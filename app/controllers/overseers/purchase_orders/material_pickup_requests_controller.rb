@@ -13,7 +13,7 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
   end
 
   def new
-    @logistics_owner = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(@purchase_order).call
+    @logistics_owner = (@purchase_order.logistics_owner.present?) ? @purchase_order.logistics_owner : Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(@purchase_order).call
     @mpr = MaterialPickupRequest.new(purchase_order: @purchase_order, logistics_owner: @logistics_owner)
 
     @mpr.purchase_order.rows.each do |row|

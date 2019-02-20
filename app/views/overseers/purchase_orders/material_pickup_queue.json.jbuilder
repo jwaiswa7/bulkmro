@@ -1,6 +1,9 @@
 json.data (@material_pickup_requests) do |material_pickup_request|
   json.array! [
                   [
+                      if (policy(material_pickup_request).update_logistics_owner_for_pickup_requests? && (material_pickup_request.status != 'Material Delivered'));
+                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_pickup_requests[]' class='custom-control-input' value='#{material_pickup_request.id}' id='c-#{material_pickup_request.id}'><label class='custom-control-label' for='c-#{material_pickup_request.id}'></label></div>"
+                      end,
                       if policy(material_pickup_request).delivered? && policy(material_pickup_request).can_request_invoice?
                         "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='pickup_requests[]' class='custom-control-input' value='#{material_pickup_request.id}' id='c-#{material_pickup_request.id}' data-po-id='#{material_pickup_request.purchase_order.id}'><label class='custom-control-label' for='c-#{material_pickup_request.id}'></label></div>"
                       end,

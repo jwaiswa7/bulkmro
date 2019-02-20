@@ -10,6 +10,15 @@
 <% end %>
 
 <% provide :heading_buttons do %>
+  <% if policy(:material_pickup_request).update_logistics_owner_for_pickup_requests? && !(action_name == 'material_delivered_queue') %>
+    <div class="mr-2 float-left update_logistics_owner_wrapper">
+      <%= select_tag :logistics_owner, options_for_select(Overseer.logistics.collect{|o| [o.full_name.to_s, o.id]}), class: 'form-control select2-wrap update_logistics_owner_wrapper', include_blank: 'Select a logistics owner', id: 'logistics_owner_select' %>
+    </div>
+    <button type="button" id="update_logistics_owner" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_logistics_owner_wrapper">
+      <i class="fal fa-plus mr-1"></i>Update Logistics Owner
+    </button>
+  <% end %>
+
   <% if action_name == 'material_delivered_queue' %>
     <button type="button" id="create_invoice" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
       <i class="fal fa-check mr-1"></i>Create Invoice Request
@@ -19,7 +28,14 @@
 
 <div class="col-lg-12">
   <% content_for :header_row do %>
-    <th class="sort all"></th>
+    <th class="no-sort all">
+      <% if policy(:material_pickup_request).update_logistics_owner_for_pickup_requests? && (action_name != 'material_delivered_queue') %>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" name="all_pickup_requests" id="all_pickup_requests">
+          <label class="custom-control-label" for="all_pickup_requests">Select All</label>
+        </div>
+      <% end %>
+    </th>
     <th class="sort desktop" data-name="inquiry_number">Inquiry #</th>
     <th class="sort desktop" data-name="company_name">Customer Company Name</th>
     <th class="sort desktop" data-name="so_number">Sales Order #</th>

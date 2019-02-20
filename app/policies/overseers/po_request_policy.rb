@@ -1,8 +1,4 @@
 class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
-  def update_logistics_owner?
-    admin?
-  end
-
   def index?
     true
   end

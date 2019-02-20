@@ -1,9 +1,6 @@
 json.data (@po_requests) do |po_request|
   json.array! [
                   [
-                      if policy(po_request).update_logistics_owner? && (po_request.status != 'Cancelled')
-                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='po_requests[]' class='custom-control-input' value='#{po_request.id}' id='c-#{po_request.id}'><label class='custom-control-label' for='c-#{po_request.id}'></label></div>"
-                      end,
                       if policy(po_request).edit? && po_request.status != 'Cancelled'
                         row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
