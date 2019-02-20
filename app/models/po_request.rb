@@ -122,9 +122,4 @@ class PoRequest < ApplicationRecord
     "#{title} PO Request"
   end
 
-  def submit_text(obj, use_alias: nil, suffix: nil)
-    class_name = use_alias ? use_alias : obj.class.model_name.human
-    obj.new_record? ? "Create #{class_name}" : "Update #{class_name}"
-  end
-
 end

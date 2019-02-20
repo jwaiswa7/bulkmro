@@ -10,7 +10,7 @@
       <% end %>
     </h2>
     <div class="d-md-flex justify-content-between">
-      <p>This will <em>'<%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status) %>'</em>
+      <p>This will <em>'<%= @invoice_request.new_record? ? 'Create' : 'Update' %> <%= @invoice_request.readable_status %>'</em>
         and log it under
         <strong><%= current_overseer.full_name %></strong>.</p>
 
