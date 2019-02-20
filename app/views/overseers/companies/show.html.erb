@@ -362,10 +362,10 @@
       <div class="tab-pane fade" id="banks" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Banks</h3>
-          <%# if policy(:contact).new? %>
-<!--            <a href="<%#= new_overseers_company_company_bank_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New-->
-<!--              Bank</a>-->
-          <%# end %>
+          <% if policy(:contact).new? %>
+            <a href="<%= new_overseers_company_company_bank_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+              Bank</a>
+          <% end %>
         </div>
         <p class="mt-md-1 d-none d-md-block">
           All banks searchable with relevant term/keywords under <strong><%= @company.name %></strong>.

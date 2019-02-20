@@ -2,7 +2,7 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
 
-      <div class="col-8">
+      <div class="col-6">
         <h3 class="display-5 d-flex align-items-center">
           PO Request for Order <%= format_id(@po_request.sales_order.order_number) %>
           :&nbsp;<%= status_badge(@po_request.status) %>
@@ -10,27 +10,19 @@
       </div>
 
       <% if policy(@po_request).edit? && @po_request.status != 'Cancelled' %>
-        <div class="col-2">
           <a href="<%= edit_overseers_po_request_path(@po_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
-        </div>
       <% end %>
 
-      <div class="col-2">
-        <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm" >Add Review</a>
-      </div>
+        <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm" >Add/Edit Supplier Rating</a>
 
       <% if policy(@po_request).new_payment_request? %>
-        <div class="col-2">
           <a href="<%= new_overseers_po_request_payment_request_path(@po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
             Request</a>
-        </div>
       <% end %>
 
       <% if @po_request.payment_request.present? && policy(@po_request.payment_request).show? %>
-        <div class="col-2">
           <a href="<%= overseers_payment_request_path(@po_request.payment_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
             Request</a>
-        </div>
       <% end %>
 
     </div>
@@ -114,6 +106,6 @@
   </section>
 </div>
 
-<%if @company_reviews.present? && @company_reviews.map(&:rating).include?(nil) %>
+<%if @company_reviews.present? %>
   <%= render partial: 'shared/layouts/rating_modal_with_multiple_tab'%>
 <%end %>
