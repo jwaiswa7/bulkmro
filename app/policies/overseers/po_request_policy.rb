@@ -3,7 +3,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     true
   end
 
-  def edit
+  def edit?
     logistics? || manager_or_sales?
   end
 
