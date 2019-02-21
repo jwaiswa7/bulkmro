@@ -2463,6 +2463,45 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
 
+    def migrate_magento_sales_receipts
+
+      payment_method = { 'banktransfer' => 10, 'Cheque' => 20, 'checkmo' => 30, 'razorpay' => 40, 'free' => 50, 'roundoff' => 60, 'bankcharges' => 70, 'cash' => 80, 'creditnote' => 85, 'writeoff' => 90, 'Transfer Acct' => 95 }
+
+      service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts.csv', 'seed_files')
+      service.loop(nil) do |x|
+        sales_invoice = SalesInvoice.find_by_legacy_id(x.get_column('invoice_legacy_id'))
+        sales_receipt = SalesReceipt.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
+        if sales_invoice.present? && sales_receipt.new_record?
+          sales_receipt.sales_invoice = sales_invoice
+          sales_receipt.is_legacy = true
+          sales_receipt.remote_reference = x.get_column('remote_reference')
+          sales_receipt.metadata = x.get_row
+          sales_receipt.payment_method = payment_method[x.get_column('payment_method')]
+          sales_receipt.payment_type = 20
+          sales_receipt.save!
+
+          sales_receipt.sales_receipt_row.first_or_create!(sales_invoice: sales_invoice, amount_received: x.get_column('amount_received'))
+          sales_receipt.update_attributes!(payment_amount_received: sales_receipt.sales_receipt_row.sum(:amount_received))
+        end
+      end
+
+      service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts_on_account.csv', 'seed_files')
+      service.loop(nil) do |x|
+        company = Company.acts_as_customer.find_by_legacy_id(x.get_column('company'))
+        sales_receipt = SalesReceipt.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
+        if sales_receipt.new_record? || update_if_exists
+          sales_receipt.company = company
+          sales_receipt.is_legacy = true
+          sales_receipt.remote_reference = x.get_column('remote_reference')
+          sales_receipt.metadata = x.get_row
+          sales_receipt.payment_method = payment_method[x.get_column('payment_method')]
+          sales_receipt.payment_type = 10
+          sales_receipt.save!
+        end
+      end
+
+    end
+
     def migrate_sales_receipt
       service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipt_sap_against_invoice.csv', 'seed_files')
       service.loop(nil) do |x|
