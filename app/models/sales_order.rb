@@ -224,7 +224,7 @@ class SalesOrder < ApplicationRecord
     elsif self.approval.present?
       draft_remote_request = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: self.id, status: 'success').first
       if draft_remote_request .present?
-        self.update_attributes!(draft_sync_date: draft_remote_request .created_at)
+        self.update_attributes!(draft_sync_date: draft_remote_request.created_at)
         self.draft_sync_date
       end
     end

@@ -32,7 +32,7 @@ let updateTotal = (element) => {
     $(totalPriceElement).val(toDecimal(total_price));
     $(totalTaxElement).val(toDecimal(total_tax));
     $(totalPriceWithTaxElement).val(toDecimal(total_price + total_tax));
-}
+};
 
 let toDecimal = (value, precision = 2) => {
     if (isNaN(parseFloat(value))) {
