@@ -27,6 +27,16 @@ class Customers::SalesInvoicesController < Customers::BaseController
     end
   end
 
+  def export_all
+    authorize :sales_invoice
+
+    service = Services::Customers::Exporters::SalesInvoicesExporter.new(headers, current_company)
+    self.response_body = service.call
+
+    # Set the status to success
+    response.status = 200
+  end
+
   private
     def set_sales_invoice
       @sales_invoice = current_contact.account.invoices.find(params[:id])

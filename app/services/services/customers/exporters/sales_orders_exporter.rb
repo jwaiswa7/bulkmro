@@ -1,4 +1,4 @@
-class Services::Customers::Exporters::CustomerSalesOrdersExporter < Services::Customers::Exporters::BaseExporter
+class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers::Exporters::BaseExporter
 
   def initialize(headers, company)
     @file_name = 'sales_orders_for_customer'
