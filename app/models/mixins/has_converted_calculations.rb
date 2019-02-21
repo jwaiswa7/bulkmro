@@ -3,19 +3,19 @@ module Mixins::HasConvertedCalculations
 
   included do
     def calculated_total
-      rows.map { |row| row.total_selling_price || 0 }.sum.round(2)
+      rows.map { |row| row.total_selling_price }.compact.sum.round(2)
     end
 
     def calculated_total_tax
-      rows.map { |row| row.total_tax || 0 }.sum.round(2)
+      rows.map { |row| row.total_tax }.compact.sum.round(2)
     end
 
     def calculated_total_with_tax
-      rows.map { |row| row.total_selling_price_with_tax || 0 }.sum.round(2)
+      rows.map { |row| row.total_selling_price_with_tax }.compact.sum.round(2)
     end
 
     def calculated_total_margin
-      rows.map { |row| row.total_margin || 0 }.sum.round(2)
+      rows.map { |row| row.total_margin }.compact.sum.round(2)
     end
 
     def calculated_total_margin_percentage

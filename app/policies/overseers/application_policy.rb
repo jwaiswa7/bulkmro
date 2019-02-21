@@ -66,6 +66,10 @@ class Overseers::ApplicationPolicy
     overseer.hr?
   end
 
+  def accounts?
+    overseer.accounts?
+  end
+
   def index?
     all_roles? && !hr?
   end
@@ -116,6 +120,10 @@ class Overseers::ApplicationPolicy
 
   def allow_customer_portal?
     ['kartik.pai@bulkmro.com'].include?(overseer.email)
+  end
+
+  def allow_activity_export?
+    developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
   end
 
   def export_rows?

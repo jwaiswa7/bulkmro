@@ -21,11 +21,16 @@ class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
   def approve_selected?
     admin?
   end
+
   def reject_selected?
     admin?
   end
 
   def edit?
     admin? || (record.created_by == overseer)
+  end
+
+  def export_all?
+    allow_activity_export?
   end
 end

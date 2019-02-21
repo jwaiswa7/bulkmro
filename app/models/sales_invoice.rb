@@ -12,6 +12,8 @@ class SalesInvoice < ApplicationRecord
   has_many :sales_receipt_rows
 
   scope :not_cancelled_invoices, -> { where.not(status: 'Cancelled') }
+  scope :not_paid, -> { where.not(payment_status: 'Fully Paid') }
+  has_many :email_messages
 
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice
@@ -109,13 +111,13 @@ class SalesInvoice < ApplicationRecord
   end
 
   def get_due_days
-    sales_receipt_dates = self.sales_receipts.pluck(:payment_received_date).compact
-    due_date = self.due_date
-    max_date = sales_receipt_dates.max
     days = '-'
-    if due_date.present?
-      if max_date.nil? || due_date < max_date
-        days = "#{((Time.now - self.get_due_date) / 86400).to_i} days"
+    amount_due = self.amount_due
+    if due_date < Date.today && self.amount_due > 0.0
+      if due_date.present?
+        if self.amount_received < amount_due
+          days = "#{((Time.now - self.get_due_date) / 86400).to_i} days"
+        end
       end
     end
     days

@@ -1,0 +1,168 @@
+<div class="col-lg-12 ">
+  <div class="page-header">
+    <h2>
+
+      <% if @mpr.purchase_order.present? %>
+        <% if action_name == 'confirm_delivery' %>
+          <%= action_name.capitalize.titleize %>
+        <% else %>
+          <%= action_name.capitalize.titleize %>  <%= @mpr.readable_status %>
+        <% end %>
+
+        for Purchase Order #<%= @mpr.purchase_order.po_number %>
+      <% end %>
+    </h2>
+    <p>This will <em>'<%= submit_text(@mpr).downcase %>'</em>
+      and log it under
+      <strong><%= current_overseer.full_name %></strong>.</p>
+  </div>
+
+
+  <%= simple_form_for([:overseers, @mpr.purchase_order, @mpr], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |mpr_object| %>
+    <%= render 'shared/snippets/form_errors', f: mpr_object %>
+    <%= mpr_object.simple_fields_for :material_pickup_request, mpr_object.object do |f| %>
+
+
+      <div class="card">
+
+        <% if action_name == "confirm_delivery" %>
+          <%= f.hidden_field 'action_name', value: action_name %>
+        <% end %>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col-6">
+              <%= f.association :purchase_order, disabled: true, collection: [f.object.purchase_order], label: 'Purchase Order' %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single"}, label: "Logistics Owner" %>
+            </div>
+
+            <div class="col-12 col-md-12">
+              <div class="d-block d-md-flex align-items-end">
+                <div class="flex-grow-1">
+                  <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Supplier Documents' %>
+                </div>
+
+                <div class="form-group">
+                  <% f.object.attachments.each do |attachment| %>
+                    <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                      <i class="fal fa-download"></i>
+                      <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
+                        <i class="fal fa-trash-alt"></i>
+                      <% end if attachment.present? && policy(:attachment).destroy? %>
+                    <% end %>
+                  <% end if f.object.attachments.attached? %>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :document_type, collection: enum_to_collection(MaterialPickupRequest.document_types, keep_raw: true), label: "Type of Document", input_html: {class: "select2-single"} %>
+            </div>
+
+            <div class="col-6">
+
+              <%= f.input :status, as: :select, collection: enum_to_collection(MaterialPickupRequest.statuses, keep_raw: true), disabled: true, readonly: true %>
+              <%= f.hidden_field :status %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :dispatched_by, collection: enum_to_collection(MaterialPickupRequest.dispatched_bies, keep_raw: true), label: "Material Dispatched By", input_html: {class: "select2-single"}, required: true %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :shipped_to, collection: enum_to_collection(MaterialPickupRequest.shipped_tos, keep_raw: true), label: "Material Shipped To", input_html: {class: "select2-single"}, required: true %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :logistics_aggregator, as: :select, collection: enum_to_collection(MaterialPickupRequest.logistics_aggregators), label: "Logistics Aggregator", include_blank: "None" %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: true%>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :tracking_number, label: 'Tracking Number' %>
+            </div>
+
+            <div class="col-12">
+              <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |mpr_comment| %>
+                <%= mpr_comment.hidden_field :created_by_id %>
+                <%= mpr_comment.hidden_field :updated_by_id %>
+                <%= mpr_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="form-row flex-row align-items-center">
+            <div class="col-4">
+              <%= f.input :expected_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_dispatch_date.try(:strftime, "%d-%b-%Y"), class: 'expected-dispatch-date'}, required: true, disabled: f.object.invoice_request.present? %>
+            </div>
+            <div class="col-4">
+              <%= f.input :expected_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_delivery_date.try(:strftime, "%d-%b-%Y"), class: 'expected-delivery-date'}, required: true, disabled: f.object.invoice_request.present? %>
+            </div>
+            <% if f.object.status == "Material Delivered" %>
+              <div class="col-4">
+                <%= f.input :actual_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.actual_delivery_date.try(:strftime, "%d-%b-%Y"), class: 'actual-delivery-date'}, disabled: f.object.invoice_request.present? %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <% if @mpr.rows.present? %>
+          <div class="card-body">
+            <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
+            <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
+              <%= row.hidden_field :id %>
+              <div class="form-row flex-row simple-row">
+                <div class="col-6">
+                  <%= row.hidden_field :purchase_order_row_id, label: 'Product' %>
+                  <%= row.association :purchase_order_row, label: 'Product', collection: @mpr.purchase_order.rows, include_blank: 'Choose Product', disabled: row.object.purchase_order_row.present? && row.object.errors.blank? %>
+
+                </div>
+                <% if f.object.status == "Material Delivered" %>
+                  <div class="col-2">
+                    <%= row.input :pickup_quantity, input_html: {value: row.object.pickup_quantity}, readonly: true %>
+                  </div>
+                  <div class="col-2">
+                    <%= row.input :delivered_quantity, type: "number", input_html: {value: row.object.delivered_quantity.to_i, min: 1, max: (row.object.pickup_quantity.to_i if row.object.pickup_quantity.to_i > 1)}, readonly: f.object.invoice_request.present? %>
+                  </div>
+                <% else %>
+                  <div class="col-2">
+                    <%= row.input :pickup_quantity, type: "number", input_html: {value: row.object.pickup_quantity.to_f, min: 0} %>
+                  </div>
+                <% end %>
+                <% if policy(f.object).remove_products? %>
+                  <div class="col-2  mt-3 ">
+                    <%= row.remove_nested_fields_link 'Remove Product', class: 'btn btn-danger align-self-center delete_row', wrapper_class: 'simple-row' if policy(row.object).destroy? %>
+                  </div>
+                <% end %>
+                <hr/>
+              </div>
+            <% end %>
+            <% if policy(f.object).add_products? %>
+              <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' %>
+            <% end %>
+          </div>
+        <% end %>
+        <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+          <i class="fal fa-pen"></i> <%= submit_text(@mpr, use_alias: @mpr.readable_status) %>
+        <% end %>
+        <% if f.object.comments.persisted.size > 0 %>
+          <div class="card-body">
+            <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
+            <div class="chats mb-3">
+              <% f.object.comments.persisted.each do |comment| %>
+                <%= format_comment(comment) %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+    <% end %>
+    </div>
+  <% end %>
+</div>

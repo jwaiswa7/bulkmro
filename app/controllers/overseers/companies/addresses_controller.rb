@@ -95,7 +95,8 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
           :vat,
           :tan,
           :excise,
-          :gst_type
-      )
-    end
+          :gst_type,
+        :company_id
+    )
+  end
 end

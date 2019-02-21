@@ -42,4 +42,16 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def create_customer_products?
     all_roles? && is_active?
   end
+
+  def render_rating_form?
+    index?
+  end
+
+  def update_rating?
+    index?
+  end
+
+  def new_rating?
+    record.is_supplier? && (manager? || sales? || logistics?)
+  end
 end

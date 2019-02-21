@@ -15,15 +15,18 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
     @metadata[:packing] = get_packing(@metadata)
 
     respond_to do |format|
-      format.html { }
+      format.html { render 'show' }
       format.pdf do
-        render_pdf_for @purchase_order
+        render_pdf_for(@purchase_order, locals: { inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier })
       end
     end
   end
 
   private
 
+    def set_purchase_order
+      @purchase_order = @inquiry.purchase_orders.find(params[:id])
+    end
     def get_supplier(purchase_order, product_id)
       if purchase_order.metadata['PoSupNum'].present?
         product_supplier = (Company.find_by_legacy_id(purchase_order.metadata['PoSupNum']) || Company.find_by_remote_uid(purchase_order.metadata['PoSupNum']))
