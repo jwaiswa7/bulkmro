@@ -6,11 +6,14 @@ class SalesOrderRow < ApplicationRecord
   belongs_to :sales_order
   has_one :sales_quote, through: :sales_order
   belongs_to :sales_quote_row
+  has_one :supplier, through: :sales_quote_row
   has_one :tax_code, through: :sales_quote_row
+  has_one :inquiry_product_supplier, through: :sales_quote_row
   has_one :inquiry_product, through: :sales_quote_row
   has_one :product, through: :inquiry_product
+  has_many :po_request_rows
 
-  delegate :unit_cost_price_with_unit_freight_cost, :unit_selling_price, :converted_unit_selling_price, :margin_percentage, :unit_freight_cost, :freight_cost_subtotal, :converted_unit_cost_price_with_unit_freight_cost, :converted_unit_selling_price, :converted_converted_unit_selling_price, :converted_margin_percentage, :converted_unit_freight_cost, :converted_freight_cost_subtotal, to: :sales_quote_row, allow_nil: true
+  delegate :unit_cost_price_with_unit_freight_cost, :unit_selling_price, :converted_unit_selling_price, :margin_percentage, :unit_freight_cost, :freight_cost_subtotal, :converted_unit_cost_price_with_unit_freight_cost, :converted_unit_selling_price, :converted_margin_percentage, :converted_unit_freight_cost, :converted_freight_cost_subtotal, to: :sales_quote_row, allow_nil: true
   delegate :sr_no, to: :inquiry_product, allow_nil: true
   delegate :taxation, to: :sales_quote_row
   delegate :is_service, to: :sales_quote_row
@@ -79,6 +82,18 @@ class SalesOrderRow < ApplicationRecord
 
   def total_cost_price
     sales_quote_row.unit_cost_price_with_unit_freight_cost * self.quantity if sales_quote_row.present?
+  end
+
+  def max_po_request_qty
+    quantity = self.quantity
+    if self.po_request_rows.present?
+      self.po_request_rows.each do |po_request_row|
+        if po_request_row.po_request.status != 'Cancelled'
+          quantity -= (po_request_row.quantity || 0)
+        end
+      end
+    end
+    quantity
   end
 
   def hsn_or_sac

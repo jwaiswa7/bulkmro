@@ -9837,7 +9837,7 @@ th {
   .table th, .table td {
     border-width: 0;
     white-space: nowrap;
-    vertical-align: middle;
+    vertical-align: top;
     padding: 0.75em 0.3em; }
     .table th:first-child, .table td:first-child {
       border-left-style: solid;

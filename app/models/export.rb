@@ -14,6 +14,8 @@ class Export < ApplicationRecord
       sales_order_logistics: 45,
       sales_order_sap: 50,
       image_readers: 55,
-      image_readers_for_date: 60
+      image_readers_for_date: 60,
+      activities: 65,
+      company_reviews: 70
   }
 end

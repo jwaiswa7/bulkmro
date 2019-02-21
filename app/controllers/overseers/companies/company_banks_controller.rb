@@ -37,7 +37,6 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
     @company = Company.find(params[:company_id])
     @company_bank = @company.company_banks.build(company_bank_params)
     authorize @company_bank
-
     if @company_bank.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@company_bank, action_name)
     else
@@ -77,7 +76,8 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
           :address_line_2,
           :beneficiary_email,
           :beneficiary_mobile,
-          :mandate_id
+          :mandate_id,
+          :account_number_confirmation
       )
     end
 end
