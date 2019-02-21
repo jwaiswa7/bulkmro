@@ -2413,7 +2413,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     missing_bible_orders = []
     odd_invoice_names = []
     missing_bible_invoices =[]
-
+    # 20210421
     service = Services::Shared::Spreadsheets::CsvImporter.new('14-02-bible-si.csv', 'seed_files')
     skips = [11563] # company_id -> xlktyVs
     service.loop(nil) do |x|
@@ -2596,20 +2596,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         missing_bible_invoices.push(x.get_column('AR Invoice #'))
       end
     end
-
-    message = "Missing sku => " + missing_product.join(',').to_s +
-              "-----------------------------------------------------------------------" +
-              "kit products => " + kit_products.join(',').to_s +
-              "----------------------------------------------------------------------" +
-              "odd SI names => " + odd_invoice_names.join(',').to_s +
-              "-----------------------------------------------------------------------" +
-              "Missing bible orders => " + missing_bible_orders.join(',').to_s +
-              "-----------------------------------------------------------------------" +
-              "Missing bible invoices => " + missing_bible_invoices.join(',').to_s
-
-    temp_invoice_file = Tempfile.new
-    temp_invoice_file.puts(message)
-    temp_invoice_file.close
 
     puts "M SKus", missing_product.join(',')
     puts "-----------------------------------------------------------------------------------------"
