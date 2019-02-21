@@ -27,7 +27,9 @@ json.data (@po_requests) do |po_request|
                     po_request.sales_order.order_number if po_request.sales_order.present?
                   end,
                   po_request.inquiry.inside_sales_owner.to_s,
-                  conditional_link(po_request.supplier.to_s, overseers_company_path(po_request.supplier), policy(po_request.supplier).show?),
+                  if po_request.supplier.present?
+                    conditional_link(po_request.supplier.to_s, overseers_company_path(po_request.supplier), policy(po_request.supplier).show?)
+                  end,
                   po_request.buying_price,
                   po_request.selling_price,
                   po_request.po_margin_percentage,
