@@ -2417,14 +2417,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service = Services::Shared::Spreadsheets::CsvImporter.new('14-02-bible-si.csv', 'seed_files')
     skips = [11563] # company_id -> xlktyVs
     service.loop(nil) do |x|
+
       if (x.get_column('AR Invoice #').include?(".") || x.get_column('AR Invoice #').include?("/") || x.get_column('AR Invoice #').include?("-") || x.get_column('AR Invoice #').match?(/[a-zA-Z]/))
         odd_invoice_names.push(x.get_column('AR Invoice #'))
       end
-      next if (x.get_column('AR Invoice #').include?(".") || x.get_column('AR Invoice #').include?("/") || x.get_column('AR Invoice #').include?("-") || x.get_column('AR Invoice #').match?(/[a-zA-Z]/))
-      next if skips.include?(x.get_column('Inquiry Number').to_i)
+
+      next if (x.get_column('AR Invoice #').include?(".") || x.get_column('AR Invoice #').include?("/") || x.get_column('AR Invoice #').include?("-") || x.get_column('AR Invoice #').match?(/[a-zA-Z]/) || skips.include?(x.get_column('Inquiry Number').to_i))
+
       sales_order = SalesOrder.find_by_order_number(x.get_column('SO #'))
       if sales_order.present?
-        invoice_rows_array = []
+        puts "********************** Row *****************************", x.get_column('AR Invoice #')
         inquiry = sales_order.inquiry
         unit_price = x.get_column('Unit Price').to_f
         sku = x.get_column('BM #')
@@ -2485,9 +2487,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             base_weee_tax_row_disposition: nil,
             base_weee_tax_applied_row_amnt: nil
         }
-        invoice_rows_array.push(invoice_row_obj)
 
         invoice = sales_order.invoices.where(invoice_number: x.get_column('AR Invoice #').to_i).first_or_create!
+        invoice_rows_array = invoice.metadata.present? ? invoice.metadata['ItemLine'] : []
+        invoice_rows_array.push(invoice_row_obj)
+
         metadata = {
               'state' => 1,
               'is_kit' => '',
@@ -2533,7 +2537,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               'base_shipping_hidden_tax_amnt' => nil
           }
         invoice.assign_attributes(status: 1, metadata: metadata, mis_date: x.get_column('AR Invoice Date'))
-        puts "**********************Saving Invoice*****************************", x.get_column('AR Invoice #')
+        puts "********************** Saving Invoice *****************************", x.get_column('AR Invoice #')
         invoice.save!
 
         # rows
@@ -2583,7 +2587,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         row.quantity = quantity,
         row.sku = sku,
         row.metadata = row_metadata
-        puts "**********************Saving Invoice Row*****************************", x.get_column('AR Invoice #'), x.get_column('BM #')
+        puts "********************** Saving Invoice Row *****************************", x.get_column('AR Invoice #'), x.get_column('BM #')
         row.save!
 
         puts "********************** Invoice Updated *************************", x.get_column('AR Invoice #')
@@ -2594,13 +2598,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
 
     message = "Missing sku => " + missing_product.join(',').to_s +
-              "***********************************************" +
+              "-----------------------------------------------------------------------" +
               "kit products => " + kit_products.join(',').to_s +
-              "***********************************************" +
+              "----------------------------------------------------------------------" +
               "odd SI names => " + odd_invoice_names.join(',').to_s +
-              "***********************************************" +
+              "-----------------------------------------------------------------------" +
               "Missing bible orders => " + missing_bible_orders.join(',').to_s +
-              "********************************************************" +
+              "-----------------------------------------------------------------------" +
               "Missing bible invoices => " + missing_bible_invoices.join(',').to_s
 
     temp_invoice_file = Tempfile.new
@@ -2608,8 +2612,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     temp_invoice_file.close
 
     puts "M SKus", missing_product.join(',')
+    puts "-----------------------------------------------------------------------------------------"
     puts "kit products", kit_products.join(',')
+    puts "-----------------------------------------------------------------------------------------"
     puts "odd SI names", odd_invoice_names.join(',')
+    puts "-----------------------------------------------------------------------------------------"
     puts "Missing bible orders", missing_bible_orders.join(',')
   end
 
