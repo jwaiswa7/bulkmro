@@ -52,7 +52,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def new_payment_request?
-    record.purchase_order.present? && record.payment_request.blank? && record.not_amending?
+    record.purchase_order.present? && record.payment_request.blank? && record.not_amending? && record.not_cancelled?
   end
 
   def edit_payment_request?
