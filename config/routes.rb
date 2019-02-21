@@ -38,6 +38,7 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     get "/docs/*page" => "docs#index"
+    resources :payment_collection_emails
     resources :attachments
     resources :review_questions
     resources :banks
@@ -438,7 +439,12 @@ Rails.application.routes.draw do
 
         resources :sales_quotes
         resources :sales_orders
-        resources :sales_invoices
+        resources :sales_invoices do
+          collection do
+            get 'payment_collection'
+            get 'ageing_report'
+          end
+        end
         resources :company_banks
 
         resources :imports do
@@ -462,9 +468,16 @@ Rails.application.routes.draw do
     resources :accounts do
       collection do
         get 'autocomplete'
+        get 'payment_collection'
+        get 'ageing_report'
       end
       scope module: 'accounts' do
-        resources :companies
+        resources :companies do
+          collection do
+            get 'payment_collection'
+            get 'ageing_report'
+          end
+        end
       end
     end
 
@@ -505,6 +518,9 @@ Rails.application.routes.draw do
         get 'render_form'
       end
     end
+
+    resources :sales_receipts
+
   end
 
   namespace 'customers' do
