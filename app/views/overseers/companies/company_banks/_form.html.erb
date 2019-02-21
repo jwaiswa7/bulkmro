@@ -27,14 +27,12 @@
       </div>
     </div>
     <div class="form-row">
-      <div class="<% if action_name != 'edit'%>col-6<% else %> col-12<% end %>">
+      <div class="col-6">
         <%= f.input :account_number, required: true, label: "Account Number" %>
       </div>
-      <% if action_name != 'edit' %>
-        <div class="col-6">
-          <%= f.input :account_number_confirmation, required: true, label: "Confirm Account Number" %>
-        </div>
-      <% end %>
+      <div class="col-6">
+        <%= f.input :account_number_confirmation, label: "Confirm Account Number" %>
+      </div>
     </div>
 
     <div class="form-row">
@@ -55,7 +53,7 @@
       </div>
 
       <div class="col-6">
-        <%= f.input :beneficiary_mobile, required: true, label: "Beneficiary Mobile Number", input_type: "number", input_html: { placeholder: "+91" } %>
+        <%= f.input :beneficiary_mobile, required: true, label: "Beneficiary Mobile Number", input_type: "number", input_html: {placeholder: "+91"} %>
       </div>
     </div>
 
