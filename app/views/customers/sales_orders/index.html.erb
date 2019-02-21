@@ -19,12 +19,12 @@
   <th class="no-sort desktop" data-name="">PO #</th>
   <th class="no-sort desktop" data-name="">PO Date</th>
   <th class="no-sort all" data-name="order_number">Inquiry #</th>
-  <th class="no-sort desktop" data-name="">Ship To</th>
+  <th class="no-sort desktop" data-name="cp_ship_to">Ship To</th>
   <th class="no-sort desktop" data-name="">Company</th>
   <th class="no-sort desktop" data-name="">Order Total</th>
   <th class="no-sort desktop" data-name="">Expected Delivery Date</th>
   <th class="no-sort desktop" data-name="">Actual Delivery Date</th>
-  <th class="no-sort desktop" data-name="">Order Status</th>
+  <th class="no-sort desktop" data-name="cp_status">Order Status</th>
 <% end %>
 
 <% content_for :filter_row do %>
@@ -34,12 +34,12 @@
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
+  <td data-filter="ajax"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
 <% end %>
 
 <div class="col-lg-12">
