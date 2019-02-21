@@ -21,7 +21,7 @@ class Services::Overseers::Exporters::CompanyReviewExporter < Services::Overseer
         rating: company_review.rating
       )
     end
-    export = Export.create!(export_type: 65)
+    export = Export.create!(export_type: 60)
     generate_csv(export)
   end
 end

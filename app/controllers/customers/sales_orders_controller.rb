@@ -29,11 +29,12 @@ class Customers::SalesOrdersController < Customers::BaseController
 
   def export_all
     authorize :sales_order
-    Thread.current[:current_company] = current_company
-    service = Services::Overseers::Exporters::CustomerSalesOrdersExporter.new
-    service.call
 
-    redirect_to url_for(Export.customer_sales_orders.last.report)
+    service = Services::Customers::Exporters::CustomerSalesOrdersExporter.new(headers, current_company)
+    self.response_body = service.call
+
+    # Set the status to success
+    response.status = 200
   end
 
   private
