@@ -10,7 +10,7 @@ class Services::Overseers::SalesInvoices::AgeingReport < Services::Shared::BaseS
     @color = ['color-light-blue','dark','primary','success','warning','primary','info']
 
     @summery_data = {
-        total_invoice: {
+        company_ageing_report: {
             total_invoice: {name: 'Total Invoice',value: 0 , color: color.sample},
             paid_amount: {name: 'Paid Amount' ,value: 0 , color: color.sample},
             overdue_amount: {name: 'Amount (Overdue)' ,value: 0 , color: color.sample},
@@ -29,17 +29,17 @@ class Services::Overseers::SalesInvoices::AgeingReport < Services::Shared::BaseS
 
   def call
     if payment_collection.present?
-      summery_data[:total_invoice][:total_invoice][:value] = payment_collection.sum(:amount_received_fp_nd )
-      summery_data[:total_invoice][:paid_amount][:value] = payment_collection.sum(:amount_received_pp_nd)
-      summery_data[:total_invoice][:overdue_amount][:value] =  payment_collection.sum(:amount_received_npr_nd)
-      summery_data[:total_invoice][:amount_1_to_30_od][:value] =  payment_collection.sum(:amount_1_to_30_od)
-      summery_data[:total_invoice][:amount_31_to_60_od][:value] =  payment_collection.sum(:amount_31_to_60_od)
-      summery_data[:total_invoice][:amount_61_to_90_od][:value] =  payment_collection.sum(:amount_61_to_90_od)
-      summery_data[:total_invoice][:amount_more_90_od][:value] =  payment_collection.sum(:amount_more_90_od)
-      summery_data[:total_invoice][:amount_1_to_7_nd][:value] =  payment_collection.sum(:amount_1_to_7_nd)
-      summery_data[:total_invoice][:amount_8_to_15_nd][:value] =  payment_collection.sum(:amount_8_to_15_nd)
-      summery_data[:total_invoice][:amount_15_to_30_nd][:value] =  payment_collection.sum(:amount_15_to_30_nd)
-      summery_data[:total_invoice][:amount_more_30_nd][:value] =  payment_collection.sum(:amount_more_30_nd)
+      summery_data[:company_ageing_report][:total_invoice][:value] = payment_collection.sum(:amount_received_fp_nd )
+      summery_data[:company_ageing_report][:paid_amount][:value] = payment_collection.sum(:amount_received_pp_nd)
+      summery_data[:company_ageing_report][:overdue_amount][:value] =  payment_collection.sum(:amount_received_npr_nd)
+      summery_data[:company_ageing_report][:amount_1_to_30_od][:value] =  payment_collection.sum(:amount_1_to_30_od)
+      summery_data[:company_ageing_report][:amount_31_to_60_od][:value] =  payment_collection.sum(:amount_31_to_60_od)
+      summery_data[:company_ageing_report][:amount_61_to_90_od][:value] =  payment_collection.sum(:amount_61_to_90_od)
+      summery_data[:company_ageing_report][:amount_more_90_od][:value] =  payment_collection.sum(:amount_more_90_od)
+      summery_data[:company_ageing_report][:amount_1_to_7_nd][:value] =  payment_collection.sum(:amount_1_to_7_nd)
+      summery_data[:company_ageing_report][:amount_8_to_15_nd][:value] =  payment_collection.sum(:amount_8_to_15_nd)
+      summery_data[:company_ageing_report][:amount_15_to_30_nd][:value] =  payment_collection.sum(:amount_15_to_30_nd)
+      summery_data[:company_ageing_report][:amount_more_30_nd][:value] =  payment_collection.sum(:amount_more_30_nd)
     end
   end
 
