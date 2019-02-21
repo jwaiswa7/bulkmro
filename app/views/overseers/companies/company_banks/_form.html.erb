@@ -1,7 +1,7 @@
 <div class="col-lg-12">
   <%= render 'shared/snippets/page_header', e: @company_bank %>
 
-  <%= simple_form_for([:overseers, @company, @company_bank], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => '',:id => 'company_bank_form'}) do |f| %>
+  <%= simple_form_for([:overseers, @company, @company_bank], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :company_id %>
     <%= f.hidden_field :action_name, value: action_name %>
     <%= render 'shared/snippets/form_errors', f: f %>
@@ -55,7 +55,7 @@
       </div>
 
       <div class="col-6">
-        <%= f.input :beneficiary_mobile, label: "Beneficiary Mobile Number", input_type: "number", input_html: { placeholder: "+91" } %>
+        <%= f.input :beneficiary_mobile, required: true, label: "Beneficiary Mobile Number", input_type: "number", input_html: { placeholder: "+91" } %>
       </div>
     </div>
 
