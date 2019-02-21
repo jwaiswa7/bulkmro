@@ -117,15 +117,15 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def new_purchase_orders_requests?
-    admin? || developer?
+    manager_or_sales?
   end
 
   def preview_purchase_orders_requests?
-    admin? || developer?
+    new_purchase_orders_requests?
   end
 
   def create_purchase_orders_requests?
-    admin? || developer?
+    new_purchase_orders_requests?
   end
 
   def fetch_order_data?
