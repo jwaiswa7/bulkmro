@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  post '/rate' => 'rater#create', :as => 'rate'
   mount Maily::Engine, at: '/maily' if Rails.env.development?
 
   root :to => 'overseers/dashboard#show'
@@ -28,7 +29,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-    post '1de9b0a30075ae8c303eb420c103c320' ,:to => 'image_readers#update'
+    post '1de9b0a30075ae8c303eb420c103c320', :to => 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -38,6 +39,7 @@ Rails.application.routes.draw do
   namespace 'overseers' do
     get "/docs/*page" => "docs#index"
     resources :attachments
+    resources :review_questions
     resources :banks
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
@@ -79,6 +81,7 @@ Rails.application.routes.draw do
         post 'approve_selected'
         post 'reject_selected'
         post 'add_to_inquiry'
+        get 'export_all'
       end
       member do
         get 'approve'
@@ -143,6 +146,7 @@ Rails.application.routes.draw do
     resources :products do
       collection do
         get 'autocomplete'
+        get 'service_autocomplete'
       end
       member do
         get 'customer_bp_catalog'
@@ -176,11 +180,23 @@ Rails.application.routes.draw do
     resources :po_requests do
       scope module: 'po_requests' do
         resources :payment_requests
+        resources :email_messages do
+          collection do
+            get 'sending_po_to_supplier'
+            post 'sending_po_to_supplier_notification'
+            get 'dispatch_from_supplier_delayed'
+            post 'dispatch_from_supplier_delayed_notification'
+            get 'material_received_in_bm_warehouse'
+            post 'material_received_in_bm_warehouse_notification'
+          end
+        end
       end
 
       collection do
         get 'autocomplete'
-        get 'pending'
+        get 'pending_and_rejected'
+        get 'cancelled'
+        get 'amended'
       end
 
     end
@@ -196,6 +212,9 @@ Rails.application.routes.draw do
     resources :sales_orders do
       member do
         get 'new_purchase_order'
+        get 'new_purchase_orders_requests'
+        post 'preview_purchase_orders_requests'
+        post 'create_purchase_orders_requests'
         get 'debugging'
       end
 
@@ -213,13 +232,22 @@ Rails.application.routes.draw do
 
       scope module: 'sales_orders' do
         resources :comments
+        resources :purchase_orders_requests
+        resources :email_messages do
+          collection do
+            get 'material_dispatched_to_customer'
+            post 'material_dispatched_to_customer_notification'
+            get 'material_delivered_to_customer'
+            post 'material_delivered_to_customer_notification'
+          end
+        end
       end
     end
 
     resources :purchase_orders do
       member do
-        get 'edit_internal_status'
-        patch 'update_internal_status'
+        get 'edit_material_followup'
+        patch 'update_material_followup'
       end
 
       collection do
@@ -228,6 +256,17 @@ Rails.application.routes.draw do
         get 'material_readiness_queue'
         get 'material_pickup_queue'
         get 'material_delivered_queue'
+        post 'update_logistics_owner'
+        post 'update_logistics_owner_for_pickup_requests'
+      end
+
+      scope module: 'purchase_orders' do
+        resources :material_pickup_requests do
+          member do
+            get 'confirm_delivery'
+            get 'delivered_material'
+          end
+        end
       end
     end
 
@@ -352,7 +391,10 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'export_all'
       end
-
+      member do
+        get 'render_rating_form'
+        put 'update_rating'
+      end
       scope module: 'companies' do
         resources :customer_orders
 
@@ -364,7 +406,18 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
+        resources :company_reviews do
+          collection do
+            get 'index'
+          end
+        end
 
+        resources :tags do
+          collection do
+            get 'autocomplete'
+            get 'autocomplete_closure_tree'
+          end
+        end
 
         resources :addresses do
           collection do
@@ -439,7 +492,14 @@ Rails.application.routes.draw do
     end
 
     resources :freight_quotes
-
+    resources :company_reviews do
+      collection do
+        get 'export_all'
+      end
+      member do
+        get 'render_form'
+      end
+    end
   end
 
   namespace 'customers' do

@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>RailsDependency</ID>
+  <OriginalElement>Kit</OriginalElement>
+  <nodes>
+    <node x="1896.5" y="2217.5">Activity</node>
+    <node x="276.0" y="643.5">SalesShipmentPackage</node>
+    <node x="6424.5" y="4912.5">Category</node>
+    <node x="4428.0" y="5999.5">InquiryProduct</node>
+    <node x="1220.5" y="4614.5">PurchaseOrderRow</node>
+    <node x="1897.0" y="2584.5">Contact</node>
+    <node x="1554.5" y="4512.5">InquiryCurrency</node>
+    <node x="3632.0" y="5322.5">SalesQuote</node>
+    <node x="7122.5" y="3581.5">Brand</node>
+    <node x="1979.0" y="1959.5">Overseer</node>
+    <node x="1194.5" y="5101.5">Currency</node>
+    <node x="948.0" y="3454.5">SalesInvoiceRow</node>
+    <node x="6474.0" y="5112.5">TaxRate</node>
+    <node x="-33.5" y="6563.5">SalesOrderRejection</node>
+    <node x="2637.0" y="1494.5">AddressState</node>
+    <node x="-18.5" y="494.5">SalesShipmentRow</node>
+    <node x="6028.0" y="5249.5">Product</node>
+    <node x="5111.0" y="4995.5">SalesQuoteRow</node>
+    <node x="6803.0" y="4123.5">Bank</node>
+    <node x="5626.0" y="5083.5">MeasurementUnit</node>
+    <node x="628.0" y="76.5">Inquiry</node>
+    <node x="1213.5" y="1239.5">Warehouse</node>
+    <node x="5759.0" y="6283.5">TaxCode</node>
+    <node x="897.0" y="4963.5">CurrencyRate</node>
+    <node x="3348.0" y="3284.5">Company</node>
+    <node x="4034.0" y="5708.5">SalesOrderRow</node>
+    <node x="2376.5" y="1755.5">Account</node>
+    <node x="1184.5" y="4032.5">SalesReceipt</node>
+    <node x="2899.0" y="1395.5">Address</node>
+    <node x="1547.0" y="2992.5">CompanyContact</node>
+    <node x="270.0" y="450.5">SalesShipment</node>
+    <node x="1191.5" y="4737.5">PurchaseOrder</node>
+    <node x="1188.0" y="3581.5">SalesInvoice</node>
+    <node x="4868.0" y="5999.5">InquiryProductSupplier</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="TaxRate" target="Category">
+      <point x="0.0" y="-47.5" />
+      <point x="0.0" y="47.5" />
+    </edge>
+    <edge source="Company" target="CompanyContact">
+      <point x="-172.0" y="-120.0" />
+      <point x="1680.0" y="3520.0" />
+      <point x="0.0" y="47.5" />
+    </edge>
+    <edge source="Inquiry" target="SalesQuoteRow">
+      <point x="66.66666666666663" y="443.5" />
+      <point x="866.6666666666666" y="4400.0" />
+      <point x="5240.0" y="4400.0" />
+      <point x="-40.0" y="-124.5" />
+    </edge>
+    <edge source="SalesShipment" target="SalesShipmentPackage">
+      <point x="0.0" y="69.5" />
+      <point x="0.0" y="-36.5" />
+    </edge>
+    <edge source="Activity" target="Account">
+      <point x="183.5" y="0.0" />
+      <point x="2520.0" y="2320.0" />
+      <point x="-40.0" y="124.5" />
+    </edge>
+    <edge source="Company" target="Inquiry">
+      <point x="-20.0" y="355.5" />
+      <point x="3500.0" y="4320.0" />
+      <point x="875.5555555555555" y="4320.0" />
+      <point x="75.55555555555554" y="443.5" />
+    </edge>
+    <edge source="Product" target="InquiryProduct">
+      <point x="-100.0" y="190.5" />
+      <point x="6100.0" y="5920.0" />
+      <point x="4720.0" y="5920.0" />
+      <point x="120.0" y="-80.5" />
+    </edge>
+    <edge source="SalesQuote" target="InquiryProduct">
+      <point x="128.0" y="40.0" />
+      <point x="3960.0" y="5520.0" />
+      <point x="3960.0" y="6066.666666666667" />
+      <point x="-172.0" y="-13.33333333333303" />
+    </edge>
+    <edge source="Account" target="InquiryProduct">
+      <point x="0.0" y="-124.5" />
+      <point x="2560.0" y="1000.0" />
+      <point x="7440.0" y="1000.0" />
+      <point x="7440.0" y="6520.0" />
+      <point x="4600.0" y="6520.0" />
+      <point x="0.0" y="80.5" />
+    </edge>
+    <edge source="Address" target="Company">
+      <point x="141.0" y="0.0" />
+      <point x="3520.0" y="1520.0" />
+      <point x="0.0" y="-355.5" />
+    </edge>
+    <edge source="SalesQuoteRow" target="InquiryProductSupplier">
+      <point x="-169.0" y="80.0" />
+      <point x="5040.0" y="5200.0" />
+      <point x="0.0" y="-80.5" />
+    </edge>
+    <edge source="Activity" target="Contact">
+      <point x="0.0" y="102.5" />
+      <point x="0.0" y="-135.5" />
+    </edge>
+    <edge source="Inquiry" target="Warehouse">
+      <point x="146.66666666666663" y="443.5" />
+      <point x="946.6666666666666" y="1160.0" />
+      <point x="1320.0" y="1160.0" />
+      <point x="-40.0" y="-80.5" />
+    </edge>
+    <edge source="SalesShipment" target="Inquiry">
+      <point x="0.0" y="-69.5" />
+      <point x="400.0" y="0.0" />
+      <point x="800.0" y="0.0" />
+      <point x="0.0" y="-443.5" />
+    </edge>
+    <edge source="Contact" target="CompanyContact">
+      <point x="-40.0" y="135.5" />
+      <point x="2040.0" y="3040.0" />
+      <point x="133.0" y="0.0" />
+    </edge>
+    <edge source="Bank" target="Company">
+      <point x="0.0" y="-36.5" />
+      <point x="6920.0" y="3720.0" />
+      <point x="172.0" y="80.0" />
+    </edge>
+    <edge source="SalesInvoice" target="SalesInvoiceRow">
+      <point x="-92.0" y="-40.0" />
+      <point x="1040.0" y="3600.0" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="Account" target="Address">
+      <point x="183.5" y="-40.0" />
+      <point x="3040.0" y="1840.0" />
+      <point x="0.0" y="124.5" />
+    </edge>
+    <edge source="Activity" target="Overseer">
+      <point x="0.0" y="-102.5" />
+      <point x="0.0" y="80.5" />
+    </edge>
+    <edge source="Inquiry" target="InquiryProductSupplier">
+      <point x="13.333333333333371" y="443.5" />
+      <point x="813.3333333333334" y="6280.0" />
+      <point x="4960.0" y="6280.0" />
+      <point x="-80.0" y="80.5" />
+    </edge>
+    <edge source="CompanyContact" target="Company">
+      <point x="-133.0" y="0.0" />
+      <point x="1480.0" y="3040.0" />
+      <point x="1480.0" y="3560.0" />
+      <point x="-172.0" y="-80.0" />
+    </edge>
+    <edge source="SalesQuote" target="InquiryCurrency">
+      <point x="-128.0" y="-80.0" />
+      <point x="1720.0" y="5400.0" />
+      <point x="40.0" y="47.5" />
+    </edge>
+    <edge source="TaxCode" target="Product">
+      <point x="81.0" y="0.0" />
+      <point x="6160.0" y="6320.0" />
+      <point x="-40.0" y="190.5" />
+    </edge>
+    <edge source="Inquiry" target="SalesQuote">
+      <point x="31.111111111111086" y="443.5" />
+      <point x="831.1111111111111" y="5720.0" />
+      <point x="3680.0" y="5720.0" />
+      <point x="-80.0" y="157.5" />
+    </edge>
+    <edge source="Company" target="Contact">
+      <point x="-172.0" y="-40.0" />
+      <point x="1440.0" y="3600.0" />
+      <point x="1440.0" y="2760.0" />
+      <point x="-183.0" y="40.0" />
+    </edge>
+    <edge source="InquiryCurrency" target="Inquiry">
+      <point x="-125.5" y="0.0" />
+      <point x="853.3333333333334" y="4560.0" />
+      <point x="53.33333333333337" y="443.5" />
+    </edge>
+    <edge source="Currency" target="InquiryCurrency">
+      <point x="125.5" y="0.0" />
+      <point x="1680.0" y="5160.0" />
+      <point x="0.0" y="47.5" />
+    </edge>
+    <edge source="SalesQuoteRow" target="MeasurementUnit">
+      <point x="169.0" y="0.0" />
+      <point x="-134.0" y="0.0" />
+    </edge>
+    <edge source="SalesOrderRow" target="SalesQuoteRow">
+      <point x="0.0" y="-91.5" />
+      <point x="4160.0" y="5146.666666666667" />
+      <point x="-169.0" y="26.66666666666697" />
+    </edge>
+    <edge source="InquiryProductSupplier" target="Inquiry">
+      <point x="-40.0" y="80.5" />
+      <point x="5000.0" y="6320.0" />
+      <point x="808.8888888888889" y="6320.0" />
+      <point x="8.888888888888914" y="443.5" />
+    </edge>
+    <edge source="MeasurementUnit" target="Product">
+      <point x="134.0" y="0.0" />
+      <point x="6120.0" y="5120.0" />
+      <point x="-80.0" y="-190.5" />
+    </edge>
+    <edge source="Inquiry" target="Product">
+      <point x="0.0" y="443.5" />
+      <point x="800.0" y="6480.0" />
+      <point x="6200.0" y="6480.0" />
+      <point x="0.0" y="190.5" />
+    </edge>
+    <edge source="Company" target="Brand">
+      <point x="172.0" y="0.0" />
+      <point x="-117.5" y="0.0" />
+    </edge>
+    <edge source="InquiryProductSupplier" target="SalesQuoteRow">
+      <point x="172.0" y="-40.0" />
+      <point x="5280.0" y="6040.0" />
+      <point x="0.0" y="124.5" />
+    </edge>
+    <edge source="Account" target="Product">
+      <point x="183.5" y="0.0" />
+      <point x="7400.0" y="1880.0" />
+      <point x="7400.0" y="5680.0" />
+      <point x="6240.0" y="5680.0" />
+      <point x="40.0" y="190.5" />
+    </edge>
+    <edge source="SalesQuote" target="Currency">
+      <point x="-128.0" y="-40.0" />
+      <point x="1320.0" y="5440.0" />
+      <point x="0.0" y="58.5" />
+    </edge>
+    <edge source="Inquiry" target="InquiryProduct">
+      <point x="17.77777777777783" y="443.5" />
+      <point x="817.7777777777778" y="6080.0" />
+      <point x="-172.0" y="0.0" />
+    </edge>
+    <edge source="Inquiry" target="Address">
+      <point x="155.55555555555554" y="443.5" />
+      <point x="955.5555555555555" y="1080.0" />
+      <point x="3000.0" y="1080.0" />
+      <point x="-40.0" y="-124.5" />
+    </edge>
+    <edge source="InquiryProduct" target="InquiryProductSupplier">
+      <point x="172.0" y="0.0" />
+      <point x="-172.0" y="0.0" />
+    </edge>
+    <edge source="Company" target="SalesInvoice">
+      <point x="-172.0" y="0.0" />
+      <point x="92.0" y="0.0" />
+    </edge>
+    <edge source="Product" target="Inquiry">
+      <point x="-20.0" y="190.5" />
+      <point x="6180.0" y="6400.0" />
+      <point x="804.4444444444445" y="6400.0" />
+      <point x="4.444444444444457" y="443.5" />
+    </edge>
+    <edge source="InquiryProductSupplier" target="SalesQuote">
+      <point x="-120.0" y="80.5" />
+      <point x="4920.0" y="6240.0" />
+      <point x="3760.0" y="6240.0" />
+      <point x="0.0" y="157.5" />
+    </edge>
+    <edge source="Inquiry" target="InquiryCurrency">
+      <point x="57.77777777777783" y="443.5" />
+      <point x="857.7777777777778" y="4440.0" />
+      <point x="1680.0" y="4440.0" />
+      <point x="0.0" y="-47.5" />
+    </edge>
+    <edge source="PurchaseOrder" target="InquiryCurrency">
+      <point x="128.5" y="0.0" />
+      <point x="1640.0" y="4840.0" />
+      <point x="-40.0" y="47.5" />
+    </edge>
+    <edge source="SalesOrderRow" target="SalesQuote">
+      <point x="-40.0" y="-91.5" />
+      <point x="4120.0" y="5480.0" />
+      <point x="128.0" y="0.0" />
+    </edge>
+    <edge source="Inquiry" target="SalesShipment">
+      <point x="-172.0" y="0.0" />
+      <point x="130.0" y="0.0" />
+    </edge>
+    <edge source="Contact" target="Inquiry">
+      <point x="-183.0" y="0.0" />
+      <point x="906.6666666666666" y="2720.0" />
+      <point x="106.66666666666663" y="443.5" />
+    </edge>
+    <edge source="Product" target="MeasurementUnit">
+      <point x="-172.0" y="-40.0" />
+      <point x="5760.0" y="5400.0" />
+      <point x="0.0" y="36.5" />
+    </edge>
+    <edge source="TaxRate" target="Product">
+      <point x="-86.0" y="0.0" />
+      <point x="6240.0" y="5160.0" />
+      <point x="40.0" y="-190.5" />
+    </edge>
+    <edge source="Account" target="Inquiry">
+      <point x="-40.0" y="-124.5" />
+      <point x="2520.0" y="1520.0" />
+      <point x="928.8888888888889" y="1520.0" />
+      <point x="128.8888888888889" y="443.5" />
+    </edge>
+    <edge source="SalesOrderRow" target="InquiryProduct">
+      <point x="0.0" y="91.5" />
+      <point x="4160.0" y="6053.333333333333" />
+      <point x="-172.0" y="-26.66666666666697" />
+    </edge>
+    <edge source="Activity" target="Company">
+      <point x="183.5" y="40.0" />
+      <point x="2320.0" y="2360.0" />
+      <point x="2320.0" y="3440.0" />
+      <point x="-172.0" y="-200.0" />
+    </edge>
+    <edge source="Inquiry" target="PurchaseOrder">
+      <point x="48.888888888888914" y="443.5" />
+      <point x="848.8888888888889" y="4840.0" />
+      <point x="-128.5" y="0.0" />
+    </edge>
+    <edge source="Product" target="InquiryProductSupplier">
+      <point x="-60.0" y="190.5" />
+      <point x="6140.0" y="6240.0" />
+      <point x="5080.0" y="6240.0" />
+      <point x="40.0" y="80.5" />
+    </edge>
+    <edge source="SalesOrderRow" target="Product">
+      <point x="126.0" y="0.0" />
+      <point x="6080.0" y="5800.0" />
+      <point x="-120.0" y="190.5" />
+    </edge>
+    <edge source="Brand" target="Product">
+      <point x="0.0" y="58.5" />
+      <point x="7240.0" y="5440.0" />
+      <point x="172.0" y="0.0" />
+    </edge>
+    <edge source="SalesQuoteRow" target="Inquiry">
+      <point x="0.0" y="-124.5" />
+      <point x="5280.0" y="4360.0" />
+      <point x="871.1111111111111" y="4360.0" />
+      <point x="71.11111111111109" y="443.5" />
+    </edge>
+    <edge source="Company" target="Category">
+      <point x="172.0" y="160.0" />
+      <point x="6560.0" y="3800.0" />
+      <point x="0.0" y="-47.5" />
+    </edge>
+    <edge source="Company" target="SalesQuote">
+      <point x="0.0" y="355.5" />
+      <point x="3520.0" y="5360.0" />
+      <point x="-128.0" y="-120.0" />
+    </edge>
+    <edge source="Account" target="Company">
+      <point x="40.0" y="124.5" />
+      <point x="2600.0" y="3400.0" />
+      <point x="-172.0" y="-240.0" />
+    </edge>
+    <edge source="Company" target="InquiryProductSupplier">
+      <point x="172.0" y="40.0" />
+      <point x="7080.0" y="3680.0" />
+      <point x="7080.0" y="6440.0" />
+      <point x="5040.0" y="6440.0" />
+      <point x="0.0" y="80.5" />
+    </edge>
+    <edge source="PurchaseOrder" target="PurchaseOrderRow">
+      <point x="0.0" y="-102.5" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="SalesQuote" target="SalesQuoteRow">
+      <point x="40.0" y="-157.5" />
+      <point x="3800.0" y="5120.0" />
+      <point x="-169.0" y="0.0" />
+    </edge>
+    <edge source="Inquiry" target="Contact">
+      <point x="115.55555555555554" y="443.5" />
+      <point x="915.5555555555555" y="2480.0" />
+      <point x="2040.0" y="2480.0" />
+      <point x="-40.0" y="-135.5" />
+    </edge>
+    <edge source="InquiryProduct" target="Company">
+      <point x="80.0" y="-80.5" />
+      <point x="4680.0" y="5880.0" />
+      <point x="5560.0" y="5880.0" />
+      <point x="5560.0" y="3880.0" />
+      <point x="172.0" y="240.0" />
+    </edge>
+    <edge source="SalesReceipt" target="Company">
+      <point x="95.5" y="0.0" />
+      <point x="3400.0" y="4080.0" />
+      <point x="-120.0" y="355.5" />
+    </edge>
+    <edge source="SalesQuoteRow" target="InquiryProduct">
+      <point x="-169.0" y="53.33333333333303" />
+      <point x="4600.0" y="5173.333333333333" />
+      <point x="0.0" y="-80.5" />
+    </edge>
+    <edge source="SalesInvoice" target="Inquiry">
+      <point x="-92.0" y="0.0" />
+      <point x="897.7777777777778" y="3640.0" />
+      <point x="97.77777777777783" y="443.5" />
+    </edge>
+    <edge source="SalesQuote" target="Company">
+      <point x="0.0" y="-157.5" />
+      <point x="3760.0" y="3960.0" />
+      <point x="172.0" y="320.0" />
+    </edge>
+    <edge source="InquiryProduct" target="SalesQuoteRow">
+      <point x="-172.0" y="-40.0" />
+      <point x="4360.0" y="6040.0" />
+      <point x="4360.0" y="5160.0" />
+      <point x="-169.0" y="40.0" />
+    </edge>
+    <edge source="InquiryProductSupplier" target="Product">
+      <point x="172.0" y="0.0" />
+      <point x="6120.0" y="6080.0" />
+      <point x="-80.0" y="190.5" />
+    </edge>
+    <edge source="SalesShipment" target="SalesShipmentRow">
+      <point x="-130.0" y="0.0" />
+      <point x="98.5" y="0.0" />
+    </edge>
+    <edge source="SalesInvoice" target="SalesReceipt">
+      <point x="0.0" y="58.5" />
+      <point x="0.0" y="-47.5" />
+    </edge>
+    <edge source="Product" target="Category">
+      <point x="0.0" y="-190.5" />
+      <point x="6200.0" y="4960.0" />
+      <point x="-135.5" y="0.0" />
+    </edge>
+    <edge source="PurchaseOrder" target="Currency">
+      <point x="0.0" y="102.5" />
+      <point x="0.0" y="-58.5" />
+    </edge>
+    <edge source="SalesQuoteRow" target="Product">
+      <point x="40.0" y="124.5" />
+      <point x="5320.0" y="5440.0" />
+      <point x="-172.0" y="0.0" />
+    </edge>
+    <edge source="Inquiry" target="Brand">
+      <point x="172.0" y="0.0" />
+      <point x="7240.0" y="520.0" />
+      <point x="0.0" y="-58.5" />
+    </edge>
+    <edge source="Address" target="AddressState">
+      <point x="-141.0" y="0.0" />
+      <point x="83.0" y="0.0" />
+    </edge>
+    <edge source="Inquiry" target="SalesInvoice">
+      <point x="93.33333333333337" y="443.5" />
+      <point x="893.3333333333334" y="3760.0" />
+      <point x="1240.0" y="3760.0" />
+      <point x="-40.0" y="58.5" />
+    </edge>
+    <edge source="Inquiry" target="Currency">
+      <point x="44.44444444444446" y="443.5" />
+      <point x="844.4444444444445" y="5160.0" />
+      <point x="-125.5" y="0.0" />
+    </edge>
+    <edge source="Inquiry" target="Activity">
+      <point x="120.0" y="443.5" />
+      <point x="920.0" y="2320.0" />
+      <point x="-183.5" y="0.0" />
+    </edge>
+    <edge source="Address" target="Warehouse">
+      <point x="-80.0" y="-124.5" />
+      <point x="2960.0" y="1320.0" />
+      <point x="146.5" y="0.0" />
+    </edge>
+    <edge source="Account" target="SalesInvoice">
+      <point x="-183.5" y="0.0" />
+      <point x="1280.0" y="1880.0" />
+      <point x="0.0" y="-58.5" />
+    </edge>
+    <edge source="Inquiry" target="Account">
+      <point x="124.44444444444446" y="443.5" />
+      <point x="924.4444444444445" y="1840.0" />
+      <point x="-183.5" y="-40.0" />
+    </edge>
+    <edge source="SalesQuoteRow" target="InquiryCurrency">
+      <point x="-80.0" y="-124.5" />
+      <point x="5200.0" y="4560.0" />
+      <point x="125.5" y="0.0" />
+    </edge>
+    <edge source="Company" target="InquiryProduct">
+      <point x="172.0" y="280.0" />
+      <point x="5520.0" y="3920.0" />
+      <point x="5520.0" y="5840.0" />
+      <point x="4640.0" y="5840.0" />
+      <point x="40.0" y="-80.5" />
+    </edge>
+    <edge source="Overseer" target="Activity">
+      <point x="101.0" y="0.0" />
+      <point x="2320.0" y="2040.0" />
+      <point x="2320.0" y="2280.0" />
+      <point x="183.5" y="-40.0" />
+    </edge>
+    <edge source="Inquiry" target="Company">
+      <point x="84.44444444444446" y="443.5" />
+      <point x="884.4444444444445" y="4240.0" />
+      <point x="3460.0" y="4240.0" />
+      <point x="-60.0" y="355.5" />
+    </edge>
+    <edge source="Warehouse" target="Inquiry">
+      <point x="0.0" y="-80.5" />
+      <point x="1360.0" y="1120.0" />
+      <point x="951.1111111111111" y="1120.0" />
+      <point x="151.1111111111111" y="443.5" />
+    </edge>
+    <edge source="Inquiry" target="SalesOrderRow">
+      <point x="22.22222222222217" y="443.5" />
+      <point x="822.2222222222222" y="5800.0" />
+      <point x="-126.0" y="0.0" />
+    </edge>
+    <edge source="Company" target="Product">
+      <point x="172.0" y="120.0" />
+      <point x="6760.0" y="3760.0" />
+      <point x="6760.0" y="5400.0" />
+      <point x="172.0" y="-40.0" />
+    </edge>
+    <edge source="Account" target="Contact">
+      <point x="0.0" y="124.5" />
+      <point x="2560.0" y="2720.0" />
+      <point x="183.0" y="0.0" />
+    </edge>
+    <edge source="Currency" target="CurrencyRate">
+      <point x="-40.0" y="-58.5" />
+      <point x="1280.0" y="5000.0" />
+      <point x="103.0" y="0.0" />
+    </edge>
+    <edge source="Company" target="Address">
+      <point x="-172.0" y="-280.0" />
+      <point x="3240.0" y="3360.0" />
+      <point x="3240.0" y="1600.0" />
+      <point x="141.0" y="80.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.5146250333600214" x="935.3313779480427" y="698.3241424229266" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Association fields</Category>
+    <Category>Own fields</Category>
+  </Categories>
+</Diagram>
+

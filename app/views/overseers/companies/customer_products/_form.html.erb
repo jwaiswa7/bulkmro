@@ -38,6 +38,14 @@
       <div class="col-12">
         <%= f.association :brand, collection: selected_option_or_nil(f, :brand), include_blank: 'Select a brand', input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
       </div>
+      <div class="col-12">
+        <div class="form-group">
+          <%= f.label :tag_ids, 'Categories' %>
+          <div class="select2-wrapper">
+            <%= f.select :tag_ids, @company.tags.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select / Add Categories' %>
+          </div>
+        </div>
+      </div>
       <div class="col-12 col-md-12 ">
         <div class="d-block d-md-flex align-items-end">
           <div class="flex-grow-1">

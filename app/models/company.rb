@@ -15,7 +15,9 @@ class Company < ApplicationRecord
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id, required: false
   belongs_to :default_billing_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
   belongs_to :default_shipping_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
+  belongs_to :logistics_owner, -> (record) { where(role: 'logistics') }, class_name: 'Overseer', foreign_key: 'logistics_owner_id', required: true
   belongs_to :industry, required: false
+  has_many :banks, class_name: 'CompanyBank', inverse_of: :company
   has_many :company_contacts, dependent: :destroy
   has_many :contacts, through: :company_contacts
   accepts_nested_attributes_for :company_contacts
@@ -43,6 +45,7 @@ class Company < ApplicationRecord
   has_many :product_imports, class_name: 'CustomerProductImport', inverse_of: :company
   has_many :company_banks
   has_many :banks, through: :company_banks
+  has_many :tags
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof
@@ -113,6 +116,7 @@ class Company < ApplicationRecord
     self.default_company_contact ||= set_default_company_contact
     self.default_billing_address ||= set_default_company_billing_address
     self.default_shipping_address ||= set_default_company_shipping_address
+    self.logistics_owner ||= default_logistics_owner
   end
 
   def syncable_identifiers
@@ -139,6 +143,10 @@ class Company < ApplicationRecord
   def shipping_address
     self.update_attributes(default_shipping_address: self.set_default_company_shipping_address) if self.default_shipping_address.blank?
     self.default_shipping_address
+  end
+
+  def default_logistics_owner
+    Overseer.find(213)
   end
 
   def to_contextual_s(product)
@@ -194,5 +202,9 @@ class Company < ApplicationRecord
     if self.pan.blank? || self.pan.length != 10
       errors.add(:company, 'PAN is not valid')
     end
+  end
+
+  def company_rating
+    rating_for self, 'supplier_responsiveness', star: Random.rand(1..5)
   end
 end
