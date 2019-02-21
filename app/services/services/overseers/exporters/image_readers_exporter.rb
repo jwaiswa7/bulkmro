@@ -1,7 +1,6 @@
 class Services::Overseers::Exporters::ImageReadersExporter < Services::Overseers::Exporters::BaseExporter
-  def initialize(headers)
-    @file_name = 'image_readers'
-    super(headers, @file_name)
+  def initialize
+    super
     @model = ImageReader
     @columns = %w(image_name meter_number meter_reading status image_url created_at reference_id)
     @columns.each do |column|

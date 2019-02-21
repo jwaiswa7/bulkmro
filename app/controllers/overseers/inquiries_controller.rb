@@ -23,10 +23,10 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def export_all
     authorize :inquiry
-    service = Services::Overseers::Exporters::InquiriesExporter.new(headers)
-    self.response_body = service.call
-    # Set the status to success
-    response.status = 200
+    service = Services::Overseers::Exporters::InquiriesExporter.new
+    service.call
+
+    redirect_to url_for(Export.inquiries.last.report)
   end
 
   def index_pg
