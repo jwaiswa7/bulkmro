@@ -333,8 +333,8 @@ let initVueJS = () => {
                             //vj.$emit('input', this.value) // emitting Vue change event
 
                             let optionSelected = $("option:selected", this);
-                            //console.log(optionSelected[0].text.match(/\w[\d]\.[\d]*/gm)[0])
-                            vj.$data.rows[currentRowIndex]["tax_percentage"] = parseFloat(optionSelected[0].text.match(/\w[\d]\.[\d]*/gm)[0])
+                            //console.log(optionSelected[0].text.match(/\w[\d]*\.[\d]*/gm)[0])
+                            vj.$data.rows[currentRowIndex]["tax_percentage"] = parseFloat(optionSelected[0].text.match(/\w[\d]*\.[\d]*/gm)[0])
                         });
                     });
                 }, 1000);
@@ -503,8 +503,6 @@ let assignDataEventsAsEvents = (el, currentRowIndex = '') => {
     }
 };
 
-let toDecimal = (value, precision = 2) => {
-    return parseFloat(value).toFixed(precision);
-};
+
 
 export default newAction

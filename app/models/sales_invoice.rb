@@ -13,6 +13,7 @@ class SalesInvoice < ApplicationRecord
 
   scope :not_cancelled_invoices, -> { where.not(status: 'Cancelled') }
   scope :not_paid, -> { where.not(payment_status: 'Fully Paid') }
+  has_many :email_messages
 
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice

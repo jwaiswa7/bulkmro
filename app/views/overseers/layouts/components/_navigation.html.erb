@@ -55,12 +55,21 @@
           <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
           <%= nav_dropdown_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
           <%= nav_dropdown_item 'Banks', overseers_banks_path, policy(:bank).index? %>
+          <div class="dropdown-divider"></div>
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Company Creation Requests</a>
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'All Requests', overseers_company_creation_requests_path, policy(:company_creation_request).index? %>
               <%= nav_dropdown_item 'Requested', requested_overseers_company_creation_requests_path, policy(:company_creation_request).requested? %>
               <%= nav_dropdown_item 'Created/Completed', created_overseers_company_creation_requests_path, policy(:company_creation_request).created? %>
+            </ul>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Company Reviews</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'List', overseers_company_reviews_path, policy(:company).index? %>
+              <%= nav_dropdown_item 'Review Questions', overseers_review_questions_path, policy(:company).index? %>
             </ul>
           </div>
         </div>
@@ -149,7 +158,9 @@
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'Purchase Orders List', overseers_purchase_orders_path, policy(:purchase_order).index? %>
               <div class="dropdown-divider"></div>
-              <%= nav_dropdown_item 'Pending Purchase Order Requests', pending_overseers_po_requests_path, policy(:po_request).pending? %>
+              <%= nav_dropdown_item 'Pending Purchase Order Requests', pending_and_rejected_overseers_po_requests_path, policy(:po_request).pending_and_rejected? %>
+              <%= nav_dropdown_item 'Under Amend Purchase Order Requests', amended_overseers_po_requests_path, policy(:po_request).amended? %>
+              <%= nav_dropdown_item 'Cancelled Purchase Order Requests', cancelled_overseers_po_requests_path, policy(:po_request).cancelled? %>
               <%= nav_dropdown_item 'Completed Purchase Order Requests', overseers_po_requests_path, policy(:po_request).index? %>
               <div class="dropdown-divider"></div>
               <%= nav_dropdown_item 'Material Readiness Followup Queue', material_readiness_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
@@ -160,9 +171,13 @@
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Payment Requests</a>
             <ul class="dropdown-menu">
-              <%= nav_dropdown_item 'Payment Requests List', overseers_payment_requests_path, policy(:payment_request).index? %>
-              <%= nav_dropdown_item 'Pending Payment Requests', overseers_payment_requests_path(:status => 'Pending'), policy(:payment_request).index? %>
+              <%= nav_dropdown_item 'Pending Payment Logistics', overseers_payment_requests_path(:owner => 'Logistics'), policy(:payment_request).edit_payment_logistics? %>
+              <%= nav_dropdown_item 'Pending Payment Accounts', overseers_payment_requests_path(:owner => 'Accounts'), policy(:payment_request).edit_payment_queue? %>
+              <div class="dropdown-divider"></div>
+              <%= nav_dropdown_item 'All Requests', overseers_payment_requests_path, policy(:payment_request).index? %>
+              <%#= nav_dropdown_item 'Pending Payment Requests', overseers_payment_requests_path(:status => 'Pending'), policy(:payment_request).index? %>
               <%= nav_dropdown_item 'Completed Payment Requests', overseers_payment_requests_path(:status => 'Completed'), policy(:payment_request).index? %>
+              <%= nav_dropdown_item 'Rejected Payment Requests', overseers_payment_requests_path(:status => 'Rejected'), policy(:payment_request).index? %>
             </ul>
           </div>
           <div class="dropdown-submenu">
@@ -233,18 +248,18 @@
                 </div>
               </div>
             <% end %>
-            <%# if Rails.env.development? || policy(:dashboard).chewy? %>
-<!--              <div class="dropdown-submenu">-->
-<!--                <a class="dropdown-item dropdown-toggle" href="#">Chewy</a>-->
-<!--                <div class="dropdown-menu">-->
-                  <%# chewy_indices.each do |chewy_index| %>
-                    <%#= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
-                  <%# end %>
-<!--                  <div class="dropdown-divider"></div>-->
-                  <%#= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
-<!--                </div>-->
-<!--              </div>-->
-            <%# end %>
+            <% if Rails.env.development? || policy(:dashboard).chewy? %>
+              <div class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Chewy</a>
+                <div class="dropdown-menu">
+                  <% chewy_indices.each do |chewy_index| %>
+                    <%= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
+                  <% end %>
+                  <div class="dropdown-divider"></div>
+                  <%= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
+                </div>
+              </div>
+            <% end %>
           </div>
         </li>
       <% end %>
