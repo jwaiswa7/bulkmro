@@ -267,7 +267,7 @@
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Margin
-        <strong class="d-block"><%= format_currency(sales_order.converted_total_margin) %>
+        <strong class="d-block"><%= format_currency(sales_order.converted_total_margin,symbol:sales_order.currency_sign) %>
           (<%= sales_order.calculated_total_margin_percentage %>%)</strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">

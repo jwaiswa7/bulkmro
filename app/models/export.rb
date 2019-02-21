@@ -16,6 +16,6 @@ class Export < ApplicationRecord
       image_readers: 55,
       image_readers_for_date: 60,
       activities: 65,
-      customer_sales_orders: 70
+      company_reviews: 70
   }
 end

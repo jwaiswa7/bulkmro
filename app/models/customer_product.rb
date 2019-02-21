@@ -15,6 +15,8 @@ class CustomerProduct < ApplicationRecord
   belongs_to :measurement_unit, required: false
   has_many :cart_items, dependent: :destroy
   has_many :customer_order_rows
+  has_many :customer_product_tags, dependent: :destroy
+  has_many :tags, through: :customer_product_tags
 
   validates_presence_of :name
   validates_presence_of :sku
