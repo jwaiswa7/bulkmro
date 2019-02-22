@@ -2734,8 +2734,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             comments: x.get_column('Remarks')
           )
           if is_save
-            sales_receipt.sales_receipt_row.first_or_create!(sales_invoice: invoice, amount_received: x.get_column('Paid Amt'))
-            sales_receipt.update_attributes!(payment_amount_received: sales_receipt.sales_receipt_row.sum(:amount_received))
+            sales_receipt.sales_receipt_rows.first_or_create!(sales_invoice: invoice, amount_received: x.get_column('Paid Amt'))
+            sales_receipt.update_attributes!(payment_amount_received: sales_receipt.sales_receipt_rows.sum(:amount_received))
           end
         end
       end
