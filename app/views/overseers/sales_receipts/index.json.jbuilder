@@ -14,7 +14,7 @@ json.data (@sales_receipts) do |sales_receipt|
                 sales_receipt.payment_type.present? ? sales_receipt.payment_type.titlecase : '' ,
                 sales_receipt.payment_method.present? ? sales_receipt.payment_method.titlecase : '',
                 sales_receipt.currency_id.present? ? sales_receipt.currency.name : ' - ',
-                sales_receipt.payment_amount_received.present? ? sales_receipt.payment_amount_received : ' - ',
+                sales_receipt.payment_amount_received.present? ? format_currency(sales_receipt.payment_amount_received) : ' - ',
                 sales_receipt.remote_reference.present? ? sales_receipt.remote_reference : ' - ',
                 sales_receipt.comments.present? ? sales_receipt.comments : ' - ',
                 format_succinct_date(sales_receipt.created_at)
