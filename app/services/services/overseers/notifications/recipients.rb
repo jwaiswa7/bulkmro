@@ -1,10 +1,10 @@
 class Services::Overseers::Notifications::Recipients
   class << self
-    def logistics_owners
+    def customer_so_managers
       ['priyanka.rajpurkar@bulkmro.com', 'nilesh.desai@bulkmro.com', 'lavanya.j@bulkmro.com']
     end
 
-    def customer_so_managers
+    def logistics_owners
       ['dinesh.kumar@bulkmro.com']
     end
   end

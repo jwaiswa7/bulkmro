@@ -3,6 +3,15 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     super(from, namespace)
   end
 
+  def send_po_request_creation(tos, action, notifiable, url, *msg)
+    @action = action; @notifiable = notifiable; @url = url
+    @message = "Sales order ##{msg[0]} Supplier PO is requested"
+    tos.uniq.each do | to |
+      @to = Overseer.find_by_email(to)
+      send
+    end
+  end
+
   def send_company_creation_confirmation(entity, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     @message = "#{msg[0]} has been approved and created in Sprint"
