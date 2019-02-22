@@ -82,5 +82,9 @@ module Mixins::HasRole
     def others?
       role.in? OTHER_ROLES
     end
+
+    def accounts?
+      role == 'accounts'
+    end
   end
 end

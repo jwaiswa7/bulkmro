@@ -62,16 +62,14 @@ module ShortcutsHelper
   end
 
   def submit_text(obj, use_alias: nil, suffix: nil)
-    class_name = use_alias ? use_alias.humanize : obj.class.name
-    text = class_name.titlecase.split('_').join(' ')
+    class_name = use_alias ? use_alias.humanize : obj.class.model_name.human
+    if suffix.blank?
+      suffix = ''
+    end
     if obj.new_record?
-      "Create #{text}"
+      "Create #{class_name.titleize} #{suffix.humanize}"
     else
-      if suffix.present?
-        "Update #{text} #{suffix.humanize}"
-      else
-        "Update #{text}"
-      end
+      "Update #{class_name.titleize} #{suffix.humanize}"
     end
   end
 
