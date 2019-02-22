@@ -268,7 +268,7 @@
       <div class="form-row">
 
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price || po_request_row.object.unit_price_per_quantity.round(2)}, readonly: po_request_row.object.field_disabled?, required: true %>
+          <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price || po_request_row.object.unit_price_per_quantity.round(2)}, disabled: false, required: true %>
         </div>
         <div class="col-12 col-md-1">
           <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage || 0}, label: 'Disc. %', disabled: false %>
