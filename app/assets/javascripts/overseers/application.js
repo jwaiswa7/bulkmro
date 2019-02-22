@@ -30,4 +30,4 @@
 //= require packs/plugins/raty/ratyrate.js.erb
 
 // Global
-//= require overseers/run
+//= require_tree .

@@ -12,7 +12,8 @@ json.data (@products) do |customer_product|
                         row_action_button(overseers_company_customer_product_path(customer_product.company, customer_product), 'trash', 'Delete product', 'danger', '', :delete)
                       end
                   ].join(' '),
-                  customer_product.name.to_s.truncate(50),
+                  # customer_product.name.to_s.truncate(50),
+                  link_to(customer_product.name.to_s.truncate(50), overseers_company_customer_product_path(customer_product.company, customer_product), target: '_blank'),
                   customer_product.sku,
                   customer_product.customer_price,
                   format_boolean_label(customer_product.product.synced?, 'synced'),

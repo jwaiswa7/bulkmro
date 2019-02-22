@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class PoRequestComment < ApplicationRecord
   include Mixins::CanBeStamped
   belongs_to :po_request
 
   def author
-    self.created_by
+    created_by
   end
 
   def author_role

@@ -57,6 +57,24 @@ class SalesOrder < ApplicationRecord
     # self.status ||= :'Requested'
   end
 
+  enum effective_status: {
+      'Processing': 1,
+      'Partially Shipped': 2,
+      'Partially Invoiced': 3,
+      'Partially Delivered: GRN Pending': 4,
+      'Partially Delivered: GRN Received': 5,
+      'Shipped': 6,
+      'Invoiced': 7,
+      'Delivered: GRN Pending': 8,
+      'Delivered: GRN Received': 9,
+      'Partial Payment Received': 10,
+      'Full Payment Received': 11,
+      'Short Closed': 12,
+      'Material Ready For Dispatch': 13,
+      'Cancelled': 14,
+      'Closed': 15
+  }, _prefix: true
+
   enum legacy_request_status: {
       'Requested': 10,
       'SAP Approval Pending': 20,

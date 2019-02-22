@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::CustomerOrders::InquiriesController < Overseers::CustomerOrders::BaseController
   def new
     authorize @customer_order, :can_create_inquiry?
