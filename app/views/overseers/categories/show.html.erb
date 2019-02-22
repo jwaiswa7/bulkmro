@@ -31,6 +31,29 @@
               <strong class="d-block">Parent</strong>
               <%= @category.parent.name if @category.parent.present? %>
             </div>
+
+            <% if @category.created_at %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Created At</strong>
+                <%= format_date(@category.created_at) %>
+              </div>
+            <% end %>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Service</strong>
+              <%= format_boolean(@category.is_service) %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Active</strong>
+              <%= format_boolean(@category.is_active) %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">SAP Synced</strong>
+              <%= format_boolean_label(@category.synced?, 'synced') %>
+            </div>
+
           </div>
         </div>
       </div>
