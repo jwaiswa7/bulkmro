@@ -2665,21 +2665,22 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_receipt.payment_type = 20
         sales_receipt.save!
 
-        sales_receipt.sales_receipt_row.first_or_create!(sales_invoice: sales_invoice, amount_received: x.get_column('amount_received'))
-        sales_receipt.update_attributes!(payment_amount_received: sales_receipt.sales_receipt_row.sum(:amount_received))
+        sales_receipt.sales_receipt_rows.where(sales_invoice: sales_invoice).first_or_create!(amount_received: x.get_column('amount_received'))
+        sales_receipt.update_attributes!(payment_amount_received: sales_receipt.sales_receipt_rows.sum(:amount_received))
       end
     end
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts_on_account.csv', 'seed_files')
     service.loop(nil) do |x|
       company = Company.acts_as_customer.find_by_legacy_id(x.get_column('company'))
-      sales_receipt = SalesReceipt.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
-      if sales_receipt.new_record? || update_if_exists
+      sales_receipt = SalesReceipt.where(legacy_id: x.get_column('legacy_id')).first_or_create!
+      if sales_receipt.present?
         sales_receipt.company = company
         sales_receipt.is_legacy = true
         sales_receipt.remote_reference = x.get_column('remote_reference')
         sales_receipt.metadata = x.get_row
         sales_receipt.payment_method = payment_method[x.get_column('payment_method')]
+        sales_receipt.payment_amount_received = x.get_column('amount_received')
         sales_receipt.payment_type = 10
         sales_receipt.save!
       end
@@ -2706,8 +2707,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             comments: x.get_column('Remarks')
         )
         if is_save
-          sales_receipt.sales_receipt_row.first_or_create!(sales_invoice: invoice, amount_received: x.get_column('Paid Amt'))
-          sales_receipt.update_attributes!(payment_amount_received: sales_receipt.sales_receipt_row.sum(:amount_received))
+          sales_receipt.sales_receipt_rows.where(sales_invoice: invoice).first_or_create!(amount_received: x.get_column('Paid Amt'))
+          sales_receipt.update_attributes!(payment_amount_received: sales_receipt.sales_receipt_rows.sum(:amount_received))
         end
       end
     end
@@ -2769,7 +2770,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def set_payment_collection_summary
-    Company.all.each do |company|
+    Company.acts_as_customer.all.each do |company|
       not_due_date = DateTime.now + 30.days
       invoices = company.invoices
       nd_sales_invoices = invoices.includes(:sales_receipts).where('due_date > ?', not_due_date)
