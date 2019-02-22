@@ -22,11 +22,6 @@
   dependencies:
     utilise "^2.3.5"
 
-"@fortawesome/fontawesome-pro@^5.3.1":
-  version "5.6.3"
-  resolved "https://npm.fontawesome.com/@fortawesome/fontawesome-pro/-/fontawesome-pro-5.6.3.tgz#f45b1573735e9a0bd75a1334fdf710e979708316"
-  integrity sha512-GEnSpbwxSU/aM/zxo6xu70ALnUc8aYaerb+yGIgiAgVZJnQLyBmEHga60857RdPZIPk8N6e95EkbhcQon5XClw==
-
 "@rails/webpacker@3.5":
   version "3.5.5"
   resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-3.5.5.tgz#8911c66bcefc8bc6b91270e92f0d39e3c2d43116"
