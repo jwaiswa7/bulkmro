@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def new?
     cataloging? || admin?

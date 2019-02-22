@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CategorySupplier < ApplicationRecord
   belongs_to :category
 
