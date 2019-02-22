@@ -4,7 +4,7 @@
 
 <% provide :heading_buttons do %>
   <div class="btn-group">
-    <a href="<%= export_all_overseers_sales_invoices_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales invoices" data-badge="<%= ['', time_ago_in_words(Export.sales_orders.last.created_at), 'ago'].join(' ') if Export.sales_invoices.present? %>"><i class="fal fa-download mr-1"></i>Sales
+    <a href="<%= export_all_overseers_sales_invoices_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales invoices" ><i class="fal fa-download mr-1"></i>Sales
       Invoices</a>
     <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
     <div class="dropdown-menu dropdown-menu-right">
@@ -21,17 +21,17 @@
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
-    <th class="sort all" data-name="invoice_number">Invoice #</th>
-    <th class="sort desktop" data-name="inquiry_number">Inquiry #</th>
-    <th class="no-sort desktop" data-name="order_number">Order #</th>
+    <th class="sort all text-right" data-name="invoice_number">Invoice #</th>
+    <th class="sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
+    <th class="no-sort desktop text-right" data-name="order_number">Order #</th>
     <th class="no-sort desktop" data-name="company_name">Company</th>
     <th class="no-sort desktop text-right">Line Items</th>
     <th class="no-sort desktop" data-name="status">Status</th>
-    <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
-    <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
+    <th class="no-sort desktop" data-name="inside_sales_executive" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
+    <th class="no-sort desktop" data-name="outside_sales_executive" data-toggle="tooltip" title="Outside Sales & Procurement">OS Owner</th>
     <th class="no-sort desktop">Proof of Delivery</th>
-    <th class="sort desktop" data-name="mis_date">Invoice Date</th>
-    <th class="sort desktop" data-name="created_at">Created At</th>
+    <th class="sort desktop text-right" data-name="mis_date">Invoice Date</th>
+    <th class="sort desktop text-right" data-name="created_at">Created At</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>

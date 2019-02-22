@@ -1,14 +1,14 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
+<% provide :can_be_directly_export_by_daterange, true %>
 <% provide :can_be_directly_created, true %>
 
 <% provide :heading_buttons do %>
-
   <% if policy(:activity).add_to_inquiry? %>
-    <div class="mr-2 float-left add_to_inquiry_wrapper">
-    <%= select_tag :inquiry, '', class: 'select2-ajax select2-wrap add_to_inquiry_wrapper', 'data-source' => autocomplete_overseers_inquiries_path, include_blank: 'Choose an Inquiry to Assign to Activity', id: 'inquiry_select' %>
-</div>
-    <button type="button" id="add_to_inquiry" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 add_to_inquiry_wrapper">
+    <div class="mr-2 d-inline-block export_daterange_wrapper">
+      <%= select_tag :inquiry, '', class: 'select2-ajax select2-wrap add_to_inquiry_wrapper', 'data-source' => autocomplete_overseers_inquiries_path, include_blank: 'Choose an Inquiry to Assign to Activity', id: 'inquiry_select' %>
+    </div>
+    <button type="button" id="add_to_inquiry" class="mr-2 btn btn-warning btn-rounded align-self-center btn-block-sm-down mb-md-0 mb-1 add_to_inquiry_wrapper">
       <i class="fal fa-plus mr-1"></i>Add to Inquiry
     </button>
   <% end %>
@@ -22,7 +22,7 @@
           <div class="card-body">
             <div class="text-center">
               <p class="text-uppercase text-black-50 mb-1"><strong><%= format_enum(activity_type) %></strong></p>
-              <h3 class="mb-0"><%= Activity.send(activity_type).size %></h3>
+              <h3 class="mb-0"><%= number_with_delimiter(Activity.send(activity_type).size, options = {}) %></h3>
             </div>
           </div>
         </div>
@@ -42,17 +42,22 @@
     <% end %>
   </th>
   <th class="no-sort">Created By</th>
-  <th data-name="activity_date">Activity Date</th>
+  <th class="no-sort desktop text-right" data-name="activity_date">Activity Date</th>
   <th class="no-sort">Account</th>
   <th class="no-sort">Company</th>
+  <th class="no-sort desktop text-right" data-name="activity_type">Is Supplier</th>
+  <th class="no-sort desktop text-right" data-name="activity_type">Is Customer</th>
+  <th class="no-sort">Company Creation Request Status</th>
   <th class="no-sort text-right">Inquiry</th>
+  <th class="no-sort">Commercial Status</th>
   <th class="no-sort">Contact Name</th>
   <th data-name="purpose">Purpose</th>
   <th data-name="activity_type">Type</th>
-  <th class="no-sort">Daily Allowance</th>
+  <th class="no-sort text-right">Misc. Expenses</th>
   <th class="no-sort">Points Discussed</th>
   <th class="no-sort">Actions Required</th>
-  <th class = "desktop text-right" data-name="created_at">Created</th>
+  <th data-name="activity_date">Date</th>
+  <th class="desktop text-right" data-name="created_at">Created</th>
 <% end %>
 
 <div class="col-lg-12">

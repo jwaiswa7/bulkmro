@@ -1,5 +1,5 @@
 class Overseers::AccountsController < Overseers::BaseController
-  before_action :set_account, :only => [:edit, :update, :show]
+  before_action :set_account, only: [:edit, :update, :show]
 
   def index
     @accounts = ApplyDatatableParams.to(Account.all, params)
@@ -7,7 +7,7 @@ class Overseers::AccountsController < Overseers::BaseController
   end
 
   def show
-    if (@account.is_customer?)
+    if @account.is_customer?
       service = ['Services', 'Overseers', 'Reports', 'Account'].join('::').constantize.send(:new, @account, params)
       @data = service.call
     end
@@ -61,15 +61,15 @@ class Overseers::AccountsController < Overseers::BaseController
 
   private
 
-  def account_params
-    params.require(:account).permit(
+    def account_params
+      params.require(:account).permit(
         :name,
-        :alias,
-        :account_type,
-    )
-  end
+          :alias,
+          :account_type
+      )
+    end
 
-  def set_account
-    @account = Account.find(params[:id])
-  end
+    def set_account
+      @account = Account.find(params[:id])
+    end
 end

@@ -229,15 +229,15 @@
         </div>
         <div class="col-6 col-md-3">
           Subtotal
-          <strong class="d-block"><%= format_currency(@sales_invoice.sales_order.calculated_total) %></strong>
+          <strong class="d-block"><%=  format_currency(@sales_invoice.calculated_total) %></strong>
         </div>
         <div class="col-6 col-md-3 mt-2 mt-md-0">
           Tax
-          <strong class="d-block"><%= format_currency(@sales_invoice.sales_order.calculated_total_tax) %></strong>
+          <strong class="d-block"><%= format_currency(@sales_invoice.calculated_total_tax) %></strong>
         </div>
         <div class="col-6 col-md-3 mt-2 mt-md-0">
           Grand Total
-          <strong class="d-block"><%= format_currency(@sales_invoice.sales_order.calculated_total_with_tax) %></strong>
+          <strong class="d-block"><%= format_currency(@sales_invoice.calculated_total_with_tax) %></strong>
         </div>
       </div>
     </div>

@@ -60,11 +60,11 @@ class Customers::CartController < Customers::BaseController
   end
 
   private
-  def set_cart
-    @cart = current_cart
-  end
+    def set_cart
+      @cart = current_cart
+    end
 
-  def cart_params
-    params.require(:cart).permit(items_attributes: [:quantity, :id])
-  end
+    def cart_params
+      params.require(:cart).permit(items_attributes: [:quantity, :id])
+    end
 end
