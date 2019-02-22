@@ -112,7 +112,7 @@
                   <div class="address-wrapper address-wrapper-right">
                     <% if locals[:supplier].present? %>
                       <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
-                      <%= locals[:supplier].shipping_address.to_multiline_s if locals[:supplier].shipping_address.present?%>
+                      <%= locals[:supplier].shipping_address.to_multiline_s if locals[:supplier].shipping_address.present? %>
                       <br>
                       Tel: <%= locals[:supplier].telephone if locals[:supplier].telephone.present? %><br>
                       GST No. : <%= locals[:supplier].shipping_address.try(:gst) %><br>
@@ -258,16 +258,20 @@
                       <span><%= number_to_currency(item.total_tax, precision: 2, unit: '') %></span></td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
+                      <span><%= number_to_currency((item.tax_rate.to_f / 2), precision: 2, unit: '') %>%</span>
+                    </td>
                     <td align="right" valign="top">
                       <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %></span></td>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
+                      <span><%= number_to_currency((item.tax_rate.to_f / 2), precision: 2, unit: '') %>%</span>
+                    </td>
                     <td align="center" valign="top">
-                      <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %><br></span></td>
+                      <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %><br></span>
+                    </td>
                   <% end %>
                   <td align="right" valign="top">
-                    <span><%= number_to_currency(item.total_selling_price_with_tax, precision: 2, unit: '') %></span></td>
+                    <span><%= number_to_currency(item.total_selling_price_with_tax, precision: 2, unit: '') %></span>
+                  </td>
                 </tr>
               <% end %>
 
@@ -291,24 +295,29 @@
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="right" valign="top">
-                  <b><span><%= number_to_currency(locals[:purchase_order].calculated_total, precision: 2, unit: '') %></span></b></td>
+                  <b><span><%= number_to_currency(locals[:purchase_order].calculated_total, precision: 2, unit: '') %></span></b>
+                </td>
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="center" valign="top">
                   <span></span></td>
                 <% if locals[:metadata][:PoTaxRate].to_s.include? "IG" %>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax, precision: 2, unit: '') %></span></b></td>
+                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax, precision: 2, unit: '') %></span></b>
+                  </td>
                 <% else %>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b></td>
+                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b>
+                  </td>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b></td>
+                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b>
+                  </td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_with_tax, precision: 2, unit: '') %></span></b></td>
+                  <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_with_tax, precision: 2, unit: '') %></span></b>
+                </td>
               </tr>
 
               </tbody>

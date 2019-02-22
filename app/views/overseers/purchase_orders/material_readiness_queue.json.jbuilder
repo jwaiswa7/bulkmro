@@ -1,6 +1,9 @@
 json.data (@purchase_orders) do |purchase_order|
   json.array! [
                   [
+                      if policy(purchase_order).update_logistics_owner?
+                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='purchase_orders[]' class='custom-control-input' value='#{purchase_order.id}' id='c-#{purchase_order.id}'><label class='custom-control-label' for='c-#{purchase_order.id}'></label></div>"
+                      end,
                       if policy(purchase_order).show?
                         row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
                       end,
@@ -22,10 +25,10 @@ json.data (@purchase_orders) do |purchase_order|
                   link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: '_blank'),
                   purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : '-',
                   (purchase_order.po_request.sales_order.order_number if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
-                 (format_succinct_date(purchase_order.po_request.sales_order.mis_date).to_date if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
-                  format_succinct_date((purchase_order.po_request.supplier_committed_date if purchase_order.po_request.present?)),
+                  (format_succinct_date(purchase_order.po_request.sales_order.mis_date) if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
+                  (format_succinct_date(purchase_order.po_request.supplier_committed_date) if purchase_order.po_request.present?),
                   link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: '_blank'),
-                  format_succinct_date(purchase_order.metadata['PoDate']),
+                  format_succinct_date(purchase_order.metadata['PoDate'].try(:to_date)),
                   purchase_order.rows.present? ? link_to(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name), overseers_company_path(purchase_order.inquiry.company), target: '_blank') : '',
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   (purchase_order.logistics_owner.full_name if purchase_order.logistics_owner.present?),

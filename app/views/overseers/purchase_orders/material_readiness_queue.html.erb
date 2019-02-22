@@ -4,9 +4,28 @@
 <% content_for :heading do %>
   Material Followup Queue
 <% end %>
+
+<% content_for(:heading_buttons) do %>
+  <% if policy(:purchase_order).update_logistics_owner? %>
+    <div class="mr-2 float-left update_logistics_owner_wrapper">
+      <%= select_tag :logistics_owner, options_for_select(Overseer.logistics.collect{|o| [o.full_name.to_s, o.id]}), class: 'form-control select2-wrap update_logistics_owner_wrapper', include_blank: 'Select a logistics owner', id: 'logistics_owner_select' %>
+    </div>
+    <button type="button" id="update_logistics_owner" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_logistics_owner_wrapper">
+      <i class="fal fa-plus mr-1"></i>Update Logistics Owner
+    </button>
+  <% end %>
+<% end %>
+
 <div class="col-lg-12">
   <% content_for :header_row do %>
-    <th class="no-sort all"></th>
+    <th class="no-sort all">
+      <% if policy(:purchase_order).update_logistics_owner? %>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" name="all_purchase_orders" id="all_purchase_orders">
+          <label class="custom-control-label" for="all_purchase_orders">Select All</label>
+        </div>
+      <% end %>
+    </th>
     <th class="no-sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
     <th class="no-sort desktop" data-name="customer_id">Customer Company Name</th>
     <th class="no-sort desktop text-right" data-name="so_number">Sales Order #</th>
@@ -15,7 +34,7 @@
     <th class="no-sort desktop text-right" data-name="supplier_po_number">Supplier PO #</th>
     <th class="no-sort desktop text-right" data-name="supplier_po_date">Supplier PO Date</th>
     <th class="no-sort desktop" data-name="supplier_id">Supplier Name</th>
-    <th class="no-sort desktop" data-name="inside_sales_executive">IS & P Owner</th>
+    <th class="no-sort desktop" data-toggle="tooltip" title="Inside Sales & Procurement" data-name="inside_sales_executive">IS&P</th>
     <th class="no-sort desktop" data-name="logistics_owner">Logistics Owner</th>
     <th class="no-sort all" data-name="material_status">Material Status</th>
     <th class="sort desktop text-right" data-name="followup_date">Material Readiness Date</th>
@@ -35,9 +54,10 @@
     <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
-    <td data-filter="false"></td>
     <td data-filter="daterange"></td>
     <td data-filter="false"></td>
+    <td data-filter="false"></td>
+
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>

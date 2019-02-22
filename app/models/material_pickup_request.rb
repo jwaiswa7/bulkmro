@@ -16,7 +16,8 @@ class MaterialPickupRequest < ApplicationRecord
   validates_associated :rows
   enum document_types: {
       'Tax Invoice': 10,
-      'Proforma Invoice': 20
+      'Proforma Invoice': 20,
+      'Delivery Challan': 30
   }
 
   enum status: {

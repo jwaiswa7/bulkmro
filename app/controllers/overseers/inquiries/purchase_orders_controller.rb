@@ -10,7 +10,16 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
   def show
     authorize @purchase_order
 
-    redirect_to overseers_purchase_order_path(@purchase_order, format: :pdf)
+    @metadata = @purchase_order.metadata.deep_symbolize_keys
+    @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
+    @metadata[:packing] = get_packing(@metadata)
+
+    respond_to do |format|
+      format.html { render 'show' }
+      format.pdf do
+        render_pdf_for(@purchase_order, locals: { inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier })
+      end
+    end
   end
 
   private

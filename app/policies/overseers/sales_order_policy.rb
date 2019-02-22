@@ -93,7 +93,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def can_request_po?
-    admin? || sales? || manager_or_sales? # !record.has_purchase_order_request
+    manager_or_sales? # !record.has_purchase_order_request
   end
 
   def can_request_invoice?
@@ -117,15 +117,15 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def new_purchase_orders_requests?
-    admin? || developer?
+    manager_or_sales?
   end
 
   def preview_purchase_orders_requests?
-    admin? || developer?
+    new_purchase_orders_requests?
   end
 
   def create_purchase_orders_requests?
-    admin? || developer?
+    new_purchase_orders_requests?
   end
 
   def fetch_order_data?

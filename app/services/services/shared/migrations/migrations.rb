@@ -1272,6 +1272,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     PoRequest.where.not(purchase_order_id: nil).each do |po_request|
       next if skips.include?(po_request.id)
       if po_request.status != 'Cancelled'
+        next if !po_request.sales_order.present?
         rows = po_request.sales_order.rows.inject({}) { |hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash }
         if po_request.status != 'Requested'
           if !po_request.status != 'PO Created'
@@ -1326,7 +1327,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def create_po_request_for_purchase_orders
     SalesOrder.remote_approved.each do |sales_order|
       rows = sales_order.rows.inject({}) { |hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash }
-      service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: sales_order.inquiry.company.name)
+      # service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: sales_order.inquiry.company.name)
       sales_order.inquiry.purchase_orders.each do |purchase_order|
         if purchase_order.rows.present?
           purchase_order.rows.each do |line_item|
@@ -1336,11 +1337,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               if row.supplier.present? && row.supplier.addresses.present?
                 quantity = line_item.metadata['PopQty'].present? ? line_item.metadata['PopQty'].to_i : row.quantity
                 if purchase_order.po_request.blank?
-                  po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, logistics_owner: service.call, is_legacy: true).first_or_create!
+                  po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, is_legacy: true).first_or_create!
                 else
                   po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, status: 'PO Created').first
                   if po_request
-                    po_request.update_attributes(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, logistics_owner: service.call, is_legacy: true)
+                    po_request.update_attributes(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, is_legacy: true)
                   end
                 end
                 po_request.rows.create!(sales_order_row_id: row.id, quantity: quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit) if po_request
@@ -2104,7 +2105,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
 
 
-
     def missing_inquiries
       file = "#{Rails.root}/tmp/missing_increment_ids.csv"
 
@@ -2434,6 +2434,44 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       puts missing_so
     end
 
+    # SalesOrder.where(:manager_so_status_date => nil).count
+    def sup_emails
+      Company.acts_as_supplier.each do |supplier|
+        name = supplier.name
+        sup_code = supplier.remote_uid
+        email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
+          supplier.company_contacts.first.contact.email
+        elsif supplier.default_company_contact_id.present?
+          supplier.default_company_contact.contact.email
+        else
+          supplier.legacy_email
+        end
+      end
+    end
+
+    def add_manager_approved_date
+      SalesOrder.approved.each do |sales_order|
+        sales_order.update_attributes!(manager_so_status_date: sales_order.approval.created_at) if sales_order.approval.present?
+      end
+    end
+
+    def add_manager_rejected_date
+      SalesOrder.rejected.each do |sales_order|
+        sales_order.update_attributes!(manager_so_status_date: sales_order.rejection.created_at) if sales_order.rejection.present?
+      end
+    end
+
+    def draft_sync_date
+      SalesOrder.all.each do |sales_order|
+        if sales_order.manager_so_status_date.present?
+          draft_remote_request = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: sales_order.id, status: 'success').first
+          if draft_remote_request.present?
+            sales_order.update_attributes!(draft_sync_date: draft_remote_request.created_at)
+          end
+        end
+      end
+    end
+
     def generate_review_questions
       service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
 
@@ -2500,10 +2538,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             partial = false
           end
           status = if 'Material Pickup'.in? po.material_pickup_requests.map(&:status)
-                     partial ? 'Material Partially Pickup' : 'Material Pickedup'
-                   elsif 'Material Delivered'.in? po.material_pickup_requests.map(&:status)
-                     partial ? 'Material Partially Delivered' : 'Material Delivered'
-                   end
+            partial ? 'Material Partially Pickup' : 'Material Pickedup'
+          elsif 'Material Delivered'.in? po.material_pickup_requests.map(&:status)
+            partial ? 'Material Partially Delivered' : 'Material Delivered'
+          end
           po.update_attribute(:material_status, status)
         else
           po.update_attribute(:material_status, 'Material Readiness Follow-Up')
@@ -2528,6 +2566,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         company.save(validate: false)
       end
     end
+
     def update_mis_date_of_missing_orders
       service = Services::Shared::Spreadsheets::CsvImporter.new('mis_date_for_missing_orders.csv', 'seed_files')
       missing_so = []

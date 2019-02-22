@@ -2,7 +2,9 @@ json.data (@purchase_orders) do |purchase_order|
   json.array! [
                   [
                       if policy(purchase_order).show?
-                        row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
+                        [row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order), 'eye', 'View PO', 'info', :_blank),
+                            row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
+                        ]
                       end,
                       if policy(purchase_order).show_document?
                         row_action_button(url_for(purchase_order.document), 'file-pdf', purchase_order.document.filename, 'dark', :_blank)
@@ -37,13 +39,13 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [{"source": autocomplete_overseers_companies_path}],
+                       [{ "source": autocomplete_overseers_companies_path }],
                        [],
-                       [{"source": autocomplete_overseers_companies_path}],
-                       PurchaseOrder.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
+                       [{ "source": autocomplete_overseers_companies_path }],
+                       PurchaseOrder.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
-                       Overseer.inside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
-                       Overseer.outside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+                       Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       Overseer.outside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        [],
                        []
                    ]
@@ -51,6 +53,6 @@ json.columnFilters [
 json.recordsTotal PurchaseOrder.all.count
 json.recordsFiltered @indexed_purchase_orders.total_count
 json.draw params[:draw]
-json.recordsSummary PurchaseOrder.statuses.map {|status, status_id| {status_id: status_id, "label": status, "size": @statuses[status_id]}}.as_json
+json.recordsSummary PurchaseOrder.statuses.map { |status, status_id| { status_id: status_id, "label": status, "size": @statuses[status_id] } }.as_json
 json.recordsTotalValue @total_values
-json.companyRating @indexed_purchase_orders.map {|cmp| {id: cmp.supplier_id, "rating": cmp.company_rating}}.as_json
+json.companyRating @indexed_purchase_orders.map { |cmp| { id: cmp.supplier_id, "rating": cmp.company_rating } }.as_json

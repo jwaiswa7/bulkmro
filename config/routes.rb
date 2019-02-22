@@ -81,6 +81,7 @@ Rails.application.routes.draw do
         post 'approve_selected'
         post 'reject_selected'
         post 'add_to_inquiry'
+        get 'export_all'
       end
       member do
         get 'approve'
@@ -196,7 +197,6 @@ Rails.application.routes.draw do
         get 'pending_and_rejected'
         get 'cancelled'
         get 'amended'
-        post 'update_logistics_owner'
       end
 
     end
@@ -256,6 +256,8 @@ Rails.application.routes.draw do
         get 'material_readiness_queue'
         get 'material_pickup_queue'
         get 'material_delivered_queue'
+        post 'update_logistics_owner'
+        post 'update_logistics_owner_for_pickup_requests'
       end
 
       scope module: 'purchase_orders' do

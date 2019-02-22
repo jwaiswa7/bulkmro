@@ -29,4 +29,8 @@ class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
   def edit?
     admin? || (record.created_by == overseer)
   end
+
+  def export_all?
+    allow_activity_export?
+  end
 end

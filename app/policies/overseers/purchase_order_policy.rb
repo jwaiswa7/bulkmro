@@ -54,4 +54,12 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   def create_email_message?
     new_email_message?
   end
+
+  def update_logistics_owner?
+    admin?
+  end
+
+  def update_logistics_owner_for_pickup_requests?
+    admin?
+  end
 end

@@ -20,6 +20,21 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
   end
 
+  def show
+    authorize @purchase_order
+    @inquiry = @purchase_order.inquiry
+    @metadata = @purchase_order.metadata.deep_symbolize_keys
+    @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
+    @metadata[:packing] = @purchase_order.get_packing(@metadata)
+
+    respond_to do |format|
+      format.html { }
+      format.pdf do
+        render_pdf_for(@purchase_order, locals: { inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier })
+      end
+    end
+  end
+
   def material_readiness_queue
     authorize :purchase_order
 
@@ -129,25 +144,22 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def export_all
     authorize :purchase_order
-    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new(headers)
-    self.response_body = service.call
-    # Set the status to success
-    response.status = 200
+    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new
+    service.call
+
+    redirect_to url_for(Export.purchase_orders.last.report)
   end
 
-  def show
-    authorize @purchase_order
-    @inquiry = @purchase_order.inquiry
-    @metadata = @purchase_order.metadata.deep_symbolize_keys
-    @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
-    @metadata[:packing] = @purchase_order.get_packing(@metadata)
+  def update_logistics_owner
+    @purchase_orders = PurchaseOrder.where(id: params[:purchase_orders])
+    authorize @purchase_orders
+    @purchase_orders.update_all(logistics_owner_id: params[:logistics_owner_id])
+  end
 
-    respond_to do |format|
-      format.html { }
-      format.pdf do
-        render_pdf_for(@purchase_order, locals: { inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier })
-      end
-    end
+  def update_logistics_owner_for_pickup_requests
+    @pickup_requests = MaterialPickupRequest.where(id: params[:pickup_requests])
+    authorize @pickup_requests
+    @pickup_requests.update_all(logistics_owner_id: params[:logistics_owner_id])
   end
 
   private

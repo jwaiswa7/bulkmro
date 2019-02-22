@@ -12,7 +12,7 @@ class InvoiceRequest < ApplicationRecord
   has_many :material_pickup_requests
   has_many_attached :attachments
   has_many :company_reviews, as: :rateable
-  ratyrate_rateable "CompanyReview"
+  ratyrate_rateable 'CompanyReview'
 
   enum status: {
       'Pending GRPO': 10,
@@ -33,12 +33,18 @@ class InvoiceRequest < ApplicationRecord
   validates_presence_of :inquiry
   validates :ap_invoice_number, length: { is: 8 }, allow_blank: true
   validates_numericality_of :ap_invoice_number, allow_blank: true
-
+  validate :has_attachments?
   validate :grpo_number_valid?
 
   def grpo_number_valid?
     if self.grpo_number.present? && self.grpo_number <= 50000000
       errors.add(:grpo_number, 'must be 8 digits starting with 5')
+    end
+  end
+
+  def has_attachments?
+    if !self.attachments.any?
+      errors.add(:attachments, "must be present to create or update a #{self.readable_status}")
     end
   end
 
@@ -84,11 +90,11 @@ class InvoiceRequest < ApplicationRecord
     status = self.status
     if status.include? 'Pending'
       title_without_pending = status.remove('Pending')
-      title = status.include?('GRPO') ? 'Invoice GRPO' : "#{title_without_pending}"
+      title = status.include?('GRPO') ? 'GRPO' : "#{title_without_pending}"
     elsif (status.include? 'Completed AR Invoice') || (status.include? 'Cancelled AR Invoice')
       title = status.gsub(status, 'AR Invoice')
     else
-      title = 'Invoice'
+      title = 'GRPO'
     end
     "#{title} Request"
   end
