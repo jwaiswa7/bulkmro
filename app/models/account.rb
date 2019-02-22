@@ -2,13 +2,14 @@ class Account < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasUniqueName
   include Mixins::CanBeSynced
+  include  Mixins::HasPaymentCollections
 
   pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
 
   # validates_presence_of :alias
   # validates_uniqueness_of :alias
   # validates_length_of :alias, :maximum => 20
-
+  has_many :email_messages, dependent: :destroy
   has_many :companies
   has_many :company_creation_request
   has_many :contacts
@@ -19,6 +20,8 @@ class Account < ApplicationRecord
   has_many :invoices, through: :inquiries
   has_many :sales_quotes, through: :inquiries, source: 'final_sales_quote'
   has_many :addresses, through: :companies
+  has_many :sales_receipts, :class_name => 'SalesReceipt'
+  has_many :payment_collections
   enum account_type: {
       is_supplier: 10,
       is_customer: 20,

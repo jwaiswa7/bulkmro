@@ -31,6 +31,14 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
     cataloging? || developer? && is_active?
   end
 
+  def payment_collection?
+    index?
+  end
+
+  def ageing_report?
+    index?
+  end
+
   def create_customer_products?
     all_roles? && is_active?
   end

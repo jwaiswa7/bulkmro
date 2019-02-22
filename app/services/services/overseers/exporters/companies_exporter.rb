@@ -38,7 +38,6 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
           tax_identifier: record.tax_identifier,
           created_at: record.created_at.to_date.to_s
         )
-
     end
     export = Export.create!(export_type: 10)
     generate_csv(export)
