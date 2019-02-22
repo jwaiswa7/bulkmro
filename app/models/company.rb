@@ -58,7 +58,7 @@ class Company < ApplicationRecord
   has_one_attached :logo
   has_one :payment_collection
   belongs_to :company_creation_request, optional: true
-  scope :with_invoices, -> {joins(:invoices).where.not(sales_invoices: { id: nil })}
+  scope :with_invoices, -> {includes(:invoices).where.not(sales_invoices: { id: nil })}
 
   enum company_type: {
       proprietorship: 10,
