@@ -9,21 +9,28 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
         @end_at = range[1].strip.to_date.end_of_day
     end
     @rows = []
+  end
 
-    # Tell Rack to stream the content
-    headers.delete('Content-Length')
+  def filename
+    "#{export_name}.csv"
+  end
 
-    # Don't cache anything from this generated endpoint
-    headers['Cache-Control'] = 'no-cache'
+  def generate_csv(object)
+    csv_data = CSV.generate(write_headers: true, headers: columns) do |csv|
+      rows.each do |row|
+        csv << row.values
+      end
+    end
 
-    # Tell the browser this is a CSV file
-    headers['Content-Type'] = 'text/csv'
-
-    # Make the file download with a specific filename
-    headers['Content-Disposition'] = "attachment; filename=\"#{file_name}.csv\""
-
-    # Don't buffer when going through proxy servers
-    headers['X-Accel-Buffering'] = 'no'
+    temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
+    begin
+      temp_file.write(csv_data)
+      temp_file.close
+      object.report.attach(io: File.open(temp_file.path), filename: filename)
+      object.save!
+    rescue => ex
+      puts ex.message
+    end
   end
 
   attr_accessor :start_at, :end_at, :columns, :model, :rows, :path, :export_name, :arguments

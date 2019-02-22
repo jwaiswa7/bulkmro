@@ -1,21 +1,18 @@
 class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::Exporters::BaseExporter
-  def initialize(headers)
-    @file_name = 'companies'
-    super(headers, @file_name)
+  def initialize
+    super
     @model = Company
+    @export_name = 'companies'
+    @path = Rails.root.join('tmp', filename)
     @columns = ['name', 'company_alias', 'industry', 'remote_uid', 'state_name', 'company_contact', 'payment_option', 'inside_sales_owner', 'outside_sales_owner', 'sales_manager', 'site', 'phone', 'mobile', 'email', 'pan', 'tan', 'company_type', 'nature_of_business', 'credit_limit', 'is_msme', 'tax_identifier', 'created_at']
-    @columns.each do |column|
-      rows.push(column)
-    end
   end
 
   def call
-    build_csv
+    perform_export_later('CompaniesExporter')
   end
 
   def build_csv
-    Enumerator.new do |yielder|
-      yielder << CSV.generate_line(rows)
+
       model.includes({ addresses: :state }, :company_contacts, :inside_sales_owner, :outside_sales_owner, :industry, :account).all.order(created_at: :desc).each do |record|
         rows.push(
           name: record.name,
@@ -41,10 +38,9 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
           tax_identifier: record.tax_identifier,
           created_at: record.created_at.to_date.to_s
         )
-      end
-      rows.drop(columns.count).each do |row|
-        yielder << CSV.generate_line(row.values)
-      end
+
     end
+    export = Export.create!(export_type: 10)
+    generate_csv(export)
   end
 end

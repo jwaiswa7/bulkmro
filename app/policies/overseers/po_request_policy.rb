@@ -3,8 +3,8 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     true
   end
 
-  def edit
-    developer? || logistics? || manager_or_sales? || admin?
+  def edit?
+    logistics? || manager_or_sales?
   end
 
   def pending_and_rejected?
@@ -24,7 +24,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def new?
-    admin? || sales? || manager_or_sales?
+    sales? || manager_or_sales?
   end
 
   def add_service_product?
@@ -32,7 +32,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_cancel?
-    record.purchase_order.present? && (manager_or_sales? || admin?) && record.not_amending?
+    record.purchase_order.present? && (manager_or_sales?) && record.not_amending?
   end
 
   def can_reject?
@@ -40,7 +40,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_update_rejected_po_requests?
-    record.purchase_order.present? && (manager_or_sales? || admin?) && record.status == 'Rejected'
+    record.purchase_order.present? && (manager_or_sales?) && record.status == 'Rejected'
   end
 
   def can_process_amended_po_requests?
@@ -52,7 +52,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def new_payment_request?
-    record.purchase_order.present? && record.payment_request.blank? && record.not_amending?
+    record.purchase_order.present? && record.payment_request.blank? && record.not_amending? && record.not_cancelled?
   end
 
   def edit_payment_request?
@@ -95,7 +95,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
       if overseer.allow_inquiries?
         scope.all
       else
-        scope.joins(:inquiry).where('inquiries.inside_sales_owner_id IN (:overseer) OR inquiries.outside_sales_owner_id IN (:overseer) OR po_requests.created_by_id IN (:overseer)', overseer: overseer.self_and_descendants.pluck(:id))
+        scope.joins("INNER JOIN inquiries ON inquiries.id = po_requests.inquiry_id").where('inquiries.inside_sales_owner_id IN (:overseer) OR inquiries.outside_sales_owner_id IN (:overseer) OR po_requests.created_by_id IN (:overseer)', overseer: overseer.self_and_descendants.pluck(:id))
       end
     end
   end

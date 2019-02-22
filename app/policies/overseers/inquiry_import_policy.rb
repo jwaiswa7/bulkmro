@@ -6,4 +6,8 @@ class Overseers::InquiryImportPolicy < Overseers::ApplicationPolicy
   def create_failed_skus?
     manage_failed_skus?
   end
+
+  def load_alternatives?
+    true
+  end
 end

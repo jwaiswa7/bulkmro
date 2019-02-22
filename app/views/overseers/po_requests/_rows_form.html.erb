@@ -237,7 +237,7 @@
 
         <div class="col-12 col-md-3">
           <div class="select2-wrap">
-            <%= po_request_row.association :product, collection: selected_option_or_nil(po_request_row, :product), include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => service_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, disabled: po_request_row.object.field_disabled? %>
+            <%= po_request_row.association :product, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :product), include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => service_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, disabled: po_request_row.object.field_disabled? %>
           </div>
         </div>
 
