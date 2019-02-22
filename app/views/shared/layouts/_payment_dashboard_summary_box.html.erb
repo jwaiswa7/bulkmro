@@ -14,9 +14,9 @@
                   <p class="mb-1 text-small text-uppercase text-<%= data_elm[1][:color] %>">
                     <strong><%=data_elm[1][:name] %></strong>
                   </p>
-                  <h5 class="mb-0 mt-auto text-<%= data_elm[1][:color] %> status-count-50"><%= format_currency(data_elm[1][:total_count]) %></h5>
+                  <h5 class="mb-0 mt-auto text-<%= data_elm[1][:color] %> status-count-50"><%= data_elm[1][:total_count]%></h5>
                   <hr class="my-2">
-                  <h5 class="my-0 text-small text-<%= data_elm[1][:color] %> ">&#8377;<%= data_elm[1][:value] %></h5>
+                  <h5 class="my-0 text-small text-<%= data_elm[1][:color] %> "><%= format_currency(data_elm[1][:value]) %></h5>
                 </div>
               </div>
             </div>
