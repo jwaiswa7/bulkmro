@@ -1,0 +1,23 @@
+<div class="col-lg-12">
+  <div class="page-header">
+    <h2>Document Creation Form</h2>
+  </div>
+
+  <%= simple_form_for(:document_creation, :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <div class="card">
+      <div class="card-body">
+        <div class="mt-3">
+          <div class="form-row">
+            <div class="col-6">
+              <%= f.input :inquiry, collection: [Inquiry.all], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
+            </div>
+
+            <div class="col-6">
+              <%#= f.input :sales_quote, collection: [SalesQuote.all], label_method: :to_s, include_blank: "Type Quote Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => overseers_inquiry_sales_orders_path(f.object.inquiry), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Quote Number" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

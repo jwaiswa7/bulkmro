@@ -64,6 +64,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :document_creations
+
     resources :reports
     resources :company_creation_requests do
       # member do
