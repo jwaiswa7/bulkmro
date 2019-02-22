@@ -38,12 +38,14 @@ module Mixins::HasPaymentCollections
       due_date = sales_invoice.due_date
       todays_date = Date.today
       sales_receipts = sales_invoice.sales_receipts
-      sales_receipts.each do |sales_receipt|
-        if (sales_receipt.payment_received_date < due_date ) || (sales_receipt.payment_received_date < todays_date)
-          outstanding_amount -= sales_receipt.sales_receipt_rows.sum(&:amount_received)
+      if due_date.present?
+        sales_receipts.each do |sales_receipt|
+          if sales_receipt.payment_received_date.present? && ((sales_receipt.payment_received_date < due_date ) || (sales_receipt.payment_received_date < todays_date))
+            outstanding_amount -= sales_receipt.sales_receipt_rows.sum(&:amount_received)
+          end
         end
+        amount += outstanding_amount
       end
-      amount += outstanding_amount
     end
     amount
   end

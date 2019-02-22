@@ -60,7 +60,7 @@ class Overseers::AccountsController < Overseers::BaseController
   end
 
   def payment_collection
-    @accounts = ApplyDatatableParams.to(Account.all, params)
+    @accounts = ApplyDatatableParams.to(Account.all.order(:name), params)
     authorize :account
     service = Services::Overseers::SalesInvoices::PaymentDashboard.new()
     service.call
@@ -68,7 +68,7 @@ class Overseers::AccountsController < Overseers::BaseController
   end
 
   def ageing_report
-    @accounts = ApplyDatatableParams.to(Account.all, params)
+    @accounts = ApplyDatatableParams.to(Account.all.order(:name), params)
     authorize :account
     service = Services::Overseers::SalesInvoices::AgeingReport.new()
     service.call

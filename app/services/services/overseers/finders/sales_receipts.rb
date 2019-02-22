@@ -28,7 +28,7 @@ class Services::Overseers::Finders::SalesReceipts < Services::Overseers::Finders
 
   def perform_query(query_string)
 
-    indexed_records = index_klass.query({multi_match: {query: query_string, operator: 'and', fields: index_klass.fields}})
+    indexed_records = index_klass.query({multi_match: {query: query_string, operator: 'and', fields: index_klass.fields}}).order(sort_definition)
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
@@ -52,5 +52,9 @@ class Services::Overseers::Finders::SalesReceipts < Services::Overseers::Finders
 
   def model_klass
     SalesReceipt
+  end
+
+  def sort_definition
+    { receipt_date: :desc }
   end
 end

@@ -2569,6 +2569,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
 
+
   def update_sales_receipt
     SalesReceipt.all.each do |sr|
       if sr.metadata.class == String
@@ -2597,31 +2598,32 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     SalesInvoice.all.each do |sales_invoice|
       sales_invoice.update_attributes!(calculated_total: sales_invoice.calculated_total) if sales_invoice.sales_order.present?
       sales_invoice.update_attributes!(calculated_total_with_tax: sales_invoice.calculated_total_with_tax) if sales_invoice.sales_order.present?
+      sales_invoice.update_attributes(due_date: sales_invoice.get_due_date) if sales_invoice.sales_order.present?
     end
   end
 
-  def new_sales_receipt
-    SalesReceipt.destroy_all
-    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts_1.csv', 'seed_files')
-    service.loop(nil) do |x|
-      response = JSON.parse JSON.parse(x.get_column('response'))
-      if response['success'] == 1
-        request = JSON.parse(x.get_column('request'))
-        invoice = SalesInvoice.find_by_invoice_number(request['p_invoice_no'])
-        company = request['cmp_id'].nil? ? nil : Company.find_by_remote_uid(request['cmp_id'])
-        currency = Currency.find_by_name(request['p_amount_currency'])
-        if !invoice.nil? || !company.nil?
-          pay_amount = 0.0
-          if !invoice.nil?
-            pay_amount = request['p_amount_received']
-            payment_type = 20
-          elsif !company.nil?
-            pay_amount = request['on_account']
-            payment_type = 10
-          end
-          account = company.present? ? company.account : nil
-          SalesReceipt.where(remote_reference: request['p_sap_reference_number']).first_or_create! do |sales_receipt|
-            sales_receipt.assign_attributes(
+    def new_sales_receipt
+      SalesReceipt.destroy_all
+      service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts_1.csv', 'seed_files')
+      service.loop(nil) do |x|
+        response = JSON.parse JSON.parse(x.get_column('response'))
+        if response['success'] == 1
+          request = JSON.parse(x.get_column('request'))
+          invoice = SalesInvoice.find_by_invoice_number(request['p_invoice_no'])
+          company = request['cmp_id'].nil? ? nil : Company.find_by_remote_uid(request['cmp_id'])
+          currency = Currency.find_by_name(request['p_amount_currency'])
+          if !invoice.nil? || !company.nil?
+            pay_amount = 0.0
+            if !invoice.nil?
+              pay_amount = request['p_amount_received']
+              payment_type = 20
+            elsif !company.nil?
+              pay_amount = request['on_account']
+              payment_type = 10
+            end
+            account = company.present? ? company.account : nil
+            SalesReceipt.where(remote_reference: request['p_sap_reference_number']).first_or_create! do |sales_receipt|
+              sales_receipt.assign_attributes(
                 sales_invoice: invoice,
                 company: company,
                 account: account,
@@ -2743,13 +2745,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
   end
-
-  def set_invoice_due_date
-    SalesInvoice.all.each do |sales_invoice|
-      sales_invoice.update_attributes(due_date: sales_invoice.get_due_date) if sales_invoice.sales_order.present?
-    end
-  end
-
 
   def update_payment_status_of_sales_invoice
     SalesInvoice.all.each do |si|
@@ -2926,7 +2921,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           amount_8_to_15_nd: amount_8_to_15_nd,
           amount_15_to_30_nd: amount_16_to_30_nd,
           amount_more_30_nd: amount_more_than_30_nd,
-      )
+          )
     end
   end
 end
