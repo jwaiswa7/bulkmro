@@ -373,4 +373,13 @@ class Inquiry < ApplicationRecord
   def margin_percentage
     self.final_sales_quote.present? ? self.final_sales_quote.calculated_total_margin_percentage.to_f : 0
   end
+
+  def stages_time_difference
+    self.inquiry_status_records.each do |inquiry_status_record|
+      Services::Overseers::Inquiries::InquiryStagesTimeDifference.new(inquiry_status_record).call
+    end
+  end
+
 end
+
+# Inquiry.stages_time_difference
