@@ -26,7 +26,7 @@
         <% if trimmed && comment.message.length > 48 %>
           <%= comment.message[0..48] + ".." %>
         <% else %>
-          <%= comment.message %>
+          <%= simple_format comment.message %>
         <% end %>
       </p>
     </div>

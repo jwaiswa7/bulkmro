@@ -6,8 +6,19 @@ class EmailMessage < ApplicationRecord
 
   belongs_to :inquiry, required: false
   belongs_to :sales_quote, required: false
+  belongs_to :purchase_order, required: false
+  belongs_to :sales_order, required: false
+  belongs_to :sales_invoice, required: false
 
   validates_presence_of :from, :to, :subject
+
+  enum email_type: {
+      'Sending PO to Supplier': 10,
+      'Dispatch from Supplier Delayed': 20,
+      'Material Received in BM Warehouse': 30,
+      'Material Dispatched to Customer': 40,
+      'Material Delivered to Customer': 50
+  }
 
   after_initialize :set_defaults, if: :new_record?
   def set_defaults

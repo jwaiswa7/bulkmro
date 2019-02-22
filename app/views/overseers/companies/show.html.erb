@@ -4,6 +4,7 @@
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
         <a href="<%= overseers_account_path(@company.account) %>"><img src="https://ui-avatars.com/api/?size=128&name=<%= @company.account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/></a><%= @company.name %>
+        &nbsp;<%= format_star(@company.rating) if @company.rating.present? %>
       </h3>
 
       <% if policy(@company).edit? %>
@@ -284,9 +285,11 @@
           <a class="nav-link" data-toggle="tab" href="#products" role="tab">Products</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#online-orders" role="tab">Online Orders</a>
+          <a class="nav-link" data-toggle="tab" href="#product_categories" role="tab">Product Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#online-orders" role="tab">Online Orders</a>
         </li>
-
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#payments" role="tab">Online Payments</a>
       </li>
@@ -298,6 +301,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#invoices" role="tab">Invoices</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#rating" role="tab">Ratings</a>
       </li>
       <% end %>
     </ul>
@@ -394,6 +400,33 @@
           <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'products' %>
         </div>
       <% end %>
+
+      <div class="tab-pane fade" id="product_categories" role="tabpanel">
+        <div class="d-md-flex justify-content-between">
+          <h3 class="display-5 mb-1 d-none d-md-block">Product Categories</h3>
+          <div>
+            <% if policy(:tag).new? %>
+              <a href="<%= new_overseers_company_tag_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Product Category</a>
+            <% end %>
+          </div>
+        </div>
+        <p class="mt-md-1 d-none d-md-block">
+          All product categories searchable with relevant term/keywords</strong>.
+        </p>
+
+        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_company_tags_path(@company) %>">
+          <thead>
+          <tr>
+            <th class="no-sort"></th>
+            <th class="no-sort">Name</th>
+            <th class="desktop" data-name="created_at">Created</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
 
       <% if policy(@company).new_inquiry? %>
         <div class="tab-pane fade" id="inquiries" role="tabpanel">
@@ -564,6 +597,26 @@
           <a href="#"></a>
         <% end %>
         <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Invoices'  %>
+      </div>
+      <div class="tab-pane fade" id="rating" role="tabpanel">
+        <div class="d-md-flex justify-content-between">
+          <h3 class="display-5 mb-1 d-none d-md-block">Ratings</h3>
+        </div>
+
+        <table class="datatable table table-bordered dt-responsive review-table" data-search="Searchable with relevant term/keywords." style="width:100%;" data-ajax="<%= overseers_company_company_reviews_path(@company) %>">
+          <thead>
+          <tr>
+            <th class="no-sort all"></th>
+            <th class="no-sort all">User</th>
+            <th>Company name</th>
+            <th class="no-sort desktop">Review Type</th>
+            <th class="no-sort desktop">Rating</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
       </div>
       <% end %>
     </div>

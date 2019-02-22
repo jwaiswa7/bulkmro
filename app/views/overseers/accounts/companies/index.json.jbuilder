@@ -21,6 +21,7 @@ json.data (@companies) do |company|
                       end,
                   ].join(' '),
                   link_to(company.to_s, overseers_company_path(company),target: '_blank'),
+                  format_star(company.rating),
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
@@ -29,7 +30,7 @@ json.data (@companies) do |company|
                   format_boolean(company.is_supplier?),
                   format_boolean(company.is_customer?),
                   format_boolean_label(company.synced?, 'synced'),
-                  format_succinct_date(company.created_at)
+                  format_succinct_date(company.created_at),
               ]
 end
 
