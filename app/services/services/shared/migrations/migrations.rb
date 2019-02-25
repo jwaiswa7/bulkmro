@@ -2497,6 +2497,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               company_bank.bank = bank
               company_bank.account_name = x.get_column('account_name')
               company_bank.account_number = x.get_column('account_no')
+              company_bank.account_number_confirmation = x.get_column('account_no')
               company_bank.branch = x.get_column('branch')
               company_bank.mandate_id = x.get_column('mandate_id')
               company_bank.metadata = x.get_row
