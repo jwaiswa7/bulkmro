@@ -1,5 +1,4 @@
 class Services::Resources::SalesOrders::SaveAndSync < Services::Shared::BaseService
-
   def initialize(sales_order)
     @sales_order = sales_order
   end
@@ -15,11 +14,10 @@ class Services::Resources::SalesOrders::SaveAndSync < Services::Shared::BaseServ
       if sales_order.draft_uid.present? || sales_order.order_number.present?
         ::Resources::Draft.update(sales_order.draft_uid, sales_order)
       else
-        sales_order.update_attributes(:draft_uid => ::Resources::Draft.create(sales_order))
+        sales_order.update_attributes(draft_uid: ::Resources::Draft.create(sales_order))
       end
     end
   end
 
   attr_accessor :sales_order
 end
-

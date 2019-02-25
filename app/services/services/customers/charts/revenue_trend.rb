@@ -9,9 +9,9 @@ class Services::Customers::Charts::RevenueTrend < Services::Customers::Charts::B
           labels: [],
           datasets: [
               {
-                  label: "₹ Lacs",
-                  type: "bar",
-                  borderColor: "#fd7e14",
+                  label: '₹ Lacs',
+                  type: 'bar',
+                  borderColor: '#fd7e14',
                   backgroundColor: '#fd7e14',
                   data: [],
                   yAxisID: 'revenue',
@@ -43,10 +43,10 @@ class Services::Customers::Charts::RevenueTrend < Services::Customers::Charts::B
           },
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(:created_at => start_at..end_at).joins(:company).where(companies: {id: company.id})
-      monthwise_order_totals = sales_orders.group_by_month(&:created_at).map {|k, v| [k.strftime("%b-%y"), v.map(&:calculated_total).sum.to_s]}.to_h
+      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:company).where(companies: { id: company.id })
+      monthwise_order_totals = sales_orders.group_by_month(&:created_at).map { |k, v| [k.strftime('%b-%y'), v.map(&:calculated_total).sum.to_s] }.to_h
 
-      (start_at..end_at).map {|a| a.strftime("%b-%y")}.uniq.each do |month|
+      (start_at..end_at).map { |a| a.strftime('%b-%y') }.uniq.each do |month|
         @data[:labels].push(month)
         @data[:datasets][0][:data].push(monthwise_order_totals[month] || 0)
       end

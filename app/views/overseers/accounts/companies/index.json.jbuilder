@@ -21,15 +21,16 @@ json.data (@companies) do |company|
                       end,
                   ].join(' '),
                   company.to_s,
+                  format_star(company.rating),
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
-                  (company.addresses.present? && company.is_international) ? 'International' :company.pan,
+                  (company.addresses.present? && company.is_international) ? 'International' : company.pan,
                   format_boolean(company.validate_pan),
                   format_boolean(company.is_supplier?),
                   format_boolean(company.is_customer?),
                   format_boolean_label(company.synced?, 'synced'),
-                  format_succinct_date(company.created_at)
+                  format_succinct_date(company.created_at),
               ]
 end
 
@@ -40,7 +41,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [{:"label" => "Yes", :"value" => true},{:"label" => "No", :"value" => false}],
+                       [{ "label": 'Yes', "value": true }, { "label": 'No', "value": false }],
                        [],
                        [],
                        [],

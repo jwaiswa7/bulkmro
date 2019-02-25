@@ -3,7 +3,6 @@ module Mixins::CanBeSynced
 
   included do
     def save_and_sync(options = false)
-
       if options
         service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self, options)
       else
@@ -11,8 +10,7 @@ module Mixins::CanBeSynced
       end
 
       service.call
-      self.save if Rails.env.development?
-      return true
+      self.save
     end
 
     def syncable_identifiers

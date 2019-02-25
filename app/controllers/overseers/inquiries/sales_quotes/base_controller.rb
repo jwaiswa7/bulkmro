@@ -2,7 +2,7 @@ class Overseers::Inquiries::SalesQuotes::BaseController < Overseers::Inquiries::
   before_action :set_sales_quote
 
   private
-  def set_sales_quote
-    @sales_quote = SalesQuote.find(params[:sales_quote_id])
-  end
+    def set_sales_quote
+      @sales_quote = SalesQuote.find(params[:sales_quote_id])
+    end
 end

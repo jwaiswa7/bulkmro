@@ -14,7 +14,7 @@ json.data (@products) do |product|
                         row_action_button(sku_purchase_history_overseers_product_path(product), 'history', 'View Purchase History', 'outline-dark', :_blank)
                       end,
                       if policy(product).resync_inventory?
-                          row_action_button(resync_inventory_overseers_product_path(product), 'inventory', 'Resync Inventory', 'outline-dark', :_blank)
+                        row_action_button(resync_inventory_overseers_product_path(product), 'inventory', 'Resync Inventory', 'outline-dark', :_blank)
                       end
                   ].join(' '),
                   product.name,
@@ -22,19 +22,25 @@ json.data (@products) do |product|
                   product.brand.to_s,
                   product.category.name,
                   product.mpn,
+
                   number_with_delimiter(product.total_pos, delimiter: ','),
                   number_with_delimiter(product.total_quotes, delimiter: ','),
-                  format_boolean(product.is_active?),
+                  format_boolean(product.is_service),
                   format_boolean_label(product.synced?, 'synced'),
+                  format_boolean(product.is_active),
                   format_succinct_date(product.created_at),
-                  format_succinct_date(product.approval.try(:created_at))
+                  (product.created_by || (product.inquiry_import_row.inquiry.created_by if product.inquiry_import_row)).try(:name) || '-',
+                  format_succinct_date(product.approval.try(:created_at)),
+
+
+
               ]
 end
 json.columnFilters [
                     [],
-                    [{"source": autocomplete_overseers_products_path}],
+                    [{ "source": autocomplete_overseers_products_path }],
                     [],
-                    [{"source": autocomplete_overseers_brands_path}],
+                    [{ "source": autocomplete_overseers_brands_path }],
                     [],
                     [],
                     [],
