@@ -44,7 +44,7 @@ module ShortcutsHelper
           begin
             route = recognize_path(path_so_far)
             if route
-              file_path = File.join('app/views/', "#{route[:controller]}/index.html.erb")
+              file_path = File.join('app/views/', "#{route[:controller]}/#{route[:action]}.html.erb")
               if File.exist?(file_path)
                 link_to name, path_so_far
               else
