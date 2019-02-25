@@ -284,7 +284,7 @@
                       <div class="flex-fill">
                         <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
                       </div>
-                      <div class="chats mb-3">
+                      <div class="chats">
                         <% @po_request.comments.each do |comment| %>
                           <%= format_comment(comment) %>
                         <% end %>
@@ -338,7 +338,7 @@
           <% if @mpr.comments.persisted.size > 0 %>
             <div class="card-body">
               <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
-              <div class="chats mb-3">
+              <div class="chats">
                 <% @mpr.comments.persisted.each do |comment| %>
                   <%= format_comment(comment) %>
                 <% end %>

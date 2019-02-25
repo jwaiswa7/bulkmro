@@ -56,7 +56,7 @@
           <div class="flex-fill">
             <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
           </div>
-          <div class="chats mb-3">
+          <div class="chats">
             <% @po_request.comments.each do |comment| %>
               <% if comment.persisted? %>
                 <%= format_comment(comment) %>

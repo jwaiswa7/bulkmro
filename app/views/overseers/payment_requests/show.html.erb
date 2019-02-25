@@ -219,7 +219,7 @@
         </div>
 
         <% if @payment_request.comments.persisted.size > 0 %>
-          <div class="chats mb-3">
+          <div class="chats">
             <% @payment_request.comments.each do |comment| %>
               <%= format_comment(comment) %>
             <% end %>
