@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mixins::IsAnImport
   extend ActiveSupport::Concern
 
@@ -11,9 +13,7 @@ module Mixins::IsAnImport
     validate :has_file_attachment?, if: :excel?
 
     def has_file_attachment?
-      if !file.attached?
-        errors.add(:base, 'File is required')
-      end
+      errors.add(:base, 'File is required') unless file.attached?
     end
 
     after_initialize :set_is_an_import_defaults, if: :new_record?
