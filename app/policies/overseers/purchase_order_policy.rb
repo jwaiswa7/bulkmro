@@ -20,7 +20,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def can_request_invoice?
-    !record.invoice_request.present?
+    true # allowing multiple Invoice Requests
   end
 
   def edit_material_followup?
