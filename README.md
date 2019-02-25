@@ -40,7 +40,7 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/deb.html
 https://www.java.com/en/download/
 https://www.elastic.co/guide/en/elasticsearch/reference/current/windows.html
 
-# To configure Elastic Search to start automatically when the system boots up, run the following commands:
+# To configure Elastic Search to start automatically when the system boots up, run the following commands
 #### Ubuntu
 sudo /bin/systemctl daemon-reload
 sudo /bin/systemctl enable elasticsearch.service
@@ -48,7 +48,7 @@ sudo /bin/systemctl enable elasticsearch.service
 #### Windows
 Install it as a service; will auto-start when Windows boots up.
 
-# Elastic Search can be started and stopped as follows:
+# Elastic Search can be started and stopped as follows
 #### Ubuntu
 sudo systemctl start elasticsearch.service
 sudo systemctl stop elasticsearch.service
