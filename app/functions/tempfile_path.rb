@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TempfilePath < BaseFunction
   def self.for(attachment)
     tempfile = Tempfile.new
