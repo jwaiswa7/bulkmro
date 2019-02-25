@@ -42,13 +42,17 @@
                 <%= inquiry_product_supplier.hidden_field :id %>
                 <div class="form-row">
                   <div class="col-12 col-md-3">
-                    <%= inquiry_product_supplier.association :supplier, collection: selected_option_or_nil(inquiry_product_supplier, :supplier), include_blank: "Type to search", label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_suppliers_path, :'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id} %>
-                  </div>
-                  <% if inquiry_product.object.inquiry_product_suppliers.present? %>
-                    <div class="col-12 col-md-1">
-                      <%= format_star(inquiry_product.object.inquiry_product_suppliers.first.supplier.rating) %>
+                    <div class="d-flex">
+                      <span class="flex-fill">
+                        <%= inquiry_product_supplier.association :supplier, collection: selected_option_or_nil(inquiry_product_supplier, :supplier), include_blank: "Type to search", label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_suppliers_path, :'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id} %>
+                      </span>
+                      <span class="<%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "align-self-center" : "align-self-top" %> ml-1">
+                        <% if inquiry_product.object.inquiry_product_suppliers.present? %>
+                          <%= format_star(inquiry_product.object.inquiry_product_suppliers.first.supplier.rating) %>
+                        <% end %>
+                      </span>
                     </div>
-                  <% end %>
+                  </div>
                   <div class="col-6 col-md-2">
                     <%= inquiry_product_supplier.input :bp_catalog_name, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Supplier Material Name" : false, placeholder: placeholder_for(inquiry_product_supplier, :bp_catalog_name) %>
                   </div>
