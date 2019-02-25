@@ -14,7 +14,6 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
       )
 
       @sales_order.update_attributes(
-        status: :"SAP Approval Pending",
         manager_so_status_date: Time.now
       )
 
