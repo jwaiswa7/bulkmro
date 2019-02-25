@@ -22,7 +22,7 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/source
 sudo apt-get update && sudo apt-get install yarn
 yarn install
 
-#### postgres and pgadmin
+#### postgres and pgAdmin
 sudo apt install postgresql-10 pgadmin4
 
 Start the service with sudo service postgresql restart
