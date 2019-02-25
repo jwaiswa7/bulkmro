@@ -28,6 +28,7 @@ json.data (@purchase_orders) do |purchase_order|
                   (format_succinct_date(purchase_order.po_request.sales_order.mis_date) if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
                   (format_succinct_date(purchase_order.po_request.supplier_committed_date) if purchase_order.po_request.present?),
                   link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: '_blank'),
+                  purchase_order.po_request.present? ? purchase_order.po_request.supplier_po_type : '',
                   format_succinct_date(purchase_order.metadata['PoDate'].try(:to_date)),
                   purchase_order.rows.present? ? link_to(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name), overseers_company_path(purchase_order.inquiry.company), target: '_blank') : '',
                   purchase_order.inquiry.inside_sales_owner.to_s,

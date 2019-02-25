@@ -34,5 +34,6 @@ class PurchaseOrdersIndex < BaseIndex
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
     field :potential_value, value: -> (record) { record.try(:calculated_total) }, type: 'double'
+    field :po_type, value: -> (record) {record.po_request ? record.po_request.supplier_po_type : ''}
   end
 end
