@@ -33,8 +33,7 @@
               <strong><%= inquiry_product.object.product.sku %> - <%= inquiry_product.object.product.name %>
                 <% if policy(inquiry_product.object.product).sku_purchase_history? %>
                   <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a>
-                  <a class="ml-2 text-small" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-inventory mr-1 text-small"></i>Resync
-                    Inventory</a>
+                  <a class="ml-2 text-small" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-inventory mr-1 text-small"></i>Resync Inventory</a>
                 <% end %></strong>
             </h6>
             <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
