@@ -1,6 +1,7 @@
 class Overseers::CompaniesController < Overseers::BaseController
   before_action :set_company, only: [:show, :render_rating_form, :update_rating]
 
+
   def index
     service = Services::Overseers::Finders::Companies.new(params)
     service.call
