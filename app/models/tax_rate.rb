@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TaxRate < ApplicationRecord
   has_many :products
   has_many :categories
@@ -8,6 +10,6 @@ class TaxRate < ApplicationRecord
   end
 
   def to_s
-    self.tax_percentage ? "GST #{self.tax_percentage}%" : ' GST N/A'
+    tax_percentage ? "GST #{tax_percentage}%" : ' GST N/A'
   end
 end
