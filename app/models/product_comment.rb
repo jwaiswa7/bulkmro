@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProductComment < ApplicationRecord
   include Mixins::CanBeStamped
 
@@ -10,6 +12,6 @@ class ProductComment < ApplicationRecord
   validates_presence_of :message
 
   def merged?
-    (self.merged_product_name || self.merged_product_sku || self.merged_product_metadata).present?
+    (merged_product_name || merged_product_sku || merged_product_metadata).present?
   end
 end

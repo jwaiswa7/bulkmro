@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customers::CompaniesController < Customers::BaseController
   def choose_company
     @contact = current_contact

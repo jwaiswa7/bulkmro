@@ -13,6 +13,14 @@ class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::Ba
               ['SAP Status Updated: ', sales_order.remote_status].join
           ].join('\n')
           InquiryComment.where(message: message, inquiry: sales_order.inquiry, created_by: Overseer.default_approver, updated_by: Overseer.default_approver, sales_order: sales_order).first_or_create if sales_order.inquiry.present?
+          @notification = Services::Overseers::Notifications::Notify.new(Overseer.default_approver, self.class.parent)
+          @notification.send_sap_order_confirmation(
+              sales_order.inquiry,
+              self.class.name.demodulize,
+              sales_order,
+              Rails.application.routes.url_helpers.overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order),
+              ["Sales Order #{order_number}: ", message].join
+          ) if sales_order.inquiry.present?
           if sales_order.remote_status == 'Cancelled by SAP'
             sales_order.update_attributes(status: 'Cancelled')
             Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :expected_order).call
