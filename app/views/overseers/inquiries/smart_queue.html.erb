@@ -11,7 +11,7 @@
             <div class="card-body px-3 pt-3 pb-3">
               <div class="text-center d-flex flex-column h-100">
                 <p class="mb-1 text-small"><strong><%= title %></strong></p>
-                <h5 class="mb-0 mt-auto text-<%= status[:color] %>"><%= status[:value] %></h5>
+                <h5 class="mb-0 mt-auto text-<%= status[:color] %>"><%= number_with_delimiter(status[:value]) %></h5>
               </div>
             </div>
           </div>
@@ -31,7 +31,7 @@
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort desktop">Priority</th>
-  <th class="no-sort all">#</th>
+  <th class="no-sort all text-right">#</th>
   <th class="no-sort desktop" data-name="status">Status</th>
   <th class="no-sort desktop" data-name="account_id">Account</th>
   <th class="no-sort desktop" data-name="company_id">Company</th>

@@ -3,6 +3,10 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+<% content_for :page_title do %>
+  PO Requests
+<% end %>
+
 <% content_for :heading do %>
   <% if action_name == 'pending_stock' || 'pending_stock_approval' %>
     <%= action_name.capitalize.gsub('_',' ') %> Requests
@@ -29,25 +33,24 @@
 <% end %>
 <% %>
 <% content_for :header_row do %>
-  <th class="no-sort all" data-width="70px"></th>
-  <th class="no-sort desktop" data-name="po_request_no">PO Request No.</th>
+  <th class="no-sort all"></th>
+  <th class="no-sort desktop text-right" data-name="po_request_no">PO Request No.</th>
   <th class="no-sort desktop text-right" data-name="inquiry">Inquiry</th>
   <% if action_name == 'index' || action_name == "Completed" %>
     <th class="no-sort all text-right" data-name="po_number">PO Number</th>
   <% else %>
     <th class="no-sort all text-right" data-name="order">Order</th>
   <% end %>
-  <th class="no-sort all" data-name="inside_sales">Inside Sales</th>
+  <th class="no-sort all" data-name="sku" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
   <th class="no-sort all" data-name="supplier">Supplier</th>
-  <th class="no-sort all" data-name="cp">Buying Price</th>
-  <th class="no-sort all" data-name="sp">Selling Price</th>
-  <th class="no-sort all" data-name="po_margin">PO Margin %</th>
-  <th class="no-sort all" data-name="overall_margin">Overall Margin %</th>
-  <th class="no-sort all">Committed Delivery Date</th>
-  <th class="no-sort all">Committed Supplier Delivery Date</th>
-  <th class="no-sort desktop">Status</th>
-  <th class="sort desktop" data-name="created_at">Requested At</th>
-  <th class="no-sort desktop" data-name="name">Updated At</th>
+  <th class="no-sort all text-right" data-name="cp">Buying Price</th>
+  <th class="no-sort all text-right" data-name="sp">Selling Price</th>
+  <th class="no-sort all text-right" data-name="po_margin">PO Margin %</th>
+  <th class="no-sort all text-right" data-name="overall_margin">Overall Margin %</th>
+  <th class="no-sort all text-right">Customer Committed Delivery Date</th>
+  <th class="no-sort all text-right">Supplier Committed Delivery Date</th>
+  <th class="sort desktop text-right" data-name="created_at">Requested At</th>
+  <th class="no-sort desktop text-right" data-name="name">Updated At</th>
   <th class="no-sort desktop">Email Status</th>
   <th class="no-sort desktop">Latest Comment</th>
 <% end %>

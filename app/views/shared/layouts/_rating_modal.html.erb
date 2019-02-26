@@ -18,8 +18,9 @@
                     <strong><%= company_rating.object.review_question %></strong>
                   </h6>
                   <div class="mb-2 mt-1 star">
-                    <div class=<%= 'star-' + company_rating.index.to_s %>></div>
-                    <%= company_rating.hidden_field :rating, :include_blank => false, class: "rating-" + company_rating.index.to_s, "data-rating": company_rating.object.rating %>
+                    <%= rating_for company_rating.object ,nil, disable_after_rate:false %>
+<!--                    <div class=<%#= 'star-' + company_rating.index.to_s %>></div>-->
+                    <%#= company_rating.hidden_field :rating, :include_blank => false, class: "rating-" + company_rating.index.to_s, "data-rating": company_rating.object.rating %>
                   </div>
                 </div>
               </div>

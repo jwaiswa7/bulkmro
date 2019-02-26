@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
+  post '/rate' => 'rater#create', :as => 'rate'
   mount Maily::Engine, at: '/maily' if Rails.env.development?
+  mount ActionCable.server, at: '/cable'
 
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
   get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
-  devise_for :contacts, controllers: {sessions: 'customers/sessions'}, path: 'customers'
+  devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: 'customers'
 
   namespace 'callbacks' do
     resources :sales_orders do
@@ -63,6 +65,13 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :notifications do
+      collection do
+        post 'mark_as_read'
+        get 'queue'
+      end
+    end
+
     resources :reports
     resources :company_creation_requests do
       # member do
@@ -80,6 +89,7 @@ Rails.application.routes.draw do
         post 'approve_selected'
         post 'reject_selected'
         post 'add_to_inquiry'
+        get 'export_all'
       end
       member do
         get 'approve'
@@ -186,6 +196,8 @@ Rails.application.routes.draw do
             post 'sending_po_to_supplier_notification'
             get 'dispatch_from_supplier_delayed'
             post 'dispatch_from_supplier_delayed_notification'
+            get 'material_received_in_bm_warehouse'
+            post 'material_received_in_bm_warehouse_notification'
           end
         end
       end
@@ -216,6 +228,7 @@ Rails.application.routes.draw do
         get 'new_purchase_orders_requests'
         post 'preview_purchase_orders_requests'
         post 'create_purchase_orders_requests'
+        get 'debugging'
       end
 
       collection do
@@ -233,6 +246,14 @@ Rails.application.routes.draw do
       scope module: 'sales_orders' do
         resources :comments
         resources :purchase_orders_requests
+        resources :email_messages do
+          collection do
+            get 'material_dispatched_to_customer'
+            post 'material_dispatched_to_customer_notification'
+            get 'material_delivered_to_customer'
+            post 'material_delivered_to_customer_notification'
+          end
+        end
       end
     end
 
@@ -248,6 +269,8 @@ Rails.application.routes.draw do
         get 'material_readiness_queue'
         get 'material_pickup_queue'
         get 'material_delivered_queue'
+        post 'update_logistics_owner'
+        post 'update_logistics_owner_for_pickup_requests'
       end
 
       scope module: 'purchase_orders' do
@@ -296,6 +319,8 @@ Rails.application.routes.draw do
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
+        get 'resync_inquiry_products'
+        get 'resync_unsync_inquiry_products'
         get 'calculation_sheet'
         get 'export'
         get 'stages'
@@ -338,7 +363,7 @@ Rails.application.routes.draw do
           member do
             get 'edit_mis_date'
             patch 'update_mis_date'
-
+            get 'debugging'
             get 'new_revision'
             get 'new_confirmation'
             get 'proforma'
@@ -489,6 +514,9 @@ Rails.application.routes.draw do
 
     resources :freight_quotes
     resources :company_reviews do
+      collection do
+        get 'export_all'
+      end
       member do
         get 'render_form'
       end
@@ -501,6 +529,7 @@ Rails.application.routes.draw do
       get 'edit_current_company'
       patch 'update_current_company'
     end
+    resource :profile, :controller => :profile, except: [:show, :index]
 
     resources :reports, only: %i[index] do
       member do

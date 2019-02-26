@@ -3,6 +3,8 @@
     <div class="modal-content">
       <div class="modal-header text-center pb-0">
         <h4 class="modal-title w-100 text-uppercase text-black-50 text-small pt-2">Company Review</h4>
+        <button type="button" class="btn btn-danger btn-block col-1 pl-1 mt-1 mr-1" data-dismiss="modal" aria-hidden="true"><i class="fal fa-times "></i> Skip</button>
+        <button type="button" class="btn btn-warning btn-block col-3 mt-1 mr-1 review-later " data-dismiss="modal" aria-hidden="true"><i class="fal fa-clock "></i> Review Later</button>
       </div>
       <div class="modal-body mx-0 px-0 pb-0">
         <ul class="nav nav-tabs nav-fill mx-3">
@@ -28,5 +30,5 @@
 </div>
 
 <div class="rating-modal">
-  <a href="#" class="btn btn-default btn-rounded mb-4 d-none" data-toggle="modal" data-target="#multipleRatingForm" data-backdrop="static" data-keyboard="false"></a>
+  <a href="#" class="btn btn-default btn-rounded mb-4 d-none" data-toggle="modal" data-target="#multipleRatingForm" data-backdrop="static" data-keyboard="false" data-rating= <%=@company_reviews.map(&:rating).compact.present? %>></a>
 </div>

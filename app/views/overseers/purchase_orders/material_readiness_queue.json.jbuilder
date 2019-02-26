@@ -1,6 +1,9 @@
 json.data (@purchase_orders) do |purchase_order|
   json.array! [
                   [
+                      if policy(purchase_order).update_logistics_owner?
+                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='purchase_orders[]' class='custom-control-input' value='#{purchase_order.id}' id='c-#{purchase_order.id}'><label class='custom-control-label' for='c-#{purchase_order.id}'></label></div>"
+                      end,
                       if policy(purchase_order).show?
                         row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
                       end,
@@ -14,24 +17,21 @@ json.data (@purchase_orders) do |purchase_order|
                         row_action_button(new_overseers_purchase_order_material_pickup_request_path(purchase_order), 'plus-circle', 'Create Material Pickup Request', 'success', target: :_blank)
                       end,
                       if purchase_order.po_request.present? && policy(purchase_order.po_request).new_payment_request?
-                          row_action_button(new_overseers_po_request_payment_request_path(purchase_order.po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
+                        row_action_button(new_overseers_po_request_payment_request_path(purchase_order.po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif purchase_order.po_request.present? && policy(purchase_order.po_request).show_payment_request?
                         row_action_button(overseers_payment_request_path(purchase_order.payment_request), 'eye', 'View Payment Request', 'success')
                       end
                   ].join(' '),
-                  link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: "_blank"),
-                  (purchase_order.inquiry.company.try(:name) if purchase_order.inquiry.company.present?),
-                  (purchase_order.po_request.sales_order.order_number if (purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?)),
-                  (purchase_order.po_request.sales_order.mis_date if (purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?)),
-                  (purchase_order.po_request.supplier_committed_date if (purchase_order.po_request.present?)),
-                  link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: "_blank"),
-                  purchase_order.metadata["PoDate"],
-                  (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present?),
+                  link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: '_blank'),
+                  purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : '-',
+                  (purchase_order.po_request.sales_order.order_number if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
+                  (format_succinct_date(purchase_order.po_request.sales_order.mis_date) if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
+                  (format_succinct_date(purchase_order.po_request.supplier_committed_date) if purchase_order.po_request.present?),
+                  link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: '_blank'),
+                  format_succinct_date(purchase_order.metadata['PoDate'].try(:to_date)),
+                  purchase_order.rows.present? ? link_to(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name), overseers_company_path(purchase_order.inquiry.company), target: '_blank') : '',
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   (purchase_order.logistics_owner.full_name if purchase_order.logistics_owner.present?),
-                  purchase_order.status || purchase_order.metadata_status,
-                  (purchase_order.po_request.status if purchase_order.po_request.present?),
-                  (purchase_order.payment_request.status if purchase_order.payment_request.present?),
                   purchase_order.material_status,
                   format_succinct_date(purchase_order.followup_date),
                   format_succinct_date(purchase_order.revised_supplier_delivery_date),
@@ -45,18 +45,16 @@ end
 json.columnFilters [
                        [],
                        [],
+                       [{ "source": autocomplete_overseers_companies_path }],
                        [],
                        [],
                        [],
                        [],
                        [],
-                       [{"source": autocomplete_overseers_companies_path}],
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       [],
-                       [],
-                       [],
-                       [],
-                       PurchaseOrder.material_statuses.except(:'Material Delivered').map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       [{ "source": autocomplete_overseers_companies_path }],
+                       Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       Overseer.where(role: 'logistics').alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       PurchaseOrder.material_statuses.except(:'Material Delivered').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        [],
                        []
