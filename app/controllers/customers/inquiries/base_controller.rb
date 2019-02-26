@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customers::Inquiries::BaseController < Customers::BaseController
   before_action :set_inquiry
 
@@ -14,10 +16,10 @@ class Customers::Inquiries::BaseController < Customers::BaseController
         layout: 'shared/layouts/pdf_templates/show',
         page_size: 'Legal',
         footer: {
-            center: '[page] of [topage]'
+          center: '[page] of [topage]'
         },
         locals: {
-            record: record
+          record: record
         }
       )
     end

@@ -10,4 +10,8 @@ class Customers::SalesInvoicePolicy < Customers::ApplicationPolicy
   def edit_pod?
     record.persisted? && record.not_legacy?
   end
+
+  def export_all?
+    true
+  end
 end

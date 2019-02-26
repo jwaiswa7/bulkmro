@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SalesOrderRow < ApplicationRecord
   include Mixins::CanBeStamped
 
@@ -27,44 +29,39 @@ class SalesOrderRow < ApplicationRecord
 
   after_initialize :set_defaults, if: :new_record?
   def set_defaults
-    if self.sales_quote_row.present?
-      self.quantity ||= maximum_quantity
-    end
+    self.quantity ||= maximum_quantity if sales_quote_row.present?
   end
 
   def maximum_quantity
-    self.sales_quote_row.quantity if sales_quote_row.present?
+    sales_quote_row.quantity if sales_quote_row.present?
   end
 
   def calculated_unit_selling_price
-    (self.sales_quote_row.unit_cost_price / (1 - (self.sales_quote_row.margin_percentage / 100.0))) if self.sales_quote_row.unit_cost_price.present? && self.sales_quote_row if self.sales_quote_row.present?.margin_percentage.present? if self.sales_quote_row.present?
+    (sales_quote_row.unit_cost_price / (1 - (sales_quote_row.margin_percentage / 100.0))) if sales_quote_row.present? && sales_quote_row.present?.margin_percentage.present? && sales_quote_row.unit_cost_price.present? && sales_quote_row
   end
 
   def calculated_unit_selling_price_with_tax
-    self.sales_quote_row.calculated_unit_selling_price + (self.sales_quote_row.calculated_unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)) if self.sales_quote_row.present?
+    sales_quote_row.calculated_unit_selling_price + (sales_quote_row.calculated_unit_selling_price * sales_quote_row.applicable_tax_percentage) if sales_quote_row.present?
   end
 
   def unit_selling_price_with_tax
-    self.sales_quote_row.unit_selling_price + (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)) if self.sales_quote_row.present?
+    sales_quote_row.unit_selling_price + (sales_quote_row.unit_selling_price * sales_quote_row.applicable_tax_percentage) if sales_quote_row.present?
   end
 
   def converted_total_selling_price
-    sales_quote_row.present? ? (self.total_selling_price / sales_quote_row.conversion_rate) : 0.0
+    sales_quote_row.present? ? (total_selling_price / sales_quote_row.conversion_rate) : 0.0
   end
 
-
-
   def converted_total_selling_price_with_tax
-    sales_quote_row.present? ? (self.total_selling_price_with_tax / sales_quote_row.conversion_rate) : 0.0
+    sales_quote_row.present? ? (total_selling_price_with_tax / sales_quote_row.conversion_rate) : 0.0
   end
 
   def calculated_tax
-    (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)) if self.sales_quote_row.present?
+    (sales_quote_row.unit_selling_price * sales_quote_row.applicable_tax_percentage) if sales_quote_row.present?
   end
 
-
   def total_selling_price_with_tax
-    self.sales_quote_row.unit_selling_price_with_tax * self.quantity if self.sales_quote_row.present? && self.sales_quote_row.unit_selling_price.present?
+    sales_quote_row.unit_selling_price_with_tax * self.quantity if sales_quote_row.present? && sales_quote_row.unit_selling_price.present?
   end
 
   def total_tax
@@ -76,15 +73,15 @@ class SalesOrderRow < ApplicationRecord
   end
 
   def total_selling_price
-    self.sales_quote_row.unit_selling_price * self.quantity if self.sales_quote_row.unit_selling_price.present? if self.sales_quote_row.present?
+    sales_quote_row.unit_selling_price * self.quantity if sales_quote_row.present? && sales_quote_row.unit_selling_price.present?
   end
 
   def total_margin
-    self.total_selling_price - self.total_cost_price if self.sales_quote_row.present?
+    total_selling_price - total_cost_price if sales_quote_row.present?
   end
 
   def total_cost_price
-    self.sales_quote_row.unit_cost_price_with_unit_freight_cost * self.quantity if self.sales_quote_row.present?
+    sales_quote_row.unit_cost_price_with_unit_freight_cost * self.quantity if sales_quote_row.present?
   end
 
   def max_po_request_qty
@@ -106,7 +103,8 @@ class SalesOrderRow < ApplicationRecord
       :hsn
     end
   end
+
   def to_remote_s
-    self.to_param
+    to_param
   end
 end

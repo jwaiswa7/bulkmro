@@ -27,10 +27,10 @@ class Overseers::BaseController < ApplicationController
 	end
 
 	  def user_not_authorized
-  		 message = 'You are not authorized to perform this action.'
+      message = 'You are not authorized to perform this action.'
     	set_flash_message(message, :warning, now: false)
     	redirect_to(request.referrer || root_path)
-    	end
+    end
 
 	protected
 	  def policy!(user, record)
@@ -67,5 +67,9 @@ class Overseers::BaseController < ApplicationController
 
 	  def controller_namespace
   		 @controller_namespace ||= controller_path.split('/').first
-  	end
+		end
+
+	 def set_notification
+		 @notification = Services::Overseers::Notifications::Notify.new(current_overseer, self.namespace)
+	 end
 end

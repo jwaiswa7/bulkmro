@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def new_inquiry?
     record.contacts.any? && record.addresses.any? && manager_or_sales? && is_active? && record.is_customer?
@@ -29,6 +31,14 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
 
   def new_excel_customer_product_import?
     cataloging? || developer? && is_active?
+  end
+
+  def payment_collection?
+    index?
+  end
+
+  def ageing_report?
+    index?
   end
 
   def create_customer_products?

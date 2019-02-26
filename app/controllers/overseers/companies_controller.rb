@@ -1,5 +1,6 @@
 class Overseers::CompaniesController < Overseers::BaseController
   before_action :set_company, only: [:show, :render_rating_form, :update_rating]
+  before_action :set_notification, only: [:create]
 
   def index
     service = Services::Overseers::Finders::Companies.new(params)
@@ -73,6 +74,13 @@ class Overseers::CompaniesController < Overseers::BaseController
       if @company.company_creation_request.present?
         @company.company_creation_request.update_attributes(company_id: @company.id)
         @company.company_creation_request.activity.update_attributes(company: @company)
+        @notification.send_company_creation_confirmation(
+            @company.company_creation_request,
+            action_name.to_sym,
+            @company,
+            overseers_company_path(@company),
+            @company.name.to_s
+        )
       end
       if @company.save_and_sync
         redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
@@ -92,6 +100,10 @@ class Overseers::CompaniesController < Overseers::BaseController
     service.call
 
     redirect_to url_for(Export.companies.last.report)
+  end
+
+  def payment_collection_send_mail
+
   end
 
   private

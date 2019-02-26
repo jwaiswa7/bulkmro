@@ -18,7 +18,7 @@
 <% end %>
 
 <div class="col-lg-12">
-  <%= render partial: "summary_with_extra_box", locals: {klass: SalesOrder, statuses: SalesOrder.remote_statuses, label: 'Total Sales Order'} %>
+  <%= render partial: "shared/layouts/summary", locals: {klass: SalesOrder, statuses: SalesOrder.remote_statuses, aggregation: {statuses: {}, label: 'Total Sales Order'}} %>
 </div>
 
 <div class="col-lg-12">
@@ -30,8 +30,8 @@
     <th class="no-sort desktop text-right" data-name="status">Inquiry</th>
     <th class="no-sort desktop text-right">Sales Invoices</th>
     <th class="no-sort desktop">PO # - Subject</th>
-    <th class="no-sort desktop" data-name="status">Status</th>
-    <th class="no-sort desktop" data-name="remote_status">SAP Status</th>
+    <th class="no-sort desktop text-right" data-name="status">Status</th>
+    <th class="no-sort desktop " data-name="remote_status">SAP Status</th>
     <th class="no-sort desktop" data-name="account_id">Account</th>
     <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
     <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>

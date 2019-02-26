@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Brand < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced

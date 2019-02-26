@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mixins::HasCountry
   extend ActiveSupport::Concern
 
@@ -11,7 +13,7 @@ module Mixins::HasCountry
     scope :international, -> { where.not(country_code: 'IN') }
 
     def domestic?
-      self.country_code == 'IN'
+      country_code == 'IN'
     end
 
     def international?

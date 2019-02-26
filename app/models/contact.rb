@@ -37,10 +37,12 @@ class Contact < ApplicationRecord
       manager: 70,
   }
 
+
   validates_presence_of :telephone, if: -> {!self.mobile.present? && not_legacy?}
   validates_presence_of :mobile, if: -> {!self.telephone.present? && not_legacy?}
   scope :with_includes, -> {includes(:account,:inquiries)}
   after_initialize :set_defaults, :if => :new_record?
+
   attr_accessor :current_password
 
   def set_defaults

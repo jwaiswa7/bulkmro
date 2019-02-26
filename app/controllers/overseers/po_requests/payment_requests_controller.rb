@@ -47,8 +47,8 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
 
   private
 
-    def payment_request_params
-      params.require(:payment_request).permit(
+  def payment_request_params
+    params.require(:payment_request).permit(
         :id,
         :inquiry_id,
         :utr_number,
@@ -71,7 +71,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
     )
   end
 
-    def set_payment_request
-      @payment_request = PaymentRequest.find(params[:id])
-    end
+  def set_payment_request
+    @payment_request = PaymentRequest.find(params[:id])
+  end
 end
