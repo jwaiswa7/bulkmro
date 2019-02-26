@@ -15,12 +15,7 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
         'Order Net Amount',
         'Order Tax Amount',
         'Order Total Amount',
-        'Order Status',
-        'Inside Sales',
-        'Outside Sales',
-        'Sales Manager',
-        'Quote Type',
-        'Opportunity Type'
+        'Order Status'
     ]
     @columns.each do |column|
       rows.push(column)
@@ -48,11 +43,6 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
                       tax_amount: ('%.2f' % sales_order.calculated_total_tax if sales_order.inquiry.present?),
                       gt_inc: ('%.2f' % sales_order.calculated_total_with_tax if sales_order.inquiry.present?),
                       status: sales_order.remote_status,
-                      inside_sales: sales_order.inside_sales_owner.try(:full_name),
-                      outside_sales: sales_order.outside_sales_owner.try(:full_name),
-                      sales_manager: inquiry.sales_manager.full_name,
-                      quote_type: inquiry.try(:quote_category) || '',
-                      opportunity_type: inquiry.try(:opportunity_type) || '',
                   }) if inquiry.present?
       end
       rows.drop(columns.count).each do |row|
