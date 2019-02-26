@@ -109,15 +109,15 @@ class Overseers::PoRequestsController < Overseers::BaseController
                                           end
                                           @po_request.save!
                                           @po_request_comment.save!
-                                          tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
-                                          @notification.send_po_request_update(
-                                              tos - [current_overseer.email],
-                                              action_name.to_sym,
-                                              @po_request,
-                                              overseers_po_request_path(@po_request),
-                                              @po_request.id,
-                                              @po_request_comment.message,
-                                          )
+                                          # tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
+                                          # @notification.send_po_request_update(
+                                          #     tos - [current_overseer.email],
+                                          #     action_name.to_sym,
+                                          #     @po_request,
+                                          #     overseers_po_request_path(@po_request),
+                                          #     @po_request.id,
+                                          #     @po_request_comment.message,
+                                          # )
                                         else
                                           @po_request.save!
                                         end
