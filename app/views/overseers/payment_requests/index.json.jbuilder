@@ -11,8 +11,8 @@ json.data (@payment_requests) do |payment_request|
                   payment_request.id,
                   status_badge(payment_request.status),
                   link_to(payment_request.inquiry.inquiry_number, edit_overseers_inquiry_path(payment_request.inquiry), target: '_blank'),
-                  link_to(payment_request.po_request.purchase_order.present? ? payment_request.po_request.purchase_order.po_number : '-',
-                  payment_request.request_owner, overseers_po_request_path(payment_request.po_request), target: '_blank'),
+                  link_to(payment_request.po_request.purchase_order.present? ? payment_request.po_request.purchase_order.to_s : '-', overseers_po_request_path(payment_request.po_request), target: '_blank'),
+                  payment_request.request_owner,
                   # if payment_request.payment_type.present?
                   #   payment_request.payment_type
                   # end,
@@ -46,7 +46,7 @@ end
 json.columnFilters [
                        [],
                        [],
-                       PaymentRequest.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       PaymentRequest.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
                        [],
                        [],
                        [],
@@ -61,4 +61,4 @@ json.columnFilters [
 json.recordsTotal @payment_requests.model.all.count
 json.recordsFiltered @payment_requests.count
 json.draw params[:draw]
-json.recordsSummary PaymentRequest.statuses.map { |k, v| { status_id: v, "label": k, "size": @statuses[k] || 0 } }.as_json
+json.recordsSummary PaymentRequest.statuses.map {|k, v| {status_id: v, "label": k, "size": @statuses[k] || 0}}.as_json
