@@ -3,7 +3,6 @@
   <%= @po_request.readable_status %>
 <% end %>
 
-
 <div class="col-lg-12">
   <div class="page-header">
     <h2><%= action_name.capitalize %> <%= @po_request.readable_status %> for Order <%= format_id(@po_request.sales_order.order_number) %></h2>
@@ -12,7 +11,6 @@
 
   <%= simple_form_for([:overseers, @po_request], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
-
     <div class="card mb-2">
       <div class="card-header">
         <div class="form-row">
@@ -35,7 +33,6 @@
           <strong><%= f.object.supplier.to_s %></strong>
           <a href="#" class="btn btn-default btn-danger add-review float-right" data-toggle="modal" data-target="#modalRatingForm">Add/Edit Supplier Rating</a>
         </h5>
-
         <%= render 'overseers/po_requests/rows_form', f: f %>
       </div>
     </div>
