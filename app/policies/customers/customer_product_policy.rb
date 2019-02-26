@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customers::CustomerProductPolicy < Customers::ApplicationPolicy
   def generate_all?
     true

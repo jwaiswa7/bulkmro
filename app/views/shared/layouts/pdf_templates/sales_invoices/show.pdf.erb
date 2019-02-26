@@ -196,7 +196,7 @@
 
                     <%= record.sales_order.inquiry.contact.full_name %><br>
                     <%= record.sales_order.inquiry.billing_address.name %><br>
-                    <%= record.sales_order.inquiry.to_multiline_s if record.sales_order.inquiry.billing_address.present? %>
+                    <%= record.sales_order.inquiry.billing_address.to_multiline_s if record.sales_order.inquiry.billing_address.present? %>
                     <br>
                     <% if record.sales_order.inquiry.billing_contact.present? %>
                       Tel: <%= record.sales_order.inquiry.billing_contact.phone || record.sales_order.inquiry.billing_contact.mobile || record.billing_address.telephone %>

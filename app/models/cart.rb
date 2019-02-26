@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Cart < ApplicationRecord
   include Mixins::CanBeTotalled
 
@@ -16,7 +18,7 @@ class Cart < ApplicationRecord
   }
 
   def set_global_defaults
-    if self.company.present?
+    if company.present?
       self.billing_address ||= company.addresses.first
       self.shipping_address ||= company.addresses.first
     end
