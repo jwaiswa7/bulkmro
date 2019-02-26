@@ -89,6 +89,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
           :is_msme,
           :is_active,
           :is_unregistered_dealer,
+          :is_international,
           :rating,
           contact_ids: [],
           brand_ids: [],
