@@ -32,7 +32,7 @@ json.data (@purchase_orders) do |purchase_order|
                   purchase_order.rows.present? ? link_to(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name), overseers_company_path(purchase_order.inquiry.company), target: '_blank') : '',
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   (purchase_order.logistics_owner.full_name if purchase_order.logistics_owner.present?),
-                  purchase_order.material_status,
+                  status_badge(purchase_order.material_status),
                   format_succinct_date(purchase_order.followup_date),
                   format_succinct_date(purchase_order.revised_supplier_delivery_date),
                   (status_badge(purchase_order.payment_request.status) if purchase_order.payment_request.present?),
