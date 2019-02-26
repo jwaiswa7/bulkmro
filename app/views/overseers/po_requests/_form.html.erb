@@ -23,14 +23,15 @@
       <div class="col-4">
         <%= f.input :customer_committed_date, input_html: {value: f.object.sales_order.customer_committed_date}, label: 'Customer Committed Date', disabled: true, :wrapper => :custom_multi_select, include_blank: 'Committed Date' %>
       </div>
-      <div class="col-12">
-        <% if policy(@po_request).update? %>
-          <div class="col-md-12">
-            <%= action_button(action_name, @po_request) %>
-          </div>
-        <% end %>
 
-      </div>
+    </div>
+    <div class="form-row">
+      <% if policy(@po_request).update? %>
+        <div class="col-md-12">
+          <%= action_button(action_name, @po_request) %>
+        </div>
+      <% end %>
+
     </div>
 
     <div class="card mb-2">
