@@ -9,9 +9,9 @@ const newAction = () => {
         onInquiryChange(this, reset);
     });
 
-    $('form').on('change', '#document_creation_option', function (e) {
-       debugger
-    });
+    // $('form').on('change', '#document_creation_option', function (e) {
+    //    debugger
+    // });
 };
 
 let onInquiryChange = (container, reset) => {
