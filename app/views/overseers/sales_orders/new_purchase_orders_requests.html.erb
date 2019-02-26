@@ -66,7 +66,7 @@
           <p>
             <ul class="list-group text-danger mb-3">
               <li class="list-group-item">
-                <h5 class="text-danger mb-0 text-left">If a sales order product is missing, please fulfill the following.</h5>
+                <h5 class="text-danger mb-0">If a sales order product is missing, please fulfill the following.</h5>
               </li>
               <% @sales_order.rows.each do |order_row| %>
                 <% if !order_row.supplier.contacts.any? %>
