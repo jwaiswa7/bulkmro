@@ -2604,7 +2604,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
 
-
   def update_sales_receipt
     SalesReceipt.all.each do |sr|
       if sr.metadata.class == String
