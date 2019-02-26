@@ -37,7 +37,7 @@ class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::Bas
         end
         @notification = Services::Overseers::Notifications::Notify.new(@overseer, self.class.parent)
         @notification.send_po_request_creation(
-            Services::Overseers::Notifications::Recipients.logistics_owners,
+          Services::Overseers::Notifications::Recipients.logistics_owners,
             self.class.name.demodulize,
             po_request,
             Rails.application.routes.url_helpers.overseers_po_request_path(po_request),
