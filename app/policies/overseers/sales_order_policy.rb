@@ -97,7 +97,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def can_request_invoice?
-    admin? || logistics?
+    admin? || logistics? || manager_or_sales?
   end
 
   def approve?

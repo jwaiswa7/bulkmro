@@ -18,14 +18,15 @@ class Overseers::ProfileController < Overseers::BaseController
 
 	private
 
-	  def profile_params
-  		 params.require(:overseer).permit(
-   				:first_name,
-   				:last_name,
-   				:mobile,
-   				:telephone,
-   				:smtp_password,
-   				:slack_uid,
-   		)
-  	end
+
+	def profile_params
+		params.require(:overseer).permit(
+				:first_name,
+				:last_name,
+				:mobile,
+				:telephone,
+				:smtp_password,
+				:slack_uid,
+		)
+	end
 end

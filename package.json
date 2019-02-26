@@ -2,7 +2,6 @@
   "name": "bulkmro",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-pro": "^5.3.1",
     "@rails/webpacker": "3.5",
     "animate.css": "^3.7.0",
     "autosize": "^4.0.2",
