@@ -1,5 +1,6 @@
 class Overseers::TaxCodesController < Overseers::BaseController
   before_action :set_tax_code, only: [:edit, :update, :show]
+  before_action :set_notification, only: [:update]
 
   def autocomplete
     @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
@@ -40,7 +41,12 @@ class Overseers::TaxCodesController < Overseers::BaseController
   def update
     @tax_code.assign_attributes(tax_code_params)
     authorize @tax_code
-
+    @notification.send_tax_code(
+        current_overseer,
+        action_name.to_sym,
+        @tax_code,
+        edit_overseers_tax_code_path(@tax_code)
+    )
     if @tax_code.save
       redirect_to overseers_tax_codes_path, notice: flash_message(@tax_code, action_name)
     else
