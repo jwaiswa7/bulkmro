@@ -1366,6 +1366,41 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     PaymentRequest.where(status: 40).update_all(request_owner: 'Accounts', status: :'Payment Made')
   end
 
+  def add_completed_po_to_material_followup_queue
+    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_list.csv', folder)
+    service.loop(limit) do |x|
+      current_overseer = Overseer.where(email: 'approver@bulkmro.com').last
+      purchase_order = PurchaseOrder.find_by_po_number(x.get_column('PO#'))
+      if purchase_order.po_request.present?
+        if purchase_order.po_request != "PO Created"
+          purchase_order.po_request.assign_attributes(status: 'PO Created')
+          purchase_order.po_request.save(validate: false)
+        end
+
+        if (purchase_order.material_status == nil)
+          purchase_order.set_defaults
+        end
+
+        if purchase_order.material_status != 'Material Delivered'
+          if purchase_order.email_messages.present? || !purchase_order.email_messages.where(purchase_order: purchase_order, email_type: 'Sending PO to Supplier').present?
+
+            email_message = purchase_order.email_messages.build(
+                overseer: current_overseer,
+                inquiry: purchase_order.inquiry,
+                purchase_order: purchase_order,
+                sales_order: purchase_order.po_request.sales_order,
+                email_type: 'Sending PO to Supplier'
+            )
+            email_message.assign_attributes({from: current_overseer.email, to: current_overseer.email, subject: "Internal Ref Inq ##{purchase_order.inquiry.inquiry_number} Purchase Order ##{purchase_order.po_number}"})
+            email_message.save!
+          end
+        end
+      else
+        puts "po request not available for #{purchase_order.po_number}"
+      end
+    end
+  end
+
   private
 
   def perform_migration(name)
