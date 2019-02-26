@@ -35,6 +35,7 @@ class Resources::Invoice < Resources::ApplicationResource
 
           sales_invoice.rows.create!(
             quantity: quantity,
+            sku: sku,
             metadata: {
                 qty: quantity,
                 sku: sku,

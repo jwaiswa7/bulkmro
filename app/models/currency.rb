@@ -1,6 +1,6 @@
 class Currency < ApplicationRecord
   has_many :inquiry_currencies
-  has_many :rates, class_name: 'CurrencyRate'
+  # has_many :rates, class_name: 'CurrencyRate'
   has_one :current_rate, -> { today }, class_name: 'CurrencyRate'
 
   scope :non_inr, -> { where.not(id: inr.id) }
