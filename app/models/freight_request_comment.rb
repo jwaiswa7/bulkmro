@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class FreightRequestComment < ApplicationRecord
   include Mixins::CanBeStamped
   belongs_to :freight_request
 
   def author
-    self.created_by
+    created_by
   end
 
   def author_role

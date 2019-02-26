@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SalesPurchaseOrder < ApplicationRecord
   include Mixins::CanBeSynced
 
