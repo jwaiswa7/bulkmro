@@ -75,7 +75,7 @@ class Overseers::CompaniesController < Overseers::BaseController
         @company.company_creation_request.update_attributes(company_id: @company.id)
         @company.company_creation_request.activity.update_attributes(company: @company)
         @notification.send_company_creation_confirmation(
-            @company.company_creation_request,
+          @company.company_creation_request,
             action_name.to_sym,
             @company,
             overseers_company_path(@company),

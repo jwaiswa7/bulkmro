@@ -29,12 +29,12 @@ json.columnFilters [
                        [],
                        [],
                        [],
+                       [{ "source": autocomplete_overseers_company_contacts_path(current_company) }],
                        [],
                        [],
                        [],
                        [],
-                       [],
-                       []
+                       SalesOrder.effective_statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json
 
                    ]
 
