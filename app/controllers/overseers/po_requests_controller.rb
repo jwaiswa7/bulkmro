@@ -55,7 +55,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
       authorize @po_request
     elsif params[:stock_inquiry_id].present?
       @inquiry = Inquiry.find(params[:stock_inquiry_id])
-      @po_request = PoRequest.new(:overseer => current_overseer, :inquiry => @inquiry, :po_request_type => :'Stock')
+      @po_request = PoRequest.new(overseer: current_overseer, inquiry: @inquiry, po_request_type: :'Stock')
 
       authorize @po_request
     else
@@ -137,8 +137,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_requests
 
     respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -147,8 +147,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_requests
 
     respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -157,8 +157,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_requests
 
     respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -188,7 +188,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :requested_by_id,
         :approved_by_id,
         :supplier_id,
-        rows_attributes: [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :brand, :product_id,:discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price,:conversion],
+        rows_attributes: [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :brand, :product_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion],
         comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
         attachments: []
     )

@@ -113,7 +113,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
       if overseer.allow_inquiries?
         scope.all
       else
-        scope.joins("INNER JOIN inquiries ON inquiries.id = po_requests.inquiry_id").where('inquiries.inside_sales_owner_id IN (:overseer) OR inquiries.outside_sales_owner_id IN (:overseer) OR po_requests.created_by_id IN (:overseer)', overseer: overseer.self_and_descendants.pluck(:id))
+        scope.joins('INNER JOIN inquiries ON inquiries.id = po_requests.inquiry_id').where('inquiries.inside_sales_owner_id IN (:overseer) OR inquiries.outside_sales_owner_id IN (:overseer) OR po_requests.created_by_id IN (:overseer)', overseer: overseer.self_and_descendants.pluck(:id))
       end
     end
   end

@@ -131,7 +131,7 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @product
     suppliers = {}
     @product.suppliers.each do |supplier|
-       [supplier.name, supplier.id]
+      [supplier.name, supplier.id]
     end
     render json: suppliers
   end

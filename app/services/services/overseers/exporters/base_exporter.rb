@@ -4,9 +4,9 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
     @start_at = Date.new(2018, 10, 19)
     @end_at = Date.today.end_of_day
     if args[0].present? && (args[0].include? '~')
-        range = args[0].split("~")
-        @start_at = range[0].strip.to_date
-        @end_at = range[1].strip.to_date.end_of_day
+      range = args[0].split('~')
+      @start_at = range[0].strip.to_date
+      @end_at = range[1].strip.to_date.end_of_day
     end
     @rows = []
   end

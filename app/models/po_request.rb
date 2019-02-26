@@ -28,8 +28,8 @@ class PoRequest < ApplicationRecord
 
   attr_accessor :opportunity_type, :customer_committed_date, :blobs
 
-  belongs_to :requested_by, :class_name => 'Overseer', foreign_key: 'requested_by_id', required: false
-  belongs_to :approved_by, :class_name => 'Overseer', foreign_key: 'approved_by_id', required: false
+  belongs_to :requested_by, class_name: 'Overseer', foreign_key: 'requested_by_id', required: false
+  belongs_to :approved_by, class_name: 'Overseer', foreign_key: 'approved_by_id', required: false
   belongs_to :company, required: false
 
   enum status: {
@@ -58,14 +58,14 @@ class PoRequest < ApplicationRecord
   }
 
   enum po_request_type: {
-    :'Supplier' => 10,
-    :'Stock' => 20
+    'Supplier': 10,
+    'Stock': 20
   }
 
   enum stock_status: {
-    :'Stock Requested' => 10,
-    :'Stock Rejected' => 20,
-    :'Stock Supplier PO Created' => 30
+    'Stock Requested': 10,
+    'Stock Rejected': 20,
+    'Stock Supplier PO Created': 30
   }
 
   scope :pending_and_rejected, -> { where(status: [:'Requested', :'Rejected', :'Amend']) }
@@ -74,9 +74,9 @@ class PoRequest < ApplicationRecord
   scope :cancelled, -> { where(status: [:'Cancelled']) }
   scope :can_amend, -> { where(status: [:'PO Created']) }
   scope :amended, -> { where(status: [:'Amend']) }
-  scope :pending_stock_po, -> {where(stock_status: [:'Stock Requested'])}
-  scope :completed_stock_po, -> {where(stock_status: [:'Stock Supplier PO Created'])}
-  scope :stock_po, -> {where(stock_status: [:'Stock Requested',:'Stock Rejected',:'Stock Supplier PO Created'])}
+  scope :pending_stock_po, -> { where(stock_status: [:'Stock Requested']) }
+  scope :completed_stock_po, -> { where(stock_status: [:'Stock Supplier PO Created']) }
+  scope :stock_po, -> { where(stock_status: [:'Stock Requested', :'Stock Rejected', :'Stock Supplier PO Created']) }
 
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? && !is_legacy }
@@ -102,11 +102,10 @@ class PoRequest < ApplicationRecord
         errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
       end
     elsif self.po_request_type == 'Stock'
-      if (self.stock_status == 'Stock Rejected' && self.rejection_reason.blank?)
+      if self.stock_status == 'Stock Rejected' && self.rejection_reason.blank?
         errors.add(:base, "Provide a reason to change the stock_status to #{self.stock_status} in message section")
       end
     end
-
   end
 
   def set_defaults

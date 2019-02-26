@@ -42,7 +42,7 @@ class Overseers::TaxCodesController < Overseers::BaseController
     @tax_code.assign_attributes(tax_code_params)
     authorize @tax_code
     @notification.send_tax_code(
-        current_overseer,
+      current_overseer,
         action_name.to_sym,
         @tax_code,
         edit_overseers_tax_code_path(@tax_code)

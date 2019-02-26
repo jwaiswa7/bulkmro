@@ -27,10 +27,10 @@ class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::Bas
       po_request.payment_option_id = po_request_hash[:payment_option_id]
       po_request.supplier_po_type = po_request_hash[:supplier_po_type]
       po_request.supplier_committed_date = po_request_hash[:supplier_committed_date]
-      po_request.requested_by_id= po_request_hash[:requested_by_id]
-      po_request.approved_by_id= po_request_hash[:approved_by_id]
-      po_request.reason_to_stock= po_request_hash[:reason_to_stock]
-      po_request.estimated_date_to_unstock= po_request_hash[:estimated_date_to_unstock]
+      po_request.requested_by_id = po_request_hash[:requested_by_id]
+      po_request.approved_by_id = po_request_hash[:approved_by_id]
+      po_request.reason_to_stock = po_request_hash[:reason_to_stock]
+      po_request.estimated_date_to_unstock = po_request_hash[:estimated_date_to_unstock]
       if po_request_hash[:blobs].present?
         po_request_hash[:blobs].split(' ').each do |blob|
           po_request.attachments.attach(ActiveStorage::Blob.find(blob))
