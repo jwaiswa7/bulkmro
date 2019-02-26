@@ -25,14 +25,14 @@ class Customers::ProfileController < Customers::BaseController
 
   private
 
-  def profile_params
-    params.require(:contact).permit(
+    def profile_params
+      params.require(:contact).permit(
         :first_name,
-        :last_name,
-        :email,
-        :current_password,
-        :password,
-        :password_confirmation
-    )
-  end
+          :last_name,
+          :email,
+          :current_password,
+          :password,
+          :password_confirmation
+      )
+    end
 end
