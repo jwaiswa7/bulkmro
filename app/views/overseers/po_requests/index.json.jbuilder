@@ -4,10 +4,12 @@ json.data (@po_requests) do |po_request|
                       if policy(po_request).edit? && po_request.status != 'Cancelled'
                         row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
-                      if policy(po_request).new_payment_request?
-                        row_action_button(new_overseers_po_request_payment_request_path(po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
-                      elsif policy(po_request).show_payment_request?
-                        row_action_button(overseers_payment_request_path(po_request.payment_request), 'eye', 'View Payment Request', 'success')
+                      if po_request.purchase_order.present? && !po_request.purchase_order.is_legacy?
+                        if policy(po_request).new_payment_request?
+                          row_action_button(new_overseers_po_request_payment_request_path(po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
+                        elsif policy(po_request).show_payment_request?
+                          row_action_button(overseers_payment_request_path(po_request.payment_request), 'eye', 'View Payment Request', 'success')
+                        end
                       end,
                       if policy(po_request).sending_po_to_supplier_new_email_message?
                         row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Send Purchase Order to Supplier', 'dark', :_blank)
@@ -38,7 +40,7 @@ json.data (@po_requests) do |po_request|
                   format_date(po_request.supplier_committed_date),
                   format_date_time_meridiem(po_request.created_at),
                   if po_request.last_comment.present?
-                    format_date_time_meridiem(po_request.last_comment.updated_at)
+                    format_succinct_date(po_request.last_comment.updated_at)
                   end,
                   status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? 'Supplier PO Sent' : 'Supplier PO: Not Sent to Supplier'),
                   if po_request.last_comment.present?

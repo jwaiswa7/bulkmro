@@ -1,13 +1,14 @@
 Rails.application.routes.draw do
   post '/rate' => 'rater#create', :as => 'rate'
   mount Maily::Engine, at: '/maily' if Rails.env.development?
+  mount ActionCable.server, at: '/cable'
 
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
   get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
-  devise_for :contacts, controllers: {sessions: 'customers/sessions'}, path: 'customers'
+  devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: 'customers'
 
   namespace 'callbacks' do
     resources :sales_orders do
@@ -61,6 +62,13 @@ Rails.application.routes.draw do
     resources :callback_requests do
       member do
         get 'show'
+      end
+    end
+
+    resources :notifications do
+      collection do
+        post 'mark_as_read'
+        get 'queue'
       end
     end
 
@@ -508,6 +516,7 @@ Rails.application.routes.draw do
       get 'edit_current_company'
       patch 'update_current_company'
     end
+    resource :profile, :controller => :profile, except: [:show, :index]
 
     resources :reports, only: %i[index] do
       member do
@@ -551,12 +560,28 @@ Rails.application.routes.draw do
       member do
         post 'inquiry_comments'
       end
+
       scope module: 'sales_quotes' do
         resources :comments
       end
+
+      collection do
+        get 'export_all'
+      end
     end
-    resources :orders, :controller => :sales_orders, only: %i[index show]
-    resources :invoices, :controller => :sales_invoices, only: %i[index show]
+
+    resources :orders, :controller => :sales_orders, only: %i[index show] do
+      collection do
+        get 'export_all'
+      end
+    end
+
+    resources :invoices, :controller => :sales_invoices, only: %i[index show] do
+      collection do
+        get 'export_all'
+      end
+    end
+
     resource :checkout, :controller => :checkout do
       collection do
         get 'final_checkout'

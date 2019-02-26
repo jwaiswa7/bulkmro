@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mixins::Customers::CanBeStamped
   extend ActiveSupport::Concern
 
@@ -16,15 +18,15 @@ module Mixins::Customers::CanBeStamped
     end
 
     def new_record_and_contact_defined?
-      self.new_record? && contact_defined?
+      new_record? && contact_defined?
     end
 
     def set_updated_by
-      self.assign_attributes(updated_by: contact)
+      assign_attributes(updated_by: contact)
     end
 
     def set_created_by
-      self.assign_attributes(created_by: contact)
+      assign_attributes(created_by: contact)
     end
   end
 end

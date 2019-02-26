@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::RemoteRequestPolicy < Overseers::ApplicationPolicy
   def index?
     admin? || cataloging?

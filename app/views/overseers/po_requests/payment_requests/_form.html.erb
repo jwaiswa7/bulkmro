@@ -85,19 +85,21 @@
           <div class="col-4">
             <%= f.input :payment_option, label: "Payment Terms",input_html: {:'value' => f.object.po_request.payment_option}, disabled: true %>
           </div>
-          <div class="col-4 mt-1">
-            <div class="form-group mb-0">
-              <label>Remaining amount to be Paid</label>
-            </div>
-            <h6 class="form-group text-uppercase text-black-50 form-text mb-1"><%= format_currency(f.object.remaining_amount) %></h6>
-          </div>
-          <div class="col-4 mt-1">
-            <div class="form-group mb-0">
-              <label>Total amount paid in Percentage</label>
-            </div>
-            <h6 class="form-group text-uppercase text-black-50 form-text mb-1"><%= percentage(f.object.percent_amount_paid,precision:2) %></h6>
-          </div>
 
+          <% if f.object.po_request.purchase_order.present? && !f.object.po_request.purchase_order.is_legacy? %>
+            <div class="col-4 mt-1">
+              <div class="form-group mb-0">
+                <label>Remaining amount to be Paid</label>
+              </div>
+              <h6 class="form-group text-uppercase text-black-50 form-text mb-1"><%= format_currency(f.object.remaining_amount) %></h6>
+            </div>
+            <div class="col-4 mt-1">
+              <div class="form-group mb-0">
+                <label>Total amount paid in Percentage</label>
+              </div>
+              <h6 class="form-group text-uppercase text-black-50 form-text mb-1"><%= percentage(f.object.percent_amount_paid,precision:2) %></h6>
+            </div>
+          <% end %>
         </div>
       </div>
 
@@ -170,7 +172,7 @@
             <div class="form-row">
               <div class="col-md-12">
                 <%= f.add_nested_fields_link :transactions, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
-                  <i class="fal fa-plus-circle mr-1"></i>Add payment transaction
+                  <i class="fal fa-plus-circle mr-1"></i>Add payment transaction request
                 <% end %>
               </div>
             </div>
