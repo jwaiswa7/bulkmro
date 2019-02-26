@@ -41,7 +41,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
 
   def send_tax_code(to, action, notifiable, url)
     @to = to; @action = action; @notifiable = notifiable; @url = url
-    @message = "Tax code has been updated!"
+    @message = 'Tax code has been updated!'
     send
   end
 
@@ -53,7 +53,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     else
       @message = "New reply for Product #{msg[1]}"
     end
-    @message = "#{@message.to_s}: #{msg[2]}" if msg[2].present?
+    @message = "#{@message}: #{msg[2]}" if msg[2].present?
     send
   end
 
@@ -77,7 +77,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     else
       @message = "New reply for order of Inquiry ##{msg[1]}"
     end
-    @message = "#{@message.to_s}: #{msg[2]}" if msg[2].present?
+    @message = "#{@message}: #{msg[2]}" if msg[2].present?
     send
   end
 
