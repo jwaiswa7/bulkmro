@@ -1,5 +1,5 @@
 class Overseers::CategoriesController < Overseers::BaseController
-  before_action :set_category, :only => [:edit, :update, :show]
+  before_action :set_category, only: [:edit, :update, :show]
 
   def autocomplete
     @categories = ApplyParams.to(Category.leaves.active, params)
@@ -7,9 +7,8 @@ class Overseers::CategoriesController < Overseers::BaseController
   end
 
   def autocomplete_closure_tree
-
     @categories = []
-    ApplyParams.to(Category.where("is_active = ? and is_service = ?", true,params[:is_service]).where.not(id:Category.default.id), params).each do |grandparent|
+    ApplyParams.to(Category.where('is_active = ? and is_service = ?', true, params[:is_service]).where.not(id: Category.default.id), params).each do |grandparent|
       @categories << get_category_hash(grandparent, :grandparent)
       grandparent.children.each do |parent|
         @categories << get_category_hash(parent, :parent)
@@ -61,27 +60,25 @@ class Overseers::CategoriesController < Overseers::BaseController
 
   private
 
-  def get_category_hash(category, level = :child)
+    def get_category_hash(category, level = :child)
+      {
+          id: category.id,
+          text: category.autocomplete_to_s(level)
+      }
+    end
 
-
-    {
-        :id => category.id,
-        :text => category.autocomplete_to_s(level)
-    }
-  end
-
-  def category_params
-    params.require(:category).permit(
+    def category_params
+      params.require(:category).permit(
         :parent_id,
-        :name,
-        :is_service,
-        :is_active,
-        :tax_code_id,
-        :tax_rate_id
-    )
-  end
+          :name,
+          :is_service,
+          :is_active,
+          :tax_code_id,
+          :tax_rate_id
+      )
+    end
 
-  def set_category
-    @category = Category.find(params[:id])
-  end
+    def set_category
+      @category = Category.find(params[:id])
+    end
 end

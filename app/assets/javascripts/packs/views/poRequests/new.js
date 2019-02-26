@@ -1,18 +1,9 @@
-import bindRatingModalTabClick from "../common/bindRatingModalTabClick"
-import updateRatingForm from "../common/updateRatingForm"
+
 import updateRowTotal from "./updateRowTotal"
 import select2s from "../../components/select2s";
 
 
 const newAction = () => {
-
- /*   bindRatingModalTabClick();
-    $('.rating-modal a').click();
-
-    var customTabSelector = $('#multipleRatingForm .custom-tab')
-    customTabSelector.eq(0).removeClass('disabled')
-    customTabSelector[0].click();
-    updateRatingForm();*/
 
     $('form').on('change', 'select[name*=product_id]', function (e) {
         onProductChange(this);
@@ -38,7 +29,6 @@ let onProductChange = (container) => {
             url: Routes.get_product_details_overseers_product_path(optionSelected.val()),
 
             success: function (response) {
-                console.log(response)
                 row.find('[name*=brand]').val(response.brand);
                 row.find('[name*=tax_rate_id]').val(response.tax_rate_id).trigger("change");
                 row.find('[name*=measurement_unit]').val(response.measurement_unit);

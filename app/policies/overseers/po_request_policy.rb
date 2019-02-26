@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   def index?
     true
   end
 
-  def edit
-    developer? || logistics? || manager_or_sales? || admin?
+  def edit?
+    logistics? || manager_or_sales?
   end
 
   def pending_and_rejected?
@@ -24,11 +26,15 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def new?
-    true
+    sales? || manager_or_sales?
+  end
+
+  def add_service_product?
+    manager_or_sales?
   end
 
   def can_cancel?
-    record.purchase_order.present? && (manager_or_sales? || admin?) && record.not_amending?
+    record.purchase_order.present? && (manager_or_sales?) && record.not_amending?
   end
 
   def can_reject?
@@ -40,7 +46,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_update_rejected_po_requests?
-    record.purchase_order.present? && (manager_or_sales? || admin? ) && record.status == "Rejected"
+    record.purchase_order.present? && (manager_or_sales?) && record.status == 'Rejected'
   end
 
   def can_process_amended_po_requests?
@@ -52,7 +58,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def new_payment_request?
-    record.purchase_order.present? && record.payment_request.blank? && record.not_amending?
+    record.purchase_order.present? && record.payment_request.blank? && record.not_amending? && record.not_cancelled?
   end
 
   def edit_payment_request?
@@ -60,7 +66,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def sending_po_to_supplier_new_email_message?
-    (admin? || sales?) && record.status == "PO Created" && record.purchase_order && record.purchase_order.has_supplier? && record.purchase_order.get_supplier(record.purchase_order.rows.first.metadata['PopProductId'].to_i).company_contacts.present?
+    record.status == 'PO Created' && record.purchase_order && record.contact.present?
   end
 
   def sending_po_to_supplier_create_email_message?
@@ -68,7 +74,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def dispatch_supplier_delayed_new_email_message?
-     record.status == 'PO Created' && (admin? || logistics?)
+    record.status == 'PO Created' && (admin? || logistics?) && record.purchase_order && record.contact.present?
   end
 
   def dispatch_supplier_delayed_create_email_message?
@@ -85,5 +91,30 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
 
   def completed_stock?
     index? && (logistics? || admin?)
+  end
+
+  def material_received_in_bm_warehouse_new_email_msg?
+    record.status == 'PO Created' && (admin? || logistics?) && record.purchase_order && record.contact.present? && record.purchase_order.material_status.present?
+  end
+
+  def material_received_in_bm_warehouse_create_email_msg?
+    material_received_in_bm_warehouse_new_email_msg?
+  end
+
+  class Scope
+    attr_reader :overseer, :scope
+
+    def initialize(overseer, scope)
+      @overseer = overseer
+      @scope = scope
+    end
+
+    def resolve
+      if overseer.allow_inquiries?
+        scope.all
+      else
+        scope.joins("INNER JOIN inquiries ON inquiries.id = po_requests.inquiry_id").where('inquiries.inside_sales_owner_id IN (:overseer) OR inquiries.outside_sales_owner_id IN (:overseer) OR po_requests.created_by_id IN (:overseer)', overseer: overseer.self_and_descendants.pluck(:id))
+      end
+    end
   end
 end

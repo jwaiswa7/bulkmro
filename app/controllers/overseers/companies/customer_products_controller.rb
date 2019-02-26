@@ -2,7 +2,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   before_action :set_customer_product, only: [:show, :edit, :update, :destroy]
 
   def index
-    @products = ApplyDatatableParams.to(@company.customer_products, params.reject! {|k, v| k == 'company_id'})
+    @products = ApplyDatatableParams.to(@company.customer_products, params.reject! { |k, v| k == 'company_id' })
     authorize @products
   end
 
@@ -21,27 +21,27 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
 
   def new
     @tags = Tag.all
-    @customer_product = @company.customer_products.new(:overseer => current_overseer)
+    @customer_product = @company.customer_products.new(overseer: current_overseer)
     authorize @customer_product
   end
 
   def create
     custom_params = customer_product_params
     @product = Product.find(customer_product_params[:product_id])
-    @customer_product = @company.customer_products.where(:product => @product).first_or_initialize
+    @customer_product = @company.customer_products.where(product: @product).first_or_initialize
 
     custom_params[:tag_ids].reject!(&:empty?)
     custom_params[:tag_ids].each_with_index do |tag_id, index|
       @tag = @company.tags.where(id: tag_id)
       if @tag.blank?
-        @new_tag = @company.tags.where(:name => tag_id).first_or_create
+        @new_tag = @company.tags.where(name: tag_id).first_or_create
         custom_params[:tag_ids][index] = @new_tag.id.to_s
       end
     end
 
     @customer_product.assign_attributes(custom_params)
-    @customer_product.assign_attributes(:name => @product.name) if @customer_product.name.blank?
-    @customer_product.assign_attributes(:sku => @product.sku) if @customer_product.sku.blank?
+    @customer_product.assign_attributes(name: @product.name) if @customer_product.name.blank?
+    @customer_product.assign_attributes(sku: @product.sku) if @customer_product.sku.blank?
 
     authorize @customer_product
 
@@ -75,20 +75,20 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   def update
     custom_params = customer_product_params
     @product = Product.find(customer_product_params[:product_id])
-    @customer_product = @company.customer_products.where(:product => @product).first_or_initialize
+    @customer_product = @company.customer_products.where(product: @product).first_or_initialize
 
     custom_params[:tag_ids].reject!(&:empty?)
     custom_params[:tag_ids].each_with_index do |tag_id, index|
       @tag = @company.tags.where(id: tag_id)
       if @tag.blank?
-        @new_tag = @company.tags.where(:name => tag_id).first_or_create
+        @new_tag = @company.tags.where(name: tag_id).first_or_create
         custom_params[:tag_ids][index] = @new_tag.id.to_s
       end
     end
 
     @customer_product.assign_attributes(custom_params)
-    @customer_product.assign_attributes(:name => @product.name) if @customer_product.name.blank?
-    @customer_product.assign_attributes(:sku => @product.sku) if @customer_product.sku.blank?
+    @customer_product.assign_attributes(name: @product.name) if @customer_product.name.blank?
+    @customer_product.assign_attributes(sku: @product.sku) if @customer_product.sku.blank?
     authorize @customer_product
 
     if @customer_product.save
@@ -107,24 +107,24 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
 
   private
 
-  def set_customer_product
-    @customer_product ||= CustomerProduct.find(params[:id])
-  end
+    def set_customer_product
+      @customer_product ||= CustomerProduct.find(params[:id])
+    end
 
-  def customer_product_params
-    params.require(:customer_product).permit(
+    def customer_product_params
+      params.require(:customer_product).permit(
         :name,
-        :company_id,
+          :company_id,
         :product_id,
-        :tax_code_id,
-        :tax_rate_id,
-        :measurement_unit_id,
-        :customer_price,
-        :sku,
-        :brand_id,
-        :moq,
-        :tag_ids => [],
-        :images => []
-    )
-  end
+          :tax_code_id,
+          :tax_rate_id,
+          :measurement_unit_id,
+          :customer_price,
+          :sku,
+          :brand_id,
+          :moq,
+          tag_ids: [],
+          images: []
+      )
+    end
 end

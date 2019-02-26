@@ -3,12 +3,14 @@ const updateOnContactSelect = () => {
         console.log('adwadw');
         onContactChange(this);
     }).find('select[name*=contact_id]').each(function (e) {
+        var container = this
+        if($(container).closest('.po-request-form').find('input[name*=contact_email]').val() == ""){
+            onContactChange(this);
+        }
 
-        onContactChange(this);
     });
 };
 let onContactChange = (container) => {
-    console.log(container);
     let optionSelected = $("option:selected", container);
     console.log(optionSelected);
 

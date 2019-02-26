@@ -101,30 +101,34 @@
         </div>
       </div>
 
-        <%if policy(f.object).edit_payment_queue? && (f.object.request_owner == "Accounts")%>
+
           <div class="mt-3  ">
 
             <h6 class="form-group text-uppercase text-black-50 mb-1">Payment Request Transactions</h6>
             <div class="form-row d-none d-md-flex">
               <% if f.object.persisted? %>
 
-              <div class="col-3">
+              <div class="col-2">
                 <div class="form-group mb-0">
                   <label>Payment Type</label>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-2">
                 <div class="form-group mb-0">
                   <label>UTR or Cheque Number</label>
                 </div>
               </div>
-
-              <div class="col-3">
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Cheque Issue Date</label>
+                </div>
+              </div>
+              <div class="col-2">
                 <div class="form-group mb-0">
                   <label>Cheque Date</label>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-2">
                 <div class="form-group mb-0">
                   <label>Amount</label>
                 </div>
@@ -135,20 +139,24 @@
 
           <%= f.nested_fields_for :transactions, wrapper_tag: :div do |transaction| %>
             <div class="form-row flex-row align-items-start">
-              <div class="col-3">
-                <%= transaction.input :payment_type, :label => false, :required => true, as: :select, disabled: policy(transaction.object).disabled_fields?, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => true %>
-              </div>
-
-              <div class="col-3">
-                <%= transaction.input :utr_or_cheque_no, :label => false, :required => true, disabled: policy(transaction.object).disabled_fields? %>
-              </div>
-
-              <div class="col-3">
-                <%= transaction.input :cheque_date, :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: policy(transaction.object).disabled_fields?%>
+              <div class="col-2">
+                <%= transaction.input :payment_type, :label => false, :required => true, as: :select, disabled: false, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => true %>
               </div>
 
               <div class="col-2">
-                <%= transaction.input :amount_paid,:label => false, :required => true, disabled: policy(transaction.object).disabled_fields? %>
+                <%= transaction.input :utr_or_cheque_no, :label => false, :required => true, disabled: false %>
+              </div>
+
+              <div class="col-2">
+                <%= transaction.input :issue_date, :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: false%>
+              </div>
+
+              <div class="col-2">
+                <%= transaction.input :cheque_date, :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: false%>
+              </div>
+
+              <div class="col-2">
+                <%= transaction.input :amount_paid,:label => false, :required => true, disabled: false %>
               </div>
 
               <div class="col-1 ">
@@ -179,7 +187,6 @@
             </div>
           <% end %>
           </div>
-      <% end %>
 
       <div class="mt-3 card-alternative">
         <div class="form-row">

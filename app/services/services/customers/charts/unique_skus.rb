@@ -9,9 +9,9 @@ class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Bui
           labels: [],
           datasets: [
               {
-                  label: "SKU Count",
-                  type: "bar",
-                  borderColor: "#007bff",
+                  label: 'SKU Count',
+                  type: 'bar',
+                  borderColor: '#007bff',
                   backgroundColor: '#007bff',
                   data: [],
                   yAxisID: 'sku_count',
@@ -43,12 +43,12 @@ class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Bui
           },
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(:created_at => start_at..end_at).joins(:company).where(companies: {id: company.id})
+      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:company).where(companies: { id: company.id })
       ordered_products = sales_orders.joins(:products)
 
-      (start_at..end_at).map {|a| a.strftime("%b-%Y") }.uniq.each do |month|
+      (start_at..end_at).map { |a| a.strftime('%b-%Y') }.uniq.each do |month|
         @data[:labels].push(month.gsub(/-(\d{2})/, '-'))
-        @data[:datasets][0][:data].push(ordered_products.where('sales_orders.created_at' => month.to_date.beginning_of_month..month.to_date.end_of_month.end_of_day).map{|so| so.products}.flatten.uniq.count)
+        @data[:datasets][0][:data].push(ordered_products.where('sales_orders.created_at' => month.to_date.beginning_of_month..month.to_date.end_of_month.end_of_day).map{ |so| so.products }.flatten.uniq.count)
       end
     end
   end

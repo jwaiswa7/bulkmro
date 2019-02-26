@@ -1,6 +1,7 @@
 const updateRatingForm = () => {
     var customTabSelector =  $('#multipleRatingForm .custom-tab')
-    if (customTabSelector.length > 0) {
+    if (customTabSelector.length > 0)
+    {
         customTabSelector.eq(0).removeClass('disabled')
         customTabSelector[0].click();
     }

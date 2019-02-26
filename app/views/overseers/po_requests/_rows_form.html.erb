@@ -4,7 +4,7 @@
   <%= f.hidden_field :sales_order_id %>
   <%= f.hidden_field :inquiry_id %>
   <%= f.hidden_field :supplier_id if !stock%>
-  <%= f.hidden_field :logistics_owner_id %>
+  <%#= f.hidden_field :logistics_owner_id %>
 
   <% if stock %>
     <div class="col-12 ">
@@ -12,7 +12,7 @@
     </div>
   <% end %>
   <div class="col-12 col-md-4">
-    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, alphabetical: false), :include_blank => false, label: 'Supplier PO Type' %>
+    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, keep_raw: true, alphabetical: false), :include_blank => true, label: 'Supplier PO Type', required: true %>
   </div>
 
   <% if f.object.persisted? %>
@@ -66,7 +66,7 @@
   <% if f.object.persisted? %>
 
     <div class="col-4">
-      <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
+      <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => 31961, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
     </div>
   <% end %>
   <% if stock %>
@@ -75,7 +75,7 @@
     </div>
   <% else %>
     <div class="col-12 col-md-4">
-      <%= f.association :contact, collection: f.object.supplier.contacts.map {|contact| [contact.to_s, contact.id, {'data-contact-email' => contact.email || nil, 'data-contact-phone' => contact.phone || nil}]}, input_html: {class: 'select2-single'}, required: true, hint: 'Note: If left blank, above selected contact\'s email will be applied' %>
+      <%= f.association :contact, collection: (f.object.supplier.contacts.map {|contact| [contact.to_s, contact.id, {'data-contact-email' => contact.email || nil, 'data-contact-phone' => contact.phone || nil}]} if f.object.supplier) || [], input_html: {class: 'select2-single'}, required: true, hint: 'Note: If left blank, above selected contact\'s email will be applied' %>
 
     </div>
   <% end %>
@@ -87,7 +87,7 @@
   </div>
 
   <div class="col-12 col-md-4">
-    <%= f.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date'}, required: true %>
+    <%= f.input :supplier_committed_date, label: 'Supplier Committed Delivery Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date'}, required: true %>
   </div>
   <div class="col-12 col-md-4">
     <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', required: true, label: 'Payment Terms:' %>
@@ -104,17 +104,17 @@
         </div>
       <% else %>
         <div class="col-12 col-md-6">
-          <%= f.association :bill_from, collection: Address.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single'}, required: true %>
+          <%= f.association :bill_from, collection: Address.with_includes.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single'}, required: true %>
         </div>
         <div class="col-12 col-md-6">
-          <%= f.association :ship_from, collection: Address.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single'}, required: true %>
+          <%= f.association :ship_from, collection: Address.with_includes.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single'}, required: true %>
         </div>
       <% end %>
       <div class="col-12 col-md-6">
-        <%= f.association :bill_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier Address is for e.g. from Kolkata where the BulkMRO does not have an office. The Supplier PO will be Billed TO where the Sales Order is being Billed From (Inquiry Bill From)' %>
+        <%= f.association :bill_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier is from a location where Bulk MRO has no office eg. Coimbatore, then the \'Bill To/\' for the supplier PO will be the Bulk MRO office from which the Sales Order has been created eg. Mumbai, Ahmedabad, Delhi, etc.' %>
       </div>
       <div class="col-12 col-md-6">
-        <%= f.association :ship_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier Address is for e.g. from Kolkata where the BulkMRO does not have an office. The Supplier PO will be Shipped TO where the Sales Order is being Shipped From (Inquiry Ship From)' %>
+        <%= f.association :ship_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier is from a location where Bulk MRO has no office eg. Coimbatore, then the \'Bill To\' for the supplier PO will be the Bulk MRO office from which the Sales Order has been created eg. Mumbai, Ahmedabad, Delhi, etc.' %>
       </div>
       <div class="col-md-12 mb-2 d-none">
         <div class="card card-default">
@@ -182,14 +182,11 @@
   <% end %>
 </div>
 <hr>
+<!--
 <div class="form-row d-none d-md-flex">
   <div class="col-12 col-md-6">
     <div class="form-row">
-      <!--      <div class="col-12 col-md-1">-->
-      <!--        <div class="form-group mb-0">-->
-      <!--          <label>Sr. No.</label>-->
-      <!--        </div>-->
-      <!--      </div>-->
+
       <div class="col-12 col-md-3">
         <div class="form-group mb-0">
           <label>Product</label>
@@ -251,7 +248,7 @@
       </div>
       <div class="col-12 col-md-2">
         <div class="form-group mb-0">
-          <label>Lead Time</label>
+          <label>Lead Date</label>
         </div>
       </div>
       <div class="col-12 col-md-1">
@@ -262,8 +259,9 @@
     </div>
   </div>
 </div>
+-->
 
-<%= f.nested_fields_for :rows do |po_request_row| %>
+<%= f.nested_fields_for :rows, f.object.persisted? ? f.object.rows.order(id: :asc) : f.object.rows do |po_request_row| %>
   <%= po_request_row.hidden_field :id %>
   <%= po_request_row.hidden_field :sales_order_row_id %>
   <%= po_request_row.hidden_field :product_id %>
@@ -271,72 +269,82 @@
   <%= po_request_row.hidden_field :tax_rate_id %>
   <%= po_request_row.hidden_field :measurement_unit_id, value: po_request_row.object.measurement_unit_id || MeasurementUnit.default.id %>
   <div class="form-row po-request-row">
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-12 mb-1">
+
+      #<%= ((f.object.rows.index(po_request_row.object) || f.object.rows.size || 0) + 1) %>
+      <%#= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, disabled: true %>
+    </div>
+    <div class="col-12 col-md-12">
       <div class="form-row">
-        <!--        <div class="col-12 col-md-1">-->
-        <%#= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, label: false, disabled: true %>
-        <!--        </div>-->
+
         <div class="col-12 col-md-3">
           <div class="select2-wrap">
-            <%= po_request_row.association :product, collection: [po_request_row.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => product_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false, disabled: po_request_row.object.field_disabled? %>
+            <%= po_request_row.association :product, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :product), include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => product_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, disabled: po_request_row.object.field_disabled? %>
           </div>
         </div>
 
 
-        <div class="col-12 col-md-1">
+        <div class="col-12 col-md-2">
 
-          <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: false, disabled: true %>
-          <%#= po_request_row.association :brand, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :brand), include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, disabled: po_request_row.object.field_disabled?, label: false, f.object.rows.first == po_request_row.object ? "Make" : false  %>
+          <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: 'Make', disabled: true %>
+          <%#= po_request_row.association :brand, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :brand), include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, disabled: po_request_row.object.field_disabled?, f.object.rows.first == po_request_row.object ? "Make" : false  %>
         </div>
         <div class="col-12 col-md-2">
-          <%#= po_request_row.input :tax_code, label: false, f.object.rows.first == po_request_row.object ? "HSN" : false, disabled: po_request_row.object.field_disabled? %>
-          <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: false, required: true %>
+          <%#= po_request_row.input :tax_code, f.object.rows.first == po_request_row.object ? "HSN" : false, disabled: po_request_row.object.field_disabled? %>
+          <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: 'HSN', required: true %>
         </div>
         <div class="col-12 col-md-2">
-          <%#= po_request_row.input :tax_rate, label: false, f.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
-          <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: false %>
+          <%#= po_request_row.input :tax_rate, f.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
+          <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: 'Tax Rate' %>
         </div>
-        <div class="col-12 col-md-2">
-          <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 1}, label: false, disabled: false, required: true %>
+        <div class="col-12 col-md-1">
+          <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 1}, disabled: false, required: true %>
         </div>
-        <div class="col-12 col-md-2">
-          <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage || 0}, label: false, disabled: false %>
+
+        <div class="col-12 col-md-1">
+          <%= po_request_row.input :measurement_unit, value: po_request_row.object.measurement_unit || MeasurementUnit.default.name, disabled: true %>
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-12">
       <div class="form-row">
 
+        <div class="col-12 col-md-2">
+          <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price || po_request_row.object.unit_price_per_quantity.round(2)}, readonly: po_request_row.object.field_disabled?, required: true %>
+        </div>
         <div class="col-12 col-md-1">
-          <%= po_request_row.input :measurement_unit, value: po_request_row.object.measurement_unit || MeasurementUnit.default.name, label: false, disabled: true %>
-        </div>
-        <div class="col-12 col-md-2">
-          <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price || po_request_row.object.unit_price_per_quantity.round(2)}, label: false, readonly: po_request_row.object.field_disabled?, required: true %>
-        </div>
-        <div class="col-12 col-md-2">
-          <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price}, label: false, disabled: true %>
-        </div>
-        <div class="col-12 col-md-2">
-          <%= po_request_row.input :converted_total_tax, input_html: {value: po_request_row.object.converted_total_tax}, label: false, disabled: true %>
-        </div>
-        <div class="col-12 col-md-2">
-          <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax}, label: false, disabled: true %>
+          <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage || 0}, label: 'Disc. %', disabled: false %>
         </div>
 
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :lead_time, label: false, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'lead-time'}, required: !stock , disabled: stock %>
+          <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price}, disabled: true, label: 'Total Selling Price' %>
         </div>
-        <div class="col-12 col-md-1">
-          <%= po_request_row.remove_nested_fields_link do %>
-            <div class="form-group align-self-center flex-grow-1 ml-2">
-              <i class="far fa-times text-danger"></i>
-            </div>
-          <% end if policy(po_request_row.object).destroy? %>
+        <div class="col-12 col-md-2">
+          <%= po_request_row.input :converted_total_tax, input_html: {value: po_request_row.object.converted_total_tax}, disabled: true, label: 'Total Tax' %>
         </div>
+        <div class="col-12 col-md-2">
+          <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax}, disabled: true, label: 'Total Selling Price with Tax' %>
+        </div>
+
+        <div class="col-12 col-md-2">
+          <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'lead-time'}, label: 'Lead Date', required: !stock , disabled: stock %>
+        </div>
+        <% if f.object.rows.present? && f.object.rows.length > 1 %>
+          <div class="col-12 col-md-1">
+            <%= po_request_row.remove_nested_fields_link(class: 'btn btn-danger form-group align-self-center flex-grow-1 mt-3 ml-2') do %>
+
+              Remove
+
+            <% end if policy(po_request_row.object).destroy? %>
+          </div>
+        <% end %>
       </div>
     </div>
+    <hr class="divider">
   </div>
 <% end %>
+
+<%# if policy(:po_request).add_service_product? %>
 <% if !stock %>
   <div class="col-md-3">
     <%= f.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>

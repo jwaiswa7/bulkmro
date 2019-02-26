@@ -1,22 +1,22 @@
 class Resources::ApplicationResource
   include HTTParty
-  #@@remote_exchange_log = ::Logger.new("#{Rails.root}/log/remote_exchange.log")
-  #debug_output @@remote_exchange_log
+  # @@remote_exchange_log = ::Logger.new("#{Rails.root}/log/remote_exchange.log")
+  # debug_output @@remote_exchange_log
 
   def self.new_session_id
     response = post(
-        '/Login',
-        :body => {:CompanyDB => Settings.sap.DATABASE, :UserName => Settings.sap.USERNAME, :Password => Settings.sap.PASSWORD}.to_json,
-        :verify => false,
-        :debug_output => $stdout,
-        :timeout => 30
+      '/Login',
+        body: { CompanyDB: Settings.sap.DATABASE, UserName: Settings.sap.USERNAME, Password: Settings.sap.PASSWORD }.to_json,
+        verify: false,
+        debug_output: $stdout,
+        timeout: 30
     )
     response['SessionId']
   end
 
   def self.get_sap_cookie
     Rails.cache.fetch('sap_cookie', expires_in: 20.minutes) do
-      "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=#{20.minutes}" #TODO Expires should be in date format
+      "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=#{(DateTime.now - 1.day).strftime('%a, %d %b %Y %T') }"
     end
   end
 
@@ -51,27 +51,27 @@ tq7iFj/oZ0WuMVBpik7S47FVc9SeuWTUcbRwC87lF5aobMyUNIaxc06+4zR9Hl5X
 ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
 -----END RSA PRIVATE KEY-----'
 
-  SAP = OpenStruct.new({
-                           attachment_directory: Settings.sap.ATTACHMENT_DIRECTORY,
-                           attachment_api: Settings.sap.ATTACHMENT_API,
-                           server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
-                           login: {user: Settings.sap.ATTACHMENT_USERNAME, password: Settings.sap.ATTACHMENT_PASSWORD},
-                           draft_doc_object_code: 17,
-                           draft_base_type: 23,
-                           attachment_username: Settings.sap.ATTACHMENT_USERNAME,
-                           ssh_key: ATTACHMENT_SSH
-                       })
+  SAP = OpenStruct.new(
+    attachment_directory: Settings.sap.ATTACHMENT_DIRECTORY,
+    attachment_api: Settings.sap.ATTACHMENT_API,
+    server: { host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port },
+    login: { user: Settings.sap.ATTACHMENT_USERNAME, password: Settings.sap.ATTACHMENT_PASSWORD },
+    draft_doc_object_code: 17,
+    draft_base_type: 23,
+    attachment_username: Settings.sap.ATTACHMENT_USERNAME,
+    ssh_key: ATTACHMENT_SSH
+                       )
 
   def self.set_headers
     base_uri ENDPOINT.to_s
     debug_output($stdout)
     default_options.merge!(verify: false, timeout: 30)
-    headers({
-                :'Content-Type' => 'application/json',
-                :'Access-Control-Allow-Origin' => '*',
-                :'Cookie' => get_sap_cookie,
-                :'B1S-ReplaceCollectionsOnPatch' => 'true'
-            })
+    headers(
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Cookie': get_sap_cookie,
+      'B1S-ReplaceCollectionsOnPatch': 'true'
+            )
   end
 
   set_headers
@@ -97,7 +97,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.all
-    get("/#{collection_name}").parsed_response['value'].map {|pr| OpenStruct.new(pr)}
+    get("/#{collection_name}").parsed_response['value'].map { |pr| OpenStruct.new(pr) }
   end
 
   def self.find(id, quotes: false)
@@ -150,34 +150,33 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
       OpenStruct.new(raw_response.parsed_response)
     elsif raw_response['error']
       # raise(raw_response.to_s) if Rails.env.development?
-      {raw_response: raw_response, error_message: raw_response['error']['message']['value']}
+      { raw_response: raw_response, error_message: raw_response['error']['message']['value'] }
     else
       # raise(raw_response.to_s) if Rails.env.development?
-      {raw_response: raw_response, error_message: raw_response.to_s}
+      { raw_response: raw_response, error_message: raw_response.to_s }
     end
   end
 
   def self.log_request(method, record, is_find: false)
-    @remote_request = RemoteRequest.create!({
-                                                subject: record.is_a?(String) ? nil : record,
-                                                method: method,
-                                                is_find: is_find,
-                                                resource: collection_name,
-                                                request: record.is_a?(String) ? record : to_remote(record),
-                                                url: [ENDPOINT, "/#{collection_name}"].join(""),
-                                                status: :pending
-                                            })
+    @remote_request = RemoteRequest.create!(
+      subject: record.is_a?(String) ? nil : record,
+      method: method,
+      is_find: is_find,
+      resource: collection_name,
+      request: record.is_a?(String) ? record : to_remote(record),
+      url: [ENDPOINT, "/#{collection_name}"].join(''),
+      status: :pending
+                                            )
 
     @remote_request
   end
 
   def self.log_response(response, method = 'get', url = '', body = '')
-
     status = :success
     # if response[:error_message].present?
     #   response[:error_message] = "Invalid session.."
     # end
-    if response[:error_message].present? && response[:error_message] == "Invalid session."
+    if response[:error_message].present? && (response[:error_message].downcase.include? 'invalid session')
       Rails.cache.delete('sap_cookie')
       status = :failed
       set_headers
@@ -191,7 +190,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
       status = :failed
     end
 
-    @remote_request.update_attributes(:response => response, status: status)
+    @remote_request.update_attributes(response: response, status: status)
     @remote_request
   end
 
@@ -207,5 +206,4 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
       send(action, url, body: body)
     end
   end
-
 end

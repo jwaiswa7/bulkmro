@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 class Currency < ApplicationRecord
   has_many :inquiry_currencies
-  has_many :figures, :class_name => 'CurrencyRate'
+  has_many :figures, class_name: 'CurrencyRate'
   has_one :current_rate, -> { today }, class_name: 'CurrencyRate'
 
-  scope :non_inr, -> { where.not(:id => inr.id)}
+  scope :non_inr, -> { where.not(id: inr.id) }
 
   validates_presence_of :conversion_rate
   validates_numericality_of :conversion_rate, minimum: 1, maximum: 1000
 
   def sign
-    if self.name == 'USD'
+    if name == 'USD'
       '$'
-    elsif self.name == 'EUR'
+    elsif name == 'EUR'
       '€'
     else
       '₹'

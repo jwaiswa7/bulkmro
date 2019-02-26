@@ -1,5 +1,4 @@
 class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared::BaseCallback
-
   def call
     inquiry = Inquiry.find_by_inquiry_number(params['PoEnquiryId'])
     payment_option = PaymentOption.find_by_name(params['PoPaymentTerms'].to_s.strip)
@@ -7,46 +6,45 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
       if inquiry.present? && inquiry.final_sales_quote.present?
         if params['PoNum'].present? && !PurchaseOrder.find_by_po_number(params['PoNum']).present?
           inquiry.purchase_orders.where(po_number: params['PoNum']).first_or_create! do |purchase_order|
-            purchase_order.assign_attributes(:metadata => params)
-            purchase_order.assign_attributes(:material_status => "Material Readiness Follow-Up")
-            purchase_order.assign_attributes(:logistics_owner => Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(purchase_order).call)
+            purchase_order.assign_attributes(metadata: params)
+            purchase_order.assign_attributes(material_status: 'Material Readiness Follow-Up')
+            purchase_order.assign_attributes(logistics_owner: Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(purchase_order).call)
             if params['PoStatus'].to_i > 0
-              purchase_order.assign_attributes(:status => params['PoStatus'].to_i)
+              purchase_order.assign_attributes(status: params['PoStatus'].to_i)
             else
-              purchase_order.assign_attributes(:status => PurchaseOrder.statuses[params['PoStatus']])
+              purchase_order.assign_attributes(status: PurchaseOrder.statuses[params['PoStatus']])
             end
             if payment_option.present?
-              purchase_order.assign_attributes(:payment_option => payment_option)
+              purchase_order.assign_attributes(payment_option: payment_option)
             end
             params['ItemLine'].each do |remote_row|
               purchase_order.rows.build do |row|
                 row.assign_attributes(
-                    metadata: remote_row
+                  metadata: remote_row
                 )
               end
             end
 
-            if purchase_order.po_request.present? && purchase_order.po_request.payment_request.blank?
-              create_payment_request = Services::Overseers::PaymentRequests::Create.new(purchase_order.po_request)
-              create_payment_request.call
-            end
+            # if purchase_order.po_request.present? && purchase_order.po_request.payment_request.blank?
+            #   create_payment_request = Services::Overseers::PaymentRequests::Create.new(purchase_order.po_request)
+            #   create_payment_request.call
+            # end
           end
-          return_response("Purchase Order created successfully.")
+          return_response('Purchase Order created successfully.')
         else
           purchase_order = PurchaseOrder.find_by_po_number(params['PoNum'])
           if purchase_order.present?
-            purchase_order.assign_attributes(:metadata => params)
+            purchase_order.assign_attributes(metadata: params)
             if params['PoStatus'].to_i > 0
-              purchase_order.assign_attributes(:status => params['PoStatus'].to_i)
+              purchase_order.assign_attributes(status: params['PoStatus'].to_i)
             else
-              purchase_order.assign_attributes(:status => PurchaseOrder.statuses[params['PoStatus']])
+              purchase_order.assign_attributes(status: PurchaseOrder.statuses[params['PoStatus']])
             end
             if payment_option.present?
-              purchase_order.assign_attributes(:payment_option => payment_option)
+              purchase_order.assign_attributes(payment_option: payment_option)
             end
             params['ItemLine'].each do |remote_row|
-
-              row = purchase_order.rows.select {|por| por.metadata['Linenum'] == remote_row['Linenum']}.first
+              row = purchase_order.rows.select { |por| por.metadata['Linenum'].to_i == remote_row['Linenum'] .to_i }.first
 
               if row.present?
                 row.assign_attributes(metadata: remote_row)
@@ -54,7 +52,7 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
               else
                 new_row = purchase_order.rows.build do |row|
                   row.assign_attributes(
-                      metadata: remote_row
+                    metadata: remote_row
                   )
                 end
                 new_row.save!
@@ -63,7 +61,7 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
             purchase_order.save!
           end
 
-          return_response("Purchase Order updated successfully.")
+          return_response('Purchase Order updated successfully.')
         end
       else
         return_response("Inquiry #{params['PoEnquiryId']} or Quotation not found.", 0)

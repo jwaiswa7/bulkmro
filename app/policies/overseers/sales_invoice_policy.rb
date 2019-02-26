@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def show?
     record.persisted? && record.not_legacy? && !record.original_invoice.attached?
   end
 
   def edit_mis_date?
-    record.persisted? && ['vijay.manjrekar@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com'].include?(overseer.email)
+    record.persisted? && ['vijay.manjrekar@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com'].include?(overseer.email)
   end
 
   def update_mis_date?

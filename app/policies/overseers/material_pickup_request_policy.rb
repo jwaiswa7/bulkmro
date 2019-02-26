@@ -3,7 +3,6 @@ class Overseers::MaterialPickupRequestPolicy < Overseers::ApplicationPolicy
     admin? || logistics? || sales?
   end
 
-
   def material_delivered_queue?
     admin? || logistics? || sales?
   end
@@ -15,6 +14,7 @@ class Overseers::MaterialPickupRequestPolicy < Overseers::ApplicationPolicy
   def edit?
     admin? || logistics? || sales? && record.status != 'Material Delivered'
   end
+
   def can_request_invoice?
     !record.invoice_request.present?
   end
@@ -35,4 +35,7 @@ class Overseers::MaterialPickupRequestPolicy < Overseers::ApplicationPolicy
     record.status == 'Material Delivered'
   end
 
+  def update_logistics_owner_for_pickup_requests?
+    admin?
+  end
 end

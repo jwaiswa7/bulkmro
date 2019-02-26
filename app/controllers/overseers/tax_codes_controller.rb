@@ -1,23 +1,23 @@
 class Overseers::TaxCodesController < Overseers::BaseController
   before_action :set_tax_code, only: [:edit, :update, :show]
+  before_action :set_notification, only: [:update]
 
   def autocomplete
-    @tax_codes = ApplyParams.to(TaxCode.active.where("is_service = ?",params[:is_service]), params)
+    @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
     authorize :tax_code
   end
 
   def autocomplete_for_product
     @product = Product.find(params[:product_id])
     @is_service = @product.try(:is_service) || false
-    @tax_codes = ApplyParams.to(TaxCode.active.where("is_service = ?",@is_service), params)
+    @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', @is_service), params)
     authorize @tax_codes
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         render 'autocomplete'
       end
     end
-
   end
 
   def index
@@ -41,7 +41,12 @@ class Overseers::TaxCodesController < Overseers::BaseController
   def update
     @tax_code.assign_attributes(tax_code_params)
     authorize @tax_code
-
+    @notification.send_tax_code(
+        current_overseer,
+        action_name.to_sym,
+        @tax_code,
+        edit_overseers_tax_code_path(@tax_code)
+    )
     if @tax_code.save
       redirect_to overseers_tax_codes_path, notice: flash_message(@tax_code, action_name)
     else
@@ -68,21 +73,20 @@ class Overseers::TaxCodesController < Overseers::BaseController
 
   private
 
-  def set_tax_code
-    @tax_code ||= TaxCode.find(params[:id])
-  end
+    def set_tax_code
+      @tax_code ||= TaxCode.find(params[:id])
+    end
 
-  def tax_code_params
-    params.require(:tax_code).permit(
+    def tax_code_params
+      params.require(:tax_code).permit(
         :remote_uid,
-        :code,
-        :chapter,
-        :description,
-        :tax_percentage,
-        :is_service,
-        :is_active,
-        :is_pre_gst
-    )
-  end
-
+          :code,
+          :chapter,
+          :description,
+          :tax_percentage,
+          :is_service,
+          :is_active,
+          :is_pre_gst
+      )
+    end
 end

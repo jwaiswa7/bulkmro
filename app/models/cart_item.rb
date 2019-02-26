@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CartItem < ApplicationRecord
   belongs_to :customer_product
   belongs_to :product
@@ -6,10 +8,9 @@ class CartItem < ApplicationRecord
 
   validates_presence_of :quantity
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
 
   def set_defaults
     self.quantity ||= 1
   end
-
 end

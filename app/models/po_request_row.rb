@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class PoRequestRow < ApplicationRecord
   belongs_to :po_request
   belongs_to :sales_order_row, required: false
-  has_one :sales_quote_row, :through => :sales_order_row
-  has_one :inquiry_product_supplier, :through => :sales_quote_row
-  has_one :inquiry_product, :through => :inquiry_product_supplier
-  # has_one :product, :through => :inquiry_product
+  has_one :sales_quote_row, through: :sales_order_row
+  has_one :inquiry_product_supplier, through: :sales_quote_row
+  has_one :inquiry_product, through: :inquiry_product_supplier
+  # has_one :product, through: :inquiry_product
 
   # has_one :product, :through => :sales_order_row
 
@@ -21,12 +23,12 @@ class PoRequestRow < ApplicationRecord
   after_initialize :set_defaults
 
   def set_defaults
-    measurement_unit ||= MeasurementUnit.default
+    self.measurement_unit ||= MeasurementUnit.default
   end
 
   enum status: {
-      :'Draft' => 10,
-      :'Po Requested' => 20
+      'Draft': 10,
+      'Po Requested': 20
   }
 
   def total_selling_price
@@ -57,7 +59,7 @@ class PoRequestRow < ApplicationRecord
 
   def unit_selling_price_with_tax
     return self.unit_selling_price + (self.unit_selling_price * ((self.tax_rate.tax_percentage / 100) || 0)) if self.tax_rate.present?
-    return 0
+    0
   end
 
   def converted_total_selling_price

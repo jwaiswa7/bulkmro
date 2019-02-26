@@ -42,6 +42,197 @@
         </div>
       </div>
     </div>
-     <%= render 'overseers/po_requests/rows_preview', f: f, order: @sales_order %>
+    <% if @po_requests.present? %>
+      <div class="card">
+        <div class="card-body">
+          <%= f.simple_fields_for :po_requests, @po_requests.values, wrapper_tag: :div do |po_request| %>
+            <div>
+              <%= po_request.hidden_field :id %>
+              <%= po_request.hidden_field :supplier_id %>
+              <%= po_request.hidden_field :inquiry_id %>
+              <%= po_request.hidden_field :supplier_committed_date %>
+              <%= po_request.hidden_field :blobs %>
+              <%= po_request.hidden_field :status %>
+              <%= po_request.hidden_field :bill_from_id %>
+              <%= po_request.hidden_field :ship_from_id %>
+              <%= po_request.hidden_field :bill_to_id %>
+              <%= po_request.hidden_field :ship_to_id %>
+              <%= po_request.hidden_field :contact_id %>
+              <%= po_request.hidden_field :contact_email %>
+              <%= po_request.hidden_field :contact_phone %>
+              <%= po_request.hidden_field :payment_option_id %>
+              <%= po_request.hidden_field :supplier_po_type %>
+
+
+              <strong class="d-block text-uppercase">
+                <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (po_request.index + 1) || 0 %></span>
+                <%= po_request.object.supplier.to_s %>
+                : <%= po_request.object.supplier.try(:legacy_email) %>
+              </strong>
+              <div class="form-row mt-2">
+                <div class="col-5 col-md-3 mb-2">
+                  <strong class="d-block">Bill From</strong>
+                  <%= po_request.object.bill_from.to_multiline_s %>
+
+                </div>
+                <div class="col-5 col-md-3 mb-2">
+                  <strong class="d-block">Ship From</strong>
+                  <%= po_request.object.ship_from.to_multiline_s %>
+                </div>
+                <div class="col-5 col-md-3 mb-2">
+                  <strong class="d-block">Bill To</strong>
+                  <span class="d-block">
+                    <%= po_request.object.bill_to.address.to_multiline_s %>
+                  </span>
+                </div>
+                <div class="col-5 col-md-3 mb-2">
+                  <strong class="d-block">Ship To</strong>
+                  <%= po_request.object.ship_to.address.to_multiline_s %>
+                </div>
+
+                <% if po_request.object.contact.present? %>
+                  <div class="col-3 col-md-2 mb-2">
+                    <strong class="d-block">Contact</strong>
+                    <%= po_request.object.contact.to_s %>
+                    <% if po_request.object.contact_email.present? %>
+
+                      <span class="d-block">
+                        <strong>Email</strong>
+                        <%= po_request.object.contact_email.to_s %>
+                      </span>
+                    <% end %>
+                    <% if po_request.object.contact_phone.present? %>
+
+                      <span class="d-block">
+                        <strong>Number</strong>
+                        <%= po_request.object.contact_phone.to_s %>
+
+                      </span>
+
+                    <% end %>
+                  </div>
+                <% end %>
+
+                <div class="col-2 col-md-2 mb-2">
+                  <strong class="d-block">Status</strong>
+                  <%= po_request.object.status %>
+                </div>
+                <div class="col-2 col-md-2 mb-2">
+                  <strong class="d-block">P. Terms</strong>
+                  <%= po_request.object.payment_option %>
+                </div>
+
+
+                <% if po_request.object.supplier_po_type.present? %>
+                  <div class="col-2 col-md-2 mb-2">
+                    <strong class="d-block">Supplier PO Type</strong>
+                    <%= po_request.object.supplier_po_type.humanize.titleize %>
+                  </div>
+                <% end %>
+                <% if po_request.object.supplier_committed_date.present? %>
+                  <div class="col-2 col-md-2 mb-2">
+                    <strong class="d-block">Supplier Committed Delivery Date</strong>
+                    <%= po_request.object.supplier_committed_date %>
+                  </div>
+                <% end %>
+
+              </div>
+              <div class="form-row mt-2">
+                <div class="col-6 mb-2">
+                  <strong class="d-block">Attachments</strong>
+                  <% po_request.object.attachments.each_with_index do |attachment, index| %>
+                    <%= link_to url_for(attachment), target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                      <%= "#{(index + 1)} ." %> <%= attachment.filename %>
+                      <br>
+                    <% end if attachment.blob_id.present? %>
+                  <% end if po_request.object.attachments.attached?  %>
+                </div>
+              </div>
+              <table class="w-100 table table-bordered dt-responsive wrap-whitespace" data-fixed-header="false">
+                <thead>
+                <tr>
+                  <th class="no-sort">Sr. No.</th>
+                  <th class="no-sort">Product</th>
+                  <th class="no-sort">Make</th>
+                  <th class="no-sort">HSN</th>
+                  <th data-toggle="tooltip" title="Tax Rate" class="no-sort">Tax %</th>
+                  <th class="no-sort">Quantity</th>
+                  <th data-toggle="tooltip" title="Unit of Measurement" class="no-sort">UOM</th>
+                  <th data-toggle="tooltip" title="Unit Price" class="no-sort">UP</th>
+                  <th data-toggle="tooltip" title="Total Price" class="no-sort">TP</th>
+                  <th data-toggle="tooltip" title="Total Tax" class="no-sort">TT</th>
+                  <th data-toggle="tooltip" title="Total Price with tax" class="no-sort">TP with Tax</th>
+                  <th data-toggle="tooltip" title="Discount percentage" class="no-sort">Disc. %</th>
+                  <th class="no-sort">Lead time</th>
+                </tr>
+                </thead>
+                <tbody>
+                <%= po_request.nested_fields_for :rows, po_request.object.rows do |po_request_row| %>
+                  <%= po_request_row.hidden_field :id %>
+                  <%= po_request_row.hidden_field :sales_order_row_id %>
+                  <%= po_request_row.hidden_field :product_id %>
+                  <%= po_request_row.hidden_field :tax_code_id %>
+                  <%= po_request_row.hidden_field :tax_rate_id %>
+                  <%= po_request_row.hidden_field :measurement_unit_id %>
+                  <%= po_request_row.hidden_field :quantity %>
+                  <%= po_request_row.hidden_field :discount_percentage %>
+                  <%= po_request_row.hidden_field :unit_price %>
+                  <%= po_request_row.hidden_field :lead_time %>
+
+                  <% if po_request_row.present? %>
+
+                    <tr>
+                      <td><%= ((po_request.object.rows.index(po_request_row.object) || 0) + 1) %></td>
+                      <td><%= po_request_row.object.product.to_s %></td>
+                      <td><%= po_request_row.object.product.try(:brand).to_s %></td>
+                      <td><%= po_request_row.object.tax_code %></td>
+                      <td><%= po_request_row.object.tax_rate.to_s %></td>
+                      <td><%= number_with_precision(po_request_row.object.quantity.to_f, precision: 2) %></td>
+                      <td><%= po_request_row.object.product.try(:measurement_unit).to_s %></td>
+                      <td><%= format_currency(po_request_row.object.unit_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+                      <td><%= format_currency(po_request_row.object.converted_total_selling_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+                      <td><%= format_currency(po_request_row.object.converted_total_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+                      <td><%= format_currency(po_request_row.object.converted_total_selling_price_with_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+                      <td><%= percentage(po_request_row.object.discount_percentage, precision: 2) %></td>
+                      <td>
+                        <%= format_succinct_date(po_request_row.object.lead_time) %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+                </tbody>
+              </table>
+              <div class="col-md-3 d-none">
+                <%= po_request.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
+                  <i class="fal fa-plus-circle mr-1"></i>Add a Service product
+                <% end %>
+              </div>
+            </div>
+            <hr class="<%= f.object.po_requests.last == po_request.object ? 'd-none' : '' %>"/>
+          <% end %>
+        </div>
+        <div class="card-footer">
+          <% if policy(@sales_order).create_purchase_orders_requests? %>
+            <div class="form-row">
+              <div class="col-md-6">
+                <%= link_to :back, :class => "btn btn-warning btn-block" do %>
+                  <i class="fal fa-angle-double-left"></i> Back
+                <% end %>
+              </div>
+              <div class="col-md-6">
+                <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+                  <i class="fal fa-pen"></i> Create PO request
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <div class="card text-lg-center">
+        <div class="card-body">
+          All quantities satisfied
+        </div>
+      </div>
+    <% end %>
   <% end %>
 </div>

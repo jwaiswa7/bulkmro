@@ -17,7 +17,6 @@
           <%= po_request.hidden_field :contact_id %>
           <%= po_request.hidden_field :contact_email %>
           <%= po_request.hidden_field :contact_phone %>
-          <%= po_request.hidden_field :logistics_owner_id %>
           <%= po_request.hidden_field :payment_option_id %>
           <%= po_request.hidden_field :supplier_po_type %>
           <%= po_request.hidden_field :requested_by_id %>
@@ -55,30 +54,28 @@
               <%= po_request.object.ship_to.to_s %>
             </div>
           <% end %>
-            <% if po_request.object.contact.present? %>
-              <div class="col-2 col-md-1 mb-2">
-                <strong class="d-block">Contact</strong>
-                <%= po_request.object.contact.to_s %>
-              </div>
-            <% end %>
-            <% if po_request.object.contact_email.present? %>
-              <div class="col-2 col-md-1 mb-2">
-                <strong class="d-block">Contact email</strong>
-                <%= po_request.object.contact_email.to_s %>
-              </div>
-            <% end %>
-            <% if po_request.object.contact_phone.present? %>
-              <div class="col-2 col-md-1 mb-2">
-                <strong class="d-block">Contact Number</strong>
-                <%= po_request.object.contact_phone.to_s %>
-              </div>
-            <% end %>
-            <% if po_request.object.logistics_owner.present? %>
-              <div class="col-2 col-md-2 mb-2">
-                <strong class="d-block">Logistics Owner</strong>
-                <%= po_request.object.logistics_owner.to_s %>
-              </div>
-            <% end %>
+          <% if po_request.object.contact.present? %>
+            <div class="col-3 col-md-2 mb-2">
+              <strong class="d-block">Contact</strong>
+              <%= po_request.object.contact.to_s %>
+              <% if po_request.object.contact_email.present? %>
+
+                      <span class="d-block">
+                        <strong>Email</strong>
+                        <%= po_request.object.contact_email.to_s %>
+                      </span>
+              <% end %>
+              <% if po_request.object.contact_phone.present? %>
+
+                      <span class="d-block">
+                        <strong>Number</strong>
+                        <%= po_request.object.contact_phone.to_s %>
+
+                      </span>
+
+              <% end %>
+            </div>
+          <% end %>
             <% if po_request.object.requested_by.present? %>
               <div class="col-2 col-md-1 mb-2">
                 <strong class="d-block">Requested By</strong>
@@ -88,7 +85,7 @@
             <% if po_request.object.approved_by.present? %>
               <div class="col-2 col-md-1 mb-2">
                 <strong class="d-block">Approved By</strong>
-                <%= po_request.object.approved by.to_s %>
+                <%= po_request.object.approved_by.to_s %>
               </div>
             <% end %>
             <% if po_request.object.status.present? %>

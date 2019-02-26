@@ -67,7 +67,7 @@ class Overseers::ApplicationPolicy
   end
 
   def accounts?
-     overseer.accounts?
+    overseer.accounts?
   end
 
   def index?
@@ -122,6 +122,10 @@ class Overseers::ApplicationPolicy
     ['kartik.pai@bulkmro.com'].include?(overseer.email)
   end
 
+  def allow_activity_export?
+    developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
+  end
+
   def export_rows?
     false
   end
@@ -146,7 +150,7 @@ class Overseers::ApplicationPolicy
       if overseer.manager?
         scope.all
       else
-        scope.where(:created_by => overseer.self_and_descendants)
+        scope.where(created_by: overseer.self_and_descendants)
       end
     end
   end

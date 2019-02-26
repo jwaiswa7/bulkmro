@@ -7,22 +7,15 @@
   <p style="color: #555;">Kindly treat this as priority and initiate the process at the earliest.</p>
 
   <p style="color: #555;">Thanking you</p>
-  <p style="color: #555;">Inq
-    <%= format_id(@inquiry.inquiry_number) %>
-  </p>
   <br/>
-  <p style="color: #555;">Regards,<br><%= @overseer.full_name %>
-    <br>
-    <small>Inside Sales & Procurement Executive.</small>
+  <p style="color: #555;">Best Regards,<br>
+  <p style="color: #555">
+    <%= @overseer.full_name %><br>
+    <% if @overseer.designation.present? %>
+      <span style="font-size:8pt;font-family:Arial"><font color="#000000"><%= @overseer.designation %></font></span><br>
+    <% end %>
   </p>
-
 </div>
-
-<% if @overseer.designation.present? %><p style="margin:0 0 0;">
-  <span style="font-size:8pt;font-family:Arial"><font><%= @overseer.designation %></font></span>
-  <span style="font-size:8pt;font-family:Arial"><font><br></font></span></p>
-<% end %>
-
 <div>
   <div>
     <div dir="ltr">

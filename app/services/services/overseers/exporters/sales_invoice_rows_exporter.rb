@@ -1,9 +1,9 @@
 class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overseers::Exporters::BaseExporter
-
-  def initialize(headers)
-    @file_name = 'sales_invoice_rows'
-    super(headers, @file_name)
+  def initialize
+    super
     @model = SalesInvoiceRow
+    @export_name = 'sales_invoice_rows'
+    @path = Rails.root.join('tmp', filename)
     @columns = [
         'Inquiry Number',
         'BM Number',
@@ -20,42 +20,35 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
         'Branch (Bill From)',
         'Invoice Status'
     ]
-    @columns.each do |column|
-      rows.push(column)
-    end
   end
 
   def call
-    build_csv
+    perform_export_later('SalesInvoiceRowsExporter')
   end
 
   def build_csv
-    Enumerator.new do |yielder|
-      yielder << CSV.generate_line(rows)
-      model.where(:created_at => start_at..end_at).order(sales_invoice_id: :asc).where("sales_invoices.sales_order_id IS NOT NULL").joins(:sales_invoice).each do |row|
-        sales_invoice = row.sales_invoice
-        sales_order = sales_invoice.sales_order
-        inquiry = sales_invoice.inquiry
-        rows.push({
-                      :inquiry_number => sales_invoice.inquiry.inquiry_number.to_s,
-                      :bm_number => row.sku,
-                      :invoice_number => sales_invoice.invoice_number,
-                      :invoice_date => sales_invoice.created_at.to_date.to_s,
-                      :order_number => sales_invoice.sales_order.order_number.to_s,
-                      :order_date => sales_invoice.sales_order.created_at.to_date.to_s,
-                      :customer_name => sales_invoice.inquiry.company.name.to_s,
-                      :invoice_net_amount => ('%.2f' % (sales_order.calculated_total_cost - sales_invoice.metadata['shipping_amount'].to_f)) || '%.2f' % sales_order.calculated_total_cost_without_freight,
-                      :freight_and_packaging => (sales_invoice.metadata['shipping_amount'] || '%.2f' % sales_order.calculated_freight_cost_total),
-                      :total_with_freight => ('%.2f' % sales_order.calculated_total), #cross-check
-                      :tax_amount => ('%.2f' % sales_order.calculated_total_tax),
-                      :gross_amount => ('%.2f' % sales_order.calculated_total_with_tax),
-                      :bill_from_branch => if inquiry.bill_from then inquiry.bill_from.address.state.name else "" end,
-                      :invoice_status => sales_invoice.sales_order.remote_status
-                  })
-      end
-      rows.drop(columns.count).each do |row|
-        yielder << CSV.generate_line(row.values)
-      end
+    model.where(created_at: start_at..end_at).order(sales_invoice_id: :asc).where('sales_invoices.sales_order_id IS NOT NULL').joins(:sales_invoice).each do |row|
+      sales_invoice = row.sales_invoice
+      sales_order = sales_invoice.sales_order
+      inquiry = sales_invoice.inquiry
+      rows.push(
+        inquiry_number: sales_invoice.inquiry.inquiry_number.to_s,
+        bm_number: row.sku,
+        invoice_number: sales_invoice.invoice_number,
+        invoice_date: sales_invoice.created_at.to_date.to_s,
+        order_number: sales_invoice.sales_order.order_number.to_s,
+        order_date: sales_invoice.sales_order.created_at.to_date.to_s,
+        customer_name: sales_invoice.inquiry.company.name.to_s,
+        invoice_net_amount: ('%.2f' % (sales_order.calculated_total_cost - sales_invoice.metadata['shipping_amount'].to_f)) || '%.2f' % sales_order.calculated_total_cost_without_freight,
+        freight_and_packaging: (sales_invoice.metadata['shipping_amount'] || '%.2f' % sales_order.calculated_freight_cost_total),
+        total_with_freight: ('%.2f' % sales_order.calculated_total), # cross-check
+        tax_amount: ('%.2f' % sales_order.calculated_total_tax),
+        gross_amount: ('%.2f' % sales_order.calculated_total_with_tax),
+        bill_from_branch: if inquiry.bill_from then inquiry.bill_from.address.state.name else '' end,
+        invoice_status: sales_invoice.sales_order.remote_status
+                )
     end
+    export = Export.create!(export_type: 20)
+    generate_csv(export)
   end
 end

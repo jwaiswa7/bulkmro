@@ -18,7 +18,7 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
   def set_and_validate_excel_rows
     excel = SimpleXlsxReader.open(TempfilePath.for(import.file))
     excel_rows = excel.sheets.first.rows
-    excel_rows.reject! {|er| er.compact.blank?}
+    excel_rows.reject! { |er| er.compact.blank? }
 
     @excel_rows = excel_rows
   end
@@ -53,7 +53,7 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
     rows.each do |row|
       if Product.find_by_sku(row['sku']).blank? || Product.find_by_sku(row['sku']).not_approved?
         if row['mpn'].to_s.strip.present?
-          row['sku'] = Services::Resources::Shared::UidGenerator.product_sku(rows.map {|r| r['sku'] || r.try(:sku)})
+          row['sku'] = Services::Resources::Shared::UidGenerator.product_sku(rows.map { |r| r['sku'] || r.try(:sku) })
         else
           import.errors.add(:base, ['invalid excel rows, sku or mpn are mandatory for every row'].join(' '))
           raise ExcelInvalidRows

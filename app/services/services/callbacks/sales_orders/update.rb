@@ -1,5 +1,4 @@
 class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::BaseCallback
-
   def call
     order_number = params['increment_id']
     remote_status = params['sap_order_status']
@@ -9,27 +8,35 @@ class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::Ba
 
       if sales_order.present?
         begin
-          sales_order.update_attributes(:remote_status => remote_status.to_i)
+          sales_order.update_attributes(remote_status: remote_status.to_i)
           message = [
-              ["SAP Status Updated: ", sales_order.remote_status].join
+              ['SAP Status Updated: ', sales_order.remote_status].join
           ].join('\n')
           InquiryComment.where(message: message, inquiry: sales_order.inquiry, created_by: Overseer.default_approver, updated_by: Overseer.default_approver, sales_order: sales_order).first_or_create if sales_order.inquiry.present?
-          if sales_order.remote_status == "Cancelled by SAP"
-            sales_order.update_attributes(:status => "Cancelled")
+          @notification = Services::Overseers::Notifications::Notify.new(Overseer.default_approver, self.class.parent)
+          @notification.send_sap_order_confirmation(
+              sales_order.inquiry,
+              self.class.name.demodulize,
+              sales_order,
+              Rails.application.routes.url_helpers.overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order),
+              ["Sales Order #{order_number}: ", message].join
+          ) if sales_order.inquiry.present?
+          if sales_order.remote_status == 'Cancelled by SAP'
+            sales_order.update_attributes(status: 'Cancelled')
             Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :expected_order).call
           end
 
           sales_order.update_index
 
-          return_response("Order Updated Successfully")
+          return_response('Order Updated Successfully')
         rescue => e
           return_response(e.message, 0)
         end
       else
-        return_response("Order Number not found.", 0)
+        return_response('Order Number not found.', 0)
       end
     else
-      return_response("Order Number or Status blank.", 0)
+      return_response('Order Number or Status blank.', 0)
     end
   end
 

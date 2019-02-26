@@ -17,6 +17,6 @@ class DateModifiedMessage < BaseFunction
       end
     end
 
-    return messages.join(" \r\n")
+    messages.join(" \r\n")
   end
 end

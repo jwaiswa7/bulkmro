@@ -23,7 +23,7 @@ class Overseers::RemoteRequestsController < Overseers::BaseController
   end
 
   private
-  def set_remote_request
-    @remote_request = RemoteRequest.find(params[:id])
-  end
+    def set_remote_request
+      @remote_request = RemoteRequest.find(params[:id])
+    end
 end
