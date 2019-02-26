@@ -32,20 +32,15 @@ module Mixins::HasPaymentCollections
   def amount_overdue_outstanding
     # invoice date is crossed and payment is not received yet
     amount = 0.0
-    invoices = self.invoices.includes(:sales_receipts, :sales_receipt_rows).where('sales_invoices.mis_date >= ?', '01-04-2018')
+    todays_date = Date.today
+    invoices = self.invoices.includes(:sales_receipts, :sales_receipt_rows).where('sales_invoices.mis_date >= ? AND sales_invoices.due_date < ?', '01-04-2018',todays_date)
     invoices.each do |sales_invoice|
       outstanding_amount = sales_invoice.calculated_total_with_tax
-      due_date = sales_invoice.due_date
-      todays_date = Date.today
       sales_receipts = sales_invoice.sales_receipts
-      if due_date.present?
-        sales_receipts.each do |sales_receipt|
-          if sales_receipt.payment_received_date.present? && ((sales_receipt.payment_received_date < due_date ) || (sales_receipt.payment_received_date < todays_date))
-            outstanding_amount -= sales_receipt.sales_receipt_rows.sum(&:amount_received)
-          end
-        end
-        amount += outstanding_amount
+      sales_receipts.each do |sales_receipt|
+        outstanding_amount -= sales_receipt.sales_receipt_rows.sum(&:amount_received)
       end
+      amount += outstanding_amount
     end
     amount
   end
