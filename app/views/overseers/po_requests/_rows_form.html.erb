@@ -42,7 +42,6 @@
   <% end %>
   <div class="col-12 col-md-4">
     <%= f.association :contact, collection: (f.object.supplier.contacts.map {|contact| [contact.to_s, contact.id, {'data-contact-email' => contact.email || nil, 'data-contact-phone' => contact.phone || nil}]} if f.object.supplier) || [], input_html: {class: 'select2-single'}, required: true, hint: 'Note: If left blank, above selected contact\'s email will be applied' %>
-
   </div>
 
   <div class="col-12 col-md-4">
@@ -105,9 +104,7 @@
         </div>
       </div>
     </div>
-
   </div>
-
 
   <div class="col-12 col-md-6">
     <div class="d-flex flex-row align-items-end">
