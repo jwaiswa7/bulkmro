@@ -3,21 +3,13 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/atom-one-light.min.css" />
 <!-- /Move to node_modules imports -->
 
-<% if Rails.env.production? %>
 <!-- FA 5 -->
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-TXfwrfuHVznxCssTxWoPZjhcss/hp38gEOH8UPZG/JcXonvBQ6SlsIF49wUzsGno" crossorigin="anonymous">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-6jHF7Z3XI3fF4XZixAuSu0gGKrXwoX/w3uFPxC56OtjChio7wtTGJWRW53Nhx6Ev" crossorigin="anonymous">
 <!-- /FA 5 -->
-<% end %>
 
 <!-- Styles -->
 <% if !Rails.env.production? || !Rails.env.staging? %>
   <%= stylesheet_link_tag 'overseers/imports', media: 'all', 'data-turbolinks-track': 'reload' %>
-<% end %>
-
-<% if Rails.env.staging? %>
-  <!-- FA 5 -->
-  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-TXfwrfuHVznxCssTxWoPZjhcss/hp38gEOH8UPZG/JcXonvBQ6SlsIF49wUzsGno" crossorigin="anonymous">
-  <!-- /FA 5 -->
 <% end %>
 
 <%= stylesheet_link_tag 'overseers/application', media: 'all', 'data-turbolinks-track': 'reload' %>
