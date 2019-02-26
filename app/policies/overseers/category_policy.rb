@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::CategoryPolicy < Overseers::ApplicationPolicy
   def autocomplete_closure_tree?
     autocomplete?

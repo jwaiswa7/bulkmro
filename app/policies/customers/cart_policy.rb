@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customers::CartPolicy < Customers::ApplicationPolicy
   def show?
     contact.customer_products.exists?
