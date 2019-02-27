@@ -35,7 +35,6 @@ json.data (@purchase_orders) do |purchase_order|
                   purchase_order.material_status,
                   format_succinct_date(purchase_order.followup_date),
                   format_succinct_date(purchase_order.revised_supplier_delivery_date),
-
                   if purchase_order.last_comment.present?
                     format_comment(purchase_order.last_comment, trimmed: true)
                   end

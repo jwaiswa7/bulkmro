@@ -15,7 +15,7 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
       callback_method = %w(approve reject merge).detect { |action| params[action] }
       send(callback_method) if callback_method.present? && policy(@product).send([callback_method, '?'].join)
       @notification.send_product_comment(
-          InquiryImport.find(@product.inquiry_import_row.inquiry_import_id).created_by,
+        InquiryImport.find(@product.inquiry_import_row.inquiry_import_id).created_by,
           action_name.to_sym,
           @product,
           overseers_product_comments_path(@product),
