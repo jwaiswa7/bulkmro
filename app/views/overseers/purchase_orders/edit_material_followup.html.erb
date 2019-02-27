@@ -47,7 +47,6 @@
             <%= f.input :followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.followup_date.try(:strftime, "%d-%b-%Y"), class: 'followup-date'}, required: true %>
           </div>
 
-
           <div class="col-12">
             <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |purchase_order_comment| %>
               <%= purchase_order_comment.hidden_field :created_by_id %>
@@ -55,7 +54,6 @@
               <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
             <% end %>
           </div>
-
 
           <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
             <i class="fal fa-plus-circle"></i> Update Status
