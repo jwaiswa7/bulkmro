@@ -60,7 +60,7 @@ let setup = () => {
                 header: isFixedHeader,
                 headerOffset: $('.navbar.navbar-expand-lg').height()
             },
-            fnDrawCallback: function(oSettings) {
+            fnDrawCallback: function (oSettings) {
                 if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
                     $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
                 } else {
@@ -118,14 +118,14 @@ let setup = () => {
                     last: '<i class="fal fa-arrow-to-right"></i>'
                 }
             },
-            
-            initComplete: function(settings, json) {
+
+            initComplete: function (settings, json) {
                 let table = this;
 
                 // Init filters
                 let actionTd = $(table).find('thead tr:eq(1) td:eq(0)');
                 let clear = $('<a href="#" class="btn btn-sm px-2 btn-danger" data-toggle="tooltip" title="Clear search and all enabled filters"><i class="fal fa-times"></i></a>');
-                clear.on('click', function(e) {
+                clear.on('click', function (e) {
                     $('[data-filter="ajax"] select').val("").trigger('change');
                     $('[data-filter="dropdown"] select').val("").trigger('change');
                     $('[data-filter="daterange"] input').val("").trigger('change');
@@ -139,26 +139,29 @@ let setup = () => {
                     let filter = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')').data('filter');
                     let td = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')');
                     let text = $(column.header()).text();
+                    let selected = (filter == 'dropdown' || filter == 'ajax') ? window.hasher.getParam(text).split('|') : window.hasher.getParam(text);
 
                     if (filter && filter != false) {
                         let input = '';
 
                         if (filter == 'dropdown') {
                             input = $('<select class="select2-single form-control" data-placeholder="' + [text, ' ', 'Select'].join('') + '"><option value="" selected disabled></option></select>');
-                            json.columnFilters[this.index()].forEach(function(f) {
+                            json.columnFilters[this.index()].forEach(function (f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
                                 input.append(option);
                             });
                         } else if (filter == 'daterange') {
                             input = $('<input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" />');
+                            input.val(selected);
                         } else if (filter == 'ajax') {
                             let source = "";
-                            json.columnFilters[this.index()].forEach(function(f) {
+                            json.columnFilters[this.index()].forEach(function (f) {
                                 source = f.source;
                             });
                             input = $('<select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' ', 'Select'].join('') + '"></select>');
                         } else {
                             input = $('<input type="text" class="form-control" placeholder="' + [text, ' ', 'Filter'].join('') + '" />');
+                            input.val(selected);
                         }
 
                         input.on('change', function () {
@@ -167,15 +170,29 @@ let setup = () => {
 
                             // Set URL Hash
                             if ($(input).is('select'))
-                                val = [$(this).find('option:selected').text(), "|", val].join('');
+                                val = val ? [$(this).find('option:selected').text(), "|", val].join('') : '';
 
                             window.hasher.setParam(text, val);
                         });
 
                         td.append(input);
                         select2s();
+
+                        if (!selected) return;
+                        if (filter == 'dropdown') {
+                            console.log(selected[1]);
+                            input.val(selected[1]);
+                        } else if (filter == 'ajax') {
+                            input.append(new Option(selected[0], selected[1], true, true));
+                        } else {
+                            console.log(selected);
+                            input.val(selected);
+                        }
                     }
                 });
+
+                // Reload Datatable
+                if (window.hasher.getHashString()) this.DataTable().ajax.reload();
             }
         })
     });
@@ -210,7 +227,7 @@ let cleanUp = () => {
 };
 
 // Turbolinks hook
-document.addEventListener("turbolinks:before-cache", function() {
+document.addEventListener("turbolinks:before-cache", function () {
     cleanUp();
 });
 

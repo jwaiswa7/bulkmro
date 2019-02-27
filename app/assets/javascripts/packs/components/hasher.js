@@ -4,7 +4,7 @@ const hasher = () => {
             let string = this.getHashString();
             let url = new URL('https://dummy.bulkmro.com'); // A dummy url for using searchParams API
             url.search = string;
-            return url.searchParams.get(param);
+            return url.searchParams.get(param) ? url.searchParams.get(param) : "";
         },
 
         setParam: function(param, value) {
