@@ -35,7 +35,7 @@ class Resources::Invoice < Resources::ApplicationResource
 
           sales_invoice.rows.create!(
             quantity: quantity,
-            metadata: {
+            sku: sku,metadata: {
                 qty: quantity,
                 sku: sku,
                 name: remote_row['U_Item_Descr'] != '' ? remote_row['U_Item_Descr'] : remote_row['ItemDescription'],

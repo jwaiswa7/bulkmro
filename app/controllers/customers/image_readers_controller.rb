@@ -16,14 +16,14 @@ class Customers::ImageReadersController < Customers::BaseController
   end
 
   def export_all
-    service = Services::Overseers::Exporters::ImageReadersExporter.new(headers)
+    service = Services::Customers::Exporters::ImageReadersExporter.new(headers)
     self.response_body = service.call
     # Set the status to success
     response.status = 200
   end
 
   def export_by_date
-    service = Services::Overseers::Exporters::ImageReadersForDateExporter.new(params, headers)
+    service = Services::Customers::Exporters::ImageReadersForDateExporter.new(params, headers)
     self.response_body = service.call
     # Set the status to success
     response.status = 200

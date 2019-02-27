@@ -29,7 +29,7 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
         created: record.created_at.to_date.to_s
                 )
     end
-    export = Export.create!(export_type: 65)
+    export = Export.create!(export_type: 55)
     generate_csv(export)
   end
 end

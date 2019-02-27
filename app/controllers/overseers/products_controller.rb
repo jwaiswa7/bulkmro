@@ -145,6 +145,10 @@ class Overseers::ProductsController < Overseers::BaseController
     product_details['measurement_unit'] = @product.measurement_unit.to_s
     product_details['converted_unit_selling_price'] = @product.latest_unit_cost_price
     render json: product_details
+    service = Services::Overseers::Exporters::ProductsExporter.new
+    service.call
+
+    redirect_to url_for(Export.products.last.report)
   end
 
   private
