@@ -23,9 +23,13 @@ json.data (@po_requests) do |po_request|
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       end
                   ].join(' '),
-                  conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),
+                  if po_request.po_request_type == 'Stock'
+                    conditional_link(po_request.id, overseers_inquiry_po_request_path(po_request.inquiry,po_request), policy(po_request).show?)
+                  else
+                    conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?)
+                  end,
                   conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
-                  if po_request.purchase_order.present? && (po_request.status == 'PO Created' || po_request.stock_status == 'Stock PO Created')
+                  if po_request.purchase_order.present? && (po_request.status == 'PO Created' || po_request.stock_status == 'Stock Supplier PO Created')
                     po_request.purchase_order.po_number
                   else
                     po_request.sales_order.order_number if po_request.sales_order.present?

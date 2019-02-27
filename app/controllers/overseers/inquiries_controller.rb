@@ -176,7 +176,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   def create_purchase_orders_requests
     @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
     authorize @inquiry
-    service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@inquiry, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
+    service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@inquiry, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h, true)
     service.call
     Rails.cache.delete(:po_requests)
     redirect_to stock_overseers_po_requests_path

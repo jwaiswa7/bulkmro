@@ -38,7 +38,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def show
     authorize @po_request
-    service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
+    service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales', stock_po=(@po_request.po_request_type == 'Stock'))
     @company_reviews = service.call
   end
 
@@ -49,8 +49,6 @@ class Overseers::PoRequestsController < Overseers::BaseController
       @sales_order.rows.each do |sales_order_row|
         @po_request.rows.where(sales_order_row: sales_order_row).first_or_initialize
       end
-      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@sales_order, current_overseer)
-      @company_reviews = service.call
 
       authorize @po_request
     elsif params[:stock_inquiry_id].present?

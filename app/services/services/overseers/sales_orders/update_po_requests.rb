@@ -1,8 +1,9 @@
 class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::BaseService
-  def initialize(order, overseer, po_requests)
+  def initialize(order, overseer, po_requests, stock_po=false)
     @order = order
     @overseer = overseer
     @po_requests = po_requests
+    @stock_po = stock_po
   end
 
   def call
@@ -13,8 +14,13 @@ class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::Bas
       elsif @order.class.name == 'Inquiry'
         po_request.inquiry = @order
       end
-      po_request.status = po_request_hash[:status]
-      po_request.stock_status = po_request_hash[:stock_status]
+      if @stock_po
+        po_request.po_request_type = 'Stock'
+        po_request.stock_status = po_request_hash[:stock_status]
+      else
+        po_request.po_request_type = 'Supplier'
+        po_request.status = po_request_hash[:status]
+      end
       po_request.supplier_id = po_request_hash[:supplier_id]
       po_request.inquiry_id = po_request_hash[:inquiry_id]
       po_request.bill_from_id = po_request_hash[:bill_from_id]
