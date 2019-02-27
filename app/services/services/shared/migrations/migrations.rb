@@ -2598,7 +2598,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     def create_banks
       service = Services::Shared::Spreadsheets::CsvImporter.new('banks.csv', folder)
       errors = []
-      service.loop(nil) do |x|
+      service.loop(nil) do |llx|
         begin
           bank = Bank.where(code: x.get_column('Bank Code')).first_or_initialize
           if bank.new_record? || update_if_exists
