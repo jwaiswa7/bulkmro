@@ -112,6 +112,8 @@ class PaymentRequest < ApplicationRecord
     if self.po_request.purchase_order.present?
       if self.po_request.purchase_order.try(:calculated_total_with_tax) >= self.total_amount_paid
         self.po_request.purchase_order.try(:calculated_total_with_tax) - self.total_amount_paid
+      else
+        0.0
       end
     else
       0.0
