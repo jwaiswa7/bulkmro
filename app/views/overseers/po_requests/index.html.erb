@@ -35,6 +35,9 @@
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort desktop text-right" data-name="po_request_no">PO Request No.</th>
+  <% if action_name.include?'stock' %>
+    <th class="no-sort desktop">Stock Status</th>
+  <% end %>
   <th class="no-sort desktop text-right" data-name="inquiry">Inquiry</th>
   <% if action_name == 'index' || action_name == "Completed" %>
     <th class="no-sort all text-right" data-name="po_number">PO Number</th>

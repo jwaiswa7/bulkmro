@@ -177,6 +177,10 @@ module StatusesHelper
       'success'
     when :'Supplier PO: Not Sent to Supplier'
       'danger'
+    when :'Stock Supplier PO Created'
+      'success'
+    when :'Stock Requested'
+      'warning'
     else
       'danger'
     end
