@@ -124,6 +124,120 @@
       </div>
     </div>
 
+    <% if @products_list.present? %>
+      <div class="card mb-2">
+        <div class="card-body">
+          <div class="chats">
+              <% if @invoice_request.purchase_order.present? %>
+              <h5 class="text-uppercase">
+                <strong><%= @invoice_request.purchase_order.supplier.to_s %></strong>
+              </h5>
+              <div class="form-row">
+                <div class="col-6">
+                  <% if @invoice_request.purchase_order.try(:supplier).try(:address) %>
+                    <div class="form-group">
+                      <label class="form-control-label d-block">Address</label>
+                      <%= @invoice_request.purchase_order.supplier.address %>
+                    </div>
+                  <% end %>
+                </div>
+                <div class="col-6">
+                  <% if @invoice_request.purchase_order.try(:supplier).try(:default_contact) %>
+                    <div class="form-group">
+                      <label class="form-control-label d-block">Contact</label>
+                      <%= @invoice_request.purchase_order.supplier.default_contact if @invoice_request.purchase_order.supplier.default_contact.present? %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+              <div class="form-row d-none d-md-flex">
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>Sr. No.</label>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group mb-0">
+                  <label>Product</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>Make</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>HSN</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>T. Rate</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>Quantity</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>MOU</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>UP</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>TP</label>
+                </div>
+              </div>
+            </div>
+
+              <% @products_list.each do |k| %>
+                <div class="form-row flex-row align-items-start">
+                  <div class="col-1 col-md-1">
+                    <%= (@products_list.index(k) || 0) + 1 %>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <%= k[:purchase_order_row].get_product %>
+                  </div>
+
+                  <div class="col-6 col-md-1">
+                    <%= k[:purchase_order_row].get_product.try(:brand).to_s %>
+                  </div>
+                  <div class="col-12 col-md-1">
+                    <%= k[:purchase_order_row].metadata['PopHsn'] %>
+                  </div>
+                  <div class="col-12 col-md-1">
+                    <%= k[:purchase_order_row].tax_rate %>
+                  </div>
+                  <div class="col-12 col-md-1">
+                    <%= k[:total_quantity] %>
+                  </div>
+                  <div class="col-12 col-md-1">
+                    <%= k[:purchase_order_row].uom %>
+                  </div>
+                  <div class="col-12 col-md-1">
+                    <%= number_to_currency(k[:purchase_order_row].unit_selling_price, precision: 0, unit: '') %>
+                  </div>
+                  <div class="col-12 col-md-1">
+                    <%= number_to_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f, precision: 0, unit: '') %>
+                  </div>
+                </div>
+              <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+
     <div class="card">
       <div class="card-body">
         <div class="flex-fill">
@@ -140,6 +254,8 @@
       </div>
     </div>
   </section>
+
+
 </div>
 
 <%if @company_reviews.present? %>
