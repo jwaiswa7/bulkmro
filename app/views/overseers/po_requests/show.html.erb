@@ -1,3 +1,4 @@
+<%= provide :container_fluid, true %>
 <div class="col-lg-12">
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
@@ -16,14 +17,16 @@
       <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm">Add/Edit
         Supplier Rating</a>
 
-      <% if policy(@po_request).new_payment_request? %>
-        <a href="<%= new_overseers_po_request_payment_request_path(@po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
-          Request</a>
-      <% end %>
+      <% if @po_request.purchase_order.present? && !@po_request.purchase_order.is_legacy? %>
+        <% if policy(@po_request).new_payment_request? %>
+          <a href="<%= new_overseers_po_request_payment_request_path(@po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
+            Request</a>
+        <% end %>
 
-      <% if @po_request.payment_request.present? && policy(@po_request.payment_request).show? %>
-        <a href="<%= overseers_payment_request_path(@po_request.payment_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
-          Request</a>
+        <% if @po_request.payment_request.present? && policy(@po_request.payment_request).show? %>
+          <a href="<%= overseers_payment_request_path(@po_request.payment_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
+            Request</a>
+        <% end %>
       <% end %>
 
     </div>
@@ -55,7 +58,7 @@
                 <th data-toggle="tooltip" title="Total Tax">TT</th>
                 <th data-toggle="tooltip" title="Total Price with tax">TP with Tax</th>
                 <th data-toggle="tooltip" title="Discount percentage">Disc. %</th>
-                <th>Lead Time</th>
+                <th>Lead Date</th>
               </tr>
               </thead>
               <tbody>

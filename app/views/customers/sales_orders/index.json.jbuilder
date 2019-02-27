@@ -29,7 +29,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [{ "source": autocomplete_overseers_company_contacts_path(current_company)}],
+                       [{ "source": autocomplete_overseers_company_contacts_path(current_company) }],
                        [],
                        [],
                        [],

@@ -28,13 +28,16 @@ json.data (@purchase_orders) do |purchase_order|
                   (format_succinct_date(purchase_order.po_request.sales_order.mis_date) if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
                   (format_succinct_date(purchase_order.po_request.supplier_committed_date) if purchase_order.po_request.present?),
                   link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: '_blank'),
+                  purchase_order.po_request.present? ? purchase_order.po_request.supplier_po_type : '',
                   format_succinct_date(purchase_order.metadata['PoDate'].try(:to_date)),
-                  purchase_order.rows.present? ? link_to(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name), overseers_company_path(purchase_order.inquiry.company), target: '_blank') : '',
+                  (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).present? ? conditional_link(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name), overseers_company_path(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'])), policy(purchase_order.inquiry).show?) : '-' if purchase_order.rows.present?),
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   (purchase_order.logistics_owner.full_name if purchase_order.logistics_owner.present?),
-                  purchase_order.material_status,
+                  status_badge(purchase_order.material_status),
                   format_succinct_date(purchase_order.followup_date),
                   format_succinct_date(purchase_order.revised_supplier_delivery_date),
+                  (status_badge(purchase_order.payment_request.status) if purchase_order.payment_request.present?),
+                  (percentage(purchase_order.payment_request.percent_amount_paid, precision: 2) if purchase_order.payment_request.present?),
                   if purchase_order.last_comment.present?
                     format_comment(purchase_order.last_comment, trimmed: true)
                   end
@@ -50,11 +53,14 @@ json.columnFilters [
                        [],
                        [],
                        [],
+                       [],
                        [{ "source": autocomplete_overseers_companies_path }],
                        Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        Overseer.where(role: 'logistics').alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        PurchaseOrder.material_statuses.except(:'Material Delivered').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
+                       [],
+                       PaymentRequest.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        []
                    ]

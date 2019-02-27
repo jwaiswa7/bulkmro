@@ -17,9 +17,9 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
         quotation_uid: @sales_order.inquiry.quotation_uid
       )
 
-      if (@sales_order.status!= 'Approved')
+      if @sales_order.status != 'Approved'
         @sales_order.update_attributes(
-            status: :"SAP Approval Pending",
+          status: :"SAP Approval Pending",
         )
       end
       @sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(@sales_order)), filename: @sales_order.filename)

@@ -1,5 +1,4 @@
 class Services::Customers::Exporters::SalesQuotesExporter < Services::Customers::Exporters::BaseExporter
-
   def initialize(headers, company)
     @file_name = 'sales_quotes_for_customer'
     super(headers, @file_name)
@@ -30,15 +29,15 @@ class Services::Customers::Exporters::SalesQuotesExporter < Services::Customers:
       model.where(id: sales_quote_ids).order(created_at: :desc).each do |sales_quote|
         inquiry = sales_quote.inquiry
 
-        rows.push({
-                      inquiry_number: inquiry.try(:inquiry_number) || '',
-                      date: format_date(sales_quote.created_at),
-                      line_items: sales_quote.rows.size,
-                      total: sales_quote.calculated_total || '',
-                      sales_person: sales_quote.inquiry.inside_sales_owner.to_s,
-                      valid_upto: sales_quote.inquiry.valid_end_time || '',
-                      status: sales_quote.changed_status(sales_quote.inquiry.status)
-                  })
+        rows.push(
+          inquiry_number: inquiry.try(:inquiry_number) || '',
+          date: format_date(sales_quote.created_at),
+          line_items: sales_quote.rows.size,
+          total: sales_quote.calculated_total || '',
+          sales_person: sales_quote.inquiry.inside_sales_owner.to_s,
+          valid_upto: sales_quote.inquiry.valid_end_time || '',
+          status: sales_quote.changed_status(sales_quote.inquiry.status)
+                  )
       end
       rows.drop(columns.count).each do |row|
         yielder << CSV.generate_line(row.values)

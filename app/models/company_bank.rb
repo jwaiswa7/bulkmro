@@ -17,7 +17,6 @@ class CompanyBank < ApplicationRecord
   validates_plausible_phone :beneficiary_mobile, allow_blank: true
 
   def to_s
-    [self.bank, account_number, account_name].reject(&:blank?).join(', ')
+    [self.bank, branch, self.bank.ifsc_code, account_number, account_name].reject(&:blank?).join(', ')
   end
-
 end

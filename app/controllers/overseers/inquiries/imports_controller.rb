@@ -91,7 +91,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
     if service.call
       @notification.send_product_import_confirmation(
-          Overseer.cataloging,
+        Overseer.cataloging,
           action_name.to_sym,
           @excel_import,
           edit_overseers_inquiry_path(@inquiry),

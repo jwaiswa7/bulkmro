@@ -42,7 +42,9 @@
         <% if po_request.purchase_order.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Purchase Order #</strong>
-            <%= po_request.purchase_order.po_number %>
+            <%= link_to overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank' do %>
+            <%= format_id(po_request.purchase_order.po_number) %>
+            <% end %>
           </div>
         <% end %>
 

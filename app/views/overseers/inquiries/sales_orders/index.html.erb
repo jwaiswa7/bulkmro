@@ -7,6 +7,7 @@
       <th class="no-sort"></th>
       <th class="no-sort desktop text-right">Order #</th>
       <th class="no-sort desktop text-right">Doc ID</th>
+      <th class="no-sort desktop text-right">Quote ID</th>
       <th>Status</th>
       <% if @sales_orders.where(status: "Approved").count > 1 %>
         <th> SAP Status</th>
@@ -64,6 +65,7 @@
           </td>
           <td><%= sales_order.order_number %></td>
           <td><%= sales_order.id %></td>
+          <td><%= sales_order.sales_quote_id || '-' %></td>
           <td><%= status_badge(sales_order.order_status) %></td>
           <% if @sales_orders.where(status: "Approved").count > 1 %>
             <td> <%=  sales_order.remote_status || "-" %></td>

@@ -99,10 +99,10 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
         @sales_order.update_attributes(sent_at: Time.now)
       end
       @notification.send_order_confirmation(
-          @inquiry,
+        @inquiry,
           action_name.to_sym,
           @sales_order,
-          overseers_inquiry_comments_path(@inquiry, sales_order_id: @sales_order.to_param, :show_to_customer => false),
+          overseers_inquiry_comments_path(@inquiry, sales_order_id: @sales_order.to_param, show_to_customer: false),
           @sales_order.inquiry.inquiry_number.to_s
       )
     else
