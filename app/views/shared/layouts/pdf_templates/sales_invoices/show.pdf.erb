@@ -195,15 +195,15 @@
                   <div class="address-wrapper address-wrapper-left">
 
                     <%= record.sales_order.inquiry.contact.full_name %><br>
-                    <%= record.sales_order.billing_address.name %><br>
-                    <%= record.sales_order.billing_address.to_multiline_s if record.sales_order.billing_address.present? %>
+                    <%= record.sales_order.serialized_billing_address.name %><br>
+                    <%= record.sales_order.serialized_billing_address.to_multiline_s if record.sales_order.serialized_billing_address.present? %>
                     <br>
                     <% if record.sales_order.inquiry.billing_contact.present? %>
                       Tel: <%= record.sales_order.inquiry.billing_contact.phone || record.sales_order.inquiry.billing_contact.mobile || record.billing_address.telephone %>
                     <% else %>
-                      Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.sales_order.billing_address.telephone %>
+                      Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.sales_order.serialized_billing_address.telephone %>
                     <% end %> <br>
-                    GST No.:<%= record.sales_order.billing_address.gst %><br>
+                    GST No.:<%= record.sales_order.serialized_billing_address.gst %><br>
                   </div>
                 </td>
                 <td class="address-section-gap"></td>
@@ -212,17 +212,20 @@
 
                     <%= record.sales_order.inquiry.shipping_contact.present? ? record.sales_order.inquiry.shipping_contact.full_name : record.sales_order.inquiry.contact.full_name %>
                     <br>
-                    <%= record.sales_order.shipping_address.name if record.sales_order.shipping_address.present? %><br>
-                    <%= record.sales_order.shipping_address.to_multiline_s if record.sales_order.shipping_address.present? %>
+                    <%= record.sales_order.serialized_shipping_address.name if record.sales_order.serialized_shipping_address.present? %>
+                    <br>
+                    <%= record.sales_order.serialized_shipping_address.to_multiline_s if record.sales_order.serialized_shipping_address.present? %>
                     <br>
 
                     <% if record.sales_order.inquiry.shipping_contact.present? %>
-                      Tel: <%= record.sales_order.inquiry.shipping_contact.phone || record.sales_order.inquiry.shipping_contact.mobile || record.shipping_address.telephone %>
+                      Tel: <%= record.sales_order.inquiry.shipping_contact.phone || record.sales_order.inquiry.shipping_contact.mobile || record.sales_order.serialized_shipping_address.telephone %>
                     <% else %>
-                      Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.sales_order.shipping_address.telephone %>
+                      Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.sales_order.serialized_shipping_address.telephone %>
                     <% end %> <br>
 
-                    GST No.:<%= record.sales_order.shipping_address.gst if record.sales_order.shipping_address.present? %><br>
+                    GST
+                    No.:<%= record.sales_order.serialized_shipping_address.gst if record.sales_order.serialized_shipping_address.present? %>
+                    <br>
                   </div>
                 </td>
               </tr>
@@ -302,7 +305,7 @@
                   <td align="center" valign="top">
                     <span><%= item.mpn %></span></td>
                   <td align="left" valign="top">
-                    <span><%= item.name  %></span></td>
+                    <span><%= item.name %></span></td>
                   <td align="center" valign="top">
                     <span><%= item.brand %></span></td>
                   <td align="center" valign="top">
@@ -322,7 +325,8 @@
                     <td align="center" valign="top">
                       <span><%= item.tax_rate.round(0) %>%</span></td>
                     <td align="right" valign="top">
-                      <span><%= number_to_currency(item.metadata['base_tax_amount'], precision: 2, unit: '') %></span></td>
+                      <span><%= number_to_currency(item.metadata['base_tax_amount'], precision: 2, unit: '') %></span>
+                    </td>
                   <% else %>
                     <td align="center" valign="top">
                       <span><%= (item.tax_rate / 2).to_f.round(2) %>%</span></td>

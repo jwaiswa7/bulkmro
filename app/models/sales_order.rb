@@ -198,11 +198,11 @@ class SalesOrder < ApplicationRecord
   end
 
 
-  def serailized_billing_address
+  def serialized_billing_address
     self.billing_address || self.inquiry.billing_address
   end
 
-  def serailized_shipping_address
+  def serialized_shipping_address
     self.shipping_address || self.inquiry.shipping_address
   end
 
