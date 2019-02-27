@@ -707,8 +707,13 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
-  def resend_failed_remote_requests(start_at: Date.yesterday.beginning_of_day, end_at: Date.yesterday.end_of_day)
+  def resend_failed_remote_requests(start_at: Date.yesterday.beginning_of_day, end_at: Date.yesterday.end_of_day, ignore_drafts: false)
     requests = RemoteRequest.where(created_at: start_at..end_at).failed
+
+    if ignore_drafts
+      requests.where.not(resource: 'Drafts')
+    end
+
     requested = []
     requested_ids = []
     requests.each do |request|
@@ -966,6 +971,12 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       end
     end
     return { missing: missing.uniq, mismatch: mismatch.uniq }
+  end
+
+  def add_logistics_owner_to_all_po
+    PurchaseOrder.all.each do |po|
+      po.update_attributes(logistics_owner: Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(po).call)
+    end
   end
 
   def sync_last_synced_quote

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mixins::HasApproveableStatus
   extend ActiveSupport::Concern
 

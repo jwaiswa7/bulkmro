@@ -33,14 +33,18 @@ json.data (@activities) do |activity|
                   if activity.inquiry.present?
                     link_to format_id(activity.inquiry.inquiry_number), edit_overseers_inquiry_path(activity.inquiry)
                   end,
+                  if activity.inquiry.present?
+                    status_badge(activity.inquiry.commercial_status)
+                  end,
                   if activity.contact.present?
-                    activity.contact.to_s
+                    link_to(activity.contact.to_s, overseers_contact_path(activity.contact), target:'_blank')
                   end,
                   format_enum(activity.purpose),
                   format_enum(activity.activity_type),
-                  activity.expenses,
+                  format_currency(activity.expenses),
                   activity.points_discussed,
                   activity.actions_required,
+                  format_date(activity.activity_date),
                   format_succinct_date(activity.created_at)
               ]
 end

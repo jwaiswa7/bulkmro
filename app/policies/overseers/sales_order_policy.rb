@@ -93,11 +93,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def can_request_po?
-    true # !record.has_purchase_order_request
+    manager_or_sales? # !record.has_purchase_order_request
   end
 
   def can_request_invoice?
-    true # !record.has_purchase_order_request
+    admin? || logistics? || manager_or_sales?
   end
 
   def approve?
@@ -116,8 +116,36 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record.sent? && record.approved? && record.not_synced? && admin?
   end
 
+  def new_purchase_orders_requests?
+    manager_or_sales?
+  end
+
+  def preview_purchase_orders_requests?
+    new_purchase_orders_requests?
+  end
+
+  def create_purchase_orders_requests?
+    new_purchase_orders_requests?
+  end
+
   def fetch_order_data?
     developer?
+  end
+
+  def material_dispatched_to_customer_new_email_msg?
+    (admin? || logistics?)
+  end
+
+  def material_dispatched_to_customer_create_email_msg?
+    material_dispatched_to_customer_new_email_msg?
+  end
+
+  def material_delivered_to_customer_new_email_msg?
+    (admin? || logistics?)
+  end
+
+  def material_delivered_to_customer_create_email_msg?
+    material_delivered_to_customer_new_email_msg?
   end
 
   def debugging?
