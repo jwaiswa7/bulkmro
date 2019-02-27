@@ -462,14 +462,15 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
       ) if x.get_column('sap_row_num').present?
 
-      if company.legacy_metadata['default_billing'] == x.get_column('idcompany_gstinfo')
-        company.default_billing_address = address
-      end
+      if company.legacy_metadata.present?
+        if company.legacy_metadata['default_billing'] == x.get_column('idcompany_gstinfo')
+          company.default_billing_address = address
+        end
 
-      if company.legacy_metadata['default_shipping'] == x.get_column('idcompany_gstinfo')
-        company.default_shipping_address = address
+        if company.legacy_metadata['default_shipping'] == x.get_column('idcompany_gstinfo')
+          company.default_shipping_address = address
+        end
       end
-
       company.save!
     end
   end
