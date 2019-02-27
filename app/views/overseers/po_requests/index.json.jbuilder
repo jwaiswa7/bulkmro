@@ -38,7 +38,7 @@ json.data (@po_requests) do |po_request|
                   format_date(po_request.supplier_committed_date),
                   format_date_time_meridiem(po_request.created_at),
                   if po_request.last_comment.present?
-                    format_date_time_meridiem(po_request.last_comment.updated_at)
+                    format_succinct_date(po_request.last_comment.updated_at)
                   end,
                   status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? 'Supplier PO Sent' : 'Supplier PO: Not Sent to Supplier'),
                   if po_request.last_comment.present?
