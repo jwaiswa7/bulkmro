@@ -139,6 +139,8 @@ let setup = () => {
                     let filter = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')').data('filter');
                     let td = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')');
                     let text = $(column.header()).text();
+
+                    // Uses the window.hasher to get column-level filters, if defined, to set selected value that will allow filtering the datatable
                     let selected = (filter == 'dropdown' || filter == 'ajax') ? window.hasher.getParam(text).split('|') : window.hasher.getParam(text);
 
                     if (filter && filter != false) {
@@ -152,7 +154,6 @@ let setup = () => {
                             });
                         } else if (filter == 'daterange') {
                             input = $('<input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" />');
-                            input.val(selected);
                         } else if (filter == 'ajax') {
                             let source = "";
                             json.columnFilters[this.index()].forEach(function (f) {
@@ -161,38 +162,35 @@ let setup = () => {
                             input = $('<select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' ', 'Select'].join('') + '"></select>');
                         } else {
                             input = $('<input type="text" class="form-control" placeholder="' + [text, ' ', 'Filter'].join('') + '" />');
-                            input.val(selected);
                         }
 
                         input.on('change', function () {
                             let val = $(this).val();
                             column.search(val).draw();
 
-                            // Set URL Hash
+                            // Override the value for dropdowns/select2s in the text|value format
                             if ($(input).is('select'))
                                 val = val ? [$(this).find('option:selected').text(), "|", val].join('') : '';
 
+                            // Set URL Hash parameter for this specific column
                             window.hasher.setParam(text, val);
                         });
 
                         td.append(input);
                         select2s();
 
-                        if (!selected) return;
+                        // If filters are defined, we use selected to set drodpowns, textboxes and select2 DOM elements to filter the datatable
+                        if (selected == "") return;
+                        $(this).data('filtered', false);
                         if (filter == 'dropdown') {
-                            console.log(selected[1]);
-                            input.val(selected[1]);
+                            input.val(selected[1]).trigger('change');
                         } else if (filter == 'ajax') {
-                            input.append(new Option(selected[0], selected[1], true, true));
+                            input.append(new Option(selected[0], selected[1], true, true)).trigger('change');
                         } else {
-                            console.log(selected);
-                            input.val(selected);
+                            input.val(selected).trigger('change');
                         }
                     }
                 });
-
-                // Reload Datatable
-                if (window.hasher.getHashString()) this.DataTable().ajax.reload();
             }
         })
     });
@@ -209,6 +207,12 @@ let ajax = () => {
         // Remove the blur state after the table has loaded in
         $(this).on('init.dt', function () {
             $(this).removeClass('blur');
+
+            // If filters are defined, this triggers all of them and sets filtered state to true
+            if (!$(this).data('filtered')) {
+                $('.filter-list-input').val('').trigger('keyup');
+                $(this).data('filtered', true);
+            }
         });
 
         // Load data from the specified data attribute
