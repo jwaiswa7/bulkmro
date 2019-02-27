@@ -21,8 +21,20 @@ class InvoiceRequest < ApplicationRecord
       'In stock': 70,
       'Completed AR Invoice Request': 40,
       'Cancelled AR Invoice': 50,
-      'Cancelled': 60
+      'Cancelled': 60,
+      'Mismatch: Supplier PO vs Supplier Invoice': 80,
+      'Mismatch: HSN / SAC Code': 81,
+      'Mismatch: Tax Rates': 82,
+      'Mismatch: Supplier Billing or Shipping Address': 83,
+      'Mismatch: Supplier GST Number': 84,
+      'Mismatch: Supplier Name': 85,
+      'Mismatch: Quantity': 86,
+      'Mismatch: Unit Price': 87,
+      'Mismatch: SKU / Description': 88,
+      'Others': 89
   }
+
+
 
   scope :grpo_pending, -> { where(status: :'Pending GRPO') }
   scope :ap_invoice_pending, -> { where(status: :'Pending AP Invoice') }
@@ -97,6 +109,18 @@ class InvoiceRequest < ApplicationRecord
       title = 'GRPO'
     end
     "#{title} Request"
+  end
+
+  def grouped_status
+    grouped_status = {}
+    status_category = { 10 => 'Pending GRPO', 20 => 'Pending AP Invoice', 30 => 'Pending AR Invoice', 70 => 'In stock', 40 => 'Completed AR Invoice Request', 50 => 'Cancelled AR Invoice', 60 => 'Cancelled', 80 => 'Rejected' }
+    status_category.each do |index, category|
+      grouped_status[category] = InvoiceRequest.statuses.collect { |status, v|
+        if v.between?(index, index + 9)
+          status
+        end}.compact
+    end
+    grouped_status
   end
 
   def to_s
