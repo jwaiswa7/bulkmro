@@ -145,7 +145,6 @@ let setup = () => {
 
                         if (filter == 'dropdown') {
                             input = $('<select class="select2-single form-control" data-placeholder="' + [text, ' ', 'Select'].join('') + '"><option value="" selected disabled></option></select>');
-
                             json.columnFilters[this.index()].forEach(function(f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
                                 input.append(option);
@@ -165,6 +164,12 @@ let setup = () => {
                         input.on('change', function () {
                             let val = $(this).val();
                             column.search(val).draw();
+
+                            // Set URL Hash
+                            if ($(input).is('select'))
+                                val = [$(this).find('option:selected').text(), "|", val].join('');
+
+                            window.hasher.setParam(text, val);
                         });
 
                         td.append(input);
