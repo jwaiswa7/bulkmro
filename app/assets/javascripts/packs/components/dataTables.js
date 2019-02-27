@@ -136,14 +136,15 @@ let setup = () => {
 
                 this.api().columns().every(function () {
                     let column = this;
-                    let filter = $(table).find('thead tr:eq(1) td:eq(' + this.index() + ')').data('filter');
-                    let td = $(table).find('thead tr:eq(1) td:eq(' + this.index() + ')');
+                    let filter = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')').data('filter');
+                    let td = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')');
+                    let text = $(column.header()).text();
 
                     if (filter && filter != false) {
                         let input = '';
 
                         if (filter == 'dropdown') {
-                            input = $('<select class="select2-single form-control" data-placeholder="' + 'Select ' + $(column.header()).text() + '"><option value="" selected disabled></option></select>');
+                            input = $('<select class="select2-single form-control" data-placeholder="' + [text, ' ', 'Select'].join('') + '"><option value="" selected disabled></option></select>');
 
                             json.columnFilters[this.index()].forEach(function(f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
@@ -156,9 +157,9 @@ let setup = () => {
                             json.columnFilters[this.index()].forEach(function(f) {
                                 source = f.source;
                             });
-                            input = $('<select class="form-control select2-ajax" data-source=' + source + '></select>');
+                            input = $('<select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' ', 'Select'].join('') + '"></select>');
                         } else {
-                            input = $('<input type="text" class="form-control" placeholder="' + 'Filter ' + $(column.header()).text() + '" />');
+                            input = $('<input type="text" class="form-control" placeholder="' + [text, ' ', 'Filter'].join('') + '" />');
                         }
 
                         input.on('change', function () {
