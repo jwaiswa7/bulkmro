@@ -33,10 +33,11 @@ json.data (@purchase_orders) do |purchase_order|
                   (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).present? ? conditional_link(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name), overseers_company_path(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'])), policy(purchase_order.inquiry).show?) : '-' if purchase_order.rows.present?),
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   (purchase_order.logistics_owner.full_name if purchase_order.logistics_owner.present?),
-                  purchase_order.material_status,
+                  status_badge(purchase_order.material_status),
                   format_succinct_date(purchase_order.followup_date),
                   format_succinct_date(purchase_order.revised_supplier_delivery_date),
-
+                  (status_badge(purchase_order.payment_request.status) if purchase_order.payment_request.present?),
+                  (percentage(purchase_order.payment_request.percent_amount_paid, precision: 2) if purchase_order.payment_request.present?),
                   if purchase_order.last_comment.present?
                     format_comment(purchase_order.last_comment, trimmed: true)
                   end
@@ -58,6 +59,8 @@ json.columnFilters [
                        Overseer.where(role: 'logistics').alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        PurchaseOrder.material_statuses.except(:'Material Delivered').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
+                       [],
+                       PaymentRequest.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        []
                    ]

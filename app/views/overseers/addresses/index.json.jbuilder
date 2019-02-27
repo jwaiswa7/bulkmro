@@ -10,7 +10,7 @@ json.data (@addresses) do |address|
                       end,
                   ].join(' '),
                   link_to(address.company.to_s.truncate(50), overseers_company_path(address.company), target: '_blank'),
-                  address.to_s.truncate(50),
+                  link_to(address.to_s.truncate(50),overseers_company_address_path(address.company, address), target: '_blank' ),
                   address.try(:state).try(:name),
                   address.try(:city_name),
                   format_boolean(address.validate_gst),

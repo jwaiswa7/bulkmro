@@ -26,11 +26,9 @@ json.data (@purchase_orders) do |purchase_order|
                   (format_succinct_date(purchase_order.metadata['PoDate'].to_date) if purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date?),
                   purchase_order.material_status,
                   if purchase_order.payment_request.present?
-                    purchase_order.payment_request.status
+                    status_badge(purchase_order.payment_request.status)
                   end,
-                  if purchase_order.payment_request.present?
-                    purchase_order.payment_request.percent_amount_paid
-                  end,
+                  (percentage(purchase_order.payment_request.percent_amount_paid, precision: 2) if purchase_order.payment_request.present?),
                   format_succinct_date(purchase_order.created_at)
               ]
 end
