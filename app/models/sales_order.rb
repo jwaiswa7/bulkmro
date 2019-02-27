@@ -47,8 +47,6 @@ class SalesOrder < ApplicationRecord
   delegate :inside_sales_owner, :outside_sales_owner, :inside_sales_owner_id, :outside_sales_owner_id, :opportunity_type, :customer_committed_date, to: :inquiry, allow_nil: true
   delegate :currency_sign, to: :sales_quote
 
-
-
   # validates_length_of :rows, minimum: 1, :message => "must have at least one sales order row", :if => :not_legacy?
 
   after_initialize :set_defaults, if: :new_record?
@@ -85,7 +83,6 @@ class SalesOrder < ApplicationRecord
       'Order Deleted': 70,
       'Hold by Finance': 80
   }, _prefix: true
-
 
   enum status: {
       'Requested': 10,
