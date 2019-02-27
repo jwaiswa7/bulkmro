@@ -232,7 +232,7 @@
         </div>
 
         <% if @freight_quote.comments.persisted.size > 0 %>
-          <div class="chats mb-3">
+          <div class="chats">
             <% @freight_quote.comments.each do |comment| %>
               <% if comment.persisted? %>
                 <%= format_comment(comment) %>

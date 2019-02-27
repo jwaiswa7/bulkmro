@@ -373,4 +373,8 @@ class Inquiry < ApplicationRecord
   def margin_percentage
     self.final_sales_quote.present? ? self.final_sales_quote.calculated_total_margin_percentage.to_f : 0
   end
+
+  def update_last_synced_quote
+    self.update_attributes(last_synced_quote_id: self.final_sales_quote.id) if self.final_sales_quote.present?
+  end
 end
