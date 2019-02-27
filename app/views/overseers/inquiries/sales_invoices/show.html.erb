@@ -1,5 +1,5 @@
 <% content_for :heading do %>
-  <%= @sales_invoice.to_s %>
+  View Sales Invoice #<%= @sales_invoice.invoice_number %>
 <% end %>
 <div class="col-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
@@ -38,7 +38,7 @@
         <div class="form-row mb-1">
           <div class="col-12 col-md-2 mt-1 mt-md-0">
             <strong class="d-block">Sales Order # </strong>
-            <%= @sales_invoice.sales_order_id %>
+            <%= @sales_invoice.sales_order.order_number if @sales_invoice.sales_order.order_number.present?%>
           </div>
           <div class="col-6 col-md-2 mt-1 mt-md-0">
             <strong class="d-block">Sales Order Date</strong>
