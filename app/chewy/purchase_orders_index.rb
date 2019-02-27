@@ -1,6 +1,7 @@
 class PurchaseOrdersIndex < BaseIndex
   material_statuses = PurchaseOrder.material_statuses
   po_statuses = PoRequest.statuses
+  stock_po_statuses = PoRequest.stock_statuses
   statuses = PurchaseOrder.statuses
 
   define_type PurchaseOrder.all.with_includes do
@@ -34,5 +35,6 @@ class PurchaseOrdersIndex < BaseIndex
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
     field :potential_value, value: -> (record) { record.try(:calculated_total) }, type: 'double'
+    field :stock_po_status, value: -> (record) { stock_po_statuses[record.po_request ? record.po_request.stock_status : 'Stock Supplier PO Created'] }
   end
 end
