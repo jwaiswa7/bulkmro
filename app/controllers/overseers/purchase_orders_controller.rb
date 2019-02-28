@@ -135,7 +135,9 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     purchase_orders = PurchaseOrder.all
     if params[:inquiry_number].present?
       purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: { inquiry_number: params[:inquiry_number] })
-      # purchase_orders = purchase_orders.where.not(:id => PoRequest.not_cancelled.pluck(:purchase_order_id)) if params[:has_po_request]
+      purchase_orders = purchase_orders.where(id: purchase_orders.reject { |r| r.po_request.present? }.pluck(:id))
+
+
     end
     @purchase_orders = ApplyParams.to(purchase_orders, params)
 
@@ -173,7 +175,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         product_supplier = purchase_order.inquiry.final_sales_quote.rows.select { |sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id }.first
         product_supplier.supplier if product_supplier.present?
       end
-  end
+    end
 
     def set_purchase_order
       @purchase_order = PurchaseOrder.find(params[:id])
@@ -182,10 +184,10 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     def purchase_order_params
       params.require(:purchase_order).permit(
         :material_status,
-        :supplier_dispatch_date,
-        :followup_date,
-        :logistics_owner_id,
-        :revised_supplier_delivery_date,
+          :supplier_dispatch_date,
+          :followup_date,
+          :logistics_owner_id,
+          :revised_supplier_delivery_date,
           comments_attributes: [:id, :message, :created_by_id],
           attachments: []
       )

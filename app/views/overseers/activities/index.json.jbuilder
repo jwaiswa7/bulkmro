@@ -5,7 +5,7 @@ json.data (@activities) do |activity|
                         "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='activities[]' class='custom-control-input' value='#{activity.id}' id='c-#{activity.id}'><label class='custom-control-label' for='c-#{activity.id}'></label></div>"
                       end,
                       if policy(activity).edit?;
-                        row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning')
+                        row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning', :_blank)
                       end,
                       if !activity.company.present? && activity.company_creation_request.present? && !activity.company_creation_request.company_id.present? && policy(activity.company_creation_request).show?;
                         row_action_button(overseers_company_creation_request_path(activity.company_creation_request), 'eye', 'View Company Creation Request', 'info  ')
@@ -37,7 +37,7 @@ json.data (@activities) do |activity|
                     status_badge(activity.inquiry.commercial_status)
                   end,
                   if activity.contact.present?
-                    link_to(activity.contact.to_s, overseers_contact_path(activity.contact), target:'_blank')
+                    link_to(activity.contact.to_s, overseers_contact_path(activity.contact), target: '_blank')
                   end,
                   format_enum(activity.purpose),
                   format_enum(activity.activity_type),

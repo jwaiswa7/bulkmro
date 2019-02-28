@@ -21,11 +21,11 @@ class InwardDispatchRow < ApplicationRecord
   end
 
   def row_product_id
-    purchase_order_row.get_product.id
+    self.purchase_order_row.get_product.id
   end
 
-  def lead_date
-    purchase_order_row.lead_date
+  def row_lead_date
+    self.purchase_order_row.lead_date if self.purchase_order_row.present?
   end
 
 

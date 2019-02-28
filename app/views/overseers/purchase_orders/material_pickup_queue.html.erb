@@ -2,7 +2,6 @@
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
 
-
 <% content_for :heading do %>
   <% if @status.present? %>
     <%= @status %>
@@ -12,7 +11,7 @@
 <% provide :heading_buttons do %>
   <% if policy(:material_pickup_request).update_logistics_owner_for_pickup_requests? && !(action_name == 'material_delivered_queue') %>
     <div class="mr-2 float-left update_logistics_owner_wrapper">
-      <%= select_tag :logistics_owner, options_for_select(Overseer.logistics.collect{|o| [o.full_name.to_s, o.id]}), class: 'form-control select2-wrap update_logistics_owner_wrapper', include_blank: 'Select a logistics owner', id: 'logistics_owner_select' %>
+      <%= select_tag :logistics_owner, options_for_select(Overseer.logistics.collect {|o| [o.full_name.to_s, o.id]}), class: 'form-control select2-wrap update_logistics_owner_wrapper', include_blank: 'Select a logistics owner', id: 'logistics_owner_select' %>
     </div>
     <button type="button" id="update_logistics_owner" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_logistics_owner_wrapper">
       <i class="fal fa-plus mr-1"></i>Update Logistics Owner
@@ -55,12 +54,11 @@
     <th class="sort desktop" data-name="logistics_partner">Logistics Partner</th>
     <th class="sort desktop" data-name="tracking_number">Tracking Details</th>
     <th class="sort desktop text-right" data-name="expected_delivery_date">Expected Delivery Date</th>
-
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="false"></td>
+    <td data-filter="ajax"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
@@ -78,7 +76,6 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="daterange"></td>
-
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>

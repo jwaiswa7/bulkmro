@@ -110,6 +110,22 @@ class PurchaseOrder < ApplicationRecord
     return get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
   end
 
+  def billing_address
+    if self.metadata['PoSupBillFrom'].present?
+      Address.find_by_remote_uid(self.metadata['PoSupBillFrom'])
+    else
+      supplier.billing_address
+    end
+  end
+
+  def shipping_address
+    if self.metadata['PoSupShipFrom'].present?
+      Address.find_by_remote_uid(self.metadata['PoSupShipFrom'])
+    else
+      supplier.shipping_address
+    end
+  end
+
   def metadata_status
     PurchaseOrder.statuses.key(self.metadata['PoStatus'].to_i).to_s if self.metadata.present?
   end

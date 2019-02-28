@@ -36,6 +36,7 @@
   "author": "Ashwin G <ashwin.goyal@bulkmro.com>, Amit G <amit.goyal@bulkmro.com>, Prikesh S <prikesh.savla@bulkmro.com>",
   "license": "MIT",
   "devDependencies": {
+    "jshint": "^2.10.1",
     "webpack-dev-server": "2.11.2"
   }
 }
