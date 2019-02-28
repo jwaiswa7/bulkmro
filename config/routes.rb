@@ -215,6 +215,9 @@ Rails.application.routes.draw do
         get 'pending'
         get 'completed'
       end
+      member do
+        patch 'reject_grpo'
+      end
     end
 
     resources :sales_orders do
