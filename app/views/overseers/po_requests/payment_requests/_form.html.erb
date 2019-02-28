@@ -141,25 +141,21 @@
               <%= f.nested_fields_for :transactions, wrapper_tag: :div do |transaction| %>
                 <div class="form-row flex-row align-items-start">
                   <div class="col-2">
-                    <%= transaction.input :payment_type, :label => false, placeholder: placeholder_for(transaction, :utr_or_cheque_no), :required => true, as: :select, disabled: !policy(@payment_request).edit_payment_queue?, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => 'Select a Payment Type' %>
+                    <%= transaction.input :payment_type, :label => false, placeholder: placeholder_for(transaction, :utr_or_cheque_no), :required => policy(@payment_request).edit_payment_queue?, as: :select, disabled: !policy(@payment_request).edit_payment_queue?, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => 'Select a Payment Type' %>
                   </div>
-
-                  <div class="col-2">
-                    <%= transaction.input :utr_or_cheque_no, :label => false, :required => policy(@payment_request).edit_payment_queue?, disabled: !policy(@payment_request).edit_payment_queue? %>
-
-                  </div>
-                  <div class="col-2">
-                    <%= transaction.input :issue_date, :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, placeholder: placeholder_for(transaction, :issue_date), :required => policy(@payment_request).edit_payment_queue?, disabled: !policy(@payment_request).edit_payment_queue? %>
-                  </div>
-
-                  <div class="col-2">
-                    <%= transaction.input :cheque_date, :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, placeholder: placeholder_for(transaction, :cheque_date), :required => policy(@payment_request).edit_payment_queue?, disabled: !policy(@payment_request).edit_payment_queue? %>
-                  </div>
-
-                  <div class="col-2">
-                    <%= transaction.input :amount_paid, :label => false, placeholder: placeholder_for(transaction, :amount_paid), :required => policy(@payment_request).payment_request_logistics_and_accounts?, disabled: !policy(@payment_request).payment_request_logistics_and_accounts? %>
-
-                  </div>
+              </div>
+              <div class="col-2">
+                <%= transaction.input :utr_or_cheque_no, :label => false, :required => policy(@payment_request).edit_payment_queue?, disabled: !policy(@payment_request).edit_payment_queue? %>
+              </div>
+              <div class="col-2">
+                <%= transaction.input :issue_date, :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, placeholder: placeholder_for(transaction, :issue_date), disabled: !policy(@payment_request).edit_payment_queue? %>
+              </div>
+              <div class="col-2">
+                <%= transaction.input :cheque_date, :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: !policy(@payment_request).edit_payment_queue? %>
+              </div>
+              <div class="col-2">
+                <%= transaction.input :amount_paid, :label => false, placeholder: placeholder_for(transaction, :amount_paid), :required => policy(@payment_request).payment_request_logistics_and_accounts?, disabled: !policy(@payment_request).payment_request_logistics_and_accounts? %>
+              </div>
 
                   <div class="col-1 ">
                     <%= transaction.remove_nested_fields_link do %>
