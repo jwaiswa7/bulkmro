@@ -1402,6 +1402,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def update_po_type
+    PoRequest.where(stock_status: nil).update_all({po_request_type: 'Supplier'})
+  end
+
   private
 
     def perform_migration(name)
