@@ -117,7 +117,7 @@ class SalesOrder < ApplicationRecord
   }, _prefix: true
 
   scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }
-  scope :remote_approved, -> { where('sales_orders.status = ? AND sales_orders.remote_status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP']).or(SalesOrder.where(legacy_request_status: 'Approved')) }
+  scope :remote_approved, -> { where('(sales_orders.status = ? AND sales_orders.remote_status != ? OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled']) }
 
   def confirmed?
     self.confirmation.present?
