@@ -17,8 +17,12 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
     record == record.inquiry.sales_quotes.latest_record && record.persisted? && record.sent?
   end
 
+  def display_revision_button?
+    new_revision? && !record.so_status_req_or_pending.present?
+  end
+
   def new_sales_order?
-    new_revision? && record.inquiry.synced? && record.synced? && record.inquiry.valid_for_new_sales_order? && record.email_messages.present? && record.sales_quote_quantity_not_fulfilled?
+    new_revision? && record.inquiry.synced? && record.synced? && record.inquiry.valid_for_new_sales_order? && record.email_messages.present? && record.sales_quote_quantity_not_fulfilled? && (record.inquiry.last_synced_quote_id.present? && (record.inquiry.final_sales_quote.id == record.inquiry.last_synced_quote_id))
   end
 
   def reset_quote?

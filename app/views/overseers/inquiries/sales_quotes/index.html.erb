@@ -51,7 +51,7 @@
             <% end %>
             <% if policy(sales_quote).edit? %>
               <%= row_action_button(edit_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'pencil', 'Edit Sales Quote', 'warning') %>
-            <% elsif policy(sales_quote).new_revision? %>
+            <% elsif policy(sales_quote).new_revision? && policy(sales_quote).display_revision_button? %>
               <%= row_action_button(new_revision_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'redo-alt', 'Create Sales Quote Revision', 'warning') %>
             <% end %>
             <% if policy(sales_quote).reset_quote? %>

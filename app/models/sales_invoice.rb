@@ -1,8 +1,11 @@
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
-  update_index('sales_invoices#sales_invoice') { self }
+  update_index('sales_invoices#sales_invoice') {self}
 
   belongs_to :sales_order
+  belongs_to :billing_address, class_name: 'Address', required: false
+  belongs_to :shipping_address, class_name: 'Address', required: false
+
   has_one :inquiry, through: :sales_order
 
   has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
@@ -28,8 +31,8 @@ class SalesInvoice < ApplicationRecord
       'Material Rejected': 207
   }
 
-  scope :with_includes, -> { includes(:sales_order) }
-  scope :not_cancelled, -> { where.not(status: 'Cancelled') }
+  scope :with_includes, -> {includes(:sales_order)}
+  scope :not_cancelled, -> {where.not(status: 'Cancelled')}
 
   validates_with FileValidator, attachment: :original_invoice, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :duplicate_invoice, file_size_in_megabytes: 2
@@ -51,12 +54,12 @@ class SalesInvoice < ApplicationRecord
     ].compact.join('.')
   end
 
-  def billing_address
-    sales_order.billing_address || sales_order.inquiry.billing_address
+  def serialized_billing_address
+    billing_address || sales_order.inquiry.billing_address
   end
 
-  def shipping_address
-    sales_order.shipping_address || sales_order.inquiry.shipping_address
+  def serialized_shipping_address
+    shipping_address || sales_order.inquiry.shipping_address
   end
 
   def self.syncable_identifiers
@@ -64,11 +67,11 @@ class SalesInvoice < ApplicationRecord
   end
 
   def calculated_total
-    rows.map { |row| (row.metadata['base_row_total'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+    rows.map {|row| (row.metadata['base_row_total'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f)}.sum.round(2)
   end
 
   def calculated_total_tax
-    rows.map { |row| (row.metadata['base_tax_amount'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+    rows.map {|row| (row.metadata['base_tax_amount'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f)}.sum.round(2)
   end
 
   def calculated_total_with_tax
