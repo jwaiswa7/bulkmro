@@ -76,23 +76,23 @@
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Customer - Billing Address</strong>
           <%= (@inquiry.company.name) %><br>
-          <%= @sales_order.serailized_billing_address.to_compact_multiline_s %><br>
+          <%= @sales_order.serialized_billing_address.to_compact_multiline_s %><br>
           <% if @inquiry.contact.phone.present? %>
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
           <% end %>
           <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-          <span class="d-block"><em>GST Number</em>: <%= @sales_order.serailized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
+          <span class="d-block"><em>GST Number</em>: <%= @sales_order.serialized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Customer - Shipping Address</strong>
           <span class="d-block"><%= (@inquiry.shipping_company.name) %></span>
-          <span class="d-block"><%= @sales_order.serailized_shipping_address.to_compact_multiline_s %></span>
+          <span class="d-block"><%= @sales_order.serialized_shipping_address.to_compact_multiline_s %></span>
           <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
             <span class="d-block"><em>Contact</em>: <%= @inquiry.contact.full_name %>
               - <%= @inquiry.contact.phone %></span>
           <% end %>
           <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-          <span class="d-block"><em>GST Number</em>: <%= @sales_order.serailized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
+          <span class="d-block"><em>GST Number</em>: <%= @sales_order.serialized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
         </div>
       </div>
     </div>

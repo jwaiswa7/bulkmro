@@ -401,7 +401,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           company_contact.remote_uid = x.get_column('sap_id')
           company_contact.legacy_metadata = x.get_row
           company_contact.save!
-          company.update_attributes(default_company_contact: company_contact) if company.legacy_metadata['default_contact'] == x.get_column('entity_id')
+          if company.legacy_metadata.present?
+            company.update_attributes(default_company_contact: company_contact) if company.legacy_metadata['default_contact'] == x.get_column('entity_id')
+          end
         end
       end
     end
@@ -460,14 +462,15 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
       ) if x.get_column('sap_row_num').present?
 
-      if company.legacy_metadata['default_billing'] == x.get_column('idcompany_gstinfo')
-        company.default_billing_address = address
-      end
+      if company.legacy_metadata.present?
+        if company.legacy_metadata['default_billing'] == x.get_column('idcompany_gstinfo')
+          company.default_billing_address = address
+        end
 
-      if company.legacy_metadata['default_shipping'] == x.get_column('idcompany_gstinfo')
-        company.default_shipping_address = address
+        if company.legacy_metadata['default_shipping'] == x.get_column('idcompany_gstinfo')
+          company.default_shipping_address = address
+        end
       end
-
       company.save!
     end
   end
@@ -2599,7 +2602,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     def create_banks
       service = Services::Shared::Spreadsheets::CsvImporter.new('banks.csv', folder)
       errors = []
-      service.loop(nil) do |x|
+      service.loop(nil) do |llx|
         begin
           bank = Bank.where(code: x.get_column('Bank Code')).first_or_initialize
           if bank.new_record? || update_if_exists
