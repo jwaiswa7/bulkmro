@@ -3,6 +3,7 @@ class CompaniesIndex < BaseIndex
     field :id, type: 'integer'
     field :account_id, value: -> (record) { record.account_id }
     field :name, value: -> (record) { record.name }, analyzer: 'substring'
+    field :account_name, value: -> (record) { record.account.to_s }, analyzer: 'substring'
     field :addresses, value: -> (record) { record.addresses.size }, type: 'integer'
     field :contacts, value: -> (record) { record.contacts.size }, type: 'integer'
     field :inquiries, value: -> (record) { record.inquiries.size }, type: 'integer'
