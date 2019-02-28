@@ -113,7 +113,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         company_bank = CompanyBank.find_by_account_number(account_number)
         company_bank.update_attributes(remote_uid: remote_uid) if company_bank .present?
       end if banks.present?
-    end
+    end if contacts.present?
   end
 
   def self.to_remote(record)
