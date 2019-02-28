@@ -2419,6 +2419,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
         end
 
+          tax_rate = TaxRate.where(tax_percentage: x.get_column('tax rate').to_f).first_or_create!
         row.unit_selling_price = x.get_column('unit selling price (INR)').to_f
         row.quantity = x.get_column('quantity')
         row.margin_percentage = x.get_column('margin percentage')
@@ -2426,7 +2427,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
         row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
         row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
-        row.tax_rate = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
+        row.tax_rate = tax_rate || nil
         row.created_at = x.get_column('created at', to_datetime: true)
 
         row.save!
