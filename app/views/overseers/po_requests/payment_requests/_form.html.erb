@@ -144,18 +144,18 @@
               </div>
 
               <div class="col-2">
-                <%= transaction.input :utr_or_cheque_no, :label => false,:required=> policy(@payment_request).edit_payment_queue?,  disabled: !policy(@payment_request).edit_payment_queue? %>
+                <%= transaction.input :utr_or_cheque_no, :label => false,:required=> policy(@payment_request).edit_payment_queue?, disabled: !policy(@payment_request).edit_payment_queue? %>
               </div>
               <div class="col-2">
-                <%= transaction.input :issue_date, :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, :required=> policy(@payment_request).edit_payment_queue?,  disabled: !policy(@payment_request).edit_payment_queue? %>
-              </div>
-
-              <div class="col-2">
-                <%= transaction.input :cheque_date, :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, :required=> policy(@payment_request).edit_payment_queue?,  disabled: !policy(@payment_request).edit_payment_queue? %>
+                <%= transaction.input :issue_date, :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: !policy(@payment_request).edit_payment_queue? %>
               </div>
 
               <div class="col-2">
-                <%= transaction.input :amount_paid,:label => false,:required=> policy(@payment_request).payment_request_logistics_and_accounts?,  disabled: !policy(@payment_request).payment_request_logistics_and_accounts?  %>
+                <%= transaction.input :cheque_date, :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: !policy(@payment_request).edit_payment_queue? %>
+              </div>
+
+              <div class="col-2">
+                <%= transaction.input :amount_paid,:label => false,:required=> policy(@payment_request).payment_request_logistics_and_accounts?, disabled: !policy(@payment_request).payment_request_logistics_and_accounts?  %>
               </div>
 
               <div class="col-1 ">
