@@ -32,13 +32,16 @@
     <th class="no-sort desktop text-right" data-name="so_date">Sales Order Date</th>
     <th class="no-sort desktop text-right" data-name="committed_date">Committed Date to Customer</th>
     <th class="no-sort desktop text-right" data-name="supplier_po_number">Supplier PO #</th>
+    <th class="no-sort desktop text-right" data-name="po_type">Supplier PO Type</th>
     <th class="no-sort desktop text-right" data-name="supplier_po_date">Supplier PO Date</th>
     <th class="no-sort desktop" data-name="supplier_id">Supplier Name</th>
     <th class="no-sort desktop" data-toggle="tooltip" title="Inside Sales & Procurement" data-name="inside_sales_executive">IS&P</th>
     <th class="no-sort desktop" data-name="logistics_owner">Logistics Owner</th>
     <th class="no-sort all" data-name="material_status">Material Status</th>
-    <th class="sort desktop text-right" data-name="followup_date">Material Readiness Date</th>
+    <th class="sort desktop text-right" data-name="followup_date">Material Follow Up Date</th>
     <th class="sort desktop text-right" data-name="expected_delivery_date">Expected Delivery Date</th>
+    <th class="sort desktop" data-name="payment_request_status">Payment Request status</th>
+    <th class="sort desktop" data-name="percentage_paid">Percentage Paid</th>
     <th class="no-sort desktop">Latest Comment</th>
   <% end %>
   <% content_for :filter_row do %>
@@ -49,12 +52,15 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
+    <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
     <td data-filter="ajax"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
-    <td data-filter="dropdown"></td>
+    <td class="status-filter" data-filter="dropdown"></td>
     <td data-filter="daterange"></td>
+    <td data-filter="false"></td>
+    <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
 
