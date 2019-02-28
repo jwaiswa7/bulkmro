@@ -2264,10 +2264,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           # end
         end
       end
-      enddef sap_sales_orders_totals_mismatch
-      file = "#{Rails.root}/tmp/sap_orders_totals_mismatch.csv"
-      column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
 
+    end
+  end
+  def sap_sales_orders_totals_mismatch
+    file = "#{Rails.root}/tmp/sap_orders_totals_mismatch.csv"
+    column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
       service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_orders.csv', 'seed_files')
       CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
         service.loop(nil) do |x|
@@ -2565,13 +2567,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         if sales_order.manager_so_status_date.present?
           draft_remote_request = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: sales_order.id, status: 'success').first
           if draft_remote_request.present?
-            sales_order.update_attributes!(draft_sync_date: draft_remote_request.created_at)
+            sales_order.update_attributes!(draft_sync_date: draft_remote_request .created_at)
           end
         end
       end
     end
-
-    def generate_review_questions
+  def generate_review_questions
       service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
 
       service.loop() do |x|
@@ -2866,4 +2867,27 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       puts '-----------------------------------------------------------------------------------------'
       puts 'Created Or Updated Invoices', created_or_updated_invoices.join(',')
     end
+
+  def missing_payment_options
+    PaymentOption.where(active: nil).update_all(active: true)
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_payment_options.csv', folder)
+    service.loop(limit = nil) do |x|
+      payment_option = PaymentOption.where(remote_uid: x.get_column('group_code')).first_or_initialize
+      if payment_option.new_record?
+        payment_option_name = PaymentOption.find_by_name(x.get_column('value'))
+        unless payment_option_name.present?
+          payment_option.name = x.get_column('value')
+          payment_option.remote_uid = x.get_column('group_code', nil_if_zero: true)
+          payment_option.credit_limit = x.get_column('credit_limit').to_f
+          payment_option.general_discount = x.get_column('general_discount').to_f
+          payment_option.load_limit = x.get_column('load_limit').to_f
+          payment_option.legacy_metadata = x.get_row
+          payment_option.active = false
+          payment_option.save!
+        end
+      else
+        payment_option.update_attributes(name: x.get_column('value'))
+      end
+    end
+  end
 end
