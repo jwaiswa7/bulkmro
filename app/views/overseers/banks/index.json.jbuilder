@@ -3,7 +3,7 @@ json.data (@banks) do |bank|
 
                   [
                       if policy(bank).show?
-                        row_action_button(overseers_bank_path(bank), 'fal fa-eye', 'View bank', 'dark', :_blank)
+                        row_action_button(overseers_bank_path(bank), 'fal fa-eye', 'View bank', 'info', :_blank)
                       end,
                       if policy(bank).edit?
                         row_action_button(edit_overseers_bank_path(bank), 'pencil', 'Edit bank', 'warning', :_blank)
