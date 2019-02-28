@@ -46,7 +46,7 @@ end
 json.columnFilters [
                        [],
                        [],
-                       PaymentRequest.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
+                       PaymentRequest.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        [],
                        [],
@@ -61,4 +61,4 @@ json.columnFilters [
 json.recordsTotal @payment_requests.model.all.count
 json.recordsFiltered @payment_requests.count
 json.draw params[:draw]
-json.recordsSummary PaymentRequest.statuses.map {|k, v| {status_id: v, "label": k, "size": @statuses[k] || 0}}.as_json
+json.recordsSummary PaymentRequest.statuses.map { |k, v| { status_id: v, "label": k, "size": @statuses[k] || 0 } }.as_json
