@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def index?
     manager_or_sales? || cataloging? || logistics?
@@ -118,11 +116,11 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def resync_inquiry_products?
-    record.persisted? && developer? && record.inquiry_products.present?
+    developer? && record.inquiry_products.present?
   end
 
   def resync_unsync_inquiry_products?
-    record.persisted? && developer? && record.inquiry_products.present?
+    developer? && record.inquiry_products.present?
   end
 
 

@@ -1,10 +1,9 @@
-# frozen_string_literal: true
-
 class PaymentOption < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
   include Mixins::HasUniqueName
 
+  default_scope { where(active: true) }
   pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
 
   has_many :companies

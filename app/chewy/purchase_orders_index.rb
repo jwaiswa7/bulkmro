@@ -2,8 +2,6 @@ class PurchaseOrdersIndex < BaseIndex
   material_statuses = PurchaseOrder.material_statuses
   po_statuses = PoRequest.statuses
   statuses = PurchaseOrder.statuses
-  payment_request_statuses = PaymentRequest.statuses
-  supplier_po_type = PoRequest.supplier_po_types
 
   define_type PurchaseOrder.all.with_includes do
     field :id
@@ -34,11 +32,11 @@ class PurchaseOrdersIndex < BaseIndex
     field :po_date, value: -> (record) { record.metadata['PoDate'].to_date if record.metadata['PoDate'].present? && record.valid_po_date? }, type: 'date'
     field :payment_request_status_key, value: -> (record) { payment_request_statuses[record.payment_request.status] if record.payment_request.present? }, type: 'integer'
     field :payment_request_status, value: -> (record) { payment_request_statuses[record.payment_request.status] if record.payment_request.present? }
-    field :payment_request_status_string, value: -> (record) { record.try(:payment_request).try(:status).to_s}, analyzer: 'substring'
+    field :payment_request_status_string, value: -> (record) { record.try(:payment_request).try(:status).to_s }, analyzer: 'substring'
     field :followup_date, type: 'date'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
     field :potential_value, value: -> (record) { record.try(:calculated_total) }, type: 'double'
-    field :po_type, value: -> (record) {supplier_po_type[record.po_request.supplier_po_type] if record.po_request.present?}
+    field :po_type, value: -> (record) { supplier_po_type[record.po_request.supplier_po_type] if record.po_request.present? }
   end
 end

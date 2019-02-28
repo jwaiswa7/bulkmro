@@ -8,7 +8,7 @@ json.data (@company_creation_requests) do |company|
                   row_action_button(overseers_company_creation_request_path(company), 'eye',  'View Company Creation Request', 'info', :_blank)
                 end,
                 if policy(company.activity).show?;
-                  row_action_button(edit_overseers_activity_path(company.activity), 'pencil',  'Edit Activity', 'success', :_blank)
+                  row_action_button(edit_overseers_activity_path(company.activity), 'pencil',  'Edit Activity', 'warning', :_blank)
                 end
             ].join(' '),
 	              link_to(company.name, overseers_company_creation_request_path(company), target: '_blank'),

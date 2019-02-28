@@ -11,10 +11,10 @@ json.data (@material_pickup_requests) do |material_pickup_request|
                         row_action_button(overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'eye', 'View Material Pickup Request', 'info', target: :_blank)
                       end,
                       if policy(material_pickup_request).edit?
-                        row_action_button(edit_overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'pencil', 'Edit Pickup Request', 'warning')
+                        row_action_button(edit_overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'pencil', 'Edit Pickup Request', 'warning', :_blank)
                       end,
                       if policy(material_pickup_request).confirm_delivery?
-                        row_action_button(confirm_delivery_overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'check', 'Confirm Delivery', 'success')
+                        row_action_button(confirm_delivery_overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'check', 'Confirm Delivery', 'success', :_blank)
                       end,
                       if policy(material_pickup_request).delivered? && policy(material_pickup_request).can_request_invoice?
                         row_action_button(new_overseers_invoice_request_path(purchase_order_id: material_pickup_request.purchase_order, mpr_id: material_pickup_request), 'plus', 'Create GRPO Request', 'success', target: :_blank)
@@ -23,7 +23,7 @@ json.data (@material_pickup_requests) do |material_pickup_request|
                       end,
                   ].join(' '),
                   link_to(material_pickup_request.purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(material_pickup_request.purchase_order.inquiry), target: '_blank'),
-                  (conditional_link(material_pickup_request.purchase_order.inquiry.company.try(:name),overseers_company_path(material_pickup_request.purchase_order.inquiry.company), policy(material_pickup_request.purchase_order.inquiry).show?) if material_pickup_request.purchase_order.po_request.present? && material_pickup_request.purchase_order.po_request.sales_order.present?),
+                  (conditional_link(material_pickup_request.purchase_order.inquiry.company.try(:name), overseers_company_path(material_pickup_request.purchase_order.inquiry.company), policy(material_pickup_request.purchase_order.inquiry).show?) if material_pickup_request.purchase_order.po_request.present? && material_pickup_request.purchase_order.po_request.sales_order.present?),
                   (material_pickup_request.purchase_order.po_request.sales_order.order_number if material_pickup_request.purchase_order.po_request.present? && material_pickup_request.purchase_order.po_request.sales_order.present?),
                   (format_succinct_date(material_pickup_request.purchase_order.po_request.sales_order.mis_date) if material_pickup_request.purchase_order.po_request.present? && material_pickup_request.purchase_order.po_request.sales_order.present?),
                   (format_succinct_date(material_pickup_request.purchase_order.po_request.supplier_committed_date) if material_pickup_request.purchase_order.po_request.present?),
