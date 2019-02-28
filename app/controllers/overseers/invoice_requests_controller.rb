@@ -104,6 +104,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_request
 
     if @invoice_request.valid?
+      @invoice_request.status = "Pending AP Invoice" if @invoice_request.grpo_number.present? && @invoice_request.grpo_number_valid?
       @invoice_request.update_status(@invoice_request.status)
       ActiveRecord::Base.transaction do
         if @invoice_request.status_changed?
