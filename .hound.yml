@@ -1,2 +1,6 @@
 rubocop:
   config_file: .rubocop.yml
+
+jshint:
+  ignore_file: .jshintignore
+  config_file: .jshintrc
