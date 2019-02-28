@@ -5,7 +5,7 @@ class Services::Overseers::FailedRemoteRequests::Resync < Services::Shared::Base
 
   def call
     @service = Services::Shared::Snippets.new
-    request = @service.resend_failed_remote_requests
+    request = @service.resend_failed_remote_requests(ignore_drafts: true)
     message = [{ "title": 'Total requests initiated', "text": +request[1].to_s, "color": '#439FE0' }]
     title = '*Resync requests initiated at* ' + Time.now.to_s
     self.send_chat_message(title, message)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customers::ContactPolicy < Customers::ApplicationPolicy
   def edit_current_company?
     true

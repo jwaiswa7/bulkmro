@@ -707,8 +707,13 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
-  def resend_failed_remote_requests(start_at: Date.yesterday.beginning_of_day, end_at: Date.yesterday.end_of_day)
+  def resend_failed_remote_requests(start_at: Date.yesterday.beginning_of_day, end_at: Date.yesterday.end_of_day, ignore_drafts: false)
     requests = RemoteRequest.where(created_at: start_at..end_at).failed
+
+    if ignore_drafts
+      requests.where.not(resource: 'Drafts')
+    end
+
     requested = []
     requested_ids = []
     requests.each do |request|
@@ -928,6 +933,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       row.save
     end
   end
+
   def fetch_address
     service = Services::Shared::Spreadsheets::CsvImporter.new('sap_address1.csv', 'seed_files')
     mismatch = []
@@ -970,6 +976,13 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   def add_logistics_owner_to_all_po
     PurchaseOrder.all.each do |po|
       po.update_attributes(logistics_owner: Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(po).call)
+    end
+  end
+
+  def sync_last_synced_quote
+    inquiries = Inquiry.where(last_synced_quote_id: nil)
+    inquiries.each do |inquiry|
+      inquiry.update_attribute(:last_synced_quote_id, inquiry.final_sales_quote.id) if inquiry.final_sales_quote.present?
     end
   end
 end

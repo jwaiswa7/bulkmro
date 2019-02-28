@@ -22,7 +22,7 @@ class Services::Overseers::Exporters::CompanyReviewExporter < Services::Overseer
         document: company_review.rateable_type + "[#{company_review.rateable_id}]"
       )
     end
-    export = Export.create!(export_type: 70)
+    export = Export.create!(export_type: 60)
     generate_csv(export)
   end
 end

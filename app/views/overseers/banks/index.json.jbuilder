@@ -3,10 +3,10 @@ json.data (@banks) do |bank|
 
                   [
                       if policy(bank).show?
-                        row_action_button(overseers_bank_path(bank), 'fal fa-eye', 'View bank', 'dark')
+                        row_action_button(overseers_bank_path(bank), 'fal fa-eye', 'View bank', 'info', :_blank)
                       end,
                       if policy(bank).edit?
-                        row_action_button(edit_overseers_bank_path(bank), 'pencil', 'Edit bank', 'warning')
+                        row_action_button(edit_overseers_bank_path(bank), 'pencil', 'Edit bank', 'warning', :_blank)
                       end
                   ].join(' '),
                   bank.name,
@@ -14,7 +14,7 @@ json.data (@banks) do |bank|
                   bank.swift_number,
                   bank.iban,
                   format_boolean_label(bank.synced?, 'synced'),
-                  format_date(bank.created_at)
+                  format_succinct_date(bank.created_at)
               ]
 end
 
