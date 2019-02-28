@@ -38,7 +38,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def show
     authorize @po_request
-    service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales', stock_po=(@po_request.po_request_type == 'Stock'))
+    service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
     @company_reviews = service.call
   end
 
@@ -90,14 +90,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
     if @po_request.valid?
       # todo allow only in case of zero form errors
       @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
-      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).is_manager_or_sales?
+      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
       ActiveRecord::Base.transaction do if @po_request.status_changed?
                                           if @po_request.status == 'Cancelled'
                                             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}", po_request: @po_request, overseer: current_overseer)
                                             @po_request.purchase_order = nil
 
-                                            @po_request.payment_request.update!(status: :'Cancelled')
-                                            @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
+                                            if @po_request.payment_request.present?
+                                              @po_request.payment_request.update!(status: :'Cancelled')
+                                              @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
+                                            end
 
                                           elsif @po_request.status == 'Rejected'
                                             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}", po_request: @po_request, overseer: current_overseer)
