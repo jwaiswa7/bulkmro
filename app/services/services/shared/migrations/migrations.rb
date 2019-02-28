@@ -2570,7 +2570,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           end
         end
       end
-    enddef generate_review_questions
+    end
+  def generate_review_questions
       service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
 
       service.loop() do |x|
