@@ -2866,4 +2866,27 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       puts '-----------------------------------------------------------------------------------------'
       puts 'Created Or Updated Invoices', created_or_updated_invoices.join(',')
     end
+
+  def missing_payment_options
+    PaymentOption.where(active: nil).update_all(active: true)
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_payment_options.csv', folder)
+    service.loop(limit = nil) do |x|
+      payment_option = PaymentOption.where(remote_uid: x.get_column('group_code')).first_or_initialize
+      if payment_option.new_record?
+        payment_option_name = PaymentOption.find_by_name(x.get_column('value'))
+        unless payment_option_name.present?
+          payment_option.name = x.get_column('value')
+          payment_option.remote_uid = x.get_column('group_code', nil_if_zero: true)
+          payment_option.credit_limit = x.get_column('credit_limit').to_f
+          payment_option.general_discount = x.get_column('general_discount').to_f
+          payment_option.load_limit = x.get_column('load_limit').to_f
+          payment_option.legacy_metadata = x.get_row
+          payment_option.active = false
+          payment_option.save!
+        end
+      else
+        payment_option.update_attributes(name: x.get_column('value'))
+      end
+    end
+  end
 end
