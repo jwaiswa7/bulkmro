@@ -20,6 +20,7 @@ import chartjs from "./components/chartjs";
 import highlightjs from "./components/highlightjs";
 import lazyLoadImages from "./components/lazyLoadImages";
 import tableHighlightWholly from "./components/tableHighlightWholly";
+import notifications from "./components/notifications";
 // Namespacing all imports under app
 let app = {};
 
@@ -45,6 +46,7 @@ app.initializeComponents = () => {
     lazyLoadImages();
     highlightjs();
     tableHighlightWholly();
+    notifications();
 };
 
 // Turbolinks load event

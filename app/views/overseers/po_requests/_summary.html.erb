@@ -156,9 +156,9 @@
           <div class="col-12 col-md-3 mb-2">
             <strong class="d-block">Attachments </strong>
             <% po_request.attachments.each do |attachment| %>
-              <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+              <%= link_to url_for(attachment), class: 'mr-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                 <i class="fal fa-download"></i>
-                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm mr-1', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                   <i class="fal fa-trash-alt"></i>
                 <% end if attachment.present? && policy(:attachment).destroy? %>
               <% end %>

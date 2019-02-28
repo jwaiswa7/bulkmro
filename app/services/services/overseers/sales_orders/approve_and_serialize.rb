@@ -33,6 +33,7 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
   end
 
   private
+
     def make_duplicate_address(address)
       duplicate_address = address.dup
       duplicate_address.company_id = nil
