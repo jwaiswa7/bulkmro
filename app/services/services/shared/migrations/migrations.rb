@@ -2469,11 +2469,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           inquiry_not_found.push(x.get_column('inquiry number'))
         end
       end
-    end
       puts totals
       puts '<----------------------------------------INQUIRIES--------------------------------------------------->'
       puts inquiry_not_found.inspect
-  end
+    end
 
     def update_invoice_statuses
       missing_invoices = []
