@@ -21,6 +21,8 @@ import highlightjs from "./components/highlightjs";
 import lazyLoadImages from "./components/lazyLoadImages";
 import tableHighlightWholly from "./components/tableHighlightWholly";
 import hasher from "./components/hasher";
+import notifications from "./components/notifications";
+
 // Namespacing all imports under app
 let app = {};
 
@@ -47,6 +49,7 @@ app.initializeComponents = () => {
     highlightjs();
     tableHighlightWholly();
     hasher();
+    notifications();
 };
 
 // Turbolinks load event
