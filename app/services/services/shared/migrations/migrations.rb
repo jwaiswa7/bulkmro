@@ -2264,10 +2264,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           # end
         end
       end
-      enddef sap_sales_orders_totals_mismatch
-      file = "#{Rails.root}/tmp/sap_orders_totals_mismatch.csv"
-      column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
 
+    end
+  end
+  def sap_sales_orders_totals_mismatch
+    file = "#{Rails.root}/tmp/sap_orders_totals_mismatch.csv"
+    column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
       service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_orders.csv', 'seed_files')
       CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
         service.loop(nil) do |x|
@@ -2565,13 +2567,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         if sales_order.manager_so_status_date.present?
           draft_remote_request = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: sales_order.id, status: 'success').first
           if draft_remote_request.present?
-            sales_order.update_attributes!(draft_sync_date: draft_remote_request.created_at)
+            sales_order.update_attributes!(draft_sync_date: draft_remote_request .created_at)
           end
         end
       end
     end
-
-    def generate_review_questions
+  def generate_review_questions
       service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
 
       service.loop() do |x|
