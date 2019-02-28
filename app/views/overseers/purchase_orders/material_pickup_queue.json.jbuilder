@@ -23,7 +23,7 @@ json.data (@material_pickup_requests) do |material_pickup_request|
                       end,
                   ].join(' '),
                   link_to(material_pickup_request.purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(material_pickup_request.purchase_order.inquiry), target: '_blank'),
-                  (conditional_link(material_pickup_request.purchase_order.inquiry.company.try(:name),overseers_company_path(material_pickup_request.purchase_order.inquiry.company), policy(material_pickup_request.purchase_order.inquiry).show?) if material_pickup_request.purchase_order.po_request.present? && material_pickup_request.purchase_order.po_request.sales_order.present?),
+                  (conditional_link(material_pickup_request.purchase_order.inquiry.company.try(:name), overseers_company_path(material_pickup_request.purchase_order.inquiry.company), policy(material_pickup_request.purchase_order.inquiry).show?) if material_pickup_request.purchase_order.po_request.present? && material_pickup_request.purchase_order.po_request.sales_order.present?),
                   (material_pickup_request.purchase_order.po_request.sales_order.order_number if material_pickup_request.purchase_order.po_request.present? && material_pickup_request.purchase_order.po_request.sales_order.present?),
                   (format_succinct_date(material_pickup_request.purchase_order.po_request.sales_order.mis_date) if material_pickup_request.purchase_order.po_request.present? && material_pickup_request.purchase_order.po_request.sales_order.present?),
                   (format_succinct_date(material_pickup_request.purchase_order.po_request.supplier_committed_date) if material_pickup_request.purchase_order.po_request.present?),
