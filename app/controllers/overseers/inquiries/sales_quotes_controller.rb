@@ -70,7 +70,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   def reset_quote
     authorize @sales_quote
     @inquiry.update_attributes(quotation_uid: '')
-    @inquiry.final_sales_quote.save_and_sync
+    # @inquiry.final_sales_quote.save_and_sync
     redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
 
