@@ -71,7 +71,7 @@ class PurchaseOrderRow < ApplicationRecord
 
 
   def lead_date
-    po_request = purchase_order.po_request
+    po_request = self.purchase_order.po_request
     if po_request.present?
       po_request_rows = po_request.rows
       return false if po_request_rows.blank? || get_product.nil?

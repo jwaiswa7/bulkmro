@@ -215,7 +215,6 @@ group :development do
 
   # RuboCop is a Ruby static code analyzer and code formatter
   gem 'rubocop', '~> 0.63.0', require: false
-
 end
 
 group :test do
