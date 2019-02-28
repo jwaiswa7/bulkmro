@@ -1,8 +1,8 @@
-class MprRow < ApplicationRecord
-  belongs_to :material_pickup_request
+class InwardDispatchRow < ApplicationRecord
+  belongs_to :inward_dispatch
   belongs_to :purchase_order_row
 
-  validates_uniqueness_of :purchase_order_row_id, scope: :material_pickup_request
+  validates_uniqueness_of :purchase_order_row_id, scope: :inward_request
   validates_numericality_of :pickup_quantity, greater_than: 0
   validates_numericality_of :delivered_quantity, greater_than: 0, allow_nil: true
 

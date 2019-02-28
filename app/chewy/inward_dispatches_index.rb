@@ -1,7 +1,7 @@
-class MaterialPickupRequestsIndex < BaseIndex
-  statuses = MaterialPickupRequest.statuses
+class InwardDispatchesIndex < BaseIndex
+  statuses = InwardDispatch.statuses
 
-  define_type MaterialPickupRequest.all.with_includes do
+  define_type InwardDispatch.all.with_includes do
     field :id
     field :inquiry_id, value: -> (record) { record.purchase_order.inquiry.id if record.inquiry.present? }
     field :inquiry, value: -> (record) { record.purchase_order.inquiry.to_s }, analyzer: 'substring'

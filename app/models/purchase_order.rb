@@ -18,7 +18,7 @@ class PurchaseOrder < ApplicationRecord
   has_one :po_request
   has_one :payment_request
   has_one :invoice_request
-  has_many :material_pickup_requests
+  has_many :inward_dispatches
   has_many :email_messages
 
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2

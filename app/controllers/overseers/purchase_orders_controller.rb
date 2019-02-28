@@ -55,56 +55,56 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     render 'material_readiness_queue'
   end
 
-  def material_pickup_queue
+  def inward_dispatch_pickup_queue
     @status = 'Material Pickup Queue'
 
 
     base_filter = {
         base_filter_key: 'status',
 
-        base_filter_value: MaterialPickupRequest.statuses['Material Pickup']
+        base_filter_value: InwardDispatch.statuses['Material Pickup']
     }
 
 
     respond_to do |format|
       format.html { }
       format.json do
-        service = Services::Overseers::Finders::MaterialPickupRequests.new(params.merge(base_filter), current_overseer)
+        service = Services::Overseers::Finders::InwardDispatch.new(params.merge(base_filter), current_overseer)
 
         service.call
 
-        @indexed_material_pickup_requests = service.indexed_records
-        @material_pickup_requests = service.records.try(:reverse)
+        @indexed_inward_dispatches = service.indexed_records
+        @inward_dispatches = service.records.try(:reverse)
       end
     end
 
-    authorize :material_pickup_request
+    authorize :inward_dispatch
     render 'material_pickup_queue'
   end
 
-  def material_delivered_queue
+  def inward_dispatch_delivered_queue
     @status = 'Material Delivered Queue'
 
     base_filter = {
         base_filter_key: 'status',
 
-        base_filter_value: MaterialPickupRequest.statuses['Material Delivered']
+        base_filter_value: InwardDispatch.statuses['Material Delivered']
     }
 
 
     respond_to do |format|
       format.html { }
       format.json do
-        service = Services::Overseers::Finders::MaterialPickupRequests.new(params.merge(base_filter), current_overseer)
+        service = Services::Overseers::Finders::InwardDispatch.new(params.merge(base_filter), current_overseer)
 
         service.call
 
-        @indexed_material_pickup_requests = service.indexed_records
-        @material_pickup_requests = service.records.try(:reverse)
+        @indexed_inward_dispatches = service.indexed_records
+        @inward_dispatches = service.records.try(:reverse)
       end
     end
 
-    authorize :material_pickup_request
+    authorize :inward_dispatch
     render 'material_pickup_queue'
   end
 
@@ -156,10 +156,10 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @purchase_orders.update_all(logistics_owner_id: params[:logistics_owner_id])
   end
 
-  def update_logistics_owner_for_pickup_requests
-    @pickup_requests = MaterialPickupRequest.where(id: params[:pickup_requests])
-    authorize @pickup_requests
-    @pickup_requests.update_all(logistics_owner_id: params[:logistics_owner_id])
+  def update_logistics_owner_for_inward_dispatches
+    @inward_dispatches = InwardDispatch.where(id: params[:pickup_requests])
+    authorize @inward_dispatches
+    @inward_dispatches.update_all(logistics_owner_id: params[:logistics_owner_id])
   end
 
   private

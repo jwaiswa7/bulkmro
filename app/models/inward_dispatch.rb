@@ -1,15 +1,15 @@
-class MaterialPickupRequest < ApplicationRecord
-  COMMENTS_CLASS = 'MprComment'
+class InwardDispatch < ApplicationRecord
+  COMMENTS_CLASS = 'InwardDispatchComment'
 
   include Mixins::HasComments
   include Mixins::CanBeStamped
 
-  update_index('material_pickup_requests#material_pickup_request') { self }
+  update_index('inward_dispatches#inward_dispatch') { self }
   belongs_to :purchase_order
   has_one :inquiry, through: :purchase_order
 
   belongs_to :logistics_owner, -> (record) { where(role: 'logistics') }, class_name: 'Overseer', foreign_key: 'logistics_owner_id', optional: true
-  has_many :rows, -> { joins(:purchase_order_row) }, class_name: 'MprRow', inverse_of: :material_pickup_request, dependent: :destroy
+  has_many :rows, -> { joins(:purchase_order_row) }, class_name: 'InwardDispatchRow', inverse_of: :inward_dispatch, dependent: :destroy
   has_many_attached :attachments
   belongs_to :invoice_request, optional: true
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['purchase_order_row_id'].blank? && attributes['id'].blank? }, allow_destroy: true
@@ -40,7 +40,7 @@ class MaterialPickupRequest < ApplicationRecord
       'FedEx': 11,
       'Spoton': 12,
       'Safex': 13,
-      'Professional': 14,
+      'Professional Couriers': 14,
       'DTDC': 15,
       'Delhivery': 16,
       'UPS': 17,
@@ -74,7 +74,7 @@ class MaterialPickupRequest < ApplicationRecord
     grouped_status = {}
     status_category = { 10 => '3PL', 20 => 'BM Runner', 30 => 'Drop Ship' }
     status_category.each do |index, category|
-      grouped_status[category] = MaterialPickupRequest.logistics_partners.collect { |status, v|
+      grouped_status[category] = InwardDispatch.logistics_partners.collect { |status, v|
       if v.between?(index, index + 9)
         status
       end}.compact

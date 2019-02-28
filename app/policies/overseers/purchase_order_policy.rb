@@ -37,7 +37,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
-  def new_pickup_request?
+  def new_inward_dispatch?
     (record.rows.sum(&:get_pickup_quantity) > 0) && record.followup_date.present?
   end
 
