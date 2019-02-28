@@ -46,7 +46,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_process_amended_po_requests?
-    record.purchase_order.present? && (logistics? || admin?) && record.amending?
+    record.purchase_order.present? && (logistics? || admin? || manager_or_sales? ) && record.amending?
   end
 
   def show_payment_request?

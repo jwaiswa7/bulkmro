@@ -131,9 +131,15 @@
                   <div class="col-2">
                     <%= row.input :delivered_quantity, type: "number", input_html: {value: row.object.delivered_quantity.to_i, min: 1, max: (row.object.pickup_quantity.to_i if row.object.pickup_quantity.to_i > 1)}, readonly: f.object.invoice_request.present? %>
                   </div>
+                  <div class="col-2">
+                    <%= row.input :lead_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: row.object.row_lead_date.try(:strftime, "%d-%b-%Y")} %>
+                  </div>
                 <% else %>
                   <div class="col-2">
                     <%= row.input :pickup_quantity, type: "number", input_html: {value: row.object.pickup_quantity.to_f, min: 0} %>
+                  </div>
+                  <div class="col-2">
+                    <%= row.input :lead_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: row.object.row_lead_date.try(:strftime, "%d-%b-%Y")} %>
                   </div>
                 <% end %>
                 <% if policy(f.object).remove_products? %>

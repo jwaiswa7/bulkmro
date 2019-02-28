@@ -37,6 +37,20 @@
     <% if @po_requests.present? %>
       <div class="card">
         <div class="card-body">
+          <p>
+            <ul class="list-group text-danger mb-3">
+              <% @sales_order.rows.each do |order_row| %>
+                <% if !order_row.supplier.contacts.any? %>
+                  <li class="list-group-item">
+                    <i class="fal fa-exclamation-circle mr-2"></i>
+                    Add contact details for the supplier <strong><%= order_row.supplier.name.to_s %></strong> providing
+                    the product <strong><%= order_row.product.name %></strong> with SKU
+                    <strong>(<%= order_row.product.sku %>)</strong>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </p>
           <%= f.simple_fields_for :po_requests, @po_requests.values do |po_request| %>
             <div class="simple-row">
               <p class="text">
@@ -65,14 +79,13 @@
         <div class="card-body">
           <p>
             <ul class="list-group text-danger mb-3">
-              <li class="list-group-item">
-                <h5 class="text-danger mb-0">If a sales order product is missing, please fulfill the following.</h5>
-              </li>
               <% @sales_order.rows.each do |order_row| %>
                 <% if !order_row.supplier.contacts.any? %>
                   <li class="list-group-item">
                     <i class="fal fa-exclamation-circle mr-2"></i>
-                    Add contact details for the supplier <strong><%= order_row.supplier.name.to_s %></strong> providing the product <strong><%= order_row.product.name %></strong> with SKU <strong>(<%= order_row.product.sku %>)</strong>
+                    Add contact details for the supplier <strong><%= order_row.supplier.name.to_s %></strong> providing
+                    the product <strong><%= order_row.product.name %></strong> with SKU
+                    <strong>(<%= order_row.product.sku %>)</strong>
                   </li>
                 <% end %>
               <% end %>
