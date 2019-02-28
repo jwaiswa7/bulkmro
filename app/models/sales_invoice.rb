@@ -1,6 +1,6 @@
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
-  update_index('sales_invoices#sales_invoice') {self}
+  update_index('sales_invoices#sales_invoice') { self }
 
   belongs_to :sales_order
   belongs_to :billing_address, class_name: 'Address', required: false
@@ -31,8 +31,8 @@ class SalesInvoice < ApplicationRecord
       'Material Rejected': 207
   }
 
-  scope :with_includes, -> {includes(:sales_order)}
-  scope :not_cancelled, -> {where.not(status: 'Cancelled')}
+  scope :with_includes, -> { includes(:sales_order) }
+  scope :not_cancelled, -> { where.not(status: 'Cancelled') }
 
   validates_with FileValidator, attachment: :original_invoice, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :duplicate_invoice, file_size_in_megabytes: 2
@@ -67,11 +67,11 @@ class SalesInvoice < ApplicationRecord
   end
 
   def calculated_total
-    rows.map {|row| (row.metadata['base_row_total'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f)}.sum.round(2)
+    rows.map { |row| (row.metadata['base_row_total'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
   end
 
   def calculated_total_tax
-    rows.map {|row| (row.metadata['base_tax_amount'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f)}.sum.round(2)
+    rows.map { |row| (row.metadata['base_tax_amount'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
   end
 
   def calculated_total_with_tax
