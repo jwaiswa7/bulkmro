@@ -2264,7 +2264,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         # end
       end
     end
-    enddef sap_sales_orders_totals_mismatch
+  end
+  def sap_sales_orders_totals_mismatch
     file = "#{Rails.root}/tmp/sap_orders_totals_mismatch.csv"
     column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
 
