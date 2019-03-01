@@ -2868,8 +2868,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
 
   def missing_payment_options
-    PaymentOption.where(active: nil).update_all(active: true)
-    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_payment_options.csv', folder)
+    PaymentOption.where(is_active: nil).update_all(is_active: true)
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_payment_options.csv', 'seed_files')
     service.loop(limit = nil) do |x|
       payment_option = PaymentOption.where(remote_uid: x.get_column('group_code')).first_or_initialize
       if payment_option.new_record?
@@ -2881,7 +2881,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           payment_option.general_discount = x.get_column('general_discount').to_f
           payment_option.load_limit = x.get_column('load_limit').to_f
           payment_option.legacy_metadata = x.get_row
-          payment_option.active = false
+          payment_option.is_active = false
           payment_option.save!
         end
       else
