@@ -47,11 +47,11 @@
       </div>
 
       <div class="col-6">
-        <%= f.input :ap_invoice_number, as: :string, label: "SAP AP Invoice Document No." %>
+        <%= f.input :ap_invoice_number, as: :string, label: "SAP AP Invoice Document No.", :input_html => {:maxlength => 8} %>
       </div>
 
       <div class="col-6">
-        <%= f.input :ar_invoice_number, as: :string, label: "AR Invoice Number", :input_html => {:maxlength => 8} %>
+        <%= f.input :ar_invoice_number, as: :string, label: "AR Invoice Number"%>
       </div>
 
       <div class="col-6">
