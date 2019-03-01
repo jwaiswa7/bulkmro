@@ -26,12 +26,12 @@ class Services::Overseers::Finders::Activities < Services::Overseers::Finders::B
     query = query[0, 35]
 
     indexed_records = index_klass.query(
-      multi_match: {
-          query: query,
-          operator: 'and',
-          fields: %w[created_by account_id  account_name company inquiry_number contact_name purpose activity_type],
-          minimum_should_match: '100%'
-      }
+        multi_match: {
+            query: query,
+            operator: 'and',
+            fields: %w[created_by account_id  account_name company inquiry_number contact_name purpose activity_type],
+            minimum_should_match: '100%'
+        }
     )
 
     if search_filters.present?
@@ -45,7 +45,8 @@ class Services::Overseers::Finders::Activities < Services::Overseers::Finders::B
 
     indexed_records
   end
+
   def sort_definition
-    { id: :desc }
+    {id: :desc}
   end
 end
