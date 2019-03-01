@@ -28,6 +28,7 @@ let app = {};
 
 // Initaialize all components
 app.initializeComponents = () => {
+    hasher();
     customFileInputs();
     select2s();
     alertsAutohide();
@@ -48,7 +49,6 @@ app.initializeComponents = () => {
     lazyLoadImages();
     highlightjs();
     tableHighlightWholly();
-    hasher();
     notifications();
 };
 

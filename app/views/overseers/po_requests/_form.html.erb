@@ -25,7 +25,16 @@
           <div class="col-4">
             <strong class="d-block">Customer Committed Date</strong>
             <%= @po_request.sales_order.customer_committed_date %>
-          </div>
+           </div>
+        </div>
+      </div>
+      <div class="card-header">
+        <div class="form-row">
+          <% if policy(@po_request).update? %>
+            <div class="col-lg-12">
+              <%= action_button(action_name, @po_request) %>
+            </div>
+          <% end %>
         </div>
       </div>
       <div class="card-body">
@@ -33,19 +42,19 @@
           <strong><%= f.object.supplier.to_s %></strong>
           <a href="#" class="btn btn-default btn-danger add-review float-right" data-toggle="modal" data-target="#modalRatingForm">Add/Edit Supplier Rating</a>
         </h5>
+
         <%= render 'overseers/po_requests/rows_form', f: f %>
+        <% if action_name.capitalize == "New" %>
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <i class="fal fa-plus-circle"></i> Create PO Request
+          <% end %>
+        <% else %>
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
+            <i class="fal fa-pen"></i> Update PO Request
+          <% end %>
+        <% end %>
       </div>
     </div>
-
-    <% if action_name.capitalize == "New" %>
-      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> Create PO Request
-      <% end %>
-    <% else %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
-        <i class="fal fa-pen"></i> Update PO Request
-      <% end %>
-    <% end %>
   <% end %>
 
   <% if @po_request.comments.persisted.size > 0 %>

@@ -37,7 +37,7 @@ json.data (@activities) do |activity|
                     status_badge(activity.inquiry.commercial_status)
                   end,
                   if activity.contact.present?
-                    link_to(activity.contact.to_s, overseers_contact_path(activity.contact), target:'_blank')
+                    link_to(activity.contact.to_s, overseers_contact_path(activity.contact), target: '_blank')
                   end,
                   format_enum(activity.purpose),
                   format_enum(activity.activity_type),
