@@ -16,6 +16,7 @@ class SalesInvoicesIndex < BaseIndex
     field :status, value: -> (record) { statuses[record.status] }
     field :status_key, value: -> (record) { statuses[record.status] }, type: 'integer'
     field :company_id, value: -> (record) { record.inquiry.company.id if record.inquiry.present? }, type: 'integer'
+    field :account_id, value: -> (record) { record.inquiry.account.id if record.inquiry.present? }, type: 'integer'
     field :legacy, value: -> (record) { record.is_legacy }
     field :inside_sales_owner_id, value: -> (record) { record.inquiry.inside_sales_owner.id if record.inquiry.present? && record.inquiry.inside_sales_owner.present? }
     field :inside_sales_owner, value: -> (record) { record.inquiry.inside_sales_owner.to_s if record.inquiry.present? }, analyzer: 'substring'
