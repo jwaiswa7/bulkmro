@@ -29,188 +29,212 @@
     <%= f.hidden_field :purchase_order_id %>
     <%= f.hidden_field :material_pickup_request_ids, value: @invoice_request.material_pickup_requests.map(&:id).join(", ") %>
 
-    <div class="form-row">
-      <div class="col-6">
-        <%= f.association :sales_order, disabled: f.object.sales_order.present?, collection: f.object.inquiry.sales_orders.where.not(:order_number => nil), label_method: :to_s, include_blank: "Type Order Number", input_html: {class: 'select2-single select2-wrap-text', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Order Number", :selected => [(@sales_order.present? ? @sales_order.id : f.object.sales_order_id)] %>
-      </div>
-      <div class="col-6">
-        <%= f.association :inquiry, disabled: true, collection: [f.object.inquiry], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
-      </div>
-      <div class="col-6">
-        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(InvoiceRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
-      </div>
-      <div class="col-6">
-        <%= f.association :purchase_order, disabled: f.object.purchase_order.present? && f.object.errors.blank?, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
-      </div>
-      <div class="col-12 ">
-        <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select,wrapper_html:{class: @invoice_request.display_reason('other')}, collection: enum_to_collection(InvoiceRequest.rejection_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Reason'%>
-      </div>
-      <div class="col-12 ">
-        <%= f.input :other_rejection_reason, :placeholder => 'Type Rejection Reason', wrapper_html:{class: @invoice_request.display_reason('other')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
-      </div>
-
-      <div class="col-6">
-        <%= f.input :grpo_number, as: :string, label: "GRPO Number", :input_html => {:maxlength => 8} %>
-      </div>
-
-      <div class="col-6">
-        <%= f.input :ap_invoice_number, as: :string, label: "SAP AP Invoice Document No.", :input_html => {:maxlength => 8} %>
-      </div>
-
-      <div class="col-6">
-        <%= f.input :ar_invoice_number, as: :string, label: "AR Invoice Number", :input_html => {:maxlength => 8} %>
-      </div>
-
-      <div class="col-6">
-        <div class="d-block d-md-flex align-items-end">
-          <div class="flex-grow-1">
-            <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
-          </div>
-          <div class="form-group">
-            <% f.object.attachments.each do |attachment| %>
-              <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                <i class="fal fa-download"></i>
-                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                  <i class="fal fa-trash-alt"></i>
-                <% end if attachment.present? && policy(:attachment).destroy? %>
-              <% end %>
-            <% end if f.object.attachments.attached? %>
-          </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="form-row">
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <% if action_name.capitalize == "New" %>
+              <i class="fal fa-plus-circle"></i>
+            <% else %>
+              <i class="fal fa-pen"></i>
+            <% end %>
+            <%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status) %>
+          <% end %>
         </div>
       </div>
 
-      <div class="col-12">
-        <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |invoice_request_comment| %>
-          <%= invoice_request_comment.hidden_field :created_by_id %>
-          <%= invoice_request_comment.hidden_field :updated_by_id %>
-          <%= invoice_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
-        <% end %>
-      </div>
+      <div class="card-body pb-0">
+        <div class="form-row">
+          <div class="col-6">
+            <%= f.association :sales_order, disabled: f.object.sales_order.present?, collection: f.object.inquiry.sales_orders.where.not(:order_number => nil), label_method: :to_s, include_blank: "Type Order Number", input_html: {class: 'select2-single select2-wrap-text', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Order Number", :selected => [(@sales_order.present? ? @sales_order.id : f.object.sales_order_id)] %>
+          </div>
+          <div class="col-6">
+            <%= f.association :inquiry, disabled: true, collection: [f.object.inquiry], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
+          </div>
+          <div class="col-6">
+            <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(InvoiceRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
+          </div>
+          <div class="col-6">
+            <%= f.association :purchase_order, disabled: f.object.purchase_order.present? && f.object.errors.blank?, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
+          </div>
+          <div class="col-12 ">
+            <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select,wrapper_html:{class: @invoice_request.display_reason('other')}, collection: enum_to_collection(InvoiceRequest.rejection_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Reason'%>
+          </div>
+          <div class="col-12 ">
+            <%= f.input :other_rejection_reason, :placeholder => 'Type Rejection Reason', wrapper_html:{class: @invoice_request.display_reason('other')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+          </div>
 
-    </div>
+          <div class="col-6">
+            <%= f.input :grpo_number, as: :string, label: "GRPO Number", :input_html => {:maxlength => 8} %>
+          </div>
 
-    <% if @products_list.present? %>
-      <div class="card mb-2">
-        <div class="card-body">
-          <div class="chats">
-            <% if f.object.purchase_order.present? %>
-              <h5 class="text-uppercase">
-                <strong><%= f.object.purchase_order.supplier.to_s %></strong>
-              </h5>
-              <div class="form-row">
-                <div class="col-6">
-                  <% if f.object.purchase_order.try(:supplier).try(:address) %>
-                    <div class="form-group">
-                      <label class="form-control-label d-block">Address</label>
-                      <%= f.object.purchase_order.supplier.address %>
-                    </div>
-                  <% end %>
-                </div>
-                <div class="col-6">
-                  <% if f.object.purchase_order.try(:supplier).try(:default_contact) %>
-                    <div class="form-group">
-                      <label class="form-control-label d-block">Contact</label>
-                      <%= f.object.purchase_order.supplier.default_contact if f.object.purchase_order.supplier.default_contact.present? %>
-                    </div>
-                  <% end %>
-                </div>
+          <div class="col-6">
+            <%= f.input :ap_invoice_number, as: :string, label: "SAP AP Invoice Document No.", :input_html => {:maxlength => 8} %>
+          </div>
+
+          <div class="col-6">
+            <%= f.input :ar_invoice_number, as: :string, label: "AR Invoice Number", :input_html => {:maxlength => 8} %>
+          </div>
+
+          <div class="col-6">
+            <div class="d-block d-md-flex align-items-end">
+              <div class="flex-grow-1">
+                <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
               </div>
+              <div class="form-group">
+                <% f.object.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="fal fa-download"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                      <i class="fal fa-trash-alt"></i>
+                    <% end if attachment.present? && policy(:attachment).destroy? %>
+                  <% end %>
+                <% end if f.object.attachments.attached? %>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |invoice_request_comment| %>
+              <%= invoice_request_comment.hidden_field :created_by_id %>
+              <%= invoice_request_comment.hidden_field :updated_by_id %>
+              <%= invoice_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
             <% end %>
-            <div class="form-row d-none d-md-flex">
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>Sr. No.</label>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group mb-0">
-                  <label>Product</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>Make</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>HSN</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>T. Rate</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>Quantity</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>MOU</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>UP</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>TP</label>
+          </div>
+
+        </div>
+
+        <div class="mt-3 card-alternative">
+          <% if @products_list.present? %>
+            <div class="card mb-2">
+              <div class="card-body">
+                <div class="chats">
+                  <% if f.object.purchase_order.present? %>
+                    <h5 class="text-uppercase">
+                      <strong><%= f.object.purchase_order.supplier.to_s %></strong>
+                    </h5>
+                    <div class="form-row">
+                      <div class="col-6">
+                        <% if f.object.purchase_order.try(:supplier).try(:address) %>
+                          <div class="form-group">
+                            <label class="form-control-label d-block">Address</label>
+                            <%= f.object.purchase_order.supplier.address %>
+                          </div>
+                        <% end %>
+                      </div>
+                      <div class="col-6">
+                        <% if f.object.purchase_order.try(:supplier).try(:default_contact) %>
+                          <div class="form-group">
+                            <label class="form-control-label d-block">Contact</label>
+                            <%= f.object.purchase_order.supplier.default_contact if f.object.purchase_order.supplier.default_contact.present? %>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% end %>
+                  <div class="form-row d-none d-md-flex">
+                    <div class="col-1">
+                      <div class="form-group mb-0">
+                        <label>Sr. No.</label>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group mb-0">
+                        <label>Product</label>
+                      </div>
+                    </div>
+                    <div class="col-1">
+                      <div class="form-group mb-0">
+                        <label>Make</label>
+                      </div>
+                    </div>
+                    <div class="col-1">
+                      <div class="form-group mb-0">
+                        <label>HSN</label>
+                      </div>
+                    </div>
+                    <div class="col-1">
+                      <div class="form-group mb-0">
+                        <label>T. Rate</label>
+                      </div>
+                    </div>
+                    <div class="col-1">
+                      <div class="form-group mb-0">
+                        <label>Quantity</label>
+                      </div>
+                    </div>
+                    <div class="col-1">
+                      <div class="form-group mb-0">
+                        <label>MOU</label>
+                      </div>
+                    </div>
+                    <div class="col-1">
+                      <div class="form-group mb-0">
+                        <label>UP</label>
+                      </div>
+                    </div>
+                    <div class="col-1">
+                      <div class="form-group mb-0">
+                        <label>TP</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <% @products_list.each do |k| %>
+                    <div class="form-row flex-row align-items-start">
+                      <div class="col-1 col-md-1">
+                        <%= (@products_list.index(k) || 0) + 1 %>
+                      </div>
+
+                      <div class="col-6 col-md-4">
+                        <%= k[:purchase_order_row].get_product %>
+                      </div>
+
+                      <div class="col-6 col-md-1">
+                        <%= k[:purchase_order_row].get_product.try(:brand).to_s %>
+                      </div>
+                      <div class="col-12 col-md-1">
+                        <%= k[:purchase_order_row].metadata['PopHsn'] %>
+                      </div>
+                      <div class="col-12 col-md-1">
+                        <%= k[:purchase_order_row].tax_rate %>
+                      </div>
+                      <div class="col-12 col-md-1">
+                        <%= k[:total_quantity] %>
+                      </div>
+                      <div class="col-12 col-md-1">
+                        <%= k[:purchase_order_row].uom %>
+                      </div>
+                      <div class="col-12 col-md-1">
+                        <%= number_to_currency(k[:purchase_order_row].unit_selling_price, precision: 0, unit: '') %>
+                      </div>
+                      <div class="col-12 col-md-1">
+                        <%= number_to_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f, precision: 0, unit: '') %>
+                      </div>
+                    </div>
+                  <% end %>
                 </div>
               </div>
             </div>
+          <% end %>
+        </div>
 
-              <% @products_list.each do |k| %>
-                <div class="form-row flex-row align-items-start">
-                  <div class="col-1 col-md-1">
-                    <%= (@products_list.index(k) || 0) + 1 %>
-                  </div>
+      </div>
 
-                  <div class="col-6 col-md-4">
-                    <%= k[:purchase_order_row].get_product %>
-                  </div>
-
-                  <div class="col-6 col-md-1">
-                    <%= k[:purchase_order_row].get_product.try(:brand).to_s %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= k[:purchase_order_row].metadata['PopHsn'] %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= k[:purchase_order_row].tax_rate %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= k[:total_quantity] %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= k[:purchase_order_row].uom %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= number_to_currency(k[:purchase_order_row].unit_selling_price, precision: 0, unit: '') %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= number_to_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f, precision: 0, unit: '') %>
-                  </div>
-                </div>
-              <% end %>
-          </div>
+      <div class="card-footer">
+        <div class="form-row">
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <% if action_name.capitalize == "New" %>
+              <i class="fal fa-plus-circle"></i>
+            <% else %>
+              <i class="fal fa-pen"></i>
+            <% end %>
+            <%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status) %>
+          <% end %>
         </div>
       </div>
-    <% end %>
+    </div>
 
-
-    <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-      <% if action_name.capitalize == "New" %>
-        <i class="fal fa-plus-circle"></i>
-      <% else %>
-        <i class="fal fa-pen"></i>
-      <% end %>
-      <%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status) %>
-    <% end %>
   <% end %>
   <% if action_name.capitalize != "New" %>
     <div class="card">
