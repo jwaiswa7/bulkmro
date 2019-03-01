@@ -20,6 +20,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     authorize @activities
   end
 
+
   def new
     @activity = current_overseer.activities.build(overseer: current_overseer)
     @activity.build_company_creation_request(overseer: current_overseer)
