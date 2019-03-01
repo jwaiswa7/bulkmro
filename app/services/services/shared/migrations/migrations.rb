@@ -2372,7 +2372,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       next if x.get_column('product sku').in?(['BM9Y7F5', 'BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7', 'BM9R0R1', 'BM9H7O3', 'BM9P0T9', 'BM9J7D7'])
       next if !inquiry_numbers.include?(x.get_column('inquiry number').to_i)
       next if Product.where(sku: x.get_column('product sku')).present? == false
-      puts '*********************** INQUIRY ', x.get_column('inquiry number') o_number = x.get_column('order number')
+      puts '*********************** INQUIRY ', x.get_column('inquiry number')
+      o_number = x.get_column('order number')
       if o_number.include?('.') || o_number.include?('/') || o_number.include?('-') || o_number.match?(/[a-zA-Z]/)
         odd_order_names.push(o_number)
       end
