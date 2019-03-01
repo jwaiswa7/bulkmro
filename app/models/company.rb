@@ -7,7 +7,7 @@ class Company < ApplicationRecord
   include Mixins::HasManagers
 
   update_index('companies#company') { self }
-  pg_search_scope :locate, against: [:name], associated_against: {account: [:name]}, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:name], associated_against: { account: [:name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :account
   belongs_to :default_company_contact, -> (record) { where(company_id: record.id) }, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false

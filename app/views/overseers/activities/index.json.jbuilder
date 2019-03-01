@@ -50,7 +50,7 @@ json.data (@activities) do |activity|
 end
 json.columnFilters [
                        [],
-                       Overseer.outside.map{|value| {"label" => value.name.to_s, "value" => value.id}}.as_json,
+                       Overseer.outside.map { |value| { 'label' => value.name.to_s, 'value' => value.id } }.as_json,
                        [],
                        [{ "source": autocomplete_overseers_accounts_path }],
                        [{ "source": autocomplete_overseers_companies_path }],
