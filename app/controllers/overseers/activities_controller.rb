@@ -108,33 +108,33 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
   private
 
-  def activity_params
-    params.require(:activity).permit(
+    def activity_params
+      params.require(:activity).permit(
         :inquiry_id,
-        :company_id,
-        :contact_id,
-        :company_type,
-        :subject,
-        :purpose,
-        :activity_date,
-        :activity_type,
-        :points_discussed,
-        :actions_required,
-        :expenses,
-        overseer_ids: [],
-        company_creation_request_attributes: [
-            :name,
-            :email,
-            :first_name,
-            :last_name,
-            :address,
-            :account_type,
-        ],
-        attachments: []
-    )
-  end
+          :company_id,
+          :contact_id,
+          :company_type,
+          :subject,
+          :purpose,
+          :activity_date,
+          :activity_type,
+          :points_discussed,
+          :actions_required,
+          :expenses,
+          overseer_ids: [],
+          company_creation_request_attributes: [
+              :name,
+              :email,
+              :first_name,
+              :last_name,
+              :address,
+              :account_type,
+          ],
+          attachments: []
+      )
+    end
 
-  def set_activity
-    @activity = Activity.find(params[:id])
-  end
+    def set_activity
+      @activity = Activity.find(params[:id])
+    end
 end

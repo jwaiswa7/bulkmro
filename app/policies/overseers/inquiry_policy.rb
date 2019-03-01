@@ -127,7 +127,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def new_freight_request?
     !record.freight_request.present? && !logistics?
       end
-class Scope
+  class Scope
     attr_reader :overseer, :scope
 
     def initialize(overseer, scope)

@@ -1277,7 +1277,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       next if skips.include?(po_request.id)
       if po_request.status != 'Cancelled'
         next if !po_request.sales_order.present?
-        rows = po_request.sales_order.rows.inject({}) {|hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash}
+        rows = po_request.sales_order.rows.inject({}) { |hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash }
         if po_request.status != 'Requested'
           if !po_request.status != 'PO Created'
             purchase_order = po_request.purchase_order || PurchaseOrder.find_by_po_number(po_request.purchase_order_id)
@@ -1330,7 +1330,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def create_po_request_for_purchase_orders
     SalesOrder.remote_approved.each do |sales_order|
-      rows = sales_order.rows.inject({}) {|hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash}
+      rows = sales_order.rows.inject({}) { |hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash }
       # service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: sales_order.inquiry.company.name)
       sales_order.inquiry.purchase_orders.each do |purchase_order|
         if purchase_order.rows.present?
@@ -1389,11 +1389,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           if purchase_order.email_messages.present? || !purchase_order.email_messages.where(purchase_order: purchase_order, email_type: 'Sending PO to Supplier').present?
 
             email_message = purchase_order.email_messages.build(
-                overseer: current_overseer,
-                inquiry: purchase_order.inquiry,
-                purchase_order: purchase_order,
-                sales_order: purchase_order.po_request.sales_order,
-                email_type: 'Sending PO to Supplier'
+              overseer: current_overseer,
+              inquiry: purchase_order.inquiry,
+              purchase_order: purchase_order,
+              sales_order: purchase_order.po_request.sales_order,
+              email_type: 'Sending PO to Supplier'
             )
             email_message.assign_attributes(from: current_overseer.email, to: current_overseer.email, subject: "Internal Ref Inq ##{purchase_order.inquiry.inquiry_number} Purchase Order ##{purchase_order.po_number}")
             email_message.save!
@@ -2533,169 +2533,168 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       puts missing_so
     end
 
-  # SalesOrder.where(:manager_so_status_date => nil).count
-  def sup_emails
-    Company.acts_as_supplier.each do |supplier|
-      name = supplier.name
-      sup_code = supplier.remote_uid
-      email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
-                supplier.company_contacts.first.contact.email
-              elsif supplier.default_company_contact_id.present?
-                supplier.default_company_contact.contact.email
-              else
-                supplier.legacy_email
-              end
-    end
-  end
-
-  def add_manager_approved_date
-    SalesOrder.approved.each do |sales_order|
-      sales_order.update_attributes!(manager_so_status_date: sales_order.approval.created_at) if sales_order.approval.present?
-    end
-  end
-
-
-  def add_manager_rejected_date
-    SalesOrder.rejected.each do |sales_order|
-      sales_order.update_attributes!(manager_so_status_date: sales_order.rejection.created_at) if sales_order.rejection.present?
-    end
-  end
-
-  def draft_sync_date
-    SalesOrder.all.each do |sales_order|
-      if sales_order.manager_so_status_date.present?
-        draft_remote_request = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: sales_order.id, status: 'success').first
-        if draft_remote_request.present?
-          sales_order.update_attributes!(draft_sync_date: draft_remote_request.created_at)
+    # SalesOrder.where(:manager_so_status_date => nil).count
+    def sup_emails
+      Company.acts_as_supplier.each do |supplier|
+        name = supplier.name
+        sup_code = supplier.remote_uid
+        email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
+          supplier.company_contacts.first.contact.email
+        elsif supplier.default_company_contact_id.present?
+          supplier.default_company_contact.contact.email
+        else
+          supplier.legacy_email
         end
       end
     end
-  end
 
-  def generate_review_questions
-    service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
+    def add_manager_approved_date
+      SalesOrder.approved.each do |sales_order|
+        sales_order.update_attributes!(manager_so_status_date: sales_order.approval.created_at) if sales_order.approval.present?
+      end
+    end
+
+
+    def add_manager_rejected_date
+      SalesOrder.rejected.each do |sales_order|
+        sales_order.update_attributes!(manager_so_status_date: sales_order.rejection.created_at) if sales_order.rejection.present?
+      end
+    end
+
+    def draft_sync_date
+      SalesOrder.all.each do |sales_order|
+        if sales_order.manager_so_status_date.present?
+          draft_remote_request = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: sales_order.id, status: 'success').first
+          if draft_remote_request.present?
+            sales_order.update_attributes!(draft_sync_date: draft_remote_request.created_at)
+          end
+        end
+      end
+    end
+
+    def generate_review_questions
+      service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
       service.loop() do |x|
         question = x.get_column('Question')
         type = x.get_column('Type')
         weightage = x.get_column('Weightage')
         ReviewQuestion.where(question: question, question_type: type, weightage: weightage).first_or_create!
       end
+      end
 
-  end
-
-  def create_company_banks
-    service = Services::Shared::Spreadsheets::CsvImporter.new('company_banks.csv', folder)
-    errors = []
-    service.loop(nil) do |x|
-      begin
-        company = Company.find_by_remote_uid(x.get_column('bp_code'))
-        bank = Bank.find_by_code(x.get_column('bank_code'))
-        if company
-          company_bank = CompanyBank.where(remote_uid: x.get_column('internal_key')).first_or_initialize
-          if company_bank.new_record? || update_if_exists
-            company_bank.company = company
-            company_bank.bank = bank
-            company_bank.account_name = x.get_column('account_name')
-            company_bank.account_number = x.get_column('account_no')
-            company_bank.account_number_confirmation = x.get_column('account_no')
-            company_bank.branch = x.get_column('branch')
-            company_bank.mandate_id = x.get_column('mandate_id')
-            company_bank.metadata = x.get_row
-            company_bank.save!
+    def create_company_banks
+      service = Services::Shared::Spreadsheets::CsvImporter.new('company_banks.csv', folder)
+      errors = []
+      service.loop(nil) do |x|
+        begin
+          company = Company.find_by_remote_uid(x.get_column('bp_code'))
+          bank = Bank.find_by_code(x.get_column('bank_code'))
+          if company
+            company_bank = CompanyBank.where(remote_uid: x.get_column('internal_key')).first_or_initialize
+            if company_bank.new_record? || update_if_exists
+              company_bank.company = company
+              company_bank.bank = bank
+              company_bank.account_name = x.get_column('account_name')
+              company_bank.account_number = x.get_column('account_no')
+              company_bank.account_number_confirmation = x.get_column('account_no')
+              company_bank.branch = x.get_column('branch')
+              company_bank.mandate_id = x.get_column('mandate_id')
+              company_bank.metadata = x.get_row
+              company_bank.save!
+            end
           end
+        rescue => e
+          errors.push("#{e.inspect} - #{x.get_column('internal_key')}")
         end
-      rescue => e
-        errors.push("#{e.inspect} - #{x.get_column('internal_key')}")
       end
+      puts errors
     end
-    puts errors
-  end
 
-  def create_banks
-    service = Services::Shared::Spreadsheets::CsvImporter.new('banks.csv', folder)
-    errors = []
-    service.loop(nil) do |x|
-      begin
-        bank = Bank.where(code: x.get_column('Bank Code')).first_or_initialize
-        if bank.new_record? || update_if_exists
-          bank.name = x.get_column('Bank Name')
-          bank.country_code = x.get_column('Country Code')
-          bank.remote_uid = x.get_column('Absolute entry')
-          bank.save!
+    def create_banks
+      service = Services::Shared::Spreadsheets::CsvImporter.new('banks.csv', folder)
+      errors = []
+      service.loop(nil) do |x|
+        begin
+          bank = Bank.where(code: x.get_column('Bank Code')).first_or_initialize
+          if bank.new_record? || update_if_exists
+            bank.name = x.get_column('Bank Name')
+            bank.country_code = x.get_column('Country Code')
+            bank.remote_uid = x.get_column('Absolute entry')
+            bank.save!
+          end
+        rescue => e
+          errors.push("#{e.inspect} - #{x.get_column('Bank Code')}")
         end
-      rescue => e
-        errors.push("#{e.inspect} - #{x.get_column('Bank Code')}")
       end
+      puts errors
     end
-    puts errors
-  end
 
-  def update_purchase_order_material_status
-    PurchaseOrder.where(material_status: nil).update_all(material_status: 'Material Readiness Follow-Up')
-    PurchaseOrder.all.each do |po|
-      if po.material_pickup_requests.any?
-        partial = true
-        if po.rows.sum(&:get_pickup_quantity) <= 0
-          partial = false
+    def update_purchase_order_material_status
+      PurchaseOrder.where(material_status: nil).update_all(material_status: 'Material Readiness Follow-Up')
+      PurchaseOrder.all.each do |po|
+        if po.material_pickup_requests.any?
+          partial = true
+          if po.rows.sum(&:get_pickup_quantity) <= 0
+            partial = false
+          end
+          status = if 'Material Pickup'.in? po.material_pickup_requests.map(&:status)
+            partial ? 'Material Partially Pickup' : 'Material Pickedup'
+          elsif 'Material Delivered'.in? po.material_pickup_requests.map(&:status)
+            partial ? 'Material Partially Delivered' : 'Material Delivered'
+          end
+          po.update_attribute(:material_status, status)
+        else
+          po.update_attribute(:material_status, 'Material Readiness Follow-Up')
         end
-        status = if 'Material Pickup'.in? po.material_pickup_requests.map(&:status)
-                   partial ? 'Material Partially Pickup' : 'Material Pickedup'
-                 elsif 'Material Delivered'.in? po.material_pickup_requests.map(&:status)
-                   partial ? 'Material Partially Delivered' : 'Material Delivered'
-                 end
-        po.update_attribute(:material_status, status)
-      else
-        po.update_attribute(:material_status, 'Material Readiness Follow-Up')
-      end
-      po.save
-    end
-  end
-
-  def update_total_cost_in_sales_order
-    SalesOrder.all.each do |so|
-      so.order_total = so.calculated_total
-      so.invoice_total = so.invoices.map {|i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0}.inject(0) {|sum, x| sum + x}
-      so.save
-    end
-  end
-
-
-  def add_logistics_owner_to_companies
-    Company.all.each do |company|
-      service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: company.name)
-      company.logistics_owner = service.call
-      company.save(validate: false)
-    end
-  end
-
-  def update_mis_date_of_missing_orders
-    service = Services::Shared::Spreadsheets::CsvImporter.new('mis_date_for_missing_orders.csv', 'seed_files')
-    missing_so = []
-    service.loop(nil) do |x|
-      sales_order = SalesOrder.find_by_order_number(x.get_column('order number'))
-      if sales_order.present?
-        sales_order.update_attribute('mis_date', x.get_column('mis date', to_datetime: true))
-      else
-        missing_so.push(x.get_column('order number'))
+        po.save
       end
     end
-    puts '<--------------------------------------------------------------------------------------------->'
-    puts missing_so
-  end
 
-  def sup_emails
-    Company.acts_as_supplier.each do |supplier|
-      name = supplier.name
-      sup_code = supplier.remote_uid
-      email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
-                supplier.company_contacts.first.contact.email
-              elsif supplier.default_company_contact_id.present?
-                supplier.default_company_contact.contact.email
-              else
-                supplier.legacy_email
-              end
+    def update_total_cost_in_sales_order
+      SalesOrder.all.each do |so|
+        so.order_total = so.calculated_total
+        so.invoice_total = so.invoices.map { |i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0 }.inject(0) { |sum, x| sum + x }
+        so.save
+      end
     end
-  end
+
+
+    def add_logistics_owner_to_companies
+      Company.all.each do |company|
+        service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: company.name)
+        company.logistics_owner = service.call
+        company.save(validate: false)
+      end
+    end
+
+    def update_mis_date_of_missing_orders
+      service = Services::Shared::Spreadsheets::CsvImporter.new('mis_date_for_missing_orders.csv', 'seed_files')
+      missing_so = []
+      service.loop(nil) do |x|
+        sales_order = SalesOrder.find_by_order_number(x.get_column('order number'))
+        if sales_order.present?
+          sales_order.update_attribute('mis_date', x.get_column('mis date', to_datetime: true))
+        else
+          missing_so.push(x.get_column('order number'))
+        end
+      end
+      puts '<--------------------------------------------------------------------------------------------->'
+      puts missing_so
+    end
+
+    def sup_emails
+      Company.acts_as_supplier.each do |supplier|
+        name = supplier.name
+        sup_code = supplier.remote_uid
+        email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
+          supplier.company_contacts.first.contact.email
+        elsif supplier.default_company_contact_id.present?
+          supplier.default_company_contact.contact.email
+        else
+          supplier.legacy_email
+        end
+      end
+    end
 
     def create_missing_invoices
       kit_products = []

@@ -33,7 +33,6 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
     end
 
     excel_import.save
-
   end
 
 

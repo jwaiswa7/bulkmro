@@ -27,7 +27,7 @@ class Overseers::BaseController < ApplicationController
 	end
 
 	  def user_not_authorized
-      message = 'You are not authorized to perform this action.'
+     message = 'You are not authorized to perform this action.'
     	set_flash_message(message, :warning, now: false)
     	redirect_to(request.referrer || root_path)
     end
