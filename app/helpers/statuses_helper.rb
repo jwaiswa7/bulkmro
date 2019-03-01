@@ -33,6 +33,16 @@ module StatusesHelper
       'color-grey'
     when :'Cancelled'
       'color-grey'
+    when :'Material Readiness Follow-Up'
+      'color-light-blue'
+    when :'Material Pickedup'
+      'color-yellow'
+    when :'Material Partially Pickedup'
+      'color-light-yellow'
+    when :'Material Delivered'
+      'success'
+    when :'Material Partially Delivered'
+      'color-light-green'
 
     # defaults
     when :'Lead by O/S'

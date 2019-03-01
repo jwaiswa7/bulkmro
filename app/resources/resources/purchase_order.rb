@@ -93,7 +93,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         'PoDate' => remote_response['DocDate'],
         'PoType' => remote_response['Movement of Goods'],
         'DocEntry' => remote_response['DocEntry'],
-        'PoPaymentTerms' => '',
+        'PoPaymentTerms' => remote_response['PaymentGroupCode'],
         'ItemLine' => remote_rows_arr,
         'PoStatus' => remote_response['U_PO_Status'],
         'PoSupNum' => remote_response['CardCode'],
