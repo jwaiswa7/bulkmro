@@ -1,16 +1,16 @@
 class BaseIndex < Chewy::Index
   settings(
     analysis: {
-        "filter": {
-            "replace_and": {
-                "type": "pattern_replace",
-                "pattern": "(\s)+and(\s)",
-                "replacement": ""
+        filter: {
+            replace_and: {
+                type: 'pattern_replace',
+                pattern: '(\s)+and(\s)',
+                replacement: ''
             },
-            "whitespace_and_special_character_removal": {
-                "type": "pattern_replace",
-                "pattern": "[^A-Za-z0-9]+",
-                "replacement": ""
+            whitespace_and_special_character_removal: {
+                type: 'pattern_replace',
+                pattern: '[^A-Za-z0-9]+',
+                replacement: ''
             }
         },
         analyzer: {
@@ -60,8 +60,8 @@ class BaseIndex < Chewy::Index
         }
     },
     max_result_window: 5000000,
-    "number_of_replicas": '0',
-    "number_of_shards": '1'
+    'number_of_replicas': '0',
+    'number_of_shards': '1'
   )
 
   def self.fields
