@@ -5,7 +5,7 @@ class Company < ApplicationRecord
   include Mixins::CanBeActivated
   # include Mixins::HasUniqueName
   include Mixins::HasManagers
-  include  Mixins::HasPaymentCollections
+  include Mixins::HasPaymentCollections
 
   update_index('companies#company') { self }
   pg_search_scope :locate, against: [:name], associated_against: { account: [:name] }, using: { tsearch: { prefix: true } }
@@ -50,7 +50,7 @@ class Company < ApplicationRecord
 
   has_many :sales_receipts
   has_many :payment_collections
-  has_many :product_imports, :class_name => 'CustomerProductImport', inverse_of: :company
+  has_many :product_imports, class_name: 'CustomerProductImport', inverse_of: :company
   has_many :email_messages, dependent: :destroy
   has_one_attached :tan_proof
   has_one_attached :pan_proof
@@ -58,7 +58,7 @@ class Company < ApplicationRecord
   has_one_attached :logo
   has_one :payment_collection
   belongs_to :company_creation_request, optional: true
-  scope :with_invoices, -> {includes(:invoices).where.not(sales_invoices: { id: nil })}
+  scope :with_invoices, -> { includes(:invoices).where.not(sales_invoices: { id: nil }) }
 
   enum company_type: {
       proprietorship: 10,
@@ -156,7 +156,7 @@ class Company < ApplicationRecord
   end
 
   def amount_receivable
-    self.invoices.not_cancelled_invoices.map{|invoice| invoice.calculated_total_with_tax}.compact.sum
+    self.invoices.not_cancelled_invoices.map { |invoice| invoice.calculated_total_with_tax }.compact.sum
   end
 
   def to_contextual_s(product)

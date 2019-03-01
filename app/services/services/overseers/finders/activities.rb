@@ -45,6 +45,7 @@ class Services::Overseers::Finders::Activities < Services::Overseers::Finders::B
 
     indexed_records
   end
+
   def sort_definition
     { id: :desc }
   end

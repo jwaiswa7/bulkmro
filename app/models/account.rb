@@ -2,7 +2,7 @@ class Account < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasUniqueName
   include Mixins::CanBeSynced
-  include  Mixins::HasPaymentCollections
+  include Mixins::HasPaymentCollections
 
   pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
 
@@ -20,7 +20,7 @@ class Account < ApplicationRecord
   has_many :invoices, through: :inquiries
   has_many :sales_quotes, through: :inquiries, source: 'final_sales_quote'
   has_many :addresses, through: :companies
-  has_many :sales_receipts, :class_name => 'SalesReceipt'
+  has_many :sales_receipts, class_name: 'SalesReceipt'
   has_many :payment_collections
   enum account_type: {
       is_supplier: 10,

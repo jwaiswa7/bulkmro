@@ -137,7 +137,7 @@ class Overseers::ApplicationPolicy
   def export_for_logistics?
     false
       end
-class Scope
+  class Scope
     attr_reader :overseer, :scope
 
     def initialize(overseer, scope)

@@ -3,7 +3,7 @@ class ActivitiesIndex < BaseIndex
   acitity_types = Activity.activity_types
   define_type Activity.with_includes do
     field :id, type: 'integer'
-    field :created_by_id, value: ->  (record) { record.created_by.id.to_s if record.created_by.present? }
+    field :created_by_id, value: -> (record) { record.created_by.id.to_s if record.created_by.present? }
     field :created_by, value: -> (record) { record.created_by.to_s }, analyzer: 'substring'
     field :account_id, value: -> (record) { record.account.id if record.account.present? }
     field :activity_date, value: -> (record) { record.activity_date }, analyzer: 'substring'

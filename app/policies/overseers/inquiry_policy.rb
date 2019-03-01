@@ -126,6 +126,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def new_freight_request?
     !record.freight_request.present? && !logistics?
+
   end
 
   def preview_stock_po_request?
