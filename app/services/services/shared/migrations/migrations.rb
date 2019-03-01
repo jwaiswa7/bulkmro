@@ -2534,20 +2534,20 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts missing_so
   end
 
-# SalesOrder.where(:manager_so_status_date => nil).count
-  def sup_emails
-    Company.acts_as_supplier.each do |supplier|
-      name = supplier.name
-      sup_code = supplier.remote_uid
-      email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
-                supplier.company_contacts.first.contact.email
-              elsif supplier.default_company_contact_id.present?
-                supplier.default_company_contact.contact.email
-              else
-                supplier.legacy_email
-              end
+    # SalesOrder.where(:manager_so_status_date => nil).count
+    def sup_emails
+      Company.acts_as_supplier.each do |supplier|
+        name = supplier.name
+        sup_code = supplier.remote_uid
+        email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
+                  supplier.company_contacts.first.contact.email
+                elsif supplier.default_company_contact_id.present?
+                  supplier.default_company_contact.contact.email
+                else
+                  supplier.legacy_email
+                end
+      end
     end
-  end
 
   def add_manager_approved_date
     SalesOrder.approved.each do |sales_order|
@@ -2562,19 +2562,19 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def draft_sync_date
-    SalesOrder.all.each do |sales_order|
-      if sales_order.manager_so_status_date.present?
-        draft_remote_request = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: sales_order.id, status: 'success').first
-        if draft_remote_request.present?
-          sales_order.update_attributes!(draft_sync_date: draft_remote_request.created_at)
+    def draft_sync_date
+      SalesOrder.all.each do |sales_order|
+        if sales_order.manager_so_status_date.present?
+          draft_remote_request = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: sales_order.id, status: 'success').first
+          if draft_remote_request.present?
+            sales_order.update_attributes!(draft_sync_date: draft_remote_request.created_at)
+          end
         end
       end
     end
-  end
 
-  def generate_review_questions
-    service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
+    def generate_review_questions
+      service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
 
     service.loop() do |x|
       question = x.get_column('Question')
@@ -2631,26 +2631,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts errors
   end
 
-  def update_purchase_order_material_status
-    PurchaseOrder.where(material_status: nil).update_all(material_status: 'Material Readiness Follow-Up')
-    PurchaseOrder.all.each do |po|
-      if po.material_pickup_requests.any?
-        partial = true
-        if po.rows.sum(&:get_pickup_quantity) <= 0
-          partial = false
+    def update_purchase_order_material_status
+      PurchaseOrder.where(material_status: nil).update_all(material_status: 'Material Readiness Follow-Up')
+      PurchaseOrder.all.each do |po|
+        if po.material_pickup_requests.any?
+          partial = true
+          if po.rows.sum(&:get_pickup_quantity) <= 0
+            partial = false
+          end
+          status = if 'Material Pickup'.in? po.material_pickup_requests.map(&:status)
+                     partial ? 'Material Partially Pickup' : 'Material Pickedup'
+                   elsif 'Material Delivered'.in? po.material_pickup_requests.map(&:status)
+                     partial ? 'Material Partially Delivered' : 'Material Delivered'
+                   end
+          po.update_attribute(:material_status, status)
+        else
+          po.update_attribute(:material_status, 'Material Readiness Follow-Up')
         end
-        status = if 'Material Pickup'.in? po.material_pickup_requests.map(&:status)
-                   partial ? 'Material Partially Pickup' : 'Material Pickedup'
-                 elsif 'Material Delivered'.in? po.material_pickup_requests.map(&:status)
-                   partial ? 'Material Partially Delivered' : 'Material Delivered'
-                 end
-        po.update_attribute(:material_status, status)
-      else
-        po.update_attribute(:material_status, 'Material Readiness Follow-Up')
+        po.save
       end
-      po.save
     end
-  end
 
   def update_total_cost_in_sales_order
     SalesOrder.all.each do |so|
@@ -2684,19 +2684,19 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts missing_so
   end
 
-  def sup_emails
-    Company.acts_as_supplier.each do |supplier|
-      name = supplier.name
-      sup_code = supplier.remote_uid
-      email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
-                supplier.company_contacts.first.contact.email
-              elsif supplier.default_company_contact_id.present?
-                supplier.default_company_contact.contact.email
-              else
-                supplier.legacy_email
-              end
+    def sup_emails
+      Company.acts_as_supplier.each do |supplier|
+        name = supplier.name
+        sup_code = supplier.remote_uid
+        email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
+                  supplier.company_contacts.first.contact.email
+                elsif supplier.default_company_contact_id.present?
+                  supplier.default_company_contact.contact.email
+                else
+                  supplier.legacy_email
+                end
+      end
     end
-  end
 
   def create_missing_invoices
     kit_products = []
@@ -2871,27 +2871,28 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts 'Created Or Updated Invoices', created_or_updated_invoices.join(',')
   end
 
-  def missing_payment_options
-    PaymentOption.where(active: nil).update_all(active: true)
-    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_payment_options.csv', folder)
-    service.loop(limit = nil) do |x|
-      payment_option = PaymentOption.where(remote_uid: x.get_column('group_code')).first_or_initialize
-      if payment_option.new_record?
-        payment_option_name = PaymentOption.find_by_name(x.get_column('value'))
-        unless payment_option_name.present?
-          payment_option.name = x.get_column('value')
-          payment_option.remote_uid = x.get_column('group_code', nil_if_zero: true)
-          payment_option.credit_limit = x.get_column('credit_limit').to_f
-          payment_option.general_discount = x.get_column('general_discount').to_f
-          payment_option.load_limit = x.get_column('load_limit').to_f
-          payment_option.legacy_metadata = x.get_row
-          payment_option.active = false
-          payment_option.save!
+    def missing_payment_options
+      PaymentOption.where(active: nil).update_all(active: true)
+      service = Services::Shared::Spreadsheets::CsvImporter.new('missing_payment_options.csv', folder)
+      service.loop(limit = nil) do |x|
+        payment_option = PaymentOption.where(remote_uid: x.get_column('group_code')).first_or_initialize
+        if payment_option.new_record?
+          payment_option_name = PaymentOption.find_by_name(x.get_column('value'))
+          unless payment_option_name.present?
+            payment_option.name = x.get_column('value')
+            payment_option.remote_uid = x.get_column('group_code', nil_if_zero: true)
+            payment_option.credit_limit = x.get_column('credit_limit').to_f
+            payment_option.general_discount = x.get_column('general_discount').to_f
+            payment_option.load_limit = x.get_column('load_limit').to_f
+            payment_option.legacy_metadata = x.get_row
+            payment_option.active = false
+            payment_option.save!
+          end
+        else
+          payment_option.update_attributes(name: x.get_column('value'))
         end
-      else
-        payment_option.update_attributes(name: x.get_column('value'))
       end
     end
-  end
+
 
 end
