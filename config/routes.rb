@@ -468,6 +468,7 @@ Rails.application.routes.draw do
       end
       scope module: 'accounts' do
         resources :companies
+        resources :sales_invoices, only: %i[show index]
       end
     end
 
