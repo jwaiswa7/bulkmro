@@ -500,6 +500,7 @@ Rails.application.routes.draw do
             get 'ageing_report'
           end
         end
+        resources :sales_invoices, only: %i[show index]
       end
     end
 
