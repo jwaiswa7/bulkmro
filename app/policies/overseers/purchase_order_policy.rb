@@ -58,10 +58,10 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def update_logistics_owner?
-    admin?
+    admin? || logistics?
   end
 
   def update_logistics_owner_for_pickup_requests?
-    admin?
+    admin? || logistics?
   end
 end

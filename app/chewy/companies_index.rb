@@ -2,7 +2,7 @@ class CompaniesIndex < BaseIndex
   define_type Company.with_includes do
     field :id, type: 'integer'
     field :account_id, value: -> (record) { record.account_id }
-    field :name, value: -> (record) { record.name }, analyzer: 'substring'
+    field :name, value: -> (record) { record.name }, analyzer: 'fuzzy_substring'
     field :account, value: -> (record) { record.account.to_s }, analyzer: 'substring'
     field :addresses, value: -> (record) { record.addresses.size }, type: 'integer'
     field :contacts, value: -> (record) { record.contacts.size }, type: 'integer'
