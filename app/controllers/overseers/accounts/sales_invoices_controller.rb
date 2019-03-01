@@ -15,7 +15,7 @@ class Overseers::Accounts::SalesInvoicesController < Overseers::Accounts::BaseCo
         service = Services::Overseers::Finders::SalesInvoices.new(params.merge(base_filter), current_overseer)
         service.call
         @indexed_sales_invoices = service.indexed_records
-        @sales_invoices = service.records.try(:reverse)
+        @sales_invoices = service.records
       end
     end
   end
