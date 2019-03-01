@@ -1,7 +1,7 @@
 json.data (@companies) do |company|
   json.array! [
                   [
-                      if policy(company).show?;
+                      if policy(company).show?
                         row_action_button(ageing_report_overseers_company_sales_invoices_path(company), 'eye', 'View Company', 'info', :_blank)
                       end
                   ].join(' '),

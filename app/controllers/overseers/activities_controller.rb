@@ -129,7 +129,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
               :last_name,
               :address,
               :account_type,
-            ],
+          ],
           attachments: []
       )
     end

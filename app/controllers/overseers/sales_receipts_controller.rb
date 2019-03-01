@@ -1,4 +1,4 @@
-class Overseers::SalesReceiptsController  < Overseers::BaseController
+class Overseers::SalesReceiptsController < Overseers::BaseController
   before_action :set_sales_receipts, only: [:show]
 
   def index
@@ -16,7 +16,7 @@ class Overseers::SalesReceiptsController  < Overseers::BaseController
 
   private
 
-  def set_sales_receipts
-    @sales_receipt ||= SalesReceipt.find(params[:id])
-  end
+    def set_sales_receipts
+      @sales_receipt ||= SalesReceipt.find(params[:id])
+    end
 end
