@@ -123,7 +123,8 @@ class Overseers::ApplicationPolicy
   end
 
   def allow_activity_export?
-    developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
+    true
+    # developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
   end
 
   def export_rows?
