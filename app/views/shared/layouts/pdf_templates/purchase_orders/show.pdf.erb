@@ -76,7 +76,7 @@
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span>Payment Terms</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span><%= locals[:metadata][:PoPaymentTerms] %></span></td>
+                  <span><%= record.payment_option.to_s %></span></td>
               </tr>
               </tbody>
             </table>
