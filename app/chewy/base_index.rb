@@ -2,6 +2,11 @@ class BaseIndex < Chewy::Index
   settings(
     analysis: {
         "filter": {
+            "replace_and": {
+                "type": "pattern_replace",
+                "pattern": "(\s)+and(\s)",
+                "replacement": ""
+            },
             "whitespace_and_special_character_removal": {
                 "type": "pattern_replace",
                 "pattern": "[^A-Za-z0-9]+",
@@ -22,7 +27,7 @@ class BaseIndex < Chewy::Index
             },
             fuzzy_substring: {
                 tokenizer: 'fuzzy_substring',
-                filter: %w(lowercase whitespace_and_special_character_removal)
+                filter: %w(replace_and lowercase whitespace_and_special_character_removal)
             },
             substring: {
                 tokenizer: 'substring',
