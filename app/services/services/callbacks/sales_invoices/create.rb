@@ -6,12 +6,14 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
       if sales_order.present?
         if !SalesInvoice.find_by_invoice_number(params['increment_id']).present?
           sales_order.invoices.where(invoice_number: params['increment_id']).first_or_create! do |invoice|
-            invoice.assign_attributes(status: 1, metadata: params, mis_date: params['created_at'])
+            due_date = Time.now + (sales_order.inquiry.payment_option.get_days).days
+            invoice.assign_attributes(status: 1, metadata: params, mis_date: params['created_at'], :due_date => due_date)
 
             if params['is_kit'].to_i == 1
               sales_order_row = sales_order.sales_order_rows.first
 
               invoice.rows.where(sku: sales_order_row.product.sku).first_or_initialize do |row|
+
                 qty_kit = params['qty_kit'].to_i
                 unit_price_kit = params['unitprice_kit'].to_f
 
@@ -63,6 +65,7 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
                 end
               end
             end
+            invoice.assign_attributes(:calculated_total => invoice.calculated_total,:calculated_total_with_tax => invoice.calculated_total_tax)
           end
 
           sales_order.invoice_total = sales_order.invoices.map{ |i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0 }.inject(0){ |sum, x| sum + x }

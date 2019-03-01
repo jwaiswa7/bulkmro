@@ -42,7 +42,15 @@
           B. Partners
         </a>
         <div class="dropdown-menu">
-          <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, policy(:account).index? %>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Accounts / Aliases</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, policy(:account).index? %>
+              <%= nav_dropdown_item 'Accounts Receivable', payment_collection_overseers_accounts_path, policy(:account).payment_collection? %>
+              <%= nav_dropdown_item 'Ageing Report', ageing_report_overseers_accounts_path, policy(:account).payment_collection? %>
+              <%= nav_dropdown_item 'Receipts', overseers_sales_receipts_path, policy(:account).payment_collection? %>
+            </ul>
+          </div>
           <%= nav_dropdown_item 'Companies', overseers_companies_path, policy(:company).index? %>
           <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
           <%= nav_dropdown_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
@@ -120,6 +128,7 @@
               <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
             </ul>
           </div>
+          <%= nav_dropdown_item 'Sales Receipt', overseers_sales_receipts_path, policy(:sales_receipt).index? %>
           <div class="dropdown-divider"></div>
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Freight Requests</a>
@@ -219,6 +228,7 @@
             <% Report.all.each do |report| %>
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
+            <%= nav_dropdown_item "BI Sample", bi_report_overseers_reports_path, policy(:report).bi_report? %>
           </div>
         </li>
       <% end %>

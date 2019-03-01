@@ -14,6 +14,7 @@ class Services::Overseers::Finders::Activities < Services::Overseers::Finders::B
       indexed_records = indexed_records.filter(@base_filter)
     end
 
+
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -36,6 +37,7 @@ class Services::Overseers::Finders::Activities < Services::Overseers::Finders::B
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
+
 
     if @base_filter.present?
       indexed_records = indexed_records.filter(@base_filter)
