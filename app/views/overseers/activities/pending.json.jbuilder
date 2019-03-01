@@ -46,6 +46,26 @@ json.data (@activities) do |activity|
               ]
 end
 
+json.columnFilters [
+                       [],
+                       Overseer.outside.map{|value| {"label" => value.name.to_s, "value" => value.id}}.as_json,
+                       [],
+                       [{ "source": autocomplete_overseers_accounts_path }],
+                       [{ "source": autocomplete_overseers_companies_path }],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [{ "source": autocomplete_overseers_contacts_path }],
+                       Activity.purposes.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       Activity.activity_types.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       [],
+                       [],
+                       [],
+                       [],
+
+                   ]
+
 json.recordsTotal @activities.model.all.count
-json.recordsFiltered @activities.total_count
+json.recordsFiltered @indexed_activities.total_count
 json.draw params[:draw]

@@ -2,12 +2,21 @@ class Overseers::ActivitiesController < Overseers::BaseController
   before_action :set_activity, only: [:edit, :update, :approve, :reject]
 
   def index
-    @activities = ApplyDatatableParams.to(Activity.all.includes(:created_by, :overseers).approved, params)
+    service = Services::Overseers::Finders::Activities.new(params)
+    service.call
+
+     # @activities = ApplyDatatableParams.to(Activity.all.includes(:created_by, :overseers).approved, params)
+    @indexed_activities = service.indexed_records
+    @activities = service.records
     authorize @activities
   end
 
   def pending
     @activities = ApplyDatatableParams.to(Activity.all.includes(:created_by, :overseers).not_approved.not_rejected, params)
+    service = Services::Overseers::Finders::Activities.new(params)
+    service.call
+    @indexed_activities = service.indexed_records
+    @activities = service.records
     authorize @activities
   end
 
