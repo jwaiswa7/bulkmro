@@ -12,10 +12,13 @@ class SalesInvoicesIndex < BaseIndex
     field :sales_order_number_string, value: -> (record) { record.sales_order.order_number.to_s if record.sales_order.present? }, analyzer: 'substring'
     field :invoice_number_string, value: -> (record) { record.invoice_number.to_s }, analyzer: 'substring'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
+    field :account_id, value: -> (record) { record.inquiry.company.account_id if record.inquiry.present? }, type: 'integer'
+    field :account_string, value: -> (record) { record.inquiry.company.account.to_s if record.inquiry.present? }, analyzer: 'substring'
+    field :company_id, value: -> (record) { record.inquiry.company.id if record.inquiry.present? }, type: 'integer'
+    field :company_string, value: -> (record) { record.inquiry.company.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] }
     field :status_key, value: -> (record) { statuses[record.status] }, type: 'integer'
-    field :company_id, value: -> (record) { record.inquiry.company.id if record.inquiry.present? }, type: 'integer'
     field :legacy, value: -> (record) { record.is_legacy }
     field :inside_sales_owner_id, value: -> (record) { record.inquiry.inside_sales_owner.id if record.inquiry.present? && record.inquiry.inside_sales_owner.present? }
     field :inside_sales_owner, value: -> (record) { record.inquiry.inside_sales_owner.to_s if record.inquiry.present? }, analyzer: 'substring'
