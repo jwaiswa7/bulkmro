@@ -110,7 +110,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       ActiveRecord::Base.transaction do
         if @invoice_request.status_changed?
           @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{@invoice_request.status}", invoice_request: @invoice_request, overseer: current_overseer)
-          if @invoice_request.status != 'GRPO Request Rejected'
+          if @invoice_request.status != 'GRPO Request Rejected' || @invoice_request.status != 'AP Invoice Rejected'
             @invoice_request.rejection_reason = nil
             @invoice_request.other_rejection_reason = nil
           end
