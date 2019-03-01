@@ -16,4 +16,8 @@ class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
   def completed?
     index?
   end
+
+  def edit?
+    admin? || accounts?
+  end
 end
