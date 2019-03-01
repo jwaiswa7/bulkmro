@@ -117,17 +117,6 @@ class InvoiceRequest < ApplicationRecord
     "#{title} Request"
   end
 
-  def grouped_status
-    grouped_status = {'Common': [], 'Rejected with reason': []}
-    InvoiceRequest.statuses.map { |status, v|
-        if v >= 80
-          grouped_status[:'Rejected with reason'] << status
-        else
-          grouped_status[:'Common'] << status
-        end}
-    grouped_status
-  end
-
   def display_reason(type = nil)
     if type.present?
       (self.status == 'GRPO Request Rejected' && self.rejection_reason == 'Others') ? '' : 'd-none'
