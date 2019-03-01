@@ -25,7 +25,7 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
     indexed_records = indexed_records.aggregations(aggregate_by_status('status_key'))
 
     if @base_filter.present?
-      indexed_records =  indexed_records.filter(@base_filter)
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     indexed_records
@@ -55,7 +55,7 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
     indexed_records = indexed_records.aggregations(aggregate_by_status('status_key'))
 
     if @base_filter.present?
-      indexed_records =  indexed_records.filter(@base_filter)
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     indexed_records
