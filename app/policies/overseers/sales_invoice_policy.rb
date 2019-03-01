@@ -40,4 +40,8 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def update_pod?
     edit_pod?
   end
+
+  def show_pending_ap_invoice_queue?
+    index? && (admin? || accounts?)
+  end
 end
