@@ -3,6 +3,7 @@
 <% provide :can_be_directly_export_by_daterange, true %>
 <% provide :can_be_directly_created, true %>
 <% provide :wrap_whitespace, true %>
+
 <% provide :heading_buttons do %>
   <% if policy(:activity).add_to_inquiry? %>
     <div class="mr-2 d-inline-block export_daterange_wrapper">
@@ -41,42 +42,45 @@
       </div>
     <% end %>
   </th>
-  <th class="desktop no-sort" data-name="created_by_id">Created By</th>
-  <th class="desktop no-sort" data-name="account_id">Account</th>
-  <th class="desktop no-sort" data-name="company_id">Company</th>
-  <th class="desktop no-sort text-right">Is Supplier</th>
-  <th class="desktop no-sort text-right">Is Customer</th>
-  <th class="desktop no-sort">Company Creation Request Status</th>
-  <th class="desktop no-sort text-right">Inquiry</th>
-  <th class="desktop no-sort" data-name="contact_id">Contact Name</th>
-  <th class="desktop no-sort" data-name="purpose">Purpose</th>
-  <th class="desktop no-sort">Type</th>
-  <th class="desktop no-sort">Misc Expenses</th>
-  <th class="desktop no-sort text-right" data-name="activity_date">Activity Date</th>
-  <th class="desktop no-sort">Points Discussed</th>
-  <th class="desktop no-sort">Actions Required</th>
-  <th class="desktop text-right" data-name="created_at">Created</th>
-<% end %>
 
+  <th class="no-sort" data-name="created_by_id">Created By</th>
+  <th class="no-sort desktop text-right" data-name="activity_date">Activity Date</th>
+  <th class="no-sort" data-name="account_id">Account</th>
+  <th class="no-sort" data-name="company_id">Company</th>
+  <th class="no-sort desktop text-right">Is Supplier</th>
+  <th class="no-sort desktop text-right">Is Customer</th>
+  <th class="no-sort">Company Creation Request Status</th>
+  <th class="no-sort text-right" data-name="inquiry_number">Inquiry</th>
+  <th class="no-sort">Commercial Status</th>
+  <th class="no-sort" data-name="contact_id">Contact Name</th>
+  <th data-name="purpose_id">Purpose</th>
+  <th data-name="activity_type_id">Type</th>
+  <th class="no-sort text-right">Misc. Expenses</th>
+  <th class="no-sort">Points Discussed</th>
+  <th class="no-sort">Actions Required</th>
+  <th data-name="activity_date">Date</th>
+  <th class="desktop text-right">Created</th>
+<% end %>
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
   <td data-filter="dropdown"></td>
+  <td data-filter="false"></td>
   <td data-filter="ajax"></td>
   <td data-filter="ajax"></td>
+  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="ajax"></td>
   <td data-filter="dropdown"></td>
+  <td data-filter="dropdown"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
-  <td data-filter="daterange"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
 <% end %>
-
 <div class="col-lg-12">
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>

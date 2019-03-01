@@ -103,7 +103,6 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def payment_collection_send_mail
-
   end
 
   private

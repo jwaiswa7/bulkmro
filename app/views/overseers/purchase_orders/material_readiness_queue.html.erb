@@ -8,7 +8,7 @@
 <% content_for(:heading_buttons) do %>
   <% if policy(:purchase_order).update_logistics_owner? %>
     <div class="mr-2 float-left update_logistics_owner_wrapper">
-      <%= select_tag :logistics_owner, options_for_select(Overseer.logistics.collect{|o| [o.full_name.to_s, o.id]}), class: 'form-control select2-wrap update_logistics_owner_wrapper', include_blank: 'Select a logistics owner', id: 'logistics_owner_select' %>
+      <%= select_tag :logistics_owner, options_for_select(Overseer.logistics.collect {|o| [o.full_name.to_s, o.id]}), class: 'form-control select2-wrap update_logistics_owner_wrapper', include_blank: 'Select a logistics owner', id: 'logistics_owner_select' %>
     </div>
     <button type="button" id="update_logistics_owner" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_logistics_owner_wrapper">
       <i class="fal fa-plus mr-1"></i>Update Logistics Owner
@@ -32,7 +32,7 @@
     <th class="no-sort desktop text-right" data-name="so_date">Sales Order Date</th>
     <th class="no-sort desktop text-right" data-name="committed_date">Committed Date to Customer</th>
     <th class="no-sort desktop text-right" data-name="supplier_po_number">Supplier PO #</th>
-    <th class="no-sort desktop text-right" data-name="supplier_po_type">Supplier PO Type</th>
+    <th class="no-sort desktop text-right" data-name="po_type">Supplier PO Type</th>
     <th class="no-sort desktop text-right" data-name="supplier_po_date">Supplier PO Date</th>
     <th class="no-sort desktop" data-name="supplier_id">Supplier Name</th>
     <th class="no-sort desktop" data-toggle="tooltip" title="Inside Sales & Procurement" data-name="inside_sales_executive">IS&P</th>
@@ -52,7 +52,7 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="false"></td>
+    <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
     <td data-filter="ajax"></td>
     <td data-filter="dropdown"></td>
@@ -63,7 +63,6 @@
     <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>

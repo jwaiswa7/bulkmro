@@ -79,7 +79,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
   def load_alternatives
     authorize @excel_import
     respond_to do |format|
-      format.html {render :partial => "load_alternatives", locals: { row_object: InquiryImportRow.find(params[:row_object]), page: params[:page], item_index: params[:index] }}
+      format.html { render partial: 'load_alternatives', locals: { row_object: InquiryImportRow.find(params[:row_object]), page: params[:page], item_index: params[:index] } }
     end
   end
 

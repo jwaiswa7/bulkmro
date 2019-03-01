@@ -5,13 +5,13 @@ class Services::Overseers::Finders::SalesReceipts < Services::Overseers::Finders
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-                      else
-                        super
-                      end
+      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    else
+      super
+    end
 
     if @base_filter.present?
-      indexed_records=  indexed_records.filter(@base_filter)
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
 
@@ -27,14 +27,13 @@ class Services::Overseers::Finders::SalesReceipts < Services::Overseers::Finders
   end
 
   def perform_query(query_string)
-
-    indexed_records = index_klass.query({multi_match: {query: query_string, operator: 'and', fields: index_klass.fields}}).order(sort_definition)
+    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: index_klass.fields }).order(sort_definition)
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
     end
     if @base_filter.present?
-      indexed_records=  indexed_records.filter(@base_filter)
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
 

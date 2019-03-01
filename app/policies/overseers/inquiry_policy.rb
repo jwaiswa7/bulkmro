@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def index?
     manager_or_sales? || cataloging? || logistics?
@@ -118,18 +116,28 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def resync_inquiry_products?
-    record.persisted? && developer? && record.inquiry_products.present?
+    developer? && record.inquiry_products.present?
   end
 
   def resync_unsync_inquiry_products?
-    record.persisted? && developer? && record.inquiry_products.present?
+    developer? && record.inquiry_products.present?
   end
 
 
   def new_freight_request?
     !record.freight_request.present? && !logistics?
-      end
-class Scope
+
+  end
+
+  def preview_stock_po_request?
+    developer? || sales? || admin?
+  end
+
+  def create_purchase_orders_requests?
+    developer? || sales? || admin?
+  end
+
+  class Scope
     attr_reader :overseer, :scope
 
     def initialize(overseer, scope)

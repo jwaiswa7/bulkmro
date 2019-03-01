@@ -20,7 +20,7 @@ class Activity < ApplicationRecord
   accepts_nested_attributes_for :company_creation_request, reject_if: lambda { |attributes| attributes['name'].blank? }, allow_destroy: true
 
   has_many_attached :attachments
-  scope :with_includes, -> {includes(:company,:contact,:inquiry)}
+  scope :with_includes, -> { includes(:company, :contact, :inquiry) }
   enum company_type: {
       is_supplier: 10,
       is_customer: 20
@@ -47,6 +47,7 @@ class Activity < ApplicationRecord
       'Pending Approval': 20,
       'Rejected': 30
   }
+  scope :with_includes, -> { includes(:created_by, :company, :inquiry, :contact) }
 
   scope :not_meeting, -> { where.not(activity_type: activity_types[:'Meeting']) }
   scope :meeting, -> { where(activity_type: activity_types[:'Meeting']) }

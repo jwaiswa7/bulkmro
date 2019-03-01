@@ -41,12 +41,16 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     record.purchase_order.blank? && (logistics? || admin?)
   end
 
+  def can_reject_stock_po?
+    record.purchase_order.blank? && (manager? || admin?)
+  end
+
   def can_update_rejected_po_requests?
     record.purchase_order.present? && (manager_or_sales?) && record.status == 'Rejected'
   end
 
   def can_process_amended_po_requests?
-    record.purchase_order.present? && (logistics? || admin? || manager_or_sales? ) && record.amending?
+    record.purchase_order.present? && (logistics? || admin? || manager_or_sales?) && record.amending?
   end
 
   def show_payment_request?
@@ -62,7 +66,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def sending_po_to_supplier_new_email_message?
-    record.status == 'PO Created' && record.purchase_order && record.contact.present?
+    (record.status == 'PO Created' || record.stock_status == 'Stock Supplier PO Created') && record.purchase_order && record.contact.present?
   end
 
   def sending_po_to_supplier_create_email_message?
@@ -70,15 +74,27 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def dispatch_supplier_delayed_new_email_message?
-    record.status == 'PO Created' && (admin? || logistics?) && record.purchase_order && record.contact.present?
+    (record.status == 'PO Created' || record.stock_status == 'Stock Supplier PO Created') && (admin? || logistics?) && record.purchase_order && record.contact.present?
   end
 
   def dispatch_supplier_delayed_create_email_message?
     dispatch_supplier_delayed_new_email_message?
   end
 
+  def pending_stock_approval?
+    index? && (manager? || admin?)
+  end
+
+  def stock?
+    index? && (sales? || admin?)
+  end
+
+  def completed_stock?
+    index? && (logistics? || admin?)
+  end
+
   def material_received_in_bm_warehouse_new_email_msg?
-    record.status == 'PO Created' && (admin? || logistics?) && record.purchase_order && record.contact.present? && record.purchase_order.material_status.present?
+    (record.status == 'PO Created' || record.stock_status == 'Stock Supplier PO Created') && (admin? || logistics?) && record.purchase_order && record.contact.present? && record.purchase_order.material_status.present?
   end
 
   def material_received_in_bm_warehouse_create_email_msg?
