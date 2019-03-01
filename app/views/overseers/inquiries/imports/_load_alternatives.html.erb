@@ -1,0 +1,14 @@
+<%= simple_form_for(@excel_import, url: create_failed_skus_overseers_inquiry_import_path, :html => {:class => 'load-approved-alternatives', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <%= f.simple_fields_for :rows, f.object.rows.reverse do |row| %>
+    <div id="load-approved-alternatives">
+      <%= render 'approved_alternatives', row_object: row.object, row:row, page: page %>
+    </div>
+  <% end %>
+<% end %>
+
+
+
+
+
+
+

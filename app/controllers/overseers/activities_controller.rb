@@ -5,7 +5,6 @@ class Overseers::ActivitiesController < Overseers::BaseController
     service = Services::Overseers::Finders::Activities.new(params)
     service.call
 
-    # @activities = ApplyDatatableParams.to(Activity.all.includes(:created_by, :overseers).approved, params)
     @indexed_activities = service.indexed_records
     @activities = service.records
     authorize @activities

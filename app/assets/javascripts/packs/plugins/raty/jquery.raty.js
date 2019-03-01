@@ -12,7 +12,7 @@
 ;
 (function($) {
   'use strict';
- console.log('JS is called')
+ console.log('JS is called');
   var methods = {
     init: function(options) {
       return this.each(function() {
