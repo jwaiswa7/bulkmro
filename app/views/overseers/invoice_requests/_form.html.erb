@@ -43,11 +43,11 @@
         </div>
       </div>
 
-      <div class="card-body pb-0">
-        <div class="mt-3">
+      <div class="card-body pt-0 pb-0">
+        <div class="">
           <% if @mpr.present? %>
           <div>
-            <h6 class="text-uppercase text-black-50 mb-1">Material Pickup Request Details</h6>
+            <h6 class="text-uppercase text-black-50 mb-1 mt-3">Material Pickup Request Details</h6>
 
               <div class="form-row">
               <% if @mpr.purchase_order.present? %>
@@ -131,7 +131,7 @@
           <% end %>
         </div>
 
-        <div class="mt-3 card-alternative">
+        <div class=" card-alternative">
           <div class="form-row">
           <div class="col-6">
             <%= f.association :sales_order, disabled: f.object.sales_order.present?, collection: f.object.inquiry.sales_orders.where.not(:order_number => nil), label_method: :to_s, include_blank: "Type Order Number", input_html: {class: 'select2-single select2-wrap-text', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Order Number", :selected => [(@sales_order.present? ? @sales_order.id : f.object.sales_order_id)] %>
@@ -193,9 +193,9 @@
         </div>
         </div>
 
-        <div class="mt-3">
+        <div class="">
           <% if @products_list.present? %>
-            <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
+            <h6 class="text-uppercase text-black-50 mb-1 mt-3">Product Details</h6>
             <div class="card mb-2">
               <div class="card-body">
                 <div class="chats">
