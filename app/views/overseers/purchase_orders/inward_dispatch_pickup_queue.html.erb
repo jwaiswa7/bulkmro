@@ -9,7 +9,7 @@
 <% end %>
 
 <% provide :heading_buttons do %>
-  <% if policy(:material_pickup_request).update_logistics_owner_for_pickup_requests? && !(action_name == 'material_delivered_queue') %>
+  <% if policy(:inward_dispatch).update_logistics_owner_for_pickup_requests? && !(action_name == 'material_delivered_queue') %>
     <div class="mr-2 float-left update_logistics_owner_wrapper">
       <%= select_tag :logistics_owner, options_for_select(Overseer.logistics.collect {|o| [o.full_name.to_s, o.id]}), class: 'form-control select2-wrap update_logistics_owner_wrapper', include_blank: 'Select a logistics owner', id: 'logistics_owner_select' %>
     </div>
@@ -28,7 +28,7 @@
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all">
-      <% if policy(:material_pickup_request).update_logistics_owner_for_pickup_requests? && (action_name != 'material_delivered_queue') %>
+      <% if policy(:inward_dispatch).update_logistics_owner_for_pickup_requests? && (action_name != 'material_delivered_queue') %>
         <div class="custom-control custom-checkbox">
           <input type="checkbox" class="custom-control-input" name="all_pickup_requests" id="all_pickup_requests">
           <label class="custom-control-label" for="all_pickup_requests">Select All</label>

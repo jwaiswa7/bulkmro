@@ -158,14 +158,14 @@ class PurchaseOrder < ApplicationRecord
 
 
   def update_material_status
-    if self.material_pickup_requests.any?
+    if self.inward_dispatches.any?
       partial = true
       if self.rows.sum(&:get_pickup_quantity) <= 0
         partial = false
       end
-      if 'Material Pickup'.in? self.material_pickup_requests.map(&:status)
+      if 'Material Pickup'.in? self.inward_dispatches.map(&:status)
         status = partial ? 'Material Partially Pickedup' : 'Material Pickedup'
-      elsif 'Material Delivered'.in? self.material_pickup_requests.map(&:status)
+      elsif 'Material Delivered'.in? self.inward_dispatches.map(&:status)
         status = partial ? 'Material Partially Delivered' : 'Material Delivered'
       end
       self.update_attribute(:material_status, status)

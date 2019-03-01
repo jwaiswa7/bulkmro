@@ -41,11 +41,11 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     (record.rows.sum(&:get_pickup_quantity) > 0) && record.followup_date.present?
   end
 
-  def material_pickup_queue?
+  def inward_dispatch_pickup_queue?
     edit?
   end
 
-  def material_delivered_queue?
+  def inward_dispatch_delivered_queue?
     edit?
   end
 

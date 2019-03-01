@@ -36,17 +36,24 @@ class InwardDispatch < ApplicationRecord
   }
 
   enum logistics_partners: {
-      'Aramex': 10,
-      'FedEx': 11,
-      'Spoton': 12,
-      'Safex': 13,
-      'Professional Couriers': 14,
-      'DTDC': 15,
-      'Delhivery': 16,
-      'UPS': 17,
-      'Blue Dart': 18,
-      'BM Runner': 20,
-      'Drop Ship': 30
+      'Aramex': 1,
+      'FedEx': 2,
+      'Spoton': 3,
+      'Safex': 4,
+      'Professional Couriers': 5,
+      'DTDC': 5,
+      'Delhivery': 7,
+      'UPS': 8,
+      'Blue Dart': 9,
+      'Anjani Courier': 10,
+      'Mahavir Courier': 11,
+      'Elite Enterprise': 12,
+      'Sri Krishna Logistics': 13,
+      'Vinod': 20,
+      'Ganesh': 21,
+      'Tushar': 22,
+      'Others': 30,
+      'Drop Ship': 40
   }
 
   enum logistics_aggregator: {
@@ -62,7 +69,8 @@ class InwardDispatch < ApplicationRecord
   }, _prefix: true
 
   scope :with_includes, -> { includes(:inquiry).includes(:purchase_order) }
-  scope :'3PL', -> { where(logistics_partner: [10, 11, 12, 13, 14, 15, 16, 17, 18]) }
+  scope :'3PL', -> { where(logistics_partner: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]) }
+  scope :'BM Runner', -> { where(logistics_partner: [20, 21, 22]) }
   after_initialize :set_defaults, if: :new_record?
 
   validates_length_of :rows, minimum: 1, message: 'must have at least one product', on: :update
@@ -72,7 +80,7 @@ class InwardDispatch < ApplicationRecord
 
   def grouped_status
     grouped_status = {}
-    status_category = { 10 => '3PL', 20 => 'BM Runner', 30 => 'Drop Ship' }
+    status_category = { 1 => '3PL', 20 => 'BM Runner', 30 => 'Others', 40 => 'Drop Ship' }
     status_category.each do |index, category|
       grouped_status[category] = InwardDispatch.logistics_partners.collect { |status, v|
       if v.between?(index, index + 9)

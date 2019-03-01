@@ -1,9 +1,9 @@
 class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
-  def material_pickup_queue?
+  def inward_dispatch_pickup_queue?
     admin? || logistics? || sales?
   end
 
-  def material_delivered_queue?
+  def inward_dispatch_delivered_queue?
     admin? || logistics? || sales?
   end
 

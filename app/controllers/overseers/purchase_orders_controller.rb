@@ -56,7 +56,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def inward_dispatch_pickup_queue
-    @status = 'Material Pickup Queue'
+    @status = 'Inward Dispatch Pickup Queue'
 
 
     base_filter = {
@@ -69,7 +69,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html { }
       format.json do
-        service = Services::Overseers::Finders::InwardDispatch.new(params.merge(base_filter), current_overseer)
+        service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
 
         service.call
 
@@ -79,11 +79,11 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
 
     authorize :inward_dispatch
-    render 'material_pickup_queue'
+    render 'inward_dispatch_pickup_queue'
   end
 
   def inward_dispatch_delivered_queue
-    @status = 'Material Delivered Queue'
+    @status = 'Inward Dispatch Delivered Queue'
 
     base_filter = {
         base_filter_key: 'status',
@@ -95,7 +95,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html { }
       format.json do
-        service = Services::Overseers::Finders::InwardDispatch.new(params.merge(base_filter), current_overseer)
+        service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
 
         service.call
 
@@ -105,7 +105,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
 
     authorize :inward_dispatch
-    render 'material_pickup_queue'
+    render 'inward_dispatch_pickup_queue'
   end
 
   def edit_material_followup
