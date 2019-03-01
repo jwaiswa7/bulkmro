@@ -98,6 +98,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
     mpr_ids = @invoice_request.material_pickup_requests.map(&:id).join(', ')
     service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids,  false)
+    @mpr = @invoice_request.material_pickup_requests.last
     @products_list = service.call
   end
 
