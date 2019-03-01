@@ -13,8 +13,10 @@
       <p>This will <em>'<%= @invoice_request.new_record? ? 'Create' : 'Update' %> <%= @invoice_request.readable_status %>'</em>
         and log it under
         <strong><%= current_overseer.full_name %></strong>.</p>
-
-      <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm" >Add/Edit Supplier Rating</a>
+      <% if action_name == 'edit' %>
+        <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm" >Add/Edit Supplier Rating</a>
+      <%end %>
+      <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center " data-toggle="modal" data-target="#cancelGrpo">Cancel GRPO</a>
     </div>
 
   </div>
@@ -39,6 +41,12 @@
       </div>
       <div class="col-6">
         <%= f.association :purchase_order, disabled: f.object.purchase_order.present? && f.object.errors.blank?, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
+      </div>
+      <div class="col-12 ">
+        <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select,wrapper_html:{class: @invoice_request.display_reason('other')}, collection: enum_to_collection(InvoiceRequest.rejection_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Reason'%>
+      </div>
+      <div class="col-12 ">
+        <%= f.input :other_rejection_reason, :placeholder => 'Type Rejection Reason', wrapper_html:{class: @invoice_request.display_reason('other')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
       </div>
 
       <div class="col-6">
@@ -81,117 +89,119 @@
 
     </div>
 
-    <div class="card mb-2">
-      <div class="card-body">
-        <div class="chats">
-          <% if f.object.purchase_order.present? %>
-            <h5 class="text-uppercase">
-              <strong><%= f.object.purchase_order.supplier.to_s %></strong>
-            </h5>
-            <div class="form-row">
-              <div class="col-6">
-                <% if f.object.purchase_order.try(:supplier).try(:address) %>
-                  <div class="form-group">
-                    <label class="form-control-label d-block">Address</label>
-                    <%= f.object.purchase_order.supplier.address %>
-                  </div>
-                <% end %>
-              </div>
-              <div class="col-6">
-                <% if f.object.purchase_order.try(:supplier).try(:default_contact) %>
-                  <div class="form-group">
-                    <label class="form-control-label d-block">Contact</label>
-                    <%= f.object.purchase_order.supplier.default_contact if f.object.purchase_order.supplier.default_contact.present? %>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          <% end %>
-          <div class="form-row d-none d-md-flex">
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>Sr. No.</label>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="form-group mb-0">
-                <label>Product</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>Make</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>HSN</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>T. Rate</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>Quantity</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>MOU</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>UP</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>TP</label>
-              </div>
-            </div>
-          </div>
-          <% if @products_list %>
-            <% @products_list.each do |k| %>
-              <div class="form-row flex-row align-items-start">
-                <div class="col-1 col-md-1">
-                  <%= (@products_list.index(k) || 0) + 1 %>
+    <% if @products_list.present? %>
+      <div class="card mb-2">
+        <div class="card-body">
+          <div class="chats">
+            <% if f.object.purchase_order.present? %>
+              <h5 class="text-uppercase">
+                <strong><%= f.object.purchase_order.supplier.to_s %></strong>
+              </h5>
+              <div class="form-row">
+                <div class="col-6">
+                  <% if f.object.purchase_order.try(:supplier).try(:address) %>
+                    <div class="form-group">
+                      <label class="form-control-label d-block">Address</label>
+                      <%= f.object.purchase_order.supplier.address %>
+                    </div>
+                  <% end %>
                 </div>
-
-                <div class="col-6 col-md-4">
-                  <%= k[:purchase_order_row].get_product.name.to_s %>
-                </div>
-
-                <div class="col-6 col-md-1">
-                  <%= k[:purchase_order_row].get_product.try(:brand).to_s %>
-                </div>
-                <div class="col-12 col-md-1">
-                  <%= k[:purchase_order_row].metadata['PopHsn'] %>
-                </div>
-                <div class="col-12 col-md-1">
-                  <%= k[:purchase_order_row].tax_rate %>
-                </div>
-                <div class="col-12 col-md-1">
-                  <%= k[:total_quantity] %>
-                </div>
-                <div class="col-12 col-md-1">
-                  <%= k[:purchase_order_row].uom %>
-                </div>
-                <div class="col-12 col-md-1">
-                  <%= number_to_currency(k[:purchase_order_row].unit_selling_price, precision: 0, unit: '') %>
-                </div>
-                <div class="col-12 col-md-1">
-                  <%= number_to_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f, precision: 0, unit: '') %>
+                <div class="col-6">
+                  <% if f.object.purchase_order.try(:supplier).try(:default_contact) %>
+                    <div class="form-group">
+                      <label class="form-control-label d-block">Contact</label>
+                      <%= f.object.purchase_order.supplier.default_contact if f.object.purchase_order.supplier.default_contact.present? %>
+                    </div>
+                  <% end %>
                 </div>
               </div>
             <% end %>
-          <% end %>
+            <div class="form-row d-none d-md-flex">
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>Sr. No.</label>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-group mb-0">
+                  <label>Product</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>Make</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>HSN</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>T. Rate</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>Quantity</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>MOU</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>UP</label>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>TP</label>
+                </div>
+              </div>
+            </div>
+
+              <% @products_list.each do |k| %>
+                <div class="form-row flex-row align-items-start">
+                  <div class="col-1 col-md-1">
+                    <%= (@products_list.index(k) || 0) + 1 %>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <%= k[:purchase_order_row].get_product %>
+                  </div>
+
+                  <div class="col-6 col-md-1">
+                    <%= k[:purchase_order_row].get_product.try(:brand).to_s %>
+                  </div>
+                  <div class="col-12 col-md-1">
+                    <%= k[:purchase_order_row].metadata['PopHsn'] %>
+                  </div>
+                  <div class="col-12 col-md-1">
+                    <%= k[:purchase_order_row].tax_rate %>
+                  </div>
+                  <div class="col-12 col-md-1">
+                    <%= k[:total_quantity] %>
+                  </div>
+                  <div class="col-12 col-md-1">
+                    <%= k[:purchase_order_row].uom %>
+                  </div>
+                  <div class="col-12 col-md-1">
+                    <%= number_to_currency(k[:purchase_order_row].unit_selling_price, precision: 0, unit: '') %>
+                  </div>
+                  <div class="col-12 col-md-1">
+                    <%= number_to_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f, precision: 0, unit: '') %>
+                  </div>
+                </div>
+              <% end %>
+          </div>
         </div>
       </div>
-    </div>
+    <% end %>
+
 
     <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
       <% if action_name.capitalize == "New" %>
@@ -222,3 +232,4 @@
     </div>
   <% end %>
 </div>
+<%= render partial: 'cancel_grpo'%>

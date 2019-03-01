@@ -231,8 +231,3 @@ Performance/RegexpMatch:
 
 Performance/UnfreezeString:
   Enabled: true
-
-
-inherit_gem:
-  rubocop-rails_config:
-    - config/rails.yml

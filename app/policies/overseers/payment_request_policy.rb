@@ -12,4 +12,7 @@ class Overseers::PaymentRequestPolicy < Overseers::ApplicationPolicy
   def edit_payment_logistics?
     manager_or_sales? || logistics? || admin?
   end
+  def payment_request_logistics_and_accounts?
+    edit_payment_queue? || logistics?
+  end
 end

@@ -1,5 +1,5 @@
 class Overseers::InvoiceRequestsController < Overseers::BaseController
-  before_action :set_invoice_request, only: [:show, :edit, :update]
+  before_action :set_invoice_request, only: [:show, :edit, :update, :reject_grpo]
 
   def pending
     invoice_requests =
@@ -40,6 +40,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
     service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     @company_reviews = service.call
+    service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.material_pickup_requests.ids,  false)
+    @products_list = service.call
   end
 
   def new
@@ -109,8 +111,15 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       ActiveRecord::Base.transaction do
         if @invoice_request.status_changed?
           @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{@invoice_request.status}", invoice_request: @invoice_request, overseer: current_overseer)
+          if @invoice_request.status != 'GRPO Request Rejected'
+            @invoice_request.rejection_reason = nil
+            @invoice_request.other_rejection_reason = nil
+          end
           @invoice_request.save!
           @invoice_request_comment.save!
+        elsif @invoice_request.rejection_reason_changed? && @invoice_request.rejection_reason != 'Others'
+          @invoice_request.other_rejection_reason = nil
+          @invoice_request.save!
         else
           @invoice_request.save!
         end
@@ -136,8 +145,12 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         :purchase_order_id,
         :status,
         :material_pickup_request_ids,
+        :rejection_reason,
+        :other_rejection_reason,
+        :cancellation_reason,
         comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-        attachments: []
+        attachments: [],
+
     )
   end
 

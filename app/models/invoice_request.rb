@@ -21,8 +21,25 @@ class InvoiceRequest < ApplicationRecord
       'In stock': 70,
       'Completed AR Invoice Request': 40,
       'Cancelled AR Invoice': 50,
-      'Cancelled': 60
+      'Cancelled': 60,
+      'GRPO Request Rejected': 80,
+      'GRPO Requested': 90
   }
+
+  enum rejection_reason: {
+      'Mismatch: Supplier PO vs Supplier Invoice': 10,
+      'Mismatch: HSN / SAC Code': 20,
+      'Mismatch: Tax Rates': 30,
+      'Mismatch: Supplier Billing or Shipping Address': 40,
+      'Mismatch: Supplier GST Number': 50,
+      'Mismatch: Supplier Name': 60,
+      'Mismatch: Quantity': 70,
+      'Mismatch: Unit Price': 80,
+      'Mismatch: SKU / Description': 90,
+      'Others': 100
+  }
+
+
 
   scope :grpo_pending, -> { where(status: :'Pending GRPO') }
   scope :ap_invoice_pending, -> { where(status: :'Pending AP Invoice') }
@@ -35,6 +52,7 @@ class InvoiceRequest < ApplicationRecord
   validates_numericality_of :ap_invoice_number, allow_blank: true
   validate :has_attachments?
   validate :grpo_number_valid?
+  validate :presence_of_reason
 
   def grpo_number_valid?
     if self.grpo_number.present? && self.grpo_number <= 50000000
@@ -43,7 +61,7 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def has_attachments?
-    if !self.attachments.any?
+    if self.status != 'Cancelled' && !self.attachments.any?
       errors.add(:attachments, "must be present to create or update a #{self.readable_status}")
     end
   end
@@ -73,7 +91,7 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def update_status(status)
-    if status == 'In stock' || status == 'Cancelled'
+    if status == 'In stock' || status == 'Cancelled' || status == 'GRPO Request Rejected'
       self.status = status
     elsif self.ar_invoice_number.present?
       self.status = :'Completed AR Invoice Request'
@@ -99,7 +117,43 @@ class InvoiceRequest < ApplicationRecord
     "#{title} Request"
   end
 
+  def grouped_status
+    grouped_status = {'Common': [], 'Rejected with reason': []}
+    InvoiceRequest.statuses.map { |status, v|
+        if v >= 80
+          grouped_status[:'Rejected with reason'] << status
+        else
+          grouped_status[:'Common'] << status
+        end}
+    grouped_status
+  end
+
+  def display_reason(type = nil)
+    if type.present?
+      (self.status == 'GRPO Request Rejected' && self.rejection_reason == 'Others') ? '' : 'd-none'
+    else
+      self.status == 'GRPO Request Rejected' ? '' : 'd-none'
+    end
+  end
+
   def to_s
     [readable_status, "##{self.id}"].join(' ')
   end
+
+  private
+
+    def presence_of_reason
+      if status == 'GRPO Request Rejected'
+        if !rejection_reason.present?
+          errors.add(:base, 'Please enter reason for rejection')
+        elsif rejection_reason == "Others" && !other_rejection_reason.present?
+          errors.add(:base, 'Please enter reason for rejection')
+        end
+      elsif  status == 'Cancelled'
+        if !cancellation_reason.present?
+          errors.add(:base, 'Please enter reason for cancellation')
+        end
+      end
+    end
+
 end

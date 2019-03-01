@@ -5,7 +5,7 @@
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
 
-  <%= simple_form_for([:overseers, @po_request, @payment_request], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <%= simple_form_for([:overseers, @po_request, @payment_request], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => '', :id => 'payment_request_form_id'}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
 
     <%= f.hidden_field :id %>
@@ -16,11 +16,11 @@
       <div class="card-header">
         <div class="form-row">
           <% if action_name.capitalize == "New" %>
-            <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <%= button_tag(type: "submit", class: "btn btn-success btn-block payment_request_submit") do %>
               <i class="fal fa-plus-circle"></i> Create Payment Request
             <% end %>
           <% else %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
+            <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2 payment_request_submit") do %>
               <i class="fal fa-pen"></i> Update Payment Request
             <% end %>
           <% end %>
@@ -128,21 +128,21 @@
             <%= f.nested_fields_for :transactions, wrapper_tag: :div do |transaction| %>
               <div class="form-row flex-row align-items-start">
                 <div class="col-2">
-                  <%= transaction.input :payment_type, placeholder: 'Payment Type', :label => false, :required => true, as: :select, disabled: false, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => true %>
-                </div>
+                  <%= transaction.input :payment_type, placeholder: 'Payment Type', :label => false, placeholder: placeholder_for(transaction, :utr_or_cheque_no), :required => policy(@payment_request).edit_payment_queue?, as: :select, disabled: !policy(@payment_request).edit_payment_queue?, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => 'Select a Payment Type' %>
+                </div></div>
                 <div class="col-3">
-                  <%= transaction.input :utr_or_cheque_no, placeholder: 'UTR/Cheque Number', :label => false, :required => true, disabled: false %>
+                  <%= transaction.input :utr_or_cheque_no, placeholder: 'UTR/Cheque Number', :label => false, :required => policy(@payment_request).edit_payment_queue?, disabled: !policy(@payment_request).edit_payment_queue? %>
                 </div>
                 <div class="col-2">
-                  <%= transaction.input :issue_date, placeholder: 'Transaction/Issue Date', :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: false %>
+                  <%= transaction.input :issue_date, placeholder: 'Transaction/Issue Date', :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, placeholder: placeholder_for(transaction, :issue_date), disabled: !policy(@payment_request).edit_payment_queue? %>
                 </div>
                 <div class="col-2">
-                  <%= transaction.input :cheque_date, placeholder: 'Transaction/Cheque Type', :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: false %>
+                  <%= transaction.input :cheque_date, placeholder: 'Transaction/Cheque Type', :label => false, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: !policy(@payment_request).edit_payment_queue? %>
                 </div>
                 <div class="col-3">
                   <div class="d-flex">
                     <div class="flex-grow-1">
-                      <%= transaction.input :amount_paid, placeholder: 'Amount', :label => false, :required => true, disabled: false %>
+                      <%= transaction.input :amount_paid, placeholder: 'Amount', :label => false, placeholder: placeholder_for(transaction, :amount_paid), :required => policy(@payment_request).payment_request_logistics_and_accounts?, disabled: !policy(@payment_request).payment_request_logistics_and_accounts? %>
                     </div>
                     <%= transaction.remove_nested_fields_link do %>
                       <span class="align-self-center ml-2">
@@ -228,11 +228,11 @@
     <div class="card-footer">
       <div class="form-row">
         <% if action_name.capitalize == "New" %>
-          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block payment_request_submit") do %>
             <i class="fal fa-plus-circle"></i> Create Payment Request
           <% end %>
         <% else %>
-          <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2 payment_request_submit") do %>
             <i class="fal fa-pen"></i> Update Payment Request
           <% end %>
         <% end %>
