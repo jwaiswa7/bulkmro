@@ -45,12 +45,15 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def new
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
-      @po_request = PoRequest.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
+      @po_request = PoRequest.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry, po_request_type: :'Supplier')
       @sales_order.rows.each do |sales_order_row|
         @po_request.rows.where(sales_order_row: sales_order_row).first_or_initialize
       end
-      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@sales_order, current_overseer)
-      @company_reviews = service.call
+
+      authorize @po_request
+    elsif params[:stock_inquiry_id].present?
+      @inquiry = Inquiry.find(params[:stock_inquiry_id])
+      @po_request = PoRequest.new(overseer: current_overseer, inquiry: @inquiry, po_request_type: :'Stock')
 
       authorize @po_request
     else
@@ -87,14 +90,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
     if @po_request.valid?
       # todo allow only in case of zero form errors
       @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
-      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).is_manager_or_sales?
+      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
       ActiveRecord::Base.transaction do if @po_request.status_changed?
                                           if @po_request.status == 'Cancelled'
                                             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}", po_request: @po_request, overseer: current_overseer)
                                             @po_request.purchase_order = nil
 
-                                            @po_request.payment_request.update!(status: :'Cancelled')
-                                            @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
+                                            if @po_request.payment_request.present?
+                                              @po_request.payment_request.update!(status: :'Cancelled')
+                                              @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
+                                            end
 
                                           elsif @po_request.status == 'Rejected'
                                             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}", po_request: @po_request, overseer: current_overseer)
@@ -127,6 +132,36 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
+  def pending_stock_approval
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.pending_stock_po.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json { render 'index' }
+      format.html { render 'index' }
+    end
+  end
+
+  def stock
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.stock_po.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json { render 'index' }
+      format.html { render 'index' }
+    end
+  end
+
+  def completed_stock
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.completed_stock_po.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json { render 'index' }
+      format.html { render 'index' }
+    end
+  end
+
   private
 
     def po_request_params
@@ -149,7 +184,11 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :supplier_committed_date,
         :cancellation_reason,
         :rejection_reason,
-        rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time],
+        :stock_status,
+        :requested_by_id,
+        :approved_by_id,
+        :supplier_id,
+        rows_attributes: [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :brand, :product_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion],
         comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
         attachments: []
     )
