@@ -35,7 +35,7 @@ class Overseers::ApplicationPolicy
   end
 
   def developer?
-    ['bhargav.trivedi@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'ashwin.goyal@bulkmro.com', 'malav.desai@bulkmro.com', 'prikesh.savla@bulkmro.com', 'amit.goyal@bulkmro.com', 'sandesh.raut@bulkmro.com', 'sourabh.raje@bulkmro.com', 'lopesh.durugkar@bulkmro.com', 'ruta.kambli@bulkmro.com', 'rucha.parab@bulkmro.com', 'meenakshi.naik@bulkmro.com', 'pradeep.ketkale@bulkmro.com'].include? overseer.email
+    ['bhargav.trivedi@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'ashwin.goyal@bulkmro.com', 'malav.desai@bulkmro.com', 'prikesh.savla@bulkmro.com', 'amit.goyal@bulkmro.com', 'sourabh.raje@bulkmro.com', 'lopesh.durugkar@bulkmro.com', 'ruta.kambli@bulkmro.com', 'rucha.parab@bulkmro.com', 'meenakshi.naik@bulkmro.com', 'pradeep.ketkale@bulkmro.com', 'sakshi.yadav@bulkmro.com'].include? overseer.email
   end
 
   def admin?

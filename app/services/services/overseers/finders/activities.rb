@@ -3,54 +3,49 @@ class Services::Overseers::Finders::Activities < Services::Overseers::Finders::B
     call_base
   end
 
-  def all_records
-    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-                      else
-                        super
-                      end
-
-    if @base_filter.present?
-      indexed_records=  indexed_records.filter(@base_filter)
-    end
-
-
-    if search_filters.present?
-      indexed_records = filter_query(indexed_records)
-    end
-
-    if range_filters.present?
-      indexed_records = range_query(indexed_records)
-    end
-    indexed_records = indexed_records.aggregations(aggregate_by_status('po_status'))
-    indexed_records
-  end
-
-  def perform_query(query_string)
-
-    indexed_records = index_klass.query({multi_match: {query: query_string, operator: 'and', fields: index_klass.fields}})
-
-    if current_overseer.present? && !current_overseer.allow_inquiries?
-      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    end
-    if @base_filter.present?
-      indexed_records=  indexed_records.filter(@base_filter)
-    end
-
-
-    if search_filters.present?
-      indexed_records = filter_query(indexed_records)
-    end
-
-    if range_filters.present?
-      indexed_records = range_query(indexed_records)
-    end
-    indexed_records = indexed_records.aggregations(aggregate_by_status('po_status'))
-    indexed_records
-  end
-
-
   def model_klass
     Activity
+  end
+
+  def all_records
+    indexed_records = super
+
+    if @base_filter.present?
+      indexed_records = indexed_records.filter(@base_filter)
+    end
+
+
+    if search_filters.present?
+      indexed_records = filter_query(indexed_records)
+    end
+
+    indexed_records
+  end
+
+  def perform_query(query)
+    query = query[0, 35]
+
+    indexed_records = index_klass.query(
+      multi_match: {
+          query: query,
+          operator: 'and',
+          fields: %w[created_by account_id  account_name company inquiry_number contact_name purpose activity_type],
+          minimum_should_match: '100%'
+      }
+    )
+
+    if search_filters.present?
+      indexed_records = filter_query(indexed_records)
+    end
+
+
+    if @base_filter.present?
+      indexed_records = indexed_records.filter(@base_filter)
+    end
+
+    indexed_records
+  end
+  def sort_definition
+    { id: :desc }
   end
 end

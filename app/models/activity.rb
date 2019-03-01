@@ -47,6 +47,7 @@ class Activity < ApplicationRecord
       'Pending Approval': 20,
       'Rejected': 30
   }
+  scope :with_includes, -> { includes(:created_by, :company, :inquiry, :contact) }
 
   scope :not_meeting, -> { where.not(activity_type: activity_types[:'Meeting']) }
   scope :meeting, -> { where(activity_type: activity_types[:'Meeting']) }
