@@ -104,15 +104,20 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def update
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
     authorize @invoice_request
-
     if @invoice_request.valid?
       @invoice_request.update_status(@invoice_request.status)
       ActiveRecord::Base.transaction do
         if @invoice_request.status_changed?
           @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{@invoice_request.status}", invoice_request: @invoice_request, overseer: current_overseer)
-          if @invoice_request.status != 'GRPO Request Rejected' || @invoice_request.status != 'AP Invoice Rejected'
+          if !['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(@invoice_request.status)
             @invoice_request.rejection_reason = nil
             @invoice_request.other_rejection_reason = nil
+          else
+            material_pickup_requests = @invoice_request.material_pickup_requests
+            material_pickup_requests.each do |material_pickup_request|
+              material_pickup_request.status = @invoice_request.status
+              material_pickup_request.save
+            end
           end
           @invoice_request.save!
           @invoice_request_comment.save!
