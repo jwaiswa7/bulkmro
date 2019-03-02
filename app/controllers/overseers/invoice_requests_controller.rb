@@ -129,7 +129,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
               material_pickup_request.status = @invoice_request.status
               material_pickup_request.save
             end
-          elsif @invoice_request.status == 'Cancelled'
+          elsif ['Cancelled','Cancelled AR Invoice'].include?(@invoice_request.status)
             @invoice_request.rejection_reason = nil
             @invoice_request.other_rejection_reason = nil
           else

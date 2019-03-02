@@ -92,7 +92,7 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def update_status(status)
-    if ['In stock', 'Cancelled', 'GRPO Request Rejected', 'AP Invoice Request Rejected'].include? (status)
+    if ['In stock', 'Cancelled', 'GRPO Request Rejected', 'AP Invoice Request Rejected', 'Cancelled AR Invoice'].include? (status)
       self.status = status
     elsif self.ar_invoice_number.present?
       self.status = :'Completed AR Invoice Request'
@@ -139,7 +139,7 @@ class InvoiceRequest < ApplicationRecord
         elsif rejection_reason == 'Others' && !other_rejection_reason.present?
           errors.add(:base, 'Please enter reason for rejection')
         end
-      elsif  status == 'Cancelled'
+      elsif  ['Cancelled','Cancelled AR Invoice'].include?(status)
         if !cancellation_reason.present?
           errors.add(:base, 'Please enter reason for cancellation')
         end
