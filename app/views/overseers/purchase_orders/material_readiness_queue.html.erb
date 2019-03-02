@@ -46,6 +46,7 @@
     <th class="sort desktop text-right" data-name="expected_delivery_date">Expected Delivery Date</th>
     <th class="sort desktop" data-name="payment_request_status">Payment Request status</th>
     <th class="sort desktop" data-name="percentage_paid">Percentage Paid</th>
+    <th class="no-sort desktop">Requested Date</th>
     <th class="no-sort desktop">Latest Comment</th>
   <% end %>
   <% content_for :filter_row do %>
@@ -69,6 +70,7 @@
     <td data-filter="daterange"></td>
     <td data-filter="false"></td>
     <td data-filter="dropdown"></td>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
   <% end %>
