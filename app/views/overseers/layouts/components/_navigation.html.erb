@@ -115,7 +115,7 @@
               <%= nav_dropdown_item 'Sales Invoices List', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'All Requests', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Pending GRPO', pending_overseers_invoice_requests_path(:status => 'Pending GRPO'), policy(:sales_invoice).index? %>
-              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).show_pending_ap_invoice_queue? %>
+              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Pending AR Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AR Invoice'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Cancelled', cancelled_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
@@ -178,7 +178,7 @@
               <%= nav_dropdown_item 'Sales Invoices List', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'All Requests', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Pending GRPO', pending_overseers_invoice_requests_path(:status => 'Pending GRPO'), policy(:sales_invoice).index? %>
-              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).show_pending_ap_invoice_queue? %>
               <%= nav_dropdown_item 'Pending AR Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AR Invoice'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Cancelled', cancelled_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
