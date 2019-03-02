@@ -90,7 +90,7 @@ class Company < ApplicationRecord
   validates_presence_of :name
   validates :credit_limit, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates_presence_of :pan
-  validates_uniqueness_of :remote_uid, on: :update
+  validates_uniqueness_of :remote_uid, on: :update, allow_nil: true
   validate :validate_pan?
 
   validates_with FileValidator, attachment: :tan_proof
