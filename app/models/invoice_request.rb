@@ -117,6 +117,10 @@ class InvoiceRequest < ApplicationRecord
     "#{title} Request"
   end
 
+  def rejection_reason_text
+    self.rejection_reason == 'Others' ? self.other_rejection_reason : self.rejection_reason
+  end
+
   def display_reason(type = nil)
     if type == 'other'
       (['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(self.status) && self.rejection_reason == 'Others') ? '' : 'd-none'
