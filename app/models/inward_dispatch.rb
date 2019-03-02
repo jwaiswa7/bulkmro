@@ -3,6 +3,7 @@ class InwardDispatch < ApplicationRecord
 
   include Mixins::HasComments
   include Mixins::CanBeStamped
+  include Mixins::GetOverallDate
 
   update_index('inward_dispatches#inward_dispatch') { self }
   belongs_to :purchase_order
@@ -96,6 +97,10 @@ class InwardDispatch < ApplicationRecord
 
   def po_row_size
     purchase_order.rows.size
+  end
+
+  def show_supplier_delivery_date
+    get_overall_date1(self)
   end
 
   # @return [Boolean]

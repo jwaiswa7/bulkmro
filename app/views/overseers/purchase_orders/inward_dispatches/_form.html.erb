@@ -34,10 +34,15 @@
               <%= f.association :purchase_order, disabled: true, collection: [f.object.purchase_order], label: 'Purchase Order' %>
             </div>
 
-            <div class="col-6">
+            <div class="col-3">
               <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single"}, label: "Logistics Owner" %>
             </div>
 
+            <% if action_name == "confirm_delivery" %>
+              <div class="col-3">
+                <%= f.input :show_supplier_delivery_date, disabled: true, label: "Supplier Delivery Date(Overall)" %>
+              </div>
+            <% end %>
             <div class="col-12 col-md-12">
               <div class="d-block d-md-flex align-items-end">
                 <div class="flex-grow-1">
