@@ -111,7 +111,11 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @invoice_request.update_status(@invoice_request.status)
       ActiveRecord::Base.transaction do
         if @invoice_request.status_changed?
-          @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{@invoice_request.status}", invoice_request: @invoice_request, overseer: current_overseer)
+          if @invoice_request.grpo_number_changed?
+            @invoice_request_comment = InvoiceRequestComment.new(message: "GRPO Number Changed: #{@invoice_request.grpo_number}; Status changed: #{@invoice_request.status}", invoice_request: @invoice_request, overseer: current_overseer)
+          else
+            @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{@invoice_request.status}", invoice_request: @invoice_request, overseer: current_overseer)
+          end
           if @invoice_request.status != 'GRPO Request Rejected'
             @invoice_request.rejection_reason = nil
             @invoice_request.other_rejection_reason = nil
@@ -121,6 +125,9 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         elsif @invoice_request.rejection_reason_changed? && @invoice_request.rejection_reason != 'Others'
           @invoice_request.other_rejection_reason = nil
           @invoice_request.save!
+        elsif @invoice_request.grpo_number_changed?
+          @invoice_request_comment = InvoiceRequestComment.new(message: "GRPO Number Changed: #{@invoice_request.grpo_number}", invoice_request: @invoice_request, overseer: current_overseer)
+          @invoice_request_comment.save!
         else
           @invoice_request.save!
         end
