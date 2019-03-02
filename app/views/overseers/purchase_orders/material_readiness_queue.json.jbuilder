@@ -40,7 +40,7 @@ json.data (@purchase_orders) do |purchase_order|
                   status_badge(purchase_order.material_status),
                   format_succinct_date(purchase_order.followup_date),
                   format_succinct_date(purchase_order.revised_supplier_delivery_date),
-                  (purchase_order.payment_request.present? ? status_badge(purchase_order.payment_request.status) : 'Payment Request: Pending'),
+                  (purchase_order.payment_request.present? ? status_badge(purchase_order.payment_request.status) : status_badge('Payment Request: Pending')),
                   (percentage(purchase_order.payment_request.percent_amount_paid, precision: 2) if purchase_order.payment_request.present?),
                   format_succinct_date(purchase_order.email_sent_to_supplier_date) ,
                   if purchase_order.last_comment.present?
