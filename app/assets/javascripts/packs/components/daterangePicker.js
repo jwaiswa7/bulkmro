@@ -1,7 +1,7 @@
 const daterangePicker = () => {
-    $('body').on('click', '[data-toggle="daterangepicker"]', function () {
+    $('body').on('focus', '[data-toggle="daterangepicker"]', function () {
         if (!$(this).data('daterangepicker')) {
-            $('[data-toggle="daterangepicker"]').daterangepicker({
+            $(this).daterangepicker({
                 ranges: {
                     // 'Today': [moment(), moment()],
                     // 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
