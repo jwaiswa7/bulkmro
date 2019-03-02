@@ -214,6 +214,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'pending'
         get 'completed'
+        get 'cancelled'
       end
       member do
         patch 'reject_grpo'
