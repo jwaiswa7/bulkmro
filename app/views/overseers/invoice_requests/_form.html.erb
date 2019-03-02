@@ -16,7 +16,8 @@
       <% if action_name == 'edit' %>
         <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm" >Add/Edit Supplier Rating</a>
       <%end %>
-      <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center " data-toggle="modal" data-target="#cancelGrpo">Cancel <%= @invoice_request.readable_status %></a>
+<!--      This button work only for cancel GRPO if adding Cancel AP invoice then have to handle in cancel modal-->
+<!--      <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center " data-toggle="modal" data-target="#cancelGrpo">Cancel <%#= @invoice_request.readable_status %></a>-->
     </div>
 
   </div>
@@ -145,8 +146,11 @@
           <div class="col-6">
             <%= f.association :purchase_order, disabled: f.object.purchase_order.present? && f.object.errors.blank?, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
           </div>
+            <div class="col-12 ">
+              <%= f.input :cancellation_reason, :placeholder => 'Type Cancellation Reason', wrapper_html:{class: @invoice_request.display_reason('cancellation')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+            </div>
           <div class="col-12 ">
-            <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select,wrapper_html:{class: @invoice_request.display_reason}, collection: enum_to_collection(InvoiceRequest.rejection_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Reason'%>
+            <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select,wrapper_html:{class: @invoice_request.display_reason('rejection')}, collection: enum_to_collection(InvoiceRequest.rejection_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Reason'%>
           </div>
           <div class="col-12 ">
             <%= f.input :other_rejection_reason, :placeholder => 'Type Rejection Reason', wrapper_html:{class: @invoice_request.display_reason('other')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
@@ -346,4 +350,4 @@
     </div>
   <% end %>
 </div>
-<%= render partial: 'cancel_grpo'%>
+<%#= render partial: 'cancel_grpo'%>

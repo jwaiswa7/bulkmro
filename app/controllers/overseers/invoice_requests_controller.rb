@@ -30,8 +30,15 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   end
 
   def cancelled
-    cancelled_invoice_requests = InvoiceRequest.where(status: 'Cancelled').order(id: :desc)
-    @invoice_requests = ApplyDatatableParams.to(cancelled_invoice_requests, params)
+    invoice_requests =
+        if params[:status].present?
+          @status = params[:status]
+          InvoiceRequest.where(status: params[:status])
+        else
+          InvoiceRequest.all
+        end.order(id: :desc)
+
+    @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
     authorize @invoice_requests
 
     respond_to do |format|
