@@ -184,15 +184,15 @@
       <% if  @payment_request.transactions.present? %>
       <div class="card-body">
       <h6 class="text-uppercase text-black-50 mb-1">Payment Transactions</h6>
-          <table class="table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
+          <table class="table table-bordered dt-responsive wrap-whitespace w-100 datatable" data-fixed-header="false" data-sort="false">
             <thead>
             <tr>
-              <th>Sr. No.</th>
-              <th>Payment Type</th>
-              <th>UTR / Cheque Number</th>
-              <th>Cheque Issue Date</th>
-              <th>Cheque Date</th>
-              <th>Amount Paid</th>
+              <th class="no-sort text-right">Sr. No.</th>
+              <th class="no-sort">Payment Type</th>
+              <th class="no-sort text-right">UTR / Cheque Number</th>
+              <th class="no-sort text-right">Cheque Issue Date</th>
+              <th class="no-sort text-right">Cheque Date</th>
+              <th class="no-sort text-right">Amount Paid</th>
             </tr>
             </thead>
             <tbody>
@@ -219,7 +219,7 @@
         </div>
 
         <% if @payment_request.comments.persisted.size > 0 %>
-          <div class="chats mb-3">
+          <div class="chats">
             <% @payment_request.comments.each do |comment| %>
               <%= format_comment(comment) %>
             <% end %>

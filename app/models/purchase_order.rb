@@ -24,7 +24,7 @@ class PurchaseOrder < ApplicationRecord
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
   has_many_attached :attachments
 
-  scope :with_includes, -> { includes(:inquiry) }
+  scope :with_includes, -> { includes(:inquiry, :po_request) }
 
   def filename(include_extension: false)
     [
@@ -108,6 +108,22 @@ class PurchaseOrder < ApplicationRecord
   def supplier
     return po_request.supplier if po_request.present?
     return get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
+  end
+
+  def billing_address
+    if self.metadata['PoSupBillFrom'].present?
+      Address.find_by_remote_uid(self.metadata['PoSupBillFrom'])
+    else
+      supplier.billing_address
+    end
+  end
+
+  def shipping_address
+    if self.metadata['PoSupShipFrom'].present?
+      Address.find_by_remote_uid(self.metadata['PoSupShipFrom'])
+    else
+      supplier.shipping_address
+    end
   end
 
   def metadata_status

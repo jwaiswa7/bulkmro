@@ -13,7 +13,7 @@
   <%= simple_form_for([:overseers, @sales_order.comments.build], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <div class="card-body">
       <% if @comments.persisted.size > 0 %>
-        <div class="chats mb-3">
+        <div class="chats">
           <% @comments.persisted.each do |comment| %>
             <div class="media chat-item">
               <div class="media-body">

@@ -47,8 +47,6 @@ class SalesOrder < ApplicationRecord
   delegate :inside_sales_owner, :outside_sales_owner, :inside_sales_owner_id, :outside_sales_owner_id, :opportunity_type, :customer_committed_date, to: :inquiry, allow_nil: true
   delegate :currency_sign, to: :sales_quote
 
-
-
   # validates_length_of :rows, minimum: 1, :message => "must have at least one sales order row", :if => :not_legacy?
 
   after_initialize :set_defaults, if: :new_record?
@@ -86,7 +84,6 @@ class SalesOrder < ApplicationRecord
       'Hold by Finance': 80
   }, _prefix: true
 
-
   enum status: {
       'Requested': 10,
       'SAP Approval Pending': 20,
@@ -120,7 +117,7 @@ class SalesOrder < ApplicationRecord
   }, _prefix: true
 
   scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }
-  scope :remote_approved, -> { where('sales_orders.status = ? AND sales_orders.remote_status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP']).or(SalesOrder.where(legacy_request_status: 'Approved')) }
+  scope :remote_approved, -> { where('(sales_orders.status = ? AND sales_orders.remote_status != ? OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled']) }
 
   def confirmed?
     self.confirmation.present?
@@ -198,11 +195,11 @@ class SalesOrder < ApplicationRecord
   end
 
 
-  def serailized_billing_address
+  def serialized_billing_address
     self.billing_address || self.inquiry.billing_address
   end
 
-  def serailized_shipping_address
+  def serialized_shipping_address
     self.shipping_address || self.inquiry.shipping_address
   end
 
@@ -242,7 +239,7 @@ class SalesOrder < ApplicationRecord
     elsif self.approval.present?
       draft_remote_request = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: self.id, status: 'success').first
       if draft_remote_request .present?
-        self.update_attributes!(draft_sync_date: draft_remote_request .created_at)
+        self.update_attributes!(draft_sync_date: draft_remote_request.created_at)
         self.draft_sync_date
       end
     end

@@ -92,7 +92,7 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
               :logistics_aggregator,
               :purchase_order_id,
               comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-              rows_attributes: [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :_destroy],
+              rows_attributes: [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :lead_date, :_destroy],
               attachments: []
           )
     end

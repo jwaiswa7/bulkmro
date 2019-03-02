@@ -161,7 +161,7 @@ class Inquiry < ApplicationRecord
 
   with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
     # inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
-    # inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
+     inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
     # inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
     inquiry.validates_presence_of :customer_po_number
     inquiry.validates_presence_of :customer_order_date
@@ -182,7 +182,7 @@ class Inquiry < ApplicationRecord
   # validates_with FileValidator, attachment: :supplier_quote, file_size_in_megabytes: 2
   # validates_with MultipleFileValidator, attachments: :supplier_quotes, file_size_in_megabytes: 2
   # validates_with FileValidator, attachment: :final_supplier_quote, file_size_in_megabytes: 2
-  # validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
+   validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
   validates_numericality_of :potential_amount, greater_than: 0.00, if: :not_legacy?
@@ -372,5 +372,9 @@ class Inquiry < ApplicationRecord
 
   def margin_percentage
     self.final_sales_quote.present? ? self.final_sales_quote.calculated_total_margin_percentage.to_f : 0
+  end
+
+  def update_last_synced_quote
+    self.update_attributes(last_synced_quote_id: self.final_sales_quote.id) if self.final_sales_quote.present?
   end
 end

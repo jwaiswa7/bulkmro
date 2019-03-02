@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def index?
     manager_or_sales? || cataloging? || logistics?

@@ -2,10 +2,10 @@ json.data (@warehouses) do |warehouse|
   json.array! [
                   [
                       if policy(warehouse).edit?
-                        row_action_button(overseers_warehouse_path(warehouse), 'eye', 'View Warehouse', 'info')
+                        row_action_button(overseers_warehouse_path(warehouse), 'eye', 'View Warehouse', 'info', :_blank)
                       end,
                       if policy(warehouse).edit?
-                        row_action_button(edit_overseers_warehouse_path(warehouse), 'pencil', 'Edit Warehouse', 'warning')
+                        row_action_button(edit_overseers_warehouse_path(warehouse), 'pencil', 'Edit Warehouse', 'warning', :_blank)
                       end,
                   ].join(' '),
                   conditional_link(warehouse.name.to_s, overseers_warehouse_path(warehouse), policy(warehouse).edit?),
