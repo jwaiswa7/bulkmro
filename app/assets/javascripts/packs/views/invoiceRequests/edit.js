@@ -8,7 +8,7 @@ const edit = () => {
 
     $('[name="invoice_request[status]"]').unbind().bind('change', function(){
         let val = $(this).val()
-        if(val == 'GRPO Request Rejected'){
+        if(val == 'GRPO Request Rejected' || val == 'AP Invoice Request Rejected'){
             $(".invoice_request_rejection_reason").removeClass('d-none')
         }
         else{

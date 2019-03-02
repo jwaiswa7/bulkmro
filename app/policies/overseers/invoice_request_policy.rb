@@ -20,4 +20,8 @@ class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
   def edit?
     admin? || accounts?
   end
+
+  def cancelled?
+    admin? || accounts?
+  end
 end

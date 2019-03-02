@@ -22,8 +22,9 @@ class InvoiceRequest < ApplicationRecord
       'Completed AR Invoice Request': 40,
       'Cancelled AR Invoice': 50,
       'Cancelled': 60,
-      'GRPO Request Rejected': 80,
-      'GRPO Requested': 90
+      'AP Invoice Request Rejected': 80,
+      'GRPO Request Rejected': 90,
+      'GRPO Requested': 100
   }
 
   enum rejection_reason: {
@@ -91,7 +92,7 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def update_status(status)
-    if status == 'In stock' || status == 'Cancelled' || status == 'GRPO Request Rejected'
+    if ['In stock', 'Cancelled', 'GRPO Request Rejected', 'AP Invoice Request Rejected'].include? (status)
       self.status = status
     elsif self.ar_invoice_number.present?
       self.status = :'Completed AR Invoice Request'
@@ -119,9 +120,9 @@ class InvoiceRequest < ApplicationRecord
 
   def display_reason(type = nil)
     if type.present?
-      (self.status == 'GRPO Request Rejected' && self.rejection_reason == 'Others') ? '' : 'd-none'
+      (['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(self.status) && self.rejection_reason == 'Others') ? '' : 'd-none'
     else
-      self.status == 'GRPO Request Rejected' ? '' : 'd-none'
+      ['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(self.status) ? '' : 'd-none'
     end
   end
 
@@ -132,10 +133,10 @@ class InvoiceRequest < ApplicationRecord
   private
 
     def presence_of_reason
-      if status == 'GRPO Request Rejected'
+      if ['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(status)
         if !rejection_reason.present?
           errors.add(:base, 'Please enter reason for rejection')
-        elsif rejection_reason == "Others" && !other_rejection_reason.present?
+        elsif rejection_reason == 'Others' && !other_rejection_reason.present?
           errors.add(:base, 'Please enter reason for rejection')
         end
       elsif  status == 'Cancelled'
@@ -144,5 +145,4 @@ class InvoiceRequest < ApplicationRecord
         end
       end
     end
-
 end
