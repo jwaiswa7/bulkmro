@@ -132,6 +132,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def autocomplete
+    purchase_orders = PurchaseOrder.all
     if params[:inquiry_number].present?
       purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: { inquiry_number: params[:inquiry_number] })
       purchase_orders = purchase_orders.where(id: purchase_orders.pluck(:id))
@@ -142,6 +143,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def autocomplete_without_po_requests
+    purchase_orders = PurchaseOrder.all
     if params[:inquiry_number].present?
       purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: { inquiry_number: params[:inquiry_number] })
       purchase_orders = purchase_orders.where(id: purchase_orders.reject { |r| r.po_request.present? }.pluck(:id))
