@@ -10,7 +10,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
         service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer)
         service.call
         @indexed_sales_invoices = service.indexed_records
-        @sales_invoices = service.records.try(:reverse)
+        @sales_invoices = service.records
 
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_invoices, SalesInvoice)
         status_service.call
