@@ -22,7 +22,6 @@ class Services::Overseers::Finders::SalesReceipts < Services::Overseers::Finders
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-    indexed_records = indexed_records.aggregations(aggregate_by_status('po_status'))
     indexed_records
   end
 
@@ -45,7 +44,6 @@ class Services::Overseers::Finders::SalesReceipts < Services::Overseers::Finders
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-    indexed_records = indexed_records.aggregations(aggregate_by_status('po_status'))
     indexed_records
   end
 
@@ -54,7 +52,7 @@ class Services::Overseers::Finders::SalesReceipts < Services::Overseers::Finders
     SalesReceipt
   end
 
-  def sort_definition
-    { receipt_date: :desc }
-  end
+  # def sort_definition
+  #   { receipt_date: :desc }
+  # end
 end
