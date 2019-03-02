@@ -1,12 +1,14 @@
-# frozen_string_literal: true
+class Overseers::Accounts::SalesInvoicesController < Overseers::Accounts::BaseController
+  def show
+    authorize @account
+  end
 
-class Overseers::Companies::SalesInvoicesController < Overseers::Companies::BaseController
   def index
     base_filter = {
-        base_filter_key: 'company_id',
-        base_filter_value: params[:company_id]
+        base_filter_key: 'account_id',
+        base_filter_value: params[:account_id]
     }
-    authorize @company
+    authorize @account
     respond_to do |format|
       format.html { }
       format.json do
