@@ -30,7 +30,7 @@ json.data (@purchase_orders) do |purchase_order|
                   link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: '_blank'),
                   purchase_order.po_request.present? ? purchase_order.po_request.supplier_po_type : '',
                   format_succinct_date(purchase_order.metadata['PoDate'].try(:to_date)),
-                  (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).present? ? conditional_link(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name), overseers_company_path(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'])), policy(purchase_order.inquiry).show?) : '-' if purchase_order.rows.present?),
+                  (purchase_order.supplier.present? ? conditional_link(purchase_order.supplier.try(:name), overseers_company_path(purchase_order.supplier), policy(purchase_order.inquiry).show?) : '-'),
                   purchase_order.po_request.buying_price,
                   purchase_order.po_request.selling_price,
                   purchase_order.po_request.po_margin_percentage,
