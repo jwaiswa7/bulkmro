@@ -9,8 +9,11 @@ const edit = () => {
     $('[name="invoice_request[status]"]').unbind().bind('change', function(){
         let val = $(this).val()
         $(".invoice_request_rejection_reason, .invoice_request_other_rejection_reason, .invoice_request_cancellation_reason").addClass('d-none')
-        if(val == 'GRPO Request Rejected' || val == 'AP Invoice Request Rejected'){
+        if(val == 'GRPO Request Rejected' ){
             $(".invoice_request_rejection_reason").removeClass('d-none')
+        }
+        else if( val == 'AP Invoice Request Rejected'){
+            $(".invoice_request_other_rejection_reason").removeClass('d-none')
         }
         else if(val == 'Cancelled' || val == 'Cancelled AR Invoice'){
             $(".invoice_request_cancellation_reason").removeClass('d-none');
