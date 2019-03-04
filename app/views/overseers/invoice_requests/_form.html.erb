@@ -150,7 +150,7 @@
             <%= f.input :grpo_cancellation_reason, :placeholder => 'Type Cancellation Reason', wrapper_html:{class: @invoice_request.display_reason('cancellation')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
           </div>
           <div class="col-12 ">
-            <%= f.input :grpo_rejection_reason, as: :select, :wrapper => :custom_multi_select,wrapper_html:{class: @invoice_request.display_reason('rejection')}, collection: enum_to_collection(InvoiceRequest.rejection_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Reason'%>
+            <%= f.input :grpo_rejection_reason, as: :select, :wrapper => :custom_multi_select,wrapper_html:{class: @invoice_request.display_reason('rejection')}, collection: enum_to_collection(InvoiceRequest.grpo_rejection_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Reason'%>
           </div>
           <div class="col-12 ">
             <%= f.input :grpo_other_rejection_reason, :placeholder => 'Type Rejection Reason', wrapper_html:{class: @invoice_request.display_reason('other')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>

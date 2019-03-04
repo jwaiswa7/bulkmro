@@ -36,10 +36,10 @@ const edit = () => {
     $('[name="invoice_request[ap_rejection_reason]"]').unbind().bind('change', function(){
         let val = $(this).val()
         if(val == 'Others'){
-            $(".invoice_request_ap_other_rejection_reason").removeClass('d-none')
+            $(".invoice_request_ap_rejection_reason").removeClass('d-none')
         }
         else{
-            $(".invoice_request_ap_other_rejection_reason").addClass('d-none')
+            $(".invoice_request_ap_rejection_reason").addClass('d-none')
         }
     })
 

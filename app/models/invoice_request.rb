@@ -29,7 +29,7 @@ class InvoiceRequest < ApplicationRecord
       'Cancelled AP Invoice': 120
   }
 
-  enum rejection_reason: {
+  enum grpo_rejection_reason: {
       'Mismatch: Supplier PO vs Supplier Invoice': 10,
       'Mismatch: HSN / SAC Code': 20,
       'Mismatch: Tax Rates': 30,
@@ -41,7 +41,6 @@ class InvoiceRequest < ApplicationRecord
       'Mismatch: SKU / Description': 90,
       'Others': 100
   }
-
 
 
   scope :grpo_pending, -> { where(status: :'Pending GRPO') }
@@ -122,9 +121,9 @@ class InvoiceRequest < ApplicationRecord
 
   def rejection_reason_text
     if self.status == 'GRPO Request Rejected'
-      self.rejection_reason == 'Others' ? self.other_rejection_reason : self.rejection_reason
+      self.grpo_rejection_reason == 'Others' ? self.grpo_other_rejection_reason : self.grpo_rejection_reason
     elsif status == 'AP Invoice Request Rejected'
-      self.other_rejection_reason
+      self.ap_rejection_reason
     end
   end
 
@@ -147,18 +146,22 @@ class InvoiceRequest < ApplicationRecord
     def presence_of_reason
       # if ['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(status)
       if 'GRPO Request Rejected' == status
-        if !rejection_reason.present?
-          errors.add(:base, 'Please enter reason for rejection')
-        elsif rejection_reason == 'Others' && !other_rejection_reason.present?
-          errors.add(:base, 'Please enter reason for rejection')
+        if !grpo_rejection_reason.present?
+          errors.add(:base, 'Please enter reason for GRPO request rejection')
+        elsif grpo_rejection_reason == 'Others' && !grpo_other_rejection_reason.present?
+          errors.add(:base, 'Please enter reason for GRPO request rejection')
         end
       elsif 'AP Invoice Request Rejected' == status
-        if !other_rejection_reason.present?
-          errors.add(:base, 'Please enter reason for rejection')
+        if !ap_rejection_reason.present?
+          errors.add(:base, 'Please enter reason for AP Invoice rejection')
         end
-      elsif  ['Cancelled GRPO','Cancelled AP Invoice'].include?(status)
-        if !cancellation_reason.present?
-          errors.add(:base, 'Please enter reason for cancellation')
+      elsif  ['Cancelled GRPO'].include?(status)
+        if !grpo_cancellation_reason.present?
+          errors.add(:base, 'Please enter reason for GRPO request cancellation')
+        end
+      elsif  ['Cancelled AP Invoice'].include?(status)
+        if !ap_cancellation_reason.present?
+          errors.add(:base, 'Please enter reason for AP request cancellation')
         end
       end
     end
