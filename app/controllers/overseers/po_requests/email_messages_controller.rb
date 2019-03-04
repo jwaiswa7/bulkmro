@@ -11,7 +11,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
         to: @to,
         subject: "Internal Ref Inq ##{@inquiry.inquiry_number} Purchase Order ##{@po_request.purchase_order.po_number}",
         body: PoRequestMailer.purchase_order_details(@email_message).body.raw_source,
-        auto_attach: false
+        auto_attach: true
       )
     end
     authorize @po_request, :sending_po_to_supplier_new_email_message?
@@ -35,7 +35,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
 
     if @email_message.save
       if PoRequestMailer.send_supplier_notification(@email_message).deliver_now
-        @po_request.update_attributes(sent_at: Time.now)
+        @po_request.update_attributes(sent_at: Time.now, status: 'Supplier PO Sent')
       end
       redirect_to overseers_po_requests_path, notice: flash_message(@po_request, action_name)
     else
