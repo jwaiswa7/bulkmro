@@ -25,10 +25,9 @@
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
     <th class="sort all text-right" data-name="order_number">Order</th>
-    <th class="sort desktop text-right" data-name="created_at">Created Date</th>
     <th class="sort desktop text-right" data-name="mis_date">Order Date</th>
     <th class="sort desktop text-right" data-name="inquiry_number">Inquiry</th>
-    <th class="sort desktop text-right" data-name="invoice_number">Sales Invoices</th>
+    <th class="sort desktop text-right" data-name="invoice_total">Sales Invoices</th>
     <th class="no-sort desktop">PO # - Subject</th>
     <th class="no-sort desktop text-right" data-name="status">Status</th>
     <th class="no-sort desktop " data-name="remote_status">SAP Status</th>
@@ -37,6 +36,7 @@
     <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
     <th class="sort desktop text-right" data-name="quote_total">Quote Total</th>
     <th class="sort desktop text-right" data-name="order_total">Order Total</th>
+    <th class="sort desktop text-right" data-name="created_at">Created Date</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
