@@ -39,6 +39,12 @@ const edit = () => {
     $('form').on('click','.add-review',function (e) {
         $('.rating-modal a').click();
     })
+    $('.confirm-cancel').click(function(event) {
+        if( !confirm('Do you want to Cancel the PoRequest') ){
+            event.preventDefault();
+        }
+
+    });
 };
 
 export default edit
