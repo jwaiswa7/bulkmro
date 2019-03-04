@@ -52,7 +52,7 @@ class SalesQuote < ApplicationRecord
   end
 
   def syncable_identifiers
-    [:quotation_uid]
+    [:remote_uid]
   end
 
   def inquiry_has_many_sales_quotes?
