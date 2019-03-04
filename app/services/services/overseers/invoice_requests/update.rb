@@ -1,6 +1,7 @@
 class Services::Overseers::InvoiceRequests::Update < Services::Shared::BaseService
-  def initialize(invoice_request)
+  def initialize(invoice_request, current_overseer)
     @invoice_request = invoice_request
+    @current_overseer = current_overseer
   end
 
   def call
@@ -48,5 +49,5 @@ class Services::Overseers::InvoiceRequests::Update < Services::Shared::BaseServi
   end
 
   private
-    attr_accessor :invoice_request
+    attr_accessor :invoice_request, :current_overseer
 end

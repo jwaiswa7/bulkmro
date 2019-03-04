@@ -124,7 +124,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
     authorize @invoice_request
     if @invoice_request.valid?
-      service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request)
+      service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
       service.call
       redirect_to overseers_invoice_request_path(@invoice_request), notice: flash_message(@invoice_request, action_name)
     else
