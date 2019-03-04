@@ -21,11 +21,12 @@ class InvoiceRequest < ApplicationRecord
       'In stock': 70,
       'Completed AR Invoice Request': 40,
       'Cancelled AR Invoice': 50,
-      'Cancelled': 60,
+      'Cancelled GRPO': 60,
       'AP Invoice Request Rejected': 80,
       'GRPO Request Rejected': 90,
       'GRPO Requested': 100,
-      'Inward Completed': 110
+      'Inward Completed': 110,
+      'Cancelled AP Invoice': 120
   }
 
   enum rejection_reason: {
@@ -131,7 +132,7 @@ class InvoiceRequest < ApplicationRecord
     if type == 'other'
       (['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(self.status) && self.grpo_rejection_reason == 'Others') ? '' : 'd-none'
     elsif type == 'cancellation'
-      ['Cancelled','Cancelled AR Invoice'].include?(self.status) ? '' : 'd-none'
+      ['Cancelled GRPO','Cancelled AP Invoice'].include?(self.status) ? '' : 'd-none'
     elsif type == ('rejection')
       ['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(self.status) ? '' : 'd-none'
     end
@@ -155,7 +156,7 @@ class InvoiceRequest < ApplicationRecord
         if !other_rejection_reason.present?
           errors.add(:base, 'Please enter reason for rejection')
         end
-      elsif  ['Cancelled','Cancelled AR Invoice'].include?(status)
+      elsif  ['Cancelled GRPO','Cancelled AP Invoice'].include?(status)
         if !cancellation_reason.present?
           errors.add(:base, 'Please enter reason for cancellation')
         end
