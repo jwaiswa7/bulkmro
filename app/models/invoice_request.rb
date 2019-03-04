@@ -24,7 +24,8 @@ class InvoiceRequest < ApplicationRecord
       'Cancelled': 60,
       'AP Invoice Request Rejected': 80,
       'GRPO Request Rejected': 90,
-      'GRPO Requested': 100
+      'GRPO Requested': 100,
+      'Inward Completed': 110
   }
 
   enum rejection_reason: {
@@ -96,7 +97,8 @@ class InvoiceRequest < ApplicationRecord
     elsif self.ar_invoice_number.present?
       self.status = :'Completed AR Invoice Request'
     elsif self.ap_invoice_number.present?
-      self.status = :'Pending AR Invoice'
+      # self.status = :'Pending AR Invoice'
+      self.status = :'Inward Completed'
     elsif self.grpo_number.present?
       self.status = :'Pending AP Invoice'
     else
@@ -118,7 +120,11 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def rejection_reason_text
-    self.rejection_reason == 'Others' ? self.other_rejection_reason : self.rejection_reason
+    if self.status == 'GRPO Request Rejected'
+      self.rejection_reason == 'Others' ? self.other_rejection_reason : self.rejection_reason
+    elsif status == 'AP Invoice Request Rejected'
+      self.other_rejection_reason
+    end
   end
 
   def display_reason(type = nil)
@@ -138,10 +144,15 @@ class InvoiceRequest < ApplicationRecord
   private
 
     def presence_of_reason
-      if ['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(status)
+      # if ['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(status)
+      if 'GRPO Request Rejected' == status
         if !rejection_reason.present?
           errors.add(:base, 'Please enter reason for rejection')
         elsif rejection_reason == 'Others' && !other_rejection_reason.present?
+          errors.add(:base, 'Please enter reason for rejection')
+        end
+      elsif 'AP Invoice Request Rejected' == status
+        if !other_rejection_reason.present?
           errors.add(:base, 'Please enter reason for rejection')
         end
       elsif  ['Cancelled','Cancelled AR Invoice'].include?(status)
