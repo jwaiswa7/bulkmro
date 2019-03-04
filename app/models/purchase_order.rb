@@ -93,6 +93,10 @@ class PurchaseOrder < ApplicationRecord
     self.email_messages.where(email_type: 'Sending PO to Supplier').present?
   end
 
+  def email_sent_to_supplier_date
+    self.email_messages.where(email_type: 'Sending PO to Supplier').last.created_at if has_sent_email_to_supplier?
+  end
+
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?
       product_supplier = (Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']))
