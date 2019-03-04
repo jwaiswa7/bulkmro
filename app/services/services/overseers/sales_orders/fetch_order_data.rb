@@ -17,6 +17,7 @@ class Services::Overseers::SalesOrders::FetchOrderData < Services::Shared::BaseS
           sales_order_row = sales_order.rows.joins(:sales_quote_row).joins(:product).where(products: { sku: item['ItemCode'] }).first
           sales_order_row.sales_quote_row.update_attributes(tax_code_id: tax_code_id.id) if tax_code_id.present?
           sales_order_row.sales_quote_row.update_attributes(tax_rate_id: tax_rate_id.id) if tax_rate_id.present?
+          sales_order_row.sales_quote_row.update_attributes(unit_selling_price: item['Price'], quantity: item['Quantity']) #check
         end
       end if sap_so_data['error'].blank?
     end
@@ -24,4 +25,3 @@ class Services::Overseers::SalesOrders::FetchOrderData < Services::Shared::BaseS
 
   attr_accessor :sales_order
 end
-# NetTaxAmount, TaxTotal, TaxAmount
