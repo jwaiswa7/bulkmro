@@ -1,5 +1,5 @@
 class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::BaseService
-  def initialize(order, overseer, po_requests, stock_po=false)
+  def initialize(order, overseer, po_requests, stock_po = false)
     @order = order
     @overseer = overseer
     @po_requests = po_requests
