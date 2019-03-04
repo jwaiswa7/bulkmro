@@ -21,14 +21,14 @@ json.data (@activities) do |activity|
                   elsif activity.company_creation_request.present?
                     activity.company_creation_request.name
                   else
-                    '--'
+                    ''
                   end,
                   activity.company_creation_request.present? ? format_boolean(activity.company_creation_request.is_supplier?) : format_boolean(activity.is_supplier?),
                   activity.company_creation_request.present? ? format_boolean(activity.company_creation_request.is_customer?) : format_boolean(activity.is_customer?),
                   if activity.company_creation_request.present?
                     status_badge(activity.company_creation_request.status)
                   else
-                    '--'
+                    ''
                   end,
                   if activity.inquiry.present?
                     link_to format_id(activity.inquiry.inquiry_number), edit_overseers_inquiry_path(activity.inquiry)
