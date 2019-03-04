@@ -17,9 +17,9 @@ class ApplicationMailer < ActionMailer::Base
 
   def htmlized_email(email_message)
     gmail_delivery(
-        mail(mail_params(email_message)) do |format|
-          format.html { render html: email_message.body.html_safe }
-        end
+      mail(mail_params(email_message)) do |format|
+        format.html { render html: email_message.body.html_safe }
+      end
     )
   end
 
@@ -31,7 +31,7 @@ class ApplicationMailer < ActionMailer::Base
 
   def gmail_delivery(mail)
     mail.delivery_method.settings = Settings.gmail_smtp.to_hash
-    return mail
+    mail
   end
 
   def mail_params(email_message)
