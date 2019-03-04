@@ -5,7 +5,8 @@ const edit = () => {
     $('.add-review').on('click',function (e) {
         $('#multipleRatingForm').modal('toggle')
     })
-
+    let form_original_data = $("form").serializeArray();
+    
     $('[name="invoice_request[status]"]').unbind().bind('change', function(){
         let val = $(this).val()
         $(".invoice_request_rejection_reason, .invoice_request_other_rejection_reason, .invoice_request_cancellation_reason").addClass('d-none')
@@ -15,7 +16,8 @@ const edit = () => {
         else if( val == 'AP Invoice Request Rejected'){
             $(".invoice_request_other_rejection_reason").removeClass('d-none')
         }
-        else if(val == 'Cancelled' || val == 'Cancelled AR Invoice'){
+        else if(val == 'Cancelled GRPO' || val == 'Cancelled AP Invoice'){
+            $(this)
             $(".invoice_request_cancellation_reason").removeClass('d-none');
         }
         else{
@@ -37,6 +39,29 @@ const edit = () => {
         }
 
     });
+
+    $('.submit-form').unbind().bind('click', function (event) {
+        let form_changed_data = $("form").serializeArray(),
+          changed_status = form_changed_data.filter(x => x.name === "invoice_request[status]"),
+          original_status = form_original_data.filter(x => x.name === "invoice_request[status]");
+        if(changed_status){
+            let is_cancel_status = changed_status[0]['value'].toLowerCase().indexOf('cancel') != -1
+            if(is_cancel_status && original_status && (changed_status[0]['value'] != original_status[0]['value'])){
+                if (changed_status[0]['value'] == 'Cancelled AP Invoice'){
+                    if( !confirm('Do you want to Cancel the AP Invoice ?') ){
+                        event.preventDefault();
+                    }
+                }
+                else{
+                    if( !confirm('Do you want to Cancel the GRPO?') ){
+                        event.preventDefault();
+                    }
+                }
+            }
+        }
+
+
+    })
 
 };
 
