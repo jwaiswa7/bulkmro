@@ -119,7 +119,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
     if @purchase_order.valid?
 
-      messages = DateModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date', 'followup_date'])
+      messages = FieldModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date', 'followup_date'])
       if messages.present?
         @purchase_order.comments.create(message: messages, overseer: current_overseer)
       end
@@ -159,7 +159,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def update_logistics_owner_for_inward_dispatches
-    @inward_dispatches = InwardDispatch.where(id: params[:pickup_requests])
+    @inward_dispatches = InwardDispatch.where(id: params[:inward_dispatches])
     authorize @inward_dispatches
     @inward_dispatches.update_all(logistics_owner_id: params[:logistics_owner_id])
   end

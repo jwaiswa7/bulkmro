@@ -46,7 +46,10 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
     @inward_dispatch.assign_attributes(inward_dispatch_params.merge(overseer: current_overseer))
 
     if @inward_dispatch.valid?
-      messages = DateModifiedMessage.for(@inward_dispatch, ['expected_dispatch_date', 'expected_delivery_date', 'actual_delivery_date'])
+      messages = FieldModifiedMessage.for(@inward_dispatch, message_fields(@inward_dispatch))
+      @inward_dispatch.rows.each do |row|
+        messages << FieldModifiedMessage.for(row, ["supplier_delivery_date"])
+      end
       if messages.present?
         @inward_dispatch.comments.create(message: messages, overseer: current_overseer)
       end
@@ -75,6 +78,10 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
 
     def set_inward_dispatch
       @inward_dispatch = InwardDispatch.find(params[:id])
+    end
+
+    def message_fields(object)
+      object.attributes.keys - %w(id purchase_order_id overseer_id logistics_owner_id created_by_id updated_by_id created_at updated_at invoice_request_id)
     end
 
     def inward_dispatch_params

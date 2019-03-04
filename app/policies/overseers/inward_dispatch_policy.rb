@@ -35,7 +35,7 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
     record.status == 'Material Delivered'
   end
 
-  def update_logistics_owner_for_pickup_requests?
+  def update_logistics_owner_for_inward_dispatches?
     admin?
   end
 end
