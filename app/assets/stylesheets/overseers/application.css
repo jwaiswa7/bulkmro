@@ -9826,8 +9826,7 @@ th {
     .table tr.parent:last-child {
       border-bottom-right-radius: 0; }
     .table tr.child {
-      background-color: transparent;
-      word-wrap: normal; }
+      background-color: transparent; }
       .table tr.child td {
         padding: 0; }
         .table tr.child td > * {
@@ -9850,6 +9849,9 @@ th {
       border-bottom-right-radius: 0.25rem;
       border-top-right-radius: 0.25rem;
       padding-right: 0.75em; }
+    .table th.child, .table td.child {
+      word-wrap: normal;
+      white-space: normal; }
     .table th a:not(.btn):not(.razorpay-payment-button), .table td a:not(.btn):not(.razorpay-payment-button) {
       color: inherit;
       display: inline-block;
