@@ -113,7 +113,7 @@ class SalesInvoice < ApplicationRecord
   def get_due_days
     days = '-'
     amount_due = self.amount_due
-    if due_date < Date.today && self.amount_due > 0.0
+    if due_date.present? && due_date < Date.today && self.amount_due > 0.0
       if due_date.present?
         if self.amount_received < amount_due
           days = "#{((Time.now - self.get_due_date) / 86400).to_i} days"
