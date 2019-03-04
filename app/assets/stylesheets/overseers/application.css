@@ -9826,7 +9826,8 @@ th {
     .table tr.parent:last-child {
       border-bottom-right-radius: 0; }
     .table tr.child {
-      background-color: transparent; }
+      background-color: transparent;
+      word-wrap: normal; }
       .table tr.child td {
         padding: 0; }
         .table tr.child td > * {
