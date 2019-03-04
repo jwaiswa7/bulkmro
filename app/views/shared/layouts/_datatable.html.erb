@@ -1,6 +1,5 @@
 <% if content_for?(:heading) || (content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new?) || !content_for?(:hide_table_desc) %>
   <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
-
     <div class="d-md-flex justify-content-between">
       <div>
         <% if content_for?(:heading) %>
@@ -9,7 +8,7 @@
           <h1 class="display-5 mb-1"><%= current_model.titleize %></h1>
         <% end unless content_for?(:hide_table_heading) %>
         <% unless content_for?(:hide_table_desc) %>
-          <p class="lead mt-1">
+          <p class="lead mt-1 mb-1">
             All <%= current_model.humanize.downcase %> searchable with relevant term/keywords.
           </p>
         <% end %>
