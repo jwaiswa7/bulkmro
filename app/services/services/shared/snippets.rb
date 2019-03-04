@@ -980,7 +980,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def sync_last_synced_quote
-    inquiries = Inquiry.where(last_synced_quote_id: nil)
+    inquiries = Inquiry.where(last_synced_quote_id: nil).last(30)
     inquiries.each do |inquiry|
       inquiry.update_attribute(:last_synced_quote_id, inquiry.final_sales_quote.id) if inquiry.final_sales_quote.present?
     end
