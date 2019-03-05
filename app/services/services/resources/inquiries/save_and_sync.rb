@@ -10,18 +10,14 @@ class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseServic
   end
 
   def call_later
-     if inquiry.project_uid.blank?
-       project_uid = ::Resources::Project.custom_find(inquiry.subject, 'Name')
-       inquiry.update_attributes(:project_uid => project_uid)
-     else
-       project_uid = ::Resources::Project.custom_find(inquiry.id, :Project_Code)
-     end
+    if inquiry.project_uid.blank?
+      project_uid = ::Resources::Project.custom_find(inquiry.subject, 'Name')
+      inquiry.update_attributes(:project_uid => project_uid)
+    end
 
-    if inquiry.project_uid.blank? && project_uid.present?
+    if inquiry.project_uid.blank?
       project_uid = ::Resources::Project.create(inquiry)
       inquiry.update_attributes(project_uid: project_uid)
-    else
-
     end
 
     if inquiry.opportunity_uid.present?
