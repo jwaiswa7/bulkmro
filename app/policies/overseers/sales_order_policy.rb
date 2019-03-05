@@ -128,10 +128,6 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     new_purchase_orders_requests?
   end
 
-  def create_stock_po?
-    admin? || sales?
-  end
-
   def fetch_order_data?
     developer?
   end

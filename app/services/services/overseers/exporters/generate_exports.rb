@@ -9,6 +9,7 @@ class Services::Overseers::Exporters::GenerateExportsHourly < Services::Shared::
     end
   end
 end
+
 class Services::Overseers::Exporters::GenerateExportsDaily < Services::Shared::BaseService
   def initialize
     export_arr = [
