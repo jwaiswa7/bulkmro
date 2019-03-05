@@ -122,48 +122,108 @@
           </div>
         </div>
 
-        <% if @inward_dispatch.rows.present? %>
-          <div class="card-body">
-            <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
-            <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
-              <%= row.hidden_field :id %>
-              <div class="form-row flex-row simple-row">
-                <div class="col-6">
-                  <%= row.hidden_field :purchase_order_row_id, label: 'Product' %>
-                  <%= row.association :purchase_order_row, label: 'Product', collection: @inward_dispatch.purchase_order.rows, include_blank: 'Choose Product', disabled: row.object.purchase_order_row.present? && row.object.errors.blank? %>
-
+        <div class="card-body">
+          <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
+          <div class="form-row d-none d-md-flex">
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>Sr. No.</label>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group mb-0">
+                <label>Product</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-group mb-0">
+                <label>Supplier PO Total Qty</label>
+              </div>
+            </div>
+            <% if f.object.status == "Material Delivered" %>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Inward Dispatch Qty</label>
                 </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Delivered Qty</label>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Supplier Delivery Date</label>
+                </div>
+              </div>
+            <% else %>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Inward Dispatch Qty</label>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group mb-0">
+                  <label>Supplier Delivery Date</label>
+                </div>
+              </div>
+            <% end %>
+            <% if policy(f.object).remove_products? %>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>Remove Product</label>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <% if @inward_dispatch.rows.present? %>
+            <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
+              <div class="form-row flex-row align-items-start">
+                <div class="col-1 col-md-1">
+                  <%= (@inward_dispatch.rows.index(row.object) || 0) + 1 %>
+                  <%= row.hidden_field :id %>
+                </div>
+
+                <div class="col-6 col-md-3">
+                  <%= row.hidden_field :purchase_order_row_id, label: 'Product' %>
+                  <%= row.input :purchase_order_row, input_html: {value: row.object.purchase_order_row.to_s}, disabled: row.object.purchase_order_row.present? && row.object.errors.blank?, label: false %>
+                </div>
+
+                <div class="col-6 col-md-2">
+                  <%= row.input :quantity, input_html: {value: row.object.purchase_order_row&.quantity}, readonly: true, label: false %>
+                </div>
+
                 <% if f.object.status == "Material Delivered" %>
-                  <div class="col-2">
-                    <%= row.input :pickup_quantity, input_html: {value: row.object.pickup_quantity}, readonly: true %>
+                  <div class="col-6 col-md-2">
+                    <%= row.input :pickup_quantity, input_html: {value: row.object.pickup_quantity}, readonly: true, label: false %>
                   </div>
-                  <div class="col-2">
-                    <%= row.input :delivered_quantity, type: "number", input_html: {value: row.object.delivered_quantity.to_i, min: 1, max: (row.object.pickup_quantity.to_i if row.object.pickup_quantity.to_i > 1)}, readonly: f.object.invoice_request.present? %>
+                  <div class="col-6 col-md-2">
+                    <%= row.input :delivered_quantity, type: "number", input_html: {value: row.object.delivered_quantity.to_i, min: 1, max: (row.object.pickup_quantity.to_i if row.object.pickup_quantity.to_i > 1)}, readonly: f.object.invoice_request.present?, label: false %>
                   </div>
-                  <div class="col-2">
-                    <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+                  <div class="col-6 col-md-2">
+                    <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: false %>
                   </div>
                 <% else %>
-                  <div class="col-2">
-                    <%= row.input :pickup_quantity, type: "number", input_html: {value: row.object.pickup_quantity.to_f, min: 0} %>
+                  <div class="col-6 col-md-2">
+                    <%= row.input :pickup_quantity, type: "number", input_html: {value: row.object.pickup_quantity.to_f, min: 0}, label: false %>
                   </div>
-                  <div class="col-2">
-                    <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true %>
+                  <div class="col-6 col-md-3">
+                    <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true, label: false %>
                   </div>
                 <% end %>
                 <% if policy(f.object).remove_products? %>
-                  <div class="col-2  mt-3 ">
+                  <div class="col-6 col-md-1">
                     <%= row.remove_nested_fields_link 'Remove Product', class: 'btn btn-danger align-self-center delete_row', wrapper_class: 'simple-row' if policy(row.object).destroy? %>
                   </div>
                 <% end %>
-                <hr/>
               </div>
             <% end %>
             <% if policy(f.object).add_products? %>
               <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' %>
             <% end %>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
+
         <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
           <i class="fal fa-pen"></i> <%= submit_text(@inward_dispatch, use_alias: @inward_dispatch.readable_status) %>
         <% end %>

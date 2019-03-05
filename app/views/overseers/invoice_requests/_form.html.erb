@@ -26,7 +26,7 @@
     <%= f.hidden_field :sales_order_id %>
     <%= f.hidden_field :inquiry_id %>
     <%= f.hidden_field :purchase_order_id %>
-    <%= f.hidden_field :material_pickup_request_ids, value: @invoice_request.material_pickup_requests.map(&:id).join(", ") %>
+    <%= f.hidden_field :inward_dispatches_ids, value: @invoice_request.inward_dispatches.map(&:id).join(", ") %>
 
     <div class="form-row">
       <div class="col-6">

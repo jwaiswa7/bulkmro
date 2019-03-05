@@ -8,19 +8,19 @@ const inwardDispatchDeliveredQueue = () => {
 };
 
 let toggleCheckboxes = () => {
-    $('table').on('change', 'input[type=checkbox][name="inward_dispatches[]"]', (event) => {
+    $('table').on('change', 'input[type=checkbox][name="the_inward_dispatches[]"]', (event) => {
         showOrHideActions();
     })
 }
 
 let createInvoiceRequest = () => {
     let inward_dispatches = {};
-    $('input[type=checkbox][name="inward_dispatches[]"]:checked').each((index, element) => {
+    $('input[type=checkbox][name="the_inward_dispatches[]"]:checked').each((index, element) => {
         inward_dispatches[$(element).val()] = $(element).data("po-id");
     });
 
     if (checkValues(inward_dispatches) == true) {
-        let data = {ids: Object.keys(pickup_requests), purchase_order_id: Object.values(inward_dispatches)[0]};
+        let data = {ids: Object.keys(inward_dispatches), purchase_order_id: Object.values(inward_dispatches)[0]};
         window.open(Routes.new_overseers_invoice_request_path(data));
     } else {
         $.notify({
@@ -39,7 +39,7 @@ let checkValues = (obj) => {
 let showOrHideActions = () => {
     var hide = true;
 
-    $('input[type=checkbox][name="inward_dispatches[]"]').each((index, element) => {
+    $('input[type=checkbox][name="the_inward_dispatches[]"]').each((index, element) => {
         if ($(element).is(':checked')) {
             hide = false;
         }
