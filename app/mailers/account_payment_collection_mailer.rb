@@ -3,12 +3,14 @@ class AccountPaymentCollectionMailer < ApplicationMailer
   def acknowledgement(email_message)
     @overseer = email_message.overseer
     @account = email_message.account
+    attach_files(email_message.files)
     standard_email(email_message)
   end
 
   def send_acknowledgement(email_message)
     @overseer = email_message.overseer
     @account = email_message.account
+    attach_files(email_message.files)
     email = htmlized_email(email_message)
     email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
   end

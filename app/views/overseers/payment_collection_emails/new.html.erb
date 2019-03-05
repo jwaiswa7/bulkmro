@@ -25,6 +25,9 @@
           <%= f.input :subject %>
         </div>
 
+        <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} %>
+        <%= f.input :auto_attach, wrapper: :custom_boolean, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+
         <div class="form-group">
           <%= f.input :body, input_html: {class: 'html-editor'} %>
         </div>
