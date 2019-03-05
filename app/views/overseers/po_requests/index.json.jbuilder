@@ -1,10 +1,8 @@
 json.data (@po_requests) do |po_request|
   json.array! [
                   [
-                      if po_request.sales_order.present? && (policy(po_request).edit?)
-                        row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
-                      elsif policy(po_request).edit? && po_request.status != 'Cancelled'
-                        row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning', :_blank)
+                      if policy(po_request).edit? && po_request.status != 'Cancelled'
+                        row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning', :_blank)
                       end,
                       if policy(po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
@@ -21,17 +19,11 @@ json.data (@po_requests) do |po_request|
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       end
                   ].join(' '),
-                  if po_request.po_request_type == 'Stock'
-                    conditional_link(po_request.id, overseers_inquiry_po_request_path(po_request.inquiry, po_request), policy(po_request).show?)
-                  else
-                    conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?)
-                  end,
-                  if po_request.po_request_type == 'Stock'
-                    status_badge(po_request.stock_status)
-                  end,
+                  conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),
                   conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
-                  if po_request.purchase_order.present? && (po_request.status == 'PO Created' || po_request.stock_status == 'Stock Supplier PO Created')
+                  if po_request.purchase_order.present? && (po_request.status == 'PO Created')
                     link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank')
+
                   else
                     po_request.sales_order.order_number if po_request.sales_order.present?
                   end,
@@ -42,7 +34,7 @@ json.data (@po_requests) do |po_request|
                   po_request.buying_price,
                   po_request.selling_price,
                   po_request.po_margin_percentage,
-                  (po_request.sales_order.calculated_total_margin_percentage if po_request.sales_order.present?),
+                  po_request.sales_order.calculated_total_margin_percentage,
                   format_date(po_request.inquiry.customer_committed_date),
                   format_date(po_request.supplier_committed_date),
                   format_date_time_meridiem(po_request.created_at),

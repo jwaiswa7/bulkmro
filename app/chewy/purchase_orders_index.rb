@@ -1,7 +1,6 @@
 class PurchaseOrdersIndex < BaseIndex
   material_statuses = PurchaseOrder.material_statuses
   po_statuses = PoRequest.statuses
-  stock_po_statuses = PoRequest.stock_statuses
   statuses = PurchaseOrder.statuses
   payment_request_statuses = PaymentRequest.statuses
   supplier_po_type = PoRequest.supplier_po_types
@@ -41,6 +40,5 @@ class PurchaseOrdersIndex < BaseIndex
     field :updated_at, type: 'date'
     field :potential_value, value: -> (record) { record.try(:calculated_total) }, type: 'double'
     field :po_type, value: -> (record) { supplier_po_type[record.po_request.supplier_po_type] if record.po_request.present? }
-    field :stock_po_status, value: -> (record) { stock_po_statuses[record.po_request ? record.po_request.stock_status : 'Stock Supplier PO Created'] }
   end
 end

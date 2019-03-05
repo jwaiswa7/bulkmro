@@ -10,6 +10,6 @@ let inquiries= {
     editSuppliers: inquiriesEditSuppliers,
     updateSuppliers: inquiriesUpdateSuppliers,
     index: inquiriesIndex
-};
+}
 
 export default inquiries

@@ -1,6 +1,6 @@
 class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseController
   before_action :set_import, only: [:show]
-  before_action :set_excel_import, only: [:load_alternatives, :manage_failed_skus, :create_failed_skus]
+  before_action :set_excel_import, only: [:manage_failed_skus, :create_failed_skus]
   before_action :set_notification, only: [:create_failed_skus]
 
   def index
@@ -76,18 +76,11 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     service.call
   end
 
-  def load_alternatives
-    authorize @excel_import
-    respond_to do |format|
-      format.html { render partial: 'load_alternatives', locals: { row_object: InquiryImportRow.find(params[:row_object]), page: params[:page], item_index: params[:index] } }
-    end
-  end
-
   def create_failed_skus
     @excel_import.assign_attributes(create_failed_skus_params)
 
     authorize @excel_import
-    service = Services::Overseers::InquiryImports::CreateFailedSkus.new(@inquiry, @excel_import, current_overseer)
+    service = Services::Overseers::InquiryImports::CreateFailedSkus.new(@inquiry, @excel_import)
 
     if service.call
       @notification.send_product_import_confirmation(

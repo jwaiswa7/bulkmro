@@ -2,8 +2,8 @@ import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from "../common/updateSummaryBox";
 
 const index = () => {
-    bindSummaryBox(".summary_box", '.status-filter');
-    updateSummaryBox();
+    bindSummaryBox(".summary_box", '.status-filter')
+    updateSummaryBox()
     aggregateSummaryBox()
 };
 
@@ -14,6 +14,6 @@ let aggregateSummaryBox = () => {
         $('.overall-status-count').html( new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusCount));
         $('.overall-status-value').html("&#8377;" + new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusValue));
     });
-};
+}
 
 export default index
