@@ -130,7 +130,7 @@ class Resources::Quotation < Resources::ApplicationResource
         SalesPersonCode: record.inquiry.inside_sales_owner.salesperson_uid, # record.inside_sales_owner, # Inside Sales Owner
         NumAtCard: record.inquiry.subject, # Comment on Quote?
         DocCurrency: 'INR', # record.currency.name
-        DocEntry: record.quotation_uid,
+        DocEntry: record.remote_uid,
         ImportEnt: record.inquiry.customer_po_number, # Customer PO ID Not Available Yet
         U_RevNo: record.ancestors.size, # Quotation Revision ID
         DocDate: record.created_date, # Quote Create Date

@@ -26,7 +26,7 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   end
 
   def reset_quote?
-    developer?
+    developer? && record == record.inquiry.final_sales_quote
   end
 
   def preview?
