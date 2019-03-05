@@ -98,23 +98,23 @@ class PoRequestRow < ApplicationRecord
     self.sales_order_row.present?
   end
 
-  def is_inquiry_product_supplier_present
+  def is_inquiry_product_supplier_present?
     self.inquiry_product_supplier.present?
   end
 
-  def is_supplier_product_name_present
-    if is_inquiry_product_supplier_present
+  def supplier_product_name
+    if is_inquiry_product_supplier_present?
       self.inquiry_product_supplier.bp_catalog_name.present? ? self.inquiry_product_supplier.bp_catalog_name : self.inquiry_product_supplier.product.name
     end
   end
 
-  def is_supplier_product_sku_present
-    if is_inquiry_product_supplier_present
+  def supplier_product_sku
+    if is_inquiry_product_supplier_present?
       self.inquiry_product_supplier.bp_catalog_sku.present? ? self.inquiry_product_supplier.bp_catalog_sku : self.inquiry_product_supplier.product.sku
     end
   end
 
   def to_s
-    "#{is_supplier_product_sku_present} - #{is_supplier_product_name_present}"
+    "#{supplier_product_sku} - #{supplier_product_name}"
   end
 end
