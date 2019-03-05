@@ -2,23 +2,14 @@ class Overseers::ActivitiesController < Overseers::BaseController
   before_action :set_activity, only: [:edit, :update, :approve, :reject]
 
   def index
-    service = Services::Overseers::Finders::Activities.new(params)
-    service.call
-
-    @indexed_activities = service.indexed_records
-    @activities = service.records
+    @activities = ApplyDatatableParams.to(Activity.all.includes(:created_by, :overseers).approved, params)
     authorize @activities
   end
 
   def pending
     @activities = ApplyDatatableParams.to(Activity.all.includes(:created_by, :overseers).not_approved.not_rejected, params)
-    service = Services::Overseers::Finders::Activities.new(params)
-    service.call
-    @indexed_activities = service.indexed_records
-    @activities = service.records
     authorize @activities
   end
-
 
   def new
     @activity = current_overseer.activities.build(overseer: current_overseer)
@@ -129,7 +120,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
               :last_name,
               :address,
               :account_type,
-          ],
+            ],
           attachments: []
       )
     end

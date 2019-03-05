@@ -1,7 +1,7 @@
 class RemoteRequestsIndex < BaseIndex
   resource_status = RemoteRequest.resources
-
-  define_type RemoteRequest.all do
+  id = RemoteRequest.last(5000).first.id
+  define_type RemoteRequest.where('id >= ?', id) do
     field :id, type: 'integer'
     field :request, value: -> (record) { record.manage_remote_request_data(record) }, analyzer: 'substring'
     field :resource_id, value: ->(record) { resource_status[record.resource] }

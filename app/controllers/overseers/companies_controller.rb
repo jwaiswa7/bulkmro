@@ -102,9 +102,6 @@ class Overseers::CompaniesController < Overseers::BaseController
     redirect_to url_for(Export.companies.last.report)
   end
 
-  def payment_collection_send_mail
-  end
-
   private
     def set_company
       @company ||= Company.find(params[:id])

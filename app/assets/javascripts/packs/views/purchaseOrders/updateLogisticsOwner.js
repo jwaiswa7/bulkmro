@@ -12,7 +12,7 @@ let toggleCheckboxes = () => {
     $('#all_purchase_orders').prop("checked", false);
 
     $('#all_purchase_orders').change((event) => {
-        var $element = $(event.target);
+        var $element = $(event.target)
         if ($element.is(':checked')) {
             $('input[type=checkbox][name="purchase_orders[]"]').each((index, element) => {
                 //$(element).attr('checked', 'checked')
@@ -31,7 +31,7 @@ let toggleCheckboxes = () => {
     $('table').on('change', 'input[type=checkbox][name="purchase_orders[]"]', (event) => {
         showOrHideActions();
     })
-};
+}
 
 let updateOwner = () => {
     let purchase_orders = [];
@@ -92,6 +92,6 @@ let showOrHideActions = () => {
         $('.update_logistics_owner_wrapper').hide();
     }
 
-};
+}
 
 export default updateLogisticsOwner

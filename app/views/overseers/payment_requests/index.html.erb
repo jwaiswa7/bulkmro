@@ -3,7 +3,7 @@
 <% provide :wrap_whitespace, true %>
 
 <div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: PaymentRequest, statuses: PaymentRequest.statuses, aggregation: {}} %>
+  <%= render partial: "shared/layouts/summary", locals: {klass: PaymentRequest, statuses: PaymentRequest.statuses} %>
 </div>
 
 <% content_for :heading do %>
