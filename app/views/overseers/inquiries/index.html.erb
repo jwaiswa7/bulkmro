@@ -4,7 +4,7 @@
 <% provide :wrap_whitespace, true %>
 
 <div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: Inquiry, statuses: Inquiry.statuses.except('Lead by O/S','Order Won'), aggregation: {statuses: Inquiry.statuses.slice('Order Won'), label:'Total'}} %>
+  <%= render partial: "shared/layouts/summary", locals: {klass: Inquiry, statuses: Inquiry.statuses} %>
 </div>
 
 <% content_for :header_row do %>
@@ -35,7 +35,7 @@
   <td data-filter="ajax"></td>
   <td data-filter="ajax"></td>
   <td data-filter="false"></td>
-  <td data-filter="false"></td>
+  <td data-filter="daterange"></td>
   <td data-filter="ajax"></td>
   <td data-filter="dropdown"></td>
   <td data-filter="dropdown"></td>

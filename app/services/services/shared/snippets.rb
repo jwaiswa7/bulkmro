@@ -2,7 +2,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   def supplier_data_summary
     Account.is_supplier.size
     Company.acts_as_supplier.size
-    ids = PurchaseOrder.all.map { |po| po.metadata['PoSupNum'] }.compact.uniq
+    ids = PurchaseOrder.all.map {|po| po.metadata['PoSupNum']}.compact.uniq
     ids.size
     nov_ids = Company.acts_as_supplier.where(created_at: Time.new(2018, 11, 1).beginning_of_month..Time.new(2018, 11, 1).end_of_month).pluck(:remote_uid)
     (ids & nov_ids).size
@@ -255,7 +255,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   def best_products
     inquiry_products = InquiryProduct.joins(:inquiry, :product).where('inquiries.company_id = ?', company.id)
     best_products = inquiry_products.top(:product_id, 5)
-    best_product_ids = best_products.map { |best_product| best_product[0] }
+    best_product_ids = best_products.map {|best_product| best_product[0]}
     inquiry_products.where('products.id IN (?)', best_product_ids).select('inquiry_products.product_id, inquiry_products.bp_catalog_sku').distinct
   end
 
@@ -780,10 +780,10 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def get_product_price(product_id, company)
     company_inquiries = company.inquiries.includes(:sales_quote_rows, :sales_order_rows)
-    sales_order_rows = company_inquiries.map { |i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id) }.flatten.compact
-    sales_order_row_price = sales_order_rows.map { |r| r.unit_selling_price }.flatten if sales_order_rows.present?
+    sales_order_rows = company_inquiries.map {|i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_order_row_price = sales_order_rows.map {|r| r.unit_selling_price}.flatten if sales_order_rows.present?
     return sales_order_row_price.min if sales_order_row_price.present?
-    sales_quote_rows = company_inquiries.map { |i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id) }.flatten.compact
+    sales_quote_rows = company_inquiries.map {|i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
     sales_quote_row_price = sales_quote_rows.pluck(:unit_selling_price)
     return sales_quote_row_price.min
   end
@@ -792,7 +792,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     customers = Contact.all
     customers.each do |customer|
       customer_companies = customer.companies
-      inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company: customer_companies).map { |i| i.inquiry_products }.flatten if customer_companies.present?
+      inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company: customer_companies).map {|i| i.inquiry_products}.flatten if customer_companies.present?
       if inquiry_products.present?
         inquiry_products.each do |inquiry_product|
           CustomerProduct.where(company_id: inquiry_product.inquiry.company_id, sku: inquiry_product.product.sku).first_or_create do |customer_product|
@@ -823,8 +823,8 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   def update_sales_orders_for_legacy_inquiries
     folders = ['seed_files', 'seed_files_2']
     folders.each do |folder|
-      legacy_request_status_mapping = { 'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70 }
-      remote_status = { 'Supplier PO: Request Pending' => 17, 'Supplier PO: Partially Created' => 18, 'Partially Shipped' => 19, 'Partially Invoiced' => 20, 'Partially Delivered: GRN Pending' => 21, 'Partially Delivered: GRN Received' => 22, 'Supplier PO: Created' => 23, 'Shipped' => 24, 'Invoiced' => 25, 'Delivered: GRN Pending' => 26, 'Delivered: GRN Received' => 27, 'Partial Payment Received' => 28, 'Payment Received (Closed)' => 29, 'Cancelled by SAP' => 30, 'Short Close' => 31, 'Processing' => 32, 'Material Ready For Dispatch' => 33, 'Order Deleted' => 70 }
+      legacy_request_status_mapping = {'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70}
+      remote_status = {'Supplier PO: Request Pending' => 17, 'Supplier PO: Partially Created' => 18, 'Partially Shipped' => 19, 'Partially Invoiced' => 20, 'Partially Delivered: GRN Pending' => 21, 'Partially Delivered: GRN Received' => 22, 'Supplier PO: Created' => 23, 'Shipped' => 24, 'Invoiced' => 25, 'Delivered: GRN Pending' => 26, 'Delivered: GRN Received' => 27, 'Partial Payment Received' => 28, 'Payment Received (Closed)' => 29, 'Cancelled by SAP' => 30, 'Short Close' => 31, 'Processing' => 32, 'Material Ready For Dispatch' => 33, 'Order Deleted' => 70}
       service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv', folder)
       service.loop(nil) do |x|
         inquiry_number = x.get_column('inquiry_number').to_i
@@ -883,7 +883,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def inquiry_status_update
-    Inquiry.joins('LEFT JOIN inquiry_status_records ON inquiry_status_records.inquiry_id = inquiries.id').distinct.where(inquiry_status_records: { inquiry_id: nil }).with_includes.each do |inquiry|
+    Inquiry.joins('LEFT JOIN inquiry_status_records ON inquiry_status_records.inquiry_id = inquiries.id').distinct.where(inquiry_status_records: {inquiry_id: nil}).with_includes.each do |inquiry|
       if inquiry.inquiry_status_records.blank?
         subject = inquiry
         status = inquiry.status
@@ -941,7 +941,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     service.loop() do |x|
       address_uid = x.get_column('address_uid')
       company_uid = x.get_column('company_uid')
-      data = { company: company_uid, address: address_uid }
+      data = {company: company_uid, address: address_uid}
       address = Address.find_by_remote_uid(address_uid)
       if address.present?
         if address.company.remote_uid != company_uid
@@ -970,7 +970,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         end
       end
     end
-    return { missing: missing.uniq, mismatch: mismatch.uniq }
+    return {missing: missing.uniq, mismatch: mismatch.uniq}
   end
 
   def add_logistics_owner_to_all_po
@@ -980,9 +980,51 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def sync_last_synced_quote
-    inquiries = Inquiry.where(last_synced_quote_id: nil)
+    inquiries = Inquiry.where(last_synced_quote_id: nil).last(30)
     inquiries.each do |inquiry|
       inquiry.update_attribute(:last_synced_quote_id, inquiry.final_sales_quote.id) if inquiry.final_sales_quote.present?
+    end
+  end
+
+  def update_sales_quote_remote_uid
+    inquiries = Inquiry.where.not(last_synced_quote_id: nil)
+    inquiries.each do |inquiry|
+      inquiry.last_synced_quote.update_attribute(:remote_uid, inquiry.quotation_uid)
+    end
+  end
+
+  def add_completed_po_to_material_followup_queue
+
+    PoRequest.all.includes(:purchase_order).where.not(purchase_order_id: nil).each do |po_request|
+      current_overseer = Overseer.where(email: 'approver@bulkmro.com').last
+      purchase_order = po_request.purchase_order
+      if purchase_order.po_request.present?
+        if purchase_order.po_request != 'PO Created'
+          purchase_order.po_request.assign_attributes(status: 'PO Created')
+          purchase_order.po_request.save(validate: false)
+        end
+
+        if purchase_order.material_status == nil
+          purchase_order.set_defaults
+        end
+
+        if purchase_order.material_status != 'Material Delivered'
+          if purchase_order.email_messages.present? || !purchase_order.email_messages.where(purchase_order: purchase_order, email_type: 'Sending PO to Supplier').present?
+
+            email_message = purchase_order.email_messages.build(
+                overseer: current_overseer,
+                inquiry: purchase_order.inquiry,
+                purchase_order: purchase_order,
+                sales_order: purchase_order.po_request.sales_order,
+                email_type: 'Sending PO to Supplier'
+            )
+            email_message.assign_attributes(from: current_overseer.email, to: current_overseer.email, subject: "Internal Ref Inq ##{purchase_order.inquiry.inquiry_number} Purchase Order ##{purchase_order.po_number}")
+            email_message.save!
+          end
+        end
+      else
+        puts "po request not available for #{purchase_order.po_number}"
+      end
     end
   end
 end

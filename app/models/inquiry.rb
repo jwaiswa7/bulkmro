@@ -22,6 +22,8 @@ class Inquiry < ApplicationRecord
   has_one :industry, through: :company
   belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: false
   belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: false
+  belongs_to :last_synced_quote, class_name: 'SalesQuote', foreign_key: :last_synced_quote_id, required: false
+
   has_one :account, through: :company
   has_many :inquiry_products, -> { order(sr_no: :asc) }, inverse_of: :inquiry, dependent: :destroy
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? && attributes['id'].blank? }, allow_destroy: true
@@ -37,7 +39,6 @@ class Inquiry < ApplicationRecord
   has_many :sales_quotes, dependent: :destroy
   has_many :purchase_orders
   has_many :po_requests
-  accepts_nested_attributes_for :po_requests, allow_destroy: true
   has_many :sales_quote_rows, through: :sales_quotes
   has_one :final_sales_quote, -> { where.not(sent_at: nil).latest }, class_name: 'SalesQuote'
   has_many :draft_sales_quotes, -> { where(sent_at: nil) }, class_name: 'SalesQuote'
@@ -56,6 +57,8 @@ class Inquiry < ApplicationRecord
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
   has_one :customer_order, dependent: :nullify
   has_one :freight_request
+
+
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email
@@ -106,8 +109,7 @@ class Inquiry < ApplicationRecord
       repeat: 60,
       list: 65,
       route_through: 70,
-      tender: 80,
-      stock: 90
+      tender: 80
   }
 
   enum opportunity_source: {
@@ -163,7 +165,7 @@ class Inquiry < ApplicationRecord
 
   with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
     # inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
-    # inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
+    inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
     # inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
     inquiry.validates_presence_of :customer_po_number
     inquiry.validates_presence_of :customer_order_date
@@ -184,7 +186,7 @@ class Inquiry < ApplicationRecord
   # validates_with FileValidator, attachment: :supplier_quote, file_size_in_megabytes: 2
   # validates_with MultipleFileValidator, attachments: :supplier_quotes, file_size_in_megabytes: 2
   # validates_with FileValidator, attachment: :final_supplier_quote, file_size_in_megabytes: 2
-  # validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
   validates_numericality_of :potential_amount, greater_than: 0.00, if: :not_legacy?

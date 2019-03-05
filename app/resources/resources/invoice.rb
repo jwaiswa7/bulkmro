@@ -36,44 +36,46 @@ class Resources::Invoice < Resources::ApplicationResource
             quantity = remote_row['Quantity'].to_f
             tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
 
-          sales_invoice.rows.create!(
-            quantity: quantity,
-            sku: sku,metadata: {
-                qty: quantity,
-                sku: sku,
-                name: remote_row['U_Item_Descr'] != '' ? remote_row['U_Item_Descr'] : remote_row['ItemDescription'],
-                price: unit_price,
-                base_cost: nil,
-                row_total: unit_price * quantity,
-                base_price: unit_price,
-                product_id: (product.present? ? product.id.to_param : ''),
-                tax_amount: tax_amount,
-                description: remote_row['ItemDescription'],
-                order_item_id: nil,
-                base_row_total: unit_price * quantity,
-                price_incl_tax: nil,
-                additional_data: nil,
-                base_tax_amount: tax_amount,
-                discount_amount: nil,
-                weee_tax_applied: nil,
-                hidden_tax_amount: nil,
-                row_total_incl_tax: (unit_price * quantity) + (tax_amount),
-                base_price_incl_tax: (unit_price + (tax_amount / quantity)),
-                base_discount_amount: nil,
-                weee_tax_disposition: nil,
-                base_hidden_tax_amount: nil,
-                base_row_total_incl_tax: (unit_price * quantity) + (tax_amount),
-                weee_tax_applied_amount: nil,
-                weee_tax_row_disposition: nil,
-                base_weee_tax_disposition: nil,
-                weee_tax_applied_row_amount: nil,
-                base_weee_tax_applied_amount: nil,
-                base_weee_tax_row_disposition: nil,
-                base_weee_tax_applied_row_amnt: nil
-            }
-          )
-          break if is_kit
-        end if remote_rows.present? end
+            sales_invoice.rows.create!(
+              quantity: quantity,
+              sku: sku,
+              metadata: {
+                  qty: quantity,
+                  sku: sku,
+                  name: remote_row['U_Item_Descr'] != '' ? remote_row['U_Item_Descr'] : remote_row['ItemDescription'],
+                  price: unit_price,
+                  base_cost: nil,
+                  row_total: unit_price * quantity,
+                  base_price: unit_price,
+                  product_id: (product.present? ? product.id.to_param : ''),
+                  tax_amount: tax_amount,
+                  description: remote_row['ItemDescription'],
+                  order_item_id: nil,
+                  base_row_total: unit_price * quantity,
+                  price_incl_tax: nil,
+                  additional_data: nil,
+                  base_tax_amount: tax_amount,
+                  discount_amount: nil,
+                  weee_tax_applied: nil,
+                  hidden_tax_amount: nil,
+                  row_total_incl_tax: (unit_price * quantity) + (tax_amount),
+                  base_price_incl_tax: (unit_price + (tax_amount / quantity)),
+                  base_discount_amount: nil,
+                  weee_tax_disposition: nil,
+                  base_hidden_tax_amount: nil,
+                  base_row_total_incl_tax: (unit_price * quantity) + (tax_amount),
+                  weee_tax_applied_amount: nil,
+                  weee_tax_row_disposition: nil,
+                  base_weee_tax_disposition: nil,
+                  weee_tax_applied_row_amount: nil,
+                  base_weee_tax_applied_amount: nil,
+                  base_weee_tax_row_disposition: nil,
+                  base_weee_tax_applied_row_amnt: nil
+              }
+            )
+            break if is_kit
+          end if remote_rows.present?
+        end
       end
     end
   end

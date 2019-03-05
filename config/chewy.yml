@@ -8,7 +8,4 @@ development:
 production:
   host: <%= ENV["BONSAI_URL"] %>
 staging:
-  host: <%= ENV["FOUNDELASTICSEARCH_URL"] %>
-  user: <%= ENV["ELASTIC_USER_NAME"] %>
-  password: <%= ENV["ELASTIC_PASSWORD"] %>
-  scheme: 'https'
+  host: <%= ENV["BONSAI_URL"] %>

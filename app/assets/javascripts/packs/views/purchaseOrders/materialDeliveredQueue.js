@@ -11,7 +11,7 @@ let toggleCheckboxes = () => {
     $('table').on('change', 'input[type=checkbox][name="pickup_requests[]"]', (event) => {
         showOrHideActions();
     })
-};
+}
 
 let createInvoiceRequest = () => {
     let pickup_requests = {};
@@ -34,7 +34,7 @@ let createInvoiceRequest = () => {
 
 let checkValues = (obj) => {
     return Object.keys(obj).every((k) => obj[k] == Object.values(obj)[0])
-};
+}
 
 let showOrHideActions = () => {
     var hide = true;
@@ -49,6 +49,6 @@ let showOrHideActions = () => {
     } else {
         $('#create_invoice').show();
     }
-};
+}
 
 export default materialDeliveredQueue

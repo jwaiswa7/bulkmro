@@ -33,7 +33,7 @@
     <div class="form-row">
       <div class="col-6 col-md-2">
         <strong class="d-block">SAP Quotation</strong>
-        #<%= sales_quote.quotation_uid.blank? ? "SAP Request Pending" : sales_quote.quotation_uid %>
+        #<%= sales_quote.remote_uid.blank? ? "SAP Request Pending" : sales_quote.remote_uid %>
       </div>
       <div class="col-6 col-md-2">
         <strong class="d-block">Customer PO No.</strong>

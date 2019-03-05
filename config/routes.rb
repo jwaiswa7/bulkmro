@@ -39,7 +39,6 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     get "/docs/*page" => "docs#index"
-    resources :payment_collection_emails
     resources :attachments
     resources :review_questions
     resources :banks
@@ -73,12 +72,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :reports do
-      collection do
-        get 'bi_report'
-      end
-    end
-
+    resources :reports
     resources :company_creation_requests do
       # member do
       #   post 'exchange_with_existing_company'
@@ -168,8 +162,6 @@ Rails.application.routes.draw do
         get 'sku_purchase_history'
         get 'resync'
         get 'resync_inventory'
-        get 'autocomplete_suppliers'
-        get 'get_product_details'
       end
 
       collection do
@@ -213,9 +205,6 @@ Rails.application.routes.draw do
         get 'pending_and_rejected'
         get 'cancelled'
         get 'amended'
-        get 'pending_stock_approval'
-        get 'stock'
-        get 'completed_stock'
       end
 
     end
@@ -272,6 +261,7 @@ Rails.application.routes.draw do
       collection do
         get 'export_all'
         get 'autocomplete'
+        get 'autocomplete_without_po_requests'
         get 'material_readiness_queue'
         get 'material_pickup_queue'
         get 'material_delivered_queue'
@@ -338,8 +328,6 @@ Rails.application.routes.draw do
         get 'index_pg'
         get 'smart_queue'
         get 'export_all'
-        post 'create_purchase_orders_requests'
-        post 'preview_stock_po_request'
       end
 
       scope module: 'inquiries' do
@@ -347,12 +335,6 @@ Rails.application.routes.draw do
         resources :email_messages
         resources :sales_shipments
         resources :purchase_orders
-
-        resources :po_requests do
-          collection do
-            post 'preview_stock'
-          end
-        end
 
         resources :sales_invoices do
           member do
@@ -399,7 +381,6 @@ Rails.application.routes.draw do
           member do
             get 'manage_failed_skus'
             patch 'create_failed_skus'
-            get 'load_alternatives'
           end
 
           collection do
@@ -461,12 +442,7 @@ Rails.application.routes.draw do
 
         resources :sales_quotes
         resources :sales_orders
-        resources :sales_invoices do
-          collection do
-            get 'payment_collection'
-            get 'ageing_report'
-          end
-        end
+        resources :sales_invoices
         resources :company_banks
 
         resources :imports do
@@ -490,16 +466,10 @@ Rails.application.routes.draw do
     resources :accounts do
       collection do
         get 'autocomplete'
-        get 'payment_collection'
-        get 'ageing_report'
       end
       scope module: 'accounts' do
-        resources :companies do
-          collection do
-            get 'payment_collection'
-            get 'ageing_report'
-          end
-        end
+        resources :companies
+        resources :sales_invoices, only: %i[show index]
       end
     end
 
@@ -540,9 +510,6 @@ Rails.application.routes.draw do
         get 'render_form'
       end
     end
-
-    resources :sales_receipts
-
   end
 
   namespace 'customers' do

@@ -29,7 +29,7 @@ class Services::Overseers::Finders::Activities < Services::Overseers::Finders::B
       multi_match: {
           query: query,
           operator: 'and',
-          fields: %w[created_by account_id  account_name company inquiry_number contact_name purpose activity_type],
+          fields: %w[created_by account_id activity_date created_at activity_date account_name company inquiry_number contact_name purpose activity_type],
           minimum_should_match: '100%'
       }
     )
@@ -44,9 +44,5 @@ class Services::Overseers::Finders::Activities < Services::Overseers::Finders::B
     end
 
     indexed_records
-  end
-
-  def sort_definition
-    { id: :desc }
   end
 end
