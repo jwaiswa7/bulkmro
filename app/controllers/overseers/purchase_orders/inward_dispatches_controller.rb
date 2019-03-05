@@ -48,7 +48,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
     if @inward_dispatch.valid?
       messages = FieldModifiedMessage.for(@inward_dispatch, message_fields(@inward_dispatch))
       @inward_dispatch.rows.each do |row|
-        messages << FieldModifiedMessage.for(row, ["supplier_delivery_date"])
+        messages << FieldModifiedMessage.for(row, ['supplier_delivery_date'])
       end
       if messages.present?
         @inward_dispatch.comments.create(message: messages, overseer: current_overseer)
