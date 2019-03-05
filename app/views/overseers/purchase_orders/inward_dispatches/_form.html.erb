@@ -67,7 +67,6 @@
             </div>
 
             <div class="col-6">
-
               <%#= f.input :status, as: :select, collection: enum_to_collection(InwardDispatch.statuses, keep_raw: true), disabled: true, readonly: true %>
               <%= f.hidden_field :status %>
             </div>
@@ -162,7 +161,7 @@
                   <label>Inward Dispatch Qty</label>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-2">
                 <div class="form-group mb-0">
                   <label>Supplier Delivery Date</label>
                 </div>
@@ -201,13 +200,13 @@
                     <%= row.input :delivered_quantity, type: "number", input_html: {value: row.object.delivered_quantity.to_i, min: 1, max: (row.object.pickup_quantity.to_i if row.object.pickup_quantity.to_i > 1)}, readonly: f.object.invoice_request.present?, label: false %>
                   </div>
                   <div class="col-6 col-md-2">
-                    <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: false %>
+                    <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true, label: false %>
                   </div>
                 <% else %>
                   <div class="col-6 col-md-2">
                     <%= row.input :pickup_quantity, type: "number", input_html: {value: row.object.pickup_quantity.to_f, min: 0}, label: false %>
                   </div>
-                  <div class="col-6 col-md-3">
+                  <div class="col-6 col-md-2">
                     <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true, label: false %>
                   </div>
                 <% end %>
