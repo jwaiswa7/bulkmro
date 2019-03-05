@@ -263,6 +263,7 @@ Rails.application.routes.draw do
       collection do
         get 'export_all'
         get 'autocomplete'
+        get 'autocomplete_without_po_requests'
         get 'material_readiness_queue'
         get 'material_pickup_queue'
         get 'material_delivered_queue'
@@ -470,6 +471,7 @@ Rails.application.routes.draw do
       end
       scope module: 'accounts' do
         resources :companies
+        resources :sales_invoices, only: %i[show index]
       end
     end
 

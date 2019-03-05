@@ -214,7 +214,11 @@
           <div class="col-12 col-md-6">
             <div class="d-flex flex-row">
               <div class="flex-grow-1">
-                <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe) : false %>
+                <% if f.object.calculation_sheet.attached? %>
+                  <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: "#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe %>
+                <% else %>
+                  <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: false %>
+                <% end %>
               </div>
               <% if f.object.persisted? %>
                 <a class="btn btn-sm text-success ml-1 mt-2 align-self-center text-small mt-0" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path(id: f.object.to_param) %>" target="_blank">
@@ -262,7 +266,7 @@
             <%= f.input :price_type, label: 'Delivery', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :payment_option, label: 'Payment terms', required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
+            <%= f.association :payment_option, label: 'Payment terms', required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', collection: PaymentOption.active.pluck(:name, :id) %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.input :packing_and_forwarding_option, label: 'Packing and forwarding', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>

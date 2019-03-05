@@ -42,8 +42,14 @@ module ShortcutsHelper
       else
         crumbs << (content_tag :li, class: 'breadcrumb-item' do
           begin
-            if recognize_path(path_so_far)
-              link_to name, path_so_far
+            route = recognize_path(path_so_far)
+            if route
+              file_path = File.join('app/views/', "#{route[:controller]}/#{route[:action]}.html.erb")
+              if File.exist?(file_path)
+                link_to name, path_so_far
+              else
+                name
+              end
             end
           rescue ActionController::RoutingError => e
             name
