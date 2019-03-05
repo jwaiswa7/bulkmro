@@ -42,7 +42,9 @@
         <% if po_request.purchase_order.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Purchase Order #</strong>
-            <%= po_request.purchase_order.po_number %>
+            <%= link_to overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank' do %>
+            <%= format_id(po_request.purchase_order.po_number) %>
+            <% end %>
           </div>
         <% end %>
 
@@ -100,7 +102,6 @@
             <% end %>
           </div>
         <% end %>
-
         <% if po_request.bill_from.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Bill From</strong>
@@ -126,6 +127,30 @@
           </div>
         <% end %>
 
+        <% if po_request.reason_to_stock.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Reason to Stock</strong>
+            <%= po_request.reason_to_stock.to_s %>
+          </div>
+        <% end %>
+        <% if po_request.estimated_date_to_unstock.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Estimated date to Unstock</strong>
+            <%= po_request.estimated_date_to_unstock.to_s %>
+          </div>
+        <% end %>
+        <% if po_request.requested_by.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Requested By</strong>
+            <%= po_request.requested_by.to_s %>
+          </div>
+        <% end %>
+        <% if po_request.approved_by.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Approved By</strong>
+            <%= po_request.approved_by.to_s %>
+          </div>
+        <% end %>
       </div>
 
       <% if po_request.attachments.attached? %>
@@ -133,9 +158,9 @@
           <div class="col-12 col-md-3 mb-2">
             <strong class="d-block">Attachments </strong>
             <% po_request.attachments.each do |attachment| %>
-              <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+              <%= link_to url_for(attachment), class: 'mr-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                 <i class="fal fa-download"></i>
-                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm mr-1', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                   <i class="fal fa-trash-alt"></i>
                 <% end if attachment.present? && policy(:attachment).destroy? %>
               <% end %>

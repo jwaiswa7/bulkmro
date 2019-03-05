@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customers::CustomerOrderPolicy < Customers::ApplicationPolicy
   def order_confirmed?
     true

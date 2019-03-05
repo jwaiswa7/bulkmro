@@ -105,15 +105,15 @@ class Resources::BusinessPartner < Resources::ApplicationResource
           email: assigned_email
         )
       end
-      company.company_contacts.where(remote_uid: remote_uid, contact: assigned_contact).first_or_create!
-
+      contact = company.company_contacts.where(contact: assigned_contact).first_or_create!
+      contact.update_attribute(:remote_uid, remote_uid)
       banks.each do |bank|
         account_number = bank['AccountNo']
         remote_uid = bank['InternalKey']
         company_bank = CompanyBank.find_by_account_number(account_number)
         company_bank.update_attributes(remote_uid: remote_uid) if company_bank .present?
       end if banks.present?
-    end
+    end if contacts.present?
   end
 
   def self.to_remote(record)

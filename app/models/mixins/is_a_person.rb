@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mixins::IsAPerson
   extend ActiveSupport::Concern
 
@@ -6,9 +8,7 @@ module Mixins::IsAPerson
     has_many :text_messages
 
     def full_name
-      if first_name.present?
-        [first_name, last_name].compact.join(' ').titleize
-      end
+      [first_name, last_name].compact.join(' ').titleize if first_name.present?
     end
 
     def name

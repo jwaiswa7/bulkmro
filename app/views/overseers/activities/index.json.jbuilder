@@ -5,7 +5,7 @@ json.data (@activities) do |activity|
                         "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='activities[]' class='custom-control-input' value='#{activity.id}' id='c-#{activity.id}'><label class='custom-control-label' for='c-#{activity.id}'></label></div>"
                       end,
                       if policy(activity).edit?;
-                        row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning')
+                        row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning', :_blank)
                       end,
                       if !activity.company.present? && activity.company_creation_request.present? && !activity.company_creation_request.company_id.present? && policy(activity.company_creation_request).show?;
                         row_action_button(overseers_company_creation_request_path(activity.company_creation_request), 'eye', 'View Company Creation Request', 'info  ')
@@ -37,18 +37,38 @@ json.data (@activities) do |activity|
                     status_badge(activity.inquiry.commercial_status)
                   end,
                   if activity.contact.present?
-                    activity.contact.to_s
+                    link_to(activity.contact.to_s, overseers_contact_path(activity.contact), target: '_blank')
                   end,
                   format_enum(activity.purpose),
                   format_enum(activity.activity_type),
-                  activity.expenses,
+                  format_currency(activity.expenses),
                   activity.points_discussed,
                   activity.actions_required,
                   format_date(activity.activity_date),
                   format_succinct_date(activity.created_at)
               ]
 end
+json.columnFilters [
+                       [],
+                       Overseer.outside.map { |value| { 'label' => value.name.to_s, 'value' => value.id } }.as_json,
+                       [],
+                       [{ "source": autocomplete_overseers_accounts_path }],
+                       [{ "source": autocomplete_overseers_companies_path }],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [{ "source": autocomplete_overseers_contacts_path }],
+                       Activity.purposes.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       Activity.activity_types.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       [],
+                       [],
+                       [],
+                       [],
+                       []
+                   ]
 
 json.recordsTotal @activities.model.all.count
-json.recordsFiltered @activities.total_count
+json.recordsFiltered @indexed_activities.total_count
 json.draw params[:draw]

@@ -10,8 +10,8 @@ json.data (@sales_invoices) do |sales_invoice|
                   ].join(' '),
                   @company.account.alias,
                   @company.name,
-                  sales_invoice.inquiry.present? ?  conditional_link(sales_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_invoice.inquiry), policy(sales_invoice.inquiry).edit?) : "-",
-                  sales_invoice.inquiry.present? ? conditional_link(sales_invoice.invoice_number,overseers_inquiry_sales_invoices_path(sales_invoice.inquiry),policy(sales_invoice).show?) : sales_invoice.invoice_number,
+                  sales_invoice.inquiry.present? ? conditional_link(sales_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_invoice.inquiry), policy(sales_invoice.inquiry).edit?) : '-',
+                  sales_invoice.inquiry.present? ? conditional_link(sales_invoice.invoice_number, overseers_inquiry_sales_invoices_path(sales_invoice.inquiry), policy(sales_invoice).show?) : sales_invoice.invoice_number,
                   format_succinct_date(sales_invoice.mis_date),
                   '',
                   if  sales_invoice.sales_order.present? && sales_invoice.sales_order.inquiry.present? && sales_invoice.sales_order.inquiry.payment_option.present?

@@ -26,6 +26,11 @@
               <strong class="d-block">Suppliers</strong>
               <%= @brand_suppliers.count %>
             </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Active</strong>
+              <%= format_boolean(@brand.is_active) %>
+            </div>
           </div>
         </div>
       </div>

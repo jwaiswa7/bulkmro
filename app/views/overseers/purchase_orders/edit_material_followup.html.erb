@@ -47,7 +47,6 @@
             <%= f.input :followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.followup_date.try(:strftime, "%d-%b-%Y"), class: 'followup-date'}, required: true %>
           </div>
 
-
           <div class="col-12">
             <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |purchase_order_comment| %>
               <%= purchase_order_comment.hidden_field :created_by_id %>
@@ -55,7 +54,6 @@
               <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
             <% end %>
           </div>
-
 
           <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
             <i class="fal fa-plus-circle"></i> Update Status
@@ -66,54 +64,48 @@
   <% end %>
   <div class="card mt-2">
     <div class="card-body">
-
       <div class="form-row">
         <% if @purchase_order.rows.size > 0 %>
           <div class="col-12">
-            <div class="mt-3">
-              <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
-              <table class="table table-bordered dt-responsive wrap-whitespace w-100 " data-fixed-header="false">
-                <thead>
+            <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
+            <table class="table table-bordered dt-responsive wrap-whitespace w-100 datatable" data-fixed-header="false" data-sort="false">
+              <thead>
+              <tr>
+                <th class="no-sort text-right">No.</th>
+                <th class="no-sort">Product</th>
+                <th class="no-sort text-right">PO Total Quantity</th>
+                <th class="no-sort text-right">Available Pickup Quantity</th>
+                <th class="no-sort text-right">Quantity Pickup / Delivered</th>
+                <th class="no-sort text-right">Lead Date</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @purchase_order.rows.each_with_index do |row, index| %>
                 <tr>
-                  <td></td>
-                  <td><strong class="d-block">Product</strong></td>
-                  <td><strong class="d-block">PO Total Quantity</strong></td>
-                  <td><strong class="d-block">Available Pickup Quantity</strong></td>
-                  <td><strong class="d-block">Quantity Pickup / Delivered </strong></td>
-                  <td><strong class="d-block">Lead Date </strong></td>
+                  <td><%= index + 1 %></td>
+                  <td><%= row.to_s %></td>
+                  <td><%= row.quantity %></td>
+                  <td><%= row.get_pickup_quantity %></td>
+                  <td><%= row.quantity - row.get_pickup_quantity || 'N/A' %></td>
+                  <td><%= format_succinct_date(row.lead_date) %></td>
                 </tr>
-                </thead>
-                <tbody>
-                <% @purchase_order.rows.each_with_index do |row, index| %>
-
-                  <tr>
-                    <td><%= index + 1 %></td>
-                    <td><%= row.to_s %></td>
-                    <td><%= row.quantity %></td>
-                    <td><%= row.get_pickup_quantity %></td>
-                    <td><%= row.quantity - row.get_pickup_quantity || 'N/A' %></td>
-                    <td><%= format_succinct_date(row.lead_date) %></td>
-                  </tr>
-
-                <% end %>
-                </tbody>
-              </table>
-            </div>
+              <% end %>
+              </tbody>
+            </table>
           </div>
         <% end %>
       </div>
-
     </div>
   </div>
+
   <% if @purchase_order.comments.persisted.size > 0 %>
     <div class="card mt-2">
       <div class="card-body">
         <div>
           <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
           <div class="form-row">
-
             <div class="col-12">
-              <div class="chats mb-3">
+              <div class="chats">
                 <% @purchase_order.comments.each do |comment| %>
                   <% if comment.persisted? %>
                     <%= format_comment(comment) %>
@@ -121,7 +113,6 @@
                 <% end %>
               </div>
             </div>
-
           </div>
         </div>
       </div>

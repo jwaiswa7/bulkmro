@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PoRequestRow < ApplicationRecord
   belongs_to :po_request
   belongs_to :sales_order_row, required: false
@@ -73,11 +75,11 @@ class PoRequestRow < ApplicationRecord
   end
 
   def total_tax
-    total_selling_price_with_tax - total_selling_price
+    total_selling_price.present? ? (total_selling_price_with_tax - total_selling_price) : 0.0
   end
 
   def converted_total_tax
-    converted_total_selling_price_with_tax - converted_total_selling_price
+    converted_total_selling_price.present? ? converted_total_selling_price_with_tax - converted_total_selling_price : 0.0
   end
 
   def total_buying_price

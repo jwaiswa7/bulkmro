@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::Companies::ImportsController < Overseers::Companies::BaseController
   def new_excel_customer_product_import
     @product_excel_import = @company.product_imports.build(overseer: current_overseer)
@@ -7,9 +9,9 @@ class Overseers::Companies::ImportsController < Overseers::Companies::BaseContro
   def download_customer_product_template
     authorize @company
     respond_to do |format|
-      format.xlsx {
-        response.headers['Content-Disposition'] = 'attachment; filename="' + ["#{@company.name.to_s} Excel Template", 'xlsx'].join('.') + '"'
-      }
+      format.xlsx do
+        response.headers['Content-Disposition'] = 'attachment; filename="' + ["#{@company.name} Excel Template", 'xlsx'].join('.') + '"'
+      end
     end
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CustomerOrderComment < ApplicationRecord
   include Mixins::CanBeStamped
 
@@ -11,7 +13,7 @@ class CustomerOrderComment < ApplicationRecord
   scope :customer_comments, -> { where(show_to_customer: true) }
 
   def author
-    self.contact || self.created_by
+    contact || created_by
   end
 
   def author_role

@@ -46,34 +46,34 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def export_all
     authorize :sales_order
-    service = Services::Overseers::Exporters::SalesOrdersExporter.new(headers)
-    self.response_body = service.call
-    # Set the status to success
-    response.status = 200
+    service = Services::Overseers::Exporters::SalesOrdersExporter.new
+    service.call
+
+    redirect_to url_for(Export.sales_orders.last.report)
   end
 
   def export_rows
     authorize :sales_order
-    service = Services::Overseers::Exporters::SalesOrderRowsExporter.new(headers)
-    self.response_body = service.call
-    # Set the status to success
-    response.status = 200
+    service = Services::Overseers::Exporters::SalesOrderRowsExporter.new
+    service.call
+
+    redirect_to url_for(Export.sales_order_rows.last.report)
   end
 
   def export_for_logistics
     authorize :sales_order
-    service = Services::Overseers::Exporters::SalesOrdersLogisticsExporter.new(headers)
-    self.response_body = service.call
-    # Set the status to success
-    response.status = 200
+    service = Services::Overseers::Exporters::SalesOrdersLogisticsExporter.new
+    service.call
+
+    redirect_to url_for(Export.sales_order_logistics.last.report)
   end
 
   def export_for_sap
     authorize :sales_order
-    service = Services::Overseers::Exporters::SalesOrdersSapExporter.new(headers)
-    self.response_body = service.call
-    # Set the status to success
-    response.status = 200
+    service = Services::Overseers::Exporters::SalesOrdersSapExporter.new
+    service.call
+
+    redirect_to url_for(Export.sales_order_sap.last.report)
   end
 
   def index

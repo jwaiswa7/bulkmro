@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   def show?
     record.persisted? && record.not_legacy? && !record.document.attached?
@@ -8,6 +10,10 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def autocomplete?
+    manager_or_sales? || logistics?
+  end
+
+  def autocomplete_without_po_requests?
     manager_or_sales? || logistics?
   end
 
@@ -56,10 +62,10 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def update_logistics_owner?
-    admin?
+    admin? || logistics?
   end
 
   def update_logistics_owner_for_pickup_requests?
-    admin?
+    admin? || logistics?
   end
 end

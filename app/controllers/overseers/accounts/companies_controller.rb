@@ -29,25 +29,24 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   end
 
   def payment_collection
-
     service = Services::Overseers::SalesInvoices::PaymentDashboard.new(@account)
     service.call
-     @summery_data = service.summery_data
-      base_filter = {
-          :base_filter_key => "account_id",
-          :base_filter_value => @account.id
-      }
+    @summery_data = service.summery_data
+    base_filter = {
+        base_filter_key: 'account_id',
+        base_filter_value: @account.id
+    }
 
-      authorize :company
-      respond_to do |format|
-          format.html {}
-          format.json do
-            service = Services::Overseers::Finders::Companies.new(params.merge(base_filter), current_overseer)
-            service.call
-            @indexed_companies = service.indexed_records
-            @companies = service.records.try(:reverse)
-          end
+    authorize :company
+    respond_to do |format|
+      format.html { }
+      format.json do
+        service = Services::Overseers::Finders::Companies.new(params.merge(base_filter), current_overseer)
+        service.call
+        @indexed_companies = service.indexed_records
+        @companies = service.records.try(:reverse)
       end
+    end
   end
 
 
@@ -56,13 +55,13 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     service.call
     @summery_data = service.summery_data
     base_filter = {
-        :base_filter_key => "account_id",
-        :base_filter_value => @account.id
+        base_filter_key: 'account_id',
+        base_filter_value: @account.id
     }
 
     authorize :company
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::Companies.new(params.merge(base_filter), current_overseer)
         service.call
@@ -111,6 +110,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :account_id,
           :name,
           :industry_id,
+          :credit_limit,
           :remote_uid,
           :default_company_contact_id,
           :default_payment_option_id,
@@ -133,6 +133,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
           :is_msme,
           :is_active,
           :is_unregistered_dealer,
+          :is_international,
           :rating,
           contact_ids: [],
           brand_ids: [],
