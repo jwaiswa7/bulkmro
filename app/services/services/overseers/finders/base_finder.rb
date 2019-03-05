@@ -247,6 +247,17 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
+  def aggregate_using_date_histogram(key,  aggregation_field, interval)
+    {
+        "#{key}": {
+            date_histogram: {
+                field: aggregation_field,
+                interval: interval
+            }
+        }
+    }
+  end
+
   def filter_by_script(condition)
     {
         script: {
