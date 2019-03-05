@@ -81,6 +81,7 @@ class PoRequest < ApplicationRecord
   end
 
   after_initialize :set_defaults, if: :new_record?
+
   def update_po_index
     PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order.id])
   end
@@ -125,6 +126,8 @@ class PoRequest < ApplicationRecord
       title = 'Pending'
     elsif self.status == 'PO Created'
       title = 'Completed'
+    else
+      title = 'Cancelled'
     end
     "#{title} PO Request"
   end
