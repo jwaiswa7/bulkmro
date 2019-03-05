@@ -20,11 +20,11 @@ class PoRequestRow < ApplicationRecord
   # delegate :measurement_unit, to: :sales_order_row, allow_nil: true
   attr_accessor :sr, :product_name, :brand, :lead_time_option
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
 
   def set_defaults
     self.measurement_unit ||= MeasurementUnit.default
-    self.product ||=  sales_order_row.product if sales_order_row.present?
+    self.product ||= sales_order_row.product if sales_order_row.present?
   end
 
   enum status: {
