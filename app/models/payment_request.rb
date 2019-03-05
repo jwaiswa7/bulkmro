@@ -109,12 +109,22 @@ class PaymentRequest < ApplicationRecord
   end
 
   def remaining_amount
-    if self.po_request.sales_order.try(:calculated_total_with_tax) >= self.total_amount_paid
-      self.po_request.sales_order.try(:calculated_total_with_tax) - self.total_amount_paid
+    if self.po_request.purchase_order.present?
+      if self.po_request.purchase_order.try(:calculated_total_with_tax) >= self.total_amount_paid
+        self.po_request.purchase_order.try(:calculated_total_with_tax) - self.total_amount_paid
+      else
+        0.0
+      end
+    else
+      0.0
     end
   end
 
   def percent_amount_paid
-    self.total_amount_paid * 100 / self.po_request.sales_order.try(:calculated_total_with_tax)
+    if self.po_request.purchase_order.present?
+      self.total_amount_paid * 100 / self.po_request.purchase_order.try(:calculated_total_with_tax)
+    else
+      0.0
+    end
   end
 end

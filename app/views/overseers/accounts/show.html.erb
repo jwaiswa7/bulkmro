@@ -1,3 +1,4 @@
+<%= provide :container_fluid, true %>
 <div class="col-lg-12">
   <section class="pt-3 pt-lg-4 pb-4 pb-lg-5">
     <div class="d-md-flex justify-content-between">
@@ -17,6 +18,23 @@
     </div>
   </section>
 
+  <section class="mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="form-row">
+          <div class="col-6 col-md-6 mb-2">
+            <strong class="d-block">Is Supplier</strong>
+            <%= format_boolean(@account.is_supplier?) %>
+          </div>
+          <div class="col-6 col-md-6 mb-2">
+            <strong class="d-block">Is Customer</strong>
+            <%= format_boolean(@account.is_customer?) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="pb-4 pb-lg-5">
     <ul class="nav nav-tabs nav-fill">
       <li class="nav-item">
@@ -24,6 +42,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#contacts" role="tab">Contacts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#sales_invoices" role="tab">Sales Invoices</a>
       </li>
 
       <%# if  @account.is_customer? %>
@@ -91,6 +112,29 @@
           </tbody>
         </table>
       </div>
+
+      <div class="tab-pane fade" id="sales_invoices" role="tabpanel">
+        <% content_for :ajax_url, flush: true do %><%= overseers_account_sales_invoices_path(account_id: @account.id) %>
+        <% end %>
+        <% content_for :header_row, flush: true do %>
+          <th class="no-sort all"></th>
+          <th class="sort all text-right" data-name="invoice_number">Invoice #</th>
+          <th class="sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
+          <th class="no-sort desktop text-right" data-name="order_number">Order #</th>
+          <th class="no-sort desktop" data-name="company_name">Company</th>
+          <th class="no-sort desktop text-right">Line Items</th>
+          <th class="no-sort desktop" data-name="status">Status</th>
+          <th class="no-sort desktop" data-name="inside_sales_executive" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
+          <th class="no-sort desktop" data-name="outside_sales_executive" data-toggle="tooltip" title="Outside Sales & Procurement">OS Owner</th>
+          <th class="no-sort desktop">Proof of Delivery</th>
+          <th class="sort desktop text-right" data-name="mis_date">Invoice Date</th>
+          <th class="sort desktop text-right" data-name="created_at">Created At</th>
+        <% end %>
+
+        <%= render 'shared/layouts/internal_datatable', entity: @account, children: 'sales_invoices' %>
+      </div>
+
+
       <% if @account.is_customer? %>
         <div class="tab-pane fade" id="sales_order_report" role="tabpanel">
         <div class="d-md-flex justify-content-between">

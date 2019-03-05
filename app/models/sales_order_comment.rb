@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SalesOrderComment < ApplicationRecord
   include Mixins::CanBeStamped
 

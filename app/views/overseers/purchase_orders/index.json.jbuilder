@@ -3,7 +3,7 @@ json.data (@purchase_orders) do |purchase_order|
                   [
                       if policy(purchase_order).show?
                         [row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order), 'eye', 'View PO', 'info', :_blank),
-                            row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
+                         row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
                         ]
                       end,
                       if policy(purchase_order).show_document?
@@ -16,7 +16,7 @@ json.data (@purchase_orders) do |purchase_order|
                   ].join(' '),
                   conditional_link(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), policy(purchase_order.inquiry).edit?),
                   conditional_link(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), policy(purchase_order.inquiry).edit?),
-                  purchase_order.rows.present? ? link_to(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name), overseers_company_path(purchase_order.inquiry.company), target: '_blank') : '',
+                  (purchase_order.supplier.present? ? conditional_link(purchase_order.supplier.try(:name), overseers_company_path(purchase_order.supplier), policy(purchase_order.inquiry).show?) : '-'),
                   format_star((purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:rating) if purchase_order.rows.present?)),
                   purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : '-',
                   purchase_order.status || purchase_order.metadata_status,
@@ -26,11 +26,9 @@ json.data (@purchase_orders) do |purchase_order|
                   (format_succinct_date(purchase_order.metadata['PoDate'].to_date) if purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date?),
                   purchase_order.material_status,
                   if purchase_order.payment_request.present?
-                    purchase_order.payment_request.status
+                    status_badge(purchase_order.payment_request.status)
                   end,
-                  if purchase_order.payment_request.present?
-                    purchase_order.payment_request.percent_amount_paid
-                  end,
+                  (percentage(purchase_order.payment_request.percent_amount_paid, precision: 2) if purchase_order.payment_request.present?),
                   format_succinct_date(purchase_order.created_at)
               ]
 end

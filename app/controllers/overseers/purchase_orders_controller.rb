@@ -135,7 +135,18 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     purchase_orders = PurchaseOrder.all
     if params[:inquiry_number].present?
       purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: { inquiry_number: params[:inquiry_number] })
-      # purchase_orders = purchase_orders.where.not(:id => PoRequest.not_cancelled.pluck(:purchase_order_id)) if params[:has_po_request]
+      purchase_orders = purchase_orders.where(id: purchase_orders.pluck(:id))
+    end
+    @purchase_orders = ApplyParams.to(purchase_orders, params)
+
+    authorize :purchase_order
+  end
+
+  def autocomplete_without_po_requests
+    purchase_orders = PurchaseOrder.all
+    if params[:inquiry_number].present?
+      purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: { inquiry_number: params[:inquiry_number] })
+      purchase_orders = purchase_orders.where(id: purchase_orders.reject { |r| r.po_request.present? }.pluck(:id))
     end
     @purchase_orders = ApplyParams.to(purchase_orders, params)
 
@@ -144,10 +155,10 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def export_all
     authorize :purchase_order
-    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new(headers)
-    self.response_body = service.call
-    # Set the status to success
-    response.status = 200
+    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new
+    service.call
+
+    redirect_to url_for(Export.purchase_orders.last.report)
   end
 
   def update_logistics_owner
@@ -173,7 +184,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         product_supplier = purchase_order.inquiry.final_sales_quote.rows.select { |sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id }.first
         product_supplier.supplier if product_supplier.present?
       end
-  end
+    end
 
     def set_purchase_order
       @purchase_order = PurchaseOrder.find(params[:id])
@@ -182,10 +193,10 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     def purchase_order_params
       params.require(:purchase_order).permit(
         :material_status,
-        :supplier_dispatch_date,
-        :followup_date,
-        :logistics_owner_id,
-        :revised_supplier_delivery_date,
+          :supplier_dispatch_date,
+          :followup_date,
+          :logistics_owner_id,
+          :revised_supplier_delivery_date,
           comments_attributes: [:id, :message, :created_by_id],
           attachments: []
       )

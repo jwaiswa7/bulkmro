@@ -97,7 +97,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def can_request_invoice?
-    admin? || logistics?
+    admin? || logistics? || manager_or_sales?
   end
 
   def approve?
@@ -126,6 +126,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def create_purchase_orders_requests?
     new_purchase_orders_requests?
+  end
+
+  def create_stock_po?
+    admin? || sales?
   end
 
   def fetch_order_data?

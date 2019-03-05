@@ -1,6 +1,18 @@
 class BaseIndex < Chewy::Index
   settings(
     analysis: {
+        filter: {
+            replace_and: {
+                type: 'pattern_replace',
+                pattern: '(\s)+and(\s)',
+                replacement: ''
+            },
+            whitespace_and_special_character_removal: {
+                type: 'pattern_replace',
+                pattern: '[^A-Za-z0-9]+',
+                replacement: ''
+            }
+        },
         analyzer: {
             edge_ngram: {
                 tokenizer: 'edge_ngram',
@@ -13,6 +25,10 @@ class BaseIndex < Chewy::Index
                 tokenizer: 'keyword',
                 filter: ['lowercase']
             },
+            fuzzy_substring: {
+                tokenizer: 'fuzzy_substring',
+                filter: %w(replace_and lowercase whitespace_and_special_character_removal)
+            },
             substring: {
                 tokenizer: 'substring',
                 filter: ['lowercase']
@@ -23,6 +39,12 @@ class BaseIndex < Chewy::Index
             }
         },
         tokenizer: {
+            fuzzy_substring: {
+                type: 'ngram',
+                min_gram: 1,
+                max_gram: 30,
+                token_chars: %w(letter digit whitespace punctuation symbol)
+            },
             substring: {
                 type: 'ngram',
                 min_gram: 1,
@@ -38,8 +60,8 @@ class BaseIndex < Chewy::Index
         }
     },
     max_result_window: 5000000,
-    "number_of_replicas": '0',
-    "number_of_shards": '1'
+    'number_of_replicas': '0',
+    'number_of_shards': '1'
   )
 
   def self.fields

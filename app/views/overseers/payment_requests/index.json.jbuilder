@@ -10,8 +10,8 @@ json.data (@payment_requests) do |payment_request|
                   ].join(' '),
                   payment_request.id,
                   status_badge(payment_request.status),
-                  payment_request.inquiry.inquiry_number,
-                  payment_request.po_request.purchase_order.present? ? payment_request.po_request.purchase_order.po_number : '-',
+                  link_to(payment_request.inquiry.inquiry_number, edit_overseers_inquiry_path(payment_request.inquiry), target: '_blank'),
+                  link_to(payment_request.po_request.purchase_order.present? ? payment_request.po_request.purchase_order.to_s : '-', overseers_po_request_path(payment_request.po_request), target: '_blank'),
                   payment_request.request_owner,
                   # if payment_request.payment_type.present?
                   #   payment_request.payment_type
@@ -29,12 +29,12 @@ json.data (@payment_requests) do |payment_request|
                   else
                     '-'
                   end,
-                  format_currency(payment_request.po_request.sales_order.try(:calculated_total_with_tax)),
+                  format_currency(payment_request.po_request.purchase_order.present? ? payment_request.po_request.purchase_order.try(:calculated_total_with_tax) : 0),
                   format_currency(payment_request.remaining_amount),
                   percentage(payment_request.percent_amount_paid, precision: 2),
-                  format_date_time_meridiem(payment_request.created_at),
+                  format_date_time_meridiem(payment_request.updated_at),
                   if payment_request.last_comment.present?
-                    format_date_time_meridiem(payment_request.last_comment.created_at)
+                    format_succinct_date(payment_request.last_comment.created_at)
                   end,
                   if payment_request.last_comment.present?
                     format_comment(payment_request.last_comment, trimmed: true)

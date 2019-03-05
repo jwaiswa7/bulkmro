@@ -3,8 +3,8 @@
 
   <%= simple_form_for([:overseers, @company, @company_bank], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :company_id %>
+    <%= f.hidden_field :action_name, value: action_name %>
     <%= render 'shared/snippets/form_errors', f: f %>
-
     <div class="form-row">
       <div class="col-12">
         <%= f.input :company, disabled: true %>
@@ -22,12 +22,16 @@
     </div>
 
     <div class="form-row">
-      <div class="col-6">
+      <div class="col-12">
         <%= f.input :account_name, required: true, label: "Account Name" %>
       </div>
-
+    </div>
+    <div class="form-row">
       <div class="col-6">
         <%= f.input :account_number, required: true, label: "Account Number" %>
+      </div>
+      <div class="col-6">
+        <%= f.input :account_number_confirmation, label: "Confirm Account Number" %>
       </div>
     </div>
 
@@ -49,7 +53,7 @@
       </div>
 
       <div class="col-6">
-        <%= f.input :beneficiary_mobile, required: true, label: "Beneficiary Mobile Number", input_type: "number", input_html: { placeholder: "+91" } %>
+        <%= f.input :beneficiary_mobile, required: true, label: "Beneficiary Mobile Number", input_type: "number", input_html: {placeholder: "+91"} %>
       </div>
     </div>
 

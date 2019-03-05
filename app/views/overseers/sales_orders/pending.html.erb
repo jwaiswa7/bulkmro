@@ -3,7 +3,7 @@
 <% provide :container_fluid, true %>
 
 <div class="col-lg-12">
-  <%=render partial: "shared/layouts/summary", locals: {klass: SalesOrder , statuses: SalesOrder.statuses.except("Approved", "Order Deleted", "Hold by Finance", "Cancelled")} %>
+  <%=render partial: "shared/layouts/summary", locals: {klass: SalesOrder , statuses: SalesOrder.statuses.except("Approved", "Order Deleted", "Hold by Finance", "Cancelled"), aggregation:{}} %>
 </div>
 
 <div class="col-lg-12">
