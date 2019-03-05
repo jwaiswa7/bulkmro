@@ -6,6 +6,6 @@ let mprs = {
     new: newAction,
     edit: edit,
     confirmDelivery: confirmDelivery
-}
+};
 
 export default mprs
