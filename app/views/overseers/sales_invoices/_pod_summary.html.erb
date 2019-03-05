@@ -1,0 +1,42 @@
+
+<a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4" type="button" data-toggle="collapse" data-target="#pod-summary">
+  Proof of Delivery Summary
+</a>
+<div id="pod-summary" class="collapse show">
+  <div class="mt-2 form-row d-flex flex-row align-content-stretch">
+    <% if @invoice_over_month.present? &&  @pod_over_month.present? %>
+    <div class="col-12 col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table w-100 wrap-whitespace">
+                    <tbody>
+                    <tr>
+                      <th></th>
+                      <% @invoice_over_month.each_with_index do |invoice_bucket| %>
+                         <th><strong><%= format_month(invoice_bucket['key_as_string'].to_date) %></strong></th>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th class="text-uppercase text-dark "> Invoice Created </th>
+                      <% @invoice_over_month.each_with_index do |invoice_bucket| %>
+                        <td class="text-uppercase">
+                          <%= number_with_delimiter(invoice_bucket['doc_count'], delimiter: ',') %>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th class="text-uppercase text-dark "> Pending POD </th>
+                        <% @list_of_months.each do |month| %>
+                          <td class="text-uppercase">
+                            <%= (@pod_over_month.has_key?month) ? number_with_delimiter(@pod_over_month[month], delimiter: ',') : 0 %>
+                          </td>
+                        <% end %>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <% end %>
+  </div>
+</div>
