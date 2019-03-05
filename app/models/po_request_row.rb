@@ -97,4 +97,24 @@ class PoRequestRow < ApplicationRecord
   def field_disabled?
     self.sales_order_row.present?
   end
+
+  def is_inquiry_product_supplier_present?
+    self.inquiry_product_supplier.present?
+  end
+
+  def supplier_product_name
+    if is_inquiry_product_supplier_present?
+      self.inquiry_product_supplier.bp_catalog_name.present? ? self.inquiry_product_supplier.bp_catalog_name : self.inquiry_product_supplier.product.name
+    end
+  end
+
+  def supplier_product_sku
+    if is_inquiry_product_supplier_present?
+      self.inquiry_product_supplier.bp_catalog_sku.present? ? self.inquiry_product_supplier.bp_catalog_sku : self.inquiry_product_supplier.product.sku
+    end
+  end
+
+  def to_s
+    "#{supplier_product_sku} - #{supplier_product_name}"
+  end
 end
