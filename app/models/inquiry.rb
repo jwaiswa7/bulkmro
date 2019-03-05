@@ -22,6 +22,8 @@ class Inquiry < ApplicationRecord
   has_one :industry, through: :company
   belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: false
   belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: false
+  belongs_to :last_synced_quote, class_name: 'SalesQuote', foreign_key: :last_synced_quote_id, required: false
+
   has_one :account, through: :company
   has_many :inquiry_products, -> { order(sr_no: :asc) }, inverse_of: :inquiry, dependent: :destroy
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? && attributes['id'].blank? }, allow_destroy: true
@@ -56,6 +58,8 @@ class Inquiry < ApplicationRecord
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
   has_one :customer_order, dependent: :nullify
   has_one :freight_request
+
+
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email
