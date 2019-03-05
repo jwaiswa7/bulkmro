@@ -7,6 +7,6 @@ let activities= {
     edit: activitiesNew,
     index: index,
     pending: pending
-}
+};
 
 export default activities
