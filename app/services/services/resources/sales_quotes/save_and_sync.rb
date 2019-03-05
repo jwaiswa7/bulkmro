@@ -10,7 +10,7 @@ class Services::Resources::SalesQuotes::SaveAndSync < Services::Shared::BaseServ
   end
 
   def call_later
-    if sales_quote.remote_uid.blank? && sales_quote.inquiry.quotation_uid.present? && sales_quote.parent.present? && sales_quote.parent.sales_orders.remote_approved.blank?
+    if sales_quote.remote_uid.blank? && sales_quote.inquiry.quotation_uid.present? && sales_quote.parent.present? && sales_quote.parent.sales_orders.status_Approved.blank?
       sales_quote.remote_uid = sales_quote.inquiry.quotation_uid
     end
 
