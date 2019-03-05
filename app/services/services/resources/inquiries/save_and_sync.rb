@@ -12,7 +12,7 @@ class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseServic
   def call_later
     if inquiry.project_uid.blank?
       project_uid = ::Resources::Project.custom_find(inquiry.subject, 'Name')
-      inquiry.update_attributes(:project_uid => project_uid)
+      inquiry.update_attributes(project_uid: project_uid)
     end
 
     if inquiry.project_uid.blank?

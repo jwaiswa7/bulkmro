@@ -19,7 +19,5 @@ module Mixins::IsARequest
       patch: 30,
       callback: 40
     }
-
-
   end
 end

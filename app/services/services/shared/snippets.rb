@@ -748,14 +748,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         warehouse.remote_branch_code = x.get_column('Business Place ID')
         warehouse.legacy_metadata = x.get_row
         warehouse.build_address(
-            name: x.get_column('Account Name'),
-            street1: x.get_column('Street'),
-            street2: x.get_column('Block'),
-            pincode: x.get_column('Zip Code'),
-            city_name: x.get_column('City'),
-            country_code: x.get_column('Country'),
-            gst: x.get_column('GST'),
-            state: AddressState.find_by_region_code(x.get_column('State'))
+          name: x.get_column('Account Name'),
+          street1: x.get_column('Street'),
+          street2: x.get_column('Block'),
+          pincode: x.get_column('Zip Code'),
+          city_name: x.get_column('City'),
+          country_code: x.get_column('Country'),
+          gst: x.get_column('GST'),
+          state: AddressState.find_by_region_code(x.get_column('State'))
         )
         warehouse.save!
       end
@@ -954,14 +954,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         company = Company.find_by_remote_uid(company_uid)
         if company.present?
           address = company.addresses.new(
-              gst: x.get_column('gst'),
-              country_code: x.get_column('country_code'),
-              state: AddressState.find_by_region_code(x.get_column('State')),
-              state_name: nil,
-              city_name: x.get_column('city_name'),
-              pincode: x.get_column('pincode'),
-              street1: x.get_column('street1'),
-              remote_uid: address_uid
+            gst: x.get_column('gst'),
+            country_code: x.get_column('country_code'),
+            state: AddressState.find_by_region_code(x.get_column('State')),
+            state_name: nil,
+            city_name: x.get_column('city_name'),
+            pincode: x.get_column('pincode'),
+            street1: x.get_column('street1'),
+            remote_uid: address_uid
 
           )
           address.save!
