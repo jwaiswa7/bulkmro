@@ -5,6 +5,14 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
     record.persisted? && record.not_legacy? && !record.original_invoice.attached?
   end
 
+  def payment_collection?
+    index?
+  end
+
+  def ageing_report?
+    index?
+  end
+
   def edit_mis_date?
     record.persisted? && ['vijay.manjrekar@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com'].include?(overseer.email)
   end

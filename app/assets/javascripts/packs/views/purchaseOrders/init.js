@@ -10,6 +10,6 @@ let purchaseOrders= {
     materialReadinessQueue: materialReadinessQueue,
     materialPickupQueue: updateLogisticsOwner,
     editMaterialFollowup: editMaterialFollowup
-}
+};
 
 export default purchaseOrders

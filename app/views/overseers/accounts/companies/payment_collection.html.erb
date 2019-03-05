@@ -1,0 +1,24 @@
+<%= provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+
+<div class="col-lg-12">
+  <%= render partial: "shared/layouts/payment_dashboard_summary_box", locals: {} %>
+</div>
+<% content_for :header_row do %>
+  <th class="no-sort all"></th>
+  <th class="no-sort all desktop" >Alias</th>
+  <th class="no-sort all desktop" >Name</th>
+  <th class="no-sort desktop text-right" >Amount Receivable</th>
+  <th class="no-sort desktop text-right" >Amount received Against Invoice</th>
+  <th class="no-sort desktop text-right" >Amount received On Acc</th>
+  <th class="no-sort text-right" >Total Amt Received </th>
+  <th class="no-sort text-right" >Overdue Outstanding </th>
+  <th class="no-sort text-right" >Total Outstanding</th>
+<% end %>
+
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>
