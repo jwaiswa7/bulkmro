@@ -62,7 +62,7 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def has_attachments?
-    if self.status != 'Cancelled' && !self.attachments.any?
+    if (self.status != 'Cancelled GRPO' || self.status != 'Cancelled AR Invoice') && !self.attachments.any?
       errors.add(:attachments, "must be present to create or update a #{self.readable_status}")
     end
   end
@@ -92,7 +92,7 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def update_status(status)
-    if ['In stock', 'Cancelled', 'GRPO Request Rejected', 'AP Invoice Request Rejected', 'Cancelled AR Invoice'].include? (status)
+    if ['In stock', 'Cancelled GRPO', 'GRPO Request Rejected', 'AP Invoice Request Rejected', 'Cancelled AP Invoice'].include? (status)
       self.status = status
     elsif self.ar_invoice_number.present?
       self.status = :'Completed AR Invoice Request'
@@ -127,13 +127,27 @@ class InvoiceRequest < ApplicationRecord
     end
   end
 
+  def cancellation_reason_text
+    if self.status == 'Cancelled GRPO'
+      self.grpo_cancellation_reason
+    elsif self.status == 'Cancelled AP Invoice'
+      self.ap_cancellation_reason
+    end
+  end
+
   def display_reason(type = nil)
-    if type == 'other'
-      (['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(self.status) && self.grpo_rejection_reason == 'Others') ? '' : 'd-none'
-    elsif type == 'cancellation'
-      ['Cancelled GRPO','Cancelled AP Invoice'].include?(self.status) ? '' : 'd-none'
-    elsif type == ('rejection')
-      ['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(self.status) ? '' : 'd-none'
+    # If status is cancelled then also all rejection as well as other cacellation display on first load of form to avoid that ui helper written
+    case type
+    when 'other'
+      (('GRPO Request Rejected' == self.status) && self.grpo_rejection_reason == 'Others') ? '' : 'd-none'
+    when 'ap_rejection'
+      ('AP Invoice Request Rejected' == self.status) ? '' : 'd-none'
+    when 'grpo_rejection'
+      ('GRPO Request Rejected' == self.status) ? '' : 'd-none'
+    when 'grpo_cancellation'
+      ('Cancelled GRPO' == self.status) ? '' : 'd-none'
+    when 'ap_cancellation'
+      ('Cancelled AP Invoice' == self.status) ? '' : 'd-none'
     end
   end
 
@@ -144,25 +158,26 @@ class InvoiceRequest < ApplicationRecord
   private
 
     def presence_of_reason
-      # if ['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(status)
-      if 'GRPO Request Rejected' == status
+      case status
+      when 'GRPO Request Rejected'
         if !grpo_rejection_reason.present?
           errors.add(:base, 'Please enter reason for GRPO request rejection')
         elsif grpo_rejection_reason == 'Others' && !grpo_other_rejection_reason.present?
           errors.add(:base, 'Please enter reason for GRPO request rejection')
         end
-      elsif 'AP Invoice Request Rejected' == status
+      when 'AP Invoice Request Rejected'
         if !ap_rejection_reason.present?
           errors.add(:base, 'Please enter reason for AP Invoice rejection')
         end
-      elsif  ['Cancelled GRPO'].include?(status)
+      when 'Cancelled GRPO'
         if !grpo_cancellation_reason.present?
           errors.add(:base, 'Please enter reason for GRPO request cancellation')
         end
-      elsif  ['Cancelled AP Invoice'].include?(status)
+      when 'Cancelled AP Invoice'
         if !ap_cancellation_reason.present?
           errors.add(:base, 'Please enter reason for AP request cancellation')
         end
+      else
       end
     end
 end

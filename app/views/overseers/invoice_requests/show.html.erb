@@ -112,7 +112,7 @@
                 <%if @invoice_request.status.present? && ['Cancelled GRPO','Cancelled AP Invoice'].include?(@invoice_request.status) %>
                   <div class="col-6 col-md-3 mb-2">
                     <strong class="d-block">Cancellation Reason</strong>
-                    <%= @invoice_request.cancellation_reason %>
+                    <%= @invoice_request.cancellation_reason_text %>
                   </div>
                 <%end %>
 

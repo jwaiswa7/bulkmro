@@ -1,5 +1,5 @@
 class Overseers::InvoiceRequestsController < Overseers::BaseController
-  before_action :set_invoice_request, only: [:show, :edit, :update, :reject_grpo]
+  before_action :set_invoice_request, only: [:show, :edit, :update, :cancel_invoice_request, :render_cancellation_form]
 
   def pending
     invoice_requests =
@@ -129,6 +129,25 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       redirect_to overseers_invoice_request_path(@invoice_request), notice: flash_message(@invoice_request, action_name)
     else
       render 'edit'
+    end
+  end
+
+  def cancel_invoice_request
+    @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
+    authorize @invoice_request
+    if @invoice_request.valid?
+      service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
+      service.call
+      render json: { sucess: 'Successfully updated ' }, status: 200
+    else
+      render json: { error: @invoice_request.errors }, status: 500
+    end
+  end
+
+  def render_cancellation_form
+    authorize @invoice_request
+    respond_to do |format|
+      format.html {render :partial => "cancel_invoice_request",  locals: {status: params[:status]}}
     end
   end
 

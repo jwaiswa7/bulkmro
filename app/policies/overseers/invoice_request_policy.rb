@@ -24,4 +24,12 @@ class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
   def cancelled?
     admin? || accounts?
   end
+
+  def render_cancellation_form?
+    admin? || accounts?
+  end
+
+  def cancel_invoice_request?
+    update?
+  end
 end

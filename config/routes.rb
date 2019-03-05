@@ -217,7 +217,8 @@ Rails.application.routes.draw do
         get 'cancelled'
       end
       member do
-        patch 'reject_grpo'
+        get 'render_cancellation_form'
+        patch 'cancel_invoice_request'
       end
     end
 

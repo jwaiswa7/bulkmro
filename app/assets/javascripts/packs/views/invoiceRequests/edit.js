@@ -5,25 +5,37 @@ const edit = () => {
     $('.add-review').on('click',function (e) {
         $('#multipleRatingForm').modal('toggle')
     })
-    let form_original_data = $("form").serializeArray();
     
+    // original form data when form loaded
+    let form_original_data = $("form").serializeArray();
+
+    // for hind and show (rejection/cancellation)reasons input
+
     $('[name="invoice_request[status]"]').unbind().bind('change', function(){
         let val = $(this).val()
         $(".invoice_request_grpo_rejection_reason, .invoice_request_grpo_other_rejection_reason, .invoice_request_grpo_cancellation_reason ").addClass('d-none')
-        $(".invoice_request_ap_rejection_reason, .invoice_request_ap_other_rejection_reason, .invoice_request_ap_cancellation_reason ").addClass('d-none')
-        if(val == 'GRPO Request Rejected' ){
-            $(".invoice_request_grpo_rejection_reason").removeClass('d-none')
+        $(".invoice_request_ap_rejection_reason, .invoice_request_ap_cancellation_reason ").addClass('d-none')
+
+        switch(val) {
+            case 'GRPO Request Rejected':
+                $(".invoice_request_grpo_rejection_reason").removeClass('d-none');
+                break;
+            case 'AP Invoice Request Rejected':
+                $(".invoice_request_ap_rejection_reason").removeClass('d-none');
+                break;
+            case 'Cancelled GRPO':
+                $(".invoice_request_grpo_cancellation_reason").removeClass('d-none');
+                break;
+            case 'Cancelled AP Invoice':
+                $(".invoice_request_ap_cancellation_reason").removeClass('d-none');
+                break;
+            default:
         }
-        else if( val == 'AP Invoice Request Rejected'){
-            $(".invoice_request_ap_rejection_reason").removeClass('d-none')
-        }
-        else if(val == 'Cancelled GRPO' || val == 'Cancelled AP Invoice'){
-            $(this)
-            $(".invoice_request_cancellation_reason").removeClass('d-none');
-        }
-        else{
-        }
+
     })
+
+    // for hide and show other rejection reson while selecting grpo rejection reason
+
     $('[name="invoice_request[grpo_rejection_reason]"]').unbind().bind('change', function(){
         let val = $(this).val()
         if(val == 'Others'){
@@ -33,15 +45,6 @@ const edit = () => {
             $(".invoice_request_grpo_other_rejection_reason").addClass('d-none')
         }
     })
-    $('[name="invoice_request[ap_rejection_reason]"]').unbind().bind('change', function(){
-        let val = $(this).val()
-        if(val == 'Others'){
-            $(".invoice_request_ap_rejection_reason").removeClass('d-none')
-        }
-        else{
-            $(".invoice_request_ap_rejection_reason").addClass('d-none')
-        }
-    })
 
     $('.confirm-cancel').click(function(event) {
         if( !confirm('Do you want to Cancel the GRPO') ){
@@ -49,6 +52,9 @@ const edit = () => {
         }
 
     });
+
+
+    // on form submit if invoice request want to cancel then open pop_up and confirm again
 
     $('.submit-form').unbind().bind('click', function (event) {
         let form_changed_data = $("form").serializeArray(),
