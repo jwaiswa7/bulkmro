@@ -3,7 +3,7 @@
   Proof of Delivery Summary
 </a>
 <div id="pod-summary" class="collapse show">
-  <div class="mt-2 form-row d-flex flex-row align-content-stretch">
+  <div class="mt-2 form-row d-flex flex-row align-content-stretch text-right">
     <% if @invoice_over_month.present? &&  @pod_over_month.present? %>
     <div class="col-12 col-lg-12">
         <div class="card">
@@ -17,15 +17,16 @@
                       <% end %>
                     </tr>
                     <tr>
-                      <th class="text-uppercase text-dark "> Invoice Created </th>
+                      <th class="text-uppercase text-center"> Invoice Created </th>
                       <% @invoice_over_month.keys.each do |invoice_bucket| %>
-                        <td class="text-uppercase">
-                          <a href="<%=overseers_sales_invoices_path %>#!Created+At=<%=format_date_range(invoice_bucket.to_date) %>"> <%= number_with_delimiter(@invoice_over_month[invoice_bucket]['doc_count'], delimiter: ',') %></a>
+                        <td class="text-uppercase ">
+<!--                          <a href="<%#=overseers_sales_invoices_path %>#!Created+At=<%#=format_date_range(invoice_bucket.to_date) %>"> <%#= number_with_delimiter(@invoice_over_month[invoice_bucket]['doc_count'], delimiter: ',') %></a>-->
+                          <%= number_with_delimiter(@invoice_over_month[invoice_bucket]['doc_count'], delimiter: ',') %>
                         </td>
                       <% end %>
                     </tr>
                     <tr>
-                      <th class="text-uppercase text-dark "> Pending POD </th>
+                      <th class="text-uppercase text-center"> Pending POD </th>
                         <% @invoice_over_month.keys.each do |month| %>
                           <td class="text-uppercase">
                             <%= (@pod_over_month[month].present?) ? number_with_delimiter(@pod_over_month[month]['doc_count'], delimiter: ',') : 0 %>
