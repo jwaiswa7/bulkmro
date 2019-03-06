@@ -33,7 +33,7 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
     cataloging? || developer? && is_active?
   end
 
-  def payment_collection?
+  def payment_collections?
     index?
   end
 

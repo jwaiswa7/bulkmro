@@ -28,7 +28,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     end
   end
 
-  def payment_collection
+  def payment_collections
     service = Services::Overseers::SalesInvoices::PaymentDashboard.new(@account)
     service.call
     @summery_data = service.summery_data

@@ -2,7 +2,7 @@ json.data (@accounts) do |account|
   json.array! [
                   [
                       if policy(account).show?
-                        row_action_button(payment_collection_overseers_account_companies_path(account_id: account.id), 'eye', 'View Account', 'info', :_blank)
+                        row_action_button(payment_collections_overseers_account_companies_path(account_id: account.id), 'eye', 'View Account', 'info', :_blank)
                       end,
                       if policy(account).show? && account.total_amount_outstanding > 0.0
                         row_action_button(new_overseers_payment_collection_email_path(type: 'Account', account: account), 'envelope', 'Send Email', 'dark', :_blank)

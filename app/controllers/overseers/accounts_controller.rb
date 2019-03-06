@@ -59,7 +59,7 @@ class Overseers::AccountsController < Overseers::BaseController
     end
   end
 
-  def payment_collection
+  def payment_collections
     @accounts = ApplyDatatableParams.to(Account.all.order(:name), params)
     authorize :account
     service = Services::Overseers::SalesInvoices::PaymentDashboard.new()
