@@ -11,7 +11,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
   end
 
   def pending
-    @activities = ApplyDatatableParams.to(Activity.all.includes(:created_by, :overseers).not_approved.not_rejected, params)
+    # @activities = ApplyDatatableParams.to(Activity.all.includes(:created_by, :overseers).not_approved.not_rejected, params)
     service = Services::Overseers::Finders::Activities.new(params)
     service.call
     @indexed_activities = service.indexed_records
