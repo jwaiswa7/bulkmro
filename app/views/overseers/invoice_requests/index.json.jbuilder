@@ -7,11 +7,11 @@ json.data (@invoice_requests) do |invoice_request|
                       if policy(invoice_request).edit?
                         row_action_button(edit_overseers_invoice_request_path(invoice_request), 'pencil', "Edit #{invoice_request.readable_status}", 'warning')
                       end,
-                      if policy(invoice_request).edit?
-                          link_to('', class: ['btn btn-sm btn-danger cancel-invoice'], :'data-invoice-request-id' => invoice_request.id, :remote => true) do
-                            concat content_tag(:span, '')
-                            concat content_tag :i, nil, class: ['fal fa-ban'].join
-                          end
+                      if !invoice_request.status.downcase.include?('cancel') && policy(invoice_request).edit?
+                        link_to('', class: ['btn btn-sm btn-danger cancel-invoice'], :'data-invoice-request-id' => invoice_request.id, :remote => true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
                       end
                   ].join(' '),
                   invoice_request.id,

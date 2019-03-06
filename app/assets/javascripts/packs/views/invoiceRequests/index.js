@@ -16,8 +16,9 @@ const index = () => {
                 $('.cancellation-form-modal').append(data)
                 $('#cancelInvoice').modal('show')
                 modalSubmit()
-
-
+                $('#cancelInvoice').on('hidden.bs.modal', function () {
+                    $this.removeClass('disabled')
+                })
             },
             complete: function complete() {
             }
