@@ -26,8 +26,8 @@ Rails.application.configure do
       address:              'smtp.gmail.com',
       port:                 587,
       domain:               'bulkmro.com',
-      user_name:            'pradeep.ketkale@bulkmro.com', # can be use as fallback if user credentials failed
-      password:             'sjomrdxyxxcqzbin', # can be use as fallback if user credentials failed
+      user_name:            '', # can be use as fallback if user credentials failed
+      password:             '', # can be use as fallback if user credentials failed
       authentication:       'plain',
       enable_starttls_auto: true
   }
