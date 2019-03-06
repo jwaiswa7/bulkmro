@@ -7,6 +7,7 @@ class Activity < ApplicationRecord
   include Mixins::CanBeRejected
   include Mixins::HasApproveableStatus
 
+  update_index('activities#activity') { self }
   pg_search_scope :locate, against: [:purpose, :company_type, :activity_type], associated_against: { created_by: [:first_name, :last_name], account: [:name], company: [:name], contact: [:first_name, :last_name], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
   has_many :activity_overseers
@@ -63,7 +64,7 @@ class Activity < ApplicationRecord
     self.company_type ||= :is_customer
     self.purpose ||= :'First Meeting/Intro Meeting'
     self.activity_type ||= :'Meeting'
-    self.activity_date = Date.today
+    self.activity_date ||= Date.today
   end
 
   def activity_company
