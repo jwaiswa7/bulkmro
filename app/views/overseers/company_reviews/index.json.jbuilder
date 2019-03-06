@@ -13,6 +13,6 @@ json.data (@company_reviews) do |company_review|
               ]
 end
 
-json.recordsTotal @company_reviews.model.all.count
+json.recordsTotal @company_reviews.model.where.not(rating: nil).count
 json.recordsFiltered @company_reviews.total_count
 json.draw params[:draw]
