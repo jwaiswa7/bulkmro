@@ -33,7 +33,8 @@ class PoRequest < ApplicationRecord
       'PO Created': 20,
       'Cancelled': 30,
       'Rejected': 40,
-      'Amend': 50
+      'Amend': 50,
+      'Supplier PO Sent': 60
   }
 
   enum supplier_po_type: {
@@ -52,6 +53,13 @@ class PoRequest < ApplicationRecord
       'Mismatch: Supplier GST Number': 70,
       'Others': 80
   }
+  # enum cancellation_reason: {
+  #     'NOT INTERSETED': 10,
+  #     'CANCELING ORDER': 20,
+  #     'PURCHASE ORDER NOT FOUND': 30,
+  #     'CONTACT IS NIL': 40,
+  #     'SUPPLIER NOT DEFINED': 50,
+  # }
 
   scope :pending_and_rejected, -> { where(status: [:'Requested', :'Rejected', :'Amend']) }
   scope :handled, -> { where.not(status: [:'Requested', :'Cancelled', :'Amend']) }
@@ -74,6 +82,7 @@ class PoRequest < ApplicationRecord
   end
 
   after_initialize :set_defaults, if: :new_record?
+
   def update_po_index
     PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order.id])
   end
@@ -118,6 +127,8 @@ class PoRequest < ApplicationRecord
       title = 'Pending'
     elsif self.status == 'PO Created'
       title = 'Completed'
+    else
+      title = 'Cancelled'
     end
     "#{title} PO Request"
   end
