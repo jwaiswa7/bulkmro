@@ -129,7 +129,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def fetch_order_data?
-    developer?
+    developer? && record.status == 'Approved'
   end
 
   def material_dispatched_to_customer_new_email_msg?

@@ -29,6 +29,7 @@ json.data (@companies) do |company|
 
 
                   conditional_link(company.to_s,  overseers_company_path(company), policy(company).show?),
+                  conditional_link(company.account.name.to_s,  overseers_account_path(company.account), policy(company.account).show?),
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
@@ -47,11 +48,12 @@ end
 json.columnFilters [
                        [],
                        [],
+                       [{ "source": autocomplete_overseers_accounts_path }],
+                       [],
                        [],
                        [],
                        [],
                        [{ "label": 'Yes', "value": true }, { "label": 'No', "value": false }],
-                       [],
                        [],
                        [],
                        [],
