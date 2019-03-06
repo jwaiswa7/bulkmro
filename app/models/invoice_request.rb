@@ -21,12 +21,13 @@ class InvoiceRequest < ApplicationRecord
       'In stock': 70,
       'Completed AR Invoice Request': 40,
       'Cancelled AR Invoice': 50,
-      'Cancelled GRPO': 60,
+      'Cancelled': 60,
       'AP Invoice Request Rejected': 80,
       'GRPO Request Rejected': 90,
       'GRPO Requested': 100,
       'Inward Completed': 110,
-      'Cancelled AP Invoice': 120
+      'Cancelled AP Invoice': 120,
+      'Cancelled GRPO': 130
   }
 
   enum grpo_rejection_reason: {
@@ -62,7 +63,10 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def has_attachments?
-    if (self.status != 'Cancelled GRPO' || self.status != 'Cancelled AR Invoice') && !self.attachments.any?
+    p self.id
+    p self.status
+    p (self.status != 'Cancelled GRPO' || self.status != 'Cancelled AP Invoice')
+    if !['Cancelled GRPO', 'Cancelled AP Invoice'].include?(self.status) && !self.attachments.any?
       errors.add(:attachments, "must be present to create or update a #{self.readable_status}")
     end
   end
