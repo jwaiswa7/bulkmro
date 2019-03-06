@@ -47,6 +47,27 @@ json.data (@sales_invoices) do |sales_invoice|
   ]
 end
 
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       #PaymentOption.all.map {|v| {"label": v.name, "value": v.id } }.as_json,
+                       [{"source": autocomplete_overseers_payment_options_path}],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                   ]
 
 
 json.recordsTotal @company.invoices.count
