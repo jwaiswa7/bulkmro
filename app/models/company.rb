@@ -207,4 +207,9 @@ class Company < ApplicationRecord
   def company_rating
     rating_for self, 'supplier_responsiveness', star: Random.rand(1..5)
   end
+
+  def to_s_with_type
+    type = self.account.is_supplier? ? 'S' : 'C'
+    [self.to_s, ' (', type , ')'].join('')
+  end
 end
