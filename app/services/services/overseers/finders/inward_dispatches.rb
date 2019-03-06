@@ -1,4 +1,4 @@
-class Services::Overseers::Finders::MaterialPickupRequests < Services::Overseers::Finders::BaseFinder
+class Services::Overseers::Finders::InwardDispatches < Services::Overseers::Finders::BaseFinder
   def call
     call_base
   end
@@ -51,6 +51,6 @@ class Services::Overseers::Finders::MaterialPickupRequests < Services::Overseers
   end
 
   def model_klass
-    MaterialPickupRequest
+    InwardDispatch
   end
 end

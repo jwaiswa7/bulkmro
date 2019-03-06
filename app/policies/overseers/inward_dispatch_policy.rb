@@ -1,9 +1,9 @@
-class Overseers::MaterialPickupRequestPolicy < Overseers::ApplicationPolicy
-  def material_pickup_queue?
+class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
+  def inward_dispatch_pickup_queue?
     admin? || logistics? || sales?
   end
 
-  def material_delivered_queue?
+  def inward_dispatch_delivered_queue?
     admin? || logistics? || sales?
   end
 
@@ -35,7 +35,7 @@ class Overseers::MaterialPickupRequestPolicy < Overseers::ApplicationPolicy
     record.status == 'Material Delivered'
   end
 
-  def update_logistics_owner_for_pickup_requests?
+  def update_logistics_owner_for_inward_dispatches?
     admin?
   end
 end
