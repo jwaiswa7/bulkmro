@@ -999,8 +999,8 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       current_overseer = Overseer.where(email: 'approver@bulkmro.com').last
       purchase_order = po_request.purchase_order
       if purchase_order.po_request.present?
-        if purchase_order.po_request != 'PO Created'
-          purchase_order.po_request.assign_attributes(status: 'PO Created')
+        if purchase_order.po_request != 'Supplier PO Created Not Sent'
+          purchase_order.po_request.assign_attributes(status: 'Supplier PO Created Not Sent')
           purchase_order.po_request.save(validate: false)
         end
 
