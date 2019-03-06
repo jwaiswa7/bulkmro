@@ -55,8 +55,4 @@ class Services::Overseers::Finders::NotInvoicedSalesOrders < Services::Overseers
   def model_klass
     SalesOrder
   end
-
-  def sort_definition
-    { created_at: :desc }
-  end
 end

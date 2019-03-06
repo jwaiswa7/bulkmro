@@ -8,7 +8,7 @@ class PurchaseOrdersIndex < BaseIndex
 
   define_type PurchaseOrder.all.with_includes do
     field :id
-    field :inquiry_id, value: -> (record) { record.inquiry.id if record.inquiry.present? }
+    field :inquiry_id, value: -> (record) { record.inquiry.id if record.inquiry.present? }, type: 'integer'
     field :inquiry, value: -> (record) { record.inquiry.to_s }, analyzer: 'substring'
     field :material_status, value: -> (record) { material_statuses[record.material_status] || material_statuses['Material Readiness Follow-Up'] }
     field :po_number, value: -> (record) { record.po_number.to_i }, type: 'integer'
