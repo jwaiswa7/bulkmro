@@ -259,7 +259,6 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
             aggs: {
                 bucket_truncate: {
                     bucket_sort: {
-                        from: 1,
                         size: 12
                     }
                 }
