@@ -748,14 +748,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         warehouse.remote_branch_code = x.get_column('Business Place ID')
         warehouse.legacy_metadata = x.get_row
         warehouse.build_address(
-          name: x.get_column('Account Name'),
-          street1: x.get_column('Street'),
-          street2: x.get_column('Block'),
-          pincode: x.get_column('Zip Code'),
-          city_name: x.get_column('City'),
-          country_code: x.get_column('Country'),
-          gst: x.get_column('GST'),
-          state: AddressState.find_by_region_code(x.get_column('State'))
+            name: x.get_column('Account Name'),
+            street1: x.get_column('Street'),
+            street2: x.get_column('Block'),
+            pincode: x.get_column('Zip Code'),
+            city_name: x.get_column('City'),
+            country_code: x.get_column('Country'),
+            gst: x.get_column('GST'),
+            state: AddressState.find_by_region_code(x.get_column('State'))
         )
         warehouse.save!
       end
@@ -954,14 +954,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         company = Company.find_by_remote_uid(company_uid)
         if company.present?
           address = company.addresses.new(
-            gst: x.get_column('gst'),
-            country_code: x.get_column('country_code'),
-            state: AddressState.find_by_region_code(x.get_column('State')),
-            state_name: nil,
-            city_name: x.get_column('city_name'),
-            pincode: x.get_column('pincode'),
-            street1: x.get_column('street1'),
-            remote_uid: address_uid
+              gst: x.get_column('gst'),
+              country_code: x.get_column('country_code'),
+              state: AddressState.find_by_region_code(x.get_column('State')),
+              state_name: nil,
+              city_name: x.get_column('city_name'),
+              pincode: x.get_column('pincode'),
+              street1: x.get_column('street1'),
+              remote_uid: address_uid
 
           )
           address.save!
@@ -995,9 +995,8 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def add_completed_po_to_material_followup_queue
 
-    PoRequest.all.where(created_at: Date.new(2018,03,01)..Date.today).includes(:purchase_order).where.not(purchase_order_id: nil).each do |po_request|
-      current_overseer = Overseer.where(email: 'approver@bulkmro.com').last
-      purchase_order = po_request.purchase_order
+    PurchaseOrder.all.where(created_at: Date.new(2018, 03, 05).beginning_of_day..Date.new(2018, 03, 06).end_of_day).each do |purchase_order|
+
       if purchase_order.po_request.present?
         if purchase_order.po_request != 'PO Created'
           purchase_order.po_request.assign_attributes(status: 'PO Created')
@@ -1012,13 +1011,13 @@ class Services::Shared::Snippets < Services::Shared::BaseService
           if purchase_order.email_messages.present? || !purchase_order.email_messages.where(purchase_order: purchase_order, email_type: 'Sending PO to Supplier').present?
 
             email_message = purchase_order.email_messages.build(
-                overseer: current_overseer,
+                overseer: Overseer.default_approver,
                 inquiry: purchase_order.inquiry,
                 purchase_order: purchase_order,
                 sales_order: purchase_order.po_request.sales_order,
                 email_type: 'Sending PO to Supplier'
             )
-            email_message.assign_attributes(from: current_overseer.email, to: current_overseer.email, subject: "Internal Ref Inq ##{purchase_order.inquiry.inquiry_number} Purchase Order ##{purchase_order.po_number}")
+            email_message.assign_attributes(from: Overseer.default_approver.email, to: Overseer.default_approver.email, subject: "Internal Ref Inq ##{purchase_order.inquiry.inquiry_number} Purchase Order ##{purchase_order.po_number}")
             email_message.save!
           end
         end
@@ -1027,4 +1026,46 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       end
     end
   end
+
+  def check_and_fix_sales_quote_row_margins
+
+    invalid_sales_orders = Set.new
+    invalid_sales_orders_rows = Set.new
+
+
+    fixed_sales_orders_rows = Set.new
+
+    SalesOrderRow.where(sales_order: SalesOrder.remote_approved).where.not(sales_quote_row: nil).includes(:sales_quote_row, :inquiry_product_supplier).each do |sales_order_row|
+      is_not_valid = !sales_order_row.sales_quote_row.is_unit_selling_price_consistent_with_margin_percentage?
+
+      if is_not_valid
+        sales_quote_row = sales_order_row.sales_quote_row
+
+        order_number = sales_order_row.sales_order.order_number
+        invalid_sales_orders << "#{order_number}" if is_not_valid
+        invalid_sales_orders_rows << "#{order_number}-#{sales_order_row.id}" if is_not_valid
+
+        unit_cost_price_with_unit_freight_cost = sales_quote_row.unit_cost_price_with_unit_freight_cost
+        unit_selling_price = sales_quote_row.unit_selling_price
+        margin_percentage = 1 - (unit_cost_price_with_unit_freight_cost / unit_selling_price);
+
+        if unit_cost_price_with_unit_freight_cost > 0
+          margin_percentage = (margin_percentage * 100).round(2)
+        else
+          margin_percentage = 100
+        end
+        if unit_selling_price <= 0
+          margin_percentage = -10000000
+        end
+        sales_quote_row.update_attribute(:margin_percentage, margin_percentage)
+
+
+        is_valid = sales_order_row.sales_quote_row.is_unit_selling_price_consistent_with_margin_percentage?
+        fixed_sales_orders_rows << "#{order_number}-#{sales_order_row.id}" if is_valid && is_not_valid
+      end
+    end
+
+    [invalid_sales_orders.count, invalid_sales_orders_rows.count, fixed_sales_orders_rows.count]
+  end
+
 end
