@@ -1,6 +1,6 @@
 class Overseers::DocumentCreationPolicy < Overseers::ApplicationPolicy
   def new?
-    developer?
+    manager_or_sales? || logistics?
   end
 
   def create?
