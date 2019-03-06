@@ -247,13 +247,14 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
-  def aggregate_using_date_histogram(key,  aggregation_field, interval, keyed= false)
+  def aggregate_using_date_histogram(key,  aggregation_field, interval, keyed= false, order="desc")
     {
         "#{key}": {
             date_histogram: {
                 field: aggregation_field,
                 interval: interval,
-                keyed: keyed
+                keyed: keyed,
+                order: {"_key": order}
             }
         }
     }
