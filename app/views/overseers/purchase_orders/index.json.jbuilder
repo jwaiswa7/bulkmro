@@ -10,13 +10,15 @@ json.data (@purchase_orders) do |purchase_order|
                         row_action_button(url_for(purchase_order.document), 'file-pdf', purchase_order.document.filename, 'dark', :_blank)
                       end,
 
+=begin
                       if policy(purchase_order).can_request_invoice?
                         row_action_button(new_overseers_invoice_request_path(purchase_order_id: purchase_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
                       end
+=end
                   ].join(' '),
                   conditional_link(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), policy(purchase_order.inquiry).edit?),
                   conditional_link(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), policy(purchase_order.inquiry).edit?),
-                  (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).present? ? conditional_link(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name), overseers_company_path(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'])), policy(purchase_order.inquiry).show?) : '-' if purchase_order.rows.present?),
+                  '-',#(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).present? ? conditional_link(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name), overseers_company_path(purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'])), policy(purchase_order.inquiry).show?) : '-' if purchase_order.rows.present?),
                   format_star((purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:rating) if purchase_order.rows.present?)),
                   purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : '-',
                   purchase_order.status || purchase_order.metadata_status,
