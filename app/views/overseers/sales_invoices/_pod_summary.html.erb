@@ -12,23 +12,23 @@
                     <tbody>
                     <tr>
                       <th></th>
-                      <% @invoice_over_month.each_with_index do |invoice_bucket| %>
-                         <th><strong><%= format_month(invoice_bucket['key_as_string'].to_date) %></strong></th>
+                      <% @invoice_over_month.keys.each do |invoice_bucket| %>
+                         <th><strong><%= format_month(invoice_bucket.to_date) %></strong></th>
                       <% end %>
                     </tr>
                     <tr>
                       <th class="text-uppercase text-dark "> Invoice Created </th>
-                      <% @invoice_over_month.each_with_index do |invoice_bucket| %>
+                      <% @invoice_over_month.keys.each do |invoice_bucket| %>
                         <td class="text-uppercase">
-                          <%= number_with_delimiter(invoice_bucket['doc_count'], delimiter: ',') %>
+                          <%= number_with_delimiter(@invoice_over_month[invoice_bucket]['doc_count'], delimiter: ',') %>
                         </td>
                       <% end %>
                     </tr>
                     <tr>
                       <th class="text-uppercase text-dark "> Pending POD </th>
-                        <% @list_of_months.each do |month| %>
+                        <% @invoice_over_month.keys.each do |month| %>
                           <td class="text-uppercase">
-                            <%= (@pod_over_month.has_key?month) ? number_with_delimiter(@pod_over_month[month], delimiter: ',') : 0 %>
+                            <%= (@pod_over_month[month].present?) ? number_with_delimiter(@pod_over_month[month]['doc_count'], delimiter: ',') : 0 %>
                           </td>
                         <% end %>
                     </tr>

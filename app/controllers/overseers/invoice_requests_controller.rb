@@ -32,7 +32,6 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
     @invoice_over_month = service.invoice_over_month
     @pod_over_month = service.pod_over_month
-    @list_of_months = service.list_of_months
     #####################################################################################################
 
     respond_to do |format|

@@ -11,7 +11,6 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
         @invoice_over_month = service.invoice_over_month
         @pod_over_month = service.pod_over_month
-        @list_of_months = service.list_of_months
       }
       format.json do
         service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer)
