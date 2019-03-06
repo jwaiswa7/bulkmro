@@ -46,12 +46,4 @@ class Account < ApplicationRecord
   def self.non_trade
     find_by_name('Non-Trade')
   end
-
-  def is_supplier?
-    self.account_type == 10
-  end
-
-  def is_customer?
-    self.account_type == 20
-  end
 end
