@@ -2,9 +2,9 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
   def new
     @email_message = @sales_quote.email_messages.build(overseer: current_overseer, contact: @inquiry.contact, inquiry: @inquiry, sales_quote: @sales_quote)
     @email_message.assign_attributes(
-        subject: @inquiry.subject,
-        body: SalesQuoteMailer.acknowledgement(@email_message).body.raw_source,
-        auto_attach: true,
+      subject: @inquiry.subject,
+      body: SalesQuoteMailer.acknowledgement(@email_message).body.raw_source,
+      auto_attach: true,
     )
 
     authorize @sales_quote, :new_email_message?
@@ -12,10 +12,10 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
 
   def create
     @email_message = @sales_quote.email_messages.build(
-        overseer: current_overseer,
-        contact: @inquiry.contact,
-        inquiry: @inquiry,
-        sales_quote: @sales_quote
+      overseer: current_overseer,
+      contact: @inquiry.contact,
+      inquiry: @inquiry,
+      sales_quote: @sales_quote
     )
 
     @email_message.assign_attributes(email_message_params)
@@ -49,8 +49,8 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
 
   private
 
-  def email_message_params
-    params.require(:email_message).permit(
+    def email_message_params
+      params.require(:email_message).permit(
         :subject,
         :body,
         :to,
@@ -58,6 +58,6 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
         :bcc,
         :auto_attach,
         files: []
-    )
-  end
+      )
+    end
 end
