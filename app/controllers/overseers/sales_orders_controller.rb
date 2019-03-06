@@ -7,7 +7,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html { render 'pending' }
       format.json do
-        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer, paginate: false)
+        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer)
         service.call
 
         @indexed_sales_orders = service.indexed_records
@@ -29,7 +29,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html { render 'pending' }
       format.json do
-        service = Services::Overseers::Finders::CancelledSalesOrders.new(params, current_overseer, paginate: false)
+        service = Services::Overseers::Finders::CancelledSalesOrders.new(params, current_overseer)
         service.call
 
         @indexed_sales_orders = service.indexed_records
