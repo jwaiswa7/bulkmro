@@ -79,4 +79,8 @@ class SalesInvoice < ApplicationRecord
   def calculated_total_with_tax
     (calculated_total.to_f + calculated_total_tax.to_f).round(2)
   end
+
+  def has_attachment?
+    self.pod_attachment.attached?
+  end
 end
