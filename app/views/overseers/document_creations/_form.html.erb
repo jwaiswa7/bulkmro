@@ -8,21 +8,12 @@
       <div class="card-body">
         <div class="mt-3">
           <div class="form-row">
-            <div class="col-6">
-              <%= f.input :inquiry, collection: [], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
+            <div class="col">
+              <%= f.input :option, collection: ["Purchase Order", "Sales Invoice"], input_html: {class: 'select2 select2-wrap-text'}, label: "Select Document", selected: params[:option] %>
             </div>
 
-            <div class="col-6">
-              <%= f.input :sales_order, collection: [], label_method: :to_s, include_blank: "Type Order Number", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_sales_orders_path}, label: "Order Number" %>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col-6">
-              <%= f.input :option, collection: ["Purchase Order", "Sales Invoice"], input_html: {class: 'select2 select2-wrap-text'}, label: "Select Option" %>
-            </div>
-
-            <div class="col-6">
-              <%= f.input :number, label: "Enter PO/SI number" %>
+            <div class="col">
+              <%= f.input :document_number, label: "Enter document number", input_html: { value: params[:number] } %>
             </div>
           </div>
           <div class="form-row">
@@ -30,6 +21,8 @@
               <%= f.submit "Send Request", class: "btn btn-default btn-dark" %>
             </div>
           </div>
+
+
         </div>
       </div>
     </div>
