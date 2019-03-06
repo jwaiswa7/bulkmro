@@ -988,14 +988,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def update_sales_quote_remote_uid
     inquiries = Inquiry.where.not(last_synced_quote_id: nil)
-    inquiries.each do |inquiry|
+    Inquiry.where.not(last_synced_quote_id: nil).each do |inquiry|
       inquiry.last_synced_quote.update_attribute(:remote_uid, inquiry.quotation_uid)
     end
   end
 
   def add_completed_po_to_material_followup_queue
 
-    PoRequest.all.includes(:purchase_order).where.not(purchase_order_id: nil).each do |po_request|
+    PoRequest.all.where(created_at: Date.new(2018,03,01)..Date.today).includes(:purchase_order).where.not(purchase_order_id: nil).each do |po_request|
       current_overseer = Overseer.where(email: 'approver@bulkmro.com').last
       purchase_order = po_request.purchase_order
       if purchase_order.po_request.present?
