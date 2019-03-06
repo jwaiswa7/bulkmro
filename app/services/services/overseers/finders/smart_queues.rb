@@ -65,9 +65,9 @@ class Services::Overseers::Finders::SmartQueues < Services::Overseers::Finders::
     Inquiry
   end
 
-  def sort_definition
-    [{ priority: :desc }, { quotation_followup_date: :asc }, { calculated_total: :desc }]
-  end
+  # def sort_definition
+  #   [{created_at: :desc}, { priority: :desc }, { quotation_followup_date: :asc }, { calculated_total: :desc }]
+  # end
 
   def sq_filtered_statuses
     [Inquiry.statuses[:'Lead by O/S'], Inquiry.statuses[:'Order Lost'], Inquiry.statuses[:'Regret']]
