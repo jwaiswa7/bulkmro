@@ -7,7 +7,7 @@ class SalesOrdersIndex < BaseIndex
   define_type SalesOrder.all.with_includes do
     witchcraft!
     field :id, type: 'integer'
-    field :order_number, value: -> (record) { record.order_number.to_s }, analyzer: 'substring'
+    field :order_number, value: -> (record) { record.order_number }, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
@@ -18,7 +18,7 @@ class SalesOrdersIndex < BaseIndex
     field :legacy_status, value: -> (record) { record.legacy? ? 'legacy' : 'not_legacy' }
     field :remote_status_string, value: -> (record) { record.remote_status.to_s }, analyzer: 'substring'
     field :remote_status, value: -> (record) { remote_statuses[record.remote_status] }, type: 'integer'
-    field :quote_total, value: -> (record) { record.sales_quote.calculated_total.to_i if record.sales_quote.present? && record.sales_quote.calculated_total.present? }
+    field :quote_total, value: -> (record) { record.sales_quote.calculated_total.to_i if record.sales_quote.present? && record.sales_quote.calculated_total.present? }, type: 'float'
     field :order_total, value: -> (record) { record.calculated_total.to_i if record.rows.present? && record.calculated_total.present? }
     field :customer_po_number, value: -> (record) { record.inquiry.customer_po_number if record.inquiry.present? }
     field :customer_po_number_string, value: -> (record) { record.inquiry.customer_po_number.to_s if record.inquiry.present? }, analyzer: 'substring'
