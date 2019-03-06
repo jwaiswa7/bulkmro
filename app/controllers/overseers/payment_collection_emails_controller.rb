@@ -7,7 +7,7 @@ class Overseers::PaymentCollectionEmailsController < Overseers::BaseController
       @email_message.assign_attributes(
         subject: 'Company Payment Collection',
         body: CompanyPaymentCollectionMailer.acknowledgement(@email_message).body.raw_source,
-        auto_attach:true
+        auto_attach: true
           )
     else
       params[:type].downcase
@@ -16,7 +16,7 @@ class Overseers::PaymentCollectionEmailsController < Overseers::BaseController
       @email_message.assign_attributes(
         subject: 'Account Payment Collection',
         body: AccountPaymentCollectionMailer.acknowledgement(@email_message).body.raw_source,
-        auto_attach:true
+        auto_attach: true
           )
     end
     authorize :payment_collection_emails
@@ -56,6 +56,8 @@ class Overseers::PaymentCollectionEmailsController < Overseers::BaseController
     end
   end
 
+  attr_accessor :company, :account
+
   private
 
     def email_message_params
@@ -69,6 +71,4 @@ class Overseers::PaymentCollectionEmailsController < Overseers::BaseController
           files: []
       )
     end
-
-  attr_accessor :company, :account
 end

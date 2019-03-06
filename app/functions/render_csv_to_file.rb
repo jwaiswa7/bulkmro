@@ -1,8 +1,8 @@
 class RenderCsvToFile < BaseFunction
-  def self.for(record, locals={})
+  def self.for(record, locals = {})
     class_name = record.class.name
     filename = [record.name, 'pending_payments'].join('-')
-    path = Rails.root.join('tmp', 'payment_collections')
+    # path = Rails.root.join('tmp', 'payment_collections')
     csv_data = []
     if class_name == 'Account'
       columns = [
@@ -35,7 +35,7 @@ class RenderCsvToFile < BaseFunction
       csv_data = CSV.generate(write_headers: true, headers: columns) do |csv|
         record.invoices.not_cancelled_invoices.not_paid.each_with_index do |invoice, index|
           csv << [
-          index+1,
+          index + 1,
           invoice.sales_order.company,
           invoice.invoice_number,
           invoice.created_date,
@@ -58,6 +58,5 @@ class RenderCsvToFile < BaseFunction
     tempfile.close
 
     tempfile.path
-
   end
 end

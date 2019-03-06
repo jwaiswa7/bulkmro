@@ -24,7 +24,6 @@ class SalesReceiptsIndex < BaseIndex
     field :currency_name, value: -> (record) { record.currency.name if record.currency_id.present? }
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
-
   end
 
   def self.fields
