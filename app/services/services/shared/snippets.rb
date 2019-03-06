@@ -985,7 +985,6 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       inquiry.update_attribute(:last_synced_quote_id, inquiry.final_sales_quote.id) if inquiry.final_sales_quote.present?
     end
   end
-  
   def update_sales_quote_remote_uid
     inquiries = Inquiry.where.not(last_synced_quote_id: nil)
     Inquiry.where.not(last_synced_quote_id: nil).each do |inquiry|
