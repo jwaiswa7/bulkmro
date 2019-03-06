@@ -11,8 +11,8 @@ class SalesOrder < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasConvertedCalculations
 
-  update_index('sales_orders#sales_order') { self }
-  pg_search_scope :locate, against: [:status, :id, :order_number], associated_against: { company: [:name], inquiry: [:inquiry_number, :customer_po_number] }, using: { tsearch: { prefix: true } }
+  update_index('sales_orders#sales_order') {self}
+  pg_search_scope :locate, against: [:status, :id, :order_number], associated_against: {company: [:name], inquiry: [:inquiry_number, :customer_po_number]}, using: {tsearch: {prefix: true}}
   has_closure_tree(name_column: :to_s)
 
   has_one_attached :serialized_pdf
@@ -24,9 +24,9 @@ class SalesOrder < ApplicationRecord
   has_one :company, through: :inquiry
   has_one :inquiry_currency, through: :inquiry
   has_one :currency, through: :inquiry_currency
-  has_many :rows, -> { joins(:inquiry_product).order('inquiry_products.sr_no ASC') }, class_name: 'SalesOrderRow', inverse_of: :sales_order, dependent: :destroy
+  has_many :rows, -> {joins(:inquiry_product).order('inquiry_products.sr_no ASC')}, class_name: 'SalesOrderRow', inverse_of: :sales_order, dependent: :destroy
   has_many :sales_order_rows, inverse_of: :sales_order
-  accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| (attributes['sales_quote_row_id'].blank? || attributes['quantity'].blank? || attributes['quantity'].to_f < 0) && attributes['id'].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| (attributes['sales_quote_row_id'].blank? || attributes['quantity'].blank? || attributes['quantity'].to_f < 0) && attributes['id'].blank?}, allow_destroy: true
   has_many :sales_quote_rows, through: :sales_quote
   has_many :products, through: :rows
   has_many :categories, through: :products
@@ -116,8 +116,10 @@ class SalesOrder < ApplicationRecord
       'Order Deleted': 70
   }, _prefix: true
 
-  scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }
-  scope :remote_approved, -> { where('(sales_orders.status = ? AND sales_orders.remote_status != ? OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled']) }
+  scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
+  scope :remote_approved, -> {where('(sales_orders.status = ? AND sales_orders.remote_status != ? OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled'])}
+
+  scope :under_process, -> {where(status: [:'Approved', :'SAP Approval Pending', 'Requested'])}
 
   def confirmed?
     self.confirmation.present?
@@ -215,7 +217,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def total_quantities
-    self.rows.pluck(:quantity).inject(0) { |sum, x| sum + x }
+    self.rows.pluck(:quantity).inject(0) {|sum, x| sum + x}
   end
 
   def is_not_requested?(record)
@@ -225,6 +227,7 @@ class SalesOrder < ApplicationRecord
       false
     end
   end
+
   def has_purchase_order_request
     self.po_requests.present?
   end
@@ -238,7 +241,7 @@ class SalesOrder < ApplicationRecord
       self.draft_sync_date
     elsif self.approval.present?
       draft_remote_request = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: self.id, status: 'success').first
-      if draft_remote_request .present?
+      if draft_remote_request.present?
         self.update_attributes!(draft_sync_date: draft_remote_request.created_at)
         self.draft_sync_date
       end
