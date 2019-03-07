@@ -2934,4 +2934,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts skus
   end
 
+  def margin_miscalculation_sales_order_rows
+    service = Services::Shared::Spreadsheets::CsvImporter.new('margin_miscalculation_sales_order_rows.csv', 'seed_files')
+    service.loop(nil) do |x|
+      SalesOrderRow.find(x.get_column('Sales Order Row ID')).sales_quote_row.update_attribute(:margin_percentage,  x.get_column('Old Margin').to_f)
+    end
+  end
+
 end
