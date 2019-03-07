@@ -2,7 +2,12 @@ class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
   update_index('sales_invoices#sales_invoice') { self }
 
+  pg_search_scope :locate, against: [:id, :invoice_number], associated_against: { company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
+
   belongs_to :sales_order
+  belongs_to :billing_address, class_name: 'Address', required: false
+  belongs_to :shipping_address, class_name: 'Address', required: false
+
   has_one :inquiry, through: :sales_order
 
   has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
@@ -51,12 +56,12 @@ class SalesInvoice < ApplicationRecord
     ].compact.join('.')
   end
 
-  def billing_address
-    sales_order.billing_address || sales_order.inquiry.billing_address
+  def serialized_billing_address
+    billing_address || sales_order.inquiry.billing_address
   end
 
-  def shipping_address
-    sales_order.shipping_address || sales_order.inquiry.shipping_address
+  def serialized_shipping_address
+    shipping_address || sales_order.inquiry.shipping_address
   end
 
   def self.syncable_identifiers
@@ -73,5 +78,9 @@ class SalesInvoice < ApplicationRecord
 
   def calculated_total_with_tax
     (calculated_total.to_f + calculated_total_tax.to_f).round(2)
+  end
+
+  def has_attachment?
+    self.pod_attachment.attached?
   end
 end

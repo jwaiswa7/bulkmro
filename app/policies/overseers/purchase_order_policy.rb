@@ -13,6 +13,10 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || logistics?
   end
 
+  def autocomplete_without_po_requests?
+    manager_or_sales? || logistics?
+  end
+
   def export_all?
     allow_export? || allow_logistics_format_export?
   end
@@ -62,6 +66,6 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def update_logistics_owner_for_pickup_requests?
-    admin?
+    admin? || logistics?
   end
 end

@@ -31,7 +31,6 @@ class InvoiceRequest < ApplicationRecord
 
   validates_presence_of :sales_order
   validates_presence_of :inquiry
-  validates :ap_invoice_number, length: { is: 8 }, allow_blank: true
   validates_numericality_of :ap_invoice_number, allow_blank: true
   validate :has_attachments?
   validate :grpo_number_valid?

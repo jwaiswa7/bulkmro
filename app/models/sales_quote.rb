@@ -52,7 +52,7 @@ class SalesQuote < ApplicationRecord
   end
 
   def syncable_identifiers
-    [:quotation_uid]
+    [:remote_uid]
   end
 
   def inquiry_has_many_sales_quotes?
@@ -64,7 +64,7 @@ class SalesQuote < ApplicationRecord
   end
 
   def sales_quote_quantity_not_fulfilled?
-    self.calculated_total_quantity > self.sales_orders.remote_approved.persisted.map { |sales_order| sales_order.calculated_total_quantity }.compact.sum
+    self.calculated_total_quantity > self.sales_orders.under_process.persisted.map { |sales_order| sales_order.calculated_total_quantity }.compact.sum
   end
 
   def filename(include_extension: false)
@@ -104,6 +104,10 @@ class SalesQuote < ApplicationRecord
     else
       false
     end
+  end
+
+  def so_status_req_or_pending
+    self.sales_orders.pluck(:status).include?('Requested') || self.sales_orders.pluck(:status).include?('SAP Approval Pending') if self.sales_orders.present?
   end
 
   def currency_sign

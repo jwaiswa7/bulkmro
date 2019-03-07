@@ -32,7 +32,7 @@ json.data (@payment_requests) do |payment_request|
                   format_currency(payment_request.po_request.purchase_order.present? ? payment_request.po_request.purchase_order.try(:calculated_total_with_tax) : 0),
                   format_currency(payment_request.remaining_amount),
                   percentage(payment_request.percent_amount_paid, precision: 2),
-                  format_date_time_meridiem(payment_request.created_at),
+                  format_date_time_meridiem(payment_request.updated_at),
                   if payment_request.last_comment.present?
                     format_succinct_date(payment_request.last_comment.created_at)
                   end,
@@ -46,7 +46,7 @@ end
 json.columnFilters [
                        [],
                        [],
-                       PaymentRequest.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
+                       PaymentRequest.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        [],
                        [],
@@ -61,4 +61,4 @@ json.columnFilters [
 json.recordsTotal @payment_requests.model.all.count
 json.recordsFiltered @payment_requests.total_count
 json.draw params[:draw]
-json.recordsSummary PaymentRequest.statuses.map {|k, v| {status_id: v, "label": k, "size": @statuses[k] || 0}}.as_json
+json.recordsSummary PaymentRequest.statuses.map { |k, v| { status_id: v, "label": k, "size": @statuses[k] || 0 } }.as_json

@@ -30,7 +30,6 @@ json.data (@sales_orders) do |sales_order|
 
                   ].join(' '),
                   conditional_link(sales_order.order_number.present? ? sales_order.order_number : '-', overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order).show?),
-                  format_succinct_date(sales_order.created_at),
                   format_succinct_date(sales_order.mis_date),
                   conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
                    sales_order.invoices.map { |invoice| link_to(invoice.invoice_number, overseers_inquiry_sales_invoice_path(sales_order.inquiry, invoice), target: '_blank') }.compact.join(' '),
@@ -42,13 +41,11 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.outside_sales_owner.to_s,
                   format_currency(sales_order.sales_quote.calculated_total),
                   format_currency(sales_order.calculated_total),
-                  format_succinct_date(sales_order.mis_date),
-                  format_succinct_date(sales_order.created_at)
+                  format_succinct_date(sales_order.created_at),
               ]
 end
 
 json.columnFilters [
-                       [],
                        [],
                        [],
                        [],
@@ -61,6 +58,7 @@ json.columnFilters [
                        Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        Overseer.outside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        [],
+                       []
                    ]
 
 
