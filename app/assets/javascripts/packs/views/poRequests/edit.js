@@ -69,7 +69,7 @@ const edit = () => {
             let is_cancel_status = changed_status[0]['value'].toLowerCase().indexOf('cancel') != -1
             if (is_cancel_status && original_status && (changed_status[0]['value'] != original_status[0]['value'])) {
                 if (changed_status[0]['value'] == 'Cancelled') {
-                    if (!confirm('Do you want to Cancel the Po Request ?')) {
+                    if (!confirm('Do you want to cancel the Po Request?')) {
                         event.preventDefault();
                     }
                 }

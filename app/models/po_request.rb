@@ -5,7 +5,7 @@ class PoRequest < ApplicationRecord
   include Mixins::HasComments
   include Mixins::HasConvertedCalculations
 
-  pg_search_scope :locate, against: [:id], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:id], associated_against: {sales_order: [:id, :order_number], inquiry: [:inquiry_number]}, using: {tsearch: {prefix: true}}
 
   belongs_to :sales_order
   belongs_to :inquiry
@@ -15,8 +15,8 @@ class PoRequest < ApplicationRecord
   belongs_to :bill_to, class_name: 'Warehouse', foreign_key: :bill_to_id
   belongs_to :ship_to, class_name: 'Warehouse', foreign_key: :ship_to_id
 
-  belongs_to :bill_from, -> (record) { where(company_id: record.supplier.id) }, class_name: 'Address', foreign_key: :bill_from_id
-  belongs_to :ship_from, -> (record) { where(company_id: record.supplier.id) }, class_name: 'Address', foreign_key: :ship_from_id
+  belongs_to :bill_from, -> (record) {where(company_id: record.supplier.id)}, class_name: 'Address', foreign_key: :bill_from_id
+  belongs_to :ship_from, -> (record) {where(company_id: record.supplier.id)}, class_name: 'Address', foreign_key: :ship_from_id
   belongs_to :contact, required: false
 
   belongs_to :purchase_order, required: false
@@ -52,27 +52,20 @@ class PoRequest < ApplicationRecord
       'Mismatch: Supplier GST Number': 70,
       'Others': 80
   }
-  # enum cancellation_reason: {
-  #     'NOT INTERSETED': 10,
-  #     'CANCELING ORDER': 20,
-  #     'PURCHASE ORDER NOT FOUND': 30,
-  #     'CONTACT IS NIL': 40,
-  #     'SUPPLIER NOT DEFINED': 50,
-  # }
 
-  scope :pending_and_rejected, -> { where(status: [:'Requested', :'Rejected', :'Amend']) }
-  scope :handled, -> { where.not(status: [:'Requested', :'Cancelled', :'Amend']) }
-  scope :not_cancelled, -> { where.not(status: [:'Cancelled']) }
-  scope :cancelled, -> { where(status: [:'Cancelled']) }
-  scope :can_amend, -> { where(status: [:'PO Created']) }
-  scope :amended, -> { where(status: [:'Amend']) }
+  scope :pending_and_rejected, -> {where(status: [:'Requested', :'Rejected', :'Amend'])}
+  scope :handled, -> {where.not(status: [:'Requested', :'Cancelled', :'Amend'])}
+  scope :not_cancelled, -> {where.not(status: [:'Cancelled'])}
+  scope :cancelled, -> {where(status: [:'Cancelled'])}
+  scope :can_amend, -> {where(status: [:'PO Created'])}
+  scope :amended, -> {where(status: [:'Amend'])}
 
   validate :purchase_order_created?
-  validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? && !is_legacy }
+  validates_uniqueness_of :purchase_order, if: -> {purchase_order.present? && !is_legacy}
   validate :update_reason_for_status_change?
 
   after_initialize :set_defaults, if: :new_record?
-  after_save :update_po_index, if: -> { purchase_order.present? }
+  after_save :update_po_index, if: -> {purchase_order.present?}
 
   def purchase_order_created?
     if self.status == 'PO Created' && self.purchase_order.blank?
@@ -126,8 +119,6 @@ class PoRequest < ApplicationRecord
       title = 'Pending'
     elsif self.status == 'PO Created'
       title = 'Completed'
-    else
-      title = 'Cancelled'
     end
     "#{title} PO Request"
   end
