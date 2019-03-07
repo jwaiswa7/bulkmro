@@ -2892,4 +2892,46 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         end
       end
     end
+
+
+  def missing_sales_order_products
+    skus = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Missing_Products.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find_by_sku(x.get_column('SKU'))
+      if !product.present?
+        brand = Brand.find_by_name(x.get_column('Brand')) || Brand.default
+        category = Category.find_by_name(x.get_column('Category')) || Category.default
+        measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM')) || MeasurementUnit.default
+        name = x.get_column('BULK MRO Description')
+        sku = x.get_column('SKU')
+        tax_code = TaxCode.find_by_chapter(x.get_column('HSN'))
+        tax_rate = TaxRate.first_or_create(tax_percentage: x.get_column('Tax Percentage'))
+
+        next if Product.where(sku: sku).exists?
+
+        product = Product.new
+        product.brand = brand
+        product.category = category
+        product.sku = sku || product.generate_sku
+        product.tax_code = tax_code || TaxCode.default
+        product.mpn = x.get_column('MPN')
+        product.description = x.get_column('BULK MRO Description')
+        product.name = name
+        product.is_service = false
+        product.is_active = true
+        product.measurement_unit = measurement_unit
+        product.legacy_metadata = x.get_row
+        product.save_and_sync
+
+        product.create_approval(comment: product.comments.create!(overseer: Overseer.default, message: 'Product, being preapproved'), overseer: Overseer.default) if product.approval.blank?
+      end
+
+
+      skus.push product.sku
+    end
+
+    puts skus
+  end
+
 end
