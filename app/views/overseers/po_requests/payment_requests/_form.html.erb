@@ -60,8 +60,10 @@
             </div>
             </div>
           <% end %>
-
-          <div class="mt-3 card-alternative">
+          <!--      <div class="col-12">-->
+          <%#= f.input :description %>
+          <!--      </div>-->
+          <div class="mt-3 card-alternative ">
             <div class="form-row">
               <div class="col-4">
                 <%#= f.input :status, collection: enum_to_collection(PaymentRequest.statuses, alphabetical: false, keep_raw: true), input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => grouped_statuses_overseer_payment_requests_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, :include_blank => false %>
@@ -129,7 +131,7 @@
               <div class="form-row flex-row align-items-start">
                 <div class="col-2">
                   <%= transaction.input :payment_type, placeholder: 'Payment Type', :label => false, placeholder: placeholder_for(transaction, :utr_or_cheque_no), :required => policy(@payment_request).edit_payment_queue?, as: :select, disabled: !policy(@payment_request).edit_payment_queue?, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => 'Select a Payment Type' %>
-                </div></div>
+                </div>
                 <div class="col-3">
                   <%= transaction.input :utr_or_cheque_no, placeholder: 'UTR/Cheque Number', :label => false, :required => policy(@payment_request).edit_payment_queue?, disabled: !policy(@payment_request).edit_payment_queue? %>
                 </div>
