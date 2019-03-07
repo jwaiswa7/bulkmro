@@ -2941,4 +2941,57 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+
+  def resync_missing_supplier_details
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
+    service.loop(nil) do |x|
+      supplier = Company.find(x.get_column('Supplier id'))
+      if supplier.present?
+        if supplier.pan.blank?
+          pan = x.get_column('Supplier id')
+          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+            supplier.update_attribute(:pan, pan)
+          else
+            supplier.update_attribute(:pan, 'PANNO1234O')
+          end
+        else
+          pan = supplier.pan
+          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+            supplier.update_attribute(:pan, pan)
+          else
+            supplier.update_attribute(:pan, 'PANNO1234O')
+          end
+        end
+        supplier.save!
+      end
+    end
+
+  end
+
+  def fix_missing_supplier_contacts
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
+    service.loop(nil) do |x|
+      supplier = Company.find(x.get_column('Supplier id'))
+      if supplier.present?
+        if supplier.pan.blank?
+          pan = x.get_column('Supplier id')
+          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+            supplier.update_attribute(:pan, pan)
+          else
+            supplier.update_attribute(:pan, 'PANNO1234O')
+          end
+        else
+          pan = supplier.pan
+          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+            supplier.update_attribute(:pan, pan)
+          else
+            supplier.update_attribute(:pan, 'PANNO1234O')
+          end
+        end
+        supplier.save!
+      end
+    end
+
+  end
+
 end
