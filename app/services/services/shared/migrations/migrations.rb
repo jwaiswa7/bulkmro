@@ -2951,7 +2951,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
       if company.present?
-
         country_code = x.get_column('country_id')
         address = Address.new
         address.company = company
@@ -2985,15 +2984,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         else
           inquiry_missing << x.get_column('inquiry_number')
         end
-
         counter += 1
       else
         company_not_found << x.get_column('company')
       end
     end
     counter
-    11692
-    11744
   end
 
 end
