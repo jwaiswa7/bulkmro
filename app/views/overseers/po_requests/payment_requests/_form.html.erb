@@ -143,7 +143,6 @@
                   <div class="col-2">
                     <%= transaction.input :payment_type, :label => false, placeholder: placeholder_for(transaction, :utr_or_cheque_no), :required => policy(@payment_request).edit_payment_queue?, as: :select, disabled: !policy(@payment_request).edit_payment_queue?, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => 'Select a Payment Type' %>
                   </div>
-
                 <div class="col-2">
                   <%= transaction.input :utr_or_cheque_no, :label => false, :required => policy(@payment_request).edit_payment_queue?, disabled: !policy(@payment_request).edit_payment_queue? %>
                 </div>

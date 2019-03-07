@@ -2850,4 +2850,34 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts "-----------------------------------------------------------------------------------------"
     puts "Created Or Updated Invoices", created_or_updated_invoices.join(',')
   end
+
+  def missing_inquiry_shipping_address_status
+    file = "#{Rails.root}/tmp/missing_inquiry_shipping_address_with_status.csv"
+    column_headers = ['inquiry_number', 'inquiry_status']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_shipping_address.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+      service.loop(nil) do |x|
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry number'))
+        if inquiry.present? && inquiry.status.present?
+          writer << [inquiry.inquiry_number, inquiry.status.to_s]
+        end
+      end
+    end
+  end
+
+  def missing_inquiry_billing_address_status
+    file = "#{Rails.root}/tmp/missing_inquiry_billing_address_with_status.csv"
+    column_headers = ['inquiry_number', 'inquiry_status']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_billing_address.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+      service.loop(nil) do |x|
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry number'))
+        if inquiry.present? && inquiry.status.present?
+          writer << [inquiry.inquiry_number, inquiry.status.to_s]
+        end
+      end
+    end
+  end
 end
