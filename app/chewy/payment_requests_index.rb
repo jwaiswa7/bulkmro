@@ -1,0 +1,2 @@
+class PaymentRequestsIndex < BaseIndex
+end
