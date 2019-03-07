@@ -6,16 +6,16 @@ class Company < ApplicationRecord
   # include Mixins::HasUniqueName
   include Mixins::HasManagers
 
-  update_index('companies#company') { self }
-  pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
+  update_index('companies#company') {self}
+  pg_search_scope :locate, against: [:name], associated_against: {}, using: {tsearch: {prefix: true}}
 
   belongs_to :account
-  belongs_to :default_company_contact, -> (record) { where(company_id: record.id) }, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false
+  belongs_to :default_company_contact, -> (record) {where(company_id: record.id)}, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false
   has_one :default_contact, through: :default_company_contact, source: :contact
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id, required: false
-  belongs_to :default_billing_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
-  belongs_to :default_shipping_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
-  belongs_to :logistics_owner, -> (record) { where(role: 'logistics') }, class_name: 'Overseer', foreign_key: 'logistics_owner_id', required: true
+  belongs_to :default_billing_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
+  belongs_to :default_shipping_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
+  belongs_to :logistics_owner, -> (record) {where(role: 'logistics')}, class_name: 'Overseer', foreign_key: 'logistics_owner_id', required: true
   belongs_to :industry, required: false
   has_many :banks, class_name: 'CompanyBank', inverse_of: :company
   has_many :company_contacts, dependent: :destroy
@@ -83,12 +83,12 @@ class Company < ApplicationRecord
   delegate :account_type, :is_customer?, :is_supplier?, to: :account
   alias_attribute :gst, :tax_identifier
 
-  scope :with_includes, -> { includes(:addresses, :inquiries, :contacts) }
-  scope :acts_as_supplier, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier]) }
-  scope :acts_as_customer, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer]) }
+  scope :with_includes, -> {includes(:addresses, :inquiries, :contacts)}
+  scope :acts_as_supplier, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier])}
+  scope :acts_as_customer, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer])}
 
   validates_presence_of :name
-  validates :credit_limit, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :credit_limit, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validates_presence_of :pan
   validates_uniqueness_of :remote_uid, on: :update, allow_nil: true
   validate :validate_pan?
@@ -164,7 +164,7 @@ class Company < ApplicationRecord
   end
 
   def generate_catalog(overseer)
-    inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company: self.id).map { |i| i.inquiry_products }.flatten
+    inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company: self.id).map {|i| i.inquiry_products}.flatten
     inquiry_products.each do |inquiry_product|
       if inquiry_product.product.synced?
         CustomerProduct.where(company_id: inquiry_product.inquiry.company_id, product_id: inquiry_product.product_id, customer_price: (inquiry_product.product.latest_unit_cost_price || 0)).first_or_create! do |customer_product|
@@ -206,5 +206,10 @@ class Company < ApplicationRecord
 
   def company_rating
     rating_for self, 'supplier_responsiveness', star: Random.rand(1..5)
+  end
+
+  def to_s_with_type
+    type = self.account.is_supplier? ? 'S' : 'C'
+    [self.to_s, ' (', type, ')'].join('')
   end
 end
