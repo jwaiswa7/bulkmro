@@ -255,6 +255,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                 interval: interval,
                 keyed: keyed,
                 order: {"_key": order}
+            },
+            aggs: {
+                bucket_truncate: {
+                    bucket_sort: {
+                        size: 12
+                    }
+                }
             }
         }
     }

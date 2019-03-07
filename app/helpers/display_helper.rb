@@ -84,6 +84,15 @@ module DisplayHelper
     end
   end
 
+  def format_date_range(date)
+    if date.present? && (date.is_a?(DateTime) || date.is_a?(Date))
+      to_date = date >> 1
+      format_date(date)+'+~+'+format_date(to_date)
+    else
+      '-'
+    end
+  end
+
   def format_date_with_time(date)
     if date.present?
       # date.strftime("%e %b, %Y %H:%M")
