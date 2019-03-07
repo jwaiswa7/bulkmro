@@ -1,0 +1,2 @@
+class PurchaseRequestIndex < BaseIndex
+end
