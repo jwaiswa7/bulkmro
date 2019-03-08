@@ -6,45 +6,50 @@
 
 <% provide :heading_buttons do %>
   <% if policy(:activity).add_to_inquiry? %>
-    <div class="mr-2 d-inline-block export_daterange_wrapper">
+    <div class="mr-2 d-block d-md-inline-block export_daterange_wrapper">
       <%= select_tag :inquiry, '', class: 'select2-ajax select2-wrap add_to_inquiry_wrapper', 'data-source' => autocomplete_overseers_inquiries_path, include_blank: 'Choose an Inquiry to Assign to Activity', id: 'inquiry_select' %>
     </div>
-    <button type="button" id="add_to_inquiry" class="mr-2 btn btn-warning btn-rounded align-self-center btn-block-sm-down mb-md-0 mb-1 add_to_inquiry_wrapper">
+    <button type="button" id="add_to_inquiry" class="mt-md-0 mt-1 mr-2 btn btn-warning btn-rounded align-self-center btn-block-sm-down mb-md-0 mb-1 add_to_inquiry_wrapper">
       <i class="fal fa-plus mr-1"></i>Add to Inquiry
     </button>
   <% end %>
 <% end %>
 
 <div class="col-lg-12">
-  <div class="row mt-3 mt-lg-4">
-    <% Activity.activity_types.each do |activity_type, v| %>
-      <div class="col-md-2">
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="text-center">
-              <p class="text-uppercase text-black-50 mb-1"><strong><%= format_enum(activity_type) %></strong></p>
-              <h3 class="mb-0"><%= number_with_delimiter(Activity.send(activity_type).size, options = {}) %></h3>
+  <a class="btn btn-light text-left btn-lg btn-block mt-2 mt-lg-4" type="button" data-toggle="collapse" data-target="#summary">
+    Activities Summary
+  </a>
+
+  <div id="summary" class="collapse">
+    <div class="form-row mt-2">
+      <% Activity.activity_types.each do |activity_type, v| %>
+        <div class="col-md-2">
+          <div class="card mb-2 mb-md-3">
+            <div class="card-body">
+              <div class="text-center">
+                <p class="text-uppercase text-black-50 mb-1"><strong><%= format_enum(activity_type) %></strong></p>
+                <h3 class="mb-0"><%= number_with_delimiter(Activity.send(activity_type).size, options = {}) %></h3>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
 
-
 <% content_for :header_row do %>
-  <th class="desktop no-sort">
+  <th class="desktop no-sort all">
     <% if policy(:activity).perform_actions? %>
-      <div class="custom-control custom-checkbox">
+      <div class="custom-control custom-checkbox d-none d-md-block">
         <input type="checkbox" class="custom-control-input" name="all_activities" id="all_activities">
         <label class="custom-control-label" for="all_activities">Select All</label>
       </div>
     <% end %>
   </th>
 
-  <th class="no-sort" data-name="created_by_id">Created By</th>
-  <th class="sort desktop text-right" data-name="activity_date">Activity Date</th>
+  <th class="no-sort all" data-name="created_by_id" data-name="created_by_id">Created By</th>
+  <th class="sort all text-right" data-name="activity_date">Activity Date</th>
   <th class="no-sort" data-name="account_id">Account</th>
   <th class="no-sort" data-name="company_id">Company</th>
   <th class="no-sort desktop text-right">Is Supplier</th>
@@ -64,7 +69,7 @@
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
   <td data-filter="dropdown"></td>
-  <td data-filter="false"></td>
+  <td data-filter="daterange"></td>
   <td data-filter="ajax"></td>
   <td data-filter="ajax"></td>
   <td data-filter="false"></td>
@@ -78,8 +83,8 @@
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
+  <td data-filter="daterange"></td>
+  <td data-filter="daterange"></td>
 <% end %>
 <div class="col-lg-12">
   <%= render layout: 'shared/layouts/datatable' do %>

@@ -66,6 +66,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :document_creations
+
     resources :notifications do
       collection do
         post 'mark_as_read'

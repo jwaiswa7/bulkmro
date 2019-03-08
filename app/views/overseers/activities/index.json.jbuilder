@@ -2,7 +2,7 @@ json.data (@activities) do |activity|
   json.array! [
                   [
                       if policy(:activity).perform_actions?;
-                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='activities[]' class='custom-control-input' value='#{activity.id}' id='c-#{activity.id}'><label class='custom-control-label' for='c-#{activity.id}'></label></div>"
+                        "<div class='d-none d-md-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='activities[]' class='custom-control-input' value='#{activity.id}' id='c-#{activity.id}'><label class='custom-control-label' for='c-#{activity.id}'></label></div>"
                       end,
                       if policy(activity).edit?;
                         row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning', :_blank)
@@ -21,14 +21,14 @@ json.data (@activities) do |activity|
                   elsif activity.company_creation_request.present?
                     activity.company_creation_request.name
                   else
-                    '--'
+                    ''
                   end,
                   activity.company_creation_request.present? ? format_boolean(activity.company_creation_request.is_supplier?) : format_boolean(activity.is_supplier?),
                   activity.company_creation_request.present? ? format_boolean(activity.company_creation_request.is_customer?) : format_boolean(activity.is_customer?),
                   if activity.company_creation_request.present?
                     status_badge(activity.company_creation_request.status)
                   else
-                    '--'
+                    ''
                   end,
                   if activity.inquiry.present?
                     link_to format_id(activity.inquiry.inquiry_number), edit_overseers_inquiry_path(activity.inquiry)
