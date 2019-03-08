@@ -2894,104 +2894,101 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
 
 
-  def missing_sales_order_products
-    skus = []
-    service = Services::Shared::Spreadsheets::CsvImporter.new('Missing_Products.csv', 'seed_files')
-    service.loop(nil) do |x|
-      product = Product.find_by_sku(x.get_column('SKU'))
-      if !product.present?
-        brand = Brand.find_by_name(x.get_column('Brand')) || Brand.default
-        category = Category.find_by_name(x.get_column('Category')) || Category.default
-        measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM')) || MeasurementUnit.default
-        name = x.get_column('BULK MRO Description')
-        sku = x.get_column('SKU')
-        tax_code = TaxCode.find_by_chapter(x.get_column('HSN'))
-        tax_rate = TaxRate.first_or_create(tax_percentage: x.get_column('Tax Percentage'))
+    def missing_sales_order_products
+      skus = []
+      service = Services::Shared::Spreadsheets::CsvImporter.new('Missing_Products.csv', 'seed_files')
+      service.loop(nil) do |x|
+        product = Product.find_by_sku(x.get_column('SKU'))
+        if !product.present?
+          brand = Brand.find_by_name(x.get_column('Brand')) || Brand.default
+          category = Category.find_by_name(x.get_column('Category')) || Category.default
+          measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM')) || MeasurementUnit.default
+          name = x.get_column('BULK MRO Description')
+          sku = x.get_column('SKU')
+          tax_code = TaxCode.find_by_chapter(x.get_column('HSN'))
+          tax_rate = TaxRate.first_or_create(tax_percentage: x.get_column('Tax Percentage'))
 
-        next if Product.where(sku: sku).exists?
+          next if Product.where(sku: sku).exists?
 
-        product = Product.new
-        product.brand = brand
-        product.category = category
-        product.sku = sku || product.generate_sku
-        product.tax_code = tax_code || TaxCode.default
-        product.mpn = x.get_column('MPN')
-        product.description = x.get_column('BULK MRO Description')
-        product.name = name
-        product.is_service = false
-        product.is_active = true
-        product.measurement_unit = measurement_unit
-        product.legacy_metadata = x.get_row
-        product.save_and_sync
+          product = Product.new
+          product.brand = brand
+          product.category = category
+          product.sku = sku || product.generate_sku
+          product.tax_code = tax_code || TaxCode.default
+          product.mpn = x.get_column('MPN')
+          product.description = x.get_column('BULK MRO Description')
+          product.name = name
+          product.is_service = false
+          product.is_active = true
+          product.measurement_unit = measurement_unit
+          product.legacy_metadata = x.get_row
+          product.save_and_sync
 
-        product.create_approval(comment: product.comments.create!(overseer: Overseer.default, message: 'Product, being preapproved'), overseer: Overseer.default) if product.approval.blank?
-      end
-
-
-      skus.push product.sku
-    end
-
-    puts skus
-  end
-
-  def margin_miscalculation_sales_order_rows
-    service = Services::Shared::Spreadsheets::CsvImporter.new('margin_miscalculation_sales_order_rows.csv', 'seed_files')
-    service.loop(nil) do |x|
-      SalesOrderRow.find(x.get_column('Sales Order Row ID')).sales_quote_row.update_attribute(:margin_percentage,  x.get_column('Old Margin').to_f)
-    end
-  end
-
-
-  def resync_missing_supplier_details
-    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
-    service.loop(nil) do |x|
-      supplier = Company.find(x.get_column('Supplier id'))
-      if supplier.present?
-        if supplier.pan.blank?
-          pan = x.get_column('Supplier id')
-          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
-            supplier.update_attribute(:pan, pan)
-          else
-            supplier.update_attribute(:pan, 'PANNO1234O')
-          end
-        else
-          pan = supplier.pan
-          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
-            supplier.update_attribute(:pan, pan)
-          else
-            supplier.update_attribute(:pan, 'PANNO1234O')
-          end
+          product.create_approval(comment: product.comments.create!(overseer: Overseer.default, message: 'Product, being preapproved'), overseer: Overseer.default) if product.approval.blank?
         end
-        supplier.save!
+
+
+        skus.push product.sku
+      end
+
+      puts skus
+    end
+
+    def margin_miscalculation_sales_order_rows
+      service = Services::Shared::Spreadsheets::CsvImporter.new('margin_miscalculation_sales_order_rows.csv', 'seed_files')
+      service.loop(nil) do |x|
+        SalesOrderRow.find(x.get_column('Sales Order Row ID')).sales_quote_row.update_attribute(:margin_percentage,  x.get_column('Old Margin').to_f)
       end
     end
 
-  end
 
-  def fix_missing_supplier_contacts
-    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
-    service.loop(nil) do |x|
-      supplier = Company.find(x.get_column('Supplier id'))
-      if supplier.present?
-        if supplier.pan.blank?
-          pan = x.get_column('Supplier id')
-          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
-            supplier.update_attribute(:pan, pan)
+    def resync_missing_supplier_details
+      service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
+      service.loop(nil) do |x|
+        supplier = Company.find(x.get_column('Supplier id'))
+        if supplier.present?
+          if supplier.pan.blank?
+            pan = x.get_column('Supplier id')
+            if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+              supplier.update_attribute(:pan, pan)
+            else
+              supplier.update_attribute(:pan, 'PANNO1234O')
+            end
           else
-            supplier.update_attribute(:pan, 'PANNO1234O')
+            pan = supplier.pan
+            if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+              supplier.update_attribute(:pan, pan)
+            else
+              supplier.update_attribute(:pan, 'PANNO1234O')
+            end
           end
-        else
-          pan = supplier.pan
-          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
-            supplier.update_attribute(:pan, pan)
-          else
-            supplier.update_attribute(:pan, 'PANNO1234O')
-          end
+          supplier.save!
         end
-        supplier.save!
       end
-    end
+      end
 
-  end
-
+    def fix_missing_supplier_contacts
+      service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
+      service.loop(nil) do |x|
+        supplier = Company.find(x.get_column('Supplier id'))
+        if supplier.present?
+          if supplier.pan.blank?
+            pan = x.get_column('Supplier id')
+            if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+              supplier.update_attribute(:pan, pan)
+            else
+              supplier.update_attribute(:pan, 'PANNO1234O')
+            end
+          else
+            pan = supplier.pan
+            if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+              supplier.update_attribute(:pan, pan)
+            else
+              supplier.update_attribute(:pan, 'PANNO1234O')
+            end
+          end
+          supplier.save!
+        end
+      end
+      end
 end

@@ -38,10 +38,10 @@ end
 json.columnFilters [
                     [],
                     [{ "source": autocomplete_overseers_products_path }],
-                    [],
+                    [{ "source": autocomplete_overseers_products_path }],
                     [{ "source": autocomplete_overseers_brands_path }],
                     [],
-                    [],
+                    [{ "source": autocomplete_overseers_products_path }],
                     [],
                     [],
                     [],
