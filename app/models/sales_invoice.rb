@@ -10,14 +10,9 @@ class SalesInvoice < ApplicationRecord
 
   has_one :inquiry, through: :sales_order
 
-  has_many :receipts, dependent: :destroy, class_name: 'SalesReceipt', inverse_of: :sales_invoice
+  has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
-  has_many :sales_receipts
-  has_many :sales_receipt_rows
-
-  scope :not_cancelled_invoices, -> { where.not(status: 'Cancelled') }
-  scope :not_paid, -> { where.not(payment_status: 'Fully Paid') }
   has_many :email_messages
 
   has_one_attached :original_invoice
@@ -36,12 +31,6 @@ class SalesInvoice < ApplicationRecord
       'Delivered: GRN Delayed': 205,
       'Material Ready For Dispatch': 206,
       'Material Rejected': 207
-  }
-
-  enum payment_status: {
-      'Fully Paid': 10,
-      'Partially Paid': 20,
-      'Unpaid': 30,
   }
 
   scope :with_includes, -> { includes(:sales_order) }
@@ -91,6 +80,9 @@ class SalesInvoice < ApplicationRecord
     (calculated_total.to_f + calculated_total_tax.to_f).round(2)
   end
 
+  def has_attachment?
+    self.pod_attachment.attached?
+  end
   def amount_received
     # SalesReceipt.where(:sales_invoice_id => self.id).pluck(:payment_amount_received).compact.sum
     SalesReceiptRow.where('sales_invoice_id': self.id).sum(:amount_received)

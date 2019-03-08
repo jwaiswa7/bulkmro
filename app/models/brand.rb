@@ -21,4 +21,9 @@ class Brand < ApplicationRecord
   def self.legacy
     find_by_name('Legacy Brand')
   end
+
+  def self.default
+    find_by(name: 'BULK MRO APPROVED')
+  end
+
 end

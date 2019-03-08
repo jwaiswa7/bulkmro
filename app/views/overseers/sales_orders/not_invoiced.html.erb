@@ -7,24 +7,24 @@
 <% end %>
 
 <div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: SalesOrder, statuses: SalesOrder.remote_statuses, aggregation: {statuses: {}, label: 'Not Invoiced'}} %>
+  <%= render partial: "summary_with_extra_box", locals: {klass: SalesOrder, statuses: SalesOrder.remote_statuses, label: 'Not Invoiced'} %>
 </div>
 
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
-    <th class="no-sort all text-right">Order #</th>
-    <th class="no-sort desktop text-right" data-name="status">Inquiry #</th>
+    <th class="sort all text-right" data-name="order_number">Order #</th>
+    <th class="sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
     <th class="no-sort desktop" data-name="status">Status</th>
     <th class="no-sort desktop" data-name="remote_status">SAP Status</th>
     <th class="no-sort desktop" data-name="account_name">Customer Account Name</th>
     <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
     <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
-    <th class="no-sort desktop text-right">Quote Total</th>
-    <th class="no-sort desktop text-right">Order Total</th>
-    <th class="no-sort desktop text-right">Invoice Total</th>
-    <th class="no-sort desktop text-right" data-name="mis_date">Order Date</th>
-    <th class="no-sort desktop text-right" data-name="created_at">Created At</th>
+    <th class="sort desktop text-right" data-name="quote_total">Quote Total</th>
+    <th class="sort desktop text-right" data-name="order_total">Order Total</th>
+    <th class="sort desktop text-right" data-name="invoice_total">Invoice Total</th>
+    <th class="sort desktop text-right" data-name="mis_date">Order Date</th>
+    <th class="sort desktop text-right" data-name="created_at">Created At</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
@@ -38,7 +38,7 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="daterange"></td>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
   <% end %>
 

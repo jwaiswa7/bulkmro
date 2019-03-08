@@ -325,7 +325,7 @@
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="right" style="text-align: right;" valign="top">
-                  <b><span><%= record.converted_total %></span></b></td>
+                  <b><span><%= number_to_currency(record.converted_total.to_f , precision: 2, unit: '') %></span></b></td>
                 <td align="center" valign="top">
                   <span></span></td>
                 <% if record.tax_summary.strip == '0' ||

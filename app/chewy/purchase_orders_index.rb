@@ -1,14 +1,13 @@
 class PurchaseOrdersIndex < BaseIndex
   material_statuses = PurchaseOrder.material_statuses
   po_statuses = PoRequest.statuses
-  stock_po_statuses = PoRequest.stock_statuses
   statuses = PurchaseOrder.statuses
   payment_request_statuses = PaymentRequest.statuses
   supplier_po_type = PoRequest.supplier_po_types
 
   define_type PurchaseOrder.all.with_includes do
     field :id
-    field :inquiry_id, value: -> (record) { record.inquiry.id if record.inquiry.present? }
+    field :inquiry_id, value: -> (record) { record.inquiry.id if record.inquiry.present? }, type: 'integer'
     field :inquiry, value: -> (record) { record.inquiry.to_s }, analyzer: 'substring'
     field :material_status, value: -> (record) { material_statuses[record.material_status] || material_statuses['Material Readiness Follow-Up'] }
     field :po_number, value: -> (record) { record.po_number.to_i }, type: 'integer'
@@ -41,6 +40,6 @@ class PurchaseOrdersIndex < BaseIndex
     field :updated_at, type: 'date'
     field :potential_value, value: -> (record) { record.try(:calculated_total) }, type: 'double'
     field :po_type, value: -> (record) { supplier_po_type[record.po_request.supplier_po_type] if record.po_request.present? }
-    field :stock_po_status, value: -> (record) { stock_po_statuses[record.po_request ? record.po_request.stock_status : 'Stock Supplier PO Created'] }
+    field :line_item, value: -> (record) {record.rows.count if record.rows.present? }, type: 'integer'
   end
 end

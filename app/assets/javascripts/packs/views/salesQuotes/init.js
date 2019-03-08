@@ -10,6 +10,6 @@ let salesQuotes = {
     new: salesQuotesNew,
     newRevision: salesQuotesNewRevision,
     update: salesQuotesUpdate
-};
+}
 
 export default salesQuotes

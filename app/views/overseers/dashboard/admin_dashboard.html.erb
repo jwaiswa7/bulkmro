@@ -1,9 +1,9 @@
 <%= render layout: 'overseers/dashboard/show' do %>
 
-  <div class="form-row mt-3 mt-lg-4">
+  <div class="form-row mt-2 mt-lg-4">
     <% if policy(:account).index? %>
       <div class="col-md-3">
-        <div class="card mb-3 ">
+        <div class="card mb-3">
           <div class="card-body">
             <div class="text-center">
               <p class="text-uppercase mb-1"><strong>Accounts</strong></p>
@@ -18,7 +18,7 @@
     <% end %>
     <% if policy(:company).index? %>
       <div class="col-md-3">
-        <div class="card mb-3 ">
+        <div class="card mb-3">
           <div class="card-body">
             <div class="text-center">
               <p class="text-uppercase text-black-50 mb-1"><strong>Companies</strong>
@@ -34,7 +34,7 @@
     <% end %>
     <% if policy(:contact).index? %>
       <div class="col-md-3">
-        <div class="card mb-3 ">
+        <div class="card mb-3">
           <div class="card-body">
             <div class="text-center">
               <p class="text-uppercase mb-1"><strong>Contacts</strong></p>
@@ -49,7 +49,7 @@
     <% end %>
     <% if policy(:product).index? %>
       <div class="col-md-3">
-        <div class="card mb-3 ">
+        <div class="card mb-3">
           <div class="card-body">
             <div class="text-center">
               <p class="text-uppercase mb-1"><strong>Products</strong></p>
@@ -69,7 +69,7 @@
       <div class="col-12 col-lg-12">
         <div class="card">
           <div class="card-body">
-            <table class="table w-100 wrap-whitespace" data-fixed-header="false">
+            <table class="table w-100 wrap-whitespace datatable" data-sort="false" data-fixed-header="false">
               <thead>
               <tr>
                 <th class="no-sort text-right"></th>
