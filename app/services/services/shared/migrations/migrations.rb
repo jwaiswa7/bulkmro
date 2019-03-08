@@ -1405,90 +1405,42 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def find_missing_po
-    file = "#{Rails.root}/tmp/missing_pos1.csv"
-    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_orders.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: ['missing_po_number','Inq no']) do |writer|
-      service.loop(nil) do |x|
-        purchase_order = PurchaseOrder.find_by_po_number(x.get_column('po_number'))
-
-        if !purchase_order.present?
-          writer << [x.get_column('po_number'), x.get_column('inquiry_number')]
-        end
-      end
-    end
-    file = "#{Rails.root}/tmp/missing_pos2.csv"
-    new_po_number = 100000000
-    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: ['missing_po_number', "metadata_po", "reason"]) do |writer|
-      service.loop(1) do |x|
-        purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
-        poNum = JSON.parse(x.get_column('meta_data'))['PoNum']
-        if poNum.scan(/\D/).empty?
-          right_po = PurchaseOrder.find_by_po_number(poNum)
-          if right_po.present?
-            if purchase_order.present? && (poNum != x.get_column('purchase_order_number'))
-              purchase_order.destroy
-              writer << [x.get_column('purchase_order_number'), poNum, 'with po_number #{x.get_column("purchase_order_number")} deleted sucessfully']
-            elsif !purchase_order.present?
-              writer << [x.get_column('purchase_order_number'), poNum, 'Nothing to do correct data']
-            else
-              writer << [x.get_column('purchase_order_number'), poNum, 'remaining']
-            end
-          else
-            if purchase_order.present?
-              # # Replace
-              # purchase_order.destroy
-              # response = update_purchase_order(x.get_column('metadata'))
-              # new_po_number =+ 1
-              # writer << [x.get_column('purchase_order_number'), poNum, 'meta data po created with reseponse #{response} and po_number with #{purchase_order.id} deleted.']
-            else
-              response = create_purchase_order(x.get_column('metadata'))
-              new_po_number =+ 1
-              writer << [x.get_column('purchase_order_number'), poNum, response]
-            end
-          end
-        else
-          if purchase_order.present?
-            # replace existing one
-            writer << [x.get_column('purchase_order_number'), poNum, 'meta data po number is alpha numeric and po_number present']
-          else
-            response = create_purchase_order(x.get_column('metadata'))
-            new_po_number =+ 1
-            writer << [x.get_column('purchase_order_number'), poNum, 'meta data po number is alpha numeric and po_number absent']
-          end
-        end
-      end
-    end
-  end
-
   def ruta
     new_po_number = 9999999
-    file = "#{Rails.root}/tmp/missing_pos2.csv"
+    file = "#{Rails.root}/tmp/po_generation_status.csv"
     service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
     CSV.open(file, 'w', write_headers: true, headers: ['missing_po_number', "metadata_po", "reason"]) do |writer|
       service.loop(100) do |x|
         purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
         poNum = JSON.parse(x.get_column('meta_data'))['PoNum']
         if poNum.scan(/\D/).empty?
+          # po_number with only digits
           right_po = PurchaseOrder.find_by_po_number(poNum)
           if right_po.present?
+            # Purchase orders (with po number in metadata) exists.
             if purchase_order.present? && (poNum != x.get_column('purchase_order_number'))
+              # purchase order also exist for same column and mismatch in metadata, normal purchase_order
               if !purchase_order.inquiry.present?
+                # inquiry not present then delete
                 purchase_order.destroy
                 writer << [x.get_column('purchase_order_number'), poNum, "with po_number #{x.get_column('purchase_order_number')} deleted sucessfully"]
               else
+                # else display reason
                 writer << [x.get_column('purchase_order_number'), poNum, "with po_number #{x.get_column('purchase_order_number')} have inquiry"]
               end
             elsif !purchase_order.present?
               writer << [x.get_column('purchase_order_number'), poNum, 'Data is correct']
             else
+              # if both numbers matches
               writer << [x.get_column('purchase_order_number'), poNum, 'Data is correct']
             end
           else
+            # actual purchase order not present then
             if purchase_order.present?
+              # wrong purchase_order present
               status = purchase_order.metadata['PoNum'] == poNum
               if status
+                # if metadata po_number matched with wrong purchase_order then update
                 purchase_order.po_number = new_po_number
                 new_po_number = new_po_number+1
                 purchase_order.old_po_number = poNum
@@ -1499,6 +1451,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                   writer << [x.get_column('purchase_order_number'), poNum, "error during creation of purchase_order  with new po_number #{new_po_number}, error => #{purchase_order.errors}"]
                 end
               else
+                # mismatched then delete wrong purchase_order if inquiry not present otherwise dont delete
+                # In both cases create new Purchase order
                 if !purchase_order.inquiry.present?
                   purchase_order.delete
                 end
@@ -1511,15 +1465,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             end
           end
         else
+          # alpha numeric po number in metadata
           if purchase_order.present?
             status = purchase_order.metadata['PoNum'] == poNum
             if status
+              # if metata data po number and normal po number match then create new po with diff number
               purchase_order.po_number = new_po_number
               new_po_number = new_po_number+1
               purchase_order.old_po_number = poNum
-              p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-              p purchase_order.valid?
-              p new_po_number
               if purchase_order.valid?
                 purchase_order.save
                 writer << [x.get_column('purchase_order_number'), poNum, "purchase_order updated with new po_number #{new_po_number}"]
@@ -1527,6 +1480,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 writer << [x.get_column('purchase_order_number'), poNum, "error during creation of purchase_order  with new po_number #{new_po_number}, error => #{purchase_order.errors}"]
               end
             else
+              # if mismatch the po number and metadata po number then delete and create new
               if !purchase_order.inquiry.present?
                 purchase_order.delete
               end
@@ -1535,6 +1489,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               writer << [x.get_column('purchase_order_number'), poNum, "new purchase_order created with new po_number #{new_po_number}"]
             end
           else
+            # crate new po with number
             create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
             new_po_number = new_po_number+1
             writer << [x.get_column('purchase_order_number'), poNum, "new purchase_order created with new po_number #{new_po_number}"]
