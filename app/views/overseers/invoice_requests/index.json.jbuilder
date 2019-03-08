@@ -8,7 +8,7 @@ json.data (@invoice_requests) do |invoice_request|
                         row_action_button(edit_overseers_invoice_request_path(invoice_request), 'pencil', "Edit #{invoice_request.readable_status}", 'warning')
                       end,
                       if !invoice_request.status.downcase.include?('cancel') && policy(invoice_request).edit?
-                        link_to('', class: ['btn btn-sm btn-danger cancel-invoice'], :'data-invoice-request-id' => invoice_request.id, :remote => true) do
+                        link_to('', class: ['btn btn-sm btn-danger cancel-invoice'], 'data-invoice-request-id': invoice_request.id, remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
@@ -33,4 +33,4 @@ end
 json.recordsTotal @invoice_requests.count
 json.recordsFiltered @invoice_requests.total_count
 json.draw params[:draw]
-json.recordsSummary InvoiceRequest.statuses.map { |k, v| { status_id: v, "label": k, "size": @invoice_requests.pluck(:status).count(k) } }.as_json
+json.recordsSummary InvoiceRequest.statuses.map {|k, v| {status_id: v, "label": k, "size": @invoice_requests.pluck(:status).count(k)}}.as_json

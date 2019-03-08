@@ -2,7 +2,7 @@ class Services::Overseers::PoRequests::Update < Services::Shared::BaseService
   def initialize(po_request, current_overseer, action_name)
     @po_request = po_request
     @current_overseer = current_overseer
-    @action_name= action_name
+    @action_name = action_name
   end
 
   def call
@@ -20,21 +20,11 @@ class Services::Overseers::PoRequests::Update < Services::Shared::BaseService
           end
         elsif @po_request.status == 'Rejected'
           @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}", po_request: @po_request, overseer: current_overseer)
-
         else
           @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status}", po_request: @po_request, overseer: current_overseer)
         end
-        @po_request.save!
         @po_request_comment.save!
-        tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
-        @notification.send_po_request_update(
-            tos - [current_overseer.email],
-            action_name.to_sym,
-            @po_request,
-            overseers_po_request_path(@po_request),
-            @po_request.id,
-            @po_request_comment.message,
-        )
+        @po_request.save!
       else
         @po_request.save!
       end

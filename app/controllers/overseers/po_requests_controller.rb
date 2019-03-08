@@ -1,6 +1,6 @@
 class Overseers::PoRequestsController < Overseers::BaseController
   before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form]
-  before_action :set_notification, only: [:update]
+  before_action :set_notification, only: [:update, :cancel_porequest]
 
   def pending_and_rejected
     @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.pending_and_rejected.order(id: :desc)), params)
@@ -135,6 +135,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
     if @po_request.valid?
       service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer, action_name)
       service.call
+
+      tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
+      @notification.send_po_request_update(
+          tos - [current_overseer.email],
+          action_name.to_sym,
+          @po_request,
+          overseers_po_request_path(@po_request),
+          @po_request.id,
+          @po_request.last_comment.message,
+      )
       render json: {success: 1, message: 'Successfully updated '}, status: 200
     else
       render json: {success: 0, message: 'Cannot cancel this PO Request.'}, status: 200
@@ -144,7 +154,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def render_cancellation_form
     authorize @po_request
     respond_to do |format|
-      format.html {render :partial => "cancel_porequest", locals: {status: params[:status]}}
+      format.html {render partial: 'cancel_porequest', locals: {status: params[:status]}}
     end
   end
 
