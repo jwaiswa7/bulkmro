@@ -78,7 +78,7 @@
               </div>
 
               <div class="col-12">
-                <%= f.input :company_bank, :wrapper => :custom_multi_select, as: :select, collection: f.object.inquiry.company.company_banks.collect {|x| [x, x.id]}, :include_blank => false, label: "Supplier Bank Details" %>
+                <%= f.input :company_bank, as: :select, collection: f.object.inquiry.company.company_banks.collect {|x| [x, x.id]}, :include_blank => false, label: "Supplier Bank Details" %>
               </div>
 
               <div class="col-4">
