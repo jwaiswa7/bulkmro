@@ -2994,4 +2994,63 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   end
 
+
+  def migrate_orders_missing_addresses
+    service = Services::Shared::Spreadsheets::CsvImporter.new('orders_billing_address.csv', 'seed_files')
+    counter = 0
+    rows = 0
+    inquiry_missing = []
+    company_not_found = []
+    invalid = 0
+    service.loop(nil) do |x|
+      rows += 1
+      if x.get_column('company').blank?
+        company = Company.find_by_name('Legacy Company')
+      else
+        company = Company.find_by_name(x.get_column('company'))
+      end
+
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+      if company.present?
+        country_code = x.get_column('country_id')
+        address = Address.new
+        address.company = company
+        address.name = company.name
+        if x.get_column('gst').blank? || (x.get_column('gst').present? && x.get_column('gst').chars.length < 15)
+          address.gst = 'No GST Number'
+        else
+          address.gst = x.get_column('gst')[0..14]
+        end
+
+        address.country_code = country_code
+        address.state = AddressState.find_by_legacy_id(x.get_column('region_id'))
+        if !address.state.present?
+          address.state = AddressState.find_by_name('Maharashtra')
+        end
+        address.state_name = country_code == 'IN' ? nil : x.get_column('region')
+        address.city_name = x.get_column('city')
+        address.pincode = x.get_column('postcode')
+        address.street1 = x.get_column('street')
+        is_tel_valid = true if Float(x.get_column('telephone')) rescue false
+        address.telephone = x.get_column('telephone').to_i if is_tel_valid
+        address.legacy_metadata = x.get_row
+
+        if !address.valid?
+          invalid += 1
+        end
+        address.save!
+
+        if inquiry.present?
+          inquiry.update_attributes(:billing_address => address)
+        else
+          inquiry_missing << x.get_column('inquiry_number')
+        end
+        counter += 1
+      else
+        company_not_found << x.get_column('company')
+      end
+    end
+    counter
+  end
+
 end
