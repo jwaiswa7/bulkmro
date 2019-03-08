@@ -28,26 +28,23 @@ json.data (@products) do |product|
                   format_boolean(product.is_service),
                   format_boolean_label(product.synced?, 'synced'),
                   format_boolean(product.is_active),
-                  format_succinct_date(product.created_at),
-                  (product.created_by || (product.inquiry_import_row.inquiry.created_by if product.inquiry_import_row)).try(:name) || '-',
                   format_succinct_date(product.approval.try(:created_at)),
-
-
-
+                  (product.created_by || (product.inquiry_import_row.inquiry.created_by if product.inquiry_import_row)).try(:name) || '-',
+                  format_succinct_date(product.created_at),
               ]
 end
 json.columnFilters [
-                    [],
-                    [{ "source": autocomplete_overseers_products_path }],
-                    [],
-                    [{ "source": autocomplete_overseers_brands_path }],
-                    [],
-                    [],
-                    [],
-                    [],
-                    [],
-                    [],
-                    []
+                       [],
+                       [{"source": autocomplete_overseers_products_path}],
+                       [],
+                       [{"source": autocomplete_overseers_brands_path}],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       []
                    ]
 
 json.recordsTotal @products.model.all.count

@@ -22,6 +22,7 @@ class SalesShipmentsIndex < BaseIndex
     field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id }
     field :shipment_grn
     field :packing_remarks
+    field :line_items, value: -> (record) { record.rows.count }, type: 'integer'
 
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
