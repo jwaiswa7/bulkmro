@@ -23,7 +23,6 @@ class SalesShipmentsIndex < BaseIndex
     field :shipment_grn
     field :packing_remarks
     field :line_items, value: -> (record) { record.rows.count }, type: 'integer'
-
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
   end

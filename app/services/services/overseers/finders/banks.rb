@@ -25,12 +25,12 @@ class Services::Overseers::Finders::Banks < Services::Overseers::Finders::BaseFi
     query = query[0, 35]
 
     indexed_records = index_klass.query(
-        multi_match: {
-            query: query,
-            operator: 'and',
-            fields: %w[code^4 name^3],
-            minimum_should_match: '100%'
-        }
+      multi_match: {
+          query: query,
+          operator: 'and',
+          fields: %w[code^4 name^3],
+          minimum_should_match: '100%'
+      }
     ).order(sort_definition)
 
     if search_filters.present?
