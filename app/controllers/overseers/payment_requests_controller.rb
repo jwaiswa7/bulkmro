@@ -14,8 +14,19 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
           PaymentRequest.all
         end
 
-    @payment_requests = ApplyDatatableParams.to(payment_requests.order(created_at: :desc), params)
-    authorize @payment_requests
+    service = Services::Overseers::Finders::PaymentRequests.new(params, current_overseer)
+    service.call
+
+    @indexed_payment_requests = service.indexed_records
+    @payment_requests = service.records
+
+
+    authorize :payment_request
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_payment_requests, PaymentRequest)
+    status_service.call
+
+    # @total_values = status_service.indexed_total_values
+    # @statuses = status_service.indexed_statuses
     @statuses = payment_requests.group(:status).count
   end
 
