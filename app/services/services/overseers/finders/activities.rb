@@ -10,13 +10,16 @@ class Services::Overseers::Finders::Activities < Services::Overseers::Finders::B
   def all_records
     indexed_records = super
 
-    if @base_filter.present?
-      indexed_records = indexed_records.filter(@base_filter)
-    end
-
+     if @base_filter.present?
+       indexed_records = indexed_records.filter(@base_filter)
+     end
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
+    end
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
     end
 
     indexed_records
@@ -24,13 +27,11 @@ class Services::Overseers::Finders::Activities < Services::Overseers::Finders::B
 
   def perform_query(query)
     query = query[0, 35]
-
     indexed_records = index_klass.query(
       multi_match: {
           query: query,
           operator: 'and',
-          fields: %w[created_by account_id activity_date created_at activity_date account_name company inquiry_number contact_name purpose activity_type],
-          minimum_should_match: '100%'
+          fields: %w[created_by account_name company_name inquiry_number_string contact_name purpose activity_type],
       }
     )
 
@@ -39,8 +40,12 @@ class Services::Overseers::Finders::Activities < Services::Overseers::Finders::B
     end
 
 
-    if @base_filter.present?
-      indexed_records = indexed_records.filter(@base_filter)
+     if @base_filter.present?
+       indexed_records = indexed_records.filter(@base_filter)
+     end
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
     end
 
     indexed_records

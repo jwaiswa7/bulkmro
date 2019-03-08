@@ -12,7 +12,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def disable_billing_shipping_details?
-    record.persisted? && record.final_sales_quote.remote_uid.present?
+    record.persisted? && record.quotation_uid.present?
   end
 
   def smart_queue?

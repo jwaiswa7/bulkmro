@@ -29,7 +29,8 @@ class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Bui
                       position: 'left',
                       ticks: {
                           display: true,
-                          userCallback: ''
+                          userCallback: '',
+                          beginAtZero: true
                       },
                       scaleLabel: {
                           display: true,
