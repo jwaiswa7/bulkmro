@@ -3,7 +3,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
     :DocEntry
   end
 
-  def self.set_purchase_order_items(purchase_order_numbers)
+  def self.set_multiple_items(purchase_order_numbers)
     purchase_order_numbers.each do |purchase_order_number|
       remote_response = self.custom_find(purchase_order_number)
       if remote_response.present?

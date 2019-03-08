@@ -79,11 +79,17 @@ class PurchaseOrder < ApplicationRecord
 
   after_initialize :set_defaults, if: :new_record?
 
+  def self.by_number(number)
+    find_by_po_number(number)
+  end
+
+  def get_number
+    self.po_number
+  end
+
   def set_defaults
     self.material_status = 'Material Readiness Follow-Up'
   end
-
-
 
   def has_supplier?
     self.get_supplier(self.rows.first.metadata['PopProductId'].to_i).present?

@@ -1,9 +1,9 @@
-class Resources::Invoice < Resources::ApplicationResource
+class Resources::SalesInvoice < Resources::ApplicationResource
   def self.identifier
     :DocEntry
   end
 
-  def self.set_invoice_items(sales_invoice_numbers)
+  def self.set_multiple_items(sales_invoice_numbers)
     sales_invoice_numbers.each do |sales_invoice_number|
       remote_response = self.custom_find(sales_invoice_number)
       if remote_response.present?
@@ -76,6 +76,10 @@ class Resources::Invoice < Resources::ApplicationResource
         end if remote_rows.present? end
       end
     end
+  end
+
+  def self.model_name
+    'Invoice'
   end
 
   def self.custom_find(doc_num)
