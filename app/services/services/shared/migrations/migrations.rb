@@ -28,7 +28,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     elsif Rails.env.production?
       %w(inquiry_attachments)
     elsif Rails.env.development?
-      %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
+      %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories ruta)
     end
 
     PaperTrail.request(enabled: false) do
@@ -1401,6 +1401,145 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         end
       else
         puts "po request not available for #{purchase_order.po_number}"
+      end
+    end
+  end
+
+  def find_missing_po
+    file = "#{Rails.root}/tmp/missing_pos1.csv"
+    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_orders.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: ['missing_po_number','Inq no']) do |writer|
+      service.loop(nil) do |x|
+        purchase_order = PurchaseOrder.find_by_po_number(x.get_column('po_number'))
+
+        if !purchase_order.present?
+          writer << [x.get_column('po_number'), x.get_column('inquiry_number')]
+        end
+      end
+    end
+    file = "#{Rails.root}/tmp/missing_pos2.csv"
+    new_po_number = 100000000
+    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: ['missing_po_number', "metadata_po", "reason"]) do |writer|
+      service.loop(1) do |x|
+        purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
+        poNum = JSON.parse(x.get_column('meta_data'))['PoNum']
+        if poNum.scan(/\D/).empty?
+          right_po = PurchaseOrder.find_by_po_number(poNum)
+          if right_po.present?
+            if purchase_order.present? && (poNum != x.get_column('purchase_order_number'))
+              purchase_order.destroy
+              writer << [x.get_column('purchase_order_number'), poNum, 'with po_number #{x.get_column("purchase_order_number")} deleted sucessfully']
+            elsif !purchase_order.present?
+              writer << [x.get_column('purchase_order_number'), poNum, 'Nothing to do correct data']
+            else
+              writer << [x.get_column('purchase_order_number'), poNum, 'remaining']
+            end
+          else
+            if purchase_order.present?
+              # # Replace
+              # purchase_order.destroy
+              # response = update_purchase_order(x.get_column('metadata'))
+              # new_po_number =+ 1
+              # writer << [x.get_column('purchase_order_number'), poNum, 'meta data po created with reseponse #{response} and po_number with #{purchase_order.id} deleted.']
+            else
+              response = create_purchase_order(x.get_column('metadata'))
+              new_po_number =+ 1
+              writer << [x.get_column('purchase_order_number'), poNum, response]
+            end
+          end
+        else
+          if purchase_order.present?
+            # replace existing one
+            writer << [x.get_column('purchase_order_number'), poNum, 'meta data po number is alpha numeric and po_number present']
+          else
+            response = create_purchase_order(x.get_column('metadata'))
+            new_po_number =+ 1
+            writer << [x.get_column('purchase_order_number'), poNum, 'meta data po number is alpha numeric and po_number absent']
+          end
+        end
+      end
+    end
+  end
+
+  def ruta
+    new_po_number = 9999999
+    file = "#{Rails.root}/tmp/missing_pos2.csv"
+    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: ['missing_po_number', "metadata_po", "reason"]) do |writer|
+      service.loop(100) do |x|
+        purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
+        poNum = JSON.parse(x.get_column('meta_data'))['PoNum']
+        if poNum.scan(/\D/).empty?
+          right_po = PurchaseOrder.find_by_po_number(poNum)
+          if right_po.present?
+            if purchase_order.present? && (poNum != x.get_column('purchase_order_number'))
+              if !purchase_order.inquiry.present?
+                purchase_order.destroy
+                writer << [x.get_column('purchase_order_number'), poNum, "with po_number #{x.get_column('purchase_order_number')} deleted sucessfully"]
+              else
+                writer << [x.get_column('purchase_order_number'), poNum, "with po_number #{x.get_column('purchase_order_number')} have inquiry"]
+              end
+            elsif !purchase_order.present?
+              writer << [x.get_column('purchase_order_number'), poNum, 'Data is correct']
+            else
+              writer << [x.get_column('purchase_order_number'), poNum, 'Data is correct']
+            end
+          else
+            if purchase_order.present?
+              status = purchase_order.metadata['PoNum'] == poNum
+              if status
+                purchase_order.po_number = new_po_number
+                new_po_number = new_po_number+1
+                purchase_order.old_po_number = poNum
+                if purchase_order.valid?
+                  purchase_order.save
+                  writer << [x.get_column('purchase_order_number'), poNum, "purchase_order updated with new po_number #{new_po_number}"]
+                else
+                  writer << [x.get_column('purchase_order_number'), poNum, "error during creation of purchase_order  with new po_number #{new_po_number}, error => #{purchase_order.errors}"]
+                end
+              else
+                if !purchase_order.inquiry.present?
+                  purchase_order.delete
+                end
+                response = create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
+                new_po_number = new_po_number+1
+                writer << [x.get_column('purchase_order_number'), poNum, "Purchase order creation. status => #{response}"]
+              end
+            else
+              writer << [x.get_column('purchase_order_number'), poNum, "creating new po with #{x.get_column("purchase_order_number")}"]
+            end
+          end
+        else
+          if purchase_order.present?
+            status = purchase_order.metadata['PoNum'] == poNum
+            if status
+              purchase_order.po_number = new_po_number
+              new_po_number = new_po_number+1
+              purchase_order.old_po_number = poNum
+              p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+              p purchase_order.valid?
+              p new_po_number
+              if purchase_order.valid?
+                purchase_order.save
+                writer << [x.get_column('purchase_order_number'), poNum, "purchase_order updated with new po_number #{new_po_number}"]
+              else
+                writer << [x.get_column('purchase_order_number'), poNum, "error during creation of purchase_order  with new po_number #{new_po_number}, error => #{purchase_order.errors}"]
+              end
+            else
+              if !purchase_order.inquiry.present?
+                purchase_order.delete
+              end
+              create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
+              new_po_number = new_po_number+1
+              writer << [x.get_column('purchase_order_number'), poNum, "new purchase_order created with new po_number #{new_po_number}"]
+            end
+          else
+            create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
+            new_po_number = new_po_number+1
+            writer << [x.get_column('purchase_order_number'), poNum, "new purchase_order created with new po_number #{new_po_number}"]
+          end
+        end
       end
     end
   end
@@ -2894,104 +3033,153 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
 
 
-  def missing_sales_order_products
-    skus = []
-    service = Services::Shared::Spreadsheets::CsvImporter.new('Missing_Products.csv', 'seed_files')
-    service.loop(nil) do |x|
-      product = Product.find_by_sku(x.get_column('SKU'))
-      if !product.present?
-        brand = Brand.find_by_name(x.get_column('Brand')) || Brand.default
-        category = Category.find_by_name(x.get_column('Category')) || Category.default
-        measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM')) || MeasurementUnit.default
-        name = x.get_column('BULK MRO Description')
-        sku = x.get_column('SKU')
-        tax_code = TaxCode.find_by_chapter(x.get_column('HSN'))
-        tax_rate = TaxRate.first_or_create(tax_percentage: x.get_column('Tax Percentage'))
+    def missing_sales_order_products
+      skus = []
+      service = Services::Shared::Spreadsheets::CsvImporter.new('Missing_Products.csv', 'seed_files')
+      service.loop(nil) do |x|
+        product = Product.find_by_sku(x.get_column('SKU'))
+        if !product.present?
+          brand = Brand.find_by_name(x.get_column('Brand')) || Brand.default
+          category = Category.find_by_name(x.get_column('Category')) || Category.default
+          measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM')) || MeasurementUnit.default
+          name = x.get_column('BULK MRO Description')
+          sku = x.get_column('SKU')
+          tax_code = TaxCode.find_by_chapter(x.get_column('HSN'))
+          tax_rate = TaxRate.first_or_create(tax_percentage: x.get_column('Tax Percentage'))
 
-        next if Product.where(sku: sku).exists?
+          next if Product.where(sku: sku).exists?
 
-        product = Product.new
-        product.brand = brand
-        product.category = category
-        product.sku = sku || product.generate_sku
-        product.tax_code = tax_code || TaxCode.default
-        product.mpn = x.get_column('MPN')
-        product.description = x.get_column('BULK MRO Description')
-        product.name = name
-        product.is_service = false
-        product.is_active = true
-        product.measurement_unit = measurement_unit
-        product.legacy_metadata = x.get_row
-        product.save_and_sync
+          product = Product.new
+          product.brand = brand
+          product.category = category
+          product.sku = sku || product.generate_sku
+          product.tax_code = tax_code || TaxCode.default
+          product.mpn = x.get_column('MPN')
+          product.description = x.get_column('BULK MRO Description')
+          product.name = name
+          product.is_service = false
+          product.is_active = true
+          product.measurement_unit = measurement_unit
+          product.legacy_metadata = x.get_row
+          product.save_and_sync
 
-        product.create_approval(comment: product.comments.create!(overseer: Overseer.default, message: 'Product, being preapproved'), overseer: Overseer.default) if product.approval.blank?
-      end
-
-
-      skus.push product.sku
-    end
-
-    puts skus
-  end
-
-  def margin_miscalculation_sales_order_rows
-    service = Services::Shared::Spreadsheets::CsvImporter.new('margin_miscalculation_sales_order_rows.csv', 'seed_files')
-    service.loop(nil) do |x|
-      SalesOrderRow.find(x.get_column('Sales Order Row ID')).sales_quote_row.update_attribute(:margin_percentage,  x.get_column('Old Margin').to_f)
-    end
-  end
-
-
-  def resync_missing_supplier_details
-    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
-    service.loop(nil) do |x|
-      supplier = Company.find(x.get_column('Supplier id'))
-      if supplier.present?
-        if supplier.pan.blank?
-          pan = x.get_column('Supplier id')
-          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
-            supplier.update_attribute(:pan, pan)
-          else
-            supplier.update_attribute(:pan, 'PANNO1234O')
-          end
-        else
-          pan = supplier.pan
-          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
-            supplier.update_attribute(:pan, pan)
-          else
-            supplier.update_attribute(:pan, 'PANNO1234O')
-          end
+          product.create_approval(comment: product.comments.create!(overseer: Overseer.default, message: 'Product, being preapproved'), overseer: Overseer.default) if product.approval.blank?
         end
-        supplier.save!
+
+
+        skus.push product.sku
+      end
+
+      puts skus
+    end
+
+    def margin_miscalculation_sales_order_rows
+      service = Services::Shared::Spreadsheets::CsvImporter.new('margin_miscalculation_sales_order_rows.csv', 'seed_files')
+      service.loop(nil) do |x|
+        SalesOrderRow.find(x.get_column('Sales Order Row ID')).sales_quote_row.update_attribute(:margin_percentage,  x.get_column('Old Margin').to_f)
       end
     end
 
-  end
 
-  def fix_missing_supplier_contacts
-    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
-    service.loop(nil) do |x|
-      supplier = Company.find(x.get_column('Supplier id'))
-      if supplier.present?
-        if supplier.pan.blank?
-          pan = x.get_column('Supplier id')
-          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
-            supplier.update_attribute(:pan, pan)
+    def resync_missing_supplier_details
+      service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
+      service.loop(nil) do |x|
+        supplier = Company.find(x.get_column('Supplier id'))
+        if supplier.present?
+          if supplier.pan.blank?
+            pan = x.get_column('Supplier id')
+            if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+              supplier.update_attribute(:pan, pan)
+            else
+              supplier.update_attribute(:pan, 'PANNO1234O')
+            end
           else
-            supplier.update_attribute(:pan, 'PANNO1234O')
+            pan = supplier.pan
+            if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+              supplier.update_attribute(:pan, pan)
+            else
+              supplier.update_attribute(:pan, 'PANNO1234O')
+            end
           end
-        else
-          pan = supplier.pan
-          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
-            supplier.update_attribute(:pan, pan)
-          else
-            supplier.update_attribute(:pan, 'PANNO1234O')
-          end
+          supplier.save!
         end
-        supplier.save!
+      end
+
+    end
+
+    def fix_missing_supplier_contacts
+      service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
+      service.loop(nil) do |x|
+        supplier = Company.find(x.get_column('Supplier id'))
+        if supplier.present?
+          if supplier.pan.blank?
+            pan = x.get_column('Supplier id')
+            if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+              supplier.update_attribute(:pan, pan)
+            else
+              supplier.update_attribute(:pan, 'PANNO1234O')
+            end
+          else
+            pan = supplier.pan
+            if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+              supplier.update_attribute(:pan, pan)
+            else
+              supplier.update_attribute(:pan, 'PANNO1234O')
+            end
+          end
+          supplier.save!
+        end
+      end
+
+    end
+
+    def create_purchase_order(metadata, new_po_number = nil)
+      inquiry = Inquiry.find_by_inquiry_number(metadata['PoEnquiryId'])
+      payment_option = PaymentOption.find_by_name(metadata['PoPaymentTerms'].to_s.strip)
+      begin
+        if metadata['PoNum'].present? && !PurchaseOrder.find_by_po_number(metadata['PoNum']).present?
+          purchase_orders = nil
+          if new_po_number.present?
+            purchase_orders = inquiry.purchase_orders.where(po_number: new_po_number).first_or_create!
+          else
+            purchase_orders = inquiry.purchase_orders.where(po_number: params['PoNum']).first_or_create!
+          end
+          purchase_orders do |purchase_order|
+            purchase_order.assign_attributes(metadata: metadata)
+            purchase_order.assign_attributes(material_status: 'Material Readiness Follow-Up')
+            purchase_order.assign_attributes(logistics_owner: Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(purchase_order).call)
+            if metadata['PoStatus'].to_i > 0
+              purchase_order.assign_attributes(status: metadata['PoStatus'].to_i)
+            else
+              purchase_order.assign_attributes(status: PurchaseOrder.statuses[metadata['PoStatus']])
+            end
+            if payment_option.present?
+              purchase_order.assign_attributes(payment_option: payment_option)
+            end
+            metadata['ItemLine'].each do |remote_row|
+              purchase_order.rows.build do |row|
+                row.assign_attributes(
+                    metadata: remote_row
+                )
+              end
+            end
+          end
+          return_response('Purchase Order created successfully.')
+        end
+      rescue => e
+        return_response(e.message, 0)
       end
     end
 
+
+  def return_response(message, status=1)
+    response = { success: status, status: status, message: message }
+    @callback_request.update(
+        response: response.to_json,
+        status: self.to_callback_status(status),
+        hits: @callback_request.hits.to_i + 1,
+        ) if @callback_request.present?
+    response
   end
 
 end
