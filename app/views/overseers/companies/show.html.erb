@@ -4,7 +4,7 @@
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
         <a href="<%= overseers_account_path(@company.account) %>"><img src="https://ui-avatars.com/api/?size=128&name=<%= @company.account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/></a><%= @company.name %>
-        &nbsp;<%= format_star(@company.rating) if @company.rating.present? %>
+        &nbsp;<%= format_star(@company.rating) if @company.rating.present? && @company.rating > 0 %>
       </h3>
 
       <% if policy(@company).edit? %>
