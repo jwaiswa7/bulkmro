@@ -41,6 +41,7 @@ class Contact < ApplicationRecord
   validates_presence_of :mobile, if: -> { !self.telephone.present? && not_legacy? }
   scope :with_includes, -> { includes(:account, :inquiries) }
   after_initialize :set_defaults, if: :new_record?
+  attr_accessor :current_password
 
   def set_defaults
     self.role ||= :customer

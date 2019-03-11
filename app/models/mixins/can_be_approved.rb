@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mixins::CanBeApproved
   extend ActiveSupport::Concern
 
@@ -8,7 +10,7 @@ module Mixins::CanBeApproved
     scope :not_approved, -> { left_outer_joins(:approval).where([self.class.to_s.split('::')[0].underscore.downcase, 'approvals'].join('_') => { id: nil }) }
 
     def approved?
-      self.approval.present?
+      approval.present?
     end
 
     def not_approved?

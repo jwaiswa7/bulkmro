@@ -2,11 +2,12 @@ class SalesOrdersIndex < BaseIndex
   statuses = SalesOrder.statuses
   legacy_request_statuses = SalesOrder.legacy_request_statuses
   remote_statuses = SalesOrder.remote_statuses
+  effective_statuses = SalesOrder.effective_statuses
 
   define_type SalesOrder.all.with_includes do
     witchcraft!
     field :id, type: 'integer'
-    field :order_number, value: -> (record) { record.order_number.to_s }, analyzer: 'substring'
+    field :order_number, value: -> (record) { record.order_number }, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
@@ -17,7 +18,7 @@ class SalesOrdersIndex < BaseIndex
     field :legacy_status, value: -> (record) { record.legacy? ? 'legacy' : 'not_legacy' }
     field :remote_status_string, value: -> (record) { record.remote_status.to_s }, analyzer: 'substring'
     field :remote_status, value: -> (record) { remote_statuses[record.remote_status] }, type: 'integer'
-    field :quote_total, value: -> (record) { record.sales_quote.calculated_total.to_i if record.sales_quote.present? && record.sales_quote.calculated_total.present? }
+    field :quote_total, value: -> (record) { record.sales_quote.calculated_total.to_i if record.sales_quote.present? && record.sales_quote.calculated_total.present? }, type: 'float'
     field :order_total, value: -> (record) { record.calculated_total.to_i if record.rows.present? && record.calculated_total.present? }
     field :customer_po_number, value: -> (record) { record.inquiry.customer_po_number if record.inquiry.present? }
     field :customer_po_number_string, value: -> (record) { record.inquiry.customer_po_number.to_s if record.inquiry.present? }, analyzer: 'substring'
@@ -39,6 +40,7 @@ class SalesOrdersIndex < BaseIndex
     field :created_by_id
     field :updated_by_id, value: -> (record) { record.updated_by.to_s }, analyzer: 'substring'
     field :cp_status_s, value: -> (record) { record.effective_customer_status.to_s }, analyzer: 'substring'
+    field :cp_status, value: -> (record) { effective_statuses[record.effective_customer_status] }, type: 'integer'
     field :cp_order_date_s, value: -> (record) { record.inquiry.customer_order_date.strftime('%d-%b-%Y').to_s if record.inquiry.customer_order_date.present? }, analyzer: 'substring'
     field :cp_committed_date_s, value: -> (record) { record.inquiry.customer_committed_date.strftime('%d-%b-%Y').to_s if record.inquiry.customer_committed_date.present? }, analyzer: 'substring'
     field :cp_created_at_s, value: -> (record) { record.created_at.strftime('%d-%b-%Y').to_s if record.created_at.present? }, analyzer: 'substring'
@@ -46,6 +48,7 @@ class SalesOrdersIndex < BaseIndex
     field :cp_quote_id_s, value: -> (record) { record.id.to_s if record.id.present? }, analyzer: 'substring'
     field :cp_subject_s, value: -> (record) { record.inquiry.subject.to_s if record.inquiry.subject.present? }, analyzer: 'substring'
     field :cp_ship_to_s, value: -> (record) { record.inquiry.shipping_contact.try(:name) || record.inquiry.billing_contact.try(:name) }, analyzer: 'substring'
+    field :cp_ship_to, value: -> (record) { record.inquiry.shipping_contact_id || record.inquiry.contact_id }, type: 'integer'
     field :cp_company_s, value: -> (record) { record.inquiry.company.name.to_s if record.inquiry.company.name.present? }, analyzer: 'substring'
     field :cp_contact_email_s, value: -> (record) { record.inquiry.contact.email.to_s if record.inquiry.contact.email.present? }, analyzer: 'substring'
     field :cp_billing_city_s, value: -> (record) { record.inquiry.billing_address.city_name.to_s if record.inquiry.billing_address.present? }, analyzer: 'substring'

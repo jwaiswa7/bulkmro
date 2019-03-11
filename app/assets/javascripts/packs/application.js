@@ -17,14 +17,18 @@ import notify from "./components/notify";
 import stepRoundUp from "./components/stepRoundUp";
 import dropdowns from "./components/dropdownSubmenus";
 import chartjs from "./components/chartjs";
-import lazyLoadImages from "./components/lazyLoadImages"
 import highlightjs from "./components/highlightjs";
+import lazyLoadImages from "./components/lazyLoadImages";
 import tableHighlightWholly from "./components/tableHighlightWholly";
+import hasher from "./components/hasher";
+import notifications from "./components/notifications";
+
 // Namespacing all imports under app
 let app = {};
 
 // Initaialize all components
 app.initializeComponents = () => {
+    hasher();
     customFileInputs();
     select2s();
     alertsAutohide();
@@ -45,6 +49,7 @@ app.initializeComponents = () => {
     lazyLoadImages();
     highlightjs();
     tableHighlightWholly();
+    notifications();
 };
 
 // Turbolinks load event

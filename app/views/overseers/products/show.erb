@@ -1,26 +1,20 @@
-<div class="col-lg-12">
+<div class="col-lg-12 XYZ">
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
-      <div class="col-6">
-        <h3 class="display-5 d-flex align-items-center">
-          <%= @product.name %>
-        </h3>
-      </div>
-      <div class="col-2">
+      <h3 class="display-5 d-flex align-items-center">
+        <%= @product.name %>
+      </h3>
+      <div>
         <% if @product.is_kit %>
-          <a href="<%= overseers_kit_path(@product.kit) %>" class="btn btn-info btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-eye mr-1"></i>View
+          <a href="<%= overseers_kit_path(@product.kit) %>" class="btn btn-info btn-rounded align-self-center btn-block-sm-down mr-1"><i class="fal fa-eye mr-1"></i>View
             Kit</a>
         <% end %>
-      </div>
-      <div class="col-2">
         <% if policy(@product).edit? %>
-          <a href="<%= edit_overseers_product_path(@product) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+          <a href="<%= edit_overseers_product_path(@product) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down mr-1 mt-1 mt-md-0"><i class="fal fa-pen mr-1"></i>Edit
             Product</a>
         <% end %>
-      </div>
-      <div class="col-2">
         <% if policy(@product).resync_inventory? %>
-          <a href="<%= resync_inventory_overseers_product_path(@product) %>" class="btn btn-primary btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Resync
+          <a href="<%= resync_inventory_overseers_product_path(@product) %>" class="btn btn-primary btn-rounded align-self-center btn-block-sm-down mt-1 mt-md-0"><i class="fal fa-pen mr-1"></i>Resync
             Inventory</a>
         <% end %>
       </div>
@@ -74,7 +68,7 @@
 
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Service?</strong>
+              <strong class="d-block">Service</strong>
               <%= format_boolean(@product.is_service) %>
             </div>
 
@@ -129,18 +123,18 @@
           <div class="modal-dialog modal-lg">
             <!-- Modal content-->
             <div class="modal-content">
-              <div class="modal-header">
+              <div class="modal-header pb-0">
                 <h4 class="modal-title">Product Inventory</h4>
               </div>
-              <div class="modal-body">
-                <table class="table table-bordered dt-responsive" style="width:100%;">
+              <div class="modal-body py-0 px-2">
+                <table class="table table-bordered dt-responsive datatable w-100" data-sort="false">
                   <thead>
                   <tr>
                     <th class="no-sort">Warehouse</th>
-                    <th class="no-sort">In Stock</th>
-                    <th class="no-sort">Committed</th>
-                    <th class="no-sort">Ordered</th>
-                    <th class="no-sort">Available</th>
+                    <th class="no-sort text-right">In Stock</th>
+                    <th class="no-sort text-right">Committed</th>
+                    <th class="no-sort text-right">Ordered</th>
+                    <th class="no-sort text-right">Available</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -157,7 +151,7 @@
                 </table>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-danger btn-block" data-dismiss="modal">Close</button>
               </div>
             </div>
           </div>
@@ -174,13 +168,14 @@
       History searchable with relevant term/keywords under <strong><%= @product.name %></strong>.
     </p>
 
-    <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;">
+    <table class="datatable table table-bordered dt-responsive abc" data-search="Enter search term/keywords" style="width:100%;">
       <thead>
       <tr>
         <th class="no-sort"></th>
         <th class="no-sort">Inquiry #</th>
         <th class="no-sort">Buyer</th>
         <th class="no-sort">Seller</th>
+        <th class="no-sort">Rating</th>
         <th class="no-sort">Buying Price</th>
         <th class="no-sort">Selling Price</th>
         <th class="no-sort">Inquiry Date</th>
@@ -199,12 +194,16 @@
             <td><%= inquiry_product.inquiry.inquiry_number %></td>
             <td data-toggle="tooltip" title="(<%= inquiry_product.inquiry.company.account.alias %>) <%= inquiry_product.inquiry.company.account.name %>">(<%= inquiry_product.inquiry.company.account.alias %>
               ) <%= inquiry_product.inquiry.company.account.name.truncate(25) %></td>
+
             <td data-toggle="tooltip" title="(<%= inquiry_product_supplier.supplier.account.alias %>) <%= inquiry_product_supplier.supplier.name %>">(<%= inquiry_product_supplier.supplier.account.alias %>
               ) <%= inquiry_product_supplier.supplier.name.truncate(25) %></td>
+            <td>
+              <%= format_star(inquiry_product_supplier.supplier.rating) %>
+            </td>
             <td><%= format_currency(inquiry_product_supplier.try(:unit_cost_price)) %></td>
             <td><%= format_currency(inquiry_product_supplier.final_sales_quote_row.try(:unit_selling_price)) %></td>
-            <td><%= format_date(inquiry_product.inquiry.quotation_date) %></td>
-            <td><%= format_date(inquiry_product.final_sales_order.try(:sent_at)) %></td>
+            <td><%= format_succinct_date(inquiry_product.inquiry.quotation_date) %></td>
+            <td><%= format_succinct_date(inquiry_product.final_sales_order.try(:sent_at)) %></td>
           </tr>
         <% end %>
         </tbody>
@@ -212,3 +211,4 @@
     </table>
   <% end %>
 </div>
+

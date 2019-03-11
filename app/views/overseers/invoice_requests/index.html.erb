@@ -2,13 +2,19 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+<% if @completed %>
+  <div class="col-lg-12">
+    <%= render partial: "overseers/sales_invoices/pod_summary" %>
+  </div>
+<% end %>
+
 <div class="col-lg-12">
   <%= render partial: "shared/layouts/summary", locals: {klass: InvoiceRequest, statuses: InvoiceRequest.statuses} %>
 </div>
 
 <% content_for :heading do %>
   Invoice Requests
-  <% if @status .present? %>
+  <% if @status.present? %>
     <%= ": #{@status}" %>
   <% end %>
 <% end %>
@@ -28,7 +34,7 @@
   <th class="no-sort desktop text-right">Inquiry #</th>
   <th class="no-sort all text-right">Order #</th>
   <th class="no-sort all text-right">PO Number #</th>
-  <th class="no-sort all">Inside Sales</th>
+  <th class="no-sort all" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
   <th class="sort desktop text-right" data-name="created_at">Requested At</th>
   <th class="no-sort desktop text-right">Updated At</th>
   <th class="no-sort desktop">Latest Comment</th>

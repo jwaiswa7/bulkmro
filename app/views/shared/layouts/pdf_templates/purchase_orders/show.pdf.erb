@@ -4,18 +4,17 @@
       <div class="col-main">
         <div id="compare-wrapper">
           <div class="compare_open" id="compare_popup"></div>
-
           <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
             <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
           </div>
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-            <b><span style="color:#000; font-size: 30px">Purchase Order #<%= @metadata[:PoNum] %></span></b>
+            <b><span style="color:#000; font-size: 30px">Purchase Order #<%= locals[:metadata][:PoNum] %></span></b>
           </div>
           <br clear="all">
           <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record %>
           <br clear="all">
           <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-            <span><b>Purchase Order #<%= @metadata[:PoNum] %></b></span>
+            <span><b>Purchase Order #<%= locals[:metadata][:PoNum] %></b></span>
           </div>
           <br clear="all">
           <div style="border:1px solid; border-radius: 5px;">
@@ -25,12 +24,12 @@
                 <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;" valign="top">
                   <b><span>Bulk MRO Reference #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                  <span><%= @metadata[:PoEnquiryId] %></span></td>
+                  <span><%= locals[:metadata][:PoEnquiryId] %></span></td>
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                   <b><span>Date of Quotation</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
                     <span>
-                      <%= Date.parse(@metadata[:PoDate]).strftime("%d-%b-%Y") if @metadata[:PoDate].present? %>
+                      <%= Date.parse(locals[:metadata][:PoDate]).strftime("%d-%b-%Y") if locals[:metadata][:PoDate].present? %>
                     </span>
                 </td>
               </tr>
@@ -52,32 +51,32 @@
                   <b><span>Committed Delivery Date</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <span>
-                      <%= Date.parse(@metadata[:PoSupplyDate]).strftime("%d-%b-%Y") if @metadata[:PoSupplyDate].present? %>
+                      <%= Date.parse(locals[:metadata][:PoSupplyDate]).strftime("%d-%b-%Y") if locals[:metadata][:PoSupplyDate].present? %>
                     </span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span>Freight</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span><%= @metadata[:PoFreight] %></span></td>
+                  <span><%= locals[:metadata][:PoFreight] %></span></td>
               </tr>
               <tr>
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span>Packing & Forwarding</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span><%= @metadata[:packing] %></span></td>
+                  <span><%= locals[:metadata][:packing] %></span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span>Mode of Transport</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span><%= @metadata[:PoModeOfTrasport] %></span></td>
+                  <span><%= locals[:metadata][:PoModeOfTrasport] %></span></td>
               </tr>
               <tr>
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span>Delivery Terms </span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span><%= @metadata[:PoDeliveryTerms] %></span></td>
+                  <span><%= locals[:metadata][:PoDeliveryTerms] %></span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span>Payment Terms</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span><%= @metadata[:PoPaymentTerms] %></span></td>
+                  <span><%= record.payment_option.to_s %></span></td>
               </tr>
               </tbody>
             </table>
@@ -99,24 +98,24 @@
               <tr>
                 <td style="" class="address-section-holder">
                   <div style="" class="address-wrapper address-wrapper-left">
-                    <% if @supplier.present? %>
-                      <%= @supplier.name if @supplier.name.present? %><br>
-                      <%= @supplier.billing_address.to_multiline_s if @supplier.billing_address.present? %>
+                    <% if locals[:supplier].present? %>
+                      <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
+                      <%= record.billing_address&.to_multiline_s %>
                       <br>
-                      Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
-                      GST No. : <%= @supplier.billing_address.try(:gst) %><br>
+                      Tel: <%= locals[:supplier].telephone if locals[:supplier].telephone.present? %><br>
+                      GST No. : <%= locals[:supplier].billing_address.try(:gst) %><br>
                     <% end %>
                   </div>
                 </td>
                 <td class="address-section-gap"></td>
                 <td class="address-section-holder">
                   <div class="address-wrapper address-wrapper-right">
-                    <% if @supplier.present? %>
-                      <%= @supplier.name if @supplier.name.present? %><br>
-                      <%= @supplier.shipping_address.to_multiline_s if @supplier.shipping_address.present?%>
+                    <% if locals[:supplier].present? %>
+                      <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
+                      <%= record.shipping_address&.to_multiline_s %>
                       <br>
-                      Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
-                      GST No. : <%= @supplier.shipping_address.try(:gst) %><br>
+                      Tel: <%= locals[:supplier].telephone if locals[:supplier].telephone.present? %><br>
+                      GST No. : <%= locals[:supplier].shipping_address.try(:gst) %><br>
                     <% end %>
                   </div>
                 </td>
@@ -142,10 +141,10 @@
                 <td style="" class="address-section-holder">
                   <div style="" class="address-wrapper address-wrapper-left">
                     <span>
-                      <%= (@inquiry.bill_from.address.name.to_s + '<br>').html_safe if @inquiry.bill_from.address.name.present? %>
-                      <% if @inquiry.bill_from.present? %>
-                        <%= @inquiry.bill_from.address.to_multiline_s %><br>
-                        GST No. : <%= @inquiry.bill_from.address.gst %><br>
+                      <%= (locals[:inquiry].bill_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].bill_from.address.name.present? %>
+                      <% if locals[:inquiry].bill_from.present? %>
+                        <%= locals[:inquiry].bill_from.address.to_multiline_s %><br>
+                        GST No. : <%= locals[:inquiry].bill_from.address.gst %><br>
                       <% end %>
                       PAN No. : AAGCB7343G</span>
                   </div>
@@ -154,10 +153,10 @@
                 <td class="address-section-holder">
                   <div class="address-wrapper address-wrapper-right">
                     <span>
-                      <%= (@inquiry.ship_from.address.name.to_s + '<br>').html_safe if @inquiry.ship_from.address.name.present? %>
-                      <% if @inquiry.ship_from.present? %>
-                        <%= @inquiry.ship_from.address.to_multiline_s %><br>
-                        GST No. : <%= @inquiry.ship_from.address.gst %><br>
+                      <%= (locals[:inquiry].ship_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].ship_from.address.name.present? %>
+                      <% if locals[:inquiry].ship_from.present? %>
+                        <%= locals[:inquiry].ship_from.address.to_multiline_s %><br>
+                        GST No. : <%= locals[:inquiry].ship_from.address.gst %><br>
                       <% end %>
                       PAN No. : AAGCB7343G</span>
                   </div>
@@ -200,7 +199,7 @@
                 <th align="center" valign="center">
                   <b><span>Tax<br>
                     Rate</span></b></th>
-                <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
+                <% if locals[:metadata][:PoTaxRate].to_s.include? "IG" %>
                   <th align="center" valign="center">
                     <b><span>IGST<br>
                     Rate</span></b></th>
@@ -228,7 +227,7 @@
               </tr>
               </thead>
               <tbody>
-              <% @purchase_order.rows.each_with_index do |item, index| %>
+              <% locals[:purchase_order].rows.each_with_index do |item, index| %>
                 <tr>
                   <td align="center" valign="top">
                     <span><%= index + 1 %></span></td>
@@ -252,23 +251,27 @@
                     <span><%= number_to_currency(item.total_selling_price, precision: 2, unit: '') %></span></td>
                   <td align="center" valign="top">
                     <span><%= item.tax_rate.round(0) %>%</span></td>
-                  <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
+                  <% if locals[:metadata][:PoTaxRate].to_s.include? "IG" %>
                     <td align="center" valign="top">
                       <span><%= item.tax_rate.round(0) %>%</span></td>
                     <td align="right" valign="top">
                       <span><%= number_to_currency(item.total_tax, precision: 2, unit: '') %></span></td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
+                      <span><%= number_to_currency((item.tax_rate.to_f / 2), precision: 2, unit: '') %>%</span>
+                    </td>
                     <td align="right" valign="top">
                       <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %></span></td>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
+                      <span><%= number_to_currency((item.tax_rate.to_f / 2), precision: 2, unit: '') %>%</span>
+                    </td>
                     <td align="center" valign="top">
-                      <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %><br></span></td>
+                      <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %><br></span>
+                    </td>
                   <% end %>
                   <td align="right" valign="top">
-                    <span><%= number_to_currency(item.total_selling_price_with_tax, precision: 2, unit: '') %></span></td>
+                    <span><%= number_to_currency(item.total_selling_price_with_tax, precision: 2, unit: '') %></span>
+                  </td>
                 </tr>
               <% end %>
 
@@ -292,24 +295,29 @@
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="right" valign="top">
-                  <b><span><%= number_to_currency(@purchase_order.calculated_total, precision: 2, unit: '') %></span></b></td>
+                  <b><span><%= number_to_currency(locals[:purchase_order].calculated_total, precision: 2, unit: '') %></span></b>
+                </td>
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="center" valign="top">
                   <span></span></td>
-                <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
+                <% if locals[:metadata][:PoTaxRate].to_s.include? "IG" %>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency(@purchase_order.calculated_total_tax, precision: 2, unit: '') %></span></b></td>
+                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax, precision: 2, unit: '') %></span></b>
+                  </td>
                 <% else %>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency(@purchase_order.calculated_total_tax / 2, precision: 2, unit: '') %></span></b></td>
+                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b>
+                  </td>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency(@purchase_order.calculated_total_tax / 2, precision: 2, unit: '') %></span></b></td>
+                    <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax / 2, precision: 2, unit: '') %></span></b>
+                  </td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= number_to_currency(@purchase_order.calculated_total_with_tax, precision: 2, unit: '') %></span></b></td>
+                  <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_with_tax, precision: 2, unit: '') %></span></b>
+                </td>
               </tr>
 
               </tbody>
@@ -374,11 +382,11 @@
                 </tr>
                 <tr>
                   <td align="left" style=" padding-left: 10px;" valign="top"><span>
-                      <% if @inquiry.bill_from.present? && @inquiry.bill_from.legacy_id == 12 %>
-                      1. Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= @metadata[:PoNum] %>
+                      <% if locals[:inquiry].bill_from.present? && locals[:inquiry].bill_from.legacy_id == 12 %>
+                      1. Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= locals[:metadata][:PoNum] %>
                       when shipping goods.
                         <% else %>
-                      1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= @metadata[:PoNum] %>
+                      1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= locals[:metadata][:PoNum] %>
                       when shipping goods.
                       <% end %>
 
@@ -396,7 +404,7 @@
                 </tr>
                 <tr>
                   <td align="left" style=" padding-left: 10px;" valign="top"><span>
-                  <%= simple_format @inquiry.commercial_terms_and_conditions %>
+                  <%= simple_format locals[:inquiry].commercial_terms_and_conditions %>
                         </span></td>
                 </tr>
 

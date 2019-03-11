@@ -1,4 +1,6 @@
 class Overseers::Products::CommentsController < Overseers::Products::BaseController
+  before_action :set_notification, only: [:create]
+
   def index
     @comments = @product.comments.earliest
     @new_comment = @product.comments.build
@@ -12,6 +14,13 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
     if @comment.save!
       callback_method = %w(approve reject merge).detect { |action| params[action] }
       send(callback_method) if callback_method.present? && policy(@product).send([callback_method, '?'].join)
+      @notification.send_product_comment(
+        InquiryImport.find(@product.inquiry_import_row.inquiry_import_id).created_by,
+          action_name.to_sym,
+          @product,
+          overseers_product_comments_path(@product),
+          callback_method, @product.to_s, @comment.message
+      )
 
       redirect_to overseers_product_comments_path(@product), notice: flash_message(@comment, action_name)
     else

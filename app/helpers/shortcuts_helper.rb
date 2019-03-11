@@ -42,8 +42,14 @@ module ShortcutsHelper
       else
         crumbs << (content_tag :li, class: 'breadcrumb-item' do
           begin
-            if recognize_path(path_so_far)
-              link_to name, path_so_far
+            route = recognize_path(path_so_far)
+            if route
+              file_path = File.join('app/views/', "#{route[:controller]}/#{route[:action]}.html.erb")
+              if File.exist?(file_path)
+                link_to name, path_so_far
+              else
+                name
+              end
             end
           rescue ActionController::RoutingError => e
             name
@@ -56,16 +62,14 @@ module ShortcutsHelper
   end
 
   def submit_text(obj, use_alias: nil, suffix: nil)
-    class_name = use_alias ? use_alias.humanize : obj.class.name
-    text = class_name.titlecase.split('_').join(' ')
+    class_name = use_alias ? use_alias.humanize : obj.class.model_name.human
+    if suffix.blank?
+      suffix = ''
+    end
     if obj.new_record?
-      "Create #{text}"
+      "Create #{class_name.titleize} #{suffix.humanize}"
     else
-      if suffix.present?
-        "Update #{text} #{suffix.humanize}"
-      else
-        "Update #{text}"
-      end
+      "Update #{class_name.titleize} #{suffix.humanize}"
     end
   end
 

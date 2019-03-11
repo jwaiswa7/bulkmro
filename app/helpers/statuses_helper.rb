@@ -33,6 +33,16 @@ module StatusesHelper
       'color-grey'
     when :'Cancelled'
       'color-grey'
+    when :'Material Readiness Follow-Up'
+      'color-light-blue'
+    when :'Material Pickedup'
+      'color-yellow'
+    when :'Material Partially Pickedup'
+      'color-light-yellow'
+    when :'Material Delivered'
+      'success'
+    when :'Material Partially Delivered'
+      'color-light-green'
 
     # defaults
     when :'Lead by O/S'
@@ -173,6 +183,10 @@ module StatusesHelper
       'info'
     when :'captured'
       'success'
+    when :'Supplier PO Sent'
+      'success'
+    when :'Supplier PO: Not Sent to Supplier'
+      'danger'
     else
       'danger'
     end
@@ -203,5 +217,19 @@ module StatusesHelper
 
   def status_badge(status)
     format_badge(status, status_color(status)) if status
+  end
+
+  def due_badge(due_in_days, text)
+    if due_in_days == 0
+      format_badge(text, 'color-red')
+    elsif due_in_days < 0
+      format_badge(text, 'danger')
+    elsif due_in_days <= 2
+      format_badge(text, 'color-yellow')
+    elsif due_in_days <= 5
+      format_badge(text, 'color-dark-blue')
+    else
+      format_badge(text, 'color-dark-green')
+    end
   end
 end

@@ -3,16 +3,20 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
 
   def index
     payment_requests =
-        if params[:status].present?
-          @status = params[:status]
-          PaymentRequest.where(status: params[:status])
+        if params[:status].present? || params[:owner].present?
+          @param = params[:status] || params[:owner]
+          if PaymentRequest.send(:valid_scope_name?, @param)
+            PaymentRequest.send(@param)
+          else
+            PaymentRequest.where(status: @param)
+          end
         else
           PaymentRequest.all
-        end.order(id: :desc)
+        end
 
-    @payment_requests = ApplyDatatableParams.to(payment_requests, params, paginate: false)
+    @payment_requests = ApplyDatatableParams.to(payment_requests.order(updated_at: :desc), params)
     authorize @payment_requests
-    @statuses = @payment_requests.pluck(:status)
+    @statuses = payment_requests.group(:status).count
   end
 
   def show

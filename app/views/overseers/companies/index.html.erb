@@ -5,20 +5,23 @@
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort all" data-name="name">Name</th>
+  <th class="no-sort all" data-name="account_id">Account</th>
   <th class="sort desktop text-right" data-name="addresses">Addresses</th>
   <th class="sort desktop text-right" data-name="contacts">Contacts</th>
   <th class="sort desktop text-right" data-name="inquiries">Inquiries</th>
-  <th class="no-sort text-right">PAN</th>
-  <th class="no-sort text-right" data-name="is_pan_valid">Valid PAN</th>
+  <th class="no-sort desktop text-right">PAN</th>
+  <th class="no-sort desktop text-right" data-name="is_pan_valid">Valid PAN</th>
+  <th class="no-sort all">Rating</th>
   <th class="no-sort desktop text-right" data-name="is_supplier">Is Supplier</th>
   <th class="no-sort desktop text-right " data-name="is_customer">Is Customer</th>
-  <th class="no-sort desktop">SAP Status</th>
+  <th class="no-sort desktop text-right">SAP Status</th>
   <th class="desktop text-right" data-name="created_at">Created</th>
 <% end %>
 
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
+  <td data-filter="ajax"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
@@ -28,9 +31,12 @@
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
+  <td data-filter="false"></td>
 <% end %>
-
+<!--required for render review form-->
+<!--<div class="modal-render"></div>-->
 <div class="col-lg-12">
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>
+

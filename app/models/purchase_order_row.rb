@@ -1,5 +1,6 @@
 class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order
+  has_many :mpr_rows
 
   after_create :increase_product_count
   before_destroy :decrease_product_count
@@ -28,7 +29,11 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def tax_rate
-    self.metadata['PopTaxRate'].gsub(/\D/, '').to_f
+    if self.metadata['PopTaxRate'] == 'IMP@18'
+      0.0
+    else
+      self.metadata['PopTaxRate'].gsub(/\D/, '').to_f
+    end
   end
 
   def applicable_tax_percentage
@@ -66,5 +71,25 @@ class PurchaseOrderRow < ApplicationRecord
 
   def get_product
     Product.where(legacy_id: self.metadata['PopProductId'].to_i).or(Product.where(id: Product.decode_id(self.metadata['PopProductId']))).try(:first)
+  end
+
+
+  def lead_date
+    po_request = self.purchase_order.po_request
+    if po_request.present?
+      po_request_rows = po_request.rows
+      return false if po_request_rows.blank? || get_product.nil?
+      po_request_rows.select { |por_row| por_row.sales_order_row.product == get_product if por_row.sales_order_row }.first.try(:lead_time)
+    else
+      return false
+    end
+  end
+
+  def get_pickup_quantity
+    self.quantity - self.mpr_rows.sum(&:reserved_quantity)
+  end
+
+  def to_s
+    "#{sku ? "#{sku} -" : ''} #{metadata['PopProductName']}"
   end
 end
