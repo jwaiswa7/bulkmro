@@ -24,5 +24,6 @@ service.call
 service = Services::Shared::Migrations::Migrations.new(%w(missing_sales_order_products), folder: 'seed_files')
 service.call
 
-service = Services::Shared::Migrations::Migrations.new(%w(ruta), folder: 'seed_files')
+service = Services::Shared::Migrations::Migrations.new(%w(update_purchase_orders), folder: 'seed_files')
 service.call
+
