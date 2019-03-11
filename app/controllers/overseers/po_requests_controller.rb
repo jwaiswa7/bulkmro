@@ -1,6 +1,7 @@
 class Overseers::PoRequestsController < Overseers::BaseController
-  before_action :set_po_request, only: [:show, :edit, :update]
+  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form]
   before_action :set_notification, only: [:update]
+
   def pending_and_rejected
     @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.pending_and_rejected.order(id: :desc)), params)
     authorize @po_requests
@@ -132,6 +133,25 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
+  def cancel_porequest
+    @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
+    authorize @po_request
+    if @po_request.valid?
+      service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer, action_name)
+      service.call
+      render json: {success: 1, message: 'Successfully updated '}, status: 200
+    else
+      render json: {success: 0, message: 'Cannot cancel this PO Request.'}, status: 200
+    end
+  end
+
+  def render_cancellation_form
+    authorize @po_request
+    respond_to do |format|
+      format.html {render :partial => "cancel_porequest", locals: {status: params[:status]}}
+    end
+  end
+
   def pending_stock_approval
     @po_requests = ApplyDatatableParams.to(PoRequest.all.pending_stock_po.order(id: :desc), params)
     authorize @po_requests
@@ -164,8 +184,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   private
 
-    def po_request_params
-      params.require(:po_request).permit(
+  def po_request_params
+    params.require(:po_request).permit(
         :id,
         :inquiry_id,
         :sales_order_id,
@@ -194,7 +214,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     )
   end
 
-    def set_po_request
-      @po_request = PoRequest.find(params[:id])
-    end
+  def set_po_request
+    @po_request = PoRequest.find(params[:id])
+  end
 end

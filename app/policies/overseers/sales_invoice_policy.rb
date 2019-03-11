@@ -52,4 +52,8 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def search_or_create?
     manager_or_sales? || logistics?
   end
+
+  def show_pending_ap_invoice_queue?
+    index? && (admin? || accounts?)
+  end
 end

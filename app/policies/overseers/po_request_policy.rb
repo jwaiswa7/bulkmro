@@ -101,6 +101,14 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     material_received_in_bm_warehouse_new_email_msg?
   end
 
+  def cancel_porequest?
+    update?
+  end
+
+  def render_cancellation_form?
+    can_cancel?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
