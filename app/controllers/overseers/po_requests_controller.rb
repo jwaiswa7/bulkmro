@@ -88,7 +88,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     if @po_request.valid?
       # todo allow only in case of zero form errors
       @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
-      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).is_manager_or_sales?
+      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && !policy(@po_request).can_reject?
       ActiveRecord::Base.transaction do
         if @po_request.status_changed?
           if @po_request.status == 'Cancelled'
@@ -146,8 +146,10 @@ class Overseers::PoRequestsController < Overseers::BaseController
           @po_request.last_comment.message,
       )
       render json: {success: 1, message: 'Successfully updated '}, status: 200
-    else
+    elsif @po_request.status == 'Cancelled'
       render json: {success: 0, message: 'Cannot cancel this PO Request.'}, status: 200
+    else
+      render json: {success: 0, message: 'Cannot reject this PO Request.'}, status: 200
     end
   end
 

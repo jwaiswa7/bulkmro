@@ -34,11 +34,11 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_cancel?
-    record.purchase_order.present? && (manager_or_sales?) && record.not_amending?
+    record.purchase_order.present? && (manager_or_sales?) && record.not_amending? && record.status != 'Cancelled'
   end
 
   def can_reject?
-    record.purchase_order.blank? && (logistics? || admin?)
+    record.purchase_order.blank? && (logistics? || admin? || manager_or_sales?) && record.status == 'Requested'
   end
 
   def can_update_rejected_po_requests?
@@ -90,7 +90,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def render_cancellation_form?
-    can_cancel?
+    can_cancel? || can_reject?
   end
 
   class Scope

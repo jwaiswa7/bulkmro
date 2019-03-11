@@ -1,10 +1,11 @@
 const index = () => {
 
-    $('.datatable').on('click', '.cancel-po_request', function () {
-        if (confirm('Do you want to cancel the Po Request?')) {
+    $('.datatable').on('click', '.cancel-po_request', function (e) {
+        if (confirm('Do you want to '+ $(this).attr('title').toLowerCase() +' the Po Request?')) {
             var id = $(this).data('po-request-id')
             var status = $('.cancellation-form-modal').data('status')
             var $this = $(this)
+
             $(this).addClass('disabled')
             $.ajax({
                 data: {},
