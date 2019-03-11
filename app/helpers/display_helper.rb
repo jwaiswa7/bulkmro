@@ -87,7 +87,7 @@ module DisplayHelper
   def format_date_range(date)
     if date.present? && (date.is_a?(DateTime) || date.is_a?(Date))
       to_date = date >> 1
-      format_date(date)+'+~+'+format_date(to_date)
+      format_date(date) + '+~+' + format_date(to_date)
     else
       '-'
     end

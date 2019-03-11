@@ -3,13 +3,13 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
     :DocEntry
   end
 
-  def self.set_purchase_order_items(purchase_order_numbers, filter_params= nil)
+  def self.set_purchase_order_items(purchase_order_numbers, filter_params = nil)
     purchase_order_numbers.each do |purchase_order_number|
       if filter_params.present?
         remote_response = self.custom_find_with_filters(purchase_order_number, filter_params[:"#{purchase_order_number.to_s}"])
         if remote_response.present?
           metadata = self.build_metadata(remote_response)
-          metadata['PoNum'] = (purchase_order_number.to_s + "0").to_i
+          metadata['PoNum'] = (purchase_order_number.to_s + '0').to_i
           purchase_order = ::PurchaseOrder.find_by_po_number(metadata['PoNum'])
           if !purchase_order.present?
             service = Services::Callbacks::PurchaseOrders::Create.new(metadata, nil)
@@ -49,7 +49,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
               else
                 new_row = purchase_order.rows.build do |po_row|
                   po_row.assign_attributes(
-                      metadata: remote_row
+                    metadata: remote_row
                   )
                 end
                 new_row.save!
@@ -77,7 +77,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
 
   def self.custom_find_with_filters(doc_num, filter_params)
     filters_query = "DocNum eq #{doc_num}"
-    filter_params.map{|k,v| filters_query << " and " + k.to_s + " eq " + "'#{v.to_s}'"}
+    filter_params.map {|k, v| filters_query << ' and ' + k.to_s + ' eq ' + "'#{v}'"}
     response = get("/#{collection_name}?$filter=#{filters_query}")
     log_request(:get, 'Purchase Order - #{doc_num}', is_find: true)
     validated_response = get_validated_response(response)
