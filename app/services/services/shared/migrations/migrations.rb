@@ -2346,7 +2346,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
       row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
       row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
-      row.tax_percentage = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
+      row.tax_percentage = TaxRate.find_by_tax_percenServices::Overseers::PoRequeststage(x.get_column('tax rate')) || nil
       # row.tax_percentage
       row.save!
       puts '**************** QUOTE ROW SAVED ********************'
@@ -3710,8 +3710,5 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     [missing_orders, mismatches]
     []
   end
-
-  mis = test_bible_sales_orders_rows_mismatch(nil)
-
 
 end
