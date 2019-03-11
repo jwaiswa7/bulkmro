@@ -2368,7 +2368,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       service.loop(nil) do |x|
         i = i + 1
         # next if i < 11729
-        next if !x.get_column('product sku').upcase.in?(['BM1A9O9','BM1Z9F4','BM1Z8Z7','BM0Z1F1','BM0P0K2','BM0Z0I8','BM0P0J9','BM0Z0I9','BM9C4D9','BM9B7R8','BM0L0D8','BM9B7M5','BM9C9L6','BM0C718','BM0Q7E2','BM9C4F8','BM00038','BM00039','BM00034','BM00035','BM00036','BM00037','BM9Y7F5','BM9U9M5','BM9Y6Q3','BM9P8F4','BM9P8G5','CUM01','BM5P9Y7'])
+        next if !x.get_column('product sku').upcase.in?(['BM1A9O9', 'BM1Z9F4', 'BM1Z8Z7', 'BM0Z1F1', 'BM0P0K2', 'BM0Z0I8', 'BM0P0J9', 'BM0Z0I9', 'BM9C4D9', 'BM9B7R8', 'BM0L0D8', 'BM9B7M5', 'BM9C9L6', 'BM0C718', 'BM0Q7E2', 'BM9C4F8', 'BM00038', 'BM00039', 'BM00034', 'BM00035', 'BM00036', 'BM00037', 'BM9Y7F5', 'BM9U9M5', 'BM9Y6Q3', 'BM9P8F4', 'BM9P8G5', 'CUM01', 'BM5P9Y7'])
         # next if !inquiry_numbers.include?(x.get_column('inquiry number').to_i)
         # next if Product.where(sku: x.get_column('product sku')).present? == false
         puts '*********************** INQUIRY ', x.get_column('inquiry number')
@@ -2894,163 +2894,160 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
 
 
-  def missing_sales_order_products
-    skus = []
-    service = Services::Shared::Spreadsheets::CsvImporter.new('Missing_Products.csv', 'seed_files')
-    service.loop(nil) do |x|
-      product = Product.find_by_sku(x.get_column('SKU'))
-      if !product.present?
-        brand = Brand.find_by_name(x.get_column('Brand')) || Brand.default
-        category = Category.find_by_name(x.get_column('Category')) || Category.default
-        measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM')) || MeasurementUnit.default
-        name = x.get_column('BULK MRO Description')
-        sku = x.get_column('SKU')
-        tax_code = TaxCode.find_by_chapter(x.get_column('HSN'))
-        tax_rate = TaxRate.first_or_create(tax_percentage: x.get_column('Tax Percentage'))
+    def missing_sales_order_products
+      skus = []
+      service = Services::Shared::Spreadsheets::CsvImporter.new('Missing_Products.csv', 'seed_files')
+      service.loop(nil) do |x|
+        product = Product.find_by_sku(x.get_column('SKU'))
+        if !product.present?
+          brand = Brand.find_by_name(x.get_column('Brand')) || Brand.default
+          category = Category.find_by_name(x.get_column('Category')) || Category.default
+          measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM')) || MeasurementUnit.default
+          name = x.get_column('BULK MRO Description')
+          sku = x.get_column('SKU')
+          tax_code = TaxCode.find_by_chapter(x.get_column('HSN'))
+          tax_rate = TaxRate.first_or_create(tax_percentage: x.get_column('Tax Percentage'))
 
-        next if Product.where(sku: sku).exists?
+          next if Product.where(sku: sku).exists?
 
-        product = Product.new
-        product.brand = brand
-        product.category = category
-        product.sku = sku || product.generate_sku
-        product.tax_code = tax_code || TaxCode.default
-        product.mpn = x.get_column('MPN')
-        product.description = x.get_column('BULK MRO Description')
-        product.name = name
-        product.is_service = false
-        product.is_active = true
-        product.measurement_unit = measurement_unit
-        product.legacy_metadata = x.get_row
-        product.save_and_sync
+          product = Product.new
+          product.brand = brand
+          product.category = category
+          product.sku = sku || product.generate_sku
+          product.tax_code = tax_code || TaxCode.default
+          product.mpn = x.get_column('MPN')
+          product.description = x.get_column('BULK MRO Description')
+          product.name = name
+          product.is_service = false
+          product.is_active = true
+          product.measurement_unit = measurement_unit
+          product.legacy_metadata = x.get_row
+          product.save_and_sync
 
-        product.create_approval(comment: product.comments.create!(overseer: Overseer.default, message: 'Product, being preapproved'), overseer: Overseer.default) if product.approval.blank?
+          product.create_approval(comment: product.comments.create!(overseer: Overseer.default, message: 'Product, being preapproved'), overseer: Overseer.default) if product.approval.blank?
+        end
+
+
+        skus.push product.sku
       end
 
-
-      skus.push product.sku
+      puts skus
     end
 
-    puts skus
-  end
-
-  def margin_miscalculation_sales_order_rows
-    service = Services::Shared::Spreadsheets::CsvImporter.new('margin_miscalculation_sales_order_rows.csv', 'seed_files')
-    service.loop(nil) do |x|
-      SalesOrderRow.find(x.get_column('Sales Order Row ID')).sales_quote_row.update_attribute(:margin_percentage,  x.get_column('Old Margin').to_f)
+    def margin_miscalculation_sales_order_rows
+      service = Services::Shared::Spreadsheets::CsvImporter.new('margin_miscalculation_sales_order_rows.csv', 'seed_files')
+      service.loop(nil) do |x|
+        SalesOrderRow.find(x.get_column('Sales Order Row ID')).sales_quote_row.update_attribute(:margin_percentage,  x.get_column('Old Margin').to_f)
+      end
     end
-  end
 
 
-  def resync_missing_supplier_details
-    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
-    service.loop(nil) do |x|
-      supplier = Company.find(x.get_column('Supplier id'))
-      if supplier.present?
-        if supplier.pan.blank?
-          pan = x.get_column('Supplier id')
-          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
-            supplier.update_attribute(:pan, pan)
+    def resync_missing_supplier_details
+      service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
+      service.loop(nil) do |x|
+        supplier = Company.find(x.get_column('Supplier id'))
+        if supplier.present?
+          if supplier.pan.blank?
+            pan = x.get_column('Supplier id')
+            if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+              supplier.update_attribute(:pan, pan)
+            else
+              supplier.update_attribute(:pan, 'PANNO1234O')
+            end
           else
-            supplier.update_attribute(:pan, 'PANNO1234O')
+            pan = supplier.pan
+            if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+              supplier.update_attribute(:pan, pan)
+            else
+              supplier.update_attribute(:pan, 'PANNO1234O')
+            end
           end
-        else
-          pan = supplier.pan
-          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
-            supplier.update_attribute(:pan, pan)
+          supplier.save!
+        end
+      end
+      end
+
+    def fix_missing_supplier_contacts
+      service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
+      service.loop(nil) do |x|
+        supplier = Company.find(x.get_column('Supplier id'))
+        if supplier.present?
+          if supplier.pan.blank?
+            pan = x.get_column('Supplier id')
+            if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+              supplier.update_attribute(:pan, pan)
+            else
+              supplier.update_attribute(:pan, 'PANNO1234O')
+            end
           else
-            supplier.update_attribute(:pan, 'PANNO1234O')
+            pan = supplier.pan
+            if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+              supplier.update_attribute(:pan, pan)
+            else
+              supplier.update_attribute(:pan, 'PANNO1234O')
+            end
           end
+          supplier.save!
         end
-        supplier.save!
       end
-    end
+      end
 
-  end
 
-  def fix_missing_supplier_contacts
-    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_supplier_details.csv', 'seed_files')
-    service.loop(nil) do |x|
-      supplier = Company.find(x.get_column('Supplier id'))
-      if supplier.present?
-        if supplier.pan.blank?
-          pan = x.get_column('Supplier id')
-          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
-            supplier.update_attribute(:pan, pan)
+    def migrate_orders_missing_addresses
+      service = Services::Shared::Spreadsheets::CsvImporter.new('orders_billing_address.csv', 'seed_files')
+      counter = 0
+      rows = 0
+      inquiry_missing = []
+      company_not_found = []
+      invalid = 0
+      service.loop(nil) do |x|
+        rows += 1
+        if x.get_column('company').blank?
+          company = Company.find_by_name('Legacy Company')
+        else
+          company = Company.find_by_name(x.get_column('company'))
+        end
+
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+        if company.present?
+          country_code = x.get_column('country_id')
+          address = Address.new
+          address.company = company
+          address.name = company.name
+          if x.get_column('gst').blank? || (x.get_column('gst').present? && x.get_column('gst').chars.length < 15)
+            address.gst = 'No GST Number'
           else
-            supplier.update_attribute(:pan, 'PANNO1234O')
+            address.gst = x.get_column('gst')[0..14]
           end
-        else
-          pan = supplier.pan
-          if pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
-            supplier.update_attribute(:pan, pan)
+
+          address.country_code = country_code
+          address.state = AddressState.find_by_legacy_id(x.get_column('region_id'))
+          if !address.state.present?
+            address.state = AddressState.find_by_name('Maharashtra')
+          end
+          address.state_name = country_code == 'IN' ? nil : x.get_column('region')
+          address.city_name = x.get_column('city')
+          address.pincode = x.get_column('postcode')
+          address.street1 = x.get_column('street')
+          is_tel_valid = true if Float(x.get_column('telephone')) rescue false
+          address.telephone = x.get_column('telephone').to_i if is_tel_valid
+          address.legacy_metadata = x.get_row
+
+          if !address.valid?
+            invalid += 1
+          end
+          address.save!
+
+          if inquiry.present?
+            inquiry.update_attributes(billing_address: address)
           else
-            supplier.update_attribute(:pan, 'PANNO1234O')
+            inquiry_missing << x.get_column('inquiry_number')
           end
-        end
-        supplier.save!
-      end
-    end
-
-  end
-
-
-  def migrate_orders_missing_addresses
-    service = Services::Shared::Spreadsheets::CsvImporter.new('orders_billing_address.csv', 'seed_files')
-    counter = 0
-    rows = 0
-    inquiry_missing = []
-    company_not_found = []
-    invalid = 0
-    service.loop(nil) do |x|
-      rows += 1
-      if x.get_column('company').blank?
-        company = Company.find_by_name('Legacy Company')
-      else
-        company = Company.find_by_name(x.get_column('company'))
-      end
-
-      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
-      if company.present?
-        country_code = x.get_column('country_id')
-        address = Address.new
-        address.company = company
-        address.name = company.name
-        if x.get_column('gst').blank? || (x.get_column('gst').present? && x.get_column('gst').chars.length < 15)
-          address.gst = 'No GST Number'
+          counter += 1
         else
-          address.gst = x.get_column('gst')[0..14]
+          company_not_found << x.get_column('company')
         end
-
-        address.country_code = country_code
-        address.state = AddressState.find_by_legacy_id(x.get_column('region_id'))
-        if !address.state.present?
-          address.state = AddressState.find_by_name('Maharashtra')
-        end
-        address.state_name = country_code == 'IN' ? nil : x.get_column('region')
-        address.city_name = x.get_column('city')
-        address.pincode = x.get_column('postcode')
-        address.street1 = x.get_column('street')
-        is_tel_valid = true if Float(x.get_column('telephone')) rescue false
-        address.telephone = x.get_column('telephone').to_i if is_tel_valid
-        address.legacy_metadata = x.get_row
-
-        if !address.valid?
-          invalid += 1
-        end
-        address.save!
-
-        if inquiry.present?
-          inquiry.update_attributes(:billing_address => address)
-        else
-          inquiry_missing << x.get_column('inquiry_number')
-        end
-        counter += 1
-      else
-        company_not_found << x.get_column('company')
       end
+      counter
     end
-    counter
-  end
-
 end
