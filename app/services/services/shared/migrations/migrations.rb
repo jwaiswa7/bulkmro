@@ -3171,4 +3171,79 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+
+  def test_invoices_migrations
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Sales Order Comparison - Bible.csv', 'seed_files')
+    missing_invoices = []
+    missing_inquiries = []
+    mimatched_invoices = []
+
+    service.loop(nil) do |x|
+      invoice = Invoice.find_by_invoice_number(x.get_column('AR Invoice #'))
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number'))
+      qty_to_check = x.get_column('Qty').to_i
+      selling_price_to_check = x.get_column('Selling Price (as per SO / AR Invoice)').to_i
+      sku = x.get_column('sku')
+      tax_amount_to_check = x.get_column('Tax Amount').to_i
+
+      if inquiry.blank?
+        missing_inquiries << x.get_column('Inquiry Number')
+      end
+
+      if invoice.present?
+        mismatch = false
+        item = invoice.rows.where(:sku => sku).first
+        item_qty = item.qty
+        item_price = item.price.to_i
+        item_tax_amount = item.tax_amount.to_i
+
+        if qty_to_check != item_qty
+          mismatch = true
+        end
+
+        if selling_price_to_check != item_price
+          mismatch = true
+        end
+
+        if item_tax_amount != tax_amount_to_check
+          mismatch = true
+        end
+
+        if mismatch
+          mimatched_invoices << [x.get_column('AR Invoice #'), qty_to_check, item_qty, selling_price_to_check, item_price, tax_amount_to_check, item_tax_amount]
+        end
+      else
+        missing_invoices << x.get_column('AR Invoice #')
+      end
+    end
+
+    column_headers = ['invoice_number', 'sprint_total', 'sprint_tax', 'sprint_total_with_tax', 'sap_total', 'sap_tax', 'sap_total_with_tax']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_invoices.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+      service.loop(nil) do |x|
+        sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('#'))
+        sap_total_without_tax = 0
+        total_without_tax = 0
+
+        if sales_invoice.present? && !sales_invoice.is_legacy?
+          total_without_tax = sales_invoice.metadata['base_grand_total'].to_f - sales_invoice.metadata['base_tax_amount'].to_f
+          sap_total_without_tax = x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f
+          if (total_without_tax != sap_total_without_tax) || (sales_invoice.metadata['base_grand_total'].to_f != x.get_column('Document Total').to_f)
+
+            writer << [
+                sales_invoice.invoice_number,
+                total_without_tax,
+                sales_invoice.metadata['base_tax_amount'].to_f,
+                sales_invoice.metadata['base_grand_total'].to_f,
+                sap_total_without_tax,
+                x.get_column('Tax Amount (SC)').to_f,
+                x.get_column('Document Total')
+            ]
+          end
+        end
+      end
+    end
+  end
+
 end
