@@ -28,7 +28,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     elsif Rails.env.production?
       %w(inquiry_attachments)
     elsif Rails.env.development?
-      %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories ruta)
+      %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories update_purchase_orders)
     end
 
     PaperTrail.request(enabled: false) do
@@ -1405,7 +1405,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def ruta
+  def update_purchase_orders
     new_po_number = 9999999
     file = "#{Rails.root}/tmp/po_generation_status.csv"
     service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
@@ -1441,9 +1441,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               status = purchase_order.metadata['PoNum'] == poNum
               if status
                 # if metadata po_number matched with wrong purchase_order then update
+                purchase_order.old_po_number = purchase_order.po_number
                 purchase_order.po_number = new_po_number
-                new_po_number = new_po_number+1
-                purchase_order.old_po_number = poNum
+                new_po_number = new_po_number + 1
                 if purchase_order.valid?
                   purchase_order.save
                   writer << [x.get_column('purchase_order_number'), poNum, "purchase_order updated with new po_number #{new_po_number}"]
@@ -1470,9 +1470,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             status = purchase_order.metadata['PoNum'] == poNum
             if status
               # if metata data po number and normal po number match then create new po with diff number
+              purchase_order.old_po_number = purchase_order.po_number
               purchase_order.po_number = new_po_number
               new_po_number = new_po_number+1
-              purchase_order.old_po_number = poNum
               if purchase_order.valid?
                 purchase_order.save
                 writer << [x.get_column('purchase_order_number'), poNum, "purchase_order updated with new po_number #{new_po_number}"]
