@@ -67,6 +67,29 @@
               </div>
             </div>
           </a>
+          <a class="card text-black-50 sales-quote" target="_blank" href="{url}">
+            <div class="card-header p-1">
+              <span class="badge badge-wrap text-uppercase badge-danger float-right"><strong>Regret</strong></span>
+              <strong>Sales Quote</strong>
+            </div>
+            <div class="card-body p-1 text-center">
+              <div class="subject">
+                #{number}
+              </div>
+              <hr class="my-1">
+              <div class="ise">
+                {executive}
+              </div>
+              <hr class="my-1">
+              <div class="subject">
+                {subject}
+              </div>
+              <hr class="my-1">
+              <div class="margin">
+                {margin}%
+              </div>
+            </div>
+          </a>
         </div>
 
         <script>
@@ -87,7 +110,7 @@
                     margin: '10'
                 }),
                 children: [{
-                    innerHTML: treantTemplate('inquiry', {
+                    innerHTML: treantTemplate('sales-quote', {
                         url: 'http://google.com',
                         number: '19293',
                         executive: 'Amit G.',
@@ -95,7 +118,7 @@
                         margin: '10'
                     })
                 }, {
-                    innerHTML: treantTemplate('inquiry', {
+                    innerHTML: treantTemplate('sales-quote', {
                         url: 'http://google.com',
                         number: '19293',
                         executive: 'Amit G.',
