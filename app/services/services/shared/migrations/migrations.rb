@@ -3134,7 +3134,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
         if inquiry.sales_orders.pluck(:old_order_number).include?(x.get_column('order number'))
           so = SalesOrder.find_by_old_order_number(x.get_column('order number'))
-          if so.rows.map { |r| r.product.sku }.include?(x.get_column('product sku'))
+          if so.rows.map {|r| r.product.sku}.include?(x.get_column('product sku'))
             row = sales_quote.rows.joins(:product).where('products.sku = ?', x.get_column('product sku')).first
           end
         end
@@ -3177,7 +3177,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_order.remote_status = x.get_column('SAP status') || 'Processing'
         sales_order.sent_at = sales_quote.created_at
         sales_order.save!
-        row_object = { sku: product_sku, supplier: x.get_column('supplier'), total_with_tax: row.total_selling_price_with_tax.to_f }
+        row_object = {sku: product_sku, supplier: x.get_column('supplier'), total_with_tax: row.total_selling_price_with_tax.to_f}
         totals[sales_order.order_number] ||= []
         totals[sales_order.order_number].push(row_object)
         puts '************************** ORDER SAVED *******************************'
@@ -3211,7 +3211,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     i = 0
     service = Services::Shared::Spreadsheets::CsvImporter.new('9. invoice number has string literals instead of being a number.csv', 'seed_files')
     # skips = [11563] # company_id -> xlktyVs
-    service.loop(nil ) do |x|
+    service.loop(nil) do |x|
       i = i + 1
       # puts "<-------------#{i}----------->"
       # next if !inquiry_numbers.include?(x.get_column('Inquiry Number').to_i)
@@ -3313,7 +3313,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             base_weee_tax_applied_row_amnt: nil
         }
 
-        row = invoice.rows.where('metadata @> ?', { sku: sku }.to_json)
+        row = invoice.rows.where('metadata @> ?', {sku: sku}.to_json)
         if row.present?
           row.first.update_attributes(sku: sku, quantity: quantity, sales_invoice_id: invoice.id, metadata: invoice_row_obj)
         else
@@ -3333,21 +3333,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             'price_kit' => 0,
             'controller' => 'callbacks/sales_invoices',
             'created_at' => x.get_column('AR Invoice Date'),
-            'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+            'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
             'increment_id' => invoice_number,
             'sales_invoice' => {
                 'created_at' => x.get_column('AR Invoice Date'),
                 'updated_at' => nil
             },
             'unitprice_kit' => 0,
-            'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) { |sum, value| sum + value.to_f }.round(2),
+            'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) {|sum, value| sum + value.to_f}.round(2),
             'discount_amount' => '',
             'shipping_amount' => nil,
-            'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+            'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
             'customer_company' => nil,
             'hidden_tax_amount' => nil,
             'shipping_incl_tax' => nil,
-            'base_subtotal' => item_lines.pluck('row_total').inject(0) { |sum, value| sum + value.to_f }.round(2),
+            'base_subtotal' => item_lines.pluck('row_total').inject(0) {|sum, value| sum + value.to_f}.round(2),
             'base_currency_code' => sales_order.inquiry.currency.try(:name),
             'base_to_order_rate' => sales_order.inquiry.currency.conversion_rate.to_f,
             'billing_address_id' => sales_order.inquiry.billing_address.present? ? sales_order.inquiry.billing_address.id : nil,
@@ -3361,12 +3361,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             'discount_description' => nil,
             'base_hidden_tax_amount' => nil,
             'base_shipping_incl_tax' => nil,
-            'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+            'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
             'base_shipping_tax_amount' => nil,
             'shipping_hidden_tax_amount' => nil,
             'base_shipping_hidden_tax_amnt' => nil
         }
-        invoice.assign_attributes(status: 1, metadata: metadata, mis_date: x.get_column('AR Invoice Date'), created_at: ( x.get_column('AR Invoice Date').present? ? x.get_column('AR Invoice Date').to_datetime : DateTime.now))
+        invoice.assign_attributes(status: 1, metadata: metadata, mis_date: x.get_column('AR Invoice Date'), created_at: (x.get_column('AR Invoice Date').present? ? x.get_column('AR Invoice Date').to_datetime : DateTime.now))
         invoice.save!
         created_or_updated_invoices.push(invoice.invoice_number)
         puts '********************** Saving Invoice *****************************', invoice_number
@@ -3397,7 +3397,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       puts "******************************************************** SALES ORDER #{x.get_column('order number')} Fetched ***************************"
 
       if sales_order.present?
-        if sales_order.rows.map { |r| r.product.sku }.include?(x.get_column('product sku'))
+        if sales_order.rows.map {|r| r.product.sku}.include?(x.get_column('product sku'))
           row = sales_order.sales_quote.rows.joins(:product).where('products.sku = ?', x.get_column('product sku')).first
 
           if row.present? && row.tax_rate_id.present?
@@ -3523,24 +3523,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def test_bible_sales_orders_totals_mismatch
-
-
-    column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax']
-
-    service = Services::Shared::Spreadsheets::CsvImporter.new('Sales Order Comparison - Bible.csv', 'seed_files')
-
-    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
-      service.loop(nil) do |x|
-        sales_order = SalesOrder.find_by_order_number(x.get_column('SO #'))
-        if sales_order.present? && ((sales_order.calculated_total.to_f != x.get_column('SUM of Selling Price (as per SO / AR Invoice)').to_f) || (sales_order.calculated_total_with_tax.to_f != x.get_column('SUM of Gross Total Selling').to_f))
-          writer << [sales_order.order_number, sales_order.calculated_total, sales_order.calculated_total_with_tax, x.get_column('SUM of Selling Price (as per SO / AR Invoice)'), x.get_column('SUM of Gross Total Selling')]
-        end
-      end
-    end
-  end
-
-
   def test_invoices_migrations
     service = Services::Shared::Spreadsheets::CsvImporter.new('Sales Order Comparison - Bible.csv', 'seed_files')
     missing_invoices = []
@@ -3614,4 +3596,118 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
   end
+
+  def test_bible_sales_orders_rows_mismatch(count = 100)
+
+    mismatches = []
+    missing_orders = []
+
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Sales Order Comparison - Bible.csv', 'seed_files')
+    service.loop(count) do |x|
+      # puts x.get_row
+      mismatch = nil
+      sales_order = SalesOrder.where(order_number: x.get_column('SO #')).or(SalesOrder.where(old_order_number: x.get_column('SO #'))).includes(:sales_quote_rows).first
+
+      if sales_order.present?
+        product = Product.find_by(sku: x.get_column('BM #'))
+
+        total_selling_price = x.get_column('Selling Price (as per SO / AR Invoice)')
+        total_selling_price_with_tax = x.get_column('Gross Total Selling')
+        total_cost_price = x.get_column('Buying Total')
+
+        sales_order_row = sales_order.rows.select {|sor| sor.product == product}.first
+        tax_rate = x.get_column('Tax Rate')
+        quantity = x.get_column('Qty')
+
+        if sales_order_row.blank?
+          mismatch = 'row'
+        end
+
+        # if quantity&.to_f != sales_order_row&.quantity
+        #   mismatch = [mismatch, 'quantity'].compact.join(', ')
+        # end
+
+        converted_total_cost_price = ((sales_order_row&.total_cost_price&.round || 1) / (sales_order_row&.sales_quote_row&.conversion_rate || 1))
+
+        # if total_cost_price&.to_f&.round != converted_total_cost_price
+        #   mismatch = [mismatch, 'total_cost_price'].compact.join(', ')
+        # end
+
+        if (total_selling_price&.to_f&.round != sales_order_row&.converted_total_selling_price&.round)
+          mismatch = [mismatch, 'total_selling_price'].compact.join(', ')
+        end
+
+        if (tax_rate&.to_f&.round != sales_order_row&.sales_quote_row&.tax_rate&.tax_percentage&.round)
+          mismatch = [mismatch, 'tax_rate'].compact.join(', ')
+        end
+
+        if (total_selling_price_with_tax&.to_f&.round != sales_order_row&.converted_total_selling_price_with_tax&.round)
+          mismatch = [mismatch, 'total_selling_price_with_tax'].compact.join(', ')
+        end
+
+        if mismatch.present?
+          mismatches << [
+              [x.get_column('BM #'), x.get_column('SO #')].join,
+              x.get_column('BM #'), x.get_column('SO #'), mismatch, sales_order_row&.quantity&.to_f, quantity, converted_total_cost_price, total_cost_price, sales_order_row&.converted_total_selling_price&.round, total_selling_price, sales_order_row&.sales_quote_row&.tax_rate&.tax_percentage, tax_rate, sales_order_row&.converted_total_selling_price_with_tax&.round, total_selling_price_with_tax]
+        end
+
+      else
+        missing_orders << x.get_column('SO #')
+      end
+    end
+    overseer = Overseer.find(185)
+    file = "#{Rails.root}/tmp/sales_orders_row_orders.csv"
+    column_headers = ["Key", 'BM #', 'SO #', "Issues in", "quantity", "Bible Quantity", "Total Cost Price", "Bible Total Cost Price", "Total Selling Price", "Bible Total Selling Price", "Tax Rate", "Bible Tax Rate", "Total Selling Price with tax", "Bible Total Selling Price with tax",]
+    # CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+    #   mismatches.each do |mismatch|
+    #     writer << mismatch
+    #   end
+    # end
+
+
+    csv_data = CSV.generate(write_headers: true, headers: columns) do |csv|
+
+      mismatches.each do |object|
+
+        csv << object
+
+      end
+
+    end
+
+
+
+    temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
+
+    begin
+
+      temp_file.write(csv_data)
+
+      temp_file.close
+
+      overseer.file.attach(io: File.open(temp_file.path), filename: filename)
+
+      overseer.save!
+
+      puts Rails.application.routes.url_helpers.rails_blob_path(overseer.file, only_path: true)
+
+    rescue => ex
+
+      puts ex.message
+
+    end
+
+    # QUANTITY
+    # TAX RATE %
+    # SP
+    # SP W TAX
+    # COST
+    [missing_orders, mismatches]
+    []
+  end
+
+  mis = test_bible_sales_orders_rows_mismatch(nil)
+
+
 end
