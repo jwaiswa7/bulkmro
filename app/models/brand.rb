@@ -25,5 +25,4 @@ class Brand < ApplicationRecord
   def self.default
     find_by(name: 'BULK MRO APPROVED')
   end
-
 end

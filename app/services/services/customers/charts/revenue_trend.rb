@@ -29,7 +29,8 @@ class Services::Customers::Charts::RevenueTrend < Services::Customers::Charts::B
                       position: 'left',
                       ticks: {
                           display: true,
-                          userCallback: ''
+                          userCallback: '',
+                          beginAtZero: true
                       },
                       scaleLabel: {
                           display: true,
