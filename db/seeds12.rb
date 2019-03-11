@@ -20,3 +20,6 @@ service.call
 # To add missing payment options
 service = Services::Shared::Migrations::Migrations.new(%w(missing_payment_options), folder: 'seed_files')
 service.call
+
+service1 = Services::Shared::Migrations::Migrations.new(%w(missing_sales_order_in_sprint), folder: 'seed_files')
+service1.call

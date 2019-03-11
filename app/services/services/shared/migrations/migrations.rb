@@ -28,7 +28,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     elsif Rails.env.production?
       %w(inquiry_attachments)
     elsif Rails.env.development?
-      %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
+      %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories missing_sales_order_in_sprint)
     end
 
     PaperTrail.request(enabled: false) do
@@ -2919,6 +2919,89 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           end
         else
           payment_option.update_attributes(name: x.get_column('value'))
+        end
+      end
+    end
+
+    def missing_sales_order_in_sprint
+      @missing_inquiry = [], @available_inquiry = [], @inquiry_with_text = [], @missing_supplier = [], @missing_product_sku = []
+
+
+      service = Services::Shared::Spreadsheets::CsvImporter.new('so_not_present.csv', 'seed_files')
+      i = 10000
+      service.loop(5) do |x|
+        quantity = x.get_column('quantity')
+        inquiry_number = x.get_column('inquiry number')
+        product_sku = x.get_column('product sku')
+        unit_cost_price = x.get_column('unit cost price')
+        available_supplier = x.get_column('supplier')
+        unit_selling_price = x.get_column('unit selling price (INR)')
+        if inquiry_number.present? && inquiry_number.match(/[a-zA-Z\/_-]/).blank?
+          inquiry = Inquiry.find_by_inquiry_number(inquiry_number)
+
+          if inquiry.present?
+            product = Product.find_by_sku(product_sku)
+            supplier = Company.find_by_name(available_supplier) || Company.default_supplier
+            if product.present? && supplier.present?
+
+              if InquiryProduct.where(:inquiry_id => inquiry.id, :product_id => product.id).present?
+                inquiry_product = InquiryProduct.where(:inquiry_id => inquiry.id, :product_id => product.id).first
+                inquiry_product.update_attributes(:quantity => quantity)
+              else
+                inquiry_product = inquiry.inquiry_products.create!(:product_id => product.id, :inquiry_id => inquiry.id, :quantity => quantity || 0)
+                #inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.create!(:supplier_id => supplier.id, :unit_cost_price => unit_cost_price)
+              end
+              inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(:inquiry_product_id => inquiry_product.id, :supplier => supplier).first_or_create
+              inquiry_product_supplier.update_attributes(:unit_cost_price => unit_cost_price)
+
+              if inquiry_product.present? && inquiry_product_supplier.present?
+                if TaxRate.find_by_tax_percentage(x.get_column('tax rate').to_f).blank?
+                  tax_rate = TaxRate.create!(:tax_percentage => x.get_column('tax rate').to_f)
+                else
+                  tax_rate = TaxRate.find_by_tax_percentage(x.get_column('tax rate').to_f)
+                end
+                puts "***********Tax Rate = #{tax_rate.id}"
+                if inquiry.final_sales_quote.present?
+                  sales_quote = inquiry.final_sales_quote
+                  if inquiry.final_sales_quote.rows.select{ |sqr| sqr.product == product }.present?
+                    sales_quote_row = sales_quote.rows.where(:inquiry_product_supplier_id => inquiry_product_supplier.id)
+                    sales_quote_row.update_all(:quantity => quantity.to_f, :unit_selling_price => unit_selling_price.to_d, :tax_rate_id => tax_rate.id)
+                  else
+                    puts "***********Sales Quote id = #{unit_selling_price}"
+                    sales_quote_row = [sales_quote.rows.create!(:quantity => quantity, :tax_code_id => product.tax_code_id, :tax_rate => tax_rate, :inquiry_product_supplier_id => inquiry_product_supplier.id, :measurement_unit_id => product.measurement_unit_id , :unit_selling_price => unit_selling_price.to_d, :converted_unit_selling_price => unit_selling_price.to_d, :created_by_id => inquiry.created_by_id, :updated_by_id => inquiry.updated_by_id)]
+                  end
+                else
+                  parent_id = inquiry.sales_quotes.last.id
+                  sales_quote = inquiry.sales_quotes.create!(:created_by_id => inquiry.created_by_id, :updated_by_id => inquiry.updated_by_id, :parent_id => parent_id, :created_at => x.get_column('created at'),:updated_at => x.get_column('created at'), :sent_at => x.get_column('created at'))
+                  puts "***********Sales Quote id = #{sales_quote.id}"
+                  puts "***********Unit Price= #{unit_selling_price}"
+                  sales_quote_row = [sales_quote.rows.create!(:quantity => quantity, :tax_code_id => product.tax_code_id, :tax_rate => tax_rate, :inquiry_product_supplier_id => inquiry_product_supplier.id, :measurement_unit_id => product.measurement_unit_id , :unit_selling_price => unit_selling_price.to_d, :created_by_id => inquiry.created_by_id, :updated_by_id => inquiry.updated_by_id, :converted_unit_selling_price => unit_selling_price.to_d)]
+                  puts "***********Sales Quote Row id = #{sales_quote_row.id}"
+                end
+                sales_order = sales_quote.sales_orders.create!(
+                  :billing_address_id => inquiry.billing_address_id,
+                  :shipping_address_id => inquiry.shipping_address_id,
+                  :order_number => i,
+                  :created_by_id => inquiry.created_by_id,
+                  :updated_by_id => inquiry.updated_by_id,
+                  :legacy_request_status =>  60,
+                  :created_at => x.get_column('created at'),
+                  :updated_at => x.get_column('created at'),
+                  :legacy_order_number => x.get_column('order number').to_s
+                )
+                i = i+1
+                puts "*********#{sales_order.id}"
+                puts "*********#{sales_quote_row.id}"
+                sales_order.rows.create!(:sales_quote_row_id => sales_quote_row.first.id, :quantity => quantity, :created_by_id => inquiry.created_by_id, :updated_by_id => inquiry.updated_by_id, :created_at => x.get_column('created at'),:updated_at => x.get_column('created at'))
+              end
+            end
+            @missing_supplier << available_supplier if supplier.blank?
+            @missing_product_sku << product_sku if product.blank?
+          else
+            @missing_inquiry << "#{inquiry_number}"
+          end
+        else
+          @inquiry_with_text << "#{inquiry_number}"
         end
       end
     end
