@@ -26,4 +26,6 @@ service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(update_purchase_orders), folder: 'seed_files')
 service.call
+service = Services::Shared::Migrations::Migrations.new(%w(update_magento_po_order), folder: 'seed_files')
+service.call
 
