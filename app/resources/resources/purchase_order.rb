@@ -3,7 +3,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
     :DocEntry
   end
 
-  def self.set_purchase_order_items(purchase_order_numbers, filter_params = nil)
+  def self.set_multiple_items(purchase_order_numbers, filter_params = nil)
     purchase_order_numbers.each do |purchase_order_number|
       if filter_params.present?
         remote_response = self.custom_find_with_filters(purchase_order_number, filter_params[:"#{purchase_order_number.to_s}"])

@@ -87,7 +87,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     end
 
     def set_invoice_items
-      Resources::Invoice.set_invoice_items([@sales_invoice.invoice_number])
+      Resources::SalesInvoice.set_multiple_items([@sales_invoice.invoice_number])
     end
 
     def sales_invoice_params
