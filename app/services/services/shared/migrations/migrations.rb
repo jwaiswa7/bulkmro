@@ -1527,7 +1527,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             inquiry = Inquiry.find_by_inquiry_number(inquiry_number)
             if po_num.scan(/\D/).empty?
               if inquiry.present?
-                writer << [po_num, inquiry_number, "Inquiry present with inquiry_number with #{inquiry_number}"]
+                begin
+                  purchase_order = PurchaseOrder.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
+                  if purchase_order.new_record? || update_if_exists
+                    purchase_order.inquiry = inquiry
+                    purchase_order.is_legacy = true
+                    purchase_order.po_number = x.get_column('po_number')
+                    purchase_order.metadata = x.get_row
+                    purchase_order.save!
+                  end
+                  attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'document', file_url: x.get_column('file_path')) if !purchase_order.document.attached?
+                  writer << [po_num, inquiry_number, "PO created with po_nuber #{x.get_column('po_number')}"]
+                rescue => e
+                  errors.push("#{e.inspect} - #{x.get_column('legacy_id')}")
+                  writer << [po_num, inquiry_number, "PO not created with rules #{e.inspect}"]
+                end
               else
                 writer << [po_num, inquiry_number, "Inquiry absent with inquiry_number with #{inquiry_number}"]
               end
