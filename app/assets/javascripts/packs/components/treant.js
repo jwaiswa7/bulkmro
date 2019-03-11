@@ -1,7 +1,6 @@
 // Makes sure that the custom file inputs have the highlighted border on file selection
 const treant = () => {
     if (!$('.treant').exists()) return;
-
     let config = {
         chart: {
             container: ".treant",
@@ -14,11 +13,10 @@ const treant = () => {
                 }
             },
         },
-
         nodeStructure: nodeStructure
     };
 
-    new Treant(config, function() {}, $)
+    new Treant(config, function() {}, $);
 };
 
 export default treant
