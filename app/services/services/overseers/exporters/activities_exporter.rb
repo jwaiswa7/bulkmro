@@ -1,6 +1,6 @@
 class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::Exporters::BaseExporter
-  def initialize(*ranges)
-    super(*ranges)
+  def initialize(*params)
+    super(*params)
     @model = Activity
     @export_name = 'activities'
     @path = Rails.root.join('tmp', filename)
@@ -12,9 +12,15 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
   end
 
   def build_csv
-    model.where('created_at >= :start_at AND created_at <= :end_at', start_at: @start_at, end_at: @end_at).order(created_at: :desc).each do |record|
+    if @ids.present?
+      records = model.where(id: @ids).order(created_at: :desc)
+    else
+      records = model.where('created_at >= :start_at AND created_at <= :end_at', start_at: @start_at, end_at: @end_at).order(created_at: :desc)
+    end
+    records.each do |record|
+      name = record.created_by.present? ? record.created_by.full_name : record.id
       rows.push(
-        created_by: record.created_by.full_name,
+        created_by: name,
         account: (record.activity_account.to_s if record.activity_account.present?),
         company: (record.activity_company.to_s if record.activity_company.present?),
         company_type: record.company_type,
@@ -29,7 +35,11 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
         created: record.created_at.to_date.to_s
                 )
     end
-    export = Export.create!(export_type: 55)
+    if @ids.present?
+      export = Export.create!(export_type: 55, filtered: true, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+    else
+      export = Export.create!(export_type: 55, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+    end
     generate_csv(export)
   end
 end

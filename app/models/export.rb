@@ -1,7 +1,9 @@
 class Export < ApplicationRecord
   has_one_attached :report
 
-  enum export_type: {
+  scope :not_filtered, -> { where(filtered: false) }
+
+    enum export_type: {
       inquiries: 1,
       products: 5,
       companies: 10,

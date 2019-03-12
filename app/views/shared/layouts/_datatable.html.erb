@@ -23,7 +23,7 @@
               <div class="mr-2 d-md-inline-block export_daterange_wrapper">
                 <input type="text" id="export_daterange" name="export_daterange" class="form-control" data-toggle="daterangepicker" data-direction="left" placeholder="Pick a daterange" />
               </div>
-              <a href="<%= [request.path, '/', 'export_all.csv'].join %>" id="export_daterange_button" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down export_daterange_wrapper" <% if Export.send(controller_path.split('/').last).last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).last.created_at), "ago"].join(' ') %><% end %>">
+              <a href="<%= [request.path, '/', 'export_all.csv'].join %>" id="export_daterange_button" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down export_daterange_wrapper" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
                 <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
               </a>
             </div>
@@ -32,6 +32,11 @@
             <a href="<%= [request.path, '/', 'new'].join %>" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" target="_blank" >
               <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
             </a>
+          <% end %>
+          <% if content_for?(:can_be_directly_exported_filtered_records) && policy(current_model.singularize.to_sym).export_filtered_records? %>
+            <%= button_tag(type: 'button', class: "mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1", id: 'export_filtered_records') do %>
+              <i class="icon-ok icon-white"></i> Filtered <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+            <% end %>
           <% end %>
           <% if content_for?(:can_be_directly_exported) && policy(current_model.singularize.to_sym).export_all? %>
             <a href="<%= [request.path, '/', 'export_all.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" <% if Export.send(controller_path.split('/').last).last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).last.created_at), "ago"].join(' ') %><% end %>">

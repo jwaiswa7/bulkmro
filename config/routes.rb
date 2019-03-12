@@ -90,6 +90,7 @@ Rails.application.routes.draw do
         post 'reject_selected'
         post 'add_to_inquiry'
         get 'export_all'
+        get 'export_filtered_records'
       end
       member do
         get 'approve'

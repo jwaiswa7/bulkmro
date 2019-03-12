@@ -129,6 +129,7 @@ let setup = () => {
                     $('[data-filter="dropdown"] select').val("").trigger('change');
                     $('[data-filter="daterange"] input').val("").trigger('change');
                     $('.filter-list-input').val("").trigger('keyup');
+                    $('#export_filtered_records').hide();
                     e.preventDefault();
                 });
                 actionTd.append(clear);
@@ -173,6 +174,9 @@ let setup = () => {
 
                             // Set URL Hash parameter for this specific column
                             window.hasher.setParam(text, val);
+
+                            // Set a custom event that triggers on any of the filters being changed
+                            $(that).trigger('filters:change');
                         });
 
                         td.append(input);
