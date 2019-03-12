@@ -14,8 +14,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_requests
 
     respond_to do |format|
-      format.json { render 'index' }
-      format.html { render 'index' }
+      format.json {render 'index'}
+      format.html {render 'index'}
     end
   end
 
@@ -35,8 +35,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     #####################################################################################################
 
     respond_to do |format|
-      format.json { render 'index' }
-      format.html { render 'index' }
+      format.json {render 'index'}
+      format.html {render 'index'}
     end
   end
 
@@ -53,8 +53,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_requests
 
     respond_to do |format|
-      format.json { render 'index' }
-      format.html { render 'index' }
+      format.json {render 'index'}
+      format.html {render 'index'}
     end
   end
 
@@ -69,7 +69,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
     service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     @company_reviews = service.call
-    service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.material_pickup_requests.ids,  false)
+    service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.material_pickup_requests.ids, false)
     @products_list = service.call
   end
 
@@ -92,9 +92,9 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         else
           @invoice_request.material_pickup_requests << MaterialPickupRequest.where(id: @mpr_ids)
         end
-        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@mpr_ids,  false)
+        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@mpr_ids, false)
       else
-        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@purchase_order,  true)
+        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@purchase_order, true)
       end
       @products_list = service.call
     else
@@ -126,7 +126,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @company_reviews = service.call
 
     mpr_ids = @invoice_request.material_pickup_requests.map(&:id).join(', ')
-    service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids,  false)
+    service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids, false)
     @mpr = @invoice_request.material_pickup_requests.last
     @products_list = service.call
   end
@@ -149,23 +149,23 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     if @invoice_request.valid?
       service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
       service.call
-      render json: { sucess: 'Successfully updated ' }, status: 200
+      render json: {sucess: 'Successfully updated '}, status: 200
     else
-      render json: { error: @invoice_request.errors }, status: 500
+      render json: {error: @invoice_request.errors}, status: 500
     end
   end
 
   def render_cancellation_form
     authorize @invoice_request
     respond_to do |format|
-      format.html {render :partial => "cancel_invoice_request",  locals: {status: params[:status]}}
+      format.html {render partial: 'cancel_invoice_request', locals: {status: params[:status]}}
     end
   end
 
   private
 
-    def invoice_request_params
-      params.require(:invoice_request).permit(
+  def invoice_request_params
+    params.require(:invoice_request).permit(
         :id,
         :inquiry_id,
         :sales_order_id,
@@ -187,7 +187,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     )
   end
 
-    def set_invoice_request
-      @invoice_request = InvoiceRequest.find(params[:id])
-    end
+  def set_invoice_request
+    @invoice_request = InvoiceRequest.find(params[:id])
+  end
 end

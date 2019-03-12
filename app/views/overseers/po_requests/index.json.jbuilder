@@ -4,9 +4,7 @@ json.data (@po_requests) do |po_request|
                       if po_request.sales_order.present? && (policy(po_request).edit?)
                         row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
                       elsif policy(po_request).edit? && po_request.status != 'Cancelled'
-                        [row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning', :_blank),
-                           # row_action_button(overseers_po_requests_path(po_request), 'close-circle-outline', 'Cancel PO Request', 'warning', :_blank)
-                        ]
+                        row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning', :_blank)
                       end,
 
                       if policy(po_request).new_payment_request?
@@ -23,12 +21,18 @@ json.data (@po_requests) do |po_request|
                       if policy(po_request).material_received_in_bm_warehouse_new_email_msg?
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       end,
-                      if po_request.status.present? && !po_request.status.downcase.include?('cancel') && policy(po_request).edit?
-                          link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], :'data-po-request-id' => po_request.id, :remote => true) do
-                            concat content_tag(:span, '')
-                            concat content_tag :i, nil, class: ['fal fa-ban'].join
-                          end
+                      if policy(po_request).can_cancel?
+                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Cancel', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
+                      elsif po_request.status.present? && !po_request.status.downcase.include?('reject') && policy(po_request).can_reject?
+                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
                       end
+
                   ].join(' '),
                   if po_request.po_request_type == 'Stock'
                     conditional_link(po_request.id, overseers_inquiry_po_request_path(po_request.inquiry,po_request), policy(po_request).show?)
