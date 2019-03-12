@@ -39,9 +39,6 @@ json.data (@po_requests) do |po_request|
                   else
                     conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?)
                   end,
-                  if po_request.po_request_type == 'Stock'
-                    status_badge(po_request.stock_status)
-                  end,
                   conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
                   if po_request.purchase_order.present? && (po_request.status == 'PO Created' || po_request.stock_status == 'Stock Supplier PO Created')
                     link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank')
@@ -59,9 +56,7 @@ json.data (@po_requests) do |po_request|
                   format_date(po_request.inquiry.customer_committed_date),
                   format_date(po_request.supplier_committed_date),
                   format_date_time_meridiem(po_request.created_at),
-                  if po_request.last_comment.present?
-                    format_succinct_date(po_request.last_comment.updated_at)
-                  end,
+                  format_date_time_meridiem(po_request.updated_at),
                   status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? 'Supplier PO Sent' : 'Supplier PO: Not Sent to Supplier'),
                   if po_request.last_comment.present?
                     format_comment(po_request.last_comment, trimmed: true)
