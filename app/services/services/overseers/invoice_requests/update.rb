@@ -56,5 +56,5 @@ class Services::Overseers::InvoiceRequests::Update < Services::Shared::BaseServi
 
   private
 
-  attr_accessor :invoice_request, :current_overseer
+    attr_accessor :invoice_request, :current_overseer
 end

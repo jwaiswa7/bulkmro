@@ -6,8 +6,6 @@ class Services::Overseers::PoRequests::Update < Services::Shared::BaseService
   end
 
   def call
-    @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
-    @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
     ActiveRecord::Base.transaction do
       if @po_request.status_changed?
         if @po_request.status == 'Cancelled'
