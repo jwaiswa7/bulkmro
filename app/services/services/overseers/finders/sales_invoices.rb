@@ -5,10 +5,10 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_value('inquiry_present', true)))
-                      else
-                        super.filter(filter_by_value('inquiry_present', true))
-                      end
+      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_value('inquiry_present', true)))
+    else
+      super.filter(filter_by_value('inquiry_present', true))
+    end
 
     if @status.present?
       indexed_records = indexed_records.filter(filter_by_value(:status, @status))
@@ -29,7 +29,7 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
     end
 
     indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('invoice_over_time',  :mis_date, 'month', true))
-    indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('pod_over_time',  :pod_created_at, 'month',true))
+    indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('pod_over_time',  :pod_created_at, 'month', true))
 
     indexed_records
   end
