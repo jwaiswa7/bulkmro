@@ -2,17 +2,6 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
   before_action :set_payment_request, only: [:show]
 
   def index
-    payment_requests =
-        if params[:status].present? || params[:owner].present?
-          @param = params[:status] || params[:owner]
-          if PaymentRequest.send(:valid_scope_name?, @param)
-            PaymentRequest.send(@param)
-          else
-            PaymentRequest.where(status: @param)
-          end
-        else
-          PaymentRequest.all
-        end
 
     service = Services::Overseers::Finders::PaymentRequests.new(params, current_overseer)
     service.call
@@ -25,9 +14,8 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
     status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_payment_requests, PaymentRequest)
     status_service.call
 
-    # @total_values = status_service.indexed_total_values
-    # @statuses = status_service.indexed_statuses
-    @statuses = payment_requests.group(:status).count
+    @total_values = status_service.indexed_total_values
+    @statuses = status_service.indexed_statuses
   end
 
   def show
