@@ -3748,10 +3748,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service = Services::Shared::Spreadsheets::CsvImporter.new('Sales Order Comparison - Bible.csv', 'seed_files')
     missing_invoices = []
     missing_inquiries = []
-    mimatched_invoices = []
+    mismatched_invoices = []
 
     service.loop(nil) do |x|
-      invoice = Invoice.find_by_invoice_number(x.get_column('AR Invoice #'))
+      invoice = SalesInvoice.find_by_invoice_number(x.get_column('AR Invoice #'))
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number'))
       qty_to_check = x.get_column('Qty').to_i
       selling_price_to_check = x.get_column('Selling Price (as per SO / AR Invoice)').to_i
@@ -3765,24 +3765,28 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       if invoice.present?
         mismatch = false
         item = invoice.rows.where(:sku => sku).first
-        item_qty = item.qty
-        item_price = item.price.to_i
-        item_tax_amount = item.tax_amount.to_i
+        if item.present?
+          item_qty = item.metadata['qty']
+          item_price = item.metadata['price'].to_i
+          item_tax_amount = item.metadata['tax_amount'].to_i
 
-        if qty_to_check != item_qty
-          mismatch = true
-        end
+          if qty_to_check != item_qty
+            mismatch = true
+          end
 
-        if selling_price_to_check != item_price
-          mismatch = true
-        end
+          if selling_price_to_check != item_price
+            mismatch = true
+          end
 
-        if item_tax_amount != tax_amount_to_check
-          mismatch = true
-        end
+          if item_tax_amount != tax_amount_to_check
+            mismatch = true
+          end
 
-        if mismatch
-          mimatched_invoices << [x.get_column('AR Invoice #'), qty_to_check, item_qty, selling_price_to_check, item_price, tax_amount_to_check, item_tax_amount]
+          if mismatch
+            mismatched_invoices << [x.get_column('AR Invoice #'), sku, qty_to_check, item_qty, selling_price_to_check, item_price, tax_amount_to_check, item_tax_amount]
+          end
+        else
+          mismatched_invoices << [x.get_column('AR Invoice #'), sku, qty_to_check, 0, selling_price_to_check, 0, tax_amount_to_check, 0]
         end
       else
         missing_invoices << x.get_column('AR Invoice #')
