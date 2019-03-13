@@ -3,8 +3,9 @@ import updateSummaryBox from '../common/updateSummaryBox'
 
 const index = () => {
 
-    bindSummaryBox(".summary_box", '.status-filter');
-    updateSummaryBox();
+    bindSummaryBox(".summary_box", '.status-filter')
+    updateSummaryBox()
+    aggregateSummaryBox()
 
     // To show/hide Filtered records button
     $('#export_filtered_records').hide();
@@ -14,6 +15,7 @@ const index = () => {
     });
 
     $('#export_filtered_records').click((event) => {
+        $(this).prop('disabled', true);
         let element = $(event.target);
         let dataTable = $('.datatable').dataTable();
         let data = dataTable.api().ajax.params();
@@ -23,6 +25,7 @@ const index = () => {
             type: "GET",
             data: data,
             success: function () {
+                $(this).prop('disabled', false);
                 $.notify({
                     message: 'Email sent with Filtered Activities!'
                 }, {
@@ -32,5 +35,14 @@ const index = () => {
         });
     });
 };
+
+let aggregateSummaryBox = () => {
+    let table = $('.datatable').DataTable();
+    table.on('xhr', function () {
+        let json = table.ajax.json() ? table.ajax.json() : {};
+        $('.overall-status-count').html( new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusCount));
+        $('.overall-status-value').html("&#8377;" + new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusValue));
+    });
+}
 
 export default index
