@@ -44,7 +44,6 @@ json.data (@activities) do |activity|
                   format_currency(activity.expenses),
                   activity.points_discussed,
                   activity.actions_required,
-                  format_date(activity.activity_date),
                   format_succinct_date(activity.created_at)
               ]
 end
@@ -62,7 +61,6 @@ json.columnFilters [
                        [{ "source": autocomplete_overseers_contacts_path }],
                        Activity.purposes.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        Activity.activity_types.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
-                       [],
                        [],
                        [],
                        [],

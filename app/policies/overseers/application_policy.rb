@@ -50,6 +50,10 @@ class Overseers::ApplicationPolicy
     overseer.inside? || overseer.outside?
   end
 
+  def inside?
+    overseer.inside?
+  end
+
   def others?
     overseer.others?
   end

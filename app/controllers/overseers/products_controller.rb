@@ -18,6 +18,20 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @products
   end
 
+  def non_kit_autocomplete
+    base_filter = {
+        base_filter_key: 'is_not_kit',
+        base_filter_value: true
+    }
+
+    service = Services::Overseers::Finders::Products.new(params.merge(page: 1).merge(base_filter))
+    service.call
+
+    @indexed_products = service.indexed_records
+    @products = service.records
+    authorize @products
+  end
+
   def service_autocomplete
     base_filter = {
         base_filter_key: 'is_service',

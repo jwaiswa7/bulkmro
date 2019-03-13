@@ -23,10 +23,19 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def export_all
     authorize :inquiry
-    service = Services::Overseers::Exporters::InquiriesExporter.new
+    service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, [])
     service.call
 
     redirect_to url_for(Export.inquiries.last.report)
+  end
+
+  def export_filtered_records
+    authorize :inquiry
+    service = Services::Overseers::Finders::Inquiries.new(params, current_overseer, paginate: false)
+    service.call
+
+    export_service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, service.records.pluck(:id))
+    export_service.call
   end
 
   def index_pg
@@ -94,7 +103,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :new_inquiry).call if @inquiry.persisted?
-      redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to edit_overseers_inquiry_path(@inquiry, notice: flash_message(@inquiry, action_name))
     else
       render 'new'
     end
