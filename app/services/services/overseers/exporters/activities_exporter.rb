@@ -4,7 +4,7 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
     @model = Activity
     @export_name = 'activities'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['created_by', 'account', 'company', 'company_type', 'inquiry', 'commercial_status', 'contact_name', 'purpose', 'type', 'points_discussed', 'actions_required', 'activity_date', 'created']
+    @columns = ['created_by', 'account', 'company', 'company_type', 'inquiry', 'commercial_status', 'contact_name', 'purpose', 'type', 'points_discussed', 'actions_required', 'misc_expences', 'activity_date', 'created']
   end
 
   def call
@@ -25,6 +25,7 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
         type: record.activity_type,
         points_discussed: record.points_discussed,
         actions_required: record.actions_required,
+        misc_expences: format_currency(record.expenses),
         activity_date: record.activity_date.to_date.to_s,
         created: record.created_at.to_date.to_s
                 )

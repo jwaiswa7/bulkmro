@@ -11,8 +11,14 @@ class Overseers::ActivitiesController < Overseers::BaseController
   end
 
   def pending
-    @activities = ApplyDatatableParams.to(Activity.all.includes(:created_by, :overseers).not_approved.not_rejected, params)
-    service = Services::Overseers::Finders::Activities.new(params)
+    # @activities = ApplyDatatableParams.to(Activity.all.includes(:created_by, :overseers).not_approved.not_rejected, params)
+    #
+    base_filter = {
+        base_filter_key: 'approval_status',
+        base_filter_value: 'pending'
+    }
+
+    service = Services::Overseers::Finders::Activities.new(params.merge(base_filter))
     service.call
     @indexed_activities = service.indexed_records
     @activities = service.records
@@ -56,6 +62,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     authorize @activity
     ActiveRecord::Base.transaction do
       @activity.create_approval(overseer: current_overseer)
+      ActivitiesIndex::Activity.import([@activity.id])
     end
     redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
   end
@@ -67,6 +74,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     @activities.each do |activity|
       ActiveRecord::Base.transaction do
         activity.create_approval(overseer: current_overseer)
+        ActivitiesIndex::Activity.import([activity.id])
       end
     end
   end
@@ -78,6 +86,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     @activities.each do |activity|
       ActiveRecord::Base.transaction do
         activity.create_rejection(overseer: current_overseer)
+        ActivitiesIndex::Activity.import([activity.id])
       end
     end
   end
@@ -86,6 +95,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     authorize @activity
     ActiveRecord::Base.transaction do
       @activity.create_rejection(overseer: current_overseer)
+      ActivitiesIndex::Activity.import([@activity.id])
     end
     redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
   end

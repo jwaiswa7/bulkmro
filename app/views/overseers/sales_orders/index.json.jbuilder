@@ -50,13 +50,13 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [],
                        SalesOrder.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        SalesOrder.remote_statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [{ "source": autocomplete_overseers_accounts_path }],
                        Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        Overseer.outside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        [],
+                       []
                    ]
 
 

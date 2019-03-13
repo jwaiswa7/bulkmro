@@ -42,6 +42,14 @@ class SalesInvoice < ApplicationRecord
   validates_presence_of :invoice_number
   validates_uniqueness_of :invoice_number
 
+  def self.by_number(number)
+    find_by_invoice_number(number)
+  end
+
+  def get_number
+    self.invoice_number
+  end
+
   def filename(include_extension: false)
     [
         ['invoice', invoice_number].join('_'),
@@ -78,5 +86,9 @@ class SalesInvoice < ApplicationRecord
 
   def calculated_total_with_tax
     (calculated_total.to_f + calculated_total_tax.to_f).round(2)
+  end
+
+  def has_attachment?
+    self.pod_attachment.attached?
   end
 end
