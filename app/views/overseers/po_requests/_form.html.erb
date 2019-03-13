@@ -42,7 +42,7 @@
       <div class="card-header">
         <div class="form-row">
           <% if policy(@po_request).update? %>
-            <div class="col-lg-12">
+            <div class="col-lg-12 submit-form">
               <%= action_button(action_name, @po_request) %>
             </div>
           <% end %>
@@ -53,6 +53,7 @@
           <strong><%= f.object.supplier.to_s %></strong>
           <a href="#" class="btn btn-default btn-danger add-review float-right" data-toggle="modal" data-target="#modalRatingForm">Add/Edit Supplier Rating</a>
         </h5>
+<!--        <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center " data-toggle="modal" data-target="#cancelpo">Cancel <%#= @po_request.readable_status %></a>-->
 
         <%= render 'overseers/po_requests/rows_form', f: f , product_path: service_autocomplete_overseers_products_path, stock: false%>
         <% if action_name.capitalize == "New" %>
@@ -60,7 +61,7 @@
             <i class="fal fa-plus-circle"></i> Create PO Request
           <% end %>
         <% else %>
-          <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2 submit-form") do %>
             <i class="fal fa-pen"></i> Update PO Request
           <% end %>
         <% end %>
@@ -87,3 +88,4 @@
     </div>
   <% end %>
 </div>
+<%#= render partial: 'cancel_porequest'%>

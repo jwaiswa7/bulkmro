@@ -68,12 +68,12 @@ class PoRequest < ApplicationRecord
     'Stock Supplier PO Created': 30
   }
 
-  scope :pending_and_rejected, -> { where(status: [:'Requested', :'Rejected', :'Amend']) }
-  scope :handled, -> { where.not(status: [:'Requested', :'Cancelled', :'Amend']) }
-  scope :not_cancelled, -> { where.not(status: [:'Cancelled']) }
-  scope :cancelled, -> { where(status: [:'Cancelled']) }
-  scope :can_amend, -> { where(status: [:'PO Created']) }
-  scope :amended, -> { where(status: [:'Amend']) }
+  scope :pending_and_rejected, -> {where(status: [:'Requested', :'Rejected', :'Amend'])}
+  scope :handled, -> {where.not(status: [:'Requested', :'Cancelled', :'Amend'])}
+  scope :not_cancelled, -> {where.not(status: [:'Cancelled'])}
+  scope :cancelled, -> {where(status: [:'Cancelled'])}
+  scope :can_amend, -> {where(status: [:'PO Created'])}
+  scope :amended, -> {where(status: [:'Amend'])}
   scope :pending_stock_po, -> { where(stock_status: [:'Stock Requested']) }
   scope :completed_stock_po, -> { where(stock_status: [:'Stock Supplier PO Created']) }
   scope :stock_po, -> { where(stock_status: [:'Stock Requested', :'Stock Rejected', :'Stock Supplier PO Created']) }

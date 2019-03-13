@@ -460,7 +460,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       address.update_attributes(
           billing_address_uid: x.get_column('sap_row_num').split(',')[0],
           shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
-          ) if x.get_column('sap_row_num').present?
+      ) if x.get_column('sap_row_num').present?
 
       if company.legacy_metadata.present?
         if company.legacy_metadata['default_billing'] == x.get_column('idcompany_gstinfo')
@@ -602,7 +602,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       address.update_attributes(
           billing_address_uid: x.get_column('sap_row_num').split(',')[0],
           shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
-          ) if x.get_column('sap_row_num').present?
+      ) if x.get_column('sap_row_num').present?
 
       if company.legacy_metadata['default_billing'] == x.get_column('address_id')
         company.default_billing_address = address
@@ -2264,7 +2264,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         # end
       end
     end
-
   end
 
   def sap_sales_orders_totals_mismatch
@@ -3933,4 +3932,42 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     []
   end
 
+  def missing_payment_options
+    PaymentOption.where(is_active: nil).update_all(is_active: true)
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_payment_options.csv', 'seed_files')
+    service.loop(limit = nil) do |x|
+      payment_option = PaymentOption.where(remote_uid: x.get_column('group_code')).first_or_initialize
+      if payment_option.new_record?
+        payment_option_name = PaymentOption.find_by_name(x.get_column('value'))
+        unless payment_option_name.present?
+          payment_option.name = x.get_column('value')
+          payment_option.remote_uid = x.get_column('group_code', nil_if_zero: true)
+          payment_option.credit_limit = x.get_column('credit_limit').to_f
+          payment_option.general_discount = x.get_column('general_discount').to_f
+          payment_option.load_limit = x.get_column('load_limit').to_f
+          payment_option.legacy_metadata = x.get_row
+          payment_option.is_active = false
+          payment_option.save!
+        end
+      else
+        payment_option.update_attributes(name: x.get_column('value'))
+      end
+    end
+  end
+
+
+  def update_invoice_request_cancellation_status
+    invoice_requests = InvoiceRequest.where(status: 60)
+    invoice_requests.each do |invoice_request|
+      if invoice_request.grpo_number.nil?
+        invoice_request.status = 'Cancelled GRPO'
+        # modifiy with specific reason it's mendatory
+        invoice_request.grpo_cancellation_reason = 'cancellation changed in migration'
+      else
+        invoice_request.status = 'Cancelled AP Invoice'
+        invoice_request.ap_cancellation_reason = 'cancellation changed in migration'
+      end
+      invoice_request.save!
+    end
+  end
 end

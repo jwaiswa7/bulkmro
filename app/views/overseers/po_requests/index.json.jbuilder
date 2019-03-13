@@ -6,6 +6,7 @@ json.data (@po_requests) do |po_request|
                       elsif policy(po_request).edit? && po_request.status != 'Cancelled'
                         row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning', :_blank)
                       end,
+
                       if policy(po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif policy(po_request).show_payment_request?
@@ -19,15 +20,24 @@ json.data (@po_requests) do |po_request|
                       end,
                       if policy(po_request).material_received_in_bm_warehouse_new_email_msg?
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
+                      end,
+                      if policy(po_request).can_cancel?
+                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Cancel', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
+                      elsif po_request.status.present? && !po_request.status.downcase.include?('reject') && policy(po_request).can_reject?
+                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
                       end
+
                   ].join(' '),
                   if po_request.po_request_type == 'Stock'
                     conditional_link(po_request.id, overseers_inquiry_po_request_path(po_request.inquiry,po_request), policy(po_request).show?)
                   else
                     conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?)
-                  end,
-                  if po_request.po_request_type == 'Stock'
-                    status_badge(po_request.stock_status)
                   end,
                   conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
                   if po_request.purchase_order.present? && (po_request.status == 'PO Created' || po_request.stock_status == 'Stock Supplier PO Created')
@@ -46,9 +56,7 @@ json.data (@po_requests) do |po_request|
                   format_date(po_request.inquiry.customer_committed_date),
                   format_date(po_request.supplier_committed_date),
                   format_date_time_meridiem(po_request.created_at),
-                  if po_request.last_comment.present?
-                    format_succinct_date(po_request.last_comment.updated_at)
-                  end,
+                  format_date_time_meridiem(po_request.updated_at),
                   status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? 'Supplier PO Sent' : 'Supplier PO: Not Sent to Supplier'),
                   if po_request.last_comment.present?
                     format_comment(po_request.last_comment, trimmed: true)
