@@ -35,11 +35,8 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
         created: record.created_at.to_date.to_s
                 )
     end
-    if @ids.present?
-      export = Export.create!(export_type: 55, filtered: true, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    else
-      export = Export.create!(export_type: 55, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    end
+    filtered = @ids.present?
+    export = Export.create!(export_type: 55, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     generate_csv(export)
   end
 end

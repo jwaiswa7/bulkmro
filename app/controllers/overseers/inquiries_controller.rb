@@ -23,10 +23,19 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def export_all
     authorize :inquiry
-    service = Services::Overseers::Exporters::InquiriesExporter.new
+    service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, [])
     service.call
 
     redirect_to url_for(Export.inquiries.last.report)
+  end
+
+  def export_filtered_records
+    authorize :inquiry
+    service = Services::Overseers::Finders::Inquiries.new(params, current_overseer, paginate: false)
+    service.call
+
+    export_service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, service.records.pluck(:id))
+    export_service.call
   end
 
   def index_pg

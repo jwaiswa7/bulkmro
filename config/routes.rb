@@ -331,6 +331,7 @@ Rails.application.routes.draw do
         get 'index_pg'
         get 'smart_queue'
         get 'export_all'
+        get 'export_filtered_records'
       end
 
       scope module: 'inquiries' do
