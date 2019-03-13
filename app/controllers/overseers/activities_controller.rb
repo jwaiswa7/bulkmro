@@ -125,7 +125,6 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
     export_service = Services::Overseers::Exporters::ActivitiesExporter.new(nil, current_overseer, service.records.pluck(:id))
     export_service.call
-
   end
 
   private

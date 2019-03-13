@@ -18,15 +18,24 @@ const index = () => {
 
     $('#export_filtered_records').click((event) => {
         let element = $(event.target);
+        element.prop('disabled', true);
         let dataTable = $('.datatable').dataTable();
         let data = dataTable.api().ajax.params();
         event.preventDefault();
-        setTimeout(60000),
         $.ajax({
             url: Routes.export_filtered_records_overseers_activities_path(),
             type: "GET",
             data: data,
+            error: function () {
+                element.prop('disabled', false);
+                $.notify({
+                    message: 'Email is not delivered. Please export all activities'
+                }, {
+                    type: 'danger'
+                }, {delay: 1000});
+            },
             success: function () {
+                element.prop('disabled', false);
                 $.notify({
                     message: 'Email sent with Filtered Activities!'
                 }, {
