@@ -35,7 +35,7 @@ json.data (@companies) do |company|
                   company.inquiries.size,
                   (company.addresses.present? && company.is_international) ? 'International' : company.pan,
                   format_boolean(company.validate_pan),
-                  if company.is_supplier?
+                  if company.is_supplier? && company.rating.present? && company.rating > 0
                     format_star(company.rating)
                   end,
                   format_boolean(company.is_supplier?),
