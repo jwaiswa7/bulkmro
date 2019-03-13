@@ -45,6 +45,8 @@
   <th class="no-sort desktop text-right" data-name="po_request_no">PO Request No.</th>
   <% if action_name.include?'stock' %>
     <th class="no-sort desktop">Stock Status</th>
+  <% else %>
+    <th class="no-sort desktop">Status</th>
   <% end %>
   <th class="no-sort desktop text-right" data-name="inquiry">Inquiry</th>
   <% if action_name == 'index' || action_name == "Completed" %>
