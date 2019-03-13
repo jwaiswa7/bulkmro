@@ -137,23 +137,23 @@ class Overseers::ProductsController < Overseers::BaseController
 
   private
 
-  def product_params
-    params.require(:product).permit(
+    def product_params
+      params.require(:product).permit(
         :name,
-        :sku,
-        :mpn,
-        :is_service,
-        :is_active,
-        :brand_id,
-        :category_id,
-        :tax_code_id,
-        :tax_rate_id,
-        :measurement_unit_id,
-        images: []
-    )
-  end
+          :sku,
+          :mpn,
+          :is_service,
+          :is_active,
+          :brand_id,
+          :category_id,
+          :tax_code_id,
+          :tax_rate_id,
+          :measurement_unit_id,
+          images: []
+      )
+    end
 
-  def set_product
-    @product = Product.find(params[:id])
-  end
+    def set_product
+      @product = Product.find(params[:id])
+    end
 end

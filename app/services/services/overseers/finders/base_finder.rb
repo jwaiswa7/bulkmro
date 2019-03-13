@@ -34,14 +34,14 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
 
     @query_string = if params[:search].present? && params[:search][:value].present?
-                      params[:search][:value]
-                    elsif params[:q].present?
-                      params[:q]
-                    elsif params.is_a?(String)
-                      params
-                    else
-                      ''
-                    end.try(:strip)
+      params[:search][:value]
+    elsif params[:q].present?
+      params[:q]
+    elsif params.is_a?(String)
+      params
+    else
+      ''
+    end.try(:strip)
 
 
     @per = (params[:per] || params[:length] || 20).to_i
@@ -51,10 +51,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def call_base
     non_paginated_records = if query_string.present?
-                              perform_query(query_string)
-                            else
-                              all_records
-                            end
+      perform_query(query_string)
+    else
+      all_records
+    end
 
     @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
     @indexed_records = non_paginated_records if !paginate
@@ -75,20 +75,20 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def perform_query(query_string)
     index_klass.query(
-        query_string: {
-            fields: index_klass.fields,
-            query: query_string,
-            default_operator: 'or'
-        }
+      query_string: {
+          fields: index_klass.fields,
+          query: query_string,
+          default_operator: 'or'
+      }
     )
   end
 
   def filter_query(indexed_records)
     search_filters.each do |search_filter|
       indexed_records = indexed_records.filter(
-          term: {
-              :"#{search_filter[:name]}" => search_filter[:search][:value]
-          }
+        term: {
+            :"#{search_filter[:name]}" => search_filter[:search][:value]
+        }
       ) if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
     end
 
@@ -99,12 +99,12 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     range_filters.each do |range_filter|
       range = range_filter[:search][:value].split('~')
       indexed_records = indexed_records.query(
-          range: {
-              :"#{range_filter[:name]}" => {
-                  gte: range[0].strip.to_date,
-                  lte: range[1].strip.to_date
-              }
-          }
+        range: {
+            :"#{range_filter[:name]}" => {
+                gte: range[0].strip.to_date,
+                lte: range[1].strip.to_date
+            }
+        }
       )
     end
 

@@ -44,7 +44,7 @@ class Product < ApplicationRecord
   validates_presence_of :name
   validates_presence_of :sku, if: :not_rejected?
   validates_uniqueness_of :sku, if: :not_rejected?
-   self.order(sku: :asc, mpn: :desc)
+  self.order(sku: :asc, mpn: :desc)
   after_initialize :set_defaults, if: :new_record?
   validate :unique_name?
 
