@@ -2,10 +2,14 @@
 
 class Overseers::KitPolicy < Overseers::ApplicationPolicy
   def index?
-    cataloging? || admin?
+    cataloging? || admin? || inside?
   end
 
   def new?
+    index?
+  end
+
+  def show?
     index?
   end
 

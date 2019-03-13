@@ -13,7 +13,7 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
     #  @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
 
     indexed_records = indexed_records.filter(filter_by_array('material_status', PurchaseOrder.material_statuses.except(:'Material Delivered').values))
-    indexed_records = indexed_records.filter(filter_by_po_status)
+    # indexed_records = indexed_records.filter(filter_by_po_status)
     indexed_records = indexed_records.filter(filter_by_value('po_email_sent', true))
 
 

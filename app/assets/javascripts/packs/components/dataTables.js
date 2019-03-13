@@ -1,6 +1,5 @@
 // Component Imports
 import select2s from "./select2s";
-
 const dataTables = () => {
     preSetup();
     setup();
@@ -9,7 +8,7 @@ const dataTables = () => {
 
 // Setup the filter field before all dataTables, if the filter attribute exists
 let preSetup = () => {
-    $.fn.DataTable.ext.pager.numbers_length = 4;
+    // $.fn.DataTable.ext.pager.numbers_length = 4;
     $(document).on('preInit.dt', function (e, settings) {
         if ($(e.target).data('has-search') == true) return;
 
@@ -131,6 +130,7 @@ let setup = () => {
                     $('[data-filter="dropdown"] select').val("").trigger('change');
                     $('[data-filter="daterange"] input').val("").trigger('change');
                     $('.filter-list-input').val("").trigger('keyup');
+                    $('#export_filtered_records').hide();
                     e.preventDefault();
                 });
                 actionTd.append(clear);
@@ -175,6 +175,9 @@ let setup = () => {
 
                             // Set URL Hash parameter for this specific column
                             window.hasher.setParam(text, val);
+
+                            // Set a custom event that triggers on any of the filters being changed
+                            $(that).trigger('filters:change');
                         });
 
                         td.append(input);
