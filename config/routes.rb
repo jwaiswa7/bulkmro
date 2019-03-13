@@ -155,6 +155,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'service_autocomplete'
+        get 'autocomplete_mpn'
       end
       member do
         get 'customer_bp_catalog'

@@ -24,13 +24,13 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
     query = query[0, 35]
 
     indexed_records = index_klass.query(
-      multi_match: {
-          query: query,
-          operator: 'and',
-          fields: %w[sku^3 sku_edge name brand category mpn],
-          minimum_should_match: '100%'
-      }
-                                        )
+        multi_match: {
+            query: query,
+            operator: 'and',
+            fields: %w[sku^3 sku_edge name brand category mpn],
+            minimum_should_match: '100%'
+        }
+    )
 
     if @base_filter.present?
       indexed_records = indexed_records.filter(@base_filter)
@@ -62,7 +62,6 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
 
     @records = model_klass.where(id: indexed_records.pluck(:id)).approved.with_includes.reverse
   end
-
 
   def model_klass
     Product
