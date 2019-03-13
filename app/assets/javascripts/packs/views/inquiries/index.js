@@ -15,8 +15,8 @@ const index = () => {
     });
 
     $('#export_filtered_records').click((event) => {
-        $(this).prop('disabled', true);
         let element = $(event.target);
+        element.prop('disabled', true);
         let dataTable = $('.datatable').dataTable();
         let data = dataTable.api().ajax.params();
         event.preventDefault();
@@ -24,7 +24,8 @@ const index = () => {
             url: Routes.export_filtered_records_overseers_inquiries_path(),
             type: "GET",
             data: data,
-            error: function() {
+            error: function () {
+                element.prop('disabled', false);
                 $.notify({
                     message: 'Email is not delivered. Please export all activities'
                 }, {
@@ -32,7 +33,7 @@ const index = () => {
                 }, {delay: 1000});
             },
             success: function () {
-                $(this).prop('disabled', false);
+                element.prop('disabled', false);
                 $.notify({
                     message: 'Email sent with Filtered Activities!'
                 }, {
@@ -47,7 +48,7 @@ let aggregateSummaryBox = () => {
     let table = $('.datatable').DataTable();
     table.on('xhr', function () {
         let json = table.ajax.json() ? table.ajax.json() : {};
-        $('.overall-status-count').html( new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusCount));
+        $('.overall-status-count').html(new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusCount));
         $('.overall-status-value').html("&#8377;" + new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusValue));
     });
 }
