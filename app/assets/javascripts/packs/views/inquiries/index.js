@@ -15,6 +15,7 @@ const index = () => {
     });
 
     $('#export_filtered_records').click((event) => {
+        $(this).prop('disabled', true);
         let element = $(event.target);
         let dataTable = $('.datatable').dataTable();
         let data = dataTable.api().ajax.params();
@@ -24,6 +25,7 @@ const index = () => {
             type: "GET",
             data: data,
             success: function () {
+                $(this).prop('disabled', false);
                 $.notify({
                     message: 'Email sent with Filtered Activities!'
                 }, {
@@ -43,6 +45,7 @@ let aggregateSummaryBox = () => {
         $('.overall-status-value').html("&#8377;" + new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusValue));
     });
 };
+
 
 
 export default index
