@@ -9,6 +9,5 @@ class ExportMailer < ApplicationMailer
 
     attach_files([record.report])
     mail(to: @overseer.email, subject: subject)
-
   end
 end

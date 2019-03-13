@@ -9,7 +9,7 @@ const index = () => {
     // To show/hide Filtered records button
     $('#export_filtered_records').hide();
 
-    $('.datatable').on('filters:change', function() {
+    $('.datatable').on('filters:change', function () {
         $('#export_filtered_records').show();
     });
 
@@ -23,7 +23,11 @@ const index = () => {
             type: "GET",
             data: data,
             success: function () {
-
+                $.notify({
+                    message: 'Email sent with Filtered Activities!'
+                }, {
+                    type: 'info'
+                }, {delay: 5000});
             }
         });
     });
