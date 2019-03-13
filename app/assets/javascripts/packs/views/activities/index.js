@@ -21,11 +21,17 @@ const index = () => {
         let dataTable = $('.datatable').dataTable();
         let data = dataTable.api().ajax.params();
         event.preventDefault();
-        setTimeout(60000),
         $.ajax({
             url: Routes.export_filtered_records_overseers_activities_path(),
             type: "GET",
             data: data,
+            error: function() {
+                $.notify({
+                    message: 'Email is not delivered. Please export all activities'
+                }, {
+                    type: 'danger'
+                }, {delay: 1000});
+            },
             success: function () {
                 $.notify({
                     message: 'Email sent with Filtered Activities!'

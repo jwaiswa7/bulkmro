@@ -24,6 +24,13 @@ const index = () => {
             url: Routes.export_filtered_records_overseers_inquiries_path(),
             type: "GET",
             data: data,
+            error: function() {
+                $.notify({
+                    message: 'Email is not delivered. Please export all activities'
+                }, {
+                    type: 'danger'
+                }, {delay: 1000});
+            },
             success: function () {
                 $(this).prop('disabled', false);
                 $.notify({

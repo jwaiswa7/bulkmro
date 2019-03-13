@@ -118,6 +118,10 @@ class Overseers::ApplicationPolicy
     developer? || ['Gaurang Shah', 'Devang Shah', 'Ankur Gupta', 'Lavanya Jamma', 'Shailender Agarwal', 'Nilesh Desai', 'Priyanka Rajpurkar', 'Uday Salvi', 'Akshay Jindal', 'Nitin Nabera', 'Vijay Manjrekar'].include?(overseer.name)
   end
 
+  def export_filtered_records?
+    developer? #allow_export?
+  end
+
   def allow_logistics_format_export?
     developer? || ['Amit Rawool', 'Vignesh Gounder', 'Mahendra Kolekar', 'Ajay Rathod'].include?(overseer.name)
   end
