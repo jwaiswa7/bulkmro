@@ -87,8 +87,14 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_request
     if @po_request.valid?
       # todo allow only in case of zero form errors
+
+      messages = FieldModifiedMessage.for(@po_request, ['contact_email', 'contact_phone', 'contact_id', 'payment_option_id', 'bill_from_id', 'ship_from_id', 'bill_to_id', 'ship_to_id', 'status', 'supplier_po_type', 'supplier_committed_date'])
+      if messages.present?
+        @po_request.comments.create(message: messages, overseer: current_overseer)
+      end
+
       @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
-      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).is_manager_or_sales?
+      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
       ActiveRecord::Base.transaction do
         if @po_request.status_changed?
           if @po_request.status == 'Cancelled'

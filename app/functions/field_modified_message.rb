@@ -4,6 +4,7 @@ class FieldModifiedMessage < BaseFunction
       @messages = []
       fields.each do |field|
         if record.send("#{field}_changed?")
+          # raise
           if field.match?(/date/i)
             for_date_fields(record, field)
           else
@@ -11,6 +12,7 @@ class FieldModifiedMessage < BaseFunction
           end
         end
       end
+      # add id
 
       @messages.join(" \r\n")
     end
