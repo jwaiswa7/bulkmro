@@ -38,6 +38,7 @@ module DisplayHelper
 
   def format_currency(amount, symbol: nil, precision: 2, plus_if_positive: false, show_symbol: true, floor: false)
     if amount.present?
+      amount = amount.to_f
       [amount > 0 && plus_if_positive ? '+' : nil, amount < 0 ? '-' : nil, show_symbol ? (symbol || '₹') : nil, number_with_precision(floor ? amount.abs.floor : amount.abs, precision: precision, delimiter: ',')].join if amount.present?
     else
       '-'
