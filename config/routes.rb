@@ -156,6 +156,7 @@ Rails.application.routes.draw do
     resources :products do
       collection do
         get 'autocomplete'
+        get 'non_kit_autocomplete'
         get 'service_autocomplete'
       end
       member do
