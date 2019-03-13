@@ -65,6 +65,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :document_creations
+
     resources :notifications do
       collection do
         post 'mark_as_read'
@@ -154,6 +156,7 @@ Rails.application.routes.draw do
     resources :products do
       collection do
         get 'autocomplete'
+        get 'non_kit_autocomplete'
         get 'service_autocomplete'
         get 'autocomplete_mpn'
       end
