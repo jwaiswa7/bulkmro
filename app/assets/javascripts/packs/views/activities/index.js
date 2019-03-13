@@ -21,6 +21,7 @@ const index = () => {
         let dataTable = $('.datatable').dataTable();
         let data = dataTable.api().ajax.params();
         event.preventDefault();
+        setTimeout(60000),
         $.ajax({
             url: Routes.export_filtered_records_overseers_activities_path(),
             type: "GET",
