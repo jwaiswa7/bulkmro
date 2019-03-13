@@ -4,7 +4,7 @@ class Kit < ApplicationRecord
 
   default_scope { order(created_at: :desc) }
 
-  pg_search_scope :locate, against: [:remote_uid], associated_against: { product: [:sku, :name] }, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:remote_uid], associated_against: { product: [:sku, :name], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
   has_many :kit_product_rows
   belongs_to :product

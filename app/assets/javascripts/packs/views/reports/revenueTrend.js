@@ -24,8 +24,13 @@ let updateChartOptions = function (chartObject) {
                             display: true,
                             userCallback: function (value) {
                                 value = value.toString();
-                                return '₹' + (value / 100000) + ' Lacs';
-                            }
+                                if(value >= 0 && value <= 1){
+                                    return value;
+                                } else {
+                                    return '₹' + (value / 100000) + ' Lacs';
+                                }
+                            },
+                            beginAtZero: true
                         },
                         scaleLabel: {
                             display: true,
