@@ -60,7 +60,7 @@
 
                 <tr>
                   <td><%= sr_no + 1 %></td>
-                  <td><%= row.product.to_s %></td>
+                  <td><%= row.to_s %> <%= "(#{row.product.to_s})" if row.to_s != row.product.to_s %> </td>
                   <td><%= row.product.try(:brand).to_s %></td>
                   <td><%= row.tax_code %></td>
                   <td><%= row.tax_rate %></td>

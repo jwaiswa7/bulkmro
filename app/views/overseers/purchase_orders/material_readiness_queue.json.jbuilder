@@ -13,8 +13,8 @@ json.data (@purchase_orders) do |purchase_order|
                       if policy(purchase_order).edit_material_followup?
                         row_action_button(edit_material_followup_overseers_purchase_order_path(purchase_order), 'list-alt', 'Edit Material Followup', 'success', :_blank)
                       end,
-                      if policy(purchase_order).new_pickup_request?
-                        row_action_button(new_overseers_purchase_order_material_pickup_request_path(purchase_order), 'plus-circle', 'Create Material Pickup Request', 'success', target: :_blank)
+                      if policy(purchase_order).new_inward_dispatch?
+                        row_action_button(new_overseers_purchase_order_inward_dispatch_path(purchase_order), 'people-carry', 'Create Inward Dispatch', 'success', target: :_blank)
                       end,
                       if purchase_order.po_request.present? && policy(purchase_order.po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(purchase_order.po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
@@ -31,10 +31,10 @@ json.data (@purchase_orders) do |purchase_order|
                   purchase_order.po_request.present? ? purchase_order.po_request.supplier_po_type : '',
                   format_succinct_date(purchase_order.metadata['PoDate'].try(:to_date)),
                   (purchase_order.supplier.present? ? conditional_link(purchase_order.supplier.try(:name), overseers_company_path(purchase_order.supplier), policy(purchase_order.inquiry).show?) : '-'),
-                  purchase_order.po_request.buying_price,
-                  purchase_order.po_request.selling_price,
-                  purchase_order.po_request.po_margin_percentage,
-                  (purchase_order.po_request.sales_order.calculated_total_margin_percentage if purchase_order.po_request.sales_order.present?),
+                  (purchase_order.po_request.buying_price if purchase_order.po_request.present?),
+                  (purchase_order.po_request.selling_price if purchase_order.po_request.present?),
+                  (purchase_order.po_request.po_margin_percentage if purchase_order.po_request.present?),
+                  (purchase_order.po_request.sales_order.calculated_total_margin_percentage if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   (purchase_order.logistics_owner.full_name if purchase_order.logistics_owner.present?),
                   status_badge(purchase_order.material_status),
@@ -52,24 +52,24 @@ end
 json.columnFilters [
                        [],
                        [],
-                       [{ "source": autocomplete_overseers_companies_path }],
+                       [{"source": autocomplete_overseers_companies_path}],
                        [],
                        [],
                        [],
                        [],
-                       PoRequest.supplier_po_types.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       PoRequest.supplier_po_types.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
                        [],
-                       [{ "source": autocomplete_overseers_companies_path }],
-                       [],
-                       [],
+                       [{"source": autocomplete_overseers_companies_path}],
                        [],
                        [],
-                       Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
-                       Overseer.where(role: 'logistics').alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
-                       PurchaseOrder.material_statuses.except(:'Material Delivered').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        [],
-                       PaymentRequest.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       Overseer.inside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+                       Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+                       PurchaseOrder.material_statuses.except(:'Material Delivered').map {|k, v| {"label": k, "value": v.to_s}}.as_json,
+                       [],
+                       [],
+                       PaymentRequest.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
                        [],
                        []
                    ]

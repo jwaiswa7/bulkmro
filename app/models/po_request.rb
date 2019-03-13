@@ -33,7 +33,8 @@ class PoRequest < ApplicationRecord
       'PO Created': 20,
       'Cancelled': 30,
       'Rejected': 40,
-      'Amend': 50
+      'Amend': 50,
+      'Supplier PO Sent': 60
   }
 
   enum supplier_po_type: {

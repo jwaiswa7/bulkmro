@@ -1,8 +1,8 @@
-class MprRow < ApplicationRecord
-  belongs_to :material_pickup_request
+class InwardDispatchRow < ApplicationRecord
+  belongs_to :inward_dispatch
   belongs_to :purchase_order_row
 
-  validates_uniqueness_of :purchase_order_row_id, scope: :material_pickup_request
+  validates_uniqueness_of :purchase_order_row_id, scope: :inward_dispatch
   validates_numericality_of :pickup_quantity, greater_than: 0
   validates_numericality_of :delivered_quantity, greater_than: 0, allow_nil: true
 
@@ -28,6 +28,9 @@ class MprRow < ApplicationRecord
     self.purchase_order_row.lead_date if self.purchase_order_row.present?
   end
 
+  def pending_delivery
+    self.purchase_order_row.quantity - self.delivered_quantity.to_i
+  end
 
   def check_pickup_quantity?
     previous_pickup_quantity = pickup_quantity_was || 0

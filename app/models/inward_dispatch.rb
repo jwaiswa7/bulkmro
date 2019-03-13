@@ -1,15 +1,16 @@
-class MaterialPickupRequest < ApplicationRecord
-  COMMENTS_CLASS = 'MprComment'
+class InwardDispatch < ApplicationRecord
+  COMMENTS_CLASS = 'InwardDispatchComment'
 
   include Mixins::HasComments
   include Mixins::CanBeStamped
+  include Mixins::GetOverallDate
 
-  update_index('material_pickup_requests#material_pickup_request') { self }
+  update_index('inward_dispatches#inward_dispatch') { self }
   belongs_to :purchase_order
   has_one :inquiry, through: :purchase_order
 
   belongs_to :logistics_owner, -> (record) { where(role: 'logistics') }, class_name: 'Overseer', foreign_key: 'logistics_owner_id', optional: true
-  has_many :rows, -> { joins(:purchase_order_row) }, class_name: 'MprRow', inverse_of: :material_pickup_request, dependent: :destroy
+  has_many :rows, -> { joins(:purchase_order_row) }, class_name: 'InwardDispatchRow', inverse_of: :inward_dispatch, dependent: :destroy
   has_many_attached :attachments
   belongs_to :invoice_request, optional: true
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['purchase_order_row_id'].blank? && attributes['id'].blank? }, allow_destroy: true
@@ -38,17 +39,24 @@ class MaterialPickupRequest < ApplicationRecord
   }
 
   enum logistics_partners: {
-      'Aramex': 10,
-      'FedEx': 11,
-      'Spoton': 12,
-      'Safex': 13,
-      'Professional': 14,
-      'DTDC': 15,
-      'Delhivery': 16,
-      'UPS': 17,
-      'Blue Dart': 18,
-      'BM Runner': 20,
-      'Drop Ship': 30
+      'Aramex': 1,
+      'FedEx': 2,
+      'Spoton': 3,
+      'Safex': 4,
+      'Professional Couriers': 5,
+      'DTDC': 5,
+      'Delhivery': 7,
+      'UPS': 8,
+      'Blue Dart': 9,
+      'Anjani Courier': 10,
+      'Mahavir Courier': 11,
+      'Elite Enterprise': 12,
+      'Sri Krishna Logistics': 13,
+      'Vinod': 20,
+      'Ganesh': 21,
+      'Tushar': 22,
+      'Others': 30,
+      'Drop Ship': 40
   }
 
   enum logistics_aggregator: {
@@ -64,7 +72,8 @@ class MaterialPickupRequest < ApplicationRecord
   }, _prefix: true
 
   scope :with_includes, -> { includes(:inquiry).includes(:purchase_order) }
-  scope :'3PL', -> { where(logistics_partner: [10, 11, 12, 13, 14, 15, 16, 17, 18]) }
+  scope :'3PL', -> { where(logistics_partner: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]) }
+  scope :'BM Runner', -> { where(logistics_partner: [20, 21, 22]) }
   after_initialize :set_defaults, if: :new_record?
 
   validates_length_of :rows, minimum: 1, message: 'must have at least one product', on: :update
@@ -74,9 +83,9 @@ class MaterialPickupRequest < ApplicationRecord
 
   def grouped_status
     grouped_status = {}
-    status_category = { 10 => '3PL', 20 => 'BM Runner', 30 => 'Drop Ship' }
+    status_category = { 1 => '3PL', 20 => 'BM Runner', 30 => 'Others', 40 => 'Drop Ship' }
     status_category.each do |index, category|
-      grouped_status[category] = MaterialPickupRequest.logistics_partners.collect { |status, v|
+      grouped_status[category] = InwardDispatch.logistics_partners.collect { |status, v|
       if v.between?(index, index + 9)
         status
       end}.compact
@@ -90,6 +99,10 @@ class MaterialPickupRequest < ApplicationRecord
 
   def po_row_size
     purchase_order.rows.size
+  end
+
+  def show_supplier_delivery_date
+    get_overall_date(self)
   end
 
   # @return [Boolean]
