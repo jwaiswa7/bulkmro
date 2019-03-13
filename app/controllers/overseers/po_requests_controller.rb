@@ -87,10 +87,14 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_request
     if @po_request.valid?
       # todo allow only in case of zero form errors
-
+      row_updated_message = ""
       messages = FieldModifiedMessage.for(@po_request, ['contact_email', 'contact_phone', 'contact_id', 'payment_option_id', 'bill_from_id', 'ship_from_id', 'bill_to_id', 'ship_to_id', 'status', 'supplier_po_type', 'supplier_committed_date'])
-      if messages.present?
-        @po_request.comments.create(message: messages, overseer: current_overseer)
+      @po_request.rows.each do |po_request_row|
+        updated_row_fields = FieldModifiedMessage.for(po_request_row, ['quantity', 'tax_code_id', 'tax_rate_id', 'discount_percentage', 'unit_price', 'lead_time'])
+        row_updated_message += updated_row_fields
+      end
+      if messages.present? || row_updated_message.present?
+        @po_request.comments.create(message: messages + '\r\n' + row_updated_message, overseer: current_overseer)
       end
 
       @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
