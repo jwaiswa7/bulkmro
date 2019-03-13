@@ -1008,7 +1008,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         if purchase_order.material_status != 'Material Delivered'
           if purchase_order.email_messages.present? || !purchase_order.email_messages.where(purchase_order: purchase_order, email_type: 'Sending PO to Supplier').present?
 
-            email_message = purchase_order.email_messages.build
+            email_message = purchase_order.email_messages.build(
               overseer: Overseer.default_approver,
               inquiry: purchase_order.inquiry,
               purchase_order: purchase_order,
