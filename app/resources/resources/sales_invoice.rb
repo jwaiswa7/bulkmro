@@ -26,19 +26,19 @@ class Resources::SalesInvoice < Resources::ApplicationResource
 
           sales_invoice.update_attributes!(metadata: metadata, billing_address: billing_address, shipping_address: shipping_address)
           remote_rows.each do |remote_row|
-            # is_kit = remote_row['TreeType'] == 'iSalesTree' ? true : false
-            unit_price = remote_row['Price'].to_f
-            sku = remote_row['ItemCode']
-            product = Product.find_by_sku(sku)
-            is_kit = product.present? ? product.is_kit : false
+          # is_kit = remote_row['TreeType'] == 'iSalesTree' ? true : false
+          unit_price = remote_row['Price'].to_f
+          sku = remote_row['ItemCode']
+          product = Product.find_by_sku(sku)
+          is_kit = product.present? ? product.is_kit : false
 
-            # sales_order_row = sales_order.rows.joins(:product).where('products.sku = ?', sku).first
-            quantity = remote_row['Quantity'].to_f
-            tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
+          # sales_order_row = sales_order.rows.joins(:product).where('products.sku = ?', sku).first
+          quantity = remote_row['Quantity'].to_f
+          tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
 
           sales_invoice.rows.create!(
             quantity: quantity,
-            sku: sku,metadata: {
+            sku: sku, metadata: {
                 qty: quantity,
                 sku: sku,
                 name: remote_row['U_Item_Descr'] != '' ? remote_row['U_Item_Descr'] : remote_row['ItemDescription'],
@@ -153,7 +153,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
       }
       remote_rows_arr.push(remote_row_obj)
     end
-    metadata = {
+    {
         'state' => remote_response['U_Invoic_Status'],
         'is_kit' => '',
         'qty_kit' => remote_rows_arr[0][:qty],

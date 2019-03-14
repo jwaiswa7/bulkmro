@@ -35,7 +35,7 @@ json.data (@po_requests) do |po_request|
 
                   ].join(' '),
                   if po_request.po_request_type == 'Stock'
-                    conditional_link(po_request.id, overseers_inquiry_po_request_path(po_request.inquiry,po_request), policy(po_request).show?)
+                    conditional_link(po_request.id, overseers_inquiry_po_request_path(po_request.inquiry, po_request), policy(po_request).show?)
                   else
                     conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?)
                   end,

@@ -1,5 +1,5 @@
 class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::BaseService
-  def initialize(order, overseer, po_requests, stock_po=false)
+  def initialize(order, overseer, po_requests, stock_po = false)
     @order = order
     @overseer = overseer
     @po_requests = po_requests
@@ -53,7 +53,7 @@ class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::Bas
         @notification = Services::Overseers::Notifications::Notify.new(@overseer, self.class.parent)
         if po_request.present? && po_request.po_request_type == 'Supplier'
           @notification.send_po_request_creation(
-              Services::Overseers::Notifications::Recipients.logistics_owners,
+            Services::Overseers::Notifications::Recipients.logistics_owners,
               self.class.name.demodulize,
               po_request,
               Rails.application.routes.url_helpers.overseers_po_request_path(po_request),
@@ -61,7 +61,7 @@ class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::Bas
           )
         else
           @notification.send_stock_po_request_creation(
-              Services::Overseers::Notifications::Recipients.logistics_owners,
+            Services::Overseers::Notifications::Recipients.logistics_owners,
               self.class.name.demodulize,
               po_request,
               Rails.application.routes.url_helpers.overseers_po_request_path(po_request),

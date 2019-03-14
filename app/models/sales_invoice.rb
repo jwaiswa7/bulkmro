@@ -178,7 +178,7 @@ class SalesInvoice < ApplicationRecord
     end
     due_amt
   end
-  
+
   def has_attachment?
     self.pod_attachment.attached?
   end
