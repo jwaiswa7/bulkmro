@@ -92,6 +92,7 @@ Rails.application.routes.draw do
         post 'reject_selected'
         post 'add_to_inquiry'
         get 'export_all'
+        get 'export_filtered_records'
       end
       member do
         get 'approve'
@@ -331,6 +332,7 @@ Rails.application.routes.draw do
         get 'index_pg'
         get 'smart_queue'
         get 'export_all'
+        get 'export_filtered_records'
       end
 
       scope module: 'inquiries' do

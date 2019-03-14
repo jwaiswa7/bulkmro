@@ -63,6 +63,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def export_filtered_records?
+    developer? # allow_export?
+  end
+
   def create_excel_import?
     new_excel_import?
   end
