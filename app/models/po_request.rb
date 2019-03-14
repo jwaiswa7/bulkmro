@@ -29,7 +29,7 @@ class PoRequest < ApplicationRecord
   attr_accessor :opportunity_type, :customer_committed_date, :blobs
 
   enum status: {
-      'Requested': 10,
+      'Supplier PO: Request Pending': 10,
       'Supplier PO Created Not Sent': 20,
       'Cancelled': 30,
       'Rejected': 40,
@@ -53,8 +53,8 @@ class PoRequest < ApplicationRecord
       'Others': 80
   }
 
-  scope :pending_and_rejected, -> { where(status: [:'Requested', :'Rejected', :'Amend']) }
-  scope :handled, -> { where.not(status: [:'Requested', :'Cancelled', :'Amend']) }
+  scope :pending_and_rejected, -> { where(status: [:'Supplier PO: Request Pending', :'Rejected', :'Amend']) }
+  scope :handled, -> { where.not(status: [:'Supplier PO: Request Pending', :'Cancelled', :'Amend']) }
   scope :not_cancelled, -> { where.not(status: [:'Cancelled']) }
   scope :cancelled, -> { where(status: [:'Cancelled']) }
   scope :can_amend, -> { where(status: [:'Supplier PO Created Not Sent']) }
@@ -85,7 +85,7 @@ class PoRequest < ApplicationRecord
   end
 
   def set_defaults
-    self.status ||= :'Requested'
+    self.status ||= :'Supplier PO: Request Pending'
   end
 
   def amending?
@@ -114,7 +114,7 @@ class PoRequest < ApplicationRecord
 
   def readable_status
     title = ''
-    if self.status == 'Requested'
+    if self.status == 'Supplier PO: Request Pending'
       title = 'Pending'
     elsif self.status == 'Supplier PO Created Not Sent'
       title = 'Completed'
