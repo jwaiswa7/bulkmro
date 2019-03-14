@@ -3607,7 +3607,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       # puts x.get_row
       mismatch = nil
       sales_order = SalesOrder.where(order_number: x.get_column('order number')).or(SalesOrder.where(old_order_number: x.get_column('order number'))).first
-
+      
       if sales_order.present?
         product = Product.find_by(sku: x.get_column('product sku'))
 
