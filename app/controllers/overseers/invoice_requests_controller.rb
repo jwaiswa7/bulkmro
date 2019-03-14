@@ -147,7 +147,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def render_cancellation_form
     authorize @invoice_request
     respond_to do |format|
-      format.html {render :partial => "cancel_invoice_request",  locals: {status: params[:status]}}
+      format.html {render partial: 'cancel_invoice_request',  locals: {status: params[:status]}}
     end
   end
 
