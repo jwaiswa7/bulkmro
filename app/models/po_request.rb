@@ -53,12 +53,26 @@ class PoRequest < ApplicationRecord
       'Others': 80
   }
 
+  enum po_request_type: {
+      'Supplier': 10,
+      'Stock': 20
+  }
+
+  enum stock_status: {
+      'Stock Requested': 10,
+      'Stock Rejected': 20,
+      'Stock Supplier PO Created': 30
+  }
+
   scope :pending_and_rejected, -> { where(status: [:'Requested', :'Rejected', :'Amend']) }
   scope :handled, -> { where.not(status: [:'Requested', :'Cancelled', :'Amend']) }
   scope :not_cancelled, -> { where.not(status: [:'Cancelled']) }
   scope :cancelled, -> { where(status: [:'Cancelled']) }
   scope :can_amend, -> { where(status: [:'PO Created']) }
   scope :amended, -> { where(status: [:'Amend']) }
+  scope :pending_stock_po, -> { where(stock_status: [:'Stock Requested']) }
+  scope :completed_stock_po, -> { where(stock_status: [:'Stock Supplier PO Created']) }
+  scope :stock_po, -> { where(stock_status: [:'Stock Requested', :'Stock Rejected', :'Stock Supplier PO Created']) }
 
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? && !is_legacy }
@@ -79,13 +93,20 @@ class PoRequest < ApplicationRecord
   end
 
   def update_reason_for_status_change?
-    if (self.status == 'Cancelled' && self.cancellation_reason.blank?) || (self.status == 'Rejected' && self.rejection_reason.blank?)
-      errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
+    if self.po_request_type == 'Regular'
+      if (self.status == 'Cancelled' && self.cancellation_reason.blank?) || (self.status == 'Rejected' && self.rejection_reason.blank?)
+        errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
+      end
+    elsif self.po_request_type == 'Stock'
+      if self.stock_status == 'Stock Rejected' && self.rejection_reason.blank?
+        errors.add(:base, "Provide a reason to change the stock_status to #{self.stock_status} in message section")
+      end
     end
   end
 
   def set_defaults
-    self.status ||= :'Requested'
+    self.status ||= :'Requested' if self.po_request_type == 'Regular'
+    self.stock_status ||= :'Stock Requested' if self.po_request_type == 'Stock'
   end
 
   def amending?
