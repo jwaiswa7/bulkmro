@@ -31,7 +31,7 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
         type: record.activity_type,
         points_discussed: record.points_discussed,
         actions_required: record.actions_required,
-        misc_expences: format_currency(record.expenses),
+        misc_expences: record.expenses,
         activity_date: record.activity_date.to_date.to_s,
         created: record.created_at.to_date.to_s
                 )
