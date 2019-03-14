@@ -8,7 +8,11 @@
 <% end %>
 
 <% content_for :heading do %>
-  <%= action_name == 'index' ? 'Completed' : (action_name == 'pending_and_rejected') ? 'Pending' : action_name.capitalize %> Purchase Order Requests
+  <% if action_name == 'pending_stock' || 'pending_stock_approval' %>
+    <%= action_name.capitalize.gsub('_',' ') %> Requests
+  <%else %>
+    <%= action_name == 'index' ? 'Completed' : (action_name == 'pending_and_rejected') ? 'Pending' : action_name.capitalize %> Purchase Order Requests
+  <% end %>
 <% end %>
 
 <% content_for(:heading_buttons) do %>
