@@ -1,5 +1,5 @@
 class Overseers::InvoiceRequestsController < Overseers::BaseController
-  before_action :set_invoice_request, only: [:show, :edit, :update, :cancel_invoice_request, :render_cancellation_form]
+  before_action :set_invoice_request, only: [:show, :edit, :update]
 
   def pending
     invoice_requests =
@@ -72,16 +72,16 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @sales_order = @purchase_order.try(:po_request).try(:sales_order)
       @invoice_request = InvoiceRequest.new(overseer: current_overseer, purchase_order: @purchase_order, inquiry: @purchase_order.inquiry)
-      @mpr_ids = params[:ids].present? ? params[:ids] : MaterialPickupRequest.decode_id(params[:mpr_id])
+      @inward_dispatches_ids = params[:ids].present? ? params[:ids] : InwardDispatch.decode_id(params[:mpr_id])
 
       authorize @invoice_request
-      if params[:mpr_id] || params[:ids]
-        if params[:mpr_id]
-          @invoice_request.material_pickup_requests << MaterialPickupRequest.find(@mpr_ids)
+      if params[:inward_dispatch_id] || params[:ids]
+        if params[:inward_dispatch_id]
+          @invoice_request.inward_dispatches << InwardDispatch.find(@inward_dispatches_ids)
         else
-          @invoice_request.material_pickup_requests << MaterialPickupRequest.where(id: @mpr_ids)
+          @invoice_request.inward_dispatches << InwardDispatch.where(id: @inward_dispatches_ids)
         end
-        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@mpr_ids,  false)
+        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@inward_dispatches_ids,  false)
       else
         service = Services::Overseers::InvoiceRequests::FormProductsList.new(@purchase_order,  true)
       end
@@ -164,15 +164,14 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         :ar_invoice_number,
         :purchase_order_id,
         :status,
-        :material_pickup_request_ids,
+        :inward_dispatch_ids,
         :grpo_rejection_reason,
         :grpo_other_rejection_reason,
         :grpo_cancellation_reason,
         :ap_rejection_reason,
         :ap_cancellation_reason,
         comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-        attachments: [],
-
+        attachments: []
     )
   end
 

@@ -28,7 +28,7 @@
     <%= f.hidden_field :sales_order_id %>
     <%= f.hidden_field :inquiry_id %>
     <%= f.hidden_field :purchase_order_id %>
-    <%= f.hidden_field :material_pickup_request_ids, value: @invoice_request.material_pickup_requests.map(&:id).join(", ") %>
+    <%= f.hidden_field :inward_dispatches_ids, value: @invoice_request.inward_dispatches.map(&:id).join(", ") %>
 
     <div class="card">
       <div class="card-header">
@@ -144,7 +144,7 @@
             <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(InvoiceRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
           </div>
           <div class="col-6">
-            <%= f.association :purchase_order, disabled: f.object.purchase_order.present? && f.object.errors.blank?, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
+            <%= f.association :purchase_order, disabled: f.object.purchase_order.present? && f.object.errors.blank?, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => f.object.sales_order.present? ? autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number) : autocomplete_without_po_requests_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
           </div>
           <div class="col-12 ">
             <%= f.input :grpo_cancellation_reason, :placeholder => 'Type Cancellation Reason', wrapper_html:{class: @invoice_request.display_reason('grpo_cancellation')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>

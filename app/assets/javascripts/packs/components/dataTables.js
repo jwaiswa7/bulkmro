@@ -9,7 +9,7 @@ const dataTables = () => {
 
 // Setup the filter field before all dataTables, if the filter attribute exists
 let preSetup = () => {
-    // $.fn.DataTable.ext.pager.numbers_length = 4;
+    $.fn.DataTable.ext.pager.numbers_length = 4;
     $(document).on('preInit.dt', function (e, settings) {
         if ($(e.target).data('has-search') == true) return;
 

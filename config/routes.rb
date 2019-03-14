@@ -266,15 +266,16 @@ Rails.application.routes.draw do
       collection do
         get 'export_all'
         get 'autocomplete'
+        get 'autocomplete_without_po_requests'
         get 'material_readiness_queue'
-        get 'material_pickup_queue'
-        get 'material_delivered_queue'
+        get 'inward_dispatch_pickup_queue'
+        get 'inward_dispatch_delivered_queue'
         post 'update_logistics_owner'
-        post 'update_logistics_owner_for_pickup_requests'
+        post 'update_logistics_owner_for_inward_dispatches'
       end
 
       scope module: 'purchase_orders' do
-        resources :material_pickup_requests do
+        resources :inward_dispatches do
           member do
             get 'confirm_delivery'
             get 'delivered_material'
