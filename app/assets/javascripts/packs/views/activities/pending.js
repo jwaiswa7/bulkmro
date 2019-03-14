@@ -22,7 +22,7 @@ let toggleCheckboxes = () => {
     $('#all_activities').prop("checked", false);
 
     $('#all_activities').change((event) => {
-        var $element = $(event.target)
+        var $element = $(event.target);
         if ($element.is(':checked')) {
             $('input[type=checkbox][name="activities[]"]').each((index, element) => {
                 //$(element).attr('checked', 'checked')
@@ -41,7 +41,7 @@ let toggleCheckboxes = () => {
     $('table').on('change', 'input[type=checkbox][name="activities[]"]', (event) => {
         showOrHideActions();
     })
-}
+};
 
 let updateActivitiesApproval = (action) => {
     let activities = [];
@@ -87,6 +87,6 @@ let showOrHideActions = () => {
     } else {
         $('#approve_selected,#reject_selected').show();
     }
-}
+};
 
 export default pending

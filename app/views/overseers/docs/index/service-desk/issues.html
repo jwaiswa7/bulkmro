@@ -1,0 +1,157 @@
+
+# Address:
+
+## 1.  When adding GST no. this error is been shown
+
+
+![](https://sellerteam.blob.core.windows.net/product/image15.png)
+First check if same address id exist for other company from SAP, if
+yes then update the address id, it will resolve the issue
+
+
+# Inquiry:
+
+# Sales Quote:
+
+## 1. No matching records found (ODBC -2028)
+
+![](https://sellerteam.blob.core.windows.net/product/image12.png)
+
+Update all the inquiry products and then update inquiry.
+
+##  2.  Please enter a valid HSN in line n
+
+![](https://sellerteam.blob.core.windows.net/product/image3.png)
+
+If you get this error then find the product whose LineNum is “n” and find the product with BM no and check if product is service or not service? When it is service we should apply service tax code to product otherwise apply normal taxcode.
+
+## 3. [OQUT.DocDate] , 'Field cannot be updated (ODBC -1029)'
+
+![](https://sellerteam.blob.core.windows.net/product/image14.png)
+
+Issue  Sap Approval Pending - user made changes in sales quote after generating sales order
+
+Solution  In this case, resetting quote will resolve the issue or other solution will be to update all products and inquiry.
+
+## 4. Tax calculation for sales quote row is showing 0 %
+
+![](https://sellerteam.blob.core.windows.net/product/image7.png)
+
+Issue  30171 tax calculation showing 0 %
+
+Solution  Setting Inquiry SEZ value to No, will resolve the issue. I set to yes, that inquiry will not be applicable for tax deduction.
+
+## 5. This entry already exists in the following tables (ODBC -2035).
+
+![](https://sellerteam.blob.core.windows.net/product/image6.png)
+
+Issue: This entry already exists in the following tables
+
+Solution: Sync the products, company for that inquiry and if the issue still persists check its line number(sr. no) in the inquiry it might happen that the sr. no for products is not unique; E.g., two products with same sr. no
+
+# Sales Order:
+
+## 1.Internal error (-2010) occurred
+
+![](https://sellerteam.blob.core.windows.net/product/image13.png)
+
+We get this in sales order sync because SQ not sync properly with SAP or SQ is updated. Save the inquiry and then we get the reason for SQ not sync.
+
+If updating inquiry doesn't work, check if kit product is present in SQ, if yes then check if all products are synced. Then update inquiry again.
+
+## 2. SAP approval pending
+
+Case: initially both sales orders were in Approval Pending state -> after inquiry update 1st sales order synced with SAP
+
+![](https://sellerteam.blob.core.windows.net/product/image10.png)
+
+## Sales quotes of same inquiry
+
+![](https://sellerteam.blob.core.windows.net/product/image8.png)
+
+## Issue -> Sales person created 2 sales quotes first, and then created sales orders for them.
+
+Solution ->Instead of that, Sales order should be generated immediately after sales quote so it will get synced with SAP.
+
+In this case, sales quote should be revised with all the products(33+1) of those 2 sales quote and then order should be created for that.
+
+# Purchase Order:
+
+# Invoice:
+
+## 1\. invoice not reflecting in sprint
+
+![](https://sellerteam.blob.core.windows.net/product/image9.png)
+
+Request for invoice is sent to SAP, but for this inquiry we didn't get response from SAP. To resolve this issue we have to ask SAP service desk to send the response for inquiry invoice.
+
+# Category:
+
+# Kits:
+
+# Product:
+
+## 1\. Item BM9J9W4 is inactive
+
+![](https://sellerteam.blob.core.windows.net/product/image1.png)
+
+product with sku BM9J9W4 has inactive state, changing it to active resolved the issue.
+
+## 2\. CServiceData::SetPropertyValueString failed; Value too long in property 'SWW' of 'Item'.
+
+![](https://sellerteam.blob.core.windows.net/product/image4.png)
+
+MPN max length is 13 Characters. Changing the mpn value with valid entry will resolve the issue.
+
+# Warehouse
+
+## 1) Enter a valid value in "Whse" field [Komunikat 0-0].
+
+![](https://sellerteam.blob.core.windows.net/product/image11.png)
+
+Selected warehouse available in sprint but not in SAP. Hence this issue is occured.
+
+# Tax code
+
+## Request from sales team for adding Tax code 34029090 in system
+
+![](https://sellerteam.blob.core.windows.net/product/image5.png)
+
+Steps  first check if code is present for 3402 in HSN/SAC code in both SAP and sprint
+
+*   1st check in SAP if its not there, create tax code in SAP, steps to create tax code in SAP are as follows:
+
+*   Go to Inventory menu -> Item master data - > search for Test product -> product details will be displayed -> On click HSN field -> it will give all Tax codes -> click new -> add tax code(34029091) with description
+
+*   Add 1st 4 digits as chapter - eg. 3402
+*   Next 2 digts as heading - eg. 90
+*   And last 2 digits as subheading - eg. 91
+*   Add given description
+
+NOTE: Don't save new created tax code against open product
+
+*   After adding tax code -> Go to tools -> Query generator -> Type OCHP
+<sup>[[a]](#cmnt1)</sup> in text box -> press tab -> Execute -> add filter for chapter -> mention added tax code and find
+*   After searching tax code -> you will get internal key of that Tax code
+*   Go to sprint -> add that internal key as Remote uid in Tax code form and other details
+
+*   1st check in SAP if its there and not in sprint
+
+*   Search Tax code is present in SAP <sup>[[b]](#cmnt2)</sup>
+*   Add that tax code in Sprint -> add internal key as Remote uid in add tax code form(in sprint)
+
+*   If present in both SAP and sprint
+
+*   Check if required tax code is HSN or SAC and 1st 4 digits of the
+
+Kit's Quote/order unsynced
+
+![](https://sellerteam.blob.core.windows.net/product/image2.png)
+
+## 1.  The unsynced quote should be synced again by using the reset quote button which will wipe off its quotation uid from the linked inquiry and the quote/order will then sync properly
+
+
+It's a table name in SAP for tax codes
+
+
+**Go to tools -> Query generator -> Type OCHP in text box -> press tab -> Execute -> add filter for chapter -> mention added tax code and find**

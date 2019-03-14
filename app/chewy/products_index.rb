@@ -17,5 +17,6 @@ class ProductsIndex < BaseIndex
     field :updated_at, type: 'date'
     field :created_by, value: -> (record) { record.created_by.to_s }
     field :updated_by, value: -> (record) { record.updated_by.to_s }
+    field :is_not_kit, value: -> (record) { !record.is_kit }
   end
 end

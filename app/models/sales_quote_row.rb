@@ -26,15 +26,17 @@ class SalesQuoteRow < ApplicationRecord
   validates_numericality_of :converted_unit_selling_price, greater_than_or_equal_to: 0
   validates_numericality_of :quantity, less_than_or_equal_to: :maximum_quantity, if: :not_legacy?
 
-  # validate :is_unit_selling_price_consistent_with_margin_percentage?, if: :not_legacy?
+  # validate :validate_is_unit_selling_price_consistent_with_margin_percentage?, if: :not_legacy?
 
-  def is_unit_selling_price_consistent_with_margin_percentage?
+  def validate_is_unit_selling_price_consistent_with_margin_percentage?
     if unit_selling_price.round != calculated_unit_selling_price.round && Rails.env.development?
       errors.add :base, "selling price is not consistent with margin #{unit_selling_price} #{calculated_unit_selling_price} #{unit_cost_price_with_unit_freight_cost} #{margin_percentage} "
     end
   end
 
-
+  def is_unit_selling_price_consistent_with_margin_percentage?
+    unit_selling_price.round != calculated_unit_selling_price.round
+  end
   # validate :is_unit_selling_price_consistent_with_converted_unit_selling_price?, if: :not_legacy?
 
   def is_unit_selling_price_consistent_with_converted_unit_selling_price?
