@@ -153,30 +153,30 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   private
 
-  def invoice_request_params
-    params.require(:invoice_request).permit(
+    def invoice_request_params
+      params.require(:invoice_request).permit(
         :id,
-        :inquiry_id,
-        :sales_order_id,
-        :grpo_number,
-        :ap_invoice_number,
-        :shipment_number,
-        :ar_invoice_number,
-        :purchase_order_id,
-        :status,
-        :inward_dispatch_ids,
-        :grpo_rejection_reason,
-        :grpo_other_rejection_reason,
-        :grpo_cancellation_reason,
-        :ap_rejection_reason,
-        :ap_cancellation_reason,
-        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-        attachments: [],
+          :inquiry_id,
+          :sales_order_id,
+          :grpo_number,
+          :ap_invoice_number,
+          :shipment_number,
+          :ar_invoice_number,
+          :purchase_order_id,
+          :status,
+          :inward_dispatch_ids,
+          :grpo_rejection_reason,
+          :grpo_other_rejection_reason,
+          :grpo_cancellation_reason,
+          :ap_rejection_reason,
+          :ap_cancellation_reason,
+          comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+          attachments: [],
 
-    )
-  end
+      )
+    end
 
-  def set_invoice_request
-    @invoice_request = InvoiceRequest.find(params[:id])
-  end
+    def set_invoice_request
+      @invoice_request = InvoiceRequest.find(params[:id])
+    end
 end
