@@ -4,6 +4,7 @@ json.data (@po_requests) do |po_request|
                       if policy(po_request).edit? && po_request.status != 'Cancelled'
                         row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning', :_blank)
                       end,
+
                       if policy(po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif policy(po_request).show_payment_request?
@@ -17,9 +18,22 @@ json.data (@po_requests) do |po_request|
                       end,
                       if policy(po_request).material_received_in_bm_warehouse_new_email_msg?
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
+                      end,
+                      if policy(po_request).can_cancel?
+                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Cancel', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
+                      elsif !po_request.status.downcase.include?('reject') && policy(po_request).can_reject?
+                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
                       end
+
                   ].join(' '),
                   conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),
+                  status_badge(po_request.status),
                   conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
                   if po_request.purchase_order.present? && (po_request.status == 'PO Created')
                     link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank')

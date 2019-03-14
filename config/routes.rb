@@ -206,6 +206,10 @@ Rails.application.routes.draw do
         get 'cancelled'
         get 'amended'
       end
+      member do
+        get 'render_cancellation_form'
+        patch 'cancel_porequest'
+      end
 
     end
 

@@ -1,5 +1,5 @@
 class Overseers::InvoiceRequestsController < Overseers::BaseController
-  before_action :set_invoice_request, only: [:show, :edit, :update]
+  before_action :set_invoice_request, only: [:show, :edit, :update, :cancel_invoice_request, :render_cancellation_form]
 
   def pending
     invoice_requests =
@@ -14,8 +14,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_requests
 
     respond_to do |format|
-      format.json { render 'index' }
-      format.html { render 'index' }
+      format.json {render 'index'}
+      format.html {render 'index'}
     end
   end
 
@@ -24,8 +24,26 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_requests
 
     respond_to do |format|
-      format.json { render 'index' }
-      format.html { render 'index' }
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
+  def cancelled
+    invoice_requests =
+        if params[:status].present?
+          @status = params[:status]
+          InvoiceRequest.where(status: params[:status])
+        else
+          InvoiceRequest.all
+        end.order(id: :desc)
+
+    @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
+    authorize @invoice_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
     end
   end
 
@@ -58,7 +76,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
     service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     @company_reviews = service.call
-    service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.material_pickup_requests.ids,  false)
+    service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.material_pickup_requests.ids, false)
     @products_list = service.call
   end
 
@@ -81,9 +99,9 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         else
           @invoice_request.inward_dispatches << InwardDispatch.where(id: @inward_dispatches_ids)
         end
-        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@inward_dispatches_ids,  false)
+        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@inward_dispatches_ids, false)
       else
-        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@purchase_order,  true)
+        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@purchase_order, true)
       end
       @products_list = service.call
     else
@@ -115,7 +133,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @company_reviews = service.call
 
     mpr_ids = @invoice_request.material_pickup_requests.map(&:id).join(', ')
-    service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids,  false)
+    service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids, false)
     @mpr = @invoice_request.material_pickup_requests.last
     @products_list = service.call
   end
@@ -138,16 +156,16 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     if @invoice_request.valid?
       service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
       service.call
-      render json: { sucess: 'Successfully updated ' }, status: 200
+      render json: {sucess: 'Successfully updated '}, status: 200
     else
-      render json: { error: @invoice_request.errors }, status: 500
+      render json: {error: @invoice_request.errors}, status: 500
     end
   end
 
   def render_cancellation_form
     authorize @invoice_request
     respond_to do |format|
-      format.html {render partial: 'cancel_invoice_request',  locals: {status: params[:status]}}
+      format.html {render partial: 'cancel_invoice_request', locals: {status: params[:status]}}
     end
   end
 
@@ -171,10 +189,9 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         :ap_rejection_reason,
         :ap_cancellation_reason,
         comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-        attachments: []
-    )
-  end
-
+        attachments: [],
+      )
+    end
     def set_invoice_request
       @invoice_request = InvoiceRequest.find(params[:id])
     end

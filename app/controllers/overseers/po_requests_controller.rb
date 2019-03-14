@@ -1,6 +1,6 @@
 class Overseers::PoRequestsController < Overseers::BaseController
-  before_action :set_po_request, only: [:show, :edit, :update]
-  before_action :set_notification, only: [:update]
+  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form]
+  before_action :set_notification, only: [:update, :cancel_porequest]
 
   def pending_and_rejected
     @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.pending_and_rejected.order(id: :desc)), params)
@@ -96,17 +96,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
       if messages.present? || row_updated_message.present?
         @po_request.comments.create(message: "#{messages} \r\n #{row_updated_message}", overseer: current_overseer)
       end
-
       @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
-      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
+      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).can_reject?
       ActiveRecord::Base.transaction do
         if @po_request.status_changed?
           if @po_request.status == 'Cancelled'
             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}", po_request: @po_request, overseer: current_overseer)
             @po_request.purchase_order = nil
 
-            # @po_request.payment_request.update!(status: :'Cancelled')
-            # @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
+            @po_request.payment_request.update!(status: :'Cancelled')
+            @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
 
           elsif @po_request.status == 'Rejected'
             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}", po_request: @po_request, overseer: current_overseer)
@@ -136,6 +135,41 @@ class Overseers::PoRequestsController < Overseers::BaseController
       redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
     else
       render 'edit'
+    end
+  end
+
+  def cancel_porequest
+    @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
+    authorize @po_request
+    if @po_request.valid?
+      @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
+      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).can_reject?
+      service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer, action_name)
+      service.call
+      # @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
+      # @po_request.status = 'Requested' if @po_request.status == 'Rejected' && !policy(@po_request).can_reject?
+
+      tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
+      @notification.send_po_request_update(
+        tos - [current_overseer.email],
+          action_name.to_sym,
+          @po_request,
+          overseers_po_request_path(@po_request),
+          @po_request.id,
+          @po_request.last_comment.message,
+      )
+      render json: { success: 1, message: 'Successfully updated ' }, status: 200
+    elsif @po_request.status == 'Cancelled'
+      render json: { success: 0, message: 'Cannot cancel this PO Request.' }, status: 200
+    else
+      render json: { success: 0, message: 'Cannot reject this PO Request.' }, status: 200
+    end
+  end
+
+  def render_cancellation_form
+    authorize @po_request
+    respond_to do |format|
+      format.html { render partial: 'cancel_porequest', locals: { status: params[:status] } }
     end
   end
 
