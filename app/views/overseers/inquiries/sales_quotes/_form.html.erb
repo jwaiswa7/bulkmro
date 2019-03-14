@@ -102,7 +102,7 @@
                                 <strong>Unit Cost</strong><br>
                                 <span data-bind-html="unit_cost_price"><%= format_currency(row.object.unit_cost_price) %></span>
                               </div>
-                              <div class="flex-fill mt-2 mt-md-0">
+                              <div class="flex-fill mt-2 mt-md-0" v-if="showUnitFreight">
                                 <strong>Unit Cost with Freight</strong><br>
                                 <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= format_currency(row.object.unit_cost_price_with_unit_freight_cost) %></span>
                               </div>
@@ -126,11 +126,11 @@
                         <div class="form-row mt-2">
                           <div class="col-md-1 col-4"><%= row.input :quantity, input_html: {"data-bind": ""} %></div>
                           <div class="col-md-1 col-4"><%= row.input :margin_percentage, label: 'Margin', input_html: { "data-bind": ""} %></div>
-                          <div class="col-md-2 col-4"><%= row.input :unit_selling_price, label: 'Unit Selling Price', input_html: {min: 0, "data-bind": ""} %></div>
+                          <div class="col-md-2 col-4"><%= row.input :unit_selling_price, label: 'Unit Selling Price INR', input_html: {min: 0, "data-bind": ""} %></div>
                           <div class="col-md-3 col-12">
                             <div class="form-row">
-                              <div class="col-md-6 col-6"><%= row.input :unit_freight_cost, input_html: {"data-bind": "", min: 0}, label: 'Unit Freight' %></div>
-                              <div class="col-md-6 col-6"><%= row.input :freight_cost_subtotal, input_html: {"data-bind": "", min: 0}, label: 'Total Freight' %></div>
+                              <div class="col-md-6 col-6"><%= row.input :unit_freight_cost, input_html: {"data-bind": "", min: 0}, label: 'Unit Freight INR' %></div>
+                              <div class="col-md-6 col-6"><%= row.input :freight_cost_subtotal, input_html: {"data-bind": "", min: 0}, label: 'Total Freight INR' %></div>
                             </div>
                           </div>
 
