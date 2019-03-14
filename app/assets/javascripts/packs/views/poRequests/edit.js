@@ -54,8 +54,14 @@ const edit = () => {
     })
 
     $('.confirm-cancel').click(function (event) {
-        if (!confirm('Do you want to Cancel the PoRequest')) {
-            event.preventDefault();
+        if (changed_status[0]['value'] == 'Cancelled') {
+            if (!confirm('Do you want to cancel the Po Request?')) {
+                event.preventDefault();
+            } else {
+                if (!confirm('Do you want to reject the Po Request?')) {
+                    event.preventDefault();
+                }
+            }
         }
 
     });
@@ -66,10 +72,14 @@ const edit = () => {
         let changed_status = form_changed_data.filter(x => x.name === "po_request[status]");
         let original_status = form_original_data.filter(x => x.name === "po_request[status]");
         if (changed_status) {
-            let is_cancel_status = changed_status[0]['value'].toLowerCase().indexOf('cancel') != -1
+            let is_cancel_status = changed_status[0]['value'].toLowerCase().indexOf('cancel') != -1 || changed_status[0]['value'].toLowerCase().indexOf('reject') != -1
             if (is_cancel_status && original_status && (changed_status[0]['value'] != original_status[0]['value'])) {
                 if (changed_status[0]['value'] == 'Cancelled') {
-                    if (!confirm('Do you want to Cancel the Po Request ?')) {
+                    if (!confirm('Do you want to cancel the Po Request?')) {
+                        event.preventDefault();
+                    }
+                } else if ((changed_status[0]['value'] == 'Rejected')) {
+                    if (!confirm('Do you want to reject the Po Request?')) {
                         event.preventDefault();
                     }
                 }

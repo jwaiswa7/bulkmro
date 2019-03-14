@@ -54,13 +54,6 @@ class PoRequest < ApplicationRecord
       'Mismatch: Supplier GST Number': 70,
       'Others': 80
   }
-  # enum cancellation_reason: {
-  #     'NOT INTERSETED': 10,
-  #     'CANCELING ORDER': 20,
-  #     'PURCHASE ORDER NOT FOUND': 30,
-  #     'CONTACT IS NIL': 40,
-  #     'SUPPLIER NOT DEFINED': 50,
-  # }
 
   scope :pending_and_rejected, -> { where(status: [:'Requested', :'Rejected', :'Amend']) }
   scope :handled, -> { where.not(status: [:'Requested', :'Cancelled', :'Amend']) }
@@ -132,8 +125,6 @@ class PoRequest < ApplicationRecord
       title = 'Pending'
     elsif self.status == 'PO Created'
       title = 'Completed'
-    else
-      title = 'Cancelled'
     end
     "#{title} PO Request"
   end

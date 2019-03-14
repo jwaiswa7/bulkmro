@@ -150,44 +150,44 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def measurement_unit
     measurement_units = ['EA', 'SET', 'PK', 'KG', 'M', 'FT', 'Pack', 'Pair', 'PR', 'BOX', 'LTR', 'LT', 'MTR', 'ROLL', 'Nos', 'PKT', 'REEL', 'FEET', 'Meter', '1 ROLL', 'ml', 'MAT', 'LOT', 'No', 'RFT', 'Bundle', 'NPkt', 'Metre', 'CAN', 'SQ.Ft', 'BOTTLE', 'BOTTEL', 'CUBIC METER', 'PC', 'GRAM', 'EACH', 'FOOT', 'Dozen', 'INCH', 'Ream', 'Bag', 'Unit', 'MT', 'KIT', 'SQ INCH', 'CASE']
-    MeasurementUnit.first_or_create! measurement_units.map { |mu| { name: mu } }
+    MeasurementUnit.first_or_create! measurement_units.map {|mu| {name: mu}}
   end
 
   def lead_time_option
     LeadTimeOption.first_or_create!([
-                                        { name: '2-3 DAYS', min_days: 2, max_days: 3 },
-                                        { name: '1 WEEK', min_days: 7, max_days: 7 },
-                                        { name: '8-10 DAYS', min_days: 8, max_days: 10 },
-                                        { name: '1-2 WEEKS', min_days: 7, max_days: 14 },
-                                        { name: '2 WEEKS', min_days: 14, max_days: 14 },
-                                        { name: '2-3 WEEK', min_days: 14, max_days: 21 },
-                                        { name: '3 WEEKS', min_days: 21, max_days: 21 },
-                                        { name: '3-4 WEEKS', min_days: 21, max_days: 28 },
-                                        { name: '4 WEEKS', min_days: 28, max_days: 28 },
-                                        { name: '5 WEEKS', min_days: 35, max_days: 35 },
-                                        { name: '4-6 WEEKS', min_days: 28, max_days: 42 },
-                                        { name: '6-8 WEEKS', min_days: 42, max_days: 56 },
-                                        { name: '8 WEEKS', min_days: 56, max_days: 56 },
-                                        { name: '20 WEEKS', min_days: 140, max_days: 140 },
-                                        { name: '24 WEEKS', min_days: 168, max_days: 168 },
-                                        { name: '6-10 WEEKS', min_days: 42, max_days: 70 },
-                                        { name: '10-12 WEEKS', min_days: 70, max_days: 84 },
-                                        { name: '12-14 WEEKS', min_days: 84, max_days: 98 },
-                                        { name: '14-16 WEEKS', min_days: 98, max_days: 112 },
-                                        { name: 'MORE THAN 14 WEEKS', min_days: 98, max_days: nil },
-                                        { name: 'MORE THAN 12 WEEKS', min_days: 84, max_days: nil },
-                                        { name: 'MORE THAN 6 WEEKS', min_days: 42, max_days: nil },
-                                        { name: '60 days from the date of order for 175MT, and 60 days for remaining from the date of call', min_days: 60, max_days: 120 },
-                                        { name: 'In Stock', min_days: 0, max_days: 0 },
-                                        { name: 'Refer T&C', min_days: 0, max_days: 0 }
+                                        {name: '2-3 DAYS', min_days: 2, max_days: 3},
+                                        {name: '1 WEEK', min_days: 7, max_days: 7},
+                                        {name: '8-10 DAYS', min_days: 8, max_days: 10},
+                                        {name: '1-2 WEEKS', min_days: 7, max_days: 14},
+                                        {name: '2 WEEKS', min_days: 14, max_days: 14},
+                                        {name: '2-3 WEEK', min_days: 14, max_days: 21},
+                                        {name: '3 WEEKS', min_days: 21, max_days: 21},
+                                        {name: '3-4 WEEKS', min_days: 21, max_days: 28},
+                                        {name: '4 WEEKS', min_days: 28, max_days: 28},
+                                        {name: '5 WEEKS', min_days: 35, max_days: 35},
+                                        {name: '4-6 WEEKS', min_days: 28, max_days: 42},
+                                        {name: '6-8 WEEKS', min_days: 42, max_days: 56},
+                                        {name: '8 WEEKS', min_days: 56, max_days: 56},
+                                        {name: '20 WEEKS', min_days: 140, max_days: 140},
+                                        {name: '24 WEEKS', min_days: 168, max_days: 168},
+                                        {name: '6-10 WEEKS', min_days: 42, max_days: 70},
+                                        {name: '10-12 WEEKS', min_days: 70, max_days: 84},
+                                        {name: '12-14 WEEKS', min_days: 84, max_days: 98},
+                                        {name: '14-16 WEEKS', min_days: 98, max_days: 112},
+                                        {name: 'MORE THAN 14 WEEKS', min_days: 98, max_days: nil},
+                                        {name: 'MORE THAN 12 WEEKS', min_days: 84, max_days: nil},
+                                        {name: 'MORE THAN 6 WEEKS', min_days: 42, max_days: nil},
+                                        {name: '60 days from the date of order for 175MT, and 60 days for remaining from the date of call', min_days: 60, max_days: 120},
+                                        {name: 'In Stock', min_days: 0, max_days: 0},
+                                        {name: 'Refer T&C', min_days: 0, max_days: 0}
                                     ])
   end
 
   def currencies
     Currency.first_or_create!([
-                                  { name: 'USD', conversion_rate: 71.59, legacy_id: 2 },
-                                  { name: 'INR', conversion_rate: 1, legacy_id: 0 },
-                                  { name: 'EUR', conversion_rate: 83.85, legacy_id: 1 },
+                                  {name: 'USD', conversion_rate: 71.59, legacy_id: 2},
+                                  {name: 'INR', conversion_rate: 1, legacy_id: 0},
+                                  {name: 'EUR', conversion_rate: 83.85, legacy_id: 1},
                               ])
   end
 
@@ -275,8 +275,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_contacts.csv', folder)
 
-    status_mapping = { '0' => 20, '1' => 10 }
-    contact_group_mapping = { 'General' => 10, 'Company Top Manager' => 20, 'Retailer' => 30, 'Ador' => 40, 'Vmi_group' => 50, 'C-Form customer GROUP' => 60, 'Manager' => 70 }
+    status_mapping = {'0' => 20, '1' => 10}
+    contact_group_mapping = {'General' => 10, 'Company Top Manager' => 20, 'Retailer' => 30, 'Ador' => 40, 'Vmi_group' => 50, 'C-Form customer GROUP' => 60, 'Manager' => 70}
 
     service.loop(limit) do |x|
       entity_id = x.get_column('entity_id')
@@ -342,11 +342,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         legacy_account
       end
 
-      company_type_mapping = { 'proprietorship' => 10, 'Private Limited' => 20, 'contractor' => 30, 'trust' => 40, 'Public Limited' => 50, 'dealer' => 50, 'distributor' => 60, 'trader' => 70, 'manufacturer' => 80, 'wholesaler/stockist' => 90, 'serviceprovider' => 100, 'employee' => 110 }
-      priority_mapping = { '0' => 10, '1' => 20 }
-      nature_of_business_mapping = { 'Trading' => 10, 'Manufacturer' => 20, 'Dealer' => 30 }
-      is_msme_mapping = { 'N' => false, 'Y' => true }
-      urd_mapping = { 'N' => false, 'Y' => true }
+      company_type_mapping = {'proprietorship' => 10, 'Private Limited' => 20, 'contractor' => 30, 'trust' => 40, 'Public Limited' => 50, 'dealer' => 50, 'distributor' => 60, 'trader' => 70, 'manufacturer' => 80, 'wholesaler/stockist' => 90, 'serviceprovider' => 100, 'employee' => 110}
+      priority_mapping = {'0' => 10, '1' => 20}
+      nature_of_business_mapping = {'Trading' => 10, 'Manufacturer' => 20, 'Dealer' => 30}
+      is_msme_mapping = {'N' => false, 'Y' => true}
+      urd_mapping = {'N' => false, 'Y' => true}
 
       company_name = x.get_column('cmp_name')
       company = Company.where(name: company_name || alias_name).first_or_initialize
@@ -412,7 +412,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def addresses
     legacy_state = AddressState.where(name: 'Legacy Indian State', country_code: 'IN').first_or_create
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_address.csv', folder)
-    gst_type = { 1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6 => 60 }
+    gst_type = {1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6 => 60}
 
     legacy_company = Company.legacy
     legacy_company.addresses.where(name: 'Legacy Address').first_or_create! do |address|
@@ -483,9 +483,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       next if x.get_column('sup_id').in? %w(5406)
 
-      company_type_mapping = { 'proprietorship' => 10, 'Private Limited' => 20, 'contractor' => 30, 'trust' => 40, 'Public Limited' => 50, 'dealer' => 50, 'distributor' => 60, 'trader' => 70, 'manufacturer' => 80, 'wholesaler/stockist' => 90, 'serviceprovider' => 100, 'employee' => 110 }
-      is_msme_mapping = { 'N' => false, 'Y' => true }
-      urd_mapping = { 'N' => false, 'Y' => true }
+      company_type_mapping = {'proprietorship' => 10, 'Private Limited' => 20, 'contractor' => 30, 'trust' => 40, 'Public Limited' => 50, 'dealer' => 50, 'distributor' => 60, 'trader' => 70, 'manufacturer' => 80, 'wholesaler/stockist' => 90, 'serviceprovider' => 100, 'employee' => 110}
+      is_msme_mapping = {'N' => false, 'Y' => true}
+      urd_mapping = {'N' => false, 'Y' => true}
 
       company = Company.where(remote_uid: x.get_column('sup_code')).first_or_initialize
       if company.new_record? || update_if_exists
@@ -566,7 +566,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def supplier_addresses
     supplier_address_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers_address.csv', folder)
-    gst_type_mapping = { 1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6 => 60 }
+    gst_type_mapping = {1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6 => 60}
 
     supplier_address_service.loop(limit) do |x|
       company = Company.acts_as_supplier.find_by_legacy_id(x.get_column('cmp_id'))
@@ -751,9 +751,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def inquiries
     legacy_company = Company.legacy
-    opportunity_type = { 'amazon' => 10, 'rate_contract' => 20, 'financing' => 30, 'regular' => 40, 'service' => 50, 'repeat' => 60, 'route_through' => 70, 'tender' => 80 }
-    quote_category = { 'bmro' => 10, 'ong' => 20 }
-    opportunity_source = { 1 => 10, 2 => 20, 3 => 30, 4 => 40 }
+    opportunity_type = {'amazon' => 10, 'rate_contract' => 20, 'financing' => 30, 'regular' => 40, 'service' => 50, 'repeat' => 60, 'route_through' => 70, 'tender' => 80}
+    quote_category = {'bmro' => 10, 'ong' => 20}
+    opportunity_source = {1 => 10, 2 => 20, 3 => 30, 4 => 40}
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries.csv', folder)
     service.loop(limit) do |x|
@@ -841,9 +841,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def legacy_inquiries
     errors = []
-    opportunity_type = { 'amazon' => 10, 'rate_contract' => 20, 'financing' => 30, 'regular' => 40, 'service' => 50, 'repeat' => 60, 'route_through' => 70, 'tender' => 80 }
-    quote_category = { 'bmro' => 10, 'ong' => 20 }
-    opportunity_source = { 1 => 10, 2 => 20, 3 => 30, 4 => 40 }
+    opportunity_type = {'amazon' => 10, 'rate_contract' => 20, 'financing' => 30, 'regular' => 40, 'service' => 50, 'repeat' => 60, 'route_through' => 70, 'tender' => 80}
+    quote_category = {'bmro' => 10, 'ong' => 20}
+    opportunity_source = {1 => 10, 2 => 20, 3 => 30, 4 => 40}
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv', folder)
     service.loop(limit) do |x|
@@ -935,9 +935,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def inquiry_terms
-    price_type_mapping = { 'CIF' => 30, 'CIP Mumbai Airport' => 80, 'DAP' => 50, 'DD' => 60, 'Door Delivery' => 60, 'EXW' => 10, 'FCA Mumbai' => 70, 'FOB' => 20, 'CFR' => 40 }
-    freight_option_mapping = { 'Extra as per Actual' => 20, 'Included' => 10 }
-    packing_and_forwarding_option_mapping = { 'Included' => 10, 'Not Included' => 20 }
+    price_type_mapping = {'CIF' => 30, 'CIP Mumbai Airport' => 80, 'DAP' => 50, 'DD' => 60, 'Door Delivery' => 60, 'EXW' => 10, 'FCA Mumbai' => 70, 'FOB' => 20, 'CFR' => 40}
+    freight_option_mapping = {'Extra as per Actual' => 20, 'Included' => 10}
+    packing_and_forwarding_option_mapping = {'Included' => 10, 'Not Included' => 20}
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_terms.csv', folder)
     service.loop(limit) do |x|
@@ -1015,8 +1015,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def sales_order_drafts
-    legacy_request_status_mapping = { 'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70 }
-    remote_status = { 'Supplier PO: Request Pending' => 17, 'Supplier PO: Partially Created' => 18, 'Partially Shipped' => 19, 'Partially Invoiced' => 20, 'Partially Delivered: GRN Pending' => 21, 'Partially Delivered: GRN Received' => 22, 'Supplier PO: Created' => 23, 'Shipped' => 24, 'Invoiced' => 25, 'Delivered: GRN Pending' => 26, 'Delivered: GRN Received' => 27, 'Partial Payment Received' => 28, 'Payment Received (Closed)' => 29, 'Cancelled by SAP' => 30, 'Short Close' => 31, 'Processing' => 32, 'Material Ready For Dispatch' => 33, 'Order Deleted' => 70 }
+    legacy_request_status_mapping = {'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70}
+    remote_status = {'Supplier PO: Request Pending' => 17, 'Supplier PO: Partially Created' => 18, 'Partially Shipped' => 19, 'Partially Invoiced' => 20, 'Partially Delivered: GRN Pending' => 21, 'Partially Delivered: GRN Received' => 22, 'Supplier PO: Created' => 23, 'Shipped' => 24, 'Invoiced' => 25, 'Delivered: GRN Pending' => 26, 'Delivered: GRN Received' => 27, 'Partial Payment Received' => 28, 'Payment Received (Closed)' => 29, 'Cancelled by SAP' => 30, 'Short Close' => 31, 'Processing' => 32, 'Material Ready For Dispatch' => 33, 'Order Deleted' => 70}
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv', folder)
     service.loop(limit) do |x|
       inquiry_number = x.get_column('inquiry_number').to_i
@@ -1078,7 +1078,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       product = Product.find_by_sku(x.get_column('sku'))
       if sales_order.present?
         if product.present?
-          sales_order_rows = sales_order.rows.joins(:inquiry_product).where(inquiry_products: { product_id: product.id })
+          sales_order_rows = sales_order.rows.joins(:inquiry_product).where(inquiry_products: {product_id: product.id})
           if sales_order_rows.present?
             if sales_order.id == 3195
               sales_order_rows.first.update_attributes!(quantity: 1)
@@ -1092,10 +1092,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def activities
-    company_type_mapping = { 'is_supplier' => 10, 'is_customer' => 20 }
-    purpose = { 'First Meeting/Intro Meeting' => 10, 'Follow up' => 20, 'Negotiation' => 30, 'Closure' => 40, 'Others' => 50 }
-    activity_type = { 'Meeting' => 10, 'Phone call' => 20, 'Email' => 30, 'Quote/Tender Prep' => 40, 'Tender preparation' => 50 }
-    activity_status = { 'Approved' => 10, 'Pending Approval' => 20, 'Rejected' => 30 }
+    company_type_mapping = {'is_supplier' => 10, 'is_customer' => 20}
+    purpose = {'First Meeting/Intro Meeting' => 10, 'Follow up' => 20, 'Negotiation' => 30, 'Closure' => 40, 'Others' => 50}
+    activity_type = {'Meeting' => 10, 'Phone call' => 20, 'Email' => 30, 'Quote/Tender Prep' => 40, 'Tender preparation' => 50}
+    activity_status = {'Approved' => 10, 'Pending Approval' => 20, 'Rejected' => 30}
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('activity_reports.csv', folder)
     service.loop(limit) do |x|
@@ -1228,7 +1228,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def sales_receipts
-    payment_method = { 'banktransfer' => 10, 'Cheque' => 20, 'checkmo' => 30, 'razorpay' => 40, 'free' => 50, 'roundoff' => 60, 'bankcharges' => 70, 'cash' => 80, 'creditnote' => 85, 'writeoff' => 90, 'Transfer Acct' => 95 }
+    payment_method = {'banktransfer' => 10, 'Cheque' => 20, 'checkmo' => 30, 'razorpay' => 40, 'free' => 50, 'roundoff' => 60, 'bankcharges' => 70, 'cash' => 80, 'creditnote' => 85, 'writeoff' => 90, 'Transfer Acct' => 95}
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts.csv', folder)
     service.loop(limit) do |x|
       sales_invoice = SalesInvoice.find_by_legacy_id(x.get_column('invoice_legacy_id'))
@@ -1277,7 +1277,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       next if skips.include?(po_request.id)
       if po_request.status != 'Cancelled'
         next if !po_request.sales_order.present?
-        rows = po_request.sales_order.rows.inject({}) { |hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash }
+        rows = po_request.sales_order.rows.inject({}) {|hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash}
         if po_request.status != 'Requested'
           if !po_request.status != 'PO Created'
             purchase_order = po_request.purchase_order || PurchaseOrder.find_by_po_number(po_request.purchase_order_id)
@@ -1330,7 +1330,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def create_po_request_for_purchase_orders
     SalesOrder.remote_approved.each do |sales_order|
-      rows = sales_order.rows.inject({}) { |hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash }
+      rows = sales_order.rows.inject({}) {|hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash}
       # service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: sales_order.inquiry.company.name)
       sales_order.inquiry.purchase_orders.each do |purchase_order|
         if purchase_order.rows.present?
@@ -1458,7 +1458,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
 
     def target_reports
-      target_type = { '1' => 10, '4' => 20, '7' => 30, '2' => 40, '3' => 50, '6' => 60 }
+      target_type = {'1' => 10, '4' => 20, '7' => 30, '2' => 40, '3' => 50, '6' => 60}
 
       service = Services::Shared::Spreadsheets::CsvImporter.new('target_reports.csv', 'seed_files')
       service.loop(nil) do |x|
@@ -1497,8 +1497,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       objects = []
       folders = ['seed_files', 'seed_files_2']
       folders.each do |folder|
-        legacy_request_status_mapping = { 'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70 }
-        remote_status = { 'Supplier PO: Request Pending' => 17, 'Supplier PO: Partially Created' => 18, 'Partially Shipped' => 19, 'Partially Invoiced' => 20, 'Partially Delivered: GRN Pending' => 21, 'Partially Delivered: GRN Received' => 22, 'Supplier PO: Created' => 23, 'Shipped' => 24, 'Invoiced' => 25, 'Delivered: GRN Pending' => 26, 'Delivered: GRN Received' => 27, 'Partial Payment Received' => 28, 'Payment Received (Closed)' => 29, 'Cancelled by SAP' => 30, 'Short Close' => 31, 'Processing' => 32, 'Material Ready For Dispatch' => 33, 'Order Deleted' => 70 }
+        legacy_request_status_mapping = {'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70}
+        remote_status = {'Supplier PO: Request Pending' => 17, 'Supplier PO: Partially Created' => 18, 'Partially Shipped' => 19, 'Partially Invoiced' => 20, 'Partially Delivered: GRN Pending' => 21, 'Partially Delivered: GRN Received' => 22, 'Supplier PO: Created' => 23, 'Shipped' => 24, 'Invoiced' => 25, 'Delivered: GRN Pending' => 26, 'Delivered: GRN Received' => 27, 'Partial Payment Received' => 28, 'Payment Received (Closed)' => 29, 'Cancelled by SAP' => 30, 'Short Close' => 31, 'Processing' => 32, 'Material Ready For Dispatch' => 33, 'Order Deleted' => 70}
         service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv', folder)
         service.loop(nil) do |x|
           inquiry_number = x.get_column('inquiry_number').to_i
@@ -1587,7 +1587,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
 
     def purchase_order_callback_data
-      tax_rates = { '14' => 0, '15' => 12, '16' => 18, '17' => 28, '18' => 5 }
+      tax_rates = {'14' => 0, '15' => 12, '16' => 18, '17' => 28, '18' => 5}
       errors = []
       service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
       i = 0
@@ -1789,10 +1789,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     def get_product_price(product_id, company)
       company_inquiries = company.inquiries.includes(:sales_quote_rows, :sales_order_rows)
-      sales_order_rows = company_inquiries.map { |i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id) }.flatten.compact
-      sales_order_row_price = sales_order_rows.map { |r| r.unit_selling_price }.flatten if sales_order_rows.present?
+      sales_order_rows = company_inquiries.map {|i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+      sales_order_row_price = sales_order_rows.map {|r| r.unit_selling_price}.flatten if sales_order_rows.present?
       return sales_order_row_price.min if sales_order_row_price.present?
-      sales_quote_rows = company_inquiries.map { |i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id) }.flatten.compact
+      sales_quote_rows = company_inquiries.map {|i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
       sales_quote_row_price = sales_quote_rows.pluck(:unit_selling_price)
       return sales_quote_row_price.min
     end
@@ -1802,7 +1802,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       customers = Contact.all
       customers.each do |customer|
         customer_companies = customer.companies
-        inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company: customer_companies).map { |i| i.inquiry_products }.flatten
+        inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company: customer_companies).map {|i| i.inquiry_products}.flatten
         inquiry_products.each do |inquiry_product|
           CustomerProduct.where(company_id: inquiry_product.inquiry.company_id, product_id: inquiry_product.product_id).first_or_create do |customer_product|
             customer_product.category_id = inquiry_product.product.category_id
@@ -2137,7 +2137,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     def update_is_international_field_in_company
       Company.update_all(is_international: false)
       Company.all.includes(:addresses).each do |company|
-        if company.addresses.present? && !company.addresses.map { |address| address.country_code }.include?('IN')
+        if company.addresses.present? && !company.addresses.map {|address| address.country_code}.include?('IN')
           company.update_attribute('is_international', true)
         end
       end
@@ -2332,7 +2332,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     def update_total_cost_in_sales_order
       SalesOrder.all.each do |so|
         so.order_total = so.calculated_total
-        so.invoice_total = so.invoices.map { |i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0 }.inject(0) { |sum, x| sum + x }
+        so.invoice_total = so.invoices.map {|i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0}.inject(0) {|sum, x| sum + x}
         so.save
       end
     end
@@ -2422,7 +2422,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           row = nil
           if inquiry.sales_orders.pluck(:order_number).include?(x.get_column('order number').to_i)
             so = SalesOrder.find_by_order_number(x.get_column('order number').to_i)
-            if so.rows.map { |r| r.product.sku }.include?(x.get_column('product sku'))
+            if so.rows.map {|r| r.product.sku}.include?(x.get_column('product sku'))
               row = sales_quote.rows.joins(:product).where('products.sku = ?', x.get_column('product sku')).first
             end
           end
@@ -2456,7 +2456,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           sales_order.remote_status = x.get_column('SAP status') || 'Processing'
           sales_order.sent_at = sales_quote.created_at
           sales_order.save!
-          row_object = { sku: product_sku, supplier: x.get_column('supplier'), total_with_tax: row.total_selling_price_with_tax.to_f }
+          row_object = {sku: product_sku, supplier: x.get_column('supplier'), total_with_tax: row.total_selling_price_with_tax.to_f}
           totals[sales_order.order_number] ||= []
           totals[sales_order.order_number].push(row_object)
           puts '************************** ORDER SAVED *******************************'
@@ -2581,7 +2581,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         weightage = x.get_column('Weightage')
         ReviewQuestion.where(question: question, question_type: type, weightage: weightage).first_or_create!
       end
-  end
+    end
 
     def create_company_banks
       service = Services::Shared::Spreadsheets::CsvImporter.new('company_banks.csv', folder)
@@ -2654,7 +2654,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     def update_total_cost_in_sales_order
       SalesOrder.all.each do |so|
         so.order_total = so.calculated_total
-        so.invoice_total = so.invoices.map { |i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0 }.inject(0) { |sum, x| sum + x }
+        so.invoice_total = so.invoices.map {|i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0}.inject(0) {|sum, x| sum + x}
         so.save
       end
     end
@@ -2796,7 +2796,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               base_weee_tax_applied_row_amnt: nil
           }
 
-          row = invoice.rows.where('metadata @> ?', { sku: sku }.to_json)
+          row = invoice.rows.where('metadata @> ?', {sku: sku}.to_json)
           if row.present?
             row.first.update_attributes(sku: sku, quantity: quantity, sales_invoice_id: invoice.id, metadata: invoice_row_obj)
           else
@@ -2816,21 +2816,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               'price_kit' => 0,
               'controller' => 'callbacks/sales_invoices',
               'created_at' => x.get_column('AR Invoice Date'),
-              'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+              'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
               'increment_id' => invoice_number,
               'sales_invoice' => {
                   'created_at' => x.get_column('AR Invoice Date'),
                   'updated_at' => nil
               },
               'unitprice_kit' => 0,
-              'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) { |sum, value| sum + value.to_f }.round(2),
+              'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) {|sum, value| sum + value.to_f}.round(2),
               'discount_amount' => '',
               'shipping_amount' => nil,
-              'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+              'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
               'customer_company' => nil,
               'hidden_tax_amount' => nil,
               'shipping_incl_tax' => nil,
-              'base_subtotal' => item_lines.pluck('row_total').inject(0) { |sum, value| sum + value.to_f }.round(2),
+              'base_subtotal' => item_lines.pluck('row_total').inject(0) {|sum, value| sum + value.to_f}.round(2),
               'base_currency_code' => sales_order.inquiry.currency.try(:name),
               'base_to_order_rate' => sales_order.inquiry.currency.conversion_rate.to_f,
               'billing_address_id' => sales_order.inquiry.billing_address.present? ? sales_order.inquiry.billing_address.id : nil,
@@ -2844,7 +2844,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               'discount_description' => nil,
               'base_hidden_tax_amount' => nil,
               'base_shipping_incl_tax' => nil,
-              'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+              'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
               'base_shipping_tax_amount' => nil,
               'shipping_hidden_tax_amount' => nil,
               'base_shipping_hidden_tax_amnt' => nil
@@ -2890,6 +2890,20 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         else
           payment_option.update_attributes(name: x.get_column('value'))
         end
+      end
+    end
+    def update_invoice_request_cancellation_status
+      invoice_requests = InvoiceRequest.where(status: 60)
+      invoice_requests.each do |invoice_request|
+        if invoice_request.grpo_number.nil?
+          invoice_request.status = 'Cancelled GRPO'
+          # modifiy with specific reason it's mendatory
+          invoice_request.grpo_cancellation_reason = 'cancellation changed in migration'
+        else
+          invoice_request.status = 'Cancelled AP Invoice'
+          invoice_request.ap_cancellation_reason = 'cancellation changed in migration'
+        end
+        invoice_request.save!
       end
     end
 end
