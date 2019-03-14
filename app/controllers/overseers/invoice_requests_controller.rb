@@ -47,6 +47,24 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     end
   end
 
+  def cancelled
+    invoice_requests =
+        if params[:status].present?
+          @status = params[:status]
+          InvoiceRequest.where(status: params[:status])
+        else
+          InvoiceRequest.all
+        end.order(id: :desc)
+
+    @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
+    authorize @invoice_requests
+
+    respond_to do |format|
+      format.json { render 'index' }
+      format.html { render 'index' }
+    end
+  end
+
   def index
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.order(id: :desc), params)
     authorize @invoice_requests
@@ -156,26 +174,24 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     def invoice_request_params
       params.require(:invoice_request).permit(
         :id,
-          :inquiry_id,
-          :sales_order_id,
-          :grpo_number,
-          :ap_invoice_number,
-          :shipment_number,
-          :ar_invoice_number,
-          :purchase_order_id,
-          :status,
-          :inward_dispatch_ids,
-          :grpo_rejection_reason,
-          :grpo_other_rejection_reason,
-          :grpo_cancellation_reason,
-          :ap_rejection_reason,
-          :ap_cancellation_reason,
-          comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-          attachments: [],
-
+        :inquiry_id,
+        :sales_order_id,
+        :grpo_number,
+        :ap_invoice_number,
+        :shipment_number,
+        :ar_invoice_number,
+        :purchase_order_id,
+        :status,
+        :inward_dispatch_ids,
+        :grpo_rejection_reason,
+        :grpo_other_rejection_reason,
+        :grpo_cancellation_reason,
+        :ap_rejection_reason,
+        :ap_cancellation_reason,
+        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+        attachments: [],
       )
     end
-
     def set_invoice_request
       @invoice_request = InvoiceRequest.find(params[:id])
     end

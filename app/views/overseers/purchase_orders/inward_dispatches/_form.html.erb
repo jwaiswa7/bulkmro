@@ -224,7 +224,7 @@
         </div>
 
         <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-          <i class="fal fa-pen"></i> <%= submit_text(@inward_dispatch, use_alias: @inward_dispatch.readable_status) %>
+          <i class="fal fa-pen"></i> <%= submit_text(@inward_dispatch) %>
         <% end %>
         <% if f.object.comments.persisted.size > 0 %>
           <div class="card-body">

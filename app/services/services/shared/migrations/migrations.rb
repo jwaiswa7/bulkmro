@@ -2892,8 +2892,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         end
       end
     end
-
-
     def update_invoice_request_cancellation_status
       invoice_requests = InvoiceRequest.where(status: 60)
       invoice_requests.each do |invoice_request|
