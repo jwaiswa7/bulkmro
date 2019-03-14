@@ -14,13 +14,13 @@
 
         <%= f.hidden_field :order_number, as: :string %>
         <div class="form-row">
-          <div class="col-4">
+          <div class="form-group col-4">
             <strong class="d-block">Order Number</strong>
             <%= link_to overseers_inquiry_sales_order_path(f.object.inquiry, f.object), target: :_blank do %>
               <%= f.object.order_number %>
             <% end %>
           </div>
-          <div class="col-4">
+          <div class="form-group col-4">
             <strong class="d-block">Inquiry</strong>
             <%= link_to overseers_inquiry_path(f.object.inquiry) do %>
               <%= f.object.inquiry %>
@@ -28,8 +28,7 @@
           </div>
           <br>
           <div class="col-4">
-            <strong class="d-block">Customer Committed Date</strong>
-            <%= @sales_order.inquiry.customer_committed_date %>
+            <%= f.input :customer_committed_date, label: 'Customer Committed Date', disabled: true, :wrapper => :custom_multi_select, include_blank: 'Committed Date' %>
           </div>
         </div>
       </div>
@@ -53,15 +52,17 @@
           </p>
           <%= f.simple_fields_for :po_requests, @po_requests.values do |po_request| %>
             <div class="simple-row">
+
               <p class="text">
                 <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
-                <strong><%= po_request.object.supplier.to_s %>: <%= po_request.object.supplier.try(:legacy_email) %></strong>
+                <strong><%= po_request.object.supplier.to_s %>
+                  : <%= po_request.object.supplier.try(:legacy_email) %></strong>
                 <% if @po_requests.values.map(&:supplier).length > 1 %>
                   <%= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
                     Remove Supplier
                   <% end %>
                 <% end %>
-                <%= render 'overseers/po_requests/rows_form', f: po_request %>
+                <%= render 'overseers/po_requests/rows_form', f: po_request , product_path: service_autocomplete_overseers_products_path, stock: false%>
             </div>
             <hr class="<%= f.object.po_requests.last == po_request.object ? 'd-none' : '' %>"/>
           <% end %>
@@ -75,7 +76,7 @@
         </div>
       </div>
     <% else %>
-      <div class="card">
+      <div class="card text-lg-center">
         <div class="card-body">
           <p>
             <ul class="list-group text-danger mb-3">
@@ -91,15 +92,16 @@
               <% end %>
             </ul>
           </p>
-          <table class="table table-bordered dt-responsive wrap-whitespace w-100 mb-0 datatable" data-fixed-header="false" data-sort="false">
+          <table class="table table-bordered dt-responsive wrap-whitespace w-100 mb-0" data-fixed-header="false">
             <tr>
               <th class="no-sort desktop" data-name="name">PO Request No.</th>
-              <th class="no-sort desktop" data-name="name">Inquiry</th>
-              <th class="no-sort all" data-name="sku">Order</th>
+              <th class="no-sort desktop text-right" data-name="name">Inquiry</th>
+              <th class="no-sort all text-right" data-name="sku">Order</th>
               <th class="no-sort all" data-name="sku">Inside Sales</th>
               <th class="no-sort all" data-name="supplier">Supplier</th>
               <th class="no-sort desktop">Status</th>
             </tr>
+
             <% @sales_order.po_requests.each do |po_request| %>
               <tr>
                 <td><%= link_to edit_overseers_po_request_path(po_request), target: :_blank do %>

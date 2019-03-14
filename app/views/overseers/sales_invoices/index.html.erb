@@ -1,3 +1,4 @@
+<% provide :can_be_searched_or_created, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
@@ -17,7 +18,11 @@
 <% end %>
 
 <div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: SalesInvoice, statuses: SalesInvoice.statuses} %>
+  <%= render partial: "pod_summary" %>
+</div>
+
+<div class="col-lg-12">
+  <%= render partial: "shared/layouts/summary", locals: {klass: SalesInvoice, statuses: SalesInvoice.statuses, aggregation: {}} %>
 </div>
 
 <div class="col-lg-12">
@@ -35,6 +40,7 @@
       Owner
     </th>
     <th class="no-sort desktop">Proof of Delivery</th>
+    <th class="no-sort desktop" data-name="is_pod">POD</th>
     <th class="sort desktop text-right" data-name="mis_date">Invoice Date</th>
     <th class="sort desktop text-right" data-name="created_at">Created At</th>
   <% end %>
@@ -50,8 +56,9 @@
     <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
+    <td data-filter="dropdown"></td>
     <td data-filter="daterange"></td>
-    <td data-filter="false"></td>
+    <td data-filter="daterange"></td>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>

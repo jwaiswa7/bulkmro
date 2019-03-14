@@ -24,6 +24,7 @@ class Contact < ApplicationRecord
   has_many :customer_orders
   has_many :customer_products, through: :companies
   has_many :customer_order_comments
+  has_many :email_messages
 
   enum role: { customer: 10, account_manager: 20 }
   enum status: { active: 10, inactive: 20 }
@@ -36,6 +37,7 @@ class Contact < ApplicationRecord
       c_form_customer_group: 60,
       manager: 70,
   }
+
 
   validates_presence_of :telephone, if: -> { !self.mobile.present? && not_legacy? }
   validates_presence_of :mobile, if: -> { !self.telephone.present? && not_legacy? }

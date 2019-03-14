@@ -22,7 +22,9 @@ class MaterialPickupRequest < ApplicationRecord
 
   enum status: {
       'Material Pickup': 10,
-      'Material Delivered': 20
+      'Material Delivered': 20,
+      'GRPO Request Rejected': 30,
+      'AP Invoice Request Rejected': 40
   }
 
   enum dispatched_bies: {

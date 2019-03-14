@@ -34,5 +34,7 @@ class SalesInvoicesIndex < BaseIndex
     field :cp_order_date_s, value: -> (record) {record.inquiry.customer_order_date.strftime('%d-%b-%Y').to_s if record.inquiry.present? && record.inquiry.customer_order_date.present?}, analyzer: 'substring'
     field :potential_value, value: -> (record) {record.report_total}, type: 'double'
     field :line_items_count, value: -> (record) {record.rows.count if record.inquiry.present?}, type: 'integer'
+    field :pod_created_at, value: -> (record) {record.mis_date if !record.has_attachment? }, type: 'date'
+    field :is_pod, value: -> (record) {record.has_attachment? ? 1 : 0}, type: 'integer'
   end
 end

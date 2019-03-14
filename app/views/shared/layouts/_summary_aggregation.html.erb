@@ -1,0 +1,32 @@
+<div class="mt-2 form-row d-flex flex-row align-content-stretch">
+  <% statuses.each do |status, status_id| %>
+    <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
+      <a data-value="<%= status_id %>" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-<%= status_color(status) %> status-<%= status_id %>" href="#">
+        <div class="card-body px-3 pt-3 pb-3">
+          <div class="text-center d-flex flex-column h-100">
+            <p class="mb-1 text-small text-uppercase text-<%= status_color(status) %>">
+              <strong><%= format_enum(status) %></strong>
+            </p>
+            <h5 class="mb-0 mt-auto text-<%= status_color(status) %> status-count-<%= status_id %>"></h5>
+            <hr class="my-2">
+            <h5 class="my-0 text-small text-<%= status_color(status) %> status-value-<%= status_id %>">&#8377;0</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+  <% end %>
+  <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
+    <div data-value="" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-red " >
+      <div class="card-body px-3 pt-3 pb-3">
+        <div class="text-center d-flex flex-column h-100">
+          <p class="mb-1 text-small text-uppercase text-red agg-label">
+            <strong><%=label %></strong>
+          </p>
+          <h5 class="mb-0 mt-auto text-red overall-status-count"></h5>
+          <hr class="my-2">
+          <h5 class="my-0 text-small text-red overall-status-value">&#8377;0</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
