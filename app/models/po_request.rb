@@ -28,6 +28,10 @@ class PoRequest < ApplicationRecord
 
   attr_accessor :opportunity_type, :customer_committed_date, :blobs
 
+  belongs_to :requested_by, class_name: 'Overseer', foreign_key: 'requested_by_id', required: false
+  belongs_to :approved_by, class_name: 'Overseer', foreign_key: 'approved_by_id', required: false
+  belongs_to :company, required: false
+
   enum status: {
       'Requested': 10,
       'PO Created': 20,
