@@ -18,7 +18,7 @@
       <% elsif policy(@po_request).can_process_amended_po_requests? %>
         <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("Requested", "Rejected", "Cancelled"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
       <% else %>
-        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), disabled: true, :include_blank => false %>
+        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), disabled: false, :include_blank => false %>
       <% end %>
       <%= f.hidden_field :id %>
     </div>
@@ -242,8 +242,8 @@
   <div class="form-row po-request-row">
     <div class="col-12 col-md-12 mb-1">
 
-      #<%= ((f.object.rows.index(po_request_row.object) || f.object.rows.size || 0) + 1) %>
-      <%#= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, disabled: true %>
+      #<%= ((f.object.rows.index(po_request_row.object) || f.object.rows.size || 0) + 1) %>.
+      <strong class="mb-4"><%= po_request_row.object.to_s %></strong>
     </div>
     <div class="col-12 col-md-12">
       <div class="form-row">

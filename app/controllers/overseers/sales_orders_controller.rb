@@ -1,5 +1,6 @@
 class Overseers::SalesOrdersController < Overseers::BaseController
-  before_action :set_sales_order, only: [ :resync, :new_purchase_orders_requests,  :preview_purchase_orders_requests, :create_purchase_orders_requests]
+  before_action :set_sales_order, only: [:resync, :new_purchase_orders_requests, :preview_purchase_orders_requests, :create_purchase_orders_requests]
+
   def pending
     authorize :sales_order
 
@@ -83,9 +84,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       format.json do
         service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
         service.call
-
         @indexed_sales_orders = service.indexed_records
-        @sales_orders = service.records.try(:reverse)
+        @sales_orders = service.records
 
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, remote_status: true)
         status_service.call
@@ -107,7 +107,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         service.call
 
         @indexed_sales_orders = service.indexed_records
-        @sales_orders = service.records.try(:reverse)
+        @sales_orders = service.records
 
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, remote_status: true)
         status_service.call
