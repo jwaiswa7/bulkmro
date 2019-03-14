@@ -21,6 +21,6 @@ let salesOrders = {
     pending: salesOrdersPending,
     notInvoiced: notInvoiced,
     newPurchaseOrdersRequests: newPurchaseOrdersRequests
-}
+};
 
 export default salesOrders

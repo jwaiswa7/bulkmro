@@ -66,6 +66,9 @@ service.call
 service = Services::Shared::Migrations::Migrations.new(%w(add_logistics_owner_to_companies), folder: 'seed_files')
 service.call
 
+service = Services::Shared::Migrations::Migrations.new(%w(update_sales_receipt sales_invoice_totals update_account_id))
+service.call
+
 service = Services::Shared::Migrations::Migrations.new(%w(fetch_address), folder: 'seed_files')
 service.call
 
