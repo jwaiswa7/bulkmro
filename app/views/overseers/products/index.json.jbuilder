@@ -19,10 +19,9 @@ json.data (@products) do |product|
                   ].join(' '),
                   link_to(product.name, overseers_product_path(product), target: '_blank'),
                   product.sku,
-                  link_to(product.brand.to_s, overseers_brand_path(product.brand), target: '_blank'),
-                  link_to(product.category.name, overseers_category_path(product.category), target: '_blank'),
+                  product.brand.present? ? link_to(product.brand.to_s, overseers_brand_path(product.brand), target: '_blank') : '-',
+                  product.category.present? ? link_to(product.category.name, overseers_category_path(product.category), target: '_blank') : '-',
                   product.mpn,
-
                   number_with_delimiter(product.total_pos, delimiter: ','),
                   number_with_delimiter(product.total_quotes, delimiter: ','),
                   format_boolean(product.is_service),

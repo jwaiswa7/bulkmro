@@ -14,7 +14,8 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
       )
 
       @sales_order.update_attributes(
-        manager_so_status_date: Time.now
+        manager_so_status_date: Time.now,
+        quotation_uid: @sales_order.inquiry.quotation_uid
       )
 
       if @sales_order.status != 'Approved'
