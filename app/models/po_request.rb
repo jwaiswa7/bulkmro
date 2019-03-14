@@ -7,7 +7,7 @@ class PoRequest < ApplicationRecord
 
   pg_search_scope :locate, against: [:id], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
-  belongs_to :sales_order
+  belongs_to :sales_order, required: false
   belongs_to :inquiry
   belongs_to :supplier, class_name: 'Company', foreign_key: :supplier_id
   has_many :rows, class_name: 'PoRequestRow', inverse_of: :po_request, dependent: :destroy

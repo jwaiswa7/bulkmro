@@ -166,6 +166,8 @@ Rails.application.routes.draw do
         get 'sku_purchase_history'
         get 'resync'
         get 'resync_inventory'
+        get 'autocomplete_suppliers'
+        get 'get_product_details'
       end
 
       collection do
@@ -336,6 +338,7 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
         get 'export_filtered_records'
+        post 'create_purchase_orders_requests'
         post 'preview_stock_po_request'
       end
 
