@@ -51,7 +51,6 @@ class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::Bas
           end
         end
         @notification = Services::Overseers::Notifications::Notify.new(@overseer, self.class.parent)
-
         if po_request.present? && po_request.po_request_type == 'Supplier'
           @notification.send_po_request_creation(
               Services::Overseers::Notifications::Recipients.logistics_owners,

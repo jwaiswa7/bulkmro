@@ -16,6 +16,10 @@ const index = () => {
         $('#export_filtered_records').show();
     });
 
+    $('.filter-list-input').on('keyup', function () {
+        ($(this).val() == '') ? $('#export_filtered_records').hide() : $('#export_filtered_records').show();
+    });
+
     $('#export_filtered_records').click((event) => {
         let element = $(event.target);
         element.prop('disabled', true);

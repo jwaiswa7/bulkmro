@@ -1,5 +1,6 @@
 // Component Imports
 import select2s from "./select2s";
+
 const dataTables = () => {
     preSetup();
     setup();
