@@ -79,11 +79,17 @@ class PurchaseOrder < ApplicationRecord
 
   after_initialize :set_defaults, if: :new_record?
 
+  def self.by_number(number)
+    find_by_po_number(number)
+  end
+
+  def get_number
+    self.po_number
+  end
+
   def set_defaults
     self.material_status = 'Material Readiness Follow-Up'
   end
-
-
 
   def has_supplier?
     self.get_supplier(self.rows.first.metadata['PopProductId'].to_i).present?
@@ -91,6 +97,10 @@ class PurchaseOrder < ApplicationRecord
 
   def has_sent_email_to_supplier?
     self.email_messages.where(email_type: 'Sending PO to Supplier').present?
+  end
+
+  def email_sent_to_supplier_date
+    self.email_messages.where(email_type: 'Sending PO to Supplier').last.created_at if has_sent_email_to_supplier?
   end
 
   def get_supplier(product_id)

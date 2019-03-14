@@ -5,13 +5,18 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     authorize :sales_invoice
 
     respond_to do |format|
-      format.html { }
+      format.html {
+        service = Services::Overseers::SalesInvoices::ProofOfDeliverySummary.new(params, current_overseer)
+        service.call
+
+        @invoice_over_month = service.invoice_over_month
+        @pod_over_month = service.pod_over_month
+      }
       format.json do
         service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer)
         service.call
         @indexed_sales_invoices = service.indexed_records
-        @sales_invoices = service.records.try(:reverse)
-
+        @sales_invoices = service.records
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_invoices, SalesInvoice)
         status_service.call
         @total_values = status_service.indexed_total_values

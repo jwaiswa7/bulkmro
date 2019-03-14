@@ -52,7 +52,7 @@ class SalesQuote < ApplicationRecord
   end
 
   def syncable_identifiers
-    [:quotation_uid]
+    [:remote_uid]
   end
 
   def inquiry_has_many_sales_quotes?
@@ -64,7 +64,7 @@ class SalesQuote < ApplicationRecord
   end
 
   def sales_quote_quantity_not_fulfilled?
-    self.calculated_total_quantity > self.sales_orders.remote_approved.persisted.map { |sales_order| sales_order.calculated_total_quantity }.compact.sum
+    self.calculated_total_quantity > self.sales_orders.under_process.persisted.map { |sales_order| sales_order.calculated_total_quantity }.compact.sum
   end
 
   def filename(include_extension: false)

@@ -51,6 +51,6 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
     end
 
     def set_purchase_order_items
-      Resources::PurchaseOrder.set_purchase_order_items([@purchase_order.po_number])
+      Resources::PurchaseOrder.set_multiple_items([@purchase_order.po_number])
     end
 end

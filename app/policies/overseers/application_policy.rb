@@ -50,6 +50,10 @@ class Overseers::ApplicationPolicy
     overseer.inside? || overseer.outside?
   end
 
+  def inside?
+    overseer.inside?
+  end
+
   def others?
     overseer.others?
   end
@@ -111,11 +115,11 @@ class Overseers::ApplicationPolicy
   end
 
   def allow_export?
-    developer? || ['vijay.manjrekar@bulkmro.com', 'nilesh.desai@bulkmro.com', 'lavanya.j@bulkmro.com'].include?(overseer.email)
+    developer? || ['Gaurang Shah', 'Devang Shah', 'Ankur Gupta', 'Lavanya Jamma', 'Shailender Agarwal', 'Nilesh Desai', 'Priyanka Rajpurkar', 'Uday Salvi', 'Akshay Jindal', 'Nitin Nabera', 'Vijay Manjrekar'].include?(overseer.name)
   end
 
   def allow_logistics_format_export?
-    developer? || ['amit.rawool@bulkmro.com'].include?(overseer.email)
+    developer? || ['Amit Rawool', 'Vignesh Gounder', 'Mahendra Kolekar', 'Ajay Rathod'].include?(overseer.name)
   end
 
   def allow_customer_portal?
@@ -123,7 +127,8 @@ class Overseers::ApplicationPolicy
   end
 
   def allow_activity_export?
-    developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
+    true
+    # developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
   end
 
   def export_rows?

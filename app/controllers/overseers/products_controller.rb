@@ -1,5 +1,5 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync, :resync_inventory, :autocomplete_suppliers, :get_product_details]
+  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync, :resync_inventory]
 
   def index
     service = Services::Overseers::Finders::Products.new(params)
@@ -15,6 +15,20 @@ class Overseers::ProductsController < Overseers::BaseController
 
     @indexed_products = service.indexed_records
     @products = service.records.active
+    authorize @products
+  end
+
+  def non_kit_autocomplete
+    base_filter = {
+        base_filter_key: 'is_not_kit',
+        base_filter_value: true
+    }
+
+    service = Services::Overseers::Finders::Products.new(params.merge(page: 1).merge(base_filter))
+    service.call
+
+    @indexed_products = service.indexed_records
+    @products = service.records
     authorize @products
   end
 
@@ -146,7 +160,7 @@ class Overseers::ProductsController < Overseers::BaseController
     product_details['converted_unit_selling_price'] = @product.latest_unit_cost_price
     render json: product_details
   end
-
+  
   private
 
     def product_params

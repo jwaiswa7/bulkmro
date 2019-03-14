@@ -217,7 +217,7 @@
                 <% if f.object.calculation_sheet.attached? %>
                   <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: "#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe %>
                 <% else %>
-                  <%= f.input :calculation_sheet, wrapper: :custom_file, required: true, label: 'Calculation sheet', hint: false %>
+                  <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: false %>
                 <% end %>
               </div>
               <% if f.object.persisted? %>

@@ -4,7 +4,7 @@
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
         <a href="<%= overseers_account_path(@company.account) %>"><img src="https://ui-avatars.com/api/?size=128&name=<%= @company.account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/></a><%= @company.name %>
-        &nbsp;<%= format_star(@company.rating) if @company.rating.present? %>
+        &nbsp;<%= format_star(@company.rating) if @company.rating.present? && @company.rating > 0 %>
       </h3>
 
       <% if policy(@company).edit? %>
@@ -581,20 +581,21 @@
         <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Fullfilled Order'  %>
       </div>
       <div class="tab-pane fade" id="invoices" role="tabpanel">
-        <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_invoices_path(@company) %><% end %>
+        <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_invoices_path(company_id: @company.id) %><% end %>
 
         <% content_for :header_row, flush: true do %>
-            <th class="no-sort all"></th>
-            <th class="no-sort all" data-name="invoice_number">Invoice #</th>
-            <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
-            <th class="no-sort desktop" data-name="order_number">Order #</th>
-            <th class="no-sort desktop">Line Items</th>
-            <th class="no-sort desktop">Status</th>
-            <th class="no-sort desktop" data-name="mis_date">Invoice Date</th>
-            <th class="no-sort desktop">Created At</th>
-        <% end %>
-        <% content_for :heading_buttons, flush: true do %>
-          <a href="#"></a>
+          <th class="no-sort all"></th>
+          <th class="sort all text-right" data-name="invoice_number">Invoice #</th>
+          <th class="sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
+          <th class="no-sort desktop text-right" data-name="order_number">Order #</th>
+          <th class="no-sort desktop" data-name="company_name">Company</th>
+          <th class="no-sort desktop text-right">Line Items</th>
+          <th class="no-sort desktop" data-name="status">Status</th>
+          <th class="no-sort desktop" data-name="inside_sales_executive" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
+          <th class="no-sort desktop" data-name="outside_sales_executive" data-toggle="tooltip" title="Outside Sales & Procurement">OS Owner</th>
+          <th class="no-sort desktop">Proof of Delivery</th>
+          <th class="sort desktop text-right" data-name="mis_date">Invoice Date</th>
+          <th class="sort desktop text-right" data-name="created_at">Created At</th>
         <% end %>
         <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Invoices'  %>
       </div>

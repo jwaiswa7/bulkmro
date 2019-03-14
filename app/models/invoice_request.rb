@@ -6,7 +6,7 @@ class InvoiceRequest < ApplicationRecord
 
   pg_search_scope :locate, against: [:id, :grpo_number, :ap_invoice_number, :ar_invoice_number], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
-  belongs_to :sales_order, required: false
+  belongs_to :sales_order
   belongs_to :inquiry
   belongs_to :purchase_order, required: false
   has_many :material_pickup_requests
@@ -29,9 +29,8 @@ class InvoiceRequest < ApplicationRecord
   scope :ar_invoice_pending, -> { where(status: :'Pending AR Invoice') }
   scope :ar_invoice_generated, -> { where(status: :'Completed AR Invoice Request') }
 
-  # validates_presence_of :sales_order
+  validates_presence_of :sales_order
   validates_presence_of :inquiry
-  validates :ap_invoice_number, length: { is: 8 }, allow_blank: true
   validates_numericality_of :ap_invoice_number, allow_blank: true
   validate :has_attachments?
   validate :grpo_number_valid?
