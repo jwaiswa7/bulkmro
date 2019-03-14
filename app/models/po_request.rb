@@ -4,6 +4,7 @@ class PoRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
   include Mixins::HasConvertedCalculations
+  include Mixins::GetOverallDate
 
   pg_search_scope :locate, against: [:id], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
@@ -119,6 +120,10 @@ class PoRequest < ApplicationRecord
 
   def po_margin_percentage
     (((self.buying_price - self.selling_price) / self.buying_price) * 100).round(2) if self.buying_price > 0
+  end
+
+  def show_supplier_delivery_date
+    get_overall_date1(self)
   end
 
   def readable_status
