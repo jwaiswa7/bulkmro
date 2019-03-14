@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::CustomerOrders::BaseController < Overseers::BaseController
   before_action :set_customer_order
 

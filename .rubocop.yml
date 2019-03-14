@@ -143,12 +143,12 @@ Layout/SpaceBeforeBlockBraces:
 
 # Use `foo { bar }` not `foo {bar}`.
 Layout/SpaceInsideBlockBraces:
-  Enabled: true
+  Enabled: false
   EnforcedStyleForEmptyBraces: space
 
 # Use `{ a: 1 }` not `{a:1}`.
 Layout/SpaceInsideHashLiteralBraces:
-  Enabled: true
+  Enabled: false
 
 Layout/SpaceInsideParens:
   Enabled: true
@@ -231,8 +231,3 @@ Performance/RegexpMatch:
 
 Performance/UnfreezeString:
   Enabled: true
-
-
-inherit_gem:
-  rubocop-rails_config:
-    - config/rails.yml

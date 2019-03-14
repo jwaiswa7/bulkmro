@@ -3,46 +3,60 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
     :DocEntry
   end
 
-  def self.set_purchase_order_items(purchase_order_numbers)
+  def self.set_multiple_items(purchase_order_numbers, filter_params = nil)
     purchase_order_numbers.each do |purchase_order_number|
-      remote_response = self.custom_find(purchase_order_number)
-      if remote_response.present?
-        metadata = self.build_metadata(remote_response)
-
-        purchase_order = ::PurchaseOrder.find_by_po_number(purchase_order_number)
-        if !purchase_order.present?
-          service = Services::Callbacks::PurchaseOrders::Create.new(metadata, nil)
-          service.call
-          next
-        end
-
-        purchase_order.assign_attributes(metadata: metadata)
-        if metadata['PoStatus'].to_i > 0
-          purchase_order.assign_attributes(status: metadata['PoStatus'].to_i)
-        else
-          purchase_order.assign_attributes(status: ::PurchaseOrder.statuses[metadata['PoStatus']])
-        end
-
-        ActiveRecord::Base.transaction do
-          # purchase_order.rows.destroy_all
-          purchase_order.update_attributes!(metadata: metadata)
-
-          metadata['ItemLine'].each do |remote_row|
-            row = purchase_order.rows.select { |por| por.metadata['Linenum'].to_i == remote_row['Linenum'].to_i }.first
-
-            if row.present?
-              row.assign_attributes(metadata: remote_row)
-              row.save!
-            else
-              new_row = purchase_order.rows.build do |po_row|
-                po_row.assign_attributes(
-                  metadata: remote_row
-                )
-              end
-              new_row.save!
-            end
+      if filter_params.present?
+        remote_response = self.custom_find_with_filters(purchase_order_number, filter_params[:"#{purchase_order_number.to_s}"])
+        if remote_response.present?
+          metadata = self.build_metadata(remote_response)
+          metadata['PoNum'] = (purchase_order_number.to_s + '0').to_i
+          purchase_order = ::PurchaseOrder.find_by_po_number(metadata['PoNum'])
+          if !purchase_order.present?
+            service = Services::Callbacks::PurchaseOrders::Create.new(metadata, nil)
+            service.call
+            next
           end
-          purchase_order.save!
+        end
+      else
+        remote_response = self.custom_find(purchase_order_number)
+        if remote_response.present?
+          metadata = self.build_metadata(remote_response)
+
+          purchase_order = ::PurchaseOrder.find_by_po_number(purchase_order_number)
+          if !purchase_order.present?
+            service = Services::Callbacks::PurchaseOrders::Create.new(metadata, nil)
+            service.call
+            next
+          end
+
+          purchase_order.assign_attributes(metadata: metadata)
+          if metadata['PoStatus'].to_i > 0
+            purchase_order.assign_attributes(status: metadata['PoStatus'].to_i)
+          else
+            purchase_order.assign_attributes(status: ::PurchaseOrder.statuses[metadata['PoStatus']])
+          end
+
+          ActiveRecord::Base.transaction do
+            # purchase_order.rows.destroy_all
+            purchase_order.update_attributes!(metadata: metadata)
+
+            metadata['ItemLine'].each do |remote_row|
+              row = purchase_order.rows.select { |por| por.metadata['Linenum'].to_i == remote_row['Linenum'].to_i }.first
+
+              if row.present?
+                row.assign_attributes(metadata: remote_row)
+                row.save!
+              else
+                new_row = purchase_order.rows.build do |po_row|
+                  po_row.assign_attributes(
+                    metadata: remote_row
+                  )
+                end
+                new_row.save!
+              end
+            end
+            purchase_order.save!
+          end
         end
       end
     end
@@ -50,6 +64,21 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
 
   def self.custom_find(doc_num)
     response = get("/#{collection_name}?$filter=DocNum eq #{doc_num}")
+    log_request(:get, 'Purchase Order - #{doc_num}', is_find: true)
+    validated_response = get_validated_response(response)
+    log_response(validated_response)
+
+    if validated_response['value'].present?
+      remote_record = validated_response['value'][0]
+    end
+
+    remote_record
+  end
+
+  def self.custom_find_with_filters(doc_num, filter_params)
+    filters_query = "DocNum eq #{doc_num}"
+    filter_params.map {|k, v| filters_query << ' and ' + k.to_s + ' eq ' + "'#{v}'"}
+    response = get("/#{collection_name}?$filter=#{filters_query}")
     log_request(:get, 'Purchase Order - #{doc_num}', is_find: true)
     validated_response = get_validated_response(response)
     log_response(validated_response)
@@ -93,7 +122,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         'PoDate' => remote_response['DocDate'],
         'PoType' => remote_response['Movement of Goods'],
         'DocEntry' => remote_response['DocEntry'],
-        'PoPaymentTerms' => '',
+        'PoPaymentTerms' => remote_response['PaymentGroupCode'],
         'ItemLine' => remote_rows_arr,
         'PoStatus' => remote_response['U_PO_Status'],
         'PoSupNum' => remote_response['CardCode'],

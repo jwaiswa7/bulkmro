@@ -20,8 +20,10 @@ json.data (@companies) do |company|
                         row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success', :_blank)
                       end,
                   ].join(' '),
-                  company.to_s,
-                  format_star(company.rating),
+                  link_to(company.to_s, overseers_company_path(company), target: '_blank'),
+                  if company.is_supplier? && company.rating.present? && company.rating > 0
+                    format_star(company.rating)
+                  end,
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,

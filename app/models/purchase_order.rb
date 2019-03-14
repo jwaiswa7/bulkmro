@@ -24,7 +24,7 @@ class PurchaseOrder < ApplicationRecord
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
   has_many_attached :attachments
 
-  scope :with_includes, -> { includes(:inquiry) }
+  scope :with_includes, -> { includes(:inquiry, :po_request) }
 
   def filename(include_extension: false)
     [
@@ -79,11 +79,17 @@ class PurchaseOrder < ApplicationRecord
 
   after_initialize :set_defaults, if: :new_record?
 
+  def self.by_number(number)
+    find_by_po_number(number)
+  end
+
+  def get_number
+    self.po_number
+  end
+
   def set_defaults
     self.material_status = 'Material Readiness Follow-Up'
   end
-
-
 
   def has_supplier?
     self.get_supplier(self.rows.first.metadata['PopProductId'].to_i).present?
@@ -91,6 +97,10 @@ class PurchaseOrder < ApplicationRecord
 
   def has_sent_email_to_supplier?
     self.email_messages.where(email_type: 'Sending PO to Supplier').present?
+  end
+
+  def email_sent_to_supplier_date
+    self.email_messages.where(email_type: 'Sending PO to Supplier').last.created_at if has_sent_email_to_supplier?
   end
 
   def get_supplier(product_id)
@@ -108,6 +118,22 @@ class PurchaseOrder < ApplicationRecord
   def supplier
     return po_request.supplier if po_request.present?
     return get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
+  end
+
+  def billing_address
+    if self.metadata['PoSupBillFrom'].present?
+      Address.find_by_remote_uid(self.metadata['PoSupBillFrom'])
+    else
+      supplier.billing_address
+    end
+  end
+
+  def shipping_address
+    if self.metadata['PoSupShipFrom'].present?
+      Address.find_by_remote_uid(self.metadata['PoSupShipFrom'])
+    else
+      supplier.shipping_address
+    end
   end
 
   def metadata_status

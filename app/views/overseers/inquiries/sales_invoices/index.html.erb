@@ -6,6 +6,7 @@
     <% content_for :header_row do %>
       <th class="no-sort"></th>
       <th class="no-sort desktop text-right"># Invoice</th>
+      <th class="no-sort desktop text-right">Invoice Status</th>
       <th class="no-sort desktop text-right"># Sales Order</th>
       <th class="no-sort desktop text-right">Line Items</th>
       <th class="no-sort desktop text-right">Invoice Date</th>
@@ -42,6 +43,7 @@
             <% end %>
           </td>
           <td><%= sales_invoice.invoice_number %></td>
+          <td><%= status_badge(sales_invoice.status) %></td>
           <td><%= sales_invoice.sales_order.order_number %></td>
           <td><%= sales_invoice.rows.size %></td>
           <td><%= format_date(sales_invoice.mis_date || sales_invoice.metadata["sales_invoice"]["created_at"].to_date) if sales_invoice.metadata["sales_invoice"].present? && sales_invoice.metadata["sales_invoice"]["created_at"].present? %></td>

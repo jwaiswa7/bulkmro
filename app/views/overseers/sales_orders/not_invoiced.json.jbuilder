@@ -33,8 +33,8 @@ json.data (@sales_orders) do |sales_order|
                   format_currency(sales_order.sales_quote.calculated_total),
                   format_currency(sales_order.calculated_total),
                   format_currency(sales_order.invoice_total),
-                  format_date(sales_order.mis_date),
-                  format_date(sales_order.created_at)
+                  format_succinct_date(sales_order.mis_date),
+                  format_succinct_date(sales_order.created_at)
               ]
 end
 
@@ -42,7 +42,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       SalesOrder.statuses.map { |k, v| { "label":                                                             k, "value": v.to_s } }.as_json,
+                       SalesOrder.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        SalesOrder.remote_statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,

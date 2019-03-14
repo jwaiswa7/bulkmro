@@ -1,6 +1,6 @@
 class Overseers::PoRequestsController < Overseers::BaseController
   before_action :set_po_request, only: [:show, :edit, :update]
-
+  before_action :set_notification, only: [:update]
   def pending_and_rejected
     @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.pending_and_rejected.order(id: :desc)), params)
     authorize @po_requests
@@ -93,8 +93,10 @@ class Overseers::PoRequestsController < Overseers::BaseController
                                             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}", po_request: @po_request, overseer: current_overseer)
                                             @po_request.purchase_order = nil
 
-                                            @po_request.payment_request.update!(status: :'Cancelled')
-                                            @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
+                                            if @po_request.payment_request.present?
+                                              @po_request.payment_request.update!(status: :'Cancelled')
+                                              @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
+                                            end
 
                                           elsif @po_request.status == 'Rejected'
                                             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}", po_request: @po_request, overseer: current_overseer)
@@ -104,6 +106,15 @@ class Overseers::PoRequestsController < Overseers::BaseController
                                           end
                                           @po_request.save!
                                           @po_request_comment.save!
+                                          tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
+                                          @notification.send_po_request_update(
+                                            tos - [current_overseer.email],
+                                              action_name.to_sym,
+                                              @po_request,
+                                              overseers_po_request_path(@po_request),
+                                              @po_request.id,
+                                              @po_request_comment.message,
+                                          )
                                         else
                                           @po_request.save!
                                         end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Brand < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
@@ -18,5 +20,9 @@ class Brand < ApplicationRecord
 
   def self.legacy
     find_by_name('Legacy Brand')
+  end
+
+  def self.default
+    find_by(name: 'BULK MRO APPROVED')
   end
 end

@@ -22,13 +22,11 @@
       <%= format_times_ago(comment.created_at) %></span>
     </div>
     <div class="chat-item-body">
-      <p>
-        <% if trimmed && comment.message.length > 48 %>
-          <%= comment.message[0..48] + ".." %>
-        <% else %>
-          <%= simple_format comment.message %>
-        <% end %>
-      </p>
+      <% if trimmed && comment.message.length > 48 %>
+        <%= comment.message[0..48] + ".." %>
+      <% else %>
+        <%= simple_format comment.message %>
+      <% end %>
     </div>
   </div>
 </div>

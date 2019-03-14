@@ -8,16 +8,16 @@ json.data (@company_creation_requests) do |company|
                   row_action_button(overseers_company_creation_request_path(company), 'eye',  'View Company Creation Request', 'info', :_blank)
                 end,
                 if policy(company.activity).show?;
-                  row_action_button(edit_overseers_activity_path(company.activity), 'pencil',  'Edit Activity', 'success', :_blank)
+                  row_action_button(edit_overseers_activity_path(company.activity), 'pencil',  'Edit Activity', 'warning', :_blank)
                 end
             ].join(' '),
-	              company.name,
+	              link_to(company.name, overseers_company_creation_request_path(company), target: '_blank'),
 	              company.first_name,
 	              company.last_name,
 	              company.email,
                 format_boolean(company.is_supplier?),
                 format_boolean(company.is_customer?),
-	              format_date(company.created_at)
+                format_succinct_date(company.created_at)
               ]
 end
 json.columnFilters [

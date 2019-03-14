@@ -23,6 +23,17 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.ar_invoice_generated.order(id: :desc), params)
     authorize @invoice_requests
 
+    #####################################################################################################
+    ## Below code is for POD Summary on AR completed queue
+    #####################################################################################################
+    @completed = true
+    service = Services::Overseers::SalesInvoices::ProofOfDeliverySummary.new(params, current_overseer)
+    service.call
+
+    @invoice_over_month = service.invoice_over_month
+    @pod_over_month = service.pod_over_month
+    #####################################################################################################
+
     respond_to do |format|
       format.json { render 'index' }
       format.html { render 'index' }
@@ -40,6 +51,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
     service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     @company_reviews = service.call
+    service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.material_pickup_requests.ids,  false)
+    @products_list = service.call
   end
 
   def new

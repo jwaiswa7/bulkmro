@@ -29,7 +29,11 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def tax_rate
-    self.metadata['PopTaxRate'].gsub(/\D/, '').to_f
+    if self.metadata['PopTaxRate'] == 'IMP@18'
+      0.0
+    else
+      self.metadata['PopTaxRate'].gsub(/\D/, '').to_f
+    end
   end
 
   def applicable_tax_percentage
@@ -71,7 +75,7 @@ class PurchaseOrderRow < ApplicationRecord
 
 
   def lead_date
-    po_request = purchase_order.po_request
+    po_request = self.purchase_order.po_request
     if po_request.present?
       po_request_rows = po_request.rows
       return false if po_request_rows.blank? || get_product.nil?

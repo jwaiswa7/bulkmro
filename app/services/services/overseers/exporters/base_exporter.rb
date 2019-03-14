@@ -3,10 +3,13 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
     @arguments = args
     @start_at = Date.new(2018, 10, 19)
     @end_at = Date.today.end_of_day
+    @overseer = args[1]
     if args[0].present? && (args[0].include? '~')
-        range = args[0].split("~")
-        @start_at = range[0].strip.to_date
-        @end_at = range[1].strip.to_date.end_of_day
+      range = args[0].split('~')
+      @start_at = range[0].strip.to_date
+      @end_at = range[1].strip.to_date.end_of_day
+    elsif args[2].present?
+      @ids = args[2]
     end
     @rows = []
   end
@@ -28,6 +31,10 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       temp_file.close
       object.report.attach(io: File.open(temp_file.path), filename: filename)
       object.save!
+      if @ids.present?
+        sleep(60)
+        ExportMailer.export_filtered_records(object, @overseer).deliver_now
+      end
     rescue => ex
       puts ex.message
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CompanyContact < ApplicationRecord
   include Mixins::CanBeStamped
 
@@ -8,6 +10,6 @@ class CompanyContact < ApplicationRecord
   validates_uniqueness_of :contact, scope: :company
 
   def to_s
-    self.contact.to_s
+    contact.to_s
   end
 end

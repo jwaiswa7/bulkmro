@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   def index?
     true
@@ -44,7 +46,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_process_amended_po_requests?
-    record.purchase_order.present? && (logistics? || admin?) && record.amending?
+    record.purchase_order.present? && (logistics? || admin? || manager_or_sales?) && record.amending?
   end
 
   def show_payment_request?
@@ -95,7 +97,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
       if overseer.allow_inquiries?
         scope.all
       else
-        scope.joins("INNER JOIN inquiries ON inquiries.id = po_requests.inquiry_id").where('inquiries.inside_sales_owner_id IN (:overseer) OR inquiries.outside_sales_owner_id IN (:overseer) OR po_requests.created_by_id IN (:overseer)', overseer: overseer.self_and_descendants.pluck(:id))
+        scope.joins('INNER JOIN inquiries ON inquiries.id = po_requests.inquiry_id').where('inquiries.inside_sales_owner_id IN (:overseer) OR inquiries.outside_sales_owner_id IN (:overseer) OR po_requests.created_by_id IN (:overseer)', overseer: overseer.self_and_descendants.pluck(:id))
       end
     end
   end

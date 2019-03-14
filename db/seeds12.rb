@@ -12,3 +12,14 @@ service.call
 
 
 # End For Inward Queue
+
+service = Services::Shared::Migrations::Migrations.new(%w(add_completed_po_to_material_followup_queue), folder: 'seed_files')
+service.call
+
+
+# To add missing payment options
+service = Services::Shared::Migrations::Migrations.new(%w(missing_payment_options), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(missing_sales_order_products), folder: 'seed_files')
+service.call

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def show?
     record.persisted? && record.not_legacy? && !record.original_invoice.attached?
@@ -37,5 +39,9 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
 
   def update_pod?
     edit_pod?
+  end
+
+  def search_or_create?
+    manager_or_sales? || logistics?
   end
 end

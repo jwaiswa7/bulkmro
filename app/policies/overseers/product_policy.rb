@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def new?
     cataloging? || admin?
@@ -53,5 +55,9 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
 
   def service_autocomplete?
     index?
+  end
+
+  def non_kit_autocomplete?
+    edit?
   end
 end
