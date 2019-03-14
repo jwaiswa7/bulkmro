@@ -40,6 +40,7 @@ json.data (@po_requests) do |po_request|
                     conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?)
                   end,
                   po_request.po_request_type == 'Stock' ? status_badge(po_request.stock_status) : status_badge(po_request.status),
+                  status_badge(po_request.status),
                   conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
                   if po_request.purchase_order.present? && (po_request.status == 'PO Created' || po_request.stock_status == 'Stock Supplier PO Created')
                     link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank')

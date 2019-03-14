@@ -9,7 +9,7 @@ class InvoiceRequest < ApplicationRecord
   belongs_to :sales_order, required: false
   belongs_to :inquiry
   belongs_to :purchase_order, required: false
-  has_many :material_pickup_requests
+  has_many :inward_dispatches
   has_many_attached :attachments
   has_many :company_reviews, as: :rateable
   ratyrate_rateable 'CompanyReview'

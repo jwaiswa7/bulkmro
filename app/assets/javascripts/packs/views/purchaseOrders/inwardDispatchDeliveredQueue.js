@@ -1,4 +1,4 @@
-const materialDeliveredQueue = () => {
+const inwardDispatchDeliveredQueue = () => {
     $('#create_invoice').hide();
     toggleCheckboxes();
     $('#create_invoice').click((event) => {
@@ -8,23 +8,23 @@ const materialDeliveredQueue = () => {
 };
 
 let toggleCheckboxes = () => {
-    $('table').on('change', 'input[type=checkbox][name="pickup_requests[]"]', (event) => {
+    $('table').on('change', 'input[type=checkbox][name="the_inward_dispatches[]"]', (event) => {
         showOrHideActions();
     })
 };
 
 let createInvoiceRequest = () => {
-    let pickup_requests = {};
-    $('input[type=checkbox][name="pickup_requests[]"]:checked').each((index, element) => {
-        pickup_requests[$(element).val()] = $(element).data("po-id");
+    let inward_dispatches = {};
+    $('input[type=checkbox][name="the_inward_dispatches[]"]:checked').each((index, element) => {
+        inward_dispatches[$(element).val()] = $(element).data("po-id");
     });
 
-    if (checkValues(pickup_requests) == true) {
-        let data = {ids: Object.keys(pickup_requests), purchase_order_id: Object.values(pickup_requests)[0]};
+    if (checkValues(inward_dispatches) == true) {
+        let data = {ids: Object.keys(inward_dispatches), purchase_order_id: Object.values(inward_dispatches)[0]};
         window.open(Routes.new_overseers_invoice_request_path(data));
     } else {
         $.notify({
-            message: 'Selected Material Delivered Requests should be of the same Purchase Order'
+            message: 'Selected Inward Dispatches should be of the same Purchase Order'
         }, {
             type: 'danger'
         });
@@ -39,7 +39,7 @@ let checkValues = (obj) => {
 let showOrHideActions = () => {
     var hide = true;
 
-    $('input[type=checkbox][name="pickup_requests[]"]').each((index, element) => {
+    $('input[type=checkbox][name="the_inward_dispatches[]"]').each((index, element) => {
         if ($(element).is(':checked')) {
             hide = false;
         }
@@ -51,4 +51,4 @@ let showOrHideActions = () => {
     }
 };
 
-export default materialDeliveredQueue
+export default inwardDispatchDeliveredQueue

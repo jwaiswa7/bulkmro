@@ -11,11 +11,9 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
     end
 
     #  @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
-
     indexed_records = indexed_records.filter(filter_by_array('material_status', PurchaseOrder.material_statuses.except(:'Material Delivered').values))
-    # indexed_records = indexed_records.filter(filter_by_po_status)
+    indexed_records = indexed_records.filter(filter_by_value('po_request_status', PoRequest.statuses['Supplier PO Sent']))
     indexed_records = indexed_records.filter(filter_by_value('po_email_sent', true))
-
 
     if @base_filter.present?
       indexed_records = indexed_records.filter(@base_filter)
@@ -42,7 +40,7 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
     end
 
     indexed_records = indexed_records.filter(filter_by_array('material_status', PurchaseOrder.material_statuses.except(:'Material Delivered').values))
-    indexed_records = indexed_records.filter(filter_by_po_status)
+    indexed_records = indexed_records.filter(filter_by_value('po_request_status',filter_by_po_status))
     indexed_records = indexed_records.filter(filter_by_value('po_email_sent', true))
 
     if search_filters.present?
@@ -61,7 +59,7 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
         bool: {
             should: [
                 {
-                    term: { po_request_status: PoRequest.statuses['PO Created'] },
+                    term: { po_request_status: PoRequest.statuses['Supplier PO Sent'] },
                 },
                 {
                     term: { stock_po_status: PoRequest.stock_statuses['Stock Supplier PO Created'] }

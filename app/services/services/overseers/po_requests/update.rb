@@ -13,7 +13,7 @@ class Services::Overseers::PoRequests::Update < Services::Shared::BaseService
           @po_request.purchase_order = nil
 
           if @po_request.payment_request.present?
-            @po_request.payment_request.update!(status: :'Cancelled')
+            @po_request.payment_request.update_attributes(status: :'Cancelled')
             @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
           end
         elsif @po_request.status == 'Rejected'
