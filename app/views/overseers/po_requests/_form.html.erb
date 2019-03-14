@@ -14,18 +14,23 @@
     <div class="card mb-2">
       <div class="card-header">
         <div class="form-row">
-          <div class="col-4">
+          <div class="col-3">
             <strong class="d-block">Order Number</strong>
             <%= format_id(@po_request.sales_order.order_number) %>
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <strong class="d-block">Inquiry Number</strong>
             <%= format_id(@po_request.sales_order.inquiry.inquiry_number) %>
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <strong class="d-block">Customer Committed Date</strong>
             <%= @po_request.sales_order.customer_committed_date %>
-           </div>
+          </div>
+          <div class="col-3">
+            <strong class="d-block">Supplier Delivery Date(Overall)</strong>
+            <%= @po_request.show_supplier_delivery_date %>
+            <%#= f.input :show_supplier_delivery_date, disabled: true, label: "Supplier Delivery Date(Overall)" %>
+          </div>
         </div>
       </div>
       <div class="card-header">
@@ -77,9 +82,5 @@
     </div>
   <% end %>
 </div>
-
-<!--<div class="col-3">-->
-  <%#= f.input :show_supplier_delivery_date, disabled: true, label: "Supplier Delivery Date(Overall)" %>
-<!--</div>-->
 
 <%#= render partial: 'cancel_porequest'%>

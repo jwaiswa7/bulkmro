@@ -116,7 +116,7 @@ class PoRequest < ApplicationRecord
   end
 
   def show_supplier_delivery_date
-    get_overall_date1(self)
+    get_overall_date(self)
   end
 
   def readable_status
