@@ -19,6 +19,12 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
     @statuses = payment_requests.group(:status).count
   end
 
+  def update_payment_status
+    @payment_requests = PaymentRequest.where(id: params[:payment_requests])
+    authorize @payment_requests
+    @payment_requests.update_all(status: params[:status_id].to_i)
+  end
+
   def show
     authorize @payment_request
   end
