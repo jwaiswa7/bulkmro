@@ -29,6 +29,24 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     end
   end
 
+  def cancelled
+    invoice_requests =
+        if params[:status].present?
+          @status = params[:status]
+          InvoiceRequest.where(status: params[:status])
+        else
+          InvoiceRequest.all
+        end.order(id: :desc)
+
+    @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
+    authorize @invoice_requests
+
+    respond_to do |format|
+      format.json { render 'index' }
+      format.html { render 'index' }
+    end
+  end
+
   def index
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.order(id: :desc), params)
     authorize @invoice_requests
@@ -98,28 +116,38 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
     mpr_ids = @invoice_request.material_pickup_requests.map(&:id).join(', ')
     service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids,  false)
+    @mpr = @invoice_request.material_pickup_requests.last
     @products_list = service.call
   end
 
   def update
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
     authorize @invoice_request
-
     if @invoice_request.valid?
-      @invoice_request.update_status(@invoice_request.status)
-      ActiveRecord::Base.transaction do
-        if @invoice_request.status_changed?
-          @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{@invoice_request.status}", invoice_request: @invoice_request, overseer: current_overseer)
-          @invoice_request.save!
-          @invoice_request_comment.save!
-        else
-          @invoice_request.save!
-        end
-      end
-
+      service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
+      service.call
       redirect_to overseers_invoice_request_path(@invoice_request), notice: flash_message(@invoice_request, action_name)
     else
       render 'edit'
+    end
+  end
+
+  def cancel_invoice_request
+    @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
+    authorize @invoice_request
+    if @invoice_request.valid?
+      service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
+      service.call
+      render json: { sucess: 'Successfully updated ' }, status: 200
+    else
+      render json: { error: @invoice_request.errors }, status: 500
+    end
+  end
+
+  def render_cancellation_form
+    authorize @invoice_request
+    respond_to do |format|
+      format.html {render partial: 'cancel_invoice_request',  locals: {status: params[:status]}}
     end
   end
 
@@ -137,6 +165,11 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         :purchase_order_id,
         :status,
         :inward_dispatch_ids,
+        :grpo_rejection_reason,
+        :grpo_other_rejection_reason,
+        :grpo_cancellation_reason,
+        :ap_rejection_reason,
+        :ap_cancellation_reason,
         comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
         attachments: []
     )

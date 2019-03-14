@@ -2892,4 +2892,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         end
       end
     end
+
+
+
+    def update_invoice_request_cancellation_status
+      invoice_requests = InvoiceRequest.where(status: 60)
+      invoice_requests.each do |invoice_request|
+        if invoice_request.grpo_number.nil?
+          invoice_request.status = 'Cancelled GRPO'
+          # modifiy with specific reason it's mendatory
+          invoice_request.grpo_cancellation_reason = 'cancellation changed in migration'
+        else
+          invoice_request.status = 'Cancelled AP Invoice'
+          invoice_request.ap_cancellation_reason = 'cancellation changed in migration'
+        end
+        invoice_request.save!
+      end
+    end
 end
