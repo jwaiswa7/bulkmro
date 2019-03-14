@@ -141,6 +141,26 @@ class Overseers::ProductsController < Overseers::BaseController
     redirect_to url_for(Export.products.last.report)
   end
 
+  def autocomplete_suppliers
+    authorize @product
+    suppliers = {}
+    @product.suppliers.each do |supplier|
+      [supplier.name, supplier.id]
+    end
+    render json: suppliers
+  end
+
+  def get_product_details
+    authorize @product
+    product_details = {}
+    product_details['brand'] = @product.brand.to_s
+    product_details['tax_code_id'] = @product.best_tax_code.id
+    product_details['tax_rate_id'] = @product.best_tax_rate.id
+    product_details['measurement_unit'] = @product.measurement_unit.to_s
+    product_details['converted_unit_selling_price'] = @product.latest_unit_cost_price
+    render json: product_details
+  end
+  
   private
 
     def product_params
