@@ -10089,8 +10089,7 @@ th {
     display: flex;
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
-    justify-content: space-between;
-    margin-bottom: 0.375rem; }
+    justify-content: space-between; }
   .chat-item .chat-item-author {
     color: #212529;
     font-weight: 600; }
@@ -10102,9 +10101,9 @@ th {
   .chat-item .chat-item-body p img {
     margin: 0.75rem 0; }
   .chat-item > .media-body {
-    border-radius: 0.5rem;
-    padding: 0.75rem;
-    background: #f3f4f5; }
+    border-radius: 0.25rem;
+    padding: 0.45rem 0.75rem;
+    background: white; }
   .chat-item + .chat-item {
     margin-top: 0.75rem; }
   .chat-item .media-attachment {
