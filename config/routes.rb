@@ -329,6 +329,7 @@ Rails.application.routes.draw do
         get 'calculation_sheet'
         get 'export'
         get 'stages'
+        get 'relationship_map'
       end
 
       collection do

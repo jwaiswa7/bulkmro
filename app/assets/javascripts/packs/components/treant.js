@@ -1,5 +1,5 @@
 // Makes sure that the custom file inputs have the highlighted border on file selection
-const treant = () => {
+const treant = (nodeStructure) => {
     if (!$('.treant').exists()) return;
     let config = {
         chart: {

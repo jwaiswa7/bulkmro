@@ -51,7 +51,6 @@ app.initializeComponents = () => {
     highlightjs();
     tableHighlightWholly();
     notifications();
-    treant();
 };
 
 // Turbolinks load event

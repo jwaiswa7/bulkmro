@@ -119,6 +119,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def relationship_map?
+    stages?
+  end
+
   def resync_inquiry_products?
     developer? && record.inquiry_products.present?
   end

@@ -1,0 +1,18 @@
+<a class="card text-black-50 inquiry" target="_blank" href="/overseers/inquiries/<%= inquiry.id %>">
+  <div class="card-header p-1">
+    <strong>Inquiry</strong>
+  </div>
+  <div class="card-body p-1 text-center">
+    <div class="subject">
+      #<%= inquiry.inquiry_number %>
+    </div>
+    <hr class="my-1">
+    <div class="ise">
+      <%= inquiry.inside_sales_owner.to_s %>
+    </div>
+    <hr class="my-1">
+    <div class="subject">
+      <%= inquiry.subject %>
+    </div>
+  </div>
+</a>
