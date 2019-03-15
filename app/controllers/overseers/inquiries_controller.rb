@@ -1,11 +1,11 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :resync_inquiry_products, :resync_unsync_inquiry_products ]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :resync_inquiry_products, :resync_unsync_inquiry_products]
 
   def index
     authorize :inquiry
 
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.json do
         service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
         service.call
@@ -23,10 +23,19 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def export_all
     authorize :inquiry
-    service = Services::Overseers::Exporters::InquiriesExporter.new
+    service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, [])
     service.call
 
     redirect_to url_for(Export.inquiries.last.report)
+  end
+
+  def export_filtered_records
+    authorize :inquiry
+    service = Services::Overseers::Finders::Inquiries.new(params, current_overseer, paginate: false)
+    service.call
+
+    export_service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, service.records.pluck(:id))
+    export_service.call
   end
 
   def index_pg
@@ -77,7 +86,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     send_file(
-      "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
         filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
     )
   end
@@ -173,65 +182,83 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
   end
 
+  def create_purchase_orders_requests
+    @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
+    authorize @inquiry
+    service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@inquiry, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h, true)
+    service.call
+    Rails.cache.delete(:po_requests)
+    redirect_to stock_overseers_po_requests_path
+  end
+
+  def preview_stock_po_request
+    @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
+    service = Services::Overseers::SalesOrders::PreviewPoRequests.new(@inquiry, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
+    @po_requests = service.call
+
+    Rails.cache.write(:po_requests, @po_requests, expires_in: 25.minutes)
+    authorize @inquiry
+  end
+
   private
 
-    def set_inquiry
-      @inquiry ||= Inquiry.find(params[:id])
-    end
+  def set_inquiry
+    @inquiry ||= Inquiry.find(params[:id])
+  end
 
-    def inquiry_params
-      params.require(:inquiry).permit(
+  def inquiry_params
+    params.require(:inquiry).permit(
         :project_uid,
-          :company_id,
-          :contact_id,
-          :industry_id,
-          :inside_sales_owner_id,
-          :outside_sales_owner_id,
-          :sales_manager_id,
-          :billing_address_id,
-          :billing_company_id,
-          :shipping_address_id,
-          :shipping_company_id,
-          :shipping_contact_id,
-          :bill_from_id,
-          :ship_from_id,
-          :status,
-          :opportunity_type,
-          :opportunity_source,
-          :subject,
-          :gross_profit_percentage,
-          :quotation_date,
-          :customer_committed_date,
-          :customer_order_date,
-          :valid_end_time,
-          :quotation_followup_date,
-          :procurement_date,
-          :expected_closing_date,
-          :quote_category,
-          :price_type,
-          :potential_amount,
-          :freight_option,
-          :freight_cost,
-          :total_freight_cost,
-          :customer_po_number,
-          :packing_and_forwarding_option,
-          :payment_option_id,
-          :weight_in_kgs,
-          :customer_po_sheet,
-          :final_supplier_quote,
-          :copy_of_email,
-          :is_sez,
-          :calculation_sheet,
-          :commercial_terms_and_conditions,
-          :comments,
-          supplier_quotes: [],
-          inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
-      )
-    end
+        :company_id,
+        :contact_id,
+        :industry_id,
+        :inside_sales_owner_id,
+        :outside_sales_owner_id,
+        :sales_manager_id,
+        :billing_address_id,
+        :billing_company_id,
+        :shipping_address_id,
+        :shipping_company_id,
+        :shipping_contact_id,
+        :bill_from_id,
+        :ship_from_id,
+        :status,
+        :opportunity_type,
+        :opportunity_source,
+        :subject,
+        :gross_profit_percentage,
+        :quotation_date,
+        :customer_committed_date,
+        :customer_order_date,
+        :valid_end_time,
+        :quotation_followup_date,
+        :procurement_date,
+        :expected_closing_date,
+        :quote_category,
+        :price_type,
+        :potential_amount,
+        :freight_option,
+        :freight_cost,
+        :total_freight_cost,
+        :customer_po_number,
+        :packing_and_forwarding_option,
+        :payment_option_id,
+        :weight_in_kgs,
+        :customer_po_sheet,
+        :final_supplier_quote,
+        :copy_of_email,
+        :is_sez,
+        :calculation_sheet,
+        :commercial_terms_and_conditions,
+        :comments,
+        supplier_quotes: [],
+        inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
+    )
+  end
 
-    def edit_suppliers_params
-      if params.has_key?(:inquiry)
-        params.require(:inquiry).permit(
+  def edit_suppliers_params
+    if params.has_key?(:inquiry)
+      params.require(:inquiry).permit(
           inquiry_products_attributes: [
               :id,
               inquiry_product_suppliers_attributes: [
@@ -243,9 +270,66 @@ class Overseers::InquiriesController < Overseers::BaseController
                   :_destroy
               ]
           ]
-        )
-      else
-        {}
-      end
+      )
+    else
+      {}
     end
+  end
+
+  def new_purchase_orders_requests_params
+    if params.has_key?(:inquiry)
+      params.require(:inquiry).permit(
+          :id,
+          po_requests_attributes: [
+              :id,
+              :supplier_id,
+              :inquiry_id,
+              :company_id,
+              :reason_to_stock,
+              :estimated_date_to_unstock,
+              :requested_by_id,
+              :approved_by_id,
+              :_destroy,
+              :logistics_owner_id,
+              :address_id,
+              :contact_id,
+              :payment_option_id,
+              :stock_status,
+              :supplier_committed_date,
+              :blobs,
+              :supplier_po_type,
+              :contact_email,
+              :contact_phone,
+              :bill_from_id,
+              :ship_from_id,
+              :bill_to_id,
+              :ship_to_id,
+              attachments: [],
+              rows_attributes: [
+                  :id,
+                  :_destroy,
+                  :status,
+                  :quantity,
+                  :sales_order_row_id,
+                  :product_id,
+                  :brand,
+                  :tax_code_id,
+                  :tax_rate_id,
+                  :measurement_unit_id,
+                  :unit_price,
+                  :conversion,
+                  :lead_time,
+                  :discount_percentage
+              ],
+              comments_attributes: [
+                  :created_by_id,
+                  :updated_by_id,
+                  :message
+              ]
+          ]
+      )
+    else
+      {}
+    end
+  end
 end
