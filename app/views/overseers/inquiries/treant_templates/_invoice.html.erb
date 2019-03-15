@@ -9,10 +9,6 @@
     </div>
     <hr class="my-1">
     <div>
-      <%= invoice.status %>
-    </div>
-    <hr class="my-1">
-    <div>
       <%= format_currency(invoice.metadata['base_grand_total'].to_f - invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %>
     </div>
     <hr class="my-1">
