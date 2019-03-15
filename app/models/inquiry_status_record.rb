@@ -1,5 +1,6 @@
 class InquiryStatusRecord < ApplicationRecord
   belongs_to :subject, polymorphic: true, required: false
+  belongs_to :parent, class_name: 'InquiryStatusRecord', foreign_key: 'parent_id'
 
   enum status: {
       'New Inquiry': 0,
