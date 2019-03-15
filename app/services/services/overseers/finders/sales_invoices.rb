@@ -28,9 +28,7 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
       indexed_records = indexed_records.filter(@base_filter)
     end
 
-    indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('invoice_over_time',  :mis_date, 'month', true))
-    indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('pod_over_time',  :pod_created_at, 'month', true))
-
+    indexed_records = pod_dashboard_aggregation(indexed_records)
     indexed_records
   end
 
@@ -61,9 +59,15 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
       indexed_records = indexed_records.filter(@base_filter)
     end
 
+    indexed_records = pod_dashboard_aggregation(indexed_records)
+    indexed_records
+  end
+
+  def pod_dashboard_aggregation(indexed_records)
     indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('invoice_over_time',  :mis_date, 'month', true))
     indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('pod_over_time',  :pod_created_at, 'month', true))
-
+    indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('regular_pod_over_time',  :regular_pod, 'month', true))
+    indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('route_through_pod_over_time',  :route_through_pod, 'month', true))
     indexed_records
   end
 
