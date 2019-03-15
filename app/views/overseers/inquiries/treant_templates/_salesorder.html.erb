@@ -1,6 +1,6 @@
 <a class="card text-black-50 sales-order" target="_blank" href="/overseers/inquiries/<%= sales_order.inquiry.to_param %>/sales_orders/<%= sales_order.to_param %>">
-  <div class="card-header p-1">
-    <span class="badge badge-wrap text-uppercase  float-right"><strong><%= status_badge(sales_order.order_status) %></strong></span>
+  <div class="card-header p-1 text-center">
+    <span class="badge badge-wrap text-uppercase float-right"><strong><%= status_badge(sales_order.order_status) %></strong></span>
     <strong>Sales Order</strong>
   </div>
   <div class="card-body p-1 text-center">
@@ -17,7 +17,7 @@
     </div>
     <hr class="my-1">
     <div>
-      <%= format_succinct_date(sales_order.created_at) %>
+      <%= format_date_with_time(sales_order.created_at) %>
     </div>
   </div>
 </a>

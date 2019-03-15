@@ -1,5 +1,5 @@
 <a class="card text-black-50 purchase-order" target="_blank" href="/overseers/inquiries/<%= po.inquiry_id %>/purchase_orders/<%= po.id %>">
-  <div class="card-header p-1">
+  <div class="card-header text-center p-1">
     <span class="badge badge-wrap text-uppercase  float-right"><strong><%= status_badge(po.status) %></strong></span>
     <strong>Purchase Order</strong>
   </div>
@@ -13,7 +13,7 @@
     </div>
     <hr class="my-1">
     <div>
-      <%= format_succinct_date(po.created_at) %>
+      <%= format_date_with_time(po.created_at) %>
     </div>
   </div>
 </a>

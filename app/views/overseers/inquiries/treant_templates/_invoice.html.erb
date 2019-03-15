@@ -1,5 +1,5 @@
 <a class="card text-black-50 invoice" target="_blank" href="/overseers/inquiries/<%= invoice.inquiry.id %>/sales_invoices/<%= invoice.id %>">
-  <div class="card-header p-1">
+  <div class="card-header text-center p-1">
     <span class="badge badge-wrap text-uppercase  float-right"><strong><%= status_badge(invoice.status) %></strong></span>
     <strong>Sales Invoice</strong>
   </div>
@@ -17,7 +17,7 @@
     </div>
     <hr class="my-1">
     <div>
-      <%= format_succinct_date(invoice.created_at) %>
+      <%= format_date_with_time(invoice.created_at) %>
     </div>
   </div>
 </a>
