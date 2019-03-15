@@ -42,41 +42,7 @@
         <% end %>
       </div>
       <div class="tab-pane fade active show" role="tabpanel" id="visual">
-        <div class="treant-templates d-none">
-            <script>
-               function assignNodeStructure() {
-                   $.get(Routes.relationship_map_overseers_inquiry_path(<%= @inquiry.id %>), function (response) {
-                       console.log(response['data'])
-                       if (response['data'] != undefined) {
-                           var nodeStructure = response['data']
-                           if (!$('.treant').exists()) return;
-                           let config = {
-                               chart: {
-                                   container: ".treant",
-                                   scrollbar: "native",
-                                   connectors: {
-                                       type: "step",
-                                       style: {
-                                           "stroke-width": 2,
-                                           'stroke': '#fd7e14',
-                                           'arrow-end': 'block-wide-long'
-                                       }
-                                   },
-                               },
-                               nodeStructure: nodeStructure
-                           };
-
-                           new Treant(config, function() {}, $);
-                       }
-                   })
-
-                   //console.log('Inside view script is load')
-               }
-               assignNodeStructure()
-
-            </script>
-        </div>
-        <div class="treant" style="width:100%; height: auto;"></div>
+        <div class="treant" style="width:100%; height: auto;" data-nodes="<%= relationship_map_overseers_inquiry_path(@inquiry.id) %>"></div>
       </div>
     </div>
   <% end %>
