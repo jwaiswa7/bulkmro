@@ -55,7 +55,7 @@
         </h5>
 <!--        <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center " data-toggle="modal" data-target="#cancelpo">Cancel <%#= @po_request.readable_status %></a>-->
 
-        <%= render 'overseers/po_requests/rows_form', f: f , product_path: service_autocomplete_overseers_products_path, stock: false%>
+        <%= render 'overseers/po_requests/rows_form', f: f, product_path: service_autocomplete_overseers_products_path, stock: false%>
         <% if action_name.capitalize == "New" %>
           <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
             <i class="fal fa-plus-circle"></i> Create PO Request

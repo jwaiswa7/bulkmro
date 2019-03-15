@@ -3822,146 +3822,111 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
 
-    def test_bible_sales_orders_rows_mismatch(count = 100)
+    def test_bible_sales_orders_rows_mismatch(count = 500)
       mismatches = []
       missing_orders = []
 
 
-      service = Services::Shared::Spreadsheets::CsvImporter.new('Sales Order Comparison - Bible.csv', 'seed_files')
+      service = Services::Shared::Spreadsheets::CsvImporter.new('2019-02-15 Bible Sales Order Rows.csv', 'seed_files')
       service.loop(count) do |x|
         # puts x.get_row
         mismatch = nil
-        sales_order = SalesOrder.where(order_number: x.get_column('SO #')).or(SalesOrder.where(old_order_number: x.get_column('SO #'))).includes(:sales_quote_rows).first
+        sales_order = SalesOrder.where(order_number: x.get_column('order number')).or(SalesOrder.where(old_order_number: x.get_column('order number'))).first
 
         if sales_order.present?
-          product = Product.find_by(sku: x.get_column('BM #'))
+          product = Product.find_by(sku: x.get_column('product sku'))
 
-          total_selling_price = x.get_column('Selling Price (as per SO / AR Invoice)')
-          total_selling_price_with_tax = x.get_column('Gross Total Selling')
-          total_cost_price = x.get_column('Buying Total')
+          unit_selling_price = x.get_column('unit selling price (INR)')
+          total_selling_price_with_tax = x.get_column('total')
+          unit_cost_price = x.get_column('unit cost price')
 
           sales_order_row = sales_order.rows.select {|sor| sor.product == product}.first
-          tax_rate = x.get_column('Tax Rate')
-          quantity = x.get_column('Qty')
+          tax_rate = x.get_column('tax rate')
+          quantity = x.get_column('quantity')
+
+
+        mismatch = {}
 
           if sales_order_row.blank?
-            mismatch = 'row'
+            mismatch['issue in row'] = 'yes'
           end
 
-          # if quantity&.to_f != sales_order_row&.quantity
-          #   mismatch = [mismatch, 'quantity'].compact.join(', ')
-          # end
+           if quantity&.to_f != sales_order_row&.quantity
+             mismatch['issue in quantity'] = 'yes'
+           end
 
-          converted_total_cost_price = ((sales_order_row&.total_cost_price&.round || 1) / (sales_order_row&.sales_quote_row&.conversion_rate || 1))
+          if unit_cost_price&.to_f&.floor != sales_order_row&.sales_quote_row&.unit_cost_price&.floor
+           mismatch['issue in unit_cost_price'] = 'yes'
+         end
 
-          # if total_cost_price&.to_f&.round != converted_total_cost_price
-          #   mismatch = [mismatch, 'total_cost_price'].compact.join(', ')
-          # end
-
-          if total_selling_price&.to_f&.round != sales_order_row&.converted_total_selling_price&.round
-            mismatch = [mismatch, 'total_selling_price'].compact.join(', ')
-          end
+        if (unit_selling_price&.to_f&.round != sales_order_row&.unit_selling_price&.round)
+          mismatch['issue in unit_selling_price'] = 'yes'
+        end
 
           if tax_rate&.to_f&.round != sales_order_row&.sales_quote_row&.tax_rate&.tax_percentage&.round
-            mismatch = [mismatch, 'tax_rate'].compact.join(', ')
+            mismatch['issue in tax_rate'] = 'yes'
           end
 
-          if total_selling_price_with_tax&.to_f&.round != sales_order_row&.converted_total_selling_price_with_tax&.round
-            mismatch = [mismatch, 'total_selling_price_with_tax'].compact.join(', ')
+          if total_selling_price_with_tax&.to_f&.round != sales_order_row&.total_selling_price_with_tax&.round
+            mismatch['issue in total_selling_price_with_tax'] = 'yes'
           end
 
-          if mismatch.present?
+          if mismatch.any?
             mismatches << [
-                [x.get_column('BM #'), x.get_column('SO #')].join,
-                x.get_column('BM #'), x.get_column('SO #'), mismatch, sales_order_row&.quantity&.to_f, quantity, converted_total_cost_price, total_cost_price, sales_order_row&.converted_total_selling_price&.round, total_selling_price, sales_order_row&.sales_quote_row&.tax_rate&.tax_percentage, tax_rate, sales_order_row&.converted_total_selling_price_with_tax&.round, total_selling_price_with_tax]
+                [x.get_column('product sku'), x.get_column('order number')].join,
+                x.get_column('product sku'), x.get_column('order number'), mismatch.keys.join(', ').gsub('issue in ',''), sales_order_row&.quantity&.to_f, quantity, unit_cost_price, sales_order_row&.sales_quote_row&.unit_cost_price&.round, sales_order_row&.unit_selling_price&.round, unit_selling_price, sales_order_row&.sales_quote_row&.tax_rate&.tax_percentage, tax_rate, sales_order_row&.total_selling_price_with_tax&.round, total_selling_price_with_tax, mismatch['issue in row'],  mismatch['issue in quantity'], mismatch['issue in unit_cost_price'], mismatch['issue in unit_selling_price'],  mismatch['issue in tax_rate'],  mismatch['issue in total_selling_price_with_tax']]
           end
 
-        else
-          missing_orders << x.get_column('SO #')
-        end
+      else
+        missing_orders << x.get_column('order number')
       end
-      overseer = Overseer.find(185)
-      file = "#{Rails.root}/tmp/sales_orders_row_orders.csv"
-      column_headers = ['Key', 'BM #', 'SO #', 'Issues in', 'quantity', 'Bible Quantity', 'Total Cost Price', 'Bible Total Cost Price', 'Total Selling Price', 'Bible Total Selling Price', 'Tax Rate', 'Bible Tax Rate', 'Total Selling Price with tax', 'Bible Total Selling Price with tax',]
-      # CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
-      #   mismatches.each do |mismatch|
-      #     writer << mismatch
-      #   end
-      # end
-
-
-      csv_data = CSV.generate(write_headers: true, headers: columns) do |csv|
-        mismatches.each do |object|
-          csv << object
-        end
-      end
-
-
-      temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
-
-      begin
-
-        temp_file.write(csv_data)
-
-        temp_file.close
-
-        overseer.file.attach(io: File.open(temp_file.path), filename: filename)
-
-        overseer.save!
-
-        puts Rails.application.routes.url_helpers.rails_blob_path(overseer.file, only_path: true)
-
-      rescue => ex
-
-        puts ex.message
-
-      end
-
-      # QUANTITY
-      # TAX RATE %
-      # SP
-      # SP W TAX
-      # COST
-      [missing_orders, mismatches]
-      []
     end
-
-    def missing_payment_options
-      PaymentOption.where(is_active: nil).update_all(is_active: true)
-      service = Services::Shared::Spreadsheets::CsvImporter.new('missing_payment_options.csv', 'seed_files')
-      service.loop(limit = nil) do |x|
-        payment_option = PaymentOption.where(remote_uid: x.get_column('group_code')).first_or_initialize
-        if payment_option.new_record?
-          payment_option_name = PaymentOption.find_by_name(x.get_column('value'))
-          unless payment_option_name.present?
-            payment_option.name = x.get_column('value')
-            payment_option.remote_uid = x.get_column('group_code', nil_if_zero: true)
-            payment_option.credit_limit = x.get_column('credit_limit').to_f
-            payment_option.general_discount = x.get_column('general_discount').to_f
-            payment_option.load_limit = x.get_column('load_limit').to_f
-            payment_option.legacy_metadata = x.get_row
-            payment_option.is_active = false
-            payment_option.save!
-          end
-        else
-          payment_option.update_attributes(name: x.get_column('value'))
-        end
+    overseer = Overseer.find(185)
+    filename = "#{Rails.root}/tmp/sales_orders_row_orders.csv"
+    columns = ["Key", 'BM #', 'SO #', "Issues Summary", "quantity", "Bible Quantity", "Total Cost Price", "Bible Total Cost Price", "Unit Selling Price", "Bible Unit Selling Price", "Tax Rate", "Bible Tax Rate", "Total Selling Price with tax", "Bible Total Selling Price with tax","Issue In Row", "Issue In Quantity", "Issue In Unit Cost Price", "Issue In Unit Selling Price", "Issue In Tax Rate", "Issue In Total Selling Price With Tax"]
+    CSV.open(filename, 'w', write_headers: true, headers: columns) do |writer|
+      mismatches.each do |mismatch|
+        writer << mismatch
       end
     end
 
+    # csv_data = CSV.generate(write_headers: true, headers: columns) do |csv|
+    #
+    #   mismatches.each do |object|
+    #
+    #     csv << object
+    #
+    #   end
+    #
+    # end
+    #
+    #
+    # temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
+    #
+    # begin
+    #
+    #   temp_file.write(csv_data)
+    #
+    #   temp_file.close
+    #
+    #   overseer.file.attach(io: File.open(temp_file.path), filename: filename)
+    #
+    #   overseer.save!
+    #
+    #   puts Rails.application.routes.url_helpers.rails_blob_path(overseer.file, only_path: true)
+    #
+    # rescue => ex
+    #
+    #   puts ex.message
+    #
+    # end
 
-    def update_invoice_request_cancellation_status
-      invoice_requests = InvoiceRequest.where(status: 60)
-      invoice_requests.each do |invoice_request|
-        if invoice_request.grpo_number.nil?
-          invoice_request.status = 'Cancelled GRPO'
-          # modifiy with specific reason it's mendatory
-          invoice_request.grpo_cancellation_reason = 'cancellation changed in migration'
-        else
-          invoice_request.status = 'Cancelled AP Invoice'
-          invoice_request.ap_cancellation_reason = 'cancellation changed in migration'
-        end
-        invoice_request.save!
-      end
-    end
+    # QUANTITY
+    # TAX RATE %
+    # SP
+    # SP W TAX
+    # COST
+    [missing_orders, mismatches]
+  end
+  # test_bible_sales_orders_rows_mismatch
 end

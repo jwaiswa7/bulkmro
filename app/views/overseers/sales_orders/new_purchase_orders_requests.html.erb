@@ -62,7 +62,7 @@
                     Remove Supplier
                   <% end %>
                 <% end %>
-                <%= render 'overseers/po_requests/rows_form', f: po_request , product_path: service_autocomplete_overseers_products_path, stock: false%>
+                <%= render 'overseers/po_requests/rows_form', f: po_request, product_path: service_autocomplete_overseers_products_path, stock: false %>
             </div>
             <hr class="<%= f.object.po_requests.last == po_request.object ? 'd-none' : '' %>"/>
           <% end %>

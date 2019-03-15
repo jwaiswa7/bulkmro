@@ -27,18 +27,6 @@ const edit = () => {
             $('.status-rejected').find('select').val('').attr("required", false);
         }
     });
-
-    $('form').on('change', 'select[name*=stock_status]', function (e) {
-        if ($(e.target).val() == "Stock Rejected") {
-            $('.status-rejected').removeClass('d-none');
-            $('.status-rejected').find('select').attr("required", true);
-        }
-        if ($(e.target).val() != "Stock Rejected") {
-            $('.status-rejected').addClass('d-none');
-            $('.status-rejected').find('select').val('').attr("required", false);
-        }
-    });
-
     $('form').on('change','select[name*=stock_status]',function(e){
         if($(e.target).val() == "Stock Rejected"){
             $('.status-rejected').removeClass('d-none');

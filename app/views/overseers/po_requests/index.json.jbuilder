@@ -3,6 +3,10 @@ json.data (@po_requests) do |po_request|
                   [
                       if po_request.sales_order.present? && (policy(po_request).edit?)
                         row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
+                      elsif (policy(po_request).edit? && po_request.status != 'Cancelled')
+                        row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning')
+                      if po_request.sales_order.present? && (policy(po_request).edit?)
+                        row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
                       elsif policy(po_request).edit? && po_request.status != 'Cancelled'
                         row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning', :_blank)
                       end,

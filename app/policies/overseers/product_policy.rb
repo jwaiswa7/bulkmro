@@ -68,4 +68,12 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def non_kit_autocomplete?
     edit?
   end
+
+  def autocomplete_suppliers?
+    true
+  end
+
+  def get_product_details?
+    true
+  end
 end
