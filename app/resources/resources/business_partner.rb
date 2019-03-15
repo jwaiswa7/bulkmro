@@ -56,6 +56,15 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       if address_to_update.blank?
 
         address_to_update = company.addresses.where(remote_uid: address['AddressName']).first_or_initialize do |new_address|
+          state_name = nil
+          address_state_id = nil
+          if address['State'].present?
+            address_state = AddressState.where(region_code: address['State'], country_code: address['Country']).first
+            if address_state.present?
+              state_name = address_state.name
+              address_state_id = address_state.id
+            end
+          end
           new_address.assign_attributes(
             legacy_id: address['AddressName'],
             name: company.name,
@@ -63,8 +72,8 @@ class Resources::BusinessPartner < Resources::ApplicationResource
             city_name: address['City'].present? ? address['City'] : nil,
             street2: address['AddressName2'].present? ? address['AddressName2'] : nil,
             country_code: address['Country'].present? ? address['Country'] : 'IN',
-            state_name: address['State'].present? ? AddressState.where(region_code: address['State'], country_code: address['Country']).first.name : nil,
-            address_state_id: address['State'].present? ? AddressState.where(region_code: address['State'], country_code: address['Country']).first.id : nil,
+            state_name: state_name,
+            address_state_id: address_state_id,
             pincode: address['ZipCode'].present? ? address['ZipCode'] : nil,
             gst: address['GSTIN'].present? ? address['GSTIN'] : nil,
             vat: address['U_VAT'].present? ? address['U_VAT'] : nil,
