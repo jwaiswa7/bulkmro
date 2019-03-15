@@ -9,10 +9,6 @@
     </div>
     <hr class="my-1">
     <div>
-        <%= sales_order.remote_status.present? ? sales_order.remote_status : "N/A" %>
-    </div>
-    <hr class="my-1">
-    <div>
       <%= format_currency(sales_order.converted_total,symbol:sales_order.currency_sign) %>
     </div>
     <hr class="my-1">
