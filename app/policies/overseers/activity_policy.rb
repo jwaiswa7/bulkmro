@@ -35,6 +35,6 @@ class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
   end
 
   def export_filtered_records?
-    developer? # allow_export?
+    allow_export? && overseer.can_send_emails?
   end
 end
