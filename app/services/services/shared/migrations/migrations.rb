@@ -3844,36 +3844,38 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         tax_rate = x.get_column('tax rate')
         quantity = x.get_column('quantity')
 
+
+        mismatch = {}
+
+
         if sales_order_row.blank?
-          mismatch = 'row'
+          mismatch['issue in row'] = 'yes'
         end
 
          if quantity&.to_f != sales_order_row&.quantity
-           mismatch = [mismatch, 'quantity'].compact.join(', ')
+           mismatch['issue in quantity'] = 'yes'
          end
 
-         if unit_cost_price&.to_f&.round != sales_order_row&.sales_quote_row&.unit_cost_price&.round
-           mismatch = [mismatch, 'unit_cost_price'].compact.join(', ')
+         if unit_cost_price&.to_f&.floor != sales_order_row&.sales_quote_row&.unit_cost_price&.floor
+           mismatch['issue in unit_cost_price'] = 'yes'
          end
 
         if (unit_selling_price&.to_f&.round != sales_order_row&.unit_selling_price&.round)
-          mismatch = [mismatch, 'total_selling_price'].compact.join(', ')
+          mismatch['issue in unit_selling_price'] = 'yes'
         end
 
         if (tax_rate&.to_f&.round != sales_order_row&.sales_quote_row&.tax_rate&.tax_percentage&.round)
-          mismatch = [mismatch, 'tax_rate'].compact.join(', ')
+          mismatch['issue in tax_rate'] = 'yes'
         end
 
         if (total_selling_price_with_tax&.to_f&.round != sales_order_row&.total_selling_price_with_tax&.round)
-          mismatch = [mismatch, 'total_selling_price_with_tax'].compact.join(', ')
-
-
+          mismatch['issue in total_selling_price_with_tax'] = 'yes'
         end
 
-        if mismatch.present?
+        if mismatch.any?
           mismatches << [
               [x.get_column('product sku'), x.get_column('order number')].join,
-              x.get_column('product sku'), x.get_column('order number'), mismatch, sales_order_row&.quantity&.to_f, quantity, unit_cost_price, sales_order_row&.sales_quote_row&.unit_cost_price&.round, sales_order_row&.unit_selling_price&.round, unit_selling_price, sales_order_row&.sales_quote_row&.tax_rate&.tax_percentage, tax_rate, sales_order_row&.total_selling_price_with_tax&.round, total_selling_price_with_tax]
+              x.get_column('product sku'), x.get_column('order number'), mismatch.keys.join(', ').gsub('issue in ',''), sales_order_row&.quantity&.to_f, quantity, unit_cost_price, sales_order_row&.sales_quote_row&.unit_cost_price&.round, sales_order_row&.unit_selling_price&.round, unit_selling_price, sales_order_row&.sales_quote_row&.tax_rate&.tax_percentage, tax_rate, sales_order_row&.total_selling_price_with_tax&.round, total_selling_price_with_tax, mismatch['issue in row'],  mismatch['issue in quantity'], mismatch['issue in unit_cost_price'], mismatch['issue in unit_selling_price'],  mismatch['issue in tax_rate'],  mismatch['issue in total_selling_price_with_tax']]
         end
 
       else
@@ -3882,7 +3884,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
     overseer = Overseer.find(185)
     filename = "#{Rails.root}/tmp/sales_orders_row_orders.csv"
-    columns = ["Key", 'BM #', 'SO #', "Issues in", "quantity", "Bible Quantity", "Total Cost Price", "Bible Total Cost Price", "Total Selling Price", "Bible Total Selling Price", "Tax Rate", "Bible Tax Rate", "Total Selling Price with tax", "Bible Total Selling Price with tax",]
+    columns = ["Key", 'BM #', 'SO #', "Issues Summary", "quantity", "Bible Quantity", "Total Cost Price", "Bible Total Cost Price", "Unit Selling Price", "Bible Unit Selling Price", "Tax Rate", "Bible Tax Rate", "Total Selling Price with tax", "Bible Total Selling Price with tax","Issue In Row", "Issue In Quantity", "Issue In Unit Cost Price", "Issue In Unit Selling Price", "Issue In Tax Rate", "Issue In Total Selling Price With Tax"]
     CSV.open(filename, 'w', write_headers: true, headers: columns) do |writer|
       mismatches.each do |mismatch|
         writer << mismatch
