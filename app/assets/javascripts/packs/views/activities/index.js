@@ -10,14 +10,12 @@ const index = () => {
     exportDaterange();
 
     // To show/hide Filtered records button
-    $('#export_filtered_records').hide();
-
     $('.datatable').on('filters:change', function () {
         $('#export_filtered_records').show();
     });
 
     $('.filter-list-input').on('keyup', function () {
-        ($(this).val() == '') ? $('#export_filtered_records').hide() : $('#export_filtered_records').show();
+        (window.hasher.getHashString() != "" || $(this).val() != '') ? $('#export_filtered_records').show() : $('#export_filtered_records').hide();
     });
 
     $('#export_filtered_records').click((event) => {
