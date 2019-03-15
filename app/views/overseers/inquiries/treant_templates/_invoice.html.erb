@@ -1,18 +1,22 @@
 <a class="card text-black-50 invoice" target="_blank" href="/overseers/inquiries/<%= invoice.inquiry.id %>/sales_invoices/<%= invoice.id %>">
   <div class="card-header p-1">
     <span class="badge badge-wrap text-uppercase  float-right"><strong><%= status_badge(invoice.status) %></strong></span>
-    <strong>Sales Invoice #<%= invoice.invoice_number %></strong>
+    <strong>Sales Invoice</strong>
   </div>
   <div class="card-body p-1 text-center">
-    <div class="subject">
+    <div>
+      #<%= invoice.invoice_number %>
+    </div>
+    <hr class="my-1">
+    <div>
       <%= invoice.status %>
     </div>
     <hr class="my-1">
-    <div class="subject">
+    <div>
       <%= format_currency(invoice.metadata['base_grand_total'].to_f - invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %>
     </div>
     <hr class="my-1">
-    <div class="ise">
+    <div>
       <%= format_succinct_date(invoice.created_at) %>
     </div>
   </div>

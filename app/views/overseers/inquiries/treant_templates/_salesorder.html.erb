@@ -1,18 +1,22 @@
 <a class="card text-black-50 sales-order" target="_blank" href="/overseers/inquiries/<%= sales_order.inquiry.to_param %>/sales_orders/<%= sales_order.to_param %>">
   <div class="card-header p-1">
     <span class="badge badge-wrap text-uppercase  float-right"><strong><%= status_badge(sales_order.order_status) %></strong></span>
-    <strong>Sales Orders #<%= sales_order.order_status == "Approved" || sales_order.order_status == "Cancelled" ? sales_order.order_number : "N/A" %></strong>
+    <strong>Sales Order</strong>
   </div>
   <div class="card-body p-1 text-center">
-    <div class="ise">
+    <div>
+      #<%= sales_order.order_status == "Approved" || sales_order.order_status == "Cancelled" ? sales_order.order_number : "N/A" %>
+    </div>
+    <hr class="my-1">
+    <div>
         <%= sales_order.remote_status.present? ? sales_order.remote_status : "N/A" %>
-      <hr class="my-1">
     </div>
-    <div class="ise">
+    <hr class="my-1">
+    <div>
       <%= format_currency(sales_order.converted_total,symbol:sales_order.currency_sign) %>
-      <hr class="my-1">
     </div>
-    <div class="ise">
+    <hr class="my-1">
+    <div>
       <%= format_succinct_date(sales_order.created_at) %>
     </div>
   </div>
