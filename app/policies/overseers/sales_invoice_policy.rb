@@ -34,7 +34,7 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   end
 
   def edit_pod?
-    record.persisted? && record.not_legacy?
+    record.persisted?
   end
 
   def update_pod?

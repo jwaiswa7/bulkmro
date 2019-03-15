@@ -1,5 +1,5 @@
 <div style="border:1px solid; border-radius: 5px;padding: 2px">
-  <% if record&.present? && record&.legacy_id == 12 %>
+  <% if record&.present? && record&.legacy_id&.to_i == 12 %>
     <table style="width: 100%;" cellspacing="0" border="0">
       <tr>
         <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
@@ -18,7 +18,7 @@
             sales@bulkmro.com</font></td>
       </tr>
     </table>
-  <% elsif record&.legacy_id == 16 || record&.legacy_id == 3 %>
+  <% elsif record&.legacy_id&.to_i == 16 || record&.legacy_id&.to_i == 3 %>
     <table style="width: 100%;" cellspacing="0" border="0">
       <tr>
         <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
@@ -43,7 +43,7 @@
       </tr>
 
     </table>
-  <% elsif (record&.legacy_id == 4 || record&.legacy_id == 15) %>
+  <% elsif (record&.legacy_id&.to_i == 4 || record&.legacy_id&.to_i == 15) %>
     <table style="width: 100%;" cellspacing="0" border="0">
       <tr>
         <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
@@ -68,7 +68,7 @@
             sales@bulkmro.com</font></td>
       </tr>
     </table>
-  <% elsif (record&.legacy_id == 7) %>
+  <% elsif (record&.legacy_id&.to_i == 7) %>
     <table style="width: 100%;" cellspacing="0" border="0">
       <tr>
         <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
@@ -89,7 +89,7 @@
             sales@bulkmro.com</font></td>
       </tr>
     </table>
-  <% elsif (record&.legacy_id == 10) %>
+  <% elsif (record&.legacy_id&.to_i == 10) %>
     <table style="width: 100%;" cellspacing="0" border="0">
       <tr>
         <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
@@ -112,7 +112,7 @@
             sales@bulkmro.com</font></td>
       </tr>
     </table>
-  <% elsif (record&.legacy_id == 11) %>
+  <% elsif (record&.legacy_id&.to_i == 11) %>
     <table style="width: 100%;" cellspacing="0" border="0">
       <tr>
         <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
@@ -134,7 +134,7 @@
             sales@bulkmro.com</font></td>
       </tr>
     </table>
-  <% elsif (record&.legacy_id == 13 || record&.legacy_id == 17) %>
+  <% elsif (record&.legacy_id&.to_i == 13 || record&.legacy_id&.to_i == 17) %>
     <table style="width: 100%;" cellspacing="0" border="0">
       <tr>
         <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
@@ -156,7 +156,7 @@
             sales@bulkmro.com</font></td>
       </tr>
     </table>
-  <% elsif (record&.legacy_id == 18) %>
+  <% elsif (record&.legacy_id&.to_i == 18) %>
     <table style="width: 100%;" cellspacing="0" border="0">
       <tr>
         <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">

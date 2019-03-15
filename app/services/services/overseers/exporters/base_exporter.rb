@@ -32,7 +32,6 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       object.report.attach(io: File.open(temp_file.path), filename: filename)
       object.save!
       if @ids.present?
-        sleep(60)
         ExportMailer.export_filtered_records(object, @overseer).deliver_now
       end
     rescue => ex
