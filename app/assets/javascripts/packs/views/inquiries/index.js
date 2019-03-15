@@ -31,7 +31,7 @@ const index = () => {
             error: function () {
                 element.prop('disabled', false);
                 $.notify({
-                    message: 'Email is not delivered. Please export all activities'
+                    message: 'Email is not delivered. Please export all Inquiries'
                 }, {
                     type: 'danger'
                 }, {delay: 1000});
@@ -39,7 +39,7 @@ const index = () => {
             success: function () {
                 element.prop('disabled', false);
                 $.notify({
-                    message: 'Email sent with Filtered Activities!'
+                    message: 'Email sent with Filtered Inquiries!'
                 }, {
                     type: 'info'
                 }, {delay: 5000});
