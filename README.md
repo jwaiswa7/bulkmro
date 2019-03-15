@@ -81,6 +81,7 @@ end
 - Perform migration
 - Run calculations in clock process
 
+
 # Restoring PG Admin database
 ## Windows
 "<PATH TO POSTGRESQL's BIN FOLDER>\pg_restore" --verbose --clean --no-acl --no-owner -h localhost -U rails -d sprint_dev "<PATH TO DUMP>"
