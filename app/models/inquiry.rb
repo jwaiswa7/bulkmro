@@ -385,5 +385,4 @@ class Inquiry < ApplicationRecord
       Services::Overseers::Inquiries::InquiryStagesTimeDifference.new(inquiry_status_record).call
     end
   end
-
 end
