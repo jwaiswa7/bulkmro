@@ -7991,6 +7991,8 @@ table.table.dataTable {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center; }
+    .dataTables_wrapper.dt-bootstrap4 .dataTables_paginate ul.pagination .page-item.first, .dataTables_wrapper.dt-bootstrap4 .dataTables_paginate ul.pagination .page-item.last {
+      display: none; }
 
 table.table.dataTable.blur {
   opacity: 0.65;
