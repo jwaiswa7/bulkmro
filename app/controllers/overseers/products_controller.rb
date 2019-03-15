@@ -168,7 +168,7 @@ class Overseers::ProductsController < Overseers::BaseController
     product_details['converted_unit_selling_price'] = @product.latest_unit_cost_price
     render json: product_details
   end
-  
+
   private
 
     def product_params

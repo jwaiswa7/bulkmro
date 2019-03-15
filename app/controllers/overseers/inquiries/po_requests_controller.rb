@@ -55,32 +55,32 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
 
   private
 
-  def po_request_params
-    params.require(:po_request).permit(
+    def po_request_params
+      params.require(:po_request).permit(
         :contact_email,
-        :contact_phone,
-        :contact_id,
-        :payment_option_id,
-        :bill_from_id,
-        :ship_from_id,
-        :bill_to_id,
-        :ship_to_id,
-        :status,
-        :supplier_po_type,
-        :supplier_committed_date,
-        :cancellation_reason,
-        :rejection_reason,
-        :stock_status,
-        :requested_by_id,
-        :approved_by_id,
-        :supplier_id, :reason_to_stock, :estimated_date_to_unstock, :sales_order_id, :inquiry_id, :purchase_order_id,
-        rows_attributes: [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :brand, :product_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion],
-        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-        attachments: []
-    )
-  end
+          :contact_phone,
+          :contact_id,
+          :payment_option_id,
+          :bill_from_id,
+          :ship_from_id,
+          :bill_to_id,
+          :ship_to_id,
+          :status,
+          :supplier_po_type,
+          :supplier_committed_date,
+          :cancellation_reason,
+          :rejection_reason,
+          :stock_status,
+          :requested_by_id,
+          :approved_by_id,
+          :supplier_id, :reason_to_stock, :estimated_date_to_unstock, :sales_order_id, :inquiry_id, :purchase_order_id,
+          rows_attributes: [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :brand, :product_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion],
+          comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+          attachments: []
+      )
+    end
 
-  def set_po_request
-    @po_request = @inquiry.po_requests.find(params[:id])
-  end
+    def set_po_request
+      @po_request = @inquiry.po_requests.find(params[:id])
+    end
 end
