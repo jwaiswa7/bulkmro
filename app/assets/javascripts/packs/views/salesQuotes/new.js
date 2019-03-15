@@ -42,6 +42,7 @@ let initVueJS = () => {
         mounted() {
             this.updateSelectElements();
             this.rowsUpdated();
+            this.dropdownChanged({target: $('#sales_quote_inquiry_currency_attributes_currency_id')});
         },
         watch: {
             rows: {
@@ -158,8 +159,9 @@ let initVueJS = () => {
                 this.afterRowsUpdated();
             },
             formatCurrency(value) {
-                let val = (value / 1).toFixed(2);
-                return this.defaultCurrencySign + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                let val = (value / 1)
+                val = (val / this.conversion_rate).toFixed(2);
+                return this.currency_sign + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             },
             afterRowsUpdated() {
                 let calculated_freight_cost_total = 0,
@@ -325,8 +327,9 @@ let initVueJS = () => {
             },*/
             updateConvertedSellingPriceFor(index) {
                 let row = this.getRow(index);
+                let conversion_rate = parseFloat(this.getAttribute('conversion_rate'));
                 if (row !== undefined) {
-                    row.converted_unit_selling_price = toDecimal(toDecimal(row.unit_selling_price) / parseFloat(this.getAttribute('conversion_rate')));
+                    row.converted_unit_selling_price = toDecimal(toDecimal(row.unit_selling_price) / conversion_rate);
                 }
                 this.setRow(index, row);
             },
