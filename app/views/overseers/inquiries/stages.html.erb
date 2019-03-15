@@ -41,110 +41,41 @@
           <% end %>
         <% end %>
       </div>
-
       <div class="tab-pane fade active show" role="tabpanel" id="visual">
         <div class="treant-templates d-none">
-          <a class="card text-black-50 inquiry" target="_blank" href="{url}">
-            <div class="card-header p-1">
-              <span class="badge badge-wrap text-uppercase badge-danger float-right"><strong>Regret</strong></span>
-              <strong>Inquiry</strong>
-            </div>
-            <div class="card-body p-1 text-center">
-              <div class="subject">
-                #{number}
-              </div>
-              <hr class="my-1">
-              <div class="ise">
-                {executive}
-              </div>
-              <hr class="my-1">
-              <div class="subject">
-                {subject}
-              </div>
-              <hr class="my-1">
-              <div class="margin">
-                {margin}%
-              </div>
-            </div>
-          </a>
-          <a class="card text-black-50 sales-quote" target="_blank" href="{url}">
-            <div class="card-header p-1">
-              <span class="badge badge-wrap text-uppercase badge-danger float-right"><strong>Regret</strong></span>
-              <strong>Sales Quote</strong>
-            </div>
-            <div class="card-body p-1 text-center">
-              <div class="subject">
-                #{number}
-              </div>
-              <hr class="my-1">
-              <div class="ise">
-                {executive}
-              </div>
-              <hr class="my-1">
-              <div class="subject">
-                {subject}
-              </div>
-              <hr class="my-1">
-              <div class="margin">
-                {margin}%
-              </div>
-            </div>
-          </a>
+            <script>
+               function assignNodeStructure() {
+                   $.get(Routes.relationship_map_overseers_inquiry_path(<%= @inquiry.id %>), function (response) {
+                       console.log(response['data'])
+                       if (response['data'] != undefined) {
+                           var nodeStructure = response['data']
+                           if (!$('.treant').exists()) return;
+                           let config = {
+                               chart: {
+                                   container: ".treant",
+                                   scrollbar: "native",
+                                   connectors: {
+                                       type: "step",
+                                       style: {
+                                           "stroke-width": 2,
+                                           'stroke': '#fd7e14',
+                                           'arrow-end': 'block-wide-long'
+                                       }
+                                   },
+                               },
+                               nodeStructure: nodeStructure
+                           };
+
+                           new Treant(config, function() {}, $);
+                       }
+                   })
+
+                   //console.log('Inside view script is load')
+               }
+               assignNodeStructure()
+
+            </script>
         </div>
-
-        <script>
-            var treantTemplate = function (template, json) {
-                let t = $('.treant-templates').find(['.', template].join('')).get(0).outerHTML;
-                for (let variable in json) {
-                    t = t.replace(['{', variable, '}'].join(''), json[variable]);
-                }
-                return t;
-            };
-
-            var nodeStructure = {
-                innerHTML: treantTemplate('inquiry', {
-                    url: 'http://google.com',
-                    number: '19293',
-                    executive: 'Amit G.',
-                    subject: 'Fwd: Something very imporant',
-                    margin: '10'
-                }),
-                children: [{
-                    innerHTML: treantTemplate('sales-quote', {
-                        url: 'http://google.com',
-                        number: '19293',
-                        executive: 'Amit G.',
-                        subject: 'Fwd: Something very imporant',
-                        margin: '10'
-                    })
-                }, {
-                    innerHTML: treantTemplate('sales-quote', {
-                        url: 'http://google.com',
-                        number: '19293',
-                        executive: 'Amit G.',
-                        subject: 'Fwd: Something very imporant',
-                        margin: '10'
-                    }),
-                    children: [{
-                        innerHTML: treantTemplate('inquiry', {
-                            url: 'http://google.com',
-                            number: '19293',
-                            executive: 'Amit G.',
-                            subject: 'Fwd: Something very imporant',
-                            margin: '10'
-                        })
-                    }, {
-                        innerHTML: treantTemplate('inquiry', {
-                            url: 'http://google.com',
-                            number: '19293',
-                            executive: 'Amit G.',
-                            subject: 'Fwd: Something very imporant',
-                            margin: '10'
-                        })
-                    }]
-                }]
-            };
-        </script>
         <div class="treant" style="width:100%; height: auto;"></div>
       </div>
     </div>

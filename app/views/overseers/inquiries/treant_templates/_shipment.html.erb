@@ -1,0 +1,10 @@
+<a class="card text-black-50 shipment" target="_blank" href="/overseers/inquiries/<%= shipment.inquiry_id %>/sales_shipments/<%= shipment.id %>.pdf">
+  <div class="card-header p-1">
+    <strong>Sales Shipment #<%= shipment.shipment_number %></strong>
+  </div>
+  <div class="card-body p-1 text-center">
+    <div class="subject">
+      <%= format_succinct_date(shipment.created_at) %>
+    </div>
+  </div>
+</a>
