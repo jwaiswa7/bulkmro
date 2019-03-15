@@ -1,0 +1,58 @@
+
+<a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4" type="button" data-toggle="collapse" data-target="#pod-summary">
+  Proof of Delivery Summary
+</a>
+<div id="pod-summary" class="collapse show">
+  <div class="mt-2 form-row d-flex flex-row align-content-stretch text-right">
+    <% if @invoice_over_month.present? &&  @pod_over_month.present? %>
+    <div class="col-12 col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table w-100 wrap-whitespace">
+                    <tbody>
+                    <tr>
+                      <th></th>
+                      <% @invoice_over_month.keys.each do |invoice_bucket| %>
+                         <th><strong><%= format_month(invoice_bucket.to_date) %></strong></th>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th class="text-uppercase text-center"> Invoice Created </th>
+                      <% @invoice_over_month.keys.each do |invoice_bucket| %>
+                        <td class="text-uppercase ">
+                          <a href="<%=overseers_sales_invoices_path %>#!Invoice+Date=<%=format_date_range(invoice_bucket.to_date) %>"> <%= number_with_delimiter(@invoice_over_month[invoice_bucket]['doc_count'], delimiter: ',') %></a>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th class="text-uppercase text-center"> Regular Pending POD </th>
+                      <% @invoice_over_month.keys.each do |month| %>
+                        <td class="text-uppercase">
+                          <a href="<%=overseers_sales_invoices_path %>#!Invoice+Date=<%=format_date_range(month.to_date) %>&POD=False%7C0&Opportunity+Type=regular%7C70"> <%= (@regular_pod_over_month[month].present?) ? number_with_delimiter(@regular_pod_over_month[month]['doc_count'], delimiter: ',') : 0 %></a>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th class="text-uppercase text-center"> Route through Pending POD </th>
+                      <% @invoice_over_month.keys.each do |month| %>
+                        <td class="text-uppercase">
+                          <a href="<%=overseers_sales_invoices_path %>#!Invoice+Date=<%=format_date_range(month.to_date) %>&POD=False%7C0&Opportunity+Type=route_through%7C70"> <%= (@route_through_pod_over_month[month].present?) ? number_with_delimiter(@route_through_pod_over_month[month]['doc_count'], delimiter: ',') : 0 %></a>
+                        </td>
+                      <% end %>
+                    </tr>
+                    <tr>
+                      <th class="text-uppercase text-center"> Pending POD </th>
+                        <% @invoice_over_month.keys.each do |month| %>
+                          <td class="text-uppercase">
+                            <a href="<%=overseers_sales_invoices_path %>#!Invoice+Date=<%=format_date_range(month.to_date) %>&POD=False%7C0"> <%= (@pod_over_month[month].present?) ? number_with_delimiter(@pod_over_month[month]['doc_count'], delimiter: ',') : 0 %></a>
+                          </td>
+                        <% end %>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <% end %>
+  </div>
+</div>

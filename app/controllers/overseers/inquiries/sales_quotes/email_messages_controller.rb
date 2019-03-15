@@ -52,12 +52,12 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
     def email_message_params
       params.require(:email_message).permit(
         :subject,
-        :body,
-        :to,
-        :cc,
-        :bcc,
-        :auto_attach,
-        files: []
+          :body,
+          :to,
+          :cc,
+          :bcc,
+          :auto_attach,
+          files: []
       )
     end
 end

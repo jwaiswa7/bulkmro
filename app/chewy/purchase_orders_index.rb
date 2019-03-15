@@ -40,5 +40,6 @@ class PurchaseOrdersIndex < BaseIndex
     field :updated_at, type: 'date'
     field :potential_value, value: -> (record) { record.try(:calculated_total) }, type: 'double'
     field :po_type, value: -> (record) { supplier_po_type[record.po_request.supplier_po_type] if record.po_request.present? }
+    field :line_item, value: -> (record) {record.rows.count if record.rows.present? }, type: 'integer'
   end
 end

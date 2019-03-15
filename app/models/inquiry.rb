@@ -39,6 +39,7 @@ class Inquiry < ApplicationRecord
   has_many :sales_quotes, dependent: :destroy
   has_many :purchase_orders
   has_many :po_requests
+  accepts_nested_attributes_for :po_requests, allow_destroy: true
   has_many :sales_quote_rows, through: :sales_quotes
   has_one :final_sales_quote, -> { where.not(sent_at: nil).latest }, class_name: 'SalesQuote'
   has_many :draft_sales_quotes, -> { where(sent_at: nil) }, class_name: 'SalesQuote'
@@ -109,7 +110,8 @@ class Inquiry < ApplicationRecord
       repeat: 60,
       list: 65,
       route_through: 70,
-      tender: 80
+      tender: 80,
+      stock: 90
   }
 
   enum opportunity_source: {
@@ -260,7 +262,8 @@ class Inquiry < ApplicationRecord
           '1. Cost does not include any additional certification if required as per Indian regulations.',
           '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',
           '3. Order once placed cannot be changed.',
-          '4. BulkMRO does not accept any financial penalties for late deliveries.'
+          '4. BulkMRO does not accept any financial penalties for late deliveries.',
+          '5. Warranties are applicable as per OEM\'s Standard warranty only.'
       ].join("\r\n") if not_legacy?
       self.stage ||= 1
     end

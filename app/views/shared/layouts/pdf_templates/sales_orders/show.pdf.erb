@@ -22,7 +22,7 @@
           </div>
           <br clear="all">
 
-          <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record %>
+          <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record.inquiry.bill_from %>
 
           <br clear="all">
           <div class="information-section">
@@ -392,7 +392,8 @@
                     <td align="left" style=" padding-left: 10px;" valign="top">
                     <span>
                     1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Quote Number when remitting Wire Transfer payment.<br>
-                    2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.
+                    2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.<br>
+                    3. Warranties are applicable as per OEM's Standard warranty only.
                     </span>
                     </td>
                   </tr>

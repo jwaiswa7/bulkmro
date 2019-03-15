@@ -104,8 +104,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}", po_request: @po_request, overseer: current_overseer)
             @po_request.purchase_order = nil
 
-            @po_request.payment_request.update!(status: :'Cancelled')
-            @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
+            if @po_request.payment_request.present?@po_request.payment_request.update!(status: :'Cancelled')
+            @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)end
 
           elsif @po_request.status == 'Rejected'
             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}", po_request: @po_request, overseer: current_overseer)
@@ -170,6 +170,36 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_request
     respond_to do |format|
       format.html { render partial: 'cancel_porequest', locals: { status: params[:status] } }
+    end
+  end
+
+  def pending_stock_approval
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.pending_stock_po.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json { render 'index' }
+      format.html { render 'index' }
+    end
+    end
+
+  def stock
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.stock_po.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json { render 'index' }
+      format.html { render 'index' }
+    end
+  end
+
+  def completed_stock
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.completed_stock_po.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 

@@ -23,6 +23,19 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.ar_invoice_generated.order(id: :desc), params)
     authorize @invoice_requests
 
+    #####################################################################################################
+    ## Below code is for POD Summary on AR completed queue
+    #####################################################################################################
+    @completed = true
+    service = Services::Overseers::SalesInvoices::ProofOfDeliverySummary.new(params, current_overseer)
+    service.call
+
+    @invoice_over_month = service.invoice_over_month
+    @pod_over_month = service.pod_over_month
+    @regular_pod_over_month = service.regular_pod_over_month
+    @route_through_pod_over_month = service.route_through_pod_over_month
+    #####################################################################################################
+
     respond_to do |format|
       format.json {render 'index'}
       format.html {render 'index'}

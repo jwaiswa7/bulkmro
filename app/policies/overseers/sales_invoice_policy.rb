@@ -34,7 +34,7 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   end
 
   def edit_pod?
-    record.persisted? && record.not_legacy?
+    record.persisted?
   end
 
   def update_pod?
@@ -43,5 +43,9 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
 
   def show_pending_ap_invoice_queue?
     index? && (admin? || accounts?)
+  end
+
+  def search_or_create?
+    manager_or_sales? || logistics?
   end
 end

@@ -1,4 +1,5 @@
 <% provide :can_be_ajaxed, true %>
+<% provide :can_be_searched_or_created, true %>
 <% provide :can_be_directly_exported, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
@@ -16,7 +17,7 @@
     <th class="no-sort desktop">Rating</th>
     <th class="no-sort desktop" data-name="customer_id">Customer</th>
     <th class="no-sort all" data-name="po_status">Status</th>
-    <th class="sort desktop text-right">Line Items</th>
+    <th class="sort desktop text-right" data-name="line_item">Line Items</th>
     <th class="no-sort desktop" data-name="inside_sales_executive" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
     <th class="no-sort desktop" data-name="outside_sales_executive" data-toggle="tooltip" title="Outside Sales & Procurement">OS Owner</th>
     <th class="sort desktop text-right" data-name="po_date">PO Date</th>
