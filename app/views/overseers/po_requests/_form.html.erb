@@ -4,9 +4,20 @@
 <% end %>
 
 <div class="col-lg-12">
-  <div class="page-header">
+  <div class="page-header clearfix">
     <h2><%= action_name.capitalize %> <%= @po_request.readable_status %> for Order <%= format_id(@po_request.sales_order.order_number) %></h2>
     <p>This will <em>'<%= @po_request.new_record? ? 'Create' : 'Update' %> <%= @po_request.readable_status %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
+    <% if action_name == 'edit' %>
+      <div class="d-none d-md-inline-block float-right">
+        <%= simple_form_for(:document_creation, :url => overseers_document_creations_path, :method => :post) do |f| %>
+          <div class="mr-2 d-md-inline-block">
+            <%= f.hidden_field :option, value: 'Purchase Order' %>
+            <%= f.input :document_number, as: :integer, input_html: { value: session[:number] }, label: false, placeholder: "Enter Purchase Order #" %>
+          </div>
+          <%= f.submit "Request from SAP", class: "btn btn-rounded btn-dark" %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
   <%= simple_form_for([:overseers, @po_request], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
@@ -31,7 +42,7 @@
       <div class="card-header">
         <div class="form-row">
           <% if policy(@po_request).update? %>
-            <div class="col-lg-12">
+            <div class="col-lg-12 submit-form">
               <%= action_button(action_name, @po_request) %>
             </div>
           <% end %>
@@ -42,14 +53,15 @@
           <strong><%= f.object.supplier.to_s %></strong>
           <a href="#" class="btn btn-default btn-danger add-review float-right" data-toggle="modal" data-target="#modalRatingForm">Add/Edit Supplier Rating</a>
         </h5>
+<!--        <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center " data-toggle="modal" data-target="#cancelpo">Cancel <%#= @po_request.readable_status %></a>-->
 
-        <%= render 'overseers/po_requests/rows_form', f: f %>
+        <%= render 'overseers/po_requests/rows_form', f: f, product_path: service_autocomplete_overseers_products_path, stock: false%>
         <% if action_name.capitalize == "New" %>
           <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
             <i class="fal fa-plus-circle"></i> Create PO Request
           <% end %>
         <% else %>
-          <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2 submit-form") do %>
             <i class="fal fa-pen"></i> Update PO Request
           <% end %>
         <% end %>
@@ -76,3 +88,4 @@
     </div>
   <% end %>
 </div>
+<%#= render partial: 'cancel_porequest'%>

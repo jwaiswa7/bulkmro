@@ -7,7 +7,7 @@ class PoRequest < ApplicationRecord
 
   pg_search_scope :locate, against: [:id], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
-  belongs_to :sales_order
+  belongs_to :sales_order, required: false
   belongs_to :inquiry
   belongs_to :supplier, class_name: 'Company', foreign_key: :supplier_id
   has_many :rows, class_name: 'PoRequestRow', inverse_of: :po_request, dependent: :destroy
@@ -28,12 +28,17 @@ class PoRequest < ApplicationRecord
 
   attr_accessor :opportunity_type, :customer_committed_date, :blobs
 
+  belongs_to :requested_by, class_name: 'Overseer', foreign_key: 'requested_by_id', required: false
+  belongs_to :approved_by, class_name: 'Overseer', foreign_key: 'approved_by_id', required: false
+  belongs_to :company, required: false
+
   enum status: {
       'Supplier PO: Request Pending': 10,
       'Supplier PO Created Not Sent': 20,
       'Cancelled': 30,
       'Rejected': 40,
-      'Amend': 50
+      'Amend': 50,
+      'Supplier PO Sent': 60
   }
 
   enum supplier_po_type: {
@@ -53,12 +58,26 @@ class PoRequest < ApplicationRecord
       'Others': 80
   }
 
+  enum po_request_type: {
+      'Supplier': 10,
+      'Stock': 20
+  }
+
+  enum stock_status: {
+      'Stock Requested': 10,
+      'Stock Rejected': 20,
+      'Stock Supplier PO Created': 30
+  }
+
   scope :pending_and_rejected, -> { where(status: [:'Supplier PO: Request Pending', :'Rejected', :'Amend']) }
   scope :handled, -> { where.not(status: [:'Supplier PO: Request Pending', :'Cancelled', :'Amend']) }
   scope :not_cancelled, -> { where.not(status: [:'Cancelled']) }
   scope :cancelled, -> { where(status: [:'Cancelled']) }
   scope :can_amend, -> { where(status: [:'Supplier PO Created Not Sent']) }
   scope :amended, -> { where(status: [:'Amend']) }
+  scope :pending_stock_po, -> { where(stock_status: [:'Stock Requested']) }
+  scope :completed_stock_po, -> { where(stock_status: [:'Stock Supplier PO Created']) }
+  scope :stock_po, -> { where(stock_status: [:'Stock Requested', :'Stock Rejected', :'Stock Supplier PO Created']) }
 
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? && !is_legacy }
@@ -74,18 +93,26 @@ class PoRequest < ApplicationRecord
   end
 
   after_initialize :set_defaults, if: :new_record?
+
   def update_po_index
     PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order.id])
   end
 
   def update_reason_for_status_change?
-    if (self.status == 'Cancelled' && self.cancellation_reason.blank?) || (self.status == 'Rejected' && self.rejection_reason.blank?)
-      errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
+    if self.po_request_type == 'Regular'
+      if (self.status == 'Cancelled' && self.cancellation_reason.blank?) || (self.status == 'Rejected' && self.rejection_reason.blank?)
+        errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
+      end
+    elsif self.po_request_type == 'Stock'
+      if self.stock_status == 'Stock Rejected' && self.rejection_reason.blank?
+        errors.add(:base, "Provide a reason to change the stock_status to #{self.stock_status} in message section")
+      end
     end
   end
 
   def set_defaults
-    self.status ||= :'Supplier PO: Request Pending'
+    self.status ||= :'Supplier PO: Request Pending' if self.po_request_type == 'Regular'
+    self.stock_status ||= :'Stock Requested' if self.po_request_type == 'Stock'
   end
 
   def amending?

@@ -7,7 +7,11 @@ class Services::Overseers::CompanyReviews::CreateCompanyReview < Services::Share
   end
 
   def call
-    suppliers = order.inquiry.suppliers.uniq
+    if @order.class.name == 'SalesOrder'
+      suppliers = order.inquiry.suppliers.uniq
+    else
+      suppliers = order.suppliers.uniq
+    end
     company_reviews = []
     suppliers.each do |supplier|
       company_review = request.company_reviews.where(created_by: current_overseer, survey_type: review_type, company: supplier).first_or_create

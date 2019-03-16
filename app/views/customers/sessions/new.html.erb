@@ -16,9 +16,9 @@
       <div class="form-group">
         <%= f.input :password, :class => 'form-control', :required => true, :placeholder => "••••••••", autocomplete: "off", value: ( Rails.env.production? || Rails.env.staging? ) ? '' : 'abc123' %>
       </div>
-<!--      <p class="text-center mt-1">-->
-<!--        <small><%#= link_to "Forgot Password?", contact_password_path, method: :post %></small>-->
-<!--      </p>-->
+      <p class="text-center mt-1">
+        <small><%= link_to "Forgot Password?", contact_password_path, method: :post %></small>
+      </p>
       <% if devise_mapping.rememberable? -%>
         <div class="form-group d-none">
           <div class="custom-control custom-checkbox">

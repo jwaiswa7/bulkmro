@@ -110,41 +110,52 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
   def export_all
     authorize :activity
-    service = Services::Overseers::Exporters::ActivitiesExporter.new(params[:q])
+    service = Services::Overseers::Exporters::ActivitiesExporter.new(params[:q], current_overseer, [])
     service.call
 
     redirect_to url_for(Export.activities.last.report)
   end
 
+
+  def export_filtered_records
+    authorize :activity
+
+    service = Services::Overseers::Finders::Activities.new(params, current_overseer, paginate: false)
+    service.call
+
+    export_service = Services::Overseers::Exporters::ActivitiesExporter.new(nil, current_overseer, service.records.pluck(:id))
+    export_service.call
+  end
+
   private
 
-  def activity_params
-    params.require(:activity).permit(
+    def activity_params
+      params.require(:activity).permit(
         :inquiry_id,
-        :company_id,
-        :contact_id,
-        :company_type,
-        :subject,
-        :purpose,
-        :activity_date,
-        :activity_type,
-        :points_discussed,
-        :actions_required,
-        :expenses,
-        overseer_ids: [],
-        company_creation_request_attributes: [
-            :name,
-            :email,
-            :first_name,
-            :last_name,
-            :address,
-            :account_type,
-        ],
-        attachments: []
-    )
-  end
+          :company_id,
+          :contact_id,
+          :company_type,
+          :subject,
+          :purpose,
+          :activity_date,
+          :activity_type,
+          :points_discussed,
+          :actions_required,
+          :expenses,
+          overseer_ids: [],
+          company_creation_request_attributes: [
+              :name,
+              :email,
+              :first_name,
+              :last_name,
+              :address,
+              :account_type,
+          ],
+          attachments: []
+      )
+    end
 
-  def set_activity
-    @activity = Activity.find(params[:id])
-  end
+    def set_activity
+      @activity = Activity.find(params[:id])
+    end
 end

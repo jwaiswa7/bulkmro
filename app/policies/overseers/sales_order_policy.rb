@@ -152,6 +152,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     developer?
   end
 
+  def create_stock_po?
+    admin? || sales?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 

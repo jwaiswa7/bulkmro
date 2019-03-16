@@ -50,6 +50,10 @@ class Overseers::ApplicationPolicy
     overseer.inside? || overseer.outside?
   end
 
+  def inside?
+    overseer.inside?
+  end
+
   def others?
     overseer.others?
   end
@@ -112,6 +116,10 @@ class Overseers::ApplicationPolicy
 
   def allow_export?
     developer? || ['Gaurang Shah', 'Devang Shah', 'Ankur Gupta', 'Lavanya Jamma', 'Shailender Agarwal', 'Nilesh Desai', 'Priyanka Rajpurkar', 'Uday Salvi', 'Akshay Jindal', 'Nitin Nabera', 'Vijay Manjrekar'].include?(overseer.name)
+  end
+
+  def export_filtered_records?
+    developer? # allow_export?
   end
 
   def allow_logistics_format_export?

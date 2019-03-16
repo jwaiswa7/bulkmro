@@ -3,13 +3,13 @@ class PurchaseOrder < ApplicationRecord
 
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
-  update_index('purchase_orders#purchase_order') { self }
+  update_index('purchase_orders#purchase_order') {self}
 
-  pg_search_scope :locate, against: [:id, :po_number], using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
 
   belongs_to :inquiry
   belongs_to :payment_option, required: false
-  belongs_to :logistics_owner, -> (record) { where(role: 'logistics') }, class_name: 'Overseer', foreign_key: 'logistics_owner_id', optional: true
+  belongs_to :logistics_owner, -> (record) {where(role: 'logistics')}, class_name: 'Overseer', foreign_key: 'logistics_owner_id', optional: true
   has_one :inquiry_currency, through: :inquiry
   has_one :currency, through: :inquiry_currency
   has_one :conversion_rate, through: :inquiry_currency
@@ -18,13 +18,13 @@ class PurchaseOrder < ApplicationRecord
   has_one :po_request
   has_one :payment_request
   has_one :invoice_request
-  has_many :material_pickup_requests
+  has_many :inward_dispatches
   has_many :email_messages
 
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
   has_many_attached :attachments
 
-  scope :with_includes, -> { includes(:inquiry, :po_request) }
+  scope :with_includes, -> {includes(:inquiry, :po_request)}
 
   def filename(include_extension: false)
     [
@@ -72,18 +72,24 @@ class PurchaseOrder < ApplicationRecord
       'Material Partially Delivered': 35
   }
 
-  scope :material_readiness_queue, -> { where.not(material_status: [:'Material Delivered']) }
-  scope :material_pickup_queue, -> { where(material_status: :'Material Pickedup') }
-  scope :material_delivered_queue, -> { where(material_status: :'Material Delivered') }
-  scope :not_cancelled, -> { where.not("metadata->>'PoStatus' = ?", PurchaseOrder.statuses[:Cancelled].to_s) }
+  scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
+  scope :material_pickup_queue, -> {where(material_status: :'Material Pickedup')}
+  scope :material_delivered_queue, -> {where(material_status: :'Material Delivered')}
+  scope :not_cancelled, -> {where.not("metadata->>'PoStatus' = ?", PurchaseOrder.statuses[:Cancelled].to_s)}
 
   after_initialize :set_defaults, if: :new_record?
+
+  def self.by_number(number)
+    find_by_po_number(number)
+  end
+
+  def get_number
+    self.po_number
+  end
 
   def set_defaults
     self.material_status = 'Material Readiness Follow-Up'
   end
-
-
 
   def has_supplier?
     self.get_supplier(self.rows.first.metadata['PopProductId'].to_i).present?
@@ -104,7 +110,7 @@ class PurchaseOrder < ApplicationRecord
     end
 
     if self.inquiry.final_sales_quote.present?
-      product_supplier = self.inquiry.final_sales_quote.rows.select { |supplier_row| supplier_row.product.id == product_id || supplier_row.product.legacy_id == product_id }.first
+      product_supplier = self.inquiry.final_sales_quote.rows.select {|supplier_row| supplier_row.product.id == product_id || supplier_row.product.legacy_id == product_id}.first
       return product_supplier.supplier if product_supplier.present?
     end
   end
@@ -140,7 +146,15 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def calculated_total_with_tax
-    (rows.map { |row| row.total_selling_price_with_tax || 0 }.sum.round(2)) + self.metadata['LineTotal'].to_f + self.metadata['TaxSum'].to_f
+    (rows.map {|row| row.total_selling_price_with_tax || 0}.sum.round(2)) + self.metadata['LineTotal'].to_f + self.metadata['TaxSum'].to_f
+  end
+
+  def warehouse
+    if metadata['PoTargetWarehouse'].present?
+      Warehouse.find_by(remote_uid: metadata['PoTargetWarehouse'].to_i)
+    else
+      inquiry.bill_from
+    end
   end
 
   def get_packing(metadata)
@@ -162,14 +176,14 @@ class PurchaseOrder < ApplicationRecord
 
 
   def update_material_status
-    if self.material_pickup_requests.any?
+    if self.inward_dispatches.any?
       partial = true
       if self.rows.sum(&:get_pickup_quantity) <= 0
         partial = false
       end
-      if 'Material Pickup'.in? self.material_pickup_requests.map(&:status)
+      if 'Material Pickup'.in? self.inward_dispatches.map(&:status)
         status = partial ? 'Material Partially Pickedup' : 'Material Pickedup'
-      elsif 'Material Delivered'.in? self.material_pickup_requests.map(&:status)
+      elsif 'Material Delivered'.in? self.inward_dispatches.map(&:status)
         status = partial ? 'Material Partially Delivered' : 'Material Delivered'
       end
       self.update_attribute(:material_status, status)
