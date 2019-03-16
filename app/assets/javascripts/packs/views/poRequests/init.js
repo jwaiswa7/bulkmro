@@ -1,11 +1,13 @@
 import poRequestsEdit from "./edit";
 import poRequestsShow from "./show";
-import poRequestsNew from "./new";
-
+import poRequestsIndex from "./index";
+// import pendingAndRejected from "./pendingAndRejected";
 let poRequests= {
     edit: poRequestsEdit,
     show: poRequestsShow,
-    new: poRequestsNew
+    index: poRequestsIndex,
+    // pendingAndRejected: pendingAndRejected,
+     pendingAndRejected: poRequestsIndex
 }
 
 export default poRequests

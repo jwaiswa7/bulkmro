@@ -9,7 +9,7 @@
 <% end %>
 
 <% provide :heading_buttons do %>
-  <% if policy(:material_pickup_request).update_logistics_owner_for_pickup_requests? && !(action_name == 'material_delivered_queue') %>
+  <% if policy(:inward_dispatch).update_logistics_owner_for_inward_dispatches? && !(action_name == 'inward_dispatch_delivered_queue') %>
     <div class="mr-2 float-left update_logistics_owner_wrapper">
       <%= select_tag :logistics_owner, options_for_select(Overseer.logistics.collect {|o| [o.full_name.to_s, o.id]}), class: 'form-control select2-wrap update_logistics_owner_wrapper', include_blank: 'Select a logistics owner', id: 'logistics_owner_select' %>
     </div>
@@ -18,7 +18,7 @@
     </button>
   <% end %>
 
-  <% if action_name == 'material_delivered_queue' %>
+  <% if action_name == 'inward_dispatch_delivered_queue' %>
     <button type="button" id="create_invoice" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
       <i class="fal fa-check mr-1"></i>Create GRPO Request
     </button>
@@ -28,10 +28,10 @@
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all">
-      <% if policy(:material_pickup_request).update_logistics_owner_for_pickup_requests? && (action_name != 'material_delivered_queue') %>
+      <% if policy(:inward_dispatch).update_logistics_owner_for_inward_dispatches? && (action_name != 'inward_dispatch_delivered_queue') %>
         <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" name="all_pickup_requests" id="all_pickup_requests">
-          <label class="custom-control-label" for="all_pickup_requests">Select All</label>
+          <input type="checkbox" class="custom-control-input" name="all_inward_dispatches" id="all_inward_dispatches">
+          <label class="custom-control-label" for="all_inward_dispatches">Select All</label>
         </div>
       <% end %>
     </th>

@@ -41,6 +41,10 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
     edit_pod?
   end
 
+  def show_pending_ap_invoice_queue?
+    index? && (admin? || accounts?)
+  end
+
   def search_or_create?
     manager_or_sales? || logistics?
   end
