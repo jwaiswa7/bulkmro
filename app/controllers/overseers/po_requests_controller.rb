@@ -96,8 +96,9 @@ class Overseers::PoRequestsController < Overseers::BaseController
       if messages.present? || row_updated_message.present?
         @po_request.comments.create(message: "#{messages} \r\n #{row_updated_message}", overseer: current_overseer)
       end
-      @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
-      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).can_reject?
+
+      @po_request.status = 'Supplier PO Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
+      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
       ActiveRecord::Base.transaction do
         if @po_request.status_changed?
           if @po_request.status == 'Cancelled'
@@ -118,7 +119,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
           @po_request_comment.save!
           tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
           @notification.send_po_request_update(
-            tos - [current_overseer.email],
+              tos - [current_overseer.email],
               action_name.to_sym,
               @po_request,
               overseers_po_request_path(@po_request),
@@ -152,7 +153,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
       tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
       @notification.send_po_request_update(
-        tos - [current_overseer.email],
+          tos - [current_overseer.email],
           action_name.to_sym,
           @po_request,
           overseers_po_request_path(@po_request),
@@ -206,33 +207,33 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   private
 
-    def po_request_params
-      params.require(:po_request).permit(
+  def po_request_params
+    params.require(:po_request).permit(
         :id,
-          :inquiry_id,
-          :sales_order_id,
-          :purchase_order_id,
-          :logistics_owner_id,
-          :contact_email,
-          :contact_phone,
-          :contact_id,
-          :payment_option_id,
-          :bill_from_id,
-          :ship_from_id,
-          :bill_to_id,
-          :ship_to_id,
-          :status,
-          :supplier_po_type,
-          :supplier_committed_date,
-          :cancellation_reason,
-          :rejection_reason,
-          rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time],
-          comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-          attachments: []
-      )
-    end
+        :inquiry_id,
+        :sales_order_id,
+        :purchase_order_id,
+        :logistics_owner_id,
+        :contact_email,
+        :contact_phone,
+        :contact_id,
+        :payment_option_id,
+        :bill_from_id,
+        :ship_from_id,
+        :bill_to_id,
+        :ship_to_id,
+        :status,
+        :supplier_po_type,
+        :supplier_committed_date,
+        :cancellation_reason,
+        :rejection_reason,
+        rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time],
+        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+        attachments: []
+    )
+  end
 
-    def set_po_request
-      @po_request = PoRequest.find(params[:id])
-    end
+  def set_po_request
+    @po_request = PoRequest.find(params[:id])
+  end
 end
