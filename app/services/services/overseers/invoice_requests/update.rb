@@ -35,14 +35,14 @@ class Services::Overseers::InvoiceRequests::Update < Services::Shared::BaseServi
     case invoice_request.status.to_sym
     when :'GRPO Request Rejected'
       @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{invoice_request.status}.<br/> GRPO Request Rejection Reason: #{invoice_request.grpo_rejection_reason} ", invoice_request: invoice_request, overseer: current_overseer)
-      material_pickup_requests = invoice_request.material_pickup_requests
-      material_pickup_requests.each do |material_pickup_request|
+      inward_dispatches = invoice_request.inward_dispatches
+      inward_dispatches.each do |material_pickup_request|
         material_pickup_request.update_attributes(status: invoice_request.status)
       end
     when :'AP Request Rejected'
       @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{invoice_request.status}.<br/> AP Request Rejection Reason: #{invoice_request.ap_rejection_reason} ", invoice_request: invoice_request, overseer: current_overseer)
-      material_pickup_requests = invoice_request.material_pickup_requests
-      material_pickup_requests.each do |material_pickup_request|
+      inward_dispatches = invoice_request.inward_dispatches
+      inward_dispatches.each do |material_pickup_request|
         material_pickup_request.update_attributes(status: invoice_request.status)
       end
     when :'Cancelled GRPO'
