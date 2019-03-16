@@ -33,7 +33,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @invoice_over_month = service.invoice_over_month
     @regular_pod_over_month = service.regular_pod_over_month
     @route_through_pod_over_month = service.route_through_pod_over_month
-    @pod_over_month = @regular_pod_over_month.merge(@route_through_pod_over_month){|key,regular_value,route_through_value| regular_value['doc_count']+route_through_value['doc_count']}
+    @pod_over_month = @regular_pod_over_month.merge(@route_through_pod_over_month) { |key, regular_value, route_through_value| regular_value['doc_count'] + route_through_value['doc_count']}
     #####################################################################################################
 
     respond_to do |format|
