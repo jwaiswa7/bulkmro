@@ -995,8 +995,8 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   def add_completed_po_to_material_followup_queue
     PurchaseOrder.all.where(created_at: Date.new(2019, 03, 05).beginning_of_day..Date.new(2019, 03, 06).end_of_day).each do |purchase_order|
       if purchase_order.po_request.present?
-        if purchase_order.po_request != 'Supplier PO Created Not Sent'
-          purchase_order.po_request.assign_attributes(status: 'Supplier PO Created Not Sent')
+        if purchase_order.po_request != 'Supplier PO: Created Not Sent'
+          purchase_order.po_request.assign_attributes(status: 'Supplier PO: Created Not Sent')
           purchase_order.po_request.save(validate: false)
         end
 

@@ -34,7 +34,7 @@ class PoRequest < ApplicationRecord
 
   enum status: {
       'Supplier PO: Request Pending': 10,
-      'Supplier PO Created Not Sent': 20,
+      'Supplier PO: Created Not Sent': 20,
       'Cancelled': 30,
       'Rejected': 40,
       'Amend': 50,
@@ -73,7 +73,7 @@ class PoRequest < ApplicationRecord
   scope :handled, -> { where.not(status: [:'Supplier PO: Request Pending', :'Cancelled', :'Amend']) }
   scope :not_cancelled, -> { where.not(status: [:'Cancelled']) }
   scope :cancelled, -> { where(status: [:'Cancelled']) }
-  scope :can_amend, -> { where(status: [:'Supplier PO Created Not Sent']) }
+  scope :can_amend, -> { where(status: [:'Supplier PO: Created Not Sent']) }
   scope :amended, -> { where(status: [:'Amend']) }
   scope :pending_stock_po, -> { where(stock_status: [:'Stock Requested']) }
   scope :completed_stock_po, -> { where(stock_status: [:'Stock Supplier PO Created']) }
@@ -87,7 +87,7 @@ class PoRequest < ApplicationRecord
   after_save :update_po_index, if: -> { purchase_order.present? }
 
   def purchase_order_created?
-    if self.status == 'Supplier PO Created Not Sent' && self.purchase_order.blank?
+    if self.status == 'Supplier PO: Created Not Sent' && self.purchase_order.blank?
       errors.add(:purchase_order, ' number is mandatory')
     end
   end
@@ -143,7 +143,7 @@ class PoRequest < ApplicationRecord
     title = ''
     if self.status == 'Supplier PO: Request Pending'
       title = 'Pending'
-    elsif self.status == 'Supplier PO Created Not Sent'
+    elsif self.status == 'Supplier PO: Created Not Sent'
       title = 'Completed'
     end
     "#{title} PO Request"
