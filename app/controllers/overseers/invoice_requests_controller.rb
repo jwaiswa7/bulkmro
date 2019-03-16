@@ -31,7 +31,9 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     service.call
 
     @invoice_over_month = service.invoice_over_month
-    @pod_over_month = service.pod_over_month
+    @regular_pod_over_month = service.regular_pod_over_month
+    @route_through_pod_over_month = service.route_through_pod_over_month
+    @pod_over_month = @regular_pod_over_month.merge(@route_through_pod_over_month) { |key, regular_value, route_through_value| regular_value['doc_count'] + route_through_value['doc_count']}
     #####################################################################################################
 
     respond_to do |format|
@@ -87,7 +89,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
     service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     @company_reviews = service.call
-    service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.material_pickup_requests.ids, false)
+    service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.inward_dispatches.ids, false)
     @products_list = service.call
   end
 
@@ -143,9 +145,9 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     @company_reviews = service.call
 
-    mpr_ids = @invoice_request.material_pickup_requests.map(&:id).join(', ')
+    mpr_ids = @invoice_request.inward_dispatches.map(&:id).join(', ')
     service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids, false)
-    @mpr = @invoice_request.material_pickup_requests.last
+    @mpr = @invoice_request.inward_dispatches.last
     @products_list = service.call
   end
 

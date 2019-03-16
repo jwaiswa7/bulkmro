@@ -8,14 +8,12 @@ const index = () => {
     updateSummaryBox();
     aggregateSummaryBox();
     // To show/hide Filtered records button
-    $('#export_filtered_records').hide();
-
     $('.datatable').on('filters:change', function () {
         $('#export_filtered_records').show();
     });
 
     $('.filter-list-input').on('keyup', function () {
-        ($(this).val() == '') ? $('#export_filtered_records').hide() : $('#export_filtered_records').show();
+        (window.hasher.getHashString() != "" || $(this).val() != '') ? $('#export_filtered_records').show() : $('#export_filtered_records').hide();
     });
 
     $('#export_filtered_records').click((event) => {
@@ -31,7 +29,7 @@ const index = () => {
             error: function () {
                 element.prop('disabled', false);
                 $.notify({
-                    message: 'Email is not delivered. Please export all activities'
+                    message: 'Email is not delivered. Please export all Inquiries'
                 }, {
                     type: 'danger'
                 }, {delay: 1000});
@@ -39,7 +37,7 @@ const index = () => {
             success: function () {
                 element.prop('disabled', false);
                 $.notify({
-                    message: 'Email sent with Filtered Activities!'
+                    message: 'Email sent with Filtered Inquiries!'
                 }, {
                     type: 'info'
                 }, {delay: 5000});

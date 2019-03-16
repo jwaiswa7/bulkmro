@@ -3,12 +3,8 @@ json.data (@po_requests) do |po_request|
                   [
                       if po_request.sales_order.present? && (policy(po_request).edit?)
                         row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
-                      elsif (policy(po_request).edit? && po_request.status != 'Cancelled')
-                        row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning')
-                      if po_request.sales_order.present? && (policy(po_request).edit?)
-                        row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
                       elsif policy(po_request).edit? && po_request.status != 'Cancelled'
-                        row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning', :_blank)
+                        row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
 
                       if policy(po_request).new_payment_request?
@@ -46,7 +42,7 @@ json.data (@po_requests) do |po_request|
                   po_request.po_request_type == 'Stock' ? status_badge(po_request.stock_status) : status_badge(po_request.status),
                   status_badge(po_request.status),
                   conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
-                  if po_request.purchase_order.present? && (po_request.status == 'PO Created' || po_request.stock_status == 'Stock Supplier PO Created')
+                  if po_request.purchase_order.present? && (po_request.status == 'Supplier PO Created Not Sent' || po_request.stock_status == 'Stock Supplier PO Created')
                     link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank')
                   else
                     po_request.sales_order.order_number if po_request.sales_order.present?

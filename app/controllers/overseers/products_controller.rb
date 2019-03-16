@@ -1,5 +1,5 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync, :resync_inventory, :autocomplete_suppliers, :get_product_details]
+  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync, :resync_inventory, :get_product_details]
 
   def index
     service = Services::Overseers::Finders::Products.new(params)
@@ -160,6 +160,7 @@ class Overseers::ProductsController < Overseers::BaseController
     product_details['converted_unit_selling_price'] = @product.latest_unit_cost_price
     render json: product_details
   end
+
   private
 
     def product_params

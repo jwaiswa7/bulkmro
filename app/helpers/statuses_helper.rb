@@ -97,7 +97,7 @@ module StatusesHelper
       'success'
     when :'Completed'
       'success'
-    when :'PO Created'
+    when :'Supplier PO Created Not Sent'
       'success'
     when :'success'
       'success'

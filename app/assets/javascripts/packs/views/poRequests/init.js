@@ -9,7 +9,7 @@ let poRequests= {
     show: poRequestsShow,
     index: poRequestsIndex,
     // pendingAndRejected: pendingAndRejected,
-     pendingAndRejected: poRequestsIndex,
+    pendingAndRejected: poRequestsIndex,
     new: poRequestsNew
 };
 

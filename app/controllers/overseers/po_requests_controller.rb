@@ -99,7 +99,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
       if messages.present? || row_updated_message.present?
         @po_request.comments.create(message: "#{messages} \r\n #{row_updated_message}", overseer: current_overseer)
       end
-      @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
+
+      @po_request.status = 'Supplier PO Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
       @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
       ActiveRecord::Base.transaction do
         if @po_request.status_changed?
@@ -196,11 +197,11 @@ class Overseers::PoRequestsController < Overseers::BaseController
       tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
       @notification.send_po_request_update(
           tos - [current_overseer.email],
-          action_name.to_sym,
-          @po_request,
-          overseers_po_request_path(@po_request),
-          @po_request.id,
-          @po_request.last_comment.message,
+        action_name.to_sym,
+        @po_request,
+        overseers_po_request_path(@po_request),
+        @po_request.id,
+        @po_request.last_comment.message,
       )
       render json: {success: 1, message: 'Successfully updated '}, status: 200
     elsif @po_request.status == 'Cancelled'
