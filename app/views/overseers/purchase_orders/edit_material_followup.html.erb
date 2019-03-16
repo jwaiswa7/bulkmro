@@ -10,7 +10,7 @@
             <i class="fal fa-plus-circle mr-1"></i>New Inward Dispatch
           </a>
         <% else %>
-          <span data-toggle="tooltip" title="Followup Date Needed">
+          <span data-toggle="tooltip" title="<%= @purchase_order.followup_date.blank? ? 'Followup Date Needed' : 'No Product Left to Pickup' %>">
             <a href=# class=" btn btn-success btn-rounded align-self-center btn-block-sm-down disabled">
               <i class="fal fa-plus-circle mr-1"></i>New Inward Dispatch
             </a>
