@@ -92,6 +92,7 @@ Rails.application.routes.draw do
         post 'reject_selected'
         post 'add_to_inquiry'
         get 'export_all'
+        get 'export_filtered_records'
       end
       member do
         get 'approve'
@@ -165,6 +166,8 @@ Rails.application.routes.draw do
         get 'sku_purchase_history'
         get 'resync'
         get 'resync_inventory'
+        get 'autocomplete_suppliers'
+        get 'get_product_details'
       end
 
       collection do
@@ -208,6 +211,13 @@ Rails.application.routes.draw do
         get 'pending_and_rejected'
         get 'cancelled'
         get 'amended'
+        get 'pending_stock_approval'
+        get 'stock'
+        get 'completed_stock'
+      end
+      member do
+        get 'render_cancellation_form'
+        patch 'cancel_porequest'
       end
 
     end
@@ -217,6 +227,11 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'pending'
         get 'completed'
+        get 'cancelled'
+      end
+      member do
+        get 'render_cancellation_form'
+        patch 'cancel_invoice_request'
       end
     end
 
@@ -266,14 +281,14 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'autocomplete_without_po_requests'
         get 'material_readiness_queue'
-        get 'material_pickup_queue'
-        get 'material_delivered_queue'
+        get 'inward_dispatch_pickup_queue'
+        get 'inward_dispatch_delivered_queue'
         post 'update_logistics_owner'
-        post 'update_logistics_owner_for_pickup_requests'
+        post 'update_logistics_owner_for_inward_dispatches'
       end
 
       scope module: 'purchase_orders' do
-        resources :material_pickup_requests do
+        resources :inward_dispatches do
           member do
             get 'confirm_delivery'
             get 'delivered_material'
@@ -331,6 +346,9 @@ Rails.application.routes.draw do
         get 'index_pg'
         get 'smart_queue'
         get 'export_all'
+        get 'export_filtered_records'
+        post 'create_purchase_orders_requests'
+        post 'preview_stock_po_request'
       end
 
       scope module: 'inquiries' do
@@ -338,6 +356,12 @@ Rails.application.routes.draw do
         resources :email_messages
         resources :sales_shipments
         resources :purchase_orders
+
+        resources :po_requests do
+          collection do
+            post 'preview_stock'
+          end
+        end
 
         resources :sales_invoices do
           member do

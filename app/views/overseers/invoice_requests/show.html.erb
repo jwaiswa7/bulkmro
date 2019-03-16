@@ -101,6 +101,21 @@
                     <%= @invoice_request.ar_invoice_number %>
                   </div>
                 <% end %>
+
+                <%if @invoice_request.status.present? && ['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(@invoice_request.status) %>
+                  <div class="col-6 col-md-3 mb-2">
+                    <strong class="d-block">Rejection Reason</strong>
+                    <%= @invoice_request.rejection_reason_text %>
+                  </div>
+                <%end %>
+
+                <%if @invoice_request.status.present? && ['Cancelled GRPO','Cancelled AP Invoice'].include?(@invoice_request.status) %>
+                  <div class="col-6 col-md-3 mb-2">
+                    <strong class="d-block">Cancellation Reason</strong>
+                    <%= @invoice_request.cancellation_reason_text %>
+                  </div>
+                <%end %>
+
               </div>
             </div>
 

@@ -43,6 +43,22 @@ sendgrid:
 
 domain: www.bulkmro.com
 
+gmail_smtp:
+  address: "smtp.gmail.com"
+  port: 587
+  domain: "bulkmro.com"
+  authentication: "plain"
+  enable_starttls_auto: true
+
+sendgrid_smtp:
+  address: "smtp.sendgrid.net"
+  port: 587
+  domain: "bulkmro.com"
+  user_name: "bulk"
+  password: "GhgjIH4zw3p2"
+  authentication: "plain"
+  enable_starttls_auto: true
+
 twilio:
   phone: +919987480784
   messaging_service_sid: MGdddcada47fcc5123ebda5c7312dc086d

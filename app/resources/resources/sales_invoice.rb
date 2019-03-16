@@ -155,7 +155,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
       }
       remote_rows_arr.push(remote_row_obj)
     end
-    metadata = {
+    {
         'state' => remote_response['U_Invoic_Status'],
         'is_kit' => '',
         'qty_kit' => remote_rows_arr[0][:qty],
