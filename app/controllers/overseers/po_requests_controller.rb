@@ -3,7 +3,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   before_action :set_notification, only: [:update, :cancel_porequest]
 
   def pending_and_rejected
-    @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.pending_and_rejected.order(id: :desc)), params)
+    @po_requests = filter(:pending_and_rejected)
     authorize @po_requests
 
     respond_to do |format|
@@ -13,7 +13,17 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def cancelled
-    @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.cancelled.order(id: :desc)), params)
+    @po_requests = filter(:cancelled)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
+  def under_amend
+    @po_requests = filter(:under_amend)
     authorize @po_requests
 
     respond_to do |format|
@@ -23,7 +33,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def amended
-    @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.amended.order(id: :desc)), params)
+    @po_requests = filter(:amended)
     authorize @po_requests
 
     respond_to do |format|
@@ -33,8 +43,12 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def index
-    @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.handled.order(id: :desc)), params)
+    @po_requests = filter(:handled)
     authorize @po_requests
+  end
+
+  def filter(scope)
+    ApplyDatatableParams.to(policy_scope(PoRequest.all.send(scope).order(id: :desc)), params)
   end
 
   def show

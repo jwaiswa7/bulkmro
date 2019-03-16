@@ -17,6 +17,10 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     index?
   end
 
+  def under_amend?
+    index?
+  end
+
   def amended?
     index?
   end
@@ -38,7 +42,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_reject?
-    record.purchase_order.blank? && (logistics? || admin? || manager_or_sales?) && record.status == 'Requested'
+    record.purchase_order.blank? && (logistics? || admin?) && record.status == 'Requested'
   end
 
   def can_update_rejected_po_requests?
