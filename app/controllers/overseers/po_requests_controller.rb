@@ -100,7 +100,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         @po_request.comments.create(message: "#{messages} \r\n #{row_updated_message}", overseer: current_overseer)
       end
 
-      @po_request.status = 'Supplier PO Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
+      @po_request.status = 'Supplier PO: Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
       @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
       ActiveRecord::Base.transaction do
         if @po_request.status_changed?
