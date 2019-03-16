@@ -26,7 +26,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.inquiries.last.report)
+    redirect_to url_for(Export.inquiries.not_filtered.last.report)
   end
 
   def export_filtered_records
