@@ -278,16 +278,18 @@
         <%= f.input :commercial_terms_and_conditions %>
       </div>
 
-      <div class="text-right">
-        <% if policy(@inquiry).resync_inquiry_products? %>
-          <a href="<%= resync_inquiry_products_overseers_inquiry_path %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mt-2 mb-md-0"><i class="fal fa-retweet mr-1"></i>Resync All Products</a>
-        <% end %>
-
-        <% if policy(@inquiry).resync_unsync_inquiry_products? %>
-          <a href="<%= resync_unsync_inquiry_products_overseers_inquiry_path %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mt-2 mb-md-0"><i class="fal fa-retweet mr-1"></i>Resync Unsync Products</a>
-        <% end %>
+      <div class="form-row mt-3">
+        <div class="col-md-6">
+          <% if policy(@inquiry).resync_inquiry_products? %>
+            <a href="<%= resync_inquiry_products_overseers_inquiry_path %>" class="btn btn-success btn-rounded align-self-center btn-block"><i class="fal fa-retweet mr-1"></i>Resync All Products</a>
+          <% end %>
+        </div>
+        <div class="col-md-6">
+          <% if policy(@inquiry).resync_unsync_inquiry_products? %>
+            <a href="<%= resync_unsync_inquiry_products_overseers_inquiry_path %>" class="btn btn-success btn-rounded align-self-center btn-block mt-2 mt-md-0"><i class="fal fa-retweet mr-1"></i>Resync Unsynced Products</a>
+          <% end %>
+        </div>
       </div>
-
 
       <% if f.object.persisted? %>
         <div class="mt-3">
