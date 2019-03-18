@@ -269,7 +269,7 @@
         <a class="nav-link" data-toggle="tab" href="#banks" role="tab">Banks</a>
       </li>
 
-      <% if @company.is_customer? %>
+      <% if @company.is_supplier? %>
         <li class="nav-item">
           <a class="nav-link" data-toggle="tab" href="#purchase-orders" role="tab">Purchase Orders</a>
         </li>
@@ -286,25 +286,25 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" data-toggle="tab" href="#product_categories" role="tab">Product Categories</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#online-orders" role="tab">Online Orders</a>
         </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#payments" role="tab">Online Payments</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#quotes" role="tab">Quotes</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#orders" role="tab">Fulfilled Orders</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#invoices" role="tab">Invoices</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#rating" role="tab">Ratings</a>
-      </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#online-orders" role="tab">Online Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#payments" role="tab">Online Payments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#quotes" role="tab">Quotes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#orders" role="tab">Fulfilled Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#invoices" role="tab">Invoices</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#rating" role="tab">Ratings</a>
+        </li>
       <% end %>
     </ul>
 
@@ -325,7 +325,8 @@
         <% end %>
         <% content_for :heading_buttons, flush: true do %>
           <% if policy(:address).new? && policy(@company).new_address? %>
-            <a href="<%= new_overseers_company_address_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Address</a>
+            <a href="<%= new_overseers_company_address_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+              Address</a>
           <% end %>
         <% end %>
         <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'addresses' %>
@@ -346,7 +347,8 @@
         <% end %>
         <% content_for :heading_buttons, flush: true do %>
           <% if policy(:contact).new? && policy(@company).new_contact? %>
-            <a href="<%= new_overseers_contact_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Contact</a>
+            <a href="<%= new_overseers_contact_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+              Contact</a>
           <% end %>
         <% end %>
         <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'contacts' %>
@@ -367,14 +369,16 @@
         <% end %>
         <% content_for :heading_buttons, flush: true do %>
           <% if policy(:contact).new? %>
-            <a href="<%= new_overseers_company_company_bank_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Bank</a>
+            <a href="<%= new_overseers_company_company_bank_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+              Bank</a>
           <% end %>
         <% end %>
         <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'banks' %>
       </div>
       <% if @company.is_customer? %>
         <div class="tab-pane fade" id="products" role="tabpanel">
-          <% content_for :ajax_url, flush: true do %><%= overseers_company_customer_products_path(@company) %><% end %>
+          <% content_for :ajax_url, flush: true do %><%= overseers_company_customer_products_path(@company) %>
+          <% end %>
           <% content_for :header_row, flush: true do %>
             <th class="no-sort"></th>
             <th class="no-sort">Name</th>
@@ -386,15 +390,19 @@
           <% content_for :heading_buttons, flush: true do %>
             <div>
               <% if policy(:customer_product).generate_catalog? %>
-                <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-plus-circle mr-1"></i>Generate Catalog</a>
+                <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-plus-circle mr-1"></i>Generate
+                  Catalog</a>
               <% end %>
               <% if policy(:customer_product).destroy_all? %>
-                <a href="<%= destroy_all_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-minus-circle mr-1"></i>Destroy Catalog</a>
+                <a href="<%= destroy_all_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-minus-circle mr-1"></i>Destroy
+                  Catalog</a>
               <% end %>
               <% if policy(:customer_product).new? %>
-                <a href="<%= new_overseers_company_customer_product_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-plus-circle mr-1"></i>New Customer Product</a>
+                <a href="<%= new_overseers_company_customer_product_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-plus-circle mr-1"></i>New
+                  Customer Product</a>
               <% end %>
-              <a href="<%= new_excel_customer_product_import_overseers_company_imports_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-file-excel mr-1"></i>Add products using excel</a>
+              <a href="<%= new_excel_customer_product_import_overseers_company_imports_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-file-excel mr-1"></i>Add
+                products using excel</a>
             </div>
           <% end %>
           <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'products' %>
@@ -406,7 +414,8 @@
           <h3 class="display-5 mb-1 d-none d-md-block">Product Categories</h3>
           <div>
             <% if policy(:tag).new? %>
-              <a href="<%= new_overseers_company_tag_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Product Category</a>
+              <a href="<%= new_overseers_company_tag_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+                Product Category</a>
             <% end %>
           </div>
         </div>
@@ -430,18 +439,19 @@
 
       <% if policy(@company).new_inquiry? %>
         <div class="tab-pane fade" id="inquiries" role="tabpanel">
-          <% content_for :ajax_url, flush: true do %><%= index_pg_overseers_inquiries_path(company_id: @company.id) %><% end %>
+          <% content_for :ajax_url, flush: true do %><%= index_pg_overseers_inquiries_path(company_id: @company.id) %>
+          <% end %>
           <% content_for :header_row, flush: true do %>
-              <th class="no-sort"></th>
-              <th data-name="inquiry_number">IQ #</th>
-              <th class="no-sort">Status</th>
-              <th class="no-sort">Account</th>
-              <th class="no-sort">Company</th>
-              <th class="no-sort">Contact</th>
-              <th class="no-sort">Inside Sales</th>
-              <th class="no-sort">Outside Sales</th>
-              <th class="no-sort">Total</th>
-              <th data-name="created_at">Created</th>
+            <th class="no-sort"></th>
+            <th data-name="inquiry_number">IQ #</th>
+            <th class="no-sort">Status</th>
+            <th class="no-sort">Account</th>
+            <th class="no-sort">Company</th>
+            <th class="no-sort">Contact</th>
+            <th class="no-sort">Inside Sales</th>
+            <th class="no-sort">Outside Sales</th>
+            <th class="no-sort">Total</th>
+            <th data-name="created_at">Created</th>
           <% end %>
           <% content_for :heading_buttons, flush: true do %>
             <a href="<%= new_overseers_inquiry_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
@@ -451,59 +461,65 @@
         </div>
       <% end %>
 
-      <% if @company.is_customer? %>
+      <% if @company.is_supplier? %>
         <div class="tab-pane fade" id="purchase-orders" role="tabpanel">
-          <% content_for :ajax_url, flush: true do %><%= overseers_company_purchase_orders_path(company_id: @company.id, via_sales_orders: true)  %><% end %>
+          <% content_for :ajax_url, flush: true do %><%= overseers_company_purchase_orders_path(company_id: @company.id, via_sales_orders: true) %>
+          <% end %>
           <!--          <p class="mt-md-1 d-none d-md-block">-->
           <!--            All inquiries filterable in any way that we want under <strong><%#= @company.name %></strong>.-->
           <!--          </p>-->
 
           <% content_for :header_row, flush: true do %>
-              <th class="no-sort all"></th>
-              <th class="no-sort all" data-name="po_number">Purchase #</th>
-              <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
-              <th class="no-sort desktop" data-name="supplier_id">Supplier</th>
-              <th class="no-sort desktop" data-name="customer_id">Customer</th>
-              <th class="no-sort all" data-name="po_status">Status</th>
-              <th class="no-sort desktop">Line Items</th>
-              <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
-              <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
-              <th class="no-sort desktop" data-name="created_at">Created</th>
+            <th class="no-sort all"></th>
+            <th class="no-sort all" data-name="po_number">Purchase #</th>
+            <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
+            <th class="no-sort desktop" data-name="supplier_id">Supplier</th>
+            <th class="no-sort desktop" data-name="customer_id">Customer</th>
+            <th class="no-sort all" data-name="po_status">Status</th>
+            <th class="no-sort desktop">Warehouse</th>
+            <th class="no-sort desktop">Line Items</th>
+            <th class="no-sort desktop">Total Amt.</th>
+            <th class="no-sort desktop">PO Date</th>
+            <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
+            <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
+            <th class="no-sort desktop" data-name="created_at">Created</th>
           <% end %>
           <% content_for :heading_buttons, flush: true do %>
             <a href="#"></a>
           <% end %>
-          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'purchase orders'  %>
+          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'purchase orders' %>
         </div>
       <% end %>
 
       <% if @company.is_supplier? %>
         <div class="tab-pane fade" id="supplier-products" role="tabpanel">
-          <% content_for :ajax_url, flush: true do %><%= overseers_company_products_path(company_id: @company.id)  %><% end %>
+          <% content_for :ajax_url, flush: true do %><%= overseers_company_products_path(company_id: @company.id) %>
+          <% end %>
           <!--          <p class="mt-md-1 d-none d-md-block">-->
           <!--            All inquiries filterable in any way that we want under <strong><%#= @company.name %></strong>.-->
           <!--          </p>-->
 
           <% content_for :header_row, flush: true do %>
-              <th class="no-sort all" data-width="70px"></th>
-              <th class="no-sort desktop" data-name="product_id">Name</th>
-              <th class="no-sort all" data-name="sku">SKU</th>
-              <th class="no-sort desktop" data-name="brand_id">Brand</th>
-              <th class="no-sort desktop">Category</th>
-              <th class="no-sort desktop">MPN</th>
-              <th class="no-sort desktop" data-name="is_active"> Active</th>
-              <th class="no-sort desktop" data-name="created_at"> SAP Status</th>
-              <th class="no-sort desktop" data-name="created_at"> Created At</th>
+            <th class="no-sort all" data-width="70px"></th>
+            <th class="no-sort desktop" data-name="product_id">Name</th>
+            <th class="no-sort all" data-name="sku">SKU</th>
+            <th class="no-sort desktop" data-name="brand_id">Brand</th>
+            <th class="no-sort desktop">Category</th>
+            <th class="no-sort desktop">MPN</th>
+            <th class="no-sort desktop" data-name="is_active"> Active</th>
+            <th class="no-sort desktop" data-name="created_at"> SAP Status</th>
+            <th class="no-sort desktop" data-name="created_at"> Created At</th>
           <% end %>
           <% content_for :heading_buttons, flush: true do %>
             <a href="#"></a>
           <% end %>
-          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'supplied products'  %>
+          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'supplied products' %>
         </div>
       <% end %>
       <% if @company.is_customer? %>
         <div class="tab-pane fade" id="online-orders" role="tabpanel">
-          <% content_for :ajax_url, flush: true do %><%= overseers_company_customer_orders_path(@company)  %><% end %>
+          <% content_for :ajax_url, flush: true do %><%= overseers_company_customer_orders_path(@company) %>
+          <% end %>
           <% content_for :header_row, flush: true do %>
             <tr>
               <th class="no-sort all" data-width="70px"></th>
@@ -525,29 +541,31 @@
           <% content_for :heading_buttons, flush: true do %>
             <a href="#"></a>
           <% end %>
-          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'supplied products'  %>
+          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'supplied products' %>
         </div>
       <% end %>
       <% if @company.is_customer? %>
-      <div class="tab-pane fade" id="payments" role="tabpanel">
-        <% content_for :ajax_url, flush: true do %><%= overseers_company_customer_orders_path(@company)  %><% end %>
-        <% content_for :header_row, flush: true do %>
+        <div class="tab-pane fade" id="payments" role="tabpanel">
+          <% content_for :ajax_url, flush: true do %><%= overseers_company_customer_orders_path(@company) %>
+          <% end %>
+          <% content_for :header_row, flush: true do %>
             <th class="no-sort all"></th>
             <th class="no-sort desktop">Status</th>
             <th class="no-sort all">Online Order</th>
             <th class="no-sort desktop ">Payment #</th>
             <th class="no-sort desktop">Amount</th>
             <th class="sort desktop" data-name="created_at">Created</th>
-        <% end %>
-        <% content_for :heading_buttons, flush: true do %>
-          <a href="#"></a>
-        <% end %>
-        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'online payment'  %>
-      </div>
+          <% end %>
+          <% content_for :heading_buttons, flush: true do %>
+            <a href="#"></a>
+          <% end %>
+          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'online payment' %>
+        </div>
 
-      <div class="tab-pane fade" id="quotes" role="tabpanel">
-        <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_quotes_path(@company) %><% end %>
-        <% content_for :header_row, flush: true do %>
+        <div class="tab-pane fade" id="quotes" role="tabpanel">
+          <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_quotes_path(@company) %>
+          <% end %>
+          <% content_for :header_row, flush: true do %>
             <th class="no-sort all" data-width="70px"></th>
             <th class="no-sort all">Doc ID</th>
             <th class="no-sort all">Sent At</th>
@@ -556,15 +574,16 @@
             <th class="no-sort all">Total(Excl. Tax)</th>
             <th class="no-sort all">Total(Incl. Tax)</th>
             <th class="no-sort all">Created At</th>
-        <% end %>
-        <% content_for :heading_buttons, flush: true do %>
-          <a href="#"></a>
-        <% end %>
-        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'online payment'  %>
-      </div>
-      <div class="tab-pane fade" id="orders" role="tabpanel">
-        <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_orders_path(@company) %><% end %>
-        <% content_for :header_row, flush: true do %>
+          <% end %>
+          <% content_for :heading_buttons, flush: true do %>
+            <a href="#"></a>
+          <% end %>
+          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'online payment' %>
+        </div>
+        <div class="tab-pane fade" id="orders" role="tabpanel">
+          <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_orders_path(@company) %>
+          <% end %>
+          <% content_for :header_row, flush: true do %>
             <th class="no-sort all"></th>
             <th class="no-sort all">Order #</th>
             <th class="no-sort desktop" data-name="status">Inquiry #</th>
@@ -574,51 +593,54 @@
             <th class="no-sort desktop">Order Total</th>
             <th class="no-sort desktop" data-name="mis_date">Order Date</th>
             <th class="no-sort desktop" data-name="created_at">Created At</th>
-        <% end %>
-        <% content_for :heading_buttons, flush: true do %>
-          <a href="#"></a>
-        <% end %>
-        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Fullfilled Order'  %>
-      </div>
-      <div class="tab-pane fade" id="invoices" role="tabpanel">
-        <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_invoices_path(company_id: @company.id) %><% end %>
-
-        <% content_for :header_row, flush: true do %>
-          <th class="no-sort all"></th>
-          <th class="sort all text-right" data-name="invoice_number">Invoice #</th>
-          <th class="sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
-          <th class="no-sort desktop text-right" data-name="order_number">Order #</th>
-          <th class="no-sort desktop" data-name="company_name">Company</th>
-          <th class="no-sort desktop text-right">Line Items</th>
-          <th class="no-sort desktop" data-name="status">Status</th>
-          <th class="no-sort desktop" data-name="inside_sales_executive" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
-          <th class="no-sort desktop" data-name="outside_sales_executive" data-toggle="tooltip" title="Outside Sales & Procurement">OS Owner</th>
-          <th class="no-sort desktop">Proof of Delivery</th>
-          <th class="sort desktop text-right" data-name="mis_date">Invoice Date</th>
-          <th class="sort desktop text-right" data-name="created_at">Created At</th>
-        <% end %>
-        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Invoices'  %>
-      </div>
-      <div class="tab-pane fade" id="rating" role="tabpanel">
-        <div class="d-md-flex justify-content-between">
-          <h3 class="display-5 mb-1 d-none d-md-block">Ratings</h3>
+          <% end %>
+          <% content_for :heading_buttons, flush: true do %>
+            <a href="#"></a>
+          <% end %>
+          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Fullfilled Order' %>
         </div>
+        <div class="tab-pane fade" id="invoices" role="tabpanel">
+          <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_invoices_path(company_id: @company.id) %>
+          <% end %>
 
-        <table class="datatable table table-bordered dt-responsive review-table" data-search="Searchable with relevant term/keywords." style="width:100%;" data-ajax="<%= overseers_company_company_reviews_path(@company) %>">
-          <thead>
-          <tr>
+          <% content_for :header_row, flush: true do %>
             <th class="no-sort all"></th>
-            <th class="no-sort all">User</th>
-            <th>Company name</th>
-            <th class="no-sort desktop">Review Type</th>
-            <th class="no-sort desktop">Rating</th>
-          </tr>
-          </thead>
-          <tbody>
+            <th class="sort all text-right" data-name="invoice_number">Invoice #</th>
+            <th class="sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
+            <th class="no-sort desktop text-right" data-name="order_number">Order #</th>
+            <th class="no-sort desktop" data-name="company_name">Company</th>
+            <th class="no-sort desktop text-right">Line Items</th>
+            <th class="no-sort desktop" data-name="status">Status</th>
+            <th class="no-sort desktop" data-name="inside_sales_executive" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
+            <th class="no-sort desktop" data-name="outside_sales_executive" data-toggle="tooltip" title="Outside Sales & Procurement">OS
+              Owner
+            </th>
+            <th class="no-sort desktop">Proof of Delivery</th>
+            <th class="sort desktop text-right" data-name="mis_date">Invoice Date</th>
+            <th class="sort desktop text-right" data-name="created_at">Created At</th>
+          <% end %>
+          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Invoices' %>
+        </div>
+        <div class="tab-pane fade" id="rating" role="tabpanel">
+          <div class="d-md-flex justify-content-between">
+            <h3 class="display-5 mb-1 d-none d-md-block">Ratings</h3>
+          </div>
 
-          </tbody>
-        </table>
-      </div>
+          <table class="datatable table table-bordered dt-responsive review-table" data-search="Searchable with relevant term/keywords." style="width:100%;" data-ajax="<%= overseers_company_company_reviews_path(@company) %>">
+            <thead>
+            <tr>
+              <th class="no-sort all"></th>
+              <th class="no-sort all">User</th>
+              <th>Company name</th>
+              <th class="no-sort desktop">Review Type</th>
+              <th class="no-sort desktop">Rating</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
       <% end %>
     </div>
   </section>
