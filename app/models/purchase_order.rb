@@ -8,6 +8,7 @@ class PurchaseOrder < ApplicationRecord
   pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
 
   belongs_to :inquiry
+  belongs_to :company, optional: true
   belongs_to :payment_option, required: false
   belongs_to :logistics_owner, -> (record) {where(role: 'logistics')}, class_name: 'Overseer', foreign_key: 'logistics_owner_id', optional: true
   has_one :inquiry_currency, through: :inquiry
@@ -20,6 +21,7 @@ class PurchaseOrder < ApplicationRecord
   has_one :invoice_request
   has_many :material_pickup_requests
   has_many :email_messages
+  has_many :products, through: :rows
 
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
   has_many_attached :attachments
@@ -103,7 +105,7 @@ class PurchaseOrder < ApplicationRecord
     self.email_messages.where(email_type: 'Sending PO to Supplier').last.created_at if has_sent_email_to_supplier?
   end
 
-  def get_supplier(product_id)
+  def get_supplier(product_id = nil)
     if self.metadata['PoSupNum'].present?
       product_supplier = (Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']))
       return product_supplier if self.inquiry.suppliers.include?(product_supplier) || self.is_legacy?
@@ -174,7 +176,9 @@ class PurchaseOrder < ApplicationRecord
     end
   end
 
-
+  def po_date
+    self.metadata['PoDate'].to_date if valid_po_date?
+  end
   def update_material_status
     if self.material_pickup_requests.any?
       partial = true
