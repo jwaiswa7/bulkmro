@@ -22,6 +22,7 @@ import lazyLoadImages from "./components/lazyLoadImages";
 import tableHighlightWholly from "./components/tableHighlightWholly";
 import hasher from "./components/hasher";
 import notifications from "./components/notifications";
+import stringManipulations from "./components/stringManipulations";
 
 // Namespacing all imports under app
 let app = {};
@@ -47,6 +48,7 @@ app.initializeComponents = () => {
     dropdowns();
     chartjs();
     lazyLoadImages();
+    stringManipulations();
     highlightjs();
     tableHighlightWholly();
     notifications();

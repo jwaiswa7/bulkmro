@@ -3643,106 +3643,106 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       puts 'NIL TAX RATE ROWS', has_nil_tax_rate_rows
     end
 
-  def test_migrations
-    data_set = [
-        [
-            'year' => 2018,
-            'month' => 1,
-            'order_total' => 300000,
-            'order_count' => 23,
-            'po_total' => 23000,
-            'po_count' => 32,
-            'invoice_total' => 250000,
-            'invoice_count' => 38
-        ],
-        [
-            'year' => 2018,
-            'month' => 2,
-            'order_total' => 300000,
-            'order_count' => 23,
-            'po_total' => 23000,
-            'po_count' => 32,
-            'invoice_total' => 250000,
-            'invoice_count' => 38
-        ],
-    ]
+    def test_migrations
+      data_set = [
+          [
+              'year' => 2018,
+              'month' => 1,
+              'order_total' => 300000,
+              'order_count' => 23,
+              'po_total' => 23000,
+              'po_count' => 32,
+              'invoice_total' => 250000,
+              'invoice_count' => 38
+          ],
+          [
+              'year' => 2018,
+              'month' => 2,
+              'order_total' => 300000,
+              'order_count' => 23,
+              'po_total' => 23000,
+              'po_count' => 32,
+              'invoice_total' => 250000,
+              'invoice_count' => 38
+          ],
+      ]
 
-    so_total_mismatches = []
-    so_count_mismatches = []
-    po_total_mismatches = []
-    po_count_mismatches = []
-    invoices_total_mismatches = []
-    invoices_count_mismatches = []
-    data_set.each do |data|
-      current_year = data[0]['year']
-      current_month = data[0]['month']
+      so_total_mismatches = []
+      so_count_mismatches = []
+      po_total_mismatches = []
+      po_count_mismatches = []
+      invoices_total_mismatches = []
+      invoices_count_mismatches = []
+      data_set.each do |data|
+        current_year = data[0]['year']
+        current_month = data[0]['month']
 
-      start_date = Date.new(current_year, current_month, 1)
-      end_date = start_date.end_of_month
-      current_month_name = start_date.strftime('%B')
+        start_date = Date.new(current_year, current_month, 1)
+        end_date = start_date.end_of_month
+        current_month_name = start_date.strftime('%B')
 
-      so_total_to_check = data[0]['order_total']
-      so_count_to_check = data[0]['order_count']
-      po_total_to_check = data[0]['po_total']
-      po_count_to_check = data[0]['po_count']
-      invoices_total_to_check = data[0]['invoice_total']
-      invoices_count_to_check = data[0]['invoice_count']
+        so_total_to_check = data[0]['order_total']
+        so_count_to_check = data[0]['order_count']
+        po_total_to_check = data[0]['po_total']
+        po_count_to_check = data[0]['po_count']
+        invoices_total_to_check = data[0]['invoice_total']
+        invoices_count_to_check = data[0]['invoice_count']
 
-      # ORDERs
-      orders = SalesOrder.includes(:sales_order_rows, :sales_quote_rows).where('mis_date BETWEEN ? AND ?', start_date, end_date)
-      so_total = orders.sum(&:calculated_total)
-      so_counts = orders.size
+        # ORDERs
+        orders = SalesOrder.includes(:sales_order_rows, :sales_quote_rows).where('mis_date BETWEEN ? AND ?', start_date, end_date)
+        so_total = orders.sum(&:calculated_total)
+        so_counts = orders.size
 
-      if so_total < so_total_to_check || so_total > so_total_to_check
-        so_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
-      else
-        puts "Order Total for #{current_month_name}-#{current_year} matches."
-      end
+        if so_total < so_total_to_check || so_total > so_total_to_check
+          so_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
+        else
+          puts "Order Total for #{current_month_name}-#{current_year} matches."
+        end
 
-      if so_counts < so_count_to_check || so_counts > so_count_to_check
-        so_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
-      else
-        puts "Order Count for #{current_month_name}-#{current_year} matches."
-      end
+        if so_counts < so_count_to_check || so_counts > so_count_to_check
+          so_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
+        else
+          puts "Order Count for #{current_month_name}-#{current_year} matches."
+        end
 
 
-# POs
-=begin
-      orders = PurchaseOrder.where('mis_date BETWEEN ? AND ?', start_date, end_date)
-      po_total = orders.sum(&:calculated_total)
-      po_counts = orders.size
+        # # POs
+        # =begin
+        #       orders = PurchaseOrder.where('mis_date BETWEEN ? AND ?', start_date, end_date)
+        #       po_total = orders.sum(&:calculated_total)
+        #       po_counts = orders.size
+        #
+        #       if po_total < po_total_to_check || po_total > po_total_to_check
+        #         po_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
+        #       else
+        #         puts "PO Total for #{current_month_name}-#{current_year} matches."
+        #       end
+        #
+        #       if po_counts < po_count_to_check || po_counts > po_count_to_check
+        #         po_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
+        #       else
+        #         puts "PO Count for #{current_month_name}-#{current_year} matches."
+        #       end
+        # =end
+        #
+        #       INVOICEs
+        invoices = SalesInvoice.where('mis_date BETWEEN ? AND ?', start_date, end_date)
+        invoices_total = invoices.sum(&:calculated_total)
+        invoices_counts = invoices.size
 
-      if po_total < po_total_to_check || po_total > po_total_to_check
-        po_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
-      else
-        puts "PO Total for #{current_month_name}-#{current_year} matches."
-      end
+        if invoices_total < invoices_total_to_check || invoices_total > invoices_total_to_check
+          invoices_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
+        else
+          puts "Invoices Total for #{current_month_name}-#{current_year} matches."
+        end
 
-      if po_counts < po_count_to_check || po_counts > po_count_to_check
-        po_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
-      else
-        puts "PO Count for #{current_month_name}-#{current_year} matches."
-      end
-=end
-
-      # INVOICEs
-      invoices = SalesInvoice.where('mis_date BETWEEN ? AND ?', start_date, end_date)
-      invoices_total = invoices.sum(&:calculated_total)
-      invoices_counts = invoices.size
-
-      if invoices_total < invoices_total_to_check || invoices_total > invoices_total_to_check
-        invoices_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
-      else
-        puts "Invoices Total for #{current_month_name}-#{current_year} matches."
-      end
-
-      if invoices_counts < invoices_count_to_check || invoices_counts > invoices_count_to_check
-        invoices_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
-      else
-        puts "Invoices Count for #{current_month_name}-#{current_year} matches."
+        if invoices_counts < invoices_count_to_check || invoices_counts > invoices_count_to_check
+          invoices_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
+        else
+          puts "Invoices Count for #{current_month_name}-#{current_year} matches."
+        end
       end
     end
-  end
 
     def test_invoices_migrations
       service = Services::Shared::Spreadsheets::CsvImporter.new('Sales Order Comparison - Bible.csv', 'seed_files')
@@ -3874,7 +3874,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           if mismatch.any?
             mismatches << [
                 [x.get_column('product sku'), x.get_column('order number')].join,
-                x.get_column('product sku'), x.get_column('order number'), mismatch.keys.join(', ').gsub('issue in ', ''), sales_order_row&.quantity&.to_f, quantity, unit_cost_price, sales_order_row&.sales_quote_row&.unit_cost_price&.round, sales_order_row&.unit_selling_price&.round, unit_selling_price, sales_order_row&.sales_quote_row&.tax_rate&.tax_percentage, tax_rate, sales_order_row&.total_selling_price_with_tax&.round, total_selling_price_with_tax, mismatch['issue in row'],  mismatch['issue in quantity'], mismatch['issue in unit_cost_price'], mismatch['issue in unit_selling_price'],  mismatch['issue in tax_rate'],  mismatch['issue in total_selling_price_with_tax']]
+                x.get_column('product sku'), x.get_column('order number'), mismatch.keys.join(', ').gsub('issue in ', ''), sales_order_row&.quantity&.to_f, quantity, unit_cost_price, sales_order_row&.sales_quote_row&.unit_cost_price&.round, sales_order_row&.unit_selling_price&.round, unit_selling_price, sales_order_row&.sales_quote_row&.tax_rate&.tax_percentage, tax_rate, sales_order_row&.total_selling_price_with_tax&.round, total_selling_price_with_tax, mismatch['issue in row'], mismatch['issue in quantity'], mismatch['issue in unit_cost_price'], mismatch['issue in unit_selling_price'], mismatch['issue in tax_rate'], mismatch['issue in total_selling_price_with_tax']]
           end
 
         else
