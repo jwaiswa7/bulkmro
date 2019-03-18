@@ -41,7 +41,7 @@ class SalesInvoiceRow < ApplicationRecord
   end
 
   def freight_cost_subtotal
-    sales_quote_rows = self.sales_invoice.sales_order.sales_quote.rows.select{|row| row.product.sku == self.sku }
+    sales_quote_rows = self.sales_invoice.sales_order.sales_quote.rows.select {|row| row.product.sku == self.sku }
     sales_quote_rows.present? ? sales_quote_rows.first.freight_cost_subtotal : 0
   end
 
