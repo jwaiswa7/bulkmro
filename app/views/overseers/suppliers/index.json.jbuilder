@@ -30,7 +30,7 @@ json.data (@companies) do |company|
                   conditional_link(company.account.name.to_s,  overseers_account_path(company.account), policy(company.account).show?),
                   company.nature_of_business&.titleize || '-',
                   company.billing_address&.to_multiline_s,
-                  company.default_contact&.name || company.contacts&.first&.name,
+                  company.default_contact&.name || '-',
                   if company.is_supplier? && company.rating.present? && company.rating > 0
                     format_star(company.rating)
                   end,
