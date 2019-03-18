@@ -14,17 +14,16 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
 
   def build_csv
     if @ids.present?
-      records = model.where(id: @ids).order(created_at: :desc)
+      records = model.where(id: @ids)
     else
-      records = model.where('created_at >= :start_at AND created_at <= :end_at', start_at: @start_at, end_at: @end_at).order(created_at: :desc)
+      records = model.where('created_at >= :start_at AND created_at <= :end_at', start_at: @start_at, end_at: @end_at)
     end
-    records.each do |record|
-      name = record.created_by.present? ? record.created_by.full_name : record.id
-      # model.includes(:category, :brand, :measurement_unit).all.order(created_at: :desc).each do |record|
+    # records.each do |record|
+    records.includes(:category, :brand, :measurement_unit).all.order(created_at: :desc).each do |record|
       rows.push(
         id: record.id,
         sku: record.sku,
-        created_by: name,
+        name: record.name,
         category: (record.category.ancestors_to_s.first if record.category.present? && record.category.ancestors_to_s.first.present?),
         sub_category_1: (record.category.ancestors_to_s.second if record.category.present? && record.category.ancestors_to_s.second.present?),
         sub_category_2: (record.category.ancestors_to_s.third if record.category.present? && record.category.ancestors_to_s.third.present?),
@@ -36,7 +35,7 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
         is_service: record.is_service,
         is_active: record.is_active,
         sap_synced: record.is_active,
-        # created_by: (record.created_by.full_name if record.created_by.present?),
+        created_by: (record.created_by || (record.inquiry_import_row.inquiry.created_by if record.inquiry_import_row)).try(:name) || '-',
         created_at: record.created_at.to_date.to_s
 
                 )
