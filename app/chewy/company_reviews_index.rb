@@ -1,0 +1,3 @@
+class CompanyReviewsIndex < BaseIndex
+
+end
