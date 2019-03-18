@@ -5,7 +5,8 @@ const select2s = () => {
         theme: "bootstrap",
         containerCssClass: ':all:',
         dropdownAutoWidth: true,
-        width: 'auto'
+        width: 'auto',
+        allowClear: true
     }).on('change', function () {
         $(this).trigger('input');
     });
@@ -18,6 +19,7 @@ const select2s = () => {
             theme: "bootstrap",
             containerCssClass: ':all:',
             tags: isTags,
+            allowClear: true
         }).on('change', function () {
             $(this).trigger('input');
         });
@@ -30,6 +32,7 @@ const select2s = () => {
             containerCssClass: ':all:',
             dropdownAutoWidth: true,
             width: 'auto',
+            allowClear: true,
             ajax: {
                 url: $(this).attr('data-source'),
                 dataType: 'json',

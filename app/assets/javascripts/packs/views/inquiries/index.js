@@ -1,5 +1,6 @@
 import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from '../common/updateSummaryBox'
+import exportFilteredRecords from '../common/exportFilteredRecords'
 
 const index = () => {
 
@@ -7,45 +8,9 @@ const index = () => {
     updateSummaryBox()
     aggregateSummaryBox()
 
-    // To show/hide Filtered records button
-    $('#export_filtered_records').hide();
+    let controller = camelize($('body').data().controller);
+    exportFilteredRecords(Routes.export_filtered_records_overseers_inquiries_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
 
-    $('.datatable').on('filters:change', function () {
-        $('#export_filtered_records').show();
-    });
-
-    $('.filter-list-input').on('keyup', function () {
-        ($(this).val() == '') ? $('#export_filtered_records').hide() : $('#export_filtered_records').show();
-    });
-
-    $('#export_filtered_records').click((event) => {
-        let element = $(event.target);
-        element.prop('disabled', true);
-        let dataTable = $('.datatable').dataTable();
-        let data = dataTable.api().ajax.params();
-        event.preventDefault();
-        $.ajax({
-            url: Routes.export_filtered_records_overseers_inquiries_path(),
-            type: "GET",
-            data: data,
-            error: function () {
-                element.prop('disabled', false);
-                $.notify({
-                    message: 'Email is not delivered. Please export all Inquiries'
-                }, {
-                    type: 'danger'
-                }, {delay: 1000});
-            },
-            success: function () {
-                element.prop('disabled', false);
-                $.notify({
-                    message: 'Email sent with Filtered Inquiries!'
-                }, {
-                    type: 'info'
-                }, {delay: 5000});
-            }
-        });
-    });
 };
 
 let aggregateSummaryBox = () => {

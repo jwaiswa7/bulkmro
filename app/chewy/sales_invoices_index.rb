@@ -1,5 +1,6 @@
 class SalesInvoicesIndex < BaseIndex
   statuses = SalesInvoice.statuses
+  opportunity_type = Inquiry.opportunity_types
 
   define_type SalesInvoice.all.with_includes do
     field :id
@@ -35,5 +36,8 @@ class SalesInvoicesIndex < BaseIndex
     field :potential_value, value: -> (record) { record.report_total }, type: 'double'
     field :pod_created_at, value: -> (record) {record.mis_date if !record.has_attachment? }, type: 'date'
     field :is_pod, value: -> (record) {record.has_attachment? ? 1 : 0}, type: 'integer'
+    field :regular_pod, value: -> (record) {record.mis_date if !record.has_attachment? && record.inquiry.present? && record.inquiry.opportunity_type == 'regular' }, type: 'date'
+    field :route_through_pod, value: -> (record) {record.mis_date if !record.has_attachment? && record.inquiry.present? && record.inquiry.opportunity_type == 'route_through' }, type: 'date'
+    field :opportunity_type, value: -> (record) {opportunity_type[record.inquiry.opportunity_type] if record.inquiry.present?}, type: 'integer'
   end
 end
