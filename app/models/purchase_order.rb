@@ -8,7 +8,7 @@ class PurchaseOrder < ApplicationRecord
   pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
 
   belongs_to :inquiry
-  belongs_to :company
+  belongs_to :company, optional: true
   belongs_to :payment_option, required: false
   belongs_to :logistics_owner, -> (record) {where(role: 'logistics')}, class_name: 'Overseer', foreign_key: 'logistics_owner_id', optional: true
   has_one :inquiry_currency, through: :inquiry

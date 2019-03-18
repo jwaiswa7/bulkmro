@@ -7,9 +7,7 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
         if params['PoNum'].present? && !PurchaseOrder.find_by_po_number(params['PoNum']).present?
           inquiry.purchase_orders.where(po_number: params['PoNum']).first_or_create! do |purchase_order|
             purchase_order.assign_attributes(metadata: params)
-
             purchase_order.assign_attributes(company: purchase_order.get_supplier)
-
             purchase_order.assign_attributes(material_status: 'Material Readiness Follow-Up')
             purchase_order.assign_attributes(logistics_owner: Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(purchase_order).call)
             if params['PoStatus'].to_i > 0
@@ -23,7 +21,10 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
             params['ItemLine'].each do |remote_row|
               purchase_order.rows.build do |row|
                 row.assign_attributes(
-                  metadata: remote_row
+                    metadata: remote_row
+                )
+                row.assign_attributes(
+                    product: row.get_product
                 )
               end
             end
@@ -38,6 +39,7 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
           purchase_order = PurchaseOrder.find_by_po_number(params['PoNum'])
           if purchase_order.present?
             purchase_order.assign_attributes(metadata: params)
+            purchase_order.assign_attributes(company: purchase_order.get_supplier)
             if params['PoStatus'].to_i > 0
               purchase_order.assign_attributes(status: params['PoStatus'].to_i)
             else
@@ -47,15 +49,19 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
               purchase_order.assign_attributes(payment_option: payment_option)
             end
             params['ItemLine'].each do |remote_row|
-              row = purchase_order.rows.select { |por| por.metadata['Linenum'].to_i == remote_row['Linenum'] .to_i }.first
+              row = purchase_order.rows.select {|por| por.metadata['Linenum'].to_i == remote_row['Linenum'].to_i}.first
 
               if row.present?
                 row.assign_attributes(metadata: remote_row)
+                row.assign_attributes(product: row.get_product)
                 row.save!
               else
                 new_row = purchase_order.rows.build do |row|
                   row.assign_attributes(
-                    metadata: remote_row
+                      metadata: remote_row
+                  )
+                  row.assign_attributes(
+                      product: row.get_product
                   )
                 end
                 new_row.save!
