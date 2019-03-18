@@ -4106,6 +4106,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     not_present_suppliers = []
     address_can_be_created = []
     contact_can_be_created = []
+    address_can_not_be_created = []
+    contact_can_not_be_created = []
     address_not_found = []
     contact_not_found = []
     service = Services::Shared::Spreadsheets::CsvImporter.new('Missing contact details in Supplier - Magento Dump..csv', 'seed_files')
@@ -4117,14 +4119,65 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         contact = x.get_column('sup_mail')
         a = c.addresses
         con = c.contacts
+        legacy_state = AddressState.where(name: 'Legacy Indian State', country_code: 'IN').first_or_create
         if !a.present?
           if address.present?
             address_can_be_created.push(c.remote_uid)
+            # company = Company.find_by_legacy_id!(legacy_id)
+            address = Address.where(legacy_id: x.get_column('idcompany_gstinfo')).first_or_initialize
+            if address.new_record? || update_if_exists
+              # address.remote_uid = x.get_column('idcompany_gstinfo')
+              address.company = c
+              address.name = c.name
+              address.gst = x.get_column('sup_gst')
+              address.country_code = x.get_column('sup_country')
+              address.state = AddressState.find_by_legacy_id(x.get_column('sup_state')) || legacy_state
+              address.city_name = x.get_column('sup_city')
+              address.pincode = x.get_column('sup_zipcode')
+              address.street1 = x.get_column('sup_address1')
+              # address.street2 = x.get_column('gst_num')
+              address.cst = x.get_column('sup_cst')
+              address.vat = x.get_column('sup_vat')
+              address.telephone = x.get_column('sup_tel')
+              # address.mobile = x.get_column('gst_num')
+              address.legacy_metadata = x.get_row
+              address.save(validate: false)
+            end
           end
         end
         if !con.present?
           if contact.present?
             contact_can_be_created.push(c.remote_uid)
+
+            first_name = x.get_column('sup_contact', default: 'fname')
+            last_name = x.get_column('lastname', default: 'lname')
+            entity_id = x.get_column('sup_id')
+            email = x.get_column('sup_mail', downcase: true, remove_whitespace: true)
+            email = [entity_id, '@bulkmro.com'].join if email.match(Devise.email_regexp).blank?
+            # email = [remote_uid, email].join('-') if Contact.where(:email => email).exists?
+
+            account = c.account
+
+            contact = Contact.where(email: email).first_or_initialize
+            password = Devise.friendly_token
+            if contact.new_record? || update_if_exists
+              contact.legacy_email = x.get_column('sup_mail', downcase: true, remove_whitespace: true)
+              contact.account = account
+              contact.first_name = first_name
+              contact.last_name = last_name
+              contact.telephone = x.get_column('sup_tel')
+              contact.status = "inactive"
+              contact.password = password
+              contact.password_confirmation = password
+              contact.legacy_id = entity_id
+              contact.legacy_metadata = x.get_row
+              contact.created_at = x.get_column('created_at', to_datetime: true)
+              contact.updated_at = x.get_column('updated_at', to_datetime: true)
+              contact.save(validate: false)
+            end
+            CompanyContact.create!(contact: contact, company: c)
+          else
+            contact_can_not_be_created.push(c.remote_uid)
           end
         end
       else
@@ -4140,6 +4193,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     # puts not_present_suppliers.inspect
     puts address_can_be_created.count
     puts contact_can_be_created.count
+    puts address_can_not_be_created.inspect
+    puts contact_can_not_be_created.inspect
   end
 
 end
