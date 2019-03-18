@@ -37,8 +37,10 @@ class Overseers::DashboardController < Overseers::BaseController
   def reset_index
     authorize :dashboard
     if params.present? && params[:index].present?
-      index_class = params[:index].to_s
-      Rake::Task['chewy:reset'].invoke(index_class )
+      index_class = params[:index].to_s.classify.constantize
+      if index_class <= BaseIndex
+        index_class.reset!
+      end
     end
     redirect_back fallback_location: overseers_dashboard_path
   end
