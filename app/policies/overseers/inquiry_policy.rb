@@ -64,7 +64,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def export_filtered_records?
-    developer? # allow_export?
+    allow_export? && overseer.can_send_emails?
   end
 
   def create_excel_import?

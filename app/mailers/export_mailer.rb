@@ -8,6 +8,8 @@ class ExportMailer < ApplicationMailer
     subject = "Filtered #{record.export_type.titleize} Records"
 
     attach_files([record.report])
-    mail(to: @overseer.email, subject: subject)
+    email = mail(to: @overseer.email, subject: subject)
+    email.delivery_method.settings = Settings.gmail_smtp.to_hash
+    email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
   end
 end
