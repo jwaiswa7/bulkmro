@@ -80,3 +80,9 @@ service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(create_missing_orders_and_inquiries_with_string_literals), folder: 'seed_files')
 service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(merge_duplicate_sales_order_rows), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(missing_billing_shipping_address), folder: 'seed_files')
+service.call
