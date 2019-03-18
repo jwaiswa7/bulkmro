@@ -7,6 +7,8 @@
       #<%= sales_quote.id %>
     </div>
     <hr class="my-1">
+      <%= sales_quote.product_line_item %>
+    <hr class="my-1">
     <div>
       <%= format_currency(sales_quote.converted_total, symbol: sales_quote.currency_sign) %>
     </div>

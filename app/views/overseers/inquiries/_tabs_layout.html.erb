@@ -33,6 +33,7 @@
     <%= nav_item('Invoices', overseers_inquiry_sales_invoices_path(@inquiry), policy(@inquiry).sales_invoices?) %>
     <%= nav_item('Shipments', overseers_inquiry_sales_shipments_path(@inquiry), policy(@inquiry).sales_shipments?) %>
     <%= nav_item('Stages', stages_overseers_inquiry_path(@inquiry), ( policy(@inquiry).edit? && policy(@inquiry).update?) ) %>
+    <%= nav_item('Relationship Map',relationship_map_overseers_inquiry_path(@inquiry), policy(@inquiry).relationship_map?) %>
     <%= nav_item('Comments', overseers_inquiry_comments_path(@inquiry), policy(@inquiry).comments?) %>
   </ul>
   <div class="tab-content">

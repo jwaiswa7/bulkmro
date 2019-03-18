@@ -3,17 +3,7 @@
     This are the various <em>stages for <%= @inquiry %></em>.
   <% end %>
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <ul class="nav nav-tabs nav-fill">
-      <li class="nav-item">
-        <a class="nav-link active" href="#visual" data-toggle="tab">Visual</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#tabular" data-toggle="tab">Tabular</a>
-      </li>
-    </ul>
-
-    <div class="tab-content">
-      <div class="tab-pane fade" role="tabpanel" id="tabular">
+      <div>
         <% provide :hide_table_desc, true %>
         <% provide :hide_table_heading, true %>
 
@@ -41,9 +31,5 @@
           <% end %>
         <% end %>
       </div>
-      <div class="tab-pane fade active show" role="tabpanel" id="visual">
-        <div class="treant" style="width:100%; height: auto;" data-nodes="<%= relationship_map_overseers_inquiry_path(@inquiry.id) %>"></div>
-      </div>
-    </div>
   <% end %>
 </div>

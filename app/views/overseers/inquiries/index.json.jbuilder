@@ -6,6 +6,9 @@ json.data (@inquiries) do |inquiry|
           end,
           if policy(inquiry).new_freight_request?
             row_action_button(new_overseers_freight_request_path(inquiry_id: inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
+          end,
+          if policy(inquiry).relationship_map?
+            row_action_button(relationship_map_overseers_inquiry_path(inquiry.to_param), 'sitemap', 'Relationship Map', 'danger')
           end
       ].join(' '),
       link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),

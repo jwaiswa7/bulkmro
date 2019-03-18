@@ -4,6 +4,10 @@
   </div>
   <div class="card-body p-1 text-center">
     <div>
+      <%= status_badge(shipment.status) %>
+    </div>
+    <hr class="my-1">
+    <div>
       #<%= shipment.shipment_number %>
     </div>
     <hr class="my-1">
