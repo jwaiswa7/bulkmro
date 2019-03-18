@@ -417,6 +417,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'export_all'
+        get 'export_filtered_records'
       end
       member do
         get 'render_rating_form'
