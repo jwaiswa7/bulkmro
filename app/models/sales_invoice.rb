@@ -14,6 +14,8 @@ class SalesInvoice < ApplicationRecord
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
   has_many :email_messages
+  has_many :sales_receipts
+  has_many :sales_receipt_rows
 
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice

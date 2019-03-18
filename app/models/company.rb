@@ -5,6 +5,7 @@ class Company < ApplicationRecord
   include Mixins::CanBeActivated
   # include Mixins::HasUniqueName
   include Mixins::HasManagers
+  include  Mixins::HasPaymentCollections
 
   update_index('companies#company') {self}
   pg_search_scope :locate, against: [:name], associated_against: {}, using: {tsearch: {prefix: true}}
@@ -46,6 +47,9 @@ class Company < ApplicationRecord
   has_many :company_banks
   has_many :banks, through: :company_banks
   has_many :tags
+
+  has_many :sales_receipts
+  has_many :payment_collections
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof

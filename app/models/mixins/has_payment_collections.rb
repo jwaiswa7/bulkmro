@@ -6,22 +6,26 @@ module Mixins::HasPaymentCollections
   end
 
   def amount_received_on_account
-    self.sales_receipts.where(payment_type: :'On Account').sum(:payment_amount_received)
+    self.sales_receipts.where(payment_type: :'On Account').sum(:payment_amount_received) - self.total_reconciled_amount
+  end
+
+  def total_reconciled_amount
+    self.sales_receipts.where(payment_type: :'Reconciled Against Invoice').sum(:reconciled_amount)
   end
 
   def amount_received_against_invoice
     amount = 0
     invoices = self.invoices.includes(:sales_receipts).where('sales_invoices.mis_date >= ?', '01-04-2018')
     invoices.each do |sales_invoice|
-      sales_receipt_ids = sales_invoice.sales_receipts.where(payment_type: :'Against Invoice').pluck(:id)
+      sales_receipt_ids = sales_invoice.sales_receipts.where(payment_type: ['Against Invoice', 'Reconciled Against Invoice']).pluck(:id)
       amount += SalesReceiptRow.where(sales_receipt_id: sales_receipt_ids).sum(&:amount_received)
     end
     amount
   end
 
   def total_amount_due
-    cancelled_satatus_code = SalesInvoice.statuses['Cancelled']
-    self.invoices.where('sales_invoices.mis_date >= ? AND sales_invoices.status != ?', '01-04-2018', cancelled_satatus_code).sum(&:calculated_total_with_tax)
+    cancelled_status_code = SalesInvoice.statuses['Cancelled']
+    self.invoices.where('sales_invoices.mis_date >= ? AND sales_invoices.status != ?', '01-04-2018', cancelled_status_code).sum(&:calculated_total_with_tax)
   end
 
   def total_amount_outstanding
