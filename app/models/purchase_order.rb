@@ -174,7 +174,9 @@ class PurchaseOrder < ApplicationRecord
     end
   end
 
-
+  def po_date
+    self.metadata['PoDate'].to_date if valid_po_date?
+  end
   def update_material_status
     if self.inward_dispatches.any?
       partial = true
