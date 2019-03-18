@@ -49,6 +49,10 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     record.purchase_order.present? && (manager_or_sales?) && record.status == 'Rejected'
   end
 
+  def can_amend_completed_po_requests?
+    (logistics? || admin?) && record.amending?
+  end
+
   def can_process_amended_po_requests?
     record.purchase_order.present? && (logistics? || admin? || manager_or_sales?) && record.amending?
   end
