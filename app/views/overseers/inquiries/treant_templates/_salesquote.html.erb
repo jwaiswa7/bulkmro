@@ -1,4 +1,4 @@
-<a class="card text-black-50 sales-quote" target="_blank" href="/overseers/inquiries/<%= sales_quote.inquiry_id %>/sales_quotes/<%= sales_quote.id %>">
+<a class="card text-black-50 sales-quote" target="_blank" href="/overseers/inquiries/<%= sales_quote.inquiry.to_param %>/sales_quotes/<%= sales_quote.to_param %>">
   <div class="card-header p-1 text-center">
     <strong>Sales Quote</strong>
   </div>
@@ -6,6 +6,8 @@
     <div>
       #<%= sales_quote.id %>
     </div>
+    <hr class="my-1">
+      <%= sales_quote.product_line_item %>
     <hr class="my-1">
     <div>
       <%= format_currency(sales_quote.converted_total, symbol: sales_quote.currency_sign) %>

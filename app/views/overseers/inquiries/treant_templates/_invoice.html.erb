@@ -1,9 +1,12 @@
-<a class="card text-black-50 invoice" target="_blank" href="/overseers/inquiries/<%= invoice.inquiry.id %>/sales_invoices/<%= invoice.id %>">
+<a class="card text-black-50 invoice" target="_blank" href="/overseers/inquiries/<%= invoice.inquiry.to_param %>/sales_invoices/<%= invoice.to_param %>">
   <div class="card-header text-center p-1">
-    <span class="badge badge-wrap text-uppercase  float-right"><strong><%= status_badge(invoice.status) %></strong></span>
     <strong>Sales Invoice</strong>
   </div>
   <div class="card-body p-1 text-center">
+    <div>
+      <%= status_badge(invoice.status) %>
+    </div>
+    <hr class="my-1">
     <div>
       #<%= invoice.invoice_number %>
     </div>

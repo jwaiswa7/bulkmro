@@ -330,6 +330,7 @@ Rails.application.routes.draw do
         get 'export'
         get 'stages'
         get 'relationship_map'
+        get 'get_relationship_map_json'
       end
 
       collection do

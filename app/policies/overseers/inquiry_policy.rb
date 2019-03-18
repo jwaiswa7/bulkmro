@@ -123,6 +123,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     stages?
   end
 
+  def get_relationship_map_json?
+    relationship_map?
+  end
+
   def resync_inquiry_products?
     developer? && record.inquiry_products.present?
   end
