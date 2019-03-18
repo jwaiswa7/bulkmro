@@ -133,7 +133,7 @@
         </div>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company)} %>
+            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company)}, required: true %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.shipping_company)} %>
@@ -153,13 +153,13 @@
         <h6 class="text-uppercase text-black-50 mb-1">Owner Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
-            <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, include_blank: 'Select an Inside Sales Owner', input_html: {class: "select2-single"} %>
+            <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Inside Sales Owner'} %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
+            <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner'} %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, include_blank: 'Select a Sales Manager', input_html: {class: "select2-single"} %>
+            <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Manager'} %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true) %>
@@ -278,14 +278,14 @@
         <%= f.input :commercial_terms_and_conditions %>
       </div>
 
-        <div class="text-right">
-          <% if policy(@inquiry).resync_inquiry_products? %>
-              <a href="<%= resync_inquiry_products_overseers_inquiry_path %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mt-2 mb-md-0"><i class="fal fa-retweet mr-1"></i>Resync All Products</a>
-          <% end %>
+      <div class="text-right">
+        <% if policy(@inquiry).resync_inquiry_products? %>
+          <a href="<%= resync_inquiry_products_overseers_inquiry_path %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mt-2 mb-md-0"><i class="fal fa-retweet mr-1"></i>Resync All Products</a>
+        <% end %>
 
-          <% if policy(@inquiry).resync_unsync_inquiry_products? %>
-              <a href="<%= resync_unsync_inquiry_products_overseers_inquiry_path %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mt-2 mb-md-0"><i class="fal fa-retweet mr-1"></i>Resync Unsync Products</a>
-          <% end %>
+        <% if policy(@inquiry).resync_unsync_inquiry_products? %>
+          <a href="<%= resync_unsync_inquiry_products_overseers_inquiry_path %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mt-2 mb-md-0"><i class="fal fa-retweet mr-1"></i>Resync Unsync Products</a>
+        <% end %>
       </div>
 
 
@@ -346,7 +346,7 @@
                       <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-success" data-toggle="tooltip" title="Approved product
                       <% if inquiry_product.object.product.last_comment %>;  <%= inquiry_product.object.product.last_comment.message %>
                       <% end %>"><i class="far fa-comment-lines"></i></a>
-                    <% elsif inquiry_product.object.persisted?  && inquiry_product.object.product.present? && inquiry_product.object.product.rejected? %>
+                    <% elsif inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.rejected? %>
                       <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-danger" data-toggle="tooltip" title="Rejected product
                       <% if inquiry_product.object.product.last_comment %>; <%= inquiry_product.object.product.last_comment.message %>
                       <% end %>"><i class="far fa-comment-lines"></i></a>
@@ -406,8 +406,11 @@
                 </div>
               </div>
               <div class="col-2 col-md-1 text-center">
-                <% if inquiry_product.object.persisted? && inquiry_product.object.product.present?  %>
-                    <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank" <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success" <% else %>  class="text-warning" <% end %>title="Resync Inventory"><%= inquiry_product.object.product.stocks.total_qty %></a>
+                <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? %>
+                  <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"
+                     <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success"
+                     <% else %>  class="text-warning"
+                     <% end %>title="Resync Inventory"><%= inquiry_product.object.product.stocks.total_qty %></a>
                 <% end %>
               </div>
 

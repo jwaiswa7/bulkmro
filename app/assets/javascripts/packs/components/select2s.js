@@ -1,15 +1,17 @@
 // Converts select to select2
 const select2s = () => {
     // Select2 Single Dropdown (not AJAX)
-    $('.select2-single:not(.select2-ajax)').select2({
-        theme: "bootstrap",
-        containerCssClass: ':all:',
-        dropdownAutoWidth: true,
-        width: 'auto',
-        allowClear: !($(this).prop('required') || $(this).hasClass('required')),
-        placeholder: ''
-    }).on('change', function () {
-        $(this).trigger('input');
+    $('.select2-single:not(.select2-ajax)').each(function() {
+        $(this).select2({
+            theme: "bootstrap",
+            containerCssClass: ':all:',
+            dropdownAutoWidth: true,
+            width: 'auto',
+            allowClear: !($(this).prop('required') || $(this).hasClass('required')),
+            placeholder: ''
+        }).on('change', function () {
+            $(this).trigger('input');
+        });
     });
 
     // Select2 Multiple Dropdown (not AJAX)
