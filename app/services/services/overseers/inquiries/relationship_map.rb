@@ -1,6 +1,7 @@
 class Services::Overseers::Inquiries::RelationshipMap < Services::Shared::BaseService
-  def initialize(inquiry)
+  def initialize(inquiry,sales_quotes)
     @inquiry = inquiry
+    @sales_quotes = sales_quotes
   end
 
   def call
@@ -13,7 +14,7 @@ class Services::Overseers::Inquiries::RelationshipMap < Services::Shared::BaseSe
 
   def inquiry_sales_quotes(inquiry)
     sales_quote_array = Array.new
-    inquiry.sales_quotes.each do |sales_quote|
+    sales_quotes.each do |sales_quote|
       assign_block_data('overseers/inquiries/treant_templates/salesquote', sales_quote_array, {:sales_quote => sales_quote}, inquiry_sales_orders(sales_quote))
     end
     return sales_quote_array
@@ -55,5 +56,5 @@ class Services::Overseers::Inquiries::RelationshipMap < Services::Shared::BaseSe
     ApplicationController.new.render_to_string(*options).html_safe
   end
 
-  attr_accessor :inquiry
+  attr_accessor :inquiry, :sales_quotes
 end

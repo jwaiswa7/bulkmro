@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote]
+  before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote, :relationship_map, :get_relationship_map_json]
 
   def index
     @sales_quotes = @inquiry.sales_quotes
@@ -73,6 +73,19 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @inquiry.final_sales_quote.update_attributes(remote_uid: '')
     # @inquiry.final_sales_quote.save_and_sync
     redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
+  end
+
+
+  def relationship_map
+    authorize @sales_quote
+  end
+
+  def get_relationship_map_json
+    authorize @sales_quote
+    sales_quote_array = []
+    sales_quote_array << @sales_quote
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry,sales_quote_array).call
+    render json: {data: inquiry_json}
   end
 
   private

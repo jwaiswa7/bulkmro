@@ -390,6 +390,8 @@ Rails.application.routes.draw do
             get 'new_revision'
             get 'preview'
             get 'reset_quote'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
 
           scope module: 'sales_quotes' do

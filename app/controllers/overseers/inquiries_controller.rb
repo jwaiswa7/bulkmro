@@ -185,12 +185,11 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def relationship_map
     authorize @inquiry
-
   end
 
   def get_relationship_map_json
     authorize @inquiry
-    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry).call
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry,@inquiry.sales_quotes).call
     render json: {data: inquiry_json}
   end
   def create_purchase_orders_requests
