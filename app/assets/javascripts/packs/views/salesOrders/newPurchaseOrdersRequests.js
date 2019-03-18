@@ -4,6 +4,7 @@ import updateRowTotal from "../poRequests/updateRowTotal"
 import validatePoRequestAddresses from "../poRequests/validatePoRequestAddresses"
 import validatePoRequestContacts from "../poRequests/validatePoRequestContacts"
 import updateOnContactSelect from "../poRequests/updateOnContactSelect";
+import validateLeadDate from "../poRequests/validateLeadDate";
 
 
 const newPurchaseOrdersRequests = () => {
@@ -12,6 +13,7 @@ const newPurchaseOrdersRequests = () => {
     updateRowTotal();
 
     updateOnContactSelect();
+    validateLeadDate();
 };
 
 

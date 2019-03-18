@@ -183,99 +183,6 @@
   <% end %>
 </div>
 <hr>
-<!--
-<div class="form-row d-none d-md-flex">
-  <div class="col-12 col-md-6">
-    <div class="form-row">
-      <div class="col-12 col-md-3">
-        <div class="form-group mb-0">
-          <label>Product</label>
-        </div>
-      </div> $('.submit-form').unbind().bind('click', function (event) {
-        let form_changed_data = $("form").serializeArray();
-        let changed_status = form_changed_data.filter(x => x.name === "po_request[status]");
-        let original_status = form_original_data.filter(x => x.name === "po_request[status]");
-        if (changed_status) {
-            let is_cancel_status = changed_status[0]['value'].toLowerCase().indexOf('cancel') != -1
-            if (is_cancel_status && original_status && (changed_status[0]['value'] != original_status[0]['value'])) {
-                if (changed_status[0]['value'] == 'Cancelled') {
-                    if (!confirm('Do you want to Cancel the Po Request ?')) {
-                        event.preventDefault();
-                    }
-                }
-            }
-        }
-
-
-    });
-      <div class="col-12 col-md-1">
-        <div class="form-group mb-0">
-          <label>Make</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label>HSN</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Tax Rate">T. Rate</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label>Quantity</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Discount percentage">Disc. %</label>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-12 col-md-6">
-    <div class="form-row">
-      <div class="col-12 col-md-1">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Unit of Measurement">UOM</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Unit Price">UP</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Total Price">TP</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Total Tax">TT</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Total Price with tax">TP with tax</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label>Lead Date</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-1">
-        <div class="form-group mb-0">
-          <label>Remove</label>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
--->
 
 <%= f.nested_fields_for :rows, f.object.persisted? ? f.object.rows.order(id: :asc) : f.object.rows do |po_request_row| %>
   <%= po_request_row.hidden_field :id %>
@@ -342,7 +249,7 @@
         </div>
 
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'lead-time'}, label: 'Lead Date', required: true %>
+          <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :'data-parsley-customercommitteddate' => @po_request.sales_order.customer_committed_date, :class => 'lead-time'}, label: 'Lead Date', required: true %>
         </div>
         <% if stock || (f.object.rows.present? && f.object.rows.length > 1) %>
           <div class="col-12 col-md-1">

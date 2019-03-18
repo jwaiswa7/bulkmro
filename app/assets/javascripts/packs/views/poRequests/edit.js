@@ -2,6 +2,7 @@ import validatePoRequestAddresses from "./validatePoRequestAddresses"
 import updateOnContactSelect from "./updateOnContactSelect";
 import updateRowTotal from "./updateRowTotal"
 import openRatingModal from "../common/openRatingModal";
+import validateLeadDate from "./validateLeadDate";
 
 
 const edit = () => {
@@ -48,6 +49,7 @@ const edit = () => {
     validatePoRequestAddresses();
     updateRowTotal();
     updateOnContactSelect();
+    validateLeadDate();
 
     $('form').on('click', '.add-review', function (e) {
         $('.rating-modal a').click();
