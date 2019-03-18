@@ -1,6 +1,7 @@
 class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order
   has_many :mpr_rows
+  belongs_to :product
 
   after_create :increase_product_count
   before_destroy :decrease_product_count
