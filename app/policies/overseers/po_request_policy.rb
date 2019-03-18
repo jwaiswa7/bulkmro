@@ -42,7 +42,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_reject?
-    record.purchase_order.blank? && (logistics? || admin?) && record.status == 'Requested'
+    record.purchase_order.blank? && (logistics? || admin?) && record.status == 'Supplier PO: Request Pending'
   end
 
   def can_update_rejected_po_requests?
@@ -50,11 +50,12 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_amend_completed_po_requests?
-    (logistics? || admin?) && record.amending?
+    (logistics? || admin? || manager_or_sales?) && record.status != 'Supplier PO: Amendment'
+    # && record.amending?
   end
 
   def can_process_amended_po_requests?
-    record.purchase_order.present? && (logistics? || admin? || manager_or_sales?) && record.amending?
+    record.purchase_order.present? && (logistics? || admin?) && record.amending?
   end
 
   def show_payment_request?

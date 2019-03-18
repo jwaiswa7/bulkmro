@@ -122,7 +122,7 @@ class PoRequest < ApplicationRecord
   end
 
   def not_amending?
-    status != 'Supplier PO: Amendment' #todo
+    status != 'Supplier PO: Amendment'
   end
 
   def not_cancelled?

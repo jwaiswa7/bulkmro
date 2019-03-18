@@ -111,15 +111,18 @@ class Overseers::PoRequestsController < Overseers::BaseController
         @po_request.comments.create(message: "#{messages} \r\n #{row_updated_message}", overseer: current_overseer)
       end
 
-      @po_request.status = 'Supplier PO: Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
-      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
+      @po_request.status = 'Supplier PO: Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Supplier PO: Request Pending'
+      @po_request.status = 'Supplier PO: Request Pending' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
+      @po_request.status = 'Supplier PO: Amendment' if @po_request.status == 'Supplier PO: Created Not Sent' && policy(@po_request).manager_or_sales?
+
       ActiveRecord::Base.transaction do
         if @po_request.status_changed?
           if @po_request.status == 'Cancelled'
             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}", po_request: @po_request, overseer: current_overseer)
             @po_request.purchase_order = nil
 
-            if @po_request.payment_request.present? @po_request.payment_request.update!(status: :'Cancelled')
+            if @po_request.payment_request.present?
+              @po_request.payment_request.update!(status: :'Cancelled')
               @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
             end
 
