@@ -86,3 +86,6 @@ service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(missing_billing_shipping_address), folder: 'seed_files')
 service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(create_missing_address_and_contacts_for_supplier), folder: 'seed_files')
+service.call
