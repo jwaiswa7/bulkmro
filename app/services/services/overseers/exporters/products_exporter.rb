@@ -1,6 +1,6 @@
 class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Exporters::BaseExporter
-  def initialize
-    super
+  def initialize(*params)
+    super(*params)
 
     @model = Product
     @export_name = 'products'
@@ -9,15 +9,22 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
   end
 
   def call
-    perform_export_later('ProductsExporter')
+    perform_export_later('ProductsExporter', @arguments)
   end
 
   def build_csv
-    model.includes(:category, :brand, :measurement_unit).all.order(created_at: :desc).each do |record|
+    if @ids.present?
+      records = model.where(id: @ids).order(created_at: :desc)
+    else
+      records = model.where('created_at >= :start_at AND created_at <= :end_at', start_at: @start_at, end_at: @end_at).order(created_at: :desc)
+    end
+    records.each do |record|
+      name = record.created_by.present? ? record.created_by.full_name : record.id
+      # model.includes(:category, :brand, :measurement_unit).all.order(created_at: :desc).each do |record|
       rows.push(
         id: record.id,
         sku: record.sku,
-        name: record.name,
+        created_by: name,
         category: (record.category.ancestors_to_s.first if record.category.present? && record.category.ancestors_to_s.first.present?),
         sub_category_1: (record.category.ancestors_to_s.second if record.category.present? && record.category.ancestors_to_s.second.present?),
         sub_category_2: (record.category.ancestors_to_s.third if record.category.present? && record.category.ancestors_to_s.third.present?),
@@ -29,12 +36,13 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
         is_service: record.is_service,
         is_active: record.is_active,
         sap_synced: record.is_active,
-        created_by: (record.created_by.full_name if record.created_by.present?),
+        # created_by: (record.created_by.full_name if record.created_by.present?),
         created_at: record.created_at.to_date.to_s
 
                 )
     end
-    export = Export.create!(export_type: 5)
+    filtered = @ids.present?
+    export = Export.create!(export_type: 5, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     generate_csv(export)
   end
 end

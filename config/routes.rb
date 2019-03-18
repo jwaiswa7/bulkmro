@@ -174,6 +174,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'pending'
         get 'export_all'
+        get 'export_filtered_records'
       end
 
       scope module: 'products' do

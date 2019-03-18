@@ -135,6 +135,11 @@ class Overseers::ApplicationPolicy
     # developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
   end
 
+  def allow_product_export?
+    true
+    # developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
+  end
+
   def export_rows?
     false
   end
