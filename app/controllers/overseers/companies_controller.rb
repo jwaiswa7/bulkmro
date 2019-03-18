@@ -10,6 +10,7 @@ class Overseers::CompaniesController < Overseers::BaseController
     authorize @companies
   end
 
+
   # For rendering rating form modal
   # def render_rating_form
   #   authorize @company
