@@ -29,9 +29,7 @@ json.data (@purchase_orders) do |purchase_order|
                   format_succinct_date(purchase_order.metadata['PoDate'].try(:to_date)),
                   (purchase_order.supplier.present? ? conditional_link(purchase_order.supplier.try(:name), overseers_company_path(purchase_order.supplier), policy(purchase_order.inquiry).show?) : '-'),
                   purchase_order.po_request.present? ? purchase_order.po_request.supplier_po_type : '',
-                  if purchase_order.last_comment.present?
-                    format_comment(purchase_order.last_comment, trimmed: true)
-                  end,
+                  (format_comment(purchase_order.last_comment, trimmed: true) if purchase_order.last_comment.present?),
                   (format_succinct_date(purchase_order.po_request.sales_order.mis_date) if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
                   (purchase_order.po_request.sales_order.order_number if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
                   (format_succinct_date(purchase_order.po_request.supplier_committed_date) if purchase_order.po_request.present?),
@@ -51,6 +49,7 @@ end
 
 json.columnFilters [
                        [],
+                       [],
                        [{"source": autocomplete_overseers_companies_path}],
                        PurchaseOrder.material_statuses.except(:'Material Delivered').map {|k, v| {"label": k, "value": v.to_s}}.as_json,
                        [],
@@ -65,8 +64,7 @@ json.columnFilters [
                        Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
                        [],
                        [],
-                       PaymentRequest.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
-                       [],
+                         PaymentRequest.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
                        [],
                        [],
                        [],
