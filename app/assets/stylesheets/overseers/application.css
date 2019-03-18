@@ -9869,7 +9869,8 @@ th {
         color: #fd7e14;
         text-decoration: underline; }
   .table thead th {
-    border-bottom-width: 0; }
+    border-bottom-width: 0;
+    vertical-align: top; }
   .table thead tr {
     background-color: #fff; }
   .table.wrap-whitespace td, .table.wrap-whitespace th {
