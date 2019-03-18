@@ -3351,7 +3351,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             quote_row.quantity = order_row_hash_value[:quantity].round(2)
 
             if quote_row.inquiry_product_supplier.inquiry_product.quantity < quote_row.quantity
-              quote_row.inquiry_product_supplier.inquiry_product.update(quantity: (quote_row.inquiry_product_supplier.inquiry_product + quote_row.quantity))
+              quote_row.inquiry_product_supplier.inquiry_product.update(quantity: (quote_row.inquiry_product_supplier.inquiry_product.quantity.to_f + quote_row.quantity))
             end
 
             tax_rate = TaxRate.where(tax_percentage: (order_row_hash_value[:tax_rate]/order_row_hash_value[:line_count]).round(2)).first_or_create!
@@ -4099,6 +4099,47 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts not_present_inquiries.count
     puts order_not_present.inspect
     puts order_not_present.count
+  end
+
+  def create_missing_address_and_contacts_for_supplier
+    present_suppliers = []
+    not_present_suppliers = []
+    address_can_be_created = []
+    contact_can_be_created = []
+    address_not_found = []
+    contact_not_found = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Missing contact details in Supplier - Magento Dump..csv', 'seed_files')
+    service.loop(nil) do |x|
+      c = Company.find_by_remote_uid(x.get_column('sup_code'))
+      if c.present?
+        present_suppliers.push(c.remote_uid)
+        address = x.get_column('sup_address1')
+        contact = x.get_column('sup_mail')
+        a = c.addresses
+        con = c.contacts
+        if !a.present?
+          if address.present?
+            address_can_be_created.push(c.remote_uid)
+          end
+        end
+        if !con.present?
+          if contact.present?
+            contact_can_be_created.push(c.remote_uid)
+          end
+        end
+      else
+        not_present_suppliers.push(x.get_column('sup_code'))
+      end
+      # c = Services::Overseers::Finders::Companies.new({})
+      # c = c.perform_query(x.get_column()).filter(c.filter_by_value('is_supplier', true))
+      # ids.push(c.first&.id)
+    end
+    puts present_suppliers.count
+    # puts present_suppliers.inspect
+    puts not_present_suppliers.count
+    # puts not_present_suppliers.inspect
+    puts address_can_be_created.count
+    puts contact_can_be_created.count
   end
 
 end
