@@ -47,10 +47,10 @@ class PurchaseOrderRow < ApplicationRecord
 
   def unit_selling_price
     price = if self.metadata['PopPriceHtBase'].present?
-              (self.metadata['PopPriceHtBase'].to_f * self.purchase_order.metadata['PoCurrencyChangeRate'].to_f).round(2)
-            else
-              (self.metadata['PopPriceHt'].to_f * self.purchase_order.metadata['PoCurrencyChangeRate'].to_f).round(2) if self.metadata['PopPriceHt'].present?
-            end
+      (self.metadata['PopPriceHtBase'].to_f * self.purchase_order.metadata['PoCurrencyChangeRate'].to_f).round(2)
+    else
+      (self.metadata['PopPriceHt'].to_f * self.purchase_order.metadata['PoCurrencyChangeRate'].to_f).round(2) if self.metadata['PopPriceHt'].present?
+    end
     self.metadata['PopDiscount'].present? ? ((1 - (self.metadata['PopDiscount'].to_f / 100)) * price).round(2) : price
   end
 

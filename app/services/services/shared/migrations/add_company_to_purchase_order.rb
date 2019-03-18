@@ -1,5 +1,4 @@
 class Services::Shared::Migrations::AddCompanyToPurchaseOrder < Services::Shared::Migrations::Migrations
-
   def call
     PurchaseOrder.all.each do |purchase_order|
       purchase_order.update_attributes(company: purchase_order&.get_supplier)
