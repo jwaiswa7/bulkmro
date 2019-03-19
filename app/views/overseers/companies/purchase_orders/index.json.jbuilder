@@ -13,7 +13,10 @@ json.data (@purchase_orders) do |purchase_order|
                   (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present?),
                   (purchase_order.inquiry.company.try(:name) if purchase_order.inquiry.company.present?),
                   purchase_order.status || purchase_order.metadata_status,
+                  purchase_order.warehouse&.name,
                   purchase_order.rows.count,
+                  format_currency(purchase_order.calculated_total),
+                  (format_succinct_date(purchase_order.po_date)),
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   purchase_order.inquiry.outside_sales_owner.to_s,
                   format_succinct_date(purchase_order.created_at)

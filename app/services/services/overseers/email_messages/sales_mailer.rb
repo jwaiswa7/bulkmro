@@ -53,7 +53,7 @@ class Services::Overseers::EmailMessages::SalesMailer < Services::Shared::BaseSe
 
     template_data['tax_rates'] = []
     if customer_order.billing_address.present?
-      customer_order.tax_line_items.each do |key, value|
+      customer_order.tax_line_items(for_order: true).each do |key, value|
         hash = {}
         hash['tax_rate'] = TaxRateString.for(customer_order.billing_address, customer_order.default_warehouse_address, customer_order.default_warehouse_address, key)
         hash['tax_value'] = format_currency(value)
@@ -61,8 +61,8 @@ class Services::Overseers::EmailMessages::SalesMailer < Services::Shared::BaseSe
       end
     end
 
-    template_data['total_calculated_tax'] = format_currency(customer_order.calculated_total_tax)
-    template_data['grand_total'] = format_currency(customer_order.grand_total)
+    template_data['total_calculated_tax'] = format_currency(customer_order.calculated_total_tax(for_order: true))
+    template_data['grand_total'] = format_currency(customer_order.grand_total(for_order: true))
     template_data['name'] = customer_order.contact.to_s
     template_data['user_name'] = customer_order.contact.to_s
     template_data
