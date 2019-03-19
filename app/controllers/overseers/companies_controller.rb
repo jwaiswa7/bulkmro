@@ -96,11 +96,21 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def export_all
-    authorize :inquiry
-    service = Services::Overseers::Exporters::CompaniesExporter.new
+    authorize :company
+    service = Services::Overseers::Exporters::CompaniesExporter.new(params[:q], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.companies.last.report)
+    redirect_to url_for(Export.companies.not_filtered.last.report)
+  end
+
+  def export_filtered_records
+    authorize :company
+
+    service = Services::Overseers::Finders::Companies.new(params, current_overseer, paginate: false)
+    service.call
+
+    export_service = Services::Overseers::Exporters::CompaniesExporter.new(nil, current_overseer, service.indexed_records.pluck(:id))
+    export_service.call
   end
 
   private
