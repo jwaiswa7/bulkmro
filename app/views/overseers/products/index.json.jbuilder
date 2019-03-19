@@ -34,11 +34,11 @@ json.data (@products) do |product|
 end
 json.columnFilters [
                        [],
-                       [{ "source": autocomplete_overseers_products_path }],
+                       [{"source": autocomplete_overseers_products_path}],
+                       [{"source": autocomplete_mpn_overseers_products_path(label: :sku)}],
+                       [{"source": autocomplete_overseers_brands_path}],
                        [],
-                       [{ "source": autocomplete_overseers_brands_path }],
-                       [],
-                       [],
+                       [{"source": autocomplete_mpn_overseers_products_path(label: :mpn)}],
                        [],
                        [],
                        [],
