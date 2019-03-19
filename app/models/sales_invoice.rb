@@ -44,6 +44,14 @@ class SalesInvoice < ApplicationRecord
   validates_presence_of :invoice_number
   validates_uniqueness_of :invoice_number
 
+  def self.by_number(number)
+    find_by_invoice_number(number)
+  end
+
+  def get_number
+    self.invoice_number
+  end
+
   def filename(include_extension: false)
     [
         ['invoice', invoice_number].join('_'),

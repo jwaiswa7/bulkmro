@@ -14,10 +14,6 @@ const validatePoRequestAddresses = () => {
             var selectedBillToCity = $(parsleyInstance.$element[0]).closest('div.po-request-form').find('[name*=bill_to_id] :selected').data('warehouse-city');
             var selectedShipToCity = $(parsleyInstance.$element[0]).closest('div.po-request-form').find('[name*=ship_to_id] :selected').data('warehouse-city');
 
-            if (supplier_po_type == "regular" && selectedBillToCity == selectedShipToCity) {
-                return true;
-            }
-
             var warehouseStates = $(parsleyInstance.$element[0]).data('warehouse-list').split(',');
             console.log(selectedWarehouse);
 
@@ -25,7 +21,13 @@ const validatePoRequestAddresses = () => {
                 return selectedWarehouseState == locations[2];
             }
 
-            if ((supplier_po_type == "drop_ship" || supplier_po_type == "route_through") && selectedWarehouse == locations[0]) {
+            if (supplier_po_type == "Regular" && selectedBillToCity == selectedShipToCity) {
+                return true;
+            }
+
+
+
+            if ((supplier_po_type == "Route Through" || supplier_po_type == "Drop Ship") && selectedWarehouse == locations[0]) {
                 return true;
             }
 

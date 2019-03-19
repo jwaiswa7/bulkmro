@@ -47,6 +47,10 @@ class Company < ApplicationRecord
   has_many :company_banks
   has_many :banks, through: :company_banks
   has_many :tags
+  has_many :purchase_orders
+  has_many :supplied_products, through: :purchase_orders, source: :products
+  has_many :supplied_brands, through: :supplied_products, source: :brand
+
 
   has_many :sales_receipts
   has_many :payment_collections

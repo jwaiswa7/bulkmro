@@ -66,6 +66,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :document_creations
+
     resources :notifications do
       collection do
         post 'mark_as_read'
@@ -91,6 +93,7 @@ Rails.application.routes.draw do
         post 'reject_selected'
         post 'add_to_inquiry'
         get 'export_all'
+        get 'export_filtered_records'
       end
       member do
         get 'approve'
@@ -155,6 +158,7 @@ Rails.application.routes.draw do
     resources :products do
       collection do
         get 'autocomplete'
+        get 'non_kit_autocomplete'
         get 'service_autocomplete'
       end
       member do
@@ -163,6 +167,8 @@ Rails.application.routes.draw do
         get 'sku_purchase_history'
         get 'resync'
         get 'resync_inventory'
+        get 'autocomplete_suppliers'
+        get 'get_product_details'
       end
 
       collection do
@@ -206,6 +212,9 @@ Rails.application.routes.draw do
         get 'pending_and_rejected'
         get 'cancelled'
         get 'amended'
+        get 'pending_stock_approval'
+        get 'stock'
+        get 'completed_stock'
       end
 
     end
@@ -329,6 +338,9 @@ Rails.application.routes.draw do
         get 'index_pg'
         get 'smart_queue'
         get 'export_all'
+        get 'export_filtered_records'
+        post 'create_purchase_orders_requests'
+        post 'preview_stock_po_request'
       end
 
       scope module: 'inquiries' do
@@ -336,6 +348,12 @@ Rails.application.routes.draw do
         resources :email_messages
         resources :sales_shipments
         resources :purchase_orders
+
+        resources :po_requests do
+          collection do
+            post 'preview_stock'
+          end
+        end
 
         resources :sales_invoices do
           member do

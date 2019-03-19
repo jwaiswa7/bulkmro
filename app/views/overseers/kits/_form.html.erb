@@ -92,7 +92,7 @@
               <%= kit_product.hidden_field :id %>
               <div class="col-6">
                 <div class="select2-wrap">
-                  <%= kit_product.association :product, collection: [kit_product.object.product], label_method: :to_s, include_blank:"Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
+                  <%= kit_product.association :product, collection: [kit_product.object.product], label_method: :to_s, include_blank:"Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => non_kit_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
                 </div>
               </div>
 
