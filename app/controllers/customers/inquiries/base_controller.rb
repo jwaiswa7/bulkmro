@@ -15,6 +15,7 @@ class Customers::Inquiries::BaseController < Customers::BaseController
         template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
         layout: 'shared/layouts/pdf_templates/show',
         page_size: 'A4',
+        show_as_html: params.key?('developer'),
         footer: {
           center: '[page] of [topage]'
         },
