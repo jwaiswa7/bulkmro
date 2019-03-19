@@ -17,7 +17,7 @@ json.data (@products) do |product|
                   link_to(product.name, overseers_product_path(product), target: '_blank'),
                   product.sku,
                   product.brand.present? ? link_to(product.brand.to_s, overseers_brand_path(product.brand), target: '_blank') : '-',
-                  product.category.present? ? link_to(product.category.name, overseers_category_path(product.category), target: '_blank'): '-',
+                  product.category.present? ? link_to(product.category.name, overseers_category_path(product.category), target: '_blank') : '-',
                   product.mpn,
                   format_boolean(product.is_active?),
                   format_boolean_label(product.synced?, 'synced'),
