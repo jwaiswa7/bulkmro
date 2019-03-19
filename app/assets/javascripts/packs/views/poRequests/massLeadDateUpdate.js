@@ -1,36 +1,12 @@
 const updateLogisticsOwner = () => {
     $('.update_logistics_owner_wrapper').hide();
-    toggleCheckboxes();
+    // toggleCheckboxes();
 
     $('#update_logistics_owner').click((event) => {
         updateOwner();
     });
 };
 
-let toggleCheckboxes = () => {
-    $('#all_inward_dispatches').prop("checked", false);
-
-    $('#all_inward_dispatches').change((event) => {
-        var $element = $(event.target)
-        if ($element.is(':checked')) {
-            $('input[type=checkbox][name="the_inward_dispatches[]"]').each((index, element) => {
-                //$(element).attr('checked', 'checked')
-                $(element).prop("checked", true);
-                showOrHideActions();
-            });
-        } else {
-            $('input[type=checkbox][name="the_inward_dispatches[]"]').each((index, element) => {
-                //$(element).removeAttr('checked')
-                $(element).prop("checked", false);
-                showOrHideActions();
-            });
-        }
-    });
-
-    $('table').on('change', 'input[type=checkbox][name="the_inward_dispatches[]"]', (event) => {
-        showOrHideActions();
-    })
-}
 
 let updateOwner = () => {
     let inward_dispatches = [];
@@ -77,20 +53,4 @@ let updateOwner = () => {
             }
         });
     }
-
-
 };
-
-
-let showOrHideActions = () => {
-    let hide = true;
-
-    if ($('input[type=checkbox][name="the_inward_dispatches[]"]:checked').length > 0) {
-        $('.update_logistics_owner_wrapper').show();
-    } else {
-        $('.update_logistics_owner_wrapper').hide();
-    }
-
-}
-
-export default updateLogisticsOwner
