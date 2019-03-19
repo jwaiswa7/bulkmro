@@ -25,6 +25,10 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
     allow_export?
   end
 
+  def export_filtered_records?
+    allow_export? && overseer.can_send_emails?
+  end
+
   def download_customer_product_template?
     all_roles? && is_active?
   end
