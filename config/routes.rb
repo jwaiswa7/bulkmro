@@ -523,6 +523,7 @@ Rails.application.routes.draw do
     resources :company_reviews do
       collection do
         get 'export_all'
+        get 'export_filtered_records'
       end
       member do
         get 'render_form'
