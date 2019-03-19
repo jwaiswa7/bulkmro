@@ -21,7 +21,7 @@ class Customers::Inquiries::BaseController < Customers::BaseController
         locals: {
           record: record
         },
-        :zoom => 0.78125
+        zoom: 0.78125
       )
     end
 end
