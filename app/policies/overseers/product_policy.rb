@@ -53,9 +53,7 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     # allow_export? || ['priyanka.rajpurkar@bulkmro.com', 'subrata.baruah@bulkmro.com'].include?(overseer.email)
     allow_product_export?
   end
-  def export_filtered_records?
-    allow_export? && overseer.can_send_emails?
-  end
+
 
   def service_autocomplete?
     index?
