@@ -21,10 +21,10 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
             params['ItemLine'].each do |remote_row|
               purchase_order.rows.build do |row|
                 row.assign_attributes(
-                    metadata: remote_row
+                  metadata: remote_row
                 )
                 row.assign_attributes(
-                    product: row.get_product
+                  product: row.get_product
                 )
               end
             end
@@ -58,10 +58,10 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
               else
                 new_row = purchase_order.rows.build do |row|
                   row.assign_attributes(
-                      metadata: remote_row
+                    metadata: remote_row
                   )
                   row.assign_attributes(
-                      product: row.get_product
+                    product: row.get_product
                   )
                 end
                 new_row.save!

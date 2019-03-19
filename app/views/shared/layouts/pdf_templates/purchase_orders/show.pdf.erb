@@ -101,7 +101,8 @@
                     <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
                     <%= record.billing_address&.to_multiline_s %>
                     <br>
-                    Tel: <%= record.billing_address&.telephone || record.billing_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %><br>
+                    Tel: <%= record.billing_address&.telephone || record.billing_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %>
+                    <br>
                     GST No. : <%= record.billing_address&.gst %><br>
                   <% end %>
                 </td>
@@ -111,7 +112,8 @@
                     <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
                     <%= record.shipping_address&.to_multiline_s %>
                     <br>
-                    Tel: <%= record.shipping_address&.telephone || record.shipping_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %><br>
+                    Tel: <%= record.shipping_address&.telephone || record.shipping_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %>
+                    <br>
                     GST No. : <%= record.shipping_address&.gst %><br>
                   <% end %>
                 </td>
@@ -133,22 +135,22 @@
               <tbody>
               <tr>
                 <td class="address-wrapper" style="height: auto;">
-                    <%= (locals[:inquiry].bill_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].bill_from.address.name.present? %>
-                    <% if locals[:inquiry].bill_from.present? %>
-                      <%= locals[:inquiry].bill_from.address.to_multiline_s %><br>
-                      GST No. : <%= locals[:inquiry].bill_from.address.gst %><br>
-                    <% end %>
-                    PAN No. : AAGCB7343G
+                  <%= (locals[:inquiry].bill_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].bill_from.address.name.present? %>
+                  <% if locals[:inquiry].bill_from.present? %>
+                    <%= locals[:inquiry].bill_from.address.to_multiline_s %><br>
+                    GST No. : <%= locals[:inquiry].bill_from.address.gst %><br>
+                  <% end %>
+                  PAN No. : AAGCB7343G
                 </td>
 
                 <td style="width: 2%;"></td>
                 <td class="address-wrapper" style="height: auto;">
-                    <%= (locals[:inquiry].ship_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].ship_from.address.name.present? %>
-                    <% if locals[:inquiry].ship_from.present? %>
-                      <%= locals[:inquiry].ship_from.address.to_multiline_s %><br>
-                      GST No. : <%= locals[:inquiry].ship_from.address.gst %><br>
-                    <% end %>
-                    PAN No. : AAGCB7343G
+                  <%= (locals[:inquiry].ship_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].ship_from.address.name.present? %>
+                  <% if locals[:inquiry].ship_from.present? %>
+                    <%= locals[:inquiry].ship_from.address.to_multiline_s %><br>
+                    GST No. : <%= locals[:inquiry].ship_from.address.gst %><br>
+                  <% end %>
+                  PAN No. : AAGCB7343G
                 </td>
               </tr>
               </tbody>
