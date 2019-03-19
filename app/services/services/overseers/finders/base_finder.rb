@@ -221,7 +221,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                       exists: { field: 'sent_at' }
                   },
                   {
-                      terms: { status: SalesOrder.statuses.except(:'Approved', :'Rejected', :'Canceled').values },
+                      terms: { status: SalesOrder.statuses.except(:'Approved', :'Rejected', :'Cancelled').values },
                   },
               ],
               minimum_should_match: 3,
