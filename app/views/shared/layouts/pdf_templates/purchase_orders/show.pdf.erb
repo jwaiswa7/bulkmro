@@ -5,7 +5,7 @@
         <div id="compare-wrapper">
           <div class="compare_open" id="compare_popup"></div>
           <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
-            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
+            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png',:width => "50%" %>
           </div>
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
             <b><span style="color:#000; font-size: 26px;">Purchase Order #<%= locals[:metadata][:PoNum] %></span></b>
@@ -86,10 +86,10 @@
 
 
             <div style=" " class="heading heading-left">
-              <b><span>Supplier - Bill to :</span></b>
+              <b><span>Supplier - Bill to:</span></b>
             </div>
             <div class="heading heading-right">
-              <b><span>Supplier - Ship to :</span></b>
+              <b><span>Supplier - Ship to:</span></b>
             </div>
 
             <br clear="all">
@@ -103,7 +103,7 @@
                     <br>
                     Tel: <%= record.billing_address&.telephone || record.billing_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %>
                     <br>
-                    GST No. : <%= record.billing_address&.gst %><br>
+                    GST No.: <%= record.billing_address&.gst %><br>
                   <% end %>
                 </td>
                 <td style="width: 2%;"></td>
@@ -114,7 +114,7 @@
                     <br>
                     Tel: <%= record.shipping_address&.telephone || record.shipping_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %>
                     <br>
-                    GST No. : <%= record.shipping_address&.gst %><br>
+                    GST No.: <%= record.shipping_address&.gst %><br>
                   <% end %>
                 </td>
               </tr>
@@ -124,10 +124,10 @@
           <br clear="all">
           <div class="address-blocks">
             <div style=" " class="heading heading-left">
-              <b><span>Bulk MRO - Bill to :</span></b>
+              <b><span>Bulk MRO - Bill to:</span></b>
             </div>
             <div class="heading heading-right">
-              <b><span>Bulk MRO - Ship to :</span></b>
+              <b><span>Bulk MRO - Ship to:</span></b>
             </div>
 
             <br clear="all">
@@ -138,9 +138,9 @@
                   <%= (locals[:inquiry].bill_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].bill_from.address.name.present? %>
                   <% if locals[:inquiry].bill_from.present? %>
                     <%= locals[:inquiry].bill_from.address.to_multiline_s %><br>
-                    GST No. : <%= locals[:inquiry].bill_from.address.gst %><br>
+                    GST No.: <%= locals[:inquiry].bill_from.address.gst %><br>
                   <% end %>
-                  PAN No. : AAGCB7343G
+                  PAN No.: AAGCB7343G
                 </td>
 
                 <td style="width: 2%;"></td>
@@ -148,9 +148,9 @@
                   <%= (locals[:inquiry].ship_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].ship_from.address.name.present? %>
                   <% if locals[:inquiry].ship_from.present? %>
                     <%= locals[:inquiry].ship_from.address.to_multiline_s %><br>
-                    GST No. : <%= locals[:inquiry].ship_from.address.gst %><br>
+                    GST No.: <%= locals[:inquiry].ship_from.address.gst %><br>
                   <% end %>
-                  PAN No. : AAGCB7343G
+                  PAN No.: AAGCB7343G
                 </td>
               </tr>
               </tbody>
@@ -318,7 +318,7 @@
           <div class="bottom-info" style="position: relative">
             <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
               <div id="inner-stamp" style="float: right; position: relative;">
-                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
+                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png',:width => "95",:height => "95" %>
               </div>
             </div>
 
@@ -328,7 +328,7 @@
                 <tbody>
                 <tr>
                   <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c" valign="top">
-                    <b><span>Commercial Terms and Conditions :</span></b></td>
+                    <b><span>Commercial Terms and Conditions:</span></b></td>
                 </tr>
                 <tr>
                   <td height="" style="padding-left:10px;" valign="top">1.</td>
@@ -369,7 +369,7 @@
                 <tbody>
                 <tr style="background: #d3d3d3;">
                   <td align="left" class="invoiceheader1" colspan="16" height="20" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                    <b><span>Other Information :</span></b></td>
+                    <b><span>Other Information:</span></b></td>
                 </tr>
                 <tr>
                   <td align="left" style=" padding-left: 10px;" valign="top"><span>
@@ -391,7 +391,7 @@
                 <tbody>
                 <tr style="background: #d3d3d3;">
                   <td align="left" class="invoiceheader1" colspan="16" height="20" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                    <b><span>Note :</span></b></td>
+                    <b><span>Note:</span></b></td>
                 </tr>
                 <tr>
                   <td align="left" style=" padding-left: 10px;" valign="top"><span>

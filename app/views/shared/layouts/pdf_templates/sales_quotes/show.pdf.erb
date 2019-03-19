@@ -4,7 +4,7 @@
       <div class="col-main">
         <div id="compare-wrapper">
           <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
-            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
+            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png',:width => "50%" %>
           </div>
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
             <b><span style="color:#000; font-size: 30px">Quotation #<%= record.inquiry.inquiry_number %></span></b>
@@ -79,7 +79,7 @@
                   <b><span style="color:#000000">Packing and Forwarding</span></b> <span style="float:right">:</span>
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
-                  <span style="color:#000000"><%= record.inquiry.packing_and_forwarding_option != 'added' ? record.inquiry.packing_and_forwarding_option : 'Included' %></span>
+                  <span style="color:#000000"><%= record.inquiry.packing_and_forwarding_option != 'added' ? record.inquiry.packing_and_forwarding_option: 'Included' %></span>
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
                   <b><span style="color:#000000">Payment Terms</span></b> <span style="float:right">:</span></td>
@@ -157,7 +157,7 @@
                 </td>
                 <td style="width: 2%;"></td>
                 <td class="address-wrapper" style="height: auto;">
-                  <%= record.inquiry.shipping_contact.present? ? record.inquiry.shipping_contact.full_name : record.inquiry.contact.full_name %>
+                  <%= record.inquiry.shipping_contact.present? ? record.inquiry.shipping_contact.full_name: record.inquiry.contact.full_name %>
                   <br>
                   <% if record.inquiry.shipping_address.present? %>
                     <%= record.inquiry.shipping_address.name %><br>
@@ -353,7 +353,7 @@
           <div class="bottom-info" style="position:relative;">
             <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
               <div id="inner-stamp" style="float: right; position: relative;">
-                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
+                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png',:width => "95",:height => "95" %>
               </div>
             </div>
             <div id="commercial" style="border:1px solid; border-radius: 0;">
