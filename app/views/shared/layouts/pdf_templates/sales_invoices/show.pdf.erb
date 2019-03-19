@@ -9,8 +9,8 @@
               <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
             </div>
             <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-              <b><span style="color:#000; font-size: 25px">Tax Invoice #<%= record.metadata['increment_id'] %></span></b>
-              <span style="color:#000; font-weight: bold; font-size: 17.5px">
+              <b><span style="color:#000; font-size: 17.5px">Tax Invoice #<%= record.metadata['increment_id'] %></span></b>
+              <span style="color:#000; font-weight: bold; font-size: 11.5px">
                 <br>
                 <% if defined?(triplicate) && triplicate %>
                 Triplicate for Supplier
@@ -126,44 +126,41 @@
           </div>
           <br clear="all">
           <div class="address-blocks">
-
-
             <div style=" " class="heading heading-left">
               <b><span>Supplier - Bill from:</span></b>
             </div>
             <div class="heading heading-right">
               <b><span>Supplier - Ship from:</span></b>
             </div>
-
             <br clear="all">
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
                 <td class="address-wrapper" style="height: auto;">
-                    <% if record.sales_order.inquiry.bill_from.address.present? %>
-                      <%= record.sales_order.inquiry.bill_from.address.name.to_s %><br>
-                    <% end %>
-                    <% if record.sales_order.inquiry.bill_from.present? %>
-                      <%= record.sales_order.inquiry.bill_from.address.to_multiline_s %><br>
-                      GST No.: <%= record.sales_order.inquiry.bill_from.address.gst %><br>
-                    <% end %>
-                    PAN No.: AAGCB7343G
-                    <% if record.inquiry.is_sez? %>
-                      <br>
-                      ARN NO. : AD275180000794
-                    <% end %>
-                    </span>
+                  <% if record.sales_order.inquiry.bill_from.address.present? %>
+                    <%= record.sales_order.inquiry.bill_from.address.name.to_s %><br>
+                  <% end %>
+                  <% if record.sales_order.inquiry.bill_from.present? %>
+                    <%= record.sales_order.inquiry.bill_from.address.to_multiline_s %><br>
+                    GST No.: <%= record.sales_order.inquiry.bill_from.address.gst %><br>
+                  <% end %>
+                  PAN No.: AAGCB7343G
+                  <% if record.inquiry.is_sez? %>
+                    <br>
+                    ARN NO. : AD275180000794
+                  <% end %>
+                  </span>
                 </td>
                 <td style="width: 2%;"></td>
                 <td class="address-wrapper" style="height: auto;">
-                    <% if record.sales_order.inquiry.ship_from.present? %>
-                      <%= record.sales_order.inquiry.ship_from.address.name.to_s %><br>
-                    <% end %>
-                    <% if record.sales_order.inquiry.ship_from.present? %>
-                      <%= record.sales_order.inquiry.ship_from.address.to_multiline_s %><br>
-                      GST No.: <%= record.sales_order.inquiry.ship_from.address.gst %><br>
-                    <% end %>
-                    PAN No.: AAGCB7343G</span>
+                  <% if record.sales_order.inquiry.ship_from.present? %>
+                    <%= record.sales_order.inquiry.ship_from.address.name.to_s %><br>
+                  <% end %>
+                  <% if record.sales_order.inquiry.ship_from.present? %>
+                    <%= record.sales_order.inquiry.ship_from.address.to_multiline_s %><br>
+                    GST No.: <%= record.sales_order.inquiry.ship_from.address.gst %><br>
+                  <% end %>
+                  PAN No.: AAGCB7343G</span>
                 </td>
               </tr>
               </tbody>
@@ -174,7 +171,7 @@
           <div class="address-blocks">
 
 
-            <div style=" " class="heading heading-left">
+            <div style="" class="heading heading-left">
               <b><span>Customer - Bill to:</span></b>
             </div>
             <div class="heading heading-right">
@@ -185,36 +182,36 @@
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-wrapper" style="height: auto;">
-                    <%= record.sales_order.inquiry.contact.full_name %><br>
-                    <%= record.serialized_billing_address.name %><br>
-                    <%= record.serialized_billing_address.to_multiline_s if record.serialized_billing_address.present? %>
-                    <br>
-                    <% if record.sales_order.inquiry.billing_contact.present? %>
-                      Tel: <%= record.sales_order.inquiry.billing_contact.phone || record.sales_order.inquiry.billing_contact.mobile || record.serialized_billing_address.telephone %>
-                    <% else %>
-                      Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.serialized_billing_address.telephone %>
-                    <% end %> <br>
-                    GST No.:<%= record.serialized_billing_address.gst %><br>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <%= record.sales_order.inquiry.contact.full_name %><br>
+                  <%= record.serialized_billing_address.name %><br>
+                  <%= record.serialized_billing_address.to_multiline_s if record.serialized_billing_address.present? %>
+                  <br>
+                  <% if record.sales_order.inquiry.billing_contact.present? %>
+                    Tel: <%= record.sales_order.inquiry.billing_contact.phone || record.sales_order.inquiry.billing_contact.mobile || record.serialized_billing_address.telephone %>
+                  <% else %>
+                    Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.serialized_billing_address.telephone %>
+                  <% end %> <br>
+                  GST No.:<%= record.serialized_billing_address.gst %><br>
                 </td>
                 <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;">
-                    <%= record.sales_order.inquiry.shipping_contact.present? ? record.sales_order.inquiry.shipping_contact.full_name : record.sales_order.inquiry.contact.full_name %>
-                    <br>
-                    <%= record.serialized_shipping_address.name if record.serialized_shipping_address.present? %>
-                    <br>
-                    <%= record.serialized_shipping_address.to_multiline_s if record.serialized_shipping_address.present? %>
-                    <br>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <%= record.sales_order.inquiry.shipping_contact.present? ? record.sales_order.inquiry.shipping_contact.full_name : record.sales_order.inquiry.contact.full_name %>
+                  <br>
+                  <%= record.serialized_shipping_address.name if record.serialized_shipping_address.present? %>
+                  <br>
+                  <%= record.serialized_shipping_address.to_multiline_s if record.serialized_shipping_address.present? %>
+                  <br>
 
-                    <% if record.sales_order.inquiry.shipping_contact.present? %>
-                      Tel: <%= record.sales_order.inquiry.shipping_contact.phone || record.sales_order.inquiry.shipping_contact.mobile || record.serialized_shipping_address.telephone %>
-                    <% else %>
-                      Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.serialized_shipping_address.telephone %>
-                    <% end %> <br>
+                  <% if record.sales_order.inquiry.shipping_contact.present? %>
+                    Tel: <%= record.sales_order.inquiry.shipping_contact.phone || record.sales_order.inquiry.shipping_contact.mobile || record.serialized_shipping_address.telephone %>
+                  <% else %>
+                    Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.serialized_shipping_address.telephone %>
+                  <% end %> <br>
 
-                    GST
-                    No.:<%= record.serialized_shipping_address.gst if record.serialized_shipping_address.present? %>
-                    <br>
+                  GST
+                  No.:<%= record.serialized_shipping_address.gst if record.serialized_shipping_address.present? %>
+                  <br>
                 </td>
               </tr>
               </tbody>
@@ -477,21 +474,24 @@
                 <table style="width: 100%;" cellspacing="0" border="0">
 
                   <tr style="">
-                    <td class="invoiceheader1" style="background: #d3d3d3; border-bottom: 1px solid #3c3c3c;border-top-left-radius: 4px; border-top-right-radius: 4px;" colspan="16" height="15" align="left" valign="top">
-                      <b><span>Note :</span></b></td>
+                    <td class="invoiceheader1" style="font-size: 11px; background: #d3d3d3; border-bottom: 1px solid #3c3c3c;border-top-left-radius: 4px; border-top-right-radius: 4px;" colspan="16" height="15" align="left" valign="top">
+                      <b><span>Note:</span></b></td>
                   </tr>
                   <tr>
-                    <td class="invoiceheader1" style=" border-bottom: 1px solid #3c3c3c; " colspan="16" height="70" align="left" valign="top">
-                    <span>1. Order once confirmed can not be cancelled.<br>2. Delayed payments will
-                      attract 2% interest per month.<br>3. Invoice will be deemed accepted unless any discrepancy is
-                      raised in writing within 7 days from the date of invoice.</span></td>
+                    <td class="invoiceheader1" style=" border-bottom: 1px solid #3c3c3c; font-size: 11px;" colspan="16" align="left" valign="top">
+                      <span>
+                            1. Order once confirmed can not be cancelled.<br>
+                            2. Delayed payments will attract 2% interest per month.<br>
+                            3. Invoice will be deemed accepted unless any discrepancy is raised in writing within 7 days from the date of invoice.
+                      </span>
+                    </td>
                   </tr>
                   <tr>
-                    <td class="invoiceheader1" style="background: #d3d3d3; border-bottom: 1px solid #3c3c3c; " colspan="16" height="15" align="left" valign="top">
+                    <td class="invoiceheader1" style="font-size: 11px; background: #d3d3d3; border-bottom: 1px solid #3c3c3c; " colspan="16" height="15" align="left" valign="top">
                       <b><span>Other Information :</span></b></td>
                   </tr>
                   <tr>
-                    <td class="invoiceheader1" style=" " colspan="16" rowspan="2" height="39" align="left" valign="top">
+                    <td class="invoiceheader1" style="font-size: 11px;" colspan="16" rowspan="2" height="39" align="left" valign="top">
                     <span>1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice
                       #<%= record.metadata['increment_id'] %> when remitting Wire Transfer payment.<br>
                       2. Bulk MRO Industrial Supply
@@ -505,7 +505,6 @@
                   </tr>
                   <tr>
                   </tr>
-
                 </table>
               </div>
               <br clear="all"/>
@@ -528,7 +527,7 @@
                 <tbody>
                 <tr>
                   <td align="center" colspan="22" style="position: relative;top:0px;">
-                    <span style="color:#000000">This is a Computer Generated Invoice.</span></td>
+                    <span style="color:#000000;font-size: 11px;">This is a Computer Generated Invoice.</span></td>
                 </tr>
                 </tbody>
               </table>

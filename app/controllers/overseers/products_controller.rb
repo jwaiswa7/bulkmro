@@ -12,7 +12,15 @@ class Overseers::ProductsController < Overseers::BaseController
   def autocomplete
     service = Services::Overseers::Finders::Products.new(params.merge(page: 1))
     service.call
+    @indexed_products = service.indexed_records
+    @products = service.records.active
+    authorize @products
+  end
 
+  def autocomplete_mpn
+    @label = params[:label] || :to_s
+    service = Services::Overseers::Finders::Products.new(params, sort_by: 'mpn', sort_order: 'desc')
+    service.call
     @indexed_products = service.indexed_records
     @products = service.records.active
     authorize @products

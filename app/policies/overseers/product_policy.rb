@@ -56,6 +56,9 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def service_autocomplete?
     index?
   end
+  def autocomplete_mpn?
+    index?
+  end
 
   def autocomplete_suppliers?
     true

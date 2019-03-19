@@ -16,10 +16,10 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
         footer: {
             center: '[page] of [topage]'
         },
-        # show_as_html: true,
         locals: {
             record: record
-        }.merge(locals)
+        }.merge(locals),
+        :zoom => 0.78125,
       )
     end
 end

@@ -14,13 +14,14 @@ class Customers::Inquiries::BaseController < Customers::BaseController
         pdf: record.filename,
         template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
         layout: 'shared/layouts/pdf_templates/show',
-        page_size: 'Legal',
+        page_size: 'A4',
         footer: {
           center: '[page] of [topage]'
         },
         locals: {
           record: record
-        }
+        },
+        :zoom => 0.78125
       )
     end
 end
