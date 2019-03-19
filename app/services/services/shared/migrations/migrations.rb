@@ -1417,6 +1417,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         i = i + 1
         p '********************************************************'
         p i
+        p x.get_column('purchase_order_number')
         purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
         poNum = JSON.parse(x.get_column('meta_data'))['PoNum']
         right_po = PurchaseOrder.find_by_po_number(poNum)
@@ -1443,10 +1444,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               if status
                 # if metadata po_number matched with wrong purchase_order then update
                 response = update_existing_po(purchase_order,new_po_number, poNum)
-                if !response[:status]
+                if !response.present?
+                  writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+                elsif !response[:status]
                   new_po_number = new_po_number + 1
+                  writer << [x.get_column('purchase_order_number'), poNum, responce[:message]]
                 end
-                writer << [x.get_column('purchase_order_number'), poNum, responce[:message]]
               else
                 # mismatched then delete wrong purchase_order if inquiry not present otherwise dont delete
                 # In both cases create new Purchase order
@@ -1454,10 +1457,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                   purchase_order.delete
                 end
                 response = create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
-                if !response[:status]
+                if !response.present?
+                  writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+                elsif !response[:status]
                   new_po_number = new_po_number + 1
+                  writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
                 end
-                writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
               end
             else
               metadata = JSON.parse(x.get_column('meta_data'))
@@ -1465,7 +1470,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               if inquiry.present?
                 response = create_purchase_order(JSON.parse(x.get_column('meta_data')))
                 message = ''
-                writer << [x.get_column('purchase_order_number'), poNum,  response[:message]]
+                if !response.present?
+                  writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+                else
+                  writer << [x.get_column('purchase_order_number'), poNum,  response[:message]]
+                end
               else
                 writer << [x.get_column('purchase_order_number'), poNum, "Can not create PO becuse inquiry not present"]
               end
@@ -1478,10 +1487,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             if status
               # if metata data po number and normal po number match then create new po with diff number
               response = update_existing_po(purchase_order,new_po_number, poNum)
-              if !response[:status]
+              if !response.present?
+                writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+              elsif !response[:status]
                 new_po_number = new_po_number + 1
+                writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
               end
-              writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
             else
               # if mismatch the po number and metadata po number then delete and create new
               if !purchase_order.inquiry.present?
@@ -1489,27 +1500,33 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               end
               if right_po.present?
                 response = update_existing_po(purchase_order,new_po_number, poNum)
-                if !response[:status]
+                if !response.present?
+                  writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+                elsif !response[:status]
                   new_po_number = new_po_number + 1
+                  writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
                 end
-                writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
               else
                 response = create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
                 message = ''
-                if !response[:status]
+                if !response.present?
+                  writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+                elsif !response[:status]
                   new_po_number = new_po_number+1
+                  writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
                 end
-                writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
               end
             end
           else
             # crate new po with number
             response = create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
             message = ''
-            if !response[:status]
+            if !response.present?
+              writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+            elsif !response[:status]
               new_po_number = new_po_number+1
+              writer << [x.get_column('purchase_order_number'), poNum,  response[:message]]
             end
-            writer << [x.get_column('purchase_order_number'), poNum,  response[:message]]
           end
         end
       end
@@ -1544,7 +1561,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                     purchase_order.metadata = x.get_row
                     purchase_order.save!
                   end
-                  attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'document', file_url: x.get_column('file_path')) if !purchase_order.document.attached?
+                  # attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'document', file_url: x.get_column('file_path')) if !purchase_order.document.attached?
                   writer << [po_num, inquiry_number, "PO created with po_nuber #{x.get_column('po_number')}"]
                 rescue => e
                   errors.push("#{e.inspect} - #{x.get_column('legacy_id')}")
@@ -1566,7 +1583,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                     purchase_order.save!
                     new_po_number = new_po_number + 1
                   end
-                  attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'document', file_url: x.get_column('file_path')) if !purchase_order.document.attached?
+                  # attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'document', file_url: x.get_column('file_path')) if !purchase_order.document.attached?
                   writer << [po_num, inquiry_number, "purchase order created with #{new_po_number}"]
                 else
                   writer << [po_num, inquiry_number, "purchase order number alpha numeric and inquiry also absent"]
@@ -3944,7 +3961,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def create_purchase_order(metadata, new_po_number = nil)
     inquiry = Inquiry.find_by_inquiry_number(metadata['PoEnquiryId'])
     payment_option = PaymentOption.find_by_name(metadata['PoPaymentTerms'].to_s.strip)
-    begin
+    # begin
       if inquiry.present? && inquiry.final_sales_quote.present?
         if metadata['PoNum'].present?
           po_num =  new_po_number.present? ? new_po_number : metadata['PoNum']
@@ -3953,30 +3970,30 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             purchase_order.assign_attributes(material_status: 'Material Readiness Follow-Up')
             purchase_order.assign_attributes(metadata: meta_data, created_at: meta_data['PoDate'])
 
-            meta_data['ItemLine'].each do |remote_row|
-              purchase_order.rows.build do |row|
-                row.assign_attributes(
-                    metadata: remote_row
-                )
-                tax = nil
-                if remote_row['PopTaxRate'].to_i >= 14
-                  supplier = purchase_order.get_supplier(remote_row['PopProductId'].to_i)
-                  if supplier.present?
-                    bill_from = supplier.billing_address
-                    ship_from = supplier.shipping_address
-                    bill_to = purchase_order.inquiry.bill_from.address
-
-                    if bill_from.present? && ship_from.present? && bill_to.present?
-                      purchase_order.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
-                      row.metadata['PopTaxRate'] = tax_rates[remote_row['PopTaxRate'].to_s].to_s
-                      row.save
-                    end
-                  end
-                end
-                puts tax
-                puts "\n\n"
-              end
-            end
+            # meta_data['ItemLine'].each do |remote_row|
+            #   purchase_order.rows.build do |row|
+            #     row.assign_attributes(
+            #         metadata: remote_row
+            #     )
+            #     tax = nil
+            #     if remote_row['PopTaxRate'].to_i >= 14
+            #       supplier = purchase_order.get_supplier(remote_row['PopProductId'].to_i)
+            #       if supplier.present?
+            #         bill_from = supplier.billing_address
+            #         ship_from = supplier.shipping_address
+            #         bill_to = purchase_order.inquiry.bill_from.address
+            #
+            #         if bill_from.present? && ship_from.present? && bill_to.present?
+            #           purchase_order.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
+            #           row.metadata['PopTaxRate'] = tax_rates[remote_row['PopTaxRate'].to_s].to_s
+            #           row.save
+            #         end
+            #       end
+            #     end
+            #     puts tax
+            #     puts "\n\n"
+            #   end
+            # end
             purchase_order.save!
             return {message: 'Purchase Order created successfully with #{purchase_order.po_number}', status: false }
           end
@@ -3990,9 +4007,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       else
         return {message: "inquiry not present => #{metadata['PoEnquiryId']}", status: true }
       end
-    rescue => e
-      return {message: e.message, status: true }
-    end
+    # rescue => e
+    #   return {message: e.message, status: true }
+    # # end
   end
 
   def update_existing_po(purchase_order,new_po_number, old_po_number)
