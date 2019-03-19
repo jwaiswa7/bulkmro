@@ -21,6 +21,21 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def kra_report
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+
+        service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
+        service.call
+
+        @indexed_kra_reports = service.indexed_records.aggregations['inquiries']['buckets']
+      end
+    end
+  end
+
   def export_all
     authorize :inquiry
     service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, [])

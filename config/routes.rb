@@ -340,6 +340,7 @@ Rails.application.routes.draw do
         get 'export_filtered_records'
         post 'create_purchase_orders_requests'
         post 'preview_stock_po_request'
+        get 'kra_report'
       end
 
       scope module: 'inquiries' do
