@@ -1443,12 +1443,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               status = purchase_order.metadata['PoNum'] == poNum
               if status
                 # if metadata po_number matched with wrong purchase_order then update
-                response = update_existing_po(purchase_order,new_po_number, poNum)
+                response = update_existing_po(purchase_order, poNum, poNum)
                 if !response.present?
                   writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
                 elsif !response[:status]
                   new_po_number = new_po_number + 1
-                  writer << [x.get_column('purchase_order_number'), poNum, responce[:message]]
+                  writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
                 end
               else
                 # mismatched then delete wrong purchase_order if inquiry not present otherwise dont delete
@@ -1536,12 +1536,30 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   end
 
+
+  def list_of_inquiry_absent
+    file = "#{Rails.root}/tmp/absent_inquiry.csv"
+    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback_mod.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: ["po_number","metadata_po_number","Inquiry No", "metadata"]) do |writer|
+      service.loop(nil) do |x|
+        metadata = JSON.parse(x.get_column('meta_data'))
+        po_number = x.get_column('purchase_order_number')
+        metadata_po_number = JSON.parse(x.get_column('meta_data'))['PoNum']
+        inquiry_number = inquiry = metadata['PoEnquiryId']
+        inquiry = Inquiry.find_by_inquiry_number(metadata['PoEnquiryId'])
+        if !inquiry.present?
+          writer << [po_number,metadata_po_number, inquiry_number, metadata]
+        end
+      end
+    end
+
+  end
+
   def update_magento_po_order
     # for purchase_orders csv
     new_po_number = !PurchaseOrder.where(:po_number => 10000..100000).order(:po_number).last.present? ? 10000 : (PurchaseOrder.where(:po_number => 10000..100000).order(:po_number).last.po_number) + 1
     file = "#{Rails.root}/tmp/po_generation_problem.csv"
     service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_orders.csv', 'seed_files')
-    inquiry_number = []
     CSV.open(file, 'w', write_headers: true, headers: ['missing_po_number', "inquiry no", "reason"]) do |writer|
       service.loop(nil) do |x|
         po_num = x.get_column('po_number')
