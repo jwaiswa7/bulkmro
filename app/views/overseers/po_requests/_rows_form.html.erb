@@ -86,9 +86,10 @@
     <%= f.input :contact_phone, label: 'Contact Phone', placeholder: 'Contact phone', required: !stock %>
   </div>
 
-  <div class="col-12 col-md-4">
-    <%= f.input :supplier_committed_date, label: 'Supplier Committed Delivery Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date'}, required: true %>
-  </div>
+<!--  <div class="col-12 col-md-4">-->
+    <%#= f.input :supplier_committed_date, label: 'Supplier Committed Delivery Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date'}, required: true %>
+<!--  </div>-->
+
   <div class="col-12 col-md-4">
     <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', required: true, label: 'Payment Terms:', collection: PaymentOption.active.pluck(:name, :id) %>
   </div>
