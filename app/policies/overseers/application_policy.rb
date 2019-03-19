@@ -119,7 +119,7 @@ class Overseers::ApplicationPolicy
   end
 
   def export_filtered_records?
-    developer? # allow_export?
+    (developer? || allow_export?) && overseer.can_send_emails?
   end
 
   def allow_logistics_format_export?
