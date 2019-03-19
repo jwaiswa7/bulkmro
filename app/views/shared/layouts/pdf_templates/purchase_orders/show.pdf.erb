@@ -8,10 +8,10 @@
             <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
           </div>
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-            <b><span style="color:#000; font-size: 30px">Purchase Order #<%= locals[:metadata][:PoNum] %></span></b>
+            <b><span style="color:#000; font-size: 26px;">Purchase Order #<%= locals[:metadata][:PoNum] %></span></b>
           </div>
           <br clear="all">
-          <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record %>
+          <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record.warehouse %>
           <br clear="all">
           <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
             <span><b>Purchase Order #<%= locals[:metadata][:PoNum] %></b></span>
@@ -93,31 +93,29 @@
             </div>
 
             <br clear="all">
-            <table border="0" cellspacing="0" style="width: 100%;">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td style="" class="address-section-holder">
-                  <div style="" class="address-wrapper address-wrapper-left">
-                    <% if locals[:supplier].present? %>
-                      <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
-                      <%= record.billing_address&.to_multiline_s %>
-                      <br>
-                      Tel: <%= locals[:supplier].telephone if locals[:supplier].telephone.present? %><br>
-                      GST No. : <%= locals[:supplier].billing_address.try(:gst) %><br>
-                    <% end %>
-                  </div>
+                <td class="address-wrapper" style="height: auto;">
+                  <% if locals[:supplier].present? %>
+                    <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
+                    <%= record.billing_address&.to_multiline_s %>
+                    <br>
+                    Tel: <%= record.billing_address&.telephone || record.billing_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %>
+                    <br>
+                    GST No. : <%= record.billing_address&.gst %><br>
+                  <% end %>
                 </td>
-                <td class="address-section-gap"></td>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-right">
-                    <% if locals[:supplier].present? %>
-                      <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
-                      <%= record.shipping_address&.to_multiline_s %>
-                      <br>
-                      Tel: <%= locals[:supplier].telephone if locals[:supplier].telephone.present? %><br>
-                      GST No. : <%= locals[:supplier].shipping_address.try(:gst) %><br>
-                    <% end %>
-                  </div>
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;">
+                  <% if locals[:supplier].present? %>
+                    <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
+                    <%= record.shipping_address&.to_multiline_s %>
+                    <br>
+                    Tel: <%= record.shipping_address&.telephone || record.shipping_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %>
+                    <br>
+                    GST No. : <%= record.shipping_address&.gst %><br>
+                  <% end %>
                 </td>
               </tr>
               </tbody>
@@ -125,8 +123,6 @@
           </div>
           <br clear="all">
           <div class="address-blocks">
-
-
             <div style=" " class="heading heading-left">
               <b><span>Bulk MRO - Bill to :</span></b>
             </div>
@@ -135,31 +131,26 @@
             </div>
 
             <br clear="all">
-            <table border="0" cellspacing="0" style="width: 100%;">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td style="" class="address-section-holder">
-                  <div style="" class="address-wrapper address-wrapper-left">
-                    <span>
-                      <%= (locals[:inquiry].bill_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].bill_from.address.name.present? %>
-                      <% if locals[:inquiry].bill_from.present? %>
-                        <%= locals[:inquiry].bill_from.address.to_multiline_s %><br>
-                        GST No. : <%= locals[:inquiry].bill_from.address.gst %><br>
-                      <% end %>
-                      PAN No. : AAGCB7343G</span>
-                  </div>
+                <td class="address-wrapper" style="height: auto;">
+                  <%= (locals[:inquiry].bill_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].bill_from.address.name.present? %>
+                  <% if locals[:inquiry].bill_from.present? %>
+                    <%= locals[:inquiry].bill_from.address.to_multiline_s %><br>
+                    GST No. : <%= locals[:inquiry].bill_from.address.gst %><br>
+                  <% end %>
+                  PAN No. : AAGCB7343G
                 </td>
-                <td class="address-section-gap"></td>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-right">
-                    <span>
-                      <%= (locals[:inquiry].ship_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].ship_from.address.name.present? %>
-                      <% if locals[:inquiry].ship_from.present? %>
-                        <%= locals[:inquiry].ship_from.address.to_multiline_s %><br>
-                        GST No. : <%= locals[:inquiry].ship_from.address.gst %><br>
-                      <% end %>
-                      PAN No. : AAGCB7343G</span>
-                  </div>
+
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;">
+                  <%= (locals[:inquiry].ship_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].ship_from.address.name.present? %>
+                  <% if locals[:inquiry].ship_from.present? %>
+                    <%= locals[:inquiry].ship_from.address.to_multiline_s %><br>
+                    GST No. : <%= locals[:inquiry].ship_from.address.gst %><br>
+                  <% end %>
+                  PAN No. : AAGCB7343G
                 </td>
               </tr>
               </tbody>

@@ -21,5 +21,5 @@ service.call
 service = Services::Shared::Migrations::Migrations.new(%w(missing_payment_options), folder: 'seed_files')
 service.call
 
-service1 = Services::Shared::Migrations::Migrations.new(%w(missing_sales_order_in_sprint), folder: 'seed_files')
-service1.call
+service = Services::Shared::Migrations::Migrations.new(%w(missing_sales_order_products), folder: 'seed_files')
+service.call

@@ -107,6 +107,17 @@
       </div>
     </div>
 
+    <% if @inquiry.calculation_sheet.attached? %>
+    <div class="form-row mt-3">
+      <div class="col-6">
+        <strong class="d-block">Calculation Sheet</strong>
+        <%= link_to @inquiry.calculation_sheet, target: '_blank' do %>
+          <%= @inquiry.calculation_sheet.filename %>
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+
     <% if @inquiry.attachments.present? %>
       <div class="form-row mt-3">
         <% if @inquiry.customer_po_sheet.attached? %>
