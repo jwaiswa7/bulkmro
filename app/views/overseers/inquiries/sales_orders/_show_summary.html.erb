@@ -160,6 +160,9 @@
         <th class="no-sort">
           <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
         </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Total Freight">T. Freight</span>
+        </th>
       </tr>
       </thead>
       <tbody>
@@ -197,6 +200,9 @@
           </td>
           <td>
             <span><%= row.best_tax_rate %></span>
+          </td>
+          <td>
+            <span><%= format_currency(row.freight_cost_subtotal,symbol:sales_order.currency_sign) %></span>
           </td>
         </tr>
       <% end %>
@@ -257,9 +263,13 @@
   </div>
   <div class="card-footer">
     <div class=form-row>
-      <div class="col-6 col-md-2">
+      <div class="col-6 col-md-1">
         Products
         <strong class="d-block"><%= sales_order.rows.size %></strong>
+      </div>
+      <div class="col-6 col-md-1">
+        Total Freight
+        <strong class="d-block"><%= format_currency(sales_order.sales_quote.calculated_freight_cost_total) %></strong>
       </div>
       <div class="col-6 col-md-2">
         Cost
