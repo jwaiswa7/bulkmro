@@ -180,7 +180,6 @@ class Overseers::InquiriesController < Overseers::BaseController
   def stages
     @stages = @inquiry.inquiry_status_records.order(created_at: :asc)
     authorize @inquiry
-
   end
 
   def relationship_map
@@ -189,7 +188,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def get_relationship_map_json
     authorize @inquiry
-    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry,@inquiry.sales_quotes).call
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes).call
     render json: {data: inquiry_json}
   end
   def create_purchase_orders_requests

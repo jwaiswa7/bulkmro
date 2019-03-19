@@ -257,9 +257,9 @@ module DisplayHelper
 
   def product_line_item
     if self.rows.count == 1 && self.rows.first.product.is_kit
-      content_tag(:div,content_tag(:strong,"#{self.rows.first.product.kit.kit_product_rows.count}")+" kit line item(s)")
+      content_tag(:div, content_tag(:strong, "#{self.rows.first.product.kit.kit_product_rows.count}") + ' kit line item(s)')
     else
-      content_tag(:div,content_tag(:strong, "#{self.rows.count}")+ " line item(s)")
+      content_tag(:div, content_tag(:strong, "#{self.rows.count}") + ' line item(s)')
     end
   end
 end
