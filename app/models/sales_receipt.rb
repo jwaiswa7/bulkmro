@@ -32,7 +32,8 @@ class SalesReceipt < ApplicationRecord
       'On Account': 10,
       'Against Invoice': 20,
       'Reconciled Against Invoice': 30,
-      'Down Payment': 40,
+      'On Account and Against Invoice': 40,
+      'Down Payment': 50
   }
 
   # validate :reconciled_amount_equal_to_received_amount?

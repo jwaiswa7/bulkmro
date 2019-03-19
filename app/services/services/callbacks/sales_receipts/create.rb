@@ -7,16 +7,21 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
       account = company.present? ? company.account : nil
       payment_type = nil
 
-
-      if params['cmp_id'].present? && !params['p_invoice_no'].present?
-        total_amount_received = params[:on_account]
+      if params['p_amount_received'].to_f == 0 && params['on_account'].to_f > 0 && params['reconciled_amount'].to_f == 0
+        total_amount_received = params['on_account'].to_f
         payment_type = 'On Account'
-      elsif params['p_invoice_no'].present? && params['reconciled_amount'].to_f > 0
-        total_amount_received = params[:p_amount_received]
+      elsif params['p_amount_received'].to_f == 0 && params['on_account'].to_f > 0 && params['reconciled_amount'].to_f > 0
+        total_amount_received = params['on_account'].to_f
         payment_type = 'Reconciled Against Invoice'
-      elsif params['p_invoice_no'].present?
-        total_amount_received = params[:p_amount_received]
+      elsif params['p_amount_received'].to_f > 0 && params['on_account'].to_f == 0 && params['reconciled_amount'].to_f == 0
+        total_amount_received = params['p_amount_received'].to_f
         payment_type = 'Against Invoice'
+      elsif params['p_amount_received'].to_f > 0 && params['on_account'].to_f > 0 && params['reconciled_amount'].to_f == 0
+        total_amount_received = params['on_account'].to_f + params['p_amount_received'].to_f
+        payment_type = 'On Account and Against Invoice'
+      elsif params['p_amount_received'].to_f > 0 && params['on_account'].to_f > 0 && params['reconciled_amount'].to_f > 0
+        total_amount_received = params['on_account'].to_f + params['p_amount_received'].to_f
+        payment_type = 'On Account and Against Invoice'
       else
         total_amount_received = 0.0
       end
