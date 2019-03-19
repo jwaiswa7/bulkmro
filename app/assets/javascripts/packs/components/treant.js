@@ -8,8 +8,8 @@ const treant = () => {
     spinner = $(spinner).insertAfter($('.treant'));
 
     $.get(url, function (response) {
-        if (response['data'] != undefined) {
-            nodeStructure = response['data'];
+        if (response.data != undefined) {
+            nodeStructure = response.data;
         }
 
         if (nodeStructure == null) return;
