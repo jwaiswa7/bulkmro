@@ -28,7 +28,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               elsif Rails.env.production?
                 %w(inquiry_attachments)
               elsif Rails.env.development?
-                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
+                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories missing_sales_order_in_sprint)
               end
 
     PaperTrail.request(enabled: false) do
@@ -2803,70 +2803,101 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           SalesInvoiceRow.create!(sku: sku, quantity: quantity, sales_invoice_id: invoice.id, metadata: invoice_row_obj)
         end
 
-        item_lines = invoice.rows.pluck(:metadata)
-        metadata = {
-            'state' => 1,
-            'is_kit' => '',
-            'qty_kit' => 0, # check
-            'ItemLine' => item_lines,
-            'desc_kit' => '', # check
-            'order_id' => order_number,
-            'store_id' => nil,
-            'doc_entry' => invoice_number.to_i,
-            'price_kit' => 0,
-            'controller' => 'callbacks/sales_invoices',
-            'created_at' => x.get_column('AR Invoice Date'),
-            'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
-            'increment_id' => invoice_number,
-            'sales_invoice' => {
-                'created_at' => x.get_column('AR Invoice Date'),
-                'updated_at' => nil
-            },
-            'unitprice_kit' => 0,
-            'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) {|sum, value| sum + value.to_f}.round(2),
-            'discount_amount' => '',
-            'shipping_amount' => nil,
-            'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
-            'customer_company' => nil,
-            'hidden_tax_amount' => nil,
-            'shipping_incl_tax' => nil,
-            'base_subtotal' => item_lines.pluck('row_total').inject(0) {|sum, value| sum + value.to_f}.round(2),
-            'base_currency_code' => sales_order.inquiry.currency.try(:name),
-            'base_to_order_rate' => sales_order.inquiry.currency.conversion_rate.to_f,
-            'billing_address_id' => sales_order.inquiry.billing_address.present? ? sales_order.inquiry.billing_address.id : nil,
-            'order_currency_code' => sales_order.inquiry.currency.try(:name),
-            'shipping_address_id' => sales_order.inquiry.shipping_address.present? ? sales_order.inquiry.shipping_address.id : nil,
-            'shipping_tax_amount' => nil,
-            'store_currency_code' => '',
-            'store_to_order_rate' => '',
-            'base_discount_amount' => nil,
-            'base_shipping_amount' => nil,
-            'discount_description' => nil,
-            'base_hidden_tax_amount' => nil,
-            'base_shipping_incl_tax' => nil,
-            'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
-            'base_shipping_tax_amount' => nil,
-            'shipping_hidden_tax_amount' => nil,
-            'base_shipping_hidden_tax_amnt' => nil
-        }
-        invoice.assign_attributes(status: 1, metadata: metadata, mis_date: x.get_column('AR Invoice Date'))
-        invoice.save!
-        created_or_updated_invoices.push(invoice.invoice_number)
-        puts '********************** Saving Invoice *****************************', invoice_number
-      else
-        missing_bible_orders.push(order_number)
-        missing_bible_invoices.push(invoice_number)
+          item_lines = invoice.rows.pluck(:metadata)
+          metadata = {
+              'state' => 1,
+              'is_kit' => '',
+              'qty_kit' => 0, # check
+              'ItemLine' => item_lines,
+              'desc_kit' => '', # check
+              'order_id' => order_number,
+              'store_id' => nil,
+              'doc_entry' => invoice_number.to_i,
+              'price_kit' => 0,
+              'controller' => 'callbacks/sales_invoices',
+              'created_at' => x.get_column('AR Invoice Date'),
+              'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+              'increment_id' => invoice_number,
+              'sales_invoice' => {
+                  'created_at' => x.get_column('AR Invoice Date'),
+                  'updated_at' => nil
+              },
+              'unitprice_kit' => 0,
+              'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) { |sum, value| sum + value.to_f }.round(2),
+              'discount_amount' => '',
+              'shipping_amount' => nil,
+              'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+              'customer_company' => nil,
+              'hidden_tax_amount' => nil,
+              'shipping_incl_tax' => nil,
+              'base_subtotal' => item_lines.pluck('row_total').inject(0) { |sum, value| sum + value.to_f }.round(2),
+              'base_currency_code' => sales_order.inquiry.currency.try(:name),
+              'base_to_order_rate' => sales_order.inquiry.currency.conversion_rate.to_f,
+              'billing_address_id' => sales_order.inquiry.billing_address.present? ? sales_order.inquiry.billing_address.id : nil,
+              'order_currency_code' => sales_order.inquiry.currency.try(:name),
+              'shipping_address_id' => sales_order.inquiry.shipping_address.present? ? sales_order.inquiry.shipping_address.id : nil,
+              'shipping_tax_amount' => nil,
+              'store_currency_code' => '',
+              'store_to_order_rate' => '',
+              'base_discount_amount' => nil,
+              'base_shipping_amount' => nil,
+              'discount_description' => nil,
+              'base_hidden_tax_amount' => nil,
+              'base_shipping_incl_tax' => nil,
+              'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+              'base_shipping_tax_amount' => nil,
+              'shipping_hidden_tax_amount' => nil,
+              'base_shipping_hidden_tax_amnt' => nil
+          }
+          invoice.assign_attributes(status: 1, metadata: metadata, mis_date: x.get_column('AR Invoice Date'))
+          invoice.save!
+          created_or_updated_invoices.push(invoice.invoice_number)
+          puts '********************** Saving Invoice *****************************', invoice_number
+        else
+          missing_bible_orders.push(order_number)
+          missing_bible_invoices.push(invoice_number)
+        end
+      end
+
+    puts "M SKus", missing_product.join(',')
+    puts "-----------------------------------------------------------------------------------------"
+    puts "kit products", kit_products.join(',')
+    puts "-----------------------------------------------------------------------------------------"
+    puts "odd SI names", odd_invoice_names.join(',')
+    puts "-----------------------------------------------------------------------------------------"
+    puts "Missing bible orders", missing_bible_orders.join(',')
+    puts "-----------------------------------------------------------------------------------------"
+    puts "Created Or Updated Invoices", created_or_updated_invoices.join(',')
+  end
+
+  def missing_inquiry_shipping_address_status
+    file = "#{Rails.root}/tmp/missing_inquiry_shipping_address_with_status.csv"
+    column_headers = ['inquiry_number', 'inquiry_status']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_shipping_address.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+      service.loop(nil) do |x|
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry number'))
+        if inquiry.present? && inquiry.status.present?
+          writer << [inquiry.inquiry_number, inquiry.status.to_s]
+        end
       end
     end
-    puts 'M SKus', missing_product.join(',')
-    puts '-----------------------------------------------------------------------------------------'
-    puts 'kit products', kit_products.join(',')
-    puts '-----------------------------------------------------------------------------------------'
-    puts 'odd SI names', odd_invoice_names.join(',')
-    puts '-----------------------------------------------------------------------------------------'
-    puts 'Missing bible orders', missing_bible_orders.join(',')
-    puts '-----------------------------------------------------------------------------------------'
-    puts 'Created Or Updated Invoices', created_or_updated_invoices.join(',')
+  end
+
+  def missing_inquiry_billing_address_status
+    file = "#{Rails.root}/tmp/missing_inquiry_billing_address_with_status.csv"
+    column_headers = ['inquiry_number', 'inquiry_status']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_billing_address.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+      service.loop(nil) do |x|
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry number'))
+        if inquiry.present? && inquiry.status.present?
+          writer << [inquiry.inquiry_number, inquiry.status.to_s]
+        end
+      end
+    end
   end
 
   def missing_payment_options
