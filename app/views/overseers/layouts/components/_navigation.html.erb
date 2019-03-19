@@ -44,6 +44,7 @@
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, policy(:account).index? %>
           <%= nav_dropdown_item 'Companies', overseers_companies_path, policy(:company).index? %>
+          <%= nav_dropdown_item 'Suppliers', overseers_suppliers_path, policy(:company).index? %>
           <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
           <%= nav_dropdown_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
           <%= nav_dropdown_item 'Banks', overseers_banks_path, policy(:bank).index? %>

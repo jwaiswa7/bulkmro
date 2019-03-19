@@ -1,7 +1,6 @@
 <div class="col-lg-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <%= simple_form_for(@inquiry, url: update_suppliers_overseers_inquiry_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-      <%= f.object.class %>
       <%= render 'shared/snippets/form_errors', f: f %>
       <div class="card">
         <div class="card-body">
@@ -13,7 +12,7 @@
               </div>
             </div>
             <div class="col-md-6">
-              <%= f.input :common_supplier_id, label: false, :as => :select, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path}, include_blank: 'Select Common Supplier' %>
+              <%= f.input :common_supplier_id, label: false, :as => :select, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, 'data-placeholder': 'Select Common Supplier'} %>
             </div>
             <div class="col-md-4">
               <%= button_tag(type: "submit", name: 'common_supplier_selected', class: "btn btn-success btn-block") do %>
@@ -43,10 +42,10 @@
                   <div class="col-12 col-md-3">
                     <div class="d-flex">
                       <span class="flex-fill">
-                        <%= inquiry_product_supplier.association :supplier, collection: selected_option_or_nil(inquiry_product_supplier, :supplier), include_blank: "Type to search", label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_suppliers_path, :'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id} %>
+                        <%= inquiry_product_supplier.association :supplier, collection: selected_option_or_nil(inquiry_product_supplier, :supplier), label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, :'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id, 'data-placeholder': 'Type to Search'} %>
                       </span>
                       <span class="<%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "align-self-center" : "align-self-top" %> ml-1">
-                        <% if inquiry_product.object.inquiry_product_suppliers.present? %>
+                        <% if inquiry_product.object.inquiry_product_suppliers.present? && !inquiry_product.object.inquiry_product_suppliers.first.supplier.rating.nil? %>
                           <%= format_star(inquiry_product.object.inquiry_product_suppliers.first.supplier.rating) %>
                         <% end %>
                       </span>
