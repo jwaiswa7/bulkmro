@@ -3961,7 +3961,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def create_purchase_order(metadata, new_po_number = nil)
     inquiry = Inquiry.find_by_inquiry_number(metadata['PoEnquiryId'])
     payment_option = PaymentOption.find_by_name(metadata['PoPaymentTerms'].to_s.strip)
-    # begin
+    begin
       if inquiry.present? && inquiry.final_sales_quote.present?
         if metadata['PoNum'].present?
           po_num =  new_po_number.present? ? new_po_number : metadata['PoNum']
@@ -3970,30 +3970,30 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             purchase_order.assign_attributes(material_status: 'Material Readiness Follow-Up')
             purchase_order.assign_attributes(metadata: meta_data, created_at: meta_data['PoDate'])
 
-            # meta_data['ItemLine'].each do |remote_row|
-            #   purchase_order.rows.build do |row|
-            #     row.assign_attributes(
-            #         metadata: remote_row
-            #     )
-            #     tax = nil
-            #     if remote_row['PopTaxRate'].to_i >= 14
-            #       supplier = purchase_order.get_supplier(remote_row['PopProductId'].to_i)
-            #       if supplier.present?
-            #         bill_from = supplier.billing_address
-            #         ship_from = supplier.shipping_address
-            #         bill_to = purchase_order.inquiry.bill_from.address
-            #
-            #         if bill_from.present? && ship_from.present? && bill_to.present?
-            #           purchase_order.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
-            #           row.metadata['PopTaxRate'] = tax_rates[remote_row['PopTaxRate'].to_s].to_s
-            #           row.save
-            #         end
-            #       end
-            #     end
-            #     puts tax
-            #     puts "\n\n"
-            #   end
-            # end
+            meta_data['ItemLine'].each do |remote_row|
+              purchase_order.rows.build do |row|
+                row.assign_attributes(
+                    metadata: remote_row
+                )
+                tax = nil
+                if remote_row['PopTaxRate'].to_i >= 14
+                  supplier = purchase_order.get_supplier(remote_row['PopProductId'].to_i)
+                  if supplier.present?
+                    bill_from = supplier.billing_address
+                    ship_from = supplier.shipping_address
+                    bill_to = purchase_order.inquiry.bill_from.address
+
+                    if bill_from.present? && ship_from.present? && bill_to.present?
+                      purchase_order.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
+                      row.metadata['PopTaxRate'] = tax_rates[remote_row['PopTaxRate'].to_s].to_s
+                      row.save
+                    end
+                  end
+                end
+                puts tax
+                puts "\n\n"
+              end
+            end
             purchase_order.save!
             return {message: 'Purchase Order created successfully with #{purchase_order.po_number}', status: false }
           end
@@ -4007,9 +4007,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       else
         return {message: "inquiry not present => #{metadata['PoEnquiryId']}", status: true }
       end
-    # rescue => e
-    #   return {message: e.message, status: true }
-    # # end
+    rescue => e
+      return {message: e.message, status: true }
+    end
   end
 
   def update_existing_po(purchase_order,new_po_number, old_po_number)
