@@ -25,7 +25,7 @@ class Customers::BaseController < ApplicationController
         locals: {
             record: record
         }.merge(locals),
-        :zoom => 0.78125,
+        zoom: 0.78125
       )
     end
 

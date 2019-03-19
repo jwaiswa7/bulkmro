@@ -19,7 +19,7 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
         locals: {
             record: record
         }.merge(locals),
-        :zoom => 0.78125,
+        zoom: 0.78125
       )
     end
 end
