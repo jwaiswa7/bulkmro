@@ -1411,7 +1411,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     new_po_number = !PurchaseOrder.where(:po_number => 10000..100000).order(:po_number).last.present? ? 10000 : (PurchaseOrder.where(:po_number => 10000..100000).order(:po_number).last.po_number) + 1
     i = 0
     file = "#{Rails.root}/tmp/po_generation_status.csv"
-    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback_mod.csv', 'seed_files')
     CSV.open(file, 'w', write_headers: true, headers: ['missing_po_number', "metadata_po", "reason"]) do |writer|
       service.loop(nil) do |x|
         i = i + 1
