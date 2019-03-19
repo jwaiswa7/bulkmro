@@ -136,12 +136,10 @@
             </div>
 
             <br clear="all">
-            <table border="0" cellspacing="0" style="width: 100%;">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-left">
-
+                <td class="address-wrapper" style="height: auto;">
                     <% if record.sales_order.inquiry.bill_from.address.present? %>
                       <%= record.sales_order.inquiry.bill_from.address.name.to_s %><br>
                     <% end %>
@@ -155,12 +153,9 @@
                       ARN NO. : AD275180000794
                     <% end %>
                     </span>
-                  </div>
                 </td>
-                <td class="address-section-gap"></td>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-right">
-
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;">
                     <% if record.sales_order.inquiry.ship_from.present? %>
                       <%= record.sales_order.inquiry.ship_from.address.name.to_s %><br>
                     <% end %>
@@ -169,7 +164,6 @@
                       GST No.: <%= record.sales_order.inquiry.ship_from.address.gst %><br>
                     <% end %>
                     PAN No.: AAGCB7343G</span>
-                  </div>
                 </td>
               </tr>
               </tbody>
@@ -188,12 +182,10 @@
             </div>
 
             <br clear="all">
-            <table border="0" cellspacing="0" style="width: 100%;">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-left">
-
+                <td class="address-wrapper" style="height: auto;">
                     <%= record.sales_order.inquiry.contact.full_name %><br>
                     <%= record.serialized_billing_address.name %><br>
                     <%= record.serialized_billing_address.to_multiline_s if record.serialized_billing_address.present? %>
@@ -204,12 +196,9 @@
                       Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.serialized_billing_address.telephone %>
                     <% end %> <br>
                     GST No.:<%= record.serialized_billing_address.gst %><br>
-                  </div>
                 </td>
-                <td class="address-section-gap"></td>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-right">
-
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;">
                     <%= record.sales_order.inquiry.shipping_contact.present? ? record.sales_order.inquiry.shipping_contact.full_name : record.sales_order.inquiry.contact.full_name %>
                     <br>
                     <%= record.serialized_shipping_address.name if record.serialized_shipping_address.present? %>
@@ -226,7 +215,6 @@
                     GST
                     No.:<%= record.serialized_shipping_address.gst if record.serialized_shipping_address.present? %>
                     <br>
-                  </div>
                 </td>
               </tr>
               </tbody>
@@ -507,7 +495,8 @@
                     <span>1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice
                       #<%= record.metadata['increment_id'] %> when remitting Wire Transfer payment.<br>
                       2. Bulk MRO Industrial Supply
-                      Pvt. Ltd. is not responsible for any banking fees.</span><br/>
+                      Pvt. Ltd. is not responsible for any banking fees.<br/>
+                      3. Warranties are applicable as per OEM's Standard warranty only.</span><br/>
                       <% if record.sales_order.sales_quote.is_sez %>
                         3. Supply Meant for SEZ/Export Under Letter of Undertaking without payment of IGST<br/>
                       <% end %>

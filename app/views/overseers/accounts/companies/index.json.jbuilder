@@ -21,7 +21,9 @@ json.data (@companies) do |company|
                       end,
                   ].join(' '),
                   link_to(company.to_s, overseers_company_path(company), target: '_blank'),
-                  format_star(company.rating),
+                  if company.is_supplier? && company.rating.present? && company.rating > 0
+                    format_star(company.rating)
+                  end,
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,

@@ -1,0 +1,109 @@
+<%= provide :container_fluid, true %>
+<div class="col-lg-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+
+      <div class="col-8">
+        <h3 class="display-5 d-flex align-items-center">
+          Stock PO Request for Inquiry <%= format_id(@po_request.inquiry.inquiry_number) %>
+          :&nbsp;<%= status_badge(@po_request.stock_status) %>
+        </h3>
+      </div>
+
+      <% if policy(@po_request).edit? && @po_request.stock_status != 'Stock Cancelled' %>
+        <div class="col-2">
+          <a href="<%= edit_overseers_inquiry_po_request_path(@po_request.inquiry, @po_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
+        </div>
+      <% end %>
+
+      <% if policy(@po_request).new_payment_request? %>
+        <div class="col-2">
+          <a href="<%= new_overseers_po_request_payment_request_path(@po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
+            Request</a>
+        </div>
+      <% end %>
+
+      <% if @po_request.payment_request.present? && policy(@po_request.payment_request).show? %>
+        <div class="col-2">
+          <a href="<%= overseers_payment_request_path(@po_request.payment_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
+            Request</a>
+        </div>
+      <% end %>
+
+    </div>
+  </section>
+
+  <section class="mb-3">
+    <%= render 'overseers/po_requests/summary', po_request: @po_request %>
+    <% if @po_request.rows.present? %>
+      <div class="card mb-2">
+        <div class="card-body">
+          <div class="flex-fill">
+            <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
+          </div>
+
+          <div class="mt-3">
+            <table class="table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
+              <thead>
+              <tr>
+                <th>Sr. No.</th>
+                <th>Product</th>
+                <th>Make</th>
+                <th>HSN</th>
+                <th data-toggle="tooltip" title="Tax Rate">T. Rate</th>
+                <th>Quantity</th>
+                <th data-toggle="tooltip" title="Unit of Measurement">UOM</th>
+                <th data-toggle="tooltip" title="Unit Price">UP</th>
+                <th data-toggle="tooltip" title="Total Price">TP</th>
+                <th data-toggle="tooltip" title="Total Tax">TT</th>
+                <th data-toggle="tooltip" title="Total Price with tax">TP with Tax</th>
+                <th data-toggle="tooltip" title="Discount percentage">Disc. %</th>
+                <th>Lead Time</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @po_request.rows.reverse.each_with_index do |row, sr_no| %>
+                <% if row.product.present? %>
+
+                  <tr>
+                    <td><%= sr_no + 1 %></td>
+                    <td><%= row.product.to_s %></td>
+                    <td><%= row.product.try(:brand).to_s %></td>
+                    <td><%= row.tax_code %></td>
+                    <td><%= row.tax_rate %></td>
+                    <td><%= row.quantity.to_f %></td>
+                    <td><%= row.measurement_unit %></td>
+                    <td><%= format_currency(row.unit_price) %></td>
+                    <td><%= format_currency(row.converted_total_selling_price) %></td>
+                    <td><%= format_currency(row.converted_total_tax) %></td>
+                    <td><%= format_currency(row.converted_total_selling_price_with_tax) %></td>
+                    <td><%= percentage(row.discount_percentage, precision: 2) %></td>
+                    <td><%= format_succinct_date(row.lead_time) %></td>
+                  </tr>
+                <% end %>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if @po_request.comments.persisted.size > 0 %>
+      <div class="card">
+        <div class="card-body">
+          <div class="flex-fill">
+            <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+          </div>
+
+
+          <div class="chats mb-3">
+            <% @po_request.comments.each do |comment| %>
+              <%= format_comment(comment) %>
+            <% end %>
+          </div>
+
+        </div>
+      </div>
+    <% end %>
+  </section>
+</div>
