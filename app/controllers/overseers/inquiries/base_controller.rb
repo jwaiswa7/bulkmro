@@ -14,12 +14,13 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
         layout: 'shared/layouts/pdf_templates/show',
         page_size: 'A4',
         footer: {
-            center: '[page] of [topage]'
+            center: '[page] of [topage]',
+            font_size: 9
         },
         locals: {
             record: record
         }.merge(locals),
-        :zoom => 0.78125,
+        zoom: 0.78125
       )
     end
 end

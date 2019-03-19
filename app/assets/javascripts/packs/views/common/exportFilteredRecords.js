@@ -4,7 +4,7 @@ const exportFilteredRecords = function (export_url, successMessage, failedMessag
 
     // To show/hide Filtered records button
     $('.datatable').on('filters:change', function () {
-        $('#export_filtered_records').show();
+        (window.hasher.getHashString() != "" || $(this).val() != '') ? $('#export_filtered_records').show() : $('#export_filtered_records').hide();
     });
 
     $('.filter-list-input').on('keyup', function () {

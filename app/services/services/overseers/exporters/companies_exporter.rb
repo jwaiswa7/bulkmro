@@ -1,6 +1,6 @@
 class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::Exporters::BaseExporter
-  def initialize
-    super
+  def initialize(*params)
+    super(*params)
     @model = Company
     @export_name = 'companies'
     @path = Rails.root.join('tmp', filename)
@@ -8,11 +8,16 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
   end
 
   def call
-    perform_export_later('CompaniesExporter')
+    perform_export_later('CompaniesExporter', @arguments)
   end
 
   def build_csv
-    model.includes({ addresses: :state }, :company_contacts, :inside_sales_owner, :outside_sales_owner, :industry, :account).all.order(created_at: :desc).each do |record|
+    if @ids.present?
+      records = model.where(id: @ids).order(created_at: :desc)
+    else
+      records = model.includes({ addresses: :state }, :company_contacts, :inside_sales_owner, :outside_sales_owner, :industry, :account).all.order(created_at: :desc)
+    end
+    records.each do |record|
     rows.push(
       name: record.name,
       comapny_alias: record.account.name,
@@ -38,7 +43,8 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
       created_at: record.created_at.to_date.to_s
     )
   end
-    export = Export.create!(export_type: 10)
+    filtered = @ids.present?
+    export = Export.create!(export_type: 10, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     generate_csv(export)
   end
 end
