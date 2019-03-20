@@ -1407,11 +1407,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
 
   def update_purchase_orders
-    # # for purchase_order_callback csv
+    # for purchase_order_callback csv
     new_po_number = !PurchaseOrder.where(:po_number => 10000..100000).order(:po_number).last.present? ? 10000 : (PurchaseOrder.where(:po_number => 10000..100000).order(:po_number).last.po_number) + 1
     i = 0
     file = "#{Rails.root}/tmp/po_generation_status.csv"
     service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback_mod.csv', 'seed_files')
+    last_date = "2018-03-31".to_date
     CSV.open(file, 'w', write_headers: true, headers: ['missing_po_number', "metadata_po", "reason"]) do |writer|
       service.loop(nil) do |x|
         i = i + 1
@@ -1419,86 +1420,79 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         p i
         p x.get_column('purchase_order_number')
         purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
+        purchase_order_number = x.get_column('purchase_order_number')
         poNum = JSON.parse(x.get_column('meta_data'))['PoNum']
         right_po = PurchaseOrder.find_by_po_number(poNum)
-        if poNum.scan(/\D/).empty?
-          # po_number with only digits
-          if right_po.present?
-            # Purchase orders (with po number in metadata) exists.
-            if purchase_order.present? && (poNum != x.get_column('purchase_order_number'))
-              # purchase order also exist for same column and mismatch in metadata, normal purchase_order
-              if !purchase_order.inquiry.present?
-                # inquiry not present then delete
-                purchase_order.destroy
-                writer << [x.get_column('purchase_order_number'), poNum, "with po_number #{x.get_column('purchase_order_number')} deleted sucessfully"]
+        date = JSON.parse(x.get_column('meta_data'))['PoDate']
+        po_date = DateTime.parse date rescue nil
+        if po_date.present? && (po_date > last_date) && (purchase_order_number == poNum)
+          Resources::PurchaseOrder.set_multiple_items([right_po.po_number])
+        else
+          if poNum.scan(/\D/).empty?
+            # po_number with only digits
+            if right_po.present?
+              # Purchase orders (with po number in metadata) exists.
+              if purchase_order.present? && (poNum != x.get_column('purchase_order_number'))
+                # purchase order also exist for same column and mismatch in metadata, normal purchase_order
+                if !purchase_order.inquiry.present?
+                  # inquiry not present then delete
+                  purchase_order.destroy
+                  writer << [x.get_column('purchase_order_number'), poNum, "with po_number #{x.get_column('purchase_order_number')} deleted sucessfully"]
+                else
+                  # else display reason
+                  writer << [x.get_column('purchase_order_number'), poNum, "with po_number #{x.get_column('purchase_order_number')} have inquiry so can not delete"]
+                end
+              end
+            else
+              # actual purchase order not present then
+              if purchase_order.present?
+                # wrong purchase_order present
+                status = purchase_order.metadata['PoNum'] == poNum
+                if status
+                  # if metadata po_number matched with wrong purchase_order then update
+                  response = update_existing_po(purchase_order, poNum, poNum)
+                  if !response.present?
+                    writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+                  elsif !response[:status]
+                    new_po_number = new_po_number + 1
+                    writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
+                  end
+                else
+                  # mismatched then delete wrong purchase_order if inquiry not present otherwise dont delete
+                  # In both cases create new Purchase order
+                  if !purchase_order.inquiry.present?
+                    purchase_order.delete
+                  end
+                  response = create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
+                  if !response.present?
+                    writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+                  elsif !response[:status]
+                    new_po_number = new_po_number + 1
+                    writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
+                  end
+                end
               else
-                # else display reason
-                writer << [x.get_column('purchase_order_number'), poNum, "with po_number #{x.get_column('purchase_order_number')} have inquiry so can not delete"]
+                metadata = JSON.parse(x.get_column('meta_data'))
+                inquiry = Inquiry.find_by_inquiry_number(metadata['PoEnquiryId'])
+                if inquiry.present?
+                  response = create_purchase_order(JSON.parse(x.get_column('meta_data')))
+                  message = ''
+                  if !response.present?
+                    writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+                  else
+                    writer << [x.get_column('purchase_order_number'), poNum,  response[:message]]
+                  end
+                else
+                  writer << [x.get_column('purchase_order_number'), poNum, "Can not create PO becuse inquiry not present"]
+                end
               end
             end
           else
-            # actual purchase order not present then
+            # alpha numeric po number in metadata
             if purchase_order.present?
-              # wrong purchase_order present
               status = purchase_order.metadata['PoNum'] == poNum
               if status
-                # if metadata po_number matched with wrong purchase_order then update
-                response = update_existing_po(purchase_order, poNum, poNum)
-                if !response.present?
-                  writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
-                elsif !response[:status]
-                  new_po_number = new_po_number + 1
-                  writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
-                end
-              else
-                # mismatched then delete wrong purchase_order if inquiry not present otherwise dont delete
-                # In both cases create new Purchase order
-                if !purchase_order.inquiry.present?
-                  purchase_order.delete
-                end
-                response = create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
-                if !response.present?
-                  writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
-                elsif !response[:status]
-                  new_po_number = new_po_number + 1
-                  writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
-                end
-              end
-            else
-              metadata = JSON.parse(x.get_column('meta_data'))
-              inquiry = Inquiry.find_by_inquiry_number(metadata['PoEnquiryId'])
-              if inquiry.present?
-                response = create_purchase_order(JSON.parse(x.get_column('meta_data')))
-                message = ''
-                if !response.present?
-                  writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
-                else
-                  writer << [x.get_column('purchase_order_number'), poNum,  response[:message]]
-                end
-              else
-                writer << [x.get_column('purchase_order_number'), poNum, "Can not create PO becuse inquiry not present"]
-              end
-            end
-          end
-        else
-          # alpha numeric po number in metadata
-          if purchase_order.present?
-            status = purchase_order.metadata['PoNum'] == poNum
-            if status
-              # if metata data po number and normal po number match then create new po with diff number
-              response = update_existing_po(purchase_order,new_po_number, poNum)
-              if !response.present?
-                writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
-              elsif !response[:status]
-                new_po_number = new_po_number + 1
-                writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
-              end
-            else
-              # if mismatch the po number and metadata po number then delete and create new
-              if !purchase_order.inquiry.present?
-                purchase_order.delete
-              end
-              if right_po.present?
+                # if metata data po number and normal po number match then create new po with diff number
                 response = update_existing_po(purchase_order,new_po_number, poNum)
                 if !response.present?
                   writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
@@ -1507,33 +1501,44 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                   writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
                 end
               else
-                response = create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
-                message = ''
-                if !response.present?
-                  writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
-                elsif !response[:status]
-                  new_po_number = new_po_number+1
-                  writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
+                # if mismatch the po number and metadata po number then delete and create new
+                if !purchase_order.inquiry.present?
+                  purchase_order.delete
+                end
+                if right_po.present?
+                  response = update_existing_po(purchase_order,new_po_number, poNum)
+                  if !response.present?
+                    writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+                  elsif !response[:status]
+                    new_po_number = new_po_number + 1
+                    writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
+                  end
+                else
+                  response = create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
+                  message = ''
+                  if !response.present?
+                    writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+                  elsif !response[:status]
+                    new_po_number = new_po_number+1
+                    writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
+                  end
                 end
               end
-            end
-          else
-            # crate new po with number
-            response = create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
-            message = ''
-            if !response.present?
-              writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
-            elsif !response[:status]
-              new_po_number = new_po_number+1
-              writer << [x.get_column('purchase_order_number'), poNum,  response[:message]]
+            else
+              # crate new po with number
+              response = create_purchase_order(JSON.parse(x.get_column('meta_data')), new_po_number)
+              message = ''
+              if !response.present?
+                writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
+              elsif !response[:status]
+                new_po_number = new_po_number+1
+                writer << [x.get_column('purchase_order_number'), poNum,  response[:message]]
+              end
             end
           end
         end
       end
     end
-
-
-
   end
 
 
@@ -4102,6 +4107,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def create_purchase_order(metadata, new_po_number = nil)
     inquiry = Inquiry.find_by_inquiry_number(metadata['PoEnquiryId'])
     payment_option = PaymentOption.find_by_name(metadata['PoPaymentTerms'].to_s.strip)
+    tax_rates = {'14' => 0, '15' => 12, '16' => 18, '17' => 28, '18' => 5}
+
     begin
       if inquiry.present? && inquiry.final_sales_quote.present?
         if metadata['PoNum'].present?
@@ -4109,9 +4116,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           purchase_orders = inquiry.purchase_orders.where(po_number: po_num, metadata: metadata).first_or_create!
           purchase_orders do |purchase_order|
             purchase_order.assign_attributes(material_status: 'Material Readiness Follow-Up')
-            purchase_order.assign_attributes(metadata: meta_data, created_at: meta_data['PoDate'])
+            purchase_order.assign_attributes(metadata: metadata, created_at: metadata['PoDate'])
 
-            meta_data['ItemLine'].each do |remote_row|
+            metadata['ItemLine'].each do |remote_row|
               purchase_order.rows.build do |row|
                 row.assign_attributes(
                     metadata: remote_row
