@@ -1,9 +1,12 @@
 class PaymentRequestsIndex < BaseIndex
   statuses = PaymentRequest.statuses
+  request_owners = PaymentRequest.request_owners
 
   define_type PaymentRequest.all do
     field :id, type: 'integer'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
+    field :request_owner_string, value: -> (record) { record.request_owner }, analyzer: 'substring'
+    field :request_owner, value: -> (record) { request_owners[record.request_owner] }, type: 'integer'
     field :status, value: -> (record) { statuses[record.status] }, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
