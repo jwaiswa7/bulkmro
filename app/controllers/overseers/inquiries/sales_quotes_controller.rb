@@ -82,9 +82,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
 
   def get_relationship_map_json
     authorize @sales_quote
-    sales_quote_array = []
-    sales_quote_array << @sales_quote
-    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, sales_quote_array).call
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, [@sales_quote]).call
     render json: {data: inquiry_json}
   end
 

@@ -7,11 +7,11 @@ class Services::Overseers::Inquiries::RelationshipMap < Services::Shared::BaseSe
   def call
     {
         innerHTML: render_in_service(partial: 'overseers/inquiries/treant_templates/inquiry', locals: {inquiry: inquiry}),
-        children: inquiry_sales_quotes(inquiry)
+        children: inquiry_sales_quotes
     }
   end
 
-  def inquiry_sales_quotes(inquiry)
+  def inquiry_sales_quotes
     sales_quote_array = Array.new
     sales_quotes.each do |sales_quote|
       assign_block_data('overseers/inquiries/treant_templates/salesquote', sales_quote_array, {sales_quote: sales_quote}, inquiry_sales_orders(sales_quote))
