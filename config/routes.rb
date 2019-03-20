@@ -174,6 +174,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'pending'
         get 'export_all'
+        get 'export_filtered_records'
       end
 
       scope module: 'products' do
@@ -329,6 +330,8 @@ Rails.application.routes.draw do
         get 'calculation_sheet'
         get 'export'
         get 'stages'
+        get 'relationship_map'
+        get 'get_relationship_map_json'
       end
 
       collection do
@@ -388,6 +391,8 @@ Rails.application.routes.draw do
             get 'new_revision'
             get 'preview'
             get 'reset_quote'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
 
           scope module: 'sales_quotes' do
