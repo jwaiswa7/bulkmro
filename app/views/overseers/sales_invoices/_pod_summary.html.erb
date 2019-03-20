@@ -27,7 +27,7 @@
                 <th class="text-uppercase text-left"> Regular</th>
                 <% @invoice_over_month.keys.each do |month| %>
                   <td class="text-uppercase">
-                    <a href="<%= overseers_sales_invoices_path %>#!Invoice+Date=<%= format_date_range(month.to_date) %>&POD=False%7C0&Opportunity+Type=regular%7C70"> <%= (@regular_pod_over_month[month].present?) ? number_with_delimiter(@regular_pod_over_month[month]['doc_count'], delimiter: ',') : 0 %></a>
+                    <%= (@regular_pod_over_month[month].present?) ? number_with_delimiter(@regular_pod_over_month[month]['doc_count'], delimiter: ',') : 0 %>
                   </td>
                 <% end %>
               </tr>
