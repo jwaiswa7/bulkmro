@@ -13,7 +13,7 @@ json.data (@customer_orders) do |customer_order|
                   format_date(customer_order.created_at),
                   customer_order.contact.name,
                   format_currency(customer_order.calculated_total),
-                  format_currency(customer_order.grand_total),
+                  format_currency(customer_order.grand_total(for_order: true)),
               ]
 end
 
