@@ -3,7 +3,7 @@ class SalesQuote < ApplicationRecord
   include Mixins::CanBeSent
   include Mixins::CanBeSynced
   include Mixins::HasConvertedCalculations
-
+  include DisplayHelper
   has_closure_tree(name_column: :to_s)
 
   update_index('sales_quotes#sales_quote') { self }

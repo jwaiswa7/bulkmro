@@ -88,9 +88,9 @@
             <div class="col-md-6 mt-2 mt-md-0">
               <strong class="d-block">Bulk MRO - Bill to :</strong>
               <span>
-                      <%= (@inquiry.bill_from.address.name.to_s + '<br>').html_safe if @inquiry.bill_from.address.name.present? %>
                 <% if @inquiry.bill_from.present? %>
-                        <%= @inquiry.bill_from.address.to_multiline_s %><br>
+                  <%= (@inquiry.bill_from.address.name.to_s + '<br>').html_safe if @inquiry.bill_from.address.name.present? %>
+                  <%= @inquiry.bill_from.address.to_multiline_s %><br>
                         GST No. : <%= @inquiry.bill_from.address.gst %><br>
                       <% end %>
                 PAN No. : AAGCB7343G</span>

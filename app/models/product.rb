@@ -31,6 +31,8 @@ class Product < ApplicationRecord
   has_many :customer_products
   has_one :kit
   has_many :cart_items
+  has_many :purchase_order_rows
+  has_many :purchase_orders, through: :purchase_order_rows
   has_many :stocks, class_name: 'WarehouseProductStock', inverse_of: :product, dependent: :destroy
 
   attr_accessor :applicable_tax_percentage
