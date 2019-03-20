@@ -27,6 +27,7 @@
     "select2": "4.0.5",
     "select2-theme-bootstrap4": "https://github.com/angel-vladov/select2-bootstrap-theme",
     "stickybits": "^3.5.6",
+    "treantjs": "^1.0.0",
     "vue": "^2.5.17",
     "wholly": "https://github.com/gajus/wholly"
   },

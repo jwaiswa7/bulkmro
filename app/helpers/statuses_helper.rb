@@ -191,6 +191,8 @@ module StatusesHelper
       'success'
     when :'Stock Requested'
       'warning'
+    when :'default'
+      'info'
     else
       'danger'
     end

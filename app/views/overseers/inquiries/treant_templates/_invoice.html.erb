@@ -1,0 +1,22 @@
+<a class="card text-black-50 invoice" target="_blank" href="/overseers/inquiries/<%= invoice.inquiry.to_param %>/sales_invoices/<%= invoice.to_param %>">
+  <div class="card-header text-center p-1">
+    <strong>Sales Invoice</strong>
+  </div>
+  <div class="card-body p-1 text-center">
+    <div>
+      <%= status_badge(invoice.status) %>
+    </div>
+    <hr class="my-1">
+    <div>
+      #<%= invoice.invoice_number %>
+    </div>
+    <hr class="my-1">
+    <div>
+      <%= format_currency(invoice.metadata['base_grand_total'].to_f - invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %>
+    </div>
+    <hr class="my-1">
+    <div>
+      <%= format_date_with_time(invoice.created_at) %>
+    </div>
+  </div>
+</a>

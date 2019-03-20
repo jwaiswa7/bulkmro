@@ -1,0 +1,22 @@
+<a class="card text-black-50 inquiry" target="_blank" href="/overseers/inquiries/<%= inquiry.to_param %>">
+  <div class="card-header p-1 text-center">
+    <strong>Inquiry</strong>
+  </div>
+  <div class="card-body p-1 text-center">
+    <div>
+      #<%= inquiry.inquiry_number %>
+    </div>
+    <hr class="my-1">
+    <div>
+      <%= inquiry.inside_sales_owner.to_s %>
+    </div>
+    <hr class="my-1">
+    <div>
+      <%= inquiry.subject %>
+    </div>
+    <hr class="my-1">
+    <div>
+      <%= format_date_with_time(inquiry.created_at) %>
+    </div>
+  </div>
+</a>

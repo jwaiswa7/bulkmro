@@ -145,6 +145,10 @@ class Company < ApplicationRecord
     self.addresses.first if !self.addresses.blank?
   end
 
+  def self.default_supplier
+    find_by_name('Local')
+  end
+
   def billing_address
     self.update_attributes(default_billing_address: self.set_default_company_billing_address) if self.default_billing_address.blank?
     self.default_billing_address

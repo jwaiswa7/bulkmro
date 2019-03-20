@@ -54,7 +54,7 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
         multi_match: {
             query: query,
             operator: 'or',
-            fields: %w[name mpn^3  ],
+            fields: %w[name mpn^3 sku],
         }
     }
 

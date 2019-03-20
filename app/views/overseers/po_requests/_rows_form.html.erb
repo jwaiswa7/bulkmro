@@ -301,7 +301,7 @@
           <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: 'Tax Rate' %>
         </div>
         <div class="col-12 col-md-1">
-          <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 1}, disabled: false, required: true %>
+          <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 0.01}, disabled: false, required: true %>
         </div>
 
         <div class="col-12 col-md-1">
