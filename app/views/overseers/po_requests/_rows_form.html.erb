@@ -187,99 +187,21 @@
   <% end %>
 </div>
 <hr>
-<!--
-<div class="form-row d-none d-md-flex">
-  <div class="col-12 col-md-6">
-    <div class="form-row">
-      <div class="col-12 col-md-3">
-        <div class="form-group mb-0">
-          <label>Product</label>
-        </div>
-      </div> $('.submit-form').unbind().bind('click', function (event) {
-        let form_changed_data = $("form").serializeArray();
-        let changed_status = form_changed_data.filter(x => x.name === "po_request[status]");
-        let original_status = form_original_data.filter(x => x.name === "po_request[status]");
-        if (changed_status) {
-            let is_cancel_status = changed_status[0]['value'].toLowerCase().indexOf('cancel') != -1
-            if (is_cancel_status && original_status && (changed_status[0]['value'] != original_status[0]['value'])) {
-                if (changed_status[0]['value'] == 'Cancelled') {
-                    if (!confirm('Do you want to Cancel the Po Request ?')) {
-                        event.preventDefault();
-                    }
-                }
-            }
-        }
 
+<div class="d-inline">
+  <div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" name="all_lead_dates" id="all_lead_dates">
+    <label class="custom-control-label" for="all_lead_dates">Select All</label>
+  </div>
 
-    });
-      <div class="col-12 col-md-1">
-        <div class="form-group mb-0">
-          <label>Make</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label>HSN</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Tax Rate">T. Rate</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label>Quantity</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Discount percentage">Disc. %</label>
-        </div>
-      </div>
-    </div>
+  <div class="mr-2 float-left update_lead_date_wrapper">
+    <%= f.input :common_lead_date, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'overall-lead-time'}, label: 'Lead Date' %>
   </div>
-  <div class="col-12 col-md-6">
-    <div class="form-row">
-      <div class="col-12 col-md-1">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Unit of Measurement">UOM</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Unit Price">UP</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Total Price">TP</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Total Tax">TT</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label data-toggle="tooltip" title="Total Price with tax">TP with tax</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-2">
-        <div class="form-group mb-0">
-          <label>Lead Date</label>
-        </div>
-      </div>
-      <div class="col-12 col-md-1">
-        <div class="form-group mb-0">
-          <label>Remove</label>
-        </div>
-      </div>
-    </div>
-  </div>
+  <button type="button" id="update_lead_date" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_lead_date_wrapper">
+    <i class="fal fa-plus mr-1"></i>Update Lead Date
+  </button>
 </div>
--->
+<hr>
 
 <%= f.nested_fields_for :rows, f.object.persisted? ? f.object.rows.order(id: :asc) : f.object.rows do |po_request_row| %>
   <%= po_request_row.hidden_field :id %>
@@ -290,7 +212,10 @@
   <%= po_request_row.hidden_field :measurement_unit_id, value: po_request_row.object.measurement_unit_id || MeasurementUnit.default.id %>
   <div class="form-row po-request-row">
     <div class="col-12 col-md-12 mb-1">
-
+      <span class="custom-control custom-checkbox d-inline pl-0">
+        <%= check_box_tag 'po_request_row[]', po_request_row.object.id, false, id: "po_request_row_id_#{po_request_row.object.id}", class: 'custom-control-input' %>
+        <label class="custom-control-label" for="<%= "po_request_row_id_#{po_request_row.object.id}" %>"></label>
+      </span>
       #<%= ((f.object.rows.index(po_request_row.object) || f.object.rows.size || 0) + 1) %>
       <%#= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, disabled: true %>
     </div>
