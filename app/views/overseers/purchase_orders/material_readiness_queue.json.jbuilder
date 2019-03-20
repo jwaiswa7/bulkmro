@@ -32,7 +32,7 @@ json.data (@purchase_orders) do |purchase_order|
                   (format_comment(purchase_order.last_comment, trimmed: true) if purchase_order.last_comment.present?),
                   (format_succinct_date(purchase_order.po_request.sales_order.mis_date) if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
                   (purchase_order.po_request.sales_order.order_number if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
-                  (format_succinct_date(purchase_order.po_request.supplier_committed_date) if purchase_order.po_request.present?),
+                  (format_succinct_date(purchase_order.po_request.inquiry.customer_committed_date) if purchase_order.po_request.present?),
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   (purchase_order.logistics_owner.full_name if purchase_order.logistics_owner.present?),
                   format_succinct_date(purchase_order.followup_date),
