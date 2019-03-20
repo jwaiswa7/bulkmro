@@ -1,11 +1,11 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :resync_inquiry_products, :resync_unsync_inquiry_products ]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products ]
 
   def index
     authorize :inquiry
 
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.json do
         service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
         service.call
@@ -26,7 +26,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.inquiries.last.report)
+    redirect_to url_for(Export.inquiries.not_filtered.last.report)
   end
 
   def export_filtered_records
@@ -182,6 +182,33 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
   end
 
+  def relationship_map
+    authorize @inquiry
+  end
+
+  def get_relationship_map_json
+    authorize @inquiry
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes).call
+    render json: {data: inquiry_json}
+  end
+  def create_purchase_orders_requests
+    @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
+    authorize @inquiry
+    service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@inquiry, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h, true)
+    service.call
+    Rails.cache.delete(:po_requests)
+    redirect_to stock_overseers_po_requests_path
+  end
+
+  def preview_stock_po_request
+    @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
+    service = Services::Overseers::SalesOrders::PreviewPoRequests.new(@inquiry, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
+    @po_requests = service.call
+
+    Rails.cache.write(:po_requests, @po_requests, expires_in: 25.minutes)
+    authorize @inquiry
+  end
+
   private
 
     def set_inquiry
@@ -233,6 +260,7 @@ class Overseers::InquiriesController < Overseers::BaseController
           :calculation_sheet,
           :commercial_terms_and_conditions,
           :comments,
+          :product_type,
           supplier_quotes: [],
           inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
       )
@@ -252,6 +280,63 @@ class Overseers::InquiriesController < Overseers::BaseController
                   :_destroy
               ]
           ]
+        )
+      else
+        {}
+      end
+    end
+
+    def new_purchase_orders_requests_params
+      if params.has_key?(:inquiry)
+        params.require(:inquiry).permit(
+          :id,
+            po_requests_attributes: [
+                :id,
+                :supplier_id,
+                :inquiry_id,
+                :company_id,
+                :reason_to_stock,
+                :estimated_date_to_unstock,
+                :requested_by_id,
+                :approved_by_id,
+                :_destroy,
+                :logistics_owner_id,
+                :address_id,
+                :contact_id,
+                :payment_option_id,
+                :stock_status,
+                :supplier_committed_date,
+                :blobs,
+                :supplier_po_type,
+                :contact_email,
+                :contact_phone,
+                :bill_from_id,
+                :ship_from_id,
+                :bill_to_id,
+                :ship_to_id,
+                attachments: [],
+                rows_attributes: [
+                    :id,
+                    :_destroy,
+                    :status,
+                    :quantity,
+                    :sales_order_row_id,
+                    :product_id,
+                    :brand,
+                    :tax_code_id,
+                    :tax_rate_id,
+                    :measurement_unit_id,
+                    :unit_price,
+                    :conversion,
+                    :lead_time,
+                    :discount_percentage
+                ],
+                comments_attributes: [
+                    :created_by_id,
+                    :updated_by_id,
+                    :message
+                ]
+            ]
         )
       else
         {}

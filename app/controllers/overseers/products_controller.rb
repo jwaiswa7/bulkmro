@@ -1,5 +1,5 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync, :resync_inventory]
+  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync, :resync_inventory, :get_product_details]
 
   def index
     service = Services::Overseers::Finders::Products.new(params)
@@ -12,7 +12,15 @@ class Overseers::ProductsController < Overseers::BaseController
   def autocomplete
     service = Services::Overseers::Finders::Products.new(params.merge(page: 1))
     service.call
+    @indexed_products = service.indexed_records
+    @products = service.records.active
+    authorize @products
+  end
 
+  def autocomplete_mpn
+    @label = params[:label] || :to_s
+    service = Services::Overseers::Finders::Products.new(params, sort_by: 'mpn', sort_order: 'desc')
+    service.call
     @indexed_products = service.indexed_records
     @products = service.records.active
     authorize @products
@@ -134,12 +142,22 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def export_all
-    authorize :inquiry
-    service = Services::Overseers::Exporters::ProductsExporter.new
+    authorize :product
+    service = Services::Overseers::Exporters::ProductsExporter.new(params[:q], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.products.last.report)
+    redirect_to url_for(Export.products.not_filtered.last.report)
   end
+
+  def export_filtered_records
+    authorize :product
+    service = Services::Overseers::Finders::Products.new(params, current_overseer, paginate: false)
+    service.call
+
+    export_service = Services::Overseers::Exporters::ProductsExporter.new([], current_overseer, service.records.pluck(:id))
+    export_service.call
+  end
+
 
   def autocomplete_suppliers
     authorize @product
@@ -160,7 +178,7 @@ class Overseers::ProductsController < Overseers::BaseController
     product_details['converted_unit_selling_price'] = @product.latest_unit_cost_price
     render json: product_details
   end
-  
+
   private
 
     def product_params

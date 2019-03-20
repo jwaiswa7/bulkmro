@@ -159,6 +159,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'non_kit_autocomplete'
         get 'service_autocomplete'
+        get 'autocomplete_mpn'
       end
       member do
         get 'customer_bp_catalog'
@@ -166,12 +167,15 @@ Rails.application.routes.draw do
         get 'sku_purchase_history'
         get 'resync'
         get 'resync_inventory'
+        get 'autocomplete_suppliers'
+        get 'get_product_details'
       end
 
       collection do
         get 'autocomplete'
         get 'pending'
         get 'export_all'
+        get 'export_filtered_records'
       end
 
       scope module: 'products' do
@@ -209,6 +213,9 @@ Rails.application.routes.draw do
         get 'pending_and_rejected'
         get 'cancelled'
         get 'amended'
+        get 'pending_stock_approval'
+        get 'stock'
+        get 'completed_stock'
       end
 
     end
@@ -324,6 +331,8 @@ Rails.application.routes.draw do
         get 'calculation_sheet'
         get 'export'
         get 'stages'
+        get 'relationship_map'
+        get 'get_relationship_map_json'
       end
 
       collection do
@@ -333,6 +342,8 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
         get 'export_filtered_records'
+        post 'create_purchase_orders_requests'
+        post 'preview_stock_po_request'
       end
 
       scope module: 'inquiries' do
@@ -340,6 +351,12 @@ Rails.application.routes.draw do
         resources :email_messages
         resources :sales_shipments
         resources :purchase_orders
+
+        resources :po_requests do
+          collection do
+            post 'preview_stock'
+          end
+        end
 
         resources :sales_invoices do
           member do
@@ -363,6 +380,8 @@ Rails.application.routes.draw do
             post 'create_confirmation'
             post 'resync'
             get 'fetch_order_data'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
 
           collection do
@@ -375,6 +394,8 @@ Rails.application.routes.draw do
             get 'new_revision'
             get 'preview'
             get 'reset_quote'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
 
           scope module: 'sales_quotes' do
@@ -404,6 +425,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'export_all'
+        get 'export_filtered_records'
       end
       member do
         get 'render_rating_form'

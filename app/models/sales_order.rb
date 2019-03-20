@@ -10,6 +10,7 @@ class SalesOrder < ApplicationRecord
   include Mixins::CanBeSent
   include Mixins::CanBeSynced
   include Mixins::HasConvertedCalculations
+  include DisplayHelper
 
   update_index('sales_orders#sales_order') {self}
   pg_search_scope :locate, against: [:status, :id, :order_number], associated_against: {company: [:name], inquiry: [:inquiry_number, :customer_po_number]}, using: {tsearch: {prefix: true}}
@@ -28,6 +29,7 @@ class SalesOrder < ApplicationRecord
   has_many :sales_order_rows, inverse_of: :sales_order
   accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| (attributes['sales_quote_row_id'].blank? || attributes['quantity'].blank? || attributes['quantity'].to_f < 0) && attributes['id'].blank?}, allow_destroy: true
   has_many :sales_quote_rows, through: :sales_quote
+  has_many :inquiry_product_suppliers, through: :sales_quote_rows
   has_many :products, through: :rows
   has_many :categories, through: :products
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order

@@ -31,7 +31,6 @@ class PoRequestMailer < ApplicationMailer
     standard_email(email_message)
   end
 
-
   def send_dispatch_from_supplier_delayed_notification(email_message)
     @overseer = email_message.overseer
     @inquiry = email_message.inquiry

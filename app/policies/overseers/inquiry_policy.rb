@@ -63,10 +63,6 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
-  def export_filtered_records?
-    developer? # allow_export?
-  end
-
   def create_excel_import?
     new_excel_import?
   end
@@ -119,6 +115,14 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def relationship_map?
+    stages?
+  end
+
+  def get_relationship_map_json?
+    relationship_map?
+  end
+
   def resync_inquiry_products?
     developer? && record.inquiry_products.present?
   end
@@ -130,6 +134,14 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def new_freight_request?
     !record.freight_request.present? && !logistics?
+  end
+
+  def preview_stock_po_request?
+    developer? || sales? || admin?
+  end
+
+  def create_purchase_orders_requests?
+    developer? || sales? || admin?
   end
 
   class Scope

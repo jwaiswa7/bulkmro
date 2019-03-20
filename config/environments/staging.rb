@@ -9,15 +9,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {host: Settings.domain}
   config.action_mailer.asset_host = Settings.domain
   config.action_mailer.delivery_method = :test
-  config.action_mailer.smtp_settings = {
-      address: 'smtp.gmail.com',
-      port: 587,
-      domain: 'bulkmro.com',
-      # user_name:            '', # can be use as fallback if user credentials failed
-      # password:             '', # can be use as fallback if user credentials failed
-      authentication: 'plain',
-      enable_starttls_auto: true
-  }
+  config.action_mailer.smtp_settings = Settings.sendgrid_smtp.to_hash
 
   # Settings specified here will take precedence over those in config/application.rb.
 

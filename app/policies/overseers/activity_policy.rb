@@ -34,7 +34,4 @@ class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
     allow_activity_export?
   end
 
-  def export_filtered_records?
-    developer? # allow_export?
-  end
 end
