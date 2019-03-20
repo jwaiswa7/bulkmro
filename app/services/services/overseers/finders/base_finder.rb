@@ -4,6 +4,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @range_filters = []
     @paginate = paginate
     @status = params[:status]
+    @owner_type = params[:owner]
     @base_filter = []
     @sort_by = 'created_at'
     @sort_order = 'desc'

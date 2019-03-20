@@ -2,7 +2,6 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
   before_action :set_payment_request, only: [:show]
 
   def index
-
     service = Services::Overseers::Finders::PaymentRequests.new(params, current_overseer)
     service.call
 
