@@ -11,7 +11,7 @@
         <%= simple_form_for([:overseers, @invoice_request], :url => cancel_invoice_request_overseers_invoice_request_path(@invoice_request), :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
           <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
           <div class="modal-body">
-            <% if status == 'Pending AP Invoice'  %>
+            <% if @invoice_request.status == 'Pending AP Invoice'  %>
               <%= f.input :ap_cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
               <%= f.hidden_field :status, :value => 'Cancelled AP Invoice' %>
             <% else %>

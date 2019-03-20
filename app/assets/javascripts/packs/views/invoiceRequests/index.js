@@ -28,22 +28,24 @@ const index = () => {
 
 let modalSubmit = () => {
     $("#cancelInvoice").on('click', '.confirm-cancel', function (event) {
-        var formSelector = "#" + $(this).closest('form').attr('id'),
-            datastring = $(formSelector).serialize();
-        $.ajax({
-            type: "PATCH",
-            url: $(formSelector).attr('action'),
-            data: datastring,
-            dataType: "json",
-            success: function success(data) {
-                $('#cancelInvoice').modal('hide');
-                window.location.reload()
-            },
-            error: function error(_error) {
-                if (_error.responseJSON && _error.responseJSON.error && _error.responseJSON.error.base)
-                    $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error.base + "</div>");
-            }
-        });
+        if( confirm('Do you want to Cancel the GRPO') ){
+            var formSelector = "#" + $(this).closest('form').attr('id'),
+                datastring = $(formSelector).serialize();
+            $.ajax({
+                type: "PATCH",
+                url: $(formSelector).attr('action'),
+                data: datastring,
+                dataType: "json",
+                success: function success(data) {
+                    $('#cancelInvoice').modal('hide');
+                    window.location.reload()
+                },
+                error: function error(_error) {
+                    if (_error.responseJSON && _error.responseJSON.error && _error.responseJSON.error.base)
+                        $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error.base + "</div>");
+                }
+            });
+        }
         event.preventDefault();
     });
 }
