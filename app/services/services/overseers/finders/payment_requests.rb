@@ -15,13 +15,15 @@ class Services::Overseers::Finders::PaymentRequests < Services::Overseers::Finde
                       end
 
     if @status.present?
+      status_array = []
       if @status == 'Completed'
-        indexed_records = indexed_records.filter(filter_by_array(:status, [50]))
+        statuses = ['Payment Made', 'Partial Payment Made']
+        status_array = statuses.map{|status| PaymentRequest.statuses[status]}
       elsif @status == 'Rejected'
-        reject_statuses = ['Supplier Info: Bank Details Missing', 'Supplier Info: Bank Details Incorrect', 'Supplier Info: PI mismatch', 'Rejected: Others']
-        status_array = reject_statuses.map{|status| PaymentRequest.statuses[status]}
-        indexed_records = indexed_records.filter(filter_by_array(:status, status_array))
+        statuses = ['Supplier Info: Bank Details Missing', 'Supplier Info: Bank Details Incorrect', 'Supplier Info: PI mismatch', 'Rejected: Others']
+        status_array = statuses.map{|status| PaymentRequest.statuses[status]}
       end
+      indexed_records = indexed_records.filter(filter_by_array(:status, status_array))
     end
     # if @owner_type.present?
     #   indexed_records = indexed_records.filter(filter_by_value(:request_owner, 'Accounts'))
@@ -45,13 +47,15 @@ class Services::Overseers::Finders::PaymentRequests < Services::Overseers::Finde
     end
 
     if @status.present?
+      status_array = []
       if @status == 'Completed'
-        indexed_records = indexed_records.filter(filter_by_array(:status, [50]))
+        statuses = ['Payment Made', 'Partial Payment Made']
+        status_array = statuses.map{|status| PaymentRequest.statuses[status]}
       elsif @status == 'Rejected'
-        reject_statuses = ['Supplier Info: Bank Details Missing', 'Supplier Info: Bank Details Incorrect', 'Supplier Info: PI mismatch', 'Rejected: Others']
-        status_array = reject_statuses.map{|status| PaymentRequest.statuses[status]}
-        indexed_records = indexed_records.filter(filter_by_array(:status, status_array))
+        statuses = ['Supplier Info: Bank Details Missing', 'Supplier Info: Bank Details Incorrect', 'Supplier Info: PI mismatch', 'Rejected: Others']
+        status_array = statuses.map{|status| PaymentRequest.statuses[status]}
       end
+      indexed_records = indexed_records.filter(filter_by_array(:status, status_array))
     end
 
     if search_filters.present?
