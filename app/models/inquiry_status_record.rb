@@ -65,7 +65,7 @@ class InquiryStatusRecord < ApplicationRecord
       self.update_attribute(:parent, parent_record)
     end
 
-    parent.present? ? self.created_at- parent.created_at : 0
+     parent.present? ? format_times_ago(self.created_at- parent.created_at) : 0
   end
 
 
