@@ -15,7 +15,7 @@ class Product < ApplicationRecord
   include Mixins::HasImages
 
   update_index('products#product') { self if self.approved? }
-  pg_search_scope :locate, against: [:sku, :name], associated_against: { brand: [:name] }, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:sku, :mpn, :name], associated_against: { brand: [:name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :brand, required: false
   belongs_to :category
