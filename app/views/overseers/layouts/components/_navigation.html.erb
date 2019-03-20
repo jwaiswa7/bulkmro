@@ -44,6 +44,7 @@
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, policy(:account).index? %>
           <%= nav_dropdown_item 'Companies', overseers_companies_path, policy(:company).index? %>
+          <%= nav_dropdown_item 'Suppliers', overseers_suppliers_path, policy(:company).index? %>
           <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
           <%= nav_dropdown_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
           <%= nav_dropdown_item 'Banks', overseers_banks_path, policy(:bank).index? %>
@@ -154,6 +155,10 @@
               <%= nav_dropdown_item 'Cancelled Purchase Order Requests', cancelled_overseers_po_requests_path, policy(:po_request).cancelled? %>
               <%= nav_dropdown_item 'Completed Purchase Order Requests', overseers_po_requests_path, policy(:po_request).index? %>
               <div class="dropdown-divider"></div>
+              <%= nav_dropdown_item 'All Stock Requests', stock_overseers_po_requests_path, policy(:po_request).stock? %>
+              <%= nav_dropdown_item 'Pending Stock Approval', pending_stock_approval_overseers_po_requests_path, policy(:po_request).pending_stock_approval? %>
+              <%= nav_dropdown_item 'Completed Stock Requests', completed_stock_overseers_po_requests_path, policy(:po_request).completed_stock? %>
+              <div class="dropdown-divider"></div>
               <%= nav_dropdown_item 'Material Readiness Followup Queue', material_readiness_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
               <%= nav_dropdown_item 'Material Pickup Queue', material_pickup_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
               <%= nav_dropdown_item 'Material Delivered Queue', material_delivered_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
@@ -236,6 +241,7 @@
                 <div class="dropdown-menu">
                   <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
                   <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, policy(:callback_request).index? %>
+                  <%= nav_dropdown_item 'Document Creation Form', new_overseers_document_creation_path, policy(:document_creation).new? %>
                 </div>
               </div>
             <% end %>

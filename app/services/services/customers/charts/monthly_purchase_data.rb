@@ -38,7 +38,8 @@ class Services::Customers::Charts::MonthlyPurchaseData < Services::Customers::Ch
                       type: 'linear',
                       position: 'right',
                       ticks: {
-                          display: false
+                          display: false,
+                          beginAtZero: true
                       }
                   },
                   {
@@ -47,7 +48,8 @@ class Services::Customers::Charts::MonthlyPurchaseData < Services::Customers::Ch
                       position: 'left',
                       ticks: {
                           display: true,
-                          userCallback: ''
+                          userCallback: '',
+                          beginAtZero: true
                       },
                       scaleLabel: {
                           display: true,

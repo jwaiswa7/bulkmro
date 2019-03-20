@@ -1,5 +1,5 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync, :resync_inventory]
+  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync, :resync_inventory, :get_product_details]
 
   def index
     service = Services::Overseers::Finders::Products.new(params)
@@ -15,6 +15,20 @@ class Overseers::ProductsController < Overseers::BaseController
 
     @indexed_products = service.indexed_records
     @products = service.records.active
+    authorize @products
+  end
+
+  def non_kit_autocomplete
+    base_filter = {
+        base_filter_key: 'is_not_kit',
+        base_filter_value: true
+    }
+
+    service = Services::Overseers::Finders::Products.new(params.merge(page: 1).merge(base_filter))
+    service.call
+
+    @indexed_products = service.indexed_records
+    @products = service.records
     authorize @products
   end
 
@@ -125,6 +139,26 @@ class Overseers::ProductsController < Overseers::BaseController
     service.call
 
     redirect_to url_for(Export.products.last.report)
+  end
+
+  def autocomplete_suppliers
+    authorize @product
+    suppliers = {}
+    @product.suppliers.each do |supplier|
+      [supplier.name, supplier.id]
+    end
+    render json: suppliers
+  end
+
+  def get_product_details
+    authorize @product
+    product_details = {}
+    product_details['brand'] = @product.brand.to_s
+    product_details['tax_code_id'] = @product.best_tax_code.id
+    product_details['tax_rate_id'] = @product.best_tax_rate.id
+    product_details['measurement_unit'] = @product.measurement_unit.to_s
+    product_details['converted_unit_selling_price'] = @product.latest_unit_cost_price
+    render json: product_details
   end
 
   private
