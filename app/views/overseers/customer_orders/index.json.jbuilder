@@ -18,7 +18,7 @@ json.data (@customer_orders) do |customer_order|
                   customer_order.contact.full_name,
                   customer_order.rows.count,
                   format_currency(customer_order.calculated_total),
-                  format_currency(customer_order.grand_total),
+                  format_currency(customer_order.grand_total(for_order: true)),
                   customer_order.company.present? && customer_order.company.inside_sales_owner.present? ? customer_order.company.inside_sales_owner.full_name : '-',
                   customer_order.company.present? && customer_order.company.outside_sales_owner.present? ? customer_order.company.outside_sales_owner.full_name : '-',
                   customer_order.company.present? && customer_order.company.sales_manager.present? ? customer_order.company.sales_manager.full_name : '-',
