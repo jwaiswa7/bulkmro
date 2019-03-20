@@ -46,6 +46,9 @@
       <% @sales_quotes.each do |sales_quote| %>
         <tr>
           <td>
+            <% if policy(sales_quote).relationship_map? %>
+              <%= row_action_button(relationship_map_overseers_inquiry_sales_quote_path(@inquiry.to_param, sales_quote.to_param), 'sitemap', 'Relationship Map', 'info', :_blank) %>
+            <% end %>
             <% if policy(sales_quote).show? %>
               <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'eye', 'View Sales Quote', 'info') %>
             <% end %>

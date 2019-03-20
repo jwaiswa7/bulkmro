@@ -1,12 +1,12 @@
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
-  def initialize(params, current_overseer = nil, paginate: true)
+  def initialize(params, current_overseer = nil, paginate: true, sort_by: 'created_at', sort_order: 'desc')
     @search_filters = []
     @range_filters = []
     @paginate = paginate
     @status = params[:status]
     @base_filter = []
-    @sort_by = 'created_at'
-    @sort_order = 'desc'
+    @sort_by = sort_by
+    @sort_order = sort_order
 
     if params[:columns].present?
       params[:columns].each do |index, column|
@@ -80,7 +80,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           query: query_string,
           default_operator: 'or'
       }
-                      )
+    )
   end
 
   def filter_query(indexed_records)
@@ -89,7 +89,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         term: {
             :"#{search_filter[:name]}" => search_filter[:search][:value]
         }
-                                               ) if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
+      ) if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
     end
 
     indexed_records
@@ -105,14 +105,14 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                 lte: range[1].strip.to_date
             }
         }
-                                              )
+      )
     end
 
     indexed_records
   end
 
   def sort_definition
-    { "#{sort_by}" => "#{sort_order}" }
+    {"#{sort_by}" => "#{sort_order}"}
   end
 
   def index_klass
@@ -124,10 +124,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         bool: {
             should: [
                 {
-                    terms: { inside_sales_executive: ids },
+                    terms: {inside_sales_executive: ids},
                 },
                 {
-                    terms: { outside_sales_executive: ids }
+                    terms: {outside_sales_executive: ids}
                 }
             ],
             minimum_should_match: 1,
@@ -141,7 +141,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         bool: {
             should: [
                 {
-                    exists: { field: "#{key}" }
+                    exists: {field: "#{key}"}
                 },
             ],
         },
@@ -153,7 +153,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         bool: {
             should: [
                 {
-                    terms: { "#{key}": vals },
+                    terms: {"#{key}": vals},
                 }
             ]
         },
@@ -166,7 +166,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         bool: {
             should: [
                 {
-                    term: { "#{key}": val },
+                    term: {"#{key}": val},
                 },
             ]
         },
@@ -180,13 +180,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      term: { status: SalesOrder.statuses[:Approved] },
+                      term: {status: SalesOrder.statuses[:Approved]},
                   },
                   {
-                      term: { legacy_request_status: SalesOrder.legacy_request_statuses[:Approved] },
+                      term: {legacy_request_status: SalesOrder.legacy_request_statuses[:Approved]},
                   },
                   {
-                      term: { approval_status: 'approved' },
+                      term: {approval_status: 'approved'},
                   },
               ],
               minimum_should_match: 2,
@@ -198,13 +198,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      term: { status: SalesOrder.statuses[key] },
+                      term: {status: SalesOrder.statuses[key]},
                   },
                   {
-                      term: { legacy_request_status: SalesOrder.legacy_request_statuses[key] },
+                      term: {legacy_request_status: SalesOrder.legacy_request_statuses[key]},
                   },
                   {
-                      term: { approval_status: key },
+                      term: {approval_status: key},
                   },
               ],
               minimum_should_match: 2,
@@ -215,13 +215,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      term: { legacy_status: 'not_legacy' },
+                      term: {legacy_status: 'not_legacy'},
                   },
                   {
-                      exists: { field: 'sent_at' }
+                      exists: {field: 'sent_at'}
                   },
                   {
-                      terms: { status: SalesOrder.statuses.except(:'Approved', :'Rejected', :'Canceled').values },
+                      terms: {status: SalesOrder.statuses.except(:'Approved', :'Rejected', :'Cancelled').values},
                   },
               ],
               minimum_should_match: 3,
@@ -230,7 +230,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
-  def aggregate_by_status(key= 'statuses',  aggregation_field= 'potential_value', status_field)
+  def aggregate_by_status(key = 'statuses', aggregation_field = 'potential_value', status_field)
     {
         "#{key}": {
             terms: {
@@ -247,7 +247,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
-  def aggregate_using_date_histogram(key,  aggregation_field, interval, keyed= false, order='desc')
+  def aggregate_using_date_histogram(key, aggregation_field, interval, keyed = false, order = 'desc')
     {
         "#{key}": {
             date_histogram: {
