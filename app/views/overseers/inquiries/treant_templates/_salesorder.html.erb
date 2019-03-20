@@ -1,0 +1,24 @@
+<a class="card text-black-50 sales-order" target="_blank" href="/overseers/inquiries/<%= sales_order.inquiry.to_param %>/sales_orders/<%= sales_order.to_param %>">
+  <div class="card-header p-1 text-center">
+    <strong>Sales Order</strong>
+  </div>
+  <div class="card-body p-1 text-center">
+    <div>
+      <%= status_badge(sales_order.order_status) || 'N/A'%>
+    </div>
+    <hr class="my-1">
+    <div>
+      #<%= sales_order.order_status == "Approved" || sales_order.order_status == "Cancelled" ? sales_order.order_number : "N/A" %>
+    </div>
+    <hr class="my-1">
+    <div>
+      <%= format_currency(sales_order.converted_total,symbol:sales_order.currency_sign) %>
+    </div>
+    <hr class="my-1">
+    <%= sales_order.product_line_item %>
+    <hr class="my-1">
+    <div>
+      <%= format_date(sales_order.created_at) %>
+    </div>
+  </div>
+</a>

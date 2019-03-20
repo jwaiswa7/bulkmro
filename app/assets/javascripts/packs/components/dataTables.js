@@ -46,6 +46,7 @@ let setup = () => {
         if ($.fn.dataTable.isDataTable('#' + $(this).attr('id'))) return false;
         let isAjax = !!$(this).data('ajax');
         let isFixedHeader = $(this).data('fixed-header') == "false" ? false : true;
+        let sorting = $(this).data('sorting');
         let that = this;
 
         $.fn.dataTable.ext.errMode = 'throw';
@@ -73,7 +74,7 @@ let setup = () => {
                 "<'row'<'col-12 align-items-center text-center'i><'col-12 align-items-center text-center'p>>",
             "pageLength": 20,
             pagingType: 'full_numbers',
-            order: [[$(that).find('th').length - 1, 'desc']], // Sort on the last column
+            order: sorting == 'true' ? [[$(that).find('th').length - 1, 'desc']] : [], // Sort on the last column
             columnDefs: [{
                 "targets": 'no-sort',
                 "orderable": false
@@ -82,7 +83,7 @@ let setup = () => {
                 "render": $.fn.dataTable.render.number(',', '.', 0)
             }, {
                 "targets": 'text-right',
-                "class": 'text-right'
+                "class": 'text-right text-nowrap'
             }],
             fnServerParams: function (data) {
                 data['columns'].forEach(function (items, index) {
@@ -148,7 +149,7 @@ let setup = () => {
                         let input = '';
 
                         if (filter == 'dropdown') {
-                            input = $('<select class="select2-single form-control" data-placeholder="' + [text, ' ', 'Select'].join('') + '"><option value="" selected disabled></option></select>');
+                            input = $('<select class="select2-single form-control" data-placeholder="' + [text, ' '].join('') + '"><option value="" selected disabled></option></select>');
                             json.columnFilters[this.index()].forEach(function (f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
                                 input.append(option);
@@ -160,7 +161,7 @@ let setup = () => {
                             json.columnFilters[this.index()].forEach(function (f) {
                                 source = f.source;
                             });
-                            input = $('<select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' ', 'Select'].join('') + '"></select>');
+                            input = $('<select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' '].join('') + '"></select>');
                         } else {
                             input = $('<input type="text" class="form-control" placeholder="' + [text, ' ', 'Filter'].join('') + '" />');
                         }
