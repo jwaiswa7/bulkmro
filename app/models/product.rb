@@ -15,7 +15,7 @@ class Product < ApplicationRecord
   include Mixins::HasImages
 
   update_index('products#product') { self if self.approved? }
-  pg_search_scope :locate, against: [:sku, :name], associated_against: { brand: [:name] }, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:sku, :mpn, :name], associated_against: { brand: [:name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :brand, required: false
   belongs_to :category
@@ -44,11 +44,9 @@ class Product < ApplicationRecord
   scope :is_service, -> { where(is_service: true) }
 
   validates_presence_of :name
-
   validates_presence_of :sku, if: :not_rejected?
   validates_uniqueness_of :sku, if: :not_rejected?
-  # validates_with MultipleImageFileValidator, attachments: :images
-
+  self.order(sku: :asc, mpn: :desc)
   after_initialize :set_defaults, if: :new_record?
   validate :unique_name?
 
