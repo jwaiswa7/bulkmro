@@ -89,6 +89,9 @@
   <div class="col-12 col-md-4">
     <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', required: true, label: 'Payment Terms:', collection: PaymentOption.active.pluck(:name, :id) %>
   </div>
+  <div class="col-12 col-md-4 d-none late_lead_date_reason">
+    <%= f.input :late_lead_date_reason, placeholder: 'Reason for late lead date', label: 'Late Lead Date Reason:' %>
+  </div>
 
   <div class="col-12 ">
     <div class="form-row">
@@ -265,7 +268,7 @@
         </div>
 
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :'data-parsley-customercommitteddate' => @po_request.sales_order.customer_committed_date, :class => 'lead-time'}, label: 'Lead Date', required: true %>
+          <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :'data-customer-committed-date' => @po_request.sales_order.customer_committed_date, :class => 'lead-time'}, label: 'Lead Date', required: true %>
         </div>
         <% if stock || (f.object.rows.present? && f.object.rows.length > 1) %>
           <div class="col-12 col-md-1">

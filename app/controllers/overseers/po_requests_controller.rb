@@ -102,7 +102,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     if @po_request.valid?
       # todo allow only in case of zero form errors
       row_updated_message = ''
-      messages = FieldModifiedMessage.for(@po_request, ['contact_email', 'contact_phone', 'contact_id', 'payment_option_id', 'bill_from_id', 'ship_from_id', 'bill_to_id', 'ship_to_id', 'status', 'supplier_po_type', 'supplier_committed_date'])
+      messages = FieldModifiedMessage.for(@po_request, ['contact_email', 'contact_phone', 'contact_id', 'payment_option_id', 'bill_from_id', 'ship_from_id', 'bill_to_id', 'ship_to_id', 'status', 'supplier_po_type', 'supplier_committed_date', 'late_lead_date_reason'])
       @po_request.rows.each do |po_request_row|
         updated_row_fields = FieldModifiedMessage.for(po_request_row, ['quantity', 'tax_code_id', 'tax_rate_id', 'discount_percentage', 'unit_price', 'lead_time'], po_request_row.product.sku)
         row_updated_message += updated_row_fields
@@ -244,6 +244,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :supplier_committed_date,
         :cancellation_reason,
         :rejection_reason,
+        :late_lead_date_reason,
         rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time],
         comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
         attachments: []
