@@ -82,7 +82,7 @@ let setup = () => {
                 "render": $.fn.dataTable.render.number(',', '.', 0)
             }, {
                 "targets": 'text-right',
-                "class": 'text-right'
+                "class": 'text-right text-nowrap'
             }],
             fnServerParams: function (data) {
                 data['columns'].forEach(function (items, index) {
@@ -148,7 +148,7 @@ let setup = () => {
                         let input = '';
 
                         if (filter == 'dropdown') {
-                            input = $('<select class="select2-single form-control" data-placeholder="' + [text, ' ', 'Select'].join('') + '"><option value="" selected disabled></option></select>');
+                            input = $('<select class="select2-single form-control" data-placeholder="' + [text, ' '].join('') + '"><option value="" selected disabled></option></select>');
                             json.columnFilters[this.index()].forEach(function (f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
                                 input.append(option);
@@ -160,7 +160,7 @@ let setup = () => {
                             json.columnFilters[this.index()].forEach(function (f) {
                                 source = f.source;
                             });
-                            input = $('<select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' ', 'Select'].join('') + '"></select>');
+                            input = $('<select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' '].join('') + '"></select>');
                         } else {
                             input = $('<input type="text" class="form-control" placeholder="' + [text, ' ', 'Filter'].join('') + '" />');
                         }

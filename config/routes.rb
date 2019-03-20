@@ -159,6 +159,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'non_kit_autocomplete'
         get 'service_autocomplete'
+        get 'autocomplete_mpn'
       end
       member do
         get 'customer_bp_catalog'
@@ -174,6 +175,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'pending'
         get 'export_all'
+        get 'export_filtered_records'
       end
 
       scope module: 'products' do

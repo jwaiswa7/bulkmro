@@ -260,6 +260,7 @@ class Overseers::InquiriesController < Overseers::BaseController
           :calculation_sheet,
           :commercial_terms_and_conditions,
           :comments,
+          :product_type,
           supplier_quotes: [],
           inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
       )
