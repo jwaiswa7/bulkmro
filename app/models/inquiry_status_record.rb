@@ -58,5 +58,16 @@ class InquiryStatusRecord < ApplicationRecord
     end
   end
 
+  def tat
+    if parent.blank?
+      service =Services::Overseers::Inquiries::InquiryStagesTimeDifference.new(self )
+      parent_record= service.call
+      self.update_attribute(:parent, parent_record)
+    end
+
+    parent.present? ? self.created_at- parent.created_at : 0
+  end
+
+
   belongs_to :inquiry
 end
