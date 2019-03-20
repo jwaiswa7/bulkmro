@@ -50,24 +50,28 @@
       <div class="form-row">
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Supplier - Billing Address</strong>
-          <%= @inquiry.bill_from.address.name.to_s %>
-          <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %><br>
-          <% if @inquiry.bill_from.address.phone.present? %>
-            <em>Contact</em>: <%= @inquiry.contact.full_name %> - <%= @inquiry.bill_from.address.phone %><br>
-          <% end %>
-          <% if @inquiry.bill_from.address.gst %>
-            <em>GST Number</em>: <%= @inquiry.bill_from.address.gst %><br>
+          <% if @inquiry.bill_from.present? %>
+            <%= @inquiry.bill_from.address.name.to_s  %>
+            <%= @inquiry.bill_from.address.to_compact_multiline_s %><br>
+            <% if @inquiry.bill_from.address.phone.present? %>
+              <em>Contact</em>: <%= @inquiry.contact.full_name %> - <%= @inquiry.bill_from.address.phone %><br>
+            <% end %>
+            <% if @inquiry.bill_from.address.gst %>
+              <em>GST Number</em>: <%= @inquiry.bill_from.address.gst %><br>
+            <% end %>
           <% end %>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Supplier - Shipping Address</strong>
-          <%= @inquiry.ship_from.address.name.to_s %><br>
-          <%= @inquiry.ship_from.address.to_compact_multiline_s if @inquiry.ship_from.present? %><br>
-          <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
-            <em>Contact</em>: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %><br>
-          <% end %>
-          <% if @inquiry.ship_from.address.gst %>
-            <em>GST Number</em>: <%= @inquiry.ship_from.address.gst %><br>
+          <% if @inquiry.ship_from.present? %>
+            <%= @inquiry.ship_from.address.name.to_s %><br>
+            <%= @inquiry.ship_from.address.to_compact_multiline_s %><br>
+            <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
+              <em>Contact</em>: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %><br>
+            <% end %>
+            <% if @inquiry.ship_from.address.gst %>
+              <em>GST Number</em>: <%= @inquiry.ship_from.address.gst %><br>
+            <% end %>
           <% end %>
         </div>
       </div>
