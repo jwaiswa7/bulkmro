@@ -218,7 +218,6 @@ Rails.application.routes.draw do
       member do
         get 'render_cancellation_form'
         patch 'cancel_porequest'
-        post 'update_lead_date_in_rows'
       end
 
     end

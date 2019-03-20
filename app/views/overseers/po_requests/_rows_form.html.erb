@@ -213,7 +213,7 @@
   <div class="form-row po-request-row">
     <div class="col-12 col-md-12 mb-1">
       <span class="custom-control custom-checkbox d-inline pl-0">
-        <%= check_box_tag 'po_request_rows[]', po_request_row.object.id, false, id: "po_request_row_id_#{po_request_row.object.id}", class: 'custom-control-input' %>
+        <%= check_box_tag 'po_request_row[]', po_request_row.object.id, false, id: "po_request_row_id_#{po_request_row.object.id}", class: 'custom-control-input' %>
         <label class="custom-control-label" for="<%= "po_request_row_id_#{po_request_row.object.id}" %>"></label>
       </span>
       #<%= ((f.object.rows.index(po_request_row.object) || f.object.rows.size || 0) + 1) %>

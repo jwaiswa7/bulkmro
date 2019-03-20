@@ -205,12 +205,6 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
-  def update_lead_date_in_rows
-    authorize @po_requests
-    @po_request_rows = PoRequestRow.where(id: params[:po_request_rows])
-    @po_request_rows.update_all(lead_time: params[:common_lead_date])
-  end
-
   private
 
     def po_request_params

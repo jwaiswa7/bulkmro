@@ -1,20 +1,39 @@
+import disableBackdateOption from "../common/disableBackdateOption";
+
 const massLeadDateUpdate = () => {
-    // $('.update_lead_date_wrapper').hide();
-    // toggleCheckboxes();
+    $('.update_lead_date_wrapper').hide();
+    toggleCheckboxes();
 
     $('#update_lead_date').click((event) => {
         updateLeadDate();
     });
 };
 
-let updateLeadDate = () => {
-    let po_request_rows = [];
-    $('input[type=checkbox][name="po_request_rows[]"]:checked').each((index, element) => {
-        po_request_rows.push($(element).val());
+let toggleCheckboxes = () => {
+    $('#all_lead_dates').prop("checked", false);
+
+    $('#all_lead_dates').change((event) => {
+        var $element = $(event.target)
+        if ($element.is(':checked')) {
+            $('input[type=checkbox][name="po_request_row[]"]').each((index, element) => {
+                $(element).prop("checked", true);
+                showOrHideActions();
+            });
+        } else {
+            $('input[type=checkbox][name="po_request_row[]"]').each((index, element) => {
+                $(element).prop("checked", false);
+                showOrHideActions();
+            });
+        }
     });
 
+    $('body').on('change', 'input[type=checkbox][name="po_request_row[]"]', (event) => {
+        showOrHideActions();
+    })
+}
+
+let updateLeadDate = () => {
     let lead_date = $('input[name*=common_lead_date]').val();
-    console.log("ELEMENT", lead_date, $('input[name*=common_lead_date]').val());
     if (lead_date == '') {
         $.notify({
             message: 'Please Choose a Lead Date to Assign'
@@ -23,37 +42,36 @@ let updateLeadDate = () => {
         });
     }
 
-    if (po_request_rows.length == 0) {
+    let selectedPoRequestRows = $('input[type=checkbox][name="po_request_row[]"]:checked');
+    if (selectedPoRequestRows.length > 0 && lead_date != '') {
+        selectedPoRequestRows.each((index, element) => {
+            let container = $(element).closest('.po-request-row');
+            $(container).find('input[name$="lead_time]"]').val(lead_date);
+        });
+        $('#all_lead_dates').removeAttr('checked');
+        $('#all_lead_dates').prop("checked", false);
+    }
+
+    if (selectedPoRequestRows.length == 0) {
         $.notify({
             message: 'Please select a po request row to update lead date'
         }, {
             type: 'danger'
         });
     }
-
-    if (po_request_rows.length > 0 && lead_date != '') {
-
-        let data = JSON.stringify({po_request_rows: po_request_rows, common_lead_date: lead_date});
-        $.ajax({
-            url: Routes.update_lead_date_in_rows_overseers_po_request_path(po_request_rows),
-            type: "POST",
-            data: data,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function () {
-                // var dataTable = $('.datatable').dataTable();
-                // dataTable.api().ajax.reload(null, false);
-                // $('#all_inward_dispatches').removeAttr('checked');
-                // $('#all_inward_dispatches').prop("checked", false);
-                $.notify({
-                    message: 'Lead Date has been successfully updated'
-                }, {
-                    type: 'success'
-                });
-            }
-        });
-    }
 };
 
+
+let showOrHideActions = () => {
+    let hide = true;
+
+    if ($('input[type=checkbox][name="po_request_row[]"]:checked').length > 0) {
+        $('.update_lead_date_wrapper').show();
+        disableBackdateOption($('input[name*=common_lead_date]'));
+    } else {
+        $('.update_lead_date_wrapper').hide();
+    }
+
+}
 
 export default massLeadDateUpdate
