@@ -36,6 +36,11 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
           end
         end
 
+        sr = SalesReceipt.find_by_remote_reference(params['p_sap_reference_number'])
+        if sr.present?
+          reconciled_invoice_amount = reconciled_invoice_amount - sr.rows.sum(:amount_received)
+        end
+
         if params['reconciled_amount'].to_f == reconciled_invoice_amount.to_f
           is_valid = true
         else
