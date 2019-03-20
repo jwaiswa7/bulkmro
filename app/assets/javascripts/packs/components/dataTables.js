@@ -82,7 +82,7 @@ let setup = () => {
                 "render": $.fn.dataTable.render.number(',', '.', 0)
             }, {
                 "targets": 'text-right',
-                "class": 'text-right'
+                "class": 'text-right text-nowrap'
             }],
             fnServerParams: function (data) {
                 data['columns'].forEach(function (items, index) {
