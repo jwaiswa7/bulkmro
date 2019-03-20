@@ -6,7 +6,7 @@ json.data (@indexed_kra_reports) do |inquiry|
                   inquiry['sales_invoices']['value'],
                   inquiry['sales_orders']['value'],
                   inquiry['expected_orders']['value'],
-                  inquiry['orders_won']['value'],
+                  percentage(inquiry['orders_won']['value'] * 100 / inquiry['doc_count']),
   ]
 end
 
@@ -20,7 +20,7 @@ json.columnFilters [
                        []
                    ]
 
-json.recordsTotal Inquiry.all.count
+json.recordsTotal @indexed_kra_reports.length
 json.recordsFiltered @indexed_kra_reports.length
 json.draw params[:draw]
 json.kra_reports @indexed_kra_reports

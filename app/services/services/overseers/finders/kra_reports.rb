@@ -25,7 +25,7 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
     indexed_records = indexed_records.aggregations(
         {
             'inquiries': {
-                terms: {field: 'inside_sales_owner_id'},
+                terms: {field: 'inside_sales_owner_id',size: 500},
                 aggs: {
                     sales_invoices: {
                         sum: {

@@ -2,6 +2,10 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+<% content_for :heading do %>
+  <%='KRA Report' %>
+<% end %>
+
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort all">Name</th>
