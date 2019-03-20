@@ -380,6 +380,8 @@ Rails.application.routes.draw do
             post 'create_confirmation'
             post 'resync'
             get 'fetch_order_data'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
 
           collection do
