@@ -2803,61 +2803,61 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           SalesInvoiceRow.create!(sku: sku, quantity: quantity, sales_invoice_id: invoice.id, metadata: invoice_row_obj)
         end
 
-          item_lines = invoice.rows.pluck(:metadata)
-          metadata = {
-              'state' => 1,
-              'is_kit' => '',
-              'qty_kit' => 0, # check
-              'ItemLine' => item_lines,
-              'desc_kit' => '', # check
-              'order_id' => order_number,
-              'store_id' => nil,
-              'doc_entry' => invoice_number.to_i,
-              'price_kit' => 0,
-              'controller' => 'callbacks/sales_invoices',
-              'created_at' => x.get_column('AR Invoice Date'),
-              'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
-              'increment_id' => invoice_number,
-              'sales_invoice' => {
-                  'created_at' => x.get_column('AR Invoice Date'),
-                  'updated_at' => nil
-              },
-              'unitprice_kit' => 0,
-              'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) { |sum, value| sum + value.to_f }.round(2),
-              'discount_amount' => '',
-              'shipping_amount' => nil,
-              'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
-              'customer_company' => nil,
-              'hidden_tax_amount' => nil,
-              'shipping_incl_tax' => nil,
-              'base_subtotal' => item_lines.pluck('row_total').inject(0) { |sum, value| sum + value.to_f }.round(2),
-              'base_currency_code' => sales_order.inquiry.currency.try(:name),
-              'base_to_order_rate' => sales_order.inquiry.currency.conversion_rate.to_f,
-              'billing_address_id' => sales_order.inquiry.billing_address.present? ? sales_order.inquiry.billing_address.id : nil,
-              'order_currency_code' => sales_order.inquiry.currency.try(:name),
-              'shipping_address_id' => sales_order.inquiry.shipping_address.present? ? sales_order.inquiry.shipping_address.id : nil,
-              'shipping_tax_amount' => nil,
-              'store_currency_code' => '',
-              'store_to_order_rate' => '',
-              'base_discount_amount' => nil,
-              'base_shipping_amount' => nil,
-              'discount_description' => nil,
-              'base_hidden_tax_amount' => nil,
-              'base_shipping_incl_tax' => nil,
-              'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
-              'base_shipping_tax_amount' => nil,
-              'shipping_hidden_tax_amount' => nil,
-              'base_shipping_hidden_tax_amnt' => nil
-          }
-          invoice.assign_attributes(status: 1, metadata: metadata, mis_date: x.get_column('AR Invoice Date'))
-          invoice.save!
-          created_or_updated_invoices.push(invoice.invoice_number)
-          puts '********************** Saving Invoice *****************************', invoice_number
-        else
-          missing_bible_orders.push(order_number)
-          missing_bible_invoices.push(invoice_number)
-        end
+        item_lines = invoice.rows.pluck(:metadata)
+        metadata = {
+            'state' => 1,
+            'is_kit' => '',
+            'qty_kit' => 0, # check
+            'ItemLine' => item_lines,
+            'desc_kit' => '', # check
+            'order_id' => order_number,
+            'store_id' => nil,
+            'doc_entry' => invoice_number.to_i,
+            'price_kit' => 0,
+            'controller' => 'callbacks/sales_invoices',
+            'created_at' => x.get_column('AR Invoice Date'),
+            'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
+            'increment_id' => invoice_number,
+            'sales_invoice' => {
+                'created_at' => x.get_column('AR Invoice Date'),
+                'updated_at' => nil
+            },
+            'unitprice_kit' => 0,
+            'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) {|sum, value| sum + value.to_f}.round(2),
+            'discount_amount' => '',
+            'shipping_amount' => nil,
+            'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
+            'customer_company' => nil,
+            'hidden_tax_amount' => nil,
+            'shipping_incl_tax' => nil,
+            'base_subtotal' => item_lines.pluck('row_total').inject(0) {|sum, value| sum + value.to_f}.round(2),
+            'base_currency_code' => sales_order.inquiry.currency.try(:name),
+            'base_to_order_rate' => sales_order.inquiry.currency.conversion_rate.to_f,
+            'billing_address_id' => sales_order.inquiry.billing_address.present? ? sales_order.inquiry.billing_address.id : nil,
+            'order_currency_code' => sales_order.inquiry.currency.try(:name),
+            'shipping_address_id' => sales_order.inquiry.shipping_address.present? ? sales_order.inquiry.shipping_address.id : nil,
+            'shipping_tax_amount' => nil,
+            'store_currency_code' => '',
+            'store_to_order_rate' => '',
+            'base_discount_amount' => nil,
+            'base_shipping_amount' => nil,
+            'discount_description' => nil,
+            'base_hidden_tax_amount' => nil,
+            'base_shipping_incl_tax' => nil,
+            'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
+            'base_shipping_tax_amount' => nil,
+            'shipping_hidden_tax_amount' => nil,
+            'base_shipping_hidden_tax_amnt' => nil
+        }
+        invoice.assign_attributes(status: 1, metadata: metadata, mis_date: x.get_column('AR Invoice Date'))
+        invoice.save!
+        created_or_updated_invoices.push(invoice.invoice_number)
+        puts '********************** Saving Invoice *****************************', invoice_number
+      else
+        missing_bible_orders.push(order_number)
+        missing_bible_invoices.push(invoice_number)
       end
+    end
 
     puts "M SKus", missing_product.join(',')
     puts "-----------------------------------------------------------------------------------------"
@@ -3797,106 +3797,106 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts 'NIL TAX RATE ROWS', has_nil_tax_rate_rows
   end
 
-    def test_migrations
-      data_set = [
-          [
-              'year' => 2018,
-              'month' => 1,
-              'order_total' => 300000,
-              'order_count' => 23,
-              'po_total' => 23000,
-              'po_count' => 32,
-              'invoice_total' => 250000,
-              'invoice_count' => 38
-          ],
-          [
-              'year' => 2018,
-              'month' => 2,
-              'order_total' => 300000,
-              'order_count' => 23,
-              'po_total' => 23000,
-              'po_count' => 32,
-              'invoice_total' => 250000,
-              'invoice_count' => 38
-          ],
-      ]
+  def test_migrations
+    data_set = [
+        [
+            'year' => 2018,
+            'month' => 1,
+            'order_total' => 300000,
+            'order_count' => 23,
+            'po_total' => 23000,
+            'po_count' => 32,
+            'invoice_total' => 250000,
+            'invoice_count' => 38
+        ],
+        [
+            'year' => 2018,
+            'month' => 2,
+            'order_total' => 300000,
+            'order_count' => 23,
+            'po_total' => 23000,
+            'po_count' => 32,
+            'invoice_total' => 250000,
+            'invoice_count' => 38
+        ],
+    ]
 
-      so_total_mismatches = []
-      so_count_mismatches = []
-      po_total_mismatches = []
-      po_count_mismatches = []
-      invoices_total_mismatches = []
-      invoices_count_mismatches = []
-      data_set.each do |data|
-        current_year = data[0]['year']
-        current_month = data[0]['month']
+    so_total_mismatches = []
+    so_count_mismatches = []
+    po_total_mismatches = []
+    po_count_mismatches = []
+    invoices_total_mismatches = []
+    invoices_count_mismatches = []
+    data_set.each do |data|
+      current_year = data[0]['year']
+      current_month = data[0]['month']
 
-        start_date = Date.new(current_year, current_month, 1)
-        end_date = start_date.end_of_month
-        current_month_name = start_date.strftime('%B')
+      start_date = Date.new(current_year, current_month, 1)
+      end_date = start_date.end_of_month
+      current_month_name = start_date.strftime('%B')
 
-        so_total_to_check = data[0]['order_total']
-        so_count_to_check = data[0]['order_count']
-        po_total_to_check = data[0]['po_total']
-        po_count_to_check = data[0]['po_count']
-        invoices_total_to_check = data[0]['invoice_total']
-        invoices_count_to_check = data[0]['invoice_count']
+      so_total_to_check = data[0]['order_total']
+      so_count_to_check = data[0]['order_count']
+      po_total_to_check = data[0]['po_total']
+      po_count_to_check = data[0]['po_count']
+      invoices_total_to_check = data[0]['invoice_total']
+      invoices_count_to_check = data[0]['invoice_count']
 
-        # ORDERs
-        orders = SalesOrder.includes(:sales_order_rows, :sales_quote_rows).where('mis_date BETWEEN ? AND ?', start_date, end_date)
-        so_total = orders.sum(&:calculated_total)
-        so_counts = orders.size
+      # ORDERs
+      orders = SalesOrder.includes(:sales_order_rows, :sales_quote_rows).where('mis_date BETWEEN ? AND ?', start_date, end_date)
+      so_total = orders.sum(&:calculated_total)
+      so_counts = orders.size
 
-        if so_total < so_total_to_check || so_total > so_total_to_check
-          so_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
-        else
-          puts "Order Total for #{current_month_name}-#{current_year} matches."
-        end
+      if so_total < so_total_to_check || so_total > so_total_to_check
+        so_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
+      else
+        puts "Order Total for #{current_month_name}-#{current_year} matches."
+      end
 
-        if so_counts < so_count_to_check || so_counts > so_count_to_check
-          so_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
-        else
-          puts "Order Count for #{current_month_name}-#{current_year} matches."
-        end
+      if so_counts < so_count_to_check || so_counts > so_count_to_check
+        so_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
+      else
+        puts "Order Count for #{current_month_name}-#{current_year} matches."
+      end
 
 
-        # # POs
-        # =begin
-        #       orders = PurchaseOrder.where('mis_date BETWEEN ? AND ?', start_date, end_date)
-        #       po_total = orders.sum(&:calculated_total)
-        #       po_counts = orders.size
-        #
-        #       if po_total < po_total_to_check || po_total > po_total_to_check
-        #         po_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
-        #       else
-        #         puts "PO Total for #{current_month_name}-#{current_year} matches."
-        #       end
-        #
-        #       if po_counts < po_count_to_check || po_counts > po_count_to_check
-        #         po_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
-        #       else
-        #         puts "PO Count for #{current_month_name}-#{current_year} matches."
-        #       end
-        # =end
-        #
-        #       # INVOICEs
-        invoices = SalesInvoice.where('mis_date BETWEEN ? AND ?', start_date, end_date)
-        invoices_total = invoices.sum(&:calculated_total)
-        invoices_counts = invoices.size
+      # # POs
+      # =begin
+      #       orders = PurchaseOrder.where('mis_date BETWEEN ? AND ?', start_date, end_date)
+      #       po_total = orders.sum(&:calculated_total)
+      #       po_counts = orders.size
+      #
+      #       if po_total < po_total_to_check || po_total > po_total_to_check
+      #         po_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
+      #       else
+      #         puts "PO Total for #{current_month_name}-#{current_year} matches."
+      #       end
+      #
+      #       if po_counts < po_count_to_check || po_counts > po_count_to_check
+      #         po_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
+      #       else
+      #         puts "PO Count for #{current_month_name}-#{current_year} matches."
+      #       end
+      # =end
+      #
+      #       # INVOICEs
+      invoices = SalesInvoice.where('mis_date BETWEEN ? AND ?', start_date, end_date)
+      invoices_total = invoices.sum(&:calculated_total)
+      invoices_counts = invoices.size
 
-        if invoices_total < invoices_total_to_check || invoices_total > invoices_total_to_check
-          invoices_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
-        else
-          puts "Invoices Total for #{current_month_name}-#{current_year} matches."
-        end
+      if invoices_total < invoices_total_to_check || invoices_total > invoices_total_to_check
+        invoices_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
+      else
+        puts "Invoices Total for #{current_month_name}-#{current_year} matches."
+      end
 
-        if invoices_counts < invoices_count_to_check || invoices_counts > invoices_count_to_check
-          invoices_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
-        else
-          puts "Invoices Count for #{current_month_name}-#{current_year} matches."
-        end
+      if invoices_counts < invoices_count_to_check || invoices_counts > invoices_count_to_check
+        invoices_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
+      else
+        puts "Invoices Count for #{current_month_name}-#{current_year} matches."
       end
     end
+  end
 
   def test_invoices_migrations
     service = Services::Shared::Spreadsheets::CsvImporter.new('Sales Order Comparison - Bible.csv', 'seed_files')
@@ -3984,10 +3984,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(count) do |x|
       # puts x.get_row
       mismatch = nil
-      sales_order = SalesOrder.where(order_number: x.get_column('order number')).or(SalesOrder.where(old_order_number: x.get_column('order number'))).first
+      sales_order = SalesOrder.where(old_order_number: x.get_column('order number')).or(SalesOrder.where(order_number: x.get_column('order number'))).first
 
       if sales_order.present?
-        product = Product.find_by(sku: x.get_column('product sku'))
+        product = Product.find_by(sku: x.get_column('product sku').upcase)
 
         unit_selling_price = x.get_column('unit selling price (INR)')
         total_selling_price_with_tax = x.get_column('total')
@@ -4009,8 +4009,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           mismatch['issue in quantity'] = 'yes'
         end
 
-        if unit_cost_price&.to_f&.floor != sales_order_row&.sales_quote_row&.unit_cost_price&.floor
-          mismatch['issue in unit_cost_price'] = 'yes'
+        if unit_cost_price&.to_f&.floor != sales_order_row&.sales_quote_row&.unit_cost_price&.floor &&
+            mismatch['issue in unit_cost_price'] = 'yes'
         end
 
         if unit_selling_price&.to_f&.round != sales_order_row&.unit_selling_price&.round
@@ -4044,44 +4044,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
 
-    # csv_data = CSV.generate(write_headers: true, headers: columns) do |csv|
-    #
-    #   mismatches.each do |object|
-    #
-    #     csv << object
-    #
-    #   end
-    #
-    # end
-    #
-    #
-    # temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
-    #
-    # begin
-    #
-    #   temp_file.write(csv_data)
-    #
-    #   temp_file.close
-    #
-    #   overseer.file.attach(io: File.open(temp_file.path), filename: filename)
-    #
-    #   overseer.save!
-    #
-    #   puts Rails.application.routes.url_helpers.rails_blob_path(overseer.file, only_path: true)
-    #
-    # rescue => ex
-    #
-    #   puts ex.message
-    #
-    # end
+    [missing_orders, mismatches]
+  end
 
-      # QUANTITY
-      # TAX RATE %
-      # SP
-      # SP W TAX
-      # COST
-      [missing_orders, mismatches]
-    # end # test_bible_sales_orders_rows_mismatchdef missing_billing_shipping_address
+  # test_bible_sales_orders_rows_mismatch
+
+  def missing_billing_shipping_address
     present_inquiries = []
     not_present_inquiries = []
     order_not_present = []

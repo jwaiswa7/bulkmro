@@ -7,9 +7,11 @@ class Services::Overseers::Inquiries::InquiryStagesTimeDifference < Services::Sh
   end
 
   def call
-    stat = { 'New Inquiry' => 1, 'Acknowledgement Mail' => 2, 'Cross Reference' => 3, 'Supplier RFQ Sent' => 4, 'Preparing Quotation' => 5, 'Quotation Sent' => 6, 'Follow Up on Quotation' => 7, 'Expected Order' => 8, 'SO Not Created-Customer PO Awaited' => 9, 'SO Not Created-Pending Customer PO Revision' => 10, 'Draft SO for Approval by Sales Manager' => 11, 'SO Rejected by Sales Manager' => 12, 'SO Draft: Pending Accounts Approval' => 13, 'Rejected by Accounts' => 14, 'Hold by Accounts' => 15, 'Order Won' => 16, 'Order Lost' => 17, 'Regret' => 18}
+    stat = { "Lead by O/S" => 0, 'New Inquiry' => 1, 'Acknowledgement Mail' => 2, 'Cross Reference' => 3, 'Supplier RFQ Sent' => 4, 'Preparing Quotation' => 5, 'Quotation Sent' => 6, 'Follow Up on Quotation' => 7, 'Expected Order' => 8, 'SO Not Created-Customer PO Awaited' => 9, 'SO Not Created-Pending Customer PO Revision' => 10, 'Draft SO for Approval by Sales Manager' => 11, 'SO Rejected by Sales Manager' => 12, 'SO Draft: Pending Accounts Approval' => 13, 'Rejected by Accounts' => 14, 'SAP Rejected' => 15, 'Hold by Accounts' => 16, 'Order Won' => 17, 'Order Lost' => 18, 'Regret' => 19}
     # status_records = InquiryStatusRecord.where(inquiry_id: i.id).order('id DESC')
-    if status_record.present? && !(status_record.status == 'New Inquiry')
+    if status_record.present? && status_record.inquiry.inquiry_status_records.count > 1 && !(status_record.status == 'New Inquiry'  && stat[status_record.status].present?)
+      puts "InquiryStatusRecord #{status_record.id}"
+      puts status_record.status
       keys = stat.select {|key, val| val < stat[status_record.status]}.reverse_each.to_h.keys
       inner_records = InquiryStatusRecord.where(inquiry_id: status_record.inquiry_id, status: keys).order('id DESC')
       if inner_records.present?
@@ -22,6 +24,7 @@ class Services::Overseers::Inquiries::InquiryStagesTimeDifference < Services::Sh
             return record
           end
         end
+        return nil
       else
         return nil
       end
