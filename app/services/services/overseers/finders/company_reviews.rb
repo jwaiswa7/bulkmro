@@ -15,7 +15,7 @@ class Services::Overseers::Finders::CompanyReviews < Services::Overseers::Finder
     end
 
     if @base_filter.present?
-      indexed_records =  indexed_records.filter(@base_filter)
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     indexed_records
@@ -25,16 +25,16 @@ class Services::Overseers::Finders::CompanyReviews < Services::Overseers::Finder
     query = query[0, 35]
 
     indexed_records = index_klass.query(
-        multi_match: {
+      multi_match: {
             query: query,
             operator: 'and',
             fields: %w[company_name],
             minimum_should_match: '100%'
-        }
+       }
     )
 
     if @base_filter.present?
-      indexed_records =  indexed_records.filter(@base_filter)
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     if search_filters.present?

@@ -28,7 +28,7 @@ class Services::Overseers::Exporters::CompanyReviewExporter < Services::Overseer
       )
     end
     filtered = @ids.present?
-    export = Export.create!(export_type: 60,filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+    export = Export.create!(export_type: 60, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     generate_csv(export)
   end
 end
