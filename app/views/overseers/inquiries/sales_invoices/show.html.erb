@@ -214,6 +214,9 @@
               <span data-toggle="tooltip" title="Tax Rate">Total<br>
               (<%= @sales_invoice.inquiry.currency.name %>)</span>
             </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Total Freight">T. Freight</span>
+            </th>
 
           </tr>
           </thead>
@@ -278,6 +281,9 @@
               <td>
                 <span><%= format_currency(item.metadata['base_row_total_incl_tax'], precision: 2, symbol: nil) %></span>
               </td>
+              <td>
+                <span><%= format_currency(item.freight_cost_subtotal) %></span>
+              </td>
             </tr>
           <% end %>
           </tbody>
@@ -285,12 +291,15 @@
       </div>
       <div class="card-footer">
         <div class=form-row>
-          <div class="col-6 col-md-3">
+          <div class="col-6 col-md-2">
             Products
             <strong class="d-block"><%= @sales_invoice.rows.count %></strong>
           </div>
-
-          <div class="col-6 col-md-3 mt-2 mt-md-0">
+          <div class="col-6 col-md-2">
+            Total Freight
+            <strong class="d-block"><%= format_currency(@sales_invoice.calculated_freight_cost_total) %></strong>
+          </div>
+          <div class="col-6 col-md-2 mt-2 mt-md-0">
             Subtotal
             <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_grand_total'].to_f - @sales_invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %></strong>
           </div>
