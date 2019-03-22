@@ -20,6 +20,11 @@ class Overseers::AccountsController < Overseers::BaseController
     authorize @accounts
   end
 
+  def autocomplete_supplier
+     @accounts = ApplyParams.to(Account.all.where( account_type: "is_supplier"), params)
+    authorize @accounts
+  end
+
   def new
     @account = Account.new(overseer: current_overseer)
     authorize @account
