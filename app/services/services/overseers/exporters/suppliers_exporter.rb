@@ -19,17 +19,17 @@ class Services::Overseers::Exporters::SuppliersExporter < Services::Overseers::E
     end
     records.each do |record|
       rows.push(
-          name: record.name,
-          comapny_alias: record.account.name,
-          supplier_type: record.nature_of_business&.titleize,
-          address: record.billing_address.to_s,
-          contact: record.default_contact&.name,
-          rating: record.rating,
-          purchase_orders: record.purchase_orders.count,
-          supplied_brands: record.supplied_brands&.uniq&.count,
-          supplied_products: record.supplied_products&.uniq&.count,
-          brands: record.supplied_brands.map(&:name)&.uniq&.join(', ').upcase,
-          created: record.created_at.to_date.to_s
+        name: record.name,
+        comapny_alias: record.account.name,
+        supplier_type: record.nature_of_business&.titleize,
+        address: record.billing_address.to_s,
+        contact: record.default_contact&.name,
+        rating: record.rating,
+        purchase_orders: record.purchase_orders.count,
+        supplied_brands: record.supplied_brands&.uniq&.count,
+        supplied_products: record.supplied_products&.uniq&.count,
+        brands: record.supplied_brands.map(&:name)&.uniq&.join(', ').upcase,
+        created: record.created_at.to_date.to_s
       )
     end
     filtered = @ids.present?

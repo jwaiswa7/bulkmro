@@ -6,6 +6,6 @@ class Overseers::AccountPolicy < Overseers::ApplicationPolicy
   end
 
   def autocomplete_supplier?
-   index?
+    index?
   end
 end
