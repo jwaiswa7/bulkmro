@@ -2,7 +2,10 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
   before_action :set_company_review, only: [:update, :show, :render_form]
 
   def index
-    @company_reviews = ApplyDatatableParams.to(CompanyReview.where.not(rating: nil), params)
+    service = Services::Overseers::Finders::CompanyReviews.new(params)
+    service.call
+    @indexed_company_reviews = service.indexed_records
+    @company_reviews = service.records
     authorize @company_reviews
   end
 
@@ -58,11 +61,19 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
 
   def export_all
     authorize :company_review
-    service = Services::Overseers::Exporters::CompanyReviewExporter.new
+    service = Services::Overseers::Exporters::CompanyReviewExporter.new([], current_overseer, [])
     service.call
     redirect_to url_for(Export.company_reviews.last.report)
   end
 
+  def export_filtered_records
+    authorize :company_review
+    service = Services::Overseers::Finders::CompanyReviews.new(params, current_overseer, paginate: false)
+    service.call
+
+    export_service = Services::Overseers::Exporters::CompanyReviewExporter.new([], current_overseer, service.records)
+    export_service.call
+  end
   private
 
     def create_rates(rateable_type, rateable_id, score)

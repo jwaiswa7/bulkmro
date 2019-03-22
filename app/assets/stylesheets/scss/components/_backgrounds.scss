@@ -1,7 +1,0 @@
-@each $color, $value in $theme-colors {
-  @include bg-variant(".bg-highlight-#{$color}", lighten($value, 40%));
-}
-
-@each $color, $value in $custom-colors {
-  @include bg-variant(".bg-highlight-#{$color}", lighten($value, 20%));
-}

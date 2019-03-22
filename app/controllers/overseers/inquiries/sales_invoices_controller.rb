@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :edit_mis_date, :update_mis_date, :make_zip]
+  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :edit_mis_date, :update_mis_date, :make_zip, :relationship_map, :get_relationship_map_json]
   before_action :set_invoice_items, only: [:show, :duplicate, :triplicate, :make_zip]
 
   def index
@@ -70,6 +70,16 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     else
       render 'edit'
     end
+  end
+
+  def relationship_map
+    authorize @sales_invoice
+  end
+
+  def get_relationship_map_json
+    authorize @sales_invoice
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@sales_invoice.inquiry, [@sales_invoice.sales_order.sales_quote]).call
+    render json: {data: inquiry_json}
   end
 
   private

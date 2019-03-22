@@ -3884,19 +3884,19 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       invoices_total = invoices.sum(&:calculated_total)
       invoices_counts = invoices.size
 
-      if invoices_total < invoices_total_to_check || invoices_total > invoices_total_to_check
-        invoices_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
-      else
-        puts "Invoices Total for #{current_month_name}-#{current_year} matches."
-      end
+        if invoices_total < invoices_total_to_check || invoices_total > invoices_total_to_check
+          invoices_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
+        else
+          puts "Invoices Total for #{current_month_name}-#{current_year} matches."
+        end
 
-      if invoices_counts < invoices_count_to_check || invoices_counts > invoices_count_to_check
-        invoices_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
-      else
-        puts "Invoices Count for #{current_month_name}-#{current_year} matches."
+        if invoices_counts < invoices_count_to_check || invoices_counts > invoices_count_to_check
+          invoices_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
+        else
+          puts "Invoices Count for #{current_month_name}-#{current_year} matches."
+        end
       end
     end
-  end
 
   def test_invoices_migrations
     service = Services::Shared::Spreadsheets::CsvImporter.new('Sales Order Comparison - Bible.csv', 'seed_files')

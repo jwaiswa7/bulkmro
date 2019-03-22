@@ -1,15 +1,15 @@
 import purchaseOrdersIndex from "./index";
-import inwardDispatchDeliveredQueue from "./inwardDispatchDeliveredQueue";
+import materialDeliveredQueue from "./materialDeliveredQueue";
 import materialReadinessQueue from "./materialReadinessQueue";
-import updateLogisticsOwner from "./inwardDispatchPickupQueue";
+import updateLogisticsOwner from "./materialPickupQueue";
 import editMaterialFollowup from "./editMaterialFollowup";
 
 let purchaseOrders= {
     index: purchaseOrdersIndex,
-    inwardDispatchDeliveredQueue: inwardDispatchDeliveredQueue,
+    materialDeliveredQueue: materialDeliveredQueue,
     materialReadinessQueue: materialReadinessQueue,
-    inwardDispatchPickupQueue: updateLogisticsOwner,
+    materialPickupQueue: updateLogisticsOwner,
     editMaterialFollowup: editMaterialFollowup
-};
+}
 
 export default purchaseOrders
