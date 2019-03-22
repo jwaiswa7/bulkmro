@@ -6,7 +6,7 @@
           <div class="compare_open" id="compare_popup"></div>
 
           <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
-            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png',:width => "50%" %>
+            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
           </div>
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
             <b><span style="color:#000; font-size: 30px">Shipment #<%= @metadata[:increment_id] if @metadata.present? %></span></b>
@@ -45,7 +45,7 @@
             <table border="0" cellspacing="0" style="width: 100%;">
               <tbody>
               <tr>
-                <td align="left" colspan="5" style="width:25%; padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Quotation #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                   <span style="color:#000000"><%= @sales_shipment.sales_order.inquiry.inquiry_number %></span></td>
@@ -58,7 +58,7 @@
                 </td>
               </tr>
               <tr>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Customer Purchase Order #</span></b>
                   <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
@@ -72,7 +72,7 @@
                 </td>
               </tr>
               <tr>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Sales Order #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <span style="color:#000000"><%= @sales_shipment.sales_order.id %></span></td>
@@ -84,7 +84,7 @@
                     </span></td>
               </tr>
               <tr>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Invoice #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <span style="color:#000000"><%= @metadata[:TrackLine].first[:invoice_number] if @metadata[:TrackLine].present? %></span></td>
@@ -95,7 +95,7 @@
                 </td>
               </tr>
               <tr>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Payment Method</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <span style="color:#000000">Bank Transfer</span></td>
@@ -107,7 +107,7 @@
                     </span></td>
               </tr>
               <tr>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Shipment #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <span style="color:#000000"><%= @metadata[:increment_id] if @metadata.present? %></span></td>
@@ -119,7 +119,7 @@
                     </span></td>
               </tr>
               <tr>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">GRN #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <span style="color:#000000">
@@ -131,7 +131,7 @@
                   <span style="color:#000000"><%= @metadata[:customer_id] if @metadata.present? %></span></td>
               </tr>
               <tr>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Carrier </span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <span style="color:#000000"><%= @metadata[:TrackLine].map {|g| g[:carrier_code]}.join(",") if @metadata.present? && @metadata[:TrackLine].present? %></span>
@@ -147,10 +147,10 @@
           </div>
           <br clear="all">
           <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-            <b><span style="color:#000000">Supplier - Bill from:</span></b>
+            <b><span style="color:#000000">Supplier - Bill from :</span></b>
           </div>
           <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px;text-align: center;">
-            <b><span style="color:#000000">Supplier - Ship from:</span></b>
+            <b><span style="color:#000000">Supplier - Ship from :</span></b>
           </div>
           <br clear="all">
           <table border="0" cellspacing="0" style="width: 100%;">
@@ -162,9 +162,9 @@
                       <%= (@sales_shipment.sales_order.inquiry.bill_from.address.name.to_s + '<br>').html_safe if @sales_shipment.sales_order.inquiry.bill_from.address.name.present? %>
                       <% if @sales_shipment.sales_order.inquiry.bill_from.present? %>
                         <%= @sales_shipment.sales_order.inquiry.bill_from.address.to_multiline_s %><br>
-                        GST No.: <%= @sales_shipment.sales_order.inquiry.bill_from.address.gst %><br>
+                        GST No. : <%= @sales_shipment.sales_order.inquiry.bill_from.address.gst %><br>
                       <% end %>
-                      PAN No.: AAGCB7343G</span>
+                      PAN No. : AAGCB7343G</span>
                 </div>
               </td>
               <td style="width:4%;"></td>
@@ -174,9 +174,9 @@
                       <%= (@sales_shipment.sales_order.inquiry.ship_from.address.name.to_s + '<br>').html_safe if @sales_shipment.sales_order.inquiry.ship_from.address.name.present? %>
                       <% if @sales_shipment.sales_order.inquiry.ship_from.present? %>
                         <%= @sales_shipment.sales_order.inquiry.ship_from.address.to_multiline_s %><br>
-                        GST No.: <%= @sales_shipment.sales_order.inquiry.ship_from.address.gst %><br>
+                        GST No. : <%= @sales_shipment.sales_order.inquiry.ship_from.address.gst %><br>
                       <% end %>
-                      PAN No.: AAGCB7343G</span>
+                      PAN No. : AAGCB7343G</span>
                 </div>
               </td>
             </tr>
@@ -184,10 +184,10 @@
           </table>
           <br clear="all">
           <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-            <b><span style="color:#000000">Customer - Bill to:</span></b>
+            <b><span style="color:#000000">Customer - Bill to :</span></b>
           </div>
           <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-            <b><span style="color:#000000">Customer - Ship to:</span></b>
+            <b><span style="color:#000000">Customer - Ship to :</span></b>
           </div>
           <br clear="all">
           <table border="0" cellspacing="0" style="width: 100%;">
@@ -202,14 +202,14 @@
                     <%= @sales_shipment.sales_order.inquiry.shipping_address.to_multiline_s %>
                     <br>
                     Tel: <%= @sales_shipment.sales_order.inquiry.shipping_address.telephone %><br>
-                    GST No.:<%= @sales_shipment.sales_order.inquiry.shipping_address.gst %><br>
+                    GST No. :<%= @sales_shipment.sales_order.inquiry.shipping_address.gst %><br>
                   <% end %>
                 </div>
               </td>
               <td style="width:4%;"></td>
               <td style="width:48%;">
                 <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
-                  <%= @sales_shipment.sales_order.inquiry.shipping_contact.present? ? @sales_shipment.sales_order.inquiry.shipping_contact.full_name: @sales_shipment.sales_order.inquiry.contact.full_name %>
+                  <%= @sales_shipment.sales_order.inquiry.shipping_contact.present? ? @sales_shipment.sales_order.inquiry.shipping_contact.full_name : @sales_shipment.sales_order.inquiry.contact.full_name %>
                   <% if @sales_shipment.sales_order.inquiry.billing_address.present? %>
                     <%= @sales_shipment.sales_order.inquiry.billing_address.name %><br>
                     <%= @sales_shipment.sales_order.inquiry.billing_address.to_multiline_s %>
@@ -219,7 +219,7 @@
                     <% else %>
                       Tel: <%= @sales_shipment.sales_order.inquiry.contact.phone || @sales_shipment.sales_order.inquiry.contact.mobile || @sales_shipment.sales_order.inquiry.shipping_address.telephone %>
                     <% end %> <br>
-                    GST No.:<%= @sales_shipment.sales_order.inquiry.billing_address.gst %><br>
+                    GST No. :<%= @sales_shipment.sales_order.inquiry.billing_address.gst %><br>
                   <% end %>
                 </div>
               </td>
@@ -291,7 +291,7 @@
           </div>
           <div id="stamp" style="width:94%;position:absolute;top:500px; padding-top: 1px;padding-bottom: 1px;">
             <div id="inner-stamp" style="float: right; position: relative;">
-              <%= wicked_pdf_image_tag 'BulkMRO-stamp.png',:width => "95",:height => "95" %>
+              <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
             </div>
           </div>
           <br clear="all">

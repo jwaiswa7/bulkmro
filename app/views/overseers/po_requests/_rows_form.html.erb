@@ -31,22 +31,21 @@
     <% else %>
       <div class="col-12 col-md-4">
         <% if policy(@po_request).can_cancel? %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("Supplier PO: Request Pending", "Rejected"), alphabetical: false, keep_raw: true), :include_blank => false %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("Requested", "Rejected"), alphabetical: false, keep_raw: true), :include_blank => false %>
         <% elsif policy(@po_request).can_reject? %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("Supplier PO: Created Not Sent", "Cancelled", "Amend"), alphabetical: false, keep_raw: true), :include_blank => false %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("PO Created", "Cancelled", "Amend"), alphabetical: false, keep_raw: true), :include_blank => false %>
         <% elsif policy(@po_request).can_update_rejected_po_requests? %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("Supplier PO: Created Not Sent", "Cancelled", "Amend"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("PO Created", "Cancelled", "Amend"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
         <% elsif policy(@po_request).can_process_amended_po_requests? %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("Supplier PO: Request Pending", "Rejected", "Cancelled"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("Requested", "Rejected", "Cancelled"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
         <% else %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), disabled: false, :include_blank => false %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), disabled: true, :include_blank => false %>
         <% end %>
-      <%= f.hidden_field :id %>
 
       </div>
     <% end %>
     <div class="col-4 d-none status-rejected">
-      <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false, keep_raw: true), disabled: (stock ? !policy(f.object).can_reject_stock_po? : !policy(f.object).can_reject_stock_po?), :include_blank => true %>
+      <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false, keep_raw: true), disabled: (stock ? !policy(f.object).can_reject_stock_po? : !policy(f.object).can_reject?), :include_blank => true %>
     </div>
     <div class="col-4 d-none status-cancelled">
       <%= f.input :cancellation_reason, disabled: !(policy(f.object).can_cancel?), :include_blank => true %>
@@ -58,7 +57,7 @@
       </div>
     <% else %>
       <div class="col-12 col-md-4">
-        <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.except("Supplier PO: Created Not Sent", "Cancelled", "Rejected", "Amend"), alphabetical: false), :include_blank => false %>
+        <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.except("PO Created", "Cancelled", "Rejected", "Amend"), alphabetical: false), :include_blank => false %>
       </div>
     <% end %>
   <% end %>

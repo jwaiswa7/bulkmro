@@ -76,11 +76,11 @@ class PoRequestRow < ApplicationRecord
   end
 
   def total_tax
-    total_selling_price.present? ? (total_selling_price_with_tax - total_selling_price) : 0.0
+    total_selling_price_with_tax - total_selling_price
   end
 
   def converted_total_tax
-    converted_total_selling_price.present? ? converted_total_selling_price_with_tax - converted_total_selling_price : 0.0
+    converted_total_selling_price_with_tax - converted_total_selling_price
   end
 
   def total_buying_price

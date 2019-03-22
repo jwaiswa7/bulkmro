@@ -1,47 +1,47 @@
 
-<table style="font-size: 11px;width: 100%;" cellspacing="0" border="0">
-  <tr style="font-size: 11px;background: #d3d3d3;">
-    <td class="invoiceheader1" style="font-size: 11px;  padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" colspan="16" align="left" valign="top">
-      <b><span style="font-size: 11px;color:#000000">Payment By Wire Transfer To:</span></b></td>
+<table style="width: 100%;" cellspacing="0" border="0">
+  <tr style="background: #d3d3d3;">
+    <td class="invoiceheader1" style="  padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" colspan="16" height="20" align="left" valign="top">
+      <b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
   </tr>
 
   <tr>
-    <td colspan="4" style="font-size: 11px;padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-      <b><span style="font-size: 11px;color:#000000">Bank:</span></b></td>
-    <td style="font-size: 11px;padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-      <span style="font-size: 11px;color:#000000"><%= Settings.primary_bank.name %></span>
+    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
+      <b><span style="color:#000000">Bank:</span></b></td>
+    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+      <span style="color:#000000"><%= Settings.primary_bank.name %></span>
     </td>
   </tr>
   <tr>
-    <td style="font-size: 11px;padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-      <b><span style="font-size: 11px;color:#000000">Address:</span></b></td>
-    <td style="font-size: 11px;padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-      <span style="font-size: 11px;color:#000000"> <%= Settings.primary_bank.address %></span></td>
+    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+      <b><span style="color:#000000">Address:</span></b></td>
+    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+      <span style="color:#000000"> <%= Settings.primary_bank.address %></span></td>
   </tr>
   <tr>
-    <td style="font-size: 11px; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-      <b><span style="font-size: 11px;color:#000000">Account Name:</span></b></td>
-    <td style="font-size: 11px; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-      <span style="font-size: 11px;color:#000000"><%= Settings.primary_bank.account_name %> </span></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+      <b><span style="color:#000000">Account Name:</span></b></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+      <span style="color:#000000"><%= Settings.primary_bank.account_name %> </span></td>
 
   </tr>
   <tr>
-    <td style="font-size: 11px; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-      <b><span style="font-size: 11px;color:#000000">Account Number:</span></b></td>
-    <td style="font-size: 11px; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+      <b><span style="color:#000000">Account Number:</span></b></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
       <% if currency == 'USD' %>
-      <span style="font-size: 11px;color:#000000"><%= Settings.primary_bank.currency_usd.account_number %></span>
+      <span style="color:#000000"><%= Settings.primary_bank.currency_usd.account_number %></span>
       <% elsif currency == 'GBP' %>
-        <span style="font-size: 11px;color:#000000"><%= Settings.primary_bank.currency_gbp.account_number %></span>
+        <span style="color:#000000"><%= Settings.primary_bank.currency_gbp.account_number %></span>
       <% elsif currency == 'EUR' %>
-        <span style="font-size: 11px;color:#000000"><%= Settings.primary_bank.currency_eur.account_number %></span>
+        <span style="color:#000000"><%= Settings.primary_bank.currency_eur.account_number %></span>
       <% end %>
     </td>
   </tr>
   <tr>
-    <td style="font-size: 11px; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-      <b><span style="font-size: 11px;color:#000000">Swift Code:</span></b></td>
-    <td style="font-size: 11px; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-      <span style="font-size: 11px;color:#000000"><%= Settings.primary_bank.swift_code %></span></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+      <b><span style="color:#000000">Swift Code:</span></b></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+      <span style="color:#000000"><%= Settings.primary_bank.swift_code %></span></td>
   </tr>
 </table>

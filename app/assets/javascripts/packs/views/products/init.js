@@ -8,6 +8,6 @@ let products = {
     edit: productsEdit,
     new: productsNew,
     index: productsIndex
-};
+}
 
 export default products

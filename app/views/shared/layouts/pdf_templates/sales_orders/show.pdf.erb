@@ -6,11 +6,11 @@
           <div class="compare_open" id="compare_popup"></div>
           <div id="header">
             <div style=" float:left; width: 40%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
-              <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png',:width => "50%" %>
+              <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
             </div>
             <div style="float:right;width:60%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
               <b>
-                <span style=" font-size: 17.5px;">
+                <span style="font-size: 28px">
                   <% if defined?(proforma) && proforma %>
                     Proforma Invoice #<%= record.order_number %>
                   <% else %>
@@ -105,7 +105,7 @@
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-wrapper" style="height: auto;width: 49%;">
+                <td class="address-wrapper" style="height: auto;">
                   <% if record.inquiry.bill_from.address.present? %>
                     <%= record.inquiry.bill_from.address.name.to_s %><br>
                   <% end %>
@@ -116,7 +116,7 @@
                   PAN No.: AAGCB7343G</span>
                 </td>
                 <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;width: 49%;">
+                <td class="address-wrapper" style="height: auto;">
                   <% if record.inquiry.ship_from.present? %>
                     <%= record.inquiry.ship_from.address.name.to_s %><br>
                   <% end %>
@@ -145,7 +145,7 @@
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-wrapper" style="height: auto;width: 49%;">
+                <td class="address-wrapper" style="height: auto;">
                   <%= record.inquiry.contact.full_name %><br>
                   <%= record.inquiry.billing_address.name %><br>
                   <%= record.inquiry.billing_address.to_multiline_s if record.inquiry.billing_address.present? %>
@@ -155,7 +155,7 @@
                   GST No.:<%= record.inquiry.billing_address.gst %><br>
                 </td>
                 <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;width: 49%;">
+                <td class="address-wrapper" style="height: auto;">
                   <%= record.inquiry.shipping_contact.present? ? record.inquiry.shipping_contact.full_name : record.inquiry.contact.full_name %>
                   <br>
                   <%= record.inquiry.shipping_address.name %><br>
@@ -339,7 +339,7 @@
           <div class="bottom-info" style="position: relative">
             <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
               <div id="inner-stamp" style="float: right; position: relative;">
-                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png',:width => "95",:height => "95" %>
+                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
               </div>
             </div>
 
@@ -347,7 +347,7 @@
               <div id="noteInvoiceContainer">
                 <table style="width: 100%;" cellspacing="0" border="0">
                   <tr>
-                    <td colspan="2" style="background: #d3d3d3; padding-left: 10px; border-bottom: 1px solid #3c3c3c;" align="left" valign="top">
+                    <td colspan="2" style="background: #d3d3d3; padding-left: 10px; border-bottom: 1px solid #3c3c3c;" height="20" align="left" valign="top">
                       <b><span>Note:</span></b></td>
                   </tr>
                   <tr>
@@ -363,7 +363,7 @@
               <div id="OtherinfoInvoice" style="border:1px solid; border-radius: 5px;">
                 <table style="width: 100%;" cellspacing="0" border="0">
                   <tr style="background: #d3d3d3;">
-                    <td class="invoiceheader1" style=" border-bottom: 1px solid #3c3c3c; " colspan="16" align="left" valign="top">
+                    <td class="invoiceheader1" style=" border-bottom: 1px solid #3c3c3c; " colspan="16" height="20" align="left" valign="top">
                       <b><span>Payment By Wire Transfer To:</span></b></td>
                   </tr>
 
@@ -380,7 +380,7 @@
                 <table border="0" cellspacing="0" style="width: 100%;">
                   <tbody>
                   <tr>
-                    <td align="left" colspan="16" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top-left-radius:5px;border-top-right-radius:5px;" valign="top">
+                    <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top-left-radius:5px;border-top-right-radius:5px;" valign="top">
                       <b><span>Other Information:</span></b></td>
                   </tr>
                   <tr>
