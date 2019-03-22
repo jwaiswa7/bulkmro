@@ -12,10 +12,10 @@
           <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
           <div class="modal-body">
             <% if @invoice_request.status == 'Pending AP Invoice'  %>
-              <%= f.input :ap_cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <%= f.input :ap_cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', :required => true , input_html: {:'data-parsely-no-valid-feedback' => ''} %>
               <%= f.hidden_field :status, :value => 'Cancelled AP Invoice' %>
             <% else %>
-              <%= f.input :grpo_cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <%= f.input :grpo_cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', :required => true , input_html: {:'data-parsely-no-valid-feedback' => ''} %>
               <%= f.hidden_field :status, :value => 'Cancelled GRPO' %>
             <% end %>
           </div>
