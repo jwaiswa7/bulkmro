@@ -1,0 +1,38 @@
+.headway {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 2.65rem 0 0;
+}
+
+.HW_visible {
+  display: inline-block;
+  z-index: 1500;
+}
+
+#HW_frame_cont {
+  &.HW_visible {
+    z-index: 1500;
+  }
+
+  @include media-breakpoint-down(md) {
+    display: none;
+  }
+}
+
+
+.headway > * {
+  &:after {
+    content: 'Updates';
+    display: inline-block;
+    color: #fd7e14;
+    text-transform: uppercase;
+    font-size: 10px;
+    vertical-align: middle;
+    line-height: 32px;
+    padding-left: 2.75em;
+  }
+}
+
+#HW_badge.HW_softHidden {
+  background-color: $primary !important;
+}
