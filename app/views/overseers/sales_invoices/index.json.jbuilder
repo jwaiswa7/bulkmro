@@ -43,7 +43,7 @@ json.data (@sales_invoices) do |sales_invoice|
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.outside_sales_owner.to_s : '',
                   format_succinct_date(sales_invoice.delivery_date),
                   format_boolean(sales_invoice.has_attachment?),
-                  (sales_invoice.inquiry.opportunity_type if sales_invoice.inquiry.present?),
+                  ((sales_invoice.inquiry.opportunity_type != 'route_through' ? 'regular' : 'route_through' ) if sales_invoice.inquiry.present?),
                   format_succinct_date(sales_invoice.mis_date),
                   format_succinct_date(sales_invoice.created_at)
               ]
@@ -62,7 +62,7 @@ json.columnFilters [
                        Overseer.outside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        [],
                        [{"label": 'True', "value": 1}, {"label": 'False', "value": 0}],
-                       Inquiry.opportunity_types.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       Inquiry.opportunity_types.slice('regular','route_through').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        [],
                    ]

@@ -31,13 +31,13 @@
                       <th class="text-uppercase text-left"> Regular  </th>
                       <% @invoice_over_month.keys.each do |month| %>
                         <td class="text-uppercase">
-                          <!-- <a href="<%#= filtered_path(overseers_sales_invoices_path, [
+                           <a href="<%= filtered_path(overseers_sales_invoices_path, [
                               filter_by_value('POD', 'False', 0),
-                              filter_by_value('Opportunity Type', 'regular', 40),
+                              filter_by_value('POD Type', 'regular', 40),
                               filter_by_monthrange('Invoice Date', month.to_date)
-                          ]) %>"> -->
+                          ]) %>">
                             <%= (@regular_pod_over_month[month].present?) ? number_with_delimiter(@regular_pod_over_month[month]['doc_count'], delimiter: ',') : 0 %>
-                          <!-- </a> -->
+                           </a>
                         </td>
                       <% end %>
                     </tr>
@@ -47,7 +47,7 @@
                         <td class="text-uppercase">
                           <a href="<%= filtered_path(overseers_sales_invoices_path, [
                               filter_by_value('POD', 'False', 0),
-                              filter_by_value('Opportunity Type', 'route_through', 70),
+                              filter_by_value('POD Type', 'route_through', 70),
                               filter_by_monthrange('Invoice Date', month.to_date)
                           ]) %>">
                             <%= (@route_through_pod_over_month[month].present?) ? number_with_delimiter(@route_through_pod_over_month[month]['doc_count'], delimiter: ',') : 0 %>
