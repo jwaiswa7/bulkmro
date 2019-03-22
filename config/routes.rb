@@ -351,7 +351,12 @@ Rails.application.routes.draw do
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
-        resources :sales_shipments
+        resources :sales_shipments do
+          member do
+            get 'relationship_map'
+            get 'get_relationship_map_json'
+          end
+        end
         resources :purchase_orders do
           member do
             get 'relationship_map'
@@ -373,6 +378,8 @@ Rails.application.routes.draw do
             get 'duplicate'
             get 'triplicate'
             get 'make_zip'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
         end
 

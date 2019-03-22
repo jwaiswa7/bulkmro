@@ -1,0 +1,28 @@
+// Base class
+//
+// Requires one of the contextual, color modifier classes for `color` and
+// `background-color`.
+
+// Allow specific badges to word-wrap
+.badge {
+  vertical-align: middle;
+
+  &.badge-wrap {
+    word-wrap: normal;
+    white-space: normal;
+    line-height: 1.25em;
+  }
+}
+
+@each $color, $value in $colors {
+  .badge-#{$color} {
+    @include badge-variant($value);
+  }
+}
+
+
+@each $color, $value in $custom-colors {
+  .badge-#{$color} {
+    @include badge-variant($value);
+  }
+}

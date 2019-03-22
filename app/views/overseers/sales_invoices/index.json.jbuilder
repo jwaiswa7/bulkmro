@@ -1,6 +1,9 @@
 json.data (@sales_invoices) do |sales_invoice|
   json.array! [
                   [
+                      if policy(sales_invoice).relationship_map?
+                        row_action_button(relationship_map_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry.to_param, sales_invoice.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
+                      end,
                       if policy(sales_invoice).show? && sales_invoice.inquiry.present?
                         [
                          row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), 'eye', 'View Sales Invoice ', 'info', :_blank),
