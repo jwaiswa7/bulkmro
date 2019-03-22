@@ -4,6 +4,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @range_filters = []
     @paginate = paginate
     @status = params[:status]
+    @owner_type = params[:owner]
     @base_filter = []
     @sort_by = sort_by
     @sort_order = sort_order
@@ -18,7 +19,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           end
         end
       end
-      if params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
+      if params[:order].present? && params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
         @sort_by = params[:columns][params[:order].values.first['column']][:name]
         @sort_order = params[:order].values.first['dir']
       end

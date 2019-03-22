@@ -365,7 +365,12 @@ Rails.application.routes.draw do
         resources :comments
         resources :email_messages
         resources :sales_shipments
-        resources :purchase_orders
+        resources :purchase_orders do
+          member do
+            get 'relationship_map'
+            get 'get_relationship_map_json'
+          end
+        end
 
         resources :po_requests do
           collection do
@@ -395,6 +400,8 @@ Rails.application.routes.draw do
             post 'create_confirmation'
             post 'resync'
             get 'fetch_order_data'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
 
           collection do

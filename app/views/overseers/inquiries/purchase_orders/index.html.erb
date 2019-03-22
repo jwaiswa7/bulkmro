@@ -15,6 +15,7 @@
       <% @purchase_orders.each do |purchase_order| %>
         <tr>
           <td>
+            <%= row_action_button(relationship_map_overseers_inquiry_purchase_order_path(@inquiry.to_param, purchase_order.to_param), 'sitemap', 'Relationship Map', 'info', :_blank) %>
             <% if policy(purchase_order).show? %>
               <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, purchase_order), 'eye', 'View Purchase Order ', 'info') %>
               <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>

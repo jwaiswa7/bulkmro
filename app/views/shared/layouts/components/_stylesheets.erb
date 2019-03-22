@@ -9,8 +9,8 @@
 
 <!-- Styles -->
 <% if !Rails.env.production? || !Rails.env.staging? %>
-  <%= stylesheet_link_tag 'overseers/imports', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_link_tag 'shared/imports', media: 'all', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<%= stylesheet_link_tag 'overseers/application', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= stylesheet_link_tag 'shared/application', media: 'all', 'data-turbolinks-track': 'reload' %>
 <!-- /Styles -->
