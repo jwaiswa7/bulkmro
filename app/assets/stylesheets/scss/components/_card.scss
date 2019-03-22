@@ -1,0 +1,27 @@
+.card {
+  .card-overlay {
+    position: absolute;
+    display: flex;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.75);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .card-body {
+    img {
+      max-width: 100%;
+    }
+
+    .card-alternative {
+      background-color: #f7f7f7;
+      margin-left: -$card-spacer-y;
+      margin-right: -$card-spacer-y;
+      padding: $card-spacer-x $card-spacer-y $card-spacer-x/2;
+    }
+  }
+}

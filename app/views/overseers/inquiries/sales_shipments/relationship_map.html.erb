@@ -1,0 +1,12 @@
+<% provide :container_fluid, true %>
+
+<div class="col-lg-12">
+  <% content_for :heading_byline do %>
+    This is the relationship map of all entities <em>for <%= @inquiry %></em>.
+  <% end %>
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <div>
+      <div class="treant" style="width:100%; height: auto;" data-nodes="<%= get_relationship_map_json_overseers_inquiry_sales_shipment_path(@sales_shipment.inquiry.id, @sales_shipment.id) %>"></div>
+    </div>
+  <% end %>
+</div>
