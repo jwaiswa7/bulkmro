@@ -22,34 +22,7 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
       indexed_records = range_query(indexed_records)
     end
 
-    indexed_records = indexed_records.aggregations(
-        {
-            'inquiries': {
-                terms: {field: 'inside_sales_owner_id',size: 500},
-                aggs: {
-                    sales_invoices: {
-                        sum: {
-                            field: 'invoices_count'
-                        }
-                    },
-                    sales_orders: {
-                        sum: {
-                            field: 'sales_order_count'
-                        }
-                    },
-                    expected_orders: {
-                        sum: {
-                            field: 'expected_order'
-                        }
-                    },
-                    orders_won: {
-                        sum: {
-                            field: 'order_won'
-                        }
-                    }
-                }
-            }
-        })
+    indexed_records = aggregation_kra_report(indexed_records)
     indexed_records
   end
 
@@ -58,7 +31,7 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
         multi_match: {
             query: query_string,
             operator: 'and',
-            fields: index_klass.fields
+            fields: %w[inside_sales_owner]
         }
     ).order(sort_definition)
 
@@ -77,9 +50,69 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
+    indexed_records = aggregation_kra_report(indexed_records)
     indexed_records
   end
 
+  def aggregation_kra_report(indexed_records)
+    if @kra_report_params.present?
+      from = @kra_report_params["date_range"].split("~").first.to_date.strftime('%d-%m-%Y')
+      to = @kra_report_params["date_range"].split("~").last.to_date.strftime('%d-%m-%Y')
+      date_range = {from: from, to: to, key: 'custom-range'}
+      puts date_range
+      puts "if custom range is present"
+    else
+      date_range = {to: "01-03-2019", key: 'custom-range'}
+      puts date_range
+      puts "custom range is not present"
+    end
+    indexed_records = indexed_records.aggregations(
+        {
+            'kra_over_month': {
+                date_range: {
+                    field: 'created_at',
+                    format: 'dd-MM-yyy',
+                    ranges: [
+                        date_range
+                    ],
+                    keyed: true
+                },
+                aggs: {
+                    'inquiries': {
+                        'terms': {'field': 'inside_sales_owner_id', size: 500},
+                        aggs: {
+                            sales_invoices: {
+                                sum: {
+                                    field: 'invoices_count'
+                                }
+                            },
+                            sales_orders: {
+                                sum: {
+                                    field: 'sales_order_count'
+                                }
+                            },
+                            expected_orders: {
+                                sum: {
+                                    field: 'expected_order'
+                                }
+                            },
+                            orders_won: {
+                                sum: {
+                                    field: 'order_won'
+                                }
+                            },
+                            clients: {
+                                value_count: {
+                                    field: 'company_key'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    indexed_records
+  end
 
   def model_klass
     Inquiry

@@ -6,9 +6,12 @@
   <%='KRA Report' %>
 <% end %>
 
+<%= render layout: 'search_layout' do %>
+<% end %>
+
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
-  <th class="no-sort all">Name</th>
+  <th class="no-sort all" data-name="inside_sales_owner_id">Name</th>
   <th class="no-sort all">Inquiries</th>
   <th class="no-sort all">Sales Invoices</th>
   <th class="no-sort all">Sales Orders</th>
@@ -18,7 +21,7 @@
 
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
-  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>

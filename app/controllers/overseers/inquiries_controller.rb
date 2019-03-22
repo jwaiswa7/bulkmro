@@ -31,7 +31,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
         service.call
 
-        @indexed_kra_reports = service.indexed_records.aggregations['inquiries']['buckets']
+        @indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
       end
     end
   end
