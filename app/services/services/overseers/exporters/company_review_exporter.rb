@@ -7,7 +7,7 @@ class Services::Overseers::Exporters::CompanyReviewExporter < Services::Overseer
     @columns = ['serial', 'supplier_id', 'supplier_name', 'rating_submitted_by', 'review_type', 'rating', 'document']
   end
   def call
-    perform_export_later('CompanyReviewExporter')
+    perform_export_later('CompanyReviewExporter', @arguments)
   end
 
   def build_csv
