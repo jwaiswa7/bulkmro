@@ -351,7 +351,12 @@ Rails.application.routes.draw do
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
-        resources :sales_shipments
+        resources :sales_shipments do
+          member do
+            get 'relationship_map'
+            get 'get_relationship_map_json'
+          end
+        end
         resources :purchase_orders do
           member do
             get 'relationship_map'
@@ -373,6 +378,8 @@ Rails.application.routes.draw do
             get 'duplicate'
             get 'triplicate'
             get 'make_zip'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
         end
 
@@ -540,6 +547,7 @@ Rails.application.routes.draw do
     resources :company_reviews do
       collection do
         get 'export_all'
+        get 'export_filtered_records'
       end
       member do
         get 'render_form'
@@ -638,10 +646,8 @@ Rails.application.routes.draw do
     resource :cart, :controller => :cart, except: [:index] do
       collection do
         get 'checkout'
-        patch 'update_billing_address'
-        patch 'update_shipping_address'
-        patch 'update_special_instructions'
-        patch 'update_payment_method'
+        post 'update_cart_details'
+        post 'update_billing_address'
         patch 'update_payment_data'
         patch 'add_po_number'
         get 'empty_cart'

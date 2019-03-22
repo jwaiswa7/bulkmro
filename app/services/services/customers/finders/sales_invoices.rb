@@ -36,7 +36,7 @@ class Services::Customers::Finders::SalesInvoices < Services::Customers::Finders
   def perform_query(query_string)
     query_string = query_string[0, 35]
 
-    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[cp_created_at_s cp_delivery_date_s cp_po_number_s status_s cp_order_date_s invoice_number_s^5 inquiry_number_s^4 order_number_s^3 status_s outside_sales_owner^2 inside_sales_owner^2] }).order(sort_definition)
+    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[cp_created_at_s cp_delivery_date_s cp_po_number_s status_s cp_order_date_s invoice_number_string^5 inquiry_number_string^4 sales_order_number_string^3 status_s outside_sales_owner^2 inside_sales_owner^2] }).order(sort_definition)
 
     # if current_overseer.present? && !current_overseer.allow_inquiries?
     #   indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))

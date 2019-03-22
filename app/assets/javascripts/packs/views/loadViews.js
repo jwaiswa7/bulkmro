@@ -53,8 +53,12 @@ import activities from './activities/init'
 import companies from './companies/init'
 import suppliers from  './suppliers/init'
 
+import companyReviews from './companyReviews/init'
+
 // Document Creation
 import documentCreations from "./documentCreations/init";
+
+import checkout from "./checkout/init";
 
 let loader = {
     imports: imports,
@@ -78,7 +82,9 @@ let loader = {
     activities: activities,
     companies: companies,
     suppliers: suppliers,
-    documentCreations: documentCreations
+    companyReviews: companyReviews,
+    documentCreations: documentCreations,
+    checkout: checkout
 };
 
 // Imports

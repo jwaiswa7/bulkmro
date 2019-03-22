@@ -13,7 +13,7 @@ class CompanyReview < ApplicationRecord
     'Logistics': 10,
     'Sales': 20
   }
-
+  scope :with_includes, -> {includes(:company, :company_ratings, :created_by, :updated_by)}
   scope :sales, -> { where(survey_type: :'Sales') }
   scope :logistics, -> { where(survey_type: :'Logistics') }
   scope :reviewed, ->(overseer, type) { where(survey_type: type, created_by: overseer).where.not(rating: nil) }
