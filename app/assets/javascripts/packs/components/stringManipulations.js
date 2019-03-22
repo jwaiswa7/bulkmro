@@ -2,7 +2,7 @@ const stringManipulations = () => {
     'use strict';
     String.prototype.capitalize = function () {
         return this.charAt(0).toUpperCase() + this.slice(1);
-    }
+    };
 
     String.prototype.titleize = function () {
         var string_array = this.split(' ');
@@ -11,8 +11,7 @@ const stringManipulations = () => {
         });
 
         return string_array.join(' ');
-    }
-
+    };
 };
 
 export default stringManipulations

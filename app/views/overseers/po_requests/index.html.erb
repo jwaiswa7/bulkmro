@@ -11,7 +11,7 @@
   <% if action_name == 'pending_stock' || 'pending_stock_approval' %>
     <%= action_name.capitalize.gsub('_',' ') %> Requests
   <%else %>
-    <%= action_name == 'index' ? 'Completed' : (action_name == 'pending_and_rejected') ? 'Pending' : action_name.capitalize %> Purchase Order Requests
+    <%= action_name == 'index' ? 'Completed PO Requests ' : (action_name == 'pending_and_rejected') ? 'Pending and Rejected PO Requests' : action_name.capitalize %>
   <% end %>
 <% end %>
 
@@ -30,7 +30,7 @@
     <% end %>
   <% end %>
   <% if policy(:sales_order).index? %>
-    <a href="<%= overseers_sales_orders_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
+    <a href = "<%= overseers_sales_orders_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >
       <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
     </a>
   <% end %>
@@ -43,6 +43,11 @@
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort desktop text-right" data-name="po_request_no">PO Request No.</th>
+  <% if action_name.include?'stock' %>
+    <th class="no-sort desktop">Stock Status</th>
+  <% else %>
+    <th class="no-sort desktop">Status</th>
+  <% end %>
   <th class="no-sort desktop text-right" data-name="inquiry">Inquiry</th>
   <% if action_name == 'index' || action_name == "Completed" %>
     <th class="no-sort all text-right" data-name="po_number">PO Number</th>
@@ -67,3 +72,4 @@
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>
+<div class="cancellation-form-modal" data-status="<%= params[:status] %>"></div>

@@ -128,8 +128,12 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     new_purchase_orders_requests?
   end
 
+  def create_stock_po?
+    admin? || sales?
+  end
+
   def fetch_order_data?
-    developer? && record.status == 'Approved'
+    (developer? || admin?) && record.status == 'Approved'
   end
 
   def material_dispatched_to_customer_new_email_msg?
@@ -154,6 +158,14 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def create_stock_po?
     admin? || sales?
+  end
+
+  def relationship_map?
+    all_roles?
+  end
+
+  def get_relationship_map_json?
+    relationship_map?
   end
 
   class Scope
