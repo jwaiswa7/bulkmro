@@ -8,8 +8,6 @@ const edit = () => {
 
     openRatingModal()
 
-    let form_original_data = $("form").serializeArray();
-
     $('form').on('change', 'select[name*=status]', function (e) {
         if ($(e.target).val() == "Cancelled") {
             $('.status-cancelled').removeClass('d-none');
@@ -43,53 +41,15 @@ const edit = () => {
         console.log('Validation failed for: ',
             this.$element.attr('name'));
     });
-
     $('select[name*=status]').trigger('change');
     $('select[name*=stock_status]').trigger('change');
     validatePoRequestAddresses();
     updateRowTotal();
     updateOnContactSelect();
 
-    $('form').on('click', '.add-review', function (e) {
+    $('form').on('click','.add-review',function (e) {
         $('.rating-modal a').click();
     })
-
-    $('.confirm-cancel').click(function (event) {
-        if (changed_status[0]['value'] == 'Cancelled') {
-            if (!confirm('Do you want to cancel the Po Request?')) {
-                event.preventDefault();
-            } else {
-                if (!confirm('Do you want to reject the Po Request?')) {
-                    event.preventDefault();
-                }
-            }
-        }
-
-    });
-
-
-    $('.submit-form').unbind().bind('click', function (event) {
-        let form_changed_data = $("form").serializeArray();
-        let changed_status = form_changed_data.filter(x => x.name === "po_request[status]");
-        let original_status = form_original_data.filter(x => x.name === "po_request[status]");
-        if (changed_status) {
-            let is_cancel_status = changed_status[0]['value'].toLowerCase().indexOf('cancel') != -1 || changed_status[0]['value'].toLowerCase().indexOf('reject') != -1
-            if (is_cancel_status && original_status && (changed_status[0]['value'] != original_status[0]['value'])) {
-                if (changed_status[0]['value'] == 'Cancelled') {
-                    if (!confirm('Do you want to cancel the Po Request?')) {
-                        event.preventDefault();
-                    }
-                } else if ((changed_status[0]['value'] == 'Rejected')) {
-                    if (!confirm('Do you want to reject the Po Request?')) {
-                        event.preventDefault();
-                    }
-                }
-            }
-        }
-
-
-    });
-
 };
 
 export default edit

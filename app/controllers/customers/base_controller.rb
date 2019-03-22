@@ -20,13 +20,12 @@ class Customers::BaseController < ApplicationController
         layout: 'shared/layouts/pdf_templates/show',
         page_size: 'A4',
         footer: {
-            center: '[page] of [topage]',
-            font_size: 9
+            center: '[page] of [topage]'
         },
+        # show_as_html: true,
         locals: {
             record: record
-        }.merge(locals),
-        zoom: 0.78125
+        }.merge(locals)
       )
     end
 

@@ -29,13 +29,13 @@ const newAction = () => {
 
     $('#freight_quote_selling_price_inr').on('keyup', function() {
         calculateMargin();
-    });
+    })
 
     $('#freight_quote_buying_price_inr').on('keyup', function() {
         $('#freight_quote_invoice_value').val($('#freight_quote_buying_price_inr').val());
         calculateInsurance();
         calculateGst();
-    });
+    })
 
     $('#freight_quote_currency').on('change', function () {
         $('#freight_quote_exchange_rate').val(this.options[this.selectedIndex].dataset.conversionRate);

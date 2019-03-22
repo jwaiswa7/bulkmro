@@ -5,14 +5,14 @@
         Edit Material Followup: <%= format_id(@purchase_order.po_number) %>
       </h3>
       <span>
-        <% if policy(@purchase_order).new_inward_dispatch? %>
-          <a href="<%= new_overseers_purchase_order_inward_dispatch_path(@purchase_order) %> " class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ">
-            <i class="fal fa-plus-circle mr-1"></i>New Inward Dispatch
+        <% if policy(@purchase_order).new_pickup_request? %>
+          <a href="<%= new_overseers_purchase_order_material_pickup_request_path(@purchase_order) %> " class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ">
+            <i class="fal fa-plus-circle mr-1"></i>New Pickup Request
           </a>
         <% else %>
-          <span data-toggle="tooltip" title="<%= @purchase_order.followup_date.blank? ? 'Followup Date Needed' : 'No Product Left to Pickup' %>">
+          <span data-toggle="tooltip" title="Followup Date Needed">
             <a href=# class=" btn btn-success btn-rounded align-self-center btn-block-sm-down disabled">
-              <i class="fal fa-plus-circle mr-1"></i>New Inward Dispatch
+              <i class="fal fa-plus-circle mr-1"></i>New Pickup Request
             </a>
           </span>
         <% end %>
