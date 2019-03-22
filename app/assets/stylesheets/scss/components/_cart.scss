@@ -1,0 +1,28 @@
+.cart-dropdown {
+  width: 15rem;
+
+  .cart-items {
+    max-height: 15rem;
+    overflow: auto;
+
+    > * {
+      padding: 0.25rem 0.5rem;
+    }
+  }
+
+  .cart-footer {
+    display: flex;
+
+    * {
+      &:first-child {
+        margin-right: 0.25rem;
+      }
+
+      &:last-child {
+        margin-left: 0.25rem;
+      }
+    }
+  }
+}
+
+
