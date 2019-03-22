@@ -51,6 +51,7 @@ import poRequests from "./poRequests/init";
 import activities from './activities/init'
 
 import companies from './companies/init'
+import suppliers from  './suppliers/init'
 
 // Document Creation
 import documentCreations from "./documentCreations/init";
@@ -76,6 +77,7 @@ let loader = {
     poRequests: poRequests,
     activities: activities,
     companies: companies,
+    suppliers: suppliers,
     documentCreations: documentCreations
 };
 

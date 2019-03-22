@@ -105,8 +105,8 @@ Rails.application.routes.draw do
     resources :suppliers do
       collection do
         get 'autocomplete'
-        # get 'export_all'
-        # get 'export_filtered_records'
+        get 'export_all'
+        get 'export_filtered_records'
       end
     end
 
