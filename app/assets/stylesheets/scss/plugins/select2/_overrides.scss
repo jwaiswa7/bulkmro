@@ -43,7 +43,8 @@
 }
 
 .select2-container--bootstrap {
-  .select2-dropdown--below, .select2-dropdown--above {
+  .select2-dropdown--below,
+  .select2-dropdown--above {
     min-width: 12.5rem;
   }
 
@@ -102,7 +103,8 @@
 
 .was-validated {
   .form-control {
-    &:invalid, &.is-invalid {
+    &:invalid,
+    &.is-invalid {
       ~ .select2-container--bootstrap {
         .form-control {
           border-color: $danger;
@@ -113,7 +115,9 @@
         }
       }
     }
-    &:valid, &.is-valid {
+
+    &:valid,
+    &.is-valid {
       ~ .select2-container--bootstrap {
         .form-control {
           border-color: $success;

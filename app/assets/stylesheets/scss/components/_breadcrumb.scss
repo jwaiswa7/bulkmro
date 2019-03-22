@@ -5,7 +5,7 @@
 .breadcrumb-item {
   display: flex;
   align-items: center;
-  font-size: .875rem;
+  font-size: 0.875rem;
 
   a {
     font-weight: 500;
@@ -27,7 +27,7 @@
   justify-content: space-between;
 
   &.navbar {
-    padding: $spacer/2 $spacer;
+    padding: $spacer / 2 $spacer;
   }
 
   &.sticky-top {

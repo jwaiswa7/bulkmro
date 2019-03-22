@@ -1,10 +1,12 @@
 html {
-  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
 }
 
 @include media-breakpoint-down(sm) {
-  h1, .display-4, .h1 {
+  h1,
+  .display-4,
+  .h1 {
     font-size: $h2-font-size;
   }
 
@@ -15,12 +17,12 @@ html {
 
 @media all and (max-width: 1024px) {
   html {
-    font-size: .875rem;
+    font-size: 0.875rem;
   }
 }
 
 .text-small {
-  font-size: .875rem;
+  font-size: 0.875rem;
   line-height: 1.3125rem;
 }
 
@@ -33,17 +35,17 @@ p:last-child {
 }
 
 hr {
-  width: 100%;
   border-color: $border-color;
+  width: 100%;
 }
 
 .bg-dark {
   hr {
-    border-color: rgba(255,255,255,.1);
+    border-color: rgba(255, 255, 255, .1);
   }
 
   .text-muted {
-    color: rgba(255,255,255,.5) !important;
+    color: rgba(255, 255, 255, .5) !important;
   }
 }
 
@@ -56,8 +58,11 @@ a:focus {
 }
 
 i.material-icons {
-  &.h1, &.h2, &.h3, &.h4 {
-    font-family: 'Material Icons';
+  &.h1,
+  &.h2,
+  &.h3,
+  &.h4 {
+    font-family: "Material Icons";
     margin-bottom: 0;
   }
 }

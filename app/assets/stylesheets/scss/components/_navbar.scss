@@ -54,7 +54,7 @@
 // Causes a slight jerk on mobile
 .navbar-collapse {
   @include media-breakpoint-down(md) {
-    // padding: $spacer/2 0;
+    // padding: $spacer / 2 0;
   }
 }
 
