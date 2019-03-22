@@ -547,6 +547,7 @@ Rails.application.routes.draw do
     resources :company_reviews do
       collection do
         get 'export_all'
+        get 'export_filtered_records'
       end
       member do
         get 'render_form'
@@ -645,10 +646,8 @@ Rails.application.routes.draw do
     resource :cart, :controller => :cart, except: [:index] do
       collection do
         get 'checkout'
-        patch 'update_billing_address'
-        patch 'update_shipping_address'
-        patch 'update_special_instructions'
-        patch 'update_payment_method'
+        post 'update_cart_details'
+        post 'update_billing_address'
         patch 'update_payment_data'
         patch 'add_po_number'
         get 'empty_cart'

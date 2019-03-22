@@ -45,26 +45,35 @@
             <div>
               <hr>
               <strong class="d-block">Billing Address
-                <a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing" class="float-right">Change</a></strong>
+                <% if params[:next_step].blank? %>
+                  <a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing" class="float-right">Change</a>
+                <% end %>
+              </strong>
               <em class="d-block mt-1"><%= current_contact.name %></em>
-              <%= current_cart.billing_address.to_multiline_s %><br/>
-              <% if current_contact.telephone.present? %>
-                T: <%= current_contact.telephone %><br/>
-              <% end %>
-              GST No: <%= current_cart.billing_address.gst %>
+              <div id="changed_billing_address">
+                <%= current_cart.billing_address.to_multiline_s %><br/>
+                <% if current_contact.telephone.present? %>
+                  T: <%= current_contact.telephone %><br/>
+                <% end %>
+                GST No: <%= current_cart.billing_address.gst %>
+              </div>
             </div>
           <% end %>
           <% if @cart.shipping_address.present? %>
             <div>
               <hr>
-              <strong class="d-block">Shipping Address
-                <a data-toggle="collapse" data-parent="#checkout" href="#checkout-shipping" class="float-right">Change</a></strong>
-              <em class="d-block mt-1"><%= current_contact.name %></em>
-              <%= current_cart.shipping_address.to_multiline_s %><br/>
-              <% if current_contact.telephone.present? %>
-                T: <%= current_contact.telephone %><br/>
+              <strong class="d-block">Shipping Address</strong>
+              <% if params[:next_step].blank? %>
+                <a data-toggle="collapse" data-parent="#checkout" href="#checkout-shipping" class="float-right">Change</a>
               <% end %>
-              GST No: <%= current_cart.shipping_address.gst %>
+              <em class="d-block mt-1"><%= current_contact.name %></em>
+              <div id="changed_shipping_address">
+                <%= current_cart.shipping_address.to_multiline_s %><br/>
+                <% if current_contact.telephone.present? %>
+                  T: <%= current_contact.telephone %><br/>
+                <% end %>
+                GST No: <%= current_cart.shipping_address.gst %>
+              </div>
             </div>
           <% end %>
         </div>
@@ -72,99 +81,92 @@
     </div>
 
     <div class="accordion col-lg-9" id="checkout">
-      <div class="card">
-        <div class="card-header">
-          <a data-toggle="collapse" data-parent="#checkout" href="<%= @cart.billing_address.present? ? "#checkout-billing" : "" %>">
-            <h5 class="mb-0">
-              <strong>Billing Details</strong>
-            </h5>
-          </a>
-        </div>
+      <%= simple_form_for [:customers, @cart], :url => update_cart_details_customers_cart_path, :method => :post do |f| %>
+        <div class="card" id="billing-address">
+          <div class="card-header">
+            <a data-toggle="collapse" data-parent="#checkout" href="<%= @cart.billing_address.present? ? "#checkout-billing" : "" %>">
+              <h5 class="mb-0">
+                <strong>Billing Details</strong>
+              </h5>
+            </a>
+          </div>
 
-        <div id="checkout-billing" class="collapse <%= show_if(params[:next_step].blank?) %>" data-parent="#checkout">
-          <div class="card-body">
-            <%= simple_form_for [:customers, @cart], :url => update_billing_address_customers_cart_path, :method => :patch do |f| %>
+          <div id="checkout-billing" class="collapse <%= show_if(params[:next_step].blank?) %>" data-parent="#checkout">
+            <div class="card-body">
               <%= f.input :po_reference, label: 'PO Reference Number', placeholder: 'e.g. ASDF19126' %>
               <p>Select a billing address from your address book.</p>
-              <% current_company.addresses.each do |address| %>
-                <label class="d-flex justify-content-center align-items-center flex-row">
+              <div id="current_company_address">
+                <% current_company.addresses.each do |address| %>
+                  <label class="d-flex justify-content-center align-items-center flex-row">
                     <span class="h-100">
                       <%= f.radio_button :billing_address_id, address.id %>
                     </span>
-                  <span class="flex-grow-1 ml-2">
-                    <%= address.to_multiline_s %><br/>
-                    <% if address.telephone.present? %>T: <%= address.telephone %><br/><% end %>
-                    GST No: <%= address.gst %>
+                    <span class="flex-grow-1 ml-2" id="billing_address_<%= address.id %>">
+                      <%= address.to_multiline_s %><br/>
+                      <% if address.telephone.present? %>T: <%= address.telephone %><br/><% end %>
+                      GST No: <%= address.gst %>
                     </span>
-                </label>
-              <% end %>
-              <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
-            <% end %>
+                  </label>
+                <% end %>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="card">
-        <div class="card-header">
-          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="<%= @cart.shipping_address.present? ? "#checkout-shipping" : "" %>">
-            <h5 class="mb-0"><strong>Shipping Details</strong></h5>
-          </a>
-        </div>
+        <div class="card" id="shipping-address">
+          <div class="card-header">
+            <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="<%= @cart.shipping_address.present? ? "#checkout-shipping" : "" %>">
+              <h5 class="mb-0"><strong>Shipping Details</strong></h5>
+            </a>
+          </div>
 
-        <div id="checkout-shipping" class="collapse <%= show_if(params[:next_step] == 'shipping') %>" data-parent="#checkout">
-          <div class="card-body">
-            <p>Select a shipping address from your address book.</p>
-            <%= simple_form_for [:customers, @cart], :url => update_shipping_address_customers_cart_path, :method => :patch do |f| %>
+          <div id="checkout-shipping" class="collapse" data-parent="#checkout">
+            <div class="card-body">
+              <p>Select a shipping address from your address book.</p>
               <% current_company.addresses.each do |address| %>
                 <label class="d-flex justify-content-center align-items-center flex-row">
-                    <span class="h-100">
-                      <%= f.radio_button :shipping_address_id, address.id %>
-                    </span>
-                  <span class="flex-grow-1 ml-2">
+                  <span class="h-100">
+                    <%= f.radio_button :shipping_address_id, address.id %>
+                  </span>
+                  <span class="flex-grow-1 ml-2" id="shipping_address_<%= address.id %>">
                     <%= address.to_multiline_s %><br/>
                     <% if address.telephone.present? %>T: <%= address.telephone %><br/><% end %>
                     GST No: <%= address.gst %>
-                    </span>
+                  </span>
                 </label>
               <% end %>
-              <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
-            <% end %>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="card">
-        <div class="card-header">
-          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-comments">
-            <h5 class="mb-0"><strong>Special Instructions</strong></h5>
-          </a>
-        </div>
+        <div class="card" id="comments">
+          <div class="card-header">
+            <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-comments">
+              <h5 class="mb-0"><strong>Special Instructions</strong></h5>
+            </a>
+          </div>
 
-        <div id="checkout-comments" class="collapse <%= show_if(params[:next_step] == 'special_instructions') %>" data-parent="#checkout">
-          <div class="card-body">
-            <%= simple_form_for [:customers, @cart], :url => update_special_instructions_customers_cart_path, :method => :patch do |f| %>
+          <div id="checkout-comments" class="collapse" data-parent="#checkout">
+            <div class="card-body">
               <%= f.input :special_instructions, label: false, placeholder: 'Special Instructions / Comments' %>
-              <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block' %>
-            <% end %>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="card">
-        <div class="card-header">
-          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-payment-method">
-            <h5 class="mb-0"><strong>Payment Method</strong></h5>
-          </a>
-        </div>
+        <div class="card" id="payment-method">
+          <div class="card-header">
+            <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-payment-method">
+              <h5 class="mb-0"><strong>Payment Method</strong></h5>
+            </a>
+          </div>
 
-        <div id="checkout-payment-method" class="collapse <%= show_if(params[:next_step] == 'payment_method') %>" data-parent="#checkout">
-          <div class="card-body">
-            <%= simple_form_for [:customers, @cart], :url => update_payment_method_customers_cart_path, :method => :patch do |f| %>
+          <div id="checkout-payment-method" class="collapse" data-parent="#checkout">
+            <div class="card-body">
               <label class="d-flex justify-content-center align-items-center flex-row">
                     <span class="h-100">
                       <%= f.radio_button :payment_method, 'Bank Transfer', :checked => true %>
                     </span>
-                    <span class="flex-grow-1 ml-2">
+                <span class="flex-grow-1 ml-2">
                       <strong class="d-block">Bank Transfer</strong>
                     </span>
               </label>
@@ -173,25 +175,23 @@
                     <span class="h-100">
                       <%= f.radio_button :payment_method, 'Online Payment' %>
                     </span>
-                    <span class="flex-grow-1 ml-2">
+                <span class="flex-grow-1 ml-2">
                       <strong class="d-block">Online Payment</strong>
                       Checkout using credit card / debit card / net banking.
                     </span>
               </label>
 
-              <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
-            <% end %>
-          </div>
-        </div>
+              <%= f.button :submit, 'Continue & Place Order', class: 'btn btn-success btn-block mt-4' %>
+      <% end %>
       </div>
-
-      <div class="card">
+      </div>
+      </div>
+      <div class="card" id="product-summary">
         <div class="card-header">
           <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="<%= (@cart.billing_address.present? && @cart.shipping_address.present?) ? "#checkout-summary" : "" %>">
             <h5 class="mb-0"><strong>Products Summary</strong></h5>
           </a>
         </div>
-
         <div id="checkout-summary" class="collapse <%= show_if(params[:next_step] == 'summary') %>" data-parent="#checkout">
           <div class="card-body pt-0">
             <div class="text-left">
