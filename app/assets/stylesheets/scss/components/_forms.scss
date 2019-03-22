@@ -1,0 +1,233 @@
+form:focus {
+  outline: none;
+}
+
+//
+//
+// input[type=number]
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance:textfield;
+}
+
+//
+//
+// button, html [type="button"], [type="reset"], [type="submit"]
+button, html [type="button"], [type="reset"], [type="submit"] {
+  -webkit-appearance: none;
+}
+
+//
+//
+// Form Group
+.form-group {
+  label {
+    color: $body-color;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+    opacity: 0.9;
+  }
+}
+
+.form-control {
+  font-size: 0.875rem;
+  font-weight: $headings-font-weight;
+
+  &:focus {
+    border-color: lighten(theme-color('primary'), 30%);
+  }
+}
+
+.form-control-round {
+  border-radius: 10rem;
+}
+
+.custom-checkbox {
+  label {
+    color: $body-color;
+  }
+}
+
+label[class*='col'] {
+  margin-bottom: 0;
+}
+
+//
+//
+// Input Groups
+.input-group-prepend {
+  .input-group-text {
+    padding-right: 0;
+    border: 0 transparent;
+
+    .material-icons {
+      font-size: 1.125rem;
+    }
+  }
+
+  + .form-control {
+    border-left: none;
+    padding-left: .5rem;
+    margin-left: -0.05rem;
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.input-group-round {
+  .input-group-prepend {
+    .input-group-text {
+      border-radius: 10rem 0 0 10rem;
+    }
+
+    + .form-control{
+      border-radius: 0 10rem 10rem 0;
+    }
+  }
+}
+
+.input-group-text {
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+.input-group {
+  &:focus-within {
+    .input-group-text, .form-control {
+      border-color: lighten(theme-color('primary'), 30%);
+    } 
+  }
+}
+
+.input-group-dark {
+  .input-group-prepend {
+    margin-right: 0;
+  }
+
+  .input-group-text {
+    background: rgba(255,255,255,.1);
+    border-color: rgba(255,255,255,0);
+    color: rgba(255,255,255,.5);
+    border-right: none;
+  }
+}
+
+//
+//
+// Dark Form Colors
+.form-control-dark {
+  background: rgba(255,255,255,.1);
+  border-color: rgba(255,255,255,0);
+  color: #fff;
+
+  &:focus {
+    background: rgba(255,255,255,.1);
+    border-color: rgba(255,255,255,0);
+    color: $white;
+  }
+
+  &::placeholder {
+    color: rgba(255,255,255,.5);
+  }
+}
+
+//
+//
+// Custom File Browser buttons
+.custom-file {
+  label.custom-file-label {
+    line-height: 1.65;
+    font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &::after {
+      top: auto;
+      height: calc(2.25rem - 4px)
+    }
+  }
+
+  .valid-feedback, .invalid-feedback {
+    display: none !important;
+  }
+}
+
+.custom-file-naked {
+  cursor: pointer;
+  width: auto;
+  height: auto;
+
+  .custom-file-input {
+    width: auto;
+    height: auto;
+    cursor: pointer;
+  }
+
+  .custom-file-label {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    height: auto;
+    cursor: pointer;
+
+    &:after {
+      display: none;
+    }
+  }
+}
+
+//
+//
+// Custom Checkbox Switch
+.custom-checkbox-switch {
+  padding-left: $spacer*2.25;
+
+  .custom-control-label {
+    &:before {
+      width: $spacer*1.75;
+      height: $spacer*.75;
+      border-radius: 100px;
+      top: 0.25rem;
+      pointer-events: all;
+      transition: background-color .35s ease;
+      left: -3.35rem;
+    }
+
+    &:after {
+      background-image: none !important;
+      width: $spacer / 2;
+      height: $spacer / 2;
+      border-radius: 50%;
+      background: $white;
+      top: .45rem;
+      left: -3.15rem;
+      transition: left .35s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+  }
+
+  .custom-control-input {
+    &:checked {
+      ~ .custom-control-label {
+        &:after {
+          left: -1.65rem;
+        }
+
+        &:before {
+          background: theme-color('success');
+        }
+      }
+    }
+  }
+}
+
+.custom-radio, .custom-checkbox {
+  label {
+    display: block;
+  }
+}

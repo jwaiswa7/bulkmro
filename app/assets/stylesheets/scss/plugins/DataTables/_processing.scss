@@ -1,0 +1,30 @@
+table {
+  &.table {
+    &.dataTable {
+      &.blur {
+        opacity: 0.65;
+        filter: blur(3px);
+        -webkit-filter: blur(3px);
+        -moz-filter: blur(3px);
+        -o-filter: blur(3px);
+        -ms-filter: blur(3px);
+      }
+    }
+  }
+}
+
+div.dataTables_wrapper {
+  div.dataTables_processing {
+    border-width: 0;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: auto;
+    margin-left: 0;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 0;
+    background: transparent;
+    padding: 0;
+  }
+}

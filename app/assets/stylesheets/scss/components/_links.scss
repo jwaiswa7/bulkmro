@@ -1,0 +1,10 @@
+a {
+  &,
+  &:link,
+  &:visited,
+  &:hover,
+  &:active,
+  &:focus {
+    outline: 0;
+  }
+}
