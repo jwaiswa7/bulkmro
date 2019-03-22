@@ -1,0 +1,136 @@
+payment_term_id,term,status,days
+51,0.5% Interest Per Month,Disable,0
+124,"10 days 3 % cash discount, 30 days Due net",Disable,0
+65,10 days after invoicing,100% on 10 day(s) After Delivery,10
+128,10 days PDC,10 day(s) PDC After Delivery,10
+31,10% Advance 90% Before Dispatch,"10% advance against Proforma Invoice, 90% Before Dispatch",0
+109,100 %Payment in advance before dispatch,100% Advance Before Dispatch,0
+86,100% advance,100% Advance Against Proforma Invoice,0
+60,100% Advance Against Letter of Credit,100% Advance Against Letter of Credit,0
+100,100% advance against MATERIAL READINESS,100% Advance Against Material Readiness,0
+2,100% advance against proforma invoice,100% Advance Against Proforma Invoice,0
+25,100% Advance Along With PI,100% Advance Against Proforma Invoice,0
+26,100% Advance Along With PO,100% Advance Against Proforma Invoice,0
+101,100% advance before delivery,100% Advance Against Material Readiness,0
+97,100% After Delivery,100% Advance Against Delivery,0
+123,100% after inspection and testing of the entire lot at your site,Disable,0
+4,100% against delivery,100% Advance Against Delivery,0
+3,100% against delivery and acceptance,100% Advance Against Delivery,0
+59,100% Against Letter of Credit,100% Advance Against Letter of Credit,0
+96,100% Against PI at the time of delivery,100% Advance Against Delivery,0
+74,100% Before dispatch,100% Advance Against Material Readiness,0
+23,120 days from date of order,Disable,0
+132,120 Days from the date of Invoice,100% on 120 day(s) After Delivery,120
+121,14 Days Net,100% on 14 day(s) After Delivery,14
+12,15 days after delivery,100% on 15 day(s) After Delivery,15
+27,15 days credit,100% on 15 day(s) After Delivery,15
+69,15 DAYS NEFT,100% on 15 day(s) After Delivery,15
+113,15 Days of Receipt from Purchase Order,100% Advance After 15 day(s) from Purchase Order,15
+30,15 Days PDC,15 day(s) PDC After Delivery,15
+104,15% Advance against PI,"15% Advance Against Proforma Invoice, 90% After Delivery",0
+83,15% on advance 75% on material ready status and 10% on delivery,15% Advance Against Proforma Invoice and 75% on Material Readiness and 10% After Delivery,0
+73,20 Days after delivery,100% on 20 day(s) After Delivery,20
+62,"20% Advance along with order, balance 80% against Proforma invoice before dispatch",Disable,0
+43,20% Advance and 80% before dispatch,20% Advance Against Proforma Invoice and 80% on Material Readiness,0
+61,20% Advance and balance against proforma invoice,20% Advance Against Proforma Invoice and 80% After Delivery,0
+50,20% Against Proforma Invoice and 80% Against Delivery,20% Advance Against Proforma Invoice and 80% After Delivery,0
+32,20% Along with PO and 80% against proforma invoice,20% Advance Against Proforma Invoice and 80% After Delivery,0
+13,21 days after delivery,100% on 21 day(s) After Delivery,21
+126,21 days PDC,21 day(s) PDC After Delivery,21
+120,21 Working Days from the Date of Submission of Invoice,100% on 21 day(s) After Delivery ,21
+24,25 Days Credit,100% on 25 day(s) After Delivery,25
+6,25% advance 75% on delivery,25% Advance Against Proforma Invoice and 75% After Delivery,0
+127,25% advance against PO 65% before dlvy(Acceptance Testing at Qualitas)10% against Instl & COMSN,Disable,0
+130,25% Advance Against Proforma Invoice and 75% on 7 day(s) After Delivery,25% Advance Against Proforma Invoice and 75% on 7 day(s) After Delivery,7
+122,25% Advance and 75% before Delivery,25% Advance Against Proforma Invoice and 75% on Material Readiness,0
+103,25% Against P.O. & 75% Against Proforma Invoice Prior to Dispatch,25% Advance Against Proforma Invoice and 75% on Material Readiness,0
+14,30 days after delivery,100% on 30 day(s) After Delivery,30
+134,30 Days after Invoice,100% on 30 day(s) After Delivery,30
+28,30 Days Credit,100% on 30 day(s) After Delivery,30
+20,30 Days PDC,30 day(s) PDC After Delivery,30
+39,30 Days PDC against PI,30 day(s) PDC After Delivery,30
+49,30 days post delivery,100% on 30 day(s) After Delivery,30
+79,30% Aadvance & Bal Within 15 Days After Receipt Of Material,30% Advance Against Proforma Invoice and 70% on 15 day(s) After Delivery,15
+67,30% advance & 70% against delivery,30% Advance Against Proforma Invoice and 70% After Delivery,0
+7,30% advance 70% on delivery,30% Advance Against Proforma Invoice and 70% After Delivery,0
+40,30% advance 70% on dispatch,30% Advance Against Proforma Invoice and 70% on Material Readiness,0
+58,30% ADVANCE AGAINST PI & 70% BEFORE DISPATCH,30% Advance Against Proforma Invoice and 70% on Material Readiness,0
+64,30% advance against PI and 70% within 7 days of Delivery,30% Advance Against Proforma Invoice and 70% on 7 day(s) After Delivery,7
+77,"30% advance along with PO, balance against. Proforma Invoice before dispatch",30% Advance Against Proforma Invoice and 70% on Material Readiness,0
+45,30% Advance along with PO. 60% Against proforma prior to despatch with full tax. 10% PDC 30days at t,Disable,0
+89,30% Advance rest against PI,30% Advance Against Proforma Invoice and 70% on Material Readiness,0
+35,30% against PI & 70% prior to dispatch,30% Advance Against Proforma Invoice and 70% on Material Readiness,0
+87,"30% upon order and balance, 70% upon good readiness prior to delivery",30% Advance Against Proforma Invoice and 70% on Material Readiness,0
+110,40 Days Credit,100% on 40 day(s) After Delivery,40
+8,40% advance 60% on delivery,40% Advance Against Proforma Invoice and 60% After Delivery,0
+66,40% advance and 40% before dispatch and 20% after Insurance and Commissioning,Disable,0
+34,40% advance and 60% before dispatch,40% Advance Against Proforma Invoice and 60% on Material Readiness,0
+75,40% Advance and Balance against PI before Delivery,40% Advance Against Proforma Invoice and 60% on Material Readiness,0
+70,40% advance with order & balance at the time of delivery,40% Advance Against Proforma Invoice and 60% on Material Readiness,0
+102,"40% Advanced,Balance Against Proforma Invoice",40% Advance Against Proforma Invoice and 60% on Material Readiness,0
+15,45 days after delivery,100% on 45 day(s) After Delivery,45
+133,45 Days after Invoice,100% on 45 day(s) After Delivery,45
+91,45 days credit from the receipt of full lot of 175MT at Kalamboli,Disable,0
+33,45 Days PDC,45 day(s) PDC After Delivery,45
+90,"50 % Advance along with Confirm Purchase Order, balance against Performa Invoice before dispatch",50% Advance Against Proforma Invoice and 50% on Material Readiness,0
+38,50 % Advance along with purchase order and 50 % against Proforma Invoice prior to dispatch,50% Advance Against Proforma Invoice and 50% on Material Readiness,0
+82,"50 % Advanced Along with Purchase Order , 50% After dispatch within 10 Days",50% Advance Against Proforma Invoice and 50% on 10 day(s) After Delivery,10
+94,50% Advance,50% Advance Against Proforma Invoice and 50% After Delivery,0
+48,50% advance & 15 days 50% PDC,BT,0
+105,50% advance & 50% one week,50% Advance Against Proforma Invoice and 50% on 7 day(s) After Delivery,7
+29,50% Advance 50 % Before Delivery,50% Advance Against Proforma Invoice and 50% on Material Readiness,0
+9,50% advance 50% on delivery,50% Advance Against Proforma Invoice and 50% on Material Readiness,0
+54,50% Advance against ABG and balance against Proforma Invoice before,Disable,0
+111,50% ADVANCE ALONG WITH ORDER 40% AGAINST PI AND 10% IMMEDIATE AFTER INSTALLATION,Disable,0
+125,"50% advance along with PO,40% against PI prior to dispatch of material and 10% on commissioning",Disable,0
+44,50% advance along with the order and balance payment against Proforma invoice,50% Advance Against Proforma Invoice and 50% on Material Readiness,0
+41,50% advance and 50% after delivery,50% Advance Against Proforma Invoice and 50% After Delivery,0
+56,50% Advance and 50% against PI,50% Advance Against Proforma Invoice and 50% on Material Readiness,0
+71,50% advance and 50% at the time of delivery,50% Advance Against Proforma Invoice and 50% on Material Readiness,0
+85,50% advance and balance 50% PDC of 30 days from the date of invoice,BT,0
+84,50% advance and balance 50% PDC of 30 days from the date of PO,BT,0
+78,50% advance balance against collection,50% Advance Against Proforma Invoice and 50% After Delivery,0
+72,50% advance with order and balance 50 % before despatch of material,50% Advance Against Proforma Invoice and 50% on Material Readiness,0
+46,50% Against PI,50% Advance Against Proforma Invoice and 50% After Delivery,0
+47,50% against Pi & 50% against delivery 30 days PDC,50% Advance Against Proforma Invoice and 50% on 45 day(s) After Delivery,45
+1,50% Against PI and 50% after 45 Days,50% Advance Against Proforma Invoice and 50% on 45 day(s) After Delivery,45
+129,50% against PI and 50% after dispatch,50% Advance Against Proforma Invoice and 50% After Delivery,0
+112,50% along with Po and 50% after 6 month,50% Advance Against Proforma Invoice and 50% on 180 day(s) After Delivery,180
+106,50% along with the order 50% against delivery before installation,Disable,0
+16,60 days after delivery,100% on 60 day(s) After Delivery,60
+92,60 days credit from the receipt of full lot of 175MT at Kalamboli,Disable,0
+81,60 days from date of Invoice,100% on 75 day(s) After Delivery,75
+80,60% advance against PI and balance after delivery,60% Advance Against Proforma Invoice and 40% After Delivery,0
+36,60% advance and 40% after delivery,60% Advance Against Proforma Invoice and 40% After Delivery,0
+131,60% Advance and 40% Before Delivery,60% Advance Against Proforma Invoice and 40% On Material Readiness,0
+11,7 days after delivery,100% on 7 day(s) After Delivery,7
+76,7 Days Credit,100% on 7 day(s) After Delivery,7
+19,7 Days PDC,7 day(s) PDC After Delivery,7
+63,70% advance and 30% against delivery after 7 days,70% Advance Against Proforma Invoice and 30% on 7 day(s) After Delivery,7
+115,70% against Pi and 10% after delivery,Disable,0
+116,70% against Pi and 10% after delivery - pls add payment trm,Disable,0
+17,75 days after delivery,100% on 75 day(s) After Delivery,75
+5,75% advance 25% on delivery,75% Advance Against Proforma Invoice and 25% After Delivery,0
+68,75% with PI and 25% before delivery,75% Advance Against Proforma Invoice and 25% On Material Readiness,0
+135,80% Advance and 20% after delivery,80% Advance Against Proforma Invoice and 20% After Delivery,0
+118,"80% against supply, 20% against installation/commisssioning",Disable,0
+114,"80% on acceptance & inspection of material by GAIL, Balance 20% after demonstration by GAIL",Disable,0
+18,90 days after delivery,100% on 90 day(s) After Delivery,90
+119,90 Days PDC,90 day(s) PDC After Delivery,90
+107,90 Days PDC -Chq Dt. 02 May 2018,90 day(s) PDC After Delivery,90
+117,90% advance and 10% against bank guarantee,90% Advance Against Proforma Invoice and 10% Against Bank Guarantee,0
+53,"90% within 30 days upon receipt of material at site, Balance 10% after 30 days of receipt and final",90% Advance Against Proforma Invoice and 10% After Delivery,0
+52,Advance payment when material is ready,100% Advance Against Material Readiness,0
+21,as per tendor norms,Disable,0
+10,cash on delivery,100% Advance Against Delivery,0
+108,Cheque,100% Advance Against Proforma Invoice,0
+37,Cheque on delivery,100% Advance Against Delivery,0
+55,Immediate,100% Advance Against Proforma Invoice,0
+42,Net 30 Days,100% on 30 day(s) After Delivery,30
+93,Net 30 days from invoice subject to credit,Disable,0
+99,Payment Due on 06-Apr-2018 via PDC.,Disable,0
+57,Payment due on 24-Oct-2017; INCOTERMS CIF,Disable,0
+98,PDC OF 30 DAYS AGAINST PROFORMA INVOICE,30 day(s) PDC After Delivery,30
+88,Rs 10000/- and balance payment against Supply,Disable,0
+22,Supply Chain Finance,Disable,0
+95,Within 30 Days,100% on 30 day(s) After Delivery,30

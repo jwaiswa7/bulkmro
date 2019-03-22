@@ -39,6 +39,7 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     get "/docs/*page" => "docs#index"
+    resources :payment_collection_emails
     resources :attachments
     resources :review_questions
     resources :banks
@@ -74,7 +75,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :reports
+    resources :reports do
+      collection do
+        get 'bi_report'
+      end
+    end
+
     resources :company_creation_requests do
       # member do
       #   post 'exchange_with_existing_company'
@@ -217,6 +223,10 @@ Rails.application.routes.draw do
         get 'stock'
         get 'completed_stock'
       end
+      member do
+        get 'render_cancellation_form'
+        patch 'cancel_porequest'
+      end
 
     end
 
@@ -225,6 +235,11 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'pending'
         get 'completed'
+        get 'cancelled'
+      end
+      member do
+        get 'render_cancellation_form'
+        patch 'cancel_invoice_request'
       end
     end
 
@@ -274,14 +289,14 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'autocomplete_without_po_requests'
         get 'material_readiness_queue'
-        get 'material_pickup_queue'
-        get 'material_delivered_queue'
+        get 'inward_dispatch_pickup_queue'
+        get 'inward_dispatch_delivered_queue'
         post 'update_logistics_owner'
-        post 'update_logistics_owner_for_pickup_requests'
+        post 'update_logistics_owner_for_inward_dispatches'
       end
 
       scope module: 'purchase_orders' do
-        resources :material_pickup_requests do
+        resources :inward_dispatches do
           member do
             get 'confirm_delivery'
             get 'delivered_material'
@@ -341,16 +356,21 @@ Rails.application.routes.draw do
         get 'index_pg'
         get 'smart_queue'
         get 'export_all'
-        get 'export_filtered_records'
         post 'create_purchase_orders_requests'
         post 'preview_stock_po_request'
+        get 'export_filtered_records'
       end
 
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
         resources :sales_shipments
-        resources :purchase_orders
+        resources :purchase_orders do
+          member do
+            get 'relationship_map'
+            get 'get_relationship_map_json'
+          end
+        end
 
         resources :po_requests do
           collection do
@@ -407,6 +427,7 @@ Rails.application.routes.draw do
           member do
             get 'manage_failed_skus'
             patch 'create_failed_skus'
+            get 'load_alternatives'
           end
 
           collection do
@@ -469,7 +490,12 @@ Rails.application.routes.draw do
 
         resources :sales_quotes
         resources :sales_orders
-        resources :sales_invoices
+        resources :sales_invoices do
+          collection do
+            get 'payment_collection'
+            get 'ageing_report'
+          end
+        end
         resources :company_banks
 
         resources :imports do
@@ -493,9 +519,16 @@ Rails.application.routes.draw do
     resources :accounts do
       collection do
         get 'autocomplete'
+        get 'payment_collection'
+        get 'ageing_report'
       end
       scope module: 'accounts' do
-        resources :companies
+        resources :companies do
+          collection do
+            get 'payment_collection'
+            get 'ageing_report'
+          end
+        end
         resources :sales_invoices, only: %i[show index]
       end
     end
@@ -537,6 +570,9 @@ Rails.application.routes.draw do
         get 'render_form'
       end
     end
+
+    resources :sales_receipts
+
   end
 
   namespace 'customers' do

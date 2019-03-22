@@ -113,6 +113,9 @@ class Overseers::CompaniesController < Overseers::BaseController
     export_service.call
   end
 
+  def payment_collection_send_mail
+  end
+
   private
     def set_company
       @company ||= Company.find(params[:id])

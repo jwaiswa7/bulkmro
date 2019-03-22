@@ -1,0 +1,39 @@
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+<% provide :container_fluid, true %>
+
+<div class="col-lg-12">
+  <%= render partial: "shared/layouts/payment_dashboard_summary_box", locals: {} %>
+</div>
+
+<% content_for :header_row do %>
+  <th class="no-sort all"></th>
+  <th class="no-sort all">Company Alias</th>
+  <th class="no-sort all">Company Name</th>
+  <th class="no-sort " data-name="inquiry_number">Inquiry #</th>
+  <th class="no-sort all" data-name="invoice_number">Invoice #</th>
+  <th class="no-sort " data-name="mis_date">Invoice Date</th>
+  <th class="no-sort desktop">GRN#</th>
+  <th class="no-sort desktop">Invoice Payment Terms</th>
+  <th class="no-sort desktop" >Amt Invoiced</th>
+  <th class="no-sort desktop" >Amt Received</th>
+  <th class="no-sort desktop" >Amt Outstanding</th>
+  <th class="no-sort desktop" >Due Date</th>
+  <th class="no-sort desktop" >Overdue Amt</th>
+  <th class="no-sort desktop" >1-30 days</th>
+  <th class="no-sort desktop" >31-60 days</th>
+  <th class="no-sort desktop" >61-90 days</th>
+  <th class="no-sort desktop" > > 90 days</th>
+  <th class="no-sort desktop" >No due Amt</th>
+  <th class="no-sort desktop" > 1-7 days</th>
+  <th class="no-sort desktop"> 8 - 15 Days</th>
+  <th class="no-sort desktop"> 15 - 30 Days</th>
+  <th class="no-sort desktop">  30 Days</th>
+  <th class="no-sort desktop" >Customer PO #</th>
+  <th class="no-sort desktop" >Customer PO Date</th>
+  <th class="no-sort desktop" >Customer Billing Name</th>
+<% end %>
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

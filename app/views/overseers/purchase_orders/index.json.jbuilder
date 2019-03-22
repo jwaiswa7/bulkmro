@@ -1,6 +1,7 @@
 json.data (@purchase_orders) do |purchase_order|
   json.array! [
                   [
+                      row_action_button(relationship_map_overseers_inquiry_purchase_order_path(purchase_order.inquiry.to_param, purchase_order.to_param), 'sitemap', 'Relationship Map', 'info', :_blank),
                       if policy(purchase_order).show?
                         [row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order), 'eye', 'View PO', 'info', :_blank),
                          row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)

@@ -50,26 +50,26 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
     def payment_request_params
       params.require(:payment_request).permit(
         :id,
-        :inquiry_id,
-        :utr_number,
-        :po_request_id,
-        :purchase_order_id,
-        :po_date,
-        :due_date,
-        :payment_type,
-        :cheque_date,
-        :request_owner,
-        :status,
-        :payment_terms,
-        :purpose_of_payment,
-        :description,
-        :supplier_bank_details,
-        :company_bank_id,
-        comments_attributes: [:id, :message, :created_by_id],
-        transactions_attributes: [:id, :payment_type, :utr_or_cheque_no, :issue_date, :cheque_date, :amount_paid, :_destroy],
-        attachments: []
-    )
-  end
+          :inquiry_id,
+          :utr_number,
+          :po_request_id,
+          :purchase_order_id,
+          :po_date,
+          :due_date,
+          :payment_type,
+          :cheque_date,
+          :request_owner,
+          :status,
+          :payment_terms,
+          :purpose_of_payment,
+          :description,
+          :supplier_bank_details,
+          :company_bank_id,
+          comments_attributes: [:id, :message, :created_by_id],
+          transactions_attributes: [:id, :payment_type, :utr_or_cheque_no, :issue_date, :cheque_date, :amount_paid, :_destroy],
+          attachments: []
+      )
+    end
 
     def set_payment_request
       @payment_request = PaymentRequest.find(params[:id])

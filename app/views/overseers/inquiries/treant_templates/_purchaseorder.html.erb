@@ -4,7 +4,7 @@
   </div>
   <div class="card-body p-1 text-center">
     <div>
-      <%= status_badge(po.status) %>
+      <%= po.status.present? ? status_badge(po.status) : '-' %>
     </div>
     <hr class="my-1">
     <div>
