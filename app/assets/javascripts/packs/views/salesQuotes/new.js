@@ -33,7 +33,7 @@ let destroySelect = () => {
         }
 
     });
-}
+};
 
 let initVueJS = () => {
     let vj = new Vue({
@@ -42,6 +42,7 @@ let initVueJS = () => {
         mounted() {
             this.updateSelectElements();
             this.rowsUpdated();
+            this.dropdownChanged({target: $('#sales_quote_inquiry_currency_attributes_currency_id')});
         },
         watch: {
             rows: {
@@ -82,7 +83,7 @@ let initVueJS = () => {
             },
 
             hideProduct(product_id) {
-                let _this = this
+                let _this = this;
                 $('#ac-' + product_id).find("[data-index]").each(function (index, row) {
                     let currentRowIndex = $(row).data('index');
                     $(row).find('.btn.btn-danger').each(function (index, row) {
@@ -133,14 +134,14 @@ let initVueJS = () => {
                         row.index = currentRowIndex;
                         checkedRows[currentRowIndex] = row;
                     }
-                })
+                });
 
                 return checkedRows;
             },
 
             rowUpdated(index) {
                 this.updateConvertedSellingPriceFor(index);
-                this.updateTaxPercentage(index)
+                this.updateTaxPercentage(index);
                 this.recalculateRowTotals(index);
             },
             recalculateRowTotals(index) {
@@ -158,8 +159,9 @@ let initVueJS = () => {
                 this.afterRowsUpdated();
             },
             formatCurrency(value) {
-                let val = (value / 1).toFixed(2)
-                return this.defaultCurrencySign + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                let val = (value / 1)
+                val = (val / this.conversion_rate).toFixed(2);
+                return this.currency_sign + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             },
             afterRowsUpdated() {
                 let calculated_freight_cost_total = 0,
@@ -206,7 +208,7 @@ let initVueJS = () => {
             },
 
             updateTaxPercentage(index) {
-                let row = this.getRow(index)
+                let row = this.getRow(index);
                 row.tax_percentage = this.getAttribute('tax_rates')[parseInt(row.tax_rate_id)];
             },
 
@@ -325,8 +327,9 @@ let initVueJS = () => {
             },*/
             updateConvertedSellingPriceFor(index) {
                 let row = this.getRow(index);
+                let conversion_rate = parseFloat(this.getAttribute('conversion_rate'));
                 if (row !== undefined) {
-                    row.converted_unit_selling_price = toDecimal(toDecimal(row.unit_selling_price) / parseFloat(this.getAttribute('conversion_rate')));
+                    row.converted_unit_selling_price = toDecimal(toDecimal(row.unit_selling_price) / conversion_rate);
                 }
                 this.setRow(index, row);
             },
@@ -377,7 +380,7 @@ let initVueJS = () => {
 
             }
         },
-    })
+    });
 
     return vj;
 };
