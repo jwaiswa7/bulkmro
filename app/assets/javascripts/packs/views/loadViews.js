@@ -55,6 +55,8 @@ import companies from './companies/init'
 // Document Creation
 import documentCreations from "./documentCreations/init";
 
+import checkout from "./checkout/init";
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -76,7 +78,8 @@ let loader = {
     poRequests: poRequests,
     activities: activities,
     companies: companies,
-    documentCreations: documentCreations
+    documentCreations: documentCreations,
+    checkout: checkout
 };
 
 // Imports
