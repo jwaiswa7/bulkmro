@@ -112,7 +112,7 @@ let initVueJS = () => {
                         row.index = currentRowIndex;
                         checkedRows[currentRowIndex] = row;
                     }
-                });
+                })
 
                 return checkedRows;
             },
@@ -123,7 +123,7 @@ let initVueJS = () => {
                 this.recalculateRowTotals(index);
             },
             recalculateRowTotals(index) {
-                console.log();
+                console.log()
                 let row = this.getRow(index);
                 row.total_selling_price = toDecimal(row.unit_selling_price * row.quantity);
                 let tax = parseFloat(row.total_selling_price * row.tax_percentage / 100);
@@ -296,7 +296,7 @@ let initVueJS = () => {
                 this.setRow(index, row);
             },
             formatCurrency(value) {
-                let val = (value / 1).toFixed(2);
+                let val = (value / 1).toFixed(2)
                 return this.currencySign + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             },
             calculateConvertedSellingPrices() {
@@ -341,7 +341,7 @@ let initVueJS = () => {
 
             }
         },
-    });
+    })
 
     return vj;
 };

@@ -5,7 +5,7 @@ class ProductsIndex < BaseIndex
     field :brand_id, value: -> (record) {record.brand_id}
     field :brand, value: -> (record) {record.brand.to_s}, analyzer: 'substring'
     field :category, value: -> (record) {record.category.to_s}, analyzer: 'substring'
-    field :approved, value: -> (record) {record.approval.try(:created_at)}, type: 'date'
+    field :approved, value: -> (record) {record.approval.try(:created_at)}
     field :has_images, value: -> (record) {record.images.attached?}
     field :is_service
     field :sku, value: -> (record) {record.sku.to_s}, analyzer: 'sku_substring', fielddata: true

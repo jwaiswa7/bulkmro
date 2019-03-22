@@ -16,20 +16,4 @@ class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
   def completed?
     index?
   end
-
-  def edit?
-    admin? || accounts?
-  end
-
-  def cancelled?
-    admin? || accounts?
-  end
-
-  def render_cancellation_form?
-    admin? || accounts?
-  end
-
-  def cancel_invoice_request?
-    update?
-  end
 end

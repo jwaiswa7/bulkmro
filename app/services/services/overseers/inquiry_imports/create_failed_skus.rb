@@ -1,8 +1,7 @@
 class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::BaseService
-  def initialize(inquiry, excel_import, overseer)
+  def initialize(inquiry, excel_import)
     @inquiry = inquiry
     @excel_import = excel_import
-    @overseer = overseer
   end
 
   def call
@@ -10,7 +9,6 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
     service = Services::Overseers::InquiryImports::NextSrNo.new(inquiry)
 
     excel_import.rows.each do |row|
-      row.inquiry_product.overseer = row.inquiry_product.product.overseer = overseer
       if row.marked_for_destruction?
         if excel_import.valid?
           row.reload
@@ -36,5 +34,5 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
   end
 
 
-  attr_accessor :inquiry, :excel_import, :overseer
+  attr_accessor :inquiry, :excel_import
 end
