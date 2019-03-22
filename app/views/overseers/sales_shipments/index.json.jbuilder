@@ -1,6 +1,9 @@
 json.data (@sales_shipments) do |sales_shipment|
   json.array! [
                   [
+                      if policy(sales_shipment).relationship_map?
+                        row_action_button(relationship_map_overseers_inquiry_sales_shipment_path(sales_shipment.inquiry.to_param, sales_shipment.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
+                      end,
                       if policy(sales_shipment).show?
                         row_action_button(overseers_inquiry_sales_shipment_path(sales_shipment.inquiry, sales_shipment, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
                       end,
