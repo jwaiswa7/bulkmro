@@ -9,10 +9,26 @@
     <%= render 'shared/snippets/form_errors', f: f %>
 
     <div class="form-row">
-      <div class="col-12 col-md-6">
-      <%= f.input :pod_attachment, as: :file, wrapper: :custom_file, required: false, label: 'Proof of Delivery', hint: f.object.pod_attachment.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.pod_attachment), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.pod_attachment.filename}".html_safe) : false %>
+      <div class="col-12 col-md-8">
+        <div class="d-flex flex-row align-items-end">
+          <div class="flex-grow-1">
+            <%= f.input :pod_attachments, wrapper: :custom_file, input_html: {multiple: true}, required: false, label: 'Proof of Delivery' %>
+          </div>
+            <% if f.object.persisted? %>
+              <div class="form-group">
+            <% f.object.pod_attachments.each do |attachment| %>
+              <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                <i class="fal fa-download"></i>
+                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                  <i class="fal fa-trash-alt"></i>
+                <% end if attachment.present? #&& policy(:pod_attachment).destroy? %>
+              <% end %>
+            <% end if f.object.pod_attachments.attached? %>
+          </div>
+            <% end %>
+        </div>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
         <%= f.input :delivery_date, label: "Delivery Date", as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
       </div>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>

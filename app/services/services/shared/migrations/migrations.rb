@@ -4224,4 +4224,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts address_can_not_be_created.inspect
     puts contact_can_not_be_created.inspect
   end
+
+
+  def rename_pod_attachment_in_sales_invoice
+    records = ActiveStorage::Attachment.where(:record_type => "SalesInvoice", :name => 'pod_attachment')
+    records.each do |record|
+      record.name = 'pod_attachments'
+      record.save!
+    end
+  end
 end
