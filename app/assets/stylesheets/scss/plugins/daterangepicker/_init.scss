@@ -1,0 +1,8 @@
+//
+// Init Bootstrap Datepicker
+//
+
+@import "variables";
+// @import "../../../../../../node_modules/daterangepicker/daterangepicker.css";
+@import "daterangepicker"; // Manual override and direct copy of the node module's CSS; copied because it leads to complilation issues; TODO: FIX
+@import "overrides";
