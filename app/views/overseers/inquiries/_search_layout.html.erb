@@ -1,22 +1,16 @@
-<%= simple_form_for(:kra_report, :url => kra_report_overseers_inquiries_path, :method => :get, :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-  <div class="card">
+<%= simple_form_for(:kra_report, :url => kra_report_overseers_inquiries_path, :method => :get, :html => {:class => 'col-12 needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <div class="card mt-3">
     <div class="card-body">
-      <div class="mt-3">
-        <div class="form-row">
-          <div class="col">
-            <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker'}, required: true, label: 'Select Date Range' %>
-          </div>
-
+      <div class="form-row">
+        <div class="col">
+          <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range'}, required: true, label: 'Pick a Date Range' %>
         </div>
-        <div class="form-row">
-          <div class="col text-center">
-            <%= f.submit "get report", class: "btn btn-default btn-dark" %>
-          </div>
+      </div>
+      <div class="form-row">
+        <div class="col text-center">
+          <%= f.submit "Refresh Report", class: "btn btn-default btn-success btn-block" %>
         </div>
       </div>
     </div>
   </div>
 <% end %>
-
-
-<%#= yield %>
