@@ -247,6 +247,7 @@ Rails.application.routes.draw do
         get 'export_for_sap'
         get 'autocomplete'
         get 'not_invoiced'
+        get 'export_filtered_records'
       end
 
       scope module: 'sales_orders' do
