@@ -156,6 +156,14 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     admin? || sales?
   end
 
+  def relationship_map?
+    all_roles?
+  end
+
+  def get_relationship_map_json?
+    relationship_map?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
