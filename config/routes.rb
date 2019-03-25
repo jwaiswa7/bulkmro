@@ -299,6 +299,7 @@ Rails.application.routes.draw do
         get 'export_all'
         get 'export_rows'
         get 'export_for_logistics'
+        get 'export_filtered_records'
       end
     end
 
