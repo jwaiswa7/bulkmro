@@ -1,5 +1,6 @@
 <%= provide :container_fluid, true %>
 <% provide :can_be_directly_exported, true %>
+<% provide :can_be_directly_exported_filtered_records, true %>
 <% provide :can_be_directly_created, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
@@ -7,27 +8,27 @@
 <% content_for :header_row do %>
   <th class="no-sort all" data-width="70px"></th>
   <th class="no-sort desktop" data-name="product_id">Name</th>
-  <th class="no-sort all text-right" data-name="sku">SKU</th>
+  <th class="no-sort all text-right" data-name="product_id">SKU</th>
   <th class="no-sort desktop" data-name="brand_id">Brand</th>
   <th class="no-sort desktop">Category</th>
-  <th class="no-sort desktop">MPN</th>
+  <th class="no-sort desktop" data-name="product_id">MPN</th>
   <th class="sort desktop text-right" data-name="total_pos">Total Purchase Orders</th>
   <th class="sort desktop text-right" data-name="total_quotes">Total Sales Quotes</th>
   <th class="no-sort desktop text-right" data-name="is_service"> Service</th>
   <th class="no-sort desktop text-right">SAP</th>
   <th class="no-sort desktop text-right" data-name="is_active"> Active</th>
-  <th class="sort desktop text-right" class="approved" >Approved</th>
-  <th class="no-sort desktop text-right" >Created By</th>
+  <th class="sort desktop text-right" class="approved">Approved</th>
+  <th class="no-sort desktop text-right">Created By</th>
   <th class="sort desktop text-right" data-name="created_at">Created</th>
 <% end %>
 
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
   <td data-filter="ajax"></td>
-  <td data-filter="false"></td>
+  <td data-filter="ajax"></td>
   <td data-filter="ajax"></td>
   <td data-filter="false"></td>
-  <td data-filter="false"></td>
+  <td data-filter="ajax"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>

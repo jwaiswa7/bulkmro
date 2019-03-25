@@ -19,6 +19,8 @@
 //= require select2/dist/js/select2.full.min.js
 //= require jquery-lazy/jquery.lazy.min.js
 //= require nested_form_fields
+//= require treantjs/vendor/raphael.js
+//= require treantjs/Treant.js
 //= require cocoon
 //= require js-routes
 

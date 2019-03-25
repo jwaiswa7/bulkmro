@@ -1,6 +1,7 @@
 import validatePoRequestAddresses from "./validatePoRequestAddresses"
 import updateOnContactSelect from "./updateOnContactSelect";
 import updateRowTotal from "./updateRowTotal"
+import massLeadDateUpdate from "./massLeadDateUpdate"
 import openRatingModal from "../common/openRatingModal";
 
 
@@ -45,9 +46,11 @@ const edit = () => {
     });
     $('select[name*=status]').trigger('change');
     $('select[name*=stock_status]').trigger('change');
+
     validatePoRequestAddresses();
     updateRowTotal();
     updateOnContactSelect();
+    massLeadDateUpdate();
 
     $('form').on('click', '.add-review', function (e) {
         $('.rating-modal a').click();

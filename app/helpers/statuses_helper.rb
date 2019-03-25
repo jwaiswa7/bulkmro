@@ -187,6 +187,8 @@ module StatusesHelper
       'success'
     when :'Supplier PO: Not Sent to Supplier'
       'danger'
+    when :'default'
+      'info'
     else
       'danger'
     end
