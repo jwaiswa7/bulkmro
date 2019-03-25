@@ -116,7 +116,7 @@
             <% if @inward_dispatch.rows.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Supplier Delivery Date(Overall)</strong>
-                <%= @inward_dispatch.show_supplier_delivery_date %>
+                <%= @inward_dispatch.show_supplier_delivery_date.present? ? @inward_dispatch.show_supplier_delivery_date : "-" %>
               </div>
             <% end %>
           </div>
