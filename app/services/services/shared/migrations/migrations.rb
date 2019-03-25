@@ -3431,6 +3431,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       # next if Product.where(sku: x.get_column('product sku')).present? == false
       puts '*********************** INQUIRY ', x.get_column('inquiry number')
       o_number = x.get_column('order number')
+      next if o_number != '200305-1'
       if o_number.include?('.') || o_number.include?('/') || o_number.include?('-') || o_number.match?(/[a-zA-Z]/)
         odd_order_names.push(o_number)
       end
@@ -3537,6 +3538,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_order.remote_status = x.get_column('SAP status') || 'Processing'
         sales_order.sent_at = sales_quote.created_at
         sales_order.save!
+
         row_object = {sku: product_sku, supplier: x.get_column('supplier'), total_with_tax: row.total_selling_price_with_tax.to_f}
         totals[sales_order.order_number] ||= []
         totals[sales_order.order_number].push(row_object)
