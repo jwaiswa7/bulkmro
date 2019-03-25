@@ -207,7 +207,11 @@
                     <%= row.input :pickup_quantity, type: "number", input_html: {value: row.object.pickup_quantity.to_f, min: 0}, label: false %>
                   </div>
                   <div class="col-6 col-md-2">
-                    <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true, label: false %>
+                    <% if row.object.supplier_delivery_date.present? %>
+                      <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true, label: false %>
+                    <% else %>
+                      <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: row.object.row_lead_date}, required: true, label: false %>
+                    <% end %>
                   </div>
                 <% end %>
                 <% if policy(f.object).remove_products? %>
