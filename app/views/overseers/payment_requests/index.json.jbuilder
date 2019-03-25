@@ -62,4 +62,4 @@ json.recordsTotal @payment_requests.count
 json.recordsFiltered @indexed_payment_requests.total_count
 json.draw params[:draw]
 # json.recordsTotalValue @total_values
-json.recordsSummary PaymentRequest.statuses.map { |k, v| { status_id: v, "label": k, "size": @statuses[v] || 0 } }.as_json
+json.recordsSummary PaymentRequest.statuses.map { |k, v| { status_id: v, 'label': k, 'size': @statuses[v] || 0 } }.as_json

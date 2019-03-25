@@ -128,19 +128,19 @@ class InvoiceRequest < ApplicationRecord
     end
 
     def show_display_reason
-      data = {:display => true}
+      data = {display: true}
       case self.status
       when 'GRPO Request Rejected'
-        data[:label] = "GRPO Rejection Reason"
+        data[:label] = 'GRPO Rejection Reason'
         data[:text] = self.grpo_rejection_reason == 'Others' ? self.grpo_other_rejection_reason : self.grpo_rejection_reason
       when 'AP Invoice Request Rejected'
-        data[:label] = "AP Rejection Reason"
+        data[:label] = 'AP Rejection Reason'
         data[:text] = self.ap_rejection_reason
       when 'Cancelled GRPO'
-        data[:label] = "AP Rejection Reason"
+        data[:label] = 'AP Rejection Reason'
         data[:text] = self.grpo_cancellation_reason
       when 'Cancelled AP Invoice'
-        data[:label] = "AP Rejection Reason"
+        data[:label] = 'AP Rejection Reason'
         data[:text] = self.ap_cancellation_reason
       else
         data[:display] = false
