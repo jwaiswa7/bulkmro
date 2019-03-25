@@ -34,7 +34,7 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   end
 
   def edit_pod?
-    record.persisted?
+    record.persisted? && record.status != 'Cancelled'
   end
 
   def update_pod?
