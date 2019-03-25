@@ -6,7 +6,7 @@ const index = () => {
     bindSummaryBox(".summary_box", '.status-filter')
     updateSummaryBox()
     aggregateSummaryBox()
-
+    $('#export_filtered_records').hide()
     let controller = camelize($('body').data().controller);
     exportFilteredRecords(Routes.export_filtered_records_overseers_sales_orders_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
 };
