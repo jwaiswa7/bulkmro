@@ -12,7 +12,7 @@
       field :sales_invoices_ids, value: -> (record) { record.invoices.map(&:invoice_number).compact.join(',') if record.invoices.ids.present? }, analyzer: 'substring'
       field :potential_amount, value: -> (record) { record.potential_amount.to_f if record.potential_amount.present? }, type: 'integer'
       field :calculated_total, value: -> (record) { record.calculated_total.to_i if record.calculated_total.present? }, type: 'integer'
-      field :inside_sales_owner_id, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? }
+      field :inside_sales_owner_id, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? }, type: 'integer'
       field :inside_sales_owner, value: -> (record) { record.inside_sales_owner.to_s }, analyzer: 'substring'
       field :outside_sales_owner_id, value: -> (record) { record.outside_sales_owner.id if record.outside_sales_owner.present? }
       field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring'
@@ -32,6 +32,11 @@
       field :created_by_id
       field :updated_by_id, value: -> (record) { record.updated_by.to_s }, analyzer: 'letter'
       field :potential_value, value: -> (record) { record.potential_value(record.status.to_s) }, type: 'double'
+      field :invoices_count, value: -> (record) {record.invoices.count}, type: 'integer'
+      field :sales_order_count, value: -> (record) {record.final_sales_orders.count}, type: 'integer'
+      field :expected_order, value: -> (record) {record.status == 'Expected Order' ? 1 : 0}, type: 'integer'
+      field :order_won, value: -> (record) {record.status == 'Order Won' ? 1 : 0}, type: 'integer'
+      field :company_key, value: -> (record) { record.company_id }, type: 'integer'
     end
 
     def self.fields
