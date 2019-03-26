@@ -114,7 +114,6 @@ class Overseers::PoRequestsController < Overseers::BaseController
       @po_request.status = 'Supplier PO: Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Supplier PO: Request Pending'
       @po_request.status = 'Supplier PO: Request Pending' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
       @po_request.status = 'Supplier PO: Amendment' if @po_request.status == 'Supplier PO: Created Not Sent' && policy(@po_request).manager_or_sales?
-
       ActiveRecord::Base.transaction do
         if @po_request.status_changed?
           if @po_request.status == 'Cancelled'
