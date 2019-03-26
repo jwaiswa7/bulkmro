@@ -5,12 +5,12 @@ json.data (@inquiries) do |inquiry|
                   status_badge(inquiry.status),
                   link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),
                   format_succinct_date(inquiry.created_at),
-                  inquiry.final_sales_quote.present? ? inquiry.final_sales_quote.calculated_total : '-',
+                  inquiry.final_sales_quote.present? ? format_currency(inquiry.final_sales_quote.calculated_total) : '-',
                   inquiry.final_sales_quote.present? ? format_succinct_date(inquiry.final_sales_quote.created_at) : '-',
-                  inquiry.final_sales_orders.present? ? inquiry.final_sales_orders.compact.uniq.map(&:calculated_total).last : '-' ,
+                  inquiry.final_sales_orders.present? ? format_currency(inquiry.final_sales_orders.compact.uniq.map(&:calculated_total).last) : '-' ,
                   '20%',
                   inquiry.invoices.count,
-                  inquiry.final_sales_orders.compact.uniq.map(&:calculated_total_margin).last
+                  format_currency(inquiry.final_sales_orders.compact.uniq.map(&:calculated_total_margin).last)
               ]
 end
 
