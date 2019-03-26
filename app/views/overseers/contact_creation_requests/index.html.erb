@@ -1,0 +1,19 @@
+<% provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+
+
+<% content_for :header_row do %>
+  <th class="no-sort desktop"></th>
+  <th class="no-sort desktop">Name</th>
+  <th class="no-sort desktop">First Name</th>
+  <th class="no-sort desktop">Last Name</th>
+  <th class="no-sort desktop">Email</th>
+  <th class="no-sort desktop text-right">Is Supplier</th>
+  <th class="no-sort desktop text-right">Is Customer</th>
+  <th class="sort desktop text-right" data-name="created_at">Created</th>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

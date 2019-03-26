@@ -4,13 +4,11 @@ class CreateContactCreationRequest < ActiveRecord::Migration[5.2]
       t.string :first_name
       t.string :last_name
       t.string :email
-      t.string :account_name
-      t.integer :account_type
-      t.integer :company_id
-      t.text :address
+      t.string :phone_number
+      t.string :mobile_number
+      t.integer :contact_id
       t.references :activity, foreign_key: true
-      t.references :account, foreign_key: true
-
+      t.references :company_creation_request, foreign_key: true
       t.userstamps
       t.timestamps
     end
