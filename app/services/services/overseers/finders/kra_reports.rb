@@ -82,6 +82,11 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
                                     field: 'invoices_count'
                                 }
                             },
+                            sales_quotes: {
+                                sum: {
+                                    field: 'sales_quote_count'
+                                }
+                            },
                             sales_orders: {
                                 sum: {
                                     field: 'sales_order_count'
@@ -95,6 +100,26 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
                             orders_won: {
                                 sum: {
                                     field: 'order_won'
+                                }
+                            },
+                            total_sales_value: {
+                                sum: {
+                                    field: 'total_quote_value'
+                                }
+                            },
+                            total_order_value: {
+                                sum: {
+                                    field: 'total_order_value'
+                                }
+                            },
+                            revenue: {
+                                sum: {
+                                    field: 'revenue'
+                                }
+                            },
+                            sku: {
+                                sum: {
+                                    field: 'sku'
                                 }
                             },
                             clients: {
