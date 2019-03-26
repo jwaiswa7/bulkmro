@@ -4229,8 +4229,15 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def rename_pod_attachment_in_sales_invoice
     records = ActiveStorage::Attachment.where(:record_type => "SalesInvoice", :name => 'pod_attachment')
     records.each do |record|
-      record.name = 'pod_attachments'
-      record.save!
+      sales_invoice = SalesInvoice.where(:id => record.record_id).last
+      if sales_invoice.present?
+        sales_invoice.pod_rows.build(:delivery_date => sales_invoice.delivery_date)
+        sales_invoice.save!
+        record.record_type = 'PodRow'
+        record.name = 'attachments'
+        record.record_id = sales_invoice.pod_rows.last.id
+        record.save!
+      end
     end
   end
 end

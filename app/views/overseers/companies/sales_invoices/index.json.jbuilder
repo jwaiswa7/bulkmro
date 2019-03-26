@@ -15,16 +15,11 @@ json.data (@sales_invoices) do |sales_invoice|
                          row_action_button(url_for(sales_invoice.triplicate_invoice), 'none', sales_invoice.triplicate_invoice.filename, 'success', :_blank, 'get', false, 'T'),
                         ]
                       end,
-                      if policy(sales_invoice).edit_pod? && !sales_invoice.pod_attachment.attached?
+                      if policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count == 0)
                         row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success')
                       end,
-                      if policy(sales_invoice).edit_pod? && sales_invoice.pod_attachment.attached?
-                        [
-                            if sales_invoice.pod_attachment.attached?
-                              row_action_button(url_for(sales_invoice.pod_attachment), 'certificate', 'Download Proof of Delivery', 'dark', :_blank)
-                            end,
-                            row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info')
-                        ]
+                      if policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count > 0)
+                        row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info')
                       end,
                       if policy(sales_invoice).edit_mis_date?
                         row_action_button(edit_mis_date_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), 'calendar-alt', 'Update MIS Date', 'success')

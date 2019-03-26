@@ -7,33 +7,46 @@
 
   <%= simple_form_for(@invoice, url: update_pod_overseers_sales_invoice_path(@invoice), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
-
-    <div class="form-row">
-      <div class="col-12 col-md-8">
-        <div class="d-flex flex-row align-items-end">
-          <div class="flex-grow-1">
-            <%= f.input :pod_attachments, wrapper: :custom_file, input_html: {multiple: true}, required: false, label: 'Proof of Delivery' %>
-          </div>
-            <% if f.object.persisted? %>
+    <%= f.nested_fields_for :pod_rows do |pod| %>
+      <%= pod.hidden_field :id %>
+      <div class="form-row flex-row align-items-start">
+        <div class="col-12 col-md-8">
+          <div class="d-flex flex-row align-items-end">
+            <div class="flex-grow-1">
+              <%= pod.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, required: false, label: 'Proof of Delivery' %>
+            </div>
+            <% if pod.object.persisted? %>
               <div class="form-group">
-            <% f.object.pod_attachments.each do |attachment| %>
-              <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                <i class="fal fa-download"></i>
-                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                  <i class="fal fa-trash-alt"></i>
-                <% end if attachment.present? #&& policy(:pod_attachment).destroy? %>
-              <% end %>
-            <% end if f.object.pod_attachments.attached? %>
-          </div>
+                <% pod.object.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="fal fa-download"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                      <i class="fal fa-trash-alt"></i>
+                    <% end if attachment.present? && policy(:attachment).destroy? %>
+                  <% end %>
+                <% end if pod.object.attachments.attached? %>
+              </div>
             <% end %>
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
+          <%= pod.input :delivery_date, label: "Delivery Date", as: :string,required: true, input_html: {:'data-toggle' => 'datepicker'} %>
+        </div>
+        <div class="col-1">
+          <%= pod.remove_nested_fields_link do %>
+            <div class="form-group align-self-center flex-grow-1 ml-2">
+              <i class="far fa-times text-danger"></i>
+            </div>
+          <% end if policy(pod.object).destroy? %>
         </div>
       </div>
-      <div class="col-12 col-md-4">
-        <%= f.input :delivery_date, label: "Delivery Date", as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
-      </div>
-      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> Update POD
-      <% end %>
-    </div>
+    <% end %>
+    <%= f.input :delivery_completed %>
+    <%= f.add_nested_fields_link :pod_rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
+      <span>New POD</span>
+    <% end %>
+    <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+      <i class="fal fa-plus-circle"></i> Update POD
+    <% end %>
   <% end %>
 </div>

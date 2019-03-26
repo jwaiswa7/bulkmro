@@ -15,12 +15,16 @@ class SalesInvoice < ApplicationRecord
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
   has_many :email_messages
-  has_many :pod_rows
+  has_many :pod_rows, dependent: :destroy
+  accepts_nested_attributes_for :pod_rows, reject_if: lambda { |attributes| attributes['attachments'].blank?}, allow_destroy: true
+
+
 
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
-  has_many_attached :pod_attachments
+  has_one_attached :pod_attachment
+
 
   enum status: {
       'Open': 1,
@@ -91,6 +95,6 @@ class SalesInvoice < ApplicationRecord
   end
 
   def has_attachment?
-    self.pod_attachments.attached?
+    self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached? && self.delivery_completed
   end
 end
