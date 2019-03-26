@@ -59,12 +59,8 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
       from = @kra_report_params["date_range"].split("~").first.to_date.strftime('%d-%m-%Y')
       to = @kra_report_params["date_range"].split("~").last.to_date.strftime('%d-%m-%Y')
       date_range = {from: from, to: to, key: 'custom-range'}
-      puts date_range
-      puts "if custom range is present"
     else
-      date_range = {to: "01-03-2019", key: 'custom-range'}
-      puts date_range
-      puts "custom range is not present"
+      date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
     end
     indexed_records = indexed_records.aggregations(
         {
