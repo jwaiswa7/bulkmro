@@ -36,7 +36,7 @@ class FieldModifiedMessage < BaseFunction
       end
 
       def for_associations(record, field)
-        model = field.split('_id')[0].camelcase
+        model = (field == 'logistics_owner_id') ? 'Overseer' : field.split('_id')[0].camelcase
 
         field_is = model.constantize.find(record.send("#{field}")).to_s
         if record.send("#{field}_was").present?
