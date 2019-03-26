@@ -102,7 +102,7 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
                                 }
                             },
                             clients: {
-                                value_count: {
+                                cardinality: {
                                     field: 'company_key'
                                 }
                             }
