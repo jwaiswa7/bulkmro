@@ -79,7 +79,8 @@
         <% if po_request.supplier_committed_date.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Supplier Committed Delivery Date</strong>
-            <%= po_request.supplier_committed_date %>
+            <%#= po_request.supplier_committed_date %>
+            <%= po_request.show_supplier_delivery_date %>
           </div>
         <% end %>
 
