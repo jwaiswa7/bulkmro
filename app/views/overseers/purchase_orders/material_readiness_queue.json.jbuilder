@@ -26,7 +26,7 @@ json.data (@purchase_orders) do |purchase_order|
                   purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : '-',
                   status_badge(purchase_order.material_status),
                   link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: '_blank'),
-                  (purchase_order&.metadata['PoDate'] ? format_succinct_date(purchase_order.metadata['PoDate'].try(:to_date)) : '-'),
+                  (purchase_order.po_date ? format_succinct_date(purchase_order.po_date) : '-'),
                   (purchase_order.supplier.present? ? conditional_link(purchase_order.supplier.try(:name), overseers_company_path(purchase_order.supplier), policy(purchase_order.inquiry).show?) : '-'),
                   purchase_order.po_request.present? ? purchase_order.po_request.supplier_po_type : '',
                   (format_comment(purchase_order.last_comment, trimmed: true) if purchase_order.last_comment.present?),

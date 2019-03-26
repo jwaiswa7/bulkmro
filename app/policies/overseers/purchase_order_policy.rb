@@ -72,4 +72,12 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   def search_or_create?
     manager_or_sales? || logistics?
   end
+
+  def relationship_map?
+    edit?
+  end
+
+  def get_relationship_map_json?
+    relationship_map?
+  end
 end

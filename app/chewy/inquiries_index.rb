@@ -23,7 +23,8 @@
       field :company, value: -> (record) { record.company.to_s }, analyzer: 'substring'
       field :account_id, value: -> (record) { record.account_id }
       field :account, value: -> (record) { record.account.to_s }, analyzer: 'substring'
-      field :contact, value: -> (record) { record.contact.to_s }, analyzer: 'substring'
+      field :contact_id, value: -> (record) {record.contact_id}
+      field :contact_s, value: -> (record) { record.contact.to_s }, analyzer: 'substring'
       field :priority, type: 'integer'
       field :quotation_followup_date, type: 'date'
       field :created_at, type: 'date'
@@ -34,6 +35,6 @@
     end
 
     def self.fields
-      [:status, :status_string, :subject, :inquiry_number_string, :sales_orders_ids, :sales_invoices_ids, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :company, :account, :contact, :created_by_id]
+      [:status, :status_string, :subject, :inquiry_number_string, :sales_orders_ids, :sales_invoices_ids, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :company, :account, :contact_s, :created_by_id]
     end
   end
