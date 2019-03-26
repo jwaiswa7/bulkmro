@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync, :edit_mis_date, :update_mis_date, :fetch_order_data]
+  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map, :get_relationship_map_json]
   before_action :set_notification, only: [:create_confirmation]
 
   def index
@@ -151,6 +151,16 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     authorize @sales_order
     Services::Overseers::SalesOrders::FetchOrderData.new(@sales_order).call
     redirect_to overseers_inquiry_sales_orders_path(@inquiry)
+  end
+
+  def relationship_map
+    authorize @inquiry
+  end
+
+  def get_relationship_map_json
+    authorize @sales_order
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@sales_order.inquiry, [@sales_order.sales_quote]).call
+    render json: {data: inquiry_json}
   end
 
   private

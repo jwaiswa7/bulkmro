@@ -50,10 +50,15 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    allow_export? || ['priyanka.rajpurkar@bulkmro.com', 'subrata.baruah@bulkmro.com'].include?(overseer.email)
+    # allow_export? || ['priyanka.rajpurkar@bulkmro.com', 'subrata.baruah@bulkmro.com'].include?(overseer.email)
+    allow_product_export?
   end
 
+
   def service_autocomplete?
+    index?
+  end
+  def autocomplete_mpn?
     index?
   end
 
