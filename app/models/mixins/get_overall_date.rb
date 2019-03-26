@@ -4,13 +4,12 @@ module Mixins::GetOverallDate
   extend ActiveSupport::Concern
 
   def get_overall_date(object)
-    object.model_name.name == "PoRequest" ? date = :lead_time : date = :supplier_delivery_date
-    
+    object.model_name.name == 'PoRequest' ? date = :lead_time : date = :supplier_delivery_date
     new_object = object.rows.order("#{date} ASC").where("#{date} >= ?", Date.today)
     if new_object.present? && new_object.first.send(date).present?
       new_object.first.send(date).strftime('%d-%b-%Y')
     else
-      object.rows.order("#{date} ASC").last.send(date).strftime('%d-%b-%Y')
+      object.rows.order("#{date} ASC").last.send(date)&.strftime('%d-%b-%Y')
     end
   end
 end

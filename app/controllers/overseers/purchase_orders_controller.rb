@@ -111,6 +111,9 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def edit_material_followup
     authorize @purchase_order
     @po_request = @purchase_order.po_request
+    if @purchase_order.logistics_owner_id.nil?
+      @purchase_order.update_attribute(:logistics_owner, Services::Overseers::InwardDispatches::SelectLogisticsOwner.new(@purchase_order).call)
+    end
   end
 
   def update_material_followup
@@ -119,7 +122,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
     if @purchase_order.valid?
 
-      messages = FieldModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date', 'followup_date'])
+      messages = FieldModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date', 'followup_date', 'logistics_owner_id'])
       if messages.present?
         @purchase_order.comments.create(message: messages, overseer: current_overseer)
       end
