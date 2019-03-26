@@ -1,5 +1,14 @@
 class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shared::BaseService
 
+
+  def add_days_in_payment_terms
+    service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms_days.csv', 'seed_files')
+    service.loop(nil) do |x|
+      payment_options = PaymentOption.find(x.get_column('payment_term_id'))
+      payment_options.update_attributes(days: x.get_column('days'))
+    end
+  end
+
   def sales_invoice_totals
     SalesInvoice.all.each do |sales_invoice|
       sales_invoice.update_attributes!(calculated_total: sales_invoice.calculated_total) if sales_invoice.sales_order.present?
@@ -71,14 +80,6 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
     end
   end
 
-  def add_days_in_payment_terms
-    service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms_days.csv', 'seed_files')
-    service.loop(nil) do |x|
-      payment_options = PaymentOption.find(x.get_column('payment_term_id'))
-      payment_options.update_attributes(days: x.get_column('days'))
-    end
-  end
-
   def migrate_magento_sales_receipts
 
     payment_method = {'banktransfer' => 10, 'Cheque' => 20, 'checkmo' => 30, 'razorpay' => 40, 'free' => 50, 'roundoff' => 60, 'bankcharges' => 70, 'cash' => 80, 'creditnote' => 85, 'writeoff' => 90, 'Transfer Acct' => 95}
@@ -120,7 +121,7 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
   end
 
   def migrate_sales_receipt
-    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipt_sap_against_invoice.csv', 'seed_files')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts_against_invoice.csv', 'seed_files')
     service.loop(nil) do |x|
       invoice = SalesInvoice.find_by_invoice_number(x.get_column('AR Invoice No'))
       company = Company.find_by_remote_uid(x.get_column('BP Code'))
@@ -144,7 +145,7 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
       end
     end
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipt_sap_on_account.csv', 'seed_files')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts_on_account.csv', 'seed_files')
     service.loop(nil) do |x|
       company = Company.find_by_remote_uid(x.get_column('BP Code'))
       if company.present? && x.get_column('Non-Calculated Amount').to_f > 0
