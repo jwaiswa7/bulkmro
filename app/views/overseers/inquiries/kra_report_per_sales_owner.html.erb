@@ -1,0 +1,38 @@
+<% provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+
+<% content_for :heading do %>KRA Report per sales Person<% end %>
+
+<% content_for :header_row do %>
+  <th class="no-sort all"></th>
+  <th class="no-sort all" data-name="inside_sales_owner_id">Name</th>
+  <th class="no-sort all" data-name="status">Status</th>
+  <th class="sort all text-right" data-name="inquiry_number">Inquiry</th>
+  <th class="sort desktop text-right" data-name="created_at">Date of inquiry</th>
+  <th class="no-sort all">Value of Quote</th>
+  <th class="no-sort all">Date of Quote</th>
+  <th class="no-sort all">Value of Orders</th>
+  <th class="no-sort all">%Inquiries Won</th>
+  <th class="no-sort all">Sales Invoices</th>
+  <th class="no-sort all">Revenue</th>
+<% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
+  <td class="status-filter" data-filter="dropdown"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="daterange"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>
