@@ -34,7 +34,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     service = Services::Overseers::Finders::Inquiries.new(params, current_overseer, paginate: false)
     service.call
 
-    export_service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, service.records.pluck(:id))
+    export_service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, service.records)
     export_service.call
   end
 

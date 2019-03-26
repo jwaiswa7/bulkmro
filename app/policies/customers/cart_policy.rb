@@ -17,6 +17,10 @@ class Customers::CartPolicy < Customers::ApplicationPolicy
     true
   end
 
+  def update_cart_details?
+    true
+  end
+
   def update_billing_address?
     true
   end
