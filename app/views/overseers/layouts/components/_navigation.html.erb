@@ -137,8 +137,6 @@
           <div  class="dropdown-divider"></div>
           <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
           <%= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, policy(:activity).pending? %>
-          <div  class="dropdown-divider"></div>
-          <%= nav_dropdown_item 'KRA report', kra_report_overseers_inquiries_path, policy(:inquiry).index? %>
         </div>
       </li>
 
@@ -226,6 +224,7 @@
             <% Report.all.each do |report| %>
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
+            <%= nav_dropdown_item 'KRA Report', kra_report_overseers_inquiries_path, policy(:inquiry).index? %>
           </div>
         </li>
       <% end %>
