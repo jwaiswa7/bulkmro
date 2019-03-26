@@ -6,7 +6,7 @@
         <% if action_name == 'confirm_delivery' %>
           <%= action_name.capitalize.titleize %>
         <% else %>
-          <%= action_name.capitalize.titleize %>  <%= @inward_dispatch.readable_status %>
+          <%= action_name.capitalize.titleize %>  <%= @inward_dispatch.class %>
         <% end %>
 
         for Purchase Order #<%= @inward_dispatch.purchase_order.po_number %>

@@ -122,7 +122,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
     if @purchase_order.valid?
 
-      messages = FieldModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date', 'followup_date'])
+      messages = FieldModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date', 'followup_date', 'logistics_owner_id'])
       if messages.present?
         @purchase_order.comments.create(message: messages, overseer: current_overseer)
       end

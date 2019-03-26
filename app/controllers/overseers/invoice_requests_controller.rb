@@ -103,7 +103,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @sales_order = @purchase_order.try(:po_request).try(:sales_order)
       @invoice_request = InvoiceRequest.new(overseer: current_overseer, purchase_order: @purchase_order, inquiry: @purchase_order.inquiry)
-      @inward_dispatches_ids = params[:ids].present? ? params[:ids] : InwardDispatch.decode_id(params[:mpr_id])
+      @inward_dispatches_ids = params[:ids].present? ? params[:ids] : InwardDispatch.decode_id(params[:inward_dispatch_id])
 
       authorize @invoice_request
       if params[:inward_dispatch_id] || params[:ids]
