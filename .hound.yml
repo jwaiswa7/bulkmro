@@ -4,3 +4,6 @@ rubocop:
 jshint:
   ignore_file: .jshintignore
   config_file: .jshintrc
+
+scss:
+  enabled: false
