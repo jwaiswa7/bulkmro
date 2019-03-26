@@ -8,7 +8,13 @@
       </div>
       <div class="form-row">
         <div class="col text-center">
-          <%= f.submit "Refresh Report", class: "btn btn-default btn-success btn-block" %>
+        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+          <i class="fal fa-redo mr-2"></i>Refresh Report
+        <% end %>
+        </div>
+        <div class="col text-center">
+          <a href="<%= kra_report_overseers_inquiries_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0">
+            Reset Report</a>
         </div>
       </div>
     </div>
