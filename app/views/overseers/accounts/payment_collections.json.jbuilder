@@ -9,6 +9,7 @@ json.data (@accounts) do |account|
                       end
                   ].join(' '),
                   account.alias,
+                  account.name,
                   format_currency(account.invoices.not_cancelled_invoices.sum(&:calculated_total_with_tax)),
                   format_currency(account.amount_received_against_invoice),
                   format_currency(account.amount_received_on_account),

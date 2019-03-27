@@ -16,11 +16,16 @@ class SalesInvoice < ApplicationRecord
   has_many :email_messages
   has_many :sales_receipts
   has_many :sales_receipt_rows
+  has_many :email_messages
 
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
   has_one_attached :pod_attachment
+
+  scope :not_cancelled_invoices, -> { where.not(status: 'Cancelled') }
+  scope :not_paid, -> { where.not(payment_status: 'Fully Paid') }
+
 
   enum status: {
       'Open': 1,

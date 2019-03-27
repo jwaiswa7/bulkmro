@@ -54,6 +54,7 @@ class Company < ApplicationRecord
 
   has_many :sales_receipts
   has_many :payment_collections
+  has_many :email_messages, dependent: :destroy
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof
