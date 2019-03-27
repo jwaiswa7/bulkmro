@@ -95,6 +95,15 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit? && record.sales_orders.present?
   end
 
+
+  def has_approved_sales_orders?
+    record&.sales_orders&.remote_approved&.any?
+  end
+
+  def has_no_approved_sales_orders?
+    !has_approved_sales_orders?
+  end
+
   def calculation_sheet?
     edit?
   end
@@ -126,6 +135,8 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def resync_unsync_inquiry_products?
     developer? && record.inquiry_products.present?
   end
+
+
 
 
   def new_freight_request?
