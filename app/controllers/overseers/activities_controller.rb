@@ -150,6 +150,16 @@ class Overseers::ActivitiesController < Overseers::BaseController
               :last_name,
               :address,
               :account_type,
+              :telephone,
+              :mobile_number,
+              :activity_id
+          ],
+          contact_creation_request_attributes: [
+              :first_name,
+              :last_name,
+              :email,
+              :telephone,
+              :mobile_number
           ],
           attachments: []
       )
