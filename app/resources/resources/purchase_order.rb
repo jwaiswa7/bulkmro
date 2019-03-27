@@ -149,6 +149,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         'po_overall_margin' => remote_response['U_Ovr_Margin'],
         'PoPackingForwarding' => remote_response['U_PackFwd'],
         'PoCurrencyChangeRate' => remote_response['DocRate'],
+        'PoModeOfTrasport' => PurchaseOrder.transport_modes.key(remote_response['ShippingMethod'].to_i),
         'LineTotal' => freight,
         'TaxSum' => freight_tax
     }
