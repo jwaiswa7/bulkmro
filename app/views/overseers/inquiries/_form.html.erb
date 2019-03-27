@@ -100,15 +100,15 @@
 
       <div class="form-row">
         <div class="col-6 col-md-4">
-          <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), required: true %>
+          <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), required: true, disabled: policy(f.object).has_approved_sales_orders? %>
         </div>
 
         <div class="col-6 col-md-4">
-          <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), required: true %>
+          <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), required: true, disabled: policy(f.object).has_approved_sales_orders? %>
         </div>
 
         <div class="col-6 col-md-4">
-          <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), required: true %>
+          <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), required: true, disabled: policy(f.object).has_approved_sales_orders? %>
         </div>
       </div>
 
@@ -164,13 +164,13 @@
         <h6 class="text-uppercase text-black-50 mb-1">Owner Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-4">
-            <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Inside Sales Owner'} %>
+            <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Inside Sales Owner'}, disabled: policy(f.object).has_approved_sales_orders? %>
           </div>
           <div class="col-12 col-md-4">
-            <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner'} %>
+            <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner'}, disabled: policy(f.object).has_approved_sales_orders? %>
           </div>
           <div class="col-12 col-md-4">
-            <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Manager'} %>
+            <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Manager'}, disabled: policy(f.object).has_approved_sales_orders? %>
           </div>
         </div>
       </div>

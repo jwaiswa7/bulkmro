@@ -141,7 +141,13 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
 
+  def has_approved_sales_orders?
+    record&.sales_orders&.remote_approved&.any?
+  end
 
+  def has_no_approved_sales_orders?
+    !has_approved_sales_orders?
+  end
 
   def new_freight_request?
     !record.freight_request.present? && !logistics?
