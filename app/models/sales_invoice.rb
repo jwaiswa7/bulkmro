@@ -16,7 +16,13 @@ class SalesInvoice < ApplicationRecord
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
   has_many :email_messages
   has_many :pod_rows, dependent: :destroy
-  accepts_nested_attributes_for :pod_rows, reject_if: lambda { |attributes| attributes['attachments'].blank?}, allow_destroy: true
+  accepts_nested_attributes_for :pod_rows, reject_if: lambda { |attributes|
+    if attributes[:id].present?
+      PodRow.find(attributes[:id]).attachments.count < 1
+    else
+      attributes[:attachments].blank?
+    end
+    }, allow_destroy: true
 
 
 
@@ -96,5 +102,23 @@ class SalesInvoice < ApplicationRecord
 
   def has_attachment?
     self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached? && self.delivery_completed
+  end
+
+  def pod_status
+    if self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached?
+      if self.delivery_completed
+        'complete'
+      else
+        'partial'
+      end
+    else
+      'incomplete'
+    end
+  end
+
+  def delivery_date
+    if self.pod_rows.present?
+      self.pod_rows.order(:delivery_date).last.delivery_date
+    end
   end
 end
