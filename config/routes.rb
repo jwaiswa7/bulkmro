@@ -159,6 +159,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'non_kit_autocomplete'
         get 'service_autocomplete'
+        get 'autocomplete_mpn'
       end
       member do
         get 'customer_bp_catalog'
@@ -174,6 +175,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'pending'
         get 'export_all'
+        get 'export_filtered_records'
       end
 
       scope module: 'products' do
@@ -329,6 +331,8 @@ Rails.application.routes.draw do
         get 'calculation_sheet'
         get 'export'
         get 'stages'
+        get 'relationship_map'
+        get 'get_relationship_map_json'
       end
 
       collection do
@@ -345,8 +349,18 @@ Rails.application.routes.draw do
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
-        resources :sales_shipments
-        resources :purchase_orders
+        resources :sales_shipments do
+          member do
+            get 'relationship_map'
+            get 'get_relationship_map_json'
+          end
+        end
+        resources :purchase_orders do
+          member do
+            get 'relationship_map'
+            get 'get_relationship_map_json'
+          end
+        end
 
         resources :po_requests do
           collection do
@@ -362,6 +376,8 @@ Rails.application.routes.draw do
             get 'duplicate'
             get 'triplicate'
             get 'make_zip'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
         end
 
@@ -376,6 +392,8 @@ Rails.application.routes.draw do
             post 'create_confirmation'
             post 'resync'
             get 'fetch_order_data'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
 
           collection do
@@ -388,6 +406,8 @@ Rails.application.routes.draw do
             get 'new_revision'
             get 'preview'
             get 'reset_quote'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
 
           scope module: 'sales_quotes' do
@@ -417,6 +437,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'export_all'
+        get 'export_filtered_records'
       end
       member do
         get 'render_rating_form'

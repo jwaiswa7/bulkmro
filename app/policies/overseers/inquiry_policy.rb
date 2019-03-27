@@ -63,10 +63,6 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
-  def export_filtered_records?
-    allow_export? && overseer.can_send_emails?
-  end
-
   def create_excel_import?
     new_excel_import?
   end
@@ -126,6 +122,14 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def stages?
     edit?
+  end
+
+  def relationship_map?
+    stages?
+  end
+
+  def get_relationship_map_json?
+    relationship_map?
   end
 
   def resync_inquiry_products?

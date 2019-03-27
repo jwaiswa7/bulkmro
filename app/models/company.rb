@@ -46,6 +46,10 @@ class Company < ApplicationRecord
   has_many :company_banks
   has_many :banks, through: :company_banks
   has_many :tags
+  has_many :purchase_orders
+  has_many :supplied_products, through: :purchase_orders, source: :products
+  has_many :supplied_brands, through: :supplied_products, source: :brand
+
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof
@@ -133,6 +137,10 @@ class Company < ApplicationRecord
 
   def set_default_company_shipping_address
     self.addresses.first if !self.addresses.blank?
+  end
+
+  def self.default_supplier
+    find_by_name('Local')
   end
 
   def billing_address

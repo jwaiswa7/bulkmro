@@ -149,6 +149,12 @@ class Inquiry < ApplicationRecord
       'Extra': 20
   }
 
+  enum product_type: {
+      'MRO': 10,
+      'Projects': 20,
+      'Raw Materials': 30
+  }
+
   def commercial_status
     :open
   end

@@ -1,5 +1,6 @@
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
+  include DisplayHelper
   update_index('sales_invoices#sales_invoice') { self }
 
   pg_search_scope :locate, against: [:id, :invoice_number], associated_against: { company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }

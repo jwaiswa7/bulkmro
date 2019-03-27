@@ -102,35 +102,29 @@
             </div>
 
             <br clear="all">
-            <table border="0" cellspacing="0" style="width: 100%;">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-left">
-
-                    <% if record.inquiry.bill_from.address.present? %>
-                      <%= record.inquiry.bill_from.address.name.to_s %><br>
-                    <% end %>
-                    <% if record.inquiry.bill_from.present? %>
-                      <%= record.inquiry.bill_from.address.to_multiline_s %><br>
-                      GST No.: <%= record.inquiry.bill_from.address.gst %><br>
-                    <% end %>
-                    PAN No.: AAGCB7343G</span>
-                  </div>
+                <td class="address-wrapper" style="height: auto;">
+                  <% if record.inquiry.bill_from.address.present? %>
+                    <%= record.inquiry.bill_from.address.name.to_s %><br>
+                  <% end %>
+                  <% if record.inquiry.bill_from.present? %>
+                    <%= record.inquiry.bill_from.address.to_multiline_s %><br>
+                    GST No.: <%= record.inquiry.bill_from.address.gst %><br>
+                  <% end %>
+                  PAN No.: AAGCB7343G</span>
                 </td>
-                <td class="address-section-gap"></td>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-right">
-
-                    <% if record.inquiry.ship_from.present? %>
-                      <%= record.inquiry.ship_from.address.name.to_s %><br>
-                    <% end %>
-                    <% if record.inquiry.ship_from.present? %>
-                      <%= record.inquiry.ship_from.address.to_multiline_s %><br>
-                      GST No.: <%= record.inquiry.ship_from.address.gst %><br>
-                    <% end %>
-                    PAN No.: AAGCB7343G</span>
-                  </div>
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;">
+                  <% if record.inquiry.ship_from.present? %>
+                    <%= record.inquiry.ship_from.address.name.to_s %><br>
+                  <% end %>
+                  <% if record.inquiry.ship_from.present? %>
+                    <%= record.inquiry.ship_from.address.to_multiline_s %><br>
+                    GST No.: <%= record.inquiry.ship_from.address.gst %><br>
+                  <% end %>
+                  PAN No.: AAGCB7343G</span>
                 </td>
               </tr>
               </tbody>
@@ -148,39 +142,33 @@
             </div>
 
             <br clear="all">
-            <table border="0" cellspacing="0" style="width: 100%;">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-left">
-
-                    <%= record.inquiry.contact.full_name %><br>
-                    <%= record.inquiry.billing_address.name %><br>
-                    <%= record.inquiry.billing_address.to_multiline_s if record.inquiry.billing_address.present? %>
-                    <br>
-                    Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.billing_address.telephone %>
-                    <br>
-                    GST No.:<%= record.inquiry.billing_address.gst %><br>
-                  </div>
+                <td class="address-wrapper" style="height: auto;">
+                  <%= record.inquiry.contact.full_name %><br>
+                  <%= record.inquiry.billing_address.name %><br>
+                  <%= record.inquiry.billing_address.to_multiline_s if record.inquiry.billing_address.present? %>
+                  <br>
+                  Tel: <%= record.inquiry.contact.phone || record.inquiry.billing_address.phone %>
+                  <br>
+                  GST No.:<%= record.inquiry.billing_address.gst %><br>
                 </td>
-                <td class="address-section-gap"></td>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-right">
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;">
+                  <%= record.inquiry.shipping_contact.present? ? record.inquiry.shipping_contact.full_name : record.inquiry.contact.full_name %>
+                  <br>
+                  <%= record.inquiry.shipping_address.name %><br>
+                  <%= record.inquiry.shipping_address.to_multiline_s if record.inquiry.shipping_address.present? %>
+                  <br>
+                  <% if record.inquiry.shipping_contact.present? %>
+                    Tel: <%= record.inquiry.shipping_contact.phone || record.inquiry.shipping_address.phone %>
+                  <% else %>
+                    Tel: <%= record.inquiry.contact.phone || record.inquiry.shipping_address.phone %>
+                  <% end %>
 
-                    <%= record.inquiry.shipping_contact.present? ? record.inquiry.shipping_contact.full_name : record.inquiry.contact.full_name %>
-                    <br>
-                    <%= record.inquiry.shipping_address.name %><br>
-                    <%= record.inquiry.shipping_address.to_multiline_s if record.inquiry.shipping_address.present? %>
-                    <br>
-                    <% if record.inquiry.shipping_contact.present? %>
-                      Tel: <%= record.inquiry.shipping_contact.phone || record.inquiry.shipping_contact.mobile || record.inquiry.shipping_address.telephone %>
-                    <% else %>
-                      Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.shipping_address.telephone %>
-                    <% end %>
-
-                    <br>
-                    GST No.:<%= record.inquiry.shipping_address.gst %><br>
-                  </div>
+                  <br>
+                  GST No.:<%= record.inquiry.shipping_address.gst %><br>
                 </td>
               </tr>
               </tbody>
@@ -268,9 +256,11 @@
                   <td align="center" valign="top">
                     <span><%= format_currency(item.quantity, precision: 2, symbol: '') %></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <span><%= format_currency(item.converted_unit_selling_price, precision: 2, symbol: '') %></span></td>
+                    <span><%= format_currency(item.converted_unit_selling_price, precision: 2, symbol: '') %></span>
+                  </td>
                   <td align="right" style=" text-align:right;" valign="top">
-                    <span><%= format_currency(item.converted_total_selling_price, precision: 2, symbol: '') %></span></td>
+                    <span><%= format_currency(item.converted_total_selling_price, precision: 2, symbol: '') %></span>
+                  </td>
                   <td align="center" valign="top">
                     <span><%= (item.sales_quote_row.applicable_tax_percentage * 100).to_f.round(0) %>%</span></td>
                   <% if record.sales_quote.tax_summary.strip == '0' || record.sales_quote.tax_summary.to_s.include?("IGST") %>
@@ -289,7 +279,8 @@
                       <span><%= format_currency((item.converted_total_tax / 2), precision: 2, symbol: '') %></span></td>
                   <% end %>
                   <td align="right" style="font-size: 9px;border-bottom: 1px solid #3c3c3c; text-align: right" valign="top">
-                    <span><%= format_currency(item.converted_total_selling_price_with_tax, precision: 2, symbol: '') %></span></td>
+                    <span><%= format_currency(item.converted_total_selling_price_with_tax, precision: 2, symbol: '') %></span>
+                  </td>
                 </tr>
               <% end %>
 
@@ -321,19 +312,23 @@
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= format_currency(record.converted_total_tax, precision: 2, symbol: '') %></span></b></td>
+                    <b><span><%= format_currency(record.converted_total_tax, precision: 2, symbol: '') %></span></b>
+                  </td>
                 <% else %>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= format_currency((record.converted_total_tax / 2), precision: 2, symbol: '') %></span></b></td>
+                    <b><span><%= format_currency((record.converted_total_tax / 2), precision: 2, symbol: '') %></span></b>
+                  </td>
                   <td align="center" style="text-align: right;" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= format_currency((record.converted_total_tax / 2), precision: 2, symbol: '') %></span></b></td>
+                    <b><span><%= format_currency((record.converted_total_tax / 2), precision: 2, symbol: '') %></span></b>
+                  </td>
                 <% end %>
                 <td align="right" style="font-size: 9px;text-align: right;border-bottom-right-radius: 5px;" valign="top">
-                  <b><span><%= format_currency(record.converted_total_with_tax, precision: 2, symbol: '') %></span></b></td>
+                  <b><span><%= format_currency(record.converted_total_with_tax, precision: 2, symbol: '') %></span></b>
+                </td>
               </tr>
 
               </tbody>
