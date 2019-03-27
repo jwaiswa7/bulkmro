@@ -178,23 +178,23 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   private
 
-  def get_supplier(purchase_order, product_id)
-    if purchase_order.metadata['PoSupNum'].present?
-      product_supplier = (Company.find_by_legacy_id(purchase_order.metadata['PoSupNum']) || Company.find_by_remote_uid(purchase_order.metadata['PoSupNum']))
-      return product_supplier if purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy?
+    def get_supplier(purchase_order, product_id)
+      if purchase_order.metadata['PoSupNum'].present?
+        product_supplier = (Company.find_by_legacy_id(purchase_order.metadata['PoSupNum']) || Company.find_by_remote_uid(purchase_order.metadata['PoSupNum']))
+        return product_supplier if purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy?
+      end
+      if purchase_order.inquiry.final_sales_quote.present?
+        product_supplier = purchase_order.inquiry.final_sales_quote.rows.select {|sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id}.first
+        product_supplier.supplier if product_supplier.present?
+      end
     end
-    if purchase_order.inquiry.final_sales_quote.present?
-      product_supplier = purchase_order.inquiry.final_sales_quote.rows.select {|sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id}.first
-      product_supplier.supplier if product_supplier.present?
+
+    def set_purchase_order
+      @purchase_order = PurchaseOrder.find(params[:id])
     end
-  end
 
-  def set_purchase_order
-    @purchase_order = PurchaseOrder.find(params[:id])
-  end
-
-  def purchase_order_params
-    params.require(:purchase_order).permit(
+    def purchase_order_params
+      params.require(:purchase_order).permit(
         :material_status,
         :supplier_dispatch_date,
         :followup_date,
@@ -202,6 +202,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         :revised_supplier_delivery_date,
         comments_attributes: [:id, :message, :created_by_id],
         attachments: []
-    )
-  end
+      )
+    end
 end

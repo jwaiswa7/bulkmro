@@ -14,20 +14,26 @@ const edit = () => {
     $('[name="invoice_request[status]"]').unbind().bind('change', function(){
         let val = $(this).val()
         $(".invoice_request_grpo_rejection_reason, .invoice_request_grpo_other_rejection_reason, .invoice_request_grpo_cancellation_reason ").addClass('d-none')
+        $(".invoice_request_grpo_rejection_reason, .invoice_request_grpo_other_rejection_reason, .invoice_request_grpo_cancellation_reason ").find('input').prop('required',false)
         $(".invoice_request_ap_rejection_reason, .invoice_request_ap_cancellation_reason ").addClass('d-none')
+        $(".invoice_request_ap_rejection_reason, .invoice_request_ap_cancellation_reason ").find('input').prop('required',false)
 
         switch(val) {
             case 'GRPO Request Rejected':
                 $(".invoice_request_grpo_rejection_reason").removeClass('d-none');
+                $(".invoice_request_grpo_rejection_reason").find('input').prop('required',true);
                 break;
             case 'AP Invoice Request Rejected':
                 $(".invoice_request_ap_rejection_reason").removeClass('d-none');
+                $(".invoice_request_ap_rejection_reason").find('input').prop('required',true);
                 break;
             case 'Cancelled GRPO':
                 $(".invoice_request_grpo_cancellation_reason").removeClass('d-none');
+                $(".invoice_request_grpo_cancellation_reason").find('input').prop('required',true);
                 break;
             case 'Cancelled AP Invoice':
                 $(".invoice_request_ap_cancellation_reason").removeClass('d-none');
+                $(".invoice_request_ap_cancellation_reason").find('input').prop('required',true);
                 break;
             default:
         }
