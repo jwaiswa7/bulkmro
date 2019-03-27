@@ -36,11 +36,15 @@
         <strong class="d-block">Customer Order Date</strong>
         <%= @inquiry.customer_order_date %>
       </div>
-      <div class="col-6 col-md-3 mt-2 mt-md-0">
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        <strong class="d-block">Customer Committed Date</strong>
+        <%= @inquiry.customer_committed_date %>
+      </div>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
         <strong class="d-block">Currency</strong>
         <%= sales_order.currency %> (<%= sales_order.conversion_rate %>)
       </div>
-      <div class="col-6 col-md-3 mt-2 mt-md-0">
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
         <strong class="d-block">Payment Terms</strong>
         <%= @inquiry.payment_option %>
       </div>

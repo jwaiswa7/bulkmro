@@ -145,6 +145,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     record&.sales_orders&.remote_approved&.any?
   end
 
+  def restrict_fields_on_completed_orders?
+    has_approved_sales_orders? && !admin?
+  end
+
   def has_no_approved_sales_orders?
     !has_approved_sales_orders?
   end
