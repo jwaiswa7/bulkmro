@@ -104,7 +104,7 @@
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto; width: 49%;">
                   <% if record.inquiry.bill_from.address.present? %>
                     <%= record.inquiry.bill_from.address.name.to_s %><br>
                   <% end %>
@@ -115,7 +115,7 @@
                   PAN No.: AAGCB7343G</span>
                 </td>
                 <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                   <% if record.inquiry.ship_from.present? %>
                     <%= record.inquiry.ship_from.address.name.to_s %><br>
                   <% end %>
@@ -144,7 +144,7 @@
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto; width: 49%;">
                   <%= record.inquiry.contact.full_name %><br>
                   <% if record.inquiry.billing_address.present? %>
                     <%= record.inquiry.billing_address.name %><br>
@@ -156,7 +156,7 @@
                   <% end %>
                 </td>
                 <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                   <%= record.inquiry.shipping_contact.present? ? record.inquiry.shipping_contact.full_name : record.inquiry.contact.full_name %>
                   <br>
                   <% if record.inquiry.shipping_address.present? %>
