@@ -101,6 +101,10 @@
                     <%= @invoice_request.ar_invoice_number %>
                   </div>
                 <% end %>
+
+                <% if @invoice_request.status.present? %>
+                  <%= render 'overseers/invoice_requests/display_reason', :data => @invoice_request.show_display_reason%>
+                <%end %>
               </div>
             </div>
 
@@ -225,10 +229,10 @@
                     <%= k[:purchase_order_row].uom %>
                   </div>
                   <div class="col-12 col-md-1">
-                    <%= number_to_currency(k[:purchase_order_row].unit_selling_price, precision: 0, unit: '') %>
+                    <%= format_currency(k[:purchase_order_row].unit_selling_price) %>
                   </div>
                   <div class="col-12 col-md-1">
-                    <%= number_to_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f, precision: 0, unit: '') %>
+                    <%= format_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f) %>
                   </div>
                 </div>
               <% end %>

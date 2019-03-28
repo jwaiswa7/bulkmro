@@ -2,7 +2,7 @@ class Account < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasUniqueName
   include Mixins::CanBeSynced
-  include  Mixins::HasPaymentCollections
+  include Mixins::HasPaymentCollections
 
   pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
 

@@ -107,7 +107,7 @@ class MaterialPickupRequest < ApplicationRecord
     [status, 'Request'].join(' ')
   end
 
-  def to_s
-    [readable_status, "##{self.id}"].join(' ')
-  end
+  # def to_s
+  #   [readable_status, "##{self.id}"].join(' ')
+  # end
 end

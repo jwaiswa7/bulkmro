@@ -4,6 +4,7 @@ class PoRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
   include Mixins::HasConvertedCalculations
+  include Mixins::GetOverallDate
 
   pg_search_scope :locate, against: [:id], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
@@ -26,18 +27,20 @@ class PoRequest < ApplicationRecord
   has_many :company_reviews, as: :rateable
   ratyrate_rateable 'CompanyReview'
 
-  attr_accessor :opportunity_type, :customer_committed_date, :blobs
+  attr_accessor :opportunity_type, :customer_committed_date, :blobs, :common_lead_date
 
   belongs_to :requested_by, class_name: 'Overseer', foreign_key: 'requested_by_id', required: false
   belongs_to :approved_by, class_name: 'Overseer', foreign_key: 'approved_by_id', required: false
   belongs_to :company, required: false
 
   enum status: {
-      'Requested': 10,
-      'PO Created': 20,
+      'Supplier PO: Request Pending': 10,
+      'Supplier PO: Created Not Sent': 20,
       'Cancelled': 30,
       'Rejected': 40,
-      'Amend': 50
+      'Supplier PO: Amendment': 50,
+      'Supplier PO: Amended': 70,
+      'Supplier PO Sent': 60
   }
 
   enum supplier_po_type: {
@@ -68,12 +71,13 @@ class PoRequest < ApplicationRecord
       'Stock Supplier PO Created': 30
   }
 
-  scope :pending_and_rejected, -> { where(status: [:'Requested', :'Rejected', :'Amend']) }
-  scope :handled, -> { where.not(status: [:'Requested', :'Cancelled', :'Amend']) }
+  scope :pending_and_rejected, -> { where(status: [:'Supplier PO: Request Pending', :'Rejected', :'Supplier PO: Amendment']) }
+  scope :handled, -> { where.not(status: [:'Supplier PO: Request Pending', :'Cancelled', :'Supplier PO: Amendment']) }
   scope :not_cancelled, -> { where.not(status: [:'Cancelled']) }
   scope :cancelled, -> { where(status: [:'Cancelled']) }
-  scope :can_amend, -> { where(status: [:'PO Created']) }
-  scope :amended, -> { where(status: [:'Amend']) }
+  scope :can_amend, -> { where(status: [:'Supplier PO: Created Not Sent']) }
+  scope :under_amend, -> { where(status: [:'Supplier PO: Amendment']) }
+  scope :amended, -> { where(status: [:'Supplier PO: Amended']) }
   scope :pending_stock_po, -> { where(stock_status: [:'Stock Requested']) }
   scope :completed_stock_po, -> { where(stock_status: [:'Stock Supplier PO Created']) }
   scope :stock_po, -> { where(stock_status: [:'Stock Requested', :'Stock Rejected', :'Stock Supplier PO Created']) }
@@ -86,12 +90,13 @@ class PoRequest < ApplicationRecord
   after_save :update_po_index, if: -> { purchase_order.present? }
 
   def purchase_order_created?
-    if self.status == 'PO Created' && self.purchase_order.blank?
+    if self.status == 'Supplier PO: Created Not Sent' && self.purchase_order.blank?
       errors.add(:purchase_order, ' number is mandatory')
     end
   end
 
   after_initialize :set_defaults, if: :new_record?
+
   def update_po_index
     PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order.id])
   end
@@ -109,16 +114,16 @@ class PoRequest < ApplicationRecord
   end
 
   def set_defaults
-    self.status ||= :'Requested' if self.po_request_type == 'Regular'
+    self.status ||= :'Supplier PO: Request Pending' if self.po_request_type == 'Regular'
     self.stock_status ||= :'Stock Requested' if self.po_request_type == 'Stock'
   end
 
   def amending?
-    status == 'Amend'
+    status == 'Supplier PO: Amendment'
   end
 
   def not_amending?
-    status != 'Amend'
+    status != 'Supplier PO: Amendment'
   end
 
   def not_cancelled?
@@ -137,11 +142,15 @@ class PoRequest < ApplicationRecord
     (((self.buying_price - self.selling_price) / self.buying_price) * 100).round(2) if self.buying_price > 0
   end
 
+  def show_supplier_delivery_date
+    get_overall_date(self)
+  end
+
   def readable_status
     title = ''
-    if self.status == 'Requested'
+    if self.status == 'Supplier PO: Request Pending'
       title = 'Pending'
-    elsif self.status == 'PO Created'
+    elsif self.status == 'Supplier PO: Created Not Sent'
       title = 'Completed'
     end
     "#{title} PO Request"

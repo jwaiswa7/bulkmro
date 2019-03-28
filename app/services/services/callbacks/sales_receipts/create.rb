@@ -26,7 +26,7 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
         total_amount_received = 0.0
       end
 
-      #validate reconciled amount if present
+      # validate reconciled amount if present
       is_valid = true
       if params['reconciled_amount'].to_f > 0
         if params['p_invoice_no'].present?
@@ -49,16 +49,16 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
       end
 
       if is_valid
-        sales_receipt = SalesReceipt.where(remote_reference: params['p_sap_reference_number']).first_or_create! do |sales_receipt|
-          sales_receipt.assign_attributes(
-              company: company,
-              account: account,
-              metadata: params,
-              currency: currency,
-              payment_type: payment_type, # have to change as per new data
-              payment_received_date: params['p_received_date'],
-              payment_amount_received: total_amount_received,
-              reconciled_amount: params['reconciled_amount']
+        sales_receipt = SalesReceipt.where(remote_reference: params['p_sap_reference_number']).first_or_create! do |sales_receipt_object|
+          sales_receipt_object.assign_attributes(
+            company: company,
+            account: account,
+            metadata: params,
+            currency: currency,
+            payment_type: payment_type, # have to change as per new data
+            payment_received_date: params['p_received_date'],
+            payment_amount_received: total_amount_received,
+            reconciled_amount: params['reconciled_amount']
           )
         end
 
@@ -67,12 +67,12 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
             sales_invoice = SalesInvoice.find_by_invoice_number(si_payment['invoice_number'])
             if sales_invoice.present?
 
-              #create sales receipt rows
-              sales_receipt.rows.where(:sales_invoice => sales_invoice).first_or_create! do |sales_receipt_row|
-                sales_receipt_row.assign_attributes(:amount_received => si_payment['amount_received'])
+              # create sales receipt rows
+              sales_receipt.rows.where(sales_invoice: sales_invoice).first_or_create! do |sales_receipt_row|
+                sales_receipt_row.assign_attributes(amount_received: si_payment['amount_received'])
               end
 
-              #update sales invoice payment status
+              # update sales invoice payment status
               receivable_amount = sales_invoice.calculated_total_with_tax
               received_amount = sales_invoice.sales_receipt_rows.sum(:amount_received)
               if received_amount == 0.0
@@ -82,7 +82,7 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
               elsif receivable_amount == received_amount
                 payment_status = 'Fully Paid'
               end
-              sales_invoice.update_attributes!(:payment_status => payment_status)
+              sales_invoice.update_attributes!(payment_status: payment_status)
             end
           end
         end

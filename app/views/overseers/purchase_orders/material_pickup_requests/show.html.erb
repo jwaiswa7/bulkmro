@@ -2,28 +2,28 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        Pickup Request for #<%= @mpr.purchase_order.po_number %>
+        Inward Dispatch for #<%= @inward_dispatch.purchase_order.po_number %>
       </h3>
       <span>
-        <% if policy(@mpr).edit? %>
-        <a href="<%= edit_overseers_purchase_order_material_pickup_request_path(@mpr.purchase_order, @mpr) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>
-          Edit Material Pickup Request</a>
+        <% if policy(@inward_dispatch).edit? %>
+        <a href="<%= edit_overseers_purchase_order_inward_dispatch_path(@inward_dispatch.purchase_order, @inward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>
+          Edit Inward Dispatch</a>
       <% end %>
-        <% if policy(@mpr).confirm_delivery? %>
-        <a href="<%= confirm_delivery_overseers_purchase_order_material_pickup_request_path(@mpr.purchase_order, @mpr) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-check mr-1"></i>
+        <% if policy(@inward_dispatch).confirm_delivery? %>
+        <a href="<%= confirm_delivery_overseers_purchase_order_inward_dispatch_path(@inward_dispatch.purchase_order, @inward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-check mr-1"></i>
           Confirm Delivery</a>
       <% end %>
-        <% if policy(@mpr).delivered? && policy(@mpr.purchase_order).can_request_invoice? %>
-        <a href="<%= new_overseers_invoice_request_path(purchase_order_id: @mpr.purchase_order, mpr_id: @mpr) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>
+        <% if policy(@inward_dispatch).delivered? && policy(@inward_dispatch.purchase_order).can_request_invoice? %>
+        <a href="<%= new_overseers_invoice_request_path(purchase_order_id: @inward_dispatch.purchase_order, mpr_id: @inward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>
           Create GRPO Request</a>
       <% end %>
 
-        <% if @mpr.purchase_order.po_request.present? && policy(@mpr).delivered? && policy(@mpr.purchase_order.po_request).new_payment_request? %>
+        <% if @inward_dispatch.purchase_order.po_request.present? && policy(@inward_dispatch).delivered? && policy(@inward_dispatch.purchase_order.po_request).new_payment_request? %>
 
-            <a href="<%= new_overseers_po_request_payment_request_path(@mpr.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i> Create Payment Request
+            <a href="<%= new_overseers_po_request_payment_request_path(@inward_dispatch.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i> Create Payment Request
             </a>
-              <% elsif @mpr.purchase_order.po_request.present? && policy(@mpr).delivered? && policy(@mpr.purchase_order.po_request).show_payment_request? %>
-              <a href="<%= overseers_po_request_payment_request_path(@mpr.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>
+              <% elsif @inward_dispatch.purchase_order.po_request.present? && policy(@inward_dispatch).delivered? && policy(@inward_dispatch.purchase_order.po_request).show_payment_request? %>
+              <a href="<%= overseers_po_request_payment_request_path(@inward_dispatch.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>
                 View Payment Request</a>
         <% end %>
       </span>
@@ -34,82 +34,89 @@
     <div class="card">
       <div class="card-body">
         <div>
-          <h6 class="text-uppercase text-black-50 mb-1">Material Pickup Request Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-1">Inward Dispatch Details</h6>
           <div class="form-row">
-            <% if @mpr.purchase_order.present? %>
+            <% if @inward_dispatch.purchase_order.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Purchase Order Number</strong>
-                <%= @mpr.purchase_order.po_number %>
+                <%= @inward_dispatch.purchase_order.po_number %>
               </div>
             <% end %>
 
-            <% if @mpr.status? %>
+            <% if @inward_dispatch.status? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Status</strong>
-                <%= @mpr.status.titleize %>
+                <%= @inward_dispatch.status.titleize %>
               </div>
             <% end %>
 
-            <% if @mpr.logistics_owner.present? %>
+            <% if @inward_dispatch.logistics_owner.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Logistics Owner</strong>
-                <%= @mpr.logistics_owner.full_name %>
+                <%= @inward_dispatch.logistics_owner.full_name %>
               </div>
             <% end %>
 
-            <% if @mpr.dispatched_by? %>
+            <% if @inward_dispatch.dispatched_by? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Material Dispatched By</strong>
-                <%= @mpr.dispatched_by %>
+                <%= @inward_dispatch.dispatched_by %>
               </div>
             <% end %>
 
-            <% if @mpr.shipped_to? %>
+            <% if @inward_dispatch.shipped_to? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Material Shipped To</strong>
-                <%= @mpr.shipped_to %>
+                <%= @inward_dispatch.shipped_to %>
               </div>
             <% end %>
 
-            <% if @mpr.logistics_aggregator.present? %>
+            <% if @inward_dispatch.logistics_aggregator.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Logistics Aggregator</strong>
-                <%= @mpr.logistics_aggregator %>
+                <%= @inward_dispatch.logistics_aggregator %>
               </div>
             <% end %>
 
-            <% if @mpr.logistics_partner? %>
+            <% if @inward_dispatch.logistics_partner? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Logistics Partner</strong>
-                <%= @mpr.logistics_partner %>
+                <%= @inward_dispatch.logistics_partner %>
               </div>
             <% end %>
 
-            <% if @mpr.tracking_number? %>
+            <% if @inward_dispatch.tracking_number? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Tracking Number</strong>
-                <%= @mpr.tracking_number %>
+                <%= @inward_dispatch.tracking_number %>
               </div>
             <% end %>
 
-            <% if @mpr.expected_dispatch_date? %>
+            <% if @inward_dispatch.expected_dispatch_date? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Expected Dispatch Date</strong>
-                <%= format_date(@mpr.expected_dispatch_date) %>
+                <%= format_date(@inward_dispatch.expected_dispatch_date) %>
               </div>
             <% end %>
 
-            <% if @mpr.expected_delivery_date? %>
+            <% if @inward_dispatch.expected_delivery_date? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Expected Delivery Date</strong>
-                <%= format_date(@mpr.expected_delivery_date) %>
+                <%= format_date(@inward_dispatch.expected_delivery_date) %>
               </div>
             <% end %>
 
-            <% if @mpr.actual_delivery_date? %>
+            <% if @inward_dispatch.actual_delivery_date? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Actual Delivery Date</strong>
-                <%= format_date(@mpr.actual_delivery_date) %>
+                <%= format_date(@inward_dispatch.actual_delivery_date) %>
+              </div>
+            <% end %>
+
+            <% if @inward_dispatch.rows.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Supplier Delivery Date(Overall)</strong>
+                <%= @inward_dispatch.show_supplier_delivery_date.present? ? @inward_dispatch.show_supplier_delivery_date : "-" %>
               </div>
             <% end %>
           </div>
@@ -298,8 +305,8 @@
         </div>
       <% end %>
 
-      <div class="tab-pane fade " id="products" role="tabpanel">
-        <% if @mpr.rows.present? %>
+      <div class="tab-pane fade <% if !@po_request.present? %>active show<% end %>" id="products" role="tabpanel">
+        <% if @inward_dispatch.rows.present? %>
           <div class="card mb-2">
             <div class="card-body">
               <div class="flex-fill">
@@ -311,19 +318,21 @@
                   <tr>
                     <th>Sr. No.</th>
                     <th>Product</th>
-                    <th>Pickup Quantity</th>
-                    <th>Delivered Quantity</th>
-                    <th>Lead Date</th>
+                    <th>Supplier PO Total Qty</th>
+                    <th>Pending Delivery</th>
+                    <th>Inward Dispatch Qty</th>
+                    <th>Delivered Qty</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <% @mpr.rows.each_with_index do |row, sr_no| %>
+                  <% @inward_dispatch.rows.each_with_index do |row, sr_no| %>
                     <tr>
                       <td><%= sr_no + 1 %></td>
                       <td><%= row.purchase_order_row.to_s %></td>
-                      <td><%= row.pickup_quantity %></td>
-                      <td><%= row.delivered_quantity %></td>
-                      <td><%= format_succinct_date(row.lead_date) %></td>
+                      <td><%= row.purchase_order_row.quantity %></td>
+                      <td><%= row.pending_delivery %></td>
+                      <td><%= row.pickup_quantity.to_i %></td>
+                      <td><%= row.delivered_quantity.to_i %></td>
                     </tr>
                   <% end %>
                   </tbody>
@@ -335,11 +344,11 @@
       </div>
       <div class="tab-pane fade " id="comments" role="tabpanel">
         <div class="card">
-          <% if @mpr.comments.persisted.size > 0 %>
+          <% if @inward_dispatch.comments.persisted.size > 0 %>
             <div class="card-body">
               <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
               <div class="chats">
-                <% @mpr.comments.persisted.each do |comment| %>
+                <% @inward_dispatch.comments.persisted.each do |comment| %>
                   <%= format_comment(comment) %>
                 <% end %>
               </div>

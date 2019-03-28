@@ -1,9 +1,8 @@
 const updateOnContactSelect = () => {
     $('form').on('change', 'select[name*=contact_id]', function (e) {
-        console.log('adwadw');
         onContactChange(this);
     }).find('select[name*=contact_id]').each(function (e) {
-        var container = this
+        var container = this;
         if($(container).closest('.po-request-form').find('input[name*=contact_email]').val() == ""){
             onContactChange(this);
         }
@@ -12,7 +11,6 @@ const updateOnContactSelect = () => {
 };
 let onContactChange = (container) => {
     let optionSelected = $("option:selected", container);
-    console.log(optionSelected);
 
     if (optionSelected.exists() && optionSelected.val() !== '') {
         var email = $(optionSelected).data('contact-email');
@@ -28,8 +26,6 @@ let onContactChange = (container) => {
         $(container).closest('.po-request-form').find('input[name*=contact_email]').val("");
         $(container).closest('.po-request-form').find('input[name*=contact_phone]').val("");
     }
-
-
 };
 
 export default updateOnContactSelect
