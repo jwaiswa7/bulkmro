@@ -5,7 +5,6 @@ const updateLogisticsOwner = () => {
     $('#update_logistics_owner').click((event) => {
         updateOwner();
     });
-
 };
 
 let toggleCheckboxes = () => {

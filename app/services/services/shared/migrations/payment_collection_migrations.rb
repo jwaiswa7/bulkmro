@@ -1,6 +1,4 @@
 class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shared::BaseService
-
-
   def add_days_in_payment_terms
     service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms_days.csv', 'seed_files')
     service.loop(nil) do |x|
@@ -65,16 +63,16 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
           account = company.present? ? company.account : nil
           SalesReceipt.where(remote_reference: request['p_sap_reference_number']).first_or_create! do |sales_receipt|
             sales_receipt.assign_attributes(
-                sales_invoice: invoice,
-                company: company,
-                account: account,
-                metadata: request,
-                currency: currency,
-                payment_type: payment_type,
-                payment_received_date: request['p_received_date'],
-                payment_amount_received: pay_amount,
-                payment_method: request['p_method'],
-                comments: request['p_comments']
+              sales_invoice: invoice,
+              company: company,
+              account: account,
+              metadata: request,
+              currency: currency,
+              payment_type: payment_type,
+              payment_received_date: request['p_received_date'],
+              payment_amount_received: pay_amount,
+              payment_method: request['p_method'],
+              comments: request['p_comments']
             )
           end
         end
@@ -83,7 +81,6 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
   end
 
   def migrate_magento_sales_receipts
-
     payment_method = {'banktransfer' => 10, 'Cheque' => 20, 'checkmo' => 30, 'razorpay' => 40, 'free' => 50, 'roundoff' => 60, 'bankcharges' => 70, 'cash' => 80, 'creditnote' => 85, 'writeoff' => 90, 'Transfer Acct' => 95}
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts.csv', 'seed_files')
@@ -119,7 +116,6 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
         sales_receipt.save!
       end
     end
-
   end
 
   def migrate_sales_receipt
@@ -132,13 +128,13 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
         date = '20' + x.get_column('Payment Date').split('/').reverse.join('/')
         sales_receipt = SalesReceipt.where(remote_reference: x.get_column('Document Number')).first_or_create
         is_save = sales_receipt.update_attributes(
-            company: company,
-            account: company.account,
-            sales_invoice: invoice,
-            currency: currency,
-            payment_type: :'Against Invoice',
-            payment_received_date: date,
-            comments: x.get_column('Remarks')
+          company: company,
+          account: company.account,
+          sales_invoice: invoice,
+          currency: currency,
+          payment_type: :'Against Invoice',
+          payment_received_date: date,
+          comments: x.get_column('Remarks')
         )
         if is_save
           sales_receipt.sales_receipt_rows.where(sales_invoice: invoice).first_or_create!(amount_received: x.get_column('Paid Amt'))
@@ -156,13 +152,13 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
 
         sales_receipt = SalesReceipt.where(remote_reference: x.get_column('Document Number')).first_or_create!
         sales_receipt.assign_attributes(
-            company: company,
-            account: company.account,
-            currency: currency,
-            payment_type: :'On Account',
-            payment_received_date: date,
-            payment_amount_received: x.get_column('Non-Calculated Amount').to_f,
-            comments: x.get_column('Remarks')
+          company: company,
+          account: company.account,
+          currency: currency,
+          payment_type: :'On Account',
+          payment_received_date: date,
+          payment_amount_received: x.get_column('Non-Calculated Amount').to_f,
+          comments: x.get_column('Remarks')
         )
       end
     end
@@ -330,33 +326,32 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
 
       payment_collection = PaymentCollection.find_or_create_by(company: company)
       payment_collection.update_attributes(
-          account_id: company.account_id,
-          amount_received_fp_nd: fully_paid_not_due,
-          amount_received_pp_nd: partially_paid_not_due,
-          amount_received_npr_nd: no_pay_received_not_due,
-          amount_received_fp_od: overdue_fully_paid,
-          amount_received_pp_od: overdue_partially_paid,
-          amount_received_npr_od: overdue_no_pay_received,
+        account_id: company.account_id,
+        amount_received_fp_nd: fully_paid_not_due,
+        amount_received_pp_nd: partially_paid_not_due,
+        amount_received_npr_nd: no_pay_received_not_due,
+        amount_received_fp_od: overdue_fully_paid,
+        amount_received_pp_od: overdue_partially_paid,
+        amount_received_npr_od: overdue_no_pay_received,
 
-          amount_outstanding_pp_nd: outstanding_partially_paid_not_due,
-          amount_outstanding_npr_nd: outstanding_no_pay_received_not_due,
-          amount_outstanding_pp_od: outstanding_overdue_partially_paid,
-          amount_outstanding_npr_od: outstanding_overdue_no_pay_received,
-          amount_received_on_account: company.sales_receipts.with_amount_on_account.sum(:payment_amount_received),
-          amount_received_against_invoice: company.sales_receipts.with_amount_by_invoice.sum(:payment_amount_received),
-          total_amount_received: total_amount_received,
-          amount_outstanding: invoices.sum(:calculated_total_with_tax) - total_amount_received,
+        amount_outstanding_pp_nd: outstanding_partially_paid_not_due,
+        amount_outstanding_npr_nd: outstanding_no_pay_received_not_due,
+        amount_outstanding_pp_od: outstanding_overdue_partially_paid,
+        amount_outstanding_npr_od: outstanding_overdue_no_pay_received,
+        amount_received_on_account: company.sales_receipts.with_amount_on_account.sum(:payment_amount_received),
+        amount_received_against_invoice: company.sales_receipts.with_amount_by_invoice.sum(:payment_amount_received),
+        total_amount_received: total_amount_received,
+        amount_outstanding: invoices.sum(:calculated_total_with_tax) - total_amount_received,
 
-          amount_1_to_30_od: amount_1_to_30_od,
-          amount_31_to_60_od: amount_31_to_60_od,
-          amount_61_to_90_od: amount_61_to_90_od,
-          amount_more_90_od: amount_overdue_more_90,
-          amount_1_to_7_nd: amount_1_to_7_nd,
-          amount_8_to_15_nd: amount_8_to_15_nd,
-          amount_15_to_30_nd: amount_16_to_30_nd,
-          amount_more_30_nd: amount_more_than_30_nd,
+        amount_1_to_30_od: amount_1_to_30_od,
+        amount_31_to_60_od: amount_31_to_60_od,
+        amount_61_to_90_od: amount_61_to_90_od,
+        amount_more_90_od: amount_overdue_more_90,
+        amount_1_to_7_nd: amount_1_to_7_nd,
+        amount_8_to_15_nd: amount_8_to_15_nd,
+        amount_15_to_30_nd: amount_16_to_30_nd,
+        amount_more_30_nd: amount_more_than_30_nd,
       )
     end
   end
-
 end

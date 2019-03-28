@@ -5,7 +5,7 @@ json.data (@sales_invoices) do |sales_invoice|
                         row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
                       end,
                       if sales_invoice.pod_attachment.attached?
-                        row_action_button(url_for(sales_invoice.pod_attachment), 'certificate', 'Download Proof of Delivery', 'dark', :_blank);
+                        row_action_button(url_for(sales_invoice.pod_attachment), 'certificate', 'Download Proof of Delivery', 'dark', :_blank)
                       end
                   ].join(' '),
                   @company.account.alias,
@@ -55,7 +55,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       #PaymentOption.all.map {|v| {"label": v.name, "value": v.id } }.as_json,
+                       # PaymentOption.all.map {|v| {"label": v.name, "value": v.id } }.as_json,
                        [{"source": autocomplete_overseers_payment_options_path}],
                        [],
                        [],
