@@ -27,7 +27,6 @@ class Overseers::InquiriesController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-
         service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
         service.call
 
@@ -223,7 +222,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   def get_relationship_map_json
     authorize @inquiry
     purchase_order = PurchaseOrder.includes(po_request: :sales_order).where(inquiry_id: @inquiry).where(po_requests: {id: nil}, sales_orders: {id: nil})
-    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes,purchase_order).call
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes, purchase_order).call
     render json: {data: inquiry_json}
   end
   def create_purchase_orders_requests
