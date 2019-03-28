@@ -12,9 +12,9 @@ class Services::Overseers::Exporters::SalesOrdersRecoExporter < Services::Overse
   end
 
   def build_csv
-    model.where(created_at: start_at..end_at).where.not(sales_quote_id: nil, status: 'Cancelled').order(created_at: :desc).includes(:inquiry,:po_requests).each_with_index do |sales_order, index|
+    model.remote_approved.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc).includes(:inquiry,:po_requests).each_with_index do |sales_order, index|
       inquiry = sales_order.inquiry
-      purchase_order_ids = PoRequest.where(sales_order: sales_order.id).where.not(purchase_order_id: nil).pluck(:purchase_order_id)
+      purchase_order_ids = sales_order.po_requests.pluck(:purchase_order_id).compact
       purchase_orders = PurchaseOrder.where(id: purchase_order_ids).where.not(status: 'cancelled')
 
       rows.push(
