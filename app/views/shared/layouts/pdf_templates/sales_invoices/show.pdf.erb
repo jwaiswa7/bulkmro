@@ -191,9 +191,9 @@
                     <%= record.serialized_billing_address.to_multiline_s if record.serialized_billing_address.present? %>
                     <br>
                     <% if record.sales_order.inquiry.billing_contact.present? %>
-                      Tel: <%= record.sales_order.inquiry.billing_contact.phone || record.sales_order.inquiry.billing_contact.mobile || record.serialized_billing_address.telephone %>
+                      Tel: <%= record.sales_order.inquiry.billing_contact.phone || record.serialized_billing_address.phone %>
                     <% else %>
-                      Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.serialized_billing_address.telephone %>
+                      Tel: <%= record.sales_order.inquiry.contact.phone || record.serialized_billing_address.phone %>
                     <% end %> <br>
                     GST No.:<%= record.serialized_billing_address.gst %><br>
                 </td>
@@ -207,9 +207,9 @@
                     <br>
 
                     <% if record.sales_order.inquiry.shipping_contact.present? %>
-                      Tel: <%= record.sales_order.inquiry.shipping_contact.phone || record.sales_order.inquiry.shipping_contact.mobile || record.serialized_shipping_address.telephone %>
+                      Tel: <%= record.sales_order.inquiry.shipping_contact.phone || record.serialized_shipping_address.phone %>
                     <% else %>
-                      Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.serialized_shipping_address.telephone %>
+                      Tel: <%= record.sales_order.inquiry.contact.phone || record.serialized_shipping_address.phone %>
                     <% end %> <br>
 
                     GST
