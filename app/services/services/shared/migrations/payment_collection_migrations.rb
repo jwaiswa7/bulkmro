@@ -10,10 +10,12 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
   end
 
   def sales_invoice_totals
-    SalesInvoice.all.each do |sales_invoice|
-      sales_invoice.update_attributes!(calculated_total: sales_invoice.calculated_total) if sales_invoice.sales_order.present?
-      sales_invoice.update_attributes!(calculated_total_with_tax: sales_invoice.calculated_total_with_tax) if sales_invoice.sales_order.present?
-      sales_invoice.update_attributes(due_date: sales_invoice.get_due_date) if sales_invoice.sales_order.present?
+    Chewy.strategy(:bypass) do
+      SalesInvoice.where('calculated_total <= 0 or calculated_total is null').each do |sales_invoice|
+        sales_invoice.update_attributes!(calculated_total: sales_invoice.calculated_total) if sales_invoice.sales_order.present?
+        sales_invoice.update_attributes!(calculated_total_with_tax: sales_invoice.calculated_total_with_tax) if sales_invoice.sales_order.present?
+        sales_invoice.update_attributes(due_date: sales_invoice.get_due_date) if sales_invoice.sales_order.present?
+      end
     end
   end
 
@@ -177,19 +179,21 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
   end
 
   def update_payment_status_of_sales_invoice
-    SalesInvoice.all.each do |si|
-      if si.inquiry.present?
-        invoiced_amount = si.calculated_total_with_tax
-        amount_received = si.amount_received
+    Chewy.strategy(:bypass) do
+      SalesInvoice.where(:payment_status => nil).each do |si|
+        if si.inquiry.present?
+          invoiced_amount = si.calculated_total_with_tax
+          amount_received = si.amount_received
 
-        if invoiced_amount <= amount_received
-          si.payment_status = 'Fully Paid'
-        elsif amount_received == 0.0
-          si.payment_status = 'Unpaid'
-        elsif amount_received < invoiced_amount
-          si.payment_status = 'Partially Paid'
+          if invoiced_amount <= amount_received
+            si.payment_status = 'Fully Paid'
+          elsif amount_received == 0.0
+            si.payment_status = 'Unpaid'
+          elsif amount_received < invoiced_amount
+            si.payment_status = 'Partially Paid'
+          end
+          si.save
         end
-        si.save
       end
     end
   end
