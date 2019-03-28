@@ -81,7 +81,6 @@ let loader = {
     activities: activities,
     companies: companies,
     companyReviews: companyReviews,
-    documentCreations: documentCreations
     documentCreations: documentCreations,
     checkout: checkout
 };
