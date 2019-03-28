@@ -10,4 +10,8 @@ class Overseers::AccountPolicy < Overseers::ApplicationPolicy
   def ageing_report?
     manager_or_cataloging? || logistics?
   end
+
+  def autocomplete_supplier?
+    index?
+  end
 end

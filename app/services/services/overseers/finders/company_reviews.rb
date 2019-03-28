@@ -1,10 +1,10 @@
-class Services::Overseers::Finders::Companies < Services::Overseers::Finders::BaseFinder
+class Services::Overseers::Finders::CompanyReviews < Services::Overseers::Finders::BaseFinder
   def call
     call_base
   end
 
   def model_klass
-    Company
+    CompanyReview
   end
 
   def all_records
@@ -15,7 +15,7 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
     end
 
     if @base_filter.present?
-      indexed_records =  indexed_records.filter(@base_filter)
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     indexed_records
@@ -26,15 +26,15 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
 
     indexed_records = index_klass.query(
       multi_match: {
-          query: query,
-          operator: 'and',
-          fields: %w[name^4 pan^3 account is_pan_valid supplied_brand_names nature_of_business_string addresses_string contacts_string],
-          minimum_should_match: '100%'
-      }
+            query: query,
+            operator: 'and',
+            fields: %w[company_name],
+            minimum_should_match: '100%'
+       }
     )
 
     if @base_filter.present?
-      indexed_records =  indexed_records.filter(@base_filter)
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     if search_filters.present?

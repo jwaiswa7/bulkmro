@@ -32,30 +32,10 @@ class Customers::CartController < Customers::BaseController
     redirect_to customers_products_path
   end
 
-  def update_billing_address
+  def update_cart_details
     authorize @cart
-    @cart.update_attributes(billing_address_id: params[:cart][:billing_address_id].to_i, po_reference: params[:cart][:po_reference])
-
-    redirect_to final_checkout_customers_checkout_path(next_step: 'shipping')
-  end
-
-  def update_shipping_address
-    authorize @cart
-    @cart.update_attributes(shipping_address_id: params[:cart][:shipping_address_id].to_i)
-
-    redirect_to final_checkout_customers_checkout_path(next_step: 'special_instructions')
-  end
-
-  def update_special_instructions
-    authorize @cart
-    @cart.update_attributes(special_instructions: params[:cart][:special_instructions].to_s)
-
-    redirect_to final_checkout_customers_checkout_path(next_step: 'payment_method')
-  end
-
-  def update_payment_method
-    authorize @cart
-    @cart.update_attributes(payment_method: params[:cart][:payment_method].to_s)
+    @cart.assign_attributes(cart_params)
+    @cart.save
     redirect_to final_checkout_customers_checkout_path(next_step: 'summary')
   end
 
@@ -65,6 +45,6 @@ class Customers::CartController < Customers::BaseController
     end
 
     def cart_params
-      params.require(:cart).permit(items_attributes: [:quantity, :id])
+      params.require(:cart).permit(:id, :billing_address_id, :shipping_address_id, :po_reference, :special_instructions, :payment_method, items_attributes: [:quantity, :id])
     end
 end
