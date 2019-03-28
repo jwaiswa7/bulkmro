@@ -54,6 +54,25 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def export_kra_report
+    authorize :inquiry
+    service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
+    service.call
+
+    indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
+
+    if params['kra_report'].present?
+      date_range = params['kra_report']['date_range']
+    else
+      date_range = 'Overall'
+    end
+
+    export_service = Services::Overseers::Exporters::KraReportsExporter.new([], current_overseer, indexed_kra_reports, date_range)
+    export_service.call
+
+    redirect_to url_for(Export.kra_report.not_filtered.last.report)
+  end
+
   def export_all
     authorize :inquiry
     service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, [])

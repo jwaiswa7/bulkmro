@@ -145,11 +145,15 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def kra_report?
-    true
+    manager_or_sales? || admin?
   end
 
   def kra_report_per_sales_owner?
-    true
+    manager_or_sales? || admin?
+  end
+
+  def export_kra_report?
+    manager_or_sales? || admin?
   end
 
   class Scope
