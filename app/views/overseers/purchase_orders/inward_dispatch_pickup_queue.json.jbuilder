@@ -17,7 +17,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                         row_action_button(confirm_delivery_overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'check', 'Confirm Delivery', 'success', :_blank)
                       end,
                       if policy(inward_dispatch).delivered? && policy(inward_dispatch).can_request_invoice?
-                        row_action_button(new_overseers_invoice_request_path(purchase_order_id: inward_dispatch.purchase_order, mpr_id: inward_dispatch), 'plus', 'Create GRPO Request', 'success', target: :_blank)
+                        row_action_button(new_overseers_invoice_request_path(purchase_order_id: inward_dispatch.purchase_order, inward_dispatch_id: inward_dispatch), 'plus', 'Create GRPO Request', 'success', target: :_blank)
                       elsif inward_dispatch.invoice_request.present? && policy(inward_dispatch.invoice_request).show?
                         row_action_button(overseers_invoice_request_path(inward_dispatch.invoice_request), 'eye', "View #{inward_dispatch.invoice_request.readable_status}", 'success', target: :_blank)
                       end,

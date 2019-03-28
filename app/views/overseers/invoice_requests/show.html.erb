@@ -102,20 +102,9 @@
                   </div>
                 <% end %>
 
-                <%if @invoice_request.status.present? && ['GRPO Request Rejected', 'AP Invoice Request Rejected'].include?(@invoice_request.status) %>
-                  <div class="col-6 col-md-3 mb-2">
-                    <strong class="d-block">Rejection Reason</strong>
-                    <%= @invoice_request.rejection_reason_text %>
-                  </div>
+                <% if @invoice_request.status.present? %>
+                  <%= render 'overseers/invoice_requests/display_reason', :data => @invoice_request.show_display_reason%>
                 <%end %>
-
-                <%if @invoice_request.status.present? && ['Cancelled GRPO','Cancelled AP Invoice'].include?(@invoice_request.status) %>
-                  <div class="col-6 col-md-3 mb-2">
-                    <strong class="d-block">Cancellation Reason</strong>
-                    <%= @invoice_request.cancellation_reason_text %>
-                  </div>
-                <%end %>
-
               </div>
             </div>
 
@@ -240,10 +229,10 @@
                     <%= k[:purchase_order_row].uom %>
                   </div>
                   <div class="col-12 col-md-1">
-                    <%= number_to_currency(k[:purchase_order_row].unit_selling_price, precision: 0, unit: '') %>
+                    <%= format_currency(k[:purchase_order_row].unit_selling_price) %>
                   </div>
                   <div class="col-12 col-md-1">
-                    <%= number_to_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f, precision: 0, unit: '') %>
+                    <%= format_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f) %>
                   </div>
                 </div>
               <% end %>

@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote]
+  before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote, :relationship_map, :get_relationship_map_json]
 
   def index
     @sales_quotes = @inquiry.sales_quotes
@@ -10,7 +10,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     authorize @sales_quote
 
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.pdf do
         render_pdf_for @sales_quote
       end
@@ -35,7 +35,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote = SalesQuote.new(sales_quote_params.merge(overseer: current_overseer))
     authorize @sales_quote
 
-    callback_method = %w(save update_sent_at_field save_and_preview).detect { |action| params[action] }
+    callback_method = %w(save update_sent_at_field save_and_preview).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
       Services::Overseers::Inquiries::UpdateStatus.new(@sales_quote, :sales_quote_saved).call
@@ -54,7 +54,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote.assign_attributes(sales_quote_params.merge(overseer: current_overseer))
     authorize @sales_quote
 
-    callback_method = %w(save update_sent_at_field save_and_preview).detect { |action| params[action] }
+    callback_method = %w(save update_sent_at_field save_and_preview).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
@@ -75,11 +75,22 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
 
+
+  def relationship_map
+    authorize @sales_quote
+  end
+
+  def get_relationship_map_json
+    authorize @sales_quote
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, [@sales_quote]).call
+    render json: {data: inquiry_json}
+  end
+
   private
     def save
       service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
       service.call
-      end
+    end
 
     def update_sent_at_field
       @sales_quote.update_attributes(sent_at: Time.now)
@@ -97,8 +108,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     end
 
     def sales_quote_params
-      params.require(:sales_quote).permit(
-        :inquiry_id,
+      params.require(:sales_quote).permit(:inquiry_id,
           :parent_id,
           :billing_address_id,
           :shipping_address_id,

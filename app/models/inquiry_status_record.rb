@@ -1,6 +1,8 @@
 class InquiryStatusRecord < ApplicationRecord
   belongs_to :subject, polymorphic: true, required: false
 
+  scope :last_inquiry, -> { where(subject_type: 'Inquiry').last.subject }
+
   enum status: {
       'New Inquiry': 0,
       'Acknowledgement Mail': 2,

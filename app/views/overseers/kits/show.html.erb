@@ -96,6 +96,7 @@
             <thead>
             <tr>
               <th class="text-right" data-toggle="tooltip" title="Serial Number">Sr. No</th>
+              <th>SKU</th>
               <th>Product</th>
               <th class="text-right">Quantity</th>
               <th class="text-right">Tax Code</th>
@@ -106,6 +107,7 @@
               <% @kit.kit_product_rows.each_with_index do |kit_product, index| %>
                 <tr>
                   <td><%= (index + 1) %></td>
+                  <td><%= kit_product.product.sku %></td>
                   <td><%= kit_product.product.name %></td>
                   <td><%= kit_product.quantity %></td>
                   <td><%= kit_product.tax_code.code if kit_product.tax_code.present? %></td>

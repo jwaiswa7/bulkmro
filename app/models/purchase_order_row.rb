@@ -1,6 +1,7 @@
 class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order
   has_many :inward_dispatch_rows
+  belongs_to :product, optional: true
 
   after_create :increase_product_count
   before_destroy :decrease_product_count
@@ -79,7 +80,7 @@ class PurchaseOrderRow < ApplicationRecord
     if po_request.present?
       po_request_rows = po_request.rows
       return false if po_request_rows.blank? || get_product.nil?
-      po_request_rows.select { |por_row| por_row.sales_order_row.product == get_product if por_row.sales_order_row }.first.try(:lead_time)
+      po_request_rows.select {|por_row| por_row.sales_order_row.product == get_product if por_row.sales_order_row}.first.try(:lead_time)
     else
       return false
     end

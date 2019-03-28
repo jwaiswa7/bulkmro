@@ -103,11 +103,11 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @sales_order = @purchase_order.try(:po_request).try(:sales_order)
       @invoice_request = InvoiceRequest.new(overseer: current_overseer, purchase_order: @purchase_order, inquiry: @purchase_order.inquiry)
-      @inward_dispatches_ids = params[:ids].present? ? params[:ids] : InwardDispatch.decode_id(params[:mpr_id])
+      @inward_dispatches_ids = params[:ids].present? ? params[:ids] : InwardDispatch.decode_id(params[:inward_dispatch_id])
 
       authorize @invoice_request
-      if params[:inward_dispatch_id] || params[:ids]
-        if params[:inward_dispatch_id]
+      if params[:mpr_id] || params[:ids]
+        if params[:mpr_id]
           @invoice_request.inward_dispatches << InwardDispatch.find(@inward_dispatches_ids)
         else
           @invoice_request.inward_dispatches << InwardDispatch.where(id: @inward_dispatches_ids)
@@ -178,7 +178,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def render_cancellation_form
     authorize @invoice_request
     respond_to do |format|
-      format.html {render partial: 'cancel_invoice_request', locals: {status: params[:status]}}
+      format.html {render partial: 'cancel_invoice_request'}
     end
   end
 

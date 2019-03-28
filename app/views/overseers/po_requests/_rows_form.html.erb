@@ -83,9 +83,10 @@
     <%= f.input :contact_phone, label: 'Contact Phone', placeholder: 'Contact phone', required: !stock %>
   </div>
 
-  <div class="col-12 col-md-4">
-    <%= f.input :supplier_committed_date, label: 'Supplier Committed Delivery Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date'}, required: true %>
-  </div>
+<!--  <div class="col-12 col-md-4">-->
+    <%#= f.input :supplier_committed_date, label: 'Supplier Committed Delivery Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date'}, required: true %>
+<!--  </div>-->
+
   <div class="col-12 col-md-4">
     <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', required: true, label: 'Payment Terms:', collection: PaymentOption.active.pluck(:name, :id) %>
   </div>
@@ -187,6 +188,21 @@
 </div>
 <hr>
 
+<div class="d-inline">
+  <div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" name="all_lead_dates" id="all_lead_dates">
+    <label class="custom-control-label" for="all_lead_dates">Select All</label>
+  </div>
+
+  <div class="mr-2 float-left update_lead_date_wrapper">
+    <%= f.input :common_lead_date, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'overall-lead-time'}, label: 'Lead Date' %>
+  </div>
+  <button type="button" id="update_lead_date" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_lead_date_wrapper">
+    <i class="fal fa-plus mr-1"></i>Update Lead Date
+  </button>
+</div>
+<hr>
+
 <%= f.nested_fields_for :rows, f.object.persisted? ? f.object.rows.order(id: :asc) : f.object.rows do |po_request_row| %>
   <%= po_request_row.hidden_field :id %>
   <%= po_request_row.hidden_field :sales_order_row_id %>
@@ -196,6 +212,10 @@
   <%= po_request_row.hidden_field :measurement_unit_id, value: po_request_row.object.measurement_unit_id || MeasurementUnit.default.id %>
   <div class="form-row po-request-row">
     <div class="col-12 col-md-12 mb-1">
+      <span class="custom-control custom-checkbox d-inline pl-0">
+        <%= check_box_tag 'po_request_row[]', po_request_row.object.id, false, id: "po_request_row_id_#{po_request_row.object.id}", class: 'custom-control-input' %>
+        <label class="custom-control-label" for="<%= "po_request_row_id_#{po_request_row.object.id}" %>"></label>
+      </span>
       #<%= ((f.object.rows.index(po_request_row.object) || f.object.rows.size || 0) + 1) %>
       <%#= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, disabled: true %>
     </div>
@@ -223,7 +243,7 @@
           <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: 'Tax Rate' %>
         </div>
         <div class="col-12 col-md-1">
-          <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 1}, disabled: false, required: true %>
+          <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 0.01}, disabled: false, required: true %>
         </div>
 
         <div class="col-12 col-md-1">
