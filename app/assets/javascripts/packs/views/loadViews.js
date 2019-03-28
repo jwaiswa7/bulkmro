@@ -57,6 +57,8 @@ import companyReviews from './companyReviews/init'
 // Document Creation
 import documentCreations from "./documentCreations/init";
 
+import checkout from "./checkout/init";
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -80,6 +82,8 @@ let loader = {
     companies: companies,
     companyReviews: companyReviews,
     documentCreations: documentCreations
+    documentCreations: documentCreations,
+    checkout: checkout
 };
 
 // Imports
