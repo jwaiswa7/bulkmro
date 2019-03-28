@@ -1,8 +1,12 @@
+require 'action_view'
 class InquiryStatusRecord < ApplicationRecord
+  include ActionView::Helpers::DateHelper
   belongs_to :subject, polymorphic: true, required: false
   belongs_to :parent, class_name: 'InquiryStatusRecord', foreign_key: 'parent_id'
 
   scope :last_inquiry, -> { where(:subject_type => 'Inquiry').last.subject }
+  scope :not_expected_order, -> { where.not(status: 'Expected Order') }
+  scope :valid_status_records, -> { where.not(id: InquiryStatusRecord.where(subject_type: 'Inquiry', status: ['Preparing Quotation', 'Quotation Sent'])) }
 
   enum status: {
       'New Inquiry': 0,
@@ -60,16 +64,19 @@ class InquiryStatusRecord < ApplicationRecord
     end
   end
 
-  def tat
+  def previous_status_record
     parent_record = parent
     if parent_record.blank?
-      service =Services::Overseers::Inquiries::InquiryStagesTimeDifference.new(self )
+      service = Services::Overseers::Inquiries::InquiryPreviousStatusRecord.new(self)
       parent_record= service.call
     end
-
-    parent_record.present? ?  (self.created_at.to_time.to_i - parent_record.created_at.to_time.to_i).abs : 0
+    parent_record
   end
 
+  def tat
+    # previous_status_record.present? ? distance_of_time_in_words(self.created_at - previous_status_record.created_at) : "-"
+    previous_status_record.present? ? (self.created_at.to_time.to_i - previous_status_record.created_at.to_time.to_i).abs : "-"
+  end
 
   belongs_to :inquiry
 end

@@ -391,7 +391,8 @@ class Inquiry < ApplicationRecord
 
   def stages_time_difference
     self.inquiry_status_records.each do |inquiry_status_record|
-      Services::Overseers::Inquiries::InquiryStagesTimeDifference.new(inquiry_status_record).call
+      Services::Overseers::Inquiries::InquiryPreviousStatusRecord.new(inquiry_status_record).call
     end
   end
+
 end

@@ -13,7 +13,7 @@
           </p>
         <% end %>
       </div>
-      <% if content_for?(:can_be_directly_created) || content_for?(:can_be_searched_or_created) || content_for?(:can_be_directly_exported) || content_for?(:can_be_directly_export_by_daterange) || content_for?(:heading_buttons) %>
+      <% if content_for?(:can_be_directly_created) || content_for?(:can_be_searched_or_created) || content_for?(:can_be_directly_exported) || content_for?(:can_be_directly_export_by_daterange) || content_for?(:heading_buttons) || content_for?(:can_be_directly_exported_filtered_records) %>
         <div>
           <% if content_for?(:can_be_searched_or_created) && policy(current_model.singularize.to_sym).search_or_create? %>
             <div class="d-none d-md-inline-block align-top">
@@ -52,6 +52,16 @@
           <% if content_for?(:can_be_directly_exported_filtered_records) && policy(current_model.singularize.to_sym).export_filtered_records? %>
             <%= button_tag(type: 'button', class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1", id: 'export_filtered_records') do %>
               <i class="fal fa-envelope mr-1"></i> Filtered <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+            <% end %>
+          <% end %>
+          <%# if content_for?(:can_be_directly_exported_inquiry_tat) && policy(current_model.singularize.to_sym).export_inquiries_tat? %>
+<!--            <a href="<%#= [request.path, '/', 'inquiries_tat.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1">-->
+<!--              <i class="fal fa-download mr-1"></i><%#= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %> TAT-->
+<!--            </a>-->
+          <%# end %>
+          <% if content_for?(:can_be_directly_exported_inquiry_tat) && policy(current_model.singularize.to_sym).export_inquiries_tat? %>
+            <%= link_to ("#{export_inquiries_tat_overseers_inquiries_path}.csv"), class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" do %>
+              <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %> TAT
             <% end %>
           <% end %>
           <% if content_for?(:can_be_directly_generated) && policy(current_model.singularize.to_sym).generate_all? %>
