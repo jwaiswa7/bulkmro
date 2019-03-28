@@ -347,6 +347,7 @@ Rails.application.routes.draw do
         post 'preview_stock_po_request'
         get 'kra_report'
         get 'kra_report_per_sales_owner'
+        get 'export_kra_report'
       end
 
       scope module: 'inquiries' do
