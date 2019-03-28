@@ -86,7 +86,7 @@
           <div class="card-header">
             <a data-toggle="collapse" data-parent="#checkout" href="<%= @cart.billing_address.present? ? "#checkout-billing" : "" %>">
               <h5 class="mb-0">
-                <strong>Billing Details</strong>
+                <strong>1. Billing Details</strong>
               </h5>
             </a>
           </div>
@@ -116,7 +116,7 @@
         <div class="card" id="shipping-address">
           <div class="card-header">
             <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="<%= @cart.shipping_address.present? ? "#checkout-shipping" : "" %>">
-              <h5 class="mb-0"><strong>Shipping Details</strong></h5>
+              <h5 class="mb-0"><strong>2. Shipping Details</strong></h5>
             </a>
           </div>
 
@@ -142,7 +142,7 @@
         <div class="card" id="comments">
           <div class="card-header">
             <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-comments">
-              <h5 class="mb-0"><strong>Special Instructions</strong></h5>
+              <h5 class="mb-0"><strong>3. Special Instructions</strong></h5>
             </a>
           </div>
 
@@ -156,7 +156,7 @@
         <div class="card" id="payment-method">
           <div class="card-header">
             <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-payment-method">
-              <h5 class="mb-0"><strong>Payment Method</strong></h5>
+              <h5 class="mb-0"><strong>4. Payment Method</strong></h5>
             </a>
           </div>
 
