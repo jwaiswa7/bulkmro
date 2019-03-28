@@ -96,7 +96,7 @@
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                   <% if locals[:supplier].present? %>
                     <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
                     <%= record.billing_address&.to_multiline_s %>
@@ -107,7 +107,7 @@
                   <% end %>
                 </td>
                 <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                   <% if locals[:supplier].present? %>
                     <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
                     <%= record.shipping_address&.to_multiline_s %>
@@ -134,7 +134,7 @@
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                   <%= (locals[:inquiry].bill_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].bill_from.address.name.present? %>
                   <% if locals[:inquiry].bill_from.present? %>
                     <%= locals[:inquiry].bill_from.address.to_multiline_s %><br>
@@ -144,7 +144,7 @@
                 </td>
 
                 <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                   <%= (locals[:inquiry].ship_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].ship_from.address.name.present? %>
                   <% if locals[:inquiry].ship_from.present? %>
                     <%= locals[:inquiry].ship_from.address.to_multiline_s %><br>

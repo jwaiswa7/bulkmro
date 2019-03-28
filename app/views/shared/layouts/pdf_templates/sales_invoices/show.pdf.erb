@@ -139,7 +139,7 @@
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                     <% if record.sales_order.inquiry.bill_from.address.present? %>
                       <%= record.sales_order.inquiry.bill_from.address.name.to_s %><br>
                     <% end %>
@@ -155,7 +155,7 @@
                     </span>
                 </td>
                 <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                     <% if record.sales_order.inquiry.ship_from.present? %>
                       <%= record.sales_order.inquiry.ship_from.address.name.to_s %><br>
                     <% end %>
@@ -185,7 +185,7 @@
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                     <%= record.sales_order.inquiry.contact.full_name %><br>
                     <%= record.serialized_billing_address.name %><br>
                     <%= record.serialized_billing_address.to_multiline_s if record.serialized_billing_address.present? %>
@@ -198,7 +198,7 @@
                     GST No.:<%= record.serialized_billing_address.gst %><br>
                 </td>
                 <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                     <%= record.sales_order.inquiry.shipping_contact.present? ? record.sales_order.inquiry.shipping_contact.full_name : record.sales_order.inquiry.contact.full_name %>
                     <br>
                     <%= record.serialized_shipping_address.name if record.serialized_shipping_address.present? %>
