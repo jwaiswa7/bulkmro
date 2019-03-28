@@ -26,7 +26,7 @@ class PoRequest < ApplicationRecord
   has_many :company_reviews, as: :rateable
   ratyrate_rateable 'CompanyReview'
 
-  attr_accessor :opportunity_type, :customer_committed_date, :blobs
+  attr_accessor :opportunity_type, :customer_committed_date, :supplier_committed_date, :blobs
 
   belongs_to :requested_by, class_name: 'Overseer', foreign_key: 'requested_by_id', required: false
   belongs_to :approved_by, class_name: 'Overseer', foreign_key: 'approved_by_id', required: false
