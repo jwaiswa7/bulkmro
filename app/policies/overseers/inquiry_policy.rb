@@ -165,6 +165,14 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     developer? || sales? || admin?
   end
 
+  def kra_report?
+    true
+  end
+
+  def kra_report_per_sales_owner?
+    true
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
