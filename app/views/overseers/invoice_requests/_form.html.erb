@@ -28,7 +28,7 @@
     <%= f.hidden_field :sales_order_id %>
     <%= f.hidden_field :inquiry_id %>
     <%= f.hidden_field :purchase_order_id %>
-    <%= f.hidden_field :inward_dispatches_ids, value: @invoice_request.inward_dispatches.map(&:id).join(", ") %>
+    <%= f.hidden_field :inward_dispatch_ids, value: @invoice_request.inward_dispatches.map(&:id).join(", ") %>
 
     <div class="card">
       <div class="card-header">
@@ -48,7 +48,7 @@
         <div class="">
           <% if @mpr.present? %>
           <div>
-            <h6 class="text-uppercase text-black-50 mb-1 mt-3">Material Pickup Request Details</h6>
+            <h6 class="text-uppercase text-black-50 mb-1 mt-3">Inward Dispatch Details</h6>
 
               <div class="form-row">
               <% if @mpr.purchase_order.present? %>
@@ -147,24 +147,24 @@
             <%= f.association :purchase_order, disabled: f.object.purchase_order.present? && f.object.errors.blank?, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => f.object.sales_order.present? ? autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number) : autocomplete_without_po_requests_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
           </div>
           <div class="col-12 ">
-            <%= f.input :grpo_cancellation_reason, :placeholder => 'Type Cancellation Reason', wrapper_html:{class: @invoice_request.display_reason('grpo_cancellation')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+            <%= f.input :grpo_cancellation_reason, :placeholder => 'Type Cancellation Reason',:required => (f.object.status == 'Cancelled GRPO') , wrapper_html:{class: @invoice_request.display_reason('grpo_cancellation')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
           </div>
           <div class="col-12 ">
-            <%= f.input :grpo_rejection_reason, as: :select, :wrapper => :custom_multi_select,wrapper_html:{class: @invoice_request.display_reason('grpo_rejection')}, collection: enum_to_collection(InvoiceRequest.grpo_rejection_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Reason'%>
+            <%= f.input :grpo_rejection_reason, as: :select,:label => "GRPO Rejection Reason", :wrapper => :custom_multi_select,wrapper_html:{class: @invoice_request.display_reason('grpo_rejection')}, collection: enum_to_collection(InvoiceRequest.grpo_rejection_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Reason'%>
           </div>
           <div class="col-12 ">
-            <%= f.input :grpo_other_rejection_reason, :placeholder => 'Type Rejection Reason', wrapper_html:{class: @invoice_request.display_reason('other')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+            <%= f.input :grpo_other_rejection_reason,:label => "GRPO Other Rejection Reason", :placeholder => 'Type Rejection Reason', wrapper_html:{class: @invoice_request.display_reason('other')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
           </div>
 
           <div class="col-12 ">
-            <%= f.input :ap_cancellation_reason, :placeholder => 'Type Cancellation Reason', wrapper_html:{class: @invoice_request.display_reason('ap_cancellation')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+            <%= f.input :ap_cancellation_reason, :placeholder => 'Type AP Cancellation Reason',:required => (f.object.status == 'Cancelled AP Invoice'), wrapper_html:{class: @invoice_request.display_reason('ap_cancellation')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
           </div>
           <div class="col-12 ">
-            <%= f.input :ap_rejection_reason, :placeholder => 'Type Rejection Reason', wrapper_html:{class: @invoice_request.display_reason('ap_rejection')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+            <%= f.input :ap_rejection_reason,:label => "AP Rejection Reason", :placeholder => 'Type AP Rejection Reason', wrapper_html:{class: @invoice_request.display_reason('ap_rejection')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
           </div>
 
           <div class="col-6">
-            <%= f.input :grpo_number, as: :string, disabled: f.object.grpo_number.present? && f.object.status == 'Pending AP Invoice', label: "GRPO Number", :input_html => {:maxlength => 8} %>
+            <%= f.input :grpo_number, as: :string, disabled: f.object.grpo_number.present? && f.object.status == 'Pending AP Invoice', label: "SAP GRPO Number", :input_html => {:maxlength => 8} %>
           </div>
 
           <div class="col-6">
@@ -307,10 +307,10 @@
                         <%= k[:purchase_order_row].uom %>
                       </div>
                       <div class="col-12 col-md-1">
-                        <%= number_to_currency(k[:purchase_order_row].unit_selling_price, precision: 0, unit: '') %>
+                        <%= format_currency(k[:purchase_order_row].unit_selling_price) %>
                       </div>
                       <div class="col-12 col-md-1">
-                        <%= number_to_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f, precision: 0, unit: '') %>
+                        <%= format_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f) %>
                       </div>
                     </div>
                   <% end %>

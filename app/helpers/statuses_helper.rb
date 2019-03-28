@@ -97,7 +97,9 @@ module StatusesHelper
       'success'
     when :'Completed'
       'success'
-    when :'Supplier PO Created Not Sent'
+    when :'Supplier PO: Created Not Sent'
+      'success'
+    when :'Supplier PO: Created Not Sent'
       'success'
     when :'success'
       'success'
@@ -187,6 +189,8 @@ module StatusesHelper
       'success'
     when :'Supplier PO: Not Sent to Supplier'
       'danger'
+    when :'default'
+      'info'
     else
       'danger'
     end

@@ -113,7 +113,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     service = Services::Overseers::Exporters::ActivitiesExporter.new(params[:q], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.activities.last.report)
+    redirect_to url_for(Export.activities.not_filtered.last.report)
   end
 
 

@@ -5,7 +5,6 @@ const updateLogisticsOwner = () => {
     $('#update_logistics_owner').click((event) => {
         updateOwner();
     });
-
 };
 
 let toggleCheckboxes = () => {
@@ -50,7 +49,7 @@ let updateOwner = () => {
 
     if (inward_dispatches.length == 0) {
         $.notify({
-            message: 'Please Select any Material Pickup Request you want to update'
+            message: 'Please Select any Inward Dispatch you want to update'
         }, {
             type: 'danger'
         });

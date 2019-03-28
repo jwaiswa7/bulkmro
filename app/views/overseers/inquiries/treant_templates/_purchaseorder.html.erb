@@ -1,0 +1,22 @@
+<a class="card text-black-50 purchase-order" target="_blank" href="/overseers/inquiries/<%= po.inquiry.to_param %>/purchase_orders/<%= po.to_param %>">
+  <div class="card-header text-center p-1">
+    <strong>Purchase Order</strong>
+  </div>
+  <div class="card-body p-1 text-center">
+    <div>
+      <%= status_badge(po.status) %>
+    </div>
+    <hr class="my-1">
+    <div>
+      #<%= po.po_number %>
+    </div>
+    <hr class="my-1">
+    <div>
+      <%= format_currency(po.calculated_total, symbol: nil) %>
+    </div>
+    <hr class="my-1">
+    <div>
+      <%= format_date(po.created_at) %>
+    </div>
+  </div>
+</a>

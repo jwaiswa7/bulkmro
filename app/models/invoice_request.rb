@@ -123,21 +123,31 @@ class InvoiceRequest < ApplicationRecord
     "#{title} Request"
   end
 
-  def rejection_reason_text
-    if self.status == 'GRPO Request Rejected'
+    def rejection_reason_text
       self.grpo_rejection_reason == 'Others' ? self.grpo_other_rejection_reason : self.grpo_rejection_reason
-    elsif status == 'AP Invoice Request Rejected'
-      self.ap_rejection_reason
     end
-  end
 
-  def cancellation_reason_text
-    if self.status == 'Cancelled GRPO'
-      self.grpo_cancellation_reason
-    elsif self.status == 'Cancelled AP Invoice'
-      self.ap_cancellation_reason
+    def show_display_reason
+      data = {display: true}
+      case self.status
+      when 'GRPO Request Rejected'
+        data[:label] = 'GRPO Rejection Reason'
+        data[:text] = self.grpo_rejection_reason == 'Others' ? self.grpo_other_rejection_reason : self.grpo_rejection_reason
+      when 'AP Invoice Request Rejected'
+        data[:label] = 'AP Rejection Reason'
+        data[:text] = self.ap_rejection_reason
+      when 'Cancelled GRPO'
+        data[:label] = 'AP Rejection Reason'
+        data[:text] = self.grpo_cancellation_reason
+      when 'Cancelled AP Invoice'
+        data[:label] = 'AP Rejection Reason'
+        data[:text] = self.ap_cancellation_reason
+      else
+        data[:display] = false
+      end
+      data
     end
-  end
+
 
   def display_reason(type = nil)
     # If status is cancelled then also all rejection as well as other cacellation display on first load of form to avoid that ui helper written

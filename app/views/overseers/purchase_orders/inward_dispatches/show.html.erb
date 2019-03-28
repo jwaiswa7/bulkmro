@@ -116,7 +116,7 @@
             <% if @inward_dispatch.rows.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Supplier Delivery Date(Overall)</strong>
-                <%= @inward_dispatch.show_supplier_delivery_date %>
+                <%= @inward_dispatch.show_supplier_delivery_date.present? ? @inward_dispatch.show_supplier_delivery_date : "-" %>
               </div>
             <% end %>
           </div>
@@ -133,7 +133,7 @@
         </li>
       <% end %>
       <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#products" role="tab">Products</a>
+        <a class="nav-link" data-toggle="tab" href="#products" role="tab">Products</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#comments" role="tab">Comments</a>
