@@ -273,6 +273,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'export_all'
+        get 'export_filtered_records'
         get 'autocomplete'
         get 'autocomplete_without_po_requests'
         get 'material_readiness_queue'

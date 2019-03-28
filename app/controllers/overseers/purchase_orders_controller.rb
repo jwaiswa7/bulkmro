@@ -158,10 +158,19 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def export_all
     authorize :purchase_order
-    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new
+    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new([], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.purchase_orders.last.report)
+    redirect_to url_for(Export.purchase_orders.not_filtered.last.report)
+  end
+
+  def export_filtered_records
+    authorize :purchase_order
+    service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer, paginate: false)
+    service.call
+
+    export_service = Services::Overseers::Exporters::PurchaseOrdersExporter.new([], current_overseer, service.records.pluck(:id))
+    export_service.call
   end
 
   def update_logistics_owner
