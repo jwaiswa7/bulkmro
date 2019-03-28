@@ -23,8 +23,8 @@ class Overseers::ContactCreationRequestsController < Overseers::BaseController
     authorize @contact_creation_request
     contact = Contact.where(id: params[:contact_creation_request][:contact_id]).last
     @contact_creation_request.activity.update_attributes!(contact_id: params[:contact_id]) if @contact_creation_request.activity.present?
-    @contact_creation_request.update_attributes(account: Contact.account, Contact: Contact)
-    redirect_to overseers_Contact_creation_request_path(@contact_creation_request), notice: flash_message(@contact_creation_request, action_name)
+    @contact_creation_request.update_attributes(contact: contact)
+    redirect_to overseers_contact_creation_request_path(@contact_creation_request), notice: flash_message(@contact_creation_request, action_name)
   end
 
   def index

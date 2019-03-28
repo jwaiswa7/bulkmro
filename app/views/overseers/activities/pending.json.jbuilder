@@ -31,6 +31,11 @@ json.data (@activities) do |activity|
                   else
                     '--'
                   end,
+                  if activity.contact_creation_request.present?
+                    status_badge(activity.contact_creation_request.status)
+                  else
+                    '--'
+                  end,
                   if activity.inquiry.present?
                     link_to format_id(activity.inquiry.inquiry_number), edit_overseers_inquiry_path(activity.inquiry)
                   end,
@@ -52,6 +57,7 @@ json.columnFilters [
                        [],
                        [{ "source": autocomplete_overseers_accounts_path }],
                        [{ "source": autocomplete_overseers_companies_path }],
+                       [],
                        [],
                        [],
                        [],

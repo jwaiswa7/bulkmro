@@ -16,6 +16,7 @@ const newAction = () => {
         $('#activity_company_id').val('').trigger('change');
         $('[name="activity[company_creation_request_attributes][name]"]').attr('required', true);
         $('#activity_company_id').attr('required', false)
+        $('.new-contact-form').find('input').attr('required', false);
 
     });
 

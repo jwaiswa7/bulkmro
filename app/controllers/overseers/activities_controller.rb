@@ -29,12 +29,24 @@ class Overseers::ActivitiesController < Overseers::BaseController
   def new
     @activity = current_overseer.activities.build(overseer: current_overseer)
     @activity.build_company_creation_request(overseer: current_overseer)
+    @activity.build_contact_creation_request(overseer: current_overseer)
     @accounts = Account.all
     authorize @activity
   end
 
   def create
     @activity = Activity.new(activity_params.merge(overseer: current_overseer))
+    company_creation_params = activity_params["company_creation_request_attributes"]
+    if company_creation_params["create_new_contact"] == "true"
+      @activity.build_contact_creation_request(
+        overseer: current_overseer,
+        email: company_creation_params["email"],
+        first_name: company_creation_params["first_name"],
+        last_name: company_creation_params["last_name"],
+        telephone: company_creation_params["telephone"],
+        mobile_number: company_creation_params["mobile_number"]
+      )
+    end
     authorize @activity
     if @activity.save
       redirect_to pending_overseers_activities_path, notice: flash_message(@activity, action_name)
@@ -152,14 +164,16 @@ class Overseers::ActivitiesController < Overseers::BaseController
               :account_type,
               :telephone,
               :mobile_number,
-              :activity_id
+              :activity_id,
+              :create_new_contact
           ],
           contact_creation_request_attributes: [
               :first_name,
               :last_name,
               :email,
-              :telephone,
-              :mobile_number
+              :phone_number,
+              :mobile_number,
+              :activity_id
           ],
           attachments: []
       )

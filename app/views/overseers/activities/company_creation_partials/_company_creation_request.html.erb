@@ -52,6 +52,9 @@
   </div>
   <div class="existing-company-form mt-3 <%= (@activity.company_creation_request.id.present? && !@activity.company.present?)  ? "d-none" : ""%> mt-3" >
     <%= f.association :company, label: "Existing company", collection: selected_option_or_nil(f, :company),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path }, include_blank: 'Leave blank if no company connected' %>
+    <h6 class="mt-2 text-center">
+      AND
+    </h6>
     <button type="button" class="btn btn-warning btn-block new-contact <%= (@activity.contact_creation_request&.id.present?&& !@activity.contact.present?)  ? "d-none" : ""%>" >
       add new contact
     </button>

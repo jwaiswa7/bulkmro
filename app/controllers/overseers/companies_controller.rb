@@ -82,9 +82,6 @@ class Overseers::CompaniesController < Overseers::BaseController
             overseers_company_path(@company),
             @company.name.to_s
         )
-        if @company.company_creation_request.create_new_contact
-          @company.contacts.build()
-        end
       end
       if @company.save_and_sync
         redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
