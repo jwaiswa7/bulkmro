@@ -156,7 +156,7 @@ module DisplayHelper
     ( if (status == 'complete')
         '<i class="far fa-check text-success"></i>'
       elsif(status == 'partial')
-        '<i class="far fa-check text-success"> <span class="badge badge-success">Partial</span></i>'
+        '<i class="far fa-check text-color-dark-blue"> <span class="badge badge-color-dark-blue">Partial</span></i>'
       else
         '<i class="far fa-times text-danger"></i>'
       end).html_safe
