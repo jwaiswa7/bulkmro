@@ -4,17 +4,21 @@ class Overseers::DashboardController < Overseers::BaseController
   def show
     authorize :dashboard, :show?
 
-    if current_overseer.inside_sales_executive?
-      @dashboard = Overseers::Dashboard.new(current_overseer)
-      render 'sales_dashboard'
-    elsif current_overseer.admin?
-      @dashboard = Rails.cache.fetch('admin_dashboard_data') do
-        service = Services::Overseers::Dashboards::Admin.new
-        @dashboard = service.call
-      end
-      render 'admin_dashboard'
-    else
+    if Rails.env.development?
       render 'default_dashboard'
+    else
+      if current_overseer.inside_sales_executive?
+        @dashboard = Overseers::Dashboard.new(current_overseer)
+        render 'sales_dashboard'
+      elsif current_overseer.admin?
+        @dashboard = Rails.cache.fetch('admin_dashboard_data') do
+          service = Services::Overseers::Dashboards::Admin.new
+          @dashboard = service.call
+        end
+        render 'admin_dashboard'
+      else
+        render 'default_dashboard'
+      end
     end
   end
 

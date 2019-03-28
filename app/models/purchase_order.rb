@@ -74,6 +74,12 @@ class PurchaseOrder < ApplicationRecord
       'Material Partially Delivered': 35
   }
 
+  enum transport_mode: {
+      'Road': 1,
+      'Air': 2,
+      'Sea': 3
+  }
+
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
   scope :material_pickup_queue, -> {where(material_status: :'Material Pickedup')}
   scope :material_delivered_queue, -> {where(material_status: :'Material Delivered')}
