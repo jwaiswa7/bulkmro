@@ -42,7 +42,7 @@
       field :total_quote_value, value: -> (record) {record.final_sales_quote.calculated_total if record.final_sales_quote.present?}, type: 'double'
       field :total_order_value, value: -> (record) {record.final_sales_orders.compact.uniq.map(&:calculated_total).last}, type: 'double'
       field :revenue, value: -> (record) {record.final_sales_orders.compact.uniq.map(&:calculated_total_margin).last}, type: 'double'
-      field :sku, value: -> (record) {record.final_sales_orders.compact.uniq.map{|s|s.products.map(&:sku).count}.last}, type: 'integer'
+      field :sku, value: -> (record) {record.final_sales_orders.compact.uniq.map {|s|s.products.map(&:sku).count}.last}, type: 'integer'
     end
 
     def self.fields
