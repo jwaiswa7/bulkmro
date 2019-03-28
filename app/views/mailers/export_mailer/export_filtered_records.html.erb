@@ -1,6 +1,6 @@
 <div class="font-family: Arial; font-size: 14.5px;">
   <p style="color: #555;">Dear <%= @overseer.first_name %>,</p>
-  <p style="color: #555;">Please find attached CSV file for filtered <%= @export.export_type %> records.<br/></p>
+  <p style="color: #555;">Please find attached CSV file for filtered <%= @export.export_type.titleize.downcase %> records.<br/></p>
 
   <br/>
   <p style="color: #555;">Regards,<br><%= @overseer.full_name %></p>

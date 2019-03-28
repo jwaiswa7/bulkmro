@@ -50,7 +50,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     service = Services::Overseers::Exporters::SalesOrdersExporter.new
     service.call
 
-    redirect_to url_for(Export.sales_orders.last.report)
+    redirect_to url_for(Export.sales_orders.not_filtered.last.report)
   end
 
   def export_rows
@@ -75,6 +75,15 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     service.call
 
     redirect_to url_for(Export.sales_order_sap.last.report)
+  end
+
+  def export_filtered_records
+    authorize :sales_order
+    service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer, paginate: false)
+    service.call
+
+    export_service = Services::Overseers::Exporters::SalesOrdersExporter.new([], current_overseer, service.records.pluck(:id))
+    export_service.call
   end
 
   def index
