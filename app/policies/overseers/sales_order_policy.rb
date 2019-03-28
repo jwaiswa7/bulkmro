@@ -72,6 +72,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     allow_export?
   end
 
+  def export_for_reco?
+    allow_export?
+  end
+
   def export_rows?
     allow_export?
   end
