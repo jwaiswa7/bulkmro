@@ -38,7 +38,8 @@ class PoRequest < ApplicationRecord
       'Supplier PO: Created Not Sent': 20,
       'Cancelled': 30,
       'Rejected': 40,
-      'Amend': 50,
+      'Supplier PO: Amendment': 50,
+      'Supplier PO: Amended': 70,
       'Supplier PO Sent': 60
   }
 
@@ -70,12 +71,13 @@ class PoRequest < ApplicationRecord
       'Stock Supplier PO Created': 30
   }
 
-  scope :pending_and_rejected, -> { where(status: [:'Supplier PO: Request Pending', :'Rejected', :'Amend']) }
-  scope :handled, -> { where.not(status: [:'Supplier PO: Request Pending', :'Cancelled', :'Amend']) }
+  scope :pending_and_rejected, -> { where(status: [:'Supplier PO: Request Pending', :'Rejected', :'Supplier PO: Amendment']) }
+  scope :handled, -> { where.not(status: [:'Supplier PO: Request Pending', :'Cancelled', :'Supplier PO: Amendment']) }
   scope :not_cancelled, -> { where.not(status: [:'Cancelled']) }
   scope :cancelled, -> { where(status: [:'Cancelled']) }
   scope :can_amend, -> { where(status: [:'Supplier PO: Created Not Sent']) }
-  scope :amended, -> { where(status: [:'Amend']) }
+  scope :under_amend, -> { where(status: [:'Supplier PO: Amendment']) }
+  scope :amended, -> { where(status: [:'Supplier PO: Amended']) }
   scope :pending_stock_po, -> { where(stock_status: [:'Stock Requested']) }
   scope :completed_stock_po, -> { where(stock_status: [:'Stock Supplier PO Created']) }
   scope :stock_po, -> { where(stock_status: [:'Stock Requested', :'Stock Rejected', :'Stock Supplier PO Created']) }
@@ -117,11 +119,11 @@ class PoRequest < ApplicationRecord
   end
 
   def amending?
-    status == 'Amend'
+    status == 'Supplier PO: Amendment'
   end
 
   def not_amending?
-    status != 'Amend'
+    status != 'Supplier PO: Amendment'
   end
 
   def not_cancelled?

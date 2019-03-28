@@ -212,6 +212,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'pending_and_rejected'
         get 'cancelled'
+        get 'under_amend'
         get 'amended'
         get 'pending_stock_approval'
         get 'stock'

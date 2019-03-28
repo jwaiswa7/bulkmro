@@ -3,12 +3,10 @@ import updateOnContactSelect from "./updateOnContactSelect";
 import updateRowTotal from "./updateRowTotal"
 import massLeadDateUpdate from "./massLeadDateUpdate"
 import openRatingModal from "../common/openRatingModal";
-
+import validateLeadDate from "./validateLeadDate";
 
 const edit = () => {
-
     openRatingModal()
-
     let form_original_data = $("form").serializeArray();
 
     $('form').on('change', 'select[name*=status]', function (e) {
@@ -50,6 +48,7 @@ const edit = () => {
     validatePoRequestAddresses();
     updateRowTotal();
     updateOnContactSelect();
+    validateLeadDate();
     massLeadDateUpdate();
 
     $('form').on('click', '.add-review', function (e) {
@@ -66,9 +65,7 @@ const edit = () => {
                 }
             }
         }
-
     });
-
 
     $('.submit-form').unbind().bind('click', function (event) {
         let form_changed_data = $("form").serializeArray();
@@ -88,10 +85,7 @@ const edit = () => {
                 }
             }
         }
-
-
     });
-
 };
 
 export default edit

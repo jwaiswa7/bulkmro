@@ -3,7 +3,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   before_action :set_notification, only: [:update, :cancel_porequest]
 
   def pending_and_rejected
-    @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.pending_and_rejected.order(id: :desc)), params)
+    @po_requests = filter(:pending_and_rejected)
     authorize @po_requests
 
     respond_to do |format|
@@ -13,7 +13,17 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def cancelled
-    @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.cancelled.order(id: :desc)), params)
+    @po_requests = filter(:cancelled)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
+  def under_amend
+    @po_requests = filter(:under_amend)
     authorize @po_requests
 
     respond_to do |format|
@@ -23,7 +33,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def amended
-    @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.amended.order(id: :desc)), params)
+    @po_requests = filter(:amended)
     authorize @po_requests
 
     respond_to do |format|
@@ -33,8 +43,12 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def index
-    @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.handled.order(id: :desc)), params)
+    @po_requests = filter(:handled)
     authorize @po_requests
+  end
+
+  def filter(scope)
+    ApplyDatatableParams.to(policy_scope(PoRequest.all.send(scope).order(id: :desc)), params)
   end
 
   def show
@@ -88,7 +102,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     if @po_request.valid?
       # todo allow only in case of zero form errors
       row_updated_message = ''
-      messages = FieldModifiedMessage.for(@po_request, ['contact_email', 'contact_phone', 'contact_id', 'payment_option_id', 'bill_from_id', 'ship_from_id', 'bill_to_id', 'ship_to_id', 'status', 'supplier_po_type', 'supplier_committed_date'])
+      messages = FieldModifiedMessage.for(@po_request, ['contact_email', 'contact_phone', 'contact_id', 'payment_option_id', 'bill_from_id', 'ship_from_id', 'bill_to_id', 'ship_to_id', 'status', 'supplier_po_type', 'supplier_committed_date', 'late_lead_date_reason'])
       @po_request.rows.each do |po_request_row|
         updated_row_fields = FieldModifiedMessage.for(po_request_row, ['quantity', 'tax_code_id', 'tax_rate_id', 'discount_percentage', 'unit_price', 'lead_time'], po_request_row.product.sku)
         row_updated_message += updated_row_fields
@@ -97,15 +111,17 @@ class Overseers::PoRequestsController < Overseers::BaseController
         @po_request.comments.create(message: "#{messages} \r\n #{row_updated_message}", overseer: current_overseer)
       end
 
-      @po_request.status = 'Supplier PO: Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
-      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
+      @po_request.status = 'Supplier PO: Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Supplier PO: Request Pending'
+      @po_request.status = 'Supplier PO: Request Pending' if @po_request.status == 'Rejected' && policy(@po_request).manager_or_sales?
+      @po_request.status = 'Supplier PO: Amendment' if @po_request.status == 'Supplier PO: Created Not Sent' && policy(@po_request).manager_or_sales?
       ActiveRecord::Base.transaction do
         if @po_request.status_changed?
           if @po_request.status == 'Cancelled'
             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}", po_request: @po_request, overseer: current_overseer)
             @po_request.purchase_order = nil
 
-            if @po_request.payment_request.present? @po_request.payment_request.update!(status: :'Cancelled')
+            if @po_request.payment_request.present?
+              @po_request.payment_request.update!(status: :'Cancelled')
               @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
             end
 
@@ -227,6 +243,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :supplier_committed_date,
         :cancellation_reason,
         :rejection_reason,
+        :late_lead_date_reason,
         rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time],
         comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
         attachments: []
