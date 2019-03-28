@@ -2803,61 +2803,61 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             SalesInvoiceRow.create!(sku: sku, quantity: quantity, sales_invoice_id: invoice.id, metadata: invoice_row_obj)
           end
 
-          item_lines = invoice.rows.pluck(:metadata)
-          metadata = {
-              'state' => 1,
-              'is_kit' => '',
-              'qty_kit' => 0, # check
-              'ItemLine' => item_lines,
-              'desc_kit' => '', # check
-              'order_id' => order_number,
-              'store_id' => nil,
-              'doc_entry' => invoice_number.to_i,
-              'price_kit' => 0,
-              'controller' => 'callbacks/sales_invoices',
-              'created_at' => x.get_column('AR Invoice Date'),
-              'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
-              'increment_id' => invoice_number,
-              'sales_invoice' => {
-                  'created_at' => x.get_column('AR Invoice Date'),
-                  'updated_at' => nil
-              },
-              'unitprice_kit' => 0,
-              'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) { |sum, value| sum + value.to_f }.round(2),
-              'discount_amount' => '',
-              'shipping_amount' => nil,
-              'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
-              'customer_company' => nil,
-              'hidden_tax_amount' => nil,
-              'shipping_incl_tax' => nil,
-              'base_subtotal' => item_lines.pluck('row_total').inject(0) { |sum, value| sum + value.to_f }.round(2),
-              'base_currency_code' => sales_order.inquiry.currency.try(:name),
-              'base_to_order_rate' => sales_order.inquiry.currency.conversion_rate.to_f,
-              'billing_address_id' => sales_order.inquiry.billing_address.present? ? sales_order.inquiry.billing_address.id : nil,
-              'order_currency_code' => sales_order.inquiry.currency.try(:name),
-              'shipping_address_id' => sales_order.inquiry.shipping_address.present? ? sales_order.inquiry.shipping_address.id : nil,
-              'shipping_tax_amount' => nil,
-              'store_currency_code' => '',
-              'store_to_order_rate' => '',
-              'base_discount_amount' => nil,
-              'base_shipping_amount' => nil,
-              'discount_description' => nil,
-              'base_hidden_tax_amount' => nil,
-              'base_shipping_incl_tax' => nil,
-              'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
-              'base_shipping_tax_amount' => nil,
-              'shipping_hidden_tax_amount' => nil,
-              'base_shipping_hidden_tax_amnt' => nil
-          }
-          invoice.assign_attributes(status: 1, metadata: metadata, mis_date: x.get_column('AR Invoice Date'))
-          invoice.save!
-          created_or_updated_invoices.push(invoice.invoice_number)
-          puts '********************** Saving Invoice *****************************', invoice_number
-        else
-          missing_bible_orders.push(order_number)
-          missing_bible_invoices.push(invoice_number)
+            item_lines = invoice.rows.pluck(:metadata)
+            metadata = {
+                'state' => 1,
+                'is_kit' => '',
+                'qty_kit' => 0, # check
+                'ItemLine' => item_lines,
+                'desc_kit' => '', # check
+                'order_id' => order_number,
+                'store_id' => nil,
+                'doc_entry' => invoice_number.to_i,
+                'price_kit' => 0,
+                'controller' => 'callbacks/sales_invoices',
+                'created_at' => x.get_column('AR Invoice Date'),
+                'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+                'increment_id' => invoice_number,
+                'sales_invoice' => {
+                    'created_at' => x.get_column('AR Invoice Date'),
+                    'updated_at' => nil
+                },
+                'unitprice_kit' => 0,
+                'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) { |sum, value| sum + value.to_f }.round(2),
+                'discount_amount' => '',
+                'shipping_amount' => nil,
+                'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+                'customer_company' => nil,
+                'hidden_tax_amount' => nil,
+                'shipping_incl_tax' => nil,
+                'base_subtotal' => item_lines.pluck('row_total').inject(0) { |sum, value| sum + value.to_f }.round(2),
+                'base_currency_code' => sales_order.inquiry.currency.try(:name),
+                'base_to_order_rate' => sales_order.inquiry.currency.conversion_rate.to_f,
+                'billing_address_id' => sales_order.inquiry.billing_address.present? ? sales_order.inquiry.billing_address.id : nil,
+                'order_currency_code' => sales_order.inquiry.currency.try(:name),
+                'shipping_address_id' => sales_order.inquiry.shipping_address.present? ? sales_order.inquiry.shipping_address.id : nil,
+                'shipping_tax_amount' => nil,
+                'store_currency_code' => '',
+                'store_to_order_rate' => '',
+                'base_discount_amount' => nil,
+                'base_shipping_amount' => nil,
+                'discount_description' => nil,
+                'base_hidden_tax_amount' => nil,
+                'base_shipping_incl_tax' => nil,
+                'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+                'base_shipping_tax_amount' => nil,
+                'shipping_hidden_tax_amount' => nil,
+                'base_shipping_hidden_tax_amnt' => nil
+            }
+            invoice.assign_attributes(status: 1, metadata: metadata, mis_date: x.get_column('AR Invoice Date'))
+            invoice.save!
+            created_or_updated_invoices.push(invoice.invoice_number)
+            puts '********************** Saving Invoice *****************************', invoice_number
+          else
+            missing_bible_orders.push(order_number)
+            missing_bible_invoices.push(invoice_number)
+          end
         end
-      end
 
       puts 'M SKus', missing_product.join(',')
       puts '-----------------------------------------------------------------------------------------'
