@@ -11,21 +11,17 @@ json.data (@indexed_kra_reports) do |inquiry|
                   else
                     link_to(number_with_delimiter(inquiry['doc_count'], delimiter: ','), filtered_path(kra_report_per_sales_owner_overseers_inquiries_path, [filter_by_value('Name', Overseer.find(inquiry['key']).to_s, inquiry['key'])]), target: '_blank')
                   end,
-                  number_with_delimiter(inquiry['sales_quotes']['value']),
+                  number_with_delimiter(inquiry['sales_quotes']['value'].to_i, delimiter: ','),
                   format_currency(inquiry['total_sales_value']['value']),
-                  number_with_delimiter(inquiry['expected_orders']['value']),
+                  number_with_delimiter(inquiry['expected_orders']['value'].to_i, delimiter: ','),
                   format_currency(inquiry['total_order_value']['value']),
-                  number_with_delimiter(inquiry['sales_orders']['value']),
+                  number_with_delimiter(inquiry['sales_orders']['value'].to_i, delimiter: ','),
                   format_currency(inquiry['total_sales_value']['value']),
-                  number_with_delimiter(inquiry['sku']['value']),
-                  inquiry['orders_won']['value'] > 0 ? percentage(inquiry['orders_won']['value'] * 100.0 / inquiry['doc_count']) : '-',
-                  if @date_range.present?
-                    link_to(number_with_delimiter(inquiry['sales_invoices']['value'], delimiter: ','), filtered_path(overseers_sales_invoices_path, [filter_by_value('IS%26P', Overseer.find(inquiry['key']).to_s, inquiry['key']), filter_by_date_range('Date', @date_range)]), target: '_blank')
-                  else
-                    link_to(number_with_delimiter(inquiry['sales_invoices']['value'], delimiter: ','), filtered_path(overseers_sales_invoices_path, [filter_by_value('IS%26P', Overseer.find(inquiry['key']).to_s, inquiry['key'])]), target: '_blank')
-                  end,
+                  number_with_delimiter(inquiry['sku']['value'].to_i, delimiter: ','),
+                  inquiry['orders_won']['value'].to_i > 0 ? percentage(inquiry['orders_won']['value'] * 100.0 / inquiry['doc_count']) : '-',
+                  number_with_delimiter(inquiry['sales_invoices']['value'].to_i, delimiter: ','),
                   format_currency(inquiry['revenue']['value']),
-                  number_with_delimiter(inquiry['clients']['value'])
+                  number_with_delimiter(inquiry['clients']['value'].to_i, delimiter: ',')
               ]
 end
 
@@ -49,4 +45,3 @@ json.columnFilters [
 json.recordsTotal @indexed_kra_reports.length
 json.recordsFiltered @indexed_kra_reports.length
 json.draw params[:draw]
-json.kra_reports @indexed_kra_reports

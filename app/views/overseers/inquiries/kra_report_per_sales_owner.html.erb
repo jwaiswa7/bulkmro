@@ -2,7 +2,7 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
-<% content_for :heading do %>KRA Report per sales Person<% end %>
+<% content_for :heading do %>KRA Report per sales person<% end %>
 <% provide :hide_table_desc, true %>
 
 <% content_for :header_row do %>
@@ -17,7 +17,7 @@
   <th class="no-sort all text-right">Date of Orders</th>
   <th class="no-sort all text-right">%Margin</th>
   <th class="no-sort all text-right">Value of Margin</th>
-  <th class="no-sort all text-right">Sales Invoices</th>
+  <th class="no-sort all text-right" data-name="invoices_count">Sales Invoices</th>
   <th class="no-sort all text-right">Date of Invoices</th>
 <% end %>
 
