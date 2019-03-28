@@ -1,16 +1,15 @@
-# frozen_string_literal: true
-
 class EmailMessage < ApplicationRecord
   belongs_to :overseer, required: false
   belongs_to :contact, required: false
-
-  has_many_attached :files
-
+  belongs_to :company, required: false
+  belongs_to :account, required: false
   belongs_to :inquiry, required: false
   belongs_to :sales_quote, required: false
   belongs_to :purchase_order, required: false
   belongs_to :sales_order, required: false
   belongs_to :sales_invoice, required: false
+
+  has_many_attached :files
 
   validates_presence_of :from, :to, :subject
 
@@ -24,11 +23,17 @@ class EmailMessage < ApplicationRecord
 
   after_initialize :set_defaults, if: :new_record?
   def set_defaults
-    self.subject ||= inquiry.subject if inquiry.present?
+    if inquiry.present?
+      self.subject ||= self.inquiry.subject
+    end
 
-    self.from ||= overseer.email if overseer.present?
+    if self.overseer.present?
+      self.from ||= self.overseer.email
+    end
 
-    self.to ||= contact.email if contact.present?
+    if self.contact.present?
+      self.to ||= self.contact.email
+    end
 
     self.auto_attach ||= false
   end
