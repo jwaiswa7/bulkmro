@@ -7,7 +7,7 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
     # @end_at = Date.today.end_of_day
     @export_name = 'inquiries_tat'
     @path = Rails.root.join('tmp', filename)
-    @columns = ["Inquiry Number", "Inquiry Created Time", "Products", "Inside Sales Owner", "Sales Quote", "SO Doc ID", "Sales Order Number", "Sales Order Status", "New Inquiry", "Acknowledgement Mail", "Cross Reference", "Preparing Quotation", "Quotation Sent", "Draft SO for Approval by Sales Manager", "SO Rejected by Sales Manager", "SO Draft: Pending Accounts Approval", "Rejected by Accounts", "Hold by Accounts", "Order Won", "Order Lost", "Regret", "SAP Rejected"]
+    @columns = ['Inquiry Number', 'Inquiry Created Time', 'Products', 'Inside Sales Owner', 'Sales Quote', 'SO Doc ID', 'Sales Order Number', 'Sales Order Status', 'New Inquiry', 'Acknowledgement Mail', 'Cross Reference', 'Preparing Quotation', 'Quotation Sent', 'Draft SO for Approval by Sales Manager', 'SO Rejected by Sales Manager', 'SO Draft: Pending Accounts Approval', 'Rejected by Accounts', 'Hold by Accounts', 'Order Won', 'Order Lost', 'Regret', 'SAP Rejected']
   end
 
   def call
@@ -72,7 +72,6 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
     previous_record = record&.previous_status_record
     row[record.status] = "#{record.tat}" if record.present?
     row = fill_row(row, previous_record) if previous_record.present?
-    return row
+    row
   end
-
 end

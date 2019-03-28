@@ -394,5 +394,4 @@ class Inquiry < ApplicationRecord
       Services::Overseers::Inquiries::InquiryPreviousStatusRecord.new(inquiry_status_record).call
     end
   end
-
 end

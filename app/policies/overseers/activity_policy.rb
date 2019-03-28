@@ -33,5 +33,4 @@ class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
   def export_all?
     allow_activity_export?
   end
-
 end

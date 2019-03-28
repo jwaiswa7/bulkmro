@@ -42,7 +42,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize :inquiry
     service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, [])
     service.call
-    report =  Export.inquiries_tat.not_filtered.where(export_type: 2).last.report
+    report = Export.inquiries_tat.not_filtered.where(export_type: 2).last.report
     redirect_to url_for(report)
   end
 
@@ -197,7 +197,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   def get_relationship_map_json
     authorize @inquiry
     purchase_order = PurchaseOrder.includes(po_request: :sales_order).where(inquiry_id: @inquiry).where(po_requests: {id: nil}, sales_orders: {id: nil})
-    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes,purchase_order).call
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes, purchase_order).call
     render json: {data: inquiry_json}
   end
 
