@@ -1203,7 +1203,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def purchase_orders
+  def purchase_orders_old
+    binding.pry
     service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_orders.csv', folder)
     errors = []
     service.loop(limit) do |x|
@@ -1427,7 +1428,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           date = JSON.parse(x.get_column('meta_data'))['PoDate']
           po_date = DateTime.parse date rescue nil
           if po_date.present? && (po_date > last_date) && (purchase_order_number == poNum) && right_po.present?
-            Resources::PurchaseOrder.set_multiple_items([right_po.po_number])
+            ::Resources::PurchaseOrder.set_multiple_items([right_po.po_number])
           else
             if poNum.scan(/\D/).empty?
               # po_number with only digits
@@ -4116,10 +4117,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       if inquiry.present? && inquiry.final_sales_quote.present?
         if metadata['PoNum'].present?
           po_num =  new_po_number.present? ? new_po_number : metadata['PoNum']
-          purchase_orders = inquiry.purchase_orders.where(po_number: po_num, metadata: metadata).first_or_create!
+          purchase_orders = inquiry.purchase_orders.where(po_number: po_num, metadata: metadata, is_legacy: true).first_or_create!
           purchase_orders do |purchase_order|
             purchase_order.assign_attributes(material_status: 'Material Readiness Follow-Up')
-            purchase_order.assign_attributes(metadata: metadata, created_at: metadata['PoDate'])
+            purchase_order.assign_attributes(legacy_id: po_num, metadata: metadata, created_at: metadata['PoDate'])
             metadata['ItemLine'].each do |remote_row|
               purchase_order.rows.build do |row|
                 row.assign_attributes(
