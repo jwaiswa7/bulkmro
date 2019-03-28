@@ -95,11 +95,11 @@
           <strong class="d-block">Customer - Shipping Address</strong>
           <span class="d-block"><%= (@inquiry.shipping_company.name) %></span>
           <span class="d-block"><%= @sales_order.serialized_shipping_address.to_compact_multiline_s %></span>
-          <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
-            <span class="d-block"><em>Contact</em>: <%= @inquiry.contact.full_name %>
-              - <%= @inquiry.contact.phone %></span>
+          <% if @inquiry.shipping_contact.phone.present? %>
+            <span class="d-block"><em>Contact</em>: <%= @inquiry.shipping_contact.full_name %>
+              - <%= @inquiry.shipping_contact.phone %></span>
           <% end %>
-          <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+          <em>Email</em>: <%= @inquiry.shipping_contact.email if @inquiry.shipping_contact.email.present? %>
           <span class="d-block"><em>GST Number</em>: <%= @sales_order.serialized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
         </div>
       </div>
