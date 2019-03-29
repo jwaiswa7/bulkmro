@@ -15,8 +15,8 @@ class Overseers::InquiriesController < Overseers::BaseController
 
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry)
         status_service.call
-        @total_values = status_service.indexed_total_values
-        @statuses = status_service.indexed_statuses
+        @total_values = status_service.indexed_total_values.except!(Inquiry.statuses.slice('Lead by O/S').values)
+        @statuses = status_service.indexed_statuses.except!(Inquiry.statuses.slice('Lead by O/S').values)
       end
     end
   end
@@ -26,7 +26,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.inquiries.last.report)
+    redirect_to url_for(Export.inquiries.not_filtered.last.report)
   end
 
   def export_filtered_records
@@ -115,8 +115,10 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def update
     @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
+    @inquiry.inquiry_products.each do |inquiry_product|
+      inquiry_product.overseer = current_overseer
+    end if inquiry_params[:inquiry_products_attributes]
     authorize @inquiry
-
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call if @inquiry.inquiry_products.present?
       if @inquiry.status == 'Order Lost'
@@ -179,6 +181,24 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def stages
     @stages = @inquiry.inquiry_status_records.order(created_at: :asc)
+    authorize @inquiry
+  end
+
+  def create_purchase_orders_requests
+    @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
+    authorize @inquiry
+    service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@inquiry, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h, true)
+    service.call
+    Rails.cache.delete(:po_requests)
+    redirect_to stock_overseers_po_requests_path
+  end
+
+  def preview_stock_po_request
+    @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
+    service = Services::Overseers::SalesOrders::PreviewPoRequests.new(@inquiry, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
+    @po_requests = service.call
+
+    Rails.cache.write(:po_requests, @po_requests, expires_in: 25.minutes)
     authorize @inquiry
   end
 

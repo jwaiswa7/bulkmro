@@ -5,10 +5,10 @@
         <div id="compare-wrapper">
           <div class="compare_open" id="compare_popup"></div>
           <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
-            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
+            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png',:width => "50%" %>
           </div>
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-            <b><span style="color:#000; font-size: 30px">Purchase Order #<%= locals[:metadata][:PoNum] %></span></b>
+            <b><span style="color:#000; font-size: 17.5px;">Purchase Order #<%= locals[:metadata][:PoNum] %></span></b>
           </div>
           <br clear="all">
           <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record.warehouse %>
@@ -21,7 +21,7 @@
             <table border="0" cellspacing="0" style="width: 100%;">
               <tbody>
               <tr>
-                <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" style="width:25%; padding-left: 10px;" valign="top">
                   <b><span>Bulk MRO Reference #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                   <span><%= locals[:metadata][:PoEnquiryId] %></span></td>
@@ -34,7 +34,7 @@
                 </td>
               </tr>
               <tr>
-                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span>Contact Name</span></b>
                   <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
@@ -47,7 +47,7 @@
                   <span>+91-7506033466</span></td>
               </tr>
               <tr>
-                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span>Committed Delivery Date</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <span>
@@ -59,7 +59,7 @@
                   <span><%= locals[:metadata][:PoFreight] %></span></td>
               </tr>
               <tr>
-                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span>Packing & Forwarding</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <span><%= locals[:metadata][:packing] %></span></td>
@@ -69,7 +69,7 @@
                   <span><%= locals[:metadata][:PoModeOfTrasport] %></span></td>
               </tr>
               <tr>
-                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span>Delivery Terms </span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <span><%= locals[:metadata][:PoDeliveryTerms] %></span></td>
@@ -86,38 +86,36 @@
 
 
             <div style=" " class="heading heading-left">
-              <b><span>Supplier - Bill to :</span></b>
+              <b><span>Supplier - Bill to:</span></b>
             </div>
             <div class="heading heading-right">
-              <b><span>Supplier - Ship to :</span></b>
+              <b><span>Supplier - Ship to:</span></b>
             </div>
 
             <br clear="all">
-            <table border="0" cellspacing="0" style="width: 100%;">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td style="" class="address-section-holder">
-                  <div style="" class="address-wrapper address-wrapper-left">
-                    <% if locals[:supplier].present? %>
-                      <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
-                      <%= record.billing_address&.to_multiline_s %>
-                      <br>
-                      Tel: <%= record.billing_address&.telephone || record.billing_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %><br>
-                      GST No. : <%= record.billing_address&.gst %><br>
-                    <% end %>
-                  </div>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <% if locals[:supplier].present? %>
+                    <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
+                    <%= record.billing_address&.to_multiline_s %>
+                    <br>
+                    Tel: <%= record.billing_address&.telephone || record.billing_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %>
+                    <br>
+                    GST No.: <%= record.billing_address&.gst %><br>
+                  <% end %>
                 </td>
-                <td class="address-section-gap"></td>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-right">
-                    <% if locals[:supplier].present? %>
-                      <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
-                      <%= record.shipping_address&.to_multiline_s %>
-                      <br>
-                      Tel: <%= record.shipping_address&.telephone || record.shipping_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %><br>
-                      GST No. : <%= record.shipping_address&.gst %><br>
-                    <% end %>
-                  </div>
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <% if locals[:supplier].present? %>
+                    <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
+                    <%= record.shipping_address&.to_multiline_s %>
+                    <br>
+                    Tel: <%= record.shipping_address&.telephone || record.shipping_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %>
+                    <br>
+                    GST No.: <%= record.shipping_address&.gst %><br>
+                  <% end %>
                 </td>
               </tr>
               </tbody>
@@ -125,41 +123,34 @@
           </div>
           <br clear="all">
           <div class="address-blocks">
-
-
             <div style=" " class="heading heading-left">
-              <b><span>Bulk MRO - Bill to :</span></b>
+              <b><span>Bulk MRO - Bill to:</span></b>
             </div>
             <div class="heading heading-right">
-              <b><span>Bulk MRO - Ship to :</span></b>
+              <b><span>Bulk MRO - Ship to:</span></b>
             </div>
 
             <br clear="all">
-            <table border="0" cellspacing="0" style="width: 100%;">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td style="" class="address-section-holder">
-                  <div style="" class="address-wrapper address-wrapper-left">
-                    <span>
-                      <%= (locals[:inquiry].bill_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].bill_from.address.name.present? %>
-                      <% if locals[:inquiry].bill_from.present? %>
-                        <%= locals[:inquiry].bill_from.address.to_multiline_s %><br>
-                        GST No. : <%= locals[:inquiry].bill_from.address.gst %><br>
-                      <% end %>
-                      PAN No. : AAGCB7343G</span>
-                  </div>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <%= (locals[:inquiry].bill_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].bill_from.address.name.present? %>
+                  <% if locals[:inquiry].bill_from.present? %>
+                    <%= locals[:inquiry].bill_from.address.to_multiline_s %><br>
+                    GST No.: <%= locals[:inquiry].bill_from.address.gst %><br>
+                  <% end %>
+                  PAN No.: AAGCB7343G
                 </td>
-                <td class="address-section-gap"></td>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-right">
-                    <span>
-                      <%= (locals[:inquiry].ship_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].ship_from.address.name.present? %>
-                      <% if locals[:inquiry].ship_from.present? %>
-                        <%= locals[:inquiry].ship_from.address.to_multiline_s %><br>
-                        GST No. : <%= locals[:inquiry].ship_from.address.gst %><br>
-                      <% end %>
-                      PAN No. : AAGCB7343G</span>
-                  </div>
+
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <%= (locals[:inquiry].ship_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].ship_from.address.name.present? %>
+                  <% if locals[:inquiry].ship_from.present? %>
+                    <%= locals[:inquiry].ship_from.address.to_multiline_s %><br>
+                    GST No.: <%= locals[:inquiry].ship_from.address.gst %><br>
+                  <% end %>
+                  PAN No.: AAGCB7343G
                 </td>
               </tr>
               </tbody>
@@ -327,7 +318,7 @@
           <div class="bottom-info" style="position: relative">
             <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
               <div id="inner-stamp" style="float: right; position: relative;">
-                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
+                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png',:width => "95",:height => "95" %>
               </div>
             </div>
 
@@ -336,8 +327,8 @@
               <table border="0" cellspacing="0" style="width: 100%;">
                 <tbody>
                 <tr>
-                  <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c" valign="top">
-                    <b><span>Commercial Terms and Conditions :</span></b></td>
+                  <td align="left" colspan="16" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c" valign="top">
+                    <b><span>Commercial Terms and Conditions:</span></b></td>
                 </tr>
                 <tr>
                   <td height="" style="padding-left:10px;" valign="top">1.</td>
@@ -350,7 +341,7 @@
                 <tr>
                   <td height="" style="padding-left:10px;" valign="top">2.</td>
                   <td align="left" valign="top">
-                      <span> In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or in action.
+                      <span>In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or in action.
                     </span>
                   </td>
                 </tr>
@@ -377,8 +368,8 @@
               <table border="0" cellspacing="0" style="width: 100%;">
                 <tbody>
                 <tr style="background: #d3d3d3;">
-                  <td align="left" class="invoiceheader1" colspan="16" height="20" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                    <b><span>Other Information :</span></b></td>
+                  <td align="left" class="invoiceheader1" colspan="16" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
+                    <b><span>Other Information:</span></b></td>
                 </tr>
                 <tr>
                   <td align="left" style=" padding-left: 10px;" valign="top"><span>
@@ -399,15 +390,14 @@
               <table border="0" cellspacing="0" style="width: 100%;">
                 <tbody>
                 <tr style="background: #d3d3d3;">
-                  <td align="left" class="invoiceheader1" colspan="16" height="20" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                    <b><span>Note :</span></b></td>
+                  <td align="left" class="invoiceheader1" colspan="16" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
+                    <b><span>Note:</span></b></td>
                 </tr>
                 <tr>
                   <td align="left" style=" padding-left: 10px;" valign="top"><span>
                   <%= simple_format locals[:inquiry].commercial_terms_and_conditions %>
                         </span></td>
                 </tr>
-
                 </tbody>
               </table>
             </div>

@@ -25,12 +25,24 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
     allow_export?
   end
 
+  def export_filtered_records?
+    allow_export? && overseer.can_send_emails?
+  end
+
   def download_customer_product_template?
     all_roles? && is_active?
   end
 
   def new_excel_customer_product_import?
     cataloging? || developer? && is_active?
+  end
+
+  def payment_collection?
+    index?
+  end
+
+  def ageing_report?
+    index?
   end
 
   def create_customer_products?

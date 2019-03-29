@@ -31,6 +31,8 @@ class Product < ApplicationRecord
   has_many :customer_products
   has_one :kit
   has_many :cart_items
+  has_many :purchase_order_rows
+  has_many :purchase_orders, through: :purchase_order_rows
   has_many :stocks, class_name: 'WarehouseProductStock', inverse_of: :product, dependent: :destroy
 
   attr_accessor :applicable_tax_percentage
@@ -42,11 +44,9 @@ class Product < ApplicationRecord
   scope :is_service, -> { where(is_service: true) }
 
   validates_presence_of :name
-
   validates_presence_of :sku, if: :not_rejected?
   validates_uniqueness_of :sku, if: :not_rejected?
-  # validates_with MultipleImageFileValidator, attachments: :images
-
+  self.order(sku: :asc, mpn: :desc)
   after_initialize :set_defaults, if: :new_record?
   validate :unique_name?
 

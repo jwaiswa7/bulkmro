@@ -1111,4 +1111,17 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Inquiry.where(inquiry_number: inquiries).update_all(sales_manager_id: overseer.id)
     [inquiries.count, Inquiry.where(inquiry_number: inquiries).count]
   end
+
+  def update_po_status_to_supplier_po_sent
+    purchase_order_ids = EmailMessage.where(email_type: EmailMessage.email_types['Sending PO to Supplier']).pluck(:purchase_order_id)
+    if purchase_order_ids.present?
+      po_requests = PoRequest.where(purchase_order_id: purchase_order_ids, status: PoRequest.statuses['PO Created'])
+      if po_requests.present?
+        po_requests.each do |po_request|
+          po_request.status = PoRequest.statuses['Supplier PO Sent']
+          po_request.save!
+        end
+      end
+    end
+  end
 end

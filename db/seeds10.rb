@@ -66,6 +66,9 @@ service.call
 service = Services::Shared::Migrations::Migrations.new(%w(add_logistics_owner_to_companies), folder: 'seed_files')
 service.call
 
+service = Services::Shared::Migrations::Migrations.new(%w(update_sales_receipt sales_invoice_totals update_account_id))
+service.call
+
 service = Services::Shared::Migrations::Migrations.new(%w(fetch_address), folder: 'seed_files')
 service.call
 
@@ -79,4 +82,13 @@ service = Services::Shared::Migrations::Migrations.new(%w(create_missing_invoice
 service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(create_missing_orders_and_inquiries_with_string_literals), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(merge_duplicate_sales_order_rows), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(missing_billing_shipping_address), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(create_missing_address_and_contacts_for_supplier), folder: 'seed_files')
 service.call

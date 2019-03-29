@@ -41,6 +41,10 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     record.purchase_order.blank? && (logistics? || admin? || manager_or_sales?) && record.status == 'Requested'
   end
 
+  def can_reject_stock_po?
+    record.purchase_order.blank? && (manager? || admin?)
+  end
+
   def can_update_rejected_po_requests?
     record.purchase_order.present? && (manager_or_sales?) && record.status == 'Rejected'
   end

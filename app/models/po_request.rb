@@ -70,12 +70,12 @@ class PoRequest < ApplicationRecord
       'Stock Supplier PO Created': 30
   }
 
-  scope :pending_and_rejected, -> { where(status: [:'Supplier PO: Request Pending', :'Rejected', :'Amend']) }
-  scope :handled, -> { where.not(status: [:'Supplier PO: Request Pending', :'Cancelled', :'Amend']) }
-  scope :not_cancelled, -> { where.not(status: [:'Cancelled']) }
-  scope :cancelled, -> { where(status: [:'Cancelled']) }
-  scope :can_amend, -> { where(status: [:'Supplier PO: Created Not Sent']) }
-  scope :amended, -> { where(status: [:'Amend']) }
+  scope :pending_and_rejected, -> {where(status: [:'Supplier PO: Request Pending', :'Rejected', :'Amend'])}
+  scope :handled, -> {where.not(status: [:'Supplier PO: Request Pending', :'Cancelled', :'Amend'])}
+  scope :not_cancelled, -> {where.not(status: [:'Cancelled'])}
+  scope :cancelled, -> {where(status: [:'Cancelled'])}
+  scope :can_amend, -> {where(status: [:'Supplier PO: Created Not Sent'])}
+  scope :amended, -> {where(status: [:'Amend'])}
   scope :pending_stock_po, -> { where(stock_status: [:'Stock Requested']) }
   scope :completed_stock_po, -> { where(stock_status: [:'Stock Supplier PO Created']) }
   scope :stock_po, -> { where(stock_status: [:'Stock Requested', :'Stock Rejected', :'Stock Supplier PO Created']) }
@@ -148,7 +148,7 @@ class PoRequest < ApplicationRecord
     title = ''
     if self.status == 'Supplier PO: Request Pending'
       title = 'Pending'
-    elsif self.status == 'Supplier PO: Created Not Sent'
+    elsif self.status == 'Supplier PO Created Not Sent'
       title = 'Completed'
     end
     "#{title} PO Request"
