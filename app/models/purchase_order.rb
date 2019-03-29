@@ -3,7 +3,7 @@ class PurchaseOrder < ApplicationRecord
 
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
-  update_index('purchase_orders#purchase_order') {self}
+  # update_index('purchase_orders#purchase_order') {self}
 
   pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
 
@@ -72,6 +72,12 @@ class PurchaseOrder < ApplicationRecord
       'Material Partially Pickedup': 25,
       'Material Delivered': 30,
       'Material Partially Delivered': 35
+  }
+
+  enum transport_mode: {
+      'Road': 1,
+      'Air': 2,
+      'Sea': 3
   }
 
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}

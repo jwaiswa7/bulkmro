@@ -92,4 +92,8 @@ class SalesInvoice < ApplicationRecord
   def has_attachment?
     self.pod_attachment.attached?
   end
+
+  def calculated_freight_cost_total
+    self.rows.sum(&:freight_cost_subtotal).round(2)
+  end
 end

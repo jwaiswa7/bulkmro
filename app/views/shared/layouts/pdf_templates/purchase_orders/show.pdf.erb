@@ -101,7 +101,7 @@
                     <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
                     <%= record.billing_address&.to_multiline_s %>
                     <br>
-                    Tel: <%= record.billing_address&.telephone || record.billing_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %>
+                    Tel: <%= record.billing_address&.phone || locals[:supplier]&.phone %>
                     <br>
                     GST No.: <%= record.billing_address&.gst %><br>
                   <% end %>
@@ -112,7 +112,7 @@
                     <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
                     <%= record.shipping_address&.to_multiline_s %>
                     <br>
-                    Tel: <%= record.shipping_address&.telephone || record.shipping_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %>
+                    Tel: <%= record.shipping_address&.phone || locals[:supplier]&.phone %>
                     <br>
                     GST No.: <%= record.shipping_address&.gst %><br>
                   <% end %>
