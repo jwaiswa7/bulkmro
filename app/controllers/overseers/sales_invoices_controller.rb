@@ -29,12 +29,14 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
   def edit_pod
     authorize @invoice
+    if !@invoice.pod_rows.present?
+      @invoice.pod_rows.build
+    end
   end
 
   def update_pod
     authorize @invoice
     @invoice.assign_attributes(invoice_params)
-
     if @invoice.save
       redirect_to edit_pod_overseers_sales_invoice_path, notice: flash_message(@invoice, action_name)
     end
@@ -77,8 +79,16 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
     def invoice_params
       params.require(:sales_invoice).permit(
-        :pod_attachment,
-          :delivery_date
+
+        :delivery_date,
+        :delivery_completed,
+        pod_rows_attributes: [
+            :id,
+            :delivery_date,
+            :sales_invoice_id,
+            :_destroy,
+            attachments: []
+        ]
       )
     end
 end

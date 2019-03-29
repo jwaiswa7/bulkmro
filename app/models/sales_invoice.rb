@@ -18,6 +18,16 @@ class SalesInvoice < ApplicationRecord
   has_many :sales_receipts
   has_many :sales_receipt_rows
   has_many :email_messages
+  has_many :pod_rows, dependent: :destroy
+  accepts_nested_attributes_for :pod_rows, reject_if: lambda { |attributes|
+    if attributes[:id].present?
+      PodRow.find(attributes[:id]).attachments.count < 1
+    else
+      attributes[:attachments].blank?
+    end
+  }, allow_destroy: true
+
+
 
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice
@@ -26,6 +36,7 @@ class SalesInvoice < ApplicationRecord
 
   scope :not_cancelled_invoices, -> { where.not(status: 'Cancelled') }
   scope :not_paid, -> { where.not(payment_status: 'Fully Paid') }
+
 
 
   enum status: {
@@ -97,8 +108,27 @@ class SalesInvoice < ApplicationRecord
   end
 
   def has_attachment?
-    self.pod_attachment.attached?
+    self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached? && self.delivery_completed
   end
+
+  def pod_status
+    if self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached?
+      if self.delivery_completed
+        'complete'
+      else
+        'partial'
+      end
+    else
+      'incomplete'
+    end
+  end
+
+  def delivery_date
+    if self.pod_rows.present?
+      self.pod_rows.order(:delivery_date).last.delivery_date
+    end
+  end
+
   def amount_received
     # SalesReceipt.where(:sales_invoice_id => self.id).pluck(:payment_amount_received).compact.sum
     SalesReceiptRow.where('sales_invoice_id': self.id).sum(:amount_received)
