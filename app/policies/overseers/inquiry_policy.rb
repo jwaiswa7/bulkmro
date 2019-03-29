@@ -63,10 +63,6 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
-  def export_filtered_records?
-    allow_export? && overseer.can_send_emails?
-  end
-
   def create_excel_import?
     new_excel_import?
   end
@@ -95,6 +91,15 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit? && record.sales_orders.present?
   end
 
+
+  def has_approved_sales_orders?
+    record&.sales_orders&.remote_approved&.any?
+  end
+
+  def has_no_approved_sales_orders?
+    !has_approved_sales_orders?
+  end
+
   def calculation_sheet?
     edit?
   end
@@ -119,6 +124,14 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def relationship_map?
+    stages?
+  end
+
+  def get_relationship_map_json?
+    relationship_map?
+  end
+
   def resync_inquiry_products?
     developer? && record.inquiry_products.present?
   end
@@ -127,6 +140,18 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     developer? && record.inquiry_products.present?
   end
 
+
+  def has_approved_sales_orders?
+    record&.sales_orders&.remote_approved&.any?
+  end
+
+  def restrict_fields_on_completed_orders?
+    has_approved_sales_orders? && !admin?
+  end
+
+  def has_no_approved_sales_orders?
+    !has_approved_sales_orders?
+  end
 
   def new_freight_request?
     !record.freight_request.present? && !logistics?

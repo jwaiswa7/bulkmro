@@ -460,7 +460,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       address.update_attributes(
           billing_address_uid: x.get_column('sap_row_num').split(',')[0],
           shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
-      ) if x.get_column('sap_row_num').present?
+          ) if x.get_column('sap_row_num').present?
 
       if company.legacy_metadata.present?
         if company.legacy_metadata['default_billing'] == x.get_column('idcompany_gstinfo')
@@ -602,7 +602,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       address.update_attributes(
           billing_address_uid: x.get_column('sap_row_num').split(',')[0],
           shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
-      ) if x.get_column('sap_row_num').present?
+          ) if x.get_column('sap_row_num').present?
 
       if company.legacy_metadata['default_billing'] == x.get_column('address_id')
         company.default_billing_address = address
@@ -3083,21 +3083,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             'price_kit' => 0,
             'controller' => 'callbacks/sales_invoices',
             'created_at' => x.get_column('AR Invoice Date'),
-            'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
+            'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
             'increment_id' => invoice_number,
             'sales_invoice' => {
                 'created_at' => x.get_column('AR Invoice Date'),
                 'updated_at' => nil
             },
             'unitprice_kit' => 0,
-            'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) {|sum, value| sum + value.to_f}.round(2),
+            'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) { |sum, value| sum + value.to_f }.round(2),
             'discount_amount' => '',
             'shipping_amount' => nil,
-            'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
+            'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
             'customer_company' => nil,
             'hidden_tax_amount' => nil,
             'shipping_incl_tax' => nil,
-            'base_subtotal' => item_lines.pluck('row_total').inject(0) {|sum, value| sum + value.to_f}.round(2),
+            'base_subtotal' => item_lines.pluck('row_total').inject(0) { |sum, value| sum + value.to_f }.round(2),
             'base_currency_code' => sales_order.inquiry.currency.try(:name),
             'base_to_order_rate' => sales_order.inquiry.currency.conversion_rate.to_f,
             'billing_address_id' => sales_order.inquiry.billing_address.present? ? sales_order.inquiry.billing_address.id : nil,
@@ -3111,7 +3111,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             'discount_description' => nil,
             'base_hidden_tax_amount' => nil,
             'base_shipping_incl_tax' => nil,
-            'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
+            'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
             'base_shipping_tax_amount' => nil,
             'shipping_hidden_tax_amount' => nil,
             'base_shipping_hidden_tax_amnt' => nil
@@ -3125,15 +3125,46 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         missing_bible_invoices.push(invoice_number)
       end
     end
-    puts 'M SKus', missing_product.join(',')
-    puts '-----------------------------------------------------------------------------------------'
-    puts 'kit products', kit_products.join(',')
-    puts '-----------------------------------------------------------------------------------------'
-    puts 'odd SI names', odd_invoice_names.join(',')
-    puts '-----------------------------------------------------------------------------------------'
-    puts 'Missing bible orders', missing_bible_orders.join(',')
-    puts '-----------------------------------------------------------------------------------------'
-    puts 'Created Or Updated Invoices', created_or_updated_invoices.join(',')
+
+    puts "M SKus", missing_product.join(',')
+    puts "-----------------------------------------------------------------------------------------"
+    puts "kit products", kit_products.join(',')
+    puts "-----------------------------------------------------------------------------------------"
+    puts "odd SI names", odd_invoice_names.join(',')
+    puts "-----------------------------------------------------------------------------------------"
+    puts "Missing bible orders", missing_bible_orders.join(',')
+    puts "-----------------------------------------------------------------------------------------"
+    puts "Created Or Updated Invoices", created_or_updated_invoices.join(',')
+  end
+
+  def missing_inquiry_shipping_address_status
+    file = "#{Rails.root}/tmp/missing_inquiry_shipping_address_with_status.csv"
+    column_headers = ['inquiry_number', 'inquiry_status']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_shipping_address.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+      service.loop(nil) do |x|
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry number'))
+        if inquiry.present? && inquiry.status.present?
+          writer << [inquiry.inquiry_number, inquiry.status.to_s]
+        end
+      end
+    end
+  end
+
+  def missing_inquiry_billing_address_status
+    file = "#{Rails.root}/tmp/missing_inquiry_billing_address_with_status.csv"
+    column_headers = ['inquiry_number', 'inquiry_status']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_billing_address.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+      service.loop(nil) do |x|
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry number'))
+        if inquiry.present? && inquiry.status.present?
+          writer << [inquiry.inquiry_number, inquiry.status.to_s]
+        end
+      end
+    end
   end
 
   def missing_payment_options
@@ -3667,6 +3698,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       # next if Product.where(sku: x.get_column('product sku')).present? == false
       puts '*********************** INQUIRY ', x.get_column('inquiry number')
       o_number = x.get_column('order number')
+      next if o_number != '200305-1'
       if o_number.include?('.') || o_number.include?('/') || o_number.include?('-') || o_number.match?(/[a-zA-Z]/)
         odd_order_names.push(o_number)
       end
@@ -3773,6 +3805,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_order.remote_status = x.get_column('SAP status') || 'Processing'
         sales_order.sent_at = sales_quote.created_at
         sales_order.save!
+
         row_object = {sku: product_sku, supplier: x.get_column('supplier'), total_with_tax: row.total_selling_price_with_tax.to_f}
         totals[sales_order.order_number] ||= []
         totals[sales_order.order_number].push(row_object)
@@ -4115,24 +4148,24 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       #       end
       # =end
       #
-      #       INVOICEs
+      #       # INVOICEs
       invoices = SalesInvoice.where('mis_date BETWEEN ? AND ?', start_date, end_date)
       invoices_total = invoices.sum(&:calculated_total)
       invoices_counts = invoices.size
 
-      if invoices_total < invoices_total_to_check || invoices_total > invoices_total_to_check
-        invoices_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
-      else
-        puts "Invoices Total for #{current_month_name}-#{current_year} matches."
-      end
+        if invoices_total < invoices_total_to_check || invoices_total > invoices_total_to_check
+          invoices_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
+        else
+          puts "Invoices Total for #{current_month_name}-#{current_year} matches."
+        end
 
-      if invoices_counts < invoices_count_to_check || invoices_counts > invoices_count_to_check
-        invoices_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
-      else
-        puts "Invoices Count for #{current_month_name}-#{current_year} matches."
+        if invoices_counts < invoices_count_to_check || invoices_counts > invoices_count_to_check
+          invoices_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
+        else
+          puts "Invoices Count for #{current_month_name}-#{current_year} matches."
+        end
       end
     end
-  end
 
   def test_bible_sales_orders_totals_mismatch
 
@@ -4407,11 +4440,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     # SP W TAX
     # COST
     [missing_orders, mismatches]
-  end
-
-  # test_bible_sales_orders_rows_mismatch
-
-  def missing_billing_shipping_address
+    # end # test_bible_sales_orders_rows_mismatchdef missing_billing_shipping_address
     present_inquiries = []
     not_present_inquiries = []
     order_not_present = []

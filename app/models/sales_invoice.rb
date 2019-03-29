@@ -1,5 +1,6 @@
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
+  include DisplayHelper
   update_index('sales_invoices#sales_invoice') { self }
 
   pg_search_scope :locate, against: [:id, :invoice_number], associated_against: { company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
@@ -90,5 +91,9 @@ class SalesInvoice < ApplicationRecord
 
   def has_attachment?
     self.pod_attachment.attached?
+  end
+
+  def calculated_freight_cost_total
+    self.rows.sum(&:freight_cost_subtotal).round(2)
   end
 end

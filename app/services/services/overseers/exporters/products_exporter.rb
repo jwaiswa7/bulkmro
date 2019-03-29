@@ -1,6 +1,6 @@
 class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Exporters::BaseExporter
-  def initialize
-    super
+  def initialize(*params)
+    super(*params)
 
     @model = Product
     @export_name = 'products'
@@ -9,11 +9,17 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
   end
 
   def call
-    perform_export_later('ProductsExporter')
+    perform_export_later('ProductsExporter', @arguments)
   end
 
   def build_csv
-    model.includes(:category, :brand, :measurement_unit).all.order(created_at: :desc).each do |record|
+    if @ids.present?
+      records = model.where(id: @ids)
+    else
+      records = model
+    end
+    # records.each do |record|
+    records.includes(:category, :brand, :measurement_unit).all.order(created_at: :desc).each do |record|
       rows.push(
         id: record.id,
         sku: record.sku,
@@ -29,12 +35,13 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
         is_service: record.is_service,
         is_active: record.is_active,
         sap_synced: record.is_active,
-        created_by: (record.created_by.full_name if record.created_by.present?),
+        created_by: (record.created_by || (record.inquiry_import_row.inquiry.created_by if record.inquiry_import_row)).try(:name) || '-',
         created_at: record.created_at.to_date.to_s
 
                 )
     end
-    export = Export.create!(export_type: 5)
+    filtered = @ids.present?
+    export = Export.create!(export_type: 5, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     generate_csv(export)
   end
 end

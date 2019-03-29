@@ -5,6 +5,7 @@ class PaymentRequest < ApplicationRecord
   include Mixins::HasComments
 
   pg_search_scope :locate, against: [:id], associated_against: { po_request: [:id, :purchase_order_id], inquiry: [:inquiry_number], purchase_order: [:po_number] }, using: { tsearch: { prefix: true } }
+  update_index('payment_requests#payment_request') {self}
 
   belongs_to :inquiry
   belongs_to :purchase_order
@@ -53,6 +54,7 @@ class PaymentRequest < ApplicationRecord
       'Accounts': 20
   }
 
+  scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
   scope :Pending, -> { where(status: [10, 11]) }
   scope :Completed, -> { where(status: 50) }
   scope :Rejected, -> { where(status: ['Supplier Info: Bank Details Missing', 'Supplier Info: Bank Details Incorrect', 'Supplier Info: PI mismatch']) }

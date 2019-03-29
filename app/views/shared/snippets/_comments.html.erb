@@ -1,7 +1,7 @@
 <div class="media chat-item">
   <div class="media-body">
     <div class="chat-item-title">
-      <span class="chat-item-author"><%= comment.author.full_name %>
+      <span class="chat-item-author"><%= comment.author.full_name if comment.author.present? %>
         <span class="mr-1"><strong><span class="badge badge-secondary"><%= comment.author_role %></span></strong></span>
       </span>
       <span>

@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :resync_inquiry_products, :resync_unsync_inquiry_products]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products ]
 
   def index
     authorize :inquiry
@@ -34,7 +34,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     service = Services::Overseers::Finders::Inquiries.new(params, current_overseer, paginate: false)
     service.call
 
-    export_service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, service.records.pluck(:id))
+    export_service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, service.records)
     export_service.call
   end
 
@@ -182,6 +182,16 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
   end
 
+  def relationship_map
+    authorize @inquiry
+  end
+
+  def get_relationship_map_json
+    authorize @inquiry
+    purchase_order = PurchaseOrder.includes(po_request: :sales_order).where(inquiry_id: @inquiry).where(po_requests: {id: nil}, sales_orders: {id: nil})
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes,purchase_order).call
+    render json: {data: inquiry_json}
+  end
   def create_purchase_orders_requests
     @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
     authorize @inquiry
@@ -251,6 +261,7 @@ class Overseers::InquiriesController < Overseers::BaseController
           :calculation_sheet,
           :commercial_terms_and_conditions,
           :comments,
+          :product_type,
           supplier_quotes: [],
           inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
       )

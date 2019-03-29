@@ -36,4 +36,12 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   def new_freight_request?
     !record.freight_request.present? && record.is_final? && !logistics?
   end
+
+  def relationship_map?
+    all_roles?
+  end
+
+  def get_relationship_map_json?
+    relationship_map?
+  end
 end

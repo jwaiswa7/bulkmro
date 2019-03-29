@@ -38,7 +38,7 @@
         <div class="form-row mb-1">
           <div class="col-12 col-md-2 mt-1 mt-md-0">
             <strong class="d-block">Sales Order # </strong>
-            <%= @sales_invoice.sales_order.order_number if @sales_invoice.sales_order.order_number.present?%>
+            <%= @sales_invoice.sales_order.order_number if @sales_invoice.sales_order.order_number.present? %>
           </div>
           <div class="col-6 col-md-2 mt-1 mt-md-0">
             <strong class="d-block">Sales Order Date</strong>
@@ -67,8 +67,10 @@
           <div class="form-row">
             <div class="col-md-6 mt-2 mt-md-0">
               <strong class="d-block">Supplier - Bill from:</strong>
-              <%= @inquiry.bill_from.address.name.to_s %><br>
-              <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %><br>
+              <% if @inquiry.bill_from.present? %>
+                <%= @inquiry.bill_from.address.name.to_s %><br>
+                <%= @inquiry.bill_from.address.to_compact_multiline_s %><br>
+              <% end %>
               <% if @inquiry.bill_from.address.phone.present? %>
                 <em>Contact</em>: <%= @inquiry.contact.full_name %> - <%= @inquiry.bill_from.address.phone %><br>
               <% end %>
@@ -78,13 +80,15 @@
             </div>
             <div class="col-md-6 mt-2 mt-md-0">
               <strong class="d-block">Supplier - Ship from:</strong>
-              <%= @inquiry.ship_from.address.name.to_s %><br>
-              <%= @inquiry.ship_from.address.to_compact_multiline_s if @inquiry.ship_from.present? %><br>
-              <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
-                <em>Contact</em>: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %><br>
-              <% end %>
-              <% if @inquiry.ship_from.address.gst %>
-                <em>GST Number</em>: <%= @inquiry.ship_from.address.gst %><br>
+              <% if @inquiry.bill_from.present? %>
+                <%= @inquiry.ship_from.address.name.to_s %><br>
+                <%= @inquiry.ship_from.address.to_compact_multiline_s %><br>
+                <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
+                  <em>Contact</em>: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %><br>
+                <% end %>
+                <% if @inquiry.ship_from.address.gst %>
+                  <em>GST Number</em>: <%= @inquiry.ship_from.address.gst %><br>
+                <% end %>
               <% end %>
             </div>
           </div>
@@ -210,6 +214,9 @@
               <span data-toggle="tooltip" title="Tax Rate">Total<br>
               (<%= @sales_invoice.inquiry.currency.name %>)</span>
             </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Total Freight">T. Freight</span>
+            </th>
 
           </tr>
           </thead>
@@ -274,6 +281,9 @@
               <td>
                 <span><%= format_currency(item.metadata['base_row_total_incl_tax'], precision: 2, symbol: nil) %></span>
               </td>
+              <td>
+                <span><%= format_currency(item.freight_cost_subtotal) %></span>
+              </td>
             </tr>
           <% end %>
           </tbody>
@@ -281,28 +291,23 @@
       </div>
       <div class="card-footer">
         <div class=form-row>
-          <div class="col-6 col-md-3">
+          <div class="col-6 col-md-2">
             Products
             <strong class="d-block"><%= @sales_invoice.rows.count %></strong>
           </div>
-
-          <div class="col-6 col-md-3 mt-2 mt-md-0">
+          <div class="col-6 col-md-4">
+            Total Freight
+            <strong class="d-block"><%= format_currency(@sales_invoice.calculated_freight_cost_total) %></strong>
+          </div>
+          <div class="col-6 col-md-2 mt-2 mt-md-0">
             Subtotal
             <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_grand_total'].to_f - @sales_invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %></strong>
           </div>
-          <% if @sales_invoice.sales_order.sales_quote.tax_summary.strip == '0' ||
-              (@sales_invoice.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
-            <div class="col-6 col-md-3 mt-2 mt-md-0">
-              Total Tax Amt
-              <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %></strong>
-            </div>
-          <% else %>
-            <div class="col-6 col-md-3">
-              Total Tax Amt
-              <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_tax_amount'].to_f / 2, precision: 2, symbol: nil) %></strong>
-            </div>
-          <% end %>
-          <div class="col-6 col-md-3">
+          <div class="col-6 col-md-2">
+            Total Tax Amt
+            <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_tax_amount'].to_f / 2, precision: 2, symbol: nil) %></strong>
+          </div>
+          <div class="col-6 col-md-2">
             Grand Total
             <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_grand_total'].to_f, precision: 2, symbol: nil) %></strong>
           </div>

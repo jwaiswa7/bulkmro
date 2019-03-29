@@ -149,6 +149,12 @@ class Inquiry < ApplicationRecord
       'Extra': 20
   }
 
+  enum product_type: {
+      'MRO': 10,
+      'Projects': 20,
+      'Raw Materials': 30
+  }
+
   def commercial_status
     :open
   end
@@ -376,6 +382,7 @@ class Inquiry < ApplicationRecord
       0
     end
   end
+
 
   def margin_percentage
     self.final_sales_quote.present? ? self.final_sales_quote.calculated_total_margin_percentage.to_f : 0

@@ -27,6 +27,7 @@
     "select2": "4.0.5",
     "select2-theme-bootstrap4": "https://github.com/angel-vladov/select2-bootstrap-theme",
     "stickybits": "^3.5.6",
+    "treantjs": "^1.0.0",
     "vue": "^2.5.17",
     "wholly": "https://github.com/gajus/wholly"
   },
@@ -37,6 +38,13 @@
   "license": "MIT",
   "devDependencies": {
     "jshint": "^2.10.1",
-    "webpack-dev-server": "2.11.2"
+    "webpack-dev-server": "2.11.2",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-connect": "^5.5.0",
+    "gulp-util": "^3.0.8"
+  },
+  "scripts": {
+    "prefix": "gulp prefix"
   }
 }

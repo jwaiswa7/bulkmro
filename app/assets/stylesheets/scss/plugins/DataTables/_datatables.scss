@@ -1,0 +1,133 @@
+table {
+  &.table {
+    &.dataTable {
+      max-width: 100% !important;
+      border-spacing: 0 $spacer/4;
+
+      th {
+        font-weight: 700;
+
+        &.sorting,
+        &.sorting_asc,
+        &.sorting_desc {
+          &:before, &:after {
+            opacity: 0.15;
+          }
+        }
+
+        &.sorting_asc {
+          &:before {
+            opacity: 0.75;
+          }
+        }
+
+        &.sorting_desc {
+          &:after {
+            opacity: 0.75;
+          }
+        }
+
+        &.no-sort {
+          &:before,
+          &:after {
+            display: none;
+          }
+        }
+      }
+
+      th, td {
+        border-right-width: 0;
+      }
+
+      tr, th, td {
+        &.child {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
+
+      &.dtr-inline.collapsed {
+        > tbody {
+          > tr[role="row"] {
+            > th:first-child,
+            > td:first-child {
+              padding-left: $spacer * 1.75;
+
+              &:before {
+                top: 0;
+                left: 0;
+                font-family: $font-family-sans-serif;
+                font-weight: bold;
+                font-size: 1rem;
+                border-radius: $border-radius;
+                justify-content: center;
+                align-items: center;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                display: flex;
+                width: 25px;
+                vertical-align: bottom;
+                box-shadow: 0 0 0 transparent;
+                height: calc(100% - 4px);
+                height: -moz-calc(100% - 4px);
+                height: -webkit-calc(100% - 4px);
+                margin-top: 0;
+                border-width: 2px;
+                background-color: #fff;
+                border-color: $light;
+                color: $gray-700;
+              }
+            }
+          }
+        }
+      }
+
+      &.fixedHeader-floating, &.fixedHeader-locked {
+        background-color: transparent;
+      }
+
+      &.table-bordered {
+        th, td {
+          border: 0 transparent;
+        }
+      }
+
+      &.table-unstyled {
+        border-spacing: 0 $spacer/4;
+
+        tr {
+          background-color: transparent;
+
+          th, td {
+            padding: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.dataTables_wrapper.dt-bootstrap4 {
+  .dataTables_info {
+    white-space: normal;
+  }
+
+  .dataTables_paginate {
+    margin-top: $spacer/2;
+    text-align: center;
+
+    ul {
+      &.pagination {
+        justify-content: center;
+
+        .page-item {
+          &.first, &.last {
+            @include media-breakpoint-down(md) {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}

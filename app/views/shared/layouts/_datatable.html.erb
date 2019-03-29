@@ -72,7 +72,7 @@
     <% if content_for?(:wrap_whitespace) %> wrap-whitespace
     <% end %>" data-search="Enter search term/keywords"
          <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.fullpath %>"
-         <% end %>>
+         <% end %><% if not content_for?(:enable_sort_on_last_column) %>data-sorting="false"<% end %>>
     <thead>
     <tr>
       <%= yield :header_row %>
