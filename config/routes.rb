@@ -249,6 +249,7 @@ Rails.application.routes.draw do
         get 'export_rows'
         get 'export_for_logistics'
         get 'export_for_sap'
+        get 'export_for_reco'
         get 'autocomplete'
         get 'not_invoiced'
         get 'export_filtered_records'

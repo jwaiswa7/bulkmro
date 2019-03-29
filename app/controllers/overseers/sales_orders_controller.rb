@@ -77,6 +77,12 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     redirect_to url_for(Export.sales_order_sap.last.report)
   end
 
+  def export_for_reco
+    authorize :sales_order
+    service = Services::Overseers::Exporters::SalesOrdersRecoExporter.new([], current_overseer, [])
+    service.call
+  end
+
   def export_filtered_records
     authorize :sales_order
     service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer, paginate: false)

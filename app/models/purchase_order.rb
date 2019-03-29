@@ -162,6 +162,10 @@ class PurchaseOrder < ApplicationRecord
     (rows.map {|row| row.total_selling_price_with_tax || 0}.sum.round(2)) + self.metadata['LineTotal'].to_f + self.metadata['TaxSum'].to_f
   end
 
+  def calculated_total_without_tax
+    (rows.map {|row| row.total_selling_price || 0}.sum.round(2)) + self.metadata['LineTotal'].to_f
+  end
+
   def warehouse
     if metadata['PoTargetWarehouse'].present?
       Warehouse.find_by(remote_uid: metadata['PoTargetWarehouse'].to_i)
