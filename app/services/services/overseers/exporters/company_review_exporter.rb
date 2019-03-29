@@ -1,17 +1,22 @@
 class Services::Overseers::Exporters::CompanyReviewExporter < Services::Overseers::Exporters::BaseExporter
-  def initialize
-    super
+  def initialize(*params)
+    super(*params)
     @model = CompanyReview
     @export_name = 'supplier_review'
     @path = Rails.root.join('tmp', filename)
     @columns = ['serial', 'supplier_id', 'supplier_name', 'rating_submitted_by', 'review_type', 'rating', 'document']
   end
   def call
-    perform_export_later('CompanyReviewExporter')
+    perform_export_later('CompanyReviewExporter', @arguments)
   end
 
   def build_csv
-    model.where.not(rating: nil).includes(:company).each_with_index do |company_review, index|
+    if @ids.present?
+      records = model.where(id: @ids).order(created_at: :desc)
+    else
+      records = model.where.not(rating: nil).includes(:company)
+    end
+    records.each_with_index do |company_review, index|
       rows.push(
         serial: index + 1,
         supplier_id: company_review.company_id,
@@ -22,7 +27,8 @@ class Services::Overseers::Exporters::CompanyReviewExporter < Services::Overseer
         document: company_review.rateable_type + "[#{company_review.rateable_id}]"
       )
     end
-    export = Export.create!(export_type: 60)
+    filtered = @ids.present?
+    export = Export.create!(export_type: 60, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     generate_csv(export)
   end
 end
