@@ -22,7 +22,7 @@ class SalesInvoice < ApplicationRecord
     else
       attributes[:attachments].blank?
     end
-    }, allow_destroy: true
+  }, allow_destroy: true
 
 
 

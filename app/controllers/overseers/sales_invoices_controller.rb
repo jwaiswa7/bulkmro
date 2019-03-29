@@ -80,15 +80,15 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     def invoice_params
       params.require(:sales_invoice).permit(
 
-          :delivery_date,
-          :delivery_completed,
-          pod_rows_attributes: [
-              :id,
-              :delivery_date,
-              :sales_invoice_id,
-              :_destroy,
-              attachments: []
-          ]
-          )
+        :delivery_date,
+        :delivery_completed,
+        pod_rows_attributes: [
+            :id,
+            :delivery_date,
+            :sales_invoice_id,
+            :_destroy,
+            attachments: []
+        ]
+      )
     end
 end

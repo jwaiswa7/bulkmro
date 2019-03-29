@@ -153,13 +153,13 @@ module DisplayHelper
   end
 
   def format_boolean_with_badge(status)
-    ( if (status == 'complete')
+    (if status == 'complete'
         '<i class="far fa-check text-success"></i>'
-      elsif(status == 'partial')
+     elsif status == 'partial'
         '<i class="far fa-check text-color-dark-blue"> <span class="badge badge-color-dark-blue">Partial</span></i>'
-      else
+     else
         '<i class="far fa-times text-danger"></i>'
-      end).html_safe
+     end).html_safe
   end
 
   def format_boolean_label(true_or_false, verb = '')
