@@ -354,4 +354,14 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
       )
     end
   end
+
+  def test_total_receivable
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts_against_invoice.csv', 'seed_files')
+    paid_amount = 0
+    service.loop(nil) do |x|
+      if x.get_column('BP Code').to_i == 1541
+        paid_amount += x.get_column('Paid Amt').to_f
+      end
+    end
+  end
 end
