@@ -11,6 +11,9 @@ json.data (@activities) do |activity|
                       if activity.company_creation_request.present? && !activity.company_creation_request.company_id.present? && activity.company_creation_request.present? && policy(activity.company_creation_request).show?;
                         row_action_button(overseers_company_creation_request_path(activity.company_creation_request), 'eye', 'View Company Creation Request', 'info', :_blank)
                       end,
+                      if activity.contact_creation_request.present? && !activity.contact_creation_request.contact_id.present? && activity.contact_creation_request.present? && policy(activity.contact_creation_request).show?;
+                        row_action_button(overseers_contact_creation_request_path(activity.contact_creation_request), 'eye', 'View Contact Creation Request', 'info', :_blank)
+                      end,
                   ].join(' '),
                   activity.created_by.to_s,
                   format_date(activity.activity_date),

@@ -36,15 +36,15 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
   def create
     @activity = Activity.new(activity_params.merge(overseer: current_overseer))
-    company_creation_params = activity_params["company_creation_request_attributes"]
-    if company_creation_params["create_new_contact"] == "true"
+    company_creation_params = activity_params['company_creation_request_attributes']
+    if company_creation_params['create_new_contact'] == 'true'
       @activity.build_contact_creation_request(
         overseer: current_overseer,
-        email: company_creation_params["email"],
-        first_name: company_creation_params["first_name"],
-        last_name: company_creation_params["last_name"],
-        telephone: company_creation_params["telephone"],
-        mobile_number: company_creation_params["mobile_number"]
+        email: company_creation_params['email'],
+        first_name: company_creation_params['first_name'],
+        last_name: company_creation_params['last_name'],
+        telephone: company_creation_params['telephone'],
+        mobile_number: company_creation_params['mobile_number']
       )
     end
     authorize @activity
