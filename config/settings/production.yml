@@ -37,7 +37,7 @@ slack:
 
 sendgrid:
   username: bulk
-  password: GhgjIH4zw3p2
+  password: bdi97DHddP
   api_key: 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
   default_email: pradeep.ketkale@bulkmro.com
 
@@ -55,7 +55,7 @@ sendgrid_smtp:
   port: 587
   domain: "bulkmro.com"
   user_name: "bulk"
-  password: "GhgjIH4zw3p2"
+  password: "bdi97DHddP"
   authentication: "plain"
   enable_starttls_auto: true
 
