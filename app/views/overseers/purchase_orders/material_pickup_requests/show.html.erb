@@ -14,7 +14,7 @@
           Confirm Delivery</a>
       <% end %>
         <% if policy(@inward_dispatch).delivered? && policy(@inward_dispatch.purchase_order).can_request_invoice? %>
-        <a href="<%= new_overseers_invoice_request_path(purchase_order_id: @inward_dispatch.purchase_order, mpr_id: @inward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>
+        <a href="<%= new_overseers_invoice_request_path(purchase_order_id: @inward_dispatch.purchase_order, inward_dispatch_id: @inward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>
           Create GRPO Request</a>
       <% end %>
 
