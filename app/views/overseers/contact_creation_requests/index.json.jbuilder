@@ -1,8 +1,8 @@
 json.data (@contact_creation_requests) do |contact|
   json.array! [
                   [
-                    if !contact.contact.present? && policy(:contact).new?
-                      row_action_button(new_overseers_contact_path(ccr_id: contact.id), 'building', 'New Contact', 'success', :_blank)
+                    if !contact.contact.present? && policy(:contact).new? && contact.activity.company_id.present?
+                      row_action_button(new_overseers_contact_path(ccr_id: contact.id), 'user', 'New Contact', 'success', :_blank)
                     end,
                     if policy(contact).show?
                       row_action_button(overseers_contact_creation_request_path(contact), 'eye',  'View Contact Creation Request', 'info', :_blank)

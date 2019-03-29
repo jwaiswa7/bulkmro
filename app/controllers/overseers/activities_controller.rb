@@ -144,38 +144,38 @@ class Overseers::ActivitiesController < Overseers::BaseController
     def activity_params
       params.require(:activity).permit(
         :inquiry_id,
-          :company_id,
-          :contact_id,
-          :company_type,
-          :subject,
-          :purpose,
-          :activity_date,
-          :activity_type,
-          :points_discussed,
-          :actions_required,
-          :expenses,
-          overseer_ids: [],
-          company_creation_request_attributes: [
-              :name,
-              :email,
-              :first_name,
-              :last_name,
-              :address,
-              :account_type,
-              :telephone,
-              :mobile_number,
-              :activity_id,
-              :create_new_contact
-          ],
-          contact_creation_request_attributes: [
-              :first_name,
-              :last_name,
-              :email,
-              :phone_number,
-              :mobile_number,
-              :activity_id
-          ],
-          attachments: []
+        :company_id,
+        :contact_id,
+        :company_type,
+        :subject,
+        :purpose,
+        :activity_date,
+        :activity_type,
+        :points_discussed,
+        :actions_required,
+        :expenses,
+        overseer_ids: [],
+        company_creation_request_attributes: [
+            :name,
+            :email,
+            :first_name,
+            :last_name,
+            :address,
+            :account_type,
+            :telephone,
+            :mobile_number,
+            :activity_id,
+            :create_new_contact
+        ],
+        contact_creation_request_attributes: [
+            :first_name,
+            :last_name,
+            :email,
+            :phone_number,
+            :mobile_number,
+            :activity_id
+        ],
+        attachments: []
       )
     end
 
