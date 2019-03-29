@@ -31,7 +31,7 @@ class Services::Overseers::Finders::Banks < Services::Overseers::Finders::BaseFi
           fields: %w[code^4 name^3],
           minimum_should_match: '100%'
       }
-                                        ).order(sort_definition)
+    ).order(sort_definition)
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
@@ -42,9 +42,5 @@ class Services::Overseers::Finders::Banks < Services::Overseers::Finders::BaseFi
     end
 
     indexed_records
-  end
-
-  def sort_definition
-    { created_at: :asc }
   end
 end

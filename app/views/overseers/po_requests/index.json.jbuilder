@@ -26,7 +26,7 @@ json.data (@po_requests) do |po_request|
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
-                      elsif !po_request.status.downcase.include?('reject') && policy(po_request).can_reject?
+                      elsif po_request.status.present? && !po_request.status.downcase.include?('reject') && policy(po_request).can_reject?
                         link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
@@ -34,12 +34,15 @@ json.data (@po_requests) do |po_request|
                       end
 
                   ].join(' '),
-                  conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),
-                  status_badge(po_request.status),
+                  if po_request.po_request_type == 'Stock'
+                    conditional_link(po_request.id, overseers_inquiry_po_request_path(po_request.inquiry, po_request), policy(po_request).show?)
+                  else
+                    conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?)
+                  end,
+                  po_request.po_request_type == 'Stock' ? status_badge(po_request.stock_status) : status_badge(po_request.status),
                   conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
-                  if po_request.purchase_order.present? && (po_request.status == 'Supplier PO: Created Not Sent')
+                  if po_request.purchase_order.present? && (po_request.status == 'Supplier PO Created Not Sent' || po_request.stock_status == 'Stock Supplier PO Created')
                     link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank')
-
                   else
                     po_request.sales_order.order_number if po_request.sales_order.present?
                   end,
@@ -54,9 +57,7 @@ json.data (@po_requests) do |po_request|
                   format_date(po_request.inquiry.customer_committed_date),
                   format_date(po_request.supplier_committed_date),
                   format_date_time_meridiem(po_request.created_at),
-                  if po_request.last_comment.present?
-                    format_succinct_date(po_request.last_comment.updated_at)
-                  end,
+                  format_date_time_meridiem(po_request.updated_at),
                   status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? 'Supplier PO Sent' : 'Supplier PO: Not Sent to Supplier'),
                   if po_request.last_comment.present?
                     format_comment(po_request.last_comment, trimmed: true)

@@ -38,5 +38,5 @@ const bindRatingModalTabClick = () => {
             }
         })
     })
-}
+};
 export default bindRatingModalTabClick

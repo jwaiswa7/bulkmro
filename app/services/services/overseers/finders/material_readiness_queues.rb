@@ -12,7 +12,7 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
 
     #  @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
     indexed_records = indexed_records.filter(filter_by_array('material_status', PurchaseOrder.material_statuses.except(:'Material Delivered').values))
-    # indexed_records = indexed_records.filter(filter_by_value('po_request_status', PoRequest.statuses['Supplier PO Sent']))
+    indexed_records = indexed_records.filter(filter_by_value('po_request_status', PoRequest.statuses['Supplier PO Sent']))
     indexed_records = indexed_records.filter(filter_by_value('po_email_sent', true))
 
     if @base_filter.present?
@@ -40,7 +40,8 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
     end
 
     indexed_records = indexed_records.filter(filter_by_array('material_status', PurchaseOrder.material_statuses.except(:'Material Delivered').values))
-    indexed_records = indexed_records.filter(filter_by_value('po_request_status', PoRequest.statuses['Supplier PO Sent']))
+    indexed_records = indexed_records.filter(filter_by_value('po_request_status',filter_by_po_status))
+    indexed_records = indexed_records.filter(filter_by_value('po_email_sent', true))
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
@@ -53,6 +54,22 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
     indexed_records
   end
 
+  def filter_by_po_status
+    {
+        bool: {
+            should: [
+                {
+                    term: { po_request_status: PoRequest.statuses['Supplier PO Sent'] },
+                },
+                {
+                    term: { stock_po_status: PoRequest.stock_statuses['Stock Supplier PO Created'] }
+                }
+            ],
+            minimum_should_match: 1,
+        },
+
+    }
+  end
 
   def model_klass
     PurchaseOrder

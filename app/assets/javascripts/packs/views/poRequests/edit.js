@@ -26,14 +26,14 @@ const edit = () => {
             $('.status-rejected').find('select').val('').attr("required", false);
         }
     });
-    $('form').on('change', 'select[name*=stock_status]', function (e) {
-        if ($(e.target).val() == "Stock Rejected") {
+    $('form').on('change','select[name*=stock_status]',function(e){
+        if($(e.target).val() == "Stock Rejected"){
             $('.status-rejected').removeClass('d-none');
-            $('.status-rejected').find('select').attr("required", true);
+            $('.status-rejected').find('select').attr("required",true);
         }
-        if ($(e.target).val() != "Stock Rejected") {
+        if($(e.target).val() != "Stock Rejected"){
             $('.status-rejected').addClass('d-none');
-            $('.status-rejected').find('select').val('').attr("required", false);
+            $('.status-rejected').find('select').val('').attr("required",false);
         }
     });
     window.Parsley.on('field:error', function () {
@@ -42,6 +42,7 @@ const edit = () => {
         console.log('Validation failed for: ',
             this.$element.attr('name'));
     });
+
     $('select[name*=status]').trigger('change');
     $('select[name*=stock_status]').trigger('change');
 
