@@ -68,6 +68,7 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
           customer_product.sku = row['material_code'] || product.sku
           customer_product.brand = (Brand.find_by_name(row['brand']) if row['brand'].present?) || product.brand
           customer_product.measurement_unit = (MeasurementUnit.find_by_name(row['uom']) if row['uom'].present?) || product.measurement_unit
+          customer_product.moq =  row['moq'].to_i > 1 ? row['moq'].to_i : 1
           if row['url'].present?
             filename = row['url'].split('/').last
             attach_file(customer_product, row['url'], filename)
