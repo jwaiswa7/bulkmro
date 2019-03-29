@@ -4,6 +4,7 @@ class PoRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
   include Mixins::HasConvertedCalculations
+  include Mixins::GetOverallDate
 
   pg_search_scope :locate, against: [:id], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
@@ -26,7 +27,7 @@ class PoRequest < ApplicationRecord
   has_many :company_reviews, as: :rateable
   ratyrate_rateable 'CompanyReview'
 
-  attr_accessor :opportunity_type, :customer_committed_date, :blobs
+  attr_accessor :opportunity_type, :customer_committed_date, :blobs, :common_lead_date
 
   belongs_to :requested_by, class_name: 'Overseer', foreign_key: 'requested_by_id', required: false
   belongs_to :approved_by, class_name: 'Overseer', foreign_key: 'approved_by_id', required: false
@@ -137,6 +138,10 @@ class PoRequest < ApplicationRecord
 
   def po_margin_percentage
     (((self.buying_price - self.selling_price) / self.buying_price) * 100).round(2) if self.buying_price > 0
+  end
+
+  def show_supplier_delivery_date
+    get_overall_date(self)
   end
 
   def readable_status
