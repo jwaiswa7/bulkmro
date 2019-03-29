@@ -74,8 +74,7 @@ class InquiryStatusRecord < ApplicationRecord
   end
 
   def tat
-    # previous_status_record.present? ? distance_of_time_in_words(self.created_at - previous_status_record.created_at) : "-"
-    previous_status_record.present? ? (self.created_at.to_time.to_i - previous_status_record.created_at.to_time.to_i).abs : '-'
+    previous_status_record.present? ? (((self.created_at.to_time.to_i - previous_status_record.created_at.to_time.to_i)/60.0).ceil.abs) : '-'
   end
 
   belongs_to :inquiry
