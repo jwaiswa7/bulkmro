@@ -71,7 +71,7 @@ class Overseer < ApplicationRecord
   end
 
   def self.default
-    find_by_email('ashwin.goyal@bulkmro.com')
+    find_by_email('auditor@bulkmro.com')
   end
 
   def to_s

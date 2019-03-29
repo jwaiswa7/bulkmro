@@ -43,13 +43,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def overseers
-    Overseer.where(email: 'ashwin.goyal@bulkmro.com').first_or_create! do |overseer|
-      overseer.first_name = 'Ashwin'
-      overseer.last_name = 'Goyal'
+    Overseer.where(email: 'auditor@bulkmro.com').first_or_create! do |overseer|
+      overseer.first_name = 'Auditor'
+      overseer.last_name = ''
       overseer.role = :admin
-      overseer.username = 'ashwin.goyal'
-      overseer.password = 'abc123'
-      overseer.password_confirmation = 'abc123'
+      overseer.username = 'auditor'
+      overseer.password = 'bulkmro123'
+      overseer.password_confirmation = 'bulkmro123'
     end
 
     roles_mapping = {
