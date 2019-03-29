@@ -1409,6 +1409,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def update_purchase_orders
     # for purchase_order_callback csv
+    tax_rates = {'14' => 0, '15' => 12, '16' => 18, '17' => 28, '18' => 5}
     new_po_number = !PurchaseOrder.where(:po_number => 10000..100000).order(:po_number).last.present? ? 10000 : (PurchaseOrder.where(:po_number => 10000..100000).order(:po_number).last.po_number) + 1
     i = 0
     file = "#{Rails.root}/tmp/po_generation_status.csv"
@@ -1417,9 +1418,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     CSV.open(file, 'w', write_headers: true, headers: ['missing_po_number', "metadata_po", "reason"]) do |writer|
       service.loop(nil) do |x|
         i = i + 1
-        p '********************************************************'
-        p i
-        p x.get_column('purchase_order_number')
+        # p '********************************************************'
+        # p i
+        # p x.get_column('purchase_order_number')
+        # next if x.get_column('purchase_order_number').to_i != 3928
         if i > 0
           purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
           purchase_order_number = x.get_column('purchase_order_number')
@@ -1453,6 +1455,36 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                   else
                     # else display reason
                     writer << [x.get_column('purchase_order_number'), poNum, "with po_number #{x.get_column('purchase_order_number')} have inquiry so can not delete"]
+                  end
+                else
+                  if !right_po.rows.present?
+                    meta_data = JSON.parse(x.get_column('meta_data'))
+                    right_po.assign_attributes(metadata: meta_data, created_at: meta_data['PoDate'])
+                    meta_data['ItemLine'].each do |remote_row|
+                      right_po.rows.build do |row|
+                        row.assign_attributes(
+                            metadata: remote_row
+                        )
+                        tax = nil
+                        if remote_row['PopTaxRate'].to_i >= 14
+                          supplier = right_po.get_supplier(remote_row['PopProductId'].to_i)
+                          if supplier.present?
+                            bill_from = supplier.billing_address
+                            ship_from = supplier.shipping_address
+                            bill_to = right_po.inquiry.bill_from.try(:address)
+
+                            if bill_from.present? && ship_from.present? && bill_to.present?
+                              right_po.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
+                              row.metadata['PopTaxRate'] = tax_rates[remote_row['PopTaxRate'].to_s].to_s
+                              row.save
+                            end
+                          end
+                        end
+                        puts tax
+                        puts "\n\n"
+                      end
+                    end
+                    right_po.save!
                   end
                 end
               else
