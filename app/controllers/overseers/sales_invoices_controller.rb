@@ -49,10 +49,19 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
   def export_all
     authorize :sales_invoice
-    service = Services::Overseers::Exporters::SalesInvoicesExporter.new
+    service = Services::Overseers::Exporters::SalesInvoicesExporter.new([], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.sales_invoices.last.report)
+    redirect_to url_for(Export.sales_invoices.not_filtered.last.report)
+  end
+
+  def export_filtered_records
+    authorize :sales_invoice
+    service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer, paginate: false)
+    service.call
+
+    export_service = Services::Overseers::Exporters::SalesInvoicesExporter.new([], current_overseer, service.records.pluck(:id))
+    export_service.call
   end
 
   def export_rows
