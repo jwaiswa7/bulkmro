@@ -5,6 +5,7 @@ class Export < ApplicationRecord
 
   enum export_type: {
     inquiries: 1,
+    inquiries_tat: 2,
     products: 5,
     companies: 10,
     purchase_orders: 15,
