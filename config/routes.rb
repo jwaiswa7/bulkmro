@@ -554,6 +554,7 @@ Rails.application.routes.draw do
     resources :payment_requests do
       collection do
         get 'completed'
+        post 'update_payment_status'
       end
     end
 
