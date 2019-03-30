@@ -38,7 +38,8 @@ class PoRequest < ApplicationRecord
       'Supplier PO: Created Not Sent': 20,
       'Cancelled': 30,
       'Rejected': 40,
-      'Amend': 50,
+      'Supplier PO: Amendment': 50,
+      'Supplier PO: Amended': 70,
       'Supplier PO Sent': 60
   }
 
