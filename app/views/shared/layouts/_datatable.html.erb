@@ -87,6 +87,11 @@
         <%= yield :filter_row %>
       </tr>
     <% end %>
+    <% if content_for?(:summary_row) %>
+      <tr class="table-summary d-none d-lg-table-row text-right text-dark">
+        <%= yield :summary_row %>
+      </tr>
+    <% end %>
     </thead>
     <tbody>
     <%= yield %>
