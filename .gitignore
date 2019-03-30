@@ -37,6 +37,7 @@
 /.idea/*.xml
 
 # Misc
+/app/assets/stylesheets/shared/.sass-cache
 /public/packs
 /public/packs-test
 /node_modules
