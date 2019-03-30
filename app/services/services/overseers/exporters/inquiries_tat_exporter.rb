@@ -68,7 +68,7 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
   def fill_row(row, record)
     previous_record = record&.previous_status_record
     row[record.status] = "#{record.tat}" if record.present?
-    row["#{record.status} Date"] = record.created_at.to_date.to_s if record.present?
+    row["#{record.status} Date"] = (record.created_at).strftime('%d-%b-%Y %H:%M') if record.present?
     row = fill_row(row, previous_record) if previous_record.present?
     row
   end
