@@ -54,13 +54,8 @@
               <i class="fal fa-envelope mr-1"></i> Filtered <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
             <% end %>
           <% end %>
-          <%# if content_for?(:can_be_directly_exported_inquiry_tat) && policy(current_model.singularize.to_sym).export_inquiries_tat? %>
-<!--            <a href="<%#= [request.path, '/', 'inquiries_tat.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1">-->
-<!--              <i class="fal fa-download mr-1"></i><%#= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %> TAT-->
-<!--            </a>-->
-          <%# end %>
           <% if content_for?(:can_be_directly_exported_inquiry_tat) && policy(current_model.singularize.to_sym).export_inquiries_tat? %>
-            <%= link_to ("#{export_inquiries_tat_overseers_inquiries_path}.csv"), class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" do %>
+            <%= link_to ("#{export_inquiries_tat_overseers_inquiries_path}.csv"), class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1", 'data-badge': ([time_ago_in_words(Export.where(export_type: 2).last.created_at), "ago"].join(' ') if Export.where(export_type: 2).last.created_at.present?) do %>
               <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %> TAT
             <% end %>
           <% end %>
