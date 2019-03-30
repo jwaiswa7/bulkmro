@@ -140,6 +140,9 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     developer? && record.inquiry_products.present?
   end
 
+  def pipeline_report?
+    true
+  end
 
   def has_approved_sales_orders?
     record&.sales_orders&.remote_approved&.any?

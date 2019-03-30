@@ -221,9 +221,9 @@
             Reports
           </a>
           <div class="dropdown-menu">
-            <% Report.all.each do |report| %>
-              <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
-            <% end %>
+            <%# Report.all.each do |report| %>
+              <%= nav_dropdown_item "Pipeline", pipeline_report_overseers_inquiries_path, policy(:report).show? %>
+            <%# end %>
           </div>
         </li>
       <% end %>

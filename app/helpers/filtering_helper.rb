@@ -25,4 +25,8 @@ module FilteringHelper
 
     filter_by_date(column, from, to)
   end
+
+  def filter_by_date_range(column, date_range)
+    [column, '=', date_range].join('')
+  end
 end
