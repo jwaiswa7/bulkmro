@@ -222,8 +222,8 @@ class Overseers::InquiriesController < Overseers::BaseController
         #   @date_range = params['pipeline_report']['date_range']
         # end
 
-        temp =service.indexed_records.aggregations['inquiries_over_time']['buckets'].first
-        @indexed_pipeline_report = temp
+        @statuses = Inquiry.statuses
+        @indexed_pipeline_report = service.indexed_records.aggregations['inquiries_over_time']['buckets']
       }
     end
   end

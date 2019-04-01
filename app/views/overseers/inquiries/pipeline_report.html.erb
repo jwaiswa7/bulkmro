@@ -6,43 +6,32 @@
   </div>
 </div>
 
-<%= @indexed_pipeline_report %>
-
-<!--<div class="col-12">-->
+<div class="col-12">
   <%#= render layout: 'search_layout' do %>
-<!--     <table class="table-bordered table">-->
-<!--      <thead>-->
-<!--      <tr>-->
-<!--        <th>Month</th>-->
-        <%# @indexed_pipeline_report.statuses.each do |status| %>
-<!--          <th><%#= status.name %></th>-->
-        <%# end %>
-<!--        <th>Grand Total</th>-->
-<!--        <th>Won %</th>-->
-<!--      </tr>-->
-<!--      </thead>-->
-<!--      <tbody>-->
-      <%# @indexed_pipeline_report.entries.each do |month, entry| %>
-<!--        <tr>-->
-<!--          <td><%#= format_month(month) %></td>-->
-          <%# @data.statuses.each do |status| %>
-<!--            <td><%#= format_count(entry[status.name][:count]) %>, <%#= format_currency(entry[status.name][:value]) %></td>-->
-          <%# end %>
-<!--          <td><%#= format_count(entry[:count]) %>, <%#= format_currency(entry[:value]) %></td>-->
-<!--          <td><%#= percentage(entry[:won_count]) %>, <%#= percentage(entry[:won_value]) %></td>-->
-<!--        </tr>-->
-      <%# end %>
-      <%# @data.summary_entries.each do |month, entry| %>
-<!--        <tr>-->
-<!--          <td><%#= format_month(month) %></td>-->
-          <%# @data.statuses.each do |status| %>
-<!--            <td><%#= format_count(entry[status.name][:count]) %>, <%#= format_currency(entry[status.name][:value]) %></td>-->
-          <%# end %>
-<!--          <td><%#= format_count(entry[:count]) %>, <%#= format_currency(entry[:value]) %></td>-->
-<!--          <td><%#= percentage(entry[:won_count]) %>, <%#= percentage(entry[:won_value]) %></td>-->
-<!--        </tr>-->
-      <%# end %>
-<!--      </tbody>-->
-<!--    </table>-->
+  <table class="table-bordered table">
+    <thead>
+    <tr>
+      <th>Month</th>
+      <% @statuses.invert.each do |index, status| %>
+        <th><%= status %></th>
+      <% end %>
+      <th></th>
+      <th>Grand Total</th>
+      <th>Won %</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @indexed_pipeline_report.each do |month, record_bucket| %>
+      <tr>
+        <td><%= format_month_without_date(month) %></td>
+        <% @statuses.each do |index, status| %>
+          <td>
+              <p><%= record_bucket['pipeline']['buckets'].map{|bucket| bucket['key'] == status ? bucket['doc_count'] : nil}.compact.first %>, <%= record_bucket['pipeline']['buckets'].map{|bucket| bucket['key'] == status ? bucket['inquiry_value']['value'] : nil}.compact.first %> </p>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
   <%# end %>
-<!--</div>-->
+</div>
