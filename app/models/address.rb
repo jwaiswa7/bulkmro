@@ -65,10 +65,10 @@ class Address < ApplicationRecord
   after_initialize :set_remote_uid, if: :persisted?
 
   def set_remote_uid
-    add.update_attributes(remote_uid: Services::Resources::Shared::UidGenerator.address_uid(add)) if self.remote_uid.blank?
+    self.update_attributes(remote_uid: Services::Resources::Shared::UidGenerator.address_uid(self)) if self.remote_uid.blank?
   end
 
-  def remove_gst_whitespace02
+  def remove_gst_whitespace
     if self.gst != 'No GST Number' && self.gst != nil
       self.gst = self.gst.delete(' ')
     end
