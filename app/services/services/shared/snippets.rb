@@ -586,7 +586,6 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['sales', 'sandesh.raut@bulkmro.com'],
         ['admin', 'auditor@bulkmro.com'],
         ['sales', 'ankur.gupta@bulkmro.com'],
-        ['admin', 'prikesh.savla@bulkmro.com'],
         ['sales', 'paresh.suvarna@bulkmro.com'],
         ['outside_sales_executive', 'sandeep.saini@bulkmro.com'],
         ['sales', 'ashish.agarwal@bulkmro.com'],
