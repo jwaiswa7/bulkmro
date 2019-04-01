@@ -1,1 +1,25 @@
-<h1>Lopesh</h1>
+<% provide :container_fluid, true %>
+
+<div class="col-lg-12 mb-0">
+  <div class="page-header mb-0">
+    <h2>Inward Logistics Queue Report</h2>
+    <p>Inward Logistics Queue Report from <strong><%= format_date_without_time(Date.new(2018, 04, 01)) %></strong> to <strong><%= format_date_without_time(Date.today.end_of_day) %></strong>.</p>
+  </div>
+</div>
+
+<table class="table text-center mt-3">
+  <thead data-toggle="sticky">
+  <tr>
+    <th>Logistics Owner</th>
+    <th class="text-uppercase text-black-50">Material Not Ready</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @data.entries.each do |overseer, values| %>
+    <tr>
+      <th><%= @data.entries[overseer][:name] %></th>
+      <td><%= @data.entries[overseer][:with_material_not_ready] %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
