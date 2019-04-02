@@ -80,6 +80,11 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
                           }
                       }
                   }
+              },
+              'sum_monthly_sales': {
+                  'sum_bucket': {
+                      'buckets_path': 'pipeline>inquiry_value'
+                  }
               }
           }
       }

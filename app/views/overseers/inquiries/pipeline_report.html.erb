@@ -15,7 +15,6 @@
       <% @statuses.invert.each do |index, status| %>
         <th><%= status %></th>
       <% end %>
-      <th></th>
       <th>Grand Total</th>
       <th>Won %</th>
     </tr>
@@ -26,9 +25,10 @@
         <td><%= format_month_without_date(month) %></td>
         <% @statuses.each do |index, status| %>
           <td>
-              <p><%= record_bucket['pipeline']['buckets'].map{|bucket| bucket['key'] == status ? bucket['doc_count'] : nil}.compact.first %>, <%= record_bucket['pipeline']['buckets'].map{|bucket| bucket['key'] == status ? bucket['inquiry_value']['value'] : nil}.compact.first %> </p>
+              <%= record_bucket['pipeline']['buckets'].map{|bucket| bucket['doc_count'] if bucket['key'] == status }.compact.first || 0 %>, <%= record_bucket['pipeline']['buckets'].map{|bucket| bucket['inquiry_value']['value'] if bucket['key'] == status }.compact.first || 0 %>
           </td>
         <% end %>
+        <td><%= record_bucket['doc_count'] %>, <%= record_bucket['sum_monthly_sales']['value'] %></td>
       </tr>
     <% end %>
     </tbody>
