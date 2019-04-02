@@ -10,6 +10,8 @@ class CompanyCreationRequest < ApplicationRecord
   scope :requested, -> { where(company_id: nil) }
   scope :created, -> { where.not(company_id: nil) }
 
+  attr_accessor :create_new_contact
+
   enum account_type: {
       is_supplier: 10,
       is_customer: 20,

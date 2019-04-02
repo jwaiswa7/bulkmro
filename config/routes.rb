@@ -85,6 +85,16 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :contact_creation_requests do
+      # member do
+      #   post 'exchange_with_existing_company'
+      # end
+      collection do
+        get 'requested'
+        get 'created'
+      end
+    end
+
     resources :activities, except: [:show] do
       collection do
         get 'pending'
