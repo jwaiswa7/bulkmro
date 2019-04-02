@@ -50,6 +50,12 @@ class Report < ApplicationRecord
     end
   end
 
+  def self.inward_logistic_queue
+    where(name: 'InwardLogisticQueue').first_or_create do |report|
+      report.uid = 'inward_logistic_queue'
+    end
+  end
+
   def start_date
     start_at.to_date
   end
