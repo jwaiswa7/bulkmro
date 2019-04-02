@@ -64,8 +64,11 @@ class Overseers::PoRequestsController < Overseers::BaseController
       @sales_order.rows.each do |sales_order_row|
         @po_request.rows.where(sales_order_row: sales_order_row).first_or_initialize
       end
-      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@sales_order, current_overseer)
-      @company_reviews = service.call
+
+      authorize @po_request
+    elsif params[:stock_inquiry_id].present?
+      @inquiry = Inquiry.find(params[:stock_inquiry_id])
+      @po_request = PoRequest.new(overseer: current_overseer, inquiry: @inquiry, po_request_type: :'Stock')
 
       authorize @po_request
     else
@@ -102,7 +105,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     if @po_request.valid?
       # todo allow only in case of zero form errors
       row_updated_message = ''
-      messages = FieldModifiedMessage.for(@po_request, ['contact_email', 'contact_phone', 'contact_id', 'payment_option_id', 'bill_from_id', 'ship_from_id', 'bill_to_id', 'ship_to_id', 'status', 'supplier_po_type', 'supplier_committed_date', 'late_lead_date_reason'])
+      messages = FieldModifiedMessage.for(@po_request, ['contact_email', 'contact_phone', 'contact_id', 'payment_option_id', 'bill_from_id', 'ship_from_id', 'bill_to_id', 'ship_to_id', 'status', 'supplier_po_type', 'late_lead_date_reason'])
       @po_request.rows.each do |po_request_row|
         updated_row_fields = FieldModifiedMessage.for(po_request_row, ['quantity', 'tax_code_id', 'tax_rate_id', 'discount_percentage', 'unit_price', 'lead_time'], po_request_row.product.sku)
         row_updated_message += updated_row_fields
@@ -119,40 +122,79 @@ class Overseers::PoRequestsController < Overseers::BaseController
           if @po_request.status == 'Cancelled'
             @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}", po_request: @po_request, overseer: current_overseer)
             @po_request.purchase_order = nil
+            @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).can_reject?
+            ActiveRecord::Base.transaction do
+              if @po_request.status_changed?
+                if @po_request.status == 'Cancelled'
+                  @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}", po_request: @po_request, overseer: current_overseer)
+                  @po_request.purchase_order = nil
 
-            if @po_request.payment_request.present?
-              @po_request.payment_request.update!(status: :'Cancelled')
-              @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
+                  if @po_request.payment_request.present?
+                    @po_request.payment_request.update!(status: :'Cancelled')
+                    @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
+                  end
+
+                elsif @po_request.status == 'Rejected'
+                  @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}", po_request: @po_request, overseer: current_overseer)
+
+                else
+                  @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status}", po_request: @po_request, overseer: current_overseer)
+                end
+                @po_request.save!
+                @po_request_comment.save!
+                tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
+                @notification.send_po_request_update(
+                    tos - [current_overseer.email],
+                    action_name.to_sym,
+                    @po_request,
+                    overseers_po_request_path(@po_request),
+                    @po_request.id,
+                    @po_request_comment.message,
+                )
+              else
+                @po_request.save!
+              end
             end
 
-          elsif @po_request.status == 'Rejected'
-            @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}", po_request: @po_request, overseer: current_overseer)
+            # create_payment_request = Services::Overseers::PaymentRequests::Create.new(@po_request)
+            # create_payment_request.call
 
+            redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
           else
-            @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status}", po_request: @po_request, overseer: current_overseer)
+            render 'edit'
           end
-          @po_request.save!
-          @po_request_comment.save!
-          tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
-          @notification.send_po_request_update(
-            tos - [current_overseer.email],
-            action_name.to_sym,
-            @po_request,
-            overseers_po_request_path(@po_request),
-            @po_request.id,
-            @po_request_comment.message,
-          )
-        else
-          @po_request.save!
         end
       end
+    end
+  end
 
-      # create_payment_request = Services::Overseers::PaymentRequests::Create.new(@po_request)
-      # create_payment_request.call
+  def pending_stock_approval
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.pending_stock_po.order(id: :desc), params)
+    authorize @po_requests
 
-      redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
-    else
-      render 'edit'
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
+  def stock
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.stock_po.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
+  def completed_stock
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.completed_stock_po.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
     end
   end
 
@@ -169,7 +211,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
       tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
       @notification.send_po_request_update(
-        tos - [current_overseer.email],
+          tos - [current_overseer.email],
         action_name.to_sym,
         @po_request,
         overseers_po_request_path(@po_request),
@@ -223,8 +265,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   private
 
-    def po_request_params
-      params.require(:po_request).permit(
+  def po_request_params
+    params.require(:po_request).permit(
         :id,
         :inquiry_id,
         :sales_order_id,
@@ -244,13 +286,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :cancellation_reason,
         :rejection_reason,
         :late_lead_date_reason,
-        rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time],
-        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+        :stock_status,
+        :requested_by_id,
+        :approved_by_id,
+        :supplier_id,
+        rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time,:converted_unit_selling_price, :product_unit_selling_price, :conversion],
         attachments: []
-      )
-    end
+    )
+  end
 
-    def set_po_request
-      @po_request = PoRequest.find(params[:id])
-    end
+  def set_po_request
+    @po_request = PoRequest.find(params[:id])
+  end
 end

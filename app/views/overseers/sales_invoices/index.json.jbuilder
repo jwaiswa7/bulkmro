@@ -1,6 +1,9 @@
 json.data (@sales_invoices) do |sales_invoice|
   json.array! [
                   [
+                      if policy(sales_invoice).relationship_map?
+                        row_action_button(relationship_map_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry.to_param, sales_invoice.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
+                      end,
                       if policy(sales_invoice).show? && sales_invoice.inquiry.present?
                         [
                          row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), 'eye', 'View Sales Invoice ', 'info', :_blank),
@@ -17,15 +20,12 @@ json.data (@sales_invoices) do |sales_invoice|
                          row_action_button(url_for(sales_invoice.triplicate_invoice), 'none', sales_invoice.triplicate_invoice.filename, 'success', :_blank, 'get', false, 'T'),
                         ]
                       end,
-                      if policy(sales_invoice).edit_pod? && !sales_invoice.pod_attachment.attached?
+                      if policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count == 0)
                         row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success')
                       end,
-                      if policy(sales_invoice).edit_pod? && sales_invoice.pod_attachment.attached?
+                      if policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count > 0)
                         [
-                            if sales_invoice.pod_attachment.attached?;
-                              row_action_button(url_for(sales_invoice.pod_attachment), 'certificate', 'Download Proof of Delivery', 'dark', :_blank);
-                            end,
-                            row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info')
+                            row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info'),
                         ]
                       end,
                       if policy(sales_invoice).edit_mis_date?
@@ -42,8 +42,8 @@ json.data (@sales_invoices) do |sales_invoice|
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.inside_sales_owner.to_s : '',
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.outside_sales_owner.to_s : '',
                   format_succinct_date(sales_invoice.delivery_date),
-                  format_boolean(sales_invoice.has_attachment?),
-                  (sales_invoice.inquiry.opportunity_type if sales_invoice.inquiry.present?),
+                  format_boolean_with_badge(sales_invoice.pod_status),
+                  ((sales_invoice.inquiry.opportunity_type != 'route_through' ? 'regular' : 'route_through') if sales_invoice.inquiry.present?),
                   format_succinct_date(sales_invoice.mis_date),
                   format_succinct_date(sales_invoice.created_at)
               ]
@@ -62,7 +62,7 @@ json.columnFilters [
                        Overseer.outside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        [],
                        [{"label": 'True', "value": 1}, {"label": 'False', "value": 0}],
-                       Inquiry.opportunity_types.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       Inquiry.opportunity_types.slice('regular', 'route_through').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        [],
                    ]

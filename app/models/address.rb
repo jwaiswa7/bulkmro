@@ -6,8 +6,8 @@ class Address < ApplicationRecord
 
   include DisplayHelper
 
-  update_index('addresses#address') { self }
-  pg_search_scope :locate, against: [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode, :gst], associated_against: { state: [:name] }, using: { tsearch: { prefix: true } }
+  update_index('addresses#address') {self}
+  pg_search_scope :locate, against: [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode, :gst], associated_against: {state: [:name]}, using: {tsearch: {prefix: true}}
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company, required: false
@@ -35,15 +35,15 @@ class Address < ApplicationRecord
       un_agency_or_embassy: 60,
   }
 
-  scope :has_company_id, -> { where.not(company_id: nil) }
-  scope :with_includes, -> { includes(:state, :company) }
+  scope :has_company_id, -> {where.not(company_id: nil)}
+  scope :with_includes, -> {includes(:state, :company)}
 
   # validates_presence_of :name, :country_code, :city_name, :street1
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
   validates_presence_of :state
-  validates_uniqueness_of :remote_uid, on: :update, if: Proc.new { |address| address.company_id.present? }
-  validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> { self.gst != 'No GST Number' }
+  validates_uniqueness_of :remote_uid, on: :update, if: Proc.new {|address| address.company_id.present?}
+  validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> {self.gst != 'No GST Number'}
   # validates_presence_of :remote_uid
 
   validates_with FileValidator, attachment: :gst_proof, file_size_in_megabytes: 2
@@ -105,6 +105,10 @@ class Address < ApplicationRecord
         street2,
         [city_name, pincode, state.to_s, country_name].reject(&:blank?).join(', ')
     ].reject(&:blank?).join('<br>').html_safe
+  end
+
+  def footer
+    [city_name, pincode, state.to_s, country_name].reject(&:blank?).join(', ').html_safe
   end
 
   def validate_gst

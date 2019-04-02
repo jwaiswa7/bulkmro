@@ -13,7 +13,6 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
     if @status.present?
       indexed_records = indexed_records.filter(filter_by_value(:status, @status))
     end
-
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -33,7 +32,7 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
   end
 
   def perform_query(query_string)
-    indexed_records = index_klass.query(multi_match: {query: query_string, operator: 'and', fields: %w[invoice_number_string^3 sales_order_number_string account_string company_string^4 status_string inquiry_number_string inside_sales_owner outside_sales_owner]}).order(sort_definition)
+    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[invoice_number_string^3 cp_po_number_s  sales_order_number_string account_string company_string^4 status_string inquiry_number_string inside_sales_owner outside_sales_owner] }).order(sort_definition)
 
     indexed_records = indexed_records.filter(filter_by_value('inquiry_present', true))
 
@@ -64,8 +63,7 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
   end
 
   def pod_dashboard_aggregation(indexed_records)
-    indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('invoice_over_time',  :mis_date, 'month', true))
-    indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('pod_over_time',  :pod_created_at, 'month', true))
+    indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('invoice_over_time',  :invoice_created_at, 'month', true))
     indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('regular_pod_over_time',  :regular_pod, 'month', true))
     indexed_records = indexed_records.aggregations(aggregate_using_date_histogram('route_through_pod_over_time',  :route_through_pod, 'month', true))
     indexed_records

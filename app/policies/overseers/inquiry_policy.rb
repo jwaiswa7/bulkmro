@@ -63,6 +63,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def export_inquiries_tat?
+    developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
+  end
+
   def create_excel_import?
     new_excel_import?
   end
@@ -89,6 +93,15 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def sales_orders?
     edit? && record.sales_orders.present?
+  end
+
+
+  def has_approved_sales_orders?
+    record&.sales_orders&.remote_approved&.any?
+  end
+
+  def has_no_approved_sales_orders?
+    !has_approved_sales_orders?
   end
 
   def calculation_sheet?
@@ -132,6 +145,18 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
 
+  def has_approved_sales_orders?
+    record&.sales_orders&.remote_approved&.any?
+  end
+
+  def restrict_fields_on_completed_orders?
+    has_approved_sales_orders? && !admin?
+  end
+
+  def has_no_approved_sales_orders?
+    !has_approved_sales_orders?
+  end
+
   def new_freight_request?
     !record.freight_request.present? && !logistics?
   end
@@ -142,6 +167,18 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def create_purchase_orders_requests?
     developer? || sales? || admin?
+  end
+
+  def kra_report?
+    manager_or_sales? || admin?
+  end
+
+  def kra_report_per_sales_owner?
+    manager_or_sales? || admin?
+  end
+
+  def export_kra_report?
+    manager_or_sales? || admin?
   end
 
   class Scope

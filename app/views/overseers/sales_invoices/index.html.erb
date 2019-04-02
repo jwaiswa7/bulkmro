@@ -2,6 +2,7 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
+<% provide :can_be_directly_exported_filtered_records, true %>
 
 <% provide :heading_buttons do %>
   <div class="btn-group">
@@ -13,6 +14,7 @@
       <a class="dropdown-item" href="<%= export_rows_overseers_sales_invoices_path(format: :csv) %>">Sales Invoice Rows</a>
     </div>
   </div>
+
 <% end %>
 
 <div class="col-lg-12">
@@ -37,7 +39,7 @@
     <th class="no-sort desktop" data-name="outside_sales_executive" data-toggle="tooltip" title="Outside Sales & Procurement">OS Owner</th>
     <th class="no-sort desktop">Proof of Delivery</th>
     <th class="no-sort desktop" data-name="is_pod">POD</th>
-    <th class="no-sort desktop" data-name="opportunity_type">Opportunity Type</th>
+    <th class="no-sort desktop" data-name="pod_type">POD Type</th>
     <th class="sort desktop text-right" data-name="mis_date">Invoice Date</th>
     <th class="sort desktop text-right" data-name="created_at">Created At</th>
   <% end %>

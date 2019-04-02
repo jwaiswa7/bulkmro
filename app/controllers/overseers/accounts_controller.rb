@@ -20,6 +20,11 @@ class Overseers::AccountsController < Overseers::BaseController
     authorize @accounts
   end
 
+  def autocomplete_supplier
+    @accounts = ApplyParams.to(Account.all.where(account_type: 'is_supplier'), params)
+    authorize @accounts
+  end
+
   def new
     @account = Account.new(overseer: current_overseer)
     authorize @account
@@ -57,6 +62,22 @@ class Overseers::AccountsController < Overseers::BaseController
     else
       render 'edit'
     end
+  end
+
+  def payment_collections
+    @accounts = ApplyDatatableParams.to(Account.all.order(:name), params)
+    authorize :account
+    service = Services::Overseers::SalesInvoices::PaymentDashboard.new()
+    service.call
+    @summery_data = service.summery_data
+  end
+
+  def ageing_report
+    @accounts = ApplyDatatableParams.to(Account.all.order(:name), params)
+    authorize :account
+    service = Services::Overseers::SalesInvoices::AgeingReport.new()
+    service.call
+    @summery_data = service.summery_data
   end
 
   private

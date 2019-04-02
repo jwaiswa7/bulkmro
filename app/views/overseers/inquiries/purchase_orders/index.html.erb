@@ -6,6 +6,7 @@
     <% content_for :header_row do %>
       <th class="no-sort"></th>
       <th class="no-sort desktop text-right"># PO </th>
+      <th class="no-sort desktop">Supplier Name</th>
       <th>Status</th>
       <th class="no-sort desktop text-right">Line Items</th>
       <th class="no-sort desktop text-right">Created At</th>
@@ -15,6 +16,7 @@
       <% @purchase_orders.each do |purchase_order| %>
         <tr>
           <td>
+            <%= row_action_button(relationship_map_overseers_inquiry_purchase_order_path(@inquiry.to_param, purchase_order.to_param), 'sitemap', 'Relationship Map', 'info', :_blank) %>
             <% if policy(purchase_order).show? %>
               <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, purchase_order), 'eye', 'View Purchase Order ', 'info') %>
               <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
@@ -25,6 +27,7 @@
             <% end %>
           </td>
           <td><%= purchase_order.po_number %></td>
+          <td><%= purchase_order.supplier.name %></td>
           <td><%= purchase_order.status || purchase_order.metadata_status  %></td>
           <td><%= purchase_order.rows.size %></td>
           <td><%= format_date(purchase_order.created_at) %></td>

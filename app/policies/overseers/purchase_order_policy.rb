@@ -41,15 +41,15 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
-  def new_inward_dispatch?
+  def new_pickup_request?
     (record.rows.sum(&:get_pickup_quantity) > 0) && record.followup_date.present?
   end
 
-  def inward_dispatch_pickup_queue?
+  def material_pickup_queue?
     edit?
   end
 
-  def inward_dispatch_delivered_queue?
+  def material_delivered_queue?
     edit?
   end
 
@@ -65,11 +65,19 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     admin? || logistics?
   end
 
-  def update_logistics_owner_for_inward_dispatches?
+  def update_logistics_owner_for_pickup_requests?
     admin? || logistics?
   end
 
   def search_or_create?
     manager_or_sales? || logistics?
+  end
+
+  def relationship_map?
+    edit?
+  end
+
+  def get_relationship_map_json?
+    relationship_map?
   end
 end

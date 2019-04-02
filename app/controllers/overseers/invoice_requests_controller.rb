@@ -33,7 +33,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @invoice_over_month = service.invoice_over_month
     @regular_pod_over_month = service.regular_pod_over_month
     @route_through_pod_over_month = service.route_through_pod_over_month
-    @pod_over_month = @regular_pod_over_month.merge(@route_through_pod_over_month) { |key, regular_value, route_through_value| regular_value['doc_count'] + route_through_value['doc_count']}
+    @pod_over_month = @regular_pod_over_month.merge(@route_through_pod_over_month) {|key, regular_value, route_through_value| regular_value['doc_count'] + route_through_value['doc_count']}
     #####################################################################################################
 
     respond_to do |format|
@@ -73,8 +73,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_requests
 
     respond_to do |format|
-      format.json { render 'index' }
-      format.html { render 'index' }
+      format.json {render 'index'}
+      format.html {render 'index'}
     end
   end
 
@@ -106,8 +106,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @inward_dispatches_ids = params[:ids].present? ? params[:ids] : InwardDispatch.decode_id(params[:inward_dispatch_id])
 
       authorize @invoice_request
-      if params[:mpr_id] || params[:ids]
-        if params[:mpr_id]
+      if params[:inward_dispatch_id] || params[:ids]
+        if params[:inward_dispatch_id]
           @invoice_request.inward_dispatches << InwardDispatch.find(@inward_dispatches_ids)
         else
           @invoice_request.inward_dispatches << InwardDispatch.where(id: @inward_dispatches_ids)
@@ -154,6 +154,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def update
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
     authorize @invoice_request
+
     if @invoice_request.valid?
       service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
       service.call
@@ -187,24 +188,25 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     def invoice_request_params
       params.require(:invoice_request).permit(
         :id,
-        :inquiry_id,
-        :sales_order_id,
-        :grpo_number,
-        :ap_invoice_number,
-        :shipment_number,
-        :ar_invoice_number,
-        :purchase_order_id,
-        :status,
-        :inward_dispatch_ids,
-        :grpo_rejection_reason,
-        :grpo_other_rejection_reason,
-        :grpo_cancellation_reason,
-        :ap_rejection_reason,
-        :ap_cancellation_reason,
-        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-        attachments: [],
+          :inquiry_id,
+          :sales_order_id,
+          :grpo_number,
+          :ap_invoice_number,
+          :shipment_number,
+          :ar_invoice_number,
+          :purchase_order_id,
+          :status,
+          :inward_dispatch_ids,
+          :grpo_rejection_reason,
+          :grpo_other_rejection_reason,
+          :grpo_cancellation_reason,
+          :ap_rejection_reason,
+          :ap_cancellation_reason,
+          comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+          attachments: []
       )
     end
+
     def set_invoice_request
       @invoice_request = InvoiceRequest.find(params[:id])
     end

@@ -17,6 +17,9 @@
       <% @sales_invoices.each do |sales_invoice| %>
         <tr>
           <td>
+            <% if policy(sales_invoice).relationship_map? %>
+              <%= row_action_button(relationship_map_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry.to_param, sales_invoice.to_param), 'sitemap', 'Relationship Map', 'info', :_blank) %>
+            <% end %>
             <% if policy(sales_invoice).show_original_invoice? %>
               <%= row_action_button(url_for(sales_invoice.original_invoice), 'none', sales_invoice.original_invoice.filename, 'success', :_blank, 'get', false, 'O') %>
               <%= row_action_button(url_for(sales_invoice.duplicate_invoice), 'none', sales_invoice.duplicate_invoice.filename, 'success', :_blank, 'get', false, 'D') %>
@@ -32,13 +35,10 @@
             <% if policy(sales_invoice).edit_mis_date? %>
               <%= row_action_button(edit_mis_date_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice), 'calendar-alt', 'Update MIS Date', 'success') %>
             <% end %>
-            <% if policy(sales_invoice).edit_pod? && !sales_invoice.pod_attachment.attached? %>
+            <% if policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count == 0) %>
               <%= row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success') %>
             <% end %>
-            <% if policy(sales_invoice).edit_pod? && sales_invoice.pod_attachment.attached? %>
-              <% if sales_invoice.pod_attachment.attached? %>
-                <%= row_action_button(url_for(sales_invoice.pod_attachment), 'certificate', 'Download Proof of Delivery', 'dark', :_blank) %>
-              <% end %>
+            <% if policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count > 0) %>
               <%= row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info') %>
             <% end %>
           </td>

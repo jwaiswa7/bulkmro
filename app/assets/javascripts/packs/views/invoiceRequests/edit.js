@@ -18,29 +18,25 @@ const edit = () => {
         $(".invoice_request_ap_rejection_reason, .invoice_request_ap_cancellation_reason ").addClass('d-none')
         $(".invoice_request_ap_rejection_reason, .invoice_request_ap_cancellation_reason ").find('input').prop('required',false)
 
+        // for hide and show other rejection reson while selecting grpo rejection reason
+
         switch(val) {
             case 'GRPO Request Rejected':
-                $(".invoice_request_grpo_rejection_reason").removeClass('d-none');
-                $(".invoice_request_grpo_rejection_reason").find('input').prop('required',true);
+                onStatusChange('invoice_request_grpo_rejection_reason')
                 break;
             case 'AP Invoice Request Rejected':
-                $(".invoice_request_ap_rejection_reason").removeClass('d-none');
-                $(".invoice_request_ap_rejection_reason").find('input').prop('required',true);
+                onStatusChange('invoice_request_ap_rejection_reason')
                 break;
             case 'Cancelled GRPO':
-                $(".invoice_request_grpo_cancellation_reason").removeClass('d-none');
-                $(".invoice_request_grpo_cancellation_reason").find('input').prop('required',true);
+                onStatusChange('invoice_request_grpo_cancellation_reason')
                 break;
             case 'Cancelled AP Invoice':
-                $(".invoice_request_ap_cancellation_reason").removeClass('d-none');
-                $(".invoice_request_ap_cancellation_reason").find('input').prop('required',true);
+                onStatusChange('invoice_request_ap_cancellation_reason')
                 break;
             default:
         }
-
     })
 
-    // for hide and show other rejection reson while selecting grpo rejection reason
 
     $('[name="invoice_request[grpo_rejection_reason]"]').unbind().bind('change', function(){
         let val = $(this).val()
@@ -86,5 +82,11 @@ const edit = () => {
     })
 
 };
+
+let onStatusChange = (selector) => {
+    $("."+selector).removeClass('d-none');
+    $("."+selector).find('select').prop('required',true);
+    $("."+selector).find('input').prop('required',true);
+}
 
 export default edit

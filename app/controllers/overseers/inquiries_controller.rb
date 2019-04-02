@@ -21,6 +21,58 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def kra_report
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
+        service.call
+
+        if params['kra_report'].present?
+          @date_range = params['kra_report']['date_range']
+        end
+
+        @indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
+      end
+    end
+  end
+
+  def kra_report_per_sales_owner
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
+        service.call
+
+        @indexed_inquiries = service.indexed_records
+        @inquiries = service.records
+      end
+    end
+  end
+
+  def export_kra_report
+    authorize :inquiry
+    service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
+    service.call
+
+    indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
+
+    if params['kra_report'].present?
+      date_range = params['kra_report']['date_range']
+    else
+      date_range = 'Overall'
+    end
+
+    export_service = Services::Overseers::Exporters::KraReportsExporter.new([], current_overseer, indexed_kra_reports, date_range)
+    export_service.call
+
+    redirect_to url_for(Export.kra_report.not_filtered.last.report)
+  end
+
   def export_all
     authorize :inquiry
     service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, [])
@@ -34,8 +86,17 @@ class Overseers::InquiriesController < Overseers::BaseController
     service = Services::Overseers::Finders::Inquiries.new(params, current_overseer, paginate: false)
     service.call
 
-    export_service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, service.records.pluck(:id))
+    export_service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, service.records)
     export_service.call
+  end
+
+  def export_inquiries_tat
+    authorize :inquiry
+    service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, [])
+    service.call
+    export = Export.inquiries_tat.not_filtered.last
+    export_report = export.report if export.present?
+    export_report.present? ? redirect_to(url_for(export_report)) : redirect_to(overseers_inquiries_path, notice: 'Inquiries TAT download failed!')
   end
 
   def index_pg
@@ -188,9 +249,11 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def get_relationship_map_json
     authorize @inquiry
-    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes).call
+    purchase_order = PurchaseOrder.includes(po_request: :sales_order).where(inquiry_id: @inquiry).where(po_requests: {id: nil}, sales_orders: {id: nil})
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes, purchase_order).call
     render json: {data: inquiry_json}
   end
+
   def create_purchase_orders_requests
     @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
     authorize @inquiry

@@ -34,18 +34,21 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   end
 
   def edit_pod?
-    record.persisted?
+    record.persisted? && record.status != 'Cancelled'
   end
 
   def update_pod?
     edit_pod?
   end
 
-  def show_pending_ap_invoice_queue?
-    index? && (admin? || accounts?)
-  end
-
   def search_or_create?
     manager_or_sales? || logistics?
+  end
+  def relationship_map?
+    all_roles?
+  end
+
+  def get_relationship_map_json?
+    relationship_map?
   end
 end

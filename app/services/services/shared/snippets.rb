@@ -584,7 +584,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['sales', 'nilesh.desai@bulkmro.com'],
         ['sales', 'vignesh.gounder@bulkmro.com'],
         ['sales', 'sandesh.raut@bulkmro.com'],
-        ['admin', 'ashwin.goyal@bulkmro.com'],
+        ['admin', 'auditor@bulkmro.com'],
         ['sales', 'ankur.gupta@bulkmro.com'],
         ['admin', 'prikesh.savla@bulkmro.com'],
         ['sales', 'paresh.suvarna@bulkmro.com'],
@@ -592,7 +592,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['sales', 'ashish.agarwal@bulkmro.com'],
         ['sales', 'gitesh.ganekar@bulkmro.com'],
         ['outside_sales_executive', 'chirag.arora@bulkmro.com'],
-        ['admin', 'amit.goyal@bulkmro.com'],
+        ['admin', 'bhargav.trivedi@bulkmro.com'],
         ['procurement', 'priyanka.rajpurkar@bulkmro.com'],
         ['inside_sales_executive', 'yash.gajjar@bulkmro.com'],
         ['outside_sales_executive', 'vinayak.degwekar@bulkmro.com'],
@@ -985,6 +985,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       inquiry.update_attribute(:last_synced_quote_id, inquiry.final_sales_quote.id) if inquiry.final_sales_quote.present?
     end
   end
+
   def update_sales_quote_remote_uid
     inquiries = Inquiry.where.not(last_synced_quote_id: nil)
     Inquiry.where.not(last_synced_quote_id: nil).each do |inquiry|
@@ -995,8 +996,8 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   def add_completed_po_to_material_followup_queue
     PurchaseOrder.all.where(created_at: Date.new(2019, 03, 05).beginning_of_day..Date.new(2019, 03, 06).end_of_day).each do |purchase_order|
       if purchase_order.po_request.present?
-        if purchase_order.po_request != 'Supplier PO: Created Not Sent'
-          purchase_order.po_request.assign_attributes(status: 'Supplier PO: Created Not Sent')
+        if purchase_order.po_request != 'PO Created'
+          purchase_order.po_request.assign_attributes(status: 'PO Created')
           purchase_order.po_request.save(validate: false)
         end
 
@@ -1020,19 +1021,6 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         end
       else
         puts "po request not available for #{purchase_order.po_number}"
-      end
-    end
-  end
-
-  def update_po_status_to_supplier_po_sent
-    purchase_order_ids = EmailMessage.where(email_type: EmailMessage.email_types['Sending PO to Supplier']).pluck(:purchase_order_id)
-    if purchase_order_ids.present?
-      po_requests = PoRequest.where(purchase_order_id: purchase_order_ids, status: PoRequest.statuses['PO Created'])
-      if po_requests.present?
-        po_requests.each do |po_request|
-          po_request.status = PoRequest.statuses['Supplier PO Sent']
-          po_request.save!
-        end
       end
     end
   end

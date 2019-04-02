@@ -1,6 +1,7 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_directly_exported, true %>
 <% provide :can_be_directly_exported_filtered_records, true %>
+<% provide :can_be_directly_exported_inquiry_tat, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
@@ -11,8 +12,8 @@
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="sort all text-right" data-name="inquiry_number">Inquiry</th>
-  <th class="no-sort desktop text-right">Sales Orders</th>
-  <th class="no-sort desktop text-right">Sales Invoices</th>
+  <th class="no-sort desktop">Sales Orders</th>
+  <th class="no-sort desktop">Sales Invoices</th>
   <th class="no-sort all" data-name="status">Status</th>
   <th class="no-sort desktop" data-name="account_id">Account</th>
   <th class="no-sort desktop" data-name="company_id">Company</th>

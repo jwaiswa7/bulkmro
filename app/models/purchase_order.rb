@@ -3,7 +3,7 @@ class PurchaseOrder < ApplicationRecord
 
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
-  update_index('purchase_orders#purchase_order') {self}
+  # update_index('purchase_orders#purchase_order') {self}
 
   pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
 
@@ -19,14 +19,14 @@ class PurchaseOrder < ApplicationRecord
   has_one :po_request
   has_one :payment_request
   has_one :invoice_request
-  has_many :inward_dispatches
+  has_many :material_pickup_requests
   has_many :email_messages
   has_many :products, through: :rows
 
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
   has_many_attached :attachments
 
-  scope :with_includes, -> {includes(:inquiry, :po_request)}
+  scope :with_includes, -> {includes(:inquiry, :po_request, :company)}
   scope :supplier_email_sent, -> { joins(:email_messages).where(email_messages: { email_type: 'Sending PO to Supplier' })}
 
   def filename(include_extension: false)
@@ -75,6 +75,12 @@ class PurchaseOrder < ApplicationRecord
       'Material Partially Delivered': 35
   }
 
+  enum transport_mode: {
+      'Road': 1,
+      'Air': 2,
+      'Sea': 3
+  }
+
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
   scope :material_pickup_queue, -> {where(material_status: :'Material Pickedup')}
   scope :material_delivered_queue, -> {where(material_status: :'Material Delivered')}
@@ -107,9 +113,13 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def get_supplier(product_id = nil)
+    if company.present?
+      return company
+    end
+
     if self.metadata['PoSupNum'].present?
       product_supplier = (Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']))
-      return product_supplier if self.inquiry.suppliers.include?(product_supplier) || self.is_legacy?
+      return product_supplier
     end
 
     if self.inquiry.final_sales_quote.present?
@@ -119,6 +129,7 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def supplier
+    return company if company.present?
     return po_request.supplier if po_request.present?
     return get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
   end
@@ -152,6 +163,10 @@ class PurchaseOrder < ApplicationRecord
     (rows.map {|row| row.total_selling_price_with_tax || 0}.sum.round(2)) + self.metadata['LineTotal'].to_f + self.metadata['TaxSum'].to_f
   end
 
+  def calculated_total_without_tax
+    (rows.map {|row| row.total_selling_price || 0}.sum.round(2)) + self.metadata['LineTotal'].to_f
+  end
+
   def warehouse
     if metadata['PoTargetWarehouse'].present?
       Warehouse.find_by(remote_uid: metadata['PoTargetWarehouse'].to_i)
@@ -180,15 +195,16 @@ class PurchaseOrder < ApplicationRecord
   def po_date
     self.metadata['PoDate'].to_date if valid_po_date?
   end
+
   def update_material_status
-    if self.inward_dispatches.any?
+    if self.material_pickup_requests.any?
       partial = true
       if self.rows.sum(&:get_pickup_quantity) <= 0
         partial = false
       end
-      if 'Material Pickup'.in? self.inward_dispatches.map(&:status)
+      if 'Material Pickup'.in? self.material_pickup_requests.map(&:status)
         status = partial ? 'Material Partially Pickedup' : 'Material Pickedup'
-      elsif 'Material Delivered'.in? self.inward_dispatches.map(&:status)
+      elsif 'Material Delivered'.in? self.material_pickup_requests.map(&:status)
         status = partial ? 'Material Partially Delivered' : 'Material Delivered'
       end
       self.update_attribute(:material_status, status)

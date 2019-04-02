@@ -178,6 +178,33 @@
             sales@bulkmro.com</font></td>
       </tr>
     </table>
+  <% elsif (record.remote_uid.present?) %>
+    <table style="width: 100%;" cellspacing="0" border="0">
+      <tr>
+        <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
+          <font color="#f58220">Bulk MRO Industrial Supply Pvt. Ltd.</font></td>
+      </tr>
+      <tr>
+        <td style="text-align: center;"><font color="#000000">
+          <%= record.address.street1 %>  <%= record.address.street2 %>
+        </font></td>
+      </tr>
+      <tr>
+        <td style="text-align: center;"><font color="#000000">
+          <%= record.address.footer %>
+        </font></td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">
+          <font style="position: relative;top: -5px;" color="#000000">Telephone: <%= record.address.telephone || '+91-22-4921-4921' %>
+            <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Website:
+            www.bulkmro.com
+            <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Email:
+            sales@bulkmro.com</font></td>
+      </tr>
+    </table>
+
+
   <% else %>
     <table style="width: 100%;" cellspacing="0" border="0">
       <tr>

@@ -37,7 +37,7 @@ const validatePoRequestAddresses = () => {
         }
     });
 
-    disableBackdateOption($('.supplier-committed-date'));
+    disableBackdateOption($('.supplier-committed-date'), false);
 
     disableBackdateOption($('.lead-time'));
     $('body').on("fields_added.nested_form_fields", function (e, params) {

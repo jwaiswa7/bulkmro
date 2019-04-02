@@ -34,10 +34,17 @@
   "version": "1.0.0",
   "description": "b2b industrial supplies",
   "main": "index.js",
-  "author": "Ashwin G <ashwin.goyal@bulkmro.com>, Amit G <amit.goyal@bulkmro.com>, Prikesh S <prikesh.savla@bulkmro.com>",
+  "author": "Prikesh S <prikesh.savla@bulkmro.com>",
   "license": "MIT",
   "devDependencies": {
     "jshint": "^2.10.1",
-    "webpack-dev-server": "2.11.2"
+    "webpack-dev-server": "2.11.2",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-connect": "^5.5.0",
+    "gulp-util": "^3.0.8"
+  },
+  "scripts": {
+    "prefix": "gulp prefix"
   }
 }

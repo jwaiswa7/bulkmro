@@ -27,7 +27,7 @@ import customerProducts from "./customerProducts/init";
 import kits from "./kits/init";
 import freightRequests from "./freightRequests/init";
 import freightQuotes from "./freightQuotes/init";
-import inwardDispatches from "./inwardDispatches/init";
+import materialPickupRequests from "./materialPickupRequests/init";
 
 // Sales Invoices
 import salesInvoices from "./salesInvoices/init";
@@ -51,9 +51,14 @@ import poRequests from "./poRequests/init";
 import activities from './activities/init'
 
 import companies from './companies/init'
+import suppliers from  './suppliers/init'
+
+import companyReviews from './companyReviews/init'
 
 // Document Creation
 import documentCreations from "./documentCreations/init";
+
+import checkout from "./checkout/init";
 
 let loader = {
     imports: imports,
@@ -67,7 +72,7 @@ let loader = {
     kits: kits,
     freightRequests: freightRequests,
     freightQuotes: freightQuotes,
-    inwardDispatches: inwardDispatches,
+    materialPickupRequests: materialPickupRequests,
     salesInvoices: salesInvoices,
     salesShipments: salesShipments,
     purchaseOrders: purchaseOrders,
@@ -76,7 +81,10 @@ let loader = {
     poRequests: poRequests,
     activities: activities,
     companies: companies,
-    documentCreations: documentCreations
+    suppliers: suppliers,
+    companyReviews: companyReviews,
+    documentCreations: documentCreations,
+    checkout: checkout
 };
 
 // Imports

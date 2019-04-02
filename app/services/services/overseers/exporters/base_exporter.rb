@@ -8,8 +8,11 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       range = args[0].split('~')
       @start_at = range[0].strip.to_date
       @end_at = range[1].strip.to_date.end_of_day
+    elsif args[2].present? && args[3].present?
+      @indexed_records = args[2]
+      @date_range = args[3]
     elsif args[2].present?
-      @ids = args[2]
+      @ids = args[2].pluck(:id).uniq
     end
     @rows = []
   end
@@ -31,7 +34,7 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       temp_file.close
       object.report.attach(io: File.open(temp_file.path), filename: filename)
       object.save!
-      if @ids.present?
+      if object.filtered
         ExportMailer.export_filtered_records(object, @overseer).deliver_now
       end
     rescue => ex
