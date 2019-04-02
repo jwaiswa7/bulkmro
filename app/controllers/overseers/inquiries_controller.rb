@@ -44,7 +44,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     service.call
     export = Export.inquiries_tat.not_filtered.last
     export_report = export.report if export.present?
-    export_report.present? ? redirect_to(url_for(export_report)) : redirect_to(overseers_inquiries_path, notice: "Inquiries TAT download failed!")
+    export_report.present? ? redirect_to(url_for(export_report)) : redirect_to(overseers_inquiries_path, notice: 'Inquiries TAT download failed!')
   end
 
   def index_pg
