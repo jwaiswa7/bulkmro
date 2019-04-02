@@ -94,8 +94,9 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize :inquiry
     service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, [])
     service.call
-    report = Export.inquiries_tat.not_filtered.where(export_type: 2).last.report
-    redirect_to url_for(report)
+    export = Export.inquiries_tat.not_filtered.last
+    export_report = export.report if export.present?
+    export_report.present? ? redirect_to(url_for(export_report)) : redirect_to(overseers_inquiries_path, notice: 'Inquiries TAT download failed!')
   end
 
   def index_pg
