@@ -27,7 +27,7 @@ class PurchaseOrder < ApplicationRecord
   has_many_attached :attachments
 
   scope :with_includes, -> {includes(:inquiry, :po_request)}
-  scope :supplier_email_sent, ->{ joins(:email_messages).where(email_messages: { email_type: 'Sending PO to Supplier' } )}
+  scope :supplier_email_sent, -> { joins(:email_messages).where(email_messages: { email_type: 'Sending PO to Supplier' })}
 
   def filename(include_extension: false)
     [
