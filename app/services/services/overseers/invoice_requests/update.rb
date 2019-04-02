@@ -10,13 +10,11 @@ class Services::Overseers::InvoiceRequests::Update < Services::Shared::BaseServi
 
     ActiveRecord::Base.transaction do
       if @invoice_request.status_changed?
-
         if @invoice_request.grpo_number_changed?
           @invoice_request_comment = InvoiceRequestComment.new(message: "GRPO Number Changed: #{@invoice_request.grpo_number}; Status changed: #{@invoice_request.status}", invoice_request: @invoice_request, overseer: current_overseer)
         end
 
         status_changed(@invoice_request)
-
         @invoice_request.save!
         @invoice_request_comment.save!
       elsif @invoice_request.grpo_rejection_reason_changed? && @invoice_request.grpo_rejection_reason != 'Others'
@@ -27,6 +25,11 @@ class Services::Overseers::InvoiceRequests::Update < Services::Shared::BaseServi
         @invoice_request_comment.save!
       else
         @invoice_request.save!
+      end
+
+      messages = FieldModifiedMessage.for(@invoice_request, message_fields(@invoice_request))
+      if messages.present?
+        @invoice_request.comments.create(message: messages, overseer: current_overseer)
       end
     end
   end
@@ -56,4 +59,8 @@ class Services::Overseers::InvoiceRequests::Update < Services::Shared::BaseServi
 
   private
     attr_accessor :invoice_request, :current_overseer
+
+    def message_fields(object)
+      object.attributes.keys - %w(id sales_order_id inquiry_id purchase_order_id created_by_id updated_by_id created_at updated_at grpo_rejection_reason grpo_other_rejection_reason grpo_cancellation_reason ap_rejection_reason ap_cancellation_reason status)
+    end
 end

@@ -205,6 +205,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
           attachments: [],
       )
     end
+
     def set_invoice_request
       @invoice_request = InvoiceRequest.find(params[:id])
     end
