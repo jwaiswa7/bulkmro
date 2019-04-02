@@ -34,7 +34,7 @@ json.data (@purchase_orders) do |purchase_order|
                   (purchase_order.po_request.sales_order.order_number if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
                   (format_succinct_date(purchase_order.po_request.inquiry.customer_committed_date) if purchase_order.po_request.present?),
                   purchase_order.inquiry.inside_sales_owner.to_s,
-                  (purchase_order.logistics_owner.full_name if purchase_order.logistics_owner.present?),
+                  (purchase_order.logistics_owner.present? ? purchase_order.logistics_owner.full_name : 'Unassigned'),
                   format_succinct_date(purchase_order.followup_date),
                   format_succinct_date(purchase_order.revised_supplier_delivery_date),
                   (purchase_order.payment_request.present? ? status_badge(purchase_order.payment_request.status) : status_badge('Payment Request: Pending')),
