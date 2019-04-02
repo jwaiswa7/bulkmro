@@ -10,7 +10,7 @@ class PoRequestRow < ApplicationRecord
 
   # has_one :product, :through => :sales_order_row
 
-  belongs_to :product, required: false
+  belongs_to :product, validate: false
   belongs_to :tax_code, required: false
   belongs_to :tax_rate, required: false
   belongs_to :measurement_unit, required: false
