@@ -12,7 +12,7 @@
               <div class="card-body px-3 pt-3 pb-3">
                 <div class="text-center d-flex flex-column h-100">
                   <p class="mb-1 text-small">
-                    <a href="<%= status_record_overseers_inward_logistics_queue_report_path(status: title.first) %>"><strong><%= title.first.to_s == "with_inward_pending" ? "Delivered : GRPO Pending".upcase : title.first.to_s.humanize.remove("With").upcase %></strong></a>
+                    <a href="#"><strong><%= title.first.to_s == "with_inward_pending" ? "Delivered : GRPO Pending".upcase : title.first.to_s.humanize.remove("With").upcase %></strong></a>
                   </p>
                   <h5 class="mb-0 mt-auto text-<%= index == @data.summary_box_data.size - 1 ? "warning" : "success" %>"><%= @data.summary_box_data[title.first] %></h5>
                 </div>
