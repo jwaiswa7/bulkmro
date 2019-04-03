@@ -71,7 +71,7 @@
 
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :logistics_owner, collection: Overseer.logistics.alphabetical, include_blank: true, input_html: {class: "select2-single"}, label: "Logistics Owner" %>
+        <%= f.association :logistics_owner, required: false , collection: Overseer.logistics.alphabetical, include_blank: 'Select a Logistics Owner', input_html: {class: "select2-single"}%>
       </div>
     </div>
 
