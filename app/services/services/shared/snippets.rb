@@ -601,7 +601,6 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['inside_sales_executive', 'anand.negi@bulkmro.com'],
         ['left', 'shailendra.trivedi@bulkmro.com'],
         ['outside_sales_manager', 'shailender.agarwal@bulkmro.com'],
-        ['admin', 'malav.desai@bulkmro.com'],
         ['admin', 'shravan.agarwal@bulkmro.com'],
         ['sales', 'oindrilla.paul@bulkmro.com'],
         ['sales', 'trunal.shah@bulkmro.com'],
