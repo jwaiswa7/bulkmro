@@ -87,6 +87,16 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
                   }
               }
           }
+      },
+      'summary_row': {
+          'terms': {'field': 'status_key'},
+          aggs: {
+              inquiry_summary: {
+                  sum: {
+                      field: 'calculated_total'
+                  }
+              }
+          }
       }
     )
     indexed_records
