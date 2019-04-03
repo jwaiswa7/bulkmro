@@ -13,8 +13,8 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
   end
 
   def new
-    @logistics_owner = (@purchase_order.logistics_owner.present?) ? @purchase_order.logistics_owner : Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(@purchase_order).call
-    @mpr = MaterialPickupRequest.new(purchase_order: @purchase_order, logistics_owner: @logistics_owner)
+    @logistics_owner = (@purchase_order.logistics_owner.present?) ? @purchase_order.logistics_owner : Services::Overseers::InwardDispatches::SelectLogisticsOwner.new(@purchase_order).call
+    @mpr = InwardDispatch.new(purchase_order: @purchase_order, logistics_owner: @logistics_owner)
 
     @mpr.purchase_order.rows.each do |row|
       @mpr.rows.build(purchase_order_row: row, pickup_quantity: row.get_pickup_quantity)
@@ -73,7 +73,7 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
     end
 
     def set_material_pickup_request
-      @mpr = MaterialPickupRequest.find(params[:id])
+      @mpr = InwardDispatch.find(params[:id])
     end
 
     def mpr_params

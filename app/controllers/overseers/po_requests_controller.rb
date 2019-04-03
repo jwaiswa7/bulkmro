@@ -168,36 +168,6 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
-  def pending_stock_approval
-    @po_requests = ApplyDatatableParams.to(PoRequest.all.pending_stock_po.order(id: :desc), params)
-    authorize @po_requests
-
-    respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
-    end
-  end
-
-  def stock
-    @po_requests = ApplyDatatableParams.to(PoRequest.all.stock_po.order(id: :desc), params)
-    authorize @po_requests
-
-    respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
-    end
-  end
-
-  def completed_stock
-    @po_requests = ApplyDatatableParams.to(PoRequest.all.completed_stock_po.order(id: :desc), params)
-    authorize @po_requests
-
-    respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
-    end
-  end
-
   def cancel_porequest
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize @po_request

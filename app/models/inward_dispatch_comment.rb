@@ -1,6 +1,6 @@
-class MprComment < ApplicationRecord
+class InwardDispatchComment < ApplicationRecord
   include Mixins::CanBeStamped
-  belongs_to :material_pickup_request
+  belongs_to :inward_dispatch
 
   def author
     self.created_by

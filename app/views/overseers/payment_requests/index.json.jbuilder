@@ -1,9 +1,6 @@
 json.data (@payment_requests) do |payment_request|
   json.array! [
                   [
-                      if policy(payment_request).update_payment_status?
-                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='payment_requests[]' class='custom-control-input' value='#{payment_request.id}' id='c-#{payment_request.id}'><label class='custom-control-label' for='c-#{payment_request.id}'></label></div>"
-                      end,
                       if policy(payment_request).show?
                         row_action_button(overseers_payment_request_path(payment_request), 'eye', 'View Payment Request', 'info')
                       end,

@@ -132,7 +132,7 @@
       <div class="card mb-2">
         <div class="card-body">
           <div class="chats">
-              <% if @invoice_request.purchase_order.present? %>
+            <% if @invoice_request.purchase_order.present? %>
               <h5 class="text-uppercase">
                 <strong><%= @invoice_request.purchase_order.supplier.to_s %></strong>
               </h5>
@@ -155,7 +155,7 @@
                 </div>
               </div>
             <% end %>
-              <div class="form-row d-none d-md-flex">
+            <div class="form-row d-none d-md-flex">
               <div class="col-1">
                 <div class="form-group mb-0">
                   <label>Sr. No.</label>
@@ -203,39 +203,39 @@
               </div>
             </div>
 
-              <% @products_list.each do |k| %>
-                <div class="form-row flex-row align-items-start">
-                  <div class="col-1 col-md-1">
-                    <%= (@products_list.index(k) || 0) + 1 %>
-                  </div>
-
-                  <div class="col-6 col-md-4">
-                    <%= k[:purchase_order_row].get_product %>
-                  </div>
-
-                  <div class="col-6 col-md-1">
-                    <%= k[:purchase_order_row].get_product.try(:brand).to_s %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= k[:purchase_order_row].metadata['PopHsn'] %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= k[:purchase_order_row].tax_rate %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= k[:total_quantity] %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= k[:purchase_order_row].uom %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= format_currency(k[:purchase_order_row].unit_selling_price) %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= format_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f) %>
-                  </div>
+            <% @products_list.each do |k| %>
+              <div class="form-row flex-row align-items-start">
+                <div class="col-1 col-md-1">
+                  <%= (@products_list.index(k) || 0) + 1 %>
                 </div>
-              <% end %>
+
+                <div class="col-6 col-md-4">
+                  <%= k[:purchase_order_row].get_product %>
+                </div>
+
+                <div class="col-6 col-md-1">
+                  <%= k[:purchase_order_row].get_product.try(:brand).to_s %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= k[:purchase_order_row].metadata['PopHsn'] %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= k[:purchase_order_row].tax_rate %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= k[:total_quantity] %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= k[:purchase_order_row].uom %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= format_currency(k[:purchase_order_row].unit_selling_price) %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= format_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f) %>
+                </div>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>

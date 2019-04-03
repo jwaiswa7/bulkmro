@@ -11,15 +11,6 @@
 <% end %>
 
 <% content_for(:heading_buttons) do %>
-  <% if policy(:payment_request).update_payment_status? %>
-    <div class="mr-2 float-left update_payment_status_wrapper">
-      <%= select_tag :status, options_for_select(PaymentRequest.statuses.map { |k, v| [k, v.to_s] }), class: 'form-control select2-wrap update_payment_status_wrapper', include_blank: 'Select a Payment Status', id: 'logistics_owner_select' %>
-    </div>
-    <button type="button" id="update_payment_status" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_payment_status_wrapper">
-      <i class="fal fa-plus mr-1"></i>Update Payment Status
-    </button>
-  <% end %>
-
   <% if policy(:po_request).index? %>
     <a href="<%= overseers_po_requests_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
       <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
@@ -28,14 +19,7 @@
 <% end %>
 
 <% content_for :header_row do %>
-  <th class="no-sort all" >
-    <% if policy(:payment_request).update_payment_status? %>
-      <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" name="all_payment_requests" id="all_payment_requests">
-        <label class="custom-control-label" for="all_payment_requests">Select All</label>
-      </div>
-    <% end %>
-  </th>
+  <th class="no-sort all" data-width="70px"></th>
   <th class="desktop text-right" data-name="id">Req. No.</th>
   <th class="no-sort desktop" data-name="status">Status</th>
   <th class="desktop" data-name="inquiry_number">Inquiry #</th>

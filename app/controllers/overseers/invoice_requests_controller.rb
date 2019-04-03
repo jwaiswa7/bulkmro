@@ -60,24 +60,6 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     end
   end
 
-  def cancelled
-    invoice_requests =
-        if params[:status].present?
-          @status = params[:status]
-          InvoiceRequest.where(status: params[:status])
-        else
-          InvoiceRequest.all
-        end.order(id: :desc)
-
-    @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
-    authorize @invoice_requests
-
-    respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
-    end
-  end
-
   def index
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.order(id: :desc), params)
     authorize @invoice_requests

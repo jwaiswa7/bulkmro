@@ -1283,7 +1283,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           if !po_request.status != 'PO Created'
             purchase_order = po_request.purchase_order || PurchaseOrder.find_by_po_number(po_request.purchase_order_id)
             if purchase_order.present?
-              service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: purchase_order.inquiry.company.name)
+              service = Services::Overseers::InwardDispatches::SelectLogisticsOwner.new(nil, company_name: purchase_order.inquiry.company.name)
               purchase_order.rows.each do |line_item|
                 product_sku = line_item.sku
                 if rows[product_sku] != nil
@@ -1314,7 +1314,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             end
           end
         else
-          service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: po_request.sales_order.inquiry.company.name)
+          service = Services::Overseers::InwardDispatches::SelectLogisticsOwner.new(nil, company_name: po_request.sales_order.inquiry.company.name)
           po_request.sales_order.rows.each do |row|
             if row.supplier.blank? || row.supplier.addresses.blank?
               po_request.is_legacy = true
@@ -2929,7 +2929,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     def add_logistics_owner_to_companies
       Company.all.each do |company|
-        service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: company.name)
+        service = Services::Overseers::InwardDispatches::SelectLogisticsOwner.new(nil, company_name: company.name)
         company.logistics_owner = service.call
         company.save(validate: false)
       end
