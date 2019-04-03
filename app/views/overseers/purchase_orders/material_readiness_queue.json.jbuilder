@@ -61,7 +61,7 @@ json.columnFilters [
                        [],
                        [],
                        Overseer.inside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
-                       Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+                       Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.unshift(label: 'Unassigned', value: 0).as_json,
                        [],
                        [],
                        PaymentRequest.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
