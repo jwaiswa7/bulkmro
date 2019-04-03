@@ -188,6 +188,13 @@
                   <%= @company.sales_manager %>
                 </div>
               <% end %>
+
+              <% if @company.logistics_owner.present? %>
+                <div class="col-12 col-md-3 mb-2">
+                  <strong class="d-block">Default Logistics Owner</strong>
+                  <%= @company.logistics_owner %>
+                </div>
+              <% end %>
             </div>
           </div>
         <% end %>
