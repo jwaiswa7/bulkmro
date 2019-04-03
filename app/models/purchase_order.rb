@@ -3,7 +3,7 @@ class PurchaseOrder < ApplicationRecord
 
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
-  # update_index('purchase_orders#purchase_order') {self}
+  update_index('purchase_orders#purchase_order') {self}
 
   pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
 
