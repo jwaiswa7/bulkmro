@@ -129,7 +129,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
     mpr_ids = @invoice_request.inward_dispatches.map(&:id).join(', ')
     service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids, false)
-    @mpr = @invoice_request.inward_dispatches.last
+
+    @inward_dispatch = @invoice_request.inward_dispatches.last
     @products_list = service.call
   end
 

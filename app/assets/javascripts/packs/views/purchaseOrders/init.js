@@ -8,7 +8,7 @@ let purchaseOrders= {
     index: purchaseOrdersIndex,
     inwardDispatchDeliveredQueue: inwardDispatchDeliveredQueue,
     materialReadinessQueue: materialReadinessQueue,
-    materialPickupQueue: updateLogisticsOwner,
+    inwardDispatchPickupQueue: updateLogisticsOwner,
     editMaterialFollowup: editMaterialFollowup
 }
 

@@ -2,23 +2,23 @@
   <div class="page-header">
     <h2>
 
-      <% if @inward_dispatch.purchase_order.present? %>
+      <% if @mpr.purchase_order.present? %>
         <% if action_name == 'confirm_delivery' %>
           <%= action_name.capitalize.titleize %>
         <% else %>
-          <%= action_name.capitalize.titleize %>  <%= @inward_dispatch.class %>
+          <%= action_name.capitalize.titleize %>  <%= @mpr.class %>
         <% end %>
 
-        for Purchase Order #<%= @inward_dispatch.purchase_order.po_number %>
+        for Purchase Order #<%= @mpr.purchase_order.po_number %>
       <% end %>
     </h2>
-    <p>This will <em>'<%= submit_text(@inward_dispatch).downcase %>'</em>
+    <p>This will <em>'<%= submit_text(@mpr).downcase %>'</em>
       and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
 
 
-  <%= simple_form_for([:overseers, @inward_dispatch.purchase_order, @inward_dispatch], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |inward_dispatch_object| %>
+  <%= simple_form_for([:overseers, @mpr.purchase_order, @mpr], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |inward_dispatch_object| %>
     <%= render 'shared/snippets/form_errors', f: inward_dispatch_object %>
     <%= inward_dispatch_object.simple_fields_for :inward_dispatch, inward_dispatch_object.object do |f| %>
 
@@ -175,11 +175,11 @@
               </div>
             <% end %>
           </div>
-          <% if @inward_dispatch.rows.present? %>
+          <% if @mpr.rows.present? %>
             <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
               <div class="form-row flex-row align-items-start">
                 <div class="col-1 col-md-1">
-                  <%= (@inward_dispatch.rows.index(row.object) || 0) + 1 %>
+                  <%= (@mpr.rows.index(row.object) || 0) + 1 %>
                   <%= row.hidden_field :id %>
                 </div>
 
@@ -228,7 +228,7 @@
         </div>
 
         <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-          <i class="fal fa-pen"></i> <%= submit_text(@inward_dispatch) %>
+          <i class="fal fa-pen"></i> <%= submit_text(@mpr) %>
         <% end %>
         <% if f.object.comments.persisted.size > 0 %>
           <div class="card-body">
