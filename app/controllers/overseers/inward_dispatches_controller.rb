@@ -1,6 +1,6 @@
 class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseController
   before_action :set_inward_dispatch, only: [:show, :edit, :update, :confirm_delivery, :delivered_material]
-  before_action :set_purchase_order, only: [:new, :create, :update, :show]
+  before_action :set_purchase_order, only: [:new, :create, :update, :show, :edit]
 
   def index
     redirect_to material_readiness_queue_overseers_purchase_orders_path()

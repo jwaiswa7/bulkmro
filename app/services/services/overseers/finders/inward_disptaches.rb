@@ -1,4 +1,4 @@
-class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseers::Finders::BaseFinder
+class Services::Overseers::Finders::InwardDisptaches < Services::Overseers::Finders::BaseFinder
   def call
     call_base
   end

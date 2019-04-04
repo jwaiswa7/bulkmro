@@ -41,7 +41,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Overseers::Finders::MaterialReadinessQueues.new(params, current_overseer)
+        service = Services::Overseers::Finders::InwardDisptaches.new(params, current_overseer)
         service.call
 
         @indexed_purchase_orders = service.indexed_records

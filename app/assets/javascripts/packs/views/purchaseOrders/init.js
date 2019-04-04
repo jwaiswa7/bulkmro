@@ -1,12 +1,12 @@
 import purchaseOrdersIndex from "./index";
-import materialDeliveredQueue from "./materialDeliveredQueue";
+import inwardDispatchDeliveredQueue from "./inwardDispatchDeliveredQueue";
 import materialReadinessQueue from "./materialReadinessQueue";
-import updateLogisticsOwner from "./materialPickupQueue";
+import updateLogisticsOwner from "./inwardDispatchPickupQueue";
 import editMaterialFollowup from "./editMaterialFollowup";
 
 let purchaseOrders= {
     index: purchaseOrdersIndex,
-    materialDeliveredQueue: materialDeliveredQueue,
+    inwardDispatchDeliveredQueue: inwardDispatchDeliveredQueue,
     materialReadinessQueue: materialReadinessQueue,
     materialPickupQueue: updateLogisticsOwner,
     editMaterialFollowup: editMaterialFollowup
