@@ -62,6 +62,15 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
     else
       date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
     end
+    # "filter": {
+    #     "range": {
+    #         "date": {
+    #             "gte": 1476108600401,
+    #             "lte": 1507644600401,
+    #             "format": "epoch_millis"
+    #         }
+    #     }
+    # }
     indexed_records = indexed_records.aggregations(
       'inquiries_over_time': {
           'date_histogram': {
@@ -91,11 +100,16 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
       'summary_row': {
           'terms': {'field': 'status_key'},
           aggs: {
-              inquiry_summary: {
+              statuswise_inquiry_summary: {
                   sum: {
                       field: 'calculated_total'
                   }
               }
+          }
+      },
+      'summary_row_total': {
+          'sum_bucket': {
+              'buckets_path': 'summary_row>statuswise_inquiry_summary'
           }
       }
     )

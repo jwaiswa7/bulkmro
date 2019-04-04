@@ -224,6 +224,8 @@ class Overseers::InquiriesController < Overseers::BaseController
 
         @statuses = Inquiry.statuses
         @indexed_pipeline_report = service.indexed_records.aggregations['inquiries_over_time']['buckets']
+        @indexed_summary_row = service.indexed_records.aggregations['summary_row']
+        @summary_total = service.indexed_records.aggregations['summary_row_total']
       }
     end
   end
