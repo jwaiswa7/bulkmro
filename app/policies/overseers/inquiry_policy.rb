@@ -165,6 +165,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     developer? || sales? || admin?
   end
 
+  def bulk_update?
+    manager? || admin?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
