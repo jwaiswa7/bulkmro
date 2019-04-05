@@ -23,7 +23,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
   end
 
   def create
-    @inward_dispatch = @purchase_order.material_pickup_requests.new()
+    @inward_dispatch = @purchase_order.inward_dispatches.new()
     @inward_dispatch.assign_attributes(mpr_params.merge(overseer: current_overseer))
     authorize @inward_dispatch
     if @inward_dispatch.save
