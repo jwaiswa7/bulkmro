@@ -219,8 +219,12 @@ class Overseers::InquiriesController < Overseers::BaseController
     if inquiries.present?
       query_params = params['bulk_update_inquiries'].to_enum.to_h
       update_query = query_params.except('inquiries').reject {|_,v| v.blank?}
-      inquiries.update_all(update_query)
-      redirect_to overseers_inquiries_path
+      if update_query.present?
+        inquiries.update_all(update_query)
+        redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
+      else
+        render json: { error: 'Please select any one field to update' }, status: 500
+      end
     else
       render json: { error: 'No such inquiries present' }, status: 500
     end
