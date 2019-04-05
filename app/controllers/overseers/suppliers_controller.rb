@@ -17,4 +17,22 @@ class Overseers::SuppliersController < Overseers::BaseController
     @suppliers = ApplyParams.to(Company.acts_as_supplier, params)
     authorize @suppliers
   end
+
+  def export_all
+    authorize :supplier
+    service = Services::Overseers::Exporters::SuppliersExporter.new(params[:q], current_overseer, [])
+    service.call
+
+    redirect_to url_for(Export.suppliers.not_filtered.last.report)
+  end
+
+  def export_filtered_records
+    authorize :supplier
+
+    service = Services::Overseers::Finders::Companies.new(params, current_overseer, paginate: false)
+    service.call
+
+    export_service = Services::Overseers::Exporters::SuppliersExporter.new(nil, current_overseer, service.indexed_records)
+    export_service.call
+  end
 end
