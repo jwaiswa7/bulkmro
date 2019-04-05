@@ -8,7 +8,7 @@ class Services::Overseers::InvoiceRequests::FormProductsList < Services::Shared:
     if by_po == true
       object.rows.map { |row| { purchase_order_row: row, total_quantity: row.metadata['PopQty'] } }
     else
-      InwardDispatchRow.where(material_pickup_request_id: object)
+      InwardDispatchRow.where(inward_dispatch_id: object)
             .group_by(&:purchase_order_row_id)
             .map { |por_id, mpr_rows| { purchase_order_row: PurchaseOrderRow.find(por_id), total_quantity: mpr_rows.sum(&:delivered_quantity).to_s } }
     end

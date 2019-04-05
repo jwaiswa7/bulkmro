@@ -4,7 +4,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
 
   def index
     redirect_to material_readiness_queue_overseers_purchase_orders_path()
-    authorize :material_pickup_request
+    authorize :inward_dispatch
   end
 
   def show
@@ -29,7 +29,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
     if @inward_dispatch.save
       @purchase_order.update_material_status
 
-      redirect_to edit_overseers_purchase_order_material_pickup_request_path(@purchase_order, @inward_dispatch), notice: flash_message(@inward_dispatch, action_name)
+      redirect_to edit_overseers_purchase_order_inward_dispatch_path(@purchase_order, @inward_dispatch), notice: flash_message(@inward_dispatch, action_name)
     else
       'new'
     end
@@ -51,7 +51,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
       end
       @inward_dispatch.save
       @purchase_order.update_material_status
-      redirect_to overseers_purchase_order_material_pickup_request_path(@inward_dispatch.purchase_order, @inward_dispatch), notice: flash_message(@inward_dispatch, action_name)
+      redirect_to overseers_purchase_order_inward_dispatch_path(@inward_dispatch.purchase_order, @inward_dispatch), notice: flash_message(@inward_dispatch, action_name)
     else
       render 'edit'
     end
@@ -77,7 +77,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
     end
 
     def mpr_params
-      params.require(:material_pickup_request).require(:material_pickup_request).except(:action_name)
+      params.require(:inward_dispatch).require(:inward_dispatch).except(:action_name)
           .permit(
             :status,
               :expected_dispatch_date,
