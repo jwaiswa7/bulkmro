@@ -9,13 +9,13 @@
 
       <div class="form-row">
         <div class="col-12 col-md-4">
-          <%= f.input :inside_sales_owner, as: :select, collection: Overseer.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Inside Sales Owner'} %>
+          <%= f.input :inside_sales_executive, as: :select, required:false, collection: Overseer.pipeline_executives.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Inside Sales Owner'} %>
         </div>
         <div class="col-12 col-md-4">
-          <%= f.input :outside_sales_owner, as: :select, collection: Overseer.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner'} %>
+          <%= f.input :sales_manager, as: :select, required: false, collection: Overseer.pipeline_managers.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner'} %>
         </div>
         <div class="col-12 col-md-4">
-          <%= f.input :sales_manager, as: :select, collection: Overseer.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Manager'} %>
+          <%= f.input :business_head, as: :select, required: false, collection: Overseer.pipeline_managers.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Manager'} %>
         </div>
       </div>
 

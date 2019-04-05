@@ -46,8 +46,7 @@
         </td>
       <% end %>
       <td>
-        <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count']}.sum %>
-        , <%= @summary_total['value'] %>
+        <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count']}.sum %>, <%= @summary_total['value'] %>
       </td>
     </tr>
     </tbody>

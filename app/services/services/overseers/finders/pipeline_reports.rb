@@ -56,60 +56,64 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
 
   def aggregation_pipeline_report(indexed_records)
     if @pipeline_report_params.present?
-      from = @pipeline_report_params['date_range'].split('~').first.to_date.strftime('%d-%m-%Y')
-      to = @pipeline_report_params['date_range'].split('~').last.to_date.strftime('%d-%m-%Y')
+      from = @pipeline_report_params['date_range'].split('~').first.to_date.strftime('%Y-%m-%d') || Date.new(2019, 01, 01).strftime('%Y-%m-%d')
+      to = @pipeline_report_params['date_range'].split('~').last.to_date.strftime('%Y-%m-%d') || Date.new(2019, 01, 31).strftime('%Y-%m-%d')
       date_range = {from: from, to: to, key: 'custom-range'}
     else
-      date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
+      date_range = {from: Date.new(2019, 01, 01).strftime('%Y-%m-%d'), to: Date.today.strftime('%Y-%m-%d'), key: 'custom-range'}
     end
-    # "filter": {
-    #     "range": {
-    #         "date": {
-    #             "gte": 1476108600401,
-    #             "lte": 1507644600401,
-    #             "format": "epoch_millis"
-    #         }
-    #     }
-    # }
+    # raise
     indexed_records = indexed_records.aggregations(
-      'inquiries_over_time': {
-          'date_histogram': {
+      'pipeline_filter': {
+          'date_range': {
               'field': 'created_at',
-              'interval': 'month',
-              keyed: true,
-              order: {_key: 'desc'}
+              'format': 'yyyy-MM-dd',
+              'ranges': [
+                  date_range
+              ],
+              'keyed': 'true'
           },
-          aggs: {
-              'pipeline': {
+          'aggs': {
+              'inquiries_over_time': {
+                  'date_histogram': {
+                      'field': 'created_at',
+                      'interval': 'month',
+                      keyed: true,
+                      order: {_key: 'desc'}
+                  },
+                  aggs: {
+                      'pipeline': {
+                          'terms': {'field': 'status_key'},
+                          aggs: {
+                              inquiry_value: {
+                                  sum: {
+                                      field: 'calculated_total'
+                                  }
+                              }
+                          }
+                      },
+                      'sum_monthly_sales': {
+                          'sum_bucket': {
+                              'buckets_path': 'pipeline>inquiry_value'
+                          }
+                      }
+                  }
+              },
+              'summary_row': {
                   'terms': {'field': 'status_key'},
                   aggs: {
-                      inquiry_value: {
+                      statuswise_inquiry_summary: {
                           sum: {
                               field: 'calculated_total'
                           }
                       }
                   }
               },
-              'sum_monthly_sales': {
-                  'sum_bucket': {
-                      'buckets_path': 'pipeline>inquiry_value'
-                  }
-              }
-          }
-      },
-      'summary_row': {
-          'terms': {'field': 'status_key'},
-          aggs: {
-              statuswise_inquiry_summary: {
-                  sum: {
-                      field: 'calculated_total'
-                  }
-              }
-          }
-      },
-      'summary_row_total': {
-          'sum_bucket': {
-              'buckets_path': 'summary_row>statuswise_inquiry_summary'
+              'summary_row_total': {
+            'sum_bucket': {
+                'buckets_path': 'summary_row>statuswise_inquiry_summary'
+            }
+        }
           }
       }
     )
