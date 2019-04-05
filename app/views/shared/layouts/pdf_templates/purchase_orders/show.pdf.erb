@@ -190,7 +190,7 @@
                 <th align="center" valign="center">
                   <b><span>Tax<br>
                     Rate</span></b></th>
-                <% if locals[:metadata][:PoTaxRate].to_s.include? "IG" %>
+                <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
                   <th align="center" valign="center">
                     <b><span>IGST<br>
                     Rate</span></b></th>
@@ -242,7 +242,7 @@
                     <span><%= number_to_currency(item.total_selling_price, precision: 2, unit: '') %></span></td>
                   <td align="center" valign="top">
                     <span><%= item.tax_rate.round(0) %>%</span></td>
-                  <% if locals[:metadata][:PoTaxRate].to_s.include? "IG" %>
+                  <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (item.metadata['PopTaxRate'].to_s.include? "IG") %>
                     <td align="center" valign="top">
                       <span><%= item.tax_rate.round(0) %>%</span></td>
                     <td align="right" valign="top">
@@ -292,7 +292,7 @@
                   <span></span></td>
                 <td align="center" valign="top">
                   <span></span></td>
-                <% if locals[:metadata][:PoTaxRate].to_s.include? "IG" %>
+                <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
                   <td align="right" valign="top">
                     <b><span><%= number_to_currency(locals[:purchase_order].calculated_total_tax, precision: 2, unit: '') %></span></b>
                   </td>

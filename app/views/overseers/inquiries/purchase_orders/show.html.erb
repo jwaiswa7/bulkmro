@@ -170,7 +170,7 @@
             <th class="no-sort">
               <span data-toggle="tooltip" title="Tax Rate">Tax Rate</span>
             </th>
-            <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
+            <% if (@metadata[:PoTaxRate].to_s.include? "IG") || (@metadata[:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
               <th class="no-sort">
                 <span data-toggle="tooltip" title="Tax Rate">IGST Rate</span>
               </th>
@@ -234,7 +234,7 @@
               <td>
                 <span><%= item.tax_rate.round(0) %>%</span>
               </td>
-              <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
+              <% if (@metadata[:PoTaxRate].to_s.include? "IG") || (item.metadata['PopTaxRate'].to_s.include? "IG") %>
                 <td>
                   <span><%= item.tax_rate.round(0) %>%</span>
                 </td>
@@ -271,7 +271,7 @@
             Subtotal
             <strong class="d-block"><%= format_currency(@purchase_order.calculated_total, symbol: nil) %></strong>
           </div>
-          <%if @metadata[:PoTaxRate].to_s.include? "IG" %>
+          <% if (@metadata[:PoTaxRate].to_s.include? "IG") || (@metadata[:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
           <div class="col-6 col-md-3">
             Tax Amt
             <strong class="d-block"><%= format_currency(@purchase_order.calculated_total_tax, symbol: nil) %></strong>
@@ -283,7 +283,7 @@
           </div>
           <%end %>
           <div class="col-6 col-md-3">
-            Grand Toatal
+            Grand Total
             <strong class="d-block"><%= format_currency(@purchase_order.calculated_total_with_tax, symbol: nil) %></strong>
           </div>
         </div>
