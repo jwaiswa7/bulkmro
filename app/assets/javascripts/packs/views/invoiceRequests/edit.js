@@ -5,7 +5,7 @@ const edit = () => {
     $('.add-review').on('click',function (e) {
         $('#multipleRatingForm').modal('toggle')
     })
-    
+
     // original form data when form loaded
     let form_original_data = $("form").serializeArray();
 
@@ -18,22 +18,20 @@ const edit = () => {
         $(".invoice_request_ap_rejection_reason, .invoice_request_ap_cancellation_reason ").addClass('d-none')
         $(".invoice_request_ap_rejection_reason, .invoice_request_ap_cancellation_reason ").find('input').prop('required',false)
 
+        // for hide and show other rejection reson while selecting grpo rejection reason
+
         switch(val) {
             case 'GRPO Request Rejected':
-                $(".invoice_request_grpo_rejection_reason").removeClass('d-none');
-                $(".invoice_request_grpo_rejection_reason").find('input').prop('required',true);
+                onStatusChange('invoice_request_grpo_rejection_reason')
                 break;
             case 'AP Invoice Request Rejected':
-                $(".invoice_request_ap_rejection_reason").removeClass('d-none');
-                $(".invoice_request_ap_rejection_reason").find('input').prop('required',true);
+                onStatusChange('invoice_request_ap_rejection_reason')
                 break;
             case 'Cancelled GRPO':
-                $(".invoice_request_grpo_cancellation_reason").removeClass('d-none');
-                $(".invoice_request_grpo_cancellation_reason").find('input').prop('required',true);
+                onStatusChange('invoice_request_grpo_cancellation_reason')
                 break;
             case 'Cancelled AP Invoice':
-                $(".invoice_request_ap_cancellation_reason").removeClass('d-none');
-                $(".invoice_request_ap_cancellation_reason").find('input').prop('required',true);
+                onStatusChange('invoice_request_ap_cancellation_reason')
                 break;
             default:
         }
@@ -62,8 +60,8 @@ const edit = () => {
 
     $('.submit-form').unbind().bind('click', function (event) {
         let form_changed_data = $("form").serializeArray(),
-          changed_status = form_changed_data.filter(x => x.name === "invoice_request[status]"),
-          original_status = form_original_data.filter(x => x.name === "invoice_request[status]");
+            changed_status = form_changed_data.filter(x => x.name === "invoice_request[status]"),
+            original_status = form_original_data.filter(x => x.name === "invoice_request[status]");
         if(changed_status){
             let is_cancel_status = changed_status[0]['value'].toLowerCase().indexOf('cancel') != -1
             if(is_cancel_status && original_status && (changed_status[0]['value'] != original_status[0]['value'])){

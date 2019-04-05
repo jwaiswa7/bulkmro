@@ -6,6 +6,7 @@ let invoiceRequests= {
     index: invoiceRequestsIndex,
     pending: invoiceRequestsIndex,
     edit: invoiceRequestsEdit,
+    new: invoiceRequestsEdit,
     show: invoiceRequestsShow
 }
 
