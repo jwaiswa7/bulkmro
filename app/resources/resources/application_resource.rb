@@ -227,6 +227,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     status = :success
     if response[:error_message].present?
       status = :failed
+      #TODO - create resync record with hit count as zero
     end
 
     @remote_request.update_attributes(:response => response, status: status)

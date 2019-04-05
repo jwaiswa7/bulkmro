@@ -4,6 +4,7 @@ class CreateResyncRemoteRequests < ActiveRecord::Migration[5.2]
       t.references :subject, polymorphic: true
 
       t.integer :status
+      t.integer :hits
       t.integer :method
 
       t.string :resource
