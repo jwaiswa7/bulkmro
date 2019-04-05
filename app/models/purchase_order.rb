@@ -26,7 +26,7 @@ class PurchaseOrder < ApplicationRecord
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
   has_many_attached :attachments
 
-  scope :with_includes, -> {includes(:inquiry, :po_request)}
+  scope :with_includes, -> {includes(:inquiry, :po_request, :company)}
 
   def filename(include_extension: false)
     [
@@ -74,6 +74,12 @@ class PurchaseOrder < ApplicationRecord
       'Material Partially Delivered': 35
   }
 
+  enum transport_mode: {
+      'Road': 1,
+      'Air': 2,
+      'Sea': 3
+  }
+
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
   scope :material_pickup_queue, -> {where(material_status: :'Material Pickedup')}
   scope :material_delivered_queue, -> {where(material_status: :'Material Delivered')}
@@ -106,9 +112,13 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def get_supplier(product_id = nil)
+    if company.present?
+      return company
+    end
+
     if self.metadata['PoSupNum'].present?
       product_supplier = (Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']))
-      return product_supplier if self.inquiry.suppliers.include?(product_supplier) || self.is_legacy?
+      return product_supplier
     end
 
     if self.inquiry.final_sales_quote.present?
@@ -118,6 +128,7 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def supplier
+    return company if company.present?
     return po_request.supplier if po_request.present?
     return get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
   end
@@ -179,6 +190,7 @@ class PurchaseOrder < ApplicationRecord
   def po_date
     self.metadata['PoDate'].to_date if valid_po_date?
   end
+
   def update_material_status
     if self.material_pickup_requests.any?
       partial = true

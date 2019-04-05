@@ -38,13 +38,13 @@
                   <b><span>Contact Name</span></b>
                   <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span></span>Mr. Amit Rawool
+                  <span></span>Mr. Ajay Rathod
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span>Contact #</span></b>
                   <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span>+91-7506033466</span></td>
+                  <span>+91-7977261810</span></td>
               </tr>
               <tr>
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
@@ -96,23 +96,23 @@
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                   <% if locals[:supplier].present? %>
                     <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
                     <%= record.billing_address&.to_multiline_s %>
                     <br>
-                    Tel: <%= record.billing_address&.telephone || record.billing_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %>
+                    Tel: <%= record.billing_address&.phone || locals[:supplier]&.phone %>
                     <br>
                     GST No. : <%= record.billing_address&.gst %><br>
                   <% end %>
                 </td>
                 <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                   <% if locals[:supplier].present? %>
                     <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
                     <%= record.shipping_address&.to_multiline_s %>
                     <br>
-                    Tel: <%= record.shipping_address&.telephone || record.shipping_address&.mobile || locals[:supplier]&.telephone || locals[:supplier]&.mobile %>
+                    Tel: <%= record.shipping_address&.phone || locals[:supplier]&.phone %>
                     <br>
                     GST No. : <%= record.shipping_address&.gst %><br>
                   <% end %>
@@ -134,7 +134,7 @@
             <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                   <%= (locals[:inquiry].bill_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].bill_from.address.name.present? %>
                   <% if locals[:inquiry].bill_from.present? %>
                     <%= locals[:inquiry].bill_from.address.to_multiline_s %><br>
@@ -144,7 +144,7 @@
                 </td>
 
                 <td style="width: 2%;"></td>
-                <td class="address-wrapper" style="height: auto;">
+                <td class="address-wrapper" style="height: auto;width: 49%;">
                   <%= (locals[:inquiry].ship_from.address.name.to_s + '<br>').html_safe if locals[:inquiry].ship_from.address.name.present? %>
                   <% if locals[:inquiry].ship_from.present? %>
                     <%= locals[:inquiry].ship_from.address.to_multiline_s %><br>
