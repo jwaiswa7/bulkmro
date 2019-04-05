@@ -32,7 +32,7 @@ class Overseers::SuppliersController < Overseers::BaseController
     service = Services::Overseers::Finders::Companies.new(params, current_overseer, paginate: false)
     service.call
 
-    export_service = Services::Overseers::Exporters::SuppliersExporter.new(nil, current_overseer, service.indexed_records.pluck(:id))
+    export_service = Services::Overseers::Exporters::SuppliersExporter.new(nil, current_overseer, service.indexed_records)
     export_service.call
   end
 end
