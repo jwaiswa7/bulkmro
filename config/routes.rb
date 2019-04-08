@@ -105,6 +105,8 @@ Rails.application.routes.draw do
     resources :suppliers do
       collection do
         get 'autocomplete'
+        get 'export_all'
+        get 'export_filtered_records'
       end
     end
 
@@ -345,6 +347,7 @@ Rails.application.routes.draw do
         get 'export_filtered_records'
         post 'create_purchase_orders_requests'
         post 'preview_stock_po_request'
+        get 'bulk_update'
       end
 
       scope module: 'inquiries' do
@@ -506,6 +509,7 @@ Rails.application.routes.draw do
     resources :accounts do
       collection do
         get 'autocomplete'
+        get 'autocomplete_supplier'
       end
       scope module: 'accounts' do
         resources :companies

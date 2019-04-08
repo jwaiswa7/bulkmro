@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products ]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products]
 
   def index
     authorize :inquiry
@@ -208,6 +208,26 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     Rails.cache.write(:po_requests, @po_requests, expires_in: 25.minutes)
     authorize @inquiry
+  end
+
+  def bulk_update
+    authorize :inquiry
+
+    inquiry_numbers = params['bulk_update_inquiries']['inquiries'].split(/\s*,\s*/)
+    inquiries = Inquiry.where(inquiry_number: inquiry_numbers)
+
+    if inquiries.present?
+      query_params = params['bulk_update_inquiries'].to_enum.to_h
+      update_query = query_params.except('inquiries').reject {|_,v| v.blank?}
+      if update_query.present?
+        inquiries.update_all(update_query)
+        redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
+      else
+        render json: { error: 'Please select any one field to update' }, status: 500
+      end
+    else
+      render json: { error: 'No such inquiries present' }, status: 500
+    end
   end
 
   private

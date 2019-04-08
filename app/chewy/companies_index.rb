@@ -6,6 +6,8 @@ class CompaniesIndex < BaseIndex
     field :name, value: -> (record) {record.name}, analyzer: 'fuzzy_substring'
     field :account, value: -> (record) {record.account.to_s}, analyzer: 'substring'
     field :addresses, value: -> (record) {record.addresses.size}, type: 'integer'
+    field :addresses_string, value: -> (record) {record.addresses.to_s}, analyzer: 'substring'
+    field :contacts_string, value: ->(record) {record.default_contact&.name}
     field :contacts, value: -> (record) {record.contacts.size}, type: 'integer'
     field :inquiries, value: -> (record) {record.inquiries.size}, type: 'integer'
     field :pan, value: -> (record) {record.pan.to_s}, analyzer: 'substring'
