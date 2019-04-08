@@ -1,20 +1,26 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync]
+  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map, :get_relationship_map_json]
+  before_action :set_notification, only: [:create_confirmation]
 
   def index
     @sales_orders = @inquiry.sales_orders
     authorize @sales_orders
 
     respond_to do |format|
-      format.html {}
+      format.html { }
     end
+  end
+
+  def autocomplete
+    @sales_orders = @inquiry.sales_orders
+    authorize @sales_orders
   end
 
   def show
     authorize @sales_order
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.pdf do
         render_pdf_for @sales_order
       end
@@ -26,7 +32,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
     respond_to do |format|
       format.pdf do
-        render_pdf_for @sales_order, {proforma: true}
+        render_pdf_for @sales_order, proforma: true
       end
     end
   end
@@ -45,10 +51,10 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def create
-    @sales_order = SalesOrder.new(sales_order_params.merge(:overseer => current_overseer))
+    @sales_order = SalesOrder.new(sales_order_params.merge(overseer: current_overseer))
     authorize @sales_order
 
-    callback_method = %w(save save_and_confirm).detect {|action| params[action]}
+    callback_method = %w(save save_and_confirm).detect { |action| params[action] }
 
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
@@ -62,10 +68,10 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def update
-    @sales_order.assign_attributes(sales_order_params.merge(:overseer => current_overseer))
+    @sales_order.assign_attributes(sales_order_params.merge(overseer: current_overseer))
     authorize @sales_order
 
-    callback_method = %w(save save_and_confirm).detect {|action| params[action]}
+    callback_method = %w(save save_and_confirm).detect { |action| params[action] }
 
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
@@ -74,27 +80,33 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     end
   end
 
+  def debugging
+    authorize :sales_order
+    @sales_order = SalesOrder.find(params['id'])
+    @remote_requests = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: @sales_order.id)
+    @callback_requests = CallbackRequest.sales_order_callbacks(@sales_order.id)
+  end
+
   def create_confirmation
     authorize @sales_order
 
     if @sales_order.not_confirmed?
-      @confirmation = @sales_order.build_confirmation(:overseer => current_overseer)
-
+      @confirmation = @sales_order.build_confirmation(overseer: current_overseer)
+      Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, :order_confirmed).call
       ActiveRecord::Base.transaction do
         @confirmation.save!
-        @sales_order.update_attributes(:sent_at => Time.now)
+        @sales_order.update_attributes(status: 'Requested')
+        @sales_order.update_attributes(sent_at: Time.now)
       end
-      # chat_message = Services::Overseers::ChatMessages::SendChat.new
-      # message = chat_message.message_body(
-      #     fallback: "New Order for approval",
-      #     pretext: "New Order for approval",
-      #     author_name: "Created by: " + @sales_order.created_by.full_name,
-      #     inquiry_number: @sales_order.inquiry_id,
-      #     order_no: @sales_order.id
-      #     )
-      # chat_message.send_chat_message(@inquiry.sales_manager.slack_uid, message)
+      @notification.send_order_confirmation(
+        @inquiry,
+          action_name.to_sym,
+          @sales_order,
+          overseers_inquiry_comments_path(@inquiry, sales_order_id: @sales_order.to_param, show_to_customer: false),
+          @sales_order.inquiry.inquiry_number.to_s
+      )
     else
-      @sales_order.update_attributes(:sent_at => Time.now) if @sales_order.sent_at.blank?
+      @sales_order.update_attributes(sent_at: Time.now) if @sales_order.sent_at.blank?
     end
 
     if @sales_order.persisted?
@@ -109,6 +121,25 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     authorize @sales_order
   end
 
+  def edit_mis_date
+    if @sales_order.mis_date.blank?
+      @sales_order.mis_date = @sales_order.created_at.strftime('%d-%b-%Y')
+    end
+
+    authorize @sales_order
+  end
+
+  def update_mis_date
+    @sales_order.assign_attributes(mis_date_params.merge(overseer: current_overseer))
+    authorize @sales_order
+
+    if @sales_order.save
+      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    else
+      render 'edit'
+    end
+  end
+
   def resync
     authorize @sales_order
     if @sales_order.save_and_sync
@@ -116,35 +147,58 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     end
   end
 
+  def fetch_order_data
+    authorize @sales_order
+    Services::Overseers::SalesOrders::FetchOrderData.new(@sales_order).call
+    redirect_to overseers_inquiry_sales_orders_path(@inquiry)
+  end
+
+  def relationship_map
+    authorize @inquiry
+  end
+
+  def get_relationship_map_json
+    authorize @sales_order
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@sales_order.inquiry, [@sales_order.sales_quote]).call
+    render json: {data: inquiry_json}
+  end
+
   private
 
-  def save
-    @sales_order.save
-  end
-
-  def save_and_confirm
-    if @sales_order.save
-      redirect_to new_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), notice: flash_message(@inquiry, action_name)
-    else
-      false
+    def save
+      @sales_order.save
     end
-  end
 
-  def set_sales_order
-    @sales_order = @inquiry.sales_orders.find(params[:id])
-  end
+    def save_and_confirm
+      if @sales_order.save
+        redirect_to new_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), notice: flash_message(@inquiry, action_name)
+      else
+        false
+      end
+    end
 
-  def sales_order_params
-    params.require(:sales_order).permit(
-        :sales_quote_id,
-        :parent_id,
-        :rows_attributes => [
-            :id,
-            :sales_order_id,
-            :sales_quote_row_id,
-            :quantity,
-            :_destroy
-        ]
-    )
-  end
+    def set_sales_order
+      @sales_order = @inquiry.sales_orders.find(params[:id])
+    end
+
+    def sales_order_params
+      params.require(:sales_order).permit(
+        :mis_date,
+          :sales_quote_id,
+          :parent_id,
+          rows_attributes: [
+              :id,
+              :sales_order_id,
+              :sales_quote_row_id,
+              :quantity,
+              :_destroy
+          ]
+      )
+    end
+
+    def mis_date_params
+      params.require(:sales_order).permit(
+        :mis_date,
+      )
+    end
 end

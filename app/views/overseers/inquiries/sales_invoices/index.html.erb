@@ -5,32 +5,51 @@
 
     <% content_for :header_row do %>
       <th class="no-sort"></th>
-      <th># Invoice</th>
-      <th># Sales Order</th>
-      <th>Line Items</th>
-      <th>SAP Created At</th>
-      <th>Created At</th>
+      <th class="no-sort desktop text-right"># Invoice</th>
+      <th class="no-sort desktop text-right">Invoice Status</th>
+      <th class="no-sort desktop text-right"># Sales Order</th>
+      <th class="no-sort desktop text-right">Line Items</th>
+      <th class="no-sort desktop text-right">Invoice Date</th>
+      <th class="no-sort desktop text-right">Created At</th>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>
       <% @sales_invoices.each do |sales_invoice| %>
         <tr>
           <td>
+            <% if policy(sales_invoice).relationship_map? %>
+              <%= row_action_button(relationship_map_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry.to_param, sales_invoice.to_param), 'sitemap', 'Relationship Map', 'info', :_blank) %>
+            <% end %>
             <% if policy(sales_invoice).show_original_invoice? %>
-              <%= row_action_button(url_for(sales_invoice.original_invoice), 'file-pdf', sales_invoice.original_invoice.filename, 'dark', :_blank) %>
-              <%= row_action_button(url_for(sales_invoice.duplicate_invoice), 'file-pdf', sales_invoice.duplicate_invoice.filename, 'dark', :_blank) %>
-              <%= row_action_button(url_for(sales_invoice.triplicate_invoice), 'file-pdf', sales_invoice.triplicate_invoice.filename, 'dark', :_blank) %>
+              <%= row_action_button(url_for(sales_invoice.original_invoice), 'none', sales_invoice.original_invoice.filename, 'success', :_blank, 'get', false, 'O') %>
+              <%= row_action_button(url_for(sales_invoice.duplicate_invoice), 'none', sales_invoice.duplicate_invoice.filename, 'success', :_blank, 'get', false, 'D') %>
+              <%= row_action_button(url_for(sales_invoice.triplicate_invoice), 'none', sales_invoice.triplicate_invoice.filename, 'success', :_blank, 'get', false, 'T') %>
             <% end %>
             <% if policy(sales_invoice).show? %>
-              <%= row_action_button(overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
-              <%= row_action_button(duplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
-              <%= row_action_button(triplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+              <%= row_action_button(overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice), 'eye', 'View Sales Invoice ', 'info') %>
+              <%= row_action_button(overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get', false, 'O') %>
+              <%= row_action_button(duplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get', false, 'D') %>
+              <%= row_action_button(triplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get', false, 'T') %>
+              <%= row_action_button(make_zip_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :zip), 'file-archive', 'Download zip', 'info', :_blank) %>
+            <% end %>
+            <% if policy(sales_invoice).edit_mis_date? %>
+              <%= row_action_button(edit_mis_date_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice), 'calendar-alt', 'Update MIS Date', 'success') %>
+            <% end %>
+            <% if policy(sales_invoice).edit_pod? && !sales_invoice.pod_attachment.attached? %>
+              <%= row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success') %>
+            <% end %>
+            <% if policy(sales_invoice).edit_pod? && sales_invoice.pod_attachment.attached? %>
+              <% if sales_invoice.pod_attachment.attached? %>
+                <%= row_action_button(url_for(sales_invoice.pod_attachment), 'certificate', 'Download Proof of Delivery', 'dark', :_blank) %>
+              <% end %>
+              <%= row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info') %>
             <% end %>
           </td>
           <td><%= sales_invoice.invoice_number %></td>
+          <td><%= status_badge(sales_invoice.status) %></td>
           <td><%= sales_invoice.sales_order.order_number %></td>
           <td><%= sales_invoice.rows.size %></td>
-          <td><%= format_date(sales_invoice.metadata["sales_invoice"]["created_at"].to_date) if sales_invoice.metadata["sales_invoice"].present? && sales_invoice.metadata["sales_invoice"]["created_at"].present? %></td>
+          <td><%= format_date(sales_invoice.mis_date || sales_invoice.metadata["sales_invoice"]["created_at"].to_date) if sales_invoice.metadata["sales_invoice"].present? && sales_invoice.metadata["sales_invoice"]["created_at"].present? %></td>
           <td><%= format_date(sales_invoice.created_at) %></td>
         </tr>
       <% end %>

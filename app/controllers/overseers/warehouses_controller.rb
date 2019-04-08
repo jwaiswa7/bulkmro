@@ -1,5 +1,5 @@
 class Overseers::WarehousesController < Overseers::BaseController
-  before_action :set_company, only: [:edit,:show,:update]
+  before_action :set_warehouse, only: [:edit, :show, :update]
 
   def index
     @warehouses = ApplyDatatableParams.to(Warehouse.all, params)
@@ -11,13 +11,18 @@ class Overseers::WarehousesController < Overseers::BaseController
     authorize @warehouse
   end
 
+  def autocomplete
+    authorize :warehouse
+    @warehouse = ApplyParams.to(Warehouse.all.active, params)
+  end
+
   def create
     @warehouse = Warehouse.new(warehouse_params)
     authorize @warehouse
     if @warehouse.save
       redirect_to overseers_warehouse_path(@warehouse), notice: flash_message(@warehouse, action_name)
     else
-        puts warehouse_params
+      puts warehouse_params
     end
   end
 
@@ -41,15 +46,15 @@ class Overseers::WarehousesController < Overseers::BaseController
 
   private
 
-  def warehouse_params
-    params.require(:warehouse).permit(
+    def warehouse_params
+      params.require(:warehouse).permit(
         :name,
-        :address_attributes => [:id,:street1,:street2,:country_code,:address_state_id,:city_name,:pincode]
-    )
-  end
+          :is_active,
+          address_attributes: [:id, :street1, :street2, :country_code, :address_state_id, :city_name, :pincode],
+      )
+    end
 
-  def set_company
-    @warehouse ||= Warehouse.find(params[:id])
-  end
-
+    def set_warehouse
+      @warehouse ||= Warehouse.find(params[:id])
+    end
 end

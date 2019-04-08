@@ -1,5 +1,4 @@
 class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
-
   def self.inquiry_number
     # Generates in Postgres sequences
   end
@@ -38,6 +37,10 @@ class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
     end
 
     sku_characters.join
+  end
+
+  def self.online_order_number(id)
+    (id + 100000)
   end
 
   attr_accessor :sales_quote

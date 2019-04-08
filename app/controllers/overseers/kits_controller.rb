@@ -11,7 +11,7 @@ class Overseers::KitsController < Overseers::BaseController
   end
 
   def new
-    @kit = Kit.new(:overseer => current_overseer, :inquiry_id => inquiry)
+    @kit = Kit.new(overseer: current_overseer, inquiry_id: inquiry)
     @kit.build_product
 
     authorize @kit
@@ -24,14 +24,18 @@ class Overseers::KitsController < Overseers::BaseController
     if @kit.save
 
       if @kit.inquiry.present?
-        @kit.inquiry.inquiry_products.each do |inquiry_product|
-          @kit.kit_product_rows.where(:product_id => ip.product.id).first_or_create do |row|
-            row.quantity = inquiry_product.quantity
+        @kit_products = @kit.inquiry.try(:final_sales_quote).try(:sales_quote_rows) || @kit.inquiry.inquiry_products
+        @kit_products.each do |kit_product|
+          @kit.kit_product_rows.where(product_id: kit_product.product.id).first_or_create! do |row|
+            row.quantity = kit_product.quantity
+            row.tax_code = kit_product.try(:tax_code) || kit_product.product.tax_code
+            row.tax_rate = kit_product.try(:tax_rate) || kit_product.product.tax_rate
           end
         end
+        @kit.save
       end
 
-      redirect_to overseers_kits_path, notice: flash_message(@kit, action_name)
+      redirect_to overseers_kit_path(@kit), notice: flash_message(@kit, action_name)
     else
       render 'new'
     end
@@ -45,26 +49,27 @@ class Overseers::KitsController < Overseers::BaseController
     @kit.assign_attributes(kit_params.merge(overseer: current_overseer))
     authorize @kit
     if @kit.product.approved? ? @kit.save_and_sync : @kit.save
-      redirect_to overseers_kits_path, notice: flash_message(@kit, action_name)
+      redirect_to overseers_kit_path(@kit), notice: flash_message(@kit, action_name)
     else
       render 'edit'
     end
   end
 
   private
-  def inquiry
-    params[:inquiry_id].present? ? params[:inquiry_id] : nil
-  end
 
-  def kit_params
-    params.require(:kit).permit(
+    def inquiry
+      params[:inquiry_id].present? ? params[:inquiry_id] : nil
+    end
+
+    def kit_params
+      params.require(:kit).permit(
         :inquiry_id,
-        :product_attributes => [:id, :name, :sku, :mpn, :is_service, :brand_id, :category_id, :tax_code_id, :measurement_unit_id, :overseer],
-        :kit_product_rows_attributes => [:id, :product_id, :quantity]
-    )
-  end
+          product_attributes: [:id, :name, :sku, :mpn, :is_service, :brand_id, :category_id, :tax_code_id, :measurement_unit_id, :overseer],
+          kit_product_rows_attributes: [:id, :product_id, :quantity, :tax_code_id, :tax_rate_id, :_destroy]
+      )
+    end
 
-  def set_kit
-    @kit = Kit.find(params[:id])
-  end
+    def set_kit
+      @kit = Kit.find(params[:id])
+    end
 end

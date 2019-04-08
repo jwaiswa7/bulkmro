@@ -1,15 +1,20 @@
 <% provide :container_fluid, true %>
+<% provide :controller_is_aliased, true %>
+<% content_for :page_title do %>
+  Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %>
+<% end %>
 
 <div class="col-12">
-  <div class="page-header">
-    <div class="">
-      <h2>
-        Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %>
+  <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <h1 class="display-5 mb-1">Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %></h1>
+      <div>
         <% if @sales_order.serialized_pdf.attachment %>
-          <a class="btn btn-dark" href="<%= url_for(@sales_order.serialized_pdf) %>"><i class="fal fa-file-pdf"></i>
-            Download PDF</a>
+          <a href="<%= url_for(@sales_order.serialized_pdf) %>" class=" btn btn-info btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
+            <i class="fal fa-download mr-1"></i>Download PDF
+          </a>
         <% end %>
-      </h2>
+      </div>
     </div>
   </div>
 
@@ -17,20 +22,20 @@
     <div class="card-header">
       <div class=form-row>
         <div class="col-6 col-md-3 mb-2 mb-md-0">
-          <strong class="d-block">Quotation Number</strong>
-          #<%= @sales_order.sales_quote_id %>
+          <strong class="d-block">Inquiry Number</strong>
+          #<%= @sales_order.inquiry.inquiry_number %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3 mb-0 mb-md-0">
           <strong class="d-block">PO Number</strong>
           #<%= @sales_order.inquiry.customer_po_number %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
-          <strong class="d-block">Payment Method</strong>
-          Bank Transfer
-        </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3 mb-0 mb-md-0">
           <strong class="d-block">Currency</strong>
           <%= @sales_order.currency %>
+        </div>
+        <div class="col-6 col-md-3 mb-0 mb-md-0">
+          <strong class="d-block">Payment Method</strong>
+          Bank Transfer
         </div>
       </div>
     </div>
@@ -44,11 +49,11 @@
           <strong class="d-block">Date of Quotation</strong>
           <%= format_date(@sales_order.sales_quote.sent_at) %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3">
           <strong class="d-block">Sales Order Date</strong>
           <%= format_date(@sales_order.approval.created_at) %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3">
           <strong class="d-block">Payment Terms</strong>
           <%= @sales_order.inquiry.payment_option.name %>
         </div>
@@ -84,12 +89,11 @@
             <%= @sales_order.inquiry.company.name %><br>
             <%= @sales_order.inquiry.billing_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.phone.present? %>
-              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %>
-                - <%= @sales_order.inquiry.contact.phone %></span>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
+            <span class="d-block"><em>Email</em>: <a href="mailto:<%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %>"><%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></a></span>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.billing_address.gst || @sales_order.inquiry.company.default_billing_address.gst %></span>
-            <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
-          </div>
+           </div>
 
           <div class="col-12 col-md-6 mt-2 mt-md-0">
             <strong class="d-block">Customer - Shipping Address</strong>
@@ -98,12 +102,11 @@
             <%= @sales_order.inquiry.company.name %><br>
             <%= @sales_order.inquiry.shipping_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.mobile || @sales_order.inquiry.contact.telephone %>
-              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %>
-                - <%= @sales_order.inquiry.contact.phone %></span>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
+            <span class="d-block"><em>Email</em>: <a href="mailto:<%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %>"><%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></a></span>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.shipping_address.gst || @sales_order.inquiry.company.default_shipping_address.gst %></span>
-            <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
-          </div>
+           </div>
         </div>
       </div>
 
@@ -111,18 +114,9 @@
         <div class="form-row mt-3">
           <% if @sales_order.inquiry.customer_po_sheet.attached? %>
             <div class="col-6">
-              <strong class="d-block">PO Sheet</strong>
+              <strong class="d-block">Purchase Order</strong>
               <%= link_to @sales_order.inquiry.customer_po_sheet, target: '_blank' do %>
                 <%= @sales_order.inquiry.customer_po_sheet.filename %>
-              <% end %>
-            </div>
-          <% end %>
-
-          <% if @sales_order.inquiry.copy_of_email.attached? %>
-            <div class="col-6">
-              <strong class="d-block">Email Attachment</strong>
-              <%= link_to @sales_order.inquiry.copy_of_email, target: '_blank' do %>
-                <%= @sales_order.inquiry.copy_of_email.filename %>
               <% end %>
             </div>
           <% end %>
@@ -187,7 +181,7 @@
                   </td>
                   <td>
                       <span>
-                              <%= row.sales_quote_row.product.description || "Not Available" %>
+                            <%= row.sales_quote_row.product.name || "-" %>
                       </span>
                   </td>
                   <td>
@@ -195,7 +189,7 @@
                         <% if row.sales_quote_row.product.brand %>
                           <%= row.sales_quote_row.product.brand.name %>
                         <% else %>
-                          Not Available
+                          -
                         <% end %>
                       </span>
                   </td>
@@ -216,7 +210,7 @@
                   </td>
                   <td>
                       <span>
-                          <%= row.best_tax_code.tax_percentage %>
+                          <%= [row.best_tax_code.tax_percentage, '%'].join('') %>
                       </span>
                   </td>
                   <td>
@@ -254,39 +248,59 @@
     </div>
   </div>
 
-  <div class="card mt-3">
-    <div class="card-body">
-      <p class="text-uppercase text-black-50 mb-1">Other Information</p>
-      <p class="mb-0">
-        - Please reference our Bulk MRO Industrial Supply Quote Number when remitting Wire Transfer payment.<br>
-        - Bulk MRO Industrial Supply is not responsible for any banking fees.
-      </p>
+  <% if @sales_order.inquiry.bill_from.present? && @sales_order.inquiry.bill_from.legacy_id == 12 %>
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Note</p>
+        <p class="mb-0">
+          1. Order once confirmed cannot be cancelled or returned.
+          2. Delayed payments will attract 2% interest per month.
+          3. If any modifications are required in the invoice ,please communicate the same in writing within 2 working days otherwise the invoice will be deemed accepted.
+          4. Order once confirmed cannnot be cancelled.
+          5. Invoice will be deemed accepted unless any discrepancy is raised within 7 days from the date of invoice.
+        </p>
+      </div>
     </div>
-  </div>
 
-  <div class="card mt-3">
-    <div class="card-body">
-      <p class="text-uppercase text-black-50 mb-1">Wire Transfer Details</p>
-      <div class="form-row">
-        <div class="col-md-6">
-          <p class="mb-0">
-            <strong class="d-block">Kotak Mahindra Bank Ltd</strong>
-            Address: Aum Saheel Tower, Mumbai - 400 080<br>
-            Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br>
-            Account Number: 9412329433<br>
-            NEFT / RTGS Code: KKBK0001411
-          </p>
-        </div>
-        <div class="col-md-6 mt-2 mt-md-0">
-          <p class="mb-0">
-            <strong class="d-block">State Bank Of India</strong>
-            Address: Kalpa Taru – 39, Pedder Road, Mumbai - 400 026<br>
-            Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br>
-            Account Number: 35924122136<br>
-            NEFT / RTGS Code: SBIN0000510
-          </p>
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Wire Transfer Details</p>
+        <div class="form-row">
+          <div class="col-md-6">
+            <p class="mb-0">
+              <strong class="d-block">First Republic Bank</strong>
+              Address: 2274 EI Camino Real Palo Alto, CA 94306<br>
+              Account Name: Bulk MRO Industrial Supply , INC ABA : 32108166 <br>
+              Account Number: 80003839610<br>
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  <% else %>
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Other Information</p>
+        <p class="mb-0">
+          1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Quote Number when remitting Wire Transfer payment.<br>
+          2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.
+        </p>
+      </div>
+    </div>
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Wire Transfer Details</p>
+        <div class="form-row">
+          <% if @sales_order.currency.name.present? %>
+            <% if @sales_order.currency.name.to_s == 'USD' || @sales_order.currency.name.to_s == 'EUR' || @sales_order.currency.name.to_s == 'GBP' %>
+              <%= render 'shared/layouts/view_templates/primary_bank_info', currency: @sales_order.currency.name.to_s %>
+            <% else %>
+              <%= render 'shared/layouts/view_templates/bank_info' %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
 </div>

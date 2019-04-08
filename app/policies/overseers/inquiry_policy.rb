@@ -3,8 +3,16 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || cataloging? || logistics?
   end
 
+  def new_from_customer_order?
+    manager_or_sales? || cataloging? || logistics?
+  end
+
   def index_pg?
     index?
+  end
+
+  def disable_billing_shipping_details?
+    record.persisted? && record.quotation_uid.present?
   end
 
   def smart_queue?
@@ -24,7 +32,11 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    can_manage_inquiry? || cataloging?
+    can_manage_inquiry? || cataloging? || logistics?
+  end
+
+  def update?
+    not_logistics?
   end
 
   def new_list_import?
@@ -56,7 +68,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def imports?
-    edit?
+    edit? && not_logistics?
   end
 
   def edit_suppliers?
@@ -64,11 +76,11 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def update_suppliers?
-    edit_suppliers?
+    edit_suppliers? && not_logistics?
   end
 
   def sales_quotes?
-    edit? && (new_sales_quote? || record.sales_quotes.present?)
+    edit? && (new_sales_quote? || record.sales_quotes.present?) && not_logistics?
   end
 
   def new_sales_quote?
@@ -77,6 +89,15 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def sales_orders?
     edit? && record.sales_orders.present?
+  end
+
+
+  def has_approved_sales_orders?
+    record&.sales_orders&.remote_approved&.any?
+  end
+
+  def has_no_approved_sales_orders?
+    !has_approved_sales_orders?
   end
 
   def calculation_sheet?
@@ -99,6 +120,55 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit? && record.invoices.present?
   end
 
+  def stages?
+    edit?
+  end
+
+  def relationship_map?
+    stages?
+  end
+
+  def get_relationship_map_json?
+    relationship_map?
+  end
+
+  def resync_inquiry_products?
+    developer? && record.inquiry_products.present?
+  end
+
+  def resync_unsync_inquiry_products?
+    developer? && record.inquiry_products.present?
+  end
+
+
+  def has_approved_sales_orders?
+    record&.sales_orders&.remote_approved&.any?
+  end
+
+  def restrict_fields_on_completed_orders?
+    has_approved_sales_orders? && !admin?
+  end
+
+  def has_no_approved_sales_orders?
+    !has_approved_sales_orders?
+  end
+
+  def new_freight_request?
+    !record.freight_request.present? && !logistics?
+  end
+
+  def preview_stock_po_request?
+    developer? || sales? || admin?
+  end
+
+  def create_purchase_orders_requests?
+    developer? || sales? || admin?
+  end
+
+  def bulk_update?
+    manager? || admin?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
@@ -111,7 +181,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
       if overseer.manager?
         scope.all
       else
-        scope.where("inside_sales_owner_id IN (:overseer_ids) OR outside_sales_owner_id IN (:overseer_ids)", {overseer_ids: overseer.self_and_descendant_ids })
+        scope.where('inside_sales_owner_id IN (:overseer_ids) OR outside_sales_owner_id IN (:overseer_ids)', overseer_ids: overseer.self_and_descendant_ids)
       end
     end
   end

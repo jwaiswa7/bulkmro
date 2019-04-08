@@ -1,0 +1,32 @@
+<div class="col-12">
+  <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="">
+      <h1 class="display-5 mb-1">Most Ordered Products</h1>
+      <p class="lead mt-1">
+        You've ordered <strong><%= @total_products %></strong> through us. Below is the list of those most ordered.
+      </p>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="text-left">
+        <div class="list-group list-group-flush">
+          <% @most_ordered_products.each do |product, count| %>
+            <% if current_company.customer_product_for(product).present? %>
+              <a class="list-group-item list-group-item-action p-1" href="<%= customers_product_path(current_company.customer_product_for(product)) %>" target="_blank">
+                <span class="float-right"><%= count %></span>
+                <strong><%= product.name %></strong>
+              </a>
+            <% else %>
+              <div class="list-group-item list-group-item-action p-1">
+                <span class="float-right"><%= count %></span>
+                <strong><%= product.name %></strong>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="col-12">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <%= simple_form_for(@sales_invoice, :url => update_mis_date_overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice), :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <%= render 'shared/snippets/form_errors', f: f %>
+      <div class="card">
+        <div class="card-header">
+          <div class="form-row">
+            <div class="col-8 col-md-4">
+              <div class="form-group string required disabled sales_invoice_invoice_number form-group-valid">
+                <label class="form-control-label string required disabled" for="sales_invoice_invoice_number">Order
+                  #</label>
+                <input class="form-control is-valid string required disabled" disabled="disabled" required="required" aria-required="true" type="text" value="<%= f.object.sales_order.order_number %>" name="sales_invoice[order_number]" id="sales_invoice_invoice_number">
+              </div>
+            </div>
+            <div class="col-8 col-md-4">
+              <%= f.input :invoice_number, as: :string, disabled: true, label: "Invoice #" %>
+            </div>
+
+
+            <div class="col-12 col-md-4">
+              <%= f.input :mis_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block") do %>
+        <i class="fal fa-pen mr-1"></i> Update MIS Date
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

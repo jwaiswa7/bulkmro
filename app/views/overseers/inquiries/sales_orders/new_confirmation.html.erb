@@ -33,13 +33,21 @@
         </div>
         <div class="card-body">
           <div class="form-row">
-            <div class="col-6">
-              <strong>Currency</strong>
-              <br> <%= f.object.currency %>
+            <div class="col-6 col-md-3">
+              <strong class="d-block">Customer PO No.</strong>
+              #<%= @inquiry.customer_po_number %>
             </div>
-            <div class="col-6">
-              <strong>Conversion rate</strong>
-              <br> <%= f.object.conversion_rate %>
+            <div class="col-6 col-md-2">
+              <strong class="d-block">Customer Order Date</strong>
+              <%= @inquiry.customer_order_date %>
+            </div>
+            <div class="col-6 col-md-3">
+              <strong>Currency</strong>
+              <br> <%= f.object.currency %> (<%= f.object.inquiry_currency.conversion_rate %>)
+            </div>
+            <div class="col-6 col-md-4">
+              <strong class="d-block">Payment Terms</strong>
+              <%= @inquiry.payment_option %>
             </div>
           </div>
           <div class="card-alternative mt-3">
@@ -62,109 +70,111 @@
           </div>
 
           <% if @inquiry.attachments.present? %>
-            <div class="form-row  mt-3">
-              <div class="col-6">
+            <div class="form-row mt-3">
+              <div class="col-3">
                 <strong>Customer PO sheet</strong><br>
-                <%= link_to @inquiry.customer_po_sheet, target:'_blank' do %>
+                <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
                   <%= @inquiry.customer_po_sheet.filename %>
                 <% end if @inquiry.customer_po_sheet.attached? %>
               </div>
-              <div class="col-6">
+              <div class="col-3">
                 <strong>Email attachment</strong><br>
-                <%= link_to @inquiry.copy_of_email, target:'_blank' do %>
+                <%= link_to @inquiry.copy_of_email, target: '_blank' do %>
                   <%= @inquiry.copy_of_email.filename %>
                 <% end if @inquiry.copy_of_email.attached? %>
               </div>
-            </div><br>
-
-            <strong>Supplier Quotes attachment</strong>
-            <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
-              <%= link_to url_for(attachment), target: '_blank', :title => attachment.filename do %>
-                <br><%= attachment.filename %>
-              <% end %>
-            <% end if @inquiry.supplier_quotes.attached? %>
-            <div class="form-row mt-3">
-              <%= f.input :confirm_attachments, as: :boolean, wrapper: :custom_boolean, label: 'Confirm attachments', :required => true %>
+              <div class="col-3">
+                <strong>Supplier Quotes attachment</strong>
+                <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
+                    <br><%= attachment.filename %>
+                  <% end %>
+                <% end if @inquiry.supplier_quotes.attached? %>
+              </div>
+              <div class="col-2">
+                <%= f.input :confirm_attachments, as: :boolean, wrapper: :custom_boolean, label: 'Confirm attachments', :required => true %>
+              </div>
             </div>
           <% end %>
 
           <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
             <%= row.hidden_field :sales_order_id %>
             <%= row.hidden_field :id %>
-           <div>
-             <h6 class="text-uppercase mb-0 mt-3">
-               <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.object.sr_no %></span>
-               <strong><%= row.object.sales_quote_row %></strong>
-             </h6>
-             <div class="form-row my-2 text-small">
-               <div class="col-12">
-                 <table class="w-100 datatable table table-bordered dt-responsive table-unstyled" data-fixed-header="false">
-                   <thead>
-                   <tr>
-                     <th class="no-sort">
-                       <span data-toggle="tooltip" title="Quantity">Qty</span>
-                     </th>
-                     <th class="no-sort">
-                       <span data-toggle="tooltip" title="Unit of Measurement">UoM</span><br>
-                     </th>
-                     <th class="no-sort">
-                       <span data-toggle="tooltip" title="Unit Cost with Freight">UC w. Freight</span><br>
-                     </th>
-                     <th class="no-sort">
-                       <span data-toggle="tooltip" title="Margin Percentage">%</span>
-                     </th>
-                     <th class="no-sort">
-                       <span data-toggle="tooltip" title="Unit Selling Price">USP</span><br>
-                     </th>
-                     <th class="no-sort <%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
-                       <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= f.object.currency.sign %>)</span>
-                     </th>
-                     <th class="no-sort">
-                       <span data-toggle="tooltip" title="Total Selling Price">TSP</span><br>
-                     </th>
-                     <th class="no-sort">
-                       <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span><br>
-                     </th>
-                     <th class="no-sort">
-                       <span>Tax Code</span><br>
-                     </th>
-                   </tr>
-                   </thead>
-                   <tbody>
-                     <tr>
-                       <td>
-                         <span><%= row.object.quantity %></span>
-                       </td>
-                       <td>
-                         <span><%= row.object.measurement_unit %></span>
-                       </td>
-                       <td>
-                         <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
-                       </td>
-                       <td>
-                         <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
-                       </td>
-                       <td>
-                         <span><%= row.object.unit_selling_price %></span>
-                       </td>
-                       <td class="<%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
-                         <span><%= row.object.converted_unit_selling_price %></span>
-                       </td>
-                       <td>
-                         <span><%= row.object.total_selling_price %></span>
-                       </td>
-                       <td>
-                         <span><%= row.object.total_selling_price_with_tax %></span>
-                       </td>
-                       <td>
-                         <span><%= row.object.best_tax_code %></span>
-                       </td>
-                     </tr>
-                   </tbody>
-                 </table>
-               </div>
-             </div>
-           </div>
+            <div>
+              <h6 class="text-uppercase mb-0 mt-3">
+                <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.object.sr_no %></span>
+                <strong><%= row.object.sales_quote_row %></strong>
+              </h6>
+              <div class="form-row my-2 text-small">
+                <div class="col-12">
+                  <table class="w-100 datatable table table-bordered dt-responsive table-unstyled" data-fixed-header="false">
+                    <thead>
+                    <tr>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Quantity">Qty</span>
+                      </th>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Unit of Measurement">UoM</span><br>
+                      </th>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Unit Cost with Freight">UC w. Freight</span><br>
+                      </th>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Margin Percentage">%</span>
+                      </th>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Unit Selling Price">USP</span><br>
+                      </th>
+                      <th class="no-sort <%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
+                        <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= f.object.currency.sign %>
+                          )</span>
+                      </th>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Total Selling Price">TSP</span><br>
+                      </th>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span><br>
+                      </th>
+                      <th class="no-sort">
+                        <span>Tax Code</span><br>
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>
+                        <span><%= row.object.quantity %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.measurement_unit %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+                      </td>
+                      <td>
+                        <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.unit_selling_price %></span>
+                      </td>
+                      <td class="<%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
+                        <span><%= row.object.converted_unit_selling_price %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.total_selling_price %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.total_selling_price_with_tax %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.best_tax_code %></span>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
             <hr class="my-2">
           <% end %>
 
@@ -177,6 +187,7 @@
             </div>
           </div>
         </div>
+      </div>
       </div>
       <div class="card-footer">
         <div class="form-row">

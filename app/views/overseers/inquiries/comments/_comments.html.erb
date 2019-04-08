@@ -1,0 +1,60 @@
+<% if comments.persisted.size > 0 %>
+  <div class="chats">
+    <% comments.persisted.each do |comment| %>
+      <div class="media chat-item">
+        <div class="media-body">
+          <div class="chat-item-title">
+            <span class="chat-item-author">
+              <%= comment.author.full_name if comment.author.present?%>
+              <span class="mr-1"><strong>
+                <span class="badge badge-secondary"><%= comment.author_role %></span>
+              </strong></span>
+            </span>
+            <span>
+              <span class="mr-1"><strong>
+                <% if comment.approval.present? && @sales_order.present? && comment.sales_order_id == @sales_order.id %><span class="badge badge-success">Approved <%= "(Doc ID #{comment.sales_order_id}  )" if comment.sales_order_id.present? %></span><% end %>
+                <% if comment.rejection.present? && @sales_order.present? && comment.sales_order_id == @sales_order.id %><span class="badge badge-danger">Rejected <%= "(Doc ID #{comment.sales_order_id}  )" if comment.sales_order_id.present? %></span><% end %>
+              </strong>
+            </span>
+            <% if comment.show_to_customer? %>
+              <span class="mr-1">
+                <strong>
+                  <span class="badge badge-info">Visible To Customer</span>
+                </strong>
+              </span>
+            <% end %>
+            <%= time_ago_in_words(comment.created_at) %> ago</span>
+          </div>
+          <div class="chat-item-body">
+            <p><%= comment.message %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%=paginate comments, param_name:  show_to_customer ? "customer": "internal", params: {show_to_customer: show_to_customer} %>
+
+<% end %>
+
+
+<%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+<%= f.hidden_field :show_to_customer, value: show_to_customer %>
+
+<div class="flex-fill">
+  <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
+  <% if sales_order.present? %>
+    <% if sales_order.calculated_total_margin_percentage.to_f < 10.0 %>
+      <% if policy(sales_order).approve_low_margin? %>
+        <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' %>
+      <% else %>
+        <span data-toggle='tooltip' title="Margin is below 10%; need Devang Shah's, Gaurang Shah's or Nilesh Desai's approval to move forward">
+          <%= f.submit 'Reply and Approve', class: 'btn btn-success btn-disabled', disabled: true %>
+        </span>
+      <% end %>
+    <% else %>
+      <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(sales_order).approve? %>
+    <% end %>
+    <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(sales_order).reject? %>
+  <% end %>
+</div>

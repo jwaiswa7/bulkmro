@@ -1,5 +1,4 @@
 class Resources::Project < Resources::ApplicationResource
-
   def self.identifier
     :Code
   end
@@ -25,8 +24,8 @@ class Resources::Project < Resources::ApplicationResource
     raise if record.inquiry_number.blank?
 
     {
-      Code: record.inquiry_number,
-      Name: ["#{record.inquiry_number} - ",record.subject[0..50]].join
+        Code: record.inquiry_number,
+        Name: ["#{record.inquiry_number} - ", record.subject[0..50]].join
     }
   end
 end

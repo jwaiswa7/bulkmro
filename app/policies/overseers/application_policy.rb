@@ -18,6 +18,10 @@ class Overseers::ApplicationPolicy
     admin_or_manager? || cataloging? || logistics?
   end
 
+  def not_logistics?
+    !logistics?
+  end
+
   def admin_or_cataloging?
     admin? || cataloging?
   end
@@ -30,6 +34,10 @@ class Overseers::ApplicationPolicy
     admin_or_manager? || sales?
   end
 
+  def developer?
+    ['bhargav.trivedi@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'sourabh.raje@bulkmro.com', 'lopesh.durugkar@bulkmro.com', 'ruta.kambli@bulkmro.com', 'rucha.parab@bulkmro.com', 'meenakshi.naik@bulkmro.com', 'pradeep.ketkale@bulkmro.com', 'sakshi.yadav@bulkmro.com'].include? overseer.email
+  end
+
   def admin?
     overseer.admin?
   end
@@ -40,6 +48,10 @@ class Overseers::ApplicationPolicy
 
   def sales?
     overseer.inside? || overseer.outside?
+  end
+
+  def inside?
+    overseer.inside?
   end
 
   def others?
@@ -56,6 +68,10 @@ class Overseers::ApplicationPolicy
 
   def hr?
     overseer.hr?
+  end
+
+  def accounts?
+    overseer.accounts?
   end
 
   def index?
@@ -99,15 +115,37 @@ class Overseers::ApplicationPolicy
   end
 
   def allow_export?
-    ['vijay.manjrekar@bulkmro.com','bhargav.trivedi@bulkmro.com','saurabh.bhosale@bulkmro.com','ashwin.goyal@bulkmro.com','malav.desai@bulkmro.com','nilesh.desai@bulkmro.com','shravan.agarwal@bulkmro.com','prikesh.savla@bulkmro.com' ].include? overseer.email
+    developer? || ['Gaurang Shah', 'Devang Shah', 'Ankur Gupta', 'Lavanya Jamma', 'Shailender Agarwal', 'Nilesh Desai', 'Priyanka Rajpurkar', 'Uday Salvi', 'Akshay Jindal', 'Nitin Nabera', 'Vijay Manjrekar'].include?(overseer.name)
+  end
+
+  def export_filtered_records?
+    (developer? || allow_export?) && overseer.can_send_emails?
   end
 
   def allow_logistics_format_export?
-    ['bhargav.trivedi@bulkmro.com','saurabh.bhosale@bulkmro.com','ashwin.goyal@bulkmro.com','malav.desai@bulkmro.com','shravan.agarwal@bulkmro.com','prikesh.savla@bulkmro.com' ].include? overseer.email
+    developer? || ['Amit Rawool', 'Vignesh Gounder', 'Mahendra Kolekar', 'Ajay Rathod'].include?(overseer.name)
+  end
+
+  def allow_customer_portal?
+    ['kartik.pai@bulkmro.com'].include?(overseer.email)
+  end
+
+  def allow_activity_export?
+    true
+    # developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
+  end
+
+  def allow_product_export?
+    true
+    # developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
   end
 
   def export_rows?
     false
+  end
+
+  def is_active?
+    record.is_active?
   end
 
   def export_for_logistics?
@@ -126,7 +164,7 @@ class Overseers::ApplicationPolicy
       if overseer.manager?
         scope.all
       else
-        scope.where(:created_by => overseer.self_and_descendants)
+        scope.where(created_by: overseer.self_and_descendants)
       end
     end
   end

@@ -1,9 +1,16 @@
-class Customers::ApplicationPolicy
-  attr_reader :contact, :record
+# frozen_string_literal: true
 
-  def initialize(contact, record)
+class Customers::ApplicationPolicy
+  attr_reader :contact, :current_company, :record
+
+  def initialize(contact, current_company, record)
     @contact = contact
+    @current_company = current_company
     @record = record
+  end
+
+  def autocomplete?
+    true
   end
 
   def customer?
@@ -49,9 +56,9 @@ class Customers::ApplicationPolicy
   class Scope
     attr_reader :contact, :scope
 
-    def initialize(contact, scope)authorize :dashboard, :show?
-    @contact = contact
-    @scope = scope
+    def initialize(contact, scope)
+      @contact = contact
+      @scope = scope
     end
 
     def resolve

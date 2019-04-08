@@ -297,7 +297,7 @@ let initVueJS = () => {
                 let unit_selling_price = row.unit_selling_price;
                 let unit_cost_price_with_unit_freight_cost = row.unit_cost_price_with_unit_freight_cost;
 
-                if (trigger === 'margin_percentage' && margin_percentage < 100) {
+                if (trigger === 'margin_percentage' && ( margin_percentage < 100 || margin_percentage > 100 ) ) {
                     unit_selling_price = unit_cost_price_with_unit_freight_cost / (1 - (margin_percentage / 100));
                     row.unit_selling_price = toDecimal(unit_selling_price);
                 } else {
@@ -369,8 +369,8 @@ let initVueJS = () => {
                             //vj.$emit('input', this.value) // emitting Vue change event
 
                             let optionSelected = $("option:selected", this);
-                            //console.log(optionSelected[0].text.match(/\w[\d]\.[\d]*!/gm)[0])
-                            vj.$data.rows[currentRowIndex]["tax_percentage"] = parseFloat(optionSelected[0].text.match(/\w[\d]\.[\d]*!/gm)[0])
+                            //console.log(optionSelected[0].text.match(/\w[\d]*\.[\d]*!/gm)[0])
+                            vj.$data.rows[currentRowIndex]["tax_percentage"] = parseFloat(optionSelected[0].text.match(/\w[\d]*\.[\d]*!/gm)[0])
                         });
                     });*/
                 }, 1000);

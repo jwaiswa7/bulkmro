@@ -2,33 +2,23 @@
   <div class="card-header">
     <div class=form-row>
 
-      <div class="col-8 col-md-3">
-        <strong>Order Number</strong>
-        <br> <%= f.object.try(:order_number).blank? ? "SAP Request Pending" : f.object.order_number %>
+      <div class="col-6 col-md-3">
+        <strong class="d-block">Order Number</strong>
+        #<%= sales_order.try(:order_number).blank? ? "SAP Request Pending" : sales_order.order_number %>
       </div>
-      <% if f.object.remote_approved? %>
-        <div class="col-8 col-md-3">
-          <strong>Doc Entry</strong>
-          <br> <%= f.object.draft_uid.blank? ? "SAP Request Pending" : f.object.remote_uid %>
-        </div>
-        <div class="col-8 col-md-3">
-          <strong>Draft Entry</strong>
-          <br> <%= f.object.remote_uid.blank? ? "SAP Request Pending" : f.object.remote_uid %>
-        </div>
-      <% end %>
-      <div class="col-3 col-md-3">
-        <strong>Status</strong>
-        <br> <%= f.object.status || f.object.legacy_request_status %>
+      <div class="col-6 col-md-3">
+        <strong class="d-block">Status</strong>
+        <%= sales_order.status || sales_order.legacy_request_status %>
       </div>
-      <div class="col-3 col-md-3">
-        <strong>SAP Status</strong>
-        <br> <%= f.object.remote_status.blank? ? "SAP Request Pending" : f.object.remote_status %>
+      <div class="col-6 col-md-3 mt-2 mt-md-0">
+        <strong class="d-block">SAP Status</strong>
+        <%= sales_order.remote_status.blank? ? "SAP Request Pending" : sales_order.remote_status %>
       </div>
-      <% if f.object.status || f.object.legacy_request_status == "Approved" %>
-        <div class="col-3 col-md-3" style="text-align:right">
+      <% if sales_order.status || sales_order.legacy_request_status == "Approved" %>
+        <div class="col-6 col-md-3 mt-2 mt-md-0 text-right">
           <% if policy(@sales_order).show_pdf? %>
-            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn btn-warning", target: "_blank" do %>
-              View Proforma Invoice
+            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn btn-info btn-sm", target: "_blank" do %>
+              <i class="fal fa-eye mr-1"></i>Proforma I.
             <% end %>
           <% end %>
         </div>
@@ -38,32 +28,24 @@
   </div>
   <div class="card-body">
     <div class="form-row mb-1">
-      <div class="col-6">
-        <strong>Customer PO Number</strong>
-        <br> <%= @inquiry.customer_po_number %>
+      <div class="col-6 col-md-3">
+        <strong class="d-block">Customer Purchase Order No.</strong>
+        #<%= @inquiry.customer_po_number %>
       </div>
-      <div class="col-6">
-        <strong>Customer Order Date</strong>
-        <br> <%= @inquiry.customer_order_date %>
+      <div class="col-6 col-md-3">
+        <strong class="d-block">Customer Order Date</strong>
+        <%= @inquiry.customer_order_date %>
       </div>
-    </div>
-
-    <div class="form-row  mb-1">
-      <div class="col-6">
-        <strong>Currency</strong>
-        <br> <%= f.object.currency %>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        <strong class="d-block">Customer Committed Date</strong>
+        <%= @inquiry.customer_committed_date %>
       </div>
-      <div class="col-6">
-        <strong>Conversion rate</strong>
-        <br> <%= f.object.conversion_rate %>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        <strong class="d-block">Currency</strong>
+        <%= sales_order.currency %> (<%= sales_order.conversion_rate %>)
       </div>
-    </div>
-
-
-    <div class="form-row mb-1">
-      <div class="col-12">
-
-        <strong>Payment Terms:</strong>&nbsp;<br>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        <strong class="d-block">Payment Terms</strong>
         <%= @inquiry.payment_option %>
       </div>
     </div>
@@ -71,188 +53,263 @@
     <div class="card-alternative mt-3">
       <div class="form-row">
         <div class="col-md-6 mt-2 mt-md-0">
-          <strong>Supplier Billing Address</strong><br>
-          <%= @inquiry.bill_from.address.name.to_s %>
-          <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %><br>
-          <% if @inquiry.bill_from.address.phone.present? %>
-            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.bill_from.address.phone %><br>
-          <% end %>
-          <% if @inquiry.bill_from.address.gst %>
-              GST no: <%= @inquiry.bill_from.address.gst %><br>
+          <strong class="d-block">Supplier - Billing Address</strong>
+          <% if @inquiry.bill_from.present? %>
+            <%= @inquiry.bill_from.address.name.to_s %>
+            <%= @inquiry.bill_from.address.to_compact_multiline_s %><br>
+            <% if @inquiry.bill_from.address.phone.present? %>
+              <em>Contact</em>: <%= @inquiry.contact.full_name %> - <%= @inquiry.bill_from.address.phone %><br>
+            <% end %>
+            <% if @inquiry.bill_from.address.gst %>
+              <em>GST Number</em>: <%= @inquiry.bill_from.address.gst %><br>
+            <% end %>
           <% end %>
         </div>
-        <div class="col-md-6">
-          <strong>Supplier Shipping Address</strong>
-          <%= @inquiry.ship_from.address.name.to_s %><br>
-          <%= @inquiry.ship_from.address.to_compact_multiline_s if @inquiry.ship_from.present? %><br>
-          <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
-            Contact: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %><br>
-          <% end %>
-          <% if @inquiry.ship_from.address.gst %>
-              GST no: <%= @inquiry.ship_from.address.gst %><br>
+        <div class="col-md-6 mt-2 mt-md-0">
+          <strong class="d-block">Supplier - Shipping Address</strong>
+          <% if @inquiry.ship_from.present? %>
+            <%= @inquiry.ship_from.address.name.to_s %><br>
+            <%= @inquiry.ship_from.address.to_compact_multiline_s %><br>
+            <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
+              <em>Contact</em>: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %><br>
+            <% end %>
+            <% if @inquiry.ship_from.address.gst %>
+              <em>GST Number</em>: <%= @inquiry.ship_from.address.gst %><br>
+            <% end %>
           <% end %>
         </div>
       </div>
-      <br>
 
-
-      <div class="form-row">
+      <div class="form-row mt-0 mt-md-2">
         <div class="col-md-6 mt-2 mt-md-0">
-          <strong>Customer Billing Address</strong><br>
+          <strong class="d-block">Customer - Billing Address</strong>
           <%= (@inquiry.company.name) %><br>
-          <%= @inquiry.billing_address.to_compact_multiline_s %><br>
+          <%= @sales_order.serialized_billing_address.to_compact_multiline_s %><br>
           <% if @inquiry.contact.phone.present? %>
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
           <% end %>
-          GST no: <%= @inquiry.billing_address.gst || @inquiry.company.default_billing_address.gst %><br>
-          Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+          <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+          <span class="d-block"><em>GST Number</em>: <%= @sales_order.serialized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
         </div>
-        <div class="col-md-6">
-          <strong>Customer Shipping Address</strong><br>
-          <%= (@inquiry.shipping_company.name) %><br>
-          <%= @inquiry.shipping_address.to_compact_multiline_s %><br>
-          <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
-            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
+        <div class="col-md-6 mt-2 mt-md-0">
+          <strong class="d-block">Customer - Shipping Address</strong>
+          <span class="d-block"><%= (@inquiry.shipping_company.name) %></span>
+          <span class="d-block"><%= @sales_order.serialized_shipping_address.to_compact_multiline_s %></span>
+          <% if @inquiry.shipping_contact.phone.present? %>
+            <span class="d-block"><em>Contact</em>: <%= @inquiry.shipping_contact.full_name %>
+              - <%= @inquiry.shipping_contact.phone %></span>
           <% end %>
-          GST no: <%= @inquiry.shipping_address.gst || @inquiry.company.default_shipping_address.gst %><br>
-          Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+          <em>Email</em>: <%= @inquiry.shipping_contact.email if @inquiry.shipping_contact.email.present? %>
+          <span class="d-block"><em>GST Number</em>: <%= @sales_order.serialized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
         </div>
       </div>
     </div>
+    <div class="form-row mt-3">
+      <% if @inquiry.calculation_sheet.attached? %>
 
-    <% if @inquiry.attachments.present? %>
-      <div class="form-row  mt-3">
-        <div class="col-6">
-          <strong>Customer PO sheet</strong><br>
+        <div class="col-6 mb-1">
+          <strong class="d-block">Calculation Sheet</strong>
+          <%= link_to @inquiry.calculation_sheet, target: '_blank' do %>
+            <%= @inquiry.calculation_sheet.filename %>
+          <% end %>
+        </div>
+
+      <% end %>
+
+      <% if @inquiry.attachments.present? %>
+
+        <div class="col-6 mb-1">
+          <strong class="d-block">Customer Purchase Order</strong>
           <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
             <%= @inquiry.customer_po_sheet.filename %>
           <% end if @inquiry.customer_po_sheet.attached? %>
         </div>
-        <div class="col-6">
-          <% if @inquiry.copy_of_email.attached?  %>
-          <strong>Email attachment</strong><br>
+        <div class="col-6 mb-1">
+          <% if @inquiry.copy_of_email.attached? %>
+            <strong class="d-block">Email attachment</strong>
             <%= link_to @inquiry.copy_of_email, target: '_blank' do %>
               <%= @inquiry.copy_of_email.filename %>
             <% end %>
           <% end %>
         </div>
-      </div>
-      <br>
-      <strong>Supplier Quotes attachment</strong>
-      <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
-        <%= link_to url_for(attachment), target: '_blank', :title => attachment.filename do %>
-          <br><%= attachment.filename %>
-        <% end %>
-      <% end if @inquiry.supplier_quotes.attached? %>
+        <div class="col-6 mb-1">
+          <strong class="d-block">Supplier Quotes Attachment</strong>
+          <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
+            <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
+              <span class="d-block"><%= attachment.filename %></span>
+            <% end %>
+          <% end if @inquiry.supplier_quotes.attached? %>
+        </div>
+
+      <% end %>
+    </div>
+    <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
+      <thead>
+      <tr>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+        </th>
+        <th class="no-sort">
+          <span>Product</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Quantity">Qty</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Unit of Measurement">UoM</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Unit Cost">UC</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Margin Percentage">%</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Unit Selling Price">USP</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Total Selling Price">TSP</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Tax Code">T. Code</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Total Freight">T. Freight</span>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <% sales_order.rows.each do |row| %>
+        <tr>
+          <td>
+            <span>#<%= row.sr_no %></span>
+          </td>
+          <td>
+            <span><%= row.sales_quote_row %></span>
+          </td>
+          <td>
+            <span><%= row.quantity %></span>
+          </td>
+          <td>
+            <span><%= row.measurement_unit %></span>
+          </td>
+          <td>
+            <span><%= format_currency(row.converted_unit_cost_price_with_unit_freight_cost, symbol: sales_order.currency_sign) %></span>
+          </td>
+          <td>
+            <span><%= number_with_precision(row.margin_percentage, precision: 2) %></span>
+          </td>
+          <td>
+            <span><%= format_currency(row.converted_unit_selling_price, symbol: sales_order.currency_sign) %></span>
+          </td>
+          <td>
+            <span><%= format_currency(row.converted_total_selling_price, symbol: sales_order.currency_sign) %></span>
+          </td>
+          <td>
+            <span><%= format_currency(row.converted_total_selling_price_with_tax, symbol: sales_order.currency_sign) %></span>
+          </td>
+          <td>
+            <span><%= row.best_tax_code %></span>
+          </td>
+          <td>
+            <span><%= row.best_tax_rate %></span>
+          </td>
+          <td>
+            <span><%= format_currency(row.freight_cost_subtotal, symbol: sales_order.currency_sign) %></span>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <% @sales_order.rows.each do |row| %>
+      <%= hidden_field_tag :sales_order_id, row.sales_order_id %>
+      <%= hidden_field_tag :id, row.id %>
+      <% if row.product.present? && (row.product.kit.present? && row.product.kit.kit_product_rows.present?) %>
+        <h4 class="mb-0 mt-3 text-small ">
+          <span class="text-black-50 text-uppercase ">Kit product details - </span><strong class="text-black"><%= row.sales_quote_row.to_s %></strong>
+        </h4>
+        <table class="w-100 table table-bordered dt-responsive datatable mt-0" data-fixed-header="false">
+          <thead>
+          <tr>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+            </th>
+            <th class="no-sort">
+              <span>Product</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Quantity">Qty</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Code">T. Code</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <% row.product.kit.kit_product_rows.each_with_index do |kit_product, index| %>
+            <tr>
+              <td class="col-1">
+                <span>#<%= (index + 1) %></span>
+              </td>
+              <td class="col-6">
+                <span><%= kit_product.product.name %></span>
+              </td>
+              <td class="col-2">
+                <span><%= kit_product.quantity %></span>
+              </td>
+              <td class="col-2">
+                <span><%= kit_product.tax_code.try(:code) %></span>
+              </td>
+              <td class="col-2">
+                <span><%= kit_product.tax_rate.to_s %></span>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      <% end %>
     <% end %>
 
-    <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
-      <%= row.hidden_field :sales_order_id %>
-      <%= row.hidden_field :id %>
-      <div>
-        <h6 class="text-uppercase mb-0 mt-3">
-          <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.object.sr_no %></span>
-          <strong><%= row.object.sales_quote_row %></strong>
-        </h6>
-        <div class="form-row my-2 text-small">
-          <div class="col-12">
-            <table class="w-100 datatable table table-bordered dt-responsive table-unstyled" data-fixed-header="false">
-              <thead>
-              <tr>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Quantity">Qty</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Unit of Measurement">UoM</span><br>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Unit Cost">UC</span><br>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Margin Percentage">%</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Unit Selling Price">USP</span><br>
-                </th>
-                <th class="no-sort <%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
-                        <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= f.object.currency.sign %>
-                          )</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Total Selling Price">TSP</span><br>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span><br>
-                </th>
-                <th class="no-sort">
-                  <span>Tax Code</span><br>
-                </th>
-                <th class="no-sort">
-                  <span>Tax Rate</span><br>
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>
-                  <span><%= row.object.quantity %></span>
-                </td>
-                <td>
-                  <span><%= row.object.measurement_unit %></span>
-                </td>
-                <td>
-                  <span><%= format_currency(row.object.converted_unit_cost_price_with_unit_freight_cost) %></span>
-                </td>
-                <td>
-                  <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
-                </td>
-                <td>
-                  <span><%= format_currency(row.object.converted_unit_selling_price) %></span>
-                </td>
-                <td>
-                  <span><%= format_currency(row.object.converted_total_selling_price) %></span>
-                </td>
-                <td>
-                  <span><%= format_currency(row.object.converted_total_selling_price_with_tax) %></span>
-                </td>
-                <td>
-                  <span><%= row.object.best_tax_code %></span>
-                </td>
-                <td>
-                  <span><%= row.object.best_tax_rate %></span>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <hr class="my-2">
-    <% end %>
   </div>
   <div class="card-footer">
     <div class=form-row>
-      <div class="col-12 col-md-2">
-        Products <br>
-        <strong><%= f.object.rows.size %></strong>
+      <div class="col-6 col-md-1">
+        Products
+        <strong class="d-block"><%= sales_order.rows.size %></strong>
       </div>
-      <div class="col-4 col-md-2 mt-2 mt-md-0">Total Cost<br>
-        <strong><%= format_currency(f.object.converted_total_tax) %></strong>
+      <div class="col-6 col-md-1">
+        Total Freight
+        <strong class="d-block"><%= format_currency(sales_order.sales_quote.calculated_freight_cost_total) %></strong>
       </div>
-      <div class="col-4 col-md-2 mt-2 mt-md-0">Total Margin<br>
-        <strong><%= format_currency(f.object.converted_total_margin) %> (<%= f.object.calculated_total_margin_percentage %>%)</strong>
+      <div class="col-6 col-md-2">
+        Cost
+        <strong class="d-block"><%= format_currency(sales_order.converted_total_cost, symbol: sales_order.currency_sign) %></strong>
       </div>
-      <div class="col-8 col-md-2">
-        Total Selling Price (Excl. tax)<br>
-        <strong><%= format_currency(f.object.converted_total) %></strong>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Margin
+        <strong class="d-block"><%= format_currency(sales_order.converted_total_margin, symbol: sales_order.currency_sign) %>
+          (<%= sales_order.calculated_total_margin_percentage %>%)</strong>
       </div>
-      <div class="col-8 col-md-2 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
-        <strong><%= format_currency(f.object.converted_total_with_tax) %></strong>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Selling Price (E. tax)
+        <strong class="d-block"><%= format_currency(sales_order.converted_total, symbol: sales_order.currency_sign) %></strong>
       </div>
-
-      <div class="col-4 col-md-2">
-        Total Tax<br>
-        <strong><%= format_currency(f.object.converted_total_tax) %></strong>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Tax
+        <strong class="d-block"><%= format_currency(sales_order.converted_total_tax, symbol: sales_order.currency_sign) %></strong>
+      </div>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Selling Price (I. tax)
+        <strong class="d-block"><%= format_currency(sales_order.converted_total_with_tax, symbol: sales_order.currency_sign) %></strong>
       </div>
     </div>
   </div>

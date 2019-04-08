@@ -1442,3 +1442,6 @@
 #
 #
 
+# CustomerOrder.where(:online_order_number => nil).each do |co|
+#   co.update_attributes!(:online_order_number => Services::Resources::Shared::UidGenerator.online_order_number(co.id))
+# end

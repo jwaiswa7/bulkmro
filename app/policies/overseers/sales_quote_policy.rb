@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   def new_email_message?
     record.persisted? && record.sent? && record.children.blank? && overseer.can_send_emails?
@@ -15,15 +17,31 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
     record == record.inquiry.sales_quotes.latest_record && record.persisted? && record.sent?
   end
 
+  def display_revision_button?
+    new_revision? && !record.so_status_req_or_pending.present?
+  end
+
   def new_sales_order?
-    new_revision? && record.inquiry.synced? && record.synced? && record.inquiry.valid_for_new_sales_order? && record.email_messages.present? && record.sales_quote_quantity_not_fulfilled?
+    new_revision? && record.inquiry.synced? && record.synced? && record.inquiry.valid_for_new_sales_order? && record.email_messages.present? && record.sales_quote_quantity_not_fulfilled? && (record.inquiry.last_synced_quote_id.present? && (record.inquiry.final_sales_quote.id == record.inquiry.last_synced_quote_id))
   end
 
   def reset_quote?
-    ['shravan.agarwal@bulkmro.com','prikesh.savla@bulkmro.com','pradeep.ketkale@bulkmro.com','lopesh.durugkar@bulkmro.com'].include? overseer.email
+    developer? && record == record.inquiry.final_sales_quote
   end
 
   def preview?
     edit?
+  end
+
+  def new_freight_request?
+    !record.freight_request.present? && record.is_final? && !logistics?
+  end
+
+  def relationship_map?
+    all_roles?
+  end
+
+  def get_relationship_map_json?
+    relationship_map?
   end
 end

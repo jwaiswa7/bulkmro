@@ -1,58 +1,117 @@
 <div class="col-12">
-  <%= simple_form_for([:customers, @cart], :url => customers_customer_orders_path, :method => :post) do |cart| %>
-  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
-    <div class="d-md-flex justify-content-between">
-      <h1 class="display-5 mb-1">Cart</h1>
-      <%= cart.hidden_field 'id' %>
-      <% unless cart.object.items.size.zero? %>
-        <div>
-          <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
-            <i class="fal fa-shopping-cart mr-1"></i> Checkout
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-    <p class="lead mt-1">
-      You have <strong><%= cart.object.items.size %></strong> products in your cart.
-    </p>
-  </section>
+  <%= simple_form_for([:customers, @cart], :url => customers_cart_path, :method => :patch) do |cart| %>
 
-  <div class="card mb-2">
-    <div class="card-body py-2">
-      <div class="text-left">
-        <%= cart.simple_fields_for :items do |cart_item| %>
-          <div class="<% if cart_item.object != cart.object.items.last %>border-bottom <% end %> py-2 d-flex flex-row align-items-center">
-            <img class="" src="<%= url_for(cart_item.object.product.images.first)%>" width="60" />
-            <div class="ml-3 flex-grow-1">
-              <%= link_to customers_cart_item_path(cart_item.object), :class => 'text-danger float-right', :data => {:method => "delete"} do %>
-                <i class="fal fa-times"></i>
+    <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+      <div class="d-md-flex justify-content-between">
+        <h1 class="display-5 mb-1">Cart</h1>
+        <%= cart.hidden_field 'id' %>
+      </div>
+      <p class="lead mt-1">
+        You have <strong><%= cart.object.items.size %></strong> product(s) in your cart.
+        <%= render 'shared/snippets/form_errors', f: cart %>
+      </p>
+    </section>
+
+    <div class="row flex-lg-row-reverse">
+      <div class="col-lg-3">
+        <div class="card" data-toggle="sticky">
+          <div class="card-header">
+            <h5 class="mb-0"><strong>Summary</strong></h5>
+          </div>
+          <div class="card-body text-right">
+            <span class="d-block"><strong class="float-left">Subtotal:</strong> <strong><%= format_currency(current_cart.calculated_total) %></strong></span>
+            <% if @cart.billing_address.present? %>
+              <hr class="my-1">
+              <% current_cart.tax_line_items.each do |key, value| %>
+                <span class="d-block"><em class="float-left"><%= TaxRateString.for(current_cart.billing_address, current_cart.default_warehouse_address, current_cart.default_warehouse_address, key) %>:</em> <%= format_currency(value) %></span>
               <% end %>
-              <p class="text-black-50 m-0 p-0"><strong><%= cart_item.object.product.name %></strong></p>
-              <%= cart_item.input_field :quantity  %>
-              <%= hidden_field_tag 'contact_id', current_contact.id %>
-              <%= hidden_field_tag 'page', 'edit_cart' %>
+              <strong class="float-left">Total Tax:</strong> <strong><%= format_currency(current_cart.calculated_total_tax) %></strong>
+              <hr class="my-1">
+              <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(current_cart.grand_total) %></strong>
+            <% else %>
+              <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><strong class="float-left">Total Tax <i class="fal fa-info-circle text-small"></i>:</strong> 0.00</span>
+              <hr class="my-1">
+              <span class="d-block"><strong class="float-left">Grand Total:</strong> <%= format_currency(current_cart.calculated_total) %></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="card mt-2 mt-lg-0">
+          <div class="card-body py-2">
+            <div class="text-left">
+              <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
+                <thead>
+                <tr>
+                  <th class="no-sort desktop">Image</th>
+                  <th class="no-sort all">Product</th>
+                  <th class="no-sort">Price</th>
+                  <th data-toggle="tooltip" title="Minimum Order Quantity">MOQ</th>
+                  <th class="no-sort all">Quantity</th>
+                  <th class="all">Subtotal</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <%= cart.simple_fields_for :items do |cart_item| %>
+                  <tr>
+                    <td>
+                      <%= cart_item.hidden_field :id %>
+                      <% if cart_item.object.customer_product.best_image.present? %>
+                        <%#= image_tag cart_item.object.customer_product.tiny_best_image, fallback_url: image_path('coming_soon.png'), check_remote: false %>
+                      <% else %>
+                        <img src="<%= image_path('coming_soon.png') %>" alt="<%= cart_item.object.customer_product.sku %>" height="40" />
+                      <% end %>
+                    </td>
+                    <td>
+                      <a href="<%= customers_product_path(cart_item.object.customer_product) %>">
+                        <%= cart_item.object.customer_product.name.truncate(80) %>
+                      </a>
+                    </td>
+                    <td><%= format_currency(cart_item.object.customer_product.customer_price, precision: 2, symbol: '') %></td>
+                    <td><%= cart_item.object.customer_product.moq %></td>
+                    <td style="width: 90px"><%= cart_item.input_field :quantity, :class => 'form-control', placeholder: 'Quantity', step: cart_item.object.customer_product.moq, min: cart_item.object.customer_product.moq %></td>
+                    <td><%= format_currency(cart_item.object.customer_product.customer_price.to_f * cart_item.object.quantity, precision: 2) %></td>
+                    <td>
+                      <%= link_to customers_cart_item_path(cart_item.object), :class => 'text-danger float-right', :data => {:method => "delete"} do %>
+                        <i class="fal fa-times"></i>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
             </div>
           </div>
-        <% end %>
-      </div>
-    </div>
-
-    <div class="card-footer">
-      <div class="form-row">
-        <div class="col-md-12">
-          <% if cart.object.items.size.zero? %>
-            <%= link_to customers_products_path, :class => "btn btn-success btn-block" do %>
-              <i class="fal fa-shopping-cart mr-1"></i> Add Products
+          <div class="card-footer">
+            <div class="form-row">
+              <div class="col-md-12">
+                <div class="form-row">
+                  <div class="col-md-5">
+                    <div class="form-row">
+                      <div class="col-6">
+                        <%= link_to "Empty Cart", empty_cart_customers_cart_path, class: "btn btn-block btn-outline-danger" %>
+                      </div>
+                      <div class="col-6">
+                        <%= cart.submit "Update Cart", name: "show_cart", class: "btn btn-block btn-warning" %>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-7 mt-2 mt-md-0">
+                    <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+                      <i class="fal fa-shopping-cart mr-1"></i>Proceed to Checkout
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <%= link_to customers_products_path, :class => "mt-2 btn btn-outline-success btn-block btn-sm" do %>
+              Add More Products
             <% end %>
-          <% else %>
-            <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-              <i class="fal fa-shopping-cart mr-1"></i> Checkout
-            <% end %>
-          <% end %>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
   <% end %>
+  </div>
 </div>
 

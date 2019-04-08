@@ -31,6 +31,7 @@ en:
         sr_no: 'Serial Number'
         bp_catalog_name: 'Customer Material Name'
         bp_catalog_sku: 'Customer Material Code'
+        quantity: 'Qty'
       inquiry_product_suppliers:
         bp_catalog_name: 'Supplier Material Name'
         bp_catalog_sku: 'Supplier Material Code'
@@ -61,6 +62,11 @@ en:
         legacy_email: 'e.g. ashwin.goyal@bulkmro.com'
         companies: 'List of companies associated with this contact'
         legacy_id: 'Legacy id'
+      payment_request_transaction:
+        utr_or_cheque_no: 'check no'
+        amount_paid: 'amount'
+        issue_date: 'eg. 20-Dec-2018'
+        cheque_date: 'eg. 20-Dec-2018'
     "yes": 'Yes'
     "no": 'No'
     required:

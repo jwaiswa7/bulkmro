@@ -1,6 +1,8 @@
 var id = $(document)[0].activeElement.parentElement.id
 $('#' + id).fadeOut();
-$("#cart-count").load(window.location.href + " #cart-count > *");
+
+var quantityInput = $('.cart-items-count');
+quantityInput.html(<%= current_cart.items.size %>);
 
 $.notify({
     message: 'Product was removed from the cart.'

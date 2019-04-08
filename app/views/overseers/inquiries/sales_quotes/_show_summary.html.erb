@@ -1,159 +1,253 @@
 <div class="card">
   <div class="card-header">
     <div class=form-row>
-      <div class="col-12 col-md-2">
-        Products <br>
-        <strong><%= f.object.rows.size %></strong>
+      <div class="col-6 col-md-2">
+        Products
+        <strong class="d-block"><%= sales_quote.rows.size %></strong>
       </div>
-      <div class="col-4 col-md-2 mt-2 mt-md-0">Total Cost<br>
-        <strong><%= format_currency(f.object.converted_total_cost) %></strong>
+      <div class="col-6 col-md-2">
+        Cost
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_cost,symbol:sales_quote.currency_sign) %></strong>
       </div>
-      <div class="col-4 col-md-2 mt-2 mt-md-0">Total Margin<br>
-        <strong><%= format_currency(f.object.converted_total_margin) %> (<%= f.object.calculated_total_margin_percentage %>%)</strong>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Margin
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_margin,symbol:sales_quote.currency_sign) %>
+          (<%= sales_quote.calculated_total_margin_percentage %>%)</strong>
       </div>
-      <div class="col-8 col-md-2">
-        Total Selling Price (Excl. tax)<br>
-        <strong><%= format_currency(f.object.converted_total) %></strong>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Selling Price (E. tax)
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total,symbol:sales_quote.currency_sign) %></strong>
       </div>
-      <div class="col-8 col-md-2 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
-        <strong><%= format_currency(f.object.converted_total_with_tax) %></strong>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Selling Price (I. tax)
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_with_tax,symbol:sales_quote.currency_sign) %></strong>
       </div>
 
-      <div class="col-4 col-md-2">
-        Total Tax<br>
-        <strong><%= format_currency(f.object.converted_total_tax) %></strong>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Tax
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_tax,symbol:sales_quote.currency_sign) %></strong>
       </div>
     </div>
   </div>
   <div class="card-body">
     <div class="form-row">
-      <div class="col-6">
-        <strong>Currency</strong>
-        <br> <%= f.object.currency %>
+      <div class="col-6 col-md-2">
+        <strong class="d-block">SAP Quotation</strong>
+        #<%= @inquiry.quotation_uid.blank? ? "SAP Request Pending" : @inquiry.quotation_uid %>
       </div>
-      <div class="col-6">
-        <strong>Conversion rate</strong>
-        <br> <%= f.object.inquiry_currency.conversion_rate %>
+      <div class="col-6 col-md-2">
+        <strong class="d-block">Customer PO No.</strong>
+        #<%= @inquiry.customer_po_number %>
       </div>
-    </div><br>
-
-    <div class="form-row">
-      <div class="col-12">
-        <strong>SAP Quotation </strong><br>
-        <%= f.object.quotation_uid.blank? ? "SAP Request Pending" : f.object.quotation_uid %>
+      <div class="col-6 col-md-2">
+        <strong class="d-block">Customer Order Date</strong>
+        <%= @inquiry.customer_order_date %>
+      </div>
+      <div class="col-6 col-md-2">
+        <strong class="d-block">Currency</strong>
+        <%= sales_quote.currency %> (<%= sales_quote.inquiry_currency.conversion_rate %>)
+      </div>
+      <div class="col-6 col-md-3">
+        <strong class="d-block">Payment Terms</strong>
+        <%= @inquiry.payment_option %>
       </div>
     </div>
 
     <div class="card-alternative mt-3">
       <div class="form-row">
-        <div class="col-md-6">
-          <strong>Supplier Shipping Address</strong><br>
-          <%= @inquiry.ship_from.name.to_s %><br>
-          <%= @inquiry.ship_from.address.to_compact_multiline_s if @inquiry.ship_from.present? %>
-        </div>
         <div class="col-md-6 mt-2 mt-md-0">
-          <strong>Supplier Billing Address</strong><br>
-          <%= @inquiry.bill_from.name.to_s %><br>
-          <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %>
+          <strong class="d-block">Supplier - Billing Address</strong>
+          <% if @inquiry.bill_from.present? %>
+            <span class="d-block"><%= @inquiry.bill_from.name.to_s %></span>
+            <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %>
+            <% if @inquiry.bill_from.address.phone.present? %>
+              <span class="d-block"><em>Contact</em>:  <%= @inquiry.contact.full_name %></span>
+              - <%= @inquiry.bill_from.address.phone %><br>
+            <% end %>
+            <span class="d-block"><em>GST Number</em>: <%= @inquiry.bill_from.address.gst %></span>
+          <% end %>
+        </div>
+        <div class="col-md-6">
+          <strong class="d-block">Supplier - Shipping Address</strong>
+          <% if @inquiry.ship_from.present? %>
+            <span class="d-block"><%= @inquiry.ship_from.name.to_s %></span>
+            <%= @inquiry.ship_from.address.to_compact_multiline_s  %>
+            <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
+              <span class="d-block"><em>Contact</em>: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %></span>
+            <% end %>
+            <span class="d-block"><em>GST Number</em>: <%= @inquiry.ship_from.address.gst %></span>
+          <% end %>
         </div>
       </div>
 
       <div class="form-row mt-2 mb-1">
-        <div class="col-md-6">
-          <strong>Customer Shipping Address</strong><br>
-          <%= @inquiry.shipping_contact.present? ? @inquiry.shipping_contact.full_name : @inquiry.contact.full_name %><br>
-          <%= @inquiry.shipping_address %><br>
-          <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-        </div>
         <div class="col-md-6 mt-2 mt-md-0">
-          <strong>Customer Billing Address</strong><br>
-          <%= @inquiry.contact.full_name %><br>
-          <%= @inquiry.billing_address %><br>
-          <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+          <strong class="d-block">Customer - Billing Address</strong>
+          <span class="d-block"><%= @inquiry.contact.full_name %></span>
+          <span class="d-block"><%= @inquiry.billing_address %></span>
+          <% if @inquiry.contact.phone.present? %>
+              <span class="d-block"><em>Contact</em>: <%= @inquiry.contact.full_name %>
+                - <%= @inquiry.contact.phone %></span>
+          <% end %>
+          <span class="d-block"><em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %></span>
+          <span class="d-block"><em>GST Number</em>: <%= (@inquiry.billing_address.gst if @inquiry.billing_address.present?) || (@inquiry.company.default_billing_address.gst if @inquiry.company.default_billing_address.present?) || '-' %></span>
+        </div>
+        <div class="col-md-6">
+          <strong class="d-block">Customer - Shipping Address</strong>
+          <span class="d-block"><%= @inquiry.shipping_contact.present? ? @inquiry.shipping_contact.full_name : @inquiry.contact.full_name %></span>
+          <span class="d-block"><%= @inquiry.shipping_address %></span>
+          <% if @inquiry.shipping_contact.phone.present? %>
+              <span class="d-block"><em>Contact</em>: <%= @inquiry.shipping_contact.full_name %>
+                - <%= @inquiry.shipping_contact.phone %></span>
+          <% end %>
+
+          <span class="d-block"><em>Email</em>: <%= @inquiry.shipping_contact.email if @inquiry.shipping_contact.email.present? %></span>
+          <span class="d-block"><em>GST Number</em>: <%= (@inquiry.shipping_address.gst if @inquiry.shipping_address.present?) || (@inquiry.company.default_shipping_address.gst if @inquiry.company.default_shipping_address.present?) || '-' %></span>
         </div>
       </div>
     </div>
 
-    <%= f.simple_fields_for :rows, wrapper_tag: :div do |row| %>
-      <%= row.hidden_field :id %>
-      <div>
-        <h6 class="text-uppercase mb-0 mt-3">
-          <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.object.sr_no %></span>
-          <strong><%= row.object %></strong>
-        </h6>
-        <div class="form-row my-2 text-small">
-          <div class="col-12">
-            <table class="w-100 datatable table table-bordered dt-responsive table-unstyled" data-fixed-header="false">
-              <thead>
-              <tr>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Quantity">Qty</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Unit of Measurement">UoM</span><br>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Unit Cost with Freight">UC w. Freight</span><br>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Margin Percentage">%</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Unit Selling Price">USP</span><br>
-                </th>
-                <th class="no-sort <%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
-                  <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= f.object.currency.sign %>)</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Total Selling Price">TSP</span><br>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span><br>
-                </th>
-                <th class="no-sort">
-                  <span>HSN/SAC Code</span><br>
-                </th>
-                <th class="no-sort">
-                  <span>Tax Rate</span><br>
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>
-                  <span><%= row.object.quantity %></span>
-                </td>
-                <td>
-                  <span><%= row.object.measurement_unit %></span>
-                </td>
-                <td>
-                  <span><%= format_currency(row.object.converted_unit_cost_price_with_unit_freight_cost) %></span>
-                </td>
-                <td>
-                  <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
-                </td>
-                <td>
-                  <span><%= format_currency(row.object.converted_unit_selling_price) %></span>
-                </td>
-                <td>
-                  <span><%= format_currency(row.object.converted_total_selling_price) %></span>
-                </td>
-                <td>
-                  <span><%= format_currency(row.object.converted_total_selling_price_with_tax) %></span>
-                </td>
-                <td>
-                  <span><%= row.object.best_tax_code.chapter %></span>
-                </td>
-                <td>
-                  <span><%= percentage(row.object.best_tax_rate.tax_percentage) %></span>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+    <% if @inquiry.calculation_sheet.attached? %>
+    <div class="form-row mt-3">
+      <div class="col-6">
+        <strong class="d-block">Calculation Sheet</strong>
+        <%= link_to @inquiry.calculation_sheet, target: '_blank' do %>
+          <%= @inquiry.calculation_sheet.filename %>
+        <% end %>
       </div>
-      <hr class="my-2">
+    </div>
     <% end %>
+
+    <% if @inquiry.attachments.present? %>
+      <div class="form-row mt-3">
+        <% if @inquiry.customer_po_sheet.attached? %>
+          <div class="col-6">
+            <strong class="d-block">Customer Purchase Order</strong>
+            <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
+              <%= @inquiry.customer_po_sheet.filename %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if @inquiry.copy_of_email.attached? %>
+          <div class="col-6">
+            <strong class="d-block">Email Attachment</strong>
+            <%= link_to @inquiry.copy_of_email, target: '_blank' do %>
+              <%= @inquiry.copy_of_email.filename %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <div>
+      <table class="w-100 datatable table table-bordered dt-responsive dt-responsive wrap-whitespace mt-0" data-fixed-header="false">
+        <thead>
+        <tr>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip">Product</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Quantity">Qty</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Unit of Measurement">UoM</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Unit Cost with Freight">UC w. Freight</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Margin Percentage">%</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Unit Selling Price">USP</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Total Selling Price">TSP</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="HSN/SAC Cost">T. Code</span>
+          </th>
+          <th class="no-sort">
+            <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <% sales_quote.rows.each do |row| %>
+          <tr>
+            <td>
+              <span><%= row.sr_no %></span>
+            </td>
+            <td>
+              <span><%= row %></span>
+            </td>
+            <td>
+              <span><%= row.quantity %></span>
+            </td>
+            <td>
+              <span><%= row.measurement_unit %></span>
+            </td>
+            <td>
+              <span><%= format_currency(row.converted_unit_cost_price_with_unit_freight_cost,symbol:sales_quote.currency_sign) %></span>
+            </td>
+            <td>
+              <span><%= number_with_precision(row.margin_percentage, precision: 2,symbol:sales_quote.currency_sign) %></span>
+            </td>
+            <td>
+              <span><%= format_currency(row.converted_unit_selling_price,symbol:sales_quote.currency_sign) %></span>
+            </td>
+            <td>
+              <span><%= format_currency(row.converted_total_selling_price,symbol:sales_quote.currency_sign) %></span>
+            </td>
+            <td>
+              <span><%= format_currency(row.converted_total_selling_price_with_tax,symbol:sales_quote.currency_sign) %></span>
+            </td>
+            <td>
+              <span><%= row.best_tax_code.chapter %></span>
+            </td>
+            <td>
+              <span><%= percentage(row.best_tax_rate.tax_percentage) %></span>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class=form-row>
+      <div class="col-6 col-md-2">
+        Products
+        <strong class="d-block"><%= sales_quote.rows.size %></strong>
+      </div>
+      <div class="col-6 col-md-2">
+        Cost
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_cost,symbol:sales_quote.currency_sign) %></strong>
+      </div>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Margin
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_margin,symbol:sales_quote.currency_sign) %>
+          (<%= sales_quote.calculated_total_margin_percentage %>%)</strong>
+      </div>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Selling Price (E. tax)
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total,symbol:sales_quote.currency_sign) %></strong>
+      </div>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Selling Price (I. tax)
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_with_tax,symbol:sales_quote.currency_sign) %></strong>
+      </div>
+
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Tax
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_tax,symbol:sales_quote.currency_sign) %></strong>
+      </div>
+    </div>
   </div>
 </div>

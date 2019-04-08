@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
+  post '/rate' => 'rater#create', :as => 'rate'
   mount Maily::Engine, at: '/maily' if Rails.env.development?
+  mount ActionCable.server, at: '/cable'
 
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
   get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
-  devise_for :contacts, controllers: {sessions: 'customers/sessions'}, path: 'customers'
+  devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: 'customers'
 
   namespace 'callbacks' do
     resources :sales_orders do
@@ -28,7 +30,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-
+    post '1de9b0a30075ae8c303eb420c103c320', :to => 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -36,9 +38,13 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
+    get "/docs/*page" => "docs#index"
     resources :attachments
+    resources :review_questions
+    resources :banks
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
+      get 'reset_index'
       get 'serializer'
       get 'migrations'
       get 'console'
@@ -48,23 +54,69 @@ Rails.application.routes.draw do
       member do
         get 'show'
       end
+      collection do
+        get 'resend_failed_requests'
+      end
+    end
+
+    resources :callback_requests do
+      member do
+        get 'show'
+      end
+    end
+
+    resources :document_creations
+
+    resources :notifications do
+      collection do
+        post 'mark_as_read'
+        get 'queue'
+      end
     end
 
     resources :reports
-    resources :activities, except: [:show]
+    resources :company_creation_requests do
+      # member do
+      #   post 'exchange_with_existing_company'
+      # end
+      collection do
+        get 'requested'
+        get 'created'
+      end
+    end
+
+    resources :activities, except: [:show] do
+      collection do
+        get 'pending'
+        post 'approve_selected'
+        post 'reject_selected'
+        post 'add_to_inquiry'
+        get 'export_all'
+        get 'export_filtered_records'
+      end
+      member do
+        get 'approve'
+        get 'reject'
+      end
+    end
     resource :profile, :controller => :profile, except: [:show, :index]
     resources :overseers, except: [:show]
 
     resources :suppliers do
       collection do
         get 'autocomplete'
+        get 'export_all'
+        get 'export_filtered_records'
       end
     end
 
     resources :contacts do
       collection do
         get 'autocomplete'
-        get 'login_as_contact'
+      end
+
+      member do
+        get 'become'
       end
     end
 
@@ -86,12 +138,14 @@ Rails.application.routes.draw do
     resources :tax_codes, except: [:show] do
       collection do
         get 'autocomplete'
+        get 'autocomplete_for_product'
       end
     end
 
     resources :addresses do
       collection do
         get 'autocomplete'
+        get 'warehouse_addresses'
       end
     end
 
@@ -103,17 +157,27 @@ Rails.application.routes.draw do
     end
 
     resources :products do
+      collection do
+        get 'autocomplete'
+        get 'non_kit_autocomplete'
+        get 'service_autocomplete'
+        get 'autocomplete_mpn'
+      end
       member do
         get 'customer_bp_catalog'
         get 'best_prices_and_supplier_bp_catalog'
         get 'sku_purchase_history'
         get 'resync'
+        get 'resync_inventory'
+        get 'autocomplete_suppliers'
+        get 'get_product_details'
       end
 
       collection do
         get 'autocomplete'
         get 'pending'
         get 'export_all'
+        get 'export_filtered_records'
       end
 
       scope module: 'products' do
@@ -132,39 +196,107 @@ Rails.application.routes.draw do
     end
 
     resources :po_requests do
+      scope module: 'po_requests' do
+        resources :payment_requests
+        resources :email_messages do
+          collection do
+            get 'sending_po_to_supplier'
+            post 'sending_po_to_supplier_notification'
+            get 'dispatch_from_supplier_delayed'
+            post 'dispatch_from_supplier_delayed_notification'
+            get 'material_received_in_bm_warehouse'
+            post 'material_received_in_bm_warehouse_notification'
+          end
+        end
+      end
+
+      collection do
+        get 'autocomplete'
+        get 'pending_and_rejected'
+        get 'cancelled'
+        get 'amended'
+        get 'pending_stock_approval'
+        get 'stock'
+        get 'completed_stock'
+      end
+
+    end
+
+    resources :invoice_requests do
       collection do
         get 'autocomplete'
         get 'pending'
+        get 'completed'
       end
     end
 
     resources :sales_orders do
       member do
         get 'new_purchase_order'
+        get 'new_purchase_orders_requests'
+        post 'preview_purchase_orders_requests'
+        post 'create_purchase_orders_requests'
+        get 'debugging'
       end
 
       collection do
         get 'pending'
+        get 'cancelled'
         get 'export_all'
         get 'drafts_pending'
         get 'export_rows'
         get 'export_for_logistics'
+        get 'export_for_sap'
         get 'autocomplete'
+        get 'not_invoiced'
       end
 
       scope module: 'sales_orders' do
         resources :comments
+        resources :purchase_orders_requests
+        resources :email_messages do
+          collection do
+            get 'material_dispatched_to_customer'
+            post 'material_dispatched_to_customer_notification'
+            get 'material_delivered_to_customer'
+            post 'material_delivered_to_customer_notification'
+          end
+        end
       end
     end
 
     resources :purchase_orders do
+      member do
+        get 'edit_material_followup'
+        patch 'update_material_followup'
+      end
+
       collection do
         get 'export_all'
         get 'autocomplete'
+        get 'autocomplete_without_po_requests'
+        get 'material_readiness_queue'
+        get 'material_pickup_queue'
+        get 'material_delivered_queue'
+        post 'update_logistics_owner'
+        post 'update_logistics_owner_for_pickup_requests'
+      end
+
+      scope module: 'purchase_orders' do
+        resources :material_pickup_requests do
+          member do
+            get 'confirm_delivery'
+            get 'delivered_material'
+          end
+        end
       end
     end
 
     resources :sales_invoices do
+      member do
+        get 'edit_pod'
+        patch 'update_pod'
+      end
       collection do
         get 'export_all'
         get 'export_rows'
@@ -178,41 +310,97 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :customer_orders do
+      scope module: 'customer_orders' do
+        resources :comments
+        resources :inquiries do
+
+        end
+      end
+
+      collection do
+        get 'payments'
+        get 'refresh_payment'
+      end
+    end
+
     resources :inquiries do
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
+        get 'resync_inquiry_products'
+        get 'resync_unsync_inquiry_products'
         get 'calculation_sheet'
         get 'export'
+        get 'stages'
+        get 'relationship_map'
+        get 'get_relationship_map_json'
       end
 
       collection do
+        get 'new_from_customer_order'
         get 'autocomplete'
         get 'index_pg'
         get 'smart_queue'
         get 'export_all'
+        get 'export_filtered_records'
+        post 'create_purchase_orders_requests'
+        post 'preview_stock_po_request'
+        get 'bulk_update'
       end
-``
+
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
-        resources :sales_shipments
-        resources :purchase_orders
+        resources :sales_shipments do
+          member do
+            get 'relationship_map'
+            get 'get_relationship_map_json'
+          end
+        end
+        resources :purchase_orders do
+          member do
+            get 'relationship_map'
+            get 'get_relationship_map_json'
+          end
+        end
+
+        resources :po_requests do
+          collection do
+            post 'preview_stock'
+          end
+        end
 
         resources :sales_invoices do
           member do
+            get 'edit_mis_date'
+            patch 'update_mis_date'
+
             get 'duplicate'
             get 'triplicate'
+            get 'make_zip'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
         end
 
         resources :sales_orders do
           member do
+            get 'edit_mis_date'
+            patch 'update_mis_date'
+            get 'debugging'
             get 'new_revision'
             get 'new_confirmation'
             get 'proforma'
             post 'create_confirmation'
             post 'resync'
+            get 'fetch_order_data'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
+          end
+
+          collection do
+            get 'autocomplete'
           end
         end
 
@@ -221,6 +409,8 @@ Rails.application.routes.draw do
             get 'new_revision'
             get 'preview'
             get 'reset_quote'
+            get 'relationship_map'
+            get 'get_relationship_map_json'
           end
 
           scope module: 'sales_quotes' do
@@ -243,7 +433,6 @@ Rails.application.routes.draw do
             post 'create_list_import'
           end
         end
-
       end
     end
 
@@ -251,52 +440,240 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'export_all'
+        get 'export_filtered_records'
       end
-
+      member do
+        get 'render_rating_form'
+        put 'update_rating'
+      end
       scope module: 'companies' do
+        resources :customer_orders
+
+        resources :customer_products do
+          collection do
+            post 'generate_catalog'
+            post 'destroy_all'
+
+            get 'autocomplete'
+          end
+        end
+        resources :company_reviews do
+          collection do
+            get 'index'
+          end
+        end
+
+        resources :tags do
+          collection do
+            get 'autocomplete'
+            get 'autocomplete_closure_tree'
+          end
+        end
+
         resources :addresses do
           collection do
             get 'autocomplete'
           end
         end
+
         resources :contacts do
           collection do
             get 'autocomplete'
           end
         end
+
+        resources :sales_quotes
+        resources :sales_orders
+        resources :sales_invoices
+        resources :company_banks
+
+        resources :imports do
+          collection do
+            get 'new_excel_customer_product_import'
+            get 'download_customer_product_template'
+            post 'customer_products', to: 'imports#create_customer_products'
+          end
+        end
+
+        resources :purchase_orders do
+
+        end
+
+        resources :products do
+
+        end
       end
     end
 
     resources :accounts do
+      collection do
+        get 'autocomplete'
+        get 'autocomplete_supplier'
+      end
       scope module: 'accounts' do
         resources :companies
+        resources :sales_invoices, only: %i[show index]
       end
     end
 
-    resources  :warehouses
+
+    resources :warehouses do
+      collection do
+        get 'autocomplete'
+      end
+      scope module: 'warehouses' do
+        resources :product_stocks, only: %i[index]
+      end
+    end
+    resources :payment_options
+
+    resources :payment_requests do
+      collection do
+        get 'completed'
+      end
+    end
+
+    resources :freight_requests do
+
+      scope module: 'freight_requests' do
+        resources :freight_quotes
+      end
+
+      collection do
+        get 'completed'
+      end
+    end
+
+    resources :freight_quotes
+    resources :company_reviews do
+      collection do
+        get 'export_all'
+        get 'export_filtered_records'
+      end
+      member do
+        get 'render_form'
+      end
+    end
   end
 
   namespace 'customers' do
-    resource :dashboard, :controller => :dashboard
-    resources :cart_items, only: %i[new create destroy]
-    resources :customer_orders, only: %i[index create show] do
-      member do
-        get 'order_confirmed'
-      end
+    resource 'sign_in_steps', controller: 'sign_in_steps' do
+      post 'reset_current_company'
+      get 'edit_current_company'
+      patch 'update_current_company'
     end
-    resources :quotes, :controller => :sales_quotes, only: %i[index show]
-    resources :orders, :controller => :sales_orders, only: %i[index show]
-    resources :invoices, :controller => :sales_invoices, only: %i[index show]
-    resources :products, only: %i[index show] do
+    resource :profile, :controller => :profile, except: [:show, :index]
+
+    resources :reports, only: %i[index] do
+      member do
+      end
+
       collection do
-        get 'most_ordered_products'
+        get 'monthly_purchase_data'
+        get 'revenue_trend'
+        get 'unique_skus'
+        get 'order_count'
+        get 'categorywise_revenue'
       end
     end
 
-    resource  :cart, :controller => :cart, only: [:show] do
+    resource :dashboard, :controller => :dashboard
+    resources :cart_items, only: %i[new create destroy update]
+    resources :customer_orders, only: %i[index create show] do
+      member do
+        get 'order_confirmed'
+        get 'approve_order'
+      end
+
       collection do
-        get 'checkout'
+        get 'pending'
+        get 'approved'
+      end
+
+      scope module: 'customer_orders' do
+        resources :comments
       end
     end
+    resources :products, :controller => :customer_products, only: %i[index create show] do
+      collection do
+        get 'generate_all'
+        get 'most_ordered_products'
+        get 'autocomplete'
+      end
+    end
+
+    resources :quotes, :controller => :sales_quotes, only: %i[index show] do
+      member do
+        post 'inquiry_comments'
+      end
+
+      scope module: 'sales_quotes' do
+        resources :comments
+      end
+
+      collection do
+        get 'export_all'
+      end
+    end
+
+    resources :orders, :controller => :sales_orders, only: %i[index show] do
+      collection do
+        get 'export_all'
+      end
+    end
+
+    resources :invoices, :controller => :sales_invoices, only: %i[index show] do
+      collection do
+        get 'export_all'
+      end
+    end
+
+    resource :checkout, :controller => :checkout do
+      collection do
+        get 'final_checkout'
+      end
+    end
+    # resources :products, only: %i[index show] do
+    #   collection do
+    #     get 'most_ordered_products'
+    #     get 'autocomplete'
+    #   end
+    #
+    #   member do
+    #     get 'to_cart'
+    #   end
+    # end
+
+    resource :cart, :controller => :cart, except: [:index] do
+      collection do
+        get 'checkout'
+        post 'update_cart_details'
+        post 'update_billing_address'
+        patch 'update_payment_data'
+        patch 'add_po_number'
+        get 'empty_cart'
+      end
+    end
+
+    resources :inquiries do
+      scope module: 'inquiries' do
+        resources :comments
+      end
+    end
+
+    resources :image_readers do
+      collection do
+        get 'export_all'
+        get 'export_by_date'
+      end
+    end
+
+    resources :companies do
+      collection do
+        get 'choose_company'
+        get 'contact_companies'
+      end
+    end
+
   end
 end

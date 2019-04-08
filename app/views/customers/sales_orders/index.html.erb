@@ -1,27 +1,45 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
-
+<% provide :use_url_as_page_title, true %>
 <% content_for :heading do %>
   Orders
+<% end %>
+
+<% provide :heading_buttons do %>
+  <div class="btn-group">
+    <a href="<%= export_all_customers_orders_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales orders"><i class="fal fa-download mr-1"></i>Orders</a>
+  </div>
 <% end %>
 
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort all" data-name="order_number">Order #</th>
-  <th class="no-sort all" data-name="order_number">Quote #</th>
   <th class="no-sort desktop" data-name="created_at">Order Date</th>
+  <th class="no-sort desktop" data-name="">PO #</th>
+  <th class="no-sort desktop" data-name="">PO Date</th>
+  <th class="no-sort all" data-name="order_number">Inquiry #</th>
+  <th class="no-sort desktop" data-name="cp_ship_to">Ship To</th>
   <th class="no-sort desktop" data-name="">Company</th>
   <th class="no-sort desktop" data-name="">Order Total</th>
+  <th class="no-sort desktop" data-name="">Expected Delivery Date</th>
+  <th class="no-sort desktop" data-name="">Actual Delivery Date</th>
+  <th class="no-sort desktop" data-name="cp_status">Order Status</th>
 <% end %>
 
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
-  <td data-filter="daterange"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="ajax"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
 <% end %>
 
 <div class="col-lg-12">

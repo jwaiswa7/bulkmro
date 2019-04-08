@@ -1,0 +1,82 @@
+<% provide :controller_is_aliased, true %>
+
+<div class="col-lg-12">
+  <section class="mb-3 pt-3 pt-lg-5 pb-2">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <% if @customer_product.best_image.present?%>
+              <%= image_tag @customer_product.medium_best_image, fallback_url: image_path('coming_soon.png'), check_remote: false %>
+            <% else %>
+              <img src="<%= image_path('coming_soon.png') %>" alt="<%= @customer_product.sku %>"/>
+            <% end %>
+          </div>
+          <div class="col-md-9">
+            <h4 class="display-5 mb-1 text-black-50 mt-2 mt-md-0"><%= @customer_product.name %></h4>
+            <% if @customer_product.customer_price? %>
+              <h4 class="mb-3"><%= format_currency(@customer_product.customer_price) %></h4>
+            <% end %>
+            <%= simple_form_for([:customers, CartItem.new], :url => customers_cart_items_path, :method => :post, :remote => true) do |f| %>
+              <%= f.hidden_field :product_id, value: @customer_product.product.id %>
+              <%= f.hidden_field :customer_product_id, value: @customer_product.id %>
+              <div class="form-row">
+                <div class="col-4 col-md-2">
+                  <%= f.input :quantity, label: false, :class => 'form-control', input_html: {placeholder: 'Quantity', step: @customer_product.moq, min: @customer_product.moq, value: @customer_product.moq} %>
+                </div>
+                <div class="col-8 col-md-4">
+                  <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
+                </div>
+              </div>
+            <% end %>
+
+            <h6 class="text-uppercase text-black-50 mb-1 mt-2">Product Details</h6>
+            <div class="form-row">
+              <% if @customer_product.best_brand.present? %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">Brand</strong>
+                  <%= @customer_product.best_brand.name %>
+                </div>
+              <% end %>
+
+              <% if @customer_product.sku? %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">Material Code</strong>
+                  <%= @customer_product.sku %>
+                </div>
+              <% end %>
+
+              <% if @customer_product.best_tax_code.present? %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">Tax Code</strong>
+                  <%= @customer_product.best_tax_code.code %>
+                </div>
+              <% end %>
+
+              <% if @customer_product.best_tax_rate.present? %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">Tax Rate</strong>
+                  <%= format_currency(@customer_product.best_tax_rate.tax_percentage, symbol: '') %>%
+                </div>
+              <% end %>
+
+              <% if @customer_product.best_measurement_unit.present? %>
+                <div class="col-6 col-md-3">
+                  <strong class="d-block">Measurement Unit</strong>
+                  <%= @customer_product.best_measurement_unit.name %>
+                </div>
+              <% end %>
+
+              <% if @customer_product.moq? %>
+                <div class="col-6 col-md-3">
+                  <strong class="d-block">Minimum Order Quantity</strong>
+                  <%= @customer_product.moq %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

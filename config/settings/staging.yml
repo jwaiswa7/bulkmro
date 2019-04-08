@@ -1,0 +1,96 @@
+omniauth:
+  google_oauth2:
+    client_id: 436964214631-llt53r38ks78k5afam2r751f9nhkg1ae.apps.googleusercontent.com
+    client_secret: rtOMQ1p8G8kjTThgxN7olU5_
+
+email_messages:
+  from: no-reply@bulkmro.com
+  from_name: Bulk MRO Notifications
+  reply_to: care@bulkmro.com
+  reply_to_name: Bulk MRO Support
+
+primary_bank:
+  name: Kotak Mahindra Bank Ltd
+  address: Aum Saheel Tower, Mumbai 400080.
+  account_name: Bulk MRO Industrial Supply Pvt. Ltd.
+  account_number: 9412329433
+  neft_code: KKBK0001411
+  swift_code: KKBKINBB
+  currency_usd:
+    account_number: 9412666668
+  currency_gbp:
+    account_number: 9412666675
+  currency_eur:
+    account_number: 9412666682
+
+secondary_bank:
+  name: State Bank of India
+  address: Kalpa Taru - 39, Pedder Road, Mumbai 400026.
+  account_name: Bulk MRO Industrial Supply Pvt. Ltd.
+  account_number: 35924122136
+  neft_code: SBIN0000510
+
+slack:
+  bot_user_access_token: xoxb-395906857286-397063978996-v0clkA03XHgC2AZcsHm8F7cF
+  username: Sprint Bot
+  icon_emoji: ':moneybag:'
+
+sendgrid:
+  username: bulk
+  password: GhgjIH4zw3p2
+  api_key: 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
+  default_email: pradeep.ketkale@bulkmro.com
+
+domain: staging.bulkmro.com
+
+gmail_smtp:
+  address: "smtp.gmail.com"
+  port: 587
+  domain: "bulkmro.com"
+  authentication: "plain"
+  enable_starttls_auto: true
+
+sendgrid_smtp:
+  address: "smtp.sendgrid.net"
+  port: 587
+  domain: "bulkmro.com"
+  user_name: "bulk"
+  password: "GhgjIH4zw3p2"
+  authentication: "plain"
+  enable_starttls_auto: true
+
+twilio:
+  phone: +919987480784
+  messaging_service_sid: MGdddcada47fcc5123ebda5c7312dc086d
+  account_sid: AC058d3c9497692b0adef3e7fa5655ed32
+  auth_token: 72905dfd297bc2ea39afc029f57ba3da
+
+azure:
+  storage_account_name: bulksprint
+  storage_access_key: bQHdNppONx0Tv5ye7jGxY+N437XWOjoBbrlQ6YY0nGT9TU3eb2Pjr7rzSFyxbAccCCKv8tEZJgBIY2ersM9Zbw==
+  container: staging-sprint
+
+msg91:
+  sender_id: BLKMRO
+  auth_key: 220892AIFjiJYI5b6d37f3
+
+wit:
+  auth_token: E4C6GLQOFR4FPNUGUIUDCK3W6T4MWHON
+
+heroku:
+  dyno_adjuster_token: 3c7865fa-e80c-4e9f-a65a-12f23259c4a3
+
+razorpay:
+  MERCHANT_KEY_ID: 'rzp_test_YorJsu5KKxrZxc'
+  MERCHANT_KEY_SECRET: 'F1KKKL5ntCXObq4EZ6huRj32'
+
+sap:
+  ENDPOINT: 'https://35.200.144.191:50000/b1s/v1'
+  DATABASE: 'BMRO_20FEB2018'
+  USERNAME: 'manager'
+  PASSWORD: 'vm1234'
+  ATTACHMENT_ENDPOINT: 'https://35.200.144.191:22'
+  ATTACHMENT_DIRECTORY: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments'
+  ATTACHMENT_API: '35.200.144.191/b1_shf/Attachments'
+  ATTACHMENT_USERNAME: 'pradeep'
+  ATTACHMENT_PASSWORD: ''

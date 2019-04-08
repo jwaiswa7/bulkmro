@@ -4,7 +4,8 @@ class Serializers::InquirySerializer < Serializers::BaseSerializer
   attributes :payment_option
   attributes :inquiry_products
   attributes :inside_sales_owner, :outside_sales_owner, :sales_manager
-  attributes :company, :account, :contact
+  attributes :account, :contact
+  attributes :company_id, :shipping_company_id
   attributes :sales_quotes
   attributes :sales_quote_rows
   attributes :sales_orders

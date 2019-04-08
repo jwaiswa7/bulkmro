@@ -1,10 +1,16 @@
+# frozen_string_literal: true
+
 class Overseers::KitPolicy < Overseers::ApplicationPolicy
   def index?
-    admin?
+    cataloging? || admin? || inside?
   end
 
   def new?
-    admin?
+    index?
+  end
+
+  def show?
+    index?
   end
 
   def comments?
@@ -22,5 +28,4 @@ class Overseers::KitPolicy < Overseers::ApplicationPolicy
   def sku_purchase_history?
     index? && record.inquiry_products.any?
   end
-
 end

@@ -1,4 +1,4 @@
-json.results(@inquiries) do |inquiry|
+json.results(@inquiries.reverse) do |inquiry|
   json.set! :id, inquiry.id
   json.set! :text, inquiry.to_s
 end

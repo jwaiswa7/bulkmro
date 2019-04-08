@@ -1,0 +1,303 @@
+<div class="col-lg-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+      <h3 class="display-5 d-flex align-items-center">
+        Freiqht Quote for Request <%= format_id(@freight_quote.freight_request.id) %>:&nbsp;<%= status_badge(@freight_quote.status) %>
+      </h3>
+      <% if policy(@freight_quote).edit? %>
+        <a href="<%= edit_overseers_freight_request_freight_quote_path(@freight_quote.freight_request, @freight_quote) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="mb-3">
+    <div class="card mb-2">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-1">Inquiry Details</h6>
+          <div class="form-row">
+            <% if @freight_quote.origin_country.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Country of Origin</strong>
+                <%= @freight_quote.origin_country %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.port_of_loading.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Port of Loading</strong>
+                <%= @freight_quote.port_of_loading %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.port_of_discharge.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Port of Discharge</strong>
+                <%= @freight_quote.port_of_discharge %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.iec_code.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">IEC Code</strong>
+                <%= @freight_quote.iec_code %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.inquiry.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Inquiry #</strong>
+                <%= @freight_quote.inquiry.inquiry_number %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.purchase_order.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Purchase Order Number</strong>
+                <%= @freight_quote.purchase_order.po_number %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.owner.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">IS&P Owner</strong>
+                <%= @freight_quote.owner %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.supplier.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Supplier</strong>
+                <%= @freight_quote.supplier %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.customer.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Customer</strong>
+                <%= @freight_quote.customer %>
+              </div>
+            <% end %>
+          </div>
+
+          <% if @freight_quote.attachments.attached? %>
+            <div class="form-row">
+              <div class="col-12 col-md-3 mb-2 mt-2">
+                <strong class="d-block">Attachments </strong>
+                <% @freight_quote.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="fal fa-download"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                      <i class="fal fa-trash-alt"></i>
+                    <% end if attachment.present? && policy(:attachment).destroy? %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="mt-3 card-alternative">
+          <h6 class="text-uppercase text-black-50 mb-1">Custom Duty</h6>
+          <div class="form-row">
+            <% if @freight_quote.invoice_value.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Invoice Value</strong>
+                <%= format_currency(@freight_quote.invoice_value) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.freight_amount.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Freight</strong>
+                <%= format_currency(@freight_quote.freight_amount) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.insurance.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Insurance</strong>
+                <%= format_currency(@freight_quote.insurance) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.other_charges.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Other Charges</strong>
+                <%= format_currency(@freight_quote.other_charges) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.basic_custom_duty.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Basic Custom Duty</strong>
+                <%= format_currency(@freight_quote.basic_custom_duty) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.duty_on_freight.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Duty on Freight</strong>
+                <%= format_currency(@freight_quote.duty_on_freight) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.social_welfare_cess.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Social Welfare Cess</strong>
+                <%= format_currency(@freight_quote.social_welfare_cess) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.custom_duty.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Total Duty</strong>
+                <%= format_currency(@freight_quote.custom_duty) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.gst.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">GST</strong>
+                <%= format_currency(@freight_quote.gst) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.grand_total.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Grand Total</strong>
+                <%= format_currency(@freight_quote.grand_total) %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <h6 class="text-uppercase text-black-50 mb-1">Commercials</h6>
+          <div class="form-row">
+            <% if @freight_quote.currency.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Currency</strong>
+                <%= @freight_quote.currency %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.exchange_rate.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Exchange Rate</strong>
+                <%= format_currency(@freight_quote.exchange_rate) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.buying_price.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Buying Price</strong>
+                <%= format_currency(@freight_quote.buying_price) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.buying_price_inr.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Buying Price INR</strong>
+                <%= format_currency(@freight_quote.buying_price_inr) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.freight_amount.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Freight</strong>
+                <%= format_currency(@freight_quote.freight_amount) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.other_charges.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Other / Misc. Charges</strong>
+                <%= format_currency(@freight_quote.other_charges) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.custom_duty.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Net Custom Duty</strong>
+                <%= format_currency(@freight_quote.custom_duty) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.gst.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">GST on Custom Duty</strong>
+                <%= format_currency(@freight_quote.gst) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.bank_charges.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Bank Charges</strong>
+                <%= format_currency(@freight_quote.bank_charges) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.clearance.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Clearance & DO</strong>
+                <%= format_currency(@freight_quote.clearance) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.outward_freight.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Outward Freight</strong>
+                <%= format_currency(@freight_quote.outward_freight) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.total_buying_price.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Net Total Buying Price</strong>
+                <%= format_currency(@freight_quote.total_buying_price) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.selling_price_inr.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Selling Price INR</strong>
+                <%= format_currency(@freight_quote.selling_price_inr) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.margin.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Margin %</strong>
+                <%= number_with_precision(@freight_quote.margin, :precision => 2) %>
+              </div>
+            <% end %>
+
+            <% if @freight_quote.margin_value.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Margin Value</strong>
+                <%= format_currency(@freight_quote.margin_value) %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="flex-fill">
+          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+        </div>
+
+        <% if @freight_quote.comments.persisted.size > 0 %>
+          <div class="chats">
+            <% @freight_quote.comments.each do |comment| %>
+              <%= format_comment(comment) %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </section>
+</div>

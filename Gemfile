@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
-git_source(:github) {|repo| "https://github.com/#{repo}.git"}
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # ruby '2.5.3'
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.0'
@@ -86,7 +87,7 @@ gem 'phony_rails'
 
 # Use Microsoft Azure for file storage
 gem 'azure-storage', require: false
-
+gem 'azure-storage-blob'
 # Parse xls files
 gem 'spreadsheet', require: false
 
@@ -94,9 +95,9 @@ gem 'spreadsheet', require: false
 gem 'simple_xlsx_reader'
 
 # Render XLSX files
-gem 'axlsx', '2.0.0'
-gem 'axlsx_rails', '0.1.5'
-gem 'rubyzip', '0.9.9'
+gem 'axlsx', '3.0.0.pre'
+gem 'axlsx_rails', '0.5.2'
+gem 'rubyzip', '~> 1.2'
 
 # Validate file uploads
 gem 'file_validators'
@@ -178,9 +179,22 @@ gem 'memcachier'
 # Heroku platform API
 gem 'platform-api'
 
+gem 'pry'
 # Google Cloud API
 gem 'googleauth'
 gem 'google-api-client', '~> 0.11'
+
+gem 'parser'
+gem 'unparser'
+gem 'mini_magick'
+
+# This gem allows you to write static Rails views and partials using the Markdown syntax. No more editing prose in HTML!
+gem 'markdown-rails'
+
+# Star Rating
+gem 'ratyrate'
+
+gem 'rubocop-rails_config'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -199,6 +213,8 @@ group :development do
   # Preview emails instead of sending them
   gem 'letter_opener'
 
+  # RuboCop is a Ruby static code analyzer and code formatter
+  gem 'rubocop', '~> 0.63.0', require: false
 end
 
 group :test do
@@ -213,6 +229,10 @@ group :production do
   gem 'bonsai-elasticsearch-rails', '~> 7'
 end
 
+group :staging do
+  gem 'bonsai-elasticsearch-rails', '~> 7'
+end
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
@@ -221,3 +241,15 @@ gem 'webpacker', '~> 3.5'
 
 # For Notification bot
 gem 'slack-ruby-bot'
+
+# For charts
+gem 'chartjs-ror'
+
+# For online payments with Razorpay
+gem 'razorpay'
+
+# Wit.ai
+gem 'wit'
+
+# new relic - Performance Analytics
+gem 'newrelic_rpm'

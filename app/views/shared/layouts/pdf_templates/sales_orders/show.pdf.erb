@@ -22,7 +22,7 @@
           </div>
           <br clear="all">
 
-          <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record %>
+          <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record.inquiry.bill_from %>
 
           <br clear="all">
           <div class="information-section">
@@ -102,35 +102,29 @@
             </div>
 
             <br clear="all">
-            <table border="0" cellspacing="0" style="width: 100%;">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-left">
-
-                    <% if record.inquiry.bill_from.address.present? %>
-                      <%= record.inquiry.bill_from.address.name.to_s %><br>
-                    <% end %>
-                    <% if record.inquiry.bill_from.present? %>
-                      <%= record.inquiry.bill_from.address.to_multiline_s %><br>
-                      GST No.: <%= record.inquiry.bill_from.address.gst %><br>
-                    <% end %>
-                    PAN No.: AAGCB7343G</span>
-                  </div>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <% if record.inquiry.bill_from.address.present? %>
+                    <%= record.inquiry.bill_from.address.name.to_s %><br>
+                  <% end %>
+                  <% if record.inquiry.bill_from.present? %>
+                    <%= record.inquiry.bill_from.address.to_multiline_s %><br>
+                    GST No.: <%= record.inquiry.bill_from.address.gst %><br>
+                  <% end %>
+                  PAN No.: AAGCB7343G</span>
                 </td>
-                <td class="address-section-gap"></td>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-right">
-
-                    <% if record.inquiry.ship_from.present? %>
-                      <%= record.inquiry.ship_from.address.name.to_s %><br>
-                    <% end %>
-                    <% if record.inquiry.ship_from.present? %>
-                      <%= record.inquiry.ship_from.address.to_multiline_s %><br>
-                      GST No.: <%= record.inquiry.ship_from.address.gst %><br>
-                    <% end %>
-                    PAN No.: AAGCB7343G</span>
-                  </div>
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <% if record.inquiry.ship_from.present? %>
+                    <%= record.inquiry.ship_from.address.name.to_s %><br>
+                  <% end %>
+                  <% if record.inquiry.ship_from.present? %>
+                    <%= record.inquiry.ship_from.address.to_multiline_s %><br>
+                    GST No.: <%= record.inquiry.ship_from.address.gst %><br>
+                  <% end %>
+                  PAN No.: AAGCB7343G</span>
                 </td>
               </tr>
               </tbody>
@@ -148,39 +142,33 @@
             </div>
 
             <br clear="all">
-            <table border="0" cellspacing="0" style="width: 100%;">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
               <tbody>
               <tr>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-left">
-
-                    <%= record.inquiry.contact.full_name %><br>
-                    <%= record.inquiry.billing_address.name %><br>
-                    <%= record.inquiry.billing_address.to_multiline_s if record.inquiry.billing_address.present? %>
-                    <br>
-                    Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.billing_address.telephone %>
-                    <br>
-                    GST No.:<%= record.inquiry.billing_address.gst %><br>
-                  </div>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <%= record.inquiry.contact.full_name %><br>
+                  <%= record.inquiry.billing_address.name %><br>
+                  <%= record.inquiry.billing_address.to_multiline_s if record.inquiry.billing_address.present? %>
+                  <br>
+                  Tel: <%= record.inquiry.contact.phone || record.inquiry.billing_address.phone %>
+                  <br>
+                  GST No.:<%= record.inquiry.billing_address.gst %><br>
                 </td>
-                <td class="address-section-gap"></td>
-                <td class="address-section-holder">
-                  <div class="address-wrapper address-wrapper-right">
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <%= record.inquiry.shipping_contact.present? ? record.inquiry.shipping_contact.full_name : record.inquiry.contact.full_name %>
+                  <br>
+                  <%= record.inquiry.shipping_address.name %><br>
+                  <%= record.inquiry.shipping_address.to_multiline_s if record.inquiry.shipping_address.present? %>
+                  <br>
+                  <% if record.inquiry.shipping_contact.present? %>
+                    Tel: <%= record.inquiry.shipping_contact.phone || record.inquiry.shipping_address.phone %>
+                  <% else %>
+                    Tel: <%= record.inquiry.contact.phone || record.inquiry.shipping_address.phone %>
+                  <% end %>
 
-                    <%= record.inquiry.shipping_contact.present? ? record.inquiry.shipping_contact.full_name : record.inquiry.contact.full_name %>
-                    <br>
-                    <%= record.inquiry.shipping_address.name %><br>
-                    <%= record.inquiry.shipping_address.to_multiline_s if record.inquiry.shipping_address.present? %>
-                    <br>
-                    <% if record.inquiry.shipping_contact.present? %>
-                      Tel: <%= record.inquiry.shipping_contact.phone || record.inquiry.shipping_contact.mobile || record.inquiry.shipping_address.telephone %>
-                    <% else %>
-                      Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.shipping_address.telephone %>
-                    <% end %>
-
-                    <br>
-                    GST No.:<%= record.inquiry.shipping_address.gst %><br>
-                  </div>
+                  <br>
+                  GST No.:<%= record.inquiry.shipping_address.gst %><br>
                 </td>
               </tr>
               </tbody>
@@ -266,30 +254,33 @@
                   <td align="center" valign="top">
                     <span><%= item.sales_quote_row.try(:measurement_unit) || item.sales_quote_row.product.try(:measurement_unit) || MeasurementUnit.default %></span>
                   <td align="center" valign="top">
-                    <span><%= item.quantity %></span></td>
+                    <span><%= format_currency(item.quantity, precision: 2, symbol: '') %></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <span><%= format_currency(item.converted_unit_selling_price, symbol: '') %></span></td>
+                    <span><%= format_currency(item.converted_unit_selling_price, precision: 2, symbol: '') %></span>
+                  </td>
                   <td align="right" style=" text-align:right;" valign="top">
-                    <span><%= format_currency(item.converted_total_selling_price, symbol: '') %></span></td>
+                    <span><%= format_currency(item.converted_total_selling_price, precision: 2, symbol: '') %></span>
+                  </td>
                   <td align="center" valign="top">
-                    <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span></td>
+                    <span><%= (item.sales_quote_row.applicable_tax_percentage * 100).to_f.round(0) %>%</span></td>
                   <% if record.sales_quote.tax_summary.strip == '0' || record.sales_quote.tax_summary.to_s.include?("IGST") %>
                     <td align="center" valign="top">
-                      <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span></td>
+                      <span><%= (item.sales_quote_row.applicable_tax_percentage * 100).to_f.round(0) %>%</span></td>
                     <td align="right" style=" text-align:right;" valign="top">
-                      <span><%= format_currency(item.total_tax, symbol: '') %></span></td>
+                      <span><%= format_currency(item.total_tax, precision: 2, symbol: '') %></span></td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= item.sales_quote_row.applicable_tax_percentage * 100 / 2 %>%</span></td>
+                      <span><%= (item.sales_quote_row.applicable_tax_percentage * 100 / 2).to_f.round(0) %>%</span></td>
                     <td align="right" style=" text-align:right;" valign="top">
-                      <span><%= format_currency((item.converted_total_tax / 2), symbol: '') %></span></td>
+                      <span><%= format_currency((item.converted_total_tax / 2), precision: 2, symbol: '') %></span></td>
                     <td align="center" valign="top">
-                      <span><%= item.sales_quote_row.applicable_tax_percentage * 100 / 2 %>%</span></td>
+                      <span><%= (item.sales_quote_row.applicable_tax_percentage * 100 / 2).to_f.round(0) %>%</span></td>
                     <td align="right" style=" text-align:right;" valign="top">
-                      <span><%= format_currency((item.converted_total_tax / 2), symbol: '') %></span></td>
+                      <span><%= format_currency((item.converted_total_tax / 2), precision: 2, symbol: '') %></span></td>
                   <% end %>
                   <td align="right" style="font-size: 9px;border-bottom: 1px solid #3c3c3c; text-align: right" valign="top">
-                    <span><%= format_currency(item.converted_total_selling_price_with_tax, symbol: '') %></span></td>
+                    <span><%= format_currency(item.converted_total_selling_price_with_tax, precision: 2, symbol: '') %></span>
+                  </td>
                 </tr>
               <% end %>
 
@@ -313,7 +304,7 @@
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="right" style="text-align: right;" valign="top">
-                  <b><span><%= record.converted_total %></span></b></td>
+                  <b><span><%= format_currency(record.converted_total, precision: 2, symbol: '') %></span></b></td>
                 <td align="center" valign="top">
                   <span></span></td>
                 <% if record.sales_quote.tax_summary.strip == '0' ||
@@ -321,130 +312,96 @@
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= format_currency(record.converted_total_tax, symbol: '') %></span></b></td>
+                    <b><span><%= format_currency(record.converted_total_tax, precision: 2, symbol: '') %></span></b>
+                  </td>
                 <% else %>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= format_currency((record.converted_total_tax / 2), symbol: '') %></span></b></td>
+                    <b><span><%= format_currency((record.converted_total_tax / 2), precision: 2, symbol: '') %></span></b>
+                  </td>
                   <td align="center" style="text-align: right;" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= format_currency((record.converted_total_tax / 2), symbol: '') %></span></b></td>
+                    <b><span><%= format_currency((record.converted_total_tax / 2), precision: 2, symbol: '') %></span></b>
+                  </td>
                 <% end %>
                 <td align="right" style="font-size: 9px;text-align: right;border-bottom-right-radius: 5px;" valign="top">
-                  <b><span><%= format_currency(record.converted_total_with_tax, symbol: '') %></span></b></td>
+                  <b><span><%= format_currency(record.converted_total_with_tax, precision: 2, symbol: '') %></span></b>
+                </td>
               </tr>
 
               </tbody>
             </table>
           </div>
+
           <br clear="all">
-
-          <% if record.inquiry.bill_from.present? && record.inquiry.bill_from.legacy_id == 12 %>
-            <div id="noteInvoiceContainer">
-              <table style="width: 100%;" cellspacing="0" border="0">
-                <tr>
-                  <td colspan="2" style="background: #d3d3d3; padding-left: 10px; border-bottom: 1px solid #3c3c3c;" height="20" align="left" valign="top">
-                    <b><span>Note:</span></b></td>
-                </tr>
-                <tr>
-                  <td style="padding-left:10px;" height="" align="left" valign="top">
-                    <span>1. Order once confirmed cannot be cancelled or returned.<br>2. Delayed payments will attract 2% interest per month.<br>3. If any modifications are required in the invoice ,please communicate the same in writing within 2 working days otherwise the invoice will be deemed accepted.<br>4. Order once confirmed cannnot be cancelled.<br>5. Invoice will be deemed accepted unless any discrepancy is raised within 7 days from the date of invoice.<br> </span>
-                    <br/>
-                  </td>
-                </tr>
-
-              </table>
+          <div class="bottom-info" style="position: relative">
+            <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
+              <div id="inner-stamp" style="float: right; position: relative;">
+                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
+              </div>
             </div>
-            <br clear="all"/>
-            <div id="OtherinfoInvoice" style="border:1px solid; border-radius: 5px;">
-              <table style="width: 100%;" cellspacing="0" border="0">
-                <tr style="background: #d3d3d3;">
-                  <td class="invoiceheader1" style=" border-bottom: 1px solid #3c3c3c; " colspan="16" height="20" align="left" valign="top">
-                    <b><span>Payment By Wire Transfer To:</span></b></td>
-                </tr>
 
-                <tr>
-                  <td class="invoiceheader1" style=" border-right:1px solid black;border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c;" colspan="21" rowspan="6" height="105" align="left" valign="top">
-                    <span><b>First Republic Bank:</b><br>2274 EI Camino Real Palo Alto, CA 94306<br>Account Name: Bulk MRO Industrial Supply , INC ABA: 321081669<br>Account Number: 80003839610</span>
-                  </td>
+            <% if record.inquiry.bill_from.present? && record.inquiry.bill_from.legacy_id == 12 %>
+              <div id="noteInvoiceContainer">
+                <table style="width: 100%;" cellspacing="0" border="0">
+                  <tr>
+                    <td colspan="2" style="background: #d3d3d3; padding-left: 10px; border-bottom: 1px solid #3c3c3c;" height="20" align="left" valign="top">
+                      <b><span>Note:</span></b></td>
+                  </tr>
+                  <tr>
+                    <td style="padding-left:10px;" height="" align="left" valign="top">
+                      <span>1. Order once confirmed cannot be cancelled or returned.<br>2. Delayed payments will attract 2% interest per month.<br>3. If any modifications are required in the invoice ,please communicate the same in writing within 2 working days otherwise the invoice will be deemed accepted.<br>4. Order once confirmed cannnot be cancelled.<br>5. Invoice will be deemed accepted unless any discrepancy is raised within 7 days from the date of invoice.<br> </span>
+                      <br/>
+                    </td>
+                  </tr>
 
-                </tr>
-              </table>
-            </div>
-          <% else %>
-            <div id="noteInvoiceContainer" style="border:1px solid; border-radius: 5px;">
-              <table border="0" cellspacing="0" style="width: 100%;">
-                <tbody>
-                <tr>
-                  <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top-left-radius:5px;border-top-right-radius:5px;" valign="top">
-                    <b><span>Other Information:</span></b></td>
-                </tr>
-                <tr>
-                  <td align="left" style=" padding-left: 10px;" valign="top">
+                </table>
+              </div>
+              <br clear="all"/>
+              <div id="OtherinfoInvoice" style="border:1px solid; border-radius: 5px;">
+                <table style="width: 100%;" cellspacing="0" border="0">
+                  <tr style="background: #d3d3d3;">
+                    <td class="invoiceheader1" style=" border-bottom: 1px solid #3c3c3c; " colspan="16" height="20" align="left" valign="top">
+                      <b><span>Payment By Wire Transfer To:</span></b></td>
+                  </tr>
+
+                  <tr>
+                    <td class="invoiceheader1" style=" border-right:1px solid black;border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c;" colspan="21" rowspan="6" height="105" align="left" valign="top">
+                      <span><b>First Republic Bank:</b><br>2274 EI Camino Real Palo Alto, CA 94306<br>Account Name: Bulk MRO Industrial Supply , INC ABA: 321081669<br>Account Number: 80003839610</span>
+                    </td>
+
+                  </tr>
+                </table>
+              </div>
+            <% else %>
+              <div id="noteInvoiceContainer" style="border:1px solid; border-radius: 5px;">
+                <table border="0" cellspacing="0" style="width: 100%;">
+                  <tbody>
+                  <tr>
+                    <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top-left-radius:5px;border-top-right-radius:5px;" valign="top">
+                      <b><span>Other Information:</span></b></td>
+                  </tr>
+                  <tr>
+                    <td align="left" style=" padding-left: 10px;" valign="top">
                     <span>
                     1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Quote Number when remitting Wire Transfer payment.<br>
-                    2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.
+                    2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.<br>
+                    3. Warranties are applicable as per OEM's Standard warranty only.
                     </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td></td>
-                </tr>
-                </tbody>
-              </table>
-              <table border="0" cellspacing="0" style="width: 100%;">
-                <tbody>
-                <tr style="background: #d3d3d3;">
-                  <td align="left" class="invoiceheader1" colspan="16" height="20" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                    <b><span>Payment By Wire Transfer To:</span></b></td>
-                </tr>
-                <tr>
-                  <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span>Bank:</span></b></td>
-                  <td colspan="6" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span>Kotak Mahindra Bank Ltd</span></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span>State Bank of India</span></td>
-                </tr>
-                <tr>
-                  <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span>Address:</span></b></td>
-                  <td colspan="6" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span>Aum Saheel Tower, Mumbai 400080.</span></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span>Kalpa Taru - 39, Pedder Road, Mumbai 400026.</span></td>
-                </tr>
-                <tr>
-                  <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span>Account Name:</span></b></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span>Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span>Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
-                </tr>
-                <tr>
-                  <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span>Account Number:</span></b></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span>9412329433</span></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span>35924122136</span></td>
-                </tr>
-                <tr>
-                  <td colspan="4" style=" padding-left: 10px;border-right: 1px solid #3c3c3c;">
-                    <b><span>NEFT/RTGS Code:</span></b></td>
-                  <td colspan="6" style=" padding-left: 10px;border-right: 1px solid #3c3c3c;">
-                    <span>KKBK0001411</span></td>
-                  <td colspan="6" style=" padding-left: 10px;">
-                    <span>SBIN0000510</span></td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          <% end %>
-          <br clear="all">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                  </tr>
+                  </tbody>
+                </table>
+                <%= render 'shared/layouts/pdf_templates/bank_info' %>
+              </div>
+            <% end %>
+            <br clear="all">
+          </div>
         </div>
       </div>
     </div>

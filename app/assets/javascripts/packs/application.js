@@ -10,17 +10,27 @@ import dataTables from "./components/dataTables";
 import loadViews from "./views/loadViews";
 import alertsAutohide from "./components/alertsAutohide";
 import tinyHtmlEditor from "./components/tinyHtmlEditor";
-import chartjs from "./components/chartjs";
 import datePicker from "./components/datePicker";
 import stickyBits from "./components/stickyBits";
 import daterangePicker from "./components/daterangePicker";
 import notify from "./components/notify";
+import stepRoundUp from "./components/stepRoundUp";
+import dropdowns from "./components/dropdownSubmenus";
+import chartjs from "./components/chartjs";
+import highlightjs from "./components/highlightjs";
+import lazyLoadImages from "./components/lazyLoadImages";
+import tableHighlightWholly from "./components/tableHighlightWholly";
+import hasher from "./components/hasher";
+import notifications from "./components/notifications";
+import treant from "./components/treant";
+import stringManipulations from "./components/stringManipulations";
 
 // Namespacing all imports under app
 let app = {};
 
 // Initaialize all components
 app.initializeComponents = () => {
+    hasher();
     customFileInputs();
     select2s();
     alertsAutohide();
@@ -31,11 +41,19 @@ app.initializeComponents = () => {
     parselyValidations();
     dataTables();
     tinyHtmlEditor();
-    chartjs();
     datePicker();
     stickyBits();
     daterangePicker();
     notify();
+    stepRoundUp();
+    dropdowns();
+    chartjs();
+    lazyLoadImages();
+    stringManipulations();
+    highlightjs();
+    tableHighlightWholly();
+    notifications();
+    treant();
 };
 
 // Turbolinks load event

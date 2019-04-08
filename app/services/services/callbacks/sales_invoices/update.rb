@@ -1,9 +1,4 @@
 class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::BaseCallback
-
-  def initialize(params)
-    @params = params
-  end
-
   def call
     begin
       sales_invoice = SalesInvoice.find_by_invoice_number(params['increment_id'])
@@ -16,12 +11,20 @@ class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::
 
       if sales_invoice.present? && sales_invoice.sales_order.present?
         if params['state'].present?
-          sales_invoice.update_attributes(:status => params['state'].to_i)
+          sales_invoice.update_attributes(status: params['state'].to_i)
+
+          if params['state'].to_i == 3
+            invoice_request = InvoiceRequest.find_by_ar_invoice_number(params[:increment_id])
+            if invoice_request.present?
+              invoice_request.update_attributes!(status: ' Cancelled AR Invoice')
+            end
+          end
         end
         sales_invoice.sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
-        return_response("Sales Invoice updated successfully.")
+
+        return_response('Sales Invoice updated successfully.')
       else
-        return_response("Sales Invoice or Sales Order for this invoice not found.", 0)
+        return_response('Sales Invoice or Sales Order for this invoice not found.', 0)
       end
     rescue => e
       return_response(e.message, 0)

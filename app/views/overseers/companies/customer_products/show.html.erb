@@ -1,0 +1,95 @@
+<div class="col-lg-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+      <h3 class="display-5 d-flex align-items-center">
+        <%= @customer_product.name %>
+      </h3>
+      <% if policy(@customer_product).edit? %>
+        <a href="<%= edit_overseers_company_customer_product_path(@company) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+          customer_product</a>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-1">customer_product Details</h6>
+          <div class="form-row">
+
+            <% if @customer_product.company.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Company Name</strong>
+                <%= @customer_product.company.name %>
+              </div>
+            <% end %>
+
+            <% if @customer_product.name.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Name</strong>
+                <%= @customer_product.name %>
+              </div>
+            <% end %>
+
+            <% if @customer_product.sku? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">BM Number</strong>
+                <%= @customer_product.sku %>
+              </div>
+            <% end %>
+
+            <% if @customer_product.customer_price? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Customer Price</strong>
+                <%= format_currency(@customer_product.customer_price) %>
+              </div>
+            <% end %>
+
+            <% if @customer_product.moq? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Minimum Ordered Quantity</strong>
+                <%= @customer_product.moq %>
+              </div>
+            <% end %>
+
+            <% if @customer_product.moq? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Minimum Ordered Quantity</strong>
+                <%= @customer_product.moq %>
+              </div>
+            <% end %>
+
+            <% if @customer_product.tax_code.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Tax Code</strong>
+                <%= @customer_product.tax_code.code %>
+              </div>
+            <% end %>
+
+            <% if @customer_product.tax_rate.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Tax Rate</strong>
+                <%= @customer_product.tax_rate.tax_percentage %>
+              </div>
+            <% end %>
+
+            <% if @customer_product.measurement_unit.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Measurement Unit</strong>
+                <%= @customer_product.measurement_unit.name %>
+              </div>
+            <% end %>
+
+            <% if @customer_product.brand.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Brand</strong>
+                <%= @customer_product.brand %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

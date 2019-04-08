@@ -2,7 +2,10 @@ class Overseers::RemoteRequestsController < Overseers::BaseController
   before_action :set_remote_request, only: [:show]
 
   def index
-    @remote_requests = ApplyDatatableParams.to(RemoteRequest.all, params)
+    service = Services::Overseers::Finders::RemoteRequests.new(params)
+    service.call
+    @indexed_remote_requests = service.indexed_records
+    @remote_requests = service.records
     authorize @remote_requests
   end
 
@@ -11,8 +14,16 @@ class Overseers::RemoteRequestsController < Overseers::BaseController
     render :show
   end
 
-  private
-  def set_remote_request
-    @remote_request = RemoteRequest.find(params[:id])
+  def resend_failed_requests
+    authorize :remote_request
+    service = Services::Overseers::RemoteRequests::ResyncFailedRequests.new
+    service.call
+
+    redirect_to overseers_remote_requests_path
   end
+
+  private
+    def set_remote_request
+      @remote_request = RemoteRequest.find(params[:id])
+    end
 end

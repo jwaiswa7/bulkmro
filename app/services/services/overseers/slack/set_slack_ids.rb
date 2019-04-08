@@ -4,13 +4,13 @@ class Services::Overseers::Slack::SetSlackIds < Services::Shared::BaseService
   end
 
   def call
-    Overseer.all.where(:slack_uid => nil).each do |overseer|
+    Overseer.all.where(slack_uid: nil).each do |overseer|
       begin
         slack_uid = client.users_lookupByEmail(email: overseer.email).user.id
       rescue
         slack_uid = ''
       end
-      overseer.assign_attributes(:slack_uid => slack_uid)
+      overseer.assign_attributes(slack_uid: slack_uid)
       overseer.save!
     end
   end

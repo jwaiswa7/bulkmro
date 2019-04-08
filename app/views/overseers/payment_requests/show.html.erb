@@ -1,0 +1,231 @@
+<div class="col-lg-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+      <h3 class="display-5 d-flex align-items-center">
+        Payment Request for PO <%= format_id(@payment_request.po_request.purchase_order.present? ? @payment_request.po_request.purchase_order.po_number : nil ) %>:&nbsp;<%= status_badge(@payment_request.status) %>
+      </h3>
+      <% if policy(@payment_request).edit? && !@payment_request.Cancelled?%>
+        <a href="<%= edit_overseers_po_request_payment_request_path(@payment_request.po_request, @payment_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="mb-3">
+    <div class="card mb-2">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-1">Payment Request Details</h6>
+          <div class="form-row">
+            <% if @payment_request.po_request.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Po Request #</strong>
+                <% if policy(@payment_request.po_request).show? %>
+                  <%= link_to overseers_po_request_path(@payment_request.po_request), target: '_blank' do %>
+                    <%= format_id(@payment_request.po_request.purchase_order_id) %>
+                  <% end %>
+                <% else %>
+                  #<%= @payment_request.po_request.purchase_order_id %>
+                <% end %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.purchase_order.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Purchase Order #</strong>
+                <% if policy(@payment_request.purchase_order).show? %>
+                  <%= link_to overseers_inquiry_purchase_order_path(@payment_request.inquiry, @payment_request.purchase_order, format: :pdf), target: '_blank' do %>
+                    <%= format_id(@payment_request.purchase_order.po_number) %>
+                  <% end %>
+                <% else %>
+                  <%= format_id(@payment_request.purchase_order.po_number) %>
+                <% end %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.inquiry.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Inquiry #</strong>
+                <% if policy(@payment_request.inquiry).edit? %>
+                  <%= link_to overseers_inquiry_path(@payment_request.inquiry), target: '_blank' do %>
+                    <%= format_id(@payment_request.inquiry.inquiry_number) %>
+                  <% end %>
+                <% else %>
+                  <%= format_id(@payment_request.inquiry.inquiry_number) %>
+                <% end %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.status.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Status</strong>
+                <%= status_badge(@payment_request.status) %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.inquiry.present? && @payment_request.inquiry.inside_sales_owner.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Inside Sales</strong>
+                <%= @payment_request.inquiry.inside_sales_owner.to_s %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.inquiry.present? && @payment_request.inquiry.inside_sales_owner.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Outside Sales</strong>
+                <%= @payment_request.inquiry.outside_sales_owner.to_s %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.inquiry.present? && @payment_request.inquiry.account.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Customer Account</strong>
+                <%= @payment_request.inquiry.account.to_s %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.inquiry.present? && @payment_request.inquiry.company.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Customer Name</strong>
+                <%= @payment_request.inquiry.company.to_s %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.request_owner.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Owner</strong>
+                <%= @payment_request.request_owner.to_s %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.po_date.present? || @payment_request.purchase_order.metadata["PoDate"].present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Supplier PO date</strong>
+                <%= @payment_request.po_date || @payment_request.purchase_order.metadata["PoDate"] %>
+              </div>
+            <% end %>
+
+          </div>
+          <% if @payment_request.attachments.attached? %>
+            <div class="form-row">
+              <div class="col-12 col-md-3 mb-2 mt-2">
+                <strong class="d-block">Attachments </strong>
+                <% @payment_request.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="fal fa-download"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                      <i class="fal fa-trash-alt"></i>
+                    <% end if attachment.present? && policy(:attachment).destroy? %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card mb-2">
+      <% if @payment_request.payment_option.present? || @payment_request.due_date.present? || @payment_request.purpose_of_payment.present? || @payment_request.company_bank.present? %>
+      <div class="card-body">
+        <div>
+          <div class="form-row">
+
+            <% if @payment_request.po_request.payment_option.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Payment Terms</strong>
+                <%= @payment_request.po_request.payment_option.name %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.due_date.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Due Date</strong>
+                <% if @payment_request.status ==  "Partial Payment Pending" || @payment_request.status == "Payment Pending" %>
+                  <%=  format_due_distance(@payment_request.due_date) %>
+                <% end %>
+                <%= format_date(@payment_request.due_date) %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.purpose_of_payment.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Purpose of Payment</strong>
+                <%= @payment_request.purpose_of_payment %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.company_bank.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Supplier Bank Details</strong>
+                <%= @payment_request.company_bank.to_s %>
+              </div>
+            <% end %>
+
+            <div class="col-6 col-md-3 mb-2">
+              <div class="form-group mb-0">
+                <strong class="d-block">Remaining amount to be Paid</strong>
+              </div>
+              <h6 class="form-group text-uppercase text-black-50 form-text mb-1"><%= format_currency(@payment_request.remaining_amount) %></h6>
+            </div>
+            <div class="col-6 col-md-3 mb-2">
+              <div class="form-group mb-0">
+                <strong class="d-block">Total amount paid in Percentage</strong>
+              </div>
+              <h6 class="form-group text-uppercase text-black-50 form-text mb-1"><%= percentage(@payment_request.percent_amount_paid,precision:2) %></h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    <%end %>
+    </div>
+
+    <div class="card mb-2">
+      <% if  @payment_request.transactions.present? %>
+      <div class="card-body">
+      <h6 class="text-uppercase text-black-50 mb-1">Payment Transactions</h6>
+          <table class="table table-bordered dt-responsive wrap-whitespace w-100 datatable" data-fixed-header="false" data-sort="false">
+            <thead>
+            <tr>
+              <th class="no-sort text-right">Sr. No.</th>
+              <th class="no-sort">Payment Type</th>
+              <th class="no-sort text-right">UTR / Cheque Number</th>
+              <th class="no-sort text-right">Cheque Issue Date</th>
+              <th class="no-sort text-right">Cheque Date</th>
+              <th class="no-sort text-right">Amount Paid</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%  @payment_request.transactions.each_with_index do |row, sr_no| %>
+              <tr>
+                <td><%= sr_no + 1 %></td>
+                <td><%= row.payment_type %></td>
+                <td><%= row.utr_or_cheque_no %></td>
+                <td><%= row.issue_date %></td>
+                <td><%= row.cheque_date %></td>
+                <td><%= format_currency(row.amount_paid) %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+      </div>
+    <% end %>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="flex-fill">
+          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+        </div>
+
+        <% if @payment_request.comments.persisted.size > 0 %>
+          <div class="chats">
+            <% @payment_request.comments.each do |comment| %>
+              <%= format_comment(comment) %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </section>
+</div>

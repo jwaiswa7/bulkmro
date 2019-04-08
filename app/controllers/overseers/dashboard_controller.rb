@@ -3,38 +3,61 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def show
     authorize :dashboard, :show?
+
+    if Rails.env.development?
+      render 'default_dashboard'
+    else
+      if current_overseer.inside_sales_executive?
+        @dashboard = Overseers::Dashboard.new(current_overseer)
+        render 'sales_dashboard'
+      elsif current_overseer.admin?
+        @dashboard = Rails.cache.fetch('admin_dashboard_data') do
+          service = Services::Overseers::Dashboards::Admin.new
+          @dashboard = service.call
+        end
+        render 'admin_dashboard'
+      else
+        render 'default_dashboard'
+      end
+    end
   end
 
   def serializer
     authorize :dashboard, :show?
-    render json: Serializers::InquirySerializer.new(Inquiry.find(1004), {
+    render json: Serializers::InquirySerializer.new(Inquiry.find(1004),
         include: [
-        ]}).serialized_json
+        ]).serialized_json
   end
 
   def chewy
     authorize :dashboard
-    ProductsIndex.delete
-    ProductsIndex.create!
-    ProductsIndex.reset!
-
-    # InquiryIndex.import
-    InquiriesIndex.reset!
-    SalesOrdersIndex.reset!
-
-
-    InquiriesIndex.delete
-    InquiriesIndex.create!
-    InquiriesIndex.reset!
-
+    Dir[[Chewy.indices_path, '/*'].join()].map do |path|
+      path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
+    end
     # Fix for failure when no shards are found
+    redirect_back fallback_location: overseers_dashboard_path
+  end
+
+  def reset_index
+    authorize :dashboard
+    if params.present? && params[:index].present?
+      index_class = params[:index].to_s.classify.constantize
+      if index_class <= BaseIndex
+        index_class.reset!
+      end
+    end
     redirect_back fallback_location: overseers_dashboard_path
   end
 
   def console
     authorize :dashboard
 
-    Services::Overseers::Inquiries::RefreshCalculatedTotals.new.call
+    CustomerProduct.with_attachments.each do |customer_product|
+      customer_product.best_images.each do |image|
+        image.service.delete(customer_product.watermarked_variation(image, 'tiny').key)
+        image.service.delete(customer_product.watermarked_variation(image, 'medium').key)
+      end
+    end
     # render json: Resources::BusinessPartner.find('3095267094', quotes: true)
   end
 

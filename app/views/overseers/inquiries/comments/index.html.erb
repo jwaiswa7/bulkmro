@@ -16,61 +16,41 @@
             <li><%= message %></li>
           <% end %>
         <% end %>
-        <%= render 'overseers/inquiries/sales_orders/show_summary', f: f %>
+        <%= render 'overseers/inquiries/sales_orders/show_summary', sales_order: f.object %>
       <% end %>
     <% end %>
 
-    <%= simple_form_for([:overseers, @inquiry.comments.build(:sales_order => @sales_order)], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-      <%= f.hidden_field :sales_order_id %>
-
-      <%= render 'shared/snippets/form_errors', f: f %>
-
-      <div class="card">
-        <div class="card-body">
-          <% if @comments.persisted.size > 0 %>
-            <div class="chats mb-3">
-              <% @comments.persisted.each do |comment| %>
-                <div class="media chat-item">
-                  <div class="media-body">
-                    <div class="chat-item-title">
-                      <span class="chat-item-author"><%= comment.created_by.full_name %></span>
-                      <span>
-                        <span class="mr-1"><strong>
-                          <% if comment.approval.present? %><span class="badge badge-success">Approved</span><% end %>
-                          <% if comment.rejection.present? %><span class="badge badge-danger">Rejected</span><% end %>
-                        </strong></span>
-                        <%= time_ago_in_words(comment.created_at) %> ago</span>
-                    </div>
-                    <div class="chat-item-body">
-                      <p><%= comment.message %></p>
-                    </div>
-                  </div>
-                </div>
+    <section class="pb-4 pb-lg-5">
+      <div id="accordion">
+        <div class="card mt-2">
+          <a class="btn btn-light text-left text-black-50 btn-lg btn-block" type="button" data-toggle="collapse" data-target="#internal-comments">
+            Internal Comments
+          </a>
+            <div id="internal-comments" class="collapse <%= show_if(params[:show_to_customer].blank? || params[:show_to_customer] == 'false') %>" data-parent="#accordion">
+            <div class="card-body">
+              <%= simple_form_for([:overseers, @inquiry.comments.build(:sales_order => @sales_order)], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+                <%= f.hidden_field :sales_order_id %>
+                <%= render 'shared/snippets/form_errors', f: f %>
+                <%= render 'overseers/inquiries/comments/comments', f: f, inquiry: @inquiry, comments: @internal_comments, sales_order: @sales_order, show_to_customer: false %>
               <% end %>
             </div>
-          <% end %>
-
-          <%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
-
-          <div class="flex-fill">
-            <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
-            <% if @sales_order.present? %>
-              <% if @sales_order.calculated_total_margin_percentage.to_f < 10.0 %>
-                <% if ['devang.shah@bulkmro.com','gaurang.shah@bulkmro.com','nilesh.desai@bulkmro.com','shravan.agarwal@bulkmro.com','vijay.manjrekar@bulkmro.com','akshay.jindal@bulkmro.com'].include? current_overseer.email  %>
-                  <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
-                <% else %>
-                <span data-toggle='tooltip' title="Margin is below 10%; need Devang Shah's, Gaurang Shah's or Nilesh Desai's approval to move forward">
-                  <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-disabled', disabled: true %>
-                </span>
-                <% end %>
-              <% else %>
-                <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
+          </div>
+        </div>
+        <div class="card mt-2">
+          <a class="btn btn-light text-left text-black-50 btn-lg btn-block" type="button" data-toggle="collapse" data-target="#customer-comments">
+            Customer Comments
+          </a>
+          <div id="customer-comments" class="collapse <%= show_if(params[:show_to_customer].present? && params[:show_to_customer] == 'true') %>" data-parent="#accordion">
+            <div class="card-body">
+              <%= simple_form_for([:overseers, @inquiry.comments.build(:sales_order => @sales_order)], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+                <%= f.hidden_field :sales_order_id %>
+                <%= render 'shared/snippets/form_errors', f: f %>
+                <%= render 'overseers/inquiries/comments/comments', f: f, inquiry: @inquiry, comments: @customer_comments, sales_order: @sales_order, show_to_customer: true %>
               <% end %>
-              <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@sales_order).reject? %>
-            <% end %>
+            </div>
           </div>
         </div>
       </div>
-    <% end %>
+    </section>
   <% end %>
 </div>

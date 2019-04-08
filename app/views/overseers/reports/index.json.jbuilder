@@ -7,7 +7,7 @@ json.data (@reports) do |report|
                   ].join(' '),
                   report.name,
                   report.uid,
-                  format_date(report.updated_at)
+                  format_succinct_date(report.updated_at)
               ]
 end
 

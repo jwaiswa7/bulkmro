@@ -22,15 +22,7 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :letter_opener
-  config.action_mailer.smtp_settings = {
-      address:              'smtp.gmail.com',
-      port:                 587,
-      domain:               'bulkmro.com',
-      # user_name:            '', # can be use as fallback if user credentials failed
-      # password:             '', # can be use as fallback if user credentials failed
-      authentication:       'plain',
-      enable_starttls_auto: true
-  }
+  config.action_mailer.smtp_settings = Settings.sendgrid_smtp.to_hash
 
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -63,7 +55,7 @@ Rails.application.configure do
   #config.active_job.queue_adapter = :inline
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
-  config.active_storage.service = :local
+  config.active_storage.service = :microsoft
 
   # Don't care if the mailer can't send.
   #config.action_mailer.raise_delivery_errors = false
@@ -93,4 +85,5 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+  config.serve_static_files = true
 end

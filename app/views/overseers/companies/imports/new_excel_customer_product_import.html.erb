@@ -1,0 +1,26 @@
+<% content_for :heading_button do %>
+  <a href="<%= download_customer_product_template_overseers_company_imports_path(@company, format: :xlsx) %>" target="_blank" class="btn-block-sm-down btn btn-dark btn-rounded align-self-center btn-block-sm-down">
+    <i class="fal fa-download mr-1"></i>Download Excel Template
+  </a>
+<% end %>
+<% content_for :heading_byline do %>
+  This will <em>'<%= submit_text(@company).downcase %></em> and log it under
+  <strong><%= current_overseer.full_name %></strong>.
+<% end %>
+
+<%= render layout: 'shared/layouts/form' do %>
+  <%= simple_form_for([:overseers, @company, @product_excel_import], url: customer_products_overseers_company_imports_path(@company), :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= f.hidden_field :import_type %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+
+    <div class="card">
+      <div class="card-body">
+        <%= f.input :file, required: true, wrapper: :custom_file, label: 'Products Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
+
+        <div class="form-group mb-0">
+          <%= f.submit(class: 'btn btn-success btn-block') %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

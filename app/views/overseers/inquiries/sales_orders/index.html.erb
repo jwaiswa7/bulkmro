@@ -5,21 +5,30 @@
 
     <% content_for :header_row do %>
       <th class="no-sort"></th>
-      <th>Order #</th>
-      <th>Doc ID</th>
+      <th class="no-sort desktop text-right">Order #</th>
+      <th class="no-sort desktop text-right">Doc ID</th>
+      <th class="no-sort desktop text-right">Quote ID</th>
       <th>Status</th>
-      <th>Sent At</th>
+      <% if @sales_orders.where(status: "Approved").count > 1 %>
+        <th> SAP Status</th>
+      <% end %>
+      <th class="no-sort desktop text-right">Sent At</th>
+
+      <th class="no-sort desktop text-right">Line Items</th>
+      <th class="no-sort desktop text-right">Quote Total</th>
+      <th class="no-sort desktop text-right">Order Total</th>
+      <th class="no-sort desktop text-right">Order Date</th>
+      <th class="no-sort desktop text-right">Created At</th>
       <th>Created By</th>
-      <th>Line Items</th>
-      <th>Quote Total</th>
-      <th>Order Total</th>
-      <th>Created At</th>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>
       <% @sales_orders.each do |sales_order| %>
         <tr>
           <td>
+            <% if policy(sales_order).relationship_map? %>
+              <%= row_action_button(relationship_map_overseers_inquiry_sales_order_path(@inquiry.to_param, sales_order.to_param), 'sitemap', 'Relationship Map', 'info', :_blank) %>
+            <% end %>
             <% if policy(sales_order).show? %>
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order), 'eye', 'View Sales Order', 'info') %>
             <% end %>
@@ -32,6 +41,10 @@
               <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>
             <% end %>
 
+            <% if policy(sales_order).edit_mis_date? %>
+              <%= row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(id: sales_order), 'calendar-alt', 'Update MIS Date', 'success') %>
+            <% end %>
+
             <% if policy(sales_order).resync? %>
               <%= row_action_button(resync_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post) %>
             <% end %>
@@ -41,17 +54,32 @@
             <% elsif policy(sales_order).show_pdf? %>
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
               <%= row_action_button(proforma_overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download Proforma Invoice', 'warning', :_blank) %>
-          <% end %>
+            <% end %>
+            <% if policy(sales_order).fetch_order_data? %>
+              <%= row_action_button(fetch_order_data_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'arrows-h', 'SAP Sync', 'success') %>
+            <% end %>
+
+            <% if policy(sales_order.sales_quote).new_freight_request? %>
+              <%= row_action_button(new_overseers_freight_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'New Freight Request', 'warning') %>
+            <% end %>
+            <% if policy(sales_order).debugging? %>
+              <%= row_action_button(debugging_overseers_inquiry_sales_order_path(@inquiry,sales_order),'cogs', 'Debugging', 'danger', :_blank) %>
+             <% end %>
           </td>
           <td><%= sales_order.order_number %></td>
           <td><%= sales_order.id %></td>
-          <td><%= sales_order_status_badge(sales_order.order_status) %></td>
+          <td><%= sales_order.sales_quote_id || '-' %></td>
+          <td><%= status_badge(sales_order.order_status) %></td>
+          <% if @sales_orders.where(status: "Approved").count > 1 %>
+            <td> <%=  sales_order.remote_status || "-" %></td>
+          <% end %>
           <td><%= format_date(sales_order.sent_at) %></td>
-          <td><%= sales_order.created_by.to_s %></td>
           <td><%= sales_order.rows.size %></td>
           <td><%= format_currency(sales_order.sales_quote.calculated_total) %></td>
           <td><%= format_currency(sales_order.calculated_total) %></td>
+          <td><%= format_date(sales_order.mis_date) %></td>
           <td><%= format_date(sales_order.created_at) %></td>
+          <td><%= sales_order.created_by.to_s %></td>
         </tr>
       <% end %>
     <% end %>
