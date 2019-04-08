@@ -120,6 +120,19 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     end
   end
 
+  def self.custom_find_resync(id, by = nil)
+    url = "/#{collection_name}?$filter=#{by ? by : identifier} eq '#{id}'&$top=1"
+    response = perform_remote_sync_action('get', url)
+    validated_response = get_validated_response(response)
+    if validated_response['value'].present?
+      remote_record = validated_response['value'][0]
+      yield remote_record if block_given?
+      remote_record[self.identifier.to_s]
+    else
+      false
+    end
+  end
+
   def self.create(record)
     url = "/#{collection_name}"
     body = to_remote(record).to_json
