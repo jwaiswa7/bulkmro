@@ -39,6 +39,24 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  # def company_report
+  #   authorize :inquiry
+  #
+  #   respond_to do |format|
+  #     format.html {}
+  #     format.json do
+  #       service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer)
+  #       service.call
+  #
+  #       if params['company_report'].present?
+  #         @date_range = params['company_report']['date_range']
+  #       end
+  #
+  #       @indexed_company_reports = service.indexed_records.aggregations['company_over_month']['buckets']['custom-range']['inquiries']['buckets']
+  #     end
+  #   end
+  # end
+
   def kra_report_per_sales_owner
     authorize :inquiry
 

@@ -113,6 +113,24 @@ class Overseers::CompaniesController < Overseers::BaseController
     export_service.call
   end
 
+  def company_report
+    authorize :company
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
+        service.call
+
+        if params['company_report'].present?
+          @date_range = params['company_report']['date_range']
+        end
+
+        @indexed_company_reports = service.indexed_records.aggregations['company_over_month']['buckets']['custom-range']['inquiries']['buckets']
+      end
+    end
+  end
+
   private
     def set_company
       @company ||= Company.find(params[:id])

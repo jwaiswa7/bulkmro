@@ -1,0 +1,69 @@
+<% provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+<% provide :can_be_directly_downloaded, true %>
+
+<% content_for :heading do %>Company Report<% end %>
+<% provide :hide_table_desc, true %>
+
+<%#= render layout: 'search_layout' do %>
+<%# end %>
+
+<% content_for :header_row do %>
+  <th class="no-sort all"></th>
+  <th class="no-sort all" data-name="company_id"> Company Name</th>
+  <th class="no-sort all" data-name="account_id"> Company Alias</th>
+  <th class="no-sort all text-right">No. of Live Inquiries</th>
+  <th class="no-sort all text-right">No. of Live Quotation</th>
+  <th class="no-sort all text-right">Value of Quotation</th>
+  <th class="no-sort all text-right">No. of Live Expected Orders</th>
+  <th class="no-sort all text-right">Value of Expected Orders</th>
+  <th class="no-sort all text-right">No. of Orders</th>
+  <th class="no-sort all text-right">Value of Orders</th>
+  <th class="no-sort all text-right">Order Margin</th>
+<!--  <th class="no-sort all text-right">%Margin</th>-->
+  <th class="no-sort all text-right">No of Invoices</th>
+  <th class="no-sort all text-right">Amount Invoiced(Excl. Taxes)</th>
+<!--  <th class="no-sort all text-right">"Invoice Margin(Excl. Taxes)"</th>-->
+<!--  <th class="no-sort all text-right">"Amount Outstanding(Incl. Taxes)"</th>-->
+<!--  <th class="no-sort all text-right">No. of Cancelled Invoices</th>-->
+<% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+<% end %>
+
+<% content_for :summary_row do %>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td class="currency strong"></td>
+  <td></td>
+  <td class="currency strong"></td>
+  <td></td>
+  <td class="currency"></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td class="currency"></td>
+  <td></td>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

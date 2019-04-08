@@ -24,5 +24,15 @@ class CompaniesIndex < BaseIndex
 
     field :created_at, value: -> (record) {record.created_at}, type: 'date'
     field :updated_at, value: -> (record) {record.updated_at}, type: 'date'
+    field :inquiries_size, value: -> (record) {record.inquiry_size}, type: 'integer'
+    field :invoices_count, value: -> (record) {record.inquiries.uniq { |ip| ip.invoices }.size}, type: 'integer'
+    field :sales_quote_count, value: -> (record) {record.inquiries.uniq { |ip| ip.final_sales_quote }.size}, type: 'integer'
+    field :sales_order_count, value: -> (record) {record.inquiries.uniq { |ip| ip.final_sales_orders }.size}, type: 'integer'
+    field :expected_order, value: -> (record) {record.inquiries.statuses.map { |status| ['Expected Order'].include?(status) }.size}, type: 'integer'
+    field :order_won, value: -> (record) {record.inquiries.statuses.map { |status| ['Order Won'].include?(status) }.size}, type: 'integer'
+    field :company_key, value: -> (record) { record.id }, type: 'integer'
+    field :total_quote_value, value: -> (record) { record.inquiries.map { |ip| ip.final_sales_quote.calculated_total if ip.final_sales_quote.present?}.compact.flatten.sum }, type: 'double'
+    # field :total_order_value, value: -> (record) { record.inquiries.map { |ip| ip.final_sales_orders(&:calculated_total)if ip.final_sales_orders.present?}.compact.flatten.sum }, type: 'double'
+    # field :invoice_amount, value: -> (record) {record.inquiries.map { |ip| ip.invoices.map {|s| s.metadata['base_grand_total'].to_f } if ip.invoices.present?}.compact.flatten.sum}, type: 'double'
   end
 end

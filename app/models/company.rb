@@ -220,4 +220,22 @@ class Company < ApplicationRecord
     type = self.account.is_supplier? ? 'S' : 'C'
     [self.to_s, ' (', type, ')'].join('')
   end
+  def inquiry_size
+    self.inquiries.where.not('inquiries.status = ? and inquiries.status = ?', 10,9).size
+  end
+  def invoice_number
+    s=c.inquiries.map { |ip| ip.final_sales_quote.(&:calculated_total).sum if ip.final_sales_quote.present?}
+    i=c.inquiries.map { |ip| ip.invoices.map{|s| s.metadata['base_grand_total'].to_f }.sum if ip.invoices.present?}
+    inquiries.map { |ip| ip.invoices.map {|s| s.metadata['base_grand_total'].to_f }if ip.invoices.present?}.compact.flatten.sum
+
+    ompany_inquiries = company.inquiries.includes(:sales_quote_rows, :sales_order_rows)
+    sales_order_rows = company_inquiries.map {|i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_order_row_price = sales_order_rows.map {|r| r.unit_selling_price}.flatten if sales_order_rows.present?
+    return sales_order_row_price.min if sales_order_row_price.present?
+    sales_quote_rows = company_inquiries.map {|i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_quote_row_price = sales_quote_rows.pluck(:unit_selling_price)
+    return sales_quote_row_price.min
+
+  end
+
 end
