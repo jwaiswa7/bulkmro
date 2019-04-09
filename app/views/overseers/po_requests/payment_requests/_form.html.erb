@@ -155,19 +155,29 @@
                 </div>
               </div>
             <% end %>
-            <% if f.object.remaining_amount > 0 %>
+            <% if f.object.remaining_amount > 0.0 %>
               <div class="form-row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <%= f.add_nested_fields_link :transactions, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
                     <i class="fal fa-plus-circle mr-1"></i>Add payment transaction
+                  <% end %>
+                </div>
+                <div class="col-md-6">
+                  <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2 payment_request_submit") do %>
+                    <i class="fal fa-pen"></i>  Save payment transaction
                   <% end %>
                 </div>
               </div>
             <% else %>
               <div class="form-row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <%= f.add_nested_fields_link :transactions, class: 'btn btn-outline-success btn-block mb-2 mb-md-0 disabled' do %>
-                    <i class="fal fa-plus-circle mr-1"></i>Add payment transaction request
+                    <i class="fal fa-plus-circle mr-1"></i>Add payment transaction
+                  <% end %>
+                </div>
+                <div class="col-md-6">
+                  <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2 payment_request_submit disabled") do %>
+                    <i class="fal fa-pen"></i>  Save payment transaction
                   <% end %>
                 </div>
               </div>
