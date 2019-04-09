@@ -57,6 +57,27 @@
       </div>
     </div>
 
+    <div class="form-row">
+      <div class="col-12">
+        <div class="d-block d-md-flex align-items-end">
+          <div class="flex-grow-1">
+            <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
+          </div>
+
+          <div class="form-group">
+            <% f.object.attachments.each do |attachment| %>
+              <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                <i class="fal fa-download"></i>
+                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
+                  <i class="fal fa-trash-alt"></i>
+                <% end if attachment.present? && policy(:attachment).destroy? %>
+              <% end %>
+            <% end if f.object.attachments.attached? %>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <%= action_button(action_name, @company_bank) %>
   <% end %>
 </div>
