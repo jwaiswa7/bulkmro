@@ -1,6 +1,6 @@
 class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Overseers::Exporters::BaseExporter
-  def initialize
-    super
+  def initialize(*params)
+    super(*params)
     @model = PurchaseOrder
     @export_name = 'purchase_orders'
     @path = Rails.root.join('tmp', filename)
@@ -8,11 +8,17 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
   end
 
   def call
-    perform_export_later('PurchaseOrdersExporter')
+    perform_export_later('PurchaseOrdersExporter', @arguments)
   end
 
   def build_csv
-    model.where(created_at: start_at..end_at).order(po_number: :asc).each do |purchase_order|
+    if @ids.present?
+      records = model.where(id: @ids).order(created_at: :desc)
+    else
+      records = model.where(created_at: start_at..end_at).order(po_number: :asc)
+    end
+
+    records.each do |purchase_order|
       inquiry = purchase_order.inquiry
 
       row = {
@@ -125,7 +131,8 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
 
       rows.push(row)
     end
-    export = Export.create!(export_type: 15)
+    filtered = @ids.present?
+    export = Export.create!(export_type: 15, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     generate_csv(export)
   end
 end

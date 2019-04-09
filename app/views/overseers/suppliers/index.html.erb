@@ -1,5 +1,7 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
+<% provide :can_be_directly_exported, true %>
+<% provide :can_be_directly_exported_filtered_records, true %>
 <% provide :wrap_whitespace, true %>
 
 <% content_for :header_row do %>
@@ -7,8 +9,8 @@
   <th class="no-sort all" data-name="name">Name</th>
   <th class="no-sort all" data-name="account_id">Account</th>
   <th class="no-sort all" data-name="nature_of_business">Supplier Type</th>
-  <th class="sort desktop">Address</th>
-  <th class="sort desktop text-right">Contact</th>
+  <th class="no-sort desktop">Default Billing Address</th>
+  <th class="no-sort desktop">Contact</th>
   <th class="no-sort all">Rating</th>
   <th class="sort desktop text-right" data-name="purchase_orders_count">No. of POs</th>
   <th class="sort desktop text-right" data-name="supplied_brands_count">No. of Brands</th>

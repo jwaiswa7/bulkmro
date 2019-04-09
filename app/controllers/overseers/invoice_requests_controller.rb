@@ -53,7 +53,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
     service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     @company_reviews = service.call
-    service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.material_pickup_requests.ids,  false)
+    service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.inward_dispatches.ids, false)
     @products_list = service.call
   end
 
