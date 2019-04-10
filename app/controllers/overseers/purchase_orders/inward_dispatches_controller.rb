@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseController
-  before_action :set_material_pickup_request, only: [:show, :edit, :update, :confirm_delivery, :delivered_material]
+  before_action :set_inward_dispatch, only: [:show, :edit, :update, :confirm_delivery, :delivered_material]
   before_action :set_purchase_order, only: [:new, :create, :update, :show, :edit]
 
   def index
@@ -24,7 +24,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
 
   def create
     @inward_dispatch = @purchase_order.inward_dispatches.new()
-    @inward_dispatch.assign_attributes(mpr_params.merge(overseer: current_overseer))
+    @inward_dispatch.assign_attributes(inward_dispatch_params.merge(overseer: current_overseer))
     authorize @inward_dispatch
     if @inward_dispatch.save
       @purchase_order.update_material_status
@@ -42,7 +42,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
   def update
     authorize @inward_dispatch
 
-    @inward_dispatch.assign_attributes(mpr_params.merge(overseer: current_overseer))
+    @inward_dispatch.assign_attributes(inward_dispatch_params.merge(overseer: current_overseer))
 
     if @inward_dispatch.valid?
       messages = DateModifiedMessage.for(@inward_dispatch, ['expected_dispatch_date', 'expected_delivery_date', 'actual_delivery_date'])
@@ -72,11 +72,11 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
     end
 
-    def set_material_pickup_request
-      @inward_dispatch = InwardDispatch.find(params[:id])
-    end
+  def set_inward_dispatch
+    @inward_dispatch = InwardDispatch.find(params[:id])
+  end
 
-    def mpr_params
+    def inward_dispatch_params
       params.require(:inward_dispatch).require(:inward_dispatch).except(:action_name)
           .permit(
             :status,
