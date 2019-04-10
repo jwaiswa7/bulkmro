@@ -173,13 +173,17 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def update_logistics_owner
     @purchase_orders = PurchaseOrder.where(id: params[:purchase_orders])
     authorize @purchase_orders
-    @purchase_orders.update_all(logistics_owner_id: params[:logistics_owner_id])
+    @purchase_orders.each do |purchase_order|
+      purchase_order.update_attributes(logistics_owner_id: params[:logistics_owner_id])
+    end
   end
 
   def update_logistics_owner_for_pickup_requests
     @pickup_requests = MaterialPickupRequest.where(id: params[:pickup_requests])
     authorize @pickup_requests
-    @pickup_requests.update_all(logistics_owner_id: params[:logistics_owner_id])
+    @pickup_requests.each do |pickup_request|
+      pickup_request.update_attributes(logistics_owner_id: params[:logistics_owner_id])
+    end
   end
 
   private
