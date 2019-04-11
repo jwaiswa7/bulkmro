@@ -17,29 +17,29 @@
     <% if stock %>
       <div class="col-12 col-md-4">
         <% if policy(@po_request).can_cancel? %>
-          <%= f.input :stock_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.stock_statuses.except("Stock Requested", "Stock Rejected"), alphabetical: false, keep_raw: true), :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except("Stock Requested", "Stock Rejected"), alphabetical: false, keep_raw: true), :include_blank => false %>
         <% elsif policy(@po_request).can_reject_stock_po? %>
-          <%= f.input :stock_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.stock_statuses.except("Stock Supplier PO Created"), alphabetical: false, keep_raw: true), :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except("Stock Supplier PO Created"), alphabetical: false, keep_raw: true), :include_blank => false %>
         <% elsif policy(@po_request).can_update_rejected_po_requests? %>
-          <%= f.input :stock_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.stock_statuses.except("Stock Supplier PO Created"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except("Stock Supplier PO Created"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
         <% else %>
-          <%= f.input :stock_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.stock_statuses, alphabetical: false), disabled: true, :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses, alphabetical: false), disabled: true, :include_blank => false %>
         <% end %>
       </div>
     <% else %>
       <div class="col-12 col-md-4">
         <% if policy(@po_request).can_cancel? || policy(@po_request).can_amend_completed_po_requests? %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("Supplier PO: Request Pending", "Rejected", "Supplier PO: Amended"), alphabetical: false, keep_raw: true), :include_blank => false %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: ["Supplier PO: Request Pending", "Rejected", "Supplier PO: Amended"] %>
         <% elsif policy(@po_request).can_reject? %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("PO Created", "Cancelled", "Supplier PO: Amendment"), alphabetical: false, keep_raw: true), :include_blank => false %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: ["Supplier PO: Created Not Sent", "Cancelled", "Supplier PO: Amendment", "Supplier PO: Amended", "Supplier PO Sent"] %>
         <% elsif policy(@po_request).can_update_rejected_po_requests? %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("PO Created", "Cancelled", "Supplier PO: Amendment"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected', "Supplier PO: Created Not Sent", "Cancelled", "Supplier PO: Amendment", "Supplier PO: Amended"] %>
         <% elsif policy(@po_request).can_process_amended_po_requests? %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("Supplier PO: Request Pending", "Rejected", "Cancelled", "Supplier PO: Amendment"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected', "Supplier PO: Request Pending", "Rejected", "Cancelled", "Supplier PO: Amendment"] %>
         <% else %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), disabled: false, :include_blank => false %>
         <% end %>
-      <%= f.hidden_field :id %>
+        <%= f.hidden_field :id %>
       </div>
     <% end %>
     <div class="col-4 d-none status-rejected">
