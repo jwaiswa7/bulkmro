@@ -31,7 +31,7 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
         multi_match: {
             query: query_string,
             operator: 'and',
-            fields: %w[inside_sales_owner]
+            fields: %w[]
         }
     ).order(sort_definition)
 
@@ -74,21 +74,25 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
             },
             aggs: {
                 'inquiries': {
-                    'terms': {'field': 'inside_sales_owner_id', size: 500},
+                    'terms': {'field': 'company_key', size: 500},
                     aggs: {
-                        sales_invoices: {
+
+                        inquiries_size: {
                             sum: {
-                                field: 'invoices_count'
+                                field: 'inquiries_size'
                             }
                         },
+
                         sales_quotes: {
                             sum: {
                                 field: 'sales_quote_count'
                             }
                         },
-                        sales_orders: {
+
+
+                        total_sales_value: {
                             sum: {
-                                field: 'sales_order_count'
+                                field: 'total_quote_value'
                             }
                         },
                         expected_orders: {
@@ -96,14 +100,14 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
                                 field: 'expected_order'
                             }
                         },
-                        orders_won: {
+                        total_expected_value: {
                             sum: {
-                                field: 'order_won'
+                                field: 'expected_value'
                             }
                         },
-                        total_sales_value: {
+                        total_sales_orders: {
                             sum: {
-                                field: 'total_quote_value'
+                                field: 'sales_order_count'
                             }
                         },
                         total_order_value: {
@@ -111,22 +115,35 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
                                 field: 'total_order_value'
                             }
                         },
-                        revenue: {
+                        order_margin: {
                             sum: {
-                                field: 'revenue'
+                                field: 'total_margin'
                             }
                         },
-                        company: {
+                        sales_invoices: {
                             sum: {
-                                field: 'company'
+                                field: 'invoices_count'
                             }
                         },
-                        account: {
-                            cardinality: {
-                                field: 'account'
+                        amount_invoiced: {
+                            sum: {
+                                field: 'amount_invoiced'
+                            }
+                        },
+                        margin_percentage: {
+                            sum: {
+                                field: 'margin_percentage'
+                            }
+                        },
+                        cancelled_invoiced: {
+                            sum: {
+                                field: 'cancelled_invoiced'
                             }
                         }
+
                     }
+
+
                 }
             }
         }

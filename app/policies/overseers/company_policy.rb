@@ -53,4 +53,8 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || admin?
   end
 
+  def export_company_report?
+    manager_or_sales? || admin?
+  end
+
 end

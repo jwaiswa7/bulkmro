@@ -1,6 +1,7 @@
 class SalesQuoteRow < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanHaveTaxes
+  include Mixins::HasConvertedCalculations
 
   belongs_to :lead_time_option, required: false
   belongs_to :sales_quote

@@ -1,6 +1,7 @@
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
   include DisplayHelper
+  include Mixins::HasConvertedCalculations
   update_index('sales_invoices#sales_invoice') { self }
 
   pg_search_scope :locate, against: [:id, :invoice_number], associated_against: { company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
@@ -96,4 +97,25 @@ class SalesInvoice < ApplicationRecord
   def calculated_freight_cost_total
     self.rows.sum(&:freight_cost_subtotal).round(2)
   end
+
+
+  def total_selling_price
+    self.sales_order.sales_quote_rows.map{|p| (p.unit_selling_price * p.quantity)} if self.sales_order.sales_quote_rows.unit_selling_price.present?
+  end
+
+  def total_cost_price
+    self.sales_order.sales_quote_rows.map{|p| (p.unit_cost_price_with_unit_freight_cost * p.quantity)}
+  end
+
+
+  def invoice_margin
+   self.total_selling_price - self.total_cost_price
+  end
+  def margin_percentage
+   self.sales_order.sales_quote_rows.map{|r| (((r.invoice_margin / total_cost_price)*100) / quantity)}
+  end
+  def quantity
+    self.metadata['qty']
+  end
+
 end
