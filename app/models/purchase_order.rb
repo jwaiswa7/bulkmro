@@ -212,4 +212,9 @@ class PurchaseOrder < ApplicationRecord
       self.update_attribute(:material_status, 'Material Readiness Follow-Up')
     end
   end
+
+  def po_request_present?
+    self.po_request.present? ? (self.po_request.status == 'Supplier PO Sent' || self.po_request.status == 'Supplier PO: Created Not Sent') : false
+  end
+
 end

@@ -163,12 +163,10 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
     if @po_request.valid?
-      @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
+      @po_request.status = 'Supplier PO Sent' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
       @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).can_reject?
       service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer, action_name)
       service.call
-      # @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
-      # @po_request.status = 'Requested' if @po_request.status == 'Rejected' && !policy(@po_request).can_reject?
 
       tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
       @notification.send_po_request_update(
