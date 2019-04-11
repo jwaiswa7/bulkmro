@@ -28,7 +28,9 @@
       </div>
     <% else %>
       <div class="col-12 col-md-4">
-        <% if policy(@po_request).can_cancel? || policy(@po_request).can_amend_completed_po_requests? %>
+        <% if policy(@po_request).can_cancel? || policy(@po_request).can_create_supplier_po_not_sent_requests? %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: ["Supplier PO: Created Not Sent", "Supplier PO: Request Pending", "Rejected", "Supplier PO: Amended"] %>
+        <% elsif policy(@po_request).can_cancel? || policy(@po_request).can_amend_completed_po_requests? %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: ["Supplier PO: Request Pending", "Rejected", "Supplier PO: Amended"] %>
         <% elsif policy(@po_request).can_reject? %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: ["Supplier PO: Created Not Sent", "Cancelled", "Supplier PO: Amendment", "Supplier PO: Amended", "Supplier PO Sent"] %>

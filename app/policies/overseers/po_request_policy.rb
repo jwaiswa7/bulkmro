@@ -41,6 +41,10 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     record.purchase_order.present? && (manager_or_sales?) && record.not_amending? && record.status != 'Cancelled'
   end
 
+  def can_create_supplier_po_not_sent_requests?
+    record.purchase_order.blank? && (logistics? || admin?) && record.status == 'Supplier PO: Request Pending'
+  end
+
   def can_reject?
     record.purchase_order.blank? && (logistics? || admin?) && record.status == 'Supplier PO: Request Pending'
   end
