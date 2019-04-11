@@ -271,7 +271,7 @@
         </div>
 
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :'data-customer-committed-date' => @po_request.sales_order.customer_committed_date, :class => 'lead-time'}, label: 'Lead Date', required: true %>
+          <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :'data-customer-committed-date' =>  f.object.sales_order.customer_committed_date, :class => 'lead-time'}, label: 'Lead Date', required: true %>
         </div>
         <% if stock || (f.object.rows.present? && f.object.rows.length > 1) %>
           <div class="col-12 col-md-1">
