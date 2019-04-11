@@ -109,13 +109,13 @@ class SalesInvoice < ApplicationRecord
 
 
   def invoice_margin
-   self.total_selling_price - self.total_cost_price
+   ((self.total_selling_price - self.total_cost_price) / (self.total_selling_price)*100)
   end
-  def margin_percentage
-   self.sales_order.sales_quote_rows.map{|r| (((r.invoice_margin / total_cost_price)*100) / quantity)}
-  end
-  def quantity
-    self.metadata['qty']
-  end
+  # def margin_percentage
+  #  self.sales_order.sales_quote_rows.map{|r| (((r.invoice_margin / total_cost_price)*100) / quantity)}
+  # end
+  # def quantity
+  #   self.metadata['qty']
+  # end
 
 end

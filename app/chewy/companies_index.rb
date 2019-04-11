@@ -40,5 +40,6 @@ class CompaniesIndex < BaseIndex
     field :margin_percentage, value: -> (record) { record.inquiries.map{|i| i.final_sales_orders.map{|s| s.calculated_total_margin_percentage} if i.final_sales_orders.present?}.compact.flatten }, type: 'double'
     field :amount_invoiced, value: -> (record) { record.inquiries.map{|i| i.invoices.map{|s| s.calculated_total}}.compact.flatten.sum }, type: 'double'
     field :cancelled_invoiced, value: -> (record) { record.inquiries.map{|i| i.invoices.where(status: 'Cancelled').pluck(:id)}.flatten.compact.count }, type: 'integer'
+    # field :invoice_margin, value: -> (record) {record.inquiries.map{|i| i.invoices.map{|p| p.invoice_margin}}}, type: 'double'
   end
 end
