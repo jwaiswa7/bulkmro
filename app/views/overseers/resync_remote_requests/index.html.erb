@@ -1,0 +1,36 @@
+<% provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+
+<% provide :heading_buttons do %>
+  <% if policy(:remote_request).resend_failed_requests? %>
+    <a href="<%= resend_failed_requests_overseers_remote_requests_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
+      <i class="fal fa-redo mr-1"></i>Resync failed requests
+    </a>
+  <% end %>
+<% end %>
+
+<% content_for :header_row do %>
+  <th class="no-sort"></th>
+  <th class="no-sort" data-name="subject">Request</th>
+  <th class="no-sort text-right" data-name="status">Status</th>
+  <th class="no-sort" data-name="method">Method</th>
+  <th class="no-sort text-right" data-name="inquiry">Inquiry</th>
+  <th class="no-sort" data-name="resource_id">Resource</th>
+  <th class="no-sort text-right" data-name="created_at">Date / Time</th>
+<% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="daterange"></td>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>
