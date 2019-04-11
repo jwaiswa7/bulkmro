@@ -42,6 +42,6 @@ class PurchaseOrdersIndex < BaseIndex
     field :po_type, value: -> (record) { supplier_po_type[record.po_request.supplier_po_type] if record.po_request.present? }
     field :line_item, value: -> (record) {record.rows.count if record.rows.present? }, type: 'integer'
     field :overall_margin, value: -> (record) { record.po_request.sales_order.calculated_total_margin_percentage if record.po_request.present? && record.po_request.sales_order.present? }, type: 'integer'
-    field :po_request_present, value: -> (record) { record&.po_request&.status == 'PO Created' }
+    field :po_request_present, value: -> (record) { record&.po_request&.status == 'Supplier PO Sent' || record&.po_request&.status == 'Supplier PO: Created Not Sent' }
   end
 end
