@@ -10,7 +10,7 @@ class Services::Overseers::InvoiceRequests::FormProductsList < Services::Shared:
     else
       InwardDispatchRow.where(inward_dispatch_id: object)
             .group_by(&:purchase_order_row_id)
-            .map { |por_id, mpr_rows| { purchase_order_row: PurchaseOrderRow.find(por_id), total_quantity: mpr_rows.sum(&:delivered_quantity).to_s } }
+          .map { |por_id, inward_dispatch_rows| { purchase_order_row: PurchaseOrderRow.find(por_id), total_quantity: inward_dispatch_rows.sum(&:delivered_quantity).to_s } }
     end
   end
 

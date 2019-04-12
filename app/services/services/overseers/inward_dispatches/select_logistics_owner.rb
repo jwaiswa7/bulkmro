@@ -26,7 +26,7 @@ class Services::Overseers::InwardDispatches::SelectLogisticsOwner < Services::Sh
     when companies_group_5.include?(company_name) then
       Overseer.logistics.where(email: 'vignesh.gounder@bulkmro.com').first
     else
-      Overseer.logistics.where(email: 'amit.rawool@bulkmro.com').first
+      nil
     end
   end
 

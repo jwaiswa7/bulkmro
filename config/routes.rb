@@ -86,16 +86,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :contact_creation_requests do
-      # member do
-      #   post 'exchange_with_existing_company'
-      # end
-      collection do
-        get 'requested'
-        get 'created'
-      end
-    end
-
     resources :activities, except: [:show] do
       collection do
         get 'pending'
@@ -375,6 +365,7 @@ Rails.application.routes.draw do
         get 'kra_report'
         get 'kra_report_per_sales_owner'
         get 'export_kra_report'
+        get 'bulk_update'
       end
 
       scope module: 'inquiries' do
