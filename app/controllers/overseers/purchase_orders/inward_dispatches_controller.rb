@@ -41,7 +41,6 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
 
   def update
     authorize @inward_dispatch
-
     @inward_dispatch.assign_attributes(inward_dispatch_params.merge(overseer: current_overseer))
 
     if @inward_dispatch.valid?
@@ -79,7 +78,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
     def inward_dispatch_params
       params.require(:inward_dispatch).require(:inward_dispatch).except(:action_name)
           .permit(
-            :status,
+              :status,
               :expected_dispatch_date,
               :expected_delivery_date,
               :actual_delivery_date,
@@ -90,9 +89,10 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
               :logistics_partner,
               :tracking_number,
               :logistics_aggregator,
+              :other_logistics_partner,
               :purchase_order_id,
               comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-              rows_attributes: [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :lead_date, :_destroy],
+              rows_attributes: [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :supplier_delivery_date, :_destroy],
               attachments: []
           )
     end
