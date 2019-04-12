@@ -1,6 +1,6 @@
 class Overseers::PaymentRequestTransactionPolicy < Overseers::ApplicationPolicy
   def destroy?
-    accounts? || admin?
+    accounts? || logistics? || admin?
   end
 
   def disabled_fields?
