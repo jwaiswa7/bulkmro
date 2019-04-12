@@ -11,14 +11,20 @@ json.data (@po_requests) do |po_request|
                       elsif policy(po_request).show_payment_request?
                         row_action_button(overseers_payment_request_path(po_request.payment_request), 'eye', 'View Payment Request', 'info', :_blank)
                       end,
-                      if policy(po_request).sending_po_to_supplier_new_email_message?
+                      if policy(po_request).sending_po_to_supplier_new_email_message? && current_overseer.smtp_password.present?
                         row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Send Purchase Order to Supplier', 'dark', :_blank)
+                      else
+                        row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'dark disabled')
                       end,
-                      if policy(po_request).dispatch_supplier_delayed_new_email_message?
+                      if policy(po_request).dispatch_supplier_delayed_new_email_message? && current_overseer.smtp_password.present?
                         row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'envelope', 'Dispatch from Supplier Delayed', 'success', :_blank)
+                      else
+                        row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'success disabled')
                       end,
-                      if policy(po_request).material_received_in_bm_warehouse_new_email_msg?
+                      if policy(po_request).material_received_in_bm_warehouse_new_email_msg? && current_overseer.smtp_password.present?
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
+                      else
+                        row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'warning disabled')
                       end,
                       if policy(po_request).can_cancel?
                         link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Cancel', remote: true) do
