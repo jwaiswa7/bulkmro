@@ -12,6 +12,7 @@ json.data (@company_banks) do |company_bank|
                   company_bank.bank.name,
                   company_bank.bank.code,
                   company_bank.branch,
+                  company_bank.ifsc_code,
                   company_bank.account_name,
                   company_bank.account_number,
                   format_boolean_label(company_bank.synced?, 'synced'),
