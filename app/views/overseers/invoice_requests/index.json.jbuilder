@@ -2,7 +2,7 @@ json.data (@invoice_requests) do |invoice_request|
   json.array! [
                   [
                       if policy(invoice_request).show?
-                        row_action_button(overseers_invoice_request_path(invoice_request), 'eye', 'View GRPO Request', 'info')
+                        row_action_button(overseers_invoice_request_path(invoice_request), 'eye', 'View AP Request', 'info')
                       end,
                       if policy(invoice_request).edit?
                         row_action_button(edit_overseers_invoice_request_path(invoice_request), 'pencil', "Edit #{invoice_request.readable_status}", 'warning')

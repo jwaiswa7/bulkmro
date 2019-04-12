@@ -114,6 +114,8 @@ class InvoiceRequest < ApplicationRecord
       title = status.include?('GRPO') ? 'GRPO' : "#{title_without_pending}"
     elsif (status.include? 'Completed AR Invoice') || (status.include? 'Cancelled AR Invoice')
       title = status.gsub(status, 'AR Invoice')
+    elsif (status.include? 'Cancelled AP Invoice')
+      title = status.gsub(status, 'AP Invoice')
     else
       title = 'GRPO'
     end
