@@ -5,7 +5,7 @@ module ApplicationCable
     identified_by :current_overseer
 
     def connect
-      self.current_overseer = find_verified_overseer
+      # self.current_overseer = find_verified_overseer
     end
 
     protected
