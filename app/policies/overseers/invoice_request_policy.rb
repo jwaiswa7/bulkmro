@@ -17,8 +17,12 @@ class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
     index?
   end
 
-  def edit?
+  def can_cancel_or_reject?
     admin? || accounts?
+  end
+
+  def edit?
+    admin? || accounts? || logistics?
   end
 
   def cancelled?
