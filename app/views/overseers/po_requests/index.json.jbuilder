@@ -6,7 +6,6 @@ json.data (@po_requests) do |po_request|
                       elsif policy(po_request).edit? && po_request.status != 'Cancelled'
                         row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
-
                       if policy(po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif policy(po_request).show_payment_request?
@@ -32,11 +31,10 @@ json.data (@po_requests) do |po_request|
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       end
-
                   ].join(' '),
                   conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),
                   status_badge(po_request.status),
-                  conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
+                  conditional_link(po_request.inquiry.to_s, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
                   if po_request.purchase_order.present? && (po_request.status == 'Supplier PO: Created Not Sent')
                     link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank')
 

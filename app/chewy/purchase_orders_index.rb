@@ -27,7 +27,7 @@ class PurchaseOrdersIndex < BaseIndex
     field :outside_sales_owner, value: -> (record) { record.inquiry.outside_sales_owner.to_s }, analyzer: 'substring'
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id }
     field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id }
-    field :logistics_owner, value: -> (record) { record.logistics_owner_id }
+    field :logistics_owner, value: -> (record) { (record.logistics_owner_id.present?) ? record.logistics_owner_id : 0 }
     field :company_id, value: -> (record) { record.inquiry.company_id if record.inquiry.present? }
     field :company_rating, value: ->(record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).try(:rating) if record.rows.present? }
     field :company_rating, value: ->(record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).try(:rating) if record.rows.present? }

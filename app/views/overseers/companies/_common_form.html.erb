@@ -68,6 +68,13 @@
         <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, include_blank: 'Select a Sales Manager', input_html: {class: "select2-single"} %>
       </div>
     </div>
+
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.association :logistics_owner, collection: Overseer.logistics.alphabetical, include_blank: 'Select a Logistics Owner', input_html: {class: "select2-single"}%>
+      </div>
+    </div>
+
     <% if @account.present? %>
       <div class="form-group">
         <%= f.label :contact_ids, 'Contacts' %>

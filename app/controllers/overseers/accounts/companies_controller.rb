@@ -119,6 +119,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
           :inside_sales_owner_id,
           :outside_sales_owner_id,
           :sales_manager_id,
+          :logistics_owner_id,
           :company_type,
           :priority,
           :site,
