@@ -4,7 +4,7 @@ class FieldModifiedMessage < BaseFunction
       @messages = []
       fields.each do |field|
         if record.send("#{field}_changed?")
-          if field.match?(/date/i)
+          if field.match?(/date/i) && field != "late_lead_date_reason"
             for_date_fields(record, field, product)
           elsif field.match?(/id/i)
             for_associations(record, field)
