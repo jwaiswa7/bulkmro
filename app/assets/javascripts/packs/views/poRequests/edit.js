@@ -10,7 +10,6 @@ const edit = () => {
     let form_original_data = $("form").serializeArray();
 
     $('form').on('change', 'select[name*=status]', function (e) {
-        console.log("taakla")
         if ($(e.target).val() == "Cancelled") {
             $('.status-cancelled').removeClass('d-none');
             $('.status-cancelled').find('textarea').attr("required", true);
