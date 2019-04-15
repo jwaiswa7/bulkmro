@@ -8,6 +8,19 @@
   <%= render partial: "shared/layouts/summary", locals: {klass: Inquiry, statuses: Inquiry.statuses} %>
 </div>
 
+<% content_for(:heading_buttons) do %>
+
+  <% if policy(:inquiry).index? %>
+      <a href="#" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" data-toggle="modal" data-target="#bulkUpdate" data-backdrop="static" data-keyboard="false">
+        Bulk Update
+      </a>
+  <% end %>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render partial: "overseers/inquiries/update_modal" %>
+</div>
+
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="sort all text-right" data-name="inquiry_number">Inquiry</th>

@@ -57,7 +57,7 @@ class PaymentRequest < ApplicationRecord
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
   scope :Pending, -> { where(status: [10, 11]) }
   scope :Completed, -> { where(status: 50) }
-  scope :Rejected, -> { where(status: ['Supplier Info: Bank Details Missing', 'Supplier Info: Bank Details Incorrect', 'Supplier Info: PI mismatch']) }
+  scope :Rejected, -> { where(status: ['Supplier Info: Bank Details Missing', 'Supplier Info: Bank Details Incorrect', 'Supplier Info: PI mismatch', 'Rejected: Others']) }
   scope :Logistics, -> { where(status: [10, 11], request_owner: ['Logistics', 'Accounts']) }
   scope :Accounts, -> { where(status: [10, 11], request_owner: 'Accounts') }
 

@@ -59,6 +59,15 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :resync_remote_requests do
+      member do
+        get 'resend_failed_request'
+      end
+      collection do
+        get 'all_requests'
+      end
+    end
+
     resources :callback_requests do
       member do
         get 'show'
@@ -105,6 +114,8 @@ Rails.application.routes.draw do
     resources :suppliers do
       collection do
         get 'autocomplete'
+        get 'export_all'
+        get 'export_filtered_records'
       end
     end
 
@@ -271,6 +282,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'export_all'
+        get 'export_filtered_records'
         get 'autocomplete'
         get 'autocomplete_without_po_requests'
         get 'material_readiness_queue'
@@ -347,6 +359,7 @@ Rails.application.routes.draw do
         get 'kra_report'
         get 'kra_report_per_sales_owner'
         get 'export_kra_report'
+        get 'bulk_update'
       end
 
       scope module: 'inquiries' do
@@ -508,6 +521,7 @@ Rails.application.routes.draw do
     resources :accounts do
       collection do
         get 'autocomplete'
+        get 'autocomplete_supplier'
       end
       scope module: 'accounts' do
         resources :companies

@@ -22,7 +22,7 @@ json.data (@po_requests) do |po_request|
                       end
                   ].join(' '),
                   conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),
-                  conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
+                  conditional_link(po_request.inquiry.to_s, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
                   if po_request.purchase_order.present? && (po_request.status == 'PO Created')
                     link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank')
 
