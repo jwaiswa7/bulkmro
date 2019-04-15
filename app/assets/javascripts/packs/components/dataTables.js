@@ -138,6 +138,31 @@ let setup = () => {
 
                 this.api().columns().every(function () {
                     let column = this;
+                    let td = $(table).find('thead tr:eq(2) td:eq(' + column.index() + ')');
+                    let columnData = column.data();
+                    let value = columnData.sum();
+                    let currencyFormatter = new Intl.NumberFormat('en-IN', {
+                        style: 'currency',
+                        currency: 'INR',
+                        minimumFractionDigits: 2
+                    })
+
+                    if (value && value != "") {
+                        if (td.hasClass('currency')){
+                            td.append(currencyFormatter.format(value))
+                        }
+                        else if(td.hasClass('percentage')){
+                            let percentValue = (value / columnData.length)
+                            td.append(percentValue.toFixed(2)+'%')
+                        }
+                        else{
+                            td.append(value.toLocaleString());
+                        }
+                    }
+                });
+
+                this.api().columns().every(function () {
+                    let column = this;
                     let filter = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')').data('filter');
                     let td = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')');
                     let text = $(column.header()).text();

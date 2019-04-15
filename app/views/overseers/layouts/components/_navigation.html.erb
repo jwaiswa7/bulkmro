@@ -224,6 +224,7 @@
             <% Report.all.each do |report| %>
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
+            <%= nav_dropdown_item 'KRA Report', kra_report_overseers_inquiries_path, policy(:inquiry).index? %>
           </div>
         </li>
       <% end %>
@@ -241,6 +242,7 @@
                 <div class="dropdown-menu">
                   <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
                   <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, policy(:callback_request).index? %>
+                  <%= nav_dropdown_item 'Resync Remote Requests', overseers_resync_remote_requests_path, policy(:remote_request).index? %>
                   <%= nav_dropdown_item 'Document Creation Form', new_overseers_document_creation_path, policy(:document_creation).new? %>
                 </div>
               </div>

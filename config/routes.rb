@@ -59,6 +59,15 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :resync_remote_requests do
+      member do
+        get 'resend_failed_request'
+      end
+      collection do
+        get 'all_requests'
+      end
+    end
+
     resources :callback_requests do
       member do
         get 'show'
@@ -347,6 +356,9 @@ Rails.application.routes.draw do
         get 'export_filtered_records'
         post 'create_purchase_orders_requests'
         post 'preview_stock_po_request'
+        get 'kra_report'
+        get 'kra_report_per_sales_owner'
+        get 'export_kra_report'
         get 'bulk_update'
       end
 
