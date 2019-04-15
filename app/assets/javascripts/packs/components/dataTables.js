@@ -150,7 +150,12 @@ let setup = () => {
                     if (value && value != "") {
                         if (td.hasClass('currency')){
                             td.append(currencyFormatter.format(value))
-                        }else{
+                        }
+                        else if(td.hasClass('percentage')){
+                            let percentValue = (value / columnData.length)
+                            td.append(percentValue.toFixed(2)+'%')
+                        }
+                        else{
                             td.append(value.toLocaleString());
                         }
                     }

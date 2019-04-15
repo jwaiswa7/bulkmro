@@ -14,7 +14,7 @@ json.data (@indexed_kra_reports) do |inquiry|
                   number_with_delimiter(inquiry['sales_orders']['value'].to_i, delimiter: ','),
                   format_currency(inquiry['total_order_value']['value']),
                   number_with_delimiter(inquiry['sku']['value'].to_i, delimiter: ','),
-                  inquiry['orders_won']['value'].to_i > 0 ? percentage(inquiry['orders_won']['value'] * 100.0 / inquiry['doc_count']) : '-',
+                  inquiry['orders_won']['value'].to_i > 0 ? percentage(inquiry['orders_won']['value'] * 100.0 / inquiry['doc_count']) : 0,
                   number_with_delimiter(inquiry['sales_invoices']['value'].to_i, delimiter: ','),
                   format_currency(inquiry['revenue']['value']),
                   number_with_delimiter(inquiry['clients']['value'].to_i, delimiter: ',')
