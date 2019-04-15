@@ -12,7 +12,6 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
     ]
 
     @project_errors = [
-        'Invalid session.',
         'This entry already exists in the following tables (ODBC -2035)'
     ]
 
@@ -27,7 +26,7 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
         '10000908 - Enter P.A.N. number for business partner',
         "1250000128 - No state found for pay-to address 'A210486'; on the Addresses tab, define state information [BPAddresses.State]",
         "1250000126 - No state found for ship-to address 'A207508'; on the Addresses tab, define state information [BPAddresses.State]"
-      ]
+    ]
   end
 
   def call
@@ -50,8 +49,9 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
         if resync_request.error_message.include?('Field cannot be updated (ODBC -1029)')
           # reset_quote ?
         elsif resync_request.error_message.include?('No matching records found (ODBC -2028)')
-          resync_products
           resync_project
+          resync_products
+          resync_business_partners
         end
       when 'BusinessPartners'
         # resync_bp_group
@@ -89,17 +89,13 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
 
   def resync_project
     5.times do
-      if resync_request.subject_type == 'Inquiry'
-        error = resync_request.error_message
-        if project_errors.include?(error)
-          project_uid = ::Resources::Project.custom_find_resync(model.inquiry_number, 'Code', resync_request)
-          if !project_uid
-            model.update_attributes(project_uid: project_uid)
-            resync_request.update_attributes(hits: resync_request.hits + 1)
-          end
+      error = resync_request.error_message
+      if project_errors.include?(error)
+        project_uid = ::Resources::Project.custom_find_resync(model.inquiry_number, 'Code', resync_request)
+        if !project_uid
+          model.update_attributes(project_uid: project_uid)
+          resync_request.update_attributes(hits: resync_request.hits + 1)
         end
-      elsif resync_request.subject_type == 'SalesQuote'
-
       end
     end if resync_request.status == "failed"
   end
