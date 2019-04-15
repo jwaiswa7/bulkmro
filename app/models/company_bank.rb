@@ -7,6 +7,7 @@ class CompanyBank < ApplicationRecord
   belongs_to :company
   belongs_to :bank
   has_many :payment_requests
+  has_many_attached :attachments
 
   scope :with_includes, -> { includes(:bank, :company) }
 

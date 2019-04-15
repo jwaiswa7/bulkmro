@@ -25,7 +25,11 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize :inquiry
 
     respond_to do |format|
-      format.html {}
+      format.html {
+        if params['kra_report'].present?
+          @date_range = params['kra_report']['date_range']
+        end
+      }
       format.json do
         service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
         service.call

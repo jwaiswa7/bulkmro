@@ -2,9 +2,16 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :can_be_directly_downloaded, true %>
-
-<% content_for :heading do %>KRA Report<% end %>
-<% provide :hide_table_desc, true %>
+<% content_for :heading do %>
+  KRA Report
+<% end %>
+<% content_for :table_desc do %>
+    KRA Report <%= "for range " + @date_range.gsub("~","to") if @date_range.present?%> searchable with relevant term/keywords.
+<% end %>
+<% content_for :controller_is_aliased, false %>
+<% content_for :page_title do %>
+  Reports
+<% end %>
 
 <%= render layout: 'search_layout' do %>
 <% end %>
@@ -54,7 +61,7 @@
   <td></td>
   <td class="currency"></td>
   <td></td>
-  <td></td>
+  <td class="percentage"></td>
   <td></td>
   <td class="currency"></td>
   <td></td>

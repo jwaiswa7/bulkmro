@@ -2,19 +2,17 @@
   <div class="card mt-3">
     <div class="card-body">
       <div class="form-row">
-        <div class="col">
+        <div class="col-6">
           <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range'}, required: true, label: 'Pick a Date Range' %>
         </div>
-      </div>
-      <div class="form-row">
-        <div class="col text-center">
-        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-          <i class="fal fa-redo mr-2"></i>Refresh Report
+        <div class="col-3 text-center">
+        <%= button_tag(type: "submit", class: "btn btn-success btn-block mt-3") do %>
+          <i class="fal fa-hand-point-down mr-2"></i>Fetch Report
         <% end %>
         </div>
-        <div class="col text-center">
-          <a href="<%= kra_report_overseers_inquiries_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0">
-            Reset Report</a>
+        <div class="col-3 text-center">
+          <a href="<%= kra_report_overseers_inquiries_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 mt-3">
+            <i class="fal fa-redo mr-2"></i> Reset Report</a>
         </div>
       </div>
     </div>

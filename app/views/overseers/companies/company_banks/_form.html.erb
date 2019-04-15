@@ -12,12 +12,16 @@
     </div>
 
     <div class="form-row">
-      <div class="col-6">
+      <div class="col-4">
         <%= f.association :bank, collection: Bank.all, required: true, prompt: "Choose a bank" %>
       </div>
 
-      <div class="col-6">
+      <div class="col-3">
         <%= f.input :branch, required: true %>
+      </div>
+
+      <div class="col-5">
+        <%= f.input :ifsc_code, required: true, label: "IFSC Code" %>
       </div>
     </div>
 
@@ -54,6 +58,27 @@
 
       <div class="col-6">
         <%= f.input :beneficiary_mobile, required: true, label: "Beneficiary Mobile Number", input_type: "number", input_html: {placeholder: "+91"} %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-12">
+        <div class="d-block d-md-flex align-items-end">
+          <div class="flex-grow-1">
+            <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
+          </div>
+
+          <div class="form-group">
+            <% f.object.attachments.each do |attachment| %>
+              <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                <i class="fal fa-download"></i>
+                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
+                  <i class="fal fa-trash-alt"></i>
+                <% end if attachment.present? && policy(:attachment).destroy? %>
+              <% end %>
+            <% end if f.object.attachments.attached? %>
+          </div>
+        </div>
       </div>
     </div>
 
