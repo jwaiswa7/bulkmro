@@ -133,6 +133,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
         else
           @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status}", po_request: @po_request, overseer: current_overseer)
+          @po_request.rejection_reason = nil
+          @po_request.other_rejection_reason = nil
         end
         @po_request.save!
         @po_request_comment.save!
