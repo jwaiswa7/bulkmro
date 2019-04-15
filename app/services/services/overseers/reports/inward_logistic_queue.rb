@@ -6,7 +6,7 @@ class Services::Overseers::Reports::InwardLogisticQueue < Services::Overseers::R
       summary_box_data: { with_material_not_ready: 0, material_pickups_pending: 0, with_inward_pending: 0, with_status_partial_grpo_done: 0 }
     )
     with_material_not_ready = PurchaseOrder.where.not(id: PurchaseOrder.joins(:inward_dispatches)).joins(:po_request).where(po_requests: {status: 'Supplier PO Sent'}).group('logistics_owner_id').count
-    pickups_pending = purchase_orders.where.not(po_requests: {id: nil}).where(material_status: ['Material Pickedup', 'Material Partially Pickedup', 'Material Partially Delivered']).group(:logistics_owner_id).count
+    pickups_pending = purchase_orders.where.not(po_requests: {id: nil}).where(material_status: ['Inward Dispatch', 'Inward Dispatch: Partial', 'Material Partially Delivered']).group(:logistics_owner_id).count
     inward_pending = purchase_orders.where.not(po_requests: {id: nil}).where(material_status: ['Material Delivered', 'Material Partially Delivered']).group(:logistics_owner_id).count
     logistic_overseers = Overseer.where(role: 'logistics').order(:first_name)
     @data.entries[:nil] = {name: 'Not Assigned', with_material_not_ready: 0, material_pickups_pending: 0, with_inward_pending: 0, with_status_partial_grpo_done: 0}

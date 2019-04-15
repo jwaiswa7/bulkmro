@@ -15,7 +15,7 @@ class InvoiceRequest < ApplicationRecord
   ratyrate_rateable 'CompanyReview'
 
   enum status: {
-      'Pending GRPO': 10,
+      'GRPO Requested': 10,
       'Pending AP Invoice': 20,
       'Pending AR Invoice': 30,
       'In stock': 70,
@@ -24,7 +24,6 @@ class InvoiceRequest < ApplicationRecord
       'Cancelled': 60,
       'AP Invoice Request Rejected': 80,
       'GRPO Request Rejected': 90,
-      'GRPO Requested': 100,
       'Inward Completed': 110,
       'Cancelled AP Invoice': 120,
       'Cancelled GRPO': 130
@@ -44,7 +43,7 @@ class InvoiceRequest < ApplicationRecord
   }
 
 
-  scope :grpo_pending, -> { where(status: :'Pending GRPO') }
+  scope :grpo_pending, -> { where(status: :'GRPO Requested') }
   scope :ap_invoice_pending, -> { where(status: :'Pending AP Invoice') }
   scope :ar_invoice_pending, -> { where(status: :'Pending AR Invoice') }
   scope :ar_invoice_generated, -> { where(status: :'Completed AR Invoice Request') }
@@ -89,7 +88,7 @@ class InvoiceRequest < ApplicationRecord
   after_initialize :set_defaults, if: :new_record?
 
   def set_defaults
-    self.status ||= :'Pending GRPO'
+    self.status ||= :'GRPO Requested'
   end
 
   def update_status(status)
@@ -167,7 +166,7 @@ class InvoiceRequest < ApplicationRecord
   def allow_statuses(overseer)
     if overseer.accounts? || overseer.admin?
       statuses = InvoiceRequest.statuses
-      if self.status == 'Pending GRPO'
+      if self.status == 'GRPO Requested'
         statuses =  InvoiceRequest.statuses.except('Cancelled AP Invoice', 'Cancelled AR Invoice', 'Cancelled')
       elsif self.status == 'Pending AP Invoice'
         statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AR Invoice', 'Cancelled')
