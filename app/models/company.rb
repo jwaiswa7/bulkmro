@@ -222,16 +222,18 @@ class Company < ApplicationRecord
   end
 
   def inquiry_size
-    self.inquiries.where.not('inquiries.status = ? OR inquiries.status = ?', 10,9).size
-    # self.map {|i| i.inquiries.where.not('inquiries.status = ? and inquiries.status = ?', 10,9).size}
-  end
-
-  def margin_percentage
-    self.inquiries.final_sales_quote.present? ? self.inquiries.map{|i| i.final_sales_quote.map{|s| s.calculated_total_margin_percentage.to_f}} : 0
+    self.inquiries.where.not('inquiries.status = ? OR inquiries.status = ?', 10, 9).size
   end
 
   def cancel
-    self.inquiries.map{|i| i.sales_invoices.map{|s| s.status.where(status: 'Cancelled')}.size}
+    self.inquiries.map {|i| i.sales_invoices.map {|s| s.status.where(status: 'Cancelled')}.size}
   end
 
+  def invoice_margin
+    self.invoices.map {|s| s.inquiry.final_sales_quote.calculated_total_margin_percentage.to_f if s.inquiry.final_sales_quote.present?}.flatten.compact
+  end
+
+  def order_margin
+    self.inquiries.map {|i| i.final_sales_orders.map {|s| s.calculated_total_margin_percentage} if i.final_sales_orders.present?}.flatten.compact
+  end
 end

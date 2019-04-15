@@ -97,25 +97,4 @@ class SalesInvoice < ApplicationRecord
   def calculated_freight_cost_total
     self.rows.sum(&:freight_cost_subtotal).round(2)
   end
-
-
-  def total_selling_price
-    self.sales_order.sales_quote_rows.map{|p| (p.unit_selling_price * p.quantity)} if self.sales_order.sales_quote_rows.unit_selling_price.present?
-  end
-
-  def total_cost_price
-    self.sales_order.sales_quote_rows.map{|p| (p.unit_cost_price_with_unit_freight_cost * p.quantity)}
-  end
-
-
-  def invoice_margin
-   ((self.total_selling_price - self.total_cost_price) / (self.total_selling_price)*100)
-  end
-  # def margin_percentage
-  #  self.sales_order.sales_quote_rows.map{|r| (((r.invoice_margin / total_cost_price)*100) / quantity)}
-  # end
-  # def quantity
-  #   self.metadata['qty']
-  # end
-
 end

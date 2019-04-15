@@ -1,6 +1,6 @@
 class CompaniesIndex < BaseIndex
   businesses = Company.nature_of_businesses
-  define_type Company.with_includes do
+  define_type Company.where('id<200').with_includes do
     field :id, type: 'integer'
     field :account_id, value: -> (record) {record.account_id}
     field :name, value: -> (record) {record.name}, analyzer: 'fuzzy_substring'
@@ -33,13 +33,11 @@ class CompaniesIndex < BaseIndex
     field :order_won, value: -> (record) {record.inquiries.where('inquiries.status = ?', 18).size}, type: 'integer'
     field :company_key, value: -> (record) { record.id }, type: 'integer'
     field :total_quote_value, value: -> (record) { record.inquiries.where.not('inquiries.status = ? OR inquiries.status = ?', 10,9).map { |ip| ip.final_sales_quote.calculated_total if ip.final_sales_quote.present?}.compact.flatten.sum }, type: 'double'
-    # field :total_order_value, value: -> (record) { record.inquiries.map { |ip| ip.final_sales_orders(&:calculated_total)if ip.final_sales_orders.present?}.compact.flatten.sum }, type: 'double'
-    # field :invoice_amount, value: -> (record) {record.inquiries.map { |ip| ip.invoices.map {|s| s.metadata['base_grand_total'].to_f } if ip.invoices.present?}.compact.flatten.sum}, type: 'double'
     field :total_order_value, value: -> (record) {record.inquiries.map{|i| i.final_sales_orders.map{|s| s.calculated_total}}.compact.flatten.sum}, type: 'double'
     field :total_margin, value: -> (record) { record.inquiries.map{|i| i.final_sales_orders.map{|s| s.calculated_total_margin}}.compact.flatten.sum }, type: 'double'
-    field :margin_percentage, value: -> (record) { record.inquiries.map{|i| i.final_sales_orders.map{|s| s.calculated_total_margin_percentage} if i.final_sales_orders.present?}.compact.flatten }, type: 'double'
+    field :margin_percentage, value: -> (record) { record.order_margin.sum.to_f / record.order_margin.count }, type: 'double'
     field :amount_invoiced, value: -> (record) { record.inquiries.map{|i| i.invoices.map{|s| s.calculated_total}}.compact.flatten.sum }, type: 'double'
     field :cancelled_invoiced, value: -> (record) { record.inquiries.map{|i| i.invoices.where(status: 'Cancelled').pluck(:id)}.flatten.compact.count }, type: 'integer'
-    # field :invoice_margin, value: -> (record) {record.inquiries.map{|i| i.invoices.map{|p| p.invoice_margin}}}, type: 'double'
+    field :invoice_margin_percentage, value: -> (record) {record.invoice_margin.sum.to_f / record.invoice_margin.count }, type: 'double'
   end
 end

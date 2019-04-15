@@ -135,6 +135,11 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
                                 field: 'margin_percentage'
                             }
                         },
+                        invoice_margin: {
+                            sum: {
+                                field: 'invoice_margin_percentage'
+                            }
+                        },
                         cancelled_invoiced: {
                             sum: {
                                 field: 'cancelled_invoiced'
