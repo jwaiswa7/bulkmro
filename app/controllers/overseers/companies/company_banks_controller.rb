@@ -77,7 +77,9 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
           :beneficiary_email,
           :beneficiary_mobile,
           :mandate_id,
-          :account_number_confirmation
+          :account_number_confirmation,
+          :ifsc_code,
+          attachments: []
       )
     end
 end
