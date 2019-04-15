@@ -164,6 +164,24 @@ class InvoiceRequest < ApplicationRecord
     end
   end
 
+  def allow_statuses(overseer)
+    if overseer.accounts? || overseer.admin?
+      statuses = InvoiceRequest.statuses
+      if self.status == 'Pending GRPO'
+        statuses =  InvoiceRequest.statuses.except('Cancelled AP Invoice', 'Cancelled AR Invoice', 'Cancelled')
+      elsif self.status == 'Pending AP Invoice'
+        statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AR Invoice', 'Cancelled')
+      elsif self.status == 'Pending AR Invoice'
+        statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AP Invoice', 'Cancelled')
+      end
+      return {enabled: statuses, disabled: []}
+    elsif overseer.logistics?
+      return {enabled: InvoiceRequest.statuses, disabled: InvoiceRequest.statuses.except('In stock').keys}
+    else
+      return {enabled: InvoiceRequest.statuses, disabled: InvoiceRequest.statuses.keys}
+    end
+  end
+
   def to_s
     [readable_status, "##{self.id}"].join(' ')
   end

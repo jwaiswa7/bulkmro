@@ -120,7 +120,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
       if @po_request.status_changed?
         if @po_request.status == 'Cancelled'
-          @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}", po_request: @po_request, overseer: current_overseer)
+          @po_request_comment = PoRequestComment.new(message: @po_request&.purchase_order&.po_number.present? ? "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}" : "Status Changed: #{@po_request.status}", po_request: @po_request, overseer: current_overseer)
           @po_request.purchase_order = nil
 
           if @po_request.payment_request.present?
@@ -133,6 +133,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
         else
           @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status}", po_request: @po_request, overseer: current_overseer)
+          @po_request.rejection_reason = nil
+          @po_request.other_rejection_reason = nil
         end
         @po_request.save!
         @po_request_comment.save!
@@ -249,6 +251,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :requested_by_id,
         :approved_by_id,
         :supplier_id,
+        comments_attributes: [:id, :message, :created_by_id],
         rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time,:converted_unit_selling_price, :product_unit_selling_price, :conversion],
         attachments: []
     )

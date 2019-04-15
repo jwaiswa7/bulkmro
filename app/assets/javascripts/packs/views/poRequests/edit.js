@@ -36,6 +36,17 @@ const edit = () => {
             $('.status-rejected').find('select').val('').attr("required", false);
         }
     });
+
+    $('form').on('change', 'select[name*=rejection_reason]', function (e) {
+        if ($(e.target).val() == "Others") {
+            $('.other-rejection-reason').removeClass('d-none');
+            $('.other-rejection-reason').find('textarea').attr("required", true);
+        } else {
+            $('.other-rejection-reason').addClass('d-none');
+            $('.other-rejection-reason').find('textarea').val('').attr("required", false);
+        }
+    });
+
     window.Parsley.on('field:error', function () {
         // This global callback will be called for any field
         //  that fails validation.
