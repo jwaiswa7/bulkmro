@@ -16,7 +16,7 @@ class Services::Overseers::PoRequests::Update < Services::Shared::BaseService
             @po_request.payment_request.update_attributes(status: :'Cancelled')
             @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
           end
-        elsif @po_request.status == 'Rejected'
+        elsif @po_request.status == 'Supplier PO Request Rejected'
           @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}", po_request: @po_request, overseer: current_overseer)
         else
           @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status}", po_request: @po_request, overseer: current_overseer)

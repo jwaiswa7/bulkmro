@@ -62,9 +62,8 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_update_rejected_po_requests?
-    record.purchase_order.present? && (manager_or_sales?) && record.status == 'Rejected'
+    record.purchase_order.blank? && (manager_or_sales?) && record.status == 'Supplier PO Request Rejected'
   end
-
 
   def show_payment_request?
     record.payment_request.present?
@@ -79,7 +78,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def sending_po_to_supplier_new_email_message?
-    record.purchase_order && record.contact.present? && (record.status!= 'Cancelled' || record.stock_status == 'Rejected' || record.status == 'Supplier PO Sent')
+    record.purchase_order && record.contact.present? && (record.status!= 'Cancelled' || record.stock_status == 'Supplier PO Request Rejected' || record.status == 'Supplier PO Sent')
   end
 
   def sending_po_to_supplier_create_email_message?

@@ -37,7 +37,7 @@ class PoRequest < ApplicationRecord
       'Supplier PO: Request Pending': 10,
       'Supplier PO: Created Not Sent': 20,
       'Cancelled': 30,
-      'Rejected': 40,
+      'Supplier PO Request Rejected': 40,
       'Supplier PO: Amendment': 50,
       'Supplier PO: Amended': 70,
       'Supplier PO Sent': 60
@@ -71,7 +71,7 @@ class PoRequest < ApplicationRecord
       'Stock Supplier PO Created': 30
   }
 
-  scope :pending_and_rejected, -> { where(status: [:'Supplier PO: Request Pending', :'Rejected', :'Supplier PO: Amendment']) }
+  scope :pending_and_rejected, -> { where(status: [:'Supplier PO: Request Pending', :'Supplier PO Request Rejected', :'Supplier PO: Amendment']) }
   scope :handled, -> { where.not(status: [:'Supplier PO: Request Pending', :'Cancelled', :'Supplier PO: Amendment']) }
   scope :not_cancelled, -> { where.not(status: [:'Cancelled']) }
   scope :cancelled, -> { where(status: [:'Cancelled']) }
@@ -103,7 +103,7 @@ class PoRequest < ApplicationRecord
 
   def update_reason_for_status_change?
     if self.po_request_type == 'Regular'
-      if (self.status == 'Cancelled' && self.cancellation_reason.blank?) || (self.status == 'Rejected' && self.rejection_reason.blank?)
+      if (self.status == 'Cancelled' && self.cancellation_reason.blank?) || (self.status == 'Supplier PO Request Rejected' && self.rejection_reason.blank?)
         errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
       end
     elsif self.po_request_type == 'Stock'

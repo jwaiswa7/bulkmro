@@ -10,10 +10,11 @@ const edit = () => {
     let form_original_data = $("form").serializeArray();
 
     $('form').on('change', 'select[name*=status]', function (e) {
+        console.log("taakla")
         if ($(e.target).val() == "Cancelled") {
             $('.status-cancelled').removeClass('d-none');
             $('.status-cancelled').find('textarea').attr("required", true);
-        } else if ($(e.target).val() == "Rejected") {
+        } else if ($(e.target).val() == "Supplier PO Request Rejected") {
             $('.status-rejected').removeClass('d-none');
             $('.status-rejected').find('select').attr("required", true);
         }
@@ -21,7 +22,7 @@ const edit = () => {
             $('.status-cancelled').addClass('d-none');
             $('.status-cancelled').find('textarea').val('').attr("required", false);
         }
-        if ($(e.target).val() != "Rejected") {
+        if ($(e.target).val() != "Supplier PO Request Rejected") {
             $('.status-rejected').addClass('d-none');
             $('.status-rejected').find('select').val('').attr("required", false);
         }
@@ -89,7 +90,7 @@ const edit = () => {
                     if (!confirm('Do you want to cancel the Po Request?')) {
                         event.preventDefault();
                     }
-                } else if ((changed_status[0]['value'] == 'Rejected')) {
+                } else if ((changed_status[0]['value'] == 'Supplier PO Request Rejected')) {
                     if (!confirm('Do you want to reject the Po Request?')) {
                         event.preventDefault();
                     }
