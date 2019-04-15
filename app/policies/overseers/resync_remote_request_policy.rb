@@ -1,12 +1,14 @@
-# frozen_string_literal: true
-
 class Overseers::ResyncRemoteRequestPolicy < Overseers::ApplicationPolicy
   def index?
-    admin? || cataloging?
+    admin?
+  end
+
+  def all_requests?
+    admin?
   end
 
   def show?
-    admin? || cataloging?
+    admin?
   end
 
   def resend_failed_request?

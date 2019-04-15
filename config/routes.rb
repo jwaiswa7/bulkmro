@@ -63,6 +63,9 @@ Rails.application.routes.draw do
       member do
         get 'resend_failed_request'
       end
+      collection do
+        get 'all_requests'
+      end
     end
 
     resources :callback_requests do
