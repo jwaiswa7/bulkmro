@@ -59,6 +59,15 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :resync_remote_requests do
+      member do
+        get 'resend_failed_request'
+      end
+      collection do
+        get 'all_requests'
+      end
+    end
+
     resources :callback_requests do
       member do
         get 'show'

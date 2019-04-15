@@ -1,0 +1,45 @@
+<div class="col-md-12">
+  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <h1 class="display-5 mb-1">
+        Remote Request #<%= @remote_request.id %>
+      </h1>
+    </div>
+    <% if @remote_request.response['error_message'] %>
+      <p class="lead mt-1">
+        <%= @remote_request.response['error_message'] %>
+      </p>
+    <% end %>
+  </section>
+
+  <section class="mb-3">
+    <div class="card mb-2">
+      <div class="card-body">
+        <% if @remote_request.response['error_message'] %>
+          <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1">Error Message</h6>
+          <p class="mb-4"><%= @remote_request.response['error_message'] %>.</p>
+        <% end %>
+
+        <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1 mt-4" data-toggle="collapse" data-target="#response-summary">Resync Request</h6>
+        <div class="collapse show" id="response-summary">
+          <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(@remote_request.resync_request) %></code></pre>
+        </div>
+
+        <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1 mt-4" data-toggle="collapse" data-target="#response-summary">Resync Response</h6>
+        <div class="collapse show" id="response-summary">
+          <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(@remote_request.resync_response['raw_response']) %></code></pre>
+        </div>
+
+        <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1" data-toggle="collapse" data-target="#request-summary">Request</h6>
+        <div class="collapse show" id="request-summary">
+          <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(@remote_request.request) %></code></pre>
+        </div>
+
+        <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1 mt-4" data-toggle="collapse" data-target="#response-summary">Response</h6>
+        <div class="collapse show" id="response-summary">
+          <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(@remote_request.response['raw_response']) %></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
