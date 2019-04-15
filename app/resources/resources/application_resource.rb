@@ -5,8 +5,8 @@ class Resources::ApplicationResource
 
   def self.new_session_id
     response = post(
-      '/Login',
-        body: { CompanyDB: Settings.sap.DATABASE, UserName: Settings.sap.USERNAME, Password: Settings.sap.PASSWORD }.to_json,
+        '/Login',
+        body: {CompanyDB: Settings.sap.DATABASE, UserName: Settings.sap.USERNAME, Password: Settings.sap.PASSWORD}.to_json,
         verify: false,
         debug_output: $stdout,
         timeout: 30
@@ -52,26 +52,26 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
 -----END RSA PRIVATE KEY-----'
 
   SAP = OpenStruct.new(
-    attachment_directory: Settings.sap.ATTACHMENT_DIRECTORY,
-    attachment_api: Settings.sap.ATTACHMENT_API,
-    server: { host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port },
-    login: { user: Settings.sap.ATTACHMENT_USERNAME, password: Settings.sap.ATTACHMENT_PASSWORD },
-    draft_doc_object_code: 17,
-    draft_base_type: 23,
-    attachment_username: Settings.sap.ATTACHMENT_USERNAME,
-    ssh_key: ATTACHMENT_SSH
-                       )
+      attachment_directory: Settings.sap.ATTACHMENT_DIRECTORY,
+      attachment_api: Settings.sap.ATTACHMENT_API,
+      server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
+      login: {user: Settings.sap.ATTACHMENT_USERNAME, password: Settings.sap.ATTACHMENT_PASSWORD},
+      draft_doc_object_code: 17,
+      draft_base_type: 23,
+      attachment_username: Settings.sap.ATTACHMENT_USERNAME,
+      ssh_key: ATTACHMENT_SSH
+  )
 
   def self.set_headers
     base_uri ENDPOINT.to_s
     debug_output($stdout)
     default_options.merge!(verify: false, timeout: 30)
     headers(
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Cookie': get_sap_cookie,
-      'B1S-ReplaceCollectionsOnPatch': 'true'
-            )
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Cookie': get_sap_cookie,
+        'B1S-ReplaceCollectionsOnPatch': 'true'
+    )
   end
 
   set_headers
@@ -97,7 +97,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.all
-    get("/#{collection_name}").parsed_response['value'].map { |pr| OpenStruct.new(pr) }
+    get("/#{collection_name}").parsed_response['value'].map {|pr| OpenStruct.new(pr)}
   end
 
   def self.find(id, quotes: false)
@@ -166,23 +166,23 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
       OpenStruct.new(raw_response.parsed_response)
     elsif raw_response['error']
       # raise(raw_response.to_s) if Rails.env.development?
-      { raw_response: raw_response, error_message: raw_response['error']['message']['value'] }
+      {raw_response: raw_response, error_message: raw_response['error']['message']['value']}
     else
       # raise(raw_response.to_s) if Rails.env.development?
-      { raw_response: raw_response, error_message: raw_response.to_s }
+      {raw_response: raw_response, error_message: raw_response.to_s}
     end
   end
 
   def self.log_request(method, record, is_find: false)
     @remote_request = RemoteRequest.create!(
-      subject: record.is_a?(String) ? nil : record,
-      method: method,
-      is_find: is_find,
-      resource: collection_name,
-      request: record.is_a?(String) ? record : to_remote(record),
-      url: [ENDPOINT, "/#{collection_name}"].join(''),
-      status: :pending
-                                            )
+        subject: record.is_a?(String) ? nil : record,
+        method: method,
+        is_find: is_find,
+        resource: collection_name,
+        request: record.is_a?(String) ? record : to_remote(record),
+        url: [ENDPOINT, "/#{collection_name}"].join(''),
+        status: :pending
+    )
 
     @remote_request
   end
@@ -205,20 +205,21 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     elsif response[:error_message].present?
       status = :failed
 
-      # TODO - create resync record with hit count as zero
-      @resync_remote_request = ResyncRemoteRequest.create!(
-        subject: @remote_request.subject,
-        method: method,
-        resource: @remote_request.resource,
-        request: @remote_request.request,
-        url: @remote_request.url,
-        status: @remote_request.status
-      )
-      @resync_remote_request.update_attributes(response: response, status: status, hits: 0)
-      @resync_remote_request
+      if method != 'get'
+        @resync_remote_request = ResyncRemoteRequest.create!(
+            subject: @remote_request.subject,
+            method: method,
+            resource: @remote_request.resource,
+            request: @remote_request.request,
+            url: @remote_request.url,
+            status: @remote_request.status
+        )
+        @resync_remote_request.update_attributes(response: response, status: status, hits: 0)
+        @resync_remote_request
 
-      resync_service = Services::Resources::Shared::ResyncFailedRequests.new(@resync_remote_request)
-      resync_service.call
+        resync_service = Services::Resources::Shared::ResyncFailedRequests.new(@resync_remote_request)
+        resync_service.call
+      end
     end
 
     @remote_request.update_attributes(response: response, status: status)
