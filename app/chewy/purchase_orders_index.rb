@@ -16,7 +16,7 @@ class PurchaseOrdersIndex < BaseIndex
     field :po_status_string, value: -> (record) { record.status || record.metadata_status }, analyzer: 'substring'
     field :po_request_status, value: -> (record) { po_statuses[record.po_request ? record.po_request.status : 'Supplier PO Sent'] }
     field :po_request_status_string, value: -> (record) { record.po_request ? record.po_request.status : 'Supplier PO Sent' }, analyzer: 'substring'
-    field :po_email_sent, value: -> (record) { record.status == 'Supplier PO Sent' ? true : nil }
+    field :po_email_sent, value: -> (record) { record.po_request ? (record.po_request.status == 'Supplier PO Sent' ? true : nil) : nil }
     field :supplier_id, value: -> (record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).try(:id) if record.rows.present? }
     field :supplier, value: -> (record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).to_s if record.rows.present? }, analyzer: 'substring'
     field :customer_id, value: -> (record) { record.inquiry.company.try(:id) if record.inquiry.company.present? }

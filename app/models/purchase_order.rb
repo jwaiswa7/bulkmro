@@ -69,8 +69,8 @@ class PurchaseOrder < ApplicationRecord
 
   enum material_status: {
       'Material Readiness Follow-Up': 10,
-      'Material Pickedup': 20,
-      'Material Partially Pickedup': 25,
+      'Inward Dispatch': 20,
+      'Inward Dispatch: Partial': 25,
       'Material Delivered': 30,
       'Material Partially Delivered': 35
   }
@@ -82,7 +82,7 @@ class PurchaseOrder < ApplicationRecord
   }
 
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
-  scope :material_pickup_queue, -> {where(material_status: :'Material Pickedup')}
+  scope :material_pickup_queue, -> {where(material_status: :'Inward Dispatch')}
   scope :material_delivered_queue, -> {where(material_status: :'Material Delivered')}
   scope :not_cancelled, -> {where.not("metadata->>'PoStatus' = ?", PurchaseOrder.statuses[:Cancelled].to_s)}
 
@@ -203,7 +203,7 @@ class PurchaseOrder < ApplicationRecord
         partial = false
       end
       if 'Material Pickup'.in? self.inward_dispatches.map(&:status)
-        status = partial ? 'Material Partially Pickedup' : 'Material Pickedup'
+        status = partial ? 'Inward Dispatch: Partial' : 'Inward Dispatch'
       elsif 'Material Delivered'.in? self.inward_dispatches.map(&:status)
         status = partial ? 'Material Partially Delivered' : 'Material Delivered'
       end

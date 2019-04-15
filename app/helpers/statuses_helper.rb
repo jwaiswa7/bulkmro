@@ -173,7 +173,7 @@ module StatusesHelper
       'danger'
     when :'Cancelled by SAP'
       'danger'
-    when :'Pending GRPO'
+    when :'GRPO Requested'
       'primary'
     when :'Requested'
       'primary'
