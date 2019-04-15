@@ -25,6 +25,7 @@ class InwardDispatch < ApplicationRecord
       'Material Pickup': 10,
       'Material Delivered': 20,
       'GRPO Request Rejected': 30,
+      'GRPO Requested': 35,
       'AP Invoice Request Rejected': 40
   }
 

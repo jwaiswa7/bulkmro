@@ -72,7 +72,8 @@ class PurchaseOrder < ApplicationRecord
       'Inward Dispatch': 20,
       'Inward Dispatch: Partial': 25,
       'Material Delivered': 30,
-      'Material Partially Delivered': 35
+      'Material Partially Delivered': 35,
+      'GRPO Requested': 40
   }
 
   enum transport_mode: {
