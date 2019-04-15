@@ -1,22 +1,14 @@
 <div class="col-12 col-md-4">
-  <% if policy(@po_request).can_supplier_po_request_pending? %>
-    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: ['Supplier PO: Created Not Sent', 'Supplier PO: Amendment', 'Supplier PO: Amended', 'Rejected', 'Supplier PO Sent'] %>
-
-  <% elsif policy(@po_request).can_supplier_po_created_not_sent_requests? %>
-    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: ['Supplier PO: Request Pending', 'Supplier PO: Amendment', 'Supplier PO: Amended', 'Supplier PO Sent'] %>
-
-  <% elsif policy(@po_request).can_amend_completed_po_requests? %>
-    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: ['Supplier PO: Created Not Sent', 'Supplier PO: Request Pending', 'Supplier PO: Amended', 'Rejected', 'Supplier PO Sent'] %>
-
+  <% if @po_request.status == 'Supplier PO: Request Pending' %>
+    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: policy(@po_request).can_supplier_po_request_pending? ? ['Supplier PO: Created Not Sent', 'Supplier PO: Amendment', 'Supplier PO: Amended', 'Supplier PO Request Rejected', 'Supplier PO Sent'] : ['Supplier PO: Request Pending', 'Supplier PO: Amendment', 'Supplier PO: Amended', 'Supplier PO Sent'] %>
+  <% elsif @po_request.status == 'Supplier PO: Created Not Sent' %>
+    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: policy(@po_request).can_amend_completed_po_requests? ? ['Supplier PO: Created Not Sent', 'Supplier PO: Request Pending', 'Supplier PO: Amended', 'Supplier PO Request Rejected', 'Supplier PO Sent'] : ['Supplier PO: Created Not Sent', 'Supplier PO: Request Pending', 'Supplier PO: Amendment', 'Supplier PO: Amended', 'Supplier PO Request Rejected', 'Supplier PO Sent'] %>
   <% elsif @po_request.status == 'Supplier PO: Amendment' %>
-    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: policy(@po_request).can_process_amended_po_requests? ? ['Supplier PO: Request Pending', 'Supplier PO: Created Not Sent', 'Supplier PO: Amendment', 'Rejected', 'Supplier PO Sent'] : ['Supplier PO: Request Pending', 'Supplier PO: Created Not Sent', 'Supplier PO: Amendment', 'Supplier PO: Amended', 'Rejected', 'Supplier PO Sent'] %>
-
-  <% elsif policy(@po_request).can_cancel? %>
-    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: policy(@po_request).can_process_amended_po_requests? ? ['Supplier PO: Request Pending', 'Supplier PO: Created Not Sent', 'Supplier PO: Amendment', 'Rejected', 'Supplier PO Sent'] : ['Supplier PO: Request Pending', 'Supplier PO: Created Not Sent', 'Supplier PO: Amended', 'Rejected', 'Supplier PO Sent'] %>
-
-  <% elsif policy(@po_request).can_update_rejected_po_requests? %>
-    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected', 'Supplier PO: Created Not Sent', 'Cancelled', 'Supplier PO: Amendment', 'Supplier PO: Amended', 'Supplier PO Sent'] %>
-
+    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: policy(@po_request).can_process_amended_po_requests? ? ['Supplier PO: Request Pending', 'Supplier PO: Created Not Sent', 'Supplier PO: Amendment', 'Supplier PO Request Rejected', 'Supplier PO Sent'] : ['Supplier PO: Request Pending', 'Supplier PO: Created Not Sent', 'Supplier PO: Amendment', 'Supplier PO: Amended', 'Supplier PO Request Rejected', 'Supplier PO Sent'] %>
+  <% elsif @po_request.status == 'Supplier PO: Amended' %>
+    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, disabled: policy(@po_request).can_amend_completed_po_requests? ? ['Supplier PO: Created Not Sent', 'Supplier PO: Request Pending', 'Supplier PO: Amended', 'Supplier PO Request Rejected', 'Supplier PO Sent'] : ['Supplier PO: Created Not Sent', 'Supplier PO: Request Pending', 'Supplier PO: Amendment', 'Supplier PO: Amended', 'Supplier PO Request Rejected', 'Supplier PO Sent'] %>
+  <% elsif @po_request.status == 'Supplier PO Request Rejected' %>
+    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false, :disabled => policy(@po_request).can_update_rejected_po_requests? ? ['Supplier PO Request Rejected', 'Supplier PO: Created Not Sent', 'Cancelled', 'Supplier PO: Amendment', 'Supplier PO: Amended', 'Supplier PO Sent'] : ['Supplier PO: Request Pending', 'Supplier PO Request Rejected', 'Supplier PO: Created Not Sent', 'Cancelled', 'Supplier PO: Amendment', 'Supplier PO: Amended', 'Supplier PO Sent']  %>
   <% else %>
     <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), disabled: false, :include_blank => false %>
   <% end %>
