@@ -27,7 +27,7 @@
 
         <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1 mt-4" data-toggle="collapse" data-target="#response-summary">Resync Response</h6>
         <div class="collapse show" id="response-summary">
-          <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(@remote_request.resync_response['raw_response']) %></code></pre>
+          <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(@remote_request.resync_response['raw_response']) if @remote_request.resync_response.present? %></code></pre>
         </div>
 
         <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1" data-toggle="collapse" data-target="#request-summary">Request</h6>
@@ -37,7 +37,7 @@
 
         <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1 mt-4" data-toggle="collapse" data-target="#response-summary">Response</h6>
         <div class="collapse show" id="response-summary">
-          <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(@remote_request.response['raw_response']) %></code></pre>
+          <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(@remote_request.response['raw_response']) if @remote_request.response.present? %></code></pre>
         </div>
       </div>
     </div>
