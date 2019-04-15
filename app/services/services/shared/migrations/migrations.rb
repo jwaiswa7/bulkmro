@@ -460,7 +460,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       address.update_attributes(
           billing_address_uid: x.get_column('sap_row_num').split(',')[0],
           shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
-          ) if x.get_column('sap_row_num').present?
+      ) if x.get_column('sap_row_num').present?
 
       if company.legacy_metadata.present?
         if company.legacy_metadata['default_billing'] == x.get_column('idcompany_gstinfo')
@@ -602,7 +602,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       address.update_attributes(
           billing_address_uid: x.get_column('sap_row_num').split(',')[0],
           shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
-          ) if x.get_column('sap_row_num').present?
+      ) if x.get_column('sap_row_num').present?
 
       if company.legacy_metadata['default_billing'] == x.get_column('address_id')
         company.default_billing_address = address
@@ -1523,7 +1523,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                     if !response.present?
                       writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
                     else
-                      writer << [x.get_column('purchase_order_number'), poNum,  response[:message]]
+                      writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
                     end
                   else
                     writer << [x.get_column('purchase_order_number'), poNum, "Can not create PO becuse inquiry not present"]
@@ -1539,7 +1539,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                   if status
                     # if metata data po number and normal po number match then create new po with diff number
                     puts "<---------------------------#{new_po_number}---------------------------->"
-                    response = update_existing_po(purchase_order,new_po_number, poNum)
+                    response = update_existing_po(purchase_order, new_po_number, poNum)
                     if !response.present?
                       writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
                     elsif !response[:status]
@@ -1552,7 +1552,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                       purchase_order.delete
                     end
                     if right_po.present?
-                      response = update_existing_po(purchase_order,new_po_number, poNum)
+                      response = update_existing_po(purchase_order, new_po_number, poNum)
                       if !response.present?
                         writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
                       elsif !response[:status]
@@ -1565,7 +1565,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                       if !response.present?
                         writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
                       elsif !response[:status]
-                        new_po_number = new_po_number+1
+                        new_po_number = new_po_number + 1
                         writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
                       end
                     end
@@ -1577,8 +1577,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                   if !response.present?
                     writer << [x.get_column('purchase_order_number'), poNum, 'something issue']
                   elsif !response[:status]
-                    new_po_number = new_po_number+1
-                    writer << [x.get_column('purchase_order_number'), poNum,  response[:message]]
+                    new_po_number = new_po_number + 1
+                    writer << [x.get_column('purchase_order_number'), poNum, response[:message]]
                   end
                 end
               end
@@ -1593,7 +1593,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def list_of_inquiry_absent
     file = "#{Rails.root}/tmp/absent_inquiry.csv"
     service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback_mod.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: ["po_number","metadata_po_number","Inquiry No", "metadata"]) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: ["po_number", "metadata_po_number", "Inquiry No", "metadata"]) do |writer|
       service.loop(nil) do |x|
         metadata = JSON.parse(x.get_column('meta_data'))
         po_number = x.get_column('purchase_order_number')
@@ -1601,7 +1601,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         inquiry_number = inquiry = metadata['PoEnquiryId']
         inquiry = Inquiry.find_by_inquiry_number(metadata['PoEnquiryId'])
         if !inquiry.present?
-          writer << [po_number,metadata_po_number, inquiry_number, metadata]
+          writer << [po_number, metadata_po_number, inquiry_number, metadata]
         end
       end
     end
@@ -3083,21 +3083,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             'price_kit' => 0,
             'controller' => 'callbacks/sales_invoices',
             'created_at' => x.get_column('AR Invoice Date'),
-            'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+            'grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
             'increment_id' => invoice_number,
             'sales_invoice' => {
                 'created_at' => x.get_column('AR Invoice Date'),
                 'updated_at' => nil
             },
             'unitprice_kit' => 0,
-            'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) { |sum, value| sum + value.to_f }.round(2),
+            'base_tax_amount' => item_lines.pluck('tax_amount').inject(0) {|sum, value| sum + value.to_f}.round(2),
             'discount_amount' => '',
             'shipping_amount' => nil,
-            'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+            'base_grand_total' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
             'customer_company' => nil,
             'hidden_tax_amount' => nil,
             'shipping_incl_tax' => nil,
-            'base_subtotal' => item_lines.pluck('row_total').inject(0) { |sum, value| sum + value.to_f }.round(2),
+            'base_subtotal' => item_lines.pluck('row_total').inject(0) {|sum, value| sum + value.to_f}.round(2),
             'base_currency_code' => sales_order.inquiry.currency.try(:name),
             'base_to_order_rate' => sales_order.inquiry.currency.conversion_rate.to_f,
             'billing_address_id' => sales_order.inquiry.billing_address.present? ? sales_order.inquiry.billing_address.id : nil,
@@ -3111,7 +3111,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             'discount_description' => nil,
             'base_hidden_tax_amount' => nil,
             'base_shipping_incl_tax' => nil,
-            'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) { |sum, value| sum + value.to_f }.round(2),
+            'base_subtotal_incl_tax' => item_lines.pluck('base_row_total_incl_tax').inject(0) {|sum, value| sum + value.to_f}.round(2),
             'base_shipping_tax_amount' => nil,
             'shipping_hidden_tax_amount' => nil,
             'base_shipping_hidden_tax_amnt' => nil
@@ -4153,19 +4153,19 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       invoices_total = invoices.sum(&:calculated_total)
       invoices_counts = invoices.size
 
-        if invoices_total < invoices_total_to_check || invoices_total > invoices_total_to_check
-          invoices_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
-        else
-          puts "Invoices Total for #{current_month_name}-#{current_year} matches."
-        end
+      if invoices_total < invoices_total_to_check || invoices_total > invoices_total_to_check
+        invoices_total_mismatches << "Order Total for #{current_month_name}-#{current_year} mismatch."
+      else
+        puts "Invoices Total for #{current_month_name}-#{current_year} matches."
+      end
 
-        if invoices_counts < invoices_count_to_check || invoices_counts > invoices_count_to_check
-          invoices_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
-        else
-          puts "Invoices Count for #{current_month_name}-#{current_year} matches."
-        end
+      if invoices_counts < invoices_count_to_check || invoices_counts > invoices_count_to_check
+        invoices_count_mismatches << "Order Count for #{current_month_name}-#{current_year} mismatch."
+      else
+        puts "Invoices Count for #{current_month_name}-#{current_year} matches."
       end
     end
+  end
 
   def test_bible_sales_orders_totals_mismatch
 
@@ -4192,7 +4192,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     begin
       if inquiry.present? && inquiry.final_sales_quote.present?
         if metadata['PoNum'].present?
-          po_num =  new_po_number.present? ? new_po_number : metadata['PoNum']
+          po_num = new_po_number.present? ? new_po_number : metadata['PoNum']
           old_po_number = new_po_number.present? ? metadata['PoNum'] : nil
           purchase_order = inquiry.purchase_orders.where(po_number: po_num, metadata: metadata, is_legacy: true, old_po_number: old_po_number).first_or_create!
           if purchase_order.present?
@@ -4204,7 +4204,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                     metadata: remote_row
                 )
                 tax = nil
-                  if remote_row['PopTaxRate'].to_i >= 14
+                if remote_row['PopTaxRate'].to_i >= 14
                   supplier = purchase_order.get_supplier(remote_row['PopProductId'].to_i)
                   if supplier.present?
                     bill_from = supplier.billing_address
@@ -4223,26 +4223,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               end
             end
             purchase_order.save!
-            return {message: "Purchase Order created successfully with #{purchase_order.po_number}", status: false }
+            return {message: "Purchase Order created successfully with #{purchase_order.po_number}", status: false}
           else
-            return {message: "Purchase Order not created successfully with #{metadata['PoNum']}", status: true }
+            return {message: "Purchase Order not created successfully with #{metadata['PoNum']}", status: true}
           end
         else
           if !metadata['PoNum'].present?
-            return {message: 'metadata PoNum not exist', status: true }
+            return {message: 'metadata PoNum not exist', status: true}
           elsif PurchaseOrder.find_by_po_number(metadata['PoNum']).present?
-            return {message: "Purchase Order exist already. => #{metadata['PoNum']}", status: true }
+            return {message: "Purchase Order exist already. => #{metadata['PoNum']}", status: true}
           end
         end
       else
-        return {message: "inquiry not present => #{metadata['PoEnquiryId']}", status: true }
+        return {message: "inquiry not present => #{metadata['PoEnquiryId']}", status: true}
       end
     rescue => e
-      return {message: e.message, status: true }
+      return {message: e.message, status: true}
     end
   end
 
-  def update_existing_po(purchase_order,new_po_number, old_po_number)
+  def update_existing_po(purchase_order, new_po_number, old_po_number)
     begin
       purchase_order.assign_attributes(
           old_po_number: old_po_number,
@@ -4583,4 +4583,35 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts address_can_not_be_created.inspect
     puts contact_can_not_be_created.inspect
   end
+
+  def logistics_owner_company_exporter
+    overseer = Overseer.find(153)
+    file = "#{Rails.root}/tmp/logistics_owner_companies.csv"
+    headers = ['logistics_owner', 'name', 'company_alias']
+
+    csv_data = CSV.generate(write_headers: true, headers: headers) do |csv|
+      companies = Company.all.order('logistics_owner_id ASC')
+      companies.each do |record|
+        csv << [
+            record.logistics_owner.present? ? record.logistics_owner.name : '-',
+            record.name,
+            record.account.name
+        ]
+      end
+    end
+
+    filename = 'logistics_owner_companies.csv'
+    temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
+
+    begin
+      temp_file.write(csv_data)
+      temp_file.close
+      overseer.file.attach(io: File.open(temp_file.path), filename: filename)
+      overseer.save!
+      puts Rails.application.routes.url_helpers.rails_blob_path(overseer.file, only_path: true)
+    rescue => ex
+      puts ex.message
+    end
+  end
+
 end

@@ -116,13 +116,14 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       end
       contact = company.company_contacts.where(contact: assigned_contact).first_or_create!
       contact.update_attribute(:remote_uid, remote_uid)
-      banks.each do |bank|
-        account_number = bank['AccountNo']
-        remote_uid = bank['InternalKey']
-        company_bank = CompanyBank.find_by_account_number(account_number)
-        company_bank.update_attributes(remote_uid: remote_uid) if company_bank .present?
-      end if banks.present?
     end if contacts.present?
+
+    banks.each do |bank|
+      account_number = bank['AccountNo']
+      remote_uid = bank['InternalKey']
+      company_bank = CompanyBank.find_by_account_number(account_number)
+      company_bank.update_attributes(remote_uid: remote_uid) if company_bank.present?
+    end if banks.present?
   end
 
   def self.to_remote(record)
@@ -318,7 +319,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       bank_row.AccountNo = company_bank.account_number
       bank_row.AccountName = company_bank.account_name
       bank_row.Branch = company_bank.branch
-      bank_row.MandateID = company_bank.mandate_id
+      bank_row.MandateID = company_bank.ifsc_code
       bank_row.BankCode = company_bank.bank.code
 
       if company_bank.remote_uid.present?

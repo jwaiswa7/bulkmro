@@ -7,6 +7,15 @@ class PaymentRequestTransaction < ApplicationRecord
       'NEFT/RTGS': 20
   }
 
+  enum status: {
+      'Pending': 10,
+      'Rejected': 20,
+      'On Hold': 30,
+      'Completed': 40,
+      'Refund': 50,
+      'Cancelled': 60
+  }
+
   validate :amount_paid_exceed?, on: :create
   validates_presence_of :cheque_date, :issue_date, if: :is_payment_type_cheque?
 
