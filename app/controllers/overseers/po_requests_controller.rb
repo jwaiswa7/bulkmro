@@ -119,26 +119,28 @@ class Overseers::PoRequestsController < Overseers::BaseController
       @po_request.status = 'Supplier PO: Request Pending' if @po_request.status == 'Supplier PO Request Rejected' && policy(@po_request).manager_or_sales?
       @po_request.status = 'Supplier PO: Amendment' if @po_request.status == 'Supplier PO: Created Not Sent' && policy(@po_request).manager_or_sales?
 
-      service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer)
-      service.call
+      if @po_request.status_changed?
+        service = Services::Overseers::PoRequests::Update.new(@po_request, @po_request_comment, current_overseer)
+        service.call
 
-      # sends notification
-      tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
-      @notification.send_po_request_update(
-          tos - [current_overseer.email],
-          action_name.to_sym,
-          @po_request,
-          overseers_po_request_path(@po_request),
-          @po_request.id,
-          @po_request_comment.message,
-      )
+        # sends notification
+        tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
+        @notification.send_po_request_update(
+            tos - [current_overseer.email],
+            action_name.to_sym,
+            @po_request,
+            overseers_po_request_path(@po_request),
+            @po_request.id,
+            @po_request_comment.message,
+        )
+      else
+        @po_request.save!
+      end
+
+      redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
     else
-      @po_request.save!
+      render 'edit'
     end
-
-    redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
-  else
-    render 'edit'
   end
 
   def cancel_porequest
@@ -239,96 +241,3 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request = PoRequest.find(params[:id])
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def update
-#   @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
-#   authorize @po_request
-#   if @po_request.valid?
-#     # todo allow only in case of zero form errors
-#     row_updated_message = ''
-#     messages = FieldModifiedMessage.for(@po_request, ['contact_email', 'contact_phone', 'contact_id', 'payment_option_id', 'bill_from_id', 'ship_from_id', 'bill_to_id', 'ship_to_id', 'status', 'supplier_po_type', 'late_lead_date_reason', 'other_rejection_reason'])
-#     @po_request.rows.each do |po_request_row|
-#       updated_row_fields = FieldModifiedMessage.for(po_request_row, ['quantity', 'tax_code_id', 'tax_rate_id', 'discount_percentage', 'unit_price', 'lead_time'], po_request_row.product.sku)
-#       row_updated_message += updated_row_fields
-#     end
-#     if messages.present? || row_updated_message.present?
-#       @po_request.comments.create(message: "#{messages} \r\n #{row_updated_message}", overseer: current_overseer)
-#     end
-#
-#     @po_request.status = 'Supplier PO: Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Supplier PO: Request Pending'
-#     @po_request.status = 'Supplier PO: Request Pending' if @po_request.status == 'Supplier PO Request Rejected' && policy(@po_request).manager_or_sales?
-#     @po_request.status = 'Supplier PO: Amendment' if @po_request.status == 'Supplier PO: Created Not Sent' && policy(@po_request).manager_or_sales?
-#
-#     if @po_request.status_changed?
-#       if @po_request.status == 'Cancelled'
-#         @po_request_comment = PoRequestComment.new(message: @po_request&.purchase_order&.po_number.present? ? "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}" : "Status Changed: #{@po_request.status}", po_request: @po_request, overseer: current_overseer)
-#         @po_request.purchase_order = nil
-#
-#         if @po_request.payment_request.present?
-#           @po_request.payment_request.update!(status: :'Cancelled')
-#           @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
-#         end
-#
-#       elsif @po_request.status == 'Supplier PO Request Rejected'
-#         @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}", po_request: @po_request, overseer: current_overseer)
-#
-#       else
-#         @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status}", po_request: @po_request, overseer: current_overseer)
-#         @po_request.rejection_reason = nil
-#         @po_request.other_rejection_reason = nil
-#       end
-#       @po_request.save!
-#       @po_request_comment.save!
-#       tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
-#       @notification.send_po_request_update(
-#           tos - [current_overseer.email],
-#           action_name.to_sym,
-#           @po_request,
-#           overseers_po_request_path(@po_request),
-#           @po_request.id,
-#           @po_request_comment.message,
-#           )
-#     else
-#       @po_request.save!
-#     end
-#
-#     # create_payment_request = Services::Overseers::PaymentRequests::Create.new(@po_request)
-#     # create_payment_request.call
-#
-#     redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
-#   else
-#     render 'edit'
-#   end
-#
-# end
