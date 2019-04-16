@@ -1,9 +1,10 @@
 json.data (@indexed_company_reports) do |inquiry|
   json.array! [
                   [],
-                  Company.find( inquiry['key']).name,
-                  Company.find( inquiry['key']).account.name,
-                  Company.find( inquiry['key']).inquiry_size,
+                  link_to(Company.find(inquiry['key']).name, overseers_company_path(inquiry['key']), target: '_blank'),
+                  link_to(Company.find(inquiry['key']).account.name, overseers_account_path(Company.find(inquiry['key']).account), target: '_blank'),
+                  number_with_delimiter(inquiry['total_inquiries']['value'].to_i, delimiter: ','),
+                  number_with_delimiter(inquiry['inquiries_size']['value'].to_i, delimiter: ','),
                   number_with_delimiter(inquiry['sales_quotes']['value'].to_i, delimiter: ','),
                   format_currency(inquiry['total_sales_value']['value']),
                   number_with_delimiter(inquiry['expected_orders']['value'].to_i, delimiter: ','),
@@ -21,6 +22,7 @@ end
 
 json.columnFilters [
                        [],
+                       [{"source": autocomplete_overseers_companies_path}],
                        [],
                        [],
                        [],

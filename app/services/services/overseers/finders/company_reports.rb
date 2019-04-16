@@ -83,6 +83,12 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
                             }
                         },
 
+                        total_inquiries: {
+                            sum: {
+                                field: 'inquiries'
+                            }
+                        },
+
                         sales_quotes: {
                             sum: {
                                 field: 'sales_quote_count'

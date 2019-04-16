@@ -27,6 +27,7 @@ class CompaniesIndex < BaseIndex
     field :created_at, value: -> (record) {record.created_at}, type: 'date'
     field :updated_at, value: -> (record) {record.updated_at}, type: 'date'
     field :inquiries_size, value: -> (record) {record.inquiry_size}, type: 'integer'
+    field :inquiries, value: -> (record) {record.inquiries.count}, type: 'integer'
     field :invoices_count, value: -> (record) {record.inquiries.map{|i| i.invoices.pluck(:id)}.flatten.compact.count}, type: 'integer'
     field :sales_quote_count, value: -> (record) {record.inquiries.map{|i| i.final_sales_quote}.flatten.compact.count}, type: 'integer'
     field :sales_order_count, value: -> (record) {record.inquiries.map{|i| i.final_sales_orders.pluck(:id)}.flatten.compact.count}, type: 'integer'
