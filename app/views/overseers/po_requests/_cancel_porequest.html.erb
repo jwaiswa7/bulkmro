@@ -1,0 +1,41 @@
+<div class="modal fade" id="cancelporequest">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <% if policy(@po_request).can_reject? %>
+              Reject PO Request
+          <% else %>
+              Cancel PO Request
+          <% end %>
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <%= simple_form_for([:overseers, @po_request], :url => cancel_porequest_overseers_po_request_path(@po_request), :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+          <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
+          <div class="modal-body">
+            <% if policy(@po_request).can_reject? %>
+              <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, keep_raw: true, alphabetical: false), :include_blank => true %>
+              <%= f.hidden_field :status, :value => 'Supplier PO Request Rejected' %>
+          <% else %>
+              <%= f.input :cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <%= f.hidden_field :status, :value => 'Cancelled' %>
+          <% end %>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-warning confirm-cancel">
+              <% if policy(@po_request).can_reject? %>
+                Reject PO Request
+            <% else %>
+                Cancel PO Request
+              <% end %>
+            </button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

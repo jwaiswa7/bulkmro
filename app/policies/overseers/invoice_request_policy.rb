@@ -2,7 +2,7 @@
 
 class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
   def index?
-    manager_or_sales? || logistics? || admin?
+    accounts? || manager_or_sales? || logistics? || admin?
   end
 
   def pending?
@@ -15,5 +15,25 @@ class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
 
   def completed?
     index?
+  end
+
+  def can_cancel_or_reject?
+    admin? || accounts?
+  end
+
+  def edit?
+    admin? || accounts? || logistics?
+  end
+
+  def cancelled?
+    admin? || accounts?
+  end
+
+  def render_cancellation_form?
+    admin? || accounts?
+  end
+
+  def cancel_invoice_request?
+    update?
   end
 end

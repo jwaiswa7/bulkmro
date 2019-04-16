@@ -13,8 +13,8 @@ json.data (@purchase_orders) do |purchase_order|
                       if policy(purchase_order).edit_material_followup?
                         row_action_button(edit_material_followup_overseers_purchase_order_path(purchase_order), 'list-alt', 'Edit Material Followup', 'success', :_blank)
                       end,
-                      if policy(purchase_order).new_pickup_request?
-                        row_action_button(new_overseers_purchase_order_material_pickup_request_path(purchase_order), 'plus-circle', 'Create Material Pickup Request', 'success', target: :_blank)
+                      if policy(purchase_order).new_inward_dispatch?
+                        row_action_button(new_overseers_purchase_order_inward_dispatch_path(purchase_order), 'people-carry', 'Create Inward Dispatch', 'success', target: :_blank)
                       end,
                       if purchase_order.po_request.present? && policy(purchase_order.po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(purchase_order.po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
@@ -22,6 +22,7 @@ json.data (@purchase_orders) do |purchase_order|
                         row_action_button(overseers_payment_request_path(purchase_order.po_request.payment_request), 'eye', 'View Payment Request', 'success', :_blank)
                       end
                   ].join(' '),
+                  conditional_link(purchase_order.po_request.id, overseers_po_request_path(purchase_order.po_request), policy(purchase_order.po_request).show?),
                   link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: '_blank'),
                   purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : '-',
                   status_badge(purchase_order.material_status),
@@ -48,6 +49,7 @@ json.data (@purchase_orders) do |purchase_order|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [{"source": autocomplete_overseers_companies_path}],

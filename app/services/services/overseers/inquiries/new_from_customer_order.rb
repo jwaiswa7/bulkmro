@@ -16,7 +16,8 @@ class Services::Overseers::Inquiries::NewFromCustomerOrder < Services::Shared::B
       payment_option: company.default_payment_option || PaymentOption.default,
       shipping_contact: customer_order.contact,
       customer_po_number: customer_order.po_reference,
-      overseer: overseer
+      overseer: overseer,
+      customer_po_sheet: customer_order.customer_po_sheet.blob
     )
 
     ActiveRecord::Base.transaction do

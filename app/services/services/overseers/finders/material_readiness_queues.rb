@@ -1,4 +1,4 @@
-class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseers::Finders::BaseFinder
+class Services::Overseers::Finders::MaterialReadinessQueues  < Services::Overseers::Finders::BaseFinder
   def call
     call_base
   end
@@ -32,7 +32,7 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
   end
 
   def perform_query(query_string)
-    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[ po_number_string inquiry inside_sales_owner outside_sales_owner supplier customer po_status_string material_status_string po_type_string so_number_string logistics_owner_string ] })
+    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[ po_number_string inquiry inside_sales_owner outside_sales_owner supplier customer po_status_string po_request_string material_status_string po_type_string so_number_string logistics_owner_string ] })
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))

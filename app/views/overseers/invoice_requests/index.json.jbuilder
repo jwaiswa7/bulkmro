@@ -2,16 +2,22 @@ json.data (@invoice_requests) do |invoice_request|
   json.array! [
                   [
                       if policy(invoice_request).show?
-                        row_action_button(overseers_invoice_request_path(invoice_request), 'eye', 'View GRPO Request', 'info')
+                        row_action_button(overseers_invoice_request_path(invoice_request), 'eye', 'View AP Request', 'info')
                       end,
                       if policy(invoice_request).edit?
                         row_action_button(edit_overseers_invoice_request_path(invoice_request), 'pencil', "Edit #{invoice_request.readable_status}", 'warning')
+                      end,
+                      if !invoice_request.status.downcase.include?('cancel') && policy(invoice_request).can_cancel_or_reject?
+                        link_to('', class: ['btn btn-sm btn-danger cancel-invoice'], 'data-invoice-request-id': invoice_request.id, remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
                       end
                   ].join(' '),
                   invoice_request.id,
                   status_badge(invoice_request.status),
                   conditional_link(invoice_request.inquiry.inquiry_number, edit_overseers_inquiry_path(invoice_request.inquiry), policy(invoice_request.inquiry).edit?),
-                  conditional_link(invoice_request.sales_order.order_number, overseers_inquiry_sales_order_path(invoice_request.inquiry, invoice_request.sales_order), policy(invoice_request.sales_order).show?),
+                  invoice_request.sales_order.present? ? conditional_link(invoice_request.sales_order.order_number, overseers_inquiry_sales_order_path(invoice_request.inquiry, invoice_request.sales_order), policy(invoice_request.sales_order).show?) : '-',
                   (link_to(invoice_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(invoice_request.inquiry, invoice_request.purchase_order), target: '_blank') if invoice_request.purchase_order.present?),
                   invoice_request.inquiry.inside_sales_owner.to_s,
                   format_succinct_date(invoice_request.created_at),
@@ -27,4 +33,4 @@ end
 json.recordsTotal @invoice_requests.count
 json.recordsFiltered @invoice_requests.total_count
 json.draw params[:draw]
-json.recordsSummary InvoiceRequest.statuses.map { |k, v| { status_id: v, "label": k, "size": @invoice_requests.pluck(:status).count(k) } }.as_json
+json.recordsSummary InvoiceRequest.statuses.map {|k, v| {status_id: v, "label": k, "size": @invoice_requests.pluck(:status).count(k)}}.as_json

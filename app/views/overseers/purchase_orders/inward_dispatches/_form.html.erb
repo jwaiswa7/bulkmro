@@ -1,0 +1,246 @@
+<div class="col-lg-12 ">
+  <div class="page-header">
+    <h2>
+
+      <% if @inward_dispatch.purchase_order.present? %>
+        <% if action_name == 'confirm_delivery' %>
+          <%= action_name.capitalize.titleize %>
+        <% else %>
+          <%= action_name.capitalize.titleize %>  <%= @inward_dispatch.class %>
+        <% end %>
+
+        for Purchase Order #<%= @inward_dispatch.purchase_order.po_number %>
+      <% end %>
+    </h2>
+    <p>This will <em>'<%= submit_text(@inward_dispatch).downcase %>'</em>
+      and log it under
+      <strong><%= current_overseer.full_name %></strong>.</p>
+  </div>
+
+
+  <%= simple_form_for([:overseers, @inward_dispatch.purchase_order, @inward_dispatch], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |inward_dispatch_object| %>
+    <%= render 'shared/snippets/form_errors', f: inward_dispatch_object %>
+    <%= inward_dispatch_object.simple_fields_for :inward_dispatch, inward_dispatch_object.object do |f| %>
+
+
+      <div class="card">
+
+        <% if action_name == "confirm_delivery" %>
+          <%= f.hidden_field 'action_name', value: action_name %>
+        <% end %>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col-6">
+              <%= f.association :purchase_order, disabled: true, collection: [f.object.purchase_order], label: 'Purchase Order' %>
+            </div>
+
+            <div class="col-3">
+              <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single"}, label: "Logistics Owner" %>
+            </div>
+
+            <% if action_name == "confirm_delivery" ||  action_name == "edit" %>
+              <div class="col-3">
+                <%= f.input :show_supplier_delivery_date, disabled: true, label: "Supplier Delivery Date(Overall)" %>
+              </div>
+            <% end %>
+            <div class="col-12 col-md-12">
+              <div class="d-block d-md-flex align-items-end">
+                <div class="flex-grow-1">
+                  <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Supplier Documents' %>
+                </div>
+
+                <div class="form-group">
+                  <% f.object.attachments.each do |attachment| %>
+                    <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                      <i class="fal fa-download"></i>
+                      <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
+                        <i class="fal fa-trash-alt"></i>
+                      <% end if attachment.present? && policy(:attachment).destroy? %>
+                    <% end %>
+                  <% end if f.object.attachments.attached? %>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :document_type, collection: enum_to_collection(InwardDispatch.document_types, keep_raw: true), label: "Type of Document", input_html: {class: "select2-single"} %>
+            </div>
+
+            <div class="col-6">
+              <%#= f.input :status, as: :select, collection: enum_to_collection(InwardDispatch.statuses, keep_raw: true), disabled: true, readonly: true %>
+              <%= f.hidden_field :status %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :dispatched_by, collection: enum_to_collection(InwardDispatch.dispatched_bies, keep_raw: true), label: "Material Dispatched By", input_html: {class: "select2-single"}, required: true %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :shipped_to, collection: enum_to_collection(InwardDispatch.shipped_tos, keep_raw: true), label: "Material Shipped To", input_html: {class: "select2-single"}, required: true %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :logistics_aggregator, as: :select, collection: enum_to_collection(InwardDispatch.logistics_aggregators), label: "Logistics Aggregator", include_blank: "None" %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: true%>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :tracking_number, label: 'Tracking Number' %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :other_logistics_partner, as: :text, label: 'Other Logistics Partner' %>
+            </div>
+
+            <div class="col-12">
+              <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |inward_dispatch_comment| %>
+                <%= inward_dispatch_comment.hidden_field :created_by_id %>
+                <%= inward_dispatch_comment.hidden_field :updated_by_id %>
+                <%= inward_dispatch_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="form-row flex-row align-items-center">
+            <div class="col-4">
+              <%= f.input :expected_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_dispatch_date.try(:strftime, "%d-%b-%Y"), class: 'expected-dispatch-date'}, required: true, disabled: f.object.invoice_request.present? %>
+            </div>
+            <div class="col-4">
+              <%= f.input :expected_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_delivery_date.try(:strftime, "%d-%b-%Y"), class: 'expected-delivery-date'}, required: true, disabled: f.object.invoice_request.present? %>
+            </div>
+            <% if f.object.status == "Material Delivered" %>
+              <div class="col-4">
+                <%= f.input :actual_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.actual_delivery_date.try(:strftime, "%d-%b-%Y"), class: 'actual-delivery-date'}, disabled: f.object.invoice_request.present? %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
+          <div class="form-row d-none d-md-flex">
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>Sr. No.</label>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group mb-0">
+                <label>Product</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-group mb-0">
+                <label>Supplier PO Total Qty</label>
+              </div>
+            </div>
+            <% if f.object.status == "Material Delivered" %>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Inward Dispatch Qty</label>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Delivered Qty</label>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Supplier Delivery Date</label>
+                </div>
+              </div>
+            <% else %>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Inward Dispatch Qty</label>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Supplier Delivery Date</label>
+                </div>
+              </div>
+            <% end %>
+            <% if policy(f.object).remove_products? %>
+              <div class="col-1">
+                <div class="form-group mb-0">
+                  <label>Remove Product</label>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <% if @inward_dispatch.rows.present? %>
+            <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
+              <div class="form-row flex-row align-items-start">
+                <div class="col-1 col-md-1">
+                  <%= (@inward_dispatch.rows.index(row.object) || 0) + 1 %>
+                  <%= row.hidden_field :id %>
+                </div>
+
+                <div class="col-6 col-md-3">
+                  <%= row.hidden_field :purchase_order_row_id, label: 'Product' %>
+                  <%= row.input :purchase_order_row, input_html: {value: row.object.purchase_order_row.to_s}, disabled: row.object.purchase_order_row.present? && row.object.errors.blank?, label: false %>
+                </div>
+
+                <div class="col-6 col-md-2">
+                  <%= row.input :quantity, input_html: {value: row.object.purchase_order_row&.quantity}, readonly: true, label: false %>
+                </div>
+
+                <% if f.object.status == "Material Delivered" %>
+                  <div class="col-6 col-md-2">
+                    <%= row.input :pickup_quantity, input_html: {value: row.object.pickup_quantity}, readonly: true, label: false %>
+                  </div>
+                  <div class="col-6 col-md-2">
+                    <%= row.input :delivered_quantity, type: "number", input_html: {value: row.object.delivered_quantity.to_i, min: 1, max: (row.object.pickup_quantity.to_i if row.object.pickup_quantity.to_i > 1)}, readonly: f.object.invoice_request.present?, label: false %>
+                  </div>
+                  <div class="col-6 col-md-2">
+                    <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true, label: false %>
+                  </div>
+                <% else %>
+                  <div class="col-6 col-md-2">
+                    <%= row.input :pickup_quantity, type: "number", input_html: {value: row.object.pickup_quantity.to_f, min: 0}, label: false %>
+                  </div>
+                  <div class="col-6 col-md-2">
+                    <% if row.object.supplier_delivery_date.present? %>
+                      <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true, label: false %>
+                    <% else %>
+                      <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: row.object.row_lead_date}, required: true, label: false %>
+                    <% end %>
+                  </div>
+                <% end %>
+                <% if policy(f.object).remove_products? %>
+                  <div class="col-6 col-md-1">
+                    <%= row.remove_nested_fields_link 'Remove Product', class: 'btn btn-danger align-self-center delete_row', wrapper_class: 'simple-row' if policy(row.object).destroy? %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+            <% if policy(f.object).add_products? %>
+              <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' %>
+            <% end %>
+          <% end %>
+        </div>
+
+        <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+          <i class="fal fa-pen"></i> <%= submit_text(@inward_dispatch) %>
+        <% end %>
+        <% if f.object.comments.persisted.size > 0 %>
+          <div class="card-body">
+            <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
+            <div class="chats">
+              <% f.object.comments.persisted.each do |comment| %>
+                <%= format_comment(comment) %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+    <% end %>
+    </div>
+  <% end %>
+</div>

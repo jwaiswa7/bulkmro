@@ -65,6 +65,22 @@ class Overseers::AccountsController < Overseers::BaseController
     end
   end
 
+  def payment_collections
+    @accounts = ApplyDatatableParams.to(Account.all.order(:name), params)
+    authorize :account
+    service = Services::Overseers::SalesInvoices::PaymentDashboard.new()
+    service.call
+    @summery_data = service.summery_data
+  end
+
+  def ageing_report
+    @accounts = ApplyDatatableParams.to(Account.all.order(:name), params)
+    authorize :account
+    service = Services::Overseers::SalesInvoices::AgeingReport.new()
+    service.call
+    @summery_data = service.summery_data
+  end
+
   private
 
     def account_params
