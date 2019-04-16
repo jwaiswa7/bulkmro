@@ -92,12 +92,13 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
       error = resync_request.error_message
       if project_errors.include?(error)
         project_uid = ::Resources::Project.custom_find_resync(model.inquiry_number, 'Code', resync_request)
-        if !project_uid
+        if project_uid != false && project_uid.to_i > 0
           model.update_attributes(project_uid: project_uid)
           resync_request.update_attributes(hits: resync_request.hits + 1)
+          break
         end
       end
-    end if resync_request.status == "failed"
+    end
   end
 
   def resync_business_partners
@@ -107,7 +108,7 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
         ::Resources::BusinessPartner.update_associated_records(remote_uid)
         resync_request.update_attributes(hits: resync_request.hits + 1)
       end
-    end if resync_request.status == "failed"
+    end
   end
 
   # def reset_quote
