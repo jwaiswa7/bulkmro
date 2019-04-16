@@ -19,7 +19,7 @@
           <div class="modal-body">
             <% if policy(@po_request).can_reject? %>
               <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, keep_raw: true, alphabetical: false), :include_blank => true %>
-              <%= f.hidden_field :status, :value => 'Rejected' %>
+              <%= f.hidden_field :status, :value => 'Supplier PO Request Rejected' %>
           <% else %>
               <%= f.input :cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
               <%= f.hidden_field :status, :value => 'Cancelled' %>

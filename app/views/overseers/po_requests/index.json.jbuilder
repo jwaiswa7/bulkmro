@@ -38,7 +38,6 @@ json.data (@po_requests) do |po_request|
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       else policy(po_request).can_reject?
-                        # handle disable case
                         link_to('', class: po_request.status != "Supplier PO Request Rejected" ? ['btn btn-sm btn-danger cancel-po_request'] : ['btn btn-sm btn-danger cancel-po_request disabled'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true ) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
