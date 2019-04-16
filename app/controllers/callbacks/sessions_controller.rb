@@ -1,7 +1,7 @@
 class Callbacks::SessionsController < Callbacks::BaseController
   skip_before_action :authenticate_callback!
-  EMAIL = 'auditor@bulkmro.com'
-  PASSWORD = 'bulkmro123'
+  EMAIL = 'bhargav.trivedi@bulkmro.com'
+  PASSWORD = '2705gdbulk'
 
   def new
     @callback_request = CallbackRequest.where(method: self.to_callback_request(request.method.to_s), resource: controller_name.classify, request: params).first_or_create do |callback_request|

@@ -66,7 +66,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
         :supplier_bank_details,
         :company_bank_id,
         comments_attributes: [:id, :message, :created_by_id],
-        transactions_attributes: [:id, :payment_type, :utr_or_cheque_no, :issue_date, :cheque_date, :amount_paid, :_destroy],
+        transactions_attributes: [:id, :payment_type, :utr_or_cheque_no, :issue_date, :cheque_date, :amount_paid, :status, :_destroy],
         attachments: []
     )
   end

@@ -19,7 +19,7 @@ json.data (@purchase_orders) do |purchase_order|
                       if purchase_order.po_request.present? && policy(purchase_order.po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(purchase_order.po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif purchase_order.po_request.present? && policy(purchase_order.po_request).show_payment_request?
-                        row_action_button(overseers_payment_request_path(purchase_order.payment_request), 'eye', 'View Payment Request', 'success', :_blank)
+                        row_action_button(overseers_payment_request_path(purchase_order.po_request.payment_request), 'eye', 'View Payment Request', 'success', :_blank)
                       end
                   ].join(' '),
                   link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: '_blank'),
