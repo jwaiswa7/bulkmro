@@ -14,6 +14,8 @@ class PurchaseOrdersIndex < BaseIndex
     field :po_number_string, value: -> (record) { record.po_number.to_s }, analyzer: 'substring'
     field :po_status, value: -> (record) { statuses[record.status] }, type: 'integer'
     field :po_status_string, value: -> (record) { record.status || record.metadata_status }, analyzer: 'substring'
+    field :po_request_id, value: -> (record) { record.po_request.present? ? record.po_request.id : 0 }, type: 'integer'
+    field :po_request_string, value: -> (record) { record.po_request.present? ? record.po_request.to_s : ''}, analyzer: 'substring'
     field :po_request_status, value: -> (record) { po_statuses[record.po_request ? record.po_request.status : 'Supplier PO Sent'] }
     field :po_request_status_string, value: -> (record) { record.po_request ? record.po_request.status : 'Supplier PO Sent' }, analyzer: 'substring'
     field :po_email_sent, value: -> (record) { record.po_request ? (record.po_request.status == 'Supplier PO Sent' ? true : nil) : nil }
