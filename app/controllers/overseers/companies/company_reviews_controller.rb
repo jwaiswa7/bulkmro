@@ -16,5 +16,4 @@ class Overseers::Companies::CompanyReviewsController < Overseers::Companies::Bas
       end
     end
   end
-
 end
