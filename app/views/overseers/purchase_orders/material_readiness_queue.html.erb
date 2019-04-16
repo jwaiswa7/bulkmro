@@ -26,6 +26,7 @@
         </div>
       <% end %>
     </th>
+    <th class="no-sort desktop text-right" data-name="po_request_id">PO Request #</th>
     <th class="no-sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
     <th class="no-sort desktop" data-name="customer_id">Customer Company Name</th>
     <th class="no-sort all" data-name="material_status">Material Status</th>
@@ -50,6 +51,7 @@
     <th class="no-sort desktop" >Overall Margin %</th>
   <% end %>
   <% content_for :filter_row do %>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="ajax"></td>

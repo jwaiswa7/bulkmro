@@ -22,6 +22,7 @@ json.data (@purchase_orders) do |purchase_order|
                         row_action_button(overseers_payment_request_path(purchase_order.po_request.payment_request), 'eye', 'View Payment Request', 'success', :_blank)
                       end
                   ].join(' '),
+                  conditional_link(purchase_order.po_request.id, overseers_po_request_path(purchase_order.po_request), policy(purchase_order.po_request).show?),
                   link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: '_blank'),
                   purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : '-',
                   status_badge(purchase_order.material_status),
@@ -48,6 +49,7 @@ json.data (@purchase_orders) do |purchase_order|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [{"source": autocomplete_overseers_companies_path}],
