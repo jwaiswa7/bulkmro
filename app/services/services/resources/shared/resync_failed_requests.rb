@@ -102,6 +102,7 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
   end
 
   def resync_business_partners
+
     5.times do
       remote_uid = ::Resources::BusinessPartner.custom_find_resync(model.remote_uid, 'CardCode')
       if remote_uid.present?
