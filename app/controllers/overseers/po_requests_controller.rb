@@ -114,11 +114,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         @po_request.comments.create(message: "#{messages} \r\n #{row_updated_message}", overseer: current_overseer)
       end
 
-      # autoupdate statuses
-      @po_request.status = 'Supplier PO: Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Supplier PO: Request Pending'
-      @po_request.status = 'Supplier PO: Request Pending' if @po_request.status == 'Supplier PO Request Rejected' && policy(@po_request).manager_or_sales?
-      @po_request.status = 'Supplier PO: Amendment' if @po_request.status == 'Supplier PO: Created Not Sent' && policy(@po_request).manager_or_sales?
-
+      @po_request = autoupdate_statuses(@po_request)
       if @po_request.status_changed?
         service = Services::Overseers::PoRequests::Update.new(@po_request, @po_request_comment, current_overseer)
         service.call
@@ -172,6 +168,14 @@ class Overseers::PoRequestsController < Overseers::BaseController
     respond_to do |format|
       format.html {render partial: 'cancel_porequest', locals: {status: params[:status]}}
     end
+  end
+
+  def autoupdate_statuses(po_request)
+    @po_request = po_request
+    @po_request.status = 'Supplier PO: Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Supplier PO: Request Pending'
+    @po_request.status = 'Supplier PO: Request Pending' if @po_request.status == 'Supplier PO Request Rejected' && policy(@po_request).manager_or_sales?
+    @po_request.status = 'Supplier PO: Amendment' if @po_request.status == 'Supplier PO: Created Not Sent' && policy(@po_request).manager_or_sales?
+    @po_request
   end
 
   def pending_stock_approval
