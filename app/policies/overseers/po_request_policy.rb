@@ -54,11 +54,12 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_cancel?
-    record.purchase_order.present? && (manager_or_sales? || logistics? || admin?) && (record.status != 'Cancelled' && record.status == 'Supplier PO: Amended') || record.status == 'Supplier PO Sent'
+    (manager_or_sales? || logistics? || admin?) && record.status != 'Cancelled'
+    # record.purchase_order.present? && (manager_or_sales? || logistics? || admin?) && (record.status != 'Cancelled' && record.status == 'Supplier PO: Amended') || record.status == 'Supplier PO Sent'
   end
 
   def can_reject?
-    record.purchase_order.blank? && (logistics? || admin?) && record.status == 'Supplier PO: Request Pending'
+    record.purchase_order.blank? && (logistics? || admin?) && record.status == 'Supplier PO: Request Pending' && record.status != 'Supplier PO Request Rejected'
   end
 
   def can_update_rejected_po_requests?
