@@ -173,6 +173,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || admin?
   end
 
+  # def company_report?
+  #   manager_or_sales? || admin?
+  # end
+
   def kra_report_per_sales_owner?
     manager_or_sales? || admin?
   end

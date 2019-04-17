@@ -20,6 +20,7 @@ class Export < ApplicationRecord
     company_reviews: 60,
     kra_report: 90,
     suppliers: 65,
-    sales_order_reco: 70
+    sales_order_reco: 70,
+    company_report: 91
   }
 end

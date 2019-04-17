@@ -469,6 +469,8 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'export_all'
         get 'export_filtered_records'
+        get 'company_report'
+        get 'export_company_report'
       end
       member do
         get 'render_rating_form'
@@ -485,11 +487,7 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
-        resources :company_reviews do
-          collection do
-            get 'index'
-          end
-        end
+        resources :company_reviews
 
         resources :tags do
           collection do
