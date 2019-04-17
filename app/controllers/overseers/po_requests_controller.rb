@@ -166,7 +166,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def render_cancellation_form
     authorize @po_request
     respond_to do |format|
-      format.html {render partial: 'cancel_porequest', locals: {status: params[:status]}}
+      format.html {render partial: 'cancel_porequest', locals: {purpose: params[:purpose]}}
     end
   end
 

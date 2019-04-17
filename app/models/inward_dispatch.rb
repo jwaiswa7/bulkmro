@@ -9,6 +9,8 @@ class InwardDispatch < ApplicationRecord
   belongs_to :purchase_order
   has_one :inquiry, through: :purchase_order
 
+  attr_accessor :common_supplier_delivery_date
+
   belongs_to :logistics_owner, -> (record) { where(role: 'logistics') }, class_name: 'Overseer', foreign_key: 'logistics_owner_id', optional: true
   has_many :rows, -> { joins(:purchase_order_row) }, class_name: 'InwardDispatchRow', inverse_of: :inward_dispatch, dependent: :destroy
   has_many_attached :attachments

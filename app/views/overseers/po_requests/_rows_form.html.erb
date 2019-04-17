@@ -177,17 +177,19 @@
   <% end %>
 </div>
 <hr>
-<div class="d-inline">
-  <div class="custom-control custom-checkbox">
+<div class="form-row ml-1">
+  <div class="col-12 col-md-2 mt-4 custom-control custom-checkbox">
     <input type="checkbox" class="custom-control-input" name="all_lead_dates" id="all_lead_dates">
     <label class="custom-control-label" for="all_lead_dates">Select All</label>
-</div>
-  <div class="mr-2 float-left update_lead_date_wrapper">
+  </div>
+  <div class="col-12 col-md-4 update_lead_date_wrapper">
     <%= f.input :common_lead_date, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'overall-lead-time'}, label: 'Lead Date' %>
   </div>
-  <button type="button" id="update_lead_date" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_lead_date_wrapper">
-    <i class="fal fa-plus mr-1"></i>Update Lead Date
-  </button>
+  <div class="col-12 col-md-6 mt-3">
+    <button type="button" id="update_lead_date" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_lead_date_wrapper">
+      <i class="fal fa-plus mr-1"></i>Update Lead Date
+    </button>
+  </div>
 </div>
 <hr>
 
@@ -199,7 +201,7 @@
   <%= po_request_row.hidden_field :tax_rate_id %>
   <%= po_request_row.hidden_field :measurement_unit_id, value: po_request_row.object.measurement_unit_id || MeasurementUnit.default.id %>
   <div class="form-row po-request-row">
-    <div class="col-12 col-md-12 mb-1">
+    <div class="col-12 col-md-12 mb-1 ml-2">
       <span class="custom-control custom-checkbox d-inline pl-0">
         <%= check_box_tag 'po_request_row[]', po_request_row.object.id, false, id: "po_request_row_id_#{po_request_row.object.id}", class: 'custom-control-input' %>
         <label class="custom-control-label" for="<%= "po_request_row_id_#{po_request_row.object.id}" %>"></label>
@@ -216,18 +218,13 @@
           </div>
         </div>
 
-
         <div class="col-12 col-md-2">
-
           <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: 'Make', disabled: true %>
-          <%#= po_request_row.association :brand, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :brand), include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, disabled: po_request_row.object.field_disabled?, f.object.rows.first == po_request_row.object ? "Make" : false  %>
         </div>
         <div class="col-12 col-md-2">
-          <%#= po_request_row.input :tax_code, f.object.rows.first == po_request_row.object ? "HSN" : false, disabled: po_request_row.object.field_disabled? %>
           <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: 'HSN', required: true %>
         </div>
         <div class="col-12 col-md-2">
-          <%#= po_request_row.input :tax_rate, f.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
           <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: 'Tax Rate' %>
         </div>
         <div class="col-12 col-md-1">
