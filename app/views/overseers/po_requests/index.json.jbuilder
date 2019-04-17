@@ -37,7 +37,7 @@ json.data (@po_requests) do |po_request|
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
-                      else policy(po_request).can_reject?
+                      elsif policy(po_request).can_reject?
                         link_to('', class: po_request.status != "Supplier PO Request Rejected" ? ['btn btn-sm btn-danger cancel-po_request'] : ['btn btn-sm btn-danger cancel-po_request disabled'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true ) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
@@ -49,7 +49,6 @@ json.data (@po_requests) do |po_request|
                   conditional_link(po_request.inquiry.to_s, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
                   if po_request.purchase_order.present? && (po_request.status == 'Supplier PO: Created Not Sent')
                     link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank')
-
                   else
                     po_request.sales_order.order_number if po_request.sales_order.present?
                   end,

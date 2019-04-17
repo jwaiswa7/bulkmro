@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            <% if policy(@po_request).can_reject? %>
+            <% if purpose == "Reject" %>
               Reject PO Request
           <% else %>
               Cancel PO Request
@@ -17,8 +17,9 @@
         <%= simple_form_for([:overseers, @po_request], :url => cancel_porequest_overseers_po_request_path(@po_request), :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
           <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
           <div class="modal-body">
-            <% if policy(@po_request).can_reject? %>
-              <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, keep_raw: true, alphabetical: false), :include_blank => true %>
+            <% if purpose == "Reject" %>
+              <%= f.input :rejection_reason, as: :select, collection: enum_to_collection(PoRequest.rejection_reasons, keep_raw: true, alphabetical: false), :include_blank => true %>
+              <%= f.input :other_rejection_reason, input_html: {:'id' => 'other-rejection-reason'}, :disabled => true %>
               <%= f.hidden_field :status, :value => 'Supplier PO Request Rejected' %>
           <% else %>
               <%= f.input :cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
@@ -27,7 +28,7 @@
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-warning confirm-cancel">
-              <% if policy(@po_request).can_reject? %>
+              <% if purpose == "Reject" %>
                 Reject PO Request
             <% else %>
                 Cancel PO Request
