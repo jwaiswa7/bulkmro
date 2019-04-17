@@ -116,8 +116,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
       @po_request = autoupdate_statuses(@po_request)
       if @po_request.status_changed?
-        service = Services::Overseers::PoRequests::Update.new(@po_request, @po_request_comment, current_overseer)
-        service.call
+        service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer)
+        @po_request_comment = service.call
 
         # sends notification
         tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
@@ -144,7 +144,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_request
     if @po_request.valid?
       service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer)
-      service.call
+      @po_request_comment = service.call
 
       tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
       @notification.send_po_request_update(
@@ -166,7 +166,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def render_cancellation_form
     authorize @po_request
     respond_to do |format|
-      format.html {render partial: 'cancel_porequest', locals: {status: params[:status]}}
+      format.html {render partial: 'cancel_porequest', locals: {purpose: params[:purpose]}}
     end
   end
 
