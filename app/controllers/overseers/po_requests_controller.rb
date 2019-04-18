@@ -118,16 +118,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
       if @po_request.status_changed?
         service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer)
         @po_request_comment = service.call
-
         # sends notification
         tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
+        comment = @po_request_comment.present? ? @po_request_comment.message : nil
         @notification.send_po_request_update(
           tos - [current_overseer.email],
           action_name.to_sym,
           @po_request,
           overseers_po_request_path(@po_request),
           @po_request.id,
-          @po_request_comment.message,
+          comment,
         )
       else
         @po_request.save!
