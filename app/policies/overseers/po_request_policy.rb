@@ -79,7 +79,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def sending_po_to_supplier_new_email_message?
-    record.purchase_order && record.contact.present? && (record.status!= 'Cancelled' || record.stock_status == 'Supplier PO Request Rejected' || record.status == 'Supplier PO Sent')
+    record.purchase_order && record.contact.present? && (record.status != 'Cancelled' || record.stock_status == 'Supplier PO Request Rejected' || record.status == 'Supplier PO Sent')
   end
 
   def sending_po_to_supplier_create_email_message?

@@ -198,7 +198,9 @@
               <div class="form-row flex-row align-items-start inward-dispatch-row">
                 <div class="col-1 col-md-1 ml-2">
                   <span class="custom-control custom-checkbox d-inline pl-0">
-                    <%= check_box_tag 'row[]', row.object.id, false, id: "row_id_#{row.object.id}", class: 'custom-control-input' %>
+                    <% if params[:action] != 'confirm_delivery' %>
+                      <%= check_box_tag 'row[]', row.object.id, false, id: "row_id_#{row.object.id}", class: 'custom-control-input' %>
+                    <% end %>
                     <label class="custom-control-label" for="<%= "row_id_#{row.object.id}" %>"></label>
                   </span>
                   #<%= (@inward_dispatch.rows.index(row.object) || 0) + 1 %>

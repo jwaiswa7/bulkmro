@@ -110,6 +110,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
     if @invoice_request.valid?
       ActiveRecord::Base.transaction do
+        service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
+        service.call
         @invoice_request.save!
         @invoice_request_comment = InvoiceRequestComment.new(message: 'Invoice Request submitted.', invoice_request: @invoice_request, overseer: current_overseer)
         @invoice_request_comment.save!

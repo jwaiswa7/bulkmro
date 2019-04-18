@@ -32,7 +32,7 @@ json.data (@po_requests) do |po_request|
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       end,
-                      if po_request.po_request_type == "Stock" && policy(po_request).can_reject?
+                      if po_request.po_request_type == 'Stock' && policy(po_request).can_reject?
                         link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join

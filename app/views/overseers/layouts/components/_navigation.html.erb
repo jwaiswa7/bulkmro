@@ -46,9 +46,9 @@
             <a class="dropdown-item dropdown-toggle" href="#">Accounts / Aliases</a>
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, policy(:account).index? %>
-              <%= nav_dropdown_item 'Accounts Receivable', payment_collections_overseers_accounts_path, policy(:account).payment_collections? %>
-              <%= nav_dropdown_item 'Ageing Report', ageing_report_overseers_accounts_path, policy(:account).payment_collections? %>
-              <%= nav_dropdown_item 'Receipts', overseers_sales_receipts_path, policy(:account).payment_collections? %>
+              <%#= nav_dropdown_item 'Accounts Receivable', payment_collections_overseers_accounts_path, policy(:account).payment_collections? %>
+              <%#= nav_dropdown_item 'Ageing Report', ageing_report_overseers_accounts_path, policy(:account).payment_collections? %>
+              <%#= nav_dropdown_item 'Receipts', overseers_sales_receipts_path, policy(:account).payment_collections? %>
             </ul>
           </div>
           <%= nav_dropdown_item 'Companies', overseers_companies_path, policy(:company).index? %>
