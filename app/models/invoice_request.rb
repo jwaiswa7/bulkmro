@@ -167,11 +167,11 @@ class InvoiceRequest < ApplicationRecord
     if overseer.accounts? || overseer.admin?
       statuses = InvoiceRequest.statuses
       if self.status == 'GRPO Pending'
-        statuses =  InvoiceRequest.statuses.except('Cancelled AP Invoice', 'Cancelled AR Invoice', 'Cancelled')
+        statuses =  InvoiceRequest.statuses.except('Cancelled AP Invoice', 'Cancelled AR Invoice', 'Cancelled', 'AP Invoice Request Rejected')
       elsif self.status == 'Pending AP Invoice'
-        statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AR Invoice', 'Cancelled')
+        statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AR Invoice', 'Cancelled', 'GRPO Request Rejected')
       elsif self.status == 'Pending AR Invoice'
-        statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AP Invoice', 'Cancelled')
+        statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AP Invoice', 'Cancelled','AP Invoice Request Rejected','GRPO Request Rejected')
       end
       return {enabled: statuses, disabled: []}
     elsif overseer.logistics?

@@ -45,7 +45,7 @@
       </div>
     <% else %>
       <div class="col-12 col-md-4">
-        <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.except('Supplier PO: Created Not Sent', 'Supplier PO Sent', 'Cancelled', 'Rejected', 'Supplier PO: Amendment', 'Supplier PO: Amended'), alphabetical: false, keep_raw: true), :include_blank => false %>
+        <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.except('Supplier PO: Created Not Sent', 'Supplier PO Sent', 'Cancelled', 'Rejected', 'Supplier PO: Amendment Pending', 'Supplier PO: Amended'), alphabetical: false, keep_raw: true), :include_blank => false %>
       </div>
     <% end %>
   <% end %>
