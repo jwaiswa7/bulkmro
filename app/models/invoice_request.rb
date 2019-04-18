@@ -36,10 +36,13 @@ class InvoiceRequest < ApplicationRecord
   validate :grpo_number_valid?
 
   def grpo_number_valid?
-    if self.grpo_number.present? && self.grpo_number <= 50000000
+    if self.grpo_number.present? && self.grpo_number <= 50000000 && self.id.present? && self.created_date < "2019-04-01"
       errors.add(:grpo_number, 'must be 8 digits starting with 5')
+    elsif self.grpo_number.present? && self.grpo_number <= 500000000 && self.id.present? && self.created_date >= "2019-04-01" || self.created_date == nil
+      errors.add(:grpo_number, 'must be 9 digits starting with 5')
     end
   end
+
 
   def has_attachments?
     if !self.attachments.any?
