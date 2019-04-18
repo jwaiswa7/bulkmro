@@ -94,3 +94,7 @@ sap:
   ATTACHMENT_API: '35.200.144.191/b1_shf/Attachments'
   ATTACHMENT_USERNAME: 'pradeep'
   ATTACHMENT_PASSWORD: ''
+
+accounts:
+  arn_number: 'AD2704190070474'
+  arn_date: '03-Apr-2019'
