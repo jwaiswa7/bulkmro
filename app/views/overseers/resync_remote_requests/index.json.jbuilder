@@ -6,6 +6,7 @@ json.data (@remote_requests) do |remote_request|
                       end,
                       row_action_button(resend_failed_request_overseers_resync_remote_request_path(remote_request), 'retweet-alt', 'Resend Remote Request', 'warning')
                   ].join(' '),
+                  remote_request.hits,
                   if remote_request.subject.present? && policy(remote_request.subject).show?
                     [remote_request.subject.class.name, remote_request.subject.to_s].join(' > ')
                   end,

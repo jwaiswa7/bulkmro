@@ -128,8 +128,8 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     if validated_response['value'].present?
       remote_record = validated_response['value'][0]
       yield remote_record if block_given?
-      remote_record[self.identifier.to_s]
       resync_request.update_attributes(:status => 10, :resync_response => validated_response, :resync_url => url) if resync_request.present?
+      remote_record[self.identifier.to_s]
     else
       resync_request.update_attributes(:status => 20, :resync_response => validated_response, :resync_url => url) if resync_request.present?
       false
@@ -189,23 +189,13 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
 
   def self.log_response(response, method = 'get', url = '', body = '')
     status = :success
-    # if response[:error_message].present?
-    #   response[:error_message] = "Invalid session.."
-    # end
     if response[:error_message].present? && (response[:error_message].downcase.include? 'invalid session')
       Rails.cache.delete('sap_cookie')
       status = :failed
       set_headers
-      # response_back = perform_remote_sync_action(method, url, body)
-      # validated_response = get_validated_response(response_back)
-      # if validated_response[:error_message].present?
-      #   status = :failed
-      #   response[:error_message] = validated_response[:error_message]
-      # end
     elsif response[:error_message].present?
       status = :failed
-
-      if method != 'get'
+      if !method.equal? 'get'
         @resync_remote_request = ResyncRemoteRequest.create!(
             subject: @remote_request.subject,
             method: method,
