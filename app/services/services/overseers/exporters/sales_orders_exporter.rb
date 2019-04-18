@@ -1,7 +1,6 @@
 class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers::Exporters::BaseExporter
-  def initialize(overseer = nil)
+  def initialize
     super
-    if overseer.present? ? @overseer = overseer : @overseer = Overseer.find()
     @model = SalesOrder
     @export_name = 'sales_orders'
     @path = Rails.root.join('tmp', filename)

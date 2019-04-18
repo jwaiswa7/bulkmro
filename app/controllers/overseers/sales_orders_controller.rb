@@ -47,7 +47,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def export_all
     authorize :sales_order
-    service = Services::Overseers::Exporters::SalesOrdersExporter.new(current_overseer)
+    service = Services::Overseers::Exporters::SalesOrdersExporter.new
     service.call
 
     redirect_to url_for(Export.sales_orders.last.report)
