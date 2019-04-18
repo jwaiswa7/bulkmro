@@ -3,7 +3,7 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
     @arguments = args
     @start_at = Date.new(2018, 10, 19)
     @end_at = Date.today.end_of_day
-    @overseer = args[1]
+    @overseer = args[1].present? ? args[1] : Overseer.default
     if args[0].present? && (args[0].include? '~')
       range = args[0].split('~')
       @start_at = range[0].strip.to_date
