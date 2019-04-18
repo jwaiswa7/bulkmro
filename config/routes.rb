@@ -485,11 +485,7 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
-        resources :company_reviews do
-          collection do
-            get 'index'
-          end
-        end
+        resources :company_reviews
 
         resources :tags do
           collection do
