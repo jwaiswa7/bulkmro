@@ -6,9 +6,8 @@
         <% if action_name == 'confirm_delivery' %>
           <%= action_name.capitalize.titleize %>
         <% else %>
-          <%= action_name.capitalize.titleize %>  <%= @inward_dispatch.class %>
+          <%= action_name.capitalize.titleize %>  <%= @inward_dispatch.model_name.human.titleize %>
         <% end %>
-
         for Purchase Order #<%= @inward_dispatch.purchase_order.po_number %>
       <% end %>
     </h2>
