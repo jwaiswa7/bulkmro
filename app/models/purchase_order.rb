@@ -73,7 +73,7 @@ class PurchaseOrder < ApplicationRecord
       'Inward Dispatch: Partial': 25,
       'Material Delivered': 30,
       'Material Partially Delivered': 35,
-      'GRPO Requested': 40,
+      'GRPO Pending': 40,
       'Pending AP Invoice': 45,
       'Pending AR Invoice': 50,
       'In stock': 55,

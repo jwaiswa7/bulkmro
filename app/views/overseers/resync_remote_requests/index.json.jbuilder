@@ -25,7 +25,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       RemoteRequest.resources.map{ |k, v| { "label": k.titlecase, "value": v.to_s } }.as_json,
+                       RemoteRequest.resources.map { |k, v| { 'label': k.titlecase, 'value': v.to_s } }.as_json,
                        []
                    ]
 
