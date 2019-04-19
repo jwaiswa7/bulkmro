@@ -150,12 +150,12 @@
                     PAN No.: AAGCB7343G
                     <% if record.inquiry.is_sez? %>
                       <br>
-                      <% if Settings.accounts.arn_date_2019 > Settings.accounts.arn_date %>
+                      <% if  record.metadata['created_at'].present? && Settings.accounts.arn_date_2019 <=  record.metadata['created_at'] %>
                         ARN No. : <%= Settings.accounts.arn_number_2019 %>
-                        ARN Date: <%= Settings.accounts.arn_date_2019 %>
+                        ARN Date: <%= Date.parse(Settings.accounts.arn_date_2019) %>
                       <% else %>
                         ARN No. : <%= Settings.accounts.arn_number_2018 %>
-                        ARN Date: <%= Settings.accounts.arn_date_2018 %>
+                        ARN Date: <%= Date.parse(Settings.accounts.arn_date_2018) %>
                       <%end %>
                     <% end %>
                     </span>
