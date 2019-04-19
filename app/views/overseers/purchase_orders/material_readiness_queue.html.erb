@@ -2,7 +2,7 @@
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
 <% content_for :heading do %>
-  Material Followup Queue
+  Material Readiness Queue
 <% end %>
 
 <% content_for(:heading_buttons) do %>
@@ -26,6 +26,7 @@
         </div>
       <% end %>
     </th>
+    <th class="no-sort desktop text-right" data-name="po_request_id">PO Request #</th>
     <th class="no-sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
     <th class="no-sort desktop" data-name="customer_id">Customer Company Name</th>
     <th class="no-sort all" data-name="material_status">Material Status</th>
@@ -47,9 +48,10 @@
     <th class="no-sort desktop" data-name="buying_price">Buying Price</th>
     <th class="no-sort desktop" data-name="selling_price">Selling Price</th>
     <th class="no-sort desktop" data-name="po_margin">PO Margin %</th>
-    <th class="no-sort desktop" data-name="overall_margin">Overall Margin %</th>
+    <th class="no-sort desktop" >Overall Margin %</th>
   <% end %>
   <% content_for :filter_row do %>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="ajax"></td>

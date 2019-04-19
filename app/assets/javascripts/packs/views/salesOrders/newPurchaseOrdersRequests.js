@@ -1,11 +1,9 @@
-import bindRatingModalTabClick from "../common/bindRatingModalTabClick"
-import updateRatingForm from "../common/updateRatingForm"
 import updateRowTotal from "../poRequests/updateRowTotal"
 import validatePoRequestAddresses from "../poRequests/validatePoRequestAddresses"
 import validatePoRequestContacts from "../poRequests/validatePoRequestContacts"
 import updateOnContactSelect from "../poRequests/updateOnContactSelect";
+import validateLeadDate from "../poRequests/validateLeadDate";
 import massLeadDateUpdate from "../poRequests/massLeadDateUpdate";
-
 
 const newPurchaseOrdersRequests = () => {
     validatePoRequestAddresses();
@@ -13,9 +11,8 @@ const newPurchaseOrdersRequests = () => {
     updateRowTotal();
 
     updateOnContactSelect();
+    validateLeadDate();
     massLeadDateUpdate();
 };
-
-
 
 export default newPurchaseOrdersRequests
