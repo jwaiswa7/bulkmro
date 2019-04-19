@@ -51,4 +51,8 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def get_relationship_map_json?
     relationship_map?
   end
+
+  def show_pending_ap_invoice_queue?
+    index? && (admin? || accounts?)
+  end
 end

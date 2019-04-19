@@ -9,6 +9,7 @@ json.data (@customer_orders) do |customer_order|
                   ].join(' '),
                   status_badge(customer_order.status),
                   customer_order.online_order_number,
+                  customer_order.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", customer_order.customer_po_sheet.filename].join('').html_safe, customer_order.customer_po_sheet, target: '_blank') : '-',
                   customer_order.rows.count,
                   format_date(customer_order.created_at),
                   customer_order.contact.name,
