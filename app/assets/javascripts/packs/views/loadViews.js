@@ -27,7 +27,7 @@ import customerProducts from "./customerProducts/init";
 import kits from "./kits/init";
 import freightRequests from "./freightRequests/init";
 import freightQuotes from "./freightQuotes/init";
-import materialPickupRequests from "./materialPickupRequests/init";
+import inwardDispatches from "./inwardDispatches/init";
 
 // Sales Invoices
 import salesInvoices from "./salesInvoices/init";
@@ -51,6 +51,7 @@ import poRequests from "./poRequests/init";
 import activities from './activities/init'
 
 import companies from './companies/init'
+import suppliers from  './suppliers/init'
 
 import companyReviews from './companyReviews/init'
 
@@ -71,7 +72,7 @@ let loader = {
     kits: kits,
     freightRequests: freightRequests,
     freightQuotes: freightQuotes,
-    materialPickupRequests: materialPickupRequests,
+    inwardDispatches: inwardDispatches,
     salesInvoices: salesInvoices,
     salesShipments: salesShipments,
     purchaseOrders: purchaseOrders,
@@ -80,6 +81,7 @@ let loader = {
     poRequests: poRequests,
     activities: activities,
     companies: companies,
+    suppliers: suppliers,
     companyReviews: companyReviews,
     documentCreations: documentCreations,
     checkout: checkout

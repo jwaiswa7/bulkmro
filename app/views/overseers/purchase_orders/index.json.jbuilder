@@ -19,7 +19,7 @@ json.data (@purchase_orders) do |purchase_order|
                   ].join(' '),
                   conditional_link(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), policy(purchase_order.inquiry).edit?),
                   conditional_link(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), policy(purchase_order.inquiry).edit?),
-                  '-', # (purchase_order.supplier.present? ? conditional_link(purchase_order.supplier.try(:name), overseers_company_path(purchase_order.supplier), policy(purchase_order.inquiry).show?) : '-'),
+                  (purchase_order.supplier.present? ? conditional_link(purchase_order.supplier.try(:name), overseers_company_path(purchase_order.supplier), policy(purchase_order.inquiry).show?) : '-'),
                   format_star((purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:rating) if purchase_order.rows.present?)),
                   purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : '-',
                   purchase_order.status || purchase_order.metadata_status,

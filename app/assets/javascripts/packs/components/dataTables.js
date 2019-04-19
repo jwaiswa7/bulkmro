@@ -46,7 +46,7 @@ let setup = () => {
         if ($.fn.dataTable.isDataTable('#' + $(this).attr('id'))) return false;
         let isAjax = !!$(this).data('ajax');
         let isFixedHeader = $(this).data('fixed-header') == "false" ? false : true;
-        let sorting = $(this).data('sorting');
+        let allowSort = $(this).data('sort') ? $(this).data(sort) : true;
         let that = this;
 
         $.fn.dataTable.ext.errMode = 'throw';
@@ -74,7 +74,7 @@ let setup = () => {
                 "<'row'<'col-12 align-items-center text-center'i><'col-12 align-items-center text-center'p>>",
             "pageLength": 20,
             pagingType: 'full_numbers',
-            order: sorting == 'true' ? [[$(that).find('th').length - 1, 'desc']] : [], // Sort on the last column
+            order: allowSort ? [[$(that).find('th').length - 1, 'desc']] : false, // Sort on the last column
             columnDefs: [{
                 "targets": 'no-sort',
                 "orderable": false
@@ -135,6 +135,31 @@ let setup = () => {
                     e.preventDefault();
                 });
                 actionTd.append(clear);
+
+                this.api().columns().every(function () {
+                    let column = this;
+                    let td = $(table).find('thead tr:eq(2) td:eq(' + column.index() + ')');
+                    let columnData = column.data();
+                    let value = columnData.sum();
+                    let currencyFormatter = new Intl.NumberFormat('en-IN', {
+                        style: 'currency',
+                        currency: 'INR',
+                        minimumFractionDigits: 2
+                    })
+
+                    if (value && value != "") {
+                        if (td.hasClass('currency')){
+                            td.append(currencyFormatter.format(value))
+                        }
+                        else if(td.hasClass('percentage')){
+                            let percentValue = (value / columnData.length)
+                            td.append(percentValue.toFixed(2)+'%')
+                        }
+                        else{
+                            td.append(value.toLocaleString());
+                        }
+                    }
+                });
 
                 this.api().columns().every(function () {
                     let column = this;

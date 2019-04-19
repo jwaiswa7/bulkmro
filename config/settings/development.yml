@@ -86,7 +86,7 @@ razorpay:
 
 sap:
   ENDPOINT: 'https://35.200.144.191:50000/b1s/v1'
-  DATABASE: 'BMRO_13FEB2018'
+  DATABASE: 'BMRO_30MAR2019'
   USERNAME: 'manager'
   PASSWORD: 'vm1234'
   ATTACHMENT_ENDPOINT: 'https://35.200.144.191:22'
@@ -94,3 +94,7 @@ sap:
   ATTACHMENT_API: '35.200.144.191/b1_shf/Attachments'
   ATTACHMENT_USERNAME: 'pradeep'
   ATTACHMENT_PASSWORD: ''
+
+accounts:
+  arn_number: 'AD2704190070474'
+  arn_date: '03-Apr-2019'

@@ -11,10 +11,10 @@
     <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:class => 'text-left needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
 
       <div class="form-group">
-        <%= f.input :email, :class => 'form-control', :required => true, :placeholder => "name@company.com", autofocus: true, autocomplete: "email", value: 'ashwin.goyal@bulkmro.com' %>
+        <%= f.input :email, :class => 'form-control', :required => true, :placeholder => "name@company.com", autofocus: true, autocomplete: "email", value: 'bhargav.trivedi@bulkmro.com' %>
       </div>
       <div class="form-group">
-        <%= f.input :password, :class => 'form-control', :required => true, :placeholder => "••••••••", autocomplete: "off", value: ( Rails.env.production? || Rails.env.staging? ) ? '' : 'abc123' %>
+        <%= f.input :password, :class => 'form-control', :required => true, :placeholder => "••••••••", autocomplete: "off", value: ( Rails.env.production? || Rails.env.staging? ) ? '' : 'bulkmro123' %>
       </div>
       <p class="text-center mt-1">
         <small><%= link_to "Forgot Password?", contact_password_path, method: :post %></small>

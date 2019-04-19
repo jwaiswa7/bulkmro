@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products ]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products]
 
   def index
     authorize :inquiry
@@ -21,6 +21,62 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def kra_report
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html {
+        if params['kra_report'].present?
+          @date_range = params['kra_report']['date_range']
+        end
+      }
+      format.json do
+        service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
+        service.call
+
+        if params['kra_report'].present?
+          @date_range = params['kra_report']['date_range']
+        end
+
+        @indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
+      end
+    end
+  end
+
+  def kra_report_per_sales_owner
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
+        service.call
+
+        @indexed_inquiries = service.indexed_records
+        @inquiries = service.records
+      end
+    end
+  end
+
+  def export_kra_report
+    authorize :inquiry
+    service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
+    service.call
+
+    indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
+
+    if params['kra_report'].present?
+      date_range = params['kra_report']['date_range']
+    else
+      date_range = 'Overall'
+    end
+
+    export_service = Services::Overseers::Exporters::KraReportsExporter.new([], current_overseer, indexed_kra_reports, date_range)
+    export_service.call
+
+    redirect_to url_for(Export.kra_report.not_filtered.last.report)
+  end
+
   def export_all
     authorize :inquiry
     service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, [])
@@ -36,6 +92,15 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     export_service = Services::Overseers::Exporters::InquiriesExporter.new([], current_overseer, service.records)
     export_service.call
+  end
+
+  def export_inquiries_tat
+    authorize :inquiry
+    service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, [])
+    service.call
+    export = Export.inquiries_tat.not_filtered.last
+    export_report = export.report if export.present?
+    export_report.present? ? redirect_to(url_for(export_report)) : redirect_to(overseers_inquiries_path, notice: 'Inquiries TAT download failed!')
   end
 
   def index_pg
@@ -189,9 +254,10 @@ class Overseers::InquiriesController < Overseers::BaseController
   def get_relationship_map_json
     authorize @inquiry
     purchase_order = PurchaseOrder.includes(po_request: :sales_order).where(inquiry_id: @inquiry).where(po_requests: {id: nil}, sales_orders: {id: nil})
-    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes,purchase_order).call
+    inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes, purchase_order).call
     render json: {data: inquiry_json}
   end
+
   def create_purchase_orders_requests
     @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
     authorize @inquiry
@@ -208,6 +274,26 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     Rails.cache.write(:po_requests, @po_requests, expires_in: 25.minutes)
     authorize @inquiry
+  end
+
+  def bulk_update
+    authorize :inquiry
+
+    inquiry_numbers = params['bulk_update_inquiries']['inquiries'].split(/\s*,\s*/)
+    inquiries = Inquiry.where(inquiry_number: inquiry_numbers)
+
+    if inquiries.present?
+      query_params = params['bulk_update_inquiries'].to_enum.to_h
+      update_query = query_params.except('inquiries').reject {|_, v| v.blank?}
+      if update_query.present?
+        inquiries.update_all(update_query)
+        redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
+      else
+        render json: { error: 'Please select any one field to update' }, status: 500
+      end
+    else
+      render json: { error: 'No such inquiries present' }, status: 500
+    end
   end
 
   def pipeline_report

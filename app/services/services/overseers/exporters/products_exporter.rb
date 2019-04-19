@@ -16,7 +16,7 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
     if @ids.present?
       records = model.where(id: @ids)
     else
-      records = model.where('created_at >= :start_at AND created_at <= :end_at', start_at: @start_at, end_at: @end_at)
+      records = model
     end
     # records.each do |record|
     records.includes(:category, :brand, :measurement_unit).all.order(created_at: :desc).each do |record|

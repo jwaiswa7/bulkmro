@@ -188,6 +188,13 @@
                   <%= @company.sales_manager %>
                 </div>
               <% end %>
+
+              <% if @company.logistics_owner.present? %>
+                <div class="col-12 col-md-3 mb-2">
+                  <strong class="d-block">Default Logistics Owner</strong>
+                  <%= @company.logistics_owner %>
+                </div>
+              <% end %>
             </div>
           </div>
         <% end %>
@@ -277,6 +284,9 @@
         <li class="nav-item">
           <a class="nav-link" data-toggle="tab" href="#supplier-products" role="tab">Supplied Products</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#rating" role="tab">Ratings</a>
+        </li>
       <% end %>
       <% if @company.is_customer? %>
         <li class="nav-item">
@@ -360,6 +370,7 @@
           <th class="all" data-name="name">Name</th>
           <th class="all" data-name="code">Code</th>
           <th class="all" data-name="branch">Branch</th>
+          <th class="all" data-name="ifsc_code">IFSC Code</th>
           <th class="all" data-name="account_name">Account Name</th>
           <th class="all" data-name="account_number">Account Number</th>
           <th class="desktop" data-name="created_at">SAP Status</th>
@@ -372,6 +383,18 @@
           <% end %>
         <% end %>
         <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'banks' %>
+      </div>
+      <div class="tab-pane fade" id="rating" role="tabpanel">
+        <% content_for :ajax_url, flush: true do %><%= overseers_company_company_reviews_path(company_id: @company.id) %>
+        <% end %>
+        <% content_for :header_row, flush: true do %>
+          <th class="no-sort all"></th>
+          <th class="no-sort all">Overseer Name</th>
+          <th class="no-sort all" data-name="company_id">Company Name</th>
+          <th class="no-sort all" data-name="survey_type_id">Review Type</th>
+          <th class="no-sort all">Rating</th>
+        <% end %>
+        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Ratings' %>
       </div>
       <% if @company.is_customer? %>
         <div class="tab-pane fade" id="products" role="tabpanel">
@@ -621,26 +644,6 @@
             <th class="sort desktop text-right" data-name="created_at">Created At</th>
           <% end %>
           <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Invoices' %>
-        </div>
-        <div class="tab-pane fade" id="rating" role="tabpanel">
-          <div class="d-md-flex justify-content-between">
-            <h3 class="display-5 mb-1 d-none d-md-block">Ratings</h3>
-          </div>
-
-          <table class="datatable table table-bordered dt-responsive review-table" data-search="Searchable with relevant term/keywords." style="width:100%;" data-ajax="<%= overseers_company_company_reviews_path(@company) %>">
-            <thead>
-            <tr>
-              <th class="no-sort all"></th>
-              <th class="no-sort all">User</th>
-              <th>Company name</th>
-              <th class="no-sort desktop">Review Type</th>
-              <th class="no-sort desktop">Rating</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-          </table>
         </div>
       <% end %>
     </div>

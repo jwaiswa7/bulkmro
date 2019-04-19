@@ -11,6 +11,11 @@ class Overseers::PaymentOptionsController < Overseers::BaseController
     authorize @payment_option
   end
 
+  def autocomplete
+    @payment_options = ApplyParams.to(PaymentOption.all, params)
+    authorize @payment_options
+  end
+
   def create
     @payment_option = PaymentOption.new(payment_option_params.merge(overseer: current_overseer))
     authorize @payment_option
