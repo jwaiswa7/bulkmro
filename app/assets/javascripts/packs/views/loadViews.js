@@ -60,6 +60,8 @@ import documentCreations from "./documentCreations/init";
 
 import checkout from "./checkout/init";
 
+import companyBanks from "./companyBanks/init"
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -84,7 +86,8 @@ let loader = {
     suppliers: suppliers,
     companyReviews: companyReviews,
     documentCreations: documentCreations,
-    checkout: checkout
+    checkout: checkout,
+    companyBanks: companyBanks
 };
 
 // Imports

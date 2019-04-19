@@ -36,6 +36,21 @@ class BaseIndex < Chewy::Index
             sku_substring: {
                 tokenizer: 'sku_substring',
                 filter: ['lowercase']
+            },
+            keyword_analyzer: {
+                filter: ['lowercase','asciifolding','trim'],
+                char_filter: [],
+                type: "custom",
+                tokenizer: "keyword"
+            },
+            edge_ngram_analyzer: {
+              filter: [
+                "lowercase"
+              ],
+              tokenizer: "edge_ngram_tokenizer"
+            },
+            edge_ngram_search_analyzer: {
+              tokenizer: "lowercase"
             }
         },
         tokenizer: {
@@ -56,6 +71,14 @@ class BaseIndex < Chewy::Index
                 min_gram: 2,
                 max_gram: 7,
                 token_chars: %w(letter digit)
+            },
+            edge_ngram_tokenizer: {
+                type: "edge_ngram",
+                min_gram: 2,
+                max_gram: 5,
+                token_chars: [
+                    "letter"
+                ]
             }
         }
     },

@@ -17,6 +17,15 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @products
   end
 
+  def suggestion
+    authorize :product
+    service = Services::Overseers::Finders::Products.new(params)
+    service.call
+
+    product_names = service.indexed_records.suggest["product-suggest"].map{|p| p["options"]}
+    render json: {product_names: product_names.first}.to_json
+  end
+
   def autocomplete_mpn
     @label = params[:label] || :to_s
     service = Services::Overseers::Finders::Products.new(params, sort_by: 'mpn', sort_order: 'desc')

@@ -23,6 +23,7 @@
 //= require treantjs/Treant.js
 //= require cocoon
 //= require js-routes
+//= require easy-autocomplete/dist/jquery.easy-autocomplete.js
 
 // Plugins
 //# require packs/plugins/raty/jquery.raty.js
