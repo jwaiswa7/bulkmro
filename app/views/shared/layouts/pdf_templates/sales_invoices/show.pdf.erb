@@ -148,9 +148,9 @@
                       GST No.: <%= record.sales_order.inquiry.bill_from.address.gst %><br>
                     <% end %>
                     PAN No.: AAGCB7343G
-                    <% if record.inquiry.is_sez? %>
+                  <% if record.inquiry.is_sez? %>
                       <br>
-                      <% if  record.metadata['created_at'].present? && Settings.accounts.arn_date_2019 <=  record.metadata['created_at'] %>
+                      <% if  record.metadata['created_at'].present? && Date.parse(Settings.accounts.arn_date_2019) <=  Date.parse(record.metadata['created_at']) %>
                         ARN No. : <%= Settings.accounts.arn_number_2019 %>
                         ARN Date: <%= Date.parse(Settings.accounts.arn_date_2019) %>
                       <% else %>
