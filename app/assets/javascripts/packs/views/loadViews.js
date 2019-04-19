@@ -60,7 +60,12 @@ import documentCreations from "./documentCreations/init";
 
 import checkout from "./checkout/init";
 
+// Image Reader
+import imageReaders from "./imageReaders/init"
+
 import taxCodes from "./taxCodes/init"
+
+
 
 let loader = {
     imports: imports,
@@ -87,7 +92,8 @@ let loader = {
     companyReviews: companyReviews,
     documentCreations: documentCreations,
     checkout: checkout,
-    taxCodes: taxCodes
+    taxCodes: taxCodes,
+    imageReaders: imageReaders
 };
 
 // Imports
