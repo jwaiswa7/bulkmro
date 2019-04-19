@@ -58,7 +58,7 @@ class InvoiceRequest < ApplicationRecord
   def grpo_number_valid?
     if self.created_date.present? && self.created_date < '2019-04-01' && self.grpo_number.present? && self.grpo_number <= 50000000
       errors.add(:grpo_number, 'must be 8 digits starting with 5')
-    elsif (self.created_date.blank? || (self.created_date.present? && self.created_date > '2019-04-01'))&& self.grpo_number.present? && self.grpo_number <= 500000000
+    elsif (self.created_date.blank? || (self.created_date.present? && self.created_date > '2019-04-01')) && self.grpo_number.present? && self.grpo_number <= 500000000
       errors.add(:grpo_number, 'must be 9 digits starting with 5')
     end
   end
