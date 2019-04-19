@@ -8,6 +8,8 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @base_filter = []
     @sort_by = sort_by
     @sort_order = sort_order
+    @pipeline_report_params = params[:pipeline_report]
+
     @kra_report_params = params[:kra_report]
     @company_report_params = params[:company_report]
 

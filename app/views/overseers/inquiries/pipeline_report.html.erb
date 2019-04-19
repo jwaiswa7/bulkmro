@@ -1,0 +1,54 @@
+<% provide :container_fluid, true %>
+
+<div class="col-lg-12 mb-0">
+  <div class="page-header mb-0">
+    <h2>Pipeline Report</h2>
+  </div>
+</div>
+
+<div class="col-12">
+  <%= render layout: 'search_layout_for_pipeline' do %>
+  <% end %>
+  <table class="table-bordered table">
+    <thead>
+    <tr>
+      <th>Month</th>
+      <% @statuses.invert.each do |index, status| %>
+        <th><%= status %></th>
+      <% end %>
+      <th>Grand Total</th>
+      <th>Won %</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @indexed_pipeline_report.each do |month, record_bucket| %>
+      <tr>
+        <td><%= format_month_without_date(month) %></td>
+        <% @statuses.each do |index, status| %>
+          <td>
+            <%= record_bucket['pipeline']['buckets'].map {|bucket| bucket['doc_count'] if bucket['key'] == status}.compact.first || 0 %>
+            , <%= record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == status}.compact.first || 0 %>
+          </td>
+        <% end %>
+        <td><%= record_bucket['doc_count'] %>, <%= record_bucket['sum_monthly_sales']['value'] %></td>
+        <td>
+          <!--          <%#= record_bucket['doc_count'] != 0 ? (((record_bucket['pipeline']['buckets'].map{|bucket| bucket['doc_count'] if bucket['key'] == 18 }.compact.first || 0)/record_bucket['doc_count'])*100).round(2) : 0 %> todo-->
+          <%= (((record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == 18}.compact.first || 0) / record_bucket['sum_monthly_sales']['value']) * 100).round(2) %>
+        </td>
+      </tr>
+    <% end %>
+    <tr>
+      <td>Total Count</td>
+      <% @statuses.each do |index, status| %>
+        <td>
+          <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count'] if summary_bucket['key'] == status}.compact.first || 0 %>
+          , <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['statuswise_inquiry_summary']['value'] if summary_bucket['key'] == status}.compact.first || 0 %>
+        </td>
+      <% end %>
+      <td>
+        <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count']}.sum %>, <%= @summary_total['value'] %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
