@@ -2,7 +2,7 @@ class Overseers::ResyncRemoteRequestsController < Overseers::BaseController
   before_action :set_resync_remote_request, only: [:show, :resend_failed_request]
 
   def index
-    @remote_requests = ApplyDatatableParams.to(ResyncRemoteRequest.where("hits < 5").order(id: :desc), params)
+    @remote_requests = ApplyDatatableParams.to(ResyncRemoteRequest.where('hits < 5').order(id: :desc), params)
     authorize @remote_requests
   end
 

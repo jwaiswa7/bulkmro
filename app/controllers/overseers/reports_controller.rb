@@ -3,6 +3,7 @@ class Overseers::ReportsController < Overseers::BaseController
     Report.activity
     Report.target
     Report.monthly_sales
+    Report.inward_logistic_queue
 
     @reports = ApplyDatatableParams.to(Report.all, params)
     authorize @reports

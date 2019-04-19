@@ -7,7 +7,7 @@ class CustomerOrder < ApplicationRecord
   include Mixins::HasComments
   include Mixins::CanBeTotalled
 
-  pg_search_scope :locate, against: [:id], associated_against: { company: [:name] }, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:id], associated_against: {company: [:name]}, using: {tsearch: {prefix: true}}
 
   belongs_to :contact
   belongs_to :company
@@ -15,8 +15,10 @@ class CustomerOrder < ApplicationRecord
   has_many :rows, dependent: :destroy, class_name: 'CustomerOrderRow'
   has_many :items, dependent: :destroy, class_name: 'CustomerOrderRow'
   has_many :comments, dependent: :destroy, class_name: 'CustomerOrderComment'
-  belongs_to :billing_address, -> (record) { where(company_id: record.company_id) }, class_name: 'Address', foreign_key: :billing_address_id, required: false
-  belongs_to :shipping_address, -> (record) { where(company_id: record.company_id) }, class_name: 'Address', foreign_key: :shipping_address_id, required: false
+  belongs_to :billing_address, -> (record) {where(company_id: record.company_id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
+  belongs_to :shipping_address, -> (record) {where(company_id: record.company_id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: false
+
+  has_one_attached :customer_po_sheet
 
   enum payment_method: {
       'Bank Transfer': 10,
@@ -39,7 +41,7 @@ class CustomerOrder < ApplicationRecord
   end
 
   def total_quantities
-    self.rows.pluck(:quantity).inject(0) { |sum, x| sum + x }
+    self.rows.pluck(:quantity).inject(0) {|sum, x| sum + x}
   end
 
   def status

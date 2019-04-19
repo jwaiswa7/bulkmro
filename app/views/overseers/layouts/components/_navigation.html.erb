@@ -42,7 +42,15 @@
           B. Partners
         </a>
         <div class="dropdown-menu">
-          <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, policy(:account).index? %>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Accounts / Aliases</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, policy(:account).index? %>
+              <%#= nav_dropdown_item 'Accounts Receivable', payment_collections_overseers_accounts_path, policy(:account).payment_collections? %>
+              <%#= nav_dropdown_item 'Ageing Report', ageing_report_overseers_accounts_path, policy(:account).payment_collections? %>
+              <%#= nav_dropdown_item 'Receipts', overseers_sales_receipts_path, policy(:account).payment_collections? %>
+            </ul>
+          </div>
           <%= nav_dropdown_item 'Companies', overseers_companies_path, policy(:company).index? %>
           <%= nav_dropdown_item 'Suppliers', overseers_suppliers_path, policy(:company).index? %>
           <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
@@ -115,12 +123,15 @@
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'Sales Invoices List', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'All Requests', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
-              <%= nav_dropdown_item 'Pending GRPO', pending_overseers_invoice_requests_path(:status => 'Pending GRPO'), policy(:sales_invoice).index? %>
-              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'GRPO Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).show_pending_ap_invoice_queue? %>
               <%= nav_dropdown_item 'Pending AR Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AR Invoice'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Cancelled AP Invoice', cancelled_overseers_invoice_requests_path(:status => 'Cancelled AP Invoice'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Cancelled GRPO', cancelled_overseers_invoice_requests_path(:status => 'Cancelled'), policy(:sales_invoice).index? %>
             </ul>
           </div>
+          <%= nav_dropdown_item 'Sales Receipt', overseers_sales_receipts_path, policy(:sales_receipt).index? %>
           <div class="dropdown-divider"></div>
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Freight Requests</a>
@@ -151,7 +162,8 @@
               <%= nav_dropdown_item 'Purchase Orders List', overseers_purchase_orders_path, policy(:purchase_order).index? %>
               <div class="dropdown-divider"></div>
               <%= nav_dropdown_item 'Pending Purchase Order Requests', pending_and_rejected_overseers_po_requests_path, policy(:po_request).pending_and_rejected? %>
-              <%= nav_dropdown_item 'Under Amend Purchase Order Requests', amended_overseers_po_requests_path, policy(:po_request).amended? %>
+              <%= nav_dropdown_item 'Under Amend Purchase Order Requests', under_amend_overseers_po_requests_path, policy(:po_request).under_amend? %>
+              <%= nav_dropdown_item 'Amended Purchase Order Requests', amended_overseers_po_requests_path, policy(:po_request).amended? %>
               <%= nav_dropdown_item 'Cancelled Purchase Order Requests', cancelled_overseers_po_requests_path, policy(:po_request).cancelled? %>
               <%= nav_dropdown_item 'Completed Purchase Order Requests', overseers_po_requests_path, policy(:po_request).index? %>
               <div class="dropdown-divider"></div>
@@ -159,9 +171,9 @@
               <%= nav_dropdown_item 'Pending Stock Approval', pending_stock_approval_overseers_po_requests_path, policy(:po_request).pending_stock_approval? %>
               <%= nav_dropdown_item 'Completed Stock Requests', completed_stock_overseers_po_requests_path, policy(:po_request).completed_stock? %>
               <div class="dropdown-divider"></div>
-              <%= nav_dropdown_item 'Material Readiness Followup Queue', material_readiness_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
-              <%= nav_dropdown_item 'Material Pickup Queue', material_pickup_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
-              <%= nav_dropdown_item 'Material Delivered Queue', material_delivered_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
+              <%= nav_dropdown_item 'Material Readiness Queue', material_readiness_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
+              <%= nav_dropdown_item 'Inward Dispatch Queue', inward_dispatch_pickup_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
+              <%= nav_dropdown_item 'Inward Dispatch Delivered Queue', inward_dispatch_delivered_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
             </ul>
           </div>
           <div class="dropdown-submenu">
@@ -181,10 +193,12 @@
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'Sales Invoices List', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'All Requests', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
-              <%= nav_dropdown_item 'Pending GRPO', pending_overseers_invoice_requests_path(:status => 'Pending GRPO'), policy(:sales_invoice).index? %>
-              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'GRPO Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).show_pending_ap_invoice_queue? %>
               <%= nav_dropdown_item 'Pending AR Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AR Invoice'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Cancelled AP Invoice', cancelled_overseers_invoice_requests_path(:status => 'Cancelled AP Invoice'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Cancelled GRPO', cancelled_overseers_invoice_requests_path(:status => 'Cancelled'), policy(:sales_invoice).index? %>
             </ul>
           </div>
           <div class="dropdown-submenu">

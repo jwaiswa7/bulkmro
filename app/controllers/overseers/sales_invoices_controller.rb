@@ -29,12 +29,14 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
   def edit_pod
     authorize @invoice
+    if !@invoice.pod_rows.present?
+      @invoice.pod_rows.build
+    end
   end
 
   def update_pod
     authorize @invoice
     @invoice.assign_attributes(invoice_params)
-
     if @invoice.save
       redirect_to edit_pod_overseers_sales_invoice_path, notice: flash_message(@invoice, action_name)
     end
@@ -47,10 +49,19 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
   def export_all
     authorize :sales_invoice
-    service = Services::Overseers::Exporters::SalesInvoicesExporter.new
+    service = Services::Overseers::Exporters::SalesInvoicesExporter.new([], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.sales_invoices.last.report)
+    redirect_to url_for(Export.sales_invoices.not_filtered.last.report)
+  end
+
+  def export_filtered_records
+    authorize :sales_invoice
+    service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer, paginate: false)
+    service.call
+
+    export_service = Services::Overseers::Exporters::SalesInvoicesExporter.new([], current_overseer, service.records)
+    export_service.call
   end
 
   def export_rows
@@ -77,8 +88,16 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
     def invoice_params
       params.require(:sales_invoice).permit(
-        :pod_attachment,
-          :delivery_date
+
+        :delivery_date,
+        :delivery_completed,
+        pod_rows_attributes: [
+            :id,
+            :delivery_date,
+            :sales_invoice_id,
+            :_destroy,
+            attachments: []
+        ]
       )
     end
 end
