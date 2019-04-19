@@ -10,6 +10,11 @@ class ProductsIndex < BaseIndex
     field :is_service
     field :sku, value: -> (record) {record.sku.to_s}, analyzer: 'sku_substring', fielddata: true
     field :name, analyzer: 'substring'
+    field :namecomplete, type: 'text', value: -> (record) {record.name} do
+      field :keywordstring, type: 'text', analyzer: 'keyword_analyzer'
+      field :edgengram, type: 'text', analyzer: 'edge_ngram_analyzer', search_analyzer: 'edge_ngram_search_analyzer'
+      field :completion, type: 'completion'
+    end
     field :mpn, value: -> (record) {record.mpn.to_s}, analyzer: 'substring', type: 'text', fielddata: true
     field :total_pos, value: -> (record) {record.total_pos}, type: 'integer'
     field :total_quotes, value: -> (record) {record.total_quotes}, type: 'integer'
