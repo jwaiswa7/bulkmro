@@ -96,5 +96,7 @@ sap:
   ATTACHMENT_PASSWORD: ''
 
 accounts:
-  arn_number: 'AD2704190070474'
-  arn_date: '03-Apr-2019'
+  arn_number_2018: 'AD275180000794'
+  arn_number_2019: 'AD2704190070474'
+  arn_date_2019: '03-04-2019'
+  arn_date_2018: '25-05-2018'
