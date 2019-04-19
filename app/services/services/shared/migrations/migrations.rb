@@ -4897,4 +4897,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       puts ex.message
     end
   end
+
+  def update_logistics_owner_for_all_companies
+    companies = Company.all
+    companies.each do |company|
+      company.update_attribute(:logistics_owner, Services::Overseers::InwardDispatches::SelectLogisticsOwner.new(nil, company_name: company.name).call)
+    end
+  end
 end

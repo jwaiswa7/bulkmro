@@ -9,6 +9,8 @@
       <th class="no-sort desktop text-right">Invoice Status</th>
       <th class="no-sort desktop text-right"># Sales Order</th>
       <th class="no-sort desktop text-right">Line Items</th>
+      <th class="no-sort desktop text-right">Net Amount</th>
+      <th class="no-sort desktop text-right">Tax Amount</th>
       <th class="no-sort desktop text-right">Invoice Date</th>
       <th class="no-sort desktop text-right">Created At</th>
     <% end %>
@@ -46,8 +48,11 @@
           <td><%= status_badge(sales_invoice.status) %></td>
           <td><%= sales_invoice.sales_order.order_number %></td>
           <td><%= sales_invoice.rows.size %></td>
+          <td><%= format_currency(sales_invoice.metadata['base_grand_total'].to_f - sales_invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %></td>
+          <td><%= format_currency(sales_invoice.metadata['base_tax_amount'].to_f / 2, precision: 2, symbol: nil) %></td>
           <td><%= format_date(sales_invoice.mis_date || sales_invoice.metadata["sales_invoice"]["created_at"].to_date) if sales_invoice.metadata["sales_invoice"].present? && sales_invoice.metadata["sales_invoice"]["created_at"].present? %></td>
           <td><%= format_date(sales_invoice.created_at) %></td>
+
         </tr>
       <% end %>
     <% end %>
