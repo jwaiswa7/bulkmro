@@ -100,7 +100,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
             puts exception.message
           end
         end
-        sleep(0.5)
+        # sleep 5
       end
     end
 
