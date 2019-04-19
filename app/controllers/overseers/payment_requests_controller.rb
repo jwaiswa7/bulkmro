@@ -17,6 +17,16 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
     @statuses = status_service.indexed_statuses
   end
 
+  def update_payment_status
+    @payment_requests = PaymentRequest.where(id: params[:payment_requests])
+    authorize @payment_requests
+    @payment_requests.update_all(status: params[:status_id].to_i)
+    @payment_requests.each do |payment_request|
+      payment_comment = PaymentRequestComment.new(message: "Status Changed:#{PaymentRequest.statuses.invert[params[:status_id].to_i]}", payment_request: payment_request, overseer: current_overseer)
+      payment_comment.save
+    end
+  end
+
   def show
     authorize @payment_request
   end

@@ -15,9 +15,9 @@ class Customers::CustomerOrdersController < Customers::BaseController
       billing_address_id: current_cart.billing_address_id,
       shipping_address_id: current_cart.shipping_address_id,
       po_reference: current_cart.po_reference,
-      special_instructions: current_cart.special_instructions
+      special_instructions: current_cart.special_instructions,
+      customer_po_sheet: current_cart.customer_po_sheet.blob
     )
-
     ActiveRecord::Base.transaction do
       @customer_order = current_contact.customer_orders.create(company: current_company)
       @customer_order.assign_attributes(
@@ -25,7 +25,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
         shipping_address_id: current_cart.shipping_address_id,
         po_reference: current_cart.po_reference,
         special_instructions: current_cart.special_instructions,
-        payment_method: current_cart.payment_method
+        payment_method: current_cart.payment_method,
+        customer_po_sheet: current_cart.customer_po_sheet.attachment.blob
       )
       @customer_order.save
       @customer_order.update_attributes(online_order_number: Services::Resources::Shared::UidGenerator.online_order_number(@customer_order.id))
