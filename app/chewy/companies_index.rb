@@ -1,6 +1,6 @@
 class CompaniesIndex < BaseIndex
   businesses = Company.nature_of_businesses
-  define_type Company.where('id<200').with_includes do
+  define_type Company.with_includes do
     field :id, type: 'integer'
     field :account_id, value: -> (record) {record.account_id}
     field :name, value: -> (record) {record.name}, analyzer: 'fuzzy_substring'
