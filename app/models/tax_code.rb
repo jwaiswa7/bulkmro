@@ -5,8 +5,8 @@ class TaxCode < ApplicationRecord
 
   has_many :products
 
-  validates_presence_of :code
-  validates_presence_of :remote_uid
+  validates_presence_of :code, :remote_uid, :tax_percentage, :description
+  validates :code, length: { minimum: 8, maximum: 8 }
   scope :with_includes, -> { includes(:products) }
   after_initialize :set_defaults, if: :new_record?
   def set_defaults
