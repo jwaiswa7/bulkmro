@@ -116,18 +116,18 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
       @po_request = autoupdate_statuses(@po_request)
       if @po_request.status_changed?
-        service = Services::Overseers::PoRequests::Update.new(@po_request, @po_request_comment, current_overseer)
-        service.call
-
+        service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer)
+        @po_request_comment = service.call
         # sends notification
         tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
+        comment = @po_request_comment.present? ? @po_request_comment.message : nil
         @notification.send_po_request_update(
-            tos - [current_overseer.email],
-            action_name.to_sym,
-            @po_request,
-            overseers_po_request_path(@po_request),
-            @po_request.id,
-            @po_request_comment.message,
+          tos - [current_overseer.email],
+          action_name.to_sym,
+          @po_request,
+          overseers_po_request_path(@po_request),
+          @po_request.id,
+          comment,
         )
       else
         @po_request.save!
@@ -144,16 +144,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_request
     if @po_request.valid?
       service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer)
-      service.call
+      @po_request_comment = service.call
 
       tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
       @notification.send_po_request_update(
-          tos - [current_overseer.email],
-          action_name.to_sym,
-          @po_request,
-          overseers_po_request_path(@po_request),
-          @po_request.id,
-          @po_request.last_comment.message,
+        tos - [current_overseer.email],
+        action_name.to_sym,
+        @po_request,
+        overseers_po_request_path(@po_request),
+        @po_request.id,
+        @po_request.last_comment.message,
       )
       render json: {success: 1, message: 'Successfully updated '}, status: 200
     elsif @po_request.status == 'Cancelled'
@@ -166,7 +166,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def render_cancellation_form
     authorize @po_request
     respond_to do |format|
-      format.html {render partial: 'cancel_porequest', locals: {status: params[:status]}}
+      format.html {render partial: 'cancel_porequest', locals: {purpose: params[:purpose]}}
     end
   end
 
@@ -174,7 +174,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request = po_request
     @po_request.status = 'Supplier PO: Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Supplier PO: Request Pending'
     @po_request.status = 'Supplier PO: Request Pending' if @po_request.status == 'Supplier PO Request Rejected' && policy(@po_request).manager_or_sales?
-    @po_request.status = 'Supplier PO: Amendment' if @po_request.status == 'Supplier PO: Created Not Sent' && policy(@po_request).manager_or_sales?
+    @po_request.status = 'Supplier PO: Amendment Pending' if @po_request.status == 'Supplier PO: Created Not Sent' && policy(@po_request).manager_or_sales?
     @po_request
   end
 
@@ -210,8 +210,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   private
 
-  def po_request_params
-    params.require(:po_request).permit(
+    def po_request_params
+      params.require(:po_request).permit(
         :id,
         :inquiry_id,
         :sales_order_id,
@@ -238,10 +238,10 @@ class Overseers::PoRequestsController < Overseers::BaseController
         comments_attributes: [:id, :message, :created_by_id],
         rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion],
         attachments: []
-    )
-  end
+      )
+    end
 
-  def set_po_request
-    @po_request = PoRequest.find(params[:id])
-  end
+    def set_po_request
+      @po_request = PoRequest.find(params[:id])
+    end
 end

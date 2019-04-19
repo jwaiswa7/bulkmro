@@ -11,8 +11,9 @@ class Services::Overseers::Finders::MaterialReadinessQueues  < Services::Oversee
     end
 
     #  @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
-
-    indexed_records = indexed_records.filter(filter_by_array('material_status', PurchaseOrder.material_statuses.except(:'Material Delivered').values))
+    statuses = ['Material Readiness Follow-Up', 'Inward Dispatch', 'Inward Dispatch: Partial', 'Material Partially Delivered']
+    status_values = PurchaseOrder.material_statuses.map {|key, val| if statuses.include?(key); val; end}.compact
+    indexed_records = indexed_records.filter(filter_by_array('material_status', status_values))
     indexed_records = indexed_records.filter(filter_by_value('po_request_present', true))
     indexed_records = indexed_records.filter(filter_by_value('po_email_sent', true))
 

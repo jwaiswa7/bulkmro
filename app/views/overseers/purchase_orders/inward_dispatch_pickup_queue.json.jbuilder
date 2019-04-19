@@ -68,6 +68,6 @@ json.columnFilters [
                        []
                    ]
 
-json.recordsTotal InwardDispatch.count
-json.recordsFiltered @inward_dispatches.count
+json.recordsTotal @indexed_inward_dispatches.count
+json.recordsFiltered @indexed_inward_dispatches.total_count
 json.draw params[:draw]

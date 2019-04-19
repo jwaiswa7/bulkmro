@@ -15,7 +15,7 @@ class InvoiceRequest < ApplicationRecord
   ratyrate_rateable 'CompanyReview'
 
   enum status: {
-      'GRPO Requested': 10,
+      'GRPO Pending': 10,
       'Pending AP Invoice': 20,
       'Pending AR Invoice': 30,
       'In stock': 70,
@@ -43,7 +43,7 @@ class InvoiceRequest < ApplicationRecord
   }
 
 
-  scope :grpo_pending, -> { where(status: :'GRPO Requested') }
+  scope :grpo_pending, -> { where(status: :'GRPO Pending') }
   scope :ap_invoice_pending, -> { where(status: :'Pending AP Invoice') }
   scope :ar_invoice_pending, -> { where(status: :'Pending AR Invoice') }
   scope :ar_invoice_generated, -> { where(status: :'Completed AR Invoice Request') }
@@ -88,7 +88,7 @@ class InvoiceRequest < ApplicationRecord
   after_initialize :set_defaults, if: :new_record?
 
   def set_defaults
-    self.status ||= :'GRPO Requested'
+    self.status ||= :'GRPO Pending'
   end
 
   def update_status(status)
@@ -166,12 +166,12 @@ class InvoiceRequest < ApplicationRecord
   def allow_statuses(overseer)
     if overseer.accounts? || overseer.admin?
       statuses = InvoiceRequest.statuses
-      if self.status == 'GRPO Requested'
-        statuses =  InvoiceRequest.statuses.except('Cancelled AP Invoice', 'Cancelled AR Invoice', 'Cancelled')
+      if self.status == 'GRPO Pending'
+        statuses =  InvoiceRequest.statuses.except('Cancelled AP Invoice', 'Cancelled AR Invoice', 'Cancelled', 'AP Invoice Request Rejected')
       elsif self.status == 'Pending AP Invoice'
-        statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AR Invoice', 'Cancelled')
+        statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AR Invoice', 'Cancelled', 'GRPO Request Rejected')
       elsif self.status == 'Pending AR Invoice'
-        statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AP Invoice', 'Cancelled')
+        statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AP Invoice', 'Cancelled','AP Invoice Request Rejected','GRPO Request Rejected')
       end
       return {enabled: statuses, disabled: []}
     elsif overseer.logistics?

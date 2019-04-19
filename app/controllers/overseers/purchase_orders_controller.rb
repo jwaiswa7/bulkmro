@@ -56,7 +56,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def inward_dispatch_pickup_queue
-    @status = 'Inward Dispatch Pickup Queue'
+    @status = 'Inward Dispatch Queue'
 
 
     base_filter = {

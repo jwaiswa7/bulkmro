@@ -74,6 +74,6 @@ json.columnFilters [
                        []
                    ]
 
-json.recordsTotal PurchaseOrder.all.count
+json.recordsTotal @indexed_purchase_orders.count
 json.recordsFiltered @indexed_purchase_orders.total_count
 json.draw params[:draw]

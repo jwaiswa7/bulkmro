@@ -1,15 +1,26 @@
 const index = () => {
 
+    $('.cancellation-form-modal').on('change', 'select[name*=rejection_reason]', function (e) {
+        if ($(e.target).val() == "Others") {
+            $('#other-rejection-reason').removeClass('disabled');
+            $('#other-rejection-reason').attr("disabled", false);
+            $('#other-rejection-reason').attr("required", true);
+        } else {
+            $('#other-rejection-reason').attr("disabled", true);
+            $('#other-rejection-reason').find('textarea').val('').attr("required", false);
+        }
+    });
+
     $('.datatable').on('click', '.cancel-po_request', function (e) {
         if (confirm('Do you want to '+ $(this).attr('title').toLowerCase() +' the PO Request?')) {
             var id = $(this).data('po-request-id')
-            var status = $('.cancellation-form-modal').data('status')
             var $this = $(this)
+            var title = $(this).attr('title')
 
             $(this).addClass('disabled')
             $.ajax({
                 data: {},
-                url: "/overseers/po_requests/" + id + "/render_cancellation_form?status=" + status,
+                url: "/overseers/po_requests/" + id + "/render_cancellation_form?purpose=" + title,
                 success: function (data) {
                     $('.cancellation-form-modal').empty()
                     $('.cancellation-form-modal').append(data)
