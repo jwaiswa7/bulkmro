@@ -1,0 +1,35 @@
+<%= simple_form_for(:pipeline_report, :url => pipeline_report_overseers_inquiries_path, :method => :get, :html => {:class => 'col-12 needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <div class="card mt-3">
+    <div class="card-body">
+      <div class="form-row">
+        <div class="col">
+          <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range'}, required: true, label: 'Pick a Date Range' %>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col-12 col-md-4">
+          <%= f.input :inside_sales_executive, as: :select, required:false, collection: Overseer.pipeline_executives.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Inside Sales Owner'} %>
+        </div>
+        <div class="col-12 col-md-4">
+          <%= f.input :sales_manager, as: :select, required: false, collection: Overseer.pipeline_managers.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner'} %>
+        </div>
+        <div class="col-12 col-md-4">
+          <%= f.input :business_head, as: :select, required: false, collection: Overseer.pipeline_managers.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Manager'} %>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col text-center">
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <i class="fal fa-redo mr-2"></i>Refresh Report
+          <% end %>
+        </div>
+        <div class="col text-center">
+          <a href="<%= pipeline_report_overseers_inquiries_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0">
+            Reset Report</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

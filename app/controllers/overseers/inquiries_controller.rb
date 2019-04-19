@@ -314,6 +314,28 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def pipeline_report
+    authorize :inquiry
+
+    # raise
+    respond_to do |format|
+      format.html {
+        service = Services::Overseers::Finders::PipelineReports.new(params, current_overseer)
+        service.call
+
+        # if params['pipeline_report'].present?
+        #   @date_range = params['pipeline_report']['date_range']
+        #
+        # end
+
+        @statuses = Inquiry.statuses
+        @indexed_pipeline_report = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['inquiries_over_time']['buckets']
+        @indexed_summary_row = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row']
+        @summary_total = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row_total']
+      }
+    end
+  end
+
   private
 
     def set_inquiry

@@ -375,6 +375,7 @@ Rails.application.routes.draw do
         get 'kra_report_per_sales_owner'
         get 'export_kra_report'
         get 'bulk_update'
+        get 'pipeline_report'
       end
 
       scope module: 'inquiries' do
