@@ -53,19 +53,6 @@
               <%= f.input :activity_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
             </div>
           </div>
-
-          <div class="form-row">
-            <div class="col-6 col-md-4">
-              <%= f.input :company_type, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.company_types) %>
-            </div>
-            <div class="col-6 col-md-4">
-              <%= f.input :activity_type, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.activity_types) %>
-            </div>
-            <div class="col-12 col-md-4">
-              <%= f.input :purpose, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.purposes) %>
-            </div>
-          </div>
-
           <div class="form-group">
             <div class="select2-wrapper">
               <%= f.input :overseer_ids, as: :select, label: 'Colleagues', collection: Overseer.all.collect {|x| [x.to_s, x.id]}, input_html: {:multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select other overseers'} %>

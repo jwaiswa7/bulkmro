@@ -1,7 +1,6 @@
 class Services::Overseers::PoRequests::Update < Services::Shared::BaseService
-  def initialize(po_request, po_request_comment = nil, current_overseer)
+  def initialize(po_request, current_overseer)
     @po_request = po_request
-    @po_request_comment = po_request_comment
     @current_overseer = current_overseer
   end
 
@@ -32,6 +31,7 @@ class Services::Overseers::PoRequests::Update < Services::Shared::BaseService
       @po_request.save!
       @po_request_comment.save!
     end
+    @po_request_comment
   end
 
   attr_accessor :current_overseer
