@@ -165,5 +165,9 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
   def model_klass
     Company
   end
+
+  def index_klass
+    'CompanyReportsIndex'.constantize
+  end
 end
 
