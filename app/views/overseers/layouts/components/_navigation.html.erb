@@ -239,7 +239,7 @@
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
             <%= nav_dropdown_item 'KRA Report', kra_report_overseers_inquiries_path, policy(:inquiry).index? %>
-            <%= nav_dropdown_item 'TAT Report', tat_report_overseers_inquiries_path, policy(:inquiry).index? %>
+            <%= nav_dropdown_item 'TAT Report', tat_report_overseers_inquiries_path, policy(:inquiry).tat_report? %>
           </div>
         </li>
       <% end %>

@@ -64,7 +64,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def tat_report?
-    developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email) || admin?
+    developer? || admin?
   end
 
   def export_inquiries_tat?

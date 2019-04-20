@@ -1,8 +1,8 @@
 class InquiryMappingTat < ApplicationRecord
 
   belongs_to :inquiry
-  belongs_to :sales_quote
-  belongs_to :sales_order
+  belongs_to :sales_quote, required: false
+  belongs_to :sales_order, required: false
 
 
   scope :with_includes, -> { includes(:inquiry, inquiry: [:inquiry_status_records]) }
