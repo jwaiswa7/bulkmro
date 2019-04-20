@@ -90,6 +90,11 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     @company.assign_attributes(company_params.merge(overseer: current_overseer))
     authorize @company
 
+    if @company.logistics_owner_id_changed?
+      debugger
+      Services::Overseers::PurchaseOrders::UpdateLogisticsOwner(@company).call
+    end
+
     options = @company.name_changed? ? { name: @company.name_change[0] } : false
 
     if @company.save_and_sync(options)
