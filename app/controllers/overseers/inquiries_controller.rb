@@ -94,6 +94,28 @@ class Overseers::InquiriesController < Overseers::BaseController
     export_service.call
   end
 
+  def tat_report
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html {
+        if params['tat_report'].present?
+          @date_range = params['tat_report']['date_range']
+        end
+      }
+      format.json do
+        service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
+        service.call
+
+        if params['tat_report'].present?
+          @date_range = params['tat_report']['date_range']
+        end
+
+        @indexed_tat_reports = service.indexed_records
+      end
+    end
+  end
+
   def export_inquiries_tat
     authorize :inquiry
     service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, [])

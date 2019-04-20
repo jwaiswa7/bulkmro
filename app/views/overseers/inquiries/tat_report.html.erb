@@ -1,0 +1,143 @@
+<% provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+<% provide :can_be_directly_exported_inquiry_tat, true %>
+<% content_for :heading do %>
+  TAT Report
+<% end %>
+<% content_for :table_desc do %>
+    TAT Report <%= "for range " + @date_range.gsub("~","to") if @date_range.present?%> searchable with relevant term/keywords.
+<% end %>
+<% content_for :controller_is_aliased, false %>
+<% content_for :page_title do %>
+  Reports
+<% end %>
+
+<%= render layout: 'tat_search_layout' do %>
+<% end %>
+
+
+<% content_for :header_row do %>
+  <th class="no-sort all"></th>
+  <th class="no-sort all">Inquiry Number</th>
+  <th class="no-sort all">Inquiry Created Time</th>
+  <th class="no-sort all">Products</th>
+  <th class="no-sort all">Inside Sales Owner</th>
+  <th class="no-sort all">Sales Quote</th>
+  <th class="no-sort all">SO Doc ID</th>
+  <th class="no-sort all">Sales Order Number</th>
+  <th class="no-sort all">Sales Order Status</th>
+  <th class="no-sort all">New Inquiry</th>
+  <th class="no-sort all">New Inquiry Date</th>
+  <th class="no-sort all">Acknowledgement Mail</th>
+  <th class="no-sort all">Acknowledgement Mail Date</th>
+  <th class="no-sort all">Cross Reference</th>
+  <th class="no-sort all">Cross Reference Date</th>
+  <th class="no-sort all">Preparing Quotation</th>
+  <th class="no-sort all">Preparing Quotation Date</th>
+  <th class="no-sort all">Quotation Sent</th>
+  <th class="no-sort all">Quotation Sent Date</th>
+  <th class="no-sort all">Draft SO for Approval by Sales Manager</th>
+  <th class="no-sort all">Draft SO for Approval by Sales Manager Date</th>
+  <th class="no-sort all">SO Rejected by Sales Manager</th>
+  <th class="no-sort all">SO Rejected by Sales Manager Date</th>
+  <th class="no-sort all">SO Draft: Pending Accounts Approval</th>
+  <th class="no-sort all">SO Draft: Pending Accounts Approval Date</th>
+  <th class="no-sort all">Rejected by Accounts</th>
+  <th class="no-sort all">Rejected by Accounts Date</th>
+  <th class="no-sort all">Hold by Accounts</th>
+  <th class="no-sort all">Hold by Accounts Date</th>
+  <th class="no-sort all">Order Won</th>
+  <th class="no-sort all">Order Won Date</th>
+  <th class="no-sort all">Order Lost</th>
+  <th class="no-sort all">Order Lost Date</th>
+  <th class="no-sort all">Regret</th>
+  <th class="no-sort all">Regret Date</th>
+  <th class="no-sort all">SAP Rejected</th>
+  <th class="no-sort all">SAP Rejected Date</th>
+<% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+<% end %>
+
+<% content_for :summary_row do %>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

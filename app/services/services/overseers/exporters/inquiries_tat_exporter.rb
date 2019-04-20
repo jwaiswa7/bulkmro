@@ -2,12 +2,12 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
   def initialize(*params)
     super(*params)
     @model = Inquiry
-    @start_at = Date.new(2019, 03, 01)
+    @start_at = Date.new(2019, 01, 01)
     @end_at = Date.new(2019, 03, 31)
     # @end_at = Date.today.end_of_day
     @export_name = 'inquiries_tat'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['Inquiry Number', 'Inquiry Created Time', 'Products', 'Inside Sales Owner', 'Sales Quote', 'SO Doc ID', 'Sales Order Number', 'Sales Order Status', 'New Inquiry', 'New Inquiry Date', 'Acknowledgement Mail', 'Acknowledgement Mail Date', 'Cross Reference', 'Cross Reference Date', 'Preparing Quotation', 'Preparing Quotation Date', 'Quotation Sent', 'Quotation Sent Date', 'Draft SO for Approval by Sales Manager', 'Draft SO for Approval by Sales Manager Date', 'SO Rejected by Sales Manager', 'SO Rejected by Sales Manager Date', 'SO Draft: Pending Accounts Approval', 'SO Draft: Pending Accounts Approval Date', 'Rejected by Accounts', 'Rejected by Accounts Date', 'Hold by Accounts', 'Hold by Accounts Date', 'Order Won', 'Order Won Date', 'Order Lost', 'Order Lost Date', 'Regret', 'Regret Date', 'SAP Rejected', 'SAP Rejected Date']
+    @columns = ['Inquiry Number', 'Inquiry Created Time', 'Products', 'Inside Sales Owner', 'Sales Quote', 'SO Doc ID', 'Sales Order Number', 'Sales Order Status', 'New Inquiry', 'New Inquiry Date', 'Acknowledgement Mail', 'Acknowledgement Mail Date', 'Cross Reference', 'Cross Reference Date', 'Preparing Quotation', 'Preparing Quotation Date', 'Quotation Sent', 'Quotation Sent Date', 'Draft SO for Approval by Sales Manager', 'Draft SO for Approval by Sales Manager Date', 'SO Rejected by Sales Manager', 'SO Rejected by Sales Manager Date', 'SO Draft: Pending Accounts Approval', 'SO Draft: Pending Accounts Approval Date', 'Rejected by Accounts', 'Rejected by Accounts Date', 'Hold by Accounts', 'Hold by Accounts Date', 'Order Won', 'Order Won Date', 'Order Lost', 'Order Lost Date', 'Regret', 'Regret Date']
   end
 
   def call

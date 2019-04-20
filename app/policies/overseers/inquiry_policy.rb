@@ -63,8 +63,12 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def tat_report?
+    developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email) || admin?
+  end
+
   def export_inquiries_tat?
-    developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
+    tat_report?
   end
 
   def create_excel_import?
