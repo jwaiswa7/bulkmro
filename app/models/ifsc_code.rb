@@ -3,4 +3,8 @@ class IfscCode < ApplicationRecord
   belongs_to :bank
 
   scope :with_includes, -> {  }
+
+  def to_s
+    ["IFSC Code", " ##{self.id}"].join
+  end
 end
