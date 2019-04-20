@@ -1,6 +1,13 @@
 <%= provide :container_fluid, true %>
 <% provide :can_be_directly_created, true %>
 <% provide :can_be_ajaxed, true %>
+<% content_for :page_title do %>
+  IFSC Codes
+<% end %>
+
+<% content_for :heading do %>
+  IFSC Codes
+<% end %>
 
 <% content_for :header_row do %>
   <th class="no-sort"></th>
