@@ -91,7 +91,6 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     authorize @company
 
     if @company.logistics_owner_id_changed?
-      debugger
       Services::Overseers::PurchaseOrders::UpdateLogisticsOwner(@company).call
     end
 
