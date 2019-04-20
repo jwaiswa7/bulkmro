@@ -1,5 +1,4 @@
 class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations::Migrations
-  def call
 
     def create_ifsc_code
       service = Services::Shared::Spreadsheets::CsvImporter.new('ifsc_code_list.csv', 'seed_files')
@@ -15,5 +14,4 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         end
       end
     end
-  end
 end
