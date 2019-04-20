@@ -83,7 +83,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def inward_dispatch_delivered_queue
-    @status = 'Inward Dispatch Delivered Queue'
+    @status = 'Inward Delivered Queue'
 
     base_filter = {
         base_filter_key: 'status',
