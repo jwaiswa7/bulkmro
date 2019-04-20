@@ -91,7 +91,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     authorize @company
 
     if @company.logistics_owner_id_changed?
-      Services::Overseers::PurchaseOrders::UpdateLogisticsOwner(@company).call
+      Services::Overseers::PurchaseOrders::UpdateLogisticsOwner.new(@company).call
     end
 
     options = @company.name_changed? ? { name: @company.name_change[0] } : false
