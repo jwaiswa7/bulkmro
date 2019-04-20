@@ -5,6 +5,7 @@ class Export < ApplicationRecord
 
   enum export_type: {
     inquiries: 1,
+    inquiries_tat: 2,
     products: 5,
     companies: 10,
     purchase_orders: 15,
@@ -18,6 +19,7 @@ class Export < ApplicationRecord
     activities: 55,
     company_reviews: 60,
     suppliers: 65,
+    sales_order_reco: 70,
     kra_report: 90,
     company_report: 91
   }

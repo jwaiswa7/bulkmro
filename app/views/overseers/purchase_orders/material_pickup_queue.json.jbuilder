@@ -68,6 +68,6 @@ json.columnFilters [
                        []
                    ]
 
-json.recordsTotal MaterialPickupRequest.count
+json.recordsTotal InwardDispatch.count
 json.recordsFiltered @material_pickup_requests.count
 json.draw params[:draw]

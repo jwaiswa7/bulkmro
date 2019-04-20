@@ -1,9 +1,11 @@
 import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from "../common/updateSummaryBox";
+import updateStatus from "./updateStatus";
 
 const index = () => {
     bindSummaryBox(".summary_box", '.status-filter')
     updateSummaryBox()
+    updateStatus()
     aggregateSummaryBox()
 };
 

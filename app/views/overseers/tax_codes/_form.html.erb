@@ -18,7 +18,7 @@
         <%= f.input :code %>
       </div>
       <div class="col-4">
-        <%= f.input :chapter %>
+        <%= f.input :chapter, readonly: true, input_html: { value: @tax_code.chapter.nil? ? "0000" : @tax_code.chapter}  %>
       </div>
       <div class="col-4">
         <%= f.input :tax_percentage, label: 'Tax %' %>

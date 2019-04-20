@@ -59,8 +59,6 @@ class Inquiry < ApplicationRecord
   has_one :customer_order, dependent: :nullify
   has_one :freight_request
 
-
-
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email
   has_one_attached :supplier_quote
@@ -390,5 +388,11 @@ class Inquiry < ApplicationRecord
 
   def update_last_synced_quote
     self.update_attributes(last_synced_quote_id: self.final_sales_quote.id) if self.final_sales_quote.present?
+  end
+
+  def stages_time_difference
+    self.inquiry_status_records.each do |inquiry_status_record|
+      Services::Overseers::Inquiries::InquiryPreviousStatusRecord.new(inquiry_status_record).call
+    end
   end
 end
