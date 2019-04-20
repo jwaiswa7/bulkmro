@@ -14,8 +14,12 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
       indexed_records = filter_query(indexed_records)
     end
 
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+
     if @base_filter.present?
-      indexed_records =  indexed_records.filter(@base_filter)
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     indexed_records
@@ -28,17 +32,21 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
         multi_match: {
             query: query,
             operator: 'and',
-            fields: %w[inquiry_number_string],
+            fields: %w[inside_sales_owner],
             minimum_should_match: '100%'
         }
     )
 
     if @base_filter.present?
-      indexed_records =  indexed_records.filter(@base_filter)
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
+    end
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
     end
 
     indexed_records

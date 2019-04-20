@@ -1,12 +1,11 @@
 class InquiryMappingTat < ApplicationRecord
 
-
   belongs_to :inquiry
   belongs_to :sales_quote
   belongs_to :sales_order
 
 
-  scope :with_includes, -> { includes(:inquiry, inquiry:[:inquiry_status_records]) }
+  scope :with_includes, -> { includes(:inquiry, inquiry: [:inquiry_status_records]) }
 
   def calculate_turn_around_time(current_status)
     current_record = self.inquiry.inquiry_status_records.find_by(status: current_status)
@@ -16,7 +15,7 @@ class InquiryMappingTat < ApplicationRecord
 
     minutes = ((current_status_time.to_time.to_i - prev_status_time) / 60.0).ceil.abs
     # hours =  distance_of_time_in_words(current_status_time.to_time.to_i - prev_status_time)
-    tat = "#{minutes} mins"
+    tat = minutes
     tat
   end
 

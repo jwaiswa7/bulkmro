@@ -98,19 +98,10 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize :inquiry
 
     respond_to do |format|
-      format.html {
-        if params['tat_report'].present?
-          @date_range = params['tat_report']['date_range']
-        end
-      }
+      format.html {}
       format.json do
         service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
         service.call
-
-        if params['tat_report'].present?
-          @date_range = params['tat_report']['date_range']
-        end
-
         @indexed_tat_reports = service.indexed_records
       end
     end
@@ -173,7 +164,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     send_file(
-      "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
         filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
     )
   end
@@ -311,73 +302,73 @@ class Overseers::InquiriesController < Overseers::BaseController
         inquiries.update_all(update_query)
         redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
       else
-        render json: { error: 'Please select any one field to update' }, status: 500
+        render json: {error: 'Please select any one field to update'}, status: 500
       end
     else
-      render json: { error: 'No such inquiries present' }, status: 500
+      render json: {error: 'No such inquiries present'}, status: 500
     end
   end
 
   private
 
-    def set_inquiry
-      @inquiry ||= Inquiry.find(params[:id])
-    end
+  def set_inquiry
+    @inquiry ||= Inquiry.find(params[:id])
+  end
 
-    def inquiry_params
-      params.require(:inquiry).permit(
+  def inquiry_params
+    params.require(:inquiry).permit(
         :project_uid,
-          :company_id,
-          :contact_id,
-          :industry_id,
-          :inside_sales_owner_id,
-          :outside_sales_owner_id,
-          :sales_manager_id,
-          :billing_address_id,
-          :billing_company_id,
-          :shipping_address_id,
-          :shipping_company_id,
-          :shipping_contact_id,
-          :bill_from_id,
-          :ship_from_id,
-          :status,
-          :opportunity_type,
-          :opportunity_source,
-          :subject,
-          :gross_profit_percentage,
-          :quotation_date,
-          :customer_committed_date,
-          :customer_order_date,
-          :valid_end_time,
-          :quotation_followup_date,
-          :procurement_date,
-          :expected_closing_date,
-          :quote_category,
-          :price_type,
-          :potential_amount,
-          :freight_option,
-          :freight_cost,
-          :total_freight_cost,
-          :customer_po_number,
-          :packing_and_forwarding_option,
-          :payment_option_id,
-          :weight_in_kgs,
-          :customer_po_sheet,
-          :final_supplier_quote,
-          :copy_of_email,
-          :is_sez,
-          :calculation_sheet,
-          :commercial_terms_and_conditions,
-          :comments,
-          :product_type,
-          supplier_quotes: [],
-          inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
-      )
-    end
+        :company_id,
+        :contact_id,
+        :industry_id,
+        :inside_sales_owner_id,
+        :outside_sales_owner_id,
+        :sales_manager_id,
+        :billing_address_id,
+        :billing_company_id,
+        :shipping_address_id,
+        :shipping_company_id,
+        :shipping_contact_id,
+        :bill_from_id,
+        :ship_from_id,
+        :status,
+        :opportunity_type,
+        :opportunity_source,
+        :subject,
+        :gross_profit_percentage,
+        :quotation_date,
+        :customer_committed_date,
+        :customer_order_date,
+        :valid_end_time,
+        :quotation_followup_date,
+        :procurement_date,
+        :expected_closing_date,
+        :quote_category,
+        :price_type,
+        :potential_amount,
+        :freight_option,
+        :freight_cost,
+        :total_freight_cost,
+        :customer_po_number,
+        :packing_and_forwarding_option,
+        :payment_option_id,
+        :weight_in_kgs,
+        :customer_po_sheet,
+        :final_supplier_quote,
+        :copy_of_email,
+        :is_sez,
+        :calculation_sheet,
+        :commercial_terms_and_conditions,
+        :comments,
+        :product_type,
+        supplier_quotes: [],
+        inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
+    )
+  end
 
-    def edit_suppliers_params
-      if params.has_key?(:inquiry)
-        params.require(:inquiry).permit(
+  def edit_suppliers_params
+    if params.has_key?(:inquiry)
+      params.require(:inquiry).permit(
           inquiry_products_attributes: [
               :id,
               inquiry_product_suppliers_attributes: [
@@ -389,66 +380,66 @@ class Overseers::InquiriesController < Overseers::BaseController
                   :_destroy
               ]
           ]
-        )
-      else
-        {}
-      end
+      )
+    else
+      {}
     end
+  end
 
-    def new_purchase_orders_requests_params
-      if params.has_key?(:inquiry)
-        params.require(:inquiry).permit(
+  def new_purchase_orders_requests_params
+    if params.has_key?(:inquiry)
+      params.require(:inquiry).permit(
           :id,
-            po_requests_attributes: [
-                :id,
-                :supplier_id,
-                :inquiry_id,
-                :company_id,
-                :reason_to_stock,
-                :estimated_date_to_unstock,
-                :requested_by_id,
-                :approved_by_id,
-                :_destroy,
-                :logistics_owner_id,
-                :address_id,
-                :contact_id,
-                :payment_option_id,
-                :stock_status,
-                :supplier_committed_date,
-                :blobs,
-                :supplier_po_type,
-                :contact_email,
-                :contact_phone,
-                :bill_from_id,
-                :ship_from_id,
-                :bill_to_id,
-                :ship_to_id,
-                attachments: [],
-                rows_attributes: [
-                    :id,
-                    :_destroy,
-                    :status,
-                    :quantity,
-                    :sales_order_row_id,
-                    :product_id,
-                    :brand,
-                    :tax_code_id,
-                    :tax_rate_id,
-                    :measurement_unit_id,
-                    :unit_price,
-                    :conversion,
-                    :lead_time,
-                    :discount_percentage
-                ],
-                comments_attributes: [
-                    :created_by_id,
-                    :updated_by_id,
-                    :message
-                ]
-            ]
-        )
-      else
-        {}
-      end
+          po_requests_attributes: [
+              :id,
+              :supplier_id,
+              :inquiry_id,
+              :company_id,
+              :reason_to_stock,
+              :estimated_date_to_unstock,
+              :requested_by_id,
+              :approved_by_id,
+              :_destroy,
+              :logistics_owner_id,
+              :address_id,
+              :contact_id,
+              :payment_option_id,
+              :stock_status,
+              :supplier_committed_date,
+              :blobs,
+              :supplier_po_type,
+              :contact_email,
+              :contact_phone,
+              :bill_from_id,
+              :ship_from_id,
+              :bill_to_id,
+              :ship_to_id,
+              attachments: [],
+              rows_attributes: [
+                  :id,
+                  :_destroy,
+                  :status,
+                  :quantity,
+                  :sales_order_row_id,
+                  :product_id,
+                  :brand,
+                  :tax_code_id,
+                  :tax_rate_id,
+                  :measurement_unit_id,
+                  :unit_price,
+                  :conversion,
+                  :lead_time,
+                  :discount_percentage
+              ],
+              comments_attributes: [
+                  :created_by_id,
+                  :updated_by_id,
+                  :message
+              ]
+          ]
+      )
+    else
+      {}
     end
+  end
 end
