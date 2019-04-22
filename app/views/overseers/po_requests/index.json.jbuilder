@@ -11,21 +11,44 @@ json.data (@po_requests) do |po_request|
                       elsif policy(po_request).show_payment_request?
                         row_action_button(overseers_payment_request_path(po_request.payment_request), 'eye', 'View Payment Request', 'info', :_blank)
                       end,
-                      if policy(po_request).sending_po_to_supplier_new_email_message?
+                      if policy(po_request).sending_po_to_supplier_new_email_message? && current_overseer.smtp_password.present?
                         row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Send Purchase Order to Supplier', 'dark', :_blank)
+                      else
+                        row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'dark disabled')
                       end,
-                      if policy(po_request).dispatch_supplier_delayed_new_email_message?
+                      if policy(po_request).dispatch_supplier_delayed_new_email_message? && current_overseer.smtp_password.present?
                         row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'envelope', 'Dispatch from Supplier Delayed', 'success', :_blank)
+                      else
+                        row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'success disabled')
                       end,
-                      if policy(po_request).material_received_in_bm_warehouse_new_email_msg?
+                      if policy(po_request).material_received_in_bm_warehouse_new_email_msg? && current_overseer.smtp_password.present?
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
+                      else
+                        row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'warning disabled')
+                      end,
+                      if policy(po_request).can_cancel?
+                        link_to('', class: ['btn btn-sm btn-dark cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Cancel', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
+                      end,
+                      if po_request.po_request_type == 'Stock' && policy(po_request).can_reject?
+                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
+                      elsif policy(po_request).can_reject?
+                        link_to('', class: po_request.status != "Supplier PO Request Rejected" ? ['btn btn-sm btn-danger cancel-po_request'] : ['btn btn-sm btn-danger cancel-po_request disabled'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true ) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
                       end
                   ].join(' '),
                   conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),
+                  status_badge(po_request.status),
                   conditional_link(po_request.inquiry.to_s, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
-                  if po_request.purchase_order.present? && (po_request.status == 'PO Created')
+                  if po_request.purchase_order.present? && (po_request.status == 'Supplier PO: Created Not Sent')
                     link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank')
-
                   else
                     po_request.sales_order.order_number if po_request.sales_order.present?
                   end,

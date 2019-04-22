@@ -152,6 +152,16 @@ module DisplayHelper
     (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
   end
 
+  def format_boolean_with_badge(status)
+    (if status == 'complete'
+        '<i class="far fa-check text-success"></i>'
+     elsif status == 'partial'
+        '<i class="far fa-check text-color-dark-blue"> <span class="badge badge-color-dark-blue">Partial</span></i>'
+     else
+        '<i class="far fa-times text-danger"></i>'
+     end).html_safe
+  end
+
   def format_boolean_label(true_or_false, verb = '')
     yes = verb ? verb : 'Yes'
     no = verb ? ['Not', verb].join(' ') : 'No'

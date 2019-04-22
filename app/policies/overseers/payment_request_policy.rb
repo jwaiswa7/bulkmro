@@ -15,4 +15,8 @@ class Overseers::PaymentRequestPolicy < Overseers::ApplicationPolicy
   def payment_request_logistics_and_accounts?
     edit_payment_queue? || logistics?
   end
+
+  def update_payment_status?
+    accounts? || admin?
+  end
 end

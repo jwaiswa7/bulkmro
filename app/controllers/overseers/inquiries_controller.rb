@@ -94,6 +94,15 @@ class Overseers::InquiriesController < Overseers::BaseController
     export_service.call
   end
 
+  def export_inquiries_tat
+    authorize :inquiry
+    service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, [])
+    service.call
+    export = Export.inquiries_tat.not_filtered.last
+    export_report = export.report if export.present?
+    export_report.present? ? redirect_to(url_for(export_report)) : redirect_to(overseers_inquiries_path, notice: 'Inquiries TAT download failed!')
+  end
+
   def index_pg
     @inquiries = ApplyDatatableParams.to(policy_scope(Inquiry.all.with_includes), params)
     authorize @inquiries
@@ -248,6 +257,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, @inquiry.sales_quotes, purchase_order).call
     render json: {data: inquiry_json}
   end
+
   def create_purchase_orders_requests
     @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
     authorize @inquiry
@@ -274,7 +284,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     if inquiries.present?
       query_params = params['bulk_update_inquiries'].to_enum.to_h
-      update_query = query_params.except('inquiries').reject {|_,v| v.blank?}
+      update_query = query_params.except('inquiries').reject {|_, v| v.blank?}
       if update_query.present?
         inquiries.update_all(update_query)
         redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')

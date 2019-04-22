@@ -2,7 +2,7 @@ class IfscCodesIndex < BaseIndex
   define_type IfscCode.all do
     field :id
     field :ifsc_code, analyzer: 'sku_substring'
-    field :ifsc_complete, type: 'text', value: -> (record) {record.ifsc_code} do
+    field :ifsc_complete, type: 'text', value: -> (record) {[record.ifsc_code, record.branch].join(' ')} do
       field :keywordstring, type: 'text', analyzer: 'keyword_analyzer'
       field :edgengram, type: 'text', analyzer: 'edge_ngram_analyzer', search_analyzer: 'edge_ngram_search_analyzer'
       field :completion, type: 'completion'

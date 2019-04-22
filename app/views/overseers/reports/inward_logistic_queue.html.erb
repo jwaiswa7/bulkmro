@@ -1,0 +1,58 @@
+<div class="col-lg-12">
+  <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4" type="button" data-toggle="collapse" data-target="#summary">
+    Inward Logistics Queue Summary
+  </a>
+
+  <div id="summary" class="collapse show">
+    <div class="mt-2 form-row d-flex flex-row align-content-stretch">
+      <% @data.summary_box_data.each_with_index do |title, index| %>
+        <div class="col-4 col-md-3 col-lg-3 col-xl-4 d-flex flex-row align-content-stretch">
+
+            <div class="card w-100 mb-2 rim rim-bottom border-<%= index == @data.summary_box_data.size - 1 ? "warning" : "success" %>">
+              <div class="card-body px-3 pt-3 pb-3">
+                <div class="text-center d-flex flex-column h-100">
+                  <p class="mb-1 text-small">
+                    <a href="#"><strong><%= title.first.to_s == "with_inward_pending" ? "Delivered : GRPO Pending".upcase : title.first.to_s.humanize.remove("With").upcase %></strong></a>
+                  </p>
+                  <h5 class="mb-0 mt-auto text-<%= index == @data.summary_box_data.size - 1 ? "warning" : "success" %>"><%= @data.summary_box_data[title.first] %></h5>
+                </div>
+              </div>
+            </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<% provide :container_fluid, true %>
+<div class="col-lg-12 mb-0">
+  <div class="page-header mb-0">
+    <h2>Inward Logistics Queue Report</h2>
+    <p>Inward Logistics Queue Report from <strong><%= format_date_without_time(Date.new(2018, 04, 01)) %></strong> to
+      <strong><%= format_date_without_time(Date.today.end_of_day) %></strong>.</p>
+  </div>
+</div>
+
+<table class="table text-center mt-3">
+  <thead data-toggle="sticky">
+  <tr>
+    <th class="text-uppercase">Logistics Owner</th>
+    <th class="text-uppercase text-black-50">Material Not Ready</th>
+    <th class="text-uppercase text-black-50">Material Pickups Pending</th>
+    <th class="text-uppercase text-black-50">Inward Pending</th>
+    <th class="text-uppercase text-black-50">Status Partial Grpo Done</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @data.entries.each do |overseer, values| %>
+    <tr>
+      <th><%= @data.entries[overseer][:name] %></th>
+      <% values.each do |key, value| %>
+        <% if key != :name %>
+          <td class="text-uppercase text-black-50"><%= value %></td>
+        <% end %>
+      <% end %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
