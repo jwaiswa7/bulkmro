@@ -13,7 +13,7 @@ class Services::Overseers::Reports::InwardLogisticQueue < Services::Overseers::R
     @data.summary_box_data[:with_inward_pending] = inward_pending.values.sum
     partial_purchase_order_with_grpo = PurchaseOrder.where(is_partial: true, status: 40)
     if partial_purchase_order_with_grpo.present?
-      partial_purchase_order_with_logistics = partial_purchase_order_with_grpo..group(:logistics_owner_id).count
+      partial_purchase_order_with_logistics = partial_purchase_order_with_grpo.group(:logistics_owner_id).count
     end
     logistic_overseers = Overseer.where(role: 'logistics').order(:first_name)
     @data.entries[:nil] = { name: 'Not Assigned', with_material_not_ready: 0, material_pickups_pending: 0, with_inward_pending: 0, with_status_partial_grpo_done: 0 }
