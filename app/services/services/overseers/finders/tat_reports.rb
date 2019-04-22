@@ -36,7 +36,6 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
             minimum_should_match: '100%'
         }
     )
-
     if @base_filter.present?
       indexed_records = indexed_records.filter(@base_filter)
     end

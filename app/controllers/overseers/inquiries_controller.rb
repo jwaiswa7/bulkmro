@@ -109,7 +109,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def export_inquiries_tat
     authorize :inquiry
-    service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, [])
+    service = Services::Overseers::Exporters::TatReports.new([], current_overseer, paginate: false)
     service.call
     export = Export.inquiries_tat.not_filtered.last
     export_report = export.report if export.present?

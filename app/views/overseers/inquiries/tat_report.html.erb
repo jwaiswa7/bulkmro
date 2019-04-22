@@ -1,7 +1,7 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
+<% provide :can_be_directly_exported_inquiry_tat, true %>
 <% provide :wrap_whitespace, true %>
-<%# provide :can_be_directly_exported_inquiry_tat, true %>
 <% content_for :heading do %>
   TAT Report
 <% end %>
@@ -23,31 +23,57 @@
   <th class="no-sort all">SO Doc ID</th>
   <th class="no-sort all">Sales Order Number</th>
   <th class="no-sort all">Sales Order Status</th>
-  <th class="no-sort all">New Inquiry(mins)</th>
+  <th class="no-sort all">New Inquiry(Minutes)</th>
+  <th class="no-sort all">New Inquiry(Hours)</th>
+  <th class="no-sort all">New Inquiry(Days)</th>
   <th class="no-sort all text-right">New Inquiry Date</th>
-  <th class="no-sort all">Acknowledgement Mail(mins)</th>
+  <th class="no-sort all">Acknowledgement Mail(Minutes)</th>
+  <th class="no-sort all">Acknowledgement Mail(Minutes)</th>
+  <th class="no-sort all">Acknowledgement Mail(Days)</th>
   <th class="no-sort all text-right">Acknowledgement Mail Date</th>
-  <th class="no-sort all">Cross Reference(mins)</th>
+  <th class="no-sort all">Cross Reference(Minutes)</th>
+  <th class="no-sort all">Cross Reference(Minutes)</th>
+  <th class="no-sort all">Cross Reference(Days)</th>
   <th class="no-sort all text-right">Cross Reference Date</th>
-  <th class="no-sort all">Preparing Quotation(mins)</th>
+  <th class="no-sort all">Preparing Quotation(Minutes)</th>
+  <th class="no-sort all">Preparing Quotation(Minutes)</th>
+  <th class="no-sort all">Preparing Quotation(Days)</th>
   <th class="no-sort all text-right">Preparing Quotation Date</th>
-  <th class="no-sort all">Quotation Sent(mins)</th>
+  <th class="no-sort all">Quotation Sent(Minutes)</th>
+  <th class="no-sort all">Quotation Sent(Minutes)</th>
+  <th class="no-sort all">Quotation Sent(Days)</th>
   <th class="no-sort all text-right">Quotation Sent Date</th>
-  <th class="no-sort all">Draft SO for Approval by Sales Manager(mins)</th>
+  <th class="no-sort all">Draft SO for Approval by Sales Manager(Minutes)</th>
+  <th class="no-sort all">Draft SO for Approval by Sales Manager(Minutes)</th>
+  <th class="no-sort all">Draft SO for Approval by Sales Manager(Days)</th>
   <th class="no-sort all text-right">Draft SO for Approval by Sales Manager Date</th>
-  <th class="no-sort all">SO Rejected by Sales Manager(mins)</th>
+  <th class="no-sort all">SO Rejected by Sales Manager(Minutes)</th>
+  <th class="no-sort all">SO Rejected by Sales Manager(Minutes)</th>
+  <th class="no-sort all">SO Rejected by Sales Manager(Days)</th>
   <th class="no-sort all text-right">SO Rejected by Sales Manager Date</th>
-  <th class="no-sort all ">SO Draft: Pending Accounts Approval(mins)</th>
+  <th class="no-sort all ">SO Draft: Pending Accounts Approval(Minutes)</th>
+  <th class="no-sort all ">SO Draft: Pending Accounts Approval(Minutes)</th>
+  <th class="no-sort all ">SO Draft: Pending Accounts Approval(Days)</th>
   <th class="no-sort all text-right">SO Draft: Pending Accounts Approval Date</th>
-  <th class="no-sort all">Rejected by Accounts(mins)</th>
+  <th class="no-sort all">Rejected by Accounts(Minutes)</th>
+  <th class="no-sort all">Rejected by Accounts(Minutes)</th>
+  <th class="no-sort all">Rejected by Accounts(Days)</th>
   <th class="no-sort all text-right">Rejected by Accounts Date</th>
-  <th class="no-sort all">Hold by Accounts(mins)</th>
+  <th class="no-sort all">Hold by Accounts(Minutes)</th>
+  <th class="no-sort all">Hold by Accounts(Minutes)</th>
+  <th class="no-sort all">Hold by Accounts(Days)</th>
   <th class="no-sort all text-right">Hold by Accounts Date</th>
-  <th class="no-sort all">Order Won(mins)</th>
+  <th class="no-sort all">Order Won(Minutes)</th>
+  <th class="no-sort all">Order Won(Minutes)</th>
+  <th class="no-sort all">Order Won(Days)</th>
   <th class="no-sort all text-right">Order Won Date</th>
-  <th class="no-sort all">Order Lost(mins)</th>
+  <th class="no-sort all">Order Lost(Minutes)</th>
+  <th class="no-sort all">Order Lost(Minutes)</th>
+  <th class="no-sort all">Order Lost(Days)</th>
   <th class="no-sort all text-right">Order Lost Date</th>
-  <th class="no-sort all">Regret(mins)</th>
+  <th class="no-sort all">Regret(Minutes)</th>
+  <th class="no-sort all">Regret(Minutes)</th>
+  <th class="no-sort all">Regret(Days)</th>
   <th class="no-sort all text-right">Regret Date</th>
 <% end %>
 
@@ -55,6 +81,32 @@
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="daterange"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>

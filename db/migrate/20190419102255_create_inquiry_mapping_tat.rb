@@ -4,6 +4,7 @@ class CreateInquiryMappingTat < ActiveRecord::Migration[5.2]
       t.references :inquiry, foreign_key: true
       t.integer :sales_quote_id
       t.integer :sales_order_id
+      t.timestamp :inquiry_created_at
     end
   end
 end

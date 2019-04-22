@@ -1,5 +1,7 @@
 class InquiryMappingTat < ApplicationRecord
 
+  update_index('inquiry_mapping_tats#inquiry_mapping_tat') { self }
+
   belongs_to :inquiry
   belongs_to :sales_quote, required: false
   belongs_to :sales_order, required: false
@@ -14,7 +16,6 @@ class InquiryMappingTat < ApplicationRecord
     current_status_time = current_record.created_at
 
     minutes = ((current_status_time.to_time.to_i - prev_status_time) / 60.0).ceil.abs
-    # hours =  distance_of_time_in_words(current_status_time.to_time.to_i - prev_status_time)
     tat = minutes
     tat
   end
