@@ -33,5 +33,6 @@ class InwardDispatchesIndex < BaseIndex
     field :so_date, value: -> (record) { record.purchase_order.po_request.sales_order.mis_date if record.purchase_order.po_request.present? && record.purchase_order.po_request.sales_order.present? }, type: 'date'
     field :updated_at, type: 'date'
     field :created_at, type: 'date'
+    field :latest_comment, value: -> (record) { record.last_comment.created_at if record.last_comment.present? }, type: 'date'
   end
 end
