@@ -217,14 +217,16 @@ class PurchaseOrder < ApplicationRecord
         partial = false
       end
       if invoice_request.present?
-        self.update_attributes({ material_status: invoice_request.status, is_partial: partial })
+        json = { material_status: invoice_request.status, is_partial: partial }
+        self.update_attributes(json)
       else
         if 'Material Pickup'.in? self.inward_dispatches.map(&:status)
           status = partial ? 'Inward Dispatch: Partial' : 'Inward Dispatch'
         elsif 'Material Delivered'.in? self.inward_dispatches.map(&:status)
           status = partial ? 'Material Partially Delivered' : 'Material Delivered'
         end
-        self.update_attributes({ material_status: status, is_partial: partial })
+        json = { material_status: status, is_partial: partial }
+        self.update_attributes(json)
       end
     else
       self.update_attribute(:material_status, 'Material Readiness Follow-Up')
@@ -234,5 +236,4 @@ class PurchaseOrder < ApplicationRecord
   def po_request_present?
     self.po_request.present? ? (self.po_request.status == 'Supplier PO Sent' || self.po_request.status == 'Supplier PO: Created Not Sent') : false
   end
-
 end
