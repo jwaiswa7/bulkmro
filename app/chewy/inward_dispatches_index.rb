@@ -7,7 +7,9 @@ class InwardDispatchesIndex < BaseIndex
 
   define_type InwardDispatch.all.with_includes do
     field :id
+    field :inquiry_number, value: -> (record) { record.purchase_order.inquiry.inquiry_number if record.inquiry.present? }, type: 'integer'
     field :inquiry_id, value: -> (record) { record.purchase_order.inquiry.id if record.inquiry.present? }
+    field :so_number, value: -> (record) {record.purchase_order.po_request.sales_order.order_number if record.purchase_order.po_request.present? }, type: 'integer'
     field :inquiry, value: -> (record) { record.purchase_order.inquiry.to_s }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] }
     field :status_string, value: -> (record) { record.status.to_s }
@@ -24,10 +26,12 @@ class InwardDispatchesIndex < BaseIndex
     field :company_rating, value: ->(record) { record.purchase_order.get_supplier(record.purchase_order.rows.first.metadata['PopProductId'].to_i).try(:rating) if record.purchase_order.rows.present? }
     field :po_date, value: -> (record) { record.purchase_order.metadata['PoDate'].to_date if record.purchase_order.metadata['PoDate'].present? && record.purchase_order.valid_po_date? }, type: 'date'
     field :followup_date, value: -> (record) { record.purchase_order.followup_date }, type: 'date'
+    field :customer_committed_date, value: -> (record) { record.purchase_order.po_request.inquiry.customer_committed_date if record.purchase_order.po_request.present? }, type: 'date'
     field :expected_dispatch_date, type: 'date'
     field :expected_delivery_date, type: 'date'
     field :actual_delivery_date, type: 'date'
-    field :created_at, type: 'date'
+    field :so_date, value: -> (record) { record.purchase_order.po_request.sales_order.mis_date if record.purchase_order.po_request.present? && record.purchase_order.po_request.sales_order.present? }, type: 'date'
     field :updated_at, type: 'date'
+    field :created_at, type: 'date'
   end
 end
