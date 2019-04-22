@@ -37,6 +37,8 @@ class Company < ApplicationRecord
   has_many :inquiry_products, through: :inquiries
   has_many :products, through: :inquiry_products
   has_many :sales_quotes, through: :inquiries, source: :sales_quotes
+  has_many :final_sales_quotes, through: :inquiries, source: :final_sales_quote
+  has_many :final_sales_orders, through: :inquiries, source: :final_sales_orders
   has_many :sales_orders, through: :inquiries
   has_many :invoices, through: :inquiries
   has_many :addresses, dependent: :destroy
@@ -92,7 +94,7 @@ class Company < ApplicationRecord
   delegate :account_type, :is_customer?, :is_supplier?, to: :account
   alias_attribute :gst, :tax_identifier
 
-  scope :with_includes, -> {includes(:addresses, :inquiries, :contacts)}
+  scope :with_includes, -> {includes(:addresses, :inquiries, :contacts, :invoices, :sales_orders)}
   scope :acts_as_supplier, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier])}
   scope :acts_as_customer, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer])}
 
