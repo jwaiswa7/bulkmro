@@ -4,7 +4,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def index
     authorize :purchase_order
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.json do
         service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer)
         service.call
@@ -28,9 +28,9 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @metadata[:packing] = @purchase_order.get_packing(@metadata)
 
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.pdf do
-        render_pdf_for(@purchase_order, locals: { inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier })
+        render_pdf_for(@purchase_order, locals: {inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier})
       end
     end
   end
@@ -39,7 +39,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     authorize :purchase_order
 
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.json do
         service = Services::Overseers::Finders::MaterialReadinessQueues.new(params, current_overseer)
         service.call
@@ -55,62 +55,65 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     render 'material_readiness_queue'
   end
 
-  def material_pickup_queue
-    @status = 'Material Pickup Queue'
+  def inward_dispatch_pickup_queue
+    @status = 'Inward Dispatch Queue'
 
 
     base_filter = {
         base_filter_key: 'status',
 
-        base_filter_value: MaterialPickupRequest.statuses['Material Pickup']
+        base_filter_value: InwardDispatch.statuses['Material Pickup']
     }
 
 
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.json do
-        service = Services::Overseers::Finders::MaterialPickupRequests.new(params.merge(base_filter), current_overseer)
+        service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
 
         service.call
 
-        @indexed_material_pickup_requests = service.indexed_records
-        @material_pickup_requests = service.records.try(:reverse)
+        @indexed_inward_dispatches = service.indexed_records
+        @inward_dispatches = service.records.try(:reverse)
       end
     end
 
-    authorize :material_pickup_request
-    render 'material_pickup_queue'
+    authorize :inward_dispatch
+    render 'inward_dispatch_pickup_queue'
   end
 
-  def material_delivered_queue
-    @status = 'Material Delivered Queue'
+  def inward_dispatch_delivered_queue
+    @status = 'Inward Delivered Queue'
 
     base_filter = {
         base_filter_key: 'status',
 
-        base_filter_value: MaterialPickupRequest.statuses['Material Delivered']
+        base_filter_value: InwardDispatch.statuses['Material Delivered']
     }
 
 
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.json do
-        service = Services::Overseers::Finders::MaterialPickupRequests.new(params.merge(base_filter), current_overseer)
+        service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
 
         service.call
 
-        @indexed_material_pickup_requests = service.indexed_records
-        @material_pickup_requests = service.records.try(:reverse)
+        @indexed_inward_dispatches = service.indexed_records
+        @inward_dispatches = service.records.try(:reverse)
       end
     end
 
-    authorize :material_pickup_request
-    render 'material_pickup_queue'
+    authorize :inward_dispatch
+    render 'inward_dispatch_pickup_queue'
   end
 
   def edit_material_followup
     authorize @purchase_order
     @po_request = @purchase_order.po_request
+    if @purchase_order.logistics_owner_id.nil?
+      @purchase_order.update_attribute(:logistics_owner, Services::Overseers::InwardDispatches::SelectLogisticsOwner.new(@purchase_order).call)
+    end
   end
 
   def update_material_followup
@@ -119,7 +122,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
     if @purchase_order.valid?
 
-      messages = DateModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date', 'followup_date'])
+      messages = FieldModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date', 'followup_date', 'logistics_owner_id'])
       if messages.present?
         @purchase_order.comments.create(message: messages, overseer: current_overseer)
       end
@@ -134,7 +137,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def autocomplete
     purchase_orders = PurchaseOrder.all
     if params[:inquiry_number].present?
-      purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: { inquiry_number: params[:inquiry_number] })
+      purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: {inquiry_number: params[:inquiry_number]})
       purchase_orders = purchase_orders.where(id: purchase_orders.pluck(:id))
     end
     @purchase_orders = ApplyParams.to(purchase_orders, params)
@@ -145,8 +148,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def autocomplete_without_po_requests
     purchase_orders = PurchaseOrder.all
     if params[:inquiry_number].present?
-      purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: { inquiry_number: params[:inquiry_number] })
-      purchase_orders = purchase_orders.where(id: purchase_orders.reject { |r| r.po_request.present? }.pluck(:id))
+      purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: {inquiry_number: params[:inquiry_number]})
+      purchase_orders = purchase_orders.where(id: purchase_orders.reject {|r| r.po_request.present?}.pluck(:id))
     end
     @purchase_orders = ApplyParams.to(purchase_orders, params)
 
@@ -178,10 +181,10 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
   end
 
-  def update_logistics_owner_for_pickup_requests
-    @pickup_requests = MaterialPickupRequest.where(id: params[:pickup_requests])
-    authorize @pickup_requests
-    @pickup_requests.each do |pickup_request|
+  def update_logistics_owner_for_inward_dispatches
+    @inward_dispatches = InwardDispatch.where(id: params[:inward_dispatches])
+    authorize @inward_dispatches
+    @inward_dispatches.each do |pickup_request|
       pickup_request.update_attributes(logistics_owner_id: params[:logistics_owner_id])
     end
   end
@@ -194,7 +197,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         return product_supplier if purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy?
       end
       if purchase_order.inquiry.final_sales_quote.present?
-        product_supplier = purchase_order.inquiry.final_sales_quote.rows.select { |sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id }.first
+        product_supplier = purchase_order.inquiry.final_sales_quote.rows.select {|sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id}.first
         product_supplier.supplier if product_supplier.present?
       end
     end
@@ -206,12 +209,12 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     def purchase_order_params
       params.require(:purchase_order).permit(
         :material_status,
-          :supplier_dispatch_date,
-          :followup_date,
-          :logistics_owner_id,
-          :revised_supplier_delivery_date,
-          comments_attributes: [:id, :message, :created_by_id],
-          attachments: []
+        :supplier_dispatch_date,
+        :followup_date,
+        :logistics_owner_id,
+        :revised_supplier_delivery_date,
+        comments_attributes: [:id, :message, :created_by_id],
+        attachments: []
       )
     end
 end

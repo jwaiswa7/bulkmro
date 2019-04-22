@@ -14,4 +14,9 @@ class PaymentOption < ApplicationRecord
   def self.default
     first
   end
+
+  def get_days
+    return 30 if self.days.blank?
+    self.days <= 0 ? 30 : self.days
+  end
 end

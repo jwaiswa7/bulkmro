@@ -11,7 +11,7 @@
   <% if action_name == 'pending_stock' || 'pending_stock_approval' %>
     <%= action_name.capitalize.gsub('_',' ') %> Requests
   <%else %>
-    <%= action_name == 'index' ? 'Completed' : (action_name == 'pending_and_rejected') ? 'Pending' : action_name.capitalize %> Purchase Order Requests
+    <%= action_name == 'index' ? 'Completed PO Requests ' : (action_name == 'pending_and_rejected') ? 'Pending and Rejected PO Requests' : action_name.capitalize %>
   <% end %>
 <% end %>
 
@@ -43,7 +43,8 @@
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort desktop text-right" data-name="po_request_no">PO Request No.</th>
-  <th class="no-sort desktop text-right" data-name="inquiry">Inquiry</th>
+  <th class="no-sort desktop text-right" data-name="status">Status</th>
+  <th class="no-sort desktop" data-name="inquiry">Inquiry</th>
   <% if action_name == 'index' || action_name == "Completed" %>
     <th class="no-sort all text-right" data-name="po_number">PO Number</th>
   <% else %>
@@ -58,7 +59,7 @@
   <th class="no-sort all text-right">Customer Committed Delivery Date</th>
   <th class="no-sort all text-right">Supplier Committed Delivery Date</th>
   <th class="sort desktop text-right" data-name="created_at">Requested At</th>
-  <th class="no-sort desktop text-right" data-name="name">Updated At</th>
+  <th class="no-sort desktop text-right" data-name="updated_at">Updated At</th>
   <th class="no-sort desktop">Email Status</th>
   <th class="no-sort desktop">Latest Comment</th>
 <% end %>
@@ -67,3 +68,4 @@
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>
+<div class="cancellation-form-modal" data-status="<%= params[:status] %>"></div>

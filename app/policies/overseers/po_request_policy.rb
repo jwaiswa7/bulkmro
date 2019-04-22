@@ -17,6 +17,10 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     index?
   end
 
+  def under_amend?
+    index?
+  end
+
   def amended?
     index?
   end
@@ -33,20 +37,32 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     manager_or_sales?
   end
 
-  def can_cancel?
-    record.purchase_order.present? && (manager_or_sales?) && record.not_amending?
+  def can_supplier_po_request_pending?
+    record.purchase_order.blank? && (manager_or_sales? || admin?) && record.status == 'Supplier PO: Request Pending'
   end
 
-  def can_reject?
-    record.purchase_order.blank? && (logistics? || admin?)
+  def can_supplier_po_created_not_sent_requests?
+    record.purchase_order.blank? && (logistics? || admin?) && record.status == 'Supplier PO: Request Pending'
   end
 
-  def can_update_rejected_po_requests?
-    record.purchase_order.present? && (manager_or_sales?) && record.status == 'Rejected'
+  def can_amend_completed_po_requests?
+    record.purchase_order.present? && (admin? || manager_or_sales?) && (record.status == 'Supplier PO: Created Not Sent' || record.status == 'Supplier PO: Amended')
   end
 
   def can_process_amended_po_requests?
-    record.purchase_order.present? && (logistics? || admin? || manager_or_sales?) && record.amending?
+    record.purchase_order.present? && (logistics? || admin?) && record.amending?
+  end
+
+  def can_cancel?
+    (manager_or_sales? || logistics? || admin?) && record.status != 'Cancelled'
+  end
+
+  def can_reject?
+    record.purchase_order.blank? && (logistics? || admin?) && record.status == 'Supplier PO: Request Pending' && record.status != 'Supplier PO Request Rejected'
+  end
+
+  def can_update_rejected_po_requests?
+    record.purchase_order.blank? && (manager_or_sales? || admin?) && record.status == 'Supplier PO Request Rejected'
   end
 
   def show_payment_request?
@@ -62,7 +78,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def sending_po_to_supplier_new_email_message?
-    (record.status == 'PO Created' || record.stock_status == 'Stock Supplier PO Created') && record.purchase_order && record.contact.present?
+    record.purchase_order && record.contact.present? && (record.status != 'Cancelled' || record.stock_status == 'Supplier PO Request Rejected' || record.status == 'Supplier PO Sent')
   end
 
   def sending_po_to_supplier_create_email_message?
@@ -70,7 +86,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def dispatch_supplier_delayed_new_email_message?
-    (record.status == 'PO Created' || record.stock_status == 'Stock Supplier PO Created') && (admin? || logistics?) && record.purchase_order && record.contact.present?
+    (record.status == 'Supplier PO: Created Not Sent' || record.status == 'Supplier PO Sent' || record.stock_status == 'Stock Supplier PO Created') && (admin? || logistics?) && record.purchase_order && record.contact.present?
   end
 
   def dispatch_supplier_delayed_create_email_message?
@@ -78,11 +94,19 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def material_received_in_bm_warehouse_new_email_msg?
-    (record.status == 'PO Created' || record.stock_status == 'Stock Supplier PO Created') && (admin? || logistics?) && record.purchase_order && record.contact.present? && record.purchase_order.material_status.present?
+    (record.status == 'Supplier PO: Created Not Sent' || record.status == 'Supplier PO Sent' || record.stock_status == 'Stock Supplier PO Created') && (admin? || logistics?) && record.purchase_order && record.contact.present? && record.purchase_order.material_status.present?
   end
 
   def material_received_in_bm_warehouse_create_email_msg?
     material_received_in_bm_warehouse_new_email_msg?
+  end
+
+  def cancel_porequest?
+    update?
+  end
+
+  def render_cancellation_form?
+    can_cancel? || can_reject?
   end
 
   def stock?

@@ -72,6 +72,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     allow_export?
   end
 
+  def export_for_reco?
+    (developer? || allow_export?) && overseer.can_send_emails?
+  end
+
   def export_rows?
     allow_export?
   end
