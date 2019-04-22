@@ -4,7 +4,7 @@ class Services::Overseers::PurchaseOrders::UpdateLogisticsOwner < Services::Shar
   end
 
   def call
-    company.inquiries.joins(:purchase_orders).where('purchase_orders.logistics_owner_id = ?', nil).each do |po|
+    PurchaseOrder.with_inquiry_by_company(company.id).with_all_material_statuses.each do |po|
       po.update_attributes(logistics_owner_id: company.logistics_owner_id)
       po.inward_dispatches.where(logistics_owner_id: nil).each do |inward_dispatch|
         inward_dispatch.update_attributes(logistics_owner_id: company.logistics_owner_id)
