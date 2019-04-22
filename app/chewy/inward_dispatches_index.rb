@@ -7,7 +7,8 @@ class InwardDispatchesIndex < BaseIndex
 
   define_type InwardDispatch.all.with_includes do
     field :id
-    field :inquiry_id, value: -> (record) { record.purchase_order.inquiry.inquiry_number if record.inquiry.present? }, type: 'integer'
+    field :inquiry_number, value: -> (record) { record.purchase_order.inquiry.inquiry_number if record.inquiry.present? }, type: 'integer'
+    field :inquiry_id, value: -> (record) { record.purchase_order.inquiry.id if record.inquiry.present? }
     field :so_number, value: -> (record) {record.purchase_order.po_request.sales_order.order_number if record.purchase_order.po_request.present? }, type: 'integer'
     field :inquiry, value: -> (record) { record.purchase_order.inquiry.to_s }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] }
