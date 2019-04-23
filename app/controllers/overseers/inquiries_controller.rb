@@ -109,11 +109,14 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def export_inquiries_tat
     authorize :inquiry
-    service = Services::Overseers::Exporters::TatReports.new([], current_overseer, paginate: false)
+    service = Services::Overseers::Finders::TatReports.new(params, current_overseer, paginate: false)
     service.call
-    export = Export.inquiries_tat.not_filtered.last
-    export_report = export.report if export.present?
-    export_report.present? ? redirect_to(url_for(export_report)) : redirect_to(overseers_inquiries_path, notice: 'Inquiries TAT download failed!')
+
+    indexed_tat_reports = service.indexed_records
+    export_service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, indexed_tat_reports, '-')
+    export_service.call
+
+    redirect_to url_for(Export.inquiries_tat.not_filtered.last.report)
   end
 
   def index_pg

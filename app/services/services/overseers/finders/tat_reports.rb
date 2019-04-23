@@ -8,7 +8,7 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
   end
 
   def all_records
-    indexed_records = super
+    indexed_records = index_klass.limit(model_klass.count).order(sort_definition)
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
