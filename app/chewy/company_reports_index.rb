@@ -1,6 +1,5 @@
 class CompanyReportsIndex < BaseIndex
-  define_type Company.with_includes do
-    default_import_options batch_size: 1000, bulk_size: 10.megabytes, refresh: false
+  define_type Company.all do
     field :id, type: 'integer'
     field :account_id, value: -> (record) {record.account_id}
     field :name, value: -> (record) {record.name}, analyzer: 'fuzzy_substring'
@@ -17,12 +16,21 @@ class CompanyReportsIndex < BaseIndex
     field :expected_value, value: -> (record) { record.final_sales_quotes.joins(:inquiry).where('inquiries.status = ?',7).map(&:calculated_total).compact.flatten.sum }, type: 'double'
     field :order_won, value: -> (record) {record.inquiries.where('inquiries.status = ?', 18).size}, type: 'integer'
     field :company_key, value: -> (record) { record.id }, type: 'integer'
-    field :total_quote_value, value: -> (record) { record.final_sales_quotes.joins(:inquiry).where.not('inquiries.status = ? OR inquiries.status = ?', 10,9).map(&:calculated_total).compact.flatten.sum }, type: 'double'
-    field :total_order_value, value: -> (record) {record.sales_orders.map(&:calculated_total).compact.flatten.sum}, type: 'double'
-    field :total_margin, value: -> (record) { record.sales_orders.map(&:calculated_total_margin).compact.flatten.sum }, type: 'double'
-    field :margin_percentage, value: -> (record) { record.order_margin.sum.to_f / record.order_margin.count }, type: 'double'
-    field :amount_invoiced, value: -> (record) { record.invoices.map(&:calculated_total).compact.flatten.sum }, type: 'double'
+
+    field :final_sales_quotes, value: -> (record) { record.final_sales_quotes.joins(:inquiry).where.not('inquiries.status = ? OR inquiries.status = ?', 10,9)} do
+      field :calculated_total, type: 'double'
+      field :calculated_total_margin_percentage, type: 'double'
+    end
+    field :final_sales_orders do
+      field :calculated_total, type: 'double'
+      field :calculated_total_margin, type: 'double'
+      field :calculated_total_margin_percentage, type: 'double'
+    end
+
+    field :invoices do
+      field :calculated_total, type: 'double'
+    end
+
     field :cancelled_invoiced, value: -> (record) { record.invoices.where(status: 'Cancelled').compact.count }, type: 'integer'
-    field :invoice_margin_percentage, value: -> (record) {record.invoice_margin.sum.to_f / record.invoice_margin.count }, type: 'double'
   end
 end
