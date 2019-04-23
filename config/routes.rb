@@ -250,6 +250,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :ar_invoices
+
     resources :sales_orders do
       member do
         get 'new_purchase_order'

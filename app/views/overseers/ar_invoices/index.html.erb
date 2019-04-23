@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Ar Invoices</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ar_invoices.each do |ar_invoice| %>
+      <tr>
+        <td><%= link_to 'Show', ar_invoice %></td>
+        <td><%= link_to 'Edit', edit_ar_invoice_path(ar_invoice) %></td>
+        <td><%= link_to 'Destroy', ar_invoice, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Ar Invoice', new_ar_invoice_path %>
