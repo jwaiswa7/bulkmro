@@ -9,6 +9,7 @@ class CreateArInvoices < ActiveRecord::Migration[5.2]
       t.integer :status
       t.integer :ar_invoice_number
       t.belongs_to :sales_order
+      t.belongs_to :inquiry
       t.timestamps
       t.userstamps
     end

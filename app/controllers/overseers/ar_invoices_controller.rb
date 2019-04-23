@@ -17,6 +17,7 @@ class Overseers::ArInvoicesController < Overseers::BaseController
   # GET /ar_invoices/new
   def new
     @ar_invoice = ArInvoice.new
+
     authorize @ar_invoice
   end
 
