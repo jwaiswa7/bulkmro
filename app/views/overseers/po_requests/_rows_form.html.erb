@@ -222,7 +222,11 @@
           <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: 'Make', disabled: true %>
         </div>
         <div class="col-12 col-md-2">
-          <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: 'HSN', required: true %>
+          <% if !stock %>
+            <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: 'HSN', required: true %>
+          <% else %>
+            <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, label: 'HSN', required: true %>
+          <% end %>
         </div>
         <div class="col-12 col-md-2">
           <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: 'Tax Rate' %>
