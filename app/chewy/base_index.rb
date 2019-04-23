@@ -60,8 +60,10 @@ class BaseIndex < Chewy::Index
         }
     },
     max_result_window: 5000000,
-    'number_of_replicas': '0',
-    'number_of_shards': '1'
+    'number_of_replicas': '1',
+    'number_of_shards': '1',
+    refresh_interval: -1
+
   )
 
   def self.fields
