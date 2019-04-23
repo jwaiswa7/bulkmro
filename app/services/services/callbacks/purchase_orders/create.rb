@@ -9,7 +9,7 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
             purchase_order.assign_attributes(metadata: params)
             purchase_order.assign_attributes(company: purchase_order.get_supplier)
             purchase_order.assign_attributes(material_status: 'Material Readiness Follow-Up')
-            purchase_order.assign_attributes(logistics_owner: Services::Overseers::InwardDispatches::SelectLogisticsOwner.new(purchase_order).call)
+            purchase_order.assign_attributes(logistics_owner: purchase_order.inquiry.company.logistics_owner)
             if params['PoStatus'].to_i > 0
               purchase_order.assign_attributes(status: params['PoStatus'].to_i)
             else
