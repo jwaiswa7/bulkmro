@@ -15,7 +15,6 @@ const validatePoRequestAddresses = () => {
             var selectedShipToCity = $(parsleyInstance.$element[0]).closest('div.po-request-form').find('[name*=ship_to_id] :selected').data('warehouse-city');
 
             var warehouseStates = $(parsleyInstance.$element[0]).data('warehouse-list').split(',');
-            console.log(selectedWarehouse);
 
             if (selectedBillingSupplierState && selectedShippingSupplierState && !warehouseStates.includes(selectedBillingSupplierState) && !warehouseStates.includes(selectedShippingSupplierState)) {
                 return selectedWarehouseState == locations[2];
@@ -38,7 +37,7 @@ const validatePoRequestAddresses = () => {
         }
     });
 
-    disableBackdateOption($('.supplier-committed-date'));
+    disableBackdateOption($('.supplier-committed-date'), false);
 
     disableBackdateOption($('.lead-time'));
     $('body').on("fields_added.nested_form_fields", function (e, params) {

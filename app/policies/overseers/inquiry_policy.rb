@@ -63,6 +63,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def export_inquiries_tat?
+    developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
+  end
+
   def create_excel_import?
     new_excel_import?
   end
@@ -166,6 +170,22 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def create_purchase_orders_requests?
     developer? || sales? || admin?
+  end
+
+  def kra_report?
+    manager_or_sales? || admin?
+  end
+
+  def kra_report_per_sales_owner?
+    manager_or_sales? || admin?
+  end
+
+  def export_kra_report?
+    manager_or_sales? || admin?
+  end
+
+  def bulk_update?
+    manager? || admin?
   end
 
   class Scope

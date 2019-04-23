@@ -288,7 +288,7 @@
       </div>
       <div class="col-6 col-md-1">
         Total Freight
-        <strong class="d-block"><%= format_currency(sales_order.sales_quote.calculated_freight_cost_total) %></strong>
+        <strong class="d-block"><%= format_currency(sales_order.sales_quote.calculated_freight_cost_total, symbol: sales_order.currency_sign) %></strong>
       </div>
       <div class="col-6 col-md-2">
         Cost

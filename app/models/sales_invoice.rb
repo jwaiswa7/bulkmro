@@ -15,11 +15,29 @@ class SalesInvoice < ApplicationRecord
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
   has_many :email_messages
+  has_many :sales_receipts
+  has_many :sales_receipt_rows
+  has_many :email_messages
+  has_many :pod_rows, dependent: :destroy
+  accepts_nested_attributes_for :pod_rows, reject_if: lambda { |attributes|
+    if attributes[:id].present?
+      PodRow.find(attributes[:id]).attachments.count < 1
+    else
+      attributes[:attachments].blank?
+    end
+  }, allow_destroy: true
+
+
 
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
   has_one_attached :pod_attachment
+
+  scope :not_cancelled_invoices, -> { where.not(status: 'Cancelled') }
+  scope :not_paid, -> { where.not(payment_status: 'Fully Paid') }
+
+
 
   enum status: {
       'Open': 1,
@@ -90,7 +108,105 @@ class SalesInvoice < ApplicationRecord
   end
 
   def has_attachment?
-    self.pod_attachment.attached?
+    self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached? && self.delivery_completed
+  end
+
+  def pod_status
+    if self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached?
+      if self.delivery_completed
+        'complete'
+      else
+        'partial'
+      end
+    else
+      'incomplete'
+    end
+  end
+
+  def delivery_date
+    if self.pod_rows.present?
+      self.pod_rows.order(:delivery_date).last.delivery_date
+    end
+  end
+
+  def amount_received
+    # SalesReceipt.where(:sales_invoice_id => self.id).pluck(:payment_amount_received).compact.sum
+    SalesReceiptRow.where('sales_invoice_id': self.id).sum(:amount_received)
+  end
+
+  def amount_received_against_invoice
+    # SalesReceipt.where(:sales_invoice_id => self.id,:payment_type => 'Against Invoice').pluck(:payment_amount_received).compact.sum
+    SalesReceiptRow.where('sales_invoice_id': self.id).sum(:amount_received)
+  end
+
+  # Not needed, there won't be any on account payment for invoice
+
+  # def amount_received_on_account
+  #   SalesReceipt.where(:sales_invoice_id => self.id,:payment_type => 'On Account').pluck(:payment_amount_received).compact.sum
+  # end
+
+  def get_due_date
+    due_in_days = 30
+    if self.inquiry.present? && self.inquiry.payment_option.present?
+      due_in_days = self.inquiry.payment_option.get_days
+    end
+    self.created_at + due_in_days.days
+  end
+
+  def get_due_days
+    days = '-'
+    amount_due = self.amount_due
+    if due_date.present? && due_date < Date.today && self.amount_due > 0.0
+      if due_date.present?
+        if self.amount_received < amount_due
+          days = "#{((Time.now - self.get_due_date) / 86400).to_i} days"
+        end
+      end
+    end
+    days
+  end
+
+  def amount_due
+    self.calculated_total_with_tax - self.amount_received
+  end
+
+  def overdue_amount
+    self.due_date < DateTime.now ? self.amount_due : 0.0
+  end
+
+  def nodue_amount
+    self.due_date > DateTime.now ? self.amount_due : 0.0
+  end
+
+  def overdue_amt_in_days(start_day, end_day = nil)
+    due_date = self.due_date
+    todays_date = DateTime.now
+    due_amt = 0.0
+    if due_date < todays_date
+      due_days = ((Time.now - due_date) / 86400).to_i
+      if end_day.present?
+        due_amt = (start_day..end_day).include?(due_days) ? self.amount_due.to_s : 0.0
+      else
+        due_amt = (due_days > start_day) ? self.amount_due : 0.0
+      end
+    end
+    due_amt
+  end
+
+  def nodue_amt_in_days(start_day, end_day = nil)
+    due_date = self.due_date
+    todays_date = DateTime.now
+    due_amt = 0.0
+    if due_date > todays_date
+      due_days = ((due_date - Time.now) / 86400).to_i
+      p due_days
+      if end_day.present?
+        due_amt = (start_day..end_day).include?(due_days) ? self.amount_due.to_s : 0.0
+      else
+        due_amt = (due_days > start_day) ? self.amount_due : 0.0
+      end
+    end
+    due_amt
   end
 
   def calculated_freight_cost_total

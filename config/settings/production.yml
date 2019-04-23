@@ -37,7 +37,7 @@ slack:
 
 sendgrid:
   username: bulk
-  password: GhgjIH4zw3p2
+  password: bdi97DHddP
   api_key: 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
   default_email: pradeep.ketkale@bulkmro.com
 
@@ -55,7 +55,7 @@ sendgrid_smtp:
   port: 587
   domain: "bulkmro.com"
   user_name: "bulk"
-  password: "GhgjIH4zw3p2"
+  password: "bdi97DHddP"
   authentication: "plain"
   enable_starttls_auto: true
 
@@ -94,3 +94,9 @@ sap:
   ATTACHMENT_API: '35.200.144.191/b1_shf/Attachments'
   ATTACHMENT_USERNAME: 'pradeep'
   ATTACHMENT_PASSWORD: ''
+
+accounts:
+  arn_number_2018: 'AD275180000794'
+  arn_number_2019: 'AD2704190070474'
+  arn_date_2019: '2019-04-03'
+  arn_date_2018: '2018-05-25'

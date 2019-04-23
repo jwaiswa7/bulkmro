@@ -34,7 +34,7 @@
   "version": "1.0.0",
   "description": "b2b industrial supplies",
   "main": "index.js",
-  "author": "Ashwin G <ashwin.goyal@bulkmro.com>, Amit G <amit.goyal@bulkmro.com>, Prikesh S <prikesh.savla@bulkmro.com>",
+  "author": "Bulkmro",
   "license": "MIT",
   "devDependencies": {
     "jshint": "^2.10.1",

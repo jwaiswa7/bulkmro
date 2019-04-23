@@ -72,6 +72,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     allow_export?
   end
 
+  def export_for_reco?
+    (developer? || allow_export?) && overseer.can_send_emails?
+  end
+
   def export_rows?
     allow_export?
   end
@@ -105,7 +109,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def approve_low_margin?
-    approve? && %w(devang.shah@bulkmro.com gaurang.shah@bulkmro.com nilesh.desai@bulkmro.com prikesh.savla@bulkmro.com vijay.manjrekar@bulkmro.com akshay.jindal@bulkmro.com bhargav.trivedi@bulkmro.com).include?(overseer.email)
+    approve? && %w(devang.shah@bulkmro.com gaurang.shah@bulkmro.com nilesh.desai@bulkmro.com vijay.manjrekar@bulkmro.com akshay.jindal@bulkmro.com bhargav.trivedi@bulkmro.com).include?(overseer.email)
   end
 
   def reject?

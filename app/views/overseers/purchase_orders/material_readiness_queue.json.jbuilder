@@ -13,15 +13,16 @@ json.data (@purchase_orders) do |purchase_order|
                       if policy(purchase_order).edit_material_followup?
                         row_action_button(edit_material_followup_overseers_purchase_order_path(purchase_order), 'list-alt', 'Edit Material Followup', 'success', :_blank)
                       end,
-                      if policy(purchase_order).new_pickup_request?
-                        row_action_button(new_overseers_purchase_order_material_pickup_request_path(purchase_order), 'plus-circle', 'Create Material Pickup Request', 'success', target: :_blank)
+                      if policy(purchase_order).new_inward_dispatch?
+                        row_action_button(new_overseers_purchase_order_inward_dispatch_path(purchase_order), 'people-carry', 'Create Inward Dispatch', 'success', target: :_blank)
                       end,
                       if purchase_order.po_request.present? && policy(purchase_order.po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(purchase_order.po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif purchase_order.po_request.present? && policy(purchase_order.po_request).show_payment_request?
-                        row_action_button(overseers_payment_request_path(purchase_order.payment_request), 'eye', 'View Payment Request', 'success', :_blank)
+                        row_action_button(overseers_payment_request_path(purchase_order.po_request.payment_request), 'eye', 'View Payment Request', 'success', :_blank)
                       end
                   ].join(' '),
+                  conditional_link(purchase_order.po_request.id, overseers_po_request_path(purchase_order.po_request), policy(purchase_order.po_request).show?),
                   link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: '_blank'),
                   purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : '-',
                   status_badge(purchase_order.material_status),
@@ -34,7 +35,7 @@ json.data (@purchase_orders) do |purchase_order|
                   (purchase_order.po_request.sales_order.order_number if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
                   (format_succinct_date(purchase_order.po_request.inquiry.customer_committed_date) if purchase_order.po_request.present?),
                   purchase_order.inquiry.inside_sales_owner.to_s,
-                  (purchase_order.logistics_owner.full_name if purchase_order.logistics_owner.present?),
+                  (purchase_order.logistics_owner.present? ? purchase_order.logistics_owner.full_name : 'Unassigned'),
                   format_succinct_date(purchase_order.followup_date),
                   format_succinct_date(purchase_order.revised_supplier_delivery_date),
                   (purchase_order.payment_request.present? ? status_badge(purchase_order.payment_request.status) : status_badge('Payment Request: Pending')),
@@ -50,6 +51,7 @@ end
 json.columnFilters [
                        [],
                        [],
+                       [],
                        [{"source": autocomplete_overseers_companies_path}],
                        PurchaseOrder.material_statuses.except(:'Material Delivered').map {|k, v| {"label": k, "value": v.to_s}}.as_json,
                        [],
@@ -61,7 +63,7 @@ json.columnFilters [
                        [],
                        [],
                        Overseer.inside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
-                       Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+                       Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.reject { |h| h[:label] == 'Logistics Team'}.unshift(label: 'Unassigned', value: 0).as_json,
                        [],
                        [],
                        PaymentRequest.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
@@ -72,6 +74,6 @@ json.columnFilters [
                        []
                    ]
 
-json.recordsTotal PurchaseOrder.all.count
+json.recordsTotal @indexed_purchase_orders.count
 json.recordsFiltered @indexed_purchase_orders.total_count
 json.draw params[:draw]

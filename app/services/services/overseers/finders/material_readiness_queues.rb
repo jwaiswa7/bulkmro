@@ -1,4 +1,4 @@
-class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseers::Finders::BaseFinder
+class Services::Overseers::Finders::MaterialReadinessQueues  < Services::Overseers::Finders::BaseFinder
   def call
     call_base
   end
@@ -11,8 +11,9 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
     end
 
     #  @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
-
-    indexed_records = indexed_records.filter(filter_by_array('material_status', PurchaseOrder.material_statuses.except(:'Material Delivered').values))
+    statuses = ['Material Readiness Follow-Up', 'Inward Dispatch', 'Inward Dispatch: Partial', 'Material Partially Delivered']
+    status_values = PurchaseOrder.material_statuses.map {|key, val| if statuses.include?(key); val; end}.compact
+    indexed_records = indexed_records.filter(filter_by_array('material_status', status_values))
     indexed_records = indexed_records.filter(filter_by_value('po_request_present', true))
     indexed_records = indexed_records.filter(filter_by_value('po_email_sent', true))
 
@@ -32,7 +33,7 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
   end
 
   def perform_query(query_string)
-    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[ po_number_string^3 inquiry inside_sales_owner outside_sales_owner supplier customer po_status_string po_date] })
+    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[ po_number_string inquiry inside_sales_owner outside_sales_owner supplier customer po_status_string po_request_string material_status_string po_type_string so_number_string logistics_owner_string ] })
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))

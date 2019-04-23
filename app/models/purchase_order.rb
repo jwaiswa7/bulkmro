@@ -19,7 +19,7 @@ class PurchaseOrder < ApplicationRecord
   has_one :po_request
   has_one :payment_request
   has_one :invoice_request
-  has_many :material_pickup_requests
+  has_many :inward_dispatches
   has_many :email_messages
   has_many :products, through: :rows
 
@@ -27,6 +27,9 @@ class PurchaseOrder < ApplicationRecord
   has_many_attached :attachments
 
   scope :with_includes, -> {includes(:inquiry, :po_request, :company)}
+  scope :supplier_email_sent, -> { joins(:email_messages).where(email_messages: { email_type: 'Sending PO to Supplier' })}
+  scope :with_inquiry_by_company, -> (company_id) { joins(:inquiry).where(inquiries: { company_id: company_id }, logistics_owner_id: nil) }
+  scope :with_all_material_statuses, -> { where('material_status IN (?)', [10, 20, 25, 35]) }
 
   def filename(include_extension: false)
     [
@@ -68,10 +71,22 @@ class PurchaseOrder < ApplicationRecord
 
   enum material_status: {
       'Material Readiness Follow-Up': 10,
-      'Material Pickedup': 20,
-      'Material Partially Pickedup': 25,
+      'Inward Dispatch': 20,
+      'Inward Dispatch: Partial': 25,
       'Material Delivered': 30,
-      'Material Partially Delivered': 35
+      'Material Partially Delivered': 35,
+      'GRPO Pending': 40,
+      'Pending AP Invoice': 45,
+      'Pending AR Invoice': 50,
+      'In stock': 55,
+      'Completed AR Invoice Request': 60,
+      'Cancelled AR Invoice': 65,
+      'Cancelled': 70,
+      'AP Invoice Request Rejected': 75,
+      'GRPO Request Rejected': 80,
+      'Inward Completed': 85,
+      'Cancelled AP Invoice': 90,
+      'Cancelled GRPO': 95
   }
 
   enum transport_mode: {
@@ -81,7 +96,7 @@ class PurchaseOrder < ApplicationRecord
   }
 
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
-  scope :material_pickup_queue, -> {where(material_status: :'Material Pickedup')}
+  scope :material_pickup_queue, -> {where(material_status: :'Inward Dispatch')}
   scope :material_delivered_queue, -> {where(material_status: :'Material Delivered')}
   scope :not_cancelled, -> {where.not("metadata->>'PoStatus' = ?", PurchaseOrder.statuses[:Cancelled].to_s)}
 
@@ -162,6 +177,10 @@ class PurchaseOrder < ApplicationRecord
     (rows.map {|row| row.total_selling_price_with_tax || 0}.sum.round(2)) + self.metadata['LineTotal'].to_f + self.metadata['TaxSum'].to_f
   end
 
+  def calculated_total_without_tax
+    (rows.map {|row| row.total_selling_price || 0}.sum.round(2)) + self.metadata['LineTotal'].to_f
+  end
+
   def warehouse
     if metadata['PoTargetWarehouse'].present?
       Warehouse.find_by(remote_uid: metadata['PoTargetWarehouse'].to_i)
@@ -192,19 +211,30 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def update_material_status
-    if self.material_pickup_requests.any?
-      partial = true
-      if self.rows.sum(&:get_pickup_quantity) <= 0
-        partial = false
+    inward_dispatches = self.inward_dispatches.order(created_at: :desc)
+    if inward_dispatches.any?
+      invoice_request = inward_dispatches.first.invoice_request
+      if invoice_request.present?
+        self.update_attribute(:material_status, invoice_request.status)
+      else
+        partial = true
+        if self.rows.sum(&:get_pickup_quantity) <= 0
+          partial = false
+        end
+        if 'Material Pickup'.in? self.inward_dispatches.map(&:status)
+          status = partial ? 'Inward Dispatch: Partial' : 'Inward Dispatch'
+        elsif 'Material Delivered'.in? self.inward_dispatches.map(&:status)
+          status = partial ? 'Material Partially Delivered' : 'Material Delivered'
+        end
+        self.update_attribute(:material_status, status)
       end
-      if 'Material Pickup'.in? self.material_pickup_requests.map(&:status)
-        status = partial ? 'Material Partially Pickedup' : 'Material Pickedup'
-      elsif 'Material Delivered'.in? self.material_pickup_requests.map(&:status)
-        status = partial ? 'Material Partially Delivered' : 'Material Delivered'
-      end
-      self.update_attribute(:material_status, status)
     else
       self.update_attribute(:material_status, 'Material Readiness Follow-Up')
     end
   end
+
+  def po_request_present?
+    self.po_request.present? ? (self.po_request.status == 'Supplier PO Sent' || self.po_request.status == 'Supplier PO: Created Not Sent') : false
+  end
+
 end

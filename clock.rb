@@ -5,6 +5,7 @@ require './config/environment'
 require 'active_support/time'
 
 handler do |job, time|
+  Chewy.strategy(:atomic)
   puts "Running #{job}, at #{time}"
 end
 
@@ -19,8 +20,10 @@ every(1.day, 'refresh_calculated_totals', at: '03:00') do
 end
 
 every(20.minutes, 'refresh_smart_queue') do
-  service = Services::Overseers::Inquiries::RefreshSmartQueue.new
-  service.call
+  Chewy.strategy(:atomic) do
+    service = Services::Overseers::Inquiries::RefreshSmartQueue.new
+    service.call
+  end
 end
 
 every(30.minutes, 'update_admin_dashboard_cache') do
@@ -29,16 +32,22 @@ every(30.minutes, 'update_admin_dashboard_cache') do
 end
 
 every(1.day, 'flush_unavailable_images', at: '03:30') do
-  service = Services::Customers::CustomerProducts::FlushUnavailableImages.new
-  service.call
+  Chewy.strategy(:atomic) do
+    service = Services::Customers::CustomerProducts::FlushUnavailableImages.new
+    service.call
+  end
 end
 
 every(1.hour, 'generate_exports_hourly') do
-  Services::Overseers::Exporters::GenerateExportsHourly.new
+  Chewy.strategy(:atomic) do
+    Services::Overseers::Exporters::GenerateExportsHourly.new
+  end
 end
 
 every(1.day, 'generate_exports_daily', at: '05:00') do
-  Services::Overseers::Exporters::GenerateExportsDaily.new
+  Chewy.strategy(:atomic) do
+    Services::Overseers::Exporters::GenerateExportsDaily.new
+  end
 end
 
 every(1.day, 'refresh_indices', at: '06:00') do
@@ -50,8 +59,10 @@ every(1.hour, 'adjust_dynos') do
 end if Rails.env.production?
 
 every(1.day, 'set_slack_ids', at: '07:00') do
-  service = Services::Overseers::Slack::SetSlackIds.new
-  service.call
+  Chewy.strategy(:atomic) do
+    service = Services::Overseers::Slack::SetSlackIds.new
+    service.call
+  end
 end
 
 every(1.day, 'gcloud_run_backups', at: '23:00') do
@@ -90,3 +101,10 @@ every(1.day, 'resync_requests_status', at: '06:00') do
   service = Services::Overseers::FailedRemoteRequests::Resync.new
   service.verify
 end if Rails.env.production?
+
+every(10.minutes, 'resync_remote_requests') do
+  ResyncRemoteRequest.where("hits < 5").each do | resync_request |
+    service = Services::Resources::Shared::ResyncFailedRequests.new(resync_request )
+    service.call
+  end
+end

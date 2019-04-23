@@ -23,3 +23,13 @@ service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(missing_sales_order_products), folder: 'seed_files')
 service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(update_magento_po_order ), folder: 'seed_files')
+service.call
+service = Services::Shared::Migrations::Migrations.new(%w( update_purchase_orders), folder: 'seed_files')
+service.call
+
+#update logistics owner for all companies
+service = Services::Shared::Migrations::Migrations.new(%w(update_logistics_owner_for_all_companies), folder: 'seed_files')
+service.call
+
