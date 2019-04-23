@@ -6,6 +6,23 @@ json.data (@po_requests) do |po_request|
                       elsif policy(po_request).edit? && po_request.status != 'Cancelled'
                         row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
+                      if policy(po_request).can_cancel?
+                        link_to('', class: ['btn btn-sm btn-dark cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Cancel', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
+                      end,
+                      if po_request.po_request_type == 'Stock' && policy(po_request).can_reject?
+                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
+                      elsif policy(po_request).can_reject?
+                        link_to('', class: po_request.status != "Supplier PO Request Rejected" ? ['btn btn-sm btn-danger cancel-po_request'] : ['btn btn-sm btn-danger cancel-po_request disabled'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true ) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
+                      end,'<br/>','<br/>',
                       if policy(po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif policy(po_request).show_payment_request?
@@ -25,24 +42,8 @@ json.data (@po_requests) do |po_request|
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       else
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'warning disabled')
-                      end,
-                      if policy(po_request).can_cancel?
-                        link_to('', class: ['btn btn-sm btn-dark cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Cancel', remote: true) do
-                          concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-ban'].join
-                        end
-                      end,
-                      if po_request.po_request_type == 'Stock' && policy(po_request).can_reject?
-                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
-                          concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-ban'].join
-                        end
-                      elsif policy(po_request).can_reject?
-                        link_to('', class: po_request.status != "Supplier PO Request Rejected" ? ['btn btn-sm btn-danger cancel-po_request'] : ['btn btn-sm btn-danger cancel-po_request disabled'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true ) do
-                          concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-ban'].join
-                        end
                       end
+
                   ].join(' '),
                   conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),
                   status_badge(po_request.status),
@@ -56,12 +57,9 @@ json.data (@po_requests) do |po_request|
                   if po_request.supplier.present?
                     conditional_link(po_request.supplier.to_s, overseers_company_path(po_request.supplier), policy(po_request.supplier).show?)
                   end,
-                  po_request.buying_price,
-                  po_request.selling_price,
-                  po_request.po_margin_percentage,
-                  (po_request.sales_order.calculated_total_margin_percentage if po_request.sales_order.present?),
-                  format_date(po_request.inquiry.customer_committed_date),
-                  format_date(po_request.supplier_committed_date),
+                  attribute_boxes([{ buying: po_request.buying_price }, { selling: po_request.selling_price }]),
+                  attribute_boxes([{ margin: po_request.po_margin_percentage }, { overal: po_request.sales_order.present? ? po_request.sales_order.calculated_total_margin_percentage : 0 }]),
+                  attribute_boxes([{ customer: po_request.inquiry.customer_committed_date }, { supplier: po_request.supplier_committed_date.present? ? po_request.supplier_committed_date : 'N / A' }]),
                   format_date_time_meridiem(po_request.created_at),
                   if po_request.last_comment.present?
                     format_succinct_date(po_request.last_comment.updated_at)
