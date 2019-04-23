@@ -1,31 +1,35 @@
-class ArInvoicesController < ApplicationController
+class Overseers::ArInvoicesController < Overseers::BaseController
   before_action :set_ar_invoice, only: [:show, :edit, :update, :destroy]
 
   # GET /ar_invoices
   # GET /ar_invoices.json
   def index
     @ar_invoices = ArInvoice.all
+    authorize @ar_invoices
   end
 
   # GET /ar_invoices/1
   # GET /ar_invoices/1.json
   def show
+    authorize @ar_invoice
   end
 
   # GET /ar_invoices/new
   def new
     @ar_invoice = ArInvoice.new
+    authorize @ar_invoice
   end
 
   # GET /ar_invoices/1/edit
   def edit
+    authorize @ar_invoice
   end
 
   # POST /ar_invoices
   # POST /ar_invoices.json
   def create
     @ar_invoice = ArInvoice.new(ar_invoice_params)
-
+    authorize @ar_invoice
     respond_to do |format|
       if @ar_invoice.save
         format.html { redirect_to @ar_invoice, notice: 'Ar invoice was successfully created.' }
@@ -40,6 +44,7 @@ class ArInvoicesController < ApplicationController
   # PATCH/PUT /ar_invoices/1
   # PATCH/PUT /ar_invoices/1.json
   def update
+    authorize @ar_invoice
     respond_to do |format|
       if @ar_invoice.update(ar_invoice_params)
         format.html { redirect_to @ar_invoice, notice: 'Ar invoice was successfully updated.' }
@@ -54,6 +59,7 @@ class ArInvoicesController < ApplicationController
   # DELETE /ar_invoices/1
   # DELETE /ar_invoices/1.json
   def destroy
+    authorize @ar_invoice
     @ar_invoice.destroy
     respond_to do |format|
       format.html { redirect_to ar_invoices_url, notice: 'Ar invoice was successfully destroyed.' }
