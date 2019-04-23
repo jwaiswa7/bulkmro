@@ -138,17 +138,17 @@
               </h5>
               <div class="form-row">
                 <div class="col-6">
-                  <% if @invoice_request.purchase_order.try(:supplier).try(:address) %>
+                  <% if @invoice_request.purchase_order.try(:supplier).try(:addresses) %>
                     <div class="form-group">
                       <label class="form-control-label d-block">Address</label>
-                      <%= @invoice_request.purchase_order.supplier.address %>
+                      <%= @invoice_request.purchase_order.supplier.billing_address %>
                     </div>
                   <% end %>
                 </div>
                 <div class="col-6">
                   <% if @invoice_request.purchase_order.try(:supplier).try(:default_contact) %>
                     <div class="form-group">
-                      <label class="form-control-label d-block">Contact</label>
+                      <label class="form-control-label d-block">Contact </label>
                       <%= @invoice_request.purchase_order.supplier.default_contact if @invoice_request.purchase_order.supplier.default_contact.present? %>
                     </div>
                   <% end %>
@@ -204,7 +204,7 @@
             </div>
 
             <% @products_list.each do |k| %>
-              <div class="form-row flex-row align-items-start">
+              <div class="form-row flex-row align-items-start mb-1">
                 <div class="col-1 col-md-1">
                   <%= (@products_list.index(k) || 0) + 1 %>
                 </div>
@@ -241,7 +241,6 @@
       </div>
     <% end %>
 
-
     <div class="card">
       <div class="card-body">
         <div class="flex-fill">
@@ -258,7 +257,6 @@
       </div>
     </div>
   </section>
-
 
 </div>
 

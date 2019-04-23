@@ -169,7 +169,7 @@
           </div>
 
           <div class="col-6">
-            <%= f.input :ap_invoice_number, as: :string, label: "SAP AP Invoice Document No." %>
+            <%= f.input :ap_invoice_number, as: :string, label: "SAP AP Invoice Document Number" %>
           </div>
 
           <div class="col-6">
@@ -217,18 +217,17 @@
                     </h5>
                     <div class="form-row">
                       <div class="col-6">
-                        <% if f.object.purchase_order.try(:supplier).try(:address) %>
+                        <% if f.object.purchase_order.try(:supplier).try(:addresses) %>
                           <div class="form-group">
                             <label class="form-control-label d-block">Address</label>
-                            <%= f.object.purchase_order.supplier.address %>
+                            <%= f.object.purchase_order.supplier.default_billing_address %>
                           </div>
                         <% end %>
                       </div>
                       <div class="col-6">
                         <% if f.object.purchase_order.try(:supplier).try(:default_contact) %>
                           <div class="form-group">
-                            <label class="form-control-label d-block">Contact</label>
-                            <%= f.object.purchase_order.supplier.default_contact if f.object.purchase_order.supplier.default_contact.present? %>
+                            <label class="form-control-label d-block">Contact </label><%= f.object.purchase_order.supplier.default_contact if f.object.purchase_order.supplier.default_contact.present? %>
                           </div>
                         <% end %>
                       </div>
@@ -283,7 +282,7 @@
                   </div>
 
                   <% @products_list.each do |k| %>
-                    <div class="form-row flex-row align-items-start">
+                    <div class="form-row flex-row align-items-start mb-1">
                       <div class="col-1 col-md-1">
                         <%= (@products_list.index(k) || 0) + 1 %>
                       </div>
