@@ -52,7 +52,7 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
   end
 
   def sort_definition
-    { live_inquiries: :desc }
+    { inquiries_size: :desc }
   end
 end
 
