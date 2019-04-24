@@ -94,7 +94,7 @@ class Company < ApplicationRecord
   delegate :account_type, :is_customer?, :is_supplier?, to: :account
   alias_attribute :gst, :tax_identifier
 
-  scope :with_includes, -> {includes(:addresses, :inquiries, :contacts, :invoices, :sales_orders)}
+  scope :with_includes, -> {includes(:addresses, :inquiries, :contacts, :invoices, :final_sales_orders, :final_sales_quotes)}
   scope :acts_as_supplier, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier])}
   scope :acts_as_customer, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer])}
 
