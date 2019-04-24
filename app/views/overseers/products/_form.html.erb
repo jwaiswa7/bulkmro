@@ -1,71 +1,71 @@
-<div class="col-lg-12">
-  <%= render 'shared/snippets/page_header', e: @product %>
+<%= render 'shared/snippets/page_header', e: @product %>
 
-  <%= simple_form_for([:overseers, @product], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%= render 'shared/snippets/form_errors', f: f %>
+<%= simple_form_for([:overseers, @product], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <%= render 'shared/snippets/form_errors', f: f %>
 
-    <div class="form-row">
-      <div class="col-12">
-        <%= f.input :name %>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="form-row">
+        <div class="col-12">
+          <%= f.input :name %>
+        </div>
       </div>
-      <div class="col-6">
-        <%= f.input :sku %>
+      <div class="form-row">
+        <div class="col-6">
+          <%= f.input :sku %>
+        </div>
+        <div class="col-6">
+          <%= f.input :mpn, label: "Manufacturer Part Number" %>
+        </div>
       </div>
-      <div class="col-6">
-        <%= f.input :mpn, label: "Manufacturer Part Number" %>
+      <div class="form-row">
+        <div class="col-12 col-md-6">
+          <%= f.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single'} %>
+        </div>
+        <div class="col-6 col-md-6">
+          <%= f.association :brand, collection: selected_option_or_nil(f, :brand), include_blank: 'Select a brand', input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
+        </div>
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="col-4">
-        <%= f.association :tax_code,collection: selected_option_or_nil(f, :tax_code ), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: f.object.is_service)} %>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="col-12 col-md-4">
+          <%= f.input :is_service %>
+        </div>
+        <div class="col-12 col-md-4">
+          <%= f.input :is_active %>
+        </div>
       </div>
-      <div class="col-4">
-        <%= f.association :tax_rate, include_blank: 'Select a Tax Rate', :wrapper => :custom_multi_select %>
+      <div class="form-row">
+        <div class="col-12 col-md-6">
+          <%= f.association :tax_code, collection: selected_option_or_nil(f, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: f.object.is_service)} %>
+        </div>
+        <div class="col-12 col-md-6">
+          <%= f.association :tax_rate, include_blank: 'Select a Tax Rate', :wrapper => :custom_multi_select %>
+        </div>
       </div>
-      <div class="col-4">
-        <%= f.input :best_tax_code, disabled: true %>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="col-12 col-md-4">
-        <%= f.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single'} %>
-      </div>
-      <div class="col-6 col-md-4">
-        <%= f.association :brand, collection: selected_option_or_nil(f, :brand), include_blank: 'Select a brand', input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
-      </div>
-      <div class="col-6 col-md-4">
-        <%= f.association :category, collection: selected_option_or_nil(f, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service =>false)} %>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="col-12 col-md-4">
-        <%= f.input :is_service %>
-      </div>
-      <div class="col-12 col-md-4">
-        <%= f.input :is_active %>
+      <div class="form-row">
+        <div class="col-6 col-md-6">
+          <%= f.association :category, collection: selected_option_or_nil(f, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service => false)} %>
+        </div>
+        <div class="col-6 col-md-6">
+          <%= f.input :best_tax_code, disabled: true %>
+        </div>
       </div>
       <div class="col-12 col-md-12">
         <div class="d-block d-md-flex align-items-end">
           <div class="flex-grow-1">
             <%= f.input :images, wrapper: :custom_file, input_html: {multiple: true}, label: 'Product Images' %>
           </div>
-          <div class="form-group">
-            <% f.object.images.each do |image| %>
-              <%= link_to url_for(image), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => image.filename do %>
-                <i class="fal fa-download"></i>
-                <%= link_to overseers_attachment_path(image.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', image.filename, '?'].join('') do %>
-                  <i class="fal fa-trash-alt"></i>
-                  <% end if image.present? && policy(:attachment).destroy? %>
-              <% end %>
-            <% end if f.object.images.attached? %>
-          </div>
         </div>
       </div>
     </div>
-
-    <%= action_button(action_name, @product) %>
-  <% end %>
-</div>
+    <div class="card-footer">
+      <div class="form-row">
+        <%= action_button(action_name, @product) %>
+      </div>
+    </div>
+  </div>
+<% end %>
