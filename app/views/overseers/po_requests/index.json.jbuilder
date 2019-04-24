@@ -42,32 +42,23 @@ json.data (@po_requests) do |po_request|
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       else
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'warning disabled')
-                      end
+                      end,
 
                   ].join(' '),
-                  conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),
-                  status_badge(po_request.status),
-                  conditional_link(po_request.inquiry.to_s, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
-                  if po_request.purchase_order.present? && (po_request.status == 'Supplier PO: Created Not Sent')
-                    link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank')
-                  else
-                    po_request.sales_order.order_number if po_request.sales_order.present?
-                  end,
-                  po_request.inquiry.inside_sales_owner.to_s,
-                  if po_request.supplier.present?
-                    conditional_link(po_request.supplier.to_s, overseers_company_path(po_request.supplier), policy(po_request.supplier).show?)
-                  end,
+                  attribute_boxes([{ request_number: conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?)}, { inquiry_number: conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?) }, { order: po_request.purchase_order.present? && (po_request.status == 'Supplier PO: Created Not Sent') ? link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank') : link_to(po_request.sales_order.order_number, overseers_inquiry_sales_order_path(po_request.inquiry.id, po_request.sales_order.id), target: '_blank')}]),
+                  attribute_boxes([{ supplier: po_request.supplier.present? ? conditional_link(po_request.supplier.to_s, overseers_company_path(po_request.supplier), policy(po_request.supplier).show?) : '-'}, { customer: po_request.inquiry.company.present? ? conditional_link(po_request.inquiry.company.to_s, overseers_company_path(po_request.inquiry.company), policy(po_request.inquiry.company).show?) : '-'}]),
+                  attribute_boxes([ { supplier: po_request.supplier_committed_date.present? ? po_request.supplier_committed_date : 'N / A' }, { customer: po_request.inquiry.customer_committed_date }]),
                   attribute_boxes([{ buying: po_request.buying_price }, { selling: po_request.selling_price }]),
                   attribute_boxes([{ margin: po_request.po_margin_percentage }, { overal: po_request.sales_order.present? ? po_request.sales_order.calculated_total_margin_percentage : 0 }]),
-                  attribute_boxes([{ customer: po_request.inquiry.customer_committed_date }, { supplier: po_request.supplier_committed_date.present? ? po_request.supplier_committed_date : 'N / A' }]),
-                  format_date_time_meridiem(po_request.created_at),
+                  attribute_boxes([{ po_status: status_badge(po_request.status) }, { email_status: status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? 'Supplier PO Sent' : 'Supplier PO: Not Sent to Supplier') }]),
+                  if po_request.last_comment.present?
+                    format_comment(po_request.last_comment, trimmed: true)
+                  end,
+                  po_request.inquiry.inside_sales_owner.to_s,
+                  format_succinct_date(po_request.created_at),
                   if po_request.last_comment.present?
                     format_succinct_date(po_request.last_comment.updated_at)
                   end,
-                  status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? 'Supplier PO Sent' : 'Supplier PO: Not Sent to Supplier'),
-                  if po_request.last_comment.present?
-                    format_comment(po_request.last_comment, trimmed: true)
-                  end
               ]
 end
 
