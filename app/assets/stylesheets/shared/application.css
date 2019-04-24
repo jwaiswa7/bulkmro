@@ -8370,7 +8370,7 @@ div.dataTables_wrapper div.dataTables_processing {
 
   .daterangepicker .drp-calendar.left {
     clear: none !important; } }
-    .easy-autocomplete {
+.easy-autocomplete {
   position: relative; }
   .easy-autocomplete input {
     border-color: #ccc;

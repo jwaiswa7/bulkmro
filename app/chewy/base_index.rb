@@ -38,19 +38,19 @@ class BaseIndex < Chewy::Index
                 filter: ['lowercase']
             },
             keyword_analyzer: {
-                filter: ['lowercase','asciifolding','trim'],
+                filter: ['lowercase', 'asciifolding', 'trim'],
                 char_filter: [],
-                type: "custom",
-                tokenizer: "keyword"
+                type: 'custom',
+                tokenizer: 'keyword'
             },
             edge_ngram_analyzer: {
               filter: [
-                "lowercase"
+                'lowercase'
               ],
-              tokenizer: "edge_ngram_tokenizer"
+              tokenizer: 'edge_ngram_tokenizer'
             },
             edge_ngram_search_analyzer: {
-              tokenizer: "lowercase"
+              tokenizer: 'lowercase'
             }
         },
         tokenizer: {
@@ -73,11 +73,11 @@ class BaseIndex < Chewy::Index
                 token_chars: %w(letter digit)
             },
             edge_ngram_tokenizer: {
-                type: "edge_ngram",
+                type: 'edge_ngram',
                 min_gram: 2,
                 max_gram: 5,
                 token_chars: [
-                    "letter"
+                    'letter'
                 ]
             }
         }
@@ -85,7 +85,7 @@ class BaseIndex < Chewy::Index
     max_result_window: 5000000,
     'number_of_replicas': '1',
     'number_of_shards': '1',
-    'refresh_interval': '-1'
+
   )
 
   def self.fields
