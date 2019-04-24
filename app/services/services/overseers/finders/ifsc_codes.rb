@@ -29,12 +29,12 @@ class Services::Overseers::Finders::IfscCodes < Services::Overseers::Finders::Ba
     query = query[0, 35]
 
     indexed_records = index_klass.query(
-        multi_match: {
-            query: query,
-            operator: 'and',
-            fields: %w[ifsc_code^3 branch city district address contact bank],
-            minimum_should_match: '100%'
-        }
+      multi_match: {
+          query: query,
+          operator: 'and',
+          fields: %w[ifsc_code^3 branch city district address contact bank],
+          minimum_should_match: '100%'
+      }
     )
 
     if @base_filter.present?
@@ -58,17 +58,16 @@ class Services::Overseers::Finders::IfscCodes < Services::Overseers::Finders::Ba
 
   def suggestion(indexed_records, prefix)
     indexed_records = indexed_records.suggest(
-        "ifsc-code-suggestions":{
-            prefix: prefix,
-            completion: {
-                field: "ifsc_complete.completion",
-                size: 15,
-                skip_duplicates: true
-            }
-        }
+      "ifsc-code-suggestions": {
+          prefix: prefix,
+          completion: {
+              field: 'ifsc_complete.completion',
+              size: 15,
+              skip_duplicates: true
+          }
+      }
     )
     indexed_records
-
   end
 
   def model_klass

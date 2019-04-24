@@ -6,6 +6,6 @@ class IfscCode < ApplicationRecord
   scope :with_includes, -> {  }
 
   def to_s
-    ["IFSC Code", " ##{self.id}"].join
+    ['IFSC Code', " ##{self.id}"].join
   end
 end

@@ -75,17 +75,16 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
 
   def suggestion(indexed_records, prefix)
     indexed_records = indexed_records.suggest(
-        "product-suggest":{
-          prefix: prefix,
-          completion: {
-              field: "namecomplete.completion"
-          }
+      "product-suggest": {
+        prefix: prefix,
+        completion: {
+            field: 'namecomplete.completion'
         }
+      }
     )
     indexed_records
-
   end
-  
+
   def model_klass
     Product
   end
