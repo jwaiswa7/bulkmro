@@ -43,6 +43,12 @@ Rails.application.routes.draw do
     resources :attachments
     resources :review_questions
     resources :banks
+    resources :ifsc_codes do
+      collection do
+        get 'suggestion'
+      end
+    end
+
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'reset_index'
@@ -172,6 +178,7 @@ Rails.application.routes.draw do
         get 'non_kit_autocomplete'
         get 'service_autocomplete'
         get 'autocomplete_mpn'
+        get 'suggestion'
       end
       member do
         get 'customer_bp_catalog'

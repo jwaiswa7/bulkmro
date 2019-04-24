@@ -56,6 +56,7 @@
           <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
           <%= nav_dropdown_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
           <%= nav_dropdown_item 'Banks', overseers_banks_path, policy(:bank).index? %>
+          <%= nav_dropdown_item 'IFSC Codes', overseers_ifsc_codes_path, policy(:ifsc_code).index? %>
           <div class="dropdown-divider"></div>
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Company Creation Requests</a>
@@ -173,7 +174,7 @@
               <div class="dropdown-divider"></div>
               <%= nav_dropdown_item 'Material Readiness Queue', material_readiness_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
               <%= nav_dropdown_item 'Inward Dispatch Queue', inward_dispatch_pickup_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
-              <%= nav_dropdown_item 'Inward Dispatch Delivered Queue', inward_dispatch_delivered_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
+              <%= nav_dropdown_item 'Inward Delivered Queue', inward_dispatch_delivered_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
             </ul>
           </div>
           <div class="dropdown-submenu">

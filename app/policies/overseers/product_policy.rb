@@ -73,4 +73,8 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def get_product_details?
     true
   end
+
+  def suggestion?
+    true
+  end
 end

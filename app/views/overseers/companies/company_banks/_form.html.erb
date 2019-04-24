@@ -4,24 +4,11 @@
   <%= simple_form_for([:overseers, @company, @company_bank], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :company_id %>
     <%= f.hidden_field :action_name, value: action_name %>
+    <%= f.hidden_field :ifsc_code_id %>
     <%= render 'shared/snippets/form_errors', f: f %>
     <div class="form-row">
       <div class="col-12">
         <%= f.input :company, disabled: true %>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="col-4">
-        <%= f.association :bank, collection: Bank.all, required: true, prompt: "Choose a bank" %>
-      </div>
-
-      <div class="col-3">
-        <%= f.input :branch, required: true %>
-      </div>
-
-      <div class="col-5">
-        <%= f.input :ifsc_code, required: true, label: "IFSC Code" %>
       </div>
     </div>
 
@@ -37,6 +24,21 @@
       <div class="col-6">
         <%= f.input :account_number_confirmation, label: "Confirm Account Number" %>
       </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-4">
+        <%= f.input :ifsc_code_number, required: true, label: "IFSC Code" %>
+      </div>
+
+      <div class="col-4">
+        <%= f.association :bank, collection: Bank.all, required: true, prompt: "Choose a bank" %>
+      </div>
+
+      <div class="col-4">
+        <%= f.input :branch, required: true %>
+      </div>
+
     </div>
 
     <div class="form-row">
