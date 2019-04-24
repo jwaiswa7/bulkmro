@@ -22,7 +22,7 @@ class Overseers::ProductsController < Overseers::BaseController
     service = Services::Overseers::Finders::Products.new(params)
     service.call
 
-    product_names = service.indexed_records.suggest["product-suggest"].map{|p| p["options"]}
+    product_names = service.indexed_records.suggest['product-suggest'].map {|p| p['options']}
     render json: {product_names: product_names.first}.to_json
   end
 

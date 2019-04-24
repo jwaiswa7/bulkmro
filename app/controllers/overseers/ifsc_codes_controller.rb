@@ -50,27 +50,27 @@ class Overseers::IfscCodesController < Overseers::BaseController
     service = Services::Overseers::Finders::IfscCodes.new(params)
     service.call
 
-    ifsc_codes = service.indexed_records.suggest["ifsc-code-suggestions"].map{|p| p["options"]}
+    ifsc_codes = service.indexed_records.suggest['ifsc-code-suggestions'].map {|p| p['options']}
     render json: {ifsc_codes: ifsc_codes.first}.to_json
   end
 
   private
 
-  def ifsc_code_params
-    params.require(:ifsc_code).permit(
-      :id,
-      :ifsc_code,
-      :branch,
-      :address,
-      :city,
-      :state,
-      :district,
-      :contact,
-      :bank_id
-    )
-  end
+    def ifsc_code_params
+      params.require(:ifsc_code).permit(
+        :id,
+        :ifsc_code,
+        :branch,
+        :address,
+        :city,
+        :state,
+        :district,
+        :contact,
+        :bank_id
+      )
+    end
 
-  def set_ifsc_code
-    @ifsc_code = IfscCode.find(params[:id])
-  end
+    def set_ifsc_code
+      @ifsc_code = IfscCode.find(params[:id])
+    end
 end
