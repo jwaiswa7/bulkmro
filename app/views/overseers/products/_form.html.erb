@@ -1,5 +1,5 @@
-<%= render 'shared/snippets/page_header', e: @product %>
 
+<%= render 'shared/snippets/page_header', e: @product %>
 <%= simple_form_for([:overseers, @product], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
   <%= render 'shared/snippets/form_errors', f: f %>
 
