@@ -378,11 +378,11 @@ Rails.application.routes.draw do
         get 'export_inquiries_tat'
         post 'create_purchase_orders_requests'
         post 'preview_stock_po_request'
-        get 'pipeline_report'
         get 'kra_report'
         get 'kra_report_per_sales_owner'
         get 'export_kra_report'
         get 'bulk_update'
+        get 'pipeline_report'
       end
 
       scope module: 'inquiries' do
