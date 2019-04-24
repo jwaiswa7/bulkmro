@@ -13,6 +13,10 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
     indexed_records = aggregation_pipeline_report(indexed_records)
 
     sales_executives = Overseer.pipeline_executives
+    if @pipeline_report_params.present? && @pipeline_report_params['company'].present?
+      inquiry_company = @pipeline_report_params['company'].to_i
+      indexed_records = indexed_records.filter(filter_by_value('company_id', inquiry_company))
+    end
     if @pipeline_report_params.present? && @pipeline_report_params['inside_sales_executive'].present?
       executives = @pipeline_report_params['inside_sales_executive'].to_i
       indexed_records = indexed_records.filter(filter_for_self_and_descendants('inside_sales_owner_id', 'outside_sales_owner_id', [executives]))
