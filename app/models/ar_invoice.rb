@@ -1,8 +1,14 @@
 class ArInvoice < ApplicationRecord
+  COMMENTS_CLASS = 'ARInvoiceComment'
+
   include Mixins::CanBeStamped
+  include Mixins::HasComments
+
 
   belongs_to :sales_order
   belongs_to :inquiry
+  has_many :inward_dispatches
+
 
   enum status: {
       'AR Invoice requested': 10,
@@ -11,7 +17,7 @@ class ArInvoice < ApplicationRecord
       'Completed AR Invoice Request': 40
   }
 
-  enum grpo_rejection_reason: {
+  enum rejection_reason: {
       'Rejected: Product not in Stock': 10,
       'Rejected: Product Qty Fulfilled': 20,
       'Rejected: Others': 30
@@ -25,6 +31,19 @@ class ArInvoice < ApplicationRecord
       self.status = :'Completed AR Invoice Request'
     else
       self.status = status
+    end
+  end
+
+  def display_reason(type = nil)
+    # If status is cancelled then also all rejection as well as other cacellation display on first load of form to avoid that ui helper written
+    case type
+    when 'other'
+      (('AR Invoice requested' == self.status) && self.rejection_reason == 'Others') ? '' : 'd-none'
+    when 'ar_rejection'
+      ('AR Invoice requested' == self.status) ? '' : 'd-none'
+    when 'ar_cancellation'
+      ('Cancelled AR Invoice' == self.status) ? '' : 'd-none'
+
     end
   end
 

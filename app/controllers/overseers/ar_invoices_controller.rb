@@ -16,8 +16,8 @@ class Overseers::ArInvoicesController < Overseers::BaseController
 
   # GET /ar_invoices/new
   def new
-    @ar_invoice = ArInvoice.new
-
+    # @sales_order = SalesOrder.where(:id => params[:sales_order_id]).last
+    @ar_invoice = ArInvoice.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
     authorize @ar_invoice
   end
 
