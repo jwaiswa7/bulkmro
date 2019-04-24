@@ -12,6 +12,7 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       @indexed_records = args[2]
       @date_range = args[3]
     elsif args[2].present?
+      @indexed_records = args[2]
       @ids = args[2].pluck(:id).uniq
     end
     @rows = []

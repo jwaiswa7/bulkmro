@@ -13,7 +13,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
   end
 
   def new
-    @logistics_owner = (@purchase_order.logistics_owner.present?) ? @purchase_order.logistics_owner : nil
+    @logistics_owner = (@purchase_order.logistics_owner.present?) ? @purchase_order.logistics_owner : @purchase_order.inquiry.company.logistics_owner
     @inward_dispatch = InwardDispatch.new(purchase_order: @purchase_order, logistics_owner: @logistics_owner)
 
     @inward_dispatch.purchase_order.rows.each do |row|

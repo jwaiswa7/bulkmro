@@ -375,6 +375,7 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
         get 'export_filtered_records'
+        get 'tat_report'
         get 'export_inquiries_tat'
         post 'create_purchase_orders_requests'
         post 'preview_stock_po_request'
