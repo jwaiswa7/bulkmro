@@ -1,0 +1,204 @@
+<div class="col-12">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <%= simple_form_for(@sales_order, url: create_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), method: :post, :html => {:class => 'was-validated needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <%= f.hidden_field :parent_id %>
+      <%= f.hidden_field :sales_quote_id %>
+
+      <% if f.object.errors.any? %>
+        <% f.object.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      <% end %>
+      <div class="card">
+        <div class="card-header">
+          <div class=form-row>
+            <div class="col-8 col-md-3">
+              Total Selling Price (Excl. tax)<br>
+              <strong><%= format_currency(f.object.calculated_total) %></strong>
+            </div>
+            <div class="col-4 col-md-2">
+              Total Tax<br>
+              <strong><%= format_currency(f.object.calculated_total_tax) %></strong>
+            </div>
+            <div class="col-8 col-md-3 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
+              <strong><%= format_currency(f.object.calculated_total_with_tax) %></strong>
+            </div>
+            <div class="col-4 col-md-2 mt-2 mt-md-0">Total Margin<br>
+              <strong><%= format_currency(f.object.calculated_total_margin) %></strong>
+            </div>
+            <div class="col-12 col-md-2 mt-2 mt-md-0 d-flex align-items-center">
+              <%= f.input :confirm_ord_values, as: :boolean, wrapper: :custom_boolean, label: 'Confirm order values', :required => true %>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col-6 col-md-3">
+              <strong class="d-block">Customer PO No.</strong>
+              #<%= @inquiry.customer_po_number %>
+            </div>
+            <div class="col-6 col-md-2">
+              <strong class="d-block">Customer Order Date</strong>
+              <%= @inquiry.customer_order_date %>
+            </div>
+            <div class="col-6 col-md-3">
+              <strong>Currency</strong>
+              <br> <%= f.object.currency %> (<%= f.object.inquiry_currency.conversion_rate %>)
+            </div>
+            <div class="col-6 col-md-4">
+              <strong class="d-block">Payment Terms</strong>
+              <%= @inquiry.payment_option %>
+            </div>
+          </div>
+          <div class="card-alternative mt-3">
+            <div class="form-row">
+              <div class="col-md-6">
+                <strong>Shipping Address</strong><br>
+                <%= @inquiry.shipping_address %>
+                <div class="mt-1">
+                  <%= f.input :confirm_shipping_address, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                </div>
+              </div>
+              <div class="col-md-6 mt-2 mt-md-0">
+                <strong>Billing Address</strong>
+                <br> <%= @inquiry.billing_address %>
+                <div class="mt-1">
+                  <%= f.input :confirm_billing_address, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <% if @inquiry.attachments.present? %>
+            <div class="form-row mt-3">
+              <div class="col-3">
+                <strong>Customer PO sheet</strong><br>
+                <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
+                  <%= @inquiry.customer_po_sheet.filename %>
+                <% end if @inquiry.customer_po_sheet.attached? %>
+              </div>
+              <div class="col-3">
+                <strong>Email attachment</strong><br>
+                <%= link_to @inquiry.copy_of_email, target: '_blank' do %>
+                  <%= @inquiry.copy_of_email.filename %>
+                <% end if @inquiry.copy_of_email.attached? %>
+              </div>
+              <div class="col-3">
+                <strong>Supplier Quotes attachment</strong>
+                <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
+                    <br><%= attachment.filename %>
+                  <% end %>
+                <% end if @inquiry.supplier_quotes.attached? %>
+              </div>
+              <div class="col-2">
+                <%= f.input :confirm_attachments, as: :boolean, wrapper: :custom_boolean, label: 'Confirm attachments', :required => true %>
+              </div>
+            </div>
+          <% end %>
+
+          <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
+            <%= row.hidden_field :sales_order_id %>
+            <%= row.hidden_field :id %>
+            <div>
+              <h6 class="text-uppercase mb-0 mt-3">
+                <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.object.sr_no %></span>
+                <strong><%= row.object.sales_quote_row %></strong>
+              </h6>
+              <div class="form-row my-2 text-small">
+                <div class="col-12">
+                  <table class="w-100 datatable table table-bordered dt-responsive table-unstyled" data-fixed-header="false">
+                    <thead>
+                    <tr>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Quantity">Qty</span>
+                      </th>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Unit of Measurement">UoM</span><br>
+                      </th>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Unit Cost with Freight">UC w. Freight</span><br>
+                      </th>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Margin Percentage">%</span>
+                      </th>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Unit Selling Price">USP</span><br>
+                      </th>
+                      <th class="no-sort <%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
+                        <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= f.object.currency.sign %>
+                          )</span>
+                      </th>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Total Selling Price">TSP</span><br>
+                      </th>
+                      <th class="no-sort">
+                        <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span><br>
+                      </th>
+                      <th class="no-sort">
+                        <span>Tax Code</span><br>
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>
+                        <span><%= row.object.quantity %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.measurement_unit %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+                      </td>
+                      <td>
+                        <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.unit_selling_price %></span>
+                      </td>
+                      <td class="<%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
+                        <span><%= row.object.converted_unit_selling_price %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.total_selling_price %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.total_selling_price_with_tax %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.best_tax_code %></span>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <hr class="my-2">
+          <% end %>
+
+          <div class="form-row">
+            <div class="col-6">
+              <%= f.input :confirm_hsn_codes, as: :boolean, wrapper: :custom_boolean, label: 'Confirm HSN Codes', :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :confirm_tax_rates, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Tax Rates', :required => true %>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="card-footer">
+        <div class="form-row">
+          <div class="col-6">
+            <%= link_to "Cancel", edit_overseers_inquiry_sales_order_path(@inquiry, @sales_order), class: 'btn btn-danger btn-block' %>
+          </div>
+          <div class="col-6">
+            <%= f.submit 'Save and Confirm', class: 'btn btn-success btn-block' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

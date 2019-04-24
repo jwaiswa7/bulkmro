@@ -426,6 +426,7 @@ Rails.application.routes.draw do
             get 'debugging'
             get 'new_revision'
             get 'new_confirmation'
+            get 'new_accounts_confirmation'
             get 'proforma'
             post 'create_confirmation'
             post 'resync'
