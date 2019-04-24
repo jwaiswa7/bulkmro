@@ -56,6 +56,11 @@ class Overseers::CompaniesController < Overseers::BaseController
     authorize @companies
   end
 
+  def autocomplete_company_type
+    @companies = ApplyParams.to(Company.active, params)
+    authorize @companies
+  end
+
   def new
     if params[:ccr_id].present?
       requested_comp = CompanyCreationRequest.where(id: params[:ccr_id]).last

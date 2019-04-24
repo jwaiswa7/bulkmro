@@ -29,6 +29,7 @@ json.data (@products) do |product|
                   format_boolean(product.is_active),
                   format_succinct_date(product.created_at),
                   (product.created_by || (product.inquiry_import_row.inquiry.created_by if product.inquiry_import_row)).try(:name) || '-',
+                 product.approval.present?? product.approval.created_by.name : '-',
                   format_succinct_date(product.approval.try(:created_at)),
 
 
@@ -41,6 +42,7 @@ json.columnFilters [
                        [{"source": autocomplete_overseers_brands_path}],
                        [],
                        [{"source": autocomplete_mpn_overseers_products_path(label: :mpn)}],
+                       [],
                        [],
                        [],
                        [],
