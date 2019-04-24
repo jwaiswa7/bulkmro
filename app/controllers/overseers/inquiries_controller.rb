@@ -151,7 +151,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     send_file(
-        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+      "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
         filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
     )
   end
@@ -284,39 +284,35 @@ class Overseers::InquiriesController < Overseers::BaseController
         service = Services::Overseers::Finders::PipelineReports.new(params, current_overseer)
         service.call
 
-        # if params['pipeline_report'].present?
-        #   @date_range = params['pipeline_report']['date_range']
-        #
-        # end
-
         @statuses = Inquiry.statuses
         @indexed_pipeline_report = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['inquiries_over_time']['buckets']
         @indexed_summary_row = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row']
         @summary_total = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row_total']
       }
     end
+  end
 
-    def bulk_update
-      authorize :inquiry
+  def bulk_update
+    authorize :inquiry
 
-      inquiry_numbers = params['bulk_update_inquiries']['inquiries'].split(/\s*,\s*/)
-      inquiries = Inquiry.where(inquiry_number: inquiry_numbers)
+    inquiry_numbers = params['bulk_update_inquiries']['inquiries'].split(/\s*,\s*/)
+    inquiries = Inquiry.where(inquiry_number: inquiry_numbers)
 
-      if inquiries.present?
-        query_params = params['bulk_update_inquiries'].to_enum.to_h
-        update_query = query_params.except('inquiries').reject {|_, v| v.blank?}
-        if update_query.present?
-          inquiries.update_all(update_query)
-          redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
-        else
-          render json: {error: 'Please select any one field to update'}, status: 500
-        end
+    if inquiries.present?
+      query_params = params['bulk_update_inquiries'].to_enum.to_h
+      update_query = query_params.except('inquiries').reject {|_, v| v.blank?}
+      if update_query.present?
+        inquiries.update_all(update_query)
+        redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
       else
-        render json: {error: 'No such inquiries present'}, status: 500
+        render json: {error: 'Please select any one field to update'}, status: 500
       end
+    else
+      render json: {error: 'No such inquiries present'}, status: 500
     end
+  end
 
-    private
+  private
 
     def set_inquiry
       @inquiry ||= Inquiry.find(params[:id])
@@ -324,7 +320,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     def inquiry_params
       params.require(:inquiry).permit(
-          :project_uid,
+        :project_uid,
           :company_id,
           :contact_id,
           :industry_id,
@@ -376,17 +372,17 @@ class Overseers::InquiriesController < Overseers::BaseController
     def edit_suppliers_params
       if params.has_key?(:inquiry)
         params.require(:inquiry).permit(
-            inquiry_products_attributes: [
-                :id,
-                inquiry_product_suppliers_attributes: [
-                    :id,
-                    :supplier_id,
-                    :bp_catalog_name,
-                    :bp_catalog_sku,
-                    :unit_cost_price,
-                    :_destroy
-                ]
-            ]
+          inquiry_products_attributes: [
+              :id,
+              inquiry_product_suppliers_attributes: [
+                  :id,
+                  :supplier_id,
+                  :bp_catalog_name,
+                  :bp_catalog_sku,
+                  :unit_cost_price,
+                  :_destroy
+              ]
+          ]
         )
       else
         {}
@@ -396,7 +392,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     def new_purchase_orders_requests_params
       if params.has_key?(:inquiry)
         params.require(:inquiry).permit(
-            :id,
+          :id,
             po_requests_attributes: [
                 :id,
                 :supplier_id,
@@ -449,5 +445,4 @@ class Overseers::InquiriesController < Overseers::BaseController
         {}
       end
     end
-  end
 end

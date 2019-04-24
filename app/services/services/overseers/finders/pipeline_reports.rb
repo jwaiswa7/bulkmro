@@ -10,57 +10,32 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
       super
     end
 
-    # if @status.present?
-    #   indexed_records = indexed_records.filter(filter_by_value(:status, @status))
-    # end
-    #
-    # if search_filters.present?
-    #   indexed_records = filter_query(indexed_records)
-    # end
-    #
-    # if range_filters.present?
-    #   indexed_records = range_query(indexed_records)
-    # end
-
     indexed_records = aggregation_pipeline_report(indexed_records)
+
+    sales_executives = Overseer.pipeline_executives
+    if @pipeline_report_params.present? && @pipeline_report_params['inside_sales_executive'].present?
+      executives = @pipeline_report_params['inside_sales_executive'].to_i
+      indexed_records = indexed_records.filter(filter_for_self_and_descendants('inside_sales_owner_id', 'outside_sales_owner_id', [executives]))
+    end
+    if @pipeline_report_params.present? && @pipeline_report_params['sales_manager'].present?
+      sales_executives = sales_executives.map {|o| o if (o.parent_id == @pipeline_report_params['sales_manager'].to_i)}.compact
+      indexed_records = indexed_records.filter(filter_for_self_and_descendants('inside_sales_owner_id', 'outside_sales_owner_id', 'sales_manager_id', sales_executives.pluck(:id)))
+    end
+    if @pipeline_report_params.present? && @pipeline_report_params['business_head'].present?
+      sales_executives = sales_executives.map {|o| o if (o.parent.parent_id == @pipeline_report_params['business_head'].to_i || o.parent_id == @pipeline_report_params['business_head'].to_i) if o.parent.present?}.compact
+      indexed_records = indexed_records.filter(filter_for_self_and_descendants('inside_sales_owner_id', 'outside_sales_owner_id', 'sales_manager_id', sales_executives.pluck(:id)))
+    end
+
     indexed_records
   end
 
-  # def perform_query(query_string)
-  #   indexed_records = index_klass.query(
-  #     multi_match: {
-  #         query: query_string,
-  #         operator: 'and',
-  #         fields: %w[inside_sales_owner]
-  #     }
-  #   ).order(sort_definition)
-  #
-  #   if current_overseer.present? && !current_overseer.allow_inquiries?
-  #     indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-  #   end
-
-    # if @status.present?
-    #   indexed_records = indexed_records.filter(filter_by_value(:status, @status))
-    # end
-    #
-    # if search_filters.present?
-    #   indexed_records = filter_query(indexed_records)
-    # end
-    #
-    # if range_filters.present?
-    #   indexed_records = range_query(indexed_records)
-    # end
-  #   indexed_records = aggregation_pipeline_report(indexed_records)
-  #   indexed_records
-  # end
-
   def aggregation_pipeline_report(indexed_records)
-    if @pipeline_report_params.present?
+    if @pipeline_report_params.present? && @pipeline_report_params['date_range'].present?
       from = @pipeline_report_params['date_range'].split('~').first.to_date.strftime('%Y-%m-%d') || Date.new(2019, 01, 01).strftime('%Y-%m-%d')
       to = @pipeline_report_params['date_range'].split('~').last.to_date.strftime('%Y-%m-%d') || Date.new(2019, 01, 31).strftime('%Y-%m-%d')
       date_range = {from: from, to: to, key: 'custom-range'}
     else
-      date_range = {from: Date.new(2019, 01, 01).strftime('%Y-%m-%d'), to: Date.today.strftime('%Y-%m-%d'), key: 'custom-range'}
+      date_range = {from: Date.new(2018, 04, 01).strftime('%Y-%m-%d'), to: Date.today.strftime('%Y-%m-%d'), key: 'custom-range'}
     end
 
     pipeline_query = {

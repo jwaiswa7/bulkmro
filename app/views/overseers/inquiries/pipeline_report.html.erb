@@ -32,7 +32,7 @@
         <% end %>
         <td><%= record_bucket['doc_count'] %>, <%= record_bucket['sum_monthly_sales']['value'] %></td>
         <td>
-          <!--          <%#= record_bucket['doc_count'] != 0 ? (((record_bucket['pipeline']['buckets'].map{|bucket| bucket['doc_count'] if bucket['key'] == 18 }.compact.first || 0)/record_bucket['doc_count'])*100).round(2) : 0 %> todo-->
+          <!-- <%#= record_bucket['doc_count'] != 0 ? (((record_bucket['pipeline']['buckets'].map{|bucket| bucket['doc_count'] if bucket['key'] == 18 }.compact.first || 0)/record_bucket['doc_count'])*100).round(2) : 0 %> -->
           <%= (((record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == 18}.compact.first || 0) / record_bucket['sum_monthly_sales']['value']) * 100).round(2) %>
         </td>
       </tr>
