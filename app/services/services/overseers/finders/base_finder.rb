@@ -10,6 +10,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @sort_order = sort_order
     @pipeline_report_params = params[:pipeline_report]
     @kra_report_params = params[:kra_report]
+    @prefix = params[:prefix]
 
     if params[:columns].present?
       params[:columns].each do |index, column|

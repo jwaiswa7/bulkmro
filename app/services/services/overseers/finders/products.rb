@@ -17,6 +17,11 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
+
+    if @prefix.present?
+      indexed_records = suggestion(indexed_records, @prefix)
+    end
+
     indexed_records
   end
 
@@ -43,6 +48,11 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
+
+    if @prefix.present?
+      indexed_records = suggestion(indexed_records, @prefix)
+    end
+
     indexed_records
   end
 
@@ -61,6 +71,18 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
     indexed_records = index_klass.query(search_query).page(page).per(per)
 
     @records = model_klass.where(id: indexed_records.pluck(:id)).approved.with_includes.reverse
+  end
+
+  def suggestion(indexed_records, prefix)
+    indexed_records = indexed_records.suggest(
+      "product-suggest": {
+        prefix: prefix,
+        completion: {
+            field: 'namecomplete.completion'
+        }
+      }
+    )
+    indexed_records
   end
 
   def model_klass
