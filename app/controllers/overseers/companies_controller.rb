@@ -122,11 +122,7 @@ class Overseers::CompaniesController < Overseers::BaseController
         service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer)
         service.call
 
-        if params['company_report'].present?
-          @date_range = params['company_report']['date_range']
-        end
-
-        @indexed_company_reports = service.indexed_records.aggregations['company_over_month']['buckets']['custom-range']['inquiries']['buckets']
+        @indexed_company_reports = service.indexed_records
       end
     end
   end
