@@ -9,6 +9,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @sort_by = sort_by
     @sort_order = sort_order
     @kra_report_params = params[:kra_report]
+    @prefix = params[:prefix]
 
     if params[:columns].present?
       params[:columns].each do |index, column|
