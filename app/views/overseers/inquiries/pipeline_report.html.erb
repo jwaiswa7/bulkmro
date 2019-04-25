@@ -30,13 +30,20 @@
             <strong>
               <%= record_bucket['pipeline']['buckets'].map {|bucket| bucket['doc_count'] if bucket['key'] == status}.compact.first || 0 %>
             </strong><br>
-            <%= link_to(format_currency(record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true),
-                        filtered_path(overseers_inquiries_path, [
-                            filter_by_value('Inside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
-                            filter_by_value('Outside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
-                            filter_by_value('Status', status, status),
-                            filter_by_date_range('Date', params['pipeline_report']['date_range'])
-                        ]), target: '_blank') %>
+            <% if params.present? && params['pipeline_report'].present? %>
+              <%= link_to(format_currency(record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true),
+                          filtered_path(overseers_inquiries_path, [
+                              filter_by_value('Inside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
+                              filter_by_value('Outside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
+                              filter_by_value('Status', index, status),
+                              filter_by_date_range('Date', params['pipeline_report']['date_range'])
+                          ]), target: '_blank') %>
+            <% else %>
+              <%= link_to(format_currency(record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true),
+                          filtered_path(overseers_inquiries_path, [
+                              filter_by_value('Status', index, status),
+                          ]), target: '_blank') %>
+            <% end %>
           </td>
         <% end %>
         <td>
@@ -56,13 +63,20 @@
         <td>
           <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count'] if summary_bucket['key'] == status}.compact.first || 0 %>
           <br>
-          <%= link_to(format_currency(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['statuswise_inquiry_summary']['value'] if summary_bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true),
-                      filtered_path(overseers_inquiries_path, [
-                          filter_by_value('Inside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
-                          filter_by_value('Outside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
-                          filter_by_value('Status', index, status),
-                          filter_by_date_range('Date', params['pipeline_report']['date_range'])
-                      ]), target: '_blank') %>
+          <% if params.present? && params['pipeline_report'].present? %>
+            <%= link_to(format_currency(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['statuswise_inquiry_summary']['value'] if summary_bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true),
+                        filtered_path(overseers_inquiries_path, [
+                            filter_by_value('Inside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
+                            filter_by_value('Outside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
+                            filter_by_value('Status', index, status),
+                            filter_by_date_range('Date', params['pipeline_report']['date_range'])
+                        ]), target: '_blank') %>
+          <% else %>
+            <%= link_to(format_currency(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['statuswise_inquiry_summary']['value'] if summary_bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true),
+                        filtered_path(overseers_inquiries_path, [
+                            filter_by_value('Status', index, status),
+                        ]), target: '_blank') %>
+          <% end %>
         </td>
       <% end %>
       <td>
