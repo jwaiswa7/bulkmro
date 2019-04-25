@@ -9,6 +9,7 @@ class Services::Overseers::Exporters::CompanyReportsExporter < Services::Oversee
         'Company Alias',
         'No. of Live Inquiries',
         'No. of Live Quotation',
+        'Value of Quotations',
         'No. of Live Expected Orders',
         'Value of Expected Orders',
         'No. of Orders',
@@ -18,8 +19,9 @@ class Services::Overseers::Exporters::CompanyReportsExporter < Services::Oversee
         'No of Invoices',
         'Amount Invoiced(Excl. Taxes)',
         'Invoice Margin(Excl. Taxes)',
-        'Amount Outstanding(Incl. Taxes)',
-        'No. of Cancelled Invoices'
+        'No. of Cancelled Invoices',
+        'Value of Cancelled Invoices(Excl. Taxes)',
+        'Uniq SKUs'
     ]
   end
 
@@ -35,7 +37,7 @@ class Services::Overseers::Exporters::CompanyReportsExporter < Services::Oversee
       rows.push(
           company_key: Company.find(inquiry.attributes['company_key']).name,
           account: inquiry.attributes['account'],
-          inquiries_size: number_with_delimiter(inquiry.attributes['live_inquiries'].to_i, delimiter: ','),
+          live_inquiries: number_with_delimiter(inquiry.attributes['live_inquiries'].to_i, delimiter: ','),
           sales_quote_count: number_with_delimiter(inquiry.attributes['sales_quote_count'].to_i, delimiter: ','),
           total_quote_value: format_currency(inquiry.attributes['final_sales_quotes'].present? ? inquiry.attributes['final_sales_quotes'].map{|f| f['calculated_total'].to_f}.sum : 0 ),
           expected_order: number_with_delimiter(inquiry.attributes['expected_order'].present? ? inquiry.attributes['expected_order'].count : 0, delimiter: ',') ,
@@ -55,7 +57,9 @@ class Services::Overseers::Exporters::CompanyReportsExporter < Services::Oversee
                              else
                                percentage(0.0)
                              end,
-          cancelled_invoiced: number_with_delimiter(inquiry.attributes['cancelled_invoiced'].to_i, delimiter: ','),
+          cancelled_invoiced: number_with_delimiter(inquiry.attributes['cancelled_invoiced'].count, delimiter: ','),
+          cancelled_invoiced_value: format_currency(inquiry.attributes['cancelled_invoiced'].present? ? inquiry.attributes['cancelled_invoiced'].map{|f| f['calculated_total'].to_f}.sum : 0),
+          sku: number_with_delimiter(inquiry.attributes['sku'].to_i, delimiter: ','),
       ) if inquiry.present?
     end
     export = Export.create!(export_type: 91, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)

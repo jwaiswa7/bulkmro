@@ -129,7 +129,7 @@ class Overseers::CompaniesController < Overseers::BaseController
 
   def export_company_report
     authorize :company
-    service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer,paginate:false)
+    service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer, paginate: false)
     service.call
 
     indexed_company_reports = service.indexed_records
