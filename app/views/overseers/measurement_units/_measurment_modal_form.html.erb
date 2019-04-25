@@ -1,0 +1,27 @@
+<div class="modal fade" id="modalRatingForm">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 text-uppercase text-black-50 text-small pt-2">Measurement Unit</h4>
+      </div>
+      <%= simple_form_for([:overseers, @measurement_unit], :url => url, :method => 'PATCH') do |f| %>
+        <div class="modal-body mx-3">
+
+          <%= f.input :name %>
+
+        </div>
+        <div class="modal-footer p-0">
+          <div class="card-footer w-100">
+            <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+              Submit Measurement
+            <% end %>
+          </div>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rating-modal">
+  <a href="#" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalmeasurment" data-backdrop="static" data-keyboard="false"></a>
+</div>
