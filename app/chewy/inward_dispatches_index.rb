@@ -13,6 +13,8 @@ class InwardDispatchesIndex < BaseIndex
     field :status_string, value: -> (record) { record.status.to_s }
     field :po_number, value: -> (record) { record.purchase_order.po_number.to_i }, type: 'integer'
     field :po_number_string, value: -> (record) { record.purchase_order.po_number.to_s }, analyzer: 'substring'
+    field :so_number, value: -> (record) { record.sales_order.order_number.to_i }, type: 'integer'
+    field :so_number_string, value: -> (record) { record.sales_order.order_number.to_s }, analyzer: 'substring'
     field :supplier_id, value: -> (record) { record.purchase_order.get_supplier(record.purchase_order.rows.first.metadata['PopProductId'].to_i).try(:id) if record.purchase_order.rows.present? }
     field :supplier, value: -> (record) { record.purchase_order.get_supplier(record.purchase_order.rows.first.metadata['PopProductId'].to_i).to_s if record.purchase_order.rows.present? }, analyzer: 'substring'
     field :customer_id, value: -> (record) { record.purchase_order.inquiry.company.try(:id) if record.inquiry.company.present? }

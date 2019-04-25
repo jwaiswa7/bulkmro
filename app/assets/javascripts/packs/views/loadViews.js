@@ -47,6 +47,9 @@ import invoiceRequests from "./invoiceRequests/init";
 // Po Requests
 import poRequests from "./poRequests/init";
 
+// AR invoices
+import arInvoices from "./arInvoices/init";
+
 // Activities
 import activities from './activities/init'
 
@@ -87,7 +90,8 @@ let loader = {
     companyReviews: companyReviews,
     documentCreations: documentCreations,
     checkout: checkout,
-    taxCodes: taxCodes
+    taxCodes: taxCodes,
+    arInvoices: arInvoices
 };
 
 // Imports
