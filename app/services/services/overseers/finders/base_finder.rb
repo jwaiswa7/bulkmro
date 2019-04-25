@@ -264,7 +264,6 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
               ],
               minimum_should_match: 1,
           },
-
       }
     end
   end

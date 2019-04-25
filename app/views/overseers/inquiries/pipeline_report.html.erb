@@ -8,7 +8,8 @@
 
 <div class="col-12">
   <%= render layout: 'search_layout_for_pipeline' do %>
-  <% end %>
+  <% end %><br>
+
   <table class="table-bordered table">
     <thead>
     <tr>
@@ -20,16 +21,23 @@
       <th style="font-weight:bold;">Won %</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody style="text-align:right;">
     <% @indexed_pipeline_report.each do |month, record_bucket| %>
       <tr>
-        <td><%= format_month_without_date(month) %></td>
+        <td style="text-align:left;"><%= format_month_without_date(month) %></td>
         <% @statuses.each do |index, status| %>
           <td>
-            <%= record_bucket['pipeline']['buckets'].map {|bucket| bucket['doc_count'] if bucket['key'] == status}.compact.first || 0 %> | <%= format_currency(record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true) %>
+            <strong>
+              <%= record_bucket['pipeline']['buckets'].map {|bucket| bucket['doc_count'] if bucket['key'] == status}.compact.first || 0 %>
+            </strong><br>
+            <%= format_currency(record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true) %>
           </td>
         <% end %>
-        <td><%= record_bucket['doc_count'] %>| <%= format_currency(record_bucket['sum_monthly_sales']['value'], precision: 0, show_symbol: true) %></td>
+        <td>
+          <strong>
+            <%= record_bucket['doc_count'] %>
+          </strong><br>
+          <%= format_currency(record_bucket['sum_monthly_sales']['value'], precision: 0, show_symbol: true) %></td>
         <td>
           <!-- <%#= record_bucket['doc_count'] != 0 ? (((record_bucket['pipeline']['buckets'].map{|bucket| bucket['doc_count'] if bucket['key'] == 18 }.compact.first || 0)/record_bucket['doc_count'])*100).round(2) : 0 %> -->
           <%= percentage((((record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == 18}.compact.first || 0) / record_bucket['sum_monthly_sales']['value']) * 100).round(2)) %>
@@ -37,14 +45,16 @@
       </tr>
     <% end %>
     <tr style="font-weight:bold;">
-      <td>Total Count</td>
+      <td>Total Summary</td>
       <% @statuses.each do |index, status| %>
         <td>
-          <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count'] if summary_bucket['key'] == status}.compact.first || 0 %> | <%= format_currency(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['statuswise_inquiry_summary']['value'] if summary_bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true) %>
+          <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count'] if summary_bucket['key'] == status}.compact.first || 0 %><br>
+          <%= format_currency(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['statuswise_inquiry_summary']['value'] if summary_bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true) %>
         </td>
       <% end %>
       <td>
-        <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count']}.sum %>| <%= format_currency(@summary_total['value'], precision: 0, show_symbol: true) %>
+        <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count']}.sum %><br>
+        <%= format_currency(@summary_total['value'], precision: 0, show_symbol: true) %>
       </td>
     </tr>
     </tbody>
