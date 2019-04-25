@@ -250,7 +250,13 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :ar_invoices
+    resources :ar_invoices do
+      collection do
+        get 'pending'
+        get 'completed'
+        get 'cancelled'
+      end
+    end
 
     resources :sales_orders do
       member do

@@ -8,7 +8,7 @@ class ArInvoice < ApplicationRecord
   belongs_to :sales_order
   belongs_to :inquiry
   has_many :inward_dispatches
-
+  update_index('ar_invoices#ar_invoice') {self}
 
   enum status: {
       'AR Invoice requested': 10,
@@ -23,6 +23,8 @@ class ArInvoice < ApplicationRecord
       'Rejected: Others': 30
 
   }
+
+  scope :with_includes, -> {}
 
   def update_status(status)
     if ['Cancelled AR Invoice', 'AR Invoice Request Rejected'].include? (status)

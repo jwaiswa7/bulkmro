@@ -4,8 +4,37 @@ class Overseers::ArInvoicesController < Overseers::BaseController
   # GET /ar_invoices
   # GET /ar_invoices.json
   def index
-    @ar_invoices = ArInvoice.all
-    authorize @ar_invoices
+    authorize :ar_invoice
+    if params[:status].present?
+      if params[:status] == "pending"
+        base_filter = {
+            base_filter_key: 'status',
+            base_filter_value: ArInvoice.statuses["AR Invoice requested"]
+        }
+      elsif params[:status] == "cancelled"
+        base_filter = {
+            base_filter_key: 'status',
+            base_filter_value: ArInvoice.statuses["Cancelled AR Invoice"]
+        }
+      elsif params[:status] == "rejected"
+        base_filter = {
+            base_filter_key: 'status',
+            base_filter_value: ArInvoice.statuses["AR Invoice Request Rejected"]
+        }
+      elsif params[:status] == "completed"
+        base_filter = {
+            base_filter_key: 'status',
+            base_filter_value: ArInvoice.statuses["Completed AR Invoice Request"]
+        }
+      end
+      service = Services::Overseers::Finders::ArInvoices.new(params.merge(base_filter), current_overseer)
+    else
+      @ar_invoices = ArInvoice.all
+      service = Services::Overseers::Finders::ArInvoices.new(params)
+    end
+    service.call
+    @indexed_ar_invoices = service.indexed_records
+    @ar_invoices = service.records.try(:reverse)
   end
 
   # GET /ar_invoices/1
@@ -30,7 +59,7 @@ class Overseers::ArInvoicesController < Overseers::BaseController
   # POST /ar_invoices
   # POST /ar_invoices.json
   def create
-    @ar_invoice = ArInvoice.new(ar_invoice_params)
+    @ar_invoice = ArInvoice.new(ar_invoice_params.merge(overseer: current_overseer))
     authorize @ar_invoice
     respond_to do |format|
       if @ar_invoice.save
