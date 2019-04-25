@@ -1,5 +1,6 @@
   class InquiriesIndex < BaseIndex
     statuses = Inquiry.statuses
+
     define_type Inquiry.all.with_includes do
       field :id, type: 'integer'
       field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
