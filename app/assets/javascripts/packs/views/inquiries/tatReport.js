@@ -2,6 +2,7 @@ const tatReport = () => {
     $('.datatable').on('filters:change', function (event) {
         let value = window.hasher.getHashString();
         if (value != "" || $(this).val() != '') {
+
             if (value.indexOf('Sales') != -1) {
                 $('.avg_summary_box').show();
                 let inside_sales_owner_id = parseInt(value.split('%7C')[1]);
