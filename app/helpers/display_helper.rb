@@ -216,6 +216,10 @@ module DisplayHelper
     render partial: 'shared/snippets/comments.html', locals: { comment: comment, trimmed: trimmed }
   end
 
+  def attribute_boxes(data)
+    render partial: 'shared/snippets/attribute_boxes.html', locals: { data: data }
+  end
+
   def format_display_time(minutes)
     mins = minutes.present? ? minutes : '-'
 

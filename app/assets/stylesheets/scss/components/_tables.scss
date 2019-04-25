@@ -1,6 +1,9 @@
 th {
   font-weight: $headings-font-weight;
   color: $headings-color;
+  &.product-width-adjustment {
+    width: 30% !important;
+  }
 }
 
 .table {
