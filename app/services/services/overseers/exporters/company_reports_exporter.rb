@@ -33,20 +33,29 @@ class Services::Overseers::Exporters::CompanyReportsExporter < Services::Oversee
     end
     records.each do |inquiry|
       rows.push(
-          company_key: Company.find( inquiry['key']).name,
-          account: Company.find( inquiry['key']).account.name,
-          inquiries_size: Company.find( inquiry['key']).inquiry_size,
-          sales_quote_count: number_with_delimiter(inquiry['sales_quotes']['value'].to_i, delimiter: ','),
-          total_quote_value: format_currency(inquiry['total_sales_value']['value']),
-          expected_order: number_with_delimiter(inquiry['expected_orders']['value'].to_i, delimiter: ','),
-          expected_value: format_currency(inquiry['total_expected_value']['value']),
-          sales_order_count: number_with_delimiter(inquiry['total_sales_orders']['value'].to_i, delimiter: ','),
-          total_order_value: format_currency(inquiry['total_order_value']['value']),
-          total_margin: inquiry['order_margin']['value'],
-          invoices_count: percentage(inquiry['margin_percentage']['value']),
-          amount_invoiced: number_with_delimiter(inquiry['sales_invoices']['value'].to_i, delimiter: ','),
-          margin_percentage: format_currency(inquiry['amount_invoiced']['value']),
-          cancelled_invoiced: number_with_delimiter(inquiry['cancelled_invoiced']['value'].to_i, delimiter: ','),
+          company_key: Company.find(inquiry.attributes['company_key']).name,
+          account: inquiry.attributes['account'],
+          inquiries_size: number_with_delimiter(inquiry.attributes['live_inquiries'].to_i, delimiter: ','),
+          sales_quote_count: number_with_delimiter(inquiry.attributes['sales_quote_count'].to_i, delimiter: ','),
+          total_quote_value: format_currency(inquiry.attributes['final_sales_quotes'].present? ? inquiry.attributes['final_sales_quotes'].map{|f| f['calculated_total'].to_f}.sum : 0 ),
+          expected_order: number_with_delimiter(inquiry.attributes['expected_order'].present? ? inquiry.attributes['expected_order'].count : 0, delimiter: ',') ,
+          expected_value:  format_currency(inquiry.attributes['expected_order'].present? ? inquiry.attributes['expected_order'].map{|f| f['calculated_total'].to_f}.sum : 0),
+          sales_order_count: number_with_delimiter(inquiry.attributes['final_sales_orders'].present? ? inquiry.attributes['final_sales_orders'].count : 0, delimiter: ','),
+          total_order_value: format_currency(inquiry.attributes['final_sales_orders'].present? ? inquiry.attributes['final_sales_orders'].map{|f| f['calculated_total'].to_f}.sum : 0),
+          total_margin: format_currency(inquiry.attributes['final_sales_orders'].present? ? inquiry.attributes['final_sales_orders'].map{|f| f['calculated_total_margin'].to_f}.sum : 0),
+          margin: if inquiry.attributes['final_sales_orders'].present?
+                    percentage(inquiry.attributes['final_sales_orders'].map{|f| f['calculated_total_margin_percentage'].to_f}.sum  / inquiry.attributes['final_sales_orders'].map{|f| f['calculated_total_margin_percentage'].to_f}.count)
+                  else
+                    percentage(0.0)
+                  end,
+          invoices_count: (number_with_delimiter(inquiry.attributes['invoices'].count, delimiter: ',') if inquiry.attributes['invoices'].present?),
+          amount_invoiced: format_currency(inquiry.attributes['invoices'].present? ? inquiry.attributes['invoices'].map{|f| f['calculated_total'].to_f}.sum : 0),
+          margin_percentage: if inquiry.attributes['final_sales_quotes'].present?
+                               percentage(inquiry.attributes['final_sales_quotes'].map{|f| f['calculated_total_margin_percentage'].to_f}.sum / inquiry.attributes['final_sales_quotes'].map{|f| f['calculated_total_margin_percentage'].to_f}.count )
+                             else
+                               percentage(0.0)
+                             end,
+          cancelled_invoiced: number_with_delimiter(inquiry.attributes['cancelled_invoiced'].to_i, delimiter: ','),
       ) if inquiry.present?
     end
     export = Export.create!(export_type: 91, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
