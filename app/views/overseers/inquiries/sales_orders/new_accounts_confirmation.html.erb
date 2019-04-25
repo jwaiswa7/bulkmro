@@ -1,6 +1,6 @@
 <div class="col-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <%= simple_form_for(@sales_order, url: create_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), method: :post, :html => {:class => 'was-validated needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= simple_form_for(@sales_order, url: create_account_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), method: :post, :html => {:class => 'was-validated needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= f.hidden_field :parent_id %>
       <%= f.hidden_field :sales_quote_id %>
 
@@ -192,10 +192,27 @@
       <div class="card-footer">
         <div class="form-row">
           <div class="col-6">
-            <%= link_to "Cancel", edit_overseers_inquiry_sales_order_path(@inquiry, @sales_order), class: 'btn btn-danger btn-block' %>
+            <a class="btn btn-danger btn-block" data-parent="#rejection-comments" data-toggle="collapse" data-target="#internal-comments" style="color: #FFFFFF;">Reject</a>
           </div>
           <div class="col-6">
-            <%= f.submit 'Save and Confirm', class: 'btn btn-success btn-block' %>
+            <%= f.submit 'Approve', class: 'btn btn-success btn-block', name: 'approve' %>
+          </div>
+        </div>
+        <div class="form-row"><br></div>
+        <div class="form-row" id="rejection-comments">
+          <div class="col-12">
+            <div id="accordion">
+              <div class="card ">
+                <div id="internal-comments" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    <%= f.simple_fields_for :custom_fields do |c| %>
+                      <%= c.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+                      <%= c.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@sales_order).reject? %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

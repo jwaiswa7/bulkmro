@@ -1,8 +1,9 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
   before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation,
                                          :resync, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map,
-                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation]
-  before_action :set_notification, only: [:create_confirmation, :create_account_confirmation]
+                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation,
+                                         :create_account_rejection]
+  before_action :set_notification, only: [:create_confirmation, :create_account_confirmation, :create_account_rejection]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -122,7 +123,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   def create_account_confirmation
     authorize @sales_order
 
-    begin
+    if params['approve'].present?
       @sales_order.update_attributes(remote_status: :'Supplier PO: Request Pending', status: :'Approved', mis_date: Date.today, order_number: (@sales_order.id + 1))
       Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, :order_won).call
       comment = @sales_order.inquiry.comments.create!(message: 'SAP Approved', overseer: Overseer.default_approver, sales_order: @sales_order)
@@ -132,11 +133,27 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       end
       # sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(sales_order)), filename: sales_order.filename)
       @sales_order.update_index
-      return_response('Order Created Successfully')
-    rescue => e
-      return_response(e.message, 0)
+    else
+      @sales_order.update_attributes(status: :'SAP Rejected')
+      comment = InquiryComment.where(message: params[:message], inquiry: @sales_order.inquiry, created_by: Overseer.default_approver, updated_by: Overseer.default_approver, sales_order: @sales_order).first_or_create! if @sales_order.inquiry.present?
+      Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, :sap_rejected).call
+      @sales_order.create_rejection!(comment: comment, overseer: Overseer.default_approver)
+      @sales_order.approval.destroy! if @sales_order.approval.present?
+      @sales_order.update_index
     end
+
+    redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
+
+  # def create_account_rejection
+  #   authorize @sales_order
+  #   debugger
+  #   begin
+  #
+  #   rescue => e
+  #     return_response(e.message, 0)
+  #   end
+  # end
 
   def new_confirmation
     authorize @sales_order
@@ -211,6 +228,12 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
         :mis_date,
           :sales_quote_id,
           :parent_id,
+          :reject,
+          :approve,
+          inquiry_comment: [
+              :sales_order_id,
+              :message
+          ],
           rows_attributes: [
               :id,
               :sales_order_id,
