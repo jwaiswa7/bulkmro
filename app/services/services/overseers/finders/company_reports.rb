@@ -43,6 +43,10 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
     indexed_records
   end
 
+  def all_records
+    index_klass.limit(model_klass.count).order(sort_definition)
+  end
+
   def model_klass
     Company
   end
