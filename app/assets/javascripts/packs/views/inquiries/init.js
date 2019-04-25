@@ -4,7 +4,9 @@ import inquiriesEditSuppliers from "./editSuppliers";
 import inquiriesUpdateSuppliers from "./updateSuppliers";
 import inquiriesIndex from "./index";
 import inquiriesKraReport from "./kraReport";
-import inquiriesCompanyReport from "./companyReport";
+import inquiriesTatReport from "./tatReport";
+
+
 let inquiries = {
     new: inquiriesNew,
     edit: inquiriesEdit,
@@ -12,7 +14,8 @@ let inquiries = {
     updateSuppliers: inquiriesUpdateSuppliers,
     index: inquiriesIndex,
     kraReport: inquiriesKraReport,
-    // companyReport: inquiriesCompanyReport
+    tatReport: inquiriesTatReport
+
 }
 
 export default inquiries

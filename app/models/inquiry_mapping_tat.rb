@@ -2,6 +2,8 @@ class InquiryMappingTat < ApplicationRecord
 
   update_index('inquiry_mapping_tats#inquiry_mapping_tat') { self }
 
+  attr_accessor :inside_sales_owner
+
   belongs_to :inquiry
   belongs_to :sales_quote, required: false
   belongs_to :sales_order, required: false

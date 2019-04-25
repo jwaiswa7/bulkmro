@@ -376,6 +376,7 @@ Rails.application.routes.draw do
         get 'export_all'
         get 'export_filtered_records'
         get 'tat_report'
+        get 'sales_owner_status_avg'
         get 'export_inquiries_tat'
         post 'create_purchase_orders_requests'
         post 'preview_stock_po_request'

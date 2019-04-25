@@ -83,6 +83,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit? && record.inquiry_products.present?
   end
 
+  def sales_owner_status_avg?
+    developer? || admin?
+  end
+
   def update_suppliers?
     edit_suppliers? && not_logistics?
   end

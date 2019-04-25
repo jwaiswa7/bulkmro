@@ -10,6 +10,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @sort_order = sort_order
     @pipeline_report_params = params[:pipeline_report]
     @kra_report_params = params[:kra_report]
+    @tat_report_params = params[:tat_report]
     @prefix = params[:prefix]
     @company_report_params = params[:company_report]
 
@@ -64,6 +65,8 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
     @indexed_records = non_paginated_records if !paginate
 
+#    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes if indexed_records.present?
+#    @records = order_by_ids(@indexed_records) if indexed_records.present?
     if @indexed_records.size > 0
       @records = model_klass.find_ordered(indexed_records.pluck(:id)).with_includes if @indexed_records.present?
     else

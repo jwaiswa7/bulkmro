@@ -216,13 +216,8 @@ module DisplayHelper
     render partial: 'shared/snippets/comments.html', locals: { comment: comment, trimmed: trimmed }
   end
 
-  def format_display_time(minutes)
-    mins = minutes.present? ? minutes : '-'
-
-    hours = minutes.present? && minutes > 60 ? (minutes / 60.0).ceil.abs : '-'
-    days = minutes.present? && minutes > 1440 ? (minutes / 1440.0).ceil.abs : '-'
-
-    render partial: 'shared/snippets/time.html', locals: { minutes: mins, hours: hours, days: days }
+  def attribute_boxes(data)
+    render partial: 'shared/snippets/attribute_boxes.html', locals: { data: data }
   end
 
   def humanize(mins)
