@@ -6,26 +6,17 @@ class Overseers::ArInvoicesController < Overseers::BaseController
   def index
     authorize :ar_invoice
     if params[:status].present?
+      base_filter = {
+          base_filter_key: 'status'
+      }
       if params[:status] == "pending"
-        base_filter = {
-            base_filter_key: 'status',
-            base_filter_value: ArInvoice.statuses["AR Invoice requested"]
-        }
+        base_filter[:base_filter_value] = ArInvoice.statuses["AR Invoice requested"]
       elsif params[:status] == "cancelled"
-        base_filter = {
-            base_filter_key: 'status',
-            base_filter_value: ArInvoice.statuses["Cancelled AR Invoice"]
-        }
+        base_filter[:base_filter_value] = ArInvoice.statuses["Cancelled AR Invoice"]
       elsif params[:status] == "rejected"
-        base_filter = {
-            base_filter_key: 'status',
-            base_filter_value: ArInvoice.statuses["AR Invoice Request Rejected"]
-        }
+        base_filter[:base_filter_value] = ArInvoice.statuses["AR Invoice Request Rejected"]
       elsif params[:status] == "completed"
-        base_filter = {
-            base_filter_key: 'status',
-            base_filter_value: ArInvoice.statuses["Completed AR Invoice Request"]
-        }
+        base_filter[:base_filter_value] = ArInvoice.statuses["Completed AR Invoice Request"]
       end
       service = Services::Overseers::Finders::ArInvoices.new(params.merge(base_filter), current_overseer)
     else

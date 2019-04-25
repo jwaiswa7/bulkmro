@@ -153,7 +153,7 @@
                 <td><%= number_with_precision(sales_order_row.margin_percentage, precision: 2) %></td>
                 <td><%= sales_order_row.best_tax_code %></td>
                 <td><%= sales_order_row.best_tax_rate %></td>
-                <td><%= format_currency(sales_order_row.converted_total_selling_price_with_tax, symbol: f.object.sales_order.currency_sign) %></td>
+                <td><%= format_currency(1000, symbol: f.object.sales_order.currency_sign) %></td>
                 <td><%= format_currency(sales_order_row.converted_total_selling_price_with_tax, symbol: f.object.sales_order.currency_sign) %></td>
               </tr>
             <% end %>
