@@ -12,6 +12,21 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
 
     indexed_records = aggregation_pipeline_report(indexed_records)
 
+    # ISP 84
+    # SM  Lavanya 128
+    #     Madan 56
+    #     Devang 152
+    # BH  Ved 55
+    # C   Cummins 4
+    #
+    # start_at = Date.new(2019, 03, 01).strftime('%Y-%m-%d')
+    # end_at = Date.new(2019, 03, 31).strftime('%Y-%m-%d')
+    # Inquiry.includes({sales_quotes: [{sales_quote_rows: :supplier}]}).where(
+    #     :created_at => start_at.beginning_of_month..end_at.end_of_month).where(
+    #     'inside_sales_owner_id IN (?) OR outside_sales_owner_id IN (?)', sales_executive_ids, sales_executive_ids).where(
+    #     :company_id => customer_id
+    # )
+
     sales_executives = Overseer.pipeline_executives
     if @pipeline_report_params.present? && @pipeline_report_params['company'].present?
       inquiry_company = @pipeline_report_params['company'].to_i
