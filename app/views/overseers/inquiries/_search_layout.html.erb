@@ -1,71 +1,20 @@
-<%= simple_form_for(:pipeline_report, :url => pipeline_report_overseers_inquiries_path, :method => :get, :html => {:class => 'col-12 needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+<%= simple_form_for(:kra_report, :url => kra_report_overseers_inquiries_path, :method => :get, :html => {:class => 'col-12 needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
   <div class="card mt-3">
     <div class="card-body">
       <div class="form-row">
-        <div class="col">
-          <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range'}, required: false, label: 'Pick a Date Range' %>
+        <div class="col-6">
+          <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range'}, required: true, label: 'Pick a Date Range' %>
         </div>
-      </div>
-
-      <div class="form-row">
-        <div class="col-12 col-md-3">
-          <%= f.input :company, as: :select, required: false, collection: Company.acts_as_customer, input_html: {class: "select2-single", :'data-placeholder' => 'Select Customer Company' } %>
-          <!--          , :'value' => ['pipeline_report']['inside_sales_executive'].present? ? Overseer.find(params['pipeline_report']['inside_sales_executive']).name : ''-->
-        </div>
-        <div class="col-12 col-md-3">
-          <%= f.input :inside_sales_executive, as: :select, required: false, collection: Overseer.pipeline_executives.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Inside Sales Owner' } %>
-<!--          , :'value' => ['pipeline_report']['inside_sales_executive'].present? ? Overseer.find(params['pipeline_report']['inside_sales_executive']).name : ''-->
-        </div>
-        <div class="col-12 col-md-3">
-          <%= f.input :sales_manager, as: :select, required: false, collection: Overseer.all.map {|o| [o.parent.full_name, o.parent.id] if o.parent.present?}.compact.uniq.sort, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner' } %>
-<!--          , value: (params.present? && params['pipeline_report']['sales_manager'].present?) ? Overseer.find(params['pipeline_report']['sales_manager']).name : ''-->
-        </div>
-        <div class="col-12 col-md-3">
-          <%= f.input :business_head, as: :select, required: false, collection: Overseer.all.map {|o| (o.parent.present? ? (o.parent.parent.present? ? [o.parent.parent.full_name, o.parent.parent.id] : nil) : nil)}.compact.uniq.sort, input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Manager' } %>
-<!--          , :'value' => params.present? ? params['pipeline_report']['business_head'] : ''-->
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="col text-center">
-          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-            <i class="fal fa-redo mr-2"></i>Refresh Report
+        <div class="col-3 text-center">
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block mt-3") do %>
+            <i class="fal fa-hand-point-down mr-2"></i>Fetch Report
           <% end %>
         </div>
-        <div class="col text-center">
-          <a href="<%= pipeline_report_overseers_inquiries_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0">
-            Reset Report</a>
+        <div class="col-3 text-center">
+          <a href="<%= kra_report_overseers_inquiries_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 mt-3">
+            <i class="fal fa-redo mr-2"></i> Reset Report</a>
         </div>
       </div>
     </div>
   </div>
 <% end %>
-
-
-
-
-
-
-
-
-<!-- Make it generic -->
-<%#= simple_form_for(:kra_report, :url => kra_report_overseers_inquiries_path, :method => :get, :html => {:class => 'col-12 needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-<!--  <div class="card mt-3">-->
-<!--    <div class="card-body">-->
-<!--      <div class="form-row">-->
-<!--        <div class="col-6">-->
-          <%#= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range'}, required: true, label: 'Pick a Date Range' %>
-<!--        </div>-->
-<!--        <div class="col-3 text-center">-->
-          <%#= button_tag(type: "submit", class: "btn btn-success btn-block mt-3") do %>
-<!--            <i class="fal fa-hand-point-down mr-2"></i>Fetch Report-->
-          <%# end %>
-<!--        </div>-->
-<!--        <div class="col-3 text-center">-->
-<!--          <a href="<%#= kra_report_overseers_inquiries_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 mt-3">-->
-<!--            <i class="fal fa-redo mr-2"></i> Reset Report</a>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<%# end %>
