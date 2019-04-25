@@ -23,13 +23,17 @@ json.data (@indexed_company_reports) do |inquiry|
                   else
                     percentage(0.0)
                   end,
-                  number_with_delimiter(inquiry.attributes['cancelled_invoiced'].to_i, delimiter: ','),
+                  number_with_delimiter(inquiry.attributes['cancelled_invoiced'].count, delimiter: ','),
+                  format_currency(inquiry.attributes['cancelled_invoiced'].present? ? inquiry.attributes['cancelled_invoiced'].map{|f| f['calculated_total'].to_f}.sum : 0),
+                  number_with_delimiter(inquiry.attributes['sku'].to_i, delimiter: ','),
               ]
 end
 
 json.columnFilters [
                        [],
                        [{"source": autocomplete_overseers_companies_path}],
+                       [],
+                       [],
                        [],
                        [],
                        [],

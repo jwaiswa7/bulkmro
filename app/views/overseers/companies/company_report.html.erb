@@ -17,7 +17,7 @@
   <th class="no-sort all" data-name="account_id"> Company Alias</th>
   <th class="no-sort all text-right">Live Inquiries</th>
   <th class="no-sort all text-right">Live Quotation</th>
-  <th class="no-sort all text-right">Value of Quotation</th>
+  <th class="no-sort all text-right">Value of Quotations</th>
   <th class="no-sort all text-right">Live Expected Orders</th>
   <th class="no-sort all text-right">Value of Expected Orders</th>
   <th class="no-sort all text-right">Orders</th>
@@ -28,11 +28,15 @@
   <th class="no-sort all text-right">Amount Invoiced(Excl. Taxes)</th>
   <th class="no-sort all text-right">Invoice Margin(Excl. Taxes)</th>
   <th class="no-sort all text-right" data-name="cancelled_invoiced">Cancelled Invoices</th>
+  <th class="no-sort all text-right">Value of Cancelled Invoices</th>
+  <th class="no-sort all text-right">Uniq SKUs</th>
 <% end %>
 
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
   <td data-filter="ajax"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>

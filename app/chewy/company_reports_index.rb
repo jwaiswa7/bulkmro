@@ -32,6 +32,10 @@ class CompanyReportsIndex < BaseIndex
       field :calculated_total, type: 'double'
     end
 
-    field :cancelled_invoiced, value: -> (record) { record.invoices.where(status: 'Cancelled').compact.count }, type: 'integer'
+    field :cancelled_invoiced, value: -> (record) { record.invoices.where(status: 'Cancelled')} do
+      field :calculated_total, type: 'double'
+    end
+
+    field :sku, value: -> (record) {record.final_sales_orders.uniq.map(&:products).flatten.uniq.count }, type: 'integer'
   end
 end
