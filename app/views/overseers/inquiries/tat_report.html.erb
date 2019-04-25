@@ -5,8 +5,10 @@
 <% content_for :heading do %>
   TAT Report
 <% end %>
+
+<div class="col-lg-12 avg_summary_box"></div>
 <% content_for :table_desc do %>
-    TAT Report <%= "for range " + @date_range.gsub("~","to") if @date_range.present?%> searchable with relevant term/keywords.
+  TAT Report <%= "for range " + @date_range.gsub("~", "to") if @date_range.present? %> searchable with relevant term/keywords.
 <% end %>
 <% content_for :controller_is_aliased, false %>
 <% content_for :page_title do %>
@@ -25,7 +27,7 @@
   <th class="no-sort all">Sales Order Status</th>
   <th class="no-sort all">New Inquiry</th>
   <th class="no-sort all text-right">New Inquiry Date</th>
-  <th class="no-sort all text-right">Acknowledgement Mail<br>(Minutes)</th>
+  <th class="no-sort all text-right" data-name="status_acknowledgment_mail">Acknowledgement Mail<br>(Minutes)</th>
   <th class="no-sort all">Acknowledgement Mail<br>(Time)</th>
   <th class="no-sort all text-right">Acknowledgement Mail <br>Date</th>
   <th class="no-sort all text-right">Cross Reference<br>(Minutes)</th>

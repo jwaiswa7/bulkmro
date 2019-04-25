@@ -1,7 +1,9 @@
 class Services::Shared::Migrations::AddInquiryMappingTat < Services::Shared::Migrations::Migrations
   def call
     # add date range
-    inquiries = Inquiry.where.not(status: 'Expected Order').includes(:sales_orders)
+    start_date = Date.parse('01-01-2019')
+    end_date = Date.today
+    inquiries = Inquiry.where(created_at: start_date..end_date).where.not(status: 'Expected Order').includes(:sales_orders)
     inquiries.each do |inquiry|
       if inquiry.sales_orders.present?
         inquiry.sales_orders.each do |sales_order|
