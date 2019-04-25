@@ -16,7 +16,8 @@ class Overseers::ArInvoicesController < Overseers::BaseController
 
   # GET /ar_invoices/new
   def new
-    # @sales_order = SalesOrder.where(:id => params[:sales_order_id]).last
+    #@sales_order = SalesOrder.where(:id => params[:sales_order_id]).last
+    @sales_order = SalesOrder.where(:id => 7317).last
     @ar_invoice = ArInvoice.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
     authorize @ar_invoice
   end
@@ -48,7 +49,7 @@ class Overseers::ArInvoicesController < Overseers::BaseController
     authorize @ar_invoice
     respond_to do |format|
       if @ar_invoice.update(ar_invoice_params)
-        format.html { redirect_to @ar_invoice, notice: 'Ar invoice was successfully updated.' }
+        format.html { redirect_to overseers_ar_invoice_path(@ar_invoice), notice: 'Ar invoice was successfully updated.' }
         format.json { render :show, status: :ok, location: @ar_invoice }
       else
         format.html { render :edit }
@@ -76,6 +77,15 @@ class Overseers::ArInvoicesController < Overseers::BaseController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ar_invoice_params
-      params.fetch(:ar_invoice, {})
+      params.require(:ar_invoice).permit(
+          :sales_order_id,
+          :inquiry_id,
+          :status,
+          :cancellation_reason,
+          :rejection_reason,
+          :other_rejection_reason,
+          :ar_invoice_number,
+          :e_way
+      )
     end
 end
