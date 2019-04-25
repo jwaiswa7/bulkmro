@@ -26,6 +26,14 @@ class ArInvoice < ApplicationRecord
 
   scope :with_includes, -> {}
 
+  enum cancellation_reason: {
+
+      'Freight Charges': 10,
+      'Installation Charges': 20,
+      'Others': 30
+
+  }
+
   def update_status(status)
     if ['Cancelled AR Invoice', 'AR Invoice Request Rejected'].include? (status)
       self.status = status

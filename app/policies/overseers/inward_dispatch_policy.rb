@@ -36,6 +36,14 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
   end
 
   def update_logistics_owner_for_inward_dispatches?
-    admin?
+    if record.class == Symbol
+      admin?
+    else
+      admin? && (record.status != 'Material Delivered')
+    end
+  end
+
+  def create_ar_invoice?
+    record.status == 'Material Delivered' && (admin? || logistics?) && !record.ar_invoice.present?
   end
 end

@@ -35,6 +35,7 @@ class SalesOrder < ApplicationRecord
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
+  has_many :inward_dispatches
 
   has_one :confirmation, class_name: 'SalesOrderConfirmation', dependent: :destroy
   has_many :po_requests, inverse_of: :sales_order, dependent: :destroy

@@ -5,6 +5,8 @@ class CreateArInvoices < ActiveRecord::Migration[5.2]
       t.string  :other_rejection_reason
       t.integer :cancellation_reason
       t.string  :other_cancellation_reason
+      t.boolean :e_way, :default => false
+
 
       t.integer :status
       t.integer :ar_invoice_number
