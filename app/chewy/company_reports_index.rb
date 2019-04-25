@@ -2,7 +2,7 @@ class CompanyReportsIndex < BaseIndex
   define_type Company.with_includes do
     default_import_options batch_size: 100, bulk_size: 10.megabytes, refresh: false
     field :id, type: 'integer'
-    field :account_id, value: -> (record) {record.account_id}
+    field :account_id, value: -> (record) {record.account_id}, type: 'integer'
     field :name, value: -> (record) {record.name}, analyzer: 'fuzzy_substring'
     field :account, value: -> (record) {record.account.to_s}, analyzer: 'substring', fielddata: true
 
@@ -32,6 +32,10 @@ class CompanyReportsIndex < BaseIndex
       field :calculated_total, type: 'double'
     end
 
-    field :cancelled_invoiced, value: -> (record) { record.invoices.where(status: 'Cancelled').compact.count }, type: 'integer'
+    field :cancelled_invoiced, value: -> (record) { record.invoices.where(status: 'Cancelled')} do
+      field :calculated_total, type: 'double'
+    end
+
+    field :sku, value: -> (record) {record.final_sales_orders.uniq.map(&:products).flatten.uniq.count }, type: 'integer'
   end
 end

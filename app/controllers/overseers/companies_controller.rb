@@ -129,10 +129,10 @@ class Overseers::CompaniesController < Overseers::BaseController
 
   def export_company_report
     authorize :company
-    service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer)
+    service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer, paginate: false)
     service.call
 
-    indexed_company_reports = service.indexed_records.aggregations['company_over_month']['buckets']['custom-range']['inquiries']['buckets']
+    indexed_company_reports = service.indexed_records
 
     if params['company_report'].present?
       date_range = params['company_report']['date_range']

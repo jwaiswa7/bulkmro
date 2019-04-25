@@ -1,7 +1,7 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
-<%# provide :can_be_directly_downloaded, true %>
+<% provide :can_be_directly_downloaded, true %>
 
 <% content_for :heading do %>Company Report<% end %>
 <% provide :hide_table_desc, true %>
@@ -15,24 +15,28 @@
   <th class="no-sort all"></th>
   <th class="no-sort all" data-name="company_key"> Company Name</th>
   <th class="no-sort all" data-name="account_id"> Company Alias</th>
-  <th class="no-sort all text-right">Live Inquiries</th>
-  <th class="no-sort all text-right">Live Quotation</th>
-  <th class="no-sort all text-right">Value of Quotation</th>
-  <th class="no-sort all text-right">Live Expected Orders</th>
-  <th class="no-sort all text-right">Value of Expected Orders</th>
-  <th class="no-sort all text-right">Orders</th>
+  <th class="no-sort all text-right">No. of<br> Live Inquiries</th>
+  <th class="no-sort all text-right">No. of<br> Live Quotation</th>
+  <th class="no-sort all text-right">Value of Quotations</th>
+  <th class="no-sort all text-right">No. of Live<br> Expected Orders</th>
+  <th class="no-sort all text-right">Value of<br> Expected Orders</th>
+  <th class="no-sort all text-right">No. of<br> Orders</th>
   <th class="no-sort all text-right">Value of Orders</th>
   <th class="no-sort all text-right">Order Margin</th>
   <th class="no-sort all text-right">%Margin</th>
-  <th class="no-sort all text-right">Invoices</th>
-  <th class="no-sort all text-right">Amount Invoiced(Excl. Taxes)</th>
-  <th class="no-sort all text-right">Invoice Margin(Excl. Taxes)</th>
-  <th class="no-sort all text-right" data-name="cancelled_invoiced">Cancelled Invoices</th>
+  <th class="no-sort all text-right">No. of<br> Invoices</th>
+  <th class="no-sort all text-right">Amount Invoiced<br> (Excl. Taxes)</th>
+  <th class="no-sort all text-right">Invoice Margin<br> (Excl. Taxes)</th>
+  <th class="no-sort all text-right">No. of<br> Cancelled Invoices</th>
+  <th class="no-sort all text-right">Value of<br> Cancelled Invoices</th>
+  <th class="no-sort all text-right">No. of<br> Uniq SKUs</th>
 <% end %>
 
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
   <td data-filter="ajax"></td>
+  <td data-filter="ajax"></td>
+  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>

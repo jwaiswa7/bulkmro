@@ -4,11 +4,7 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
   end
 
   def all_records
-    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-                      else
-                        super
-                      end
+    indexed_records = index_klass.limit(model_klass.count).order(sort_definition)
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
@@ -25,13 +21,10 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
         multi_match: {
             query: query_string,
             operator: 'and',
-            fields: %w[]
+            fields: %w[name account]
         }
     ).order(sort_definition)
 
-    if current_overseer.present? && !current_overseer.allow_inquiries?
-      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    end
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
