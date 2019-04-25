@@ -9052,6 +9052,8 @@ label[class*='col'] {
 th {
   font-weight: 500;
   color: #212529; }
+  th.product-width-adjustment {
+    width: 30% !important; }
 
 .table {
   border-collapse: separate;
