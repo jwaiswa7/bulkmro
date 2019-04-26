@@ -35,12 +35,24 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved? && not_logistics?
   end
 
+  def account_approval?
+    record.status == 'Accounts Approval Pending'
+  end
+
   def update?
     edit? || admin?
   end
 
   def new_confirmation?
     edit?
+  end
+
+  def new_accounts_confirmation?
+    accounts? || admin?
+  end
+
+  def create_account_confirmation?
+    new_accounts_confirmation?
   end
 
   def create_confirmation?

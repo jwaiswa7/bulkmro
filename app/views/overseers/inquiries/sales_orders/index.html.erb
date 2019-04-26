@@ -37,6 +37,9 @@
             <% elsif policy(sales_order).new_revision? %>
               <%= row_action_button(new_revision_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'redo-alt', 'New Sales Order Revision', 'warning') %>
             <% end %>
+            <% if policy(sales_order).account_approval? %>
+              <%= row_action_button(new_accounts_confirmation_overseers_inquiry_sales_order_path(id: sales_order.to_param), 'comment-alt-check', 'Account Approval', 'warning') %>
+            <% end %>
             <% if policy(sales_order).comments? %>
               <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>
             <% end %>

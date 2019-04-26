@@ -88,7 +88,7 @@ class SalesOrder < ApplicationRecord
 
   enum status: {
       'Requested': 10,
-      'SAP Approval Pending': 20,
+      'Accounts Approval Pending': 20,
       'Rejected': 30,
       'SAP Rejected': 40,
       'Cancelled': 50,
@@ -121,7 +121,7 @@ class SalesOrder < ApplicationRecord
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
   scope :remote_approved, -> {where('(sales_orders.status = ? AND sales_orders.remote_status != ? OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled'])}
 
-  scope :under_process, -> {where(status: [:'Approved', :'SAP Approval Pending', 'Requested'])}
+  scope :under_process, -> {where(status: [:'Approved', :'Accounts Approval Pending', 'Requested'])}
 
   def confirmed?
     self.confirmation.present?
