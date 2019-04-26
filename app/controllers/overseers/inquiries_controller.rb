@@ -141,7 +141,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     service.call
 
     indexed_tat_reports = service.indexed_records
-    export_service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, indexed_tat_reports, '-')
+    export_service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, indexed_tat_reports, '')
     export_service.call
 
     redirect_to url_for(Export.inquiries_tat.not_filtered.last.report)

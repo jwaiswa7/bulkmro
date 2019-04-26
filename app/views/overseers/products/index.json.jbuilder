@@ -30,8 +30,6 @@ json.data (@products) do |product|
                   format_succinct_date(product.created_at),
                   (product.created_by || (product.inquiry_import_row.inquiry.created_by if product.inquiry_import_row)).try(:name) || '-',
                   format_succinct_date(product.approval.try(:created_at)),
-
-
               ]
 end
 json.columnFilters [
