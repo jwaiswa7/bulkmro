@@ -252,6 +252,8 @@ Rails.application.routes.draw do
 
     resources :ar_invoices
 
+    resources :material_dispatches
+
     resources :sales_orders do
       member do
         get 'new_purchase_order'

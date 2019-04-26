@@ -8,6 +8,7 @@ class ArInvoice < ApplicationRecord
   belongs_to :sales_order
   belongs_to :inquiry
   has_many :inward_dispatches
+  has_many :material_dispatches
 
 
   enum status: {
