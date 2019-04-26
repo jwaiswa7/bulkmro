@@ -1,9 +1,8 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
   before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation,
                                          :resync, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map,
-                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation,
-                                         :create_account_rejection]
-  before_action :set_notification, only: [:create_confirmation, :create_account_confirmation, :create_account_rejection]
+                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation]
+  before_action :set_notification, only: [:create_confirmation, :create_account_confirmation]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -135,7 +134,9 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       @sales_order.update_index
     else
       @sales_order.update_attributes(status: :'SAP Rejected')
-      comment = InquiryComment.where(message: params[:message], inquiry: @sales_order.inquiry, created_by: Overseer.default_approver, updated_by: Overseer.default_approver, sales_order: @sales_order).first_or_create! if @sales_order.inquiry.present?
+      comment = InquiryComment.where(message: "Rejected by Accounts. Reason: #{sales_order_params[:custom_fields][:message]}",
+                                     inquiry: @sales_order.inquiry, created_by: Overseer.default_approver, updated_by: Overseer.default_approver,
+                                     sales_order: @sales_order).first_or_create! if @sales_order.inquiry.present?
       Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, :sap_rejected).call
       @sales_order.create_rejection!(comment: comment, overseer: Overseer.default_approver)
       @sales_order.approval.destroy! if @sales_order.approval.present?
@@ -144,16 +145,6 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
     redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
-
-  # def create_account_rejection
-  #   authorize @sales_order
-  #   debugger
-  #   begin
-  #
-  #   rescue => e
-  #     return_response(e.message, 0)
-  #   end
-  # end
 
   def new_confirmation
     authorize @sales_order
@@ -230,8 +221,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
           :parent_id,
           :reject,
           :approve,
-          inquiry_comment: [
-              :sales_order_id,
+          custom_fields: [
               :message
           ],
           rows_attributes: [
