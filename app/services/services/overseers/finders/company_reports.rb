@@ -18,11 +18,11 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
 
   def perform_query(query_string)
     indexed_records = index_klass.query(
-        multi_match: {
-            query: query_string,
-            operator: 'and',
-            fields: %w[name account]
-        }
+      multi_match: {
+          query: query_string,
+          operator: 'and',
+          fields: %w[name account]
+      }
     ).order(sort_definition)
 
 
@@ -47,5 +47,5 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
   def sort_definition
     { live_inquiries: :desc }
   end
-end
 
+end

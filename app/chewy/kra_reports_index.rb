@@ -1,5 +1,4 @@
 class KraReportsIndex < BaseIndex
-
   define_type Inquiry.all.with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
@@ -23,5 +22,4 @@ class KraReportsIndex < BaseIndex
     field :revenue, value: -> (record) {record.final_sales_orders.compact.uniq.map(&:calculated_total_margin).sum}, type: 'double'
     field :sku, value: -> (record) {record.final_sales_orders.compact.uniq.map {|s|s.products.map(&:sku).count}.last}, type: 'integer'
   end
-
 end

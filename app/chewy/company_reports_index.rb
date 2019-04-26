@@ -19,7 +19,7 @@ class CompanyReportsIndex < BaseIndex
     field :expected_order, value: -> (record) {record.final_sales_quotes.where('inquiries.status = ?', 7)} do
       field :calculated_total, type: 'double'
     end
-    field :final_sales_quotes, value: -> (record) { record.final_sales_quotes.where.not('inquiries.status = ? OR inquiries.status = ?', 10,9)} do
+    field :final_sales_quotes, value: -> (record) { record.final_sales_quotes.where.not('inquiries.status = ? OR inquiries.status = ?', 10, 9)} do
       field :calculated_total, type: 'double'
       field :calculated_total_margin_percentage, type: 'double'
     end
