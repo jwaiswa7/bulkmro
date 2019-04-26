@@ -1,0 +1,13 @@
+<div class="media chat-item">
+  <div class="media-body">
+    <div class="chat-item-body">
+      <% data.each  do |attr_data| %>
+        <div class="form-group mb-0 text-left">
+          <strong class="form-control-label"><%= attr_data.keys.first.to_s.titlecase %></strong>
+          <br/>
+          <%= attr_data.values.first %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
