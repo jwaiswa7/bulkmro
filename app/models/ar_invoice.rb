@@ -45,11 +45,13 @@ class ArInvoice < ApplicationRecord
   def display_reason(type = nil)
     # If status is cancelled then also all rejection as well as other cacellation display on first load of form to avoid that ui helper written
     case type
-    when 'other'
-      (('AR Invoice requested' == self.status) && self.rejection_reason == 'Others') ? '' : 'd-none'
-    when 'ar_rejection'
-      ('AR Invoice requested' == self.status) ? '' : 'd-none'
-    when 'ar_cancellation'
+    when 'other_rejection'
+      (('AR Invoice Request Rejected' == self.status) && self.rejection_reason == 'Others') ? '' : 'd-none'
+    when 'other_cancellation'
+      (('Cancelled AR Invoice' == self.status) && self.rejection_reason == 'Others') ? '' : 'd-none'
+    when 'rejection'
+      ('AR Invoice Request Rejected' == self.status) ? '' : 'd-none'
+    when 'cancellation'
       ('Cancelled AR Invoice' == self.status) ? '' : 'd-none'
 
     end

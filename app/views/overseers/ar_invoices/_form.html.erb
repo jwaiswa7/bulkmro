@@ -172,17 +172,17 @@
               <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(ArInvoice.statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
             </div>
             <div class="col-12 ">
-              <%= f.input :cancellation_reason,as: :select, :label => "AR Cancellation Reason", :wrapper => :custom_multi_select, wrapper_html: {class: @ar_invoice.display_reason('cancellation_reason')}, collection: enum_to_collection(ArInvoice.cancellation_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Cancellation Reason'  %>
+              <%= f.input :cancellation_reason,as: :select, :label => "AR Cancellation Reason", :wrapper => :custom_multi_select, wrapper_html: {class: @ar_invoice.display_reason('cancellation')}, collection: enum_to_collection(ArInvoice.cancellation_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Cancellation Reason'  %>
             </div>
             <div class="col-12 ">
-              <%= f.input :rejection_reason, as: :select, :label => "AR Rejection Reason", :wrapper => :custom_multi_select, wrapper_html: {class: @ar_invoice.display_reason('rejection_reason')}, collection: enum_to_collection(ArInvoice.rejection_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Reason' %>
+              <%= f.input :rejection_reason, as: :select, :label => "AR Rejection Reason", :wrapper => :custom_multi_select, wrapper_html: {class: @ar_invoice.display_reason('rejection')}, collection: enum_to_collection(ArInvoice.rejection_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Reason' %>
             </div>
             <div class="col-12 ">
-              <%= f.input :other_rejection_reason, :label => "AR Other Rejection Reason", :placeholder => 'Type Rejection Reason', wrapper_html: {class: @ar_invoice.display_reason('other')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <%= f.input :other_rejection_reason, :label => "AR Other Rejection Reason", :placeholder => 'Type Rejection Reason', wrapper_html: {class: @ar_invoice.display_reason('other_rejection')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
             </div>
 
             <div class="col-12 ">
-              <%= f.input :other_cancellation_reason, :label => "AR Other Cancellation Reason", :placeholder => 'Type Cancellation Reason', wrapper_html: {class: @ar_invoice.display_reason('other')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <%= f.input :other_cancellation_reason, :label => "AR Other Cancellation Reason", :placeholder => 'Type Cancellation Reason', wrapper_html: {class: @ar_invoice.display_reason('other_cancellation')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
             </div>
 
             <div class="col-12">

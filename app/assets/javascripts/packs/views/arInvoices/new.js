@@ -24,6 +24,7 @@ const newAction = () => {
         let val = $(this).val()
         if(val == 'Rejected: Others'){
             $(".ar_invoice_other_rejection_reason").removeClass('d-none')
+            $(".ar_invoice_other_rejection_reason").removeClass('d-none')
         }
         else{
             $(".ar_invoice_other_rejection_reason").addClass('d-none')
@@ -50,6 +51,7 @@ const newAction = () => {
 
 
 let onStatusChange = (selector) => {
+    console.log(selector)
     $("."+selector).removeClass('d-none');
     $("."+selector).find('select').prop('required',true);
     $("."+selector).find('input').prop('required',true);
