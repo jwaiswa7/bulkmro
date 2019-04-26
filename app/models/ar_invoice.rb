@@ -67,5 +67,20 @@ class ArInvoice < ApplicationRecord
     end
   end
 
+  def show_display_reason
+    data = {display: true}
+    case self.status
+    when 'AR Invoice Request Rejected'
+      data[:label] = 'AR Rejection Reason'
+      data[:text] = self.rejection_reason == 'Rejected: Others' ? self.other_rejection_reason : self.rejection_reason
+    when 'Cancelled AR Invoice'
+      data[:label] = 'AP Cancellation Reason'
+      data[:text] = self.cancellation_reason == 'Others' ? self.other_cancellation_reason: self.cancellation_reason
+    else
+      data[:display] = false
+    end
+    data
+  end
+
 
 end
