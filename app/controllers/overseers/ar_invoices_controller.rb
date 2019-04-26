@@ -72,8 +72,15 @@ class Overseers::ArInvoicesController < Overseers::BaseController
   # PATCH/PUT /ar_invoices/1.json
   def update
     authorize @ar_invoice
+    @ar_invoice.assign_attributes(ar_invoice_params.merge(overseer: current_overseer))
+    @ar_invoice.update_status(@ar_invoice.status)
     respond_to do |format|
-      if @ar_invoice.update(ar_invoice_params)
+      if @ar_invoice.valid?
+        if @ar_invoice.status_changed?
+          # @ar_invoice_comment = InvoiceRequestComment.new(message: "Status Changed: #{@ar_invoice.status}", invoice_request: @ar_invoice, overseer: current_overseer)
+          # @ar_invoice_comment.save!
+        end
+        @ar_invoice.save
         format.html { redirect_to overseers_ar_invoice_path(@ar_invoice), notice: 'Ar invoice was successfully updated.' }
         format.json { render :show, status: :ok, location: @ar_invoice }
       else
@@ -110,6 +117,7 @@ class Overseers::ArInvoicesController < Overseers::BaseController
           :cancellation_reason,
           :rejection_reason,
           :other_rejection_reason,
+          :other_cancellation_reason,
           :ar_invoice_number,
           :e_way
       )

@@ -36,6 +36,12 @@ class ArInvoice < ApplicationRecord
 
   }
 
+  with_options if: :"Completed AR Invoice Request?" do |invoice_request|
+    invoice_request.validates_presence_of :ar_invoice_number
+    invoice_request.validates :ar_invoice_number, length: { is: 8 }, allow_blank: true
+    invoice_request.validates_numericality_of :ar_invoice_number, allow_blank: true
+  end
+
   def update_status(status)
     if ['Cancelled AR Invoice', 'AR Invoice Request Rejected'].include? (status)
       self.status = status
