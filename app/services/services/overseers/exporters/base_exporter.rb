@@ -10,7 +10,7 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       @end_at = range[1].strip.to_date.end_of_day
     elsif args[2].present? && args[3].present?
       @indexed_records = args[2]
-      @date_range = args[3]
+      @params = args[3]
     elsif args[2].present?
       @indexed_records = args[2]
       @ids = args[2].pluck(:id).uniq

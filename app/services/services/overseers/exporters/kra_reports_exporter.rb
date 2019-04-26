@@ -2,10 +2,11 @@ class Services::Overseers::Exporters::KraReportsExporter < Services::Overseers::
   def initialize(*params)
     super(*params)
     @model = Inquiry
-    @export_name = [@date_range.present? ? @date_range : '', 'Kra Report'].join(' ')
+    @category = @params.present? ? (@params['category'] == 'company_key' ? 'Company' : 'Inside Sales') : 'Inside Sales'
+    @export_name = [@params.present? ? @params['date_range'] : '', @category , 'Wise','Kra Report'].join(' ')
     @path = Rails.root.join('tmp', filename)
     @columns = [
-        'Inside Sales',
+         @category,
         'No. of Inquiries',
         'No. of Sales Quotes',
         'Value of Quotes',
@@ -31,7 +32,7 @@ class Services::Overseers::Exporters::KraReportsExporter < Services::Overseers::
     end
     records.each do |inquiry|
       rows.push(
-        inside_sales:  Overseer.find(inquiry['key']).to_s,
+        inside_sales: (@category == 'Company') ? Company.find(inquiry['key']).to_s : Overseer.find(inquiry['key']).to_s,
         inquiries: number_with_delimiter(inquiry['doc_count'], delimiter: ','),
         sales_quotes: number_with_delimiter(inquiry['sales_quotes']['value'].to_i, delimiter: ','),
         total_quote_value: format_currency(inquiry['total_sales_value']['value']),

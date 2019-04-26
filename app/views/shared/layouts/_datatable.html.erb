@@ -69,7 +69,7 @@
           <% if content_for?(:can_be_directly_downloaded) %>
             <% if params['action'].include?'report'
                  report_name = params['action']
-                 report_query = {date_range: params[report_name]['date_range']}.to_query(report_name) if params[report_name].present?
+                 report_query = params[report_name].as_json.to_query(report_name) if params[report_name].present?
                  report_url = params[report_name].present? ? "export_#{report_name}?#{report_query}" : "export_#{report_name}"
                end %>
             <a href="<%= report_url %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" >
