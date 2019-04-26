@@ -28,6 +28,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       format.html {
         if params['kra_report'].present?
           @date_range = params['kra_report']['date_range']
+          @category = params['kra_report']['category']
         end
       }
       format.json do
@@ -36,9 +37,13 @@ class Overseers::InquiriesController < Overseers::BaseController
 
         if params['kra_report'].present?
           @date_range = params['kra_report']['date_range']
+          @category = params['kra_report']['category']
         end
 
-        @indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
+        indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
+        @per = (params['per'] || params['length'] || 20).to_i
+        @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
+        @indexed_kra_reports = Kaminari.paginate_array(indexed_kra_reports).page(@page).per(@per)
       end
     end
   end
@@ -63,15 +68,23 @@ class Overseers::InquiriesController < Overseers::BaseController
     service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
     service.call
 
-    indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
-
     if params['kra_report'].present?
-      date_range = params['kra_report']['date_range']
-    else
-      date_range = 'Overall'
+      @date_range = params['kra_report']['date_range']
+      @category = params['kra_report']['category']
     end
 
-    export_service = Services::Overseers::Exporters::KraReportsExporter.new([], current_overseer, indexed_kra_reports, date_range)
+    indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
+
+    kra_params = {}
+    if params['kra_report'].present?
+      kra_params['date_range'] = params['kra_report']['date_range']
+      kra_params['category'] = params['kra_report']['category']
+    else
+      kra_params['date_range'] = 'Overall'
+      kra_params['category'] = 'inside_sales_owner_id'
+    end
+
+    export_service = Services::Overseers::Exporters::KraReportsExporter.new([], current_overseer, indexed_kra_reports, kra_params)
     export_service.call
 
     redirect_to url_for(Export.kra_report.not_filtered.last.report)
