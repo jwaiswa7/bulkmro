@@ -24,10 +24,12 @@ const newAction = () => {
         let val = $(this).val()
         if(val == 'Rejected: Others'){
             $(".ar_invoice_other_rejection_reason").removeClass('d-none')
-            $(".ar_invoice_other_rejection_reason").removeClass('d-none')
+            $(".ar_invoice_other_rejection_reason").find('input').prop('required',true)
+
         }
         else{
             $(".ar_invoice_other_rejection_reason").addClass('d-none')
+            $(".ar_invoice_other_rejection_reason").find('input').prop('required',false)
         }
     })
 
@@ -35,9 +37,11 @@ const newAction = () => {
         let val = $(this).val()
         if(val == 'Others'){
             $(".ar_invoice_other_cancellation_reason").removeClass('d-none')
+            $(".ar_invoice_other_cancellation_reason").find('input').prop('required',true)
         }
         else{
             $(".ar_invoice_other_cancellation_reason").addClass('d-none')
+            $(".ar_invoice_other_cancellation_reason").find('input').prop('required',false)
         }
     })
 

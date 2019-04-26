@@ -10,6 +10,7 @@ class ArInvoice < ApplicationRecord
   has_many :inward_dispatches
   has_many :material_dispatches
 
+  update_index('ar_invoices#ar_invoice') {self}
 
   enum status: {
       'AR Invoice requested': 10,
@@ -24,6 +25,8 @@ class ArInvoice < ApplicationRecord
       'Rejected: Others': 30
 
   }
+
+  scope :with_includes, -> {}
 
   enum cancellation_reason: {
 

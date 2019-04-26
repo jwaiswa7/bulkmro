@@ -188,17 +188,33 @@
               <%= nav_dropdown_item 'Rejected Payment Requests', overseers_payment_requests_path(:status => 'Rejected'), policy(:payment_request).index? %>
             </ul>
           </div>
+          <%= nav_dropdown_item 'Sales Invoices List', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
           <div class="dropdown-submenu">
-            <a class="dropdown-item dropdown-toggle" href="#">AR Invoices</a>
+            <a class="dropdown-item dropdown-toggle" href="#">AP Invoices</a>
             <ul class="dropdown-menu">
-              <%= nav_dropdown_item 'Sales Invoices List', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'All Requests', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
-              <%= nav_dropdown_item 'GRPO Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).show_pending_ap_invoice_queue? %>
               <%= nav_dropdown_item 'Inward Completed', pending_overseers_invoice_requests_path(:status => 'Inward Completed'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Cancelled AP Invoice', cancelled_overseers_invoice_requests_path(:status => 'Cancelled AP Invoice'), policy(:sales_invoice).index? %>
+            </ul>
+          </div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">GRPO</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'GRPO Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Cancelled GRPO', cancelled_overseers_invoice_requests_path(:status => 'Cancelled'), policy(:sales_invoice).index? %>
+            </ul>
+          </div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">AR Invoice</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_ar_invoices_path, policy(:ar_invoice).index? %>
+              <%= nav_dropdown_item 'Pending AR Requests', overseers_ar_invoices_path(:status => "pending"), policy(:ar_invoice).index? %>
+              <%= nav_dropdown_item 'Cancelled AR Requests', overseers_ar_invoices_path(:status => "cancelled"), policy(:ar_invoice).index? %>
+              <%= nav_dropdown_item 'Rejected AR Requests', overseers_ar_invoices_path(:status => "rejected"), policy(:ar_invoice).index? %>
+              <%= nav_dropdown_item 'Completed AR Requests', overseers_ar_invoices_path(:status => "completed"), policy(:ar_invoice).index? %>
             </ul>
           </div>
           <div class="dropdown-submenu">

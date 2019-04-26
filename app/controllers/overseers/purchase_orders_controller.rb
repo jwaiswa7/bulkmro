@@ -96,11 +96,10 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       format.html {}
       format.json do
         service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
-
         service.call
-
         @indexed_inward_dispatches = service.indexed_records
         @inward_dispatches = service.records.try(:reverse)
+
       end
     end
 
