@@ -12,10 +12,10 @@
           <%= f.input :company, as: :select, required: false, collection: Company.acts_as_customer, input_html: {class: "select2-single", :'data-placeholder' => 'Select Customer Company' } %>
         </div>
         <div class="col-12 col-md-4">
-          <%= f.input :sales_executive, as: :select, required: false, collection: Overseer.pipeline_executives.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Inside Sales Owner' } %>
+          <%= f.input :sales_executive, as: :select, required: false, collection: Overseer.pipeline_executives.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Owner' } %>
         </div>
         <div class="col-12 col-md-4">
-          <%= f.input :sales_manager, as: :select, required: false, collection: Overseer.all.map {|o| [o.parent.full_name, o.parent.id] if o.parent.present?}.compact.uniq.sort, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner' } %>
+          <%= f.input :sales_manager, as: :select, required: false, collection: Overseer.all.map {|o| [o.parent.full_name, o.parent.id] if o.parent.present?}.compact.uniq.sort, input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Manager' } %>
         </div>
       </div>
 

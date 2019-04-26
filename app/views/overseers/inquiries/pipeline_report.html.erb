@@ -22,6 +22,7 @@
     </tr>
     </thead>
     <tbody style="text-align:right;">
+
     <% @indexed_pipeline_report.each do |month, record_bucket| %>
       <tr>
         <td style="text-align:left;"><%= format_month_without_date(month) %></td>
@@ -46,7 +47,6 @@
             </strong><br>
             <%= format_currency(record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true) %>
           </td>
-          <%#= month.class %>
         <% end %>
         <td>
           <strong>
