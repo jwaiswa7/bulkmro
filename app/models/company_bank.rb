@@ -6,6 +6,7 @@ class CompanyBank < ApplicationRecord
 
   belongs_to :company
   belongs_to :bank
+  belongs_to :ifsc_code
   has_many :payment_requests
   has_many_attached :attachments
 
