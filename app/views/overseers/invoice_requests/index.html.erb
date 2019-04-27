@@ -13,10 +13,7 @@
 </div>
 
 <% content_for :heading do %>
-  Invoice Requests
-  <% if @status.present? %>
-    <%= ": #{@status}" %>
-  <% end %>
+  Invoice Requests<% if @status.present? %><%= ": #{@status}" %><% end %>
 <% end %>
 
 <% content_for(:heading_buttons) do %>
@@ -33,8 +30,8 @@
   <th class="no-sort desktop" data-name="status">Status</th>
   <th class="no-sort desktop text-right">Inquiry #</th>
   <th class="no-sort all text-right">Order #</th>
-  <th class="no-sort all text-right">PO Number #</th>
-  <th class="no-sort all" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
+  <th class="no-sort all text-right">PO #</th>
+  <th class="no-sort all text-center" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
   <th class="sort desktop text-right" data-name="created_at">Requested At</th>
   <th class="no-sort desktop text-right">Updated At</th>
   <th class="no-sort desktop">Latest Comment</th>

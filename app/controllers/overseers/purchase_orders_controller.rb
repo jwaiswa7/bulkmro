@@ -111,9 +111,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def edit_material_followup
     authorize @purchase_order
     @po_request = @purchase_order.po_request
-    if @purchase_order.logistics_owner_id.nil?
-      @purchase_order.update_attribute(:logistics_owner, Services::Overseers::InwardDispatches::SelectLogisticsOwner.new(@purchase_order).call)
-    end
   end
 
   def update_material_followup
