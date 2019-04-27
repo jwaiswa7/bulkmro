@@ -22,7 +22,7 @@ json.data (@payment_requests) do |payment_request|
                   payment_request.inquiry.inside_sales_owner.to_s,
                   if payment_request.due_date.present?
                     if payment_request.status == 'Partial Payment Pending' || payment_request.status == 'Payment Pending'
-                      [format_due_distance(payment_request.due_date), format_date(payment_request.due_date)].join(' ')
+                      [format_date(payment_request.due_date), format_due_distance(payment_request.due_date)].join('<br>')
                     else
                       format_date(payment_request.due_date)
                     end
