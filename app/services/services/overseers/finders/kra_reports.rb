@@ -137,4 +137,8 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
   def model_klass
     Inquiry
   end
+
+  def index_klass
+    'KraReportsIndex'.constantize
+  end
 end
