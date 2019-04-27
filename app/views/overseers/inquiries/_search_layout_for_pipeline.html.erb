@@ -3,19 +3,28 @@
     <div class="card-body">
       <div class="form-row">
         <div class="col">
-          <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range'}, required: false, label: 'Pick a Date Range' %>
+          <%= f.input :date_range, as: :string,
+                      input_html: {
+                          :'data-toggle' => 'daterangepicker', :placeholder => 'Date Range',
+                          :value => (params['pipeline_report'].present? && params['pipeline_report']['date_range'].present? ? params['pipeline_report']['date_range'] : '')
+                      }, required: false, label: 'Pick a Date Range' %>
         </div>
       </div>
-
       <div class="form-row">
         <div class="col-12 col-md-4">
-          <%= f.input :company, as: :select, required: false, collection: Company.acts_as_customer, input_html: {class: "select2-single", :'data-placeholder' => 'Select Customer Company' } %>
+          <%= f.input :company, as: :select, collection: Company.acts_as_customer,
+                      input_html: {class: "select2-single", :'data-placeholder' => 'Select Customer Company' }, required: false, include_blank: true,
+                      selected: params['pipeline_report'].present? && params['pipeline_report']['company'].present? ? params['pipeline_report']['company'].to_i : '' %>
         </div>
         <div class="col-12 col-md-4">
-          <%= f.input :sales_executive, as: :select, required: false, collection: Overseer.pipeline_executives.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Owner' } %>
+          <%= f.input :sales_executive, as: :select, collection: Overseer.pipeline_executives.alphabetical,
+                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Owner'}, required: false, include_blank: true,
+                      selected: params['pipeline_report'].present? && params['pipeline_report']['sales_executive'].present? ? params['pipeline_report']['sales_executive'].to_i : '' %>
         </div>
         <div class="col-12 col-md-4">
-          <%= f.input :sales_manager, as: :select, required: false, collection: Overseer.all.map {|o| [o.parent.full_name, o.parent.id] if o.parent.present?}.compact.uniq.sort, input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Manager' } %>
+          <%= f.input :sales_manager, as: :select, collection: Overseer.all.map {|o| [o.parent.full_name, o.parent.id] if o.parent.present?}.compact.uniq.sort,
+                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Manager' }, required: false, include_blank: true,
+                      selected: params['pipeline_report'].present? && params['pipeline_report']['sales_manager'].present? ? params['pipeline_report']['sales_manager'].to_i : '' %>
         </div>
       </div>
 
