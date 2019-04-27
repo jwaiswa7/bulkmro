@@ -18,8 +18,9 @@ class Export < ApplicationRecord
     sales_order_sap: 50,
     activities: 55,
     company_reviews: 60,
-    kra_report: 90,
     suppliers: 65,
-    sales_order_reco: 70
+    sales_order_reco: 70,
+    kra_report: 90,
+    company_report: 91
   }
 end
