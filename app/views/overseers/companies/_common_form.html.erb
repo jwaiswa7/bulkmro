@@ -59,13 +59,13 @@
     <h6 class="text-uppercase text-black-50 mb-1 d-block mt-3">Default owners and managers</h6>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, include_blank: 'Select an Inside Sales Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', include_blank: 'Select an Procurement Specialist', input_html: {class: "select2-single"} %>
       </div>
       <div class="col-6 col-md-4">
         <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, include_blank: 'Select a Sales Manager', input_html: {class: "select2-single"} %>
+        <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', include_blank: 'Select a Account Owner', input_html: {class: "select2-single"} %>
       </div>
     </div>
 
