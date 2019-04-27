@@ -25,7 +25,7 @@ class Services::Overseers::Finders::InwardDispatches < Services::Overseers::Find
   end
 
   def perform_query(query_string)
-    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[ po_number_string^3 inquiry supplier customer po_date] }).order(sort_definition)
+    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[ po_number_string inquiry supplier customer po_date] }).order(sort_definition)
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
@@ -46,9 +46,6 @@ class Services::Overseers::Finders::InwardDispatches < Services::Overseers::Find
     indexed_records
   end
 
-  def sort_definition
-    { created_at: :asc }
-  end
 
   def model_klass
     InwardDispatch
