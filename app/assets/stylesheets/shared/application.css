@@ -8370,7 +8370,7 @@ div.dataTables_wrapper div.dataTables_processing {
 
   .daterangepicker .drp-calendar.left {
     clear: none !important; } }
-    .easy-autocomplete {
+.easy-autocomplete {
   position: relative; }
   .easy-autocomplete input {
     border-color: #ccc;
@@ -9052,6 +9052,8 @@ label[class*='col'] {
 th {
   font-weight: 500;
   color: #212529; }
+  th.product-width-adjustment {
+    width: 30% !important; }
 
 .table {
   border-collapse: separate;
@@ -10013,3 +10015,5 @@ a.text-color-grey:hover, a.text-color-grey:focus {
   .notifications .dropdown-item {
     word-wrap: normal;
     white-space: normal; }
+
+/*# sourceMappingURL=application.css.map */
