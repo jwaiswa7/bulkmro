@@ -1,10 +1,10 @@
 class Services::Overseers::Finders::IfscCodes < Services::Overseers::Finders::BaseFinder
   def call
     non_paginated_records = if query_string.present?
-                              perform_query(query_string)
-                            else
-                              all_records
-                            end
+      perform_query(query_string)
+    else
+      all_records
+    end
 
     @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
     @indexed_records = non_paginated_records if !paginate
@@ -79,9 +79,9 @@ class Services::Overseers::Finders::IfscCodes < Services::Overseers::Finders::Ba
 
   def search_as_to_type(indexed_records, prefix)
     indexed_records = indexed_records.query(
-            "match": {
-                "ifsc_complete.autocomplete": prefix
-            }
+      "match": {
+          "ifsc_complete.autocomplete": prefix
+      }
     )
     indexed_records
   end
