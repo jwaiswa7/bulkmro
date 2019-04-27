@@ -28,9 +28,9 @@
                   <%= f.input :status, as: :select, collection: enum_to_collection(Inquiry.statuses), input_html: {class: "select2-single", :'data-placeholder' => 'Select Status'}, label: 'Status', required: false %>
                   <%= f.input :opportunity_type, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), input_html: {class: "select2-single", :'data-placeholder' => 'Select an Opportunity type'}, label: 'Opportunity Type', required: false %>
                   <%= f.input :quote_category, as: :select, collection: enum_to_collection(Inquiry.quote_categories), input_html: {class: "select2-single", :'data-placeholder' => 'Select an Quote category'}, label: 'Quote Category', required: false %>
-                  <%= f.input :inside_sales_owner_id, as: :select, collection: Overseer.inside.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Inside Sales Owner'}, label: 'Inside Sales Owner', required: false %>
+                  <%= f.input :inside_sales_owner_id, as: :select, collection: Overseer.inside.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Procurement Specialist'}, label: 'Inside Sales Owner', required: false %>
                   <%= f.input :outside_sales_owner_id, as: :select, collection: Overseer.outside.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner'}, label: 'Outside Sales Owner', required: false %>
-                  <%= f.input :sales_manager_id, as: :select, collection: Overseer.managers.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select Sales Manager'}, label: 'Sales Manager', required: false %>
+                  <%= f.input :sales_manager_id, as: :select, collection: Overseer.managers.alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select Account Owner'}, label: 'Sales Manager', required: false %>
                 </div>
               </div>
               <div class="modal-footer p-0">
