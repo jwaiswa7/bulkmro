@@ -8,6 +8,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @base_filter = []
     @sort_by = sort_by
     @sort_order = sort_order
+    @pipeline_report_params = params[:pipeline_report]
     @kra_report_params = params[:kra_report]
     @prefix = params[:prefix]
     @company_report_params = params[:company_report]
@@ -229,6 +230,41 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                   },
               ],
               minimum_should_match: 3,
+          },
+      }
+    end
+  end
+
+  def filter_for_self_and_descendants(key1, key2, key3 = nil, vals)
+    if key3.present?
+    {
+        bool: {
+            should: [
+                {
+                    terms: {"#{key1}": vals},
+                },
+                {
+                    terms: {"#{key2}": vals},
+                },
+                {
+                    terms: {"#{key3}": vals},
+                }
+            ],
+            minimum_should_match: 1,
+        },
+    }
+    else
+      {
+          bool: {
+              should: [
+                  {
+                      terms: {"#{key1}": vals},
+                  },
+                  {
+                      terms: {"#{key2}": vals},
+                  }
+              ],
+              minimum_should_match: 1,
           },
       }
     end

@@ -241,6 +241,7 @@
             <% end %>
             <%= nav_dropdown_item 'KRA Report', kra_report_overseers_inquiries_path, policy(:inquiry).index? %>
             <%= nav_dropdown_item 'Company Report', company_report_overseers_companies_path, policy(:company).index? %>
+            <%= nav_dropdown_item 'Pipeline Report', pipeline_report_overseers_inquiries_path, policy(:inquiry).show? %>
           </div>
         </li>
       <% end %>
