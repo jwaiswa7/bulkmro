@@ -28,7 +28,7 @@
 
         <div class="form-row">
           <div class="col-6">
-            <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank:"Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, label:"Tax code (Please Confirm With Inside Sales Owner)" %>
+            <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank:"Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, label:"Tax code (Please Confirm With Procurement Specialist)" %>
           </div>
           <div class="col-6">
             <%= product.input :best_tax_code, disabled: true %>
