@@ -220,4 +220,23 @@
       </div>
     </div>
   <% end %>
+  <% if action_name.capitalize != "New" %>
+    <div class="card">
+      <div class="card-body">
+        <div class="flex-fill">
+          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+        </div>
+
+        <% if @ar_invoice.comments.persisted.size > 0 %>
+          <div class="chats">
+            <% @ar_invoice.comments.each do |comment| %>
+              <% if comment.persisted? %>
+                <%= format_comment(comment) %>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>

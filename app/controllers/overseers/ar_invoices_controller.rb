@@ -1,5 +1,5 @@
 class Overseers::ArInvoicesController < Overseers::BaseController
-  before_action :set_ar_invoice, only: [:show, :edit, :update, :destroy]
+  before_action :set_ar_invoice, only: [:show, :edit, :update, :destroy, :cancel_ar_invoice, :render_cancellation_form]
 
   # GET /ar_invoices
   # GET /ar_invoices.json
@@ -59,6 +59,8 @@ class Overseers::ArInvoicesController < Overseers::BaseController
         if inward_dispatch_ids.present?
           InwardDispatch.where(id: inward_dispatch_ids).update_all(ar_invoice_id: @ar_invoice.id)
         end
+        service = Services::Overseers::ArInvoices::Update.new(@invoice_request, current_overseer)
+        service.call
         format.html { redirect_to overseers_ar_invoice_path(@ar_invoice), notice: 'Ar invoice was successfully created.' }
         format.json { render :show, status: :created, location: @ar_invoice }
       else
@@ -76,11 +78,8 @@ class Overseers::ArInvoicesController < Overseers::BaseController
     @ar_invoice.update_status(@ar_invoice.status)
     respond_to do |format|
       if @ar_invoice.valid?
-        if @ar_invoice.status_changed?
-          # @ar_invoice_comment = InvoiceRequestComment.new(message: "Status Changed: #{@ar_invoice.status}", invoice_request: @ar_invoice, overseer: current_overseer)
-          # @ar_invoice_comment.save!
-        end
-        @ar_invoice.save
+        service = Services::Overseers::ArInvoices::Update.new(@ar_invoice, current_overseer)
+        service.call
         format.html { redirect_to overseers_ar_invoice_path(@ar_invoice), notice: 'Ar invoice was successfully updated.' }
         format.json { render :show, status: :ok, location: @ar_invoice }
       else
@@ -98,6 +97,25 @@ class Overseers::ArInvoicesController < Overseers::BaseController
     respond_to do |format|
       format.html { redirect_to ar_invoices_url, notice: 'Ar invoice was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def cancel_ar_invoice
+    @ar_invoice.assign_attributes(ar_invoice_params.merge(overseer: current_overseer))
+    authorize @ar_invoice
+    @ar_invoice.update_status(@ar_invoice.status)
+    if @ar_invoice.valid?
+      @ar_invoice.save
+      render json: {sucess: 'Successfully updated '}, status: 200
+    else
+      render json: {error: @ar_invoice.errors}, status: 500
+    end
+  end
+
+  def render_cancellation_form
+    authorize @ar_invoice
+    respond_to do |format|
+      format.html {render partial: 'cancel_ar_invoice', :locals => {status: params[:status]}}
     end
   end
 

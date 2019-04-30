@@ -1,5 +1,5 @@
 class ArInvoice < ApplicationRecord
-  COMMENTS_CLASS = 'ARInvoiceComment'
+  COMMENTS_CLASS = 'ArInvoiceComment'
 
   include Mixins::CanBeStamped
   include Mixins::HasComments
@@ -9,6 +9,8 @@ class ArInvoice < ApplicationRecord
   belongs_to :inquiry
   has_many :inward_dispatches
   has_many :material_dispatches
+  validate :presence_of_reason
+
 
   update_index('ar_invoices#ar_invoice') {self}
 
@@ -56,9 +58,9 @@ class ArInvoice < ApplicationRecord
     # If status is cancelled then also all rejection as well as other cacellation display on first load of form to avoid that ui helper written
     case type
     when 'other_rejection'
-      (('AR Invoice Request Rejected' == self.status) && self.rejection_reason == 'Others') ? '' : 'd-none'
+      (('AR Invoice Request Rejected' == self.status) && self.rejection_reason == 'Rejected: Others') ? '' : 'd-none'
     when 'other_cancellation'
-      (('Cancelled AR Invoice' == self.status) && self.rejection_reason == 'Others') ? '' : 'd-none'
+      (('Cancelled AR Invoice' == self.status) && self.cancellation_reason == 'Others') ? '' : 'd-none'
     when 'rejection'
       ('AR Invoice Request Rejected' == self.status) ? '' : 'd-none'
     when 'cancellation'
@@ -66,7 +68,13 @@ class ArInvoice < ApplicationRecord
 
     end
   end
-
+  def reason_text(type)
+    if type == 'rejection'
+      self.rejection_reason == 'Rejected: Others' ? self.other_rejection_reason : self.rejection_reason
+    elsif type == 'cancellation'
+      self.rejection_reason == 'Others' ? self.other_cancellation_reason : self.cancellation_reason
+    end
+  end
   def show_display_reason
     data = {display: true}
     case self.status
@@ -80,6 +88,26 @@ class ArInvoice < ApplicationRecord
       data[:display] = false
     end
     data
+  end
+
+  private
+
+  def presence_of_reason
+    case status
+    when 'AR Invoice Request Rejected'
+      if !rejection_reason.present?
+        errors.add(:base, 'Please enter reason for AR invoice request rejection')
+      elsif rejection_reason == 'Rejected: Others' && !other_rejection_reason.present?
+        errors.add(:base, 'Please enter reason for AR invoice request rejection')
+        end
+    when 'Cancelled AR Invoice'
+      if !cancellation_reason.present?
+        errors.add(:base, 'Please enter reason for AR invoice request cancellation')
+      elsif cancellation_reason == 'Others' && !other_cancellation_reason.present?
+        errors.add(:base, 'Please enter reason for AR invoice request cancellation')
+      end
+    else
+    end
   end
 
 

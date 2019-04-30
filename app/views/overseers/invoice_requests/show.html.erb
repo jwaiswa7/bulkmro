@@ -103,7 +103,7 @@
                 <% end %>
 
                 <% if @invoice_request.status.present? %>
-                  <%= render 'overseers/invoice_requests/display_reason', :data => @ar_invoice.show_display_reason%>
+                  <%= render 'overseers/invoice_requests/display_reason', :data => @invoice_request.show_display_reason%>
                 <%end %>
               </div>
             </div>

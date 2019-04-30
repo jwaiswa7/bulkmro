@@ -176,5 +176,20 @@
 
       </div>
     </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="flex-fill">
+          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+        </div>
+
+        <% if @ar_invoice.comments.persisted.size > 0 %>
+          <div class="chats">
+            <% @ar_invoice.comments.each do |comment| %>
+              <%= format_comment(comment) %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </section>
 </div>
