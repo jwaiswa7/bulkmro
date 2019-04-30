@@ -2,7 +2,7 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        #<%= @ar_invoice.id %>
+       AR Invoice Request for Order #<%= @ar_invoice.sales_order.order_number %>:&nbsp;<%= status_badge(@ar_invoice.status) %>
       </h3>
       <a href="<%= edit_overseers_ar_invoice_path(@ar_invoice) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down">
         <i class="fal fa-pen mr-1"></i>Edit AR Invoice
@@ -42,6 +42,15 @@
             <strong class="d-block">Payment Terms </strong>
             <%= @ar_invoice.inquiry.payment_option %>
           </div>
+          <% if @ar_invoice.ar_invoice_number.present? %>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">AR Invoice #</strong>
+              <%= @ar_invoice.ar_invoice_number %>
+            </div>
+          <% end %>
+          <% if @ar_invoice.status.present? %>
+            <%= render 'overseers/invoice_requests/display_reason', :data => @ar_invoice.show_display_reason%>
+          <%end %>
         </div>
       </div>
     </div>
@@ -154,6 +163,21 @@
           </tbody>
         </table>
 
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="flex-fill">
+          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+        </div>
+
+        <% if @ar_invoice.comments.persisted.size > 0 %>
+          <div class="chats">
+            <% @ar_invoice.comments.each do |comment| %>
+              <%= format_comment(comment) %>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     </div>
   </section>

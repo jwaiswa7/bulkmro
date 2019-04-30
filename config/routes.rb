@@ -256,7 +256,13 @@ Rails.application.routes.draw do
         get 'completed'
         get 'cancelled'
       end
+      member do
+        get 'render_cancellation_form'
+        patch 'cancel_ar_invoice'
+      end
     end
+
+    resources :material_dispatches
 
     resources :sales_orders do
       member do
