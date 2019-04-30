@@ -11,6 +11,11 @@ class BaseIndex < Chewy::Index
                 type: 'pattern_replace',
                 pattern: '[^A-Za-z0-9]+',
                 replacement: ''
+            },
+            "autocomplete_filter": {
+                type: 'edge_ngram',
+                min_gram: 1,
+                max_gram: 20
             }
         },
         analyzer: {
@@ -44,13 +49,18 @@ class BaseIndex < Chewy::Index
                 tokenizer: 'keyword'
             },
             edge_ngram_analyzer: {
-              filter: [
-                'lowercase'
-              ],
-              tokenizer: 'edge_ngram_tokenizer'
+                filter: [
+                    'lowercase'
+                ],
+                tokenizer: 'edge_ngram_tokenizer'
             },
             edge_ngram_search_analyzer: {
-              tokenizer: 'lowercase'
+                tokenizer: 'lowercase'
+            },
+            autocomplete: {
+                type: 'custom',
+                tokenizer: 'standard',
+                filter: ['lowercase', 'autocomplete_filter']
             }
         },
         tokenizer: {
@@ -83,8 +93,8 @@ class BaseIndex < Chewy::Index
         }
     },
     max_result_window: 5000000,
-    'number_of_replicas': '0',
-    'number_of_shards': '3'
+    'number_of_replicas': '1',
+    'number_of_shards': '1'
   )
 
   def self.fields

@@ -17,15 +17,15 @@ const createOptions = (classname) => {
 
         listLocation: 'ifsc_codes',
 
-        getValue: 'text',
+        getValue: 'ifsc_complete',
 
         list: {
             onSelectItemEvent: function() {
-                let selectedBranch = $(classname).getSelectedItemData()._source['branch'];
-                let selectedAddress= $(classname).getSelectedItemData()._source['address'];
-                let selectedAddress2= $(classname).getSelectedItemData()._source['merged_address'];
-                let selectedBank= $(classname).getSelectedItemData()._source['bank_id'];
-                let selectedIFSC= $(classname).getSelectedItemData()._source['id'];
+                let selectedBranch = $(classname).getSelectedItemData()['branch'];
+                let selectedAddress= $(classname).getSelectedItemData()['address'];
+                let selectedAddress2= $(classname).getSelectedItemData()['merged_address'];
+                let selectedBank= $(classname).getSelectedItemData()['bank_id'];
+                let selectedIFSC= $(classname).getSelectedItemData()['id'];
 
                 $("#company_bank_branch").val(selectedBranch).trigger('change');
                 $("#company_bank_address_line_1").val(selectedAddress).trigger('change');

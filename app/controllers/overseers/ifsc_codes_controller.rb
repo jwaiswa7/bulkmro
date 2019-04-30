@@ -50,8 +50,13 @@ class Overseers::IfscCodesController < Overseers::BaseController
     service = Services::Overseers::Finders::IfscCodes.new(params)
     service.call
 
-    ifsc_codes = service.indexed_records.suggest['ifsc-code-suggestions'].map {|p| p['options']}
-    render json: {ifsc_codes: ifsc_codes.first}.to_json
+    indexed_records = service.indexed_records
+    ifsc_codes = []
+    indexed_records.each do |record|
+      ifsc_codes << record.attributes
+    end
+
+    render json: {ifsc_codes: ifsc_codes}.to_json
   end
 
   private
