@@ -193,6 +193,7 @@
               <th class="no-sort text-right">Cheque Issue Date</th>
               <th class="no-sort text-right">Cheque Date</th>
               <th class="no-sort text-right">Status</th>
+              <th class="no-sort text-right">Due Date</th>
               <th class="no-sort text-right">Amount Paid</th>
             </tr>
             </thead>
@@ -205,6 +206,7 @@
                 <td><%= row.issue_date %></td>
                 <td><%= row.cheque_date %></td>
                 <td><%= row.status %></td>
+                <td><%= row.due_date %></td>
                 <td><%= format_currency(row.amount_paid) %></td>
               </tr>
             <% end %>
