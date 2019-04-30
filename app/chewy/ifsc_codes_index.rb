@@ -6,6 +6,7 @@ class IfscCodesIndex < BaseIndex
       field :keywordstring, type: 'text', analyzer: 'keyword_analyzer'
       field :edgengram, type: 'text', analyzer: 'edge_ngram_analyzer', search_analyzer: 'edge_ngram_search_analyzer'
       field :completion, type: 'completion'
+      field :autocomplete, type: 'text', analyzer: 'autocomplete'
     end
     field :branch, analyzer: 'substring'
     field :address, analyzer: 'substring'

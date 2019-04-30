@@ -1,0 +1,59 @@
+<% provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+<% provide :can_be_directly_downloaded, true %>
+
+<% content_for :heading do %>Company Report<% end %>
+<% provide :hide_table_desc, true %>
+<% content_for :page_title do %>
+  Reports
+<% end %>
+<%#= render layout: 'search_layout' do %>
+<%# end %>
+
+<% content_for :header_row do %>
+  <th class="no-sort all"></th>
+  <th class="no-sort all" data-name="company_key"> Company Name</th>
+  <th class="no-sort all" data-name="account_id"> Company Alias</th>
+  <th class="no-sort all text-right">No. of<br> Live Inquiries</th>
+  <th class="no-sort all text-right">No. of<br> Live Quotation</th>
+  <th class="no-sort all text-right">Value of Quotations</th>
+  <th class="no-sort all text-right">No. of Live<br> Expected Orders</th>
+  <th class="no-sort all text-right">Value of<br> Expected Orders</th>
+  <th class="no-sort all text-right">No. of<br> Orders</th>
+  <th class="no-sort all text-right">Value of Orders</th>
+  <th class="no-sort all text-right">Order Margin</th>
+  <th class="no-sort all text-right">%Margin</th>
+  <th class="no-sort all text-right">No. of<br> Invoices</th>
+  <th class="no-sort all text-right">Amount Invoiced<br> (Excl. Taxes)</th>
+  <th class="no-sort all text-right">Invoice Margin<br> (Excl. Taxes)</th>
+  <th class="no-sort all text-right">No. of<br> Cancelled Invoices</th>
+  <th class="no-sort all text-right">Value of<br> Cancelled Invoices</th>
+  <th class="no-sort all text-right">No. of<br> Uniq SKUs</th>
+<% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="ajax"></td>
+  <td data-filter="ajax"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

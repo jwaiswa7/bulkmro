@@ -4,7 +4,7 @@ class CompaniesIndex < BaseIndex
     field :id, type: 'integer'
     field :account_id, value: -> (record) {record.account_id}
     field :name, value: -> (record) {record.name}, analyzer: 'fuzzy_substring'
-    field :account, value: -> (record) {record.account.to_s}, analyzer: 'substring'
+    field :account, value: -> (record) {record.account.to_s}, analyzer: 'substring', fielddata: true
     field :addresses, value: -> (record) {record.addresses.size}, type: 'integer'
     field :addresses_string, value: -> (record) {record.addresses.to_s}, analyzer: 'substring'
     field :contacts_string, value: ->(record) {record.default_contact&.name}

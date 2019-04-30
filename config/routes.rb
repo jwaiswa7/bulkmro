@@ -384,6 +384,7 @@ Rails.application.routes.draw do
         get 'kra_report_per_sales_owner'
         get 'export_kra_report'
         get 'bulk_update'
+        get 'pipeline_report'
       end
 
       scope module: 'inquiries' do
@@ -478,6 +479,8 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'export_all'
         get 'export_filtered_records'
+        get 'company_report'
+        get 'export_company_report'
       end
       member do
         get 'render_rating_form'

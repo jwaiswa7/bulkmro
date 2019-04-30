@@ -112,7 +112,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       end
     end
   end
-  #
+
   def sales_owner_status_avg
     authorize :inquiry
     respond_to do |format|
@@ -195,7 +195,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     send_file(
-        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+      "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
         filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
     )
   end
@@ -320,6 +320,22 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
   end
 
+  def pipeline_report
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html {
+        service = Services::Overseers::Finders::PipelineReports.new(params, current_overseer)
+        service.call
+
+        @statuses = Inquiry.statuses
+        @indexed_pipeline_report = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['inquiries_over_time']['buckets']
+        @indexed_summary_row = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row']
+        @summary_total = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row_total']
+      }
+    end
+  end
+
   def bulk_update
     authorize :inquiry
 
@@ -333,21 +349,21 @@ class Overseers::InquiriesController < Overseers::BaseController
         inquiries.update_all(update_query)
         redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
       else
-        render json: {error: 'Please select any one field to update'}, status: 500
+        render json: { error: 'Please select any one field to update' }, status: 500
       end
     else
-      render json: {error: 'No such inquiries present'}, status: 500
+      render json: { error: 'No such inquiries present' }, status: 500
     end
   end
 
   private
 
-  def set_inquiry
-    @inquiry ||= Inquiry.find(params[:id])
-  end
+    def set_inquiry
+      @inquiry ||= Inquiry.find(params[:id])
+    end
 
-  def inquiry_params
-    params.require(:inquiry).permit(
+    def inquiry_params
+      params.require(:inquiry).permit(
         :project_uid,
         :company_id,
         :contact_id,
@@ -355,6 +371,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         :inside_sales_owner_id,
         :outside_sales_owner_id,
         :sales_manager_id,
+        :procurement_operations_id,
         :billing_address_id,
         :billing_company_id,
         :shipping_address_id,
@@ -394,12 +411,12 @@ class Overseers::InquiriesController < Overseers::BaseController
         :product_type,
         supplier_quotes: [],
         inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
-    )
-  end
+      )
+    end
 
-  def edit_suppliers_params
-    if params.has_key?(:inquiry)
-      params.require(:inquiry).permit(
+    def edit_suppliers_params
+      if params.has_key?(:inquiry)
+        params.require(:inquiry).permit(
           inquiry_products_attributes: [
               :id,
               inquiry_product_suppliers_attributes: [
@@ -411,15 +428,15 @@ class Overseers::InquiriesController < Overseers::BaseController
                   :_destroy
               ]
           ]
-      )
-    else
-      {}
+        )
+      else
+        {}
+      end
     end
-  end
 
-  def new_purchase_orders_requests_params
-    if params.has_key?(:inquiry)
-      params.require(:inquiry).permit(
+    def new_purchase_orders_requests_params
+      if params.has_key?(:inquiry)
+        params.require(:inquiry).permit(
           :id,
           po_requests_attributes: [
               :id,

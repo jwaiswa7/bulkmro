@@ -67,7 +67,12 @@
             <% end %>
           <% end %>
           <% if content_for?(:can_be_directly_downloaded) %>
-            <a href="<%= params['kra_report'].present? ? export_kra_report_overseers_inquiries_path('kra_report':{'date_range': params['kra_report']['date_range']}) : export_kra_report_overseers_inquiries_path %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" >
+            <% if params['action'].include?'report'
+                 report_name = params['action']
+                 report_query = {date_range: params[report_name]['date_range']}.to_query(report_name) if params[report_name].present?
+                 report_url = params[report_name].present? ? "export_#{report_name}?#{report_query}" : "export_#{report_name}"
+               end %>
+            <a href="<%= report_url %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" >
               <i class="fal fa-download mr-1"></i><%= action_name.split('/').last.split("_").join(" ").upcase%>
             </a>
           <% end %>
