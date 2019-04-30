@@ -40,7 +40,7 @@
             <%= f.association :inquiry, disabled: true, collection: [f.object.inquiry], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
           </div>
           <div class="col-6">
-            <%= f.input :request_owner, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.request_owners, alphabetical: true, keep_raw: true), :include_blank => false, label: 'Transfer the ownership to ', disabled: (f.object.request_owner == "Accounts") %>
+            <%= f.input :request_owner, as: :select, collection: enum_to_collection(PaymentRequest.request_owners, alphabetical: true, keep_raw: true), :include_blank => false, label: 'Transfer the ownership to ', disabled: (f.object.request_owner == "Accounts") %>
           </div>
           <div class="col-4">
             <%= f.input :po_date, disabled: true, input_html: {:'value' => f.object.purchase_order.metadata["PoDate"]}, include_blank: "Supplier PO Date", label: "Supplier PO Date" %>
@@ -68,14 +68,14 @@
             <div class="form-row">
               <div class="col-4">
                 <%#= f.input :status, collection: enum_to_collection(PaymentRequest.statuses, alphabetical: false, keep_raw: true), input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => grouped_statuses_overseer_payment_requests_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, :include_blank => false %>
-                <%= f.input :status, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true %>
+                <%= f.input :status, collection: f.object.grouped_status, as: :grouped_select, group_method: :last, include_blank: true %>
               </div>
               <div class="col-4">
                 <%= f.input :due_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: "Payment Due Date" %>
               </div>
 
               <div class="col-4">
-                <%= f.input :purpose_of_payment, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.purpose_of_payments, alphabetical: false, keep_raw: true), :include_blank => true %>
+                <%= f.input :purpose_of_payment, as: :select, collection: enum_to_collection(PaymentRequest.purpose_of_payments, alphabetical: false, keep_raw: true), :include_blank => true %>
               </div>
 
               <div class="col-12">
@@ -151,7 +151,7 @@
                   <%= transaction.input :status, placeholder: 'Status', :required => policy(@payment_request).edit_payment_queue?, as: :select, disabled: !policy(@payment_request).edit_payment_queue? || (PaymentRequest.Rejected.include? (f.object)), collection: enum_to_collection(PaymentRequestTransaction.statuses, alphabetical: true, keep_raw: true), :include_blank => 'Select a Status' %>
                 </div>
                 <div class="col-2">
-                  <%= transaction.input :due_date, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'transaction-due-date' },  placeholder: 'Due Date', label: 'Due Date', required: true %>
+                  <%= transaction.input :transaction_due_date, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'transaction-due-date', :'data-due-date'=> (f.object.due_date if f.object.due_date.present?) },  placeholder: 'Due Date', label: 'Due Date', required: true %>
                 </div>
                 <div class="col-1">
                   <div class="d-flex">
@@ -170,7 +170,7 @@
             <% if f.object.remaining_amount > 0.0 && (!PaymentRequest.Rejected.include? (f.object)) %>
               <div class="form-row">
                 <div class="col-md-6">
-                  <%= f.add_nested_fields_link :transactions, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
+                  <%= f.add_nested_fields_link :transactions, class: 'btn btn-outline-success btn-block mb-2 mb-md-0 add-transaction' do %>
                     <i class="fal fa-plus-circle mr-1"></i>Add payment transaction
                   <% end %>
                 </div>
@@ -183,7 +183,7 @@
             <% else %>
               <div class="form-row">
                 <div class="col-md-6">
-                  <%= f.add_nested_fields_link :transactions, class: 'btn btn-outline-success btn-block mb-2 mb-md-0 disabled' do %>
+                  <%= f.add_nested_fields_link :transactions, class: 'btn btn-outline-success btn-block mb-2 mb-md-0 disabled add-transaction' do %>
                     <i class="fal fa-plus-circle mr-1"></i>Add payment transaction
                   <% end %>
                 </div>
