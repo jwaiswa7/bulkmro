@@ -296,6 +296,29 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def suggestion
+    authorize :inquiry
+    service = Services::Overseers::Finders::GlobalSearch.new(params)
+    service.call
+
+    indexed_records = service.indexed_records
+    inquiries = []
+
+    indexed_records.each do |record|
+      hash = {}
+      hash['text'] = record.attributes['inquiry_number_autocomplete'] if record.attributes['inquiry_number_autocomplete'].present?
+      hash['link'] = overseers_inquiry_path(record.attributes['inquiry_number_autocomplete'])
+      inquiries << hash
+      hash['text'] = record.attributes['inquiry_quote_autocomplete'] if record.attributes['inquiry_quote_autocomplete'].present?
+      inquiries << hash
+      record.attributes['final_sales_orders'].each do |order|
+        hash['text'] = order['inquiry_order_autocomplete'] if order['inquiry_order_autocomplete'].present?
+        inquiries << hash
+      end if record.attributes['final_sales_orders'].present?
+    end
+    render json: {inquiries: inquiries}.to_json
+  end
+
   private
 
     def set_inquiry

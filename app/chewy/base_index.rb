@@ -11,6 +11,11 @@ class BaseIndex < Chewy::Index
                 type: 'pattern_replace',
                 pattern: '[^A-Za-z0-9]+',
                 replacement: ''
+            },
+            "autocomplete_filter": {
+                "type": "edge_ngram",
+                "min_gram": 1,
+                "max_gram": 20
             }
         },
         analyzer: {
@@ -51,6 +56,11 @@ class BaseIndex < Chewy::Index
             },
             edge_ngram_search_analyzer: {
               tokenizer: 'lowercase'
+            },
+            autocomplete: {
+                type: "custom",
+                tokenizer: "standard",
+                filter: ["lowercase", "autocomplete_filter"]
             }
         },
         tokenizer: {
