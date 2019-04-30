@@ -38,24 +38,31 @@ class Overseers::ArInvoicesController < Overseers::BaseController
   def new
     @sales_order = SalesOrder.where(:id => params[:so_id]).last
     @inward_dispatches = InwardDispatch.where(id: params[:ids])
-    @ar_invoice = ArInvoice.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry, inward_dispatches: @inward_dispatches)
+    @ar_invoice = ArInvoice.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
+    @inward_dispatches.each do |inward_dispatch|
+      inward_dispatch.rows.each do |row|
+        @ar_invoice.rows.build(quantity: row.delivered_quantity, inward_dispatch_row_id: row.id, sales_order_id: @sales_order.id)
+      end
+    end
     authorize @ar_invoice
   end
 
   # GET /ar_invoices/1/edit
   def edit
-    @inward_dispatches = InwardDispatch.where( ar_invoice_id: @ar_invoice.id )
     authorize @ar_invoice
   end
 
   # POST /ar_invoices
   # POST /ar_invoices.json
   def create
-    @ar_invoice = ArInvoice.new(ar_invoice_params.merge(overseer: current_overseer))
+
+    @ar_invoice = ArInvoice.new()
+
+    @ar_invoice.assign_attributes(ar_invoice_params.merge(overseer: current_overseer))
     inward_dispatch_ids = params[:inward_dispatch_ids].first.split(',').map(&:to_i)
     authorize @ar_invoice
     respond_to do |format|
-      if @ar_invoice.save
+      if @ar_invoice.save!
         if inward_dispatch_ids.present?
           InwardDispatch.where(id: inward_dispatch_ids).update_all(ar_invoice_id: @ar_invoice.id)
         end
@@ -102,7 +109,8 @@ class Overseers::ArInvoicesController < Overseers::BaseController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ar_invoice_params
-      params.require(:ar_invoice).permit(
+      params.require(:ar_invoice).except(:action_name)
+        .permit(
           :sales_order_id,
           :inquiry_id,
           :inward_dispatch_ids,
@@ -111,7 +119,8 @@ class Overseers::ArInvoicesController < Overseers::BaseController
           :rejection_reason,
           :other_rejection_reason,
           :ar_invoice_number,
-          :e_way
-      )
+          :e_way,
+          rows_attributes: [ :id, :inward_dispatch_row_id, :sales_order_id, :quantity ]
+        )
     end
 end

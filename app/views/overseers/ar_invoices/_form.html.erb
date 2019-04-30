@@ -7,7 +7,7 @@
     <%= f.hidden_field :sales_order_id %>
     <%= f.hidden_field :inquiry_id %>
     <%#= f.hidden_field :inward_dispatches %>
-    <%= hidden_field_tag "inward_dispatch_ids[]", @inward_dispatches.pluck(:id).join(',') %>
+    <%= hidden_field_tag "inward_dispatch_ids[]", action_name == "new"  ? @inward_dispatches.pluck(:id).join(',') :  @ar_invoice.inward_dispatches.pluck(:id).join(',') %>
 
     <section class="mb-3">
       <div class="card mb-2">
@@ -102,67 +102,21 @@
       <div class="card mb-2">
         <div class="card-body">
           <h6 class="text-uppercase text-black-50 mb-1"> Products Details</h6>
-          <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
-            <thead>
-            <tr>
-              <th class="no-sort">
-                <span data-toggle="tooltip" title="Serial Number">Sr.</span>
-              </th>
-              <th class="no-sort">
-                <span data-toggle="tooltip" title="Description">Description</span>
-              </th>
-              <th class="no-sort">
-                <span data-toggle="tooltip" title="Quantity">Qty</span>
-              </th>
-              <th class="no-sort">
-                <span data-toggle="tooltip" title="Stock Quantity">Stock Qty</span>
-              </th>
-              <th class="no-sort">
-                <span data-toggle="tooltip" title="Unit of Measurement">UoM</span>
-              </th>
-              <th class="no-sort">
-                <span data-toggle="tooltip" title="Unit Cost">UC</span>
-              </th>
-              <th class="no-sort">
-                <span data-toggle="tooltip" title="Unit Selling Price">USP</span>
-              </th>
-              <th class="no-sort">
-                <span data-toggle="tooltip" title="Margin Percentage">%</span>
-              </th>
-              <th class="no-sort">
-                <span data-toggle="tooltip" title="Tax Code">T. Code</span>
-              </th>
-              <th class="no-sort">
-                <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
-              </th>
-              <th class="no-sort">
-                <span data-toggle="tooltip" title="Tax Amount">T. Amount</span>
-              </th>
-              <th class="no-sort">
-                <span data-toggle="tooltip" title="Total">Total</span>
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <% f.object.sales_order.rows.each do |sales_order_row| %>
-              <tr>
-                <td><%= sales_order_row.sr_no %></td>
-                <td><%= sales_order_row.sales_quote_row.to_s %></td>
-                <td><%= sales_order_row.quantity %></td>
-                <td><%= sales_order_row.quantity %></td>
-                <td><%= sales_order_row.measurement_unit %></td>
-                <td><%= format_currency(sales_order_row.converted_unit_cost_price_with_unit_freight_cost, symbol: f.object.sales_order.currency_sign) %></td>
-                <td><%= format_currency(sales_order_row.converted_unit_selling_price, symbol: f.object.sales_order.currency_sign) %></td>
-                <td><%= number_with_precision(sales_order_row.margin_percentage, precision: 2) %></td>
-                <td><%= sales_order_row.best_tax_code %></td>
-                <td><%= sales_order_row.best_tax_rate %></td>
-                <td><%= format_currency(1000, symbol: f.object.sales_order.currency_sign) %></td>
-                <td><%= format_currency(sales_order_row.converted_total_selling_price_with_tax, symbol: f.object.sales_order.currency_sign) %></td>
-              </tr>
+          <% if @ar_invoice.rows.present? %>
+            <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
+              <div class="form-row flex-row align-items-start inward-dispatch-row">
+                <div class="col-6 col-md-3">
+                  <%= row.hidden_field :inward_dispatch_row_id, label: 'Product' %>
+                  <%= row.input :inward_dispatch_row, input_html: {value: row.object.inward_dispatch_row.to_s}, disabled: row.object.inward_dispatch_row.present? && row.object.errors.blank?, label: false %>
+                </div>
+                <div class="col-6 col-md-3">
+                  <%= row.hidden_field :sales_order_id, label: 'Product' %>
+                  <%= row.input :inward_dispatch_row, input_html: {value: row.object.inward_dispatch_row.to_s}, disabled: row.object.inward_dispatch_row.present? && row.object.errors.blank?, label: false %>
+                </div>
+                <%= row.input :quantity, input_html: {value: row.object.quantity}, disabled: row.object.inward_dispatch_row.present? && row.object.errors.blank?, label: false %>
+              </div>
             <% end %>
-            </tbody>
-          </table>
-
+          <% end %>
         </div>
       </div>
     </section>

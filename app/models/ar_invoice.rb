@@ -8,6 +8,11 @@ class ArInvoice < ApplicationRecord
   belongs_to :sales_order
   belongs_to :inquiry
   has_many :inward_dispatches
+  has_many :rows, class_name: 'ArInvoiceRow', inverse_of: :ar_invoice
+
+  accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['inward_dispatch_row_id'].blank? }, allow_destroy: true
+  validates_associated :rows
+
   update_index('ar_invoices#ar_invoice') {self}
 
   enum status: {

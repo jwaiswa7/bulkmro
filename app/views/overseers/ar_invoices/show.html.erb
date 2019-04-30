@@ -10,7 +10,7 @@
     </div>
   </section>
 
-  
+
   <section class="mb-3">
     <div class="card mb-2">
       <div class="card-body">
@@ -146,20 +146,9 @@
           </tr>
           </thead>
           <tbody>
-          <% @ar_invoice.sales_order.rows.each do |sales_order_row| %>
+          <% @ar_invoice.rows.each do |row| %>
             <tr>
-              <td><%= sales_order_row.sr_no %></td>
-              <td><%= sales_order_row.sales_quote_row.to_s %></td>
-              <td><%= sales_order_row.quantity %></td>
-              <td><%= sales_order_row.quantity %></td>
-              <td><%= sales_order_row.measurement_unit %></td>
-              <td><%= format_currency(sales_order_row.converted_unit_cost_price_with_unit_freight_cost, symbol: @ar_invoice.sales_order.currency_sign) %></td>
-              <td><%= format_currency(sales_order_row.converted_unit_selling_price, symbol: @ar_invoice.sales_order.currency_sign) %></td>
-              <td><%= number_with_precision(sales_order_row.margin_percentage, precision: 2) %></td>
-              <td><%= sales_order_row.best_tax_code %></td>
-              <td><%= sales_order_row.best_tax_rate %></td>
-              <td><%= format_currency(sales_order_row.converted_total_selling_price_with_tax, symbol: @ar_invoice.sales_order.currency_sign) %></td>
-              <td><%= format_currency(sales_order_row.converted_total_selling_price_with_tax, symbol: @ar_invoice.sales_order.currency_sign) %></td>
+              <td><%= row.id %></td>
             </tr>
           <% end %>
           </tbody>

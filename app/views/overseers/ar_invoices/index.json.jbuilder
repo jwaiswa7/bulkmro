@@ -18,3 +18,6 @@ json.data (@ar_invoices) do |ar_invoice|
                   ar_invoice.sales_order.order_number
               ]
 end
+json.recordsTotal ArInvoice.all.count
+json.recordsFiltered @indexed_ar_invoices.total_count
+json.draw params[:draw]
