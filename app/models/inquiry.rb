@@ -8,7 +8,7 @@ class Inquiry < ApplicationRecord
   include Mixins::HasComments
 
   update_index('inquiries#inquiry') { self }
-  pg_search_scope :locate, against: [:id, :inquiry_number], associated_against: { company: [:name], account: [:name], contact: [:first_name, :last_name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:id, :inquiry_number], associated_against: { company: [:name], account: [:name], contact: [:first_name, :last_name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name], procurement_operations: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :inquiry_currency, dependent: :destroy
   has_one :currency, through: :inquiry_currency
@@ -312,7 +312,7 @@ class Inquiry < ApplicationRecord
   end
 
   def can_be_managed?(overseer)
-    overseer.manager? || overseer.self_and_descendant_ids.include?(self.inside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.outside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.created_by_id) || false
+    overseer.manager? || overseer.self_and_descendant_ids.include?(self.inside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.outside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.procurement_operations) || overseer.self_and_descendant_ids.include?(self.created_by_id) || false
   end
 
   def last_sr_no

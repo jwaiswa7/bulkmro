@@ -18,7 +18,8 @@
       field :outside_sales_owner_id, value: -> (record) { record.outside_sales_owner.id if record.outside_sales_owner.present? }
       field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring'
       field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }
-      field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }
+      field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }
+      field :procurement_operations, value: -> (record) { record.procurement_operations_id }
       field :margin_percentage, value: -> (record) { record.margin_percentage }, type: 'float'
       field :company_id, value: -> (record) { record.company_id }
       field :company, value: -> (record) { record.company.to_s }, analyzer: 'substring'
