@@ -1,6 +1,6 @@
 class CreateArInvoices < ActiveRecord::Migration[5.2]
   def change
-    create_table :ar_invoices do |t|
+    create_table :ar_invoice_requests do |t|
       t.integer :rejection_reason, :integer
       t.string  :other_rejection_reason
       t.integer :cancellation_reason

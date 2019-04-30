@@ -1,6 +1,6 @@
-class ArInvoiceComment < ApplicationRecord
+class ArInvoiceRequestComment < ApplicationRecord
   include Mixins::CanBeStamped
-  belongs_to :ar_invoice
+  belongs_to :ar_invoice_request
 
   def author
     self.created_by

@@ -1,5 +1,5 @@
-class ArInvoice < ApplicationRecord
-  COMMENTS_CLASS = 'ARInvoiceComment'
+class ArInvoiceRequest < ApplicationRecord
+  COMMENTS_CLASS = 'ARInvoiceRequestComment'
 
   include Mixins::CanBeStamped
   include Mixins::HasComments
@@ -12,7 +12,7 @@ class ArInvoice < ApplicationRecord
   validate :presence_of_reason
 
 
-  has_many :rows, class_name: 'ArInvoiceRow', inverse_of: :ar_invoice
+  has_many :rows, class_name: 'ArInvoiceRequestRow', inverse_of: :ar_invoice
 
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['inward_dispatch_row_id'].blank? }, allow_destroy: true
   validates_associated :rows

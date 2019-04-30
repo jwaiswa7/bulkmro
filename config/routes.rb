@@ -250,7 +250,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :ar_invoices do
+    resources :ar_invoice_requests do
       collection do
         get 'pending'
         get 'completed'

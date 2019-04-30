@@ -43,8 +43,8 @@ class SalesOrder < ApplicationRecord
   has_many :po_requests, inverse_of: :sales_order, dependent: :destroy
   accepts_nested_attributes_for :po_requests, allow_destroy: true
   has_many :invoice_requests
-  has_many :ar_invoices
-  has_many :ar_invoice_row, through: :ar_invoice
+  has_many :ar_invoice_requests
+  has_many :ar_invoice_request_rows, through: :ar_invoice_request
   has_many :email_messages
   belongs_to :billing_address, class_name: 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, class_name: 'Address', dependent: :destroy, required: false

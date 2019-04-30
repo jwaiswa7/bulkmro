@@ -1,10 +1,10 @@
-class Services::Overseers::Finders::ArInvoices < Services::Overseers::Finders::BaseFinder
+class Services::Overseers::Finders::ArInvoiceRequests < Services::Overseers::Finders::BaseFinder
   def call
     call_base
   end
 
   def model_klass
-    ArInvoice
+    ArInvoiceRequest
   end
 
   def all_records
