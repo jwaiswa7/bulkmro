@@ -134,6 +134,9 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                 },
                 {
                     terms: {outside_sales_executive: ids}
+                },
+                {
+                    terms: {procurement_operations: ids}
                 }
             ],
             minimum_should_match: 1,
