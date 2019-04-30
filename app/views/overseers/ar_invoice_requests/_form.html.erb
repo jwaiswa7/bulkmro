@@ -149,13 +149,13 @@
               <%= f.input :e_way, label: 'E-Way Bill' %>
             </div>
 
-            <!--            <div class="col-12">-->
-            <%#= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |invoice_request_comment| %>
-            <%#= invoice_request_comment.hidden_field :created_by_id %>
-            <%#= invoice_request_comment.hidden_field :updated_by_id %>
-            <%#= invoice_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
-            <%# end %>
-            <!--            </div>-->
+            <div class="col-12">
+              <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |ar_invoice_request_comment| %>
+              <%= ar_invoice_request_comment.hidden_field :created_by_id %>
+              <%= ar_invoice_request_comment.hidden_field :updated_by_id %>
+              <%= ar_invoice_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <% end %>
+            </div>
 
           </div>
         </div>
