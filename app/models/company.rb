@@ -37,6 +37,8 @@ class Company < ApplicationRecord
   has_many :inquiry_products, through: :inquiries
   has_many :products, through: :inquiry_products
   has_many :sales_quotes, through: :inquiries, source: :sales_quotes
+  has_many :final_sales_quotes, through: :inquiries, source: :final_sales_quote
+  has_many :final_sales_orders, through: :inquiries, source: :final_sales_orders
   has_many :sales_orders, through: :inquiries
   has_many :invoices, through: :inquiries
   has_many :addresses, dependent: :destroy
@@ -92,7 +94,7 @@ class Company < ApplicationRecord
   delegate :account_type, :is_customer?, :is_supplier?, to: :account
   alias_attribute :gst, :tax_identifier
 
-  scope :with_includes, -> {includes(:addresses, :inquiries, :contacts)}
+  scope :with_includes, -> {includes(:addresses, :inquiries, :contacts, :invoices, :final_sales_orders, :final_sales_quotes)}
   scope :acts_as_supplier, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier])}
   scope :acts_as_customer, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer])}
 
@@ -224,5 +226,21 @@ class Company < ApplicationRecord
   def to_s_with_type
     type = self.account.is_supplier? ? 'S' : 'C'
     [self.to_s, ' (', type, ')'].join('')
+  end
+
+  def inquiry_size
+    self.inquiries.where.not('inquiries.status = ? OR inquiries.status = ?', 10, 9).size
+  end
+
+  def cancel
+    self.inquiries.map {|i| i.sales_invoices.map {|s| s.status.where(status: 'Cancelled')}.size}
+  end
+
+  def invoice_margin
+    self.invoices.map {|s| s.inquiry.final_sales_quote.calculated_total_margin_percentage.to_f if s.inquiry.final_sales_quote.present?}.flatten.compact
+  end
+
+  def order_margin
+    self.inquiries.map {|i| i.final_sales_orders.map {|s| s.calculated_total_margin_percentage} if i.final_sales_orders.present?}.flatten.compact
   end
 end
