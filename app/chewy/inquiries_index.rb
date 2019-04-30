@@ -18,7 +18,7 @@
       field :outside_sales_owner_id, value: -> (record) { record.outside_sales_owner.id if record.outside_sales_owner.present? }
       field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring'
       field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }
-      field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }
+      field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }
       field :procurement_operations, value: -> (record) { record.procurement_operations_id }
       field :margin_percentage, value: -> (record) { record.margin_percentage }, type: 'float'
       field :company_id, value: -> (record) { record.company_id }
@@ -39,6 +39,6 @@
     end
 
     def self.fields
-      [:status, :status_string, :subject, :inquiry_number_string, :sales_orders_ids, :sales_invoices_ids, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :company, :account, :contact_s, :created_by_id]
+      [:status, :status_string, :subject, :inquiry_number_string, :sales_orders_ids, :sales_invoices_ids, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :procurement_operations, :company, :account, :contact_s, :created_by_id]
     end
   end
