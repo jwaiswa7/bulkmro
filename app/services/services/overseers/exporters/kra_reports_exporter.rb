@@ -3,7 +3,7 @@ class Services::Overseers::Exporters::KraReportsExporter < Services::Overseers::
     super(*params)
     @model = Inquiry
     @category = @params.present? ? (@params['category'] == 'company_key' ? 'Company' : 'Inside Sales') : 'Inside Sales'
-    @export_name = [@params.present? ? @params['date_range'] : '', @category , 'Wise','Kra Report'].join(' ')
+    @export_name = [@params.present? ? @params['date_range'] : '', @category, 'Wise', 'Kra Report'].join(' ')
     @path = Rails.root.join('tmp', filename)
     @columns = [
          @category,
