@@ -21,5 +21,4 @@ class InquiryMappingTat < ApplicationRecord
     tat = minutes
     tat
   end
-
 end

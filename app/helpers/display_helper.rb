@@ -221,10 +221,10 @@ module DisplayHelper
   end
 
   def humanize(mins)
-    [[60, :minutes], [24, :hours], [Float::INFINITY, :days]].map{ |count, name|
+    [[60, :minutes], [24, :hours], [Float::INFINITY, :days]].map { |count, name|
       if mins > 0
         mins, n = mins.divmod(count)
-        unless n.to_i==0
+        unless n.to_i == 0
           name = name.to_s.singularize if n == 1
           "#{n.to_i} #{name}"
         end

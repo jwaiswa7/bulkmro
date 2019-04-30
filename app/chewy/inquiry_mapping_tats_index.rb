@@ -1,5 +1,4 @@
 class InquiryMappingTatsIndex < BaseIndex
-
   define_type InquiryMappingTat.with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) {record.inquiry.inquiry_number.to_i}, type: 'integer'
@@ -53,7 +52,5 @@ class InquiryMappingTatsIndex < BaseIndex
     field :status_regret, value: -> (record) {record.calculate_turn_around_time('Regret') if record.inquiry.inquiry_status_records.where(status: 'Regret').present?}, type: 'integer'
     field :time_regret, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'Regret').created_at if record.inquiry.inquiry_status_records.find_by(status: 'Regret').present?}, analyzer: 'substring'
     field :created_at, value: -> (record) {record.inquiry.created_at}, type: 'date'
-
   end
-
 end

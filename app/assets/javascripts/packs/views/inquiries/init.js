@@ -15,7 +15,6 @@ let inquiries = {
     index: inquiriesIndex,
     kraReport: inquiriesKraReport,
     tatReport: inquiriesTatReport
-
 }
 
 export default inquiries

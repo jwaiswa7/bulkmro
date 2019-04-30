@@ -21,6 +21,4 @@ class Services::Shared::Migrations::AddInquiryMappingTat < Services::Shared::Mig
       end
     end
   end
-
 end
-

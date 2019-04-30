@@ -125,7 +125,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       end
     end
   end
-  #
+
   def sales_owner_status_avg
     authorize :inquiry
     respond_to do |format|
@@ -138,13 +138,12 @@ class Overseers::InquiriesController < Overseers::BaseController
       status_avgs = @indexed_tat_reports.aggregations['tat_by_sales_owner']['buckets']['custom-range']['inquiry_mapping_tats']['buckets'].select { |avg| avg['key'] == @inside_sales_owner.to_i }
       unless status_avgs.blank?
         @sales_owner_average_values = status_avgs[0].except('key', 'doc_count')
-        statuses = { 'new_inquiry': 0, 'acknowledgment_mail': 0, 'cross_reference': 0,'preparing_quotation': 0,'quotation_sent': 0,'draft_so_appr_by_sales_manager': 0,'so_reject_by_sales_manager': 0,'so_draft_pending_acct_approval': 0,'rejected_by_accounts': 0,'hold_by_accounts': 0,'order_won': 0,'order_lost': 0,'regret': 0 }
-        @status_average = statuses.map { |status, value| {status: status.to_s , value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / @indexed_tat_reports.count).round(2) : 0 } }
+        statuses = { 'new_inquiry': 0, 'acknowledgment_mail': 0, 'cross_reference': 0, 'preparing_quotation': 0, 'quotation_sent': 0, 'draft_so_appr_by_sales_manager': 0, 'so_reject_by_sales_manager': 0, 'so_draft_pending_acct_approval': 0, 'rejected_by_accounts': 0, 'hold_by_accounts': 0, 'order_won': 0, 'order_lost': 0, 'regret': 0 }
+        @status_average = statuses.map { |status, value| {status: status.to_s, value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / @indexed_tat_reports.count).round(2) : 0 } }
         format.html { render partial:  'sales_owner_status_average' }
       else
         format.html
       end
-
     end
   end
 
@@ -384,7 +383,8 @@ class Overseers::InquiriesController < Overseers::BaseController
           :inside_sales_owner_id,
           :outside_sales_owner_id,
           :sales_manager_id,
-          :billing_address_id,
+          :procurement_operations_id,
+        :billing_address_id,
           :billing_company_id,
           :shipping_address_id,
           :shipping_company_id,
