@@ -19,7 +19,7 @@
           <% end %>
         <% end %>
       </div>
-      <% if content_for?(:can_be_directly_created) || content_for?(:can_be_searched_or_created) || content_for?(:can_be_directly_exported) || content_for?(:can_be_directly_export_by_daterange) || content_for?(:heading_buttons) || content_for?(:can_be_directly_downloaded) || content_for?(:can_be_directly_exported_filtered_records) %>
+      <% if content_for?(:can_be_directly_created) || content_for?(:can_be_searched_or_created) || content_for?(:can_be_directly_exported) || content_for?(:can_be_directly_export_by_daterange) || content_for?(:heading_buttons) || content_for?(:can_be_directly_downloaded) || content_for?(:can_be_directly_exported_filtered_records) || content_for?(:can_be_directly_exported_inquiry_tat) %>
         <div>
           <% if content_for?(:can_be_searched_or_created) && policy(current_model.singularize.to_sym).search_or_create? %>
             <div class="d-none d-md-inline-block align-top">
