@@ -327,6 +327,7 @@ class Overseers::InquiriesController < Overseers::BaseController
           :inside_sales_owner_id,
           :outside_sales_owner_id,
           :sales_manager_id,
+          :procurement_operations_id,
           :billing_address_id,
           :billing_company_id,
           :shipping_address_id,

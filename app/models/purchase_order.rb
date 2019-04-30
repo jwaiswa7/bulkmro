@@ -234,7 +234,7 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def po_request_present?
-    self.po_request.present? ? (self.po_request.status == 'Supplier PO Sent' || self.po_request.status == 'Supplier PO: Created Not Sent') : false
+    self.po_request.present? ? ((self.po_request.status == 'Supplier PO Sent' || self.po_request.status == 'Supplier PO: Created Not Sent') && self.po_request.purchase_order.present?) : false
   end
 
 end
