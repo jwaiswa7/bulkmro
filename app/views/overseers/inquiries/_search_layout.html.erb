@@ -9,9 +9,9 @@
           <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range', :value => (@date_range.present? ? @date_range : '')}, required: false, label: 'Pick a Date Range' %>
         </div>
         <div class="col-3 text-center">
-        <%= button_tag(type: "submit", class: "btn btn-success btn-block mt-3") do %>
-          <i class="fal fa-hand-point-down mr-2"></i>Fetch Report
-        <% end %>
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block mt-3") do %>
+            <i class="fal fa-hand-point-down mr-2"></i>Fetch Report
+          <% end %>
         </div>
         <div class="col-3 text-center">
           <a href="<%= kra_report_overseers_inquiries_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 mt-3">

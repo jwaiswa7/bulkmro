@@ -289,6 +289,22 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
   end
 
+  def pipeline_report
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html {
+        service = Services::Overseers::Finders::PipelineReports.new(params, current_overseer)
+        service.call
+
+        @statuses = Inquiry.statuses
+        @indexed_pipeline_report = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['inquiries_over_time']['buckets']
+        @indexed_summary_row = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row']
+        @summary_total = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row_total']
+      }
+    end
+  end
+
   def bulk_update
     authorize :inquiry
 
@@ -302,10 +318,10 @@ class Overseers::InquiriesController < Overseers::BaseController
         inquiries.update_all(update_query)
         redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
       else
-        render json: { error: 'Please select any one field to update' }, status: 500
+        render json: {error: 'Please select any one field to update'}, status: 500
       end
     else
-      render json: { error: 'No such inquiries present' }, status: 500
+      render json: {error: 'No such inquiries present'}, status: 500
     end
   end
 
@@ -324,6 +340,7 @@ class Overseers::InquiriesController < Overseers::BaseController
           :inside_sales_owner_id,
           :outside_sales_owner_id,
           :sales_manager_id,
+          :procurement_operations_id,
           :billing_address_id,
           :billing_company_id,
           :shipping_address_id,
