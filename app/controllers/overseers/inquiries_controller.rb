@@ -28,6 +28,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       format.html {
         if params['kra_report'].present?
           @date_range = params['kra_report']['date_range']
+          @category = params['kra_report']['category']
         end
       }
       format.json do
@@ -36,9 +37,13 @@ class Overseers::InquiriesController < Overseers::BaseController
 
         if params['kra_report'].present?
           @date_range = params['kra_report']['date_range']
+          @category = params['kra_report']['category']
         end
 
-        @indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
+        indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
+        @per = (params['per'] || params['length'] || 20).to_i
+        @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
+        @indexed_kra_reports = Kaminari.paginate_array(indexed_kra_reports).page(@page).per(@per)
       end
     end
   end
@@ -63,15 +68,23 @@ class Overseers::InquiriesController < Overseers::BaseController
     service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
     service.call
 
-    indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
-
     if params['kra_report'].present?
-      date_range = params['kra_report']['date_range']
-    else
-      date_range = 'Overall'
+      @date_range = params['kra_report']['date_range']
+      @category = params['kra_report']['category']
     end
 
-    export_service = Services::Overseers::Exporters::KraReportsExporter.new([], current_overseer, indexed_kra_reports, date_range)
+    indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
+
+    kra_params = {}
+    if params['kra_report'].present?
+      kra_params['date_range'] = params['kra_report']['date_range']
+      kra_params['category'] = params['kra_report']['category']
+    else
+      kra_params['date_range'] = 'Overall'
+      kra_params['category'] = 'inside_sales_owner_id'
+    end
+
+    export_service = Services::Overseers::Exporters::KraReportsExporter.new([], current_overseer, indexed_kra_reports, kra_params)
     export_service.call
 
     redirect_to url_for(Export.kra_report.not_filtered.last.report)
@@ -94,13 +107,56 @@ class Overseers::InquiriesController < Overseers::BaseController
     export_service.call
   end
 
+  def tat_report
+    authorize :inquiry
+
+    respond_to do |format|
+      if params['tat_report'].present?
+        @date_range = params['tat_report']['date_range']
+      end
+      service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
+      service.call
+      format.html {
+        @indexed_tat_reports_aggs = service.indexed_records.aggregations['tat_by_sales_owner']['buckets']['custom-range']['inquiry_mapping_tats']['buckets']
+        @indexed_tat_reports = service.indexed_records
+      }
+      format.json do
+        @indexed_tat_reports = service.indexed_records
+      end
+    end
+  end
+
+  def sales_owner_status_avg
+    authorize :inquiry
+    respond_to do |format|
+      if params.present?
+        @inside_sales_owner = params['inside_sales_owner_id']
+      end
+      service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
+      service.call
+      @indexed_tat_reports = service.indexed_records
+      status_avgs = @indexed_tat_reports.aggregations['tat_by_sales_owner']['buckets']['custom-range']['inquiry_mapping_tats']['buckets'].select { |avg| avg['key'] == @inside_sales_owner.to_i }
+      unless status_avgs.blank?
+        @sales_owner_average_values = status_avgs[0].except('key', 'doc_count')
+        statuses = { 'new_inquiry': 0, 'acknowledgment_mail': 0, 'cross_reference': 0, 'preparing_quotation': 0, 'quotation_sent': 0, 'draft_so_appr_by_sales_manager': 0, 'so_reject_by_sales_manager': 0, 'so_draft_pending_acct_approval': 0, 'rejected_by_accounts': 0, 'hold_by_accounts': 0, 'order_won': 0, 'order_lost': 0, 'regret': 0 }
+        @status_average = statuses.map { |status, value| {status: status.to_s, value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / @indexed_tat_reports.count).round(2) : 0 } }
+        format.html { render partial:  'sales_owner_status_average' }
+      else
+        format.html
+      end
+    end
+  end
+
   def export_inquiries_tat
     authorize :inquiry
-    service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, [])
+    service = Services::Overseers::Finders::TatReports.new(params, current_overseer, paginate: false)
     service.call
-    export = Export.inquiries_tat.not_filtered.last
-    export_report = export.report if export.present?
-    export_report.present? ? redirect_to(url_for(export_report)) : redirect_to(overseers_inquiries_path, notice: 'Inquiries TAT download failed!')
+
+    indexed_tat_reports = service.indexed_records
+    export_service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, indexed_tat_reports, '')
+    export_service.call
+
+    redirect_to url_for(Export.inquiries_tat.not_filtered.last.report)
   end
 
   def index_pg
@@ -305,10 +361,10 @@ class Overseers::InquiriesController < Overseers::BaseController
         inquiries.update_all(update_query)
         redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
       else
-        render json: {error: 'Please select any one field to update'}, status: 500
+        render json: { error: 'Please select any one field to update' }, status: 500
       end
     else
-      render json: {error: 'No such inquiries present'}, status: 500
+      render json: { error: 'No such inquiries present' }, status: 500
     end
   end
 
@@ -321,52 +377,52 @@ class Overseers::InquiriesController < Overseers::BaseController
     def inquiry_params
       params.require(:inquiry).permit(
         :project_uid,
-          :company_id,
-          :contact_id,
-          :industry_id,
-          :inside_sales_owner_id,
-          :outside_sales_owner_id,
-          :sales_manager_id,
-          :procurement_operations_id,
-          :billing_address_id,
-          :billing_company_id,
-          :shipping_address_id,
-          :shipping_company_id,
-          :shipping_contact_id,
-          :bill_from_id,
-          :ship_from_id,
-          :status,
-          :opportunity_type,
-          :opportunity_source,
-          :subject,
-          :gross_profit_percentage,
-          :quotation_date,
-          :customer_committed_date,
-          :customer_order_date,
-          :valid_end_time,
-          :quotation_followup_date,
-          :procurement_date,
-          :expected_closing_date,
-          :quote_category,
-          :price_type,
-          :potential_amount,
-          :freight_option,
-          :freight_cost,
-          :total_freight_cost,
-          :customer_po_number,
-          :packing_and_forwarding_option,
-          :payment_option_id,
-          :weight_in_kgs,
-          :customer_po_sheet,
-          :final_supplier_quote,
-          :copy_of_email,
-          :is_sez,
-          :calculation_sheet,
-          :commercial_terms_and_conditions,
-          :comments,
-          :product_type,
-          supplier_quotes: [],
-          inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
+        :company_id,
+        :contact_id,
+        :industry_id,
+        :inside_sales_owner_id,
+        :outside_sales_owner_id,
+        :sales_manager_id,
+        :procurement_operations_id,
+        :billing_address_id,
+        :billing_company_id,
+        :shipping_address_id,
+        :shipping_company_id,
+        :shipping_contact_id,
+        :bill_from_id,
+        :ship_from_id,
+        :status,
+        :opportunity_type,
+        :opportunity_source,
+        :subject,
+        :gross_profit_percentage,
+        :quotation_date,
+        :customer_committed_date,
+        :customer_order_date,
+        :valid_end_time,
+        :quotation_followup_date,
+        :procurement_date,
+        :expected_closing_date,
+        :quote_category,
+        :price_type,
+        :potential_amount,
+        :freight_option,
+        :freight_cost,
+        :total_freight_cost,
+        :customer_po_number,
+        :packing_and_forwarding_option,
+        :payment_option_id,
+        :weight_in_kgs,
+        :customer_po_sheet,
+        :final_supplier_quote,
+        :copy_of_email,
+        :is_sez,
+        :calculation_sheet,
+        :commercial_terms_and_conditions,
+        :comments,
+        :product_type,
+        supplier_quotes: [],
+        inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
       )
     end
 
@@ -394,56 +450,56 @@ class Overseers::InquiriesController < Overseers::BaseController
       if params.has_key?(:inquiry)
         params.require(:inquiry).permit(
           :id,
-            po_requests_attributes: [
-                :id,
-                :supplier_id,
-                :inquiry_id,
-                :company_id,
-                :reason_to_stock,
-                :estimated_date_to_unstock,
-                :requested_by_id,
-                :approved_by_id,
-                :_destroy,
-                :logistics_owner_id,
-                :address_id,
-                :contact_id,
-                :payment_option_id,
-                :stock_status,
-                :supplier_committed_date,
-                :blobs,
-                :supplier_po_type,
-                :contact_email,
-                :contact_phone,
-                :bill_from_id,
-                :ship_from_id,
-                :bill_to_id,
-                :ship_to_id,
-                attachments: [],
-                rows_attributes: [
-                    :id,
-                    :_destroy,
-                    :status,
-                    :quantity,
-                    :sales_order_row_id,
-                    :product_id,
-                    :brand,
-                    :tax_code_id,
-                    :tax_rate_id,
-                    :measurement_unit_id,
-                    :unit_price,
-                    :conversion,
-                    :lead_time,
-                    :discount_percentage
-                ],
-                comments_attributes: [
-                    :created_by_id,
-                    :updated_by_id,
-                    :message
-                ]
-            ]
-        )
+          po_requests_attributes: [
+              :id,
+              :supplier_id,
+              :inquiry_id,
+              :company_id,
+              :reason_to_stock,
+              :estimated_date_to_unstock,
+              :requested_by_id,
+              :approved_by_id,
+              :_destroy,
+              :logistics_owner_id,
+              :address_id,
+              :contact_id,
+              :payment_option_id,
+              :stock_status,
+              :supplier_committed_date,
+              :blobs,
+              :supplier_po_type,
+              :contact_email,
+              :contact_phone,
+              :bill_from_id,
+              :ship_from_id,
+              :bill_to_id,
+              :ship_to_id,
+              attachments: [],
+              rows_attributes: [
+                  :id,
+                  :_destroy,
+                  :status,
+                  :quantity,
+                  :sales_order_row_id,
+                  :product_id,
+                  :brand,
+                  :tax_code_id,
+                  :tax_rate_id,
+                  :measurement_unit_id,
+                  :unit_price,
+                  :conversion,
+                  :lead_time,
+                  :discount_percentage
+              ],
+              comments_attributes: [
+                  :created_by_id,
+                  :updated_by_id,
+                  :message
+              ]
+          ]
+      )
       else
         {}
       end
-    end
+  end
 end

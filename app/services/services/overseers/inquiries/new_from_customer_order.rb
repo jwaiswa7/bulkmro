@@ -17,7 +17,7 @@ class Services::Overseers::Inquiries::NewFromCustomerOrder < Services::Shared::B
       shipping_contact: customer_order.contact,
       customer_po_number: customer_order.po_reference,
       overseer: overseer,
-      customer_po_sheet: customer_order.customer_po_sheet.blob
+      customer_po_sheet: (customer_order.customer_po_sheet.attached?) ? customer_order.customer_po_sheet.blob : nil
     )
 
     ActiveRecord::Base.transaction do
