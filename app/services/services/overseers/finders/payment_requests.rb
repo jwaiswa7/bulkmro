@@ -8,11 +8,7 @@ class Services::Overseers::Finders::PaymentRequests < Services::Overseers::Finde
   end
 
   def all_records
-    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    else
-      super
-    end
+    indexed_records = super
 
     if @status.present?
       status_array = []
@@ -41,12 +37,6 @@ class Services::Overseers::Finders::PaymentRequests < Services::Overseers::Finde
 
   def perform_query(query_string)
     indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[updated_by_id status_string inquiry_number_string^5 inside_sales_owner outside_sales_owner request_owner_string ] }).order(sort_definition)
-
-    if current_overseer.present? && !current_overseer.allow_inquiries?
-      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    else
-      indexed_records = indexed_records
-    end
 
     if @status.present?
       status_array = []

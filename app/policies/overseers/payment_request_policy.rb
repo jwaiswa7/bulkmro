@@ -19,4 +19,12 @@ class Overseers::PaymentRequestPolicy < Overseers::ApplicationPolicy
   def update_payment_status?
     accounts? || admin?
   end
+
+  def show?
+    accounts? || logistics? || sales? || admin?
+    end
+
+  def edit?
+    accounts? || logistics? || admin?
+  end
 end

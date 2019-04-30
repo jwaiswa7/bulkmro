@@ -135,7 +135,7 @@
 <!--            </div>-->
             <%= f.nested_fields_for :transactions, wrapper_tag: :div do |transaction| %>
               <div class="form-row flex-row align-items-start">
-                <div class="col-1">
+                <div class="col-2">
                   <%= transaction.input :payment_type, placeholder: 'Payment Type', placeholder: placeholder_for(transaction, :utr_or_cheque_no), :required => policy(@payment_request).edit_payment_queue?, as: :select, disabled: !policy(@payment_request).edit_payment_queue? || (PaymentRequest.Rejected.include? (f.object)), collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => 'Select a Payment Type' %>
                 </div>
                 <div class="col-2">
@@ -153,10 +153,10 @@
                 <div class="col-2">
                   <%= transaction.input :due_date, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'transaction-due-date' },  placeholder: 'Due Date', label: 'Due Date', required: true %>
                 </div>
-                <div class="col-2">
+                <div class="col-1">
                   <div class="d-flex">
                     <div class="flex-grow-1">
-                      <%= transaction.input :amount_paid, placeholder: 'Amount', placeholder: placeholder_for(transaction, :amount_paid), :required => policy(@payment_request).payment_request_logistics_and_accounts?, disabled: !policy(@payment_request).payment_request_logistics_and_accounts? || (PaymentRequest.Rejected.include? (f.object)) %>
+                      <%= transaction.input :amount_paid, placeholder: 'Amount', placeholder: placeholder_for(transaction, :amount_paid), label: "Amount", :required => policy(@payment_request).payment_request_logistics_and_accounts?, disabled: !policy(@payment_request).payment_request_logistics_and_accounts? || (PaymentRequest.Rejected.include? (f.object)) %>
                     </div>
                     <%= transaction.remove_nested_fields_link do %>
                       <span class="align-self-center ml-2">
