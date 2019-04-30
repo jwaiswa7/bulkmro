@@ -1,7 +1,6 @@
 <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4" type="button" data-toggle="collapse" data-target="#summary">
   <%= klass.name.titleize.pluralize %> Summary
 </a>
-
 <div id="summary" class="collapse">
   <div class="mt-2 form-row d-flex flex-row align-content-stretch">
     <% statuses.each do |status, status_id| %>
@@ -21,7 +20,7 @@
       </div>
     <% end %>
     <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
-      <div data-value="" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-red " >
+      <div data-value="" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-red">
         <div class="card-body px-3 pt-3 pb-3">
           <div class="text-center d-flex flex-column h-100">
             <p class="mb-1 text-small text-uppercase text-red">
