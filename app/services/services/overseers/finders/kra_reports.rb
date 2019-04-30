@@ -56,10 +56,20 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
 
   def aggregation_kra_report(indexed_records)
     if @kra_report_params.present?
-      from = @kra_report_params['date_range'].split('~').first.to_date.strftime('%d-%m-%Y')
-      to = @kra_report_params['date_range'].split('~').last.to_date.strftime('%d-%m-%Y')
-      date_range = {from: from, to: to, key: 'custom-range'}
+      if @kra_report_params['date_range'].present?
+        from = @kra_report_params['date_range'].split('~').first.to_date.strftime('%d-%m-%Y')
+        to = @kra_report_params['date_range'].split('~').last.to_date.strftime('%d-%m-%Y')
+        date_range = {from: from, to: to, key: 'custom-range'}
+      else
+        date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
+      end
+      if @kra_report_params['category'].present?
+        terms_field = @kra_report_params['category']
+      else
+        terms_field = 'inside_sales_owner_id'
+      end
     else
+      terms_field = 'inside_sales_owner_id'
       date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
     end
     indexed_records = indexed_records.aggregations(
@@ -74,7 +84,7 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
           },
           aggs: {
               'inquiries': {
-                  'terms': {'field': 'inside_sales_owner_id', size: 500},
+                  'terms': {'field': terms_field, size: 10000},
                   aggs: {
                       sales_invoices: {
                           sum: {
@@ -135,7 +145,11 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
   end
 
   def model_klass
-    Inquiry
+    if @kra_report_params.present? && @kra_report_params['category'] == 'company_key'
+      Company
+    else
+      Inquiry
+    end
   end
 
   def index_klass

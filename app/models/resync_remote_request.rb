@@ -42,8 +42,6 @@ class ResyncRemoteRequest < ApplicationRecord
   end
 
   def error_message
-    response["raw_response"]["error"]["message"]["value"]
+    response['raw_response']['error']['message']['value']
   end
-
-
 end
