@@ -4,24 +4,24 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   # GET /ar_invoices
   # GET /ar_invoices.json
   def index
-    authorize :ar_invoice
+    authorize :ar_invoice_request
     if params[:status].present?
       base_filter = {
           base_filter_key: 'status'
       }
       if params[:status] == "pending"
-        base_filter[:base_filter_value] = ArInvoiceResuest.statuses["AR Invoice requested"]
+        base_filter[:base_filter_value] = ArInvoiceRequest.statuses["AR Invoice requested"]
       elsif params[:status] == "cancelled"
-        base_filter[:base_filter_value] = ArInvoiceResuest.statuses["Cancelled AR Invoice"]
+        base_filter[:base_filter_value] = ArInvoiceRequest.statuses["Cancelled AR Invoice"]
       elsif params[:status] == "rejected"
-        base_filter[:base_filter_value] = ArInvoiceResuest.statuses["AR Invoice Request Rejected"]
+        base_filter[:base_filter_value] = ArInvoiceRequest.statuses["AR Invoice Request Rejected"]
       elsif params[:status] == "completed"
-        base_filter[:base_filter_value] = ArInvoiceResuest.statuses["Completed AR Invoice Request"]
+        base_filter[:base_filter_value] = ArInvoiceRequest.statuses["Completed AR Invoice Request"]
       end
-      service = Services::Overseers::Finders::ArInvoiceResuests.new(params.merge(base_filter), current_overseer)
+      service = Services::Overseers::Finders::ArInvoiceRequests.new(params.merge(base_filter), current_overseer)
     else
-      @ar_invoices = ArInvoiceResuest.all
-      service = Services::Overseers::Finders::ArInvoiceResuests.new(params)
+      @ar_invoices = ArInvoiceRequest.all
+      service = Services::Overseers::Finders::ArInvoiceRequests.new(params)
     end
     service.call
     @indexed_ar_invoices = service.indexed_records
@@ -41,7 +41,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
     @ar_invoice = ArInvoiceRequest.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
     @inward_dispatches.each do |inward_dispatch|
       inward_dispatch.rows.each do |row|
-        @ar_invoice.rows.build(quantity: row.delivered_quantity, inward_dispatch_row_id: row.id, sales_order_id: @sales_order.id)
+        @ar_invoice.rows.build(quantity: row.delivered_quantity, delivered_quantity: row.delivered_quantity, quantity: row.delivered_quantity, inward_dispatch_row_id: row.id, sales_order_id: @sales_order.id )
       end
     end
     authorize @ar_invoice
@@ -55,16 +55,15 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   # POST /ar_invoices
   # POST /ar_invoices.json
   def create
-
     @ar_invoice = ArInvoiceRequest.new()
-
+    raise
     @ar_invoice.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
     inward_dispatch_ids = params[:inward_dispatch_ids].first.split(',').map(&:to_i)
     authorize @ar_invoice
     respond_to do |format|
       if @ar_invoice.save!
         if inward_dispatch_ids.present?
-          InwardDispatch.where(id: inward_dispatch_ids).update_all(ar_invoice_id: @ar_invoice.id)
+          InwardDispatch.where(id: inward_dispatch_ids).update_all(ar_invoice_request_id: @ar_invoice.id)
         end
         service = Services::Overseers::ArInvoiceRequests::Update.new(@invoice_request, current_overseer)
         service.call

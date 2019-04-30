@@ -104,16 +104,22 @@
           <h6 class="text-uppercase text-black-50 mb-1"> Products Details</h6>
           <% if @ar_invoice.rows.present? %>
             <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
+
               <div class="form-row flex-row align-items-start inward-dispatch-row">
                 <div class="col-6 col-md-3">
                   <%= row.hidden_field :inward_dispatch_row_id, label: 'Product' %>
-                  <%= row.input :inward_dispatch_row, input_html: {value: row.object.inward_dispatch_row.to_s}, disabled: row.object.inward_dispatch_row.present? && row.object.errors.blank?, label: false %>
+                  <%= row.input :inward_dispatch_row, input_html: { value: row.object.inward_dispatch_row.to_s }, disabled: row.object.inward_dispatch_row.present? && row.object.errors.blank?, label: 'Product' %>
+                </div>
+                <div class="col-6 col-md-3 d-none">
+                  <%= row.hidden_field :sales_order_id %>
+                  <%= row.input :inward_dispatch_row, input_html: { value: row.object.inward_dispatch_row.to_s }, disabled: row.object.inward_dispatch_row.present? && row.object.errors.blank?, label: 'Product' %>
                 </div>
                 <div class="col-6 col-md-3">
-                  <%= row.hidden_field :sales_order_id, label: 'Product' %>
-                  <%= row.input :inward_dispatch_row, input_html: {value: row.object.inward_dispatch_row.to_s}, disabled: row.object.inward_dispatch_row.present? && row.object.errors.blank?, label: false %>
+                  <%= row.input :quantity, input_html: { value: row.object.quantity }, disabled: row.object.inward_dispatch_row.present? && row.object.errors.blank?, label: 'Total Qty' %>
                 </div>
-                <%= row.input :quantity, input_html: {value: row.object.quantity}, disabled: row.object.inward_dispatch_row.present? && row.object.errors.blank?, label: false %>
+                <div class="col-6 col-md-3">
+                  <%= row.input :delivered_quantity, input_html: { value: row.object.quantity }, label: 'Qty To Deliver' %>
+                </div>
               </div>
             <% end %>
           <% end %>
