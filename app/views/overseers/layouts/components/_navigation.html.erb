@@ -180,11 +180,11 @@
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Payment Requests</a>
             <ul class="dropdown-menu">
-              <%= nav_dropdown_item 'Pending Payment Logistics', overseers_payment_requests_path(:owner => 'Logistics'), policy(:payment_request).edit_payment_logistics? %>
-              <%= nav_dropdown_item 'Pending Payment Accounts', overseers_payment_requests_path(:owner => 'Accounts'), policy(:payment_request).edit_payment_queue? %>
-              <div class="dropdown-divider"></div>
+              <%#= nav_dropdown_item 'Pending Payment Logistics', overseers_payment_requests_path(:owner => 'Logistics'), policy(:payment_request).edit_payment_logistics? %>
+              <%#= nav_dropdown_item 'Pending Payment Accounts', overseers_payment_requests_path(:owner => 'Accounts'), policy(:payment_request).edit_payment_queue? %>
+<!--              <div class="dropdown-divider"></div>-->
               <%= nav_dropdown_item 'All Requests', overseers_payment_requests_path, policy(:payment_request).index? %>
-              <%#= nav_dropdown_item 'Pending Payment Requests', overseers_payment_requests_path(:status => 'Pending'), policy(:payment_request).index? %>
+              <%= nav_dropdown_item 'Pending Payment Requests', overseers_payment_requests_path(:status => 'Pending'), policy(:payment_request).index? %>
               <%= nav_dropdown_item 'Completed Payment Requests', overseers_payment_requests_path(:status => 'Completed'), policy(:payment_request).index? %>
               <%= nav_dropdown_item 'Rejected Payment Requests', overseers_payment_requests_path(:status => 'Rejected'), policy(:payment_request).index? %>
             </ul>
