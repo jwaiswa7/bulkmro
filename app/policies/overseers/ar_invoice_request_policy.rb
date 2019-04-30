@@ -1,4 +1,4 @@
-class Overseers::ArInvoicePolicy < Overseers::ApplicationPolicy
+class Overseers::ArInvoiceRequestPolicy < Overseers::ApplicationPolicy
   def index?
     accounts? || admin?
   end
