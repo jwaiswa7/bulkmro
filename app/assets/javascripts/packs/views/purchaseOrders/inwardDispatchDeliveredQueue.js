@@ -44,7 +44,7 @@ let createArInvoice = () => {
 
     if (checkValues(inward_dispatches) == true) {
         let data = {ids: Object.keys(inward_dispatches), so_id: Object.values(inward_dispatches)[0]};
-        window.open(Routes.new_overseers_ar_invoice_path(data));
+        window.open(Routes.new_overseers_ar_invoice_request_path(data));
     } else {
         $.notify({
             message: 'Selected Inward Dispatches Requests should be of the same Sales Order'

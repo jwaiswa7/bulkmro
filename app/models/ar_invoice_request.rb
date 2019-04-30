@@ -1,5 +1,5 @@
 class ArInvoiceRequest < ApplicationRecord
-  COMMENTS_CLASS = 'ARInvoiceRequestComment'
+  COMMENTS_CLASS = 'ArInvoiceRequestComment'
 
   include Mixins::CanBeStamped
   include Mixins::HasComments
@@ -12,12 +12,12 @@ class ArInvoiceRequest < ApplicationRecord
   validate :presence_of_reason
 
 
-  has_many :rows, class_name: 'ArInvoiceRequestRow', inverse_of: :ar_invoice
+  has_many :rows, class_name: 'ArInvoiceRequestRow', inverse_of: :ar_invoice_request
 
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['inward_dispatch_row_id'].blank? }, allow_destroy: true
   validates_associated :rows
 
-  update_index('ar_invoices#ar_invoice') {self}
+  update_index('ar_invoice_Requests#ar_invoice_request') {self}
 
   enum status: {
       'AR Invoice requested': 10,
