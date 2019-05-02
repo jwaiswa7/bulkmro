@@ -127,6 +127,7 @@
               <%= nav_dropdown_item 'GRPO Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).show_pending_ap_invoice_queue? %>
               <%= nav_dropdown_item 'Inward Completed', pending_overseers_invoice_requests_path(:status => 'Inward Completed'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'rejected'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Cancelled AP Invoice', cancelled_overseers_invoice_requests_path(:status => 'Cancelled AP Invoice'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Cancelled GRPO', cancelled_overseers_invoice_requests_path(:status => 'Cancelled'), policy(:sales_invoice).index? %>
@@ -199,6 +200,7 @@
               <%= nav_dropdown_item 'Inward Completed', pending_overseers_invoice_requests_path(:status => 'Inward Completed'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Cancelled AP Invoice', cancelled_overseers_invoice_requests_path(:status => 'Cancelled AP Invoice'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'rejected'), policy(:sales_invoice).index? %>
               <%= nav_dropdown_item 'Cancelled GRPO', cancelled_overseers_invoice_requests_path(:status => 'Cancelled'), policy(:sales_invoice).index? %>
             </ul>
           </div>
