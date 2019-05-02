@@ -2,6 +2,11 @@ class Overseers::ArInvoiceRequestPolicy < Overseers::ApplicationPolicy
   def index?
     accounts? || admin?
   end
+
+  def new?
+    index?
+  end
+
   def edit?
     accounts? || admin? || logistics?
   end

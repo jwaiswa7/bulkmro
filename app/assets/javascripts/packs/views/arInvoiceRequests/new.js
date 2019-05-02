@@ -1,13 +1,11 @@
 
 const newAction = () => {
-    console.log('9999999999999999999')
     // original form data when form loaded
     let form_original_data = $("form").serializeArray();
 
 
     $('[name="ar_invoice_request[status]"]').unbind().bind('change', function(){
         let val = $(this).val()
-        console.log(val)
         $(".ar_invoice_request_cancellation_reason, .ar_invoice_request_rejection_reason,.ar_invoice_request_other_rejection_reason,.ar_invoice_other_cancellation_reason ").addClass('d-none')
         $(".ar_invoice_request_cancellation_reason, .ar_invoice_request_rejection_reason,.ar_invoice_request_other_rejection_reason,.ar_invoice_other_cancellation_reason ").find('input').prop('required',false)
 
@@ -57,6 +55,8 @@ const newAction = () => {
 
     });
 
+    onClickDeleteRow()
+
     // on form submit if invoice request want to cancel then open pop_up and confirm again
 
     $('.submit-form').unbind().bind('click', function (event) {
@@ -95,6 +95,10 @@ let onStatusChange = (selector) => {
     $("."+selector).find('input').prop('required',true);
 }
 
-
+let onClickDeleteRow = () =>{
+    $('.delete_row').on('click', function (event) {
+        $(event.target).closest('.simple-row').find('input[type="text"]').remove();
+    })
+}
 
 export default newAction

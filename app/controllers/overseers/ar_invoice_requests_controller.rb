@@ -20,57 +20,53 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
       end
       service = Services::Overseers::Finders::ArInvoiceRequests.new(params.merge(base_filter), current_overseer)
     else
-      @ar_invoices = ArInvoiceRequest.all
+      @ar_invoice_requests = ArInvoiceRequest.all
       service = Services::Overseers::Finders::ArInvoiceRequests.new(params)
     end
     service.call
     @indexed_ar_invoices = service.indexed_records
-    @ar_invoices = service.records.try(:reverse)
+    @ar_invoice_requests = service.records.try(:reverse)
   end
 
   # GET /ar_invoices/1
   # GET /ar_invoices/1.json
   def show
-    authorize @ar_invoice
+    authorize @ar_invoice_request
   end
 
   # GET /ar_invoices/new
   def new
-    @sales_order = SalesOrder.where(:id => params[:so_id]).last
     @inward_dispatches = InwardDispatch.where(id: params[:ids])
-    @ar_invoice = ArInvoiceRequest.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
-    @inward_dispatches.each do |inward_dispatch|
-      inward_dispatch.rows.each do |row|
-        @ar_invoice.rows.build(quantity: row.delivered_quantity, delivered_quantity: row.delivered_quantity, quantity: row.delivered_quantity, inward_dispatch_row_id: row.id, sales_order_id: @sales_order.id )
-      end
-    end
-    authorize @ar_invoice
+    service = Services::Overseers::ArInvoiceRequests::New.new(params.merge(overseer: current_overseer), @inward_dispatches)
+    @ar_invoice_request = service.call
+    authorize @ar_invoice_request
   end
 
   # GET /ar_invoices/1/edit
   def edit
-    authorize @ar_invoice
+    authorize @ar_invoice_request
   end
 
   # POST /ar_invoices
   # POST /ar_invoices.json
   def create
-    @ar_invoice = ArInvoiceRequest.new()
-    @ar_invoice.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
+    @ar_invoice_request = ArInvoiceRequest.new()
+
+    @ar_invoice_request.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
     inward_dispatch_ids = params[:inward_dispatch_ids].first.split(',').map(&:to_i)
-    authorize @ar_invoice
+    authorize @ar_invoice_request
     respond_to do |format|
-      if @ar_invoice.save!
+      if @ar_invoice_request.save!
         if inward_dispatch_ids.present?
-          InwardDispatch.where(id: inward_dispatch_ids).update_all(ar_invoice_request_id: @ar_invoice.id)
+          InwardDispatch.where(id: inward_dispatch_ids).update_all(ar_invoice_request_id: @ar_invoice_request.id)
         end
-        service = Services::Overseers::ArInvoiceRequests::Update.new(@ar_invoice, current_overseer)
+        service = Services::Overseers::ArInvoiceRequests::Update.new(@ar_invoice_request, current_overseer)
         service.call
-        format.html { redirect_to overseers_ar_invoice_request_path(@ar_invoice), notice: 'Ar invoice was successfully created.' }
-        format.json { render :show, status: :created, location: @ar_invoice }
+        format.html { redirect_to overseers_ar_invoice_request_path(@ar_invoice_request), notice: 'Ar invoice was successfully created.' }
+        format.json { render :show, status: :created, location: @ar_invoice_request }
       else
         format.html { render :new }
-        format.json { render json: @ar_invoice.errors, status: :unprocessable_entity }
+        format.json { render json: @ar_invoice_request.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -78,18 +74,18 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   # PATCH/PUT /ar_invoices/1
   # PATCH/PUT /ar_invoices/1.json
   def update
-    authorize @ar_invoice
-    @ar_invoice.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
-    @ar_invoice.update_status(@ar_invoice.status)
+    authorize @ar_invoice_request
+    @ar_invoice_request.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
+    @ar_invoice_request.update_status(@ar_invoice_request.status)
     respond_to do |format|
-      if @ar_invoice.valid?
-        service = Services::Overseers::ArInvoiceRequests::Update.new(@ar_invoice, current_overseer)
+      if @ar_invoice_request.valid?
+        service = Services::Overseers::ArInvoiceRequests::Update.new(@ar_invoice_request, current_overseer)
         service.call
-        format.html { redirect_to overseers_ar_invoice_request_path(@ar_invoice), notice: 'Ar invoice was successfully updated.' }
-        format.json { render :show, status: :ok, location: @ar_invoice }
+        format.html { redirect_to overseers_ar_invoice_request_path(@ar_invoice_request), notice: 'Ar invoice was successfully updated.' }
+        format.json { render :show, status: :ok, location: @ar_invoice_request }
       else
         format.html { render :edit }
-        format.json { render json: @ar_invoice.errors, status: :unprocessable_entity }
+        format.json { render json: @ar_invoice_request.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -97,8 +93,8 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   # DELETE /ar_invoices/1
   # DELETE /ar_invoices/1.json
   def destroy
-    authorize @ar_invoice
-    @ar_invoice.destroy
+    authorize @ar_invoice_request
+    @ar_invoice_request.destroy
     respond_to do |format|
       format.html { redirect_to ar_invoice_requests_url, notice: 'Ar invoice was successfully destroyed.' }
       format.json { head :no_content }
@@ -106,19 +102,19 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   end
 
   def cancel_ar_invoice
-    @ar_invoice.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
-    authorize @ar_invoice
-    @ar_invoice.update_status(@ar_invoice.status)
-    if @ar_invoice.valid?
-      @ar_invoice.save
+    @ar_invoice_request.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
+    authorize @ar_invoice_request
+    @ar_invoice_request.update_status(@ar_invoice_request.status)
+    if @ar_invoice_request.valid?
+      @ar_invoice_request.save
       render json: {sucess: 'Successfully updated '}, status: 200
     else
-      render json: {error: @ar_invoice.errors}, status: 500
+      render json: {error: @ar_invoice_request.errors}, status: 500
     end
   end
 
   def render_cancellation_form
-    authorize @ar_invoice
+    authorize @ar_invoice_request
     respond_to do |format|
       format.html {render partial: 'cancel_ar_invoice', :locals => {status: params[:status]}}
     end
@@ -127,7 +123,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ar_invoice_request
-      @ar_invoice = ArInvoiceRequest.find(params[:id])
+      @ar_invoice_request = ArInvoiceRequest.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -144,7 +140,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
           :other_cancellation_reason,
           :ar_invoice_number,
           :e_way,
-          rows_attributes: [ :id, :inward_dispatch_row_id, :sales_order_id, :quantity ],
+          rows_attributes: [ :id, :inward_dispatch_row_id, :sales_order_id, :quantity, :delivered_quantity, :_destroy ],
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           )
     end

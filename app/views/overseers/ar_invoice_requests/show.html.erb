@@ -2,9 +2,9 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-       AR Invoice Request for Order #<%= @ar_invoice.sales_order.order_number %>:&nbsp;<%= status_badge(@ar_invoice.status) %>
+       AR Invoice Request for Order #<%= @ar_invoice_request.sales_order.order_number %>:&nbsp;<%= status_badge(@ar_invoice_request.status) %>
       </h3>
-      <a href="<%= edit_overseers_ar_invoice_request_path(@ar_invoice) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down">
+      <a href="<%= edit_overseers_ar_invoice_request_path(@ar_invoice_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down">
         <i class="fal fa-pen mr-1"></i>Edit AR Invoice
       </a>
     </div>
@@ -18,38 +18,38 @@
         <div class="form-row">
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Inquiry </strong>
-            <%= @ar_invoice.inquiry %>
+            <%= @ar_invoice_request.inquiry %>
           </div>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Order </strong>
-            #<%= @ar_invoice.sales_order.order_number %>
+            #<%= @ar_invoice_request.sales_order.order_number %>
           </div>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Customer PO </strong>
-            <%= @ar_invoice.inquiry.customer_po_number.present? ? '#'+@ar_invoice.inquiry.customer_po_number : ' - ' %>
+            <%= @ar_invoice_request.inquiry.customer_po_number.present? ? '#'+@ar_invoice_request.inquiry.customer_po_number : ' - ' %>
           </div>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Currency </strong>
-            <%= @ar_invoice.inquiry.customer_order_date %>
+            <%= @ar_invoice_request.inquiry.customer_order_date %>
           </div>
         </div>
         <div class="form-row">
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Currency </strong>
-            <%= @ar_invoice.sales_order.currency.name %>
+            <%= @ar_invoice_request.sales_order.currency.name %>
           </div>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Payment Terms </strong>
-            <%= @ar_invoice.inquiry.payment_option %>
+            <%= @ar_invoice_request.inquiry.payment_option %>
           </div>
-          <% if @ar_invoice.ar_invoice_number.present? %>
+          <% if @ar_invoice_request.ar_invoice_number.present? %>
             <div class="col-6 col-md-3 mb-2">
               <strong class="d-block">AR Invoice #</strong>
-              <%= @ar_invoice.ar_invoice_number %>
+              <%= @ar_invoice_request.ar_invoice_number %>
             </div>
           <% end %>
-          <% if @ar_invoice.status.present? %>
-            <%= render 'overseers/invoice_requests/display_reason', :data => @ar_invoice.show_display_reason%>
+          <% if @ar_invoice_request.status.present? %>
+            <%= render 'overseers/invoice_requests/display_reason', :data => @ar_invoice_request.show_display_reason%>
           <%end %>
         </div>
       </div>
@@ -60,27 +60,27 @@
         <div class="form-row">
           <div class="col-6 col-md-6 mb-2">
             <strong class="d-block">Bulk MRO Billing Address </strong>
-            <% if @ar_invoice.inquiry.bill_from.present? %>
-              <%= @ar_invoice.inquiry.bill_from.address.name.to_s %>
-              <%= @ar_invoice.inquiry.bill_from.address.to_compact_multiline_s %><br>
-              <% if @ar_invoice.inquiry.bill_from.address.phone.present? %>
-                <em>Contact</em>: <%= @ar_invoice.inquiry.contact.full_name %> - <%= @ar_invoice.inquiry.bill_from.address.phone %><br>
+            <% if @ar_invoice_request.inquiry.bill_from.present? %>
+              <%= @ar_invoice_request.inquiry.bill_from.address.name.to_s %>
+              <%= @ar_invoice_request.inquiry.bill_from.address.to_compact_multiline_s %><br>
+              <% if @ar_invoice_request.inquiry.bill_from.address.phone.present? %>
+                <em>Contact</em>: <%= @ar_invoice_request.inquiry.contact.full_name %> - <%= @ar_invoice_request.inquiry.bill_from.address.phone %><br>
               <% end %>
-              <% if @ar_invoice.inquiry.bill_from.address.gst %>
-                <strong><em>GST Number</em></strong>: <%= @ar_invoice.inquiry.bill_from.address.gst %><br>
+              <% if @ar_invoice_request.inquiry.bill_from.address.gst %>
+                <strong><em>GST Number</em></strong>: <%= @ar_invoice_request.inquiry.bill_from.address.gst %><br>
               <% end %>
             <% end %>
           </div>
           <div class="col-6 col-md-6 mb-2">
             <strong class="d-block">Bulk MRO Shipping Address </strong>
-            <% if @ar_invoice.inquiry.ship_from.present? %>
-              <%= @ar_invoice.inquiry.ship_from.address.name.to_s %><br>
-              <%= @ar_invoice.inquiry.ship_from.address.to_compact_multiline_s %><br>
-              <% if @ar_invoice.inquiry.ship_from.address.mobile || @ar_invoice.inquiry.ship_from.address.telephone %>
-                <em>Contact</em>: <%= @ar_invoice.inquiry.ship_from.address.mobile || @ar_invoice.inquiry.ship_from.address.telephone %><br>
+            <% if @ar_invoice_request.inquiry.ship_from.present? %>
+              <%= @ar_invoice_request.inquiry.ship_from.address.name.to_s %><br>
+              <%= @ar_invoice_request.inquiry.ship_from.address.to_compact_multiline_s %><br>
+              <% if @ar_invoice_request.inquiry.ship_from.address.mobile || @ar_invoice_request.inquiry.ship_from.address.telephone %>
+                <em>Contact</em>: <%= @ar_invoice_request.inquiry.ship_from.address.mobile || @ar_invoice_request.inquiry.ship_from.address.telephone %><br>
               <% end %>
-              <% if @ar_invoice.inquiry.ship_from.address.gst %>
-                <strong><em>GST Number</em></strong>: <%= @ar_invoice.inquiry.ship_from.address.gst %><br>
+              <% if @ar_invoice_request.inquiry.ship_from.address.gst %>
+                <strong><em>GST Number</em></strong>: <%= @ar_invoice_request.inquiry.ship_from.address.gst %><br>
               <% end %>
             <% end %>
           </div>
@@ -88,24 +88,24 @@
         <div class="form-row">
           <div class="col-6 col-md-6 mb-2">
             <strong class="d-block">Customer - Billing Address</strong>
-            <%= (@ar_invoice.inquiry.company.name) %><br>
-            <%= @ar_invoice.sales_order.serialized_billing_address.to_compact_multiline_s %><br>
-            <% if @ar_invoice.inquiry.contact.phone.present? %>
-              Contact: <%= @ar_invoice.inquiry.contact.full_name %> - <%= @ar_invoice.inquiry.contact.phone %><br>
+            <%= (@ar_invoice_request.inquiry.company.name) %><br>
+            <%= @ar_invoice_request.sales_order.serialized_billing_address.to_compact_multiline_s %><br>
+            <% if @ar_invoice_request.inquiry.contact.phone.present? %>
+              Contact: <%= @ar_invoice_request.inquiry.contact.full_name %> - <%= @ar_invoice_request.inquiry.contact.phone %><br>
             <% end %>
-            <strong><em>Email</em></strong>: <%= @ar_invoice.inquiry.contact.email if @ar_invoice.inquiry.contact.email.present? %>
-            <span class="d-block"><strong><em>GST Number</em></strong>: <%= @ar_invoice.sales_order.serialized_billing_address.gst || @ar_invoice.inquiry.company.default_billing_address.gst %></span>
+            <strong><em>Email</em></strong>: <%= @ar_invoice_request.inquiry.contact.email if @ar_invoice_request.inquiry.contact.email.present? %>
+            <span class="d-block"><strong><em>GST Number</em></strong>: <%= @ar_invoice_request.sales_order.serialized_billing_address.gst || @ar_invoice_request.inquiry.company.default_billing_address.gst %></span>
           </div>
           <div class="col-6 col-md-6 mb-2">
             <strong class="d-block">Customer - Shipping Address</strong>
-            <span class="d-block"><%= (@ar_invoice.inquiry.shipping_company.name) %></span>
-            <span class="d-block"><%= @ar_invoice.sales_order.serialized_shipping_address.to_compact_multiline_s %></span>
-            <% if @ar_invoice.inquiry.shipping_contact.phone.present? %>
-                <span class="d-block"><em>Contact</em>: <%= @ar_invoice.inquiry.shipping_contact.full_name %>
-                  - <%= @ar_invoice.inquiry.shipping_contact.phone %></span>
+            <span class="d-block"><%= (@ar_invoice_request.inquiry.shipping_company.name) %></span>
+            <span class="d-block"><%= @ar_invoice_request.sales_order.serialized_shipping_address.to_compact_multiline_s %></span>
+            <% if @ar_invoice_request.inquiry.shipping_contact.phone.present? %>
+                <span class="d-block"><em>Contact</em>: <%= @ar_invoice_request.inquiry.shipping_contact.full_name %>
+                  - <%= @ar_invoice_request.inquiry.shipping_contact.phone %></span>
             <% end %>
-            <strong><em>Email</em></strong>: <%= @ar_invoice.inquiry.shipping_contact.email if @ar_invoice.inquiry.shipping_contact.email.present? %>
-            <span class="d-block"><strong><em>GST Number</em></strong>: <%= @ar_invoice.sales_order.serialized_shipping_address.gst || @ar_invoice.inquiry.company.default_shipping_address.gst %></span>
+            <strong><em>Email</em></strong>: <%= @ar_invoice_request.inquiry.shipping_contact.email if @ar_invoice_request.inquiry.shipping_contact.email.present? %>
+            <span class="d-block"><strong><em>GST Number</em></strong>: <%= @ar_invoice_request.sales_order.serialized_shipping_address.gst || @ar_invoice_request.inquiry.company.default_shipping_address.gst %></span>
           </div>
         </div>
       </div>
@@ -155,9 +155,13 @@
           </tr>
           </thead>
           <tbody>
-          <% @ar_invoice.rows.each do |row| %>
+          <% @ar_invoice_request.rows.each_with_index do |row, index| %>
             <tr>
-              <td><%= row.id %></td>
+              <td><%= index + 1 %></td>
+              <td><%= row.inward_dispatch_row.purchase_order_row.to_s %></td>
+              <td><%= row.quantity %></td>
+              <td><%= row.delivered_quantity %></td>
+              <td><%= row.inward_dispatch_row.purchase_order_row.product %></td>
             </tr>
           <% end %>
           </tbody>
@@ -170,10 +174,9 @@
         <div class="flex-fill">
           <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
         </div>
-
-        <% if @ar_invoice.comments.persisted.size > 0 %>
+        <% if @ar_invoice_request.comments.persisted.size > 0 %>
           <div class="chats">
-            <% @ar_invoice.comments.each do |comment| %>
+            <% @ar_invoice_request.comments.each do |comment| %>
               <%= format_comment(comment) %>
             <% end %>
           </div>
