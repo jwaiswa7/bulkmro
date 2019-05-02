@@ -3,8 +3,7 @@
 
   <%= simple_form_for([:overseers, @measurement_unit], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.input :name %>
-    <div class="card-body">
+
       <%= action_button(action_name, @measurement_unit) %>
-    </div>
   <% end %>
 </div>
