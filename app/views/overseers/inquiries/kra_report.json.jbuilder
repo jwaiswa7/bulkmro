@@ -2,9 +2,17 @@ json.data (@indexed_kra_reports) do |inquiry|
   json.array! [
                   [],
                   if @date_range.present?
-                    link_to(Overseer.find(inquiry['key']).to_s, filtered_path(kra_report_per_sales_owner_overseers_inquiries_path, [filter_by_value('Name', Overseer.find(inquiry['key']).to_s, inquiry['key']), filter_by_date_range('Date+of+inquiry', @date_range)]), target: '_blank')
+                    if @category.present? && @category == 'company_key'
+                      link_to(Company.find(inquiry['key']).to_s, overseers_company_path(inquiry['key']), target: '_blank')
+                    else
+                      link_to(Overseer.find(inquiry['key']).to_s, filtered_path(kra_report_per_sales_owner_overseers_inquiries_path, [filter_by_value('Name', Overseer.find(inquiry['key']).to_s, inquiry['key']), filter_by_date_range('Date+of+inquiry', @date_range)]), target: '_blank')
+                    end
                   else
-                    link_to(Overseer.find(inquiry['key']).to_s, filtered_path(kra_report_per_sales_owner_overseers_inquiries_path, [filter_by_value('Name', Overseer.find(inquiry['key']).to_s, inquiry['key'])]), target: '_blank')
+                    if @category.present? && @category == 'company_key'
+                      link_to(Company.find(inquiry['key']).to_s, overseers_company_path(inquiry['key']), target: '_blank')
+                    else
+                      link_to(Overseer.find(inquiry['key']).to_s, filtered_path(kra_report_per_sales_owner_overseers_inquiries_path, [filter_by_value('Name', Overseer.find(inquiry['key']).to_s, inquiry['key'])]), target: '_blank')
+                    end
                   end,
                   number_with_delimiter(inquiry['doc_count'], delimiter: ','),
                   number_with_delimiter(inquiry['sales_quotes']['value'].to_i, delimiter: ','),
@@ -23,7 +31,11 @@ end
 
 json.columnFilters [
                        [],
-                       Overseer.inside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+                       if @category.present? && @category == 'company_key'
+                         [{"source": autocomplete_overseers_companies_path}]
+                       else
+                         Overseer.inside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json
+                       end,
                        [],
                        [],
                        [],
@@ -38,6 +50,6 @@ json.columnFilters [
                        []
                    ]
 
-json.recordsTotal @indexed_kra_reports.length
-json.recordsFiltered @indexed_kra_reports.length
+json.recordsTotal @indexed_kra_reports.count
+json.recordsFiltered @indexed_kra_reports.total_count
 json.draw params[:draw]

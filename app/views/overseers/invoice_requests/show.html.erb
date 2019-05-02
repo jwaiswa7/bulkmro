@@ -138,109 +138,60 @@
               </h5>
               <div class="form-row">
                 <div class="col-6">
-                  <% if @invoice_request.purchase_order.try(:supplier).try(:address) %>
+                  <% if @invoice_request.purchase_order.try(:supplier).try(:addresses) %>
                     <div class="form-group">
                       <label class="form-control-label d-block">Address</label>
-                      <%= @invoice_request.purchase_order.supplier.address %>
+                      <%= @invoice_request.purchase_order.supplier.billing_address %>
                     </div>
                   <% end %>
                 </div>
                 <div class="col-6">
                   <% if @invoice_request.purchase_order.try(:supplier).try(:default_contact) %>
                     <div class="form-group">
-                      <label class="form-control-label d-block">Contact</label>
+                      <label class="form-control-label d-block">Contact </label>
                       <%= @invoice_request.purchase_order.supplier.default_contact if @invoice_request.purchase_order.supplier.default_contact.present? %>
                     </div>
                   <% end %>
                 </div>
               </div>
             <% end %>
-            <div class="form-row d-none d-md-flex">
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>Sr. No.</label>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group mb-0">
-                  <label>Product</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>Make</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>HSN</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>T. Rate</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>Quantity</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>MOU</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>UP</label>
-                </div>
-              </div>
-              <div class="col-1">
-                <div class="form-group mb-0">
-                  <label>TP</label>
-                </div>
-              </div>
-            </div>
 
-            <% @products_list.each do |k| %>
-              <div class="form-row flex-row align-items-start">
-                <div class="col-1 col-md-1">
-                  <%= (@products_list.index(k) || 0) + 1 %>
-                </div>
-
-                <div class="col-6 col-md-4">
-                  <%= k[:purchase_order_row].get_product %>
-                </div>
-
-                <div class="col-6 col-md-1">
-                  <%= k[:purchase_order_row].get_product.try(:brand).to_s %>
-                </div>
-                <div class="col-12 col-md-1">
-                  <%= k[:purchase_order_row].metadata['PopHsn'] %>
-                </div>
-                <div class="col-12 col-md-1">
-                  <%= k[:purchase_order_row].tax_rate %>
-                </div>
-                <div class="col-12 col-md-1">
-                  <%= k[:total_quantity] %>
-                </div>
-                <div class="col-12 col-md-1">
-                  <%= k[:purchase_order_row].uom %>
-                </div>
-                <div class="col-12 col-md-1">
-                  <%= format_currency(k[:purchase_order_row].unit_selling_price) %>
-                </div>
-                <div class="col-12 col-md-1">
-                  <%= format_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f) %>
-                </div>
-              </div>
-            <% end %>
+            <table class="w-100 datatable table table-bordered dt-responsive dt-responsive wrap-whitespace mt-0" style="width:100%;">
+              <thead>
+              <tr>
+                <th class="no-sort"></th>
+                <th class="no-sort">Sr. No.</th>
+                <th class="no-sort product-width-adjustment">Product</th>
+                <th class="no-sort">Make</th>
+                <th class="no-sort">HSN</th>
+                <th class="no-sort">T. Rate</th>
+                <th class="no-sort">Quantity</th>
+                <th class="no-sort">MOU</th>
+                <th class="no-sort">UP</th>
+                <th class="no-sort">TP</th>
+              </tr>
+              </thead>
+              <tbody>
+                <% @products_list.each_with_index do |k, index| %>
+                  <tr>
+                    <td></td>
+                    <td><%= index + 1 %></td>
+                    <td><%= k[:purchase_order_row].get_product %></td>
+                    <td><%= k[:purchase_order_row].get_product.try(:brand).to_s %></td>
+                    <td><%= k[:purchase_order_row].metadata['PopHsn'] %></td>
+                    <td><%= k[:purchase_order_row].tax_rate %></td>
+                    <td><%= k[:total_quantity] %></td>
+                    <td><%= k[:purchase_order_row].uom %></td>
+                    <td><%= format_currency(k[:purchase_order_row].unit_selling_price) %></td>
+                    <td><%= format_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f) %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     <% end %>
-
 
     <div class="card">
       <div class="card-body">
@@ -258,7 +209,6 @@
       </div>
     </div>
   </section>
-
 
 </div>
 

@@ -43,6 +43,12 @@ Rails.application.routes.draw do
     resources :attachments
     resources :review_questions
     resources :banks
+    resources :ifsc_codes do
+      collection do
+        get 'suggestion'
+      end
+    end
+
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'reset_index'
@@ -172,6 +178,7 @@ Rails.application.routes.draw do
         get 'non_kit_autocomplete'
         get 'service_autocomplete'
         get 'autocomplete_mpn'
+        get 'suggestion'
       end
       member do
         get 'customer_bp_catalog'
@@ -368,6 +375,8 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
         get 'export_filtered_records'
+        get 'tat_report'
+        get 'sales_owner_status_avg'
         get 'export_inquiries_tat'
         post 'create_purchase_orders_requests'
         post 'preview_stock_po_request'
@@ -375,6 +384,7 @@ Rails.application.routes.draw do
         get 'kra_report_per_sales_owner'
         get 'export_kra_report'
         get 'bulk_update'
+        get 'pipeline_report'
       end
 
       scope module: 'inquiries' do
@@ -469,6 +479,8 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'export_all'
         get 'export_filtered_records'
+        get 'company_report'
+        get 'export_company_report'
       end
       member do
         get 'render_rating_form'

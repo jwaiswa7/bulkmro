@@ -4,8 +4,13 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def pending
     invoice_requests =
         if params[:status].present?
-          @status = params[:status]
-          InvoiceRequest.where(status: params[:status])
+          if params[:status] == 'rejected'
+            @status = 'Rejected'
+            InvoiceRequest.where(status:  ['AP Invoice Request Rejected', 'GRPO Request Rejected'])
+          else
+            @status = params[:status]
+            InvoiceRequest.where(status: params[:status])
+          end
         else
           InvoiceRequest.all
         end.order(id: :desc)

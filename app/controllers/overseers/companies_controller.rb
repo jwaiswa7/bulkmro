@@ -118,6 +118,39 @@ class Overseers::CompaniesController < Overseers::BaseController
     export_service.call
   end
 
+  def company_report
+    authorize :company
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer)
+        service.call
+
+        @indexed_company_reports = service.indexed_records
+      end
+    end
+  end
+
+  def export_company_report
+    authorize :company
+    service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer, paginate: false)
+    service.call
+
+    indexed_company_reports = service.indexed_records
+
+    if params['company_report'].present?
+      date_range = params['company_report']['date_range']
+    else
+      date_range = 'Overall'
+    end
+
+    export_service = Services::Overseers::Exporters::CompanyReportsExporter.new([], current_overseer, indexed_company_reports, date_range)
+    export_service.call
+
+      redirect_to url_for(Export.company_report.not_filtered.last.report)
+  end
+
   private
     def set_company
       @company ||= Company.find(params[:id])
