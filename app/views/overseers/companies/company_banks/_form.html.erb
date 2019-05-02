@@ -19,10 +19,10 @@
     </div>
     <div class="form-row">
       <div class="col-6">
-        <%= f.input :account_number, required: true, label: "Account Number" %>
+        <%= f.input :account_number, input_html: { type: 'password', onpaste: 'return false'}, required: true, label: "Account Number" %>
       </div>
       <div class="col-6">
-        <%= f.input :account_number_confirmation, label: "Confirm Account Number" %>
+        <%= f.input :account_number_confirmation, input_html: { onpaste: 'return false', autocomplete: 'off' }, required: true, label: "Confirm Account Number" %>
       </div>
     </div>
 
