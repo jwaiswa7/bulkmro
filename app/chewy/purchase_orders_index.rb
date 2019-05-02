@@ -45,5 +45,7 @@ class PurchaseOrdersIndex < BaseIndex
     field :line_item, value: -> (record) {record.rows.count if record.rows.present? }, type: 'integer'
     field :overall_margin, value: -> (record) { record.po_request.sales_order.calculated_total_margin_percentage if record.po_request.present? && record.po_request.sales_order.present? }, type: 'integer'
     field :po_request_present, value: -> (record) { record.po_request_present? }
+    field :expected_delivery_date, value: -> (record) { record.revised_supplier_delivery_date}, type: 'date'
+    field :latest_comment, value: -> (record) { record.last_comment.present? ? record.last_comment.created_at : Date.today }, type: 'date'
   end
 end
