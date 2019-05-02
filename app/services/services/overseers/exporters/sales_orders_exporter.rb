@@ -1,5 +1,6 @@
 class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers::Exporters::BaseExporter
   def initialize(*params)
+    SprintLog.debug(params.to_json)
     super(*params)
     @model = SalesOrder
     @export_name = 'sales_orders'
