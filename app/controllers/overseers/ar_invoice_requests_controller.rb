@@ -56,7 +56,6 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   # POST /ar_invoices.json
   def create
     @ar_invoice = ArInvoiceRequest.new()
-    raise
     @ar_invoice.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
     inward_dispatch_ids = params[:inward_dispatch_ids].first.split(',').map(&:to_i)
     authorize @ar_invoice
@@ -65,7 +64,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
         if inward_dispatch_ids.present?
           InwardDispatch.where(id: inward_dispatch_ids).update_all(ar_invoice_request_id: @ar_invoice.id)
         end
-        service = Services::Overseers::ArInvoiceRequests::Update.new(@invoice_request, current_overseer)
+        service = Services::Overseers::ArInvoiceRequests::Update.new(@ar_invoice, current_overseer)
         service.call
         format.html { redirect_to overseers_ar_invoice_request_path(@ar_invoice), notice: 'Ar invoice was successfully created.' }
         format.json { render :show, status: :created, location: @ar_invoice }

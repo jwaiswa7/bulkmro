@@ -132,7 +132,8 @@
         <div class="card-alternative">
           <div class="form-row">
             <div class="col-12">
-              <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(ArInvoiceRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
+              <% status_list = f.object.allow_statuses(current_overseer) %>
+              <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(status_list[:enabled], alphabetical: false, keep_raw: true), :include_blank => false, disabled:status_list[:disabled]  %>
             </div>
             <div class="col-12 ">
               <%= f.input :cancellation_reason,as: :select, :label => "AR Cancellation Reason", :wrapper => :custom_multi_select, wrapper_html: {class: @ar_invoice.display_reason('cancellation')}, collection: enum_to_collection(ArInvoiceRequest.cancellation_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Cancellation Reason'  %>
