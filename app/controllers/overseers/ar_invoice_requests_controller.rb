@@ -140,7 +140,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
           :other_cancellation_reason,
           :ar_invoice_number,
           :e_way,
-          rows_attributes: [ :id, :inward_dispatch_row_id, :sales_order_id, :quantity, :delivered_quantity ]
+          rows_attributes: [ :id, :inward_dispatch_row_id, :sales_order_id, :quantity, :delivered_quantity, :_destroy ]
         )
     end
 end

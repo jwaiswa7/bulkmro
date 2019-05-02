@@ -51,6 +51,8 @@ const newAction = () => {
         }
 
     });
+
+    onClickDeleteRow()
 };
 
 
@@ -61,4 +63,9 @@ let onStatusChange = (selector) => {
     $("."+selector).find('input').prop('required',true);
 }
 
+let onClickDeleteRow = () =>{
+    $('.delete_row').on('click', function (event) {
+        $(event.target).closest('.simple-row').find('input[type="text"]').remove();
+    })
+}
 export default newAction
