@@ -2,7 +2,7 @@ require 'action_view'
 class InquiryStatusRecord < ApplicationRecord
   include ActionView::Helpers::DateHelper
   belongs_to :subject, polymorphic: true, required: false
-  belongs_to :parent, class_name: 'InquiryStatusRecord', foreign_key: 'parent_id'
+  belongs_to :parent, class_name: 'InquiryStatusRecord', foreign_key: 'parent_id', required: false
 
   scope :last_inquiry, -> { where(subject_type: 'Inquiry').last.subject }
   scope :not_expected_order, -> { where.not(status: 'Expected Order') }
