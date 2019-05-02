@@ -10,6 +10,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @sort_order = sort_order
     @pipeline_report_params = params[:pipeline_report]
     @kra_report_params = params[:kra_report]
+    @tat_report_params = params[:tat_report]
     @prefix = params[:prefix]
     @company_report_params = params[:company_report]
 
