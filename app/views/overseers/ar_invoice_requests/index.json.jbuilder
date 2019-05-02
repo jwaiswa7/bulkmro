@@ -1,10 +1,10 @@
 json.data (@ar_invoices) do |ar_invoice|
   json.array! [
                   [
-                      if true
+                      if policy(ar_invoice).show?
                         row_action_button(overseers_ar_invoice_request_path(ar_invoice),'fal fa-eye', 'View AR Invoice', 'info', :_blank)
                       end,
-                      if true
+                      if policy(ar_invoice).edit?
                         row_action_button(edit_overseers_ar_invoice_request_path(ar_invoice),'pencil', 'Edit AR Invoice', 'warning', :_blank)
                       end,
                       if !ar_invoice.status.downcase.include?('cancel') && policy(ar_invoice).can_cancel_or_reject?
@@ -18,8 +18,9 @@ json.data (@ar_invoices) do |ar_invoice|
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
-                      end
-                        ].join(' '),
+                      end,
+                      row_action_button(new_overseers_outward_dispatch_path(:ar_invoice_request_id => ar_invoice), 'fal fa-eye', 'View AR Invoice', 'info', :_blank)
+                  ].join(' '),
                   status_badge(ar_invoice.status),
                   ar_invoice.id,
                   ar_invoice.inquiry.inquiry_number,
