@@ -1,6 +1,7 @@
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
   include DisplayHelper
+  include Mixins::HasConvertedCalculations
   update_index('sales_invoices#sales_invoice') { self }
 
   pg_search_scope :locate, against: [:id, :invoice_number], associated_against: { company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
@@ -54,6 +55,7 @@ class SalesInvoice < ApplicationRecord
 
   scope :with_includes, -> { includes(:sales_order) }
   scope :not_cancelled, -> { where.not(status: 'Cancelled') }
+  scope :cancelled, -> { where(status: 'Cancelled') }
 
   validates_with FileValidator, attachment: :original_invoice, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :duplicate_invoice, file_size_in_megabytes: 2

@@ -154,11 +154,11 @@ module DisplayHelper
 
   def format_boolean_with_badge(status)
     (if status == 'complete'
-        '<i class="far fa-check text-success"></i>'
+       '<i class="far fa-check text-success"></i>'
      elsif status == 'partial'
-        '<i class="far fa-check text-color-dark-blue"> <span class="badge badge-color-dark-blue">Partial</span></i>'
+       '<i class="far fa-check text-color-dark-blue"> <span class="badge badge-color-dark-blue">Partial</span></i>'
      else
-        '<i class="far fa-times text-danger"></i>'
+       '<i class="far fa-times text-danger"></i>'
      end).html_safe
   end
 
@@ -218,6 +218,19 @@ module DisplayHelper
 
   def attribute_boxes(data)
     render partial: 'shared/snippets/attribute_boxes.html', locals: { data: data }
+  end
+
+  def humanize(mins)
+    [[60, :minutes], [24, :hours], [Float::INFINITY, :days]].map { |count, name|
+      if mins > 0
+        mins, n = mins.divmod(count)
+        unless n.to_i == 0
+          name = name.to_s.singularize if n == 1
+          "#{n.to_i} #{name}"
+        end
+
+      end
+    }.compact.reverse.join(' ')
   end
 
   def format_times_ago(time)

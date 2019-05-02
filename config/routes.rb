@@ -375,6 +375,8 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
         get 'export_filtered_records'
+        get 'tat_report'
+        get 'sales_owner_status_avg'
         get 'export_inquiries_tat'
         post 'create_purchase_orders_requests'
         post 'preview_stock_po_request'
@@ -382,6 +384,7 @@ Rails.application.routes.draw do
         get 'kra_report_per_sales_owner'
         get 'export_kra_report'
         get 'bulk_update'
+        get 'pipeline_report'
         get 'suggestion'
       end
 
@@ -477,6 +480,8 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'export_all'
         get 'export_filtered_records'
+        get 'company_report'
+        get 'export_company_report'
       end
       member do
         get 'render_rating_form'
