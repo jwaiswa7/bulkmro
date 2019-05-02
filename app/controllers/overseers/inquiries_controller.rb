@@ -307,14 +307,22 @@ class Overseers::InquiriesController < Overseers::BaseController
     indexed_records.each do |record|
       hash = {}
       hash['text'] = record.attributes['inquiry_number_autocomplete'] if record.attributes['inquiry_number_autocomplete'].present?
-      hash['link'] = overseers_inquiry_path(record.attributes['inquiry_number_autocomplete'])
+      hash['link'] = overseers_inquiry_path(record.attributes['id'])
       inquiries << hash
-      hash['text'] = record.attributes['inquiry_quote_autocomplete'] if record.attributes['inquiry_quote_autocomplete'].present?
+
+      hash['text'] = record.attributes['final_sales_quote']['inquiry_order_autocomplete'] if record.attributes['final_sales_quote'].present?
+      hash['link'] =  overseers_inquiry_sales_quotes_path(record.attributes['id'])
       inquiries << hash
+
       record.attributes['final_sales_orders'].each do |order|
         hash['text'] = order['inquiry_order_autocomplete'] if order['inquiry_order_autocomplete'].present?
+        hash['link'] =  overseers_inquiry_sales_orders_path(record.attributes['id'])
         inquiries << hash
       end if record.attributes['final_sales_orders'].present?
+
+      # hash['text'] = record.attributes['company']['company_autocomplete'] if record.attributes['company'].present?
+      # hash['link'] =  overseers_company_path(record.attributes['id'])
+      # inquiries << hash
     end
     render json: {inquiries: inquiries}.to_json
   end

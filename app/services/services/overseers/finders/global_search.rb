@@ -6,8 +6,7 @@ class Services::Overseers::Finders::GlobalSearch < Services::Overseers::Finders:
                               all_records
                             end
 
-    @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
-    @indexed_records = non_paginated_records if !paginate
+    @indexed_records = non_paginated_records
   end
 
   def all_records
@@ -25,8 +24,8 @@ class Services::Overseers::Finders::GlobalSearch < Services::Overseers::Finders:
       indexed_records = range_query(indexed_records)
     end
 
-    if '5670'.present?
-      indexed_records = search_as_to_type(indexed_records, '5670')
+    if @prefix.present?
+      indexed_records = search_as_to_type(indexed_records, @prefix)
     end
 
     indexed_records
@@ -54,8 +53,8 @@ class Services::Overseers::Finders::GlobalSearch < Services::Overseers::Finders:
       indexed_records = range_query(indexed_records)
     end
 
-    if '5670'.present?
-      indexed_records = search_as_to_type(indexed_records, '5670')
+    if @prefix.present?
+      indexed_records = search_as_to_type(indexed_records, @prefix)
     end
     indexed_records
   end
@@ -63,7 +62,7 @@ class Services::Overseers::Finders::GlobalSearch < Services::Overseers::Finders:
   def search_as_to_type(indexed_records, prefix)
     indexed_records = indexed_records.query(
         "match": {
-            "inquiry_number_autocomplete.autocomplete": '5670'
+            "inquiry_number_autocomplete.autocomplete": @prefix
         }
     )
     indexed_records

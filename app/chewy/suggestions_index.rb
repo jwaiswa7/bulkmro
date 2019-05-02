@@ -6,11 +6,11 @@ class SuggestionsIndex < BaseIndex
     field :inquiry_number_autocomplete, type: 'text',value: -> (record) { record.inquiry_number.to_s } do
       field :autocomplete, type: 'text', analyzer: 'autocomplete'
     end
-    field :inquiry_quote_autocomplete, type: 'text', value: -> (record) {[record.inquiry_number, (' > sales_quote > ' if record.final_sales_quote.present?),(record.final_sales_quote.id if record.final_sales_quote.present?)].join(' ')} do
-      field :keywordstring, type: 'text', analyzer: 'keyword_analyzer'
-      field :edgengram, type: 'text', analyzer: 'edge_ngram_analyzer', search_analyzer: 'edge_ngram_search_analyzer'
-      field :completion, type: 'completion'
-      field :autocomplete, type: 'text', analyzer: 'autocomplete'
+
+    field :final_sales_quote do
+      field :inquiry_order_autocomplete, type: 'text',value: -> (record) {[record.inquiry.inquiry_number, ' > sales_quote >',record.id].join(' ')} do
+        field :autocomplete, type: 'text', analyzer: 'autocomplete'
+      end
     end
 
     field :final_sales_orders do
@@ -19,5 +19,11 @@ class SuggestionsIndex < BaseIndex
       end
     end
 
+    field :company do
+      field :id, type: 'integer'
+      field :company_autocomplete, type: 'text', value: -> (record) {['company > ', record.id].join(' ')} do
+        field :autocomplete, type: 'text', analyzer: 'autocomplete'
+      end
+    end
   end
 end
