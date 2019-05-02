@@ -1,6 +1,6 @@
 class IfscCodesIndex < BaseIndex
-  define_type IfscCode.all do
-    default_import_options batch_size: 2000, bulk_size: 10.megabytes, refresh: false
+  define_type IfscCode.with_includes do
+    default_import_options batch_size: 5000, bulk_size: 10.megabytes, refresh: false
     field :id
     field :ifsc_code, analyzer: 'sku_substring'
     field :ifsc_complete, type: 'text', value: -> (record) {[record.ifsc_code, record.branch].join(' ')} do
