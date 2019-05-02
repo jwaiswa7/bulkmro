@@ -23,7 +23,6 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
   end
 
   def create
-    raise
     @inward_dispatch = @purchase_order.inward_dispatches.new()
     @inward_dispatch.assign_attributes(inward_dispatch_params.merge(overseer: current_overseer))
     authorize @inward_dispatch
