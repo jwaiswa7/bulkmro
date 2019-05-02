@@ -8,7 +8,7 @@ class Overseers::ArInvoiceRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    accounts? || admin?
+    accounts? || admin? || logistics?
   end
   def render_cancellation_form?
     admin? || accounts?

@@ -59,6 +59,21 @@ class ArInvoiceRequest < ApplicationRecord
     end
   end
 
+  def allow_statuses(overseer)
+    if overseer.accounts?
+      statuses = ArInvoiceRequest.statuses
+      return {enabled: statuses, disabled: []}
+
+    elsif overseer.logistics?
+      if self.status == 'AR Invoice Request Rejected'
+        statuses =  ArInvoiceRequest.statuses.slice('AR Invoice requested')
+      end
+      return {enabled: ArInvoiceRequest.statuses, disabled: ArInvoiceRequest.statuses.except('AR Invoice requested').keys}
+    else
+      return {enabled: ArInvoiceRequest.statuses, disabled: []}
+    end
+  end
+
   def display_reason(type = nil)
     # If status is cancelled then also all rejection as well as other cacellation display on first load of form to avoid that ui helper written
     case type
