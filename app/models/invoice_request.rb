@@ -178,7 +178,13 @@ class InvoiceRequest < ApplicationRecord
       end
       return {enabled: statuses, disabled: []}
     elsif overseer.logistics?
-      return {enabled: InvoiceRequest.statuses, disabled: InvoiceRequest.statuses.except('In stock').keys}
+      if self.status == 'GRPO Request Rejected'
+        return {enabled: InvoiceRequest.statuses, disabled: InvoiceRequest.statuses.except('In stock', 'GRPO Pending').keys}
+      elsif self.status == 'AP Invoice Request Rejected'
+        return {enabled: InvoiceRequest.statuses, disabled: InvoiceRequest.statuses.except('In stock', 'Pending AP Invoice').keys}
+      else
+        return {enabled: InvoiceRequest.statuses, disabled: InvoiceRequest.statuses.except('In stock').keys}
+      end
     else
       return {enabled: InvoiceRequest.statuses, disabled: InvoiceRequest.statuses.keys}
     end
