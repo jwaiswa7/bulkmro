@@ -2,7 +2,7 @@
 const newAccountsConfirmation = () => {
     $('.account-approval').prop('disabled', true);
 
-    $('input[type=checkbox]').click(function (f) {
+    $('.new_accounts_confirmation input[type=checkbox]').click(function (f) {
         checkCheckboxStatus();
         let target = f.currentTarget.id;
         if (f.currentTarget.checked == true) {
@@ -13,25 +13,17 @@ const newAccountsConfirmation = () => {
     });
 
     $('.account-rejection').click(function () {
-        $('input[type=checkbox]').removeAttr('required')
+        $('input[type=checkbox]').removeAttr('required');
     });
-
-    let y = () => {
-
-    };
-
 };
 
 let checkCheckboxStatus = () => {
     if ($('.new_accounts_confirmation input[type="checkbox"]').not(':checked').length == 0) {
         $('.account-approval').prop('disabled', false);
-        $('.account-rejection').click();
+        $('#sales_order_custom_fields_message').removeAttr('required')
     }else{
         $('.account-approval').prop('disabled', true);
-    }
-
-    if ($('.new_accounts_confirmation input[type="checkbox"]').not(':checked').length == 1) {
-        $('.account-rejection').click();
+        $('#sales_order_custom_fields_message').attr('required', 'required')
     }
 };
 
