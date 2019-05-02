@@ -10,12 +10,12 @@ class ArInvoiceRequest < ApplicationRecord
   has_many :inward_dispatches
   has_many :material_dispatches
   validate :presence_of_reason
-
+  
 
   has_many :rows, class_name: 'ArInvoiceRequestRow', inverse_of: :ar_invoice_request
 
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['inward_dispatch_row_id'].blank? }, allow_destroy: true
-  validates_associated :rows
+  validates_associated :rows, dependent: :destroy
 
   update_index('ar_invoice_Requests#ar_invoice_request') {self}
 
