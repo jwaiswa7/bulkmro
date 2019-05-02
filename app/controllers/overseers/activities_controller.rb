@@ -123,7 +123,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     service = Services::Overseers::Finders::Activities.new(params, current_overseer, paginate: false)
     service.call
 
-    export_service = Services::Overseers::Exporters::ActivitiesExporter.new(nil, current_overseer, service.records.pluck(:id))
+    export_service = Services::Overseers::Exporters::ActivitiesExporter.new(nil, current_overseer, service.records)
     export_service.call
   end
 

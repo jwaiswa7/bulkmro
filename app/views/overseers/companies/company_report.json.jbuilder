@@ -3,7 +3,7 @@ json.data (@indexed_company_reports) do |inquiry|
                   [],
                   link_to(inquiry.attributes['name'], overseers_company_path(inquiry.attributes['company_key']), target: '_blank'),
                   link_to(inquiry.attributes['account'], overseers_account_path(inquiry.attributes['account_id']), target: '_blank'),
-                  link_to(number_with_delimiter(inquiry.attributes['live_inquiries'].to_i, delimiter: ','), filtered_path(overseers_inquiries_path, [filter_by_value('Company', inquiry.attributes['name'], inquiry.attributes['company_key'])]), target: '_blank'),
+                  link_to(number_with_delimiter(inquiry.attributes['inquiries_size'].to_i, delimiter: ','), filtered_path(overseers_inquiries_path, [filter_by_value('Company', inquiry.attributes['name'], inquiry.attributes['company_key'])]), target: '_blank'),
                   number_with_delimiter(inquiry.attributes['sales_quote_count'].to_i, delimiter: ','),
                   format_currency(inquiry.attributes['final_sales_quotes'].present? ? inquiry.attributes['final_sales_quotes'].map {|f| f['calculated_total'].to_f}.sum : 0),
                   link_to(number_with_delimiter(inquiry.attributes['expected_order'].present? ? inquiry.attributes['expected_order'].count : 0, delimiter: ','), filtered_path(overseers_inquiries_path, [filter_by_value('Company', inquiry.attributes['name'], inquiry.attributes['company_key']), filter_by_value('Status', 'Expected Order', 7)]), target: '_blank'),
