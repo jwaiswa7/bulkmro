@@ -65,6 +65,8 @@ import checkout from "./checkout/init";
 
 import taxCodes from "./taxCodes/init"
 
+import companyBanks from "./companyBanks/init"
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -90,6 +92,8 @@ let loader = {
     companyReviews: companyReviews,
     documentCreations: documentCreations,
     checkout: checkout,
+    taxCodes: taxCodes,
+    companyBanks: companyBanks
     taxCodes: taxCodes,
     arInvoiceRequests: arInvoiceRequests
 };

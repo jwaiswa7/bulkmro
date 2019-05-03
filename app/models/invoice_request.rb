@@ -111,7 +111,7 @@ class InvoiceRequest < ApplicationRecord
       title = status.include?('GRPO') ? 'GRPO' : "#{title_without_pending}"
     elsif (status.include? 'Completed AR Invoice') || (status.include? 'Cancelled AR Invoice')
       title = status.gsub(status, 'AR Invoice')
-    elsif (status.include? 'Cancelled AP Invoice')
+    elsif status.include? 'Cancelled AP Invoice'
       title = status.gsub(status, 'AP Invoice')
     else
       title = 'GRPO'
@@ -162,21 +162,27 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def allow_statuses(overseer)
+    statuses = InvoiceRequest.statuses
+    disabled_statuses = InvoiceRequest.statuses.keys
     if overseer.accounts? || overseer.admin?
-      statuses = InvoiceRequest.statuses
       if self.status == 'GRPO Pending'
         statuses =  InvoiceRequest.statuses.except('Cancelled AP Invoice', 'Cancelled AR Invoice', 'Cancelled', 'AP Invoice Request Rejected')
       elsif self.status == 'Pending AP Invoice'
         statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AR Invoice', 'Cancelled', 'GRPO Request Rejected')
       elsif self.status == 'Pending AR Invoice'
-        statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AP Invoice', 'Cancelled','AP Invoice Request Rejected','GRPO Request Rejected')
+        statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AP Invoice', 'Cancelled', 'AP Invoice Request Rejected', 'GRPO Request Rejected')
       end
-      return {enabled: statuses, disabled: []}
+      disabled_statuses = []
     elsif overseer.logistics?
-      return {enabled: InvoiceRequest.statuses, disabled: InvoiceRequest.statuses.except('In stock').keys}
-    else
-      return {enabled: InvoiceRequest.statuses, disabled: InvoiceRequest.statuses.keys}
+      if self.status == 'GRPO Request Rejected'
+        disabled_statuses =  InvoiceRequest.statuses.except('In stock', 'GRPO Pending').keys
+      elsif self.status == 'AP Invoice Request Rejected'
+        disabled_statuses =  InvoiceRequest.statuses.except('In stock', 'Pending AP Invoice').keys
+      else
+        disabled_statuses =  InvoiceRequest.statuses.except('In stock').keys
+      end
     end
+    {enabled: statuses, disabled: disabled_statuses}
   end
 
   def to_s

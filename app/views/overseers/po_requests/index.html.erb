@@ -42,26 +42,16 @@
 <% %>
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
-  <th class="no-sort desktop text-right" data-name="po_request_no">PO Request No.</th>
-  <th class="no-sort desktop text-right" data-name="status">Status</th>
-  <th class="no-sort desktop" data-name="inquiry">Inquiry</th>
-  <% if action_name == 'index' || action_name == "Completed" %>
-    <th class="no-sort all text-right" data-name="po_number">PO Number</th>
-  <% else %>
-    <th class="no-sort all text-right" data-name="order">Order</th>
-  <% end %>
-  <th class="no-sort all" data-name="sku" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
+  <th class="no-sort desktop">Entity Details</th>
   <th class="no-sort all" data-name="supplier">Supplier</th>
-  <th class="no-sort all text-right" data-name="cp">Buying Price</th>
-  <th class="no-sort all text-right" data-name="sp">Selling Price</th>
-  <th class="no-sort all text-right" data-name="po_margin">PO Margin %</th>
-  <th class="no-sort all text-right" data-name="overall_margin">Overall Margin %</th>
-  <th class="no-sort all text-right">Customer Committed Delivery Date</th>
-  <th class="no-sort all text-right">Supplier Committed Delivery Date</th>
-  <th class="sort desktop text-right" data-name="created_at">Requested At</th>
-  <th class="no-sort desktop text-right" data-name="updated_at">Updated At</th>
-  <th class="no-sort desktop">Email Status</th>
+  <th class="no-sort all text-right">Committed Delivery Date</th>
+  <th class="no-sort all">Price Details</th>
+  <th class="no-sort all" >Margin %</th>
+  <th class="no-sort desktop">Statuses</th>
   <th class="no-sort desktop">Latest Comment</th>
+  <th class="no-sort all" data-name="sku" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
+  <th class="sort desktop" data-name="created_at">Requested At</th>
+  <th class="no-sort desktop text-right" data-name="updated_at">Updated At</th>
 <% end %>
 
 <div class="col-lg-12">

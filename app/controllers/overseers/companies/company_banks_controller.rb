@@ -35,7 +35,11 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
 
   def create
     @company = Company.find(params[:company_id])
-    @company_bank = @company.company_banks.build(company_bank_params)
+    ifsc_code_number = company_bank_params['ifsc_code_number'].split().first if company_bank_params['ifsc_code_number'].present?
+    ifsc = IfscCode.find(company_bank_params['ifsc_code_id'])
+    @company_bank = @company.company_banks.build(company_bank_params.except('ifsc_code_id', 'ifsc_code_number'))
+    @company_bank.ifsc_code = ifsc
+    @company_bank.ifsc_code_number = ifsc_code_number
     authorize @company_bank
     if @company_bank.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@company_bank, action_name)
@@ -49,7 +53,11 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
   end
 
   def update
-    @company_bank.assign_attributes(company_bank_params)
+    ifsc_code_number = company_bank_params['ifsc_code_number'].split().first if company_bank_params['ifsc_code_number'].present?
+    ifsc = IfscCode.find(company_bank_params['ifsc_code_id'])
+    @company_bank.assign_attributes(company_bank_params.except('ifsc_code_id', 'ifsc_code_number'))
+    @company_bank.ifsc_code = ifsc
+    @company_bank.ifsc_code_number = ifsc_code_number
     authorize @company_bank
 
     if @company_bank.save_and_sync
@@ -78,7 +86,8 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
           :beneficiary_mobile,
           :mandate_id,
           :account_number_confirmation,
-          :ifsc_code,
+          :ifsc_code_number,
+          :ifsc_code_id,
           attachments: []
       )
     end

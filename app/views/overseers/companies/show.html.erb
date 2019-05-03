@@ -602,7 +602,7 @@
           <% content_for :heading_buttons, flush: true do %>
             <a href="#"></a>
           <% end %>
-          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'online payment' %>
+          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'quotes' %>
         </div>
         <div class="tab-pane fade" id="orders" role="tabpanel">
           <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_orders_path(@company) %>

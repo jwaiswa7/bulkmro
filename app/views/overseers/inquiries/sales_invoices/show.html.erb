@@ -70,6 +70,8 @@
               <% if @inquiry.bill_from.present? %>
                 <%= @inquiry.bill_from.address.name.to_s %><br>
                 <%= @inquiry.bill_from.address.to_compact_multiline_s %><br>
+                <%else %>
+                  ''
               <% end %>
               <% if @inquiry.bill_from.address.phone.present? %>
                 <em>Contact</em>: <%= @inquiry.contact.full_name %> - <%= @inquiry.bill_from.address.phone %><br>
