@@ -19,7 +19,9 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       end,
-                      row_action_button(new_overseers_outward_dispatch_path(:ar_invoice_request_id => ar_invoice), 'fal fa-plus', 'View AR Invoice', 'info', :_blank)
+                      if  policy(ar_invoice).can_create_outward_dispatch?
+                        row_action_button(new_overseers_outward_dispatch_path(:ar_invoice_request_id => ar_invoice), 'fal fa-plus', 'Add outward dispatch', 'info', :_blank)
+                      end
                   ].join(' '),
                   status_badge(ar_invoice.status),
                   ar_invoice.id,

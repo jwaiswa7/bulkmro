@@ -22,4 +22,8 @@ class Overseers::ArInvoiceRequestPolicy < Overseers::ApplicationPolicy
     admin? || accounts?
   end
 
+  def can_create_outward_dispatch?
+    (admin? || logistics?) && (record.status == 'Completed AR Invoice Request')
+  end
+
 end
