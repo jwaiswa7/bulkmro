@@ -26,7 +26,16 @@ const createOptions = (classname) => {
             }
         },
 
-
+        list: {
+            maxNumberOfElements: 15,
+            match: {
+                enabled: true
+            },
+            sort: {
+                enabled: true
+            }
+        },
+        theme: "solid"
     };
     return options
 }

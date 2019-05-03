@@ -61,9 +61,11 @@ class Services::Overseers::Finders::GlobalSearch < Services::Overseers::Finders:
 
   def search_as_to_type(indexed_records, prefix)
     indexed_records = indexed_records.query(
-        "match": {
-            "inquiry_number_autocomplete.autocomplete": @prefix
-        }
+            multi_match:{
+                query: prefix,
+                fields: ["inquiry_number_autocomplete.autocomplete", "products.product_autocomplete.autocomplete", "company.company_autocomplete.autocomplete"],
+                type: "best_fields"
+            }
     )
     indexed_records
   end
