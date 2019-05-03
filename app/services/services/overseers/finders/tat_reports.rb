@@ -33,7 +33,7 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
       multi_match: {
           query: query,
           operator: 'and',
-          fields: %w[inquiry_number_string, inside_sales_owner],
+          fields: %w[inquiry_number_string inside_sales_owner],
           minimum_should_match: '100%'
       }
     )
