@@ -51,6 +51,8 @@ class InquiryStatusRecord < ApplicationRecord
       'SAP Rejected': 24
   }, _prefix: true
 
+  after_create :save_inquiry_mapping_tat_record
+
   def color
     if self.subject.present?
       if self.subject_type == 'SalesOrder'
@@ -75,6 +77,10 @@ class InquiryStatusRecord < ApplicationRecord
 
   def tat
     previous_status_record.present? ? (((self.created_at.to_time.to_i - previous_status_record.created_at.to_time.to_i) / 60.0).ceil.abs) : '-'
+  end
+
+  def save_inquiry_mapping_tat_record
+    InquiryMappingTat.save_record(self.inquiry, self.subject)
   end
 
   belongs_to :inquiry
