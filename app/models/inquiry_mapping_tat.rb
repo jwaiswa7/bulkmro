@@ -13,14 +13,14 @@ class InquiryMappingTat < ApplicationRecord
 
   def self.save_record(inquiry, subject)
     if subject.class.name == 'SalesOrder'
-      record =  InquiryMappingTat.where(inquiry_id: inquiry.id, sales_quote_id: subject.sales_quote.id, sales_order_id: nil).first
+      record = InquiryMappingTat.where(inquiry_id: inquiry.id, sales_quote_id: subject.sales_quote.id, sales_order_id: nil).first
       if record.present?
         record.update_attributes(sales_order_id: subject.id)
       else
         InquiryMappingTat.where(inquiry_id: inquiry.id, sales_order_id: subject.id, sales_quote_id: subject.sales_quote.id, inquiry_created_at: inquiry.created_at).create
       end
     elsif subject.class.name == 'SalesQuote'
-      record =  InquiryMappingTat.where(inquiry_id: inquiry.id, sales_quote_id: nil).first
+      record = InquiryMappingTat.where(inquiry_id: inquiry.id, sales_quote_id: nil).first
       if record.present?
         record.update_attributes(sales_quote_id: subject.id)
       else
