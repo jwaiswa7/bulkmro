@@ -314,7 +314,7 @@ class Inquiry < ApplicationRecord
   end
 
   def can_be_managed?(overseer)
-    overseer.manager? || overseer.self_and_descendant_ids.include?(self.inside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.outside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.procurement_operations) || overseer.self_and_descendant_ids.include?(self.created_by_id) || false
+    overseer.manager? || overseer.self_and_descendant_ids.include?(self.inside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.procurement_operations_id) || overseer.self_and_descendant_ids.include?(self.outside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.procurement_operations) || overseer.self_and_descendant_ids.include?(self.created_by_id) || false
   end
 
   def last_sr_no
