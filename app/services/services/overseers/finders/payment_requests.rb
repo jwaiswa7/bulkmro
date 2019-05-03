@@ -12,7 +12,10 @@ class Services::Overseers::Finders::PaymentRequests < Services::Overseers::Finde
 
     if @status.present?
       status_array = []
-      if @status == 'Completed'
+      if @status == 'Pending'
+        statuses = ['Payment Pending', 'Partial Payment Pending']
+        status_array = statuses.map { |status| PaymentRequest.statuses[status]}
+      elsif @status == 'Completed'
         statuses = ['Payment Made', 'Partial Payment Made']
         status_array = statuses.map { |status| PaymentRequest.statuses[status]}
       elsif @status == 'Rejected'
@@ -40,7 +43,10 @@ class Services::Overseers::Finders::PaymentRequests < Services::Overseers::Finde
 
     if @status.present?
       status_array = []
-      if @status == 'Completed'
+      if @status == 'Pending'
+        statuses = ['Payment Pending', 'Partial Payment Pending']
+        status_array = statuses.map { |status| PaymentRequest.statuses[status]}
+      elsif @status == 'Completed'
         statuses = ['Payment Made', 'Partial Payment Made']
         status_array = statuses.map { |status| PaymentRequest.statuses[status]}
       elsif @status == 'Rejected'
