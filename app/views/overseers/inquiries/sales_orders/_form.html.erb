@@ -3,36 +3,37 @@
     <%= simple_form_for([:overseers, @inquiry, @sales_order], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= f.hidden_field :parent_id %>
       <%= f.hidden_field :sales_quote_id %>
-
       <%= render 'shared/snippets/form_errors', f: f %>
 
       <div class="card">
-        <div class="card-header d-md-flex d-block flex-row">
-          <div class="flex-fill">
-            <strong>Total Selling Price (Excl. tax)</strong><br>
-            <span><%= format_currency(f.object.calculated_total) %></span>
-          </div>
-          <div class="flex-fill mt-2 mt-md-0">
-            <strong>Total Selling Price (Incl. tax)</strong><br>
-            <span><%= format_currency(f.object.calculated_total_with_tax) %></span>
-          </div>
-          <div class="flex-fill mt-2 mt-md-0">
-            <strong>Total Tax</strong><br>
-            <span><%= format_currency(f.object.calculated_total_tax) %></span>
-          </div>
-          <div class="flex-fill mt-2 mt-md-0">
-            <strong>Total Margin</strong><br>
-            <span><%= format_currency(f.object.calculated_total_margin) %></span>
+        <div class="card-header">
+          <div class="form-row">
+            <div class="col-8 col-md-3">
+              <strong>Total Selling Price (Excl. tax)</strong><br>
+              <span data-v-html="calculated_total"><%= f.object.converted_total %></span>
+            </div>
+            <div class="col-4 col-md-3">
+              <strong>Total Tax</strong><br>
+              <span data-v-html="calculated_total_tax"><%= f.object.converted_total_tax %></span>
+            </div>
+            <div class="col-8 col-md-3 mt-2 mt-md-0">
+              <strong>Total Selling Price (Incl. tax)</strong><br>
+              <span data-v-html="calculated_total_with_tax"><%= f.object.converted_total_with_tax %></span>
+            </div>
+            <div class="col-4 col-md-3 mt-2 mt-md-0">
+              <strong>Total Margin</strong><br>
+              <span data-v-html="calculated_total_margin"><%= f.object.converted_total_margin %></span>
+            </div>
           </div>
         </div>
 
         <div class="card-body">
-          <div class="row">
+          <div class="form-row">
             <div class="col-md-6">
               <%= f.input :currency, disabled: true %>
             </div>
             <div class="col-md-6">
-              <%= f.input :conversion_rate, disabled: true %>
+              <%= f.input :conversion_rate, disabled: true, input_html: {"data-v-model": "", } %>
             </div>
           </div>
         </div>
@@ -43,59 +44,60 @@
         <%= row.hidden_field :id %>
         <%= row.hidden_field :sales_quote_row_id %>
 
-        <div class="card mt-3 option-wrapper">
+        <div class="card mt-3 option-wrapper " data-index="<%= row.index %>">
           <div class="card-body">
-            <h5 class="mb-1"></h5>
-            <h6 class="text-uppercase">
-              <strong><%= row.object.sales_quote_row.supplier.name %></strong>
-              <p class="lead text-black-50 text-small d-block mt-1">#<%= row.object.sales_quote_row.sr_no %></p>
+            <%= link_to_remove_association row, {class: 'float-right btn btn-danger', wrapper_class: 'option-wrapper', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+              Remove
+            <% end %>
+            <h6 class="text-uppercase mb-0">
+              <span class="lead text-black-50 text-small mt-1 mr-1">#<%= row.object.sales_quote_row.sr_no %></span>
+              <strong><%= row.object.sales_quote_row.product.sku %> - <%= row.object.sales_quote_row.inquiry_product.bp_catalog_name? ? row.object.sales_quote_row.inquiry_product.bp_catalog_name : row.object.sales_quote_row.inquiry_product.product.name %> <% if policy(row.object.sales_quote_row.inquiry_product.product).sku_purchase_history? %>
+                  <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(row.object.sales_quote_row.inquiry_product.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a><% end %>
+              </strong>
+              <%= row.object.sales_quote_row.inquiry_product.bp_catalog_sku? ? '(' + row.object.sales_quote_row.inquiry_product.bp_catalog_sku + ')' : '' %>
+              <span class="lead text-black-50 text-small mt-1 mr-1 d-block"><%= row.object.sales_quote_row.product.brand %> <%= row.object.sales_quote_row.product.mpn? ? '(' + row.object.sales_quote_row.product.mpn + ')' : '' %></span>
             </h6>
             <hr>
-            <h6 class="text-uppercase mb-0">
-              <%= row.object.sales_quote_row.product.name %>
-            </h6>
-
             <div class="form-row my-2">
               <div class="col-md-3">
                 <strong>Unit Selling Price</strong><br>
-                <span><%= row.object.unit_selling_price %></span>
+                <span data-bind-html="unit_selling_price"><%= row.object.converted_unit_selling_price %></span>
+
               </div>
-              <div class="col-md-3">
-                <strong>Unit Selling Price (in $)</strong><br>
-                <span><%= row.object.converted_unit_selling_price %></span>
-              </div>
-              <div class="col-md-3">
+
+              <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Unit Cost with Freight</strong><br>
-                <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+                <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= row.object.converted_unit_cost_price_with_unit_freight_cost %></span>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Total Selling Price</strong><br>
-                <span><%= row.object.total_selling_price %></span>
+                <span data-bind-html="total_selling_price"><%= row.object.converted_total_selling_price %></span>
               </div>
             </div>
             <div class="form-row my-2">
               <div class="col-md-3">
                 <strong>Total Selling Price with Tax</strong><br>
-                <span><%= row.object.total_selling_price_with_tax %></span>
+                <span data-bind-html="total_selling_price_with_tax"><%= row.object.converted_total_selling_price_with_tax %></span>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Margin Percentage</strong><br>
-                <span><%= row.object.margin_percentage %></span>
+                <span data-bind-html="margin_percentage"><%= row.object.margin_percentage %></span>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Tax Code</strong><br>
-                <span><%= row.object.tax_code %> <%= upcase(row.object.hsn_or_sac) %></span>
+                <span><%= row.object.best_tax_code %> <%= upcase(row.object.hsn_or_sac) %></span>
+                <%= row.hidden_field :tax_percentage, value: (row.object.sales_quote_row.applicable_tax_percentage * 100), "data-bind": "", disabled: true %>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Taxation</strong><br>
                 <span><%= row.object.taxation.to_s %></span>
               </div>
             </div>
-            <div class="d-flex flex-row justify-content-between">
-              <%= row.input :quantity %>
-              <%= link_to_remove_association row, {class: 'dynamic btn btn-danger align-self-center', wrapper_class: 'option-wrapper'} do %>
-                Remove
-              <% end %>
+
+            <div class="form-row">
+              <div class="col-12 col-md-1">
+                <%= row.input :quantity, input_html: {"data-bind": ""} %>
+              </div>
             </div>
           </div>
         </div>
@@ -103,34 +105,36 @@
 
 
       <div class="card mt-3">
-        <div class="card-header d-block d-md-flex flex-row">
-          <div class="flex-fill">
-            <strong>Total Selling Price (Excl. tax)</strong><br>
-            <span><%= format_currency(f.object.calculated_total) %></span>
-          </div>
-          <div class="flex-fill mt-2 mt-md-0">
-            <strong>Total Selling Price (Incl. tax)</strong><br>
-            <span><%= format_currency(f.object.calculated_total_with_tax) %></span>
-          </div>
-          <div class="flex-fill mt-2 mt-md-0">
-            <strong>Total Tax</strong><br>
-            <span><%= format_currency(f.object.calculated_total_tax) %></span>
-          </div>
-          <div class="flex-fill mt-2 mt-md-0">
-            <strong>Total Margin</strong><br>
-            <span><%= format_currency(f.object.calculated_total_margin) %></span>
+        <div class="card-header">
+          <div class="form-row">
+            <div class="col-8 col-md-3">
+              <strong>Total Selling Price (Excl. tax)</strong><br>
+              <span data-v-html="calculated_total"><%= f.object.calculated_total %></span>
+            </div>
+            <div class="col-4 col-md-3">
+              <strong>Total Tax</strong><br>
+              <span data-v-html="calculated_total_tax"><%= f.object.calculated_total_tax %></span>
+            </div>
+            <div class="col-8 col-md-3 mt-2 mt-md-0">
+              <strong>Total Selling Price (Incl. tax)</strong><br>
+              <span data-v-html="calculated_total_with_tax"><%= f.object.calculated_total_with_tax %></span>
+            </div>
+            <div class="col-4 col-md-3 mt-2 mt-md-0">
+              <strong>Total Margin</strong><br>
+              <span data-v-html="calculated_total_margin"><%= f.object.calculated_total_margin %></span>
+            </div>
           </div>
         </div>
         <div class="card-body">
           <div class="form-row">
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block") do %>
                 <i class="fal fa-pen mr-1"></i> Save as Draft
               <% end %>
             </div>
-            <div class="col-6">
+            <div class="col-12 col-md-6 mt-2 mt-md-0">
               <%= button_tag(type: "submit", name: "save_and_confirm", class: "btn btn-success btn-block") do %>
-                <i class="fal fa-paper-plane mr-1"></i> Save and Confirm
+                <i class="far fa-check mr-1"></i> Save and Confirm
               <% end %>
             </div>
           </div>

@@ -1,3 +1,4 @@
+<%= provide :container_fluid, true %>
 <% content_for :heading_byline do %>
   This will <em>'<%= submit_text(@inquiry).downcase %>'</em> and log it under
   <strong><%= current_overseer.full_name %></strong>.
@@ -9,125 +10,135 @@
 
       <%= render 'shared/snippets/form_errors', f: f %>
 
-      <%= f.simple_fields_for :rows do |row| %>
+      <%= f.simple_fields_for :rows, f.object.rows.reverse do |row| %>
         <% next if (row.object.inquiry_product.present? && row.object.inquiry_product.persisted?) || row.object.marked_for_destruction? %>
-        <div class="card option-wrapper mb-3 text-right text-md-left">
+        <div class="card option-wrapper mb-3 text-right text-md-left <%= "border-danger rim rim-left" if row.object.errors.any? %>">
+          <div class="card-header text-left">
+            <span class="text-muted">
+              #<%= row.object.inquiry_product.sr_no %>
+            </span>
+          </div>
           <div class="card-body">
             <%= row.hidden_field :id %>
 
             <%= row.simple_fields_for :inquiry_product do |inquiry_product, index| %>
-              <div class="nested"> <!-- TODO: Drop dependence on the nested class -->
+              <div class="nested "> <!-- TODO: Drop dependence on the nested class -->
                 <%= inquiry_product.hidden_field :id %>
                 <%= inquiry_product.hidden_field :inquiry_id %>
                 <%= inquiry_product.hidden_field :quantity %>
-
                 <%= inquiry_product.hidden_field :sr_no %>
-                <div class="row">
-                  <div class="col-12">
-                    <%= inquiry_product.simple_fields_for :product do |product| %>
-                      <%= product.hidden_field :inquiry_import_row_id %>
+                <%= inquiry_product.simple_fields_for :product do |product| %>
+                  <%= product.hidden_field :inquiry_import_row_id %>
 
-                      <div class="form-row">
-                        <div class="col-6 col-md-3">
-                          <div class="d-flex flex-row">
-                            <div class="custom-control custom-radio custom-control-inline align-self-center">
-                              <%= radio = row.radio_button :approved_alternative_id, nil, class: 'custom-control-input' %>
-                              <%= row.label :approved_alternative_id, class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %>
-                              <% end %>
-                            </div>
-                            <div class="flex-grow-1">
-                              <%= product.input :name, class: 'text-right' %>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-6 col-md-2">
-                          <%= product.input :sku, readonly: true %>
-                        </div>
-                        <div class="col-6 col-md-2">
-                          <%= product.association :brand, collection: selected_option_or_nil(product, :brand), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
-                        </div>
-
-                        <div class="col-6 col-md-2">
-                          <%= product.association :category, collection: selected_option_or_nil(product, :category), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path} %>
-
-                        </div>
-                        <div class="col-6 col-md-2">
-                          <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path} %>
-                        </div>
-                        <div class="col-6 col-md-1">
-                          <div class="form-group">
-                            <label>&nbsp;</label>
-                            <%= product.input :is_service, wrapper: :custom_boolean, label: 'Service' %>
-                          </div>
-                        </div>
-                      </div>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-            <% end %>
-
-            <%= row.hidden_field :approved_alternative_id %>
-
-            <% row.object.approved_alternatives.each do |approved_alternative| %>
-              <% if approved_alternative == row.object.approved_alternatives.first %>
-                <hr class="mb-2 mt-0">
-              <% else %>
-                <hr class="my-2">
-              <% end %>
-              <div class="row text-small">
-                <div class="col-12">
                   <div class="form-row">
                     <div class="col-6 col-md-3">
                       <div class="d-flex flex-row">
                         <div class="custom-control custom-radio custom-control-inline align-self-center">
-                          <%= radio = row.radio_button :approved_alternative_id, approved_alternative.id, class: 'custom-control-input' %>
+                          <%= radio = row.radio_button :approved_alternative_id, nil, class: 'custom-control-input', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' %>
                           <%= row.label :approved_alternative_id, class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %>
                           <% end %>
                         </div>
-                        <%= row.label :approved_alternative_id, class: 'mb-0 flex-grow-1', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
-                          <span class="mt-2 d-block d-md-none"><strong>Name</strong></span>
-                          <%= approved_alternative.name %>
-                        <% end %>
+                        <div class="flex-grow-1">
+                          <%= product.input :name, class: 'text-right', as: :text %>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-1">
+                      <div class="form-group">
+                        <%= product.label :sku %>
+                        <%= product.hidden_field :sku, readonly: true %>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-1">
+                      <div class="form-group">
+                        <%= product.label :mpn, "MPN" %>
+                        <%= product.input :mpn, label: false %>
                       </div>
                     </div>
                     <div class="col-6 col-md-2">
-                      <%= row.label :approved_alternative_id, class: 'mb-0', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
-                        <span class="mt-2 d-block d-md-none"><strong>SKU</strong></span>
-                        <%= approved_alternative.sku %>
-                      <% end %>
+                      <%= product.association :brand, collection: selected_option_or_nil(product, :brand), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
                     </div>
+
                     <div class="col-6 col-md-2">
-                      <%= row.label :approved_alternative_id, class: 'mb-0', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
-                        <span class="mt-2 d-block d-md-none"><strong>Brand</strong></span>
-                        <%= approved_alternative.brand.to_s %>
-                      <% end %>
-                    </div>
-                    <div class="col-6 col-md-2">
-                      <%= row.label :approved_alternative_id, class: 'mb-0', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
-                        <span class="mt-2 d-block d-md-none"><strong>Category</strong></span>
-                        <%= approved_alternative.category.name %>
-                      <% end %>
-                    </div>
-                    <div class="col-6 col-md-2">
-                      <%= row.label :approved_alternative_id, class: 'mb-0', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
-                        <span class="mt-2 d-block d-md-none"><strong>Category</strong></span>
-                        <%= approved_alternative.best_tax_code.to_s %>
-                      <% end %>
+                      <%= product.association :category, collection: selected_option_or_nil(product, :category), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service => false)} %>
+
                     </div>
                     <div class="col-6 col-md-1">
-                      <%= row.label :approved_alternative_id, class: 'mb-0', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
-                        <span class="mt-2 d-block d-md-none"><strong>Service</strong></span>
-                        <%= raw approved_alternative.is_service ? '<i class="fal fa-check text-success"></i>' : '<i class="fal fa-times text-danger"></i>' %>
+                      <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)} %>
+                    </div>
+                    <div class="col-6 col-md-1">
+                      <%= product.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false %>
+                    </div>
+                    <div class="col-6 col-md-1 ">
+                      <%= product.input :is_service, as: :select, wrapper: :custom_multi_select, label: 'Service', include_blank: false %>
+                    </div>
+                  </div>
+                <% end %>
+
+              </div>
+            <% end %>
+
+            <%= row.hidden_field :approved_alternative_id %>
+            <div class="approved-alternatives">
+              <% row.object.approved_alternatives.each do |approved_alternative| %>
+
+                <div class="row text-small form-row border-top">
+                  <div class="col-6 col-md-3">
+                    <div class="d-flex flex-row">
+                      <div class="custom-control custom-radio custom-control-inline align-self-center">
+                        <%= radio = row.radio_button :approved_alternative_id, approved_alternative.id, class: 'custom-control-input' %>
+                        <%= row.label :approved_alternative_id, class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %>
+                        <% end %>
+                      </div>
+                      <%= row.label :approved_alternative_id, class: 'mb-0 flex-grow-1 py-2 d-block', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
+                        <span class="mt-2 d-block d-md-none"><strong>Name</strong></span>
+                        <%= approved_alternative.name %>
                       <% end %>
                     </div>
                   </div>
+                  <div class="col-6 col-md-1">
+                    <%= row.label :approved_alternative_id, class: 'mb-0 py-2 d-block', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
+                      <span class="mt-2 d-block d-md-none"><strong>SKU</strong></span>
+                      <%= approved_alternative.sku %>
+                    <% end %>
+                  </div>
+                  <div class="col-6 col-md-1">
+                    <%= row.label :approved_alternative_id, class: 'mb-0 py-2 d-block', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
+                      <span class="mt-2 d-block d-md-none"><strong>MPN</strong></span>
+                      <%= approved_alternative.mpn %>
+                    <% end %>
+                  </div>
+                  <div class="col-6 col-md-2">
+                    <%= row.label :approved_alternative_id, class: 'mb-0 py-2 d-block', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
+                      <span class="mt-2 d-block d-md-none"><strong>Brand</strong></span>
+                      <%= approved_alternative.brand.to_s %>
+                    <% end %>
+                  </div>
+                  <div class="col-6 col-md-2">
+                    <%= row.label :approved_alternative_id, class: 'mb-0 py-2 d-block', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
+                      <span class="mt-2 d-block d-md-none"><strong>Category</strong></span>
+                      <%= approved_alternative.category.name %>
+                    <% end %>
+                  </div>
+                  <div class="col-6 col-md-2">
+                    <%= row.label :approved_alternative_id, class: 'mb-0 py-2 d-block', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
+                      <span class="mt-2 d-block d-md-none"><strong>Category</strong></span>
+                      <%= approved_alternative.best_tax_code.to_s %>
+                    <% end %>
+                  </div>
+                  <div class="col-6 col-md-1 text-center">
+                    <%= row.label :approved_alternative_id, class: 'mb-0 py-2 d-block', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
+                      <span class="mt-2 d-block d-md-none"><strong>Service</strong></span>
+                      <%= format_boolean(approved_alternative.is_service) %>
+                    <% end %>
+                  </div>
                 </div>
-              </div>
-            <% end %>
+              <% end %>
+            </div>
+
           </div>
           <div class="card-footer text-left">
-            <%= link_to_remove_association row, {class: 'dynamic btn btn-danger', wrapper_class: 'option-wrapper'} do %>
+            <%= link_to_remove_association row, {class: 'btn btn-danger', wrapper_class: 'option-wrapper'} do %>
               Skip
             <% end %>
           </div>

@@ -1,0 +1,25 @@
+<div class="col-md-12">
+  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <h1 class="display-5 mb-1">
+        Callback Request #<%= @callback_request.id %>
+      </h1>
+    </div>
+  </section>
+
+  <section class="mb-3">
+    <div class="card mb-2">
+      <div class="card-body">
+        <h6 class="text-uppercase text-<%= status_color(@callback_request.status) %> mb-1" data-toggle="collapse" data-target="#request-summary">Request</h6>
+        <div class="collapse show" id="request-summary">
+          <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(@callback_request.request) %></code></pre>
+        </div>
+
+        <h6 class="text-uppercase text-<%= status_color(@callback_request.status) %> mb-1 mt-4" data-toggle="collapse" data-target="#response-summary">Response</h6>
+        <div class="collapse show" id="response-summary">
+          <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(JSON.parse(@callback_request.response)) %></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

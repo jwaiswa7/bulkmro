@@ -3,25 +3,21 @@
     <%= simple_form_for([:overseers, @inquiry, @sales_quote, @email_message], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
 
       <div class="card-body">
-        <div class="form-group">
-          <%= f.input :from, disabled: true %>
+        <%= f.input :from, disabled: true %>
+        <%= f.input :to %>
+        <%= f.input :cc %>
+        <%= f.input :bcc %>
+        <%= f.input :subject %>
+        <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} %>
+        <div class="d-flex flex-row align-items-center">
+          <div class="form-group mr-2">
+            <%= link_to overseers_inquiry_sales_quote_path(@inquiry, @sales_quote, format: :pdf, target: :_blank), :class => 'btn btn-success' do %>
+              <i class="fal fa-file-pdf mr-2"></i>Quotation
+            <% end %>
+          </div>
+          <%= f.input :auto_attach, wrapper: :custom_boolean, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
         </div>
-
-        <div class="form-group">
-          <%= f.input :to, disabled: true %>
-        </div>
-
-        <div class="form-group">
-          <%= f.input :subject %>
-        </div>
-
-        <div class="form-group">
-          <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} %>
-        </div>
-
-        <div class="form-group">
-          <%= f.input :body, input_html: {rows: 10, class: 'html-editor'} %>
-        </div>
+        <%= f.input :body, input_html: {rows: 10, class: 'html-editor'} %>
       </div>
       <div class="card-footer">
         <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>

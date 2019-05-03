@@ -20,6 +20,7 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.string :site
       t.string :phone
       t.string :mobile
+      t.string :legacy_email
 
       t.string :pan
       t.string :tan
@@ -36,6 +37,7 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
 
       t.string :tax_identifier, index: {unique: true}
 
+      t.jsonb :legacy_metadata
       t.timestamps
       t.userstamps
     end

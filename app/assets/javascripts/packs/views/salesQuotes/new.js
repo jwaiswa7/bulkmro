@@ -62,6 +62,9 @@ let initVueJS = () => {
             }
         },
         computed: {
+            showCurrency: function () {
+                return this.currency_sign != '₹'
+            },
             totalFreightCost: function () {
                 // let total = 0;
                 //
@@ -78,6 +81,21 @@ let initVueJS = () => {
                 return this[name]
             },
 
+            hideProduct(product_id) {
+                let _this = this
+                $('#ac-' + product_id).find("[data-index]").each(function (index, row) {
+                    let currentRowIndex = $(row).data('index');
+                    $(row).find('.btn.btn-danger').each(function (index, row) {
+                        $(row).click();
+                    })
+
+                });
+                this.hiddenProducts.push(product_id);
+                //$('#ac-' + product_id).parent().hide();
+            },
+            showProductButton(product_id) {
+                return !this.hiddenProducts.includes(product_id)
+            },
             getRow(index) {
                 return this.rows[index];
             },
@@ -88,15 +106,17 @@ let initVueJS = () => {
                 }
             },
 
-            /*dropRow(index) {
+            dropRow(index) {
                 let row = this.getRow(index);
-                for (var property in row) {
+                /*for (var property in row) {
                     if (row.hasOwnProperty(property)) {
                         row[property] = 0;
                     }
-                }
+                }*/
+
+
                 this.setRow(index, row);
-            },*/
+            },
 
             getCheckedRows() {
                 let checkedSupplierIds = [];
@@ -120,11 +140,10 @@ let initVueJS = () => {
 
             rowUpdated(index) {
                 this.updateConvertedSellingPriceFor(index);
-                this.triggerSellingPriceChangeFor(index, 'margin_percentage');
+                this.updateTaxPercentage(index)
                 this.recalculateRowTotals(index);
             },
             recalculateRowTotals(index) {
-                console.log()
                 let row = this.getRow(index);
                 row.total_selling_price = toDecimal(row.unit_selling_price * row.quantity);
                 let tax = parseFloat(row.total_selling_price * row.tax_percentage / 100);
@@ -138,7 +157,10 @@ let initVueJS = () => {
                 });
                 this.afterRowsUpdated();
             },
-
+            formatCurrency(value) {
+                let val = (value / 1).toFixed(2)
+                return this.defaultCurrencySign + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            },
             afterRowsUpdated() {
                 let calculated_freight_cost_total = 0,
                     total_selling_price = 0,
@@ -176,8 +198,16 @@ let initVueJS = () => {
                 this.triggerFreightChangeFor(index, 'quantity');
             },
 
+            taxRateIdChangedFor(index) {
+            },
+
             selectSupplierChangedFor(index) {
 
+            },
+
+            updateTaxPercentage(index) {
+                let row = this.getRow(index)
+                row.tax_percentage = this.getAttribute('tax_rates')[parseInt(row.tax_rate_id)];
             },
 
             freightCostSubtotalChangedFor(index) {
@@ -239,9 +269,12 @@ let initVueJS = () => {
             triggerFreightChangeFor(index, trigger) {
                 let row = this.getRow(index);
 
-                let freight_cost_subtotal = row.freight_cost_subtotal;
-                let unit_freight_cost = row.unit_freight_cost;
-                let quantity = row.quantity;
+                let freight_cost_subtotal = row.freight_cost_subtotal || 0;
+                let unit_freight_cost = row.unit_freight_cost || 0;
+                let quantity = row.quantity || 0;
+                row.unit_freight_cost = row.unit_freight_cost || 0;
+                row.freight_cost_subtotal = row.freight_cost_subtotal || 0;
+                this.setRow(index, row);
 
                 if (trigger === 'freight_cost_subtotal' && freight_cost_subtotal >= 0) {
                     row.unit_freight_cost = toDecimal(freight_cost_subtotal / quantity);
@@ -250,26 +283,28 @@ let initVueJS = () => {
                 }
 
                 row.unit_cost_price_with_unit_freight_cost = parseFloat(row.unit_freight_cost) + parseFloat(row.unit_cost_price);
-
+                row.unit_freight_cost = row.unit_freight_cost || 0;
+                row.freight_cost_subtotal = row.freight_cost_subtotal || 0;
                 this.setRow(index, row);
+                this.triggerSellingPriceChangeFor(index, 'margin_percentage');
             },
 
             triggerSellingPriceChangeFor(index, trigger) {
                 let row = this.getRow(index);
-
 
                 //console.dir(row);
                 let margin_percentage = row.margin_percentage;
                 let unit_selling_price = row.unit_selling_price;
                 let unit_cost_price_with_unit_freight_cost = row.unit_cost_price_with_unit_freight_cost;
 
-                if (trigger === 'margin_percentage' && margin_percentage >= 0 && margin_percentage < 100) {
+                if (trigger === 'margin_percentage' && ( margin_percentage < 100 || margin_percentage > 100 ) ) {
                     unit_selling_price = unit_cost_price_with_unit_freight_cost / (1 - (margin_percentage / 100));
                     row.unit_selling_price = toDecimal(unit_selling_price);
                 } else {
                     margin_percentage = 1 - (unit_cost_price_with_unit_freight_cost / unit_selling_price);
                     row.margin_percentage = toDecimal(margin_percentage * 100);
                 }
+
                 this.setRow(index, row);
 
             },
@@ -291,7 +326,7 @@ let initVueJS = () => {
             updateConvertedSellingPriceFor(index) {
                 let row = this.getRow(index);
                 if (row !== undefined) {
-                    row.converted_unit_selling_price = toDecimal(parseFloat(row.unit_selling_price) / parseFloat(this.getAttribute('conversion_rate')));
+                    row.converted_unit_selling_price = toDecimal(toDecimal(row.unit_selling_price) / parseFloat(this.getAttribute('conversion_rate')));
                 }
                 this.setRow(index, row);
             },
@@ -308,6 +343,10 @@ let initVueJS = () => {
                     destroySelect();
                     $('form [name*=tax_code_id]').addClass('select2-ajax');
                     select2s();
+
+                    /*
+                    // Old code removed for new Tax Code Overhaul TODO
+
                     $('select.select2-ajax').each(function (k, v) {
                         $(this).select2({
                             theme: "bootstrap",
@@ -330,10 +369,10 @@ let initVueJS = () => {
                             //vj.$emit('input', this.value) // emitting Vue change event
 
                             let optionSelected = $("option:selected", this);
-                            //console.log(optionSelected[0].text.match(/\w[\d]\.[\d]*/gm)[0])
-                            vj.$data.rows[currentRowIndex]["tax_percentage"] = parseFloat(optionSelected[0].text.match(/\w[\d]\.[\d]*/gm)[0])
+                            //console.log(optionSelected[0].text.match(/\w[\d]*\.[\d]*!/gm)[0])
+                            vj.$data.rows[currentRowIndex]["tax_percentage"] = parseFloat(optionSelected[0].text.match(/\w[\d]*\.[\d]*!/gm)[0])
                         });
-                    });
+                    });*/
                 }, 1000);
 
             }
@@ -347,6 +386,9 @@ let assignEventsAndGetAttributes = () => {
     let rows = [];
     let data = {
         "check": {},
+        hiddenProducts: [],
+        currency_sign: '₹',
+        defaultCurrencySign: '',
         calculated_total_margin: 0,
         average_margin_percentage: 0,
         calculated_total_tax: 0,
@@ -396,10 +438,32 @@ let assignEventsAndGetAttributes = () => {
                     modelName = ["rows[", currentRowIndex, "].", attributeName].join('');
 
                     // To recreate VueJS v-model when nested form rows are added or removed
-                    $(el).attr("v-html", modelName);
+
                     //$(el).attr("data-v-index", currentRowIndex);
-                    if(currentRowTemplate[attributeName] == undefined){
-                        currentRowTemplate[attributeName] = 0;
+                    //$(el).attr("data-v-index", currentRowIndex);
+
+                    if (currentRowTemplate[attributeName] != undefined) {
+
+                        let value = $(el).text().trim();
+                        let numberValue = value;
+
+                        //Check if first char is not a number
+                        if (value.trim() != "") {
+
+                            if (value.match("[^0-9]").index == 0) {
+                                if (data.defaultCurrencySign == "" || data.defaultCurrencySign === undefined) {
+                                    data.defaultCurrencySign = value.match("[^0-9]")[0]
+                                }
+                                $(el).attr("v-html", "formatCurrency(" + modelName + ")");
+                                numberValue = value.replace(/[^0-9.]/g, "")
+                            }
+                        }
+
+
+                        currentRowTemplate[attributeName] = parseFloat(numberValue);
+                    }
+                    else {
+                        $(el).attr("v-html", modelName);
                     }
 
 
@@ -426,15 +490,45 @@ let assignEventsAndGetAttributes = () => {
         assignDataEventsAsEvents($(el), undefined);
     });
 
+    $('[data-v-event]').each(function (index, el) {
+        assignDataEventsAsEvents($(el), undefined);
+    });
     // V-models that cannot be edited, auto calculated
     $('[data-v-html]').each(function (index, el) {
-        $(el).attr("v-html", $(el).attr('data-v-html'));
+
+        let modelName = $(el).data("v-html");
+        let value = $(el).text().trim();
+        let numberValue = value;
+
+        //Check if first char is not a number
+        console.log();
+        if (value.trim() !== "" && value.match("[^0-9]") !== null && value.match("[^0-9]").index == 0) {
+            if (data.defaultCurrencySign == "") {
+                data.defaultCurrencySign = value.match("[^0-9]")[0]
+            }
+            $(el).attr("v-html", "formatCurrency(" + modelName + ")");
+            numberValue = value.replace(/[^0-9.]/g, "")
+        }
+        else {
+            $(el).attr("v-html", modelName);
+        }
+
+
     });
+    let tax_rates = {};
+    $($('form [name*=tax_rate_id]')[0]).children().each(function () {
+        if (this.value.trim != "") {
+            tax_rates[this.value] = parseFloat($(this).data('tax_rate'))
+        }
+    });
+
     data.rows = rows;
+    data.tax_rates = tax_rates;
     return data;
 };
 
 let assignDataEventsAsEvents = (el, currentRowIndex = '') => {
+
     let eventNames = ['v-on:change', 'v-on:input', 'v-on:click'];
     let attributeName = undefined;
 
@@ -458,11 +552,14 @@ let assignDataEventsAsEvents = (el, currentRowIndex = '') => {
         }
 
         eventNames.forEach(function (eventName) {
+
             $(el).attr('v-on:input', methodName);
         });
     } else {
         eventNames.forEach(function (eventName) {
+
             if ($(el).data(eventName)) {
+
                 $(el).attr(eventName, $(el).data(eventName).replace('_index_', currentRowIndex));
             }
         });

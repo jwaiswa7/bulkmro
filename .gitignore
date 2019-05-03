@@ -37,15 +37,13 @@
 /.idea/*.xml
 
 # Misc
+/app/assets/stylesheets/shared/.sass-cache
 /public/packs
 /public/packs-test
 /node_modules
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
-/public/packs
-/public/packs-test
-/node_modules
 yarn-debug.log*
 .yarn-integrity
 

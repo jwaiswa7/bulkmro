@@ -2,7 +2,7 @@
   <p style="color: #555;">Dear <%= @contact.first_name %>,</p>
 
   <p style="color: #555;">Greetings from Bulk MRO!</p>
-  <p style="color: #555;">Please find attached our Quotation # <%= @sales_quote.id %> for your consideration.</p>
+  <p style="color: #555;">Please find attached our quotation number <%= format_id(@sales_quote.inquiry.inquiry_number) %> for your consideration.</p>
   <p style="color: #555;">If there is any additional information you may require, please feel free to call me at
     <a href="tel:02249214921">022-4921-4921</a> or email at <a href="mailto:sales@bulkmro.com">sales@bulkmro.com</a> and
     talk to our expert and friendly Sales Agents.</p>

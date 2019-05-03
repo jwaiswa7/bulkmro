@@ -1,0 +1,127 @@
+<div class="card">
+  <div class="card-body">
+    <%= render 'shared/snippets/form_errors', f: f %>
+    <%= f.hidden_field :company_creation_request_id %>
+
+    <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
+    <% if policy(@company).edit_remote_uid? %>
+      <div class="form-row">
+        <div class="col-12 col-md-8">
+          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
+        </div>
+        <div class="col-12 col-md-4">
+          <%= f.input :remote_uid, :label => 'SAP Business Partner ID' %>
+        </div>
+      </div>
+    <% else %>
+      <div class="form-row">
+        <div class="col-12 col-md-12">
+          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
+        </div>
+      </div>
+    <% end %>
+    <div class="form-row">
+      <div class="col-6 col-md-3">
+        <%= f.input :site %>
+      </div>
+      <div class="col-6 col-md-3">
+        <%= f.input :mobile, disabled: true %>
+      </div>
+      <div class="col-6 col-md-3">
+        <%= f.input :email, disabled: true %>
+      </div>
+      <div class="col-6 col-md-3">
+        <%= f.input :telephone, disabled: true %>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.association :industry, wrapper: :custom_multi_select, include_blank: 'Select an Industry' %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :company_type, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.company_types), include_blank: 'Select a company type' %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :nature_of_business, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.nature_of_businesses), include_blank: 'Select a nature of business' %>
+      </div>
+
+      <div class="col-6 col-md-4">
+        <%= f.input :priority, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.priorities), include_blank: false %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.association :default_payment_option, wrapper: :custom_multi_select, include_blank: 'Select a default' %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :credit_limit %>
+      </div>
+    </div>
+
+    <h6 class="text-uppercase text-black-50 mb-1 d-block mt-3">Default owners and managers</h6>
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', include_blank: 'Select a Procurement Specialist', input_html: {class: "select2-single"} %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
+      </div>
+      <div class="col-12 col-md-4">
+        <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', include_blank: 'Select a Account Owner', input_html: {class: "select2-single"} %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.association :logistics_owner, collection: Overseer.logistics.alphabetical, include_blank: 'Select a Logistics Owner', input_html: {class: "select2-single"}%>
+      </div>
+    </div>
+
+    <% if @account.present? %>
+      <div class="form-group">
+        <%= f.label :contact_ids, 'Contacts' %>
+        <div class="select2-wrapper">
+          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts' %>
+        </div>
+      </div>
+    <% end %>
+
+
+    <div class="form-row">
+      <div class="col-4">
+        <%= f.input :is_msme, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is MSME?' %>
+      </div>
+      <div class="col-4">
+        <%= f.input :is_unregistered_dealer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %>
+      </div>
+      <div class="col-4">
+        <%= f.input :is_international, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is international?' %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-12 col-md-6">
+        <%= f.input :pan, label: 'PAN', input_html: {minlength: 10, maxlength: 10} %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.input :pan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'PAN Proof' %>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-12">
+        <%= f.input :logo, wrapper: :custom_file, required: false, accept: 'image/png, image/jpeg', label: 'Company Logo' %>
+      </div>
+    </div>
+    <% if f.object.persisted? %>
+      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
+      <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
+      <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
+    <% end %>
+    <div class="form-row">
+      <div class="col-12 col-md-6">
+        <%= f.input :is_active %>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <%= action_button(action_name, @company) %>
+  </div>
+</div>

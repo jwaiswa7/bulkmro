@@ -2,7 +2,7 @@ class Overseers::BrandsController < Overseers::BaseController
   before_action :set_brand, only: [:edit, :update, :show]
 
   def autocomplete
-    @brands = ApplyParams.to(Brand.all, params).order(:name)
+    @brands = ApplyParams.to(Brand.active, params).order(:name)
     authorize @brands
   end
 
@@ -12,7 +12,9 @@ class Overseers::BrandsController < Overseers::BaseController
   end
 
   def show
-    redirect_to edit_overseers_brand_path(@brand)
+    @brand_products = Product.where(brand_id: @brand.id)
+    @brand_suppliers = (@brand_products.map{ |p| p.suppliers.map{ |ps| ps }.compact.flatten.uniq }.compact.flatten.uniq)
+
     authorize @brand
   end
 
@@ -25,10 +27,10 @@ class Overseers::BrandsController < Overseers::BaseController
     @brand = Brand.new(brand_params.merge(overseer: current_overseer))
     authorize @brand
 
-    if @brand.save
+    if @brand.save_and_sync
       redirect_to overseers_brands_path, notice: flash_message(@brand, action_name)
     else
-      render :new
+      render 'new'
     end
   end
 
@@ -40,22 +42,23 @@ class Overseers::BrandsController < Overseers::BaseController
     @brand.assign_attributes(brand_params.merge(overseer: current_overseer))
     authorize @brand
 
-    if @brand.save
+    if @brand.save_and_sync
       redirect_to overseers_brands_path, notice: flash_message(@brand, action_name)
     else
-      render :new
+      render 'edit'
     end
   end
 
   private
-  def set_brand
-    @brand ||= Brand.find(params[:id])
-  end
+    def set_brand
+      @brand ||= Brand.find(params[:id])
+    end
 
-  def brand_params
-    params.require(:brand).permit(
+    def brand_params
+      params.require(:brand).permit(
         :name,
-        :company_ids => []
-    )
-  end
+          :is_active,
+          company_ids: []
+      )
+    end
 end

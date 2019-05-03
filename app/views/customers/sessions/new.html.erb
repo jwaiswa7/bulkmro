@@ -1,0 +1,39 @@
+<% content_for :page_title do %>
+  Customer Portal
+<% end %>
+
+<div class="col-xl-5 col-lg-6 col-md-7">
+  <div class="text-center">
+    <h1 class="h2">
+      <img src="<%= image_path('BMIS_Logo_PNG.png') %>" height="30"/>
+    </h1>
+    <p>Welcome back &#x1f44b;!</p>
+    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:class => 'text-left needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+
+      <div class="form-group">
+        <%= f.input :email, :class => 'form-control', :required => true, :placeholder => "name@company.com", autofocus: true, autocomplete: "email", value: 'bhargav.trivedi@bulkmro.com' %>
+      </div>
+      <div class="form-group">
+        <%= f.input :password, :class => 'form-control', :required => true, :placeholder => "••••••••", autocomplete: "off", value: ( Rails.env.production? || Rails.env.staging? ) ? '' : 'bulkmro123' %>
+      </div>
+      <p class="text-center mt-1">
+        <small><%= link_to "Forgot Password?", contact_password_path, method: :post %></small>
+      </p>
+      <% if devise_mapping.rememberable? -%>
+        <div class="form-group d-none">
+          <div class="custom-control custom-checkbox">
+            <%= f.check_box :remember_me, :class => 'custom-control-input' %>
+            <%= f.label :remember_me, :class => 'custom-control-label' %>
+          </div>
+        </div>
+      <% end -%>
+
+      <%= button_tag(type: "submit", class: "btn btn-success btn-rounded btn-block") do %>
+        Sign In
+      <% end %>
+      <p class="text-center mt-1">
+        <small>Lost? Ping the sysadmin on <a href="mailto:bhargav.trivedi@bulkmro.com">bhargav.trivedi@bulkmro.com</a>.</small>
+      </p>
+    <% end %>
+  </div>
+</div>

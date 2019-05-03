@@ -1,5 +1,4 @@
 require_relative 'boot'
-
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
@@ -16,6 +15,7 @@ module Bulkmro
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
     config.assets.paths << Rails.root.join('vendor', 'assets', 'node_modules')
+    config.autoload_paths += Dir["#{Rails.root}/lib"]
     config.time_zone = 'Asia/Kolkata'
     config.active_record.default_timezone = :local
   end

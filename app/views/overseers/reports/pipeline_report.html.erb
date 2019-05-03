@@ -1,0 +1,50 @@
+<% provide :container_fluid, true %>
+
+<div class="col-lg-12 mb-0">
+  <div class="page-header mb-0">
+    <h2>Pipeline Report</h2>
+    <p>Pipeline report from <strong><%= format_date_without_time(@report.start_at) %></strong> to
+      <strong><%= format_date_without_time(@report.end_at) %></strong>.</p>
+  </div>
+</div>
+
+<div class="col-12">
+  <%= render layout: 'search_layout' do %>
+   <!-- <canvas class="chart-bar mt-3" data-chart-axis='<%#= (@report.start_at.to_date..@report.end_at.to_date).map(&:beginning_of_month).uniq.map(&:to_s) %>' data-chart-labels='<%#= @data.statuses.map {|status| status.name} %>' data-chart-data='<%#= @data.statuses.map {|status| @data.entries.map {|month, entry| [entry[status.name][:count]]}} %>'></canvas>-->
+
+    <table class="table-bordered table">
+      <thead>
+      <tr>
+        <th>Month</th>
+        <% @data.statuses.each do |status| %>
+          <th><%= status.name %></th>
+        <% end %>
+        <th>Grand Total</th>
+        <th>Won %</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @data.entries.each do |month, entry| %>
+        <tr>
+          <td><%= format_month(month) %></td>
+          <% @data.statuses.each do |status| %>
+            <td><%= format_count(entry[status.name][:count]) %>, <%= format_currency(entry[status.name][:value]) %></td>
+          <% end %>
+          <td><%= format_count(entry[:count]) %>, <%= format_currency(entry[:value]) %></td>
+          <td><%= percentage(entry[:won_count]) %>, <%= percentage(entry[:won_value]) %></td>
+        </tr>
+      <% end %>
+      <% @data.summary_entries.each do |month, entry| %>
+        <tr>
+          <td><%= format_month(month) %></td>
+          <% @data.statuses.each do |status| %>
+            <td><%= format_count(entry[status.name][:count]) %>, <%= format_currency(entry[status.name][:value]) %></td>
+          <% end %>
+          <td><%= format_count(entry[:count]) %>, <%= format_currency(entry[:value]) %></td>
+          <td><%= percentage(entry[:won_count]) %>, <%= percentage(entry[:won_value]) %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

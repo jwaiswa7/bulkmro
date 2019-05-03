@@ -1,5 +1,11 @@
+# frozen_string_literal: true
+
 class Overseers::CategoryPolicy < Overseers::ApplicationPolicy
-  def index?
-    sales_manager?
+  def autocomplete_closure_tree?
+    autocomplete?
+  end
+
+  def new?
+    manager_or_cataloging?
   end
 end

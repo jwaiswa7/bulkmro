@@ -2,6 +2,10 @@ class Overseers::OverseersController < Overseers::BaseController
   before_action :set_overseer, only: [:edit, :update]
 
   def index
+    # service = Services::Overseers::Finders::Overseers.new(params)
+    # service.call
+    # @indexed_overseers = service.indexed_records
+    # @overseers = service.records
     @overseers = ApplyDatatableParams.to(Overseer.all, params)
     authorize @overseers
   end
@@ -12,9 +16,10 @@ class Overseers::OverseersController < Overseers::BaseController
   end
 
   def create
-    @overseer = Overseer.new(overseer_params.merge(overseer: current_overseer))
+    password = Devise.friendly_token[0, 20]
+    @overseer = Overseer.new(overseer_params.merge(overseer: current_overseer, password: password, password_confirmation: password))
     authorize @overseer
-    if @overseer.save
+    if @overseer.save_and_sync
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
     else
       render 'new'
@@ -26,34 +31,38 @@ class Overseers::OverseersController < Overseers::BaseController
   end
 
   def update
-    @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! { |_, v| v.blank? })
+    @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! { |k, v| (k == 'password' || k == 'password_confirmation') && v.blank? })
     authorize @overseer
-    if @overseer.save
+    if @overseer.save_and_sync
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
+    else
+      render 'edit'
     end
   end
 
   private
-  def overseer_params
-    params.require(:overseer).permit(
-        :id,
-        :first_name,
-        :last_name,
-        :email,
-        :mobile,
-        :telephone,
-        :identifier,
-        :designation,
-        :department,
-        :geography,
-        :password,
-        :password_confirmation,
-        :role,
-        :parent_id
-    )
-  end
 
-  def set_overseer
-    @overseer = Overseer.find(params[:id])
-  end
+    def overseer_params
+      params.require(:overseer).permit(
+        :first_name,
+          :last_name,
+          :role,
+          :parent_id,
+          :email,
+          :mobile,
+          :telephone,
+          :identifier,
+          :designation,
+          :department,
+          :function,
+          :geography,
+          :status,
+          :password,
+          :password_confirmation,
+      )
+    end
+
+    def set_overseer
+      @overseer = Overseer.find(params[:id])
+    end
 end

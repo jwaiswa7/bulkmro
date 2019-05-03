@@ -1,0 +1,50 @@
+<div class="col-12">
+  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <h1 class="display-5 mb-1">Checkout</h1>
+      <% unless current_cart.items.size.zero? %>
+        <div>
+          <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
+            <i class="fal fa-shopping-cart mr-1"></i> Checkout
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <p class="lead mt-1">
+      You have <strong><%= current_cart.items.count %></strong> products in your cart.
+    </p>
+  </section>
+
+  <div class="card mb-2">
+    <div class="card-body py-2">
+      <div class="text-left">
+          <% current_cart.items.each do |cart_item| %>
+            <div class="<% if cart_item != current_cart.items.last %>border-bottom <% end %>py-2 d-flex flex-row align-items-center">
+              <img alt="<%= %>" src="<%= url_for(cart_item.product.best_images.first) %>" width="60" />
+              <div class="ml-3">
+                <p class="text-black-50 m-0 p-0"><strong><%= cart_item.product.name %></strong></p>
+                <span class="text-black-50 d-block">x <%= cart_item.quantity %></span>
+              </div>
+            </div>
+          <% end %>
+      </div>
+    </div>
+    <div class="card-footer">
+      <% if current_cart.items.size.zero? %>
+        <%= link_to customers_products_path, :class => "btn btn-success btn-block" do %>
+          <i class="fal fa-shopping-cart mr-1"></i> Add Products
+        <% end %>
+      <% else %>
+        <div>
+          <%= link_to customers_cart_path, :class => "btn btn-warning btn-block" do %>
+            <i class="fal fa-pen"></i> Edit Quantity
+          <% end %>
+          <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
+            <i class="fal fa-shopping-cart mr-1"></i> Checkout
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

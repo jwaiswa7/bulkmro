@@ -1,28 +1,38 @@
 <div class="page-header">
-  <div class="d-md-flex justify-content-between">
-    <div>
-      <h2><%= request.path.split('/').last.titleize %></h2>
-      <% if content_for?(:heading_byline) %>
-        <p class="mt-2 mt-md-0"><%= yield :heading_byline %></p>
+  <div class="">
+    <h2>
+      <% if content_for?(:heading) %>
+        <%= yield :heading %>
       <% else %>
-        <p>This will <em>'<%= submit_text(@inquiry).downcase %>'</em> and log it under
-          <strong><%= current_overseer.full_name %></strong>.</p>
+        <%= request.path.split('/').last.titleize %>
       <% end %>
-    </div>
+      <small class="text-black-50 mb-2 ml-2 float-right"><strong>#<%= @inquiry.inquiry_number %></strong></small>
+    </h2>
 
-    <% if content_for?(:heading_button) %>
-      <%= yield :heading_button %>
+    <% if content_for?(:heading_byline) %>
+      <p class="mt-2 mt-md-0"><%= yield :heading_byline %></p>
+    <% else %>
+      <p>This will <em>'<%= submit_text(@inquiry).downcase %> <strong>#<%= @inquiry.inquiry_number %></strong>'</em> and log it under
+        <strong><%= current_overseer.full_name %></strong>.</p>
     <% end %>
   </div>
+
+  <% if content_for?(:heading_button) %>
+    <%= yield :heading_button %>
+  <% end %>
 </div>
 
 <section class="pb-4 pb-lg-5">
-  <ul class="nav nav-tabs nav-fill">
+  <ul class="nav nav-tabs nav-fill" data-toggle="sticky">
     <%= nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), policy(@inquiry).edit?) %>
     <%= nav_item('Imports', overseers_inquiry_imports_path(@inquiry), policy(@inquiry).imports?) %>
     <%= nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), policy(@inquiry).edit_suppliers?) %>
     <%= nav_item('Sales Quotes', overseers_inquiry_sales_quotes_path(@inquiry), policy(@inquiry).sales_quotes?) %>
     <%= nav_item('Sales Orders', overseers_inquiry_sales_orders_path(@inquiry), policy(@inquiry).sales_orders?) %>
+    <%= nav_item('Purchase Orders', overseers_inquiry_purchase_orders_path(@inquiry), policy(@inquiry).purchase_orders?) %>
+    <%= nav_item('Invoices', overseers_inquiry_sales_invoices_path(@inquiry), policy(@inquiry).sales_invoices?) %>
+    <%= nav_item('Shipments', overseers_inquiry_sales_shipments_path(@inquiry), policy(@inquiry).sales_shipments?) %>
+    <%= nav_item('Stages', stages_overseers_inquiry_path(@inquiry), ( policy(@inquiry).edit? && policy(@inquiry).update?) ) %>
     <%= nav_item('Comments', overseers_inquiry_comments_path(@inquiry), policy(@inquiry).comments?) %>
   </ul>
   <div class="tab-content">

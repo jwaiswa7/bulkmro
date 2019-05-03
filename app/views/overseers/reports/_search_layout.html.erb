@@ -1,15 +1,58 @@
-<%= simple_form_for([:overseers, @report], method: :get) do |f| %>
+<%= simple_form_for([:overseers, @report], method: :get, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
 
-  <%= f.label :start_at %>
-  <%= date_select(:report, :start_at, start_year: 2017, end_year: Time.current.year, use_month_numbers: false, discard_day: false, include_blank: false) %>
-  <br />
-  <%= f.label :end_at %>
-  <%= date_select(:report, :end_at, start_year: 2017, end_year: Time.current.year, use_month_numbers: false, discard_day: false, include_blank: false) %>
-  <br />
-
-  <%= f.input :date_range, as: :select, collection: enum_to_collection(Report.date_ranges), include_blank: false %>
-
-  <%= submit_tag 'Refresh', name: nil %>
+  <div class="card mt-4">
+    <div class="card-body">
+      <div class="form-row">
+        <div class="col-4">
+          <%#= date_select(:report, :start_at, start_year: 2017, end_year: Time.current.year, use_month_numbers: false, discard_day: false, include_blank: false) %>
+          <%= f.input :start_at, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.start_at.to_date }, required: true %>
+        </div>
+        <div class="col-4">
+          <%#= date_select(:report, :end_at, start_year: 2017, end_year: Time.current.year, use_month_numbers: false, discard_day: false, include_blank: false) %>
+          <%= f.input :end_at, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.end_at.to_date }, required: true %>
+        </div>
+        <div class="col-4">
+          <%= f.input :date_range, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Report.date_ranges), include_blank: false %>
+        </div>
+        <%#= yield :overseers_filter %>
+        <% if content_for?(:overseer_filters) && policy(current_model.singularize.to_sym).show? %>
+          <div class="col-3">
+            <div class="form-group select optional report_date_range form-group-valid">
+              <label class="form-control-label select optional" for="report_date_range">Designation</label>
+              <%= select_tag :designation, options_for_select(%w(Inside Outside), @data.selected_filters[:designation]), class: "custom-select is-valid select optional", onchange: 'this.form.submit();' %>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group select optional report_date_range form-group-valid">
+              <label class="form-control-label select optional" for="report_date_range">Executives</label>
+              <%= select_tag :executive, options_for_select(@data.filters[:executives], @data.selected_filters[:executive]), class: "custom-select is-valid select optional", include_blank: true %>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group select optional report_date_range form-group-valid">
+              <label class="form-control-label select optional" for="report_date_range">Manager</label>
+              <%= select_tag :manager, options_for_select(@data.filters[:managers], @data.selected_filters[:manager]), class: "custom-select is-valid select optional", include_blank: true %>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group select optional report_date_range form-group-valid">
+              <label class="form-control-label select optional" for="report_date_range">Business Head</label>
+              <%= select_tag :business_head, options_for_select(@data.filters[:business_head], @data.selected_filters[:business_head]), class: "custom-select is-valid select optional", include_blank: true %>
+            </div>
+          </div>
+        <% end %>
+        <div class="col-6">
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <i class="fal fa-redo mr-2"></i>Refresh
+          <% end %>
+        </div>
+        <div class="col-6">
+          <a href="<%= overseers_report_path(@report) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0">
+            Reset</a>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>
 
 <%= yield %>

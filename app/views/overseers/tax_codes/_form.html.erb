@@ -1,0 +1,40 @@
+<div class="col-lg-12">
+  <%= render 'shared/snippets/page_header', e: @tax_code %>
+
+  <%= simple_form_for([:overseers, @tax_code], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+
+    <div class="form-row">
+      <div class="col-4 col-md-2">
+        <%= f.input :remote_uid %>
+      </div>
+      <div class="col-8 col-md-10">
+        <%= f.input :description %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-4">
+        <%= f.input :code %>
+      </div>
+      <div class="col-4">
+        <%= f.input :chapter, readonly: true, input_html: { value: @tax_code.chapter.nil? ? "0000" : @tax_code.chapter}  %>
+      </div>
+      <div class="col-4">
+        <%= f.input :tax_percentage, label: 'Tax %' %>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-12 col-md-4">
+        <%= f.input :is_service %>
+      </div>
+      <div class="col-12 col-md-4">
+        <%= f.input :is_active %>
+      </div>
+    </div>
+    <%= f.input :is_pre_gst %>
+    <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+      <i class="fal fa-pen"></i> <%= submit_text(@tax_code) %>
+    <% end %>
+  <% end %>
+</div>

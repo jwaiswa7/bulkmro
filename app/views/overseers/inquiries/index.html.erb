@@ -1,18 +1,62 @@
 <% provide :container_fluid, true %>
+<% provide :can_be_directly_exported, true %>
+<% provide :can_be_directly_exported_filtered_records, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+<div class="col-lg-12">
+  <%= render partial: "shared/layouts/summary", locals: {klass: Inquiry, statuses: Inquiry.statuses} %>
+</div>
+
+<% content_for(:heading_buttons) do %>
+
+  <% if policy(:inquiry).index? %>
+    <a href="#" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" data-toggle="modal" data-target="#bulkUpdate" data-backdrop="static" data-keyboard="false">
+      Bulk Update
+    </a>
+  <% end %>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render partial: "overseers/inquiries/update_modal" %>
+</div>
+
 <% content_for :header_row do %>
-  <th class="no-sort"></th>
-  <th class="no-sort">Status</th>
-  <th data-name="id">#</th>
-  <th class="no-sort">Account</th>
-  <th class="no-sort">Company</th>
-  <th class="no-sort">Contact</th>
-  <th class="no-sort">Inside Sales</th>
-  <th class="no-sort">Outside Sales</th>
-  <th class="no-sort">Total</th>
-  <th data-name="created_at">Created</th>
+  <th class="no-sort all"></th>
+  <th class="sort all text-right" data-name="inquiry_number">Inquiry</th>
+  <th class="no-sort desktop">Sales Orders</th>
+  <th class="no-sort desktop">Sales Invoices</th>
+  <th class="no-sort all" data-name="status">Status</th>
+  <th class="no-sort desktop" data-name="account_id">Account</th>
+  <th class="no-sort desktop" data-name="company_id">Company</th>
+  <th class="no-sort desktop">PO # - Subject</th>
+  <th class="sort desktop text-right" data-name="quotation_followup_date">Follow Up Date</th>
+  <th class="no-sort desktop" data-name="contact_id">Contact</th>
+  <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
+  <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
+  <th class="sort desktop text-right" data-name="margin_percentage">Margin (%)</th>
+  <th class="sort desktop text-right" data-name="potential_amount">Potential Amount</th>
+  <th class="sort desktop text-right" data-name="calculated_total">Quoted Amount</th>
+  <th class="sort desktop text-right" data-name="created_at">Date</th>
+<% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td class="status-filter" data-filter="dropdown"></td>
+  <td data-filter="ajax"></td>
+  <td data-filter="ajax"></td>
+  <td data-filter="false"></td>
+  <td data-filter="daterange"></td>
+  <td data-filter="ajax"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="daterange"></td>
 <% end %>
 
 <div class="col-lg-12">

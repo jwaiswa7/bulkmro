@@ -1,0 +1,66 @@
+<% provide :can_be_searched_or_created, true %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+<% provide :container_fluid, true %>
+<% provide :can_be_directly_exported_filtered_records, true %>
+
+<% provide :heading_buttons do %>
+  <div class="btn-group">
+    <a href="<%= export_all_overseers_sales_invoices_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales invoices" ><i class="fal fa-download mr-1"></i>Sales
+      Invoices</a>
+    <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
+    <div class="dropdown-menu dropdown-menu-right">
+      <a class="dropdown-item" href="<%= export_for_logistics_overseers_sales_invoices_path(format: :csv) %>">Sales Invoices (Logistics)</a>
+      <a class="dropdown-item" href="<%= export_rows_overseers_sales_invoices_path(format: :csv) %>">Sales Invoice Rows</a>
+    </div>
+  </div>
+
+<% end %>
+
+<div class="col-lg-12">
+  <%= render partial: "pod_summary" %>
+</div>
+
+<div class="col-lg-12">
+  <%= render partial: "shared/layouts/summary", locals: {klass: SalesInvoice, statuses: SalesInvoice.statuses} %>
+</div>
+
+<div class="col-lg-12">
+  <% content_for :header_row do %>
+    <th class="no-sort all"></th>
+    <th class="sort all text-right" data-name="invoice_number">Invoice #</th>
+    <th class="sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
+    <th class="no-sort desktop text-right" data-name="order_number">Order #</th>
+    <th class="no-sort desktop" data-name="account_id">Account</th>
+    <th class="no-sort desktop" data-name="company_id">Company</th>
+    <th class="no-sort desktop text-right">Line Items</th>
+    <th class="no-sort desktop" data-name="status">Status</th>
+    <th class="no-sort desktop" data-name="inside_sales_executive" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
+    <th class="no-sort desktop" data-name="outside_sales_executive" data-toggle="tooltip" title="Outside Sales & Procurement">OS Owner</th>
+    <th class="no-sort desktop">Proof of Delivery</th>
+    <th class="no-sort desktop" data-name="is_pod">POD</th>
+    <th class="no-sort desktop" data-name="pod_type">POD Type</th>
+    <th class="sort desktop text-right" data-name="mis_date">Invoice Date</th>
+    <th class="sort desktop text-right" data-name="created_at">Created At</th>
+  <% end %>
+  <% content_for :filter_row do %>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="ajax"></td>
+    <td data-filter="ajax"></td>
+    <td data-filter="false"></td>
+    <td class="status-filter" data-filter="dropdown"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="false"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="daterange"></td>
+    <td data-filter="daterange"></td>
+  <% end %>
+
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

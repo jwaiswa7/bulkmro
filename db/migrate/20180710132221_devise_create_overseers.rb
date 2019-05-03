@@ -1,10 +1,14 @@
-# frozen_string_literal: true
+
 
 class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
   def change
     create_table :overseers do |t|
       t.integer :parent_id, index: true
       t.integer :legacy_id, index: true
+      t.string :slack_uid
+      t.integer :salesperson_uid, index: { :unique => true }
+      t.integer :employee_uid, index: { :unique => true }
+      t.integer :center_code_uid, index: { :unique => true }
 
       t.string :username
       t.string :first_name
@@ -13,19 +17,17 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       t.string :telephone
       t.string :designation
       t.string :identifier
-      t.integer :department
-      t.integer :geography
+      t.string :department
+      t.string :function
+      t.string :geography
 
-      # t.string :slack_uid
+      t.integer :status, index: true
 
       t.integer :role, index: true
 
-      t.integer :salesperson_uid, index: { :unique => true }
-      t.integer :employee_uid, index: { :unique => true }
-      t.integer :center_code_uid
-
       t.string :google_oauth2_uid
       t.jsonb :google_oauth2_metadata
+      t.jsonb :legacy_metadata
 
       ## Database authenticatable
       t.string :email,              null: false, default: ""
@@ -62,9 +64,9 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       t.userstamps
     end
 
+    # add_index :overseers, :confirmation_token,   unique: true
     add_index :overseers, :email,                unique: true
     add_index :overseers, :reset_password_token, unique: true
-    # add_index :overseers, :confirmation_token,   unique: true
     add_index :overseers, :unlock_token,         unique: true
     add_foreign_key :overseers, :overseers, column: :parent_id
   end

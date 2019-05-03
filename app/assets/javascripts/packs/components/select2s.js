@@ -1,23 +1,55 @@
 // Converts select to select2
 const select2s = () => {
-    $('.select2-single:not(.select2-ajax), .select2-multiple:not(.select2-ajax)').select2({
-        theme: "bootstrap",
-        containerCssClass: ':all:',
-    }).on('change', function () {
-        $(this).trigger('input');
-    });
+    // Select2 Single Dropdown (not AJAX)
+    $('.select2-single:not(.select2-ajax)').each(function() {
+        let placeholder = $(this).attr('placeholder') ? $(this).attr('placeholder') : $(this).data('placeholder') ? $(this).data('placeholder') : $(this).find('option').first().val() == "" ? $(this).find('option').first().text() : '';
 
-    $('select.select2-ajax').each(function (k, v) {
         $(this).select2({
             theme: "bootstrap",
             containerCssClass: ':all:',
+            dropdownAutoWidth: true,
+            width: 'auto',
+            allowClear: !($(this).prop('required') || $(this).hasClass('required')),
+            placeholder: placeholder
+        }).on('change', function () {
+            $(this).trigger('input');
+        });
+    });
+
+    // Select2 Multiple Dropdown (not AJAX)
+    $('.select2-multiple:not(.select2-ajax)').each(function () {
+        let isTags = $(this).hasClass('select2-tags');
+        let placeholder = $(this).attr('placeholder') ? $(this).attr('placeholder') : $(this).data('placeholder') ? $(this).data('placeholder') : $(this).find('option').first().val() == "" ? $(this).find('option').first().text() : '';
+
+        $(this).select2({
+            theme: "bootstrap",
+            containerCssClass: ':all:',
+            tags: isTags,
+            allowClear: !($(this).prop('required') || $(this).hasClass('required')),
+            placeholder: placeholder
+        }).on('change', function () {
+            $(this).trigger('input');
+        });
+    });
+
+    // Select2 Ajax
+    $('select.select2-ajax').each(function (k, v) {
+        let placeholder = $(this).attr('placeholder') ? $(this).attr('placeholder') : $(this).data('placeholder') ? $(this).data('placeholder') : $(this).find('option').first().val() == "" ? $(this).find('option').first().text() : '';
+
+        $(this).select2({
+            theme: "bootstrap",
+            containerCssClass: ':all:',
+            dropdownAutoWidth: true,
+            width: 'auto',
+            allowClear: !($(this).prop('required') || $(this).hasClass('required')),
+            placeholder: placeholder,
             ajax: {
                 url: $(this).attr('data-source'),
                 dataType: 'json',
-                delay: 100
+                delay: 250
             },
-            processResults: function(data, page) {
-                return { results: data };
+            processResults: function (data, page) {
+                return {results: data};
             },
 
         });

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
   def index?
-    admin?
+    admin? || hr?
   end
 
   def edit?
-    admin? || record == overseer
+    (admin? || hr?) && record != overseer
   end
 end

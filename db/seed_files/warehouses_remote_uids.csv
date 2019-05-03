@@ -1,0 +1,21 @@
+Business Place ID,Warehouse Code,Location,Warehouse Name,Account Name,Street,Block,Zip Code,Country,State,City
+1,2,1,Mumbai - Lower Parel,Bulk MRO Industrial Supply Pvt. Ltd.,"Sun Mill Compound, Lower Parel West,",,400013,IN,MH,Mumbai
+1,3,3,Mumbai - Bhiwandi,Bulk MRO Industrial Supply Pvt. Ltd.,"Mumbai Nashik Highway, Next to Sangrila Resort Opp. R.K. Petrol Pump Borivli (Kuksha), Bhiwandi",,421302,IN,MH,Thane
+1,6,8,Pune - Kothrud,Bulk MRO Industrial Supply Pvt. Ltd.,,"Near Bapuji Buva Mandir,",411021,IN,MH,"Bavdhan, Kothrud,Pune"
+1,7,2,Mumbai - Altamount,Bulk MRO Industrial Supply Pvt. Ltd.,"18, Deluxe, 664 Altamount Road,",,400026,IN,MH,Mumbai
+8,11,7,Delhi - Janakpuri,Bulk MRO Industrial Supply Pvt. Ltd.,Janakpuri,"C-6B, 156",110058,IN,DL,New Delhi
+1,14,1,Amazon Online Sales,Bulk MRO Industrial Supply Pvt. Ltd.,"S. B. Marg, Lower Parel",,400013,IN,MH,Mumbai
+6,15,6,Ahmedabad - Dev Priya,Bulk MRO Industrial Supply Pvt. Ltd.,"Anand Nagar Road, Satellite,",,380015,IN,GJ,Ahmedabad
+8,18,5,Delhi - Okhla,Bulk MRO Industrial Supply Pvt. Ltd.,,,110020,IN,DL,New Delhi
+11,19,12,Chennai,Bulk MRO Industrial Supply Pvt. Ltd.,"Sai Krupa Apartments, Kilbann Nagar, Madhavaram,",,"600060,",IN,TN,Chennai
+6,20,11,Ahmedabad - Bopal,Bulk MRO Industrial Supply Pvt. Ltd.,"Ambli - Bopal,",,380058,IN,GJ,Ahmedabad
+6,21,4,Vadodara - Manjalpur,Bulk MRO Industrial Supply Pvt. Ltd.,"Manjalpur,",,390020,IN,GJ,Vadodara
+9,22,9,Bangalore - Hoskote,Bulk MRO Industrial Supply Pvt. Ltd.,"M.V Extension, Hoskote,",,"562114,",IN,KA,Bangalore
+10,23,13,Indore,Bulk MRO Industrial Supply Pvt. Ltd.,"Bajrang Nagar,Pantipura,",,452010,IN,MP,Indore
+1,24,1,Supplier Warehouse,Bulk MRO Industrial Supply Pvt. Ldt,"Sun Mill Compound, Lower Parel West,",,400013,IN,MH,Mumbai
+1,25,1,Drop Ship - Lower Parel,Bulk MRO Industrial Supply Pvt. Ltd.,"Sun Mill Compound, Lower Parel West,",,400013,IN,MH,Mumbai
+8,26,7,Drop Ship - Delhi Janakpuri,Bulk MRO Industrial Supply Pvt. Ltd.,Janakpuri,"C-6B, 156",110058,IN,DL,New Delhi
+6,27,11,Drop Ship Ahmedabad - Bopal,Bulk MRO Industrial Supply Pvt. Ltd.,"Ambli - Bopal,",,380058,IN,GJ,Ahmedabad
+6,28,6,Drop Ship - Ahmedabad-Dev Priya,Bulk MRO Industrial Supply Pvt. Ltd.,"Anand Nagar Road, Satellite,",,380015,IN,GJ,Ahmedabad
+11,29,12,Drop Ship - Chennai,,"Sai Krupa Apartments, Kilbann Nagar, Madhavaram,",,"600060,",IN,TN,Chennai
+12,30,14,Hyderabad - SCB Nagar,,"SCB Nagar, Subhash Chandra Bose Nagar",Hafeezpet,500049,IN,TS,Hyderabad

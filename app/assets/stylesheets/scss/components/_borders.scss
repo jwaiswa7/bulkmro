@@ -1,0 +1,16 @@
+// Base class
+//
+// Requires one of the contextual, color modifier classes for `color` and
+// `background-color`.
+
+@each $color, $value in $colors {
+  .border-#{$color} {
+    border-color: $value !important;
+  }
+}
+
+@each $color, $value in $custom-colors {
+  .border-#{$color} {
+    border-color: $value !important;
+  }
+}

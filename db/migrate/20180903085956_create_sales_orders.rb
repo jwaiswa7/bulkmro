@@ -4,15 +4,18 @@ class CreateSalesOrders < ActiveRecord::Migration[5.2]
       t.references :sales_quote, foreign_key: true
       t.integer :parent_id, index: true
       t.integer :legacy_id, index: true
-      t.string :remote_uid, index: true
-      t.integer :legacy_request_status
+      t.integer :remote_uid, index: true
 
-      t.string :order_number
-      t.string :sap_series
-      t.string :doc_number
+      t.integer :legacy_request_status, index: true
+      t.integer :remote_status, index: true
+      t.integer :status, index: true
+
+      t.integer :order_number
+      t.integer :draft_uid
 
       t.datetime :sent_at
 
+      t.jsonb :legacy_metadata
       t.timestamps
       t.userstamps
     end

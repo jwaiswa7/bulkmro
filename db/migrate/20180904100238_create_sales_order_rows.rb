@@ -4,7 +4,7 @@ class CreateSalesOrderRows < ActiveRecord::Migration[5.2]
       t.references :sales_order, foreign_key: true
       t.references :sales_quote_row, foreign_key: true
 
-      t.integer :quantity
+      t.decimal :quantity
 
       t.timestamps
       t.userstamps

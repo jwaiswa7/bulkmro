@@ -1,0 +1,96 @@
+<div class="navbar navbar-expand-lg bg-light navbar-light sticky-top">
+  <!-- Drawer Toggle -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <!-- Drawer Toggle -->
+
+  <!-- Logo -->
+  <a class="navbar-brand" href="<%= customers_dashboard_path %>">
+    <img alt="BulkMRO" src="<%= image_path('BMIS_Logo_PNG.png') %>" height="22"/>
+  </a>
+  <!-- Logo -->
+
+  <!-- Navigation Bar -->
+  <div class="collapse navbar-collapse justify-content-between" id="navbar-collapse">
+    <ul class="navbar-nav">
+      <%= nav_item 'Dashboard', customers_dashboard_path, true %>
+      <%= nav_item 'Quotes', customers_quotes_path, true %>
+      <%= nav_item 'Orders', customers_orders_path, true %>
+      <%= nav_item 'Products', customers_products_path, policy(:customer_product).index? %>
+      <%= nav_item 'Invoices', customers_invoices_path, true %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
+          Reports
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, policy(:customer_product).most_ordered_products? %>
+          <%= nav_dropdown_item 'Aggregate Reports', monthly_purchase_data_customers_reports_path, policy(:report).show_aggregate_reports? %>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+          Online Orders
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'List', customers_customer_orders_path, policy(:customer_order).index? %>
+          <%= nav_dropdown_item 'Open Orders', pending_customers_customer_orders_path, policy(:customer_order).pending? %>
+          <%= nav_dropdown_item 'Closed/Fulfilled Orders', approved_customers_customer_orders_path, policy(:customer_order).approved? %>
+        </div>
+      </li>
+      <%= nav_item 'Image Reader', customers_image_readers_path, policy(:image_reader).index? %>
+    </ul>
+  </div>
+  <!-- Navigation Bar -->
+
+  <!-- Settings Dropdown DESKTOP -->
+  <div class="d-block">
+    <% if current_company.logo.attached? %>
+      <span class="d-none d-md-inline">
+        <img src="<%= url_for(current_company.logo) %>" height="18" alt="<%= current_company.name %>">
+      </span>
+    <% end %>
+    <span class="d-none d-md-inline badge badge-light mr-1"><%= current_company.name %></span>
+    <% if policy(:cart).show? %>
+      <div class="dropdown d-inline mr-2" id="cart">
+        <a href="<%= customers_cart_path %>" role="button" id="cart-count">
+          <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary cart-items-count"><%= current_cart.items.count %></span>
+        </a>
+      </div>
+    <% end %>
+    <div class="dropdown d-inline">
+      <a href="#" role="button" data-toggle="dropdown">
+        <span class="d-none d-md-inline"><%= current_contact.first_name %></span>
+        <i class="fal fa-cog"></i>
+      </a>
+      <span class="dropdown-menu dropdown-menu-right">
+        <%= link_to reset_current_company_customers_sign_in_steps_path, method: :post, :class => 'dropdown-item' do %>
+          <i class="fal fa-building"></i>&nbsp;Choose Another Company
+        <% end if policy(current_contact).reset_current_company? %>
+        <%= link_to edit_customers_profile_path, class: 'dropdown-item' do %>
+          <i class="fal fa-user"></i> Edit Profile
+        <% end %>
+        <%= link_to destroy_contact_session_path, method: :delete, :class => 'dropdown-item' do %>
+          <i class="fal fa-power-off"></i>&nbsp;Sign Out
+        <% end %>
+      </span>
+    </div>
+  </div>
+  <!-- Settings Dropdown DESKTOP -->
+</div>
+
+<div class="alert alert-success collapse">
+  Product was successfully added to the cart.
+
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="alert alert-danger collapse">
+  Product was successfully removed from the cart.
+
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>

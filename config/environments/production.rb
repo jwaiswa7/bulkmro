@@ -1,23 +1,15 @@
 Rails.application.configure do
   # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = false
-  Rails.application.routes.default_url_options[:host]= Settings.domain
-  Rails.application.routes.default_url_options[:protocol]= 'https'
+  Rails.application.routes.default_url_options[:host] = Settings.domain
+  Rails.application.routes.default_url_options[:protocol] = 'https'
 
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = { host: Settings.domain }
+  config.action_mailer.default_url_options = {host: Settings.domain}
   config.action_mailer.asset_host = Settings.domain
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-      address:              'smtp.gmail.com',
-      port:                 587,
-      domain:               'bulkmro.com',
-      # user_name:            '', # can be use as fallback if user credentials failed
-      # password:             '', # can be use as fallback if user credentials failed
-      authentication:       'plain',
-      enable_starttls_auto: true
-  }
+  config.action_mailer.smtp_settings = Settings.sendgrid_smtp.to_hash
 
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -31,7 +23,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
@@ -43,7 +35,7 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = Uglifier.new(harmony: true, compress: { unused: false })
+  config.assets.js_compressor = Uglifier.new(harmony: true, compress: {unused: false})
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
@@ -74,13 +66,22 @@ Rails.application.configure do
   config.log_level = :debug
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  config.cache_store = :mem_cache_store,
+      (ENV["MEMCACHIER_SERVERS"] || "").split(","),
+      {
+          :username => ENV["MEMCACHIER_USERNAME"],
+          :password => ENV["MEMCACHIER_PASSWORD"],
+          :failover => true,
+          :socket_timeout => 1.5,
+          :socket_failure_delay => 0.2,
+          :down_retry_delay => 60
+      }
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
-  # config.active_job.queue_adapter     = :resque
+  config.active_job.queue_adapter = :sidekiq
   # config.active_job.queue_name_prefix = "bulkmro_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
@@ -104,9 +105,9 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+    config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
   # Do not dump schema after migrations.

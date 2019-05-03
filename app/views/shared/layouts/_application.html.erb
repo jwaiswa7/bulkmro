@@ -6,29 +6,33 @@
   <%= render 'shared/layouts/components/stylesheets' %>
   <%= render 'shared/layouts/components/ga' %>
   <%= render 'shared/layouts/components/scripts' %>
+
+  <%# if overseer_signed_in? %>
+  <%#= render 'shared/layouts/components/usersnap' %>
+  <%# end %>
 </head>
 
 <body data-controller="<%= controller_name %>" data-controller-action="<%= action_name %>">
-<%= navigation %>
-<div class="layout layout-nav-top">
-  <div class="main-container">
-    <%= render 'shared/layouts/components/breadcrumbs' %>
+  <%= navigation if local_assigns[:navigation].present? %>
+  <div class="layout layout-nav-top">
+    <div class="main-container">
+      <%= render 'shared/layouts/components/breadcrumbs' if local_assigns[:navigation].present? %>
 
-    <div class="container<% if content_for?(:container_fluid) %>-fluid<% end %>">
-      <div class="row justify-content-center">
-        <%= yield %>
+      <div class="container<% if content_for?(:container_fluid) %>-fluid<% end %>">
+        <div class="row justify-content-center">
+          <%= yield %>
 
-        <% flash.each do |message_type, message| %>
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <%= message %>
-            <button class="close" data-dismiss="alert" aria-label="Close">
-              <i class="fal fa-times"></i>
-            </button>
-          </div>
-        <% end %>
+          <% flash.each do |message_type, message| %>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <%= message %>
+              <button class="close" data-dismiss="alert" aria-label="Close">
+                <i class="fal fa-times"></i>
+              </button>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
-</div>
-</body>
+  </body>
 </html>

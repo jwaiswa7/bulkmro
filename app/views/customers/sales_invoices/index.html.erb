@@ -1,0 +1,45 @@
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+<% provide :container_fluid, true %>
+<% provide :use_url_as_page_title, true %>
+<% content_for :heading do %>
+  Invoices
+<% end %>
+
+<% provide :heading_buttons do %>
+  <div class="btn-group">
+    <a href="<%= export_all_customers_invoices_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales invoices"><i class="fal fa-download mr-1"></i>Invoices</a>
+  </div>
+<% end %>
+
+<div class="col-lg-12">
+  <% content_for :header_row do %>
+    <th class="no-sort all"></th>
+    <th class="no-sort desktop" data-name="">PO #</th>
+    <th class="no-sort desktop" data-name="">PO Date</th>
+    <th class="no-sort all" data-name="invoice_number">Invoice #</th>
+    <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
+    <th class="no-sort desktop" data-name="order_number">Order #</th>
+    <th class="no-sort desktop">Line Items</th>
+    <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
+    <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
+    <th class="no-sort desktop">Proof of Delivery</th>
+    <th class="no-sort desktop">Created At</th>
+  <% end %>
+  <% content_for :filter_row do %>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+  <% end %>
+
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

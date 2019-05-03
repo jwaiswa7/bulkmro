@@ -1,0 +1,9 @@
+//
+// Init Razorpay
+//
+
+.razorpay-payment-button {
+  @extend .btn;
+  @extend .btn-success;
+  @extend .btn-block;
+}

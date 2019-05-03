@@ -1,0 +1,94 @@
+<div class="card-body pb-2">
+  <div class="form-row">
+    <div class="col-md-6">
+      <% if customer_order.billing_address.present? %>
+        <div>
+          <strong class="d-block">Billing Address</strong>
+          <em class="d-block"><%= customer_order.contact.name %></em>
+          <%= customer_order.billing_address.to_multiline_s %><br/>
+          <% if customer_order.contact.telephone.present? %>
+            T: <%= customer_order.contact.telephone %><br/>
+          <% end %>
+          GST No: <%= customer_order.billing_address.gst %>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-md-6 mt-2 mt-md-0">
+      <% if customer_order.shipping_address.present? %>
+        <div>
+          <strong class="d-block">Shipping Address</strong>
+          <em class="d-block"><%= customer_order.contact.name %></em>
+          <%= customer_order.shipping_address.to_multiline_s %><br/>
+          <% if customer_order.contact.telephone.present? %>
+            T: <%= customer_order.contact.telephone %><br/>
+          <% end %>
+          GST No: <%= customer_order.shipping_address.gst %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <hr class="my-2">
+  <% if customer_order.po_reference.present? && customer_order.po_reference != 0 %>
+    <div>
+      <strong class="d-block">PO Reference</strong>
+      <%= customer_order.po_reference %>
+    </div>
+    <hr class="my-2">
+  <% end %>
+  <% if customer_order.special_instructions.present? %>
+    <div>
+      <strong class="d-block">Special Instructions</strong>
+      <%= customer_order.special_instructions %>
+    </div>
+    <hr class="my-2">
+  <% end %>
+
+  <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
+    <thead>
+    <tr>
+      <th class="no-sort desktop">Image</th>
+      <th class="no-sort all">Product</th>
+      <th class="no-sort">Price</th>
+      <th class="all">Quantity</th>
+      <th class="no-sort all">Subtotal</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% customer_order.rows.each do |customer_order_row| %>
+      <tr>
+        <td>
+          <% if customer_order_row.customer_product.best_images.present? %>
+            <img src="<%= url_for_image(customer_order_row.customer_product.best_images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= customer_order_row.customer_product.sku %>" height="40"/>
+          <% else %>
+            <img src="<%= image_path('coming_soon.png') %>" alt="<%= customer_order_row.customer_product.sku %>" height="40"/>
+          <% end %>
+        </td>
+        <td><%= customer_order_row.customer_product.name.truncate(80) %></td>
+        <td><%= format_currency(customer_order_row.customer_product.customer_price.to_f) %></td>
+        <td><%= customer_order_row.quantity %></td>
+        <td><%= format_currency(customer_order_row.customer_product.customer_price.to_f * customer_order_row.quantity) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <div class="card-header">
+    <div class="text-right">
+      <% if customer_order.billing_address.present? %>
+        <% customer_order.tax_line_items(for_order: true).each do |key, value| %>
+                <span class="d-block"><em class="float-left"><%= TaxRateString.for(customer_order.billing_address, customer_order.default_warehouse_address, customer_order.default_warehouse_address, key) %>
+                  :</em> <%= format_currency(value) %></span>
+        <% end %>
+        <strong class="float-left">Total Tax:</strong>
+        <strong><%= format_currency(customer_order.calculated_total_tax(for_order: true)) %></strong>
+        <hr class="my-1">
+        <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(customer_order.grand_total(for_order: true)) %>
+        </strong>
+      <% else %>
+        <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><strong class="float-left">Total Tax <i class="fal fa-info-circle text-small"></i>:</strong> 0.00</span>
+        <hr class="my-1">
+        <span class="d-block"><strong class="float-left">Grand Total:</strong> <%= format_currency(customer_order.calculated_total) %></span>
+      <% end %>
+    </div>
+  </div>
+</div>

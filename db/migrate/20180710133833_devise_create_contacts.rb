@@ -2,7 +2,6 @@ class DeviseCreateContacts < ActiveRecord::Migration[5.2]
   def change
     create_table :contacts do |t|
       t.references :account, foreign_key: true
-      t.integer :remote_uid, index: { :unique => true }
       t.integer :legacy_id, index: true
 
       t.string :first_name
@@ -18,6 +17,7 @@ class DeviseCreateContacts < ActiveRecord::Migration[5.2]
 
       ## Database authenticatable
       t.string :email, null: false, default: ""
+      t.string :legacy_email
       t.string :encrypted_password, null: false, default: ""
 
       ## Recoverable
@@ -39,7 +39,7 @@ class DeviseCreateContacts < ActiveRecord::Migration[5.2]
       t.string :unlock_token # Only if unlock strategy is :email or :both
       t.datetime :locked_at
 
-
+      t.jsonb :legacy_metadata
       t.timestamps
       t.userstamps
     end

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "bmsap-212015",
+  "private_key_id": "e2b660dbd37798786a468a15433a755714118ac5",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDN8jgoFhDXZ7g0\n8GTwzrUJefVdPa5zgt5TWyNqZapaY+Nx0qkl03jQ59IeNKDDUopI+HEVFzh2J4EY\nBZSyLBt0hWS2zZYyQZSNEGs67SvwiRKip9IRdpr60y4U5qORai0kQ6djUFn9yAbA\nBd+6xQ5hxjTsREaUSALJrg2HMn6e41upaQAxUZ3ad08uBSXQ5GkRVn65EXhCZP9p\n0bNt5lb7HUiQ0YiL8deFvDm0UmjwS/LeCndiIF2vKLnLk3dtJWJ4x9S05RTmJlwZ\ndX5tWPExIheSpttJiSpvImnSp5kCRI1ioZYCldDcQZdiqOZggWL7uPk9oDvkbZ7z\nwArlka03AgMBAAECggEAMmYCRB0SRgSF2b6ylROgzg7gcs7zcCUojzGQeysiAzjK\nokIxTqZvvH/etbGfXe1HFhBmbAjgsll8iApllyygE2XJfcrV5LqTxemstCDyTczd\nmJyFFez2hEdF0auXf7CCF4vO3Mj/HNHkhP1rAOPUXy0IKoGS3Bq7Q+uqN9mtjugY\nCeDdlSvE1JnxgREML+hNod3AB7FxGDETLz3LXcODWIpGHkHYay7ajKVX6kRND7/l\nQIXiQe65qd73f7gNQmZwd1k5tBDpE8wd0FlYeXD3GTbOVF2uul7J1YrhCUTrqC/u\nxUmeWebGmgHlb41Q89jXW4BznJMWMpq5NS7MmWtBsQKBgQD3ABdIGM6DMLhPTLDw\niaUmUpP4aehTT3dCB2ZQz6GdMyOoi0oGiVGJgKl6cSruOsbcfZXvRwiBoGN6jS1B\n+DpQYX7qQny6xf6nBaM/o/oO0Jpp+oW0RDm2v+O/FJgeggR624dVpP+MQUL0gpRT\nuYnhSR3v8U+G1/JGrqmLuz6PtQKBgQDVczF7+2At1/W/cOpDgFHZEstOMgW6U/m4\np5VjQ4ahpUeSy+ghrbgwNes/ed5qZR6YRQOio0Qc6wmK/SdFSK0Xjaoj256zX9Ml\neZvlrHTOvaeDiAoeHPElBKFuXxYzIfwXK1B25lUJ8r8NWexGyCOro/zFOCjzBL3Q\nXsE7EUxkuwKBgQCxAUKt6wELKL3cLjRam/la5jCeA593HGp1SgI7hR/nHH/AR9lL\np9pjtG0/jpvaTwq1ddYdvATPiBXh/Avjy7RWaBfgXrctzbe5D6Q2dhc7yKfvrJVm\nYsINQaQ/Cc4dhsUZGfr5GB3978LAoFcVTNAPPyuSCJcaJeS8XGyp8wxZRQKBgCEs\nAs+61EqrmlSDLtUIty+eHRxs57j6Xf/Vg4DmuKCceBAXQl8hiVNsvb+ip+8vAd82\nModvCiHYYSZJi3XYApZ7fKqP8gz8YmsbiB/cela64LKvTKs7YjqXiqMFggS2TmAn\nahzgVOzz3b8sb2zco7aECL95p9uErB8a6rrMSGwLAoGBAIxDAoKbtpui9NHwoiz1\nuOE4rkd+vSFiY0wXzClPskFPrXrxApf7NfSQGfHvY5Yq759yYJ+89lHCcV+OQ7+Z\nZcqXqEFZwkaWjKGWtmJhhmgtwhzKEI182+BnsSOWNF8nK0ucMruQkYk5vGwUGd2z\npim7tlU7S/aZK6/yLBXqktpp\n-----END PRIVATE KEY-----\n",
+  "client_email": "bm-sap-linux@bmsap-212015.iam.gserviceaccount.com",
+  "client_id": "102957638572830465278",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bm-sap-linux%40bmsap-212015.iam.gserviceaccount.com"
+}

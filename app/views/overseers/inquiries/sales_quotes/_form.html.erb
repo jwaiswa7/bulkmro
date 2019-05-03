@@ -1,40 +1,40 @@
 <div class="col-lg-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <%= simple_form_for([:overseers, @inquiry, @sales_quote], :html => {}) do |f| %>
+    <%= simple_form_for([:overseers, @inquiry, @sales_quote], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= f.hidden_field :inquiry_id %>
       <%= f.hidden_field :parent_id %>
 
       <%= render 'shared/snippets/form_errors', f: f %>
 
-      <div class="card">
+      <div class="card" data-toggle="sticky">
         <div class="card-header d-block d-md-flex flex-row">
           <div class="flex-fill">
             <strong>Total Selling Price (Excl. tax)</strong><br>
-            <span data-v-html="calculated_total"><%= f.object.calculated_total %></span>
+            <span data-v-html="calculated_total"><%= format_currency(f.object.calculated_total) %></span>
           </div>
           <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Selling Price (Incl. tax)</strong><br>
-            <span data-v-html="calculated_total_with_tax"><%= f.object.calculated_total_with_tax %></span>
+            <span data-v-html="calculated_total_with_tax"><%= format_currency(f.object.calculated_total_with_tax) %></span>
           </div>
           <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Tax</strong><br>
-            <span data-v-html="calculated_total_tax"><%= f.object.calculated_total_tax %></span>
+            <span data-v-html="calculated_total_tax"><%= format_currency(f.object.calculated_total_tax) %></span>
           </div>
           <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Margin</strong><br>
-            <span data-v-html="calculated_total_margin"><%= f.object.calculated_total_margin %></span>
+            <span data-v-html="calculated_total_margin"><%= format_currency(f.object.calculated_total_margin) %></span>
           </div>
           <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Freight Cost</strong><br>
-            <span data-v-html="calculated_freight_cost_total"><%= f.object.calculated_freight_cost_total %></span>
+            <span data-v-html="calculated_freight_cost_total"><%= format_currency(f.object.calculated_freight_cost_total) %></span>
           </div>
         </div>
 
         <div class="card-body">
-          <div class="row">
+          <div class="form-row">
             <%= f.simple_fields_for :inquiry_currency do |inquiry_currency| %>
               <div class="col-md-6">
-                <%= inquiry_currency.association :currency, collection: Currency.all.map {|currency| [currency.to_s, currency.id, {'data-conversion-rate' => currency.conversion_rate}]}, include_blank: false, input_html: {"data-v-model": "", "data-v-on:change": "dropdownChanged"} %>
+                <%= inquiry_currency.association :currency, collection: Currency.all.map {|currency| [currency.to_s, currency.id, {'data-conversion-rate' => currency.conversion_rate, 'data-currency-sign' => currency.sign}]}, include_blank: false, input_html: {"data-v-model": "", "data-v-on:change": "dropdownChanged"} %>
               </div>
               <div class="col-md-6">
                 <%= inquiry_currency.input :conversion_rate, input_html: {"data-v-model": "", } %>
@@ -44,12 +44,28 @@
         </div>
       </div>
 
-      <% f.object.rows.group_by(&:inquiry_product).each do |inquiry_product, rows| %>
-        <div class="card mt-3">
+      <% f.object.rows.sort_by(&:sr_no).group_by(&:inquiry_product).each do |inquiry_product, rows| %>
+        <div class="card mt-3 option-wrapper">
           <div class="card-body accordion" id="ac-<%= inquiry_product.id %>">
-            <h6 class="text-uppercase">
-              <strong><%= inquiry_product.product.name %></strong>
-              <p class="lead text-black-50 text-small d-block mt-1">#<%= inquiry_product.sr_no %></p>
+            <div class="btn btn-danger float-right" :class="showProductButton('<%= inquiry_product.id %>')? '': 'disabled'" data-v-event="" data-v-on:click="hideProduct('<%= inquiry_product.id %>')">
+              <template v-if="showProductButton('<%= inquiry_product.id %>')">
+                Remove Product
+              </template>
+              <template v-else>
+                Product Removed
+              </template>
+            </div>
+            <h6 class="text-uppercase mb-0">
+              <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.sr_no %></span>
+              <strong>
+                <%= inquiry_product.product.sku %>
+                - <%= inquiry_product.bp_catalog_name? ? inquiry_product.bp_catalog_name : inquiry_product.product.name %>
+                <%= inquiry_product.bp_catalog_sku? ? '(' + inquiry_product.bp_catalog_sku + ')' : '' %>
+                <% if policy(inquiry_product.product).sku_purchase_history? %>
+                  <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a>
+                <% end %>
+              </strong>
+              <span class="lead text-black-50 text-small mt-1 mr-1 d-block"><%= inquiry_product.product.brand %> <%= inquiry_product.product.mpn? ? '(' + inquiry_product.product.mpn + ')' : '' %></span>
             </h6>
 
             <%= f.simple_fields_for :rows, rows.sort_by(&:unit_cost_price), wrapper_tag: :div do |row| %>
@@ -65,57 +81,70 @@
                 <div class="col-12">
                   <div class="d-flex flex-row">
                     <div class="custom-control custom-radio align-self-center mr-2">
-                      <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, (f.object.persisted? && row.object.persisted?) || (rows.select {|r| r.new_record?}.size == rows.size && rows[-1] == row.object), "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input' %>
-                      <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %>
+                      <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, (f.object.persisted? && row.object.persisted?) || (rows.select {|r| r.new_record?}.size == rows.size && rows[0] == row.object), "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' %>
+                      <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1], :"data-toggle" => "collapse", "data-target" => "#c-" + row.object.inquiry_product_supplier_id.to_s do %><%= '' %>
                       <% end %>
                     </div>
                     <div class="flex-grow-1">
                       <div class="" data-toggle="collapse" data-target="#c-<%= row.object.inquiry_product_supplier_id %>">
                         <%= row.label '', for: /id="([a-z\d_]*)"/.match(radio)[1], :class => 'd-block' do %>
-                          <h5 class="text-black-50 mb-1 text-uppercase">
+                          <h6 class="text-black-50 mb-1 text-uppercase">
                             <%= row.object.inquiry_product_supplier %>
-                          </h5>
+                            <% if !row.object.persisted? %>
+                              <div class="float-right badge badge-secondary">
+                                Removed Last Save
+                              </div>
+                            <% end %>
+                          </h6>
                           <div class="row">
                             <div class="col-12 d-block d-md-flex flex-row">
                               <div class="flex-fill">
                                 <strong>Unit Cost</strong><br>
-                                <span data-bind-html="unit_cost_price"><%= row.object.unit_cost_price %></span>
+                                <span data-bind-html="unit_cost_price"><%= format_currency(row.object.unit_cost_price) %></span>
                               </div>
                               <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Unit Cost with Freight</strong><br>
-                                <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+                                <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= format_currency(row.object.unit_cost_price_with_unit_freight_cost) %></span>
                               </div>
                               <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Total Selling Price</strong><br>
-                                <span data-bind-html="total_selling_price"><%= row.object.total_selling_price %></span>
+                                <span data-bind-html="total_selling_price"><%= format_currency(row.object.total_selling_price) %></span>
                               </div>
                               <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Total Selling Price with Tax</strong><br>
-                                <span data-bind-html="total_selling_price_with_tax"><%= row.object.total_selling_price_with_tax %></span>
+                                <span data-bind-html="total_selling_price_with_tax"><%= format_currency(row.object.total_selling_price_with_tax) %></span>
                               </div>
-                              <div class="flex-fill mt-2 mt-md-0">
-                                <strong>Unit Selling Price (in $)</strong><br>
-                                <span data-bind-html="unit_selling_price"><%= row.object.unit_selling_price %></span>
+                              <div class="flex-fill mt-2 mt-md-0" v-if="showCurrency">
+                                <strong>Unit Selling Price (in {{currency_sign}})</strong><br>
+                                <span data-bind-html="converted_unit_selling_price"><%= row.object.converted_unit_selling_price %></span>
                               </div>
                             </div>
                           </div>
                         <% end %>
                       </div>
-                      <div id="c-<%= row.object.inquiry_product_supplier_id %>" class="collapse <%= (f.object.persisted? && row.object.persisted?) || (rows.select {|r| r.new_record?}.size == rows.size && rows[-1] == row.object) ? 'show' : '' %>" data-parent="#ac-<%= inquiry_product.id %>">
+                      <div id="c-<%= row.object.inquiry_product_supplier_id %>" class="collapse <%= (f.object.persisted? && row.object.persisted?) || (rows.select {|r| r.new_record?}.size == rows.size && rows[0] == row.object) ? 'show' : '' %>" data-parent="#ac-<%= inquiry_product.id %>">
                         <div class="form-row mt-2">
                           <div class="col-md-1 col-4"><%= row.input :quantity, input_html: {"data-bind": ""} %></div>
-                          <div class="col-md-1 col-4"><%= row.input :margin_percentage, label: 'Margin', input_html: {:min => 0, :max => 99.99, "data-bind": ""} %></div>
-                          <div class="col-md-2 col-4"><%= row.input :unit_selling_price, label: 'USP', input_html: {:min => 0, "data-bind": ""} %></div>
-                          <div class="col-md-2 col-6"><%= row.input :unit_freight_cost, input_html: {"data-bind": ""}, label: 'UFC' %></div>
-                          <div class="col-md-2 col-6"><%= row.input :freight_cost_subtotal, input_html: {"data-bind": ""}, label: 'Total Freight' %></div>
+                          <div class="col-md-1 col-4"><%= row.input :margin_percentage, label: 'Margin', input_html: { "data-bind": ""} %></div>
+                          <div class="col-md-2 col-4"><%= row.input :unit_selling_price, label: 'Unit Selling Price', input_html: {min: 0, "data-bind": ""} %></div>
+                          <div class="col-md-3 col-12">
+                            <div class="form-row">
+                              <div class="col-md-6 col-6"><%= row.input :unit_freight_cost, input_html: {"data-bind": "", min: 0}, label: 'Unit Freight' %></div>
+                              <div class="col-md-6 col-6"><%= row.input :freight_cost_subtotal, input_html: {"data-bind": "", min: 0}, label: 'Total Freight' %></div>
+                            </div>
+                          </div>
 
-                          <div class="col-md-2"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path, "data-bind": ""} %></div>
+                          <div class="col-md-2"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path(is_service: row.object.is_service), "data-bind": ""} %></div>
+                          <div class="col-md-2"><%= row.association :tax_rate, collection: TaxRate.all.map {|tax_rate| [tax_rate.to_s, tax_rate.id, {'data-tax_rate' => tax_rate.tax_percentage}]} , input_html: { "data-bind": ""} %></div>
                           <%= row.hidden_field :unit_cost_price, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :unit_cost_price_with_unit_freight_cost, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :total_selling_price, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :total_selling_price_with_tax, "data-bind": "", disabled: true %>
-                          <%= row.hidden_field :tax_percentage, "data-bind": "", disabled: true %>
-                          <div class="col-md-2"><%= row.association :lead_time_option %></div>
+                          <div class="col-md-2"><%= row.association :lead_time_option, wrapper: :custom_multi_select %></div>
+                          <div class="col-md-2"><%= row.association :measurement_unit, wrapper: :custom_multi_select, required: true %></div>
+                          <%= link_to_remove_association row, {class: 'btn btn-danger align-self-center d-none', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+                            Hide
+                          <% end %>
                         </div>
                       </div>
                     </div>
@@ -158,8 +187,8 @@
               <% end %>
             </div>
             <div class="col-6">
-              <%= button_tag(type: "submit", name: "save_and_send", class: "btn btn-success btn-block") do %>
-                <i class="fal fa-paper-plane mr-1"></i> Save and Send
+              <%= button_tag(type: "submit", name: "save_and_preview", class: "btn btn-success btn-block") do %>
+                <i class="far fa-check mr-1"></i> Save and Preview
               <% end %>
             </div>
           </div>

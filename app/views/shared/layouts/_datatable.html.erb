@@ -1,32 +1,114 @@
 <% if content_for?(:heading) || (content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new?) || !content_for?(:hide_table_desc) %>
   <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
-      <% if content_for?(:heading) %>
-        <h1 class="display-5 mb-1"><%= yield :heading %></h1>
-      <% else %>
-        <h1 class="display-5 mb-1"><%= current_model.humanize %></h1>
-      <% end unless content_for?(:hide_table_heading) %>
+      <div>
+        <% if content_for?(:heading) %>
+          <h1 class="display-5 mb-1"><%= yield :heading %></h1>
+        <% else %>
+          <h1 class="display-5 mb-1"><%= current_model.titleize %></h1>
+        <% end unless content_for?(:hide_table_heading) %>
+        <% unless content_for?(:hide_table_desc) %>
+          <% if content_for?(:table_desc) %>
+            <p class="lead mt-1 mb-1">
+              <%= yield :table_desc %>
+            </p>
+          <% else %>
+            <p class="lead mt-1 mb-1">
+              All <%= current_model.humanize.downcase %> searchable with relevant term/keywords.
+            </p>
+          <% end %>
+        <% end %>
+      </div>
+      <% if content_for?(:can_be_directly_created) || content_for?(:can_be_searched_or_created) || content_for?(:can_be_directly_exported) || content_for?(:can_be_directly_export_by_daterange) || content_for?(:heading_buttons) || content_for?(:can_be_directly_downloaded) || content_for?(:can_be_directly_exported_filtered_records) || content_for?(:can_be_directly_exported_inquiry_tat) %>
+        <div>
+          <% if content_for?(:can_be_searched_or_created) && policy(current_model.singularize.to_sym).search_or_create? %>
+            <div class="d-none d-md-inline-block align-top">
+              <%= simple_form_for(:document_creation, :url => overseers_document_creations_path, class: 'd-flex', :method => :post) do |f| %>
+                <div class="mr-2 d-md-inline-block align-top">
+                  <%= f.hidden_field :option, value: current_model.singularize.titleize.gsub('_', '') %>
+                  <%= f.input :document_number, as: :integer, input_html: { value: session[:number] }, label: false, placeholder: "Enter #{current_model.singularize.titleize.gsub('_', '')} #" %>
+                </div>
+                <%= f.submit "Request from SAP", class: "btn btn-rounded btn-dark" %>
+              <% end %>
+            </div>
+          <% end %>
+          <% if content_for?(:heading_buttons)%>
+            <%= yield :heading_buttons %>
+          <% end %>
+          <% if content_for?(:can_be_directly_export_by_daterange) && policy(current_model.singularize.to_sym).export_all? %>
+            <div class="d-none d-md-inline-block">
+              <div class="mr-2 d-md-inline-block export_daterange_wrapper">
+                <input type="text" id="export_daterange" name="export_daterange" class="form-control" data-toggle="daterangepicker" data-direction="left" placeholder="Pick a daterange" />
+              </div>
+              <a href="<%= [request.path, '/', 'export_all.csv'].join %>" id="export_daterange_button" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down export_daterange_wrapper" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
+                <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+              </a>
+            </div>
+          <% end %>
+          <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
+            <a href="<%= [request.path, '/', 'new'].join %>" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" target="_blank" >
+              <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
+            </a>
+          <% end %>
+          <% if content_for?(:can_be_directly_exported) && policy(current_model.singularize.to_sym).export_all? %>
+            <a href="<%= [request.path, '/', 'export_all.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
+              <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+            </a>
+          <% end %>
 
-      <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
-        <a href="<%= [request.path, '/', 'new'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
-          <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.upcase %>
-        </a>
+          <% if content_for?(:can_be_directly_exported_filtered_records) && policy(current_model.singularize.to_sym).export_filtered_records? %>
+            <%= button_tag(type: 'button', class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1", id: 'export_filtered_records') do %>
+              <i class="fal fa-envelope mr-1"></i> Filtered <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+            <% end %>
+          <% end %>
+          <% if content_for?(:can_be_directly_exported_inquiry_tat) && policy(current_model.singularize.to_sym).export_inquiries_tat? %>
+            <%= link_to ("#{export_inquiries_tat_overseers_inquiries_path}.csv"), class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1", 'data-badge': ([time_ago_in_words(Export.where(export_type: 2).last.created_at), "ago"].join(' ') if Export.where(export_type: 2).last.present?) do %>
+              <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %> TAT
+            <% end %>
+          <% end %>
+          <% if content_for?(:can_be_directly_downloaded) %>
+            <% if params['action'].include?'report'
+                 report_name = params['action']
+                 report_query = params[report_name].as_json.to_query(report_name) if params[report_name].present?
+                 report_url = params[report_name].present? ? "export_#{report_name}?#{report_query}" : "export_#{report_name}"
+               end %>
+            <a href="<%= report_url %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" >
+              <i class="fal fa-download mr-1"></i><%= action_name.split('/').last.split("_").join(" ").upcase%>
+            </a>
+          <% end %>
+          <% if content_for?(:can_be_directly_generated) && policy(current_model.singularize.to_sym).generate_all? %>
+            <a href="<%= [request.path, '/', 'generate_all'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
+              <i class="fal fa-download mr-1"></i>Generate <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+            </a>
+          <% end %>
+        </div>
       <% end %>
     </div>
 
-    <% unless content_for?(:hide_table_desc) %>
-      <p class="lead mt-1">
-        All <%= current_model.humanize.downcase %> filterable in any way that we want.
-      </p>
-    <% end %>
+    <%= yield :notice_message %>
+
   </section>
 <% end %>
 <section class="pb-4 pb-lg-5">
-  <table class="datatable table table-bordered dt-responsive <% if content_for?(:wrap_whitespace) %> wrap-whitespace<% end %>" data-search="Filter by anything"<% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.path %>"<% end %>>
+  <table class="datatable table table-bordered table-hover dt-responsive
+    <% if content_for?(:wrap_whitespace) %> wrap-whitespace
+    <% end %>" data-search="Enter search term/keywords"
+         <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.fullpath %>"
+         <% end %><% if not content_for?(:enable_sort_on_last_column) %>data-sorting="false"<% end %>>
     <thead>
     <tr>
       <%= yield :header_row %>
     </tr>
+    <% if content_for?(:filter_row) %>
+      <tr class="filters d-none d-lg-table-row">
+        <%= yield :filter_row %>
+      </tr>
+    <% end %>
+    <% if content_for?(:summary_row) %>
+      <tr class="table-summary d-none d-lg-table-row text-right text-dark">
+        <%= yield :summary_row %>
+      </tr>
+    <% end %>
     </thead>
     <tbody>
     <%= yield %>

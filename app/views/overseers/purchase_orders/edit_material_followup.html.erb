@@ -1,0 +1,121 @@
+<div class="col-lg-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+      <h3 class="display-5 d-flex align-items-center">
+        Edit Material Followup: <%= format_id(@purchase_order.po_number) %>
+      </h3>
+      <span>
+        <% if policy(@purchase_order).new_inward_dispatch? %>
+          <a href="<%= new_overseers_purchase_order_inward_dispatch_path(@purchase_order) %> " class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ">
+            <i class="fal fa-plus-circle mr-1"></i>New Inward Dispatch
+          </a>
+        <% else %>
+          <span data-toggle="tooltip" title="<%= @purchase_order.followup_date.blank? ? 'Followup Date Needed' : 'No Product Left to Pickup' %>">
+            <a href=# class=" btn btn-success btn-rounded align-self-center btn-block-sm-down disabled">
+              <i class="fal fa-plus-circle mr-1"></i>New Inward Dispatch
+            </a>
+          </span>
+        <% end %>
+      </span>
+    </div>
+  </section>
+
+  <%= simple_form_for(@purchase_order, url: update_material_followup_overseers_purchase_order_path(@purchase_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+    <% if @po_request.present? %>
+      <%= render 'overseers/po_requests/summary', po_request: @po_request %>
+    <% end %>
+    <div class="card">
+      <div class="card-header">
+        <div class="form-row">
+          <div class="col-6">
+            <%= f.input :material_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrder.material_statuses, alphabetical: false, keep_raw: true), :disabled => true %>
+          </div>
+
+          <div class="col-6">
+            <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single"}, label: "Logistics Owner" %>
+          </div>
+          <div class="col-4">
+            <%= f.input :supplier_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.supplier_dispatch_date.try(:strftime, "%d-%b-%Y"), class: 'supplier-dispatch-date'}, required: true %>
+          </div>
+
+          <div class="col-4">
+            <%= f.input :revised_supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.revised_supplier_delivery_date.try(:strftime, "%d-%b-%Y"), class: 'revised-supplier-delivery-date'}, required: true %>
+          </div>
+
+          <div class="col-4">
+            <%= f.input :followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.followup_date.try(:strftime, "%d-%b-%Y"), class: 'followup-date'}, required: true %>
+          </div>
+
+          <div class="col-12">
+            <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |purchase_order_comment| %>
+              <%= purchase_order_comment.hidden_field :created_by_id %>
+              <%= purchase_order_comment.hidden_field :updated_by_id %>
+              <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+            <% end %>
+          </div>
+
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <i class="fal fa-plus-circle"></i> update material followup
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <div class="card mt-2">
+    <div class="card-body">
+      <div class="form-row">
+        <% if @purchase_order.rows.size > 0 %>
+          <div class="col-12">
+            <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
+            <table class="table table-bordered dt-responsive wrap-whitespace w-100 datatable" data-fixed-header="false" data-sort="false">
+              <thead>
+              <tr>
+                <th class="no-sort text-right">No.</th>
+                <th class="no-sort">Product</th>
+                <th class="no-sort text-right">PO Total Quantity</th>
+                <th class="no-sort text-right">Available Pickup Quantity</th>
+                <th class="no-sort text-right">Quantity Pickup / Delivered</th>
+                <th class="no-sort text-right">Lead Date</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @purchase_order.rows.each_with_index do |row, index| %>
+                <tr>
+                  <td><%= index + 1 %></td>
+                  <td><%= row.to_s %></td>
+                  <td><%= row.quantity %></td>
+                  <td><%= row.get_pickup_quantity %></td>
+                  <td><%= row.quantity - row.get_pickup_quantity || 'N/A' %></td>
+                  <td><%= format_succinct_date(row.lead_date) %></td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% if @purchase_order.comments.persisted.size > 0 %>
+    <div class="card mt-2">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+          <div class="form-row">
+            <div class="col-12">
+              <div class="chats">
+                <% @purchase_order.comments.each do |comment| %>
+                  <% if comment.persisted? %>
+                    <%= format_comment(comment) %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

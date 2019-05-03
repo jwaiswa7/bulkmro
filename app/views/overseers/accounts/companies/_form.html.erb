@@ -1,134 +1,15 @@
 <div class="col-lg-12">
-  <div class="page-header">
-    <h2><%= action_name.capitalize %> Company</h2>
-    <p>This will <em>'<%= submit_text(@account).downcase %>'</em> and log it under
-      <strong><%= current_overseer.full_name %></strong>.</p>
-  </div>
+  <%= render 'shared/snippets/page_header', e: @company %>
+
+  <p class="alert alert-info" data-dismiss="false">
+    <% if @account.is_supplier? %>
+      This company will be synced as a supplier because it's under a customer supplier.
+    <% elsif @account.is_customer? %>
+      This company will be synced as a customer because it's under a customer account.
+    <% end %>
+  </p>
+
   <%= simple_form_for([:overseers, @account, @company], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%= render 'shared/snippets/form_errors', f: f %>
-
-    <%= f.hidden_field :account_id %>
-
-    <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
-    <div class="form-row">
-      <div class="col-6 col-md-3">
-        <%= f.input :site %>
-      </div>
-      <div class="col-6 col-md-3">
-        <%= f.input :mobile, disabled: true %>
-      </div>
-      <div class="col-6 col-md-3">
-        <%= f.input :email, disabled: true %>
-      </div>
-      <div class="col-6 col-md-3">
-        <%= f.input :telephone, disabled: true %>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="col-6 col-md-4">
-        <%= f.association :industry, wrapper: :custom_multi_select, include_blank: 'Select an Industry' %>
-      </div>
-      <div class="col-6 col-md-4">
-        <%= f.input :company_type, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.company_types), include_blank: 'Select a company type' %>
-      </div>
-      <div class="col-6 col-md-4">
-        <%= f.input :nature_of_business, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.nature_of_businesses), include_blank: 'Select a nature of business' %>
-      </div>
-
-      <div class="col-6 col-md-4">
-        <%= f.input :priority, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.priorities) %>
-      </div>
-      <div class="col-6 col-md-4">
-        <%= f.association :default_payment_option, wrapper: :custom_multi_select, include_blank: 'Select a default' %>
-      </div>
-      <div class="col-6 col-md-4">
-        <%= f.input :credit_limit %>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, include_blank: 'Select an Inside Owner' %>
-      </div>
-      <div class="col-6 col-md-4">
-        <%= f.association :outside_sales_owner, include_blank: 'Select an Outside Owner' %>
-      </div>
-      <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, include_blank: 'Select a Manager' %>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="col-md-4">
-        <%= f.input :tan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'TAN Proof' %>
-      </div>
-      <div class="col-md-4">
-        <%= f.input :pan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'PAN Proof' %>
-      </div>
-      <div class="col-md-4">
-        <%= f.input :cen_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'CEN Proof' %>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="col-6">
-        <%= f.input :is_msme, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is MSME?' %>
-      </div>
-      <div class="col-6">
-        <%= f.input :is_unregistered_dealer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %>
-      </div>
-      <div class="col-6">
-        <%= f.input :is_supplier, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is Supplier?' %>
-      </div>
-      <div class="col-6">
-        <%= f.input :is_customer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is Customer?' %>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :contact_ids, 'Contacts' %>
-      <div class="select2-wrapper">
-        <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts' %>
-      </div>
-    </div>
-
-<!--    <div class="form-group">-->
-      <%#= f.label :product_ids, 'Products' %>
-<!--      <div class="select2-wrapper">-->
-        <%#= f.select :product_ids, Product.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Products' %>
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="form-group">-->
-      <%#= f.label :category_ids, 'Category' %>
-<!--      <div class="select2-wrapper">-->
-        <%#= f.select :category_ids, Category.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Categories' %>
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="form-group">-->
-      <%#= f.label :brand_ids, 'Brands' %>
-<!--      <div class="select2-wrapper">-->
-        <%#= f.select :brand_ids, Brand.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Brands' %>
-<!--      </div>-->
-<!--    </div>-->
-
-    <% if f.object.persisted? %>
-      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default' %>
-      <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default' %>
-      <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default' %>
-    <% end %>
-
-    <% if action_name.capitalize == "New" %>
-      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> <%= submit_text(@company) %>
-      <% end %>
-    <% else %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-        <i class="fal fa-pen"></i> <%= submit_text(@company) %>
-      <% end %>
-    <% end %>
-
-
+    <%= render 'overseers/companies/common_form', :f => f %>
   <% end %>
 </div>

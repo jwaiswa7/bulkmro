@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mixins::IsAPerson
   extend ActiveSupport::Concern
 
@@ -5,10 +7,12 @@ module Mixins::IsAPerson
     has_many :email_messages
     has_many :text_messages
 
-    validates_presence_of :first_name # :last_name
-
     def full_name
-      [first_name, last_name].compact.join(' ')
+      [first_name, last_name].compact.join(' ').titleize if first_name.present?
+    end
+
+    def name
+      full_name || ['Contact', id].compact.join(' #')
     end
   end
 end

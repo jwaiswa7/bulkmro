@@ -1,0 +1,50 @@
+<% provide :controller_is_aliased, true %>
+<% content_for :page_title do %>
+  Online Orders
+<% end %>
+
+<div class="col-12">
+  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <h1 class="display-5 mb-1">Order <%= format_id(@customer_order.online_order_number) %></h1>
+    </div>
+    <p class="lead mt-1">
+      There are a total of <strong><%= @customer_order.rows.count %></strong> product(s) in this order.
+    </p>
+  </section>
+
+  <div class="card mb-2">
+    <%= render partial: 'shared/layouts/customer_order_templates/show', locals: {customer_order: @customer_order} %>
+    <div class="col-lg-12">
+      <section class="pb-4 pb-lg-5">
+        <div id="accordion">
+          <div class="card mt-2">
+            <a class="btn btn-light text-left text-black-50 btn-lg btn-block" type="button" data-toggle="collapse" data-target="#internal-comments">
+              Internal Comments</a>
+            <div id="internal-comments" class="collapse <%= show_if(params[:show_to_customer].blank? || params[:show_to_customer] == 'false') %>" data-parent="#accordion">
+              <div class="card-body">
+                <%= simple_form_for([:overseers, @customer_order.comments.build], url: overseers_customer_order_comments_path(@customer_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+                  <%= render 'shared/snippets/form_errors', f: f %>
+                  <%= render 'overseers/customer_orders/comments/comments', f: f, customer_order: @customer_order, comments: @customer_order.comments.internal_comments, show_to_customer: false %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="card mt-2">
+            <a class="btn btn-light text-left text-black-50 btn-lg btn-block" type="button" data-toggle="collapse" data-target="#customer-comments">
+              Customer Comments
+            </a>
+            <div id="customer-comments" class="collapse <%= show_if(params[:show_to_customer].present? && params[:show_to_customer] == 'true') %>" data-parent="#accordion">
+              <div class="card-body">
+                <%= simple_form_for([:overseers, @customer_order.comments.build], url: overseers_customer_order_comments_path(@customer_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+                  <%= render 'shared/snippets/form_errors', f: f %>
+                  <%= render 'overseers/customer_orders/comments/comments', f: f, customer_order: @customer_order, comments: @customer_order.comments.customer_comments, show_to_customer: true %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

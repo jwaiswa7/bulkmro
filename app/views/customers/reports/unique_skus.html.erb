@@ -1,0 +1,10 @@
+<%= render layout: 'customers/reports/tabs_layout' do %>
+  <%= render partial: 'customers/reports/date_form', locals: { path: 'unique_skus' } %>
+
+  <h3 class="display-5 mt-3 mb-2 d-none d-md-block text-black-50">Unique SKUs</h3>
+  <div class="card">
+    <div class="card-body">
+      <%= bar_chart @chart[:data], @chart[:options].merge({:height => '180px', :id => 'unique_skus_data'}) %>
+    </div>
+  </div>
+<% end %>

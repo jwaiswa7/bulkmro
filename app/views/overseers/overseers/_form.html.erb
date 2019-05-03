@@ -1,45 +1,58 @@
 <div class="col-lg-12">
-  <div class="page-header">
-    <h2><%= action_name.capitalize %> Overseer</h2>
-    <p>This will <em>'<%= submit_text(@overseer).downcase %>'</em> and log it under
-      <strong><%= current_overseer.full_name %></strong>.</p>
-  </div>
+  <%= render 'shared/snippets/page_header', e: @overseer %>
 
   <%= simple_form_for([:overseers, @overseer], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%= f.input :role, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Overseer.roles), include_blank: 'Select a role' %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+
+    <div class="form-row">
+      <div class="col-3 col-md-2">
+        <%= f.input :legacy_id, label: 'Legacy ID', disabled: true %>
+      </div>
+      <div class="col-4 col-md-5">
+        <%= f.input :first_name %>
+      </div>
+      <div class="col-5 col-md-5">
+        <%= f.input :last_name %>
+      </div>
+    </div>
+
+    <%= f.input :role, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Overseer.roles), include_blank: false %>
 
     <% if @overseer.persisted? %>
       <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s, collection: Overseer.except_objects(@overseer.self_and_descendants), include_blank: 'Select a parent' %>
     <% else %>
       <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s, include_blank: 'Select a parent' %>
     <% end %>
-
     <div class="form-row">
-      <div class="col-6">
-        <%= f.input :first_name %>
+      <div class="col-12 col-md-4">
+        <%= f.input :email, :required => true %>
       </div>
-      <div class="col-6">
-        <%= f.input :last_name %>
+      <div class="col-6 col-md-4">
+        <%= f.input :mobile %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :telephone %>
       </div>
     </div>
 
-    <%= f.input :email, :required => true %>
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.input :designation %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :department %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :function %>
+      </div>
+      <div class="col-12 col-md-4">
+        <%= f.input :geography %>
+      </div>
+      <div class="col-12 col-md-4">
+        <%= f.input :status, as: :select, collection: enum_to_collection(Overseer.statuses) %>
+      </div>
+    </div>
 
-    <%= f.input :mobile %>
-    <%= f.input :telephone %>
-    <%= f.input :identifier %>
-    <%= f.input :designation %>
-    <%= f.input :department %>
-    <%= f.input :geography %>
-
-    <% if action_name.capitalize == "New" %>
-      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> <%= submit_text(@overseer) %>
-      <% end %>
-    <% else %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-        <i class="fal fa-pen"></i> <%= submit_text(@overseer) %>
-      <% end %>
-    <% end %>
+    <%= action_button(action_name, @overseer) %>
   <% end %>
 </div>

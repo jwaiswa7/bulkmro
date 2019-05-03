@@ -1,0 +1,6 @@
+<% provide :heading, @sales_quote.to_s %>
+<div class="col-12">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+      <%= render 'overseers/inquiries/sales_quotes/show_summary', sales_quote: @sales_quote %>
+  <% end %>
+</div>

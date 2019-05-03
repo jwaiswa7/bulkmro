@@ -1,0 +1,92 @@
+<div class="col-lg-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+      <h3 class="display-5 d-flex align-items-center">
+        <%= @warehouse.name %>
+      </h3>
+      <% if policy(@warehouse).edit? %>
+        <a href="<%= edit_overseers_warehouse_path(@warehouse) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+          Warehouse</a>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-1">Warehouse Details</h6>
+          <div class="form-row">
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Warehouse Code</strong>
+              <%= @warehouse.remote_uid %>
+            </div>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Warehouse Name</strong>
+              <%= @warehouse.name %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Address</strong>
+              <%= @warehouse.address %>
+            </div>
+
+
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">State</strong>
+              <%= @warehouse.address.state.name %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Remote Branch Code</strong>
+              <%= @warehouse.remote_branch_name %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Location UID</strong>
+              <%= @warehouse.location_uid %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">GST</strong>
+              <% if @warehouse.address.gst==nil %>
+                Not Available
+              <% else %>
+                <% @warehouse.address.gst %>
+              <% end %>
+            </div>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Is Active</strong>
+              <% if @warehouse.is_active %>
+                <i class="far fa-check text-success"></i>
+              <% else %>
+                <i class="far fa-times text-danger"></i>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <% if @warehouse.product_stocks.any? && policy(@warehouse).show_product_stocks? %>
+    <div class="d-md-flex justify-content-between mt-5">
+      <h3 class="display-5 mb-1">Product Stock</h3>
+    </div>
+
+    <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" data-ajax="<%= overseers_warehouse_product_stocks_path(warehouse_id: @warehouse.id) %>">
+      <thead>
+      <tr>
+        <th class="no-sort">Product Name</th>
+        <th class="no-sort">SKU</th>
+        <th class="no-sort">In stock</th>
+        <th class="no-sort">Committed</th>
+        <th class="no-sort">Ordered</th>
+        <th class="no-sort">Available</th>
+      </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  <% end %>
+</div>

@@ -1,12 +1,16 @@
 <!-- Move to node_modules imports -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/b-1.5.2/b-html5-1.5.2/b-print-1.5.2/fh-3.1.4/r-2.2.2/rg-1.0.3/sc-1.5.0/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/b-1.5.2/b-html5-1.5.2/b-print-1.5.2/fh-3.1.4/r-2.2.2/rg-1.0.3/sc-1.5.0/datatables.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/atom-one-light.min.css" />
 <!-- /Move to node_modules imports -->
 
-<!-- FA 5
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-TXfwrfuHVznxCssTxWoPZjhcss/hp38gEOH8UPZG/JcXonvBQ6SlsIF49wUzsGno" crossorigin="anonymous">
-/FA 5 -->
+<!-- FA 5 -->
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-6jHF7Z3XI3fF4XZixAuSu0gGKrXwoX/w3uFPxC56OtjChio7wtTGJWRW53Nhx6Ev" crossorigin="anonymous">
+<!-- /FA 5 -->
 
 <!-- Styles -->
-<%= stylesheet_link_tag 'overseers/imports', media: 'all', 'data-turbolinks-track': 'reload' %>
-<%= stylesheet_link_tag 'overseers/application', media: 'all', 'data-turbolinks-track': 'reload' %>
+<% if !Rails.env.production? || !Rails.env.staging? %>
+  <%= stylesheet_link_tag 'shared/imports', media: 'all', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<%= stylesheet_link_tag 'shared/application.css', media: 'all', 'data-turbolinks-track': 'reload' %>
 <!-- /Styles -->

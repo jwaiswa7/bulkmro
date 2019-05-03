@@ -1,0 +1,14 @@
+<% content_for :page_title do %>
+  Online Orders
+<% end %>
+
+<div class="col-md-5 my-5">
+  <div class="text-center">
+    <span class="display-3"><i class="fal fa-clipboard-check text-success"></i></span>
+    <h1 class="mb-1 mt-2 text-success"><strong>Order successfully placed!</strong></h1>
+    <p class="mb-4 mt-2">Our internal sales team will reach out to you within 48 hours with further details about your order. In the mean time, feel free to ping us on <a href="+919920182258">(+91) 99201 82258</a> or mail us on <a href="mailto:sales@bulkmro.com">sales@bulkmro.com</a>.</p>
+    <a class="btn btn-outline-info btn-block-sm-down" href="<%= customers_customer_order_path(@customer_order) %>"><i class="fal fa-eye mr-1"></i>View Online Order</a>
+    <a class="btn btn-success btn-block-sm-down mt-2 mt-md-0" href="<%= customers_products_path %>">Browse Products<i class="fal fa-arrow-circle-right ml-1"></i></a>
+  </div>
+</div>
+

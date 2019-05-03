@@ -1,0 +1,501 @@
+<div class="page fixed">
+  <div class="main-container col1-layout">
+    <div class="main">
+      <div class="col-main">
+        <div id="compare-wrapper">
+          <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
+            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
+          </div>
+          <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
+            <b><span style="color:#000; font-size: 30px">Quotation #<%= record.inquiry.inquiry_number %></span></b>
+          </div>
+          <br clear="all">
+          <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record.inquiry.bill_from %>
+          <br clear="all">
+          <div style="background: #d3d3d3; border:1px solid; border-radius: 0;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+            <span style="color:#000000"><b>Quotation #<%= record.inquiry.inquiry_number %></b></span>
+          </div>
+          <br clear="all">
+          <div style="border:1px solid; border-radius: 5px;">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;font-size:11px;" valign="top">
+                  <b><span style="color:#000000">Bulk MRO Sales Person</span></b> <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="5" style="width:25%; padding-left: 10px;font-size:11px;" valign="top">
+                  <span style="color:#000000">
+                    <%= record.inquiry.inside_sales_owner.full_name if record.inquiry.inside_sales_owner.present? %>
+                  </span></td>
+                <td align="left" colspan="5" style="width:25%; padding-left: 10px;font-size:11px;" valign="top">
+                  <b><span style="color:#000000">Bulk MRO Contact #</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="width:25%; padding-left: 10px;font-size:11px;" valign="top">
+                  <span style="color:#000000">+91-22-4921-4921</span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
+                  <b><span style="color:#000000">Date of Inquiry</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
+                  <span style="color:#000000">
+                    <%= record.inquiry.created_at.strftime("%d-%b-%Y") if record.inquiry.created_at.present? %>
+                  </span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
+                  <b><span style="color:#000000">Quotation Validity</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
+                  <span style="color:#000000">
+                    <%= record.inquiry.valid_end_time.strftime("%d-%b-%Y") if record.inquiry.valid_end_time.present? %>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;font-size:11px;" valign="top">
+                  <b><span style="color:#000000">Date of Quotation</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" sdnum="16393;0;D MMM YY" sdval="42913" style="border-top: 1px solid #3c3c3c; padding-left: 10px;font-size:11px;" valign="top">
+                  <span style="color:#000000">
+                    <%= record.created_at.strftime("%d-%b-%Y") if record.created_at.present? %>
+                  </span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
+                  <b><span style="color:#000000">Customer Inquiry Reference</span></b>
+                  <span style="float:right">:</span></td>
+                <td align="left" colspan="6" sdnum="16393;0;D MMM YY" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
+                  <span style="color:#000000"><%= record.inquiry.subject %></span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
+                  <b><span style="color:#000000">Freight</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;font-size:11px;" valign="top">
+                  <span style="color:#000000">
+                    <%= record.inquiry.freight_option %>
+                  </span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;font-size:11px;" valign="top">
+                  <b><span style="color:#000000">Price Quoted</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
+                  <span style="color:#000000">
+                    <%= record.inquiry.price_type %>
+                  </span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
+                  <b><span style="color:#000000">Packing and Forwarding</span></b> <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
+                  <span style="color:#000000"><%= record.inquiry.packing_and_forwarding_option != 'added' ? record.inquiry.packing_and_forwarding_option : 'Included' %></span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
+                  <b><span style="color:#000000">Payment Terms</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
+                  <span style="color:#000000"><%= record.inquiry.payment_option.name if record.inquiry.payment_option.present? %></span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div class="address-blocks">
+
+
+            <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 2px;padding-bottom: 2px; text-align: center;font-size:11px;">
+              <b><span style="color:#000000">Supplier - Bill from:</span></b>
+            </div>
+            <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 5px;padding-top: 2px;padding-bottom: 2px;text-align: center;font-size:11px;">
+              <b><span style="color:#000000">Supplier - Ship from:</span></b>
+            </div>
+            <br clear="all">
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
+              <tbody>
+              <tr>
+                <td class="address-wrapper" style="height: auto; width: 49%;">
+                  <% if record.inquiry.bill_from.address.present? %>
+                    <%= record.inquiry.bill_from.address.name.to_s %><br>
+                  <% end %>
+                  <% if record.inquiry.bill_from.present? %>
+                    <%= record.inquiry.bill_from.address.to_multiline_s %><br>
+                    GST No.: <%= record.inquiry.bill_from.address.gst %><br>
+                  <% end %>
+                  PAN No.: AAGCB7343G</span>
+                </td>
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <% if record.inquiry.ship_from.present? %>
+                    <%= record.inquiry.ship_from.address.name.to_s %><br>
+                  <% end %>
+                  <% if record.inquiry.ship_from.present? %>
+                    <%= record.inquiry.ship_from.address.to_multiline_s %><br>
+                    GST No.: <%= record.inquiry.ship_from.address.gst %><br>
+                  <% end %>
+                  PAN No.: AAGCB7343G</span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div class="address-blocks">
+
+
+            <div style=" " class="heading heading-left">
+              <b><span>Customer - Bill to:</span></b>
+            </div>
+            <div class="heading heading-right">
+              <b><span>Customer - Ship to:</span></b>
+            </div>
+
+            <br>
+            <table border="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
+              <tbody>
+              <tr>
+                <td class="address-wrapper" style="height: auto; width: 49%;">
+                  <%= record.inquiry.contact.full_name %><br>
+                  <% if record.inquiry.billing_address.present? %>
+                    <%= record.inquiry.billing_address.name %><br>
+                    <%= record.inquiry.billing_address.to_multiline_s %>
+                    <br>
+                    Tel: <%= record.inquiry.contact.phone || record.inquiry.billing_address.phone %>
+                    <br>
+                    GST No.:<%= record.inquiry.billing_address.gst %><br>
+                  <% end %>
+                </td>
+                <td style="width: 2%;"></td>
+                <td class="address-wrapper" style="height: auto;width: 49%;">
+                  <%= record.inquiry.shipping_contact.present? ? record.inquiry.shipping_contact.full_name : record.inquiry.contact.full_name %>
+                  <br>
+                  <% if record.inquiry.shipping_address.present? %>
+                    <%= record.inquiry.shipping_address.name %><br>
+                    <%= record.inquiry.shipping_address.to_multiline_s if record.inquiry.shipping_address.present? %>
+                    <br>
+                    <% if record.inquiry.shipping_contact.present? %>
+                      Tel: <%= record.inquiry.shipping_contact.phone || record.inquiry.shipping_address.phone %>
+                    <% else %>
+                      Tel: <%= record.inquiry.contact.phone || record.inquiry.shipping_address.phone %>
+                    <% end %>
+                    <br>
+                    GST No.:<%= record.inquiry.shipping_address.gst %><br>
+                  <% end %>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <br clear="all">
+          <div style="width: 100%;">
+            <table border="0" cellspacing="0" class="pdf-table">
+              <thead>
+              <tr>
+                <th align="center" valign="center">
+                  <b><span>Sr.<br>
+                    No.</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>SKU</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Mfr<br>
+                    Model</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Description</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Make</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>HSN/<br>
+                    SAC<br>
+                    Code</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Lead Time</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>UOM</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Qty</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Unit Price<br>
+                    (<%= record.inquiry.currency || Currency.inr %>)</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Subtotal<br>
+                    (<%= record.inquiry.currency || Currency.inr %>)</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Tax<br>
+                    Rate</span></b></th>
+                <% if record.tax_summary.strip == '0' ||
+                    (record.tax_summary.to_s.include? "IGST") %>
+                  <th align="center" valign="center">
+                    <b><span>IGST<br>
+                    Rate</span></b></th>
+                  <th align="center" valign="center">
+                    <b><span>IGST<br>
+                    Amt</span></b></th>
+                <% else %>
+                  <th align="center" valign="center">
+                    <b><span>CGST<br>
+                    Rate</span></b></th>
+                  <th align="center" valign="center">
+                    <b><span>CGST<br>
+                    Amt (<%= record.inquiry.currency || Currency.inr %>)</span></b></th>
+                  <th align="center" valign="center">
+                    <b><span>SGST<br>
+                    Rate</span></b></th>
+                  <th align="center" valign="center">
+                    <b><span>SGST<br>
+                    Amt (<%= record.inquiry.currency || Currency.inr %>)</span></b></th>
+                <% end %>
+                <th align="center" valign="center">
+                  <b><span>Total<br>
+                    (<%= record.inquiry.currency || Currency.inr %>)</span></b></th>
+              </tr>
+              </thead>
+              <tbody>
+              <% record.rows.each do |item| %>
+                <tr>
+                  <td align="center" style=" ">
+                    <span><%= item.sr_no %></span></td>
+                  <td align="center">
+                    <span><%= item.product.sku %></span></td>
+                  <td align="center">
+                    <span><%= item.product.mpn %></span></td>
+                  <td align="left">
+                    <span><%= item.to_bp_catalog_s %><br></span></td>
+                  <td align="center">
+                    <span><%= item.product.brand.to_s %></span></td>
+                  <td align="left">
+                    <span><%= item.best_tax_code.try(:chapter) %></span></td>
+                  <td align="center">
+                    <span><%= item.lead_time_option.to_s %></span></td>
+                  <td align="center">
+                    <span><%= item.try(:measurement_unit) || item.product.try(:measurement_unit) || MeasurementUnit.default %></span>
+                  </td>
+                  <td align="center">
+                    <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span></td>
+                  <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;text-align: right;">
+                    <span><%= number_to_currency(item.converted_unit_selling_price, precision: 2, unit: '') %></span>
+                  </td>
+                  <td align="right" style="text-align:right;">
+                    <span><%= number_to_currency(item.converted_total_selling_price, precision: 2, unit: '') %></span>
+                  </td>
+                  <td align="center">
+                    <span><%= item.applicable_tax_percentage * 100 %>%</span></td>
+                  <% if record.tax_summary.strip == '0' || record.tax_summary.to_s.include?("IGST") %>
+                    <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
+                      <span><%= item.applicable_tax_percentage * 100 %>%</span></td>
+                    <td align="right" style="text-align:right;">
+                      <span><%= number_to_currency(item.converted_total_tax, precision: 2, unit: '') %></span></td>
+                  <% else %>
+                    <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
+                      <span><%= item.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span></td>
+                    <td align="right" style="text-align:right;">
+                      <span><%= number_to_currency(item.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
+                    </td>
+                    <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
+                      <span><%= item.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span></td>
+                    <td align="right" style="text-align:right;">
+                      <span><%= number_to_currency(item.converted_total_tax / 2, precision: 2, unit: '') %></span></td>
+                  <% end %>
+                  <td align="right">
+                    <span><%= number_to_currency(item.converted_total_selling_price_with_tax.to_f.round(2), precision: 2, unit: '') %></span>
+                  </td>
+                </tr>
+              <% end %>
+
+              <tr class="pdf-table-total-row">
+                <td align="center" valign="top">
+                  <span>&nbsp;</span></td>
+                <td align="center" valign="top">
+                  <span><b><span>Total</span></b></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="right" style="text-align: right;" valign="top">
+                  <b><span><%= number_to_currency(record.converted_total.to_f, precision: 2, unit: '') %></span></b>
+                </td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <% if record.tax_summary.strip == '0' ||
+                    (record.tax_summary.to_s.include? "IGST") %>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="right" style="text-align: right;" valign="top">
+                    <b><span><%= number_to_currency(record.converted_total_tax, precision: 2, unit: '') %></span></b>
+                  </td>
+                <% else %>
+                  <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c;" valign="top">
+                    <span></span></td>
+                  <td align="right" style="text-align: right;" valign="top">
+                    <b><span><%= number_to_currency(record.converted_total_tax / 2, precision: 2, unit: '') %></span></b>
+                  </td>
+                  <td align="center" style="text-align: right;" valign="top">
+                    <span></span></td>
+                  <td align="right" style="text-align: right;" valign="top">
+                    <b><span><%= number_to_currency(record.converted_total_tax / 2, precision: 2, unit: '') %></span></b>
+                  </td>
+                <% end %>
+                <td align="right" valign="top">
+                  <b><span><%= number_to_currency(record.converted_total_with_tax, precision: 2, unit: '') %></span></b>
+                </td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div class="alwaysbreak"></div>
+
+
+          <br clear="all">
+          <div class="bottom-info" style="position:relative;">
+            <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
+              <div id="inner-stamp" style="float: right; position: relative;">
+                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
+              </div>
+            </div>
+            <div id="commercial" style="border:1px solid; border-radius: 0;">
+              <table border="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                  <td align="left" colspan="2" height="20" style="background: #d3d3d3; padding-left: 10px; border-bottom: 1px solid #3c3c3c;" valign="top">
+                    <b><span style="color:#000000">Commercial Terms and Conditions: </span></b></td>
+                </tr>
+                <tr>
+                  <td align="left" height="" style="padding-left:10px;" valign="top">
+                    <%= simple_format record.inquiry.commercial_terms_and_conditions %>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <br clear="all">
+            <div id="Otherinfo" style="border:1px solid; border-radius: 0;">
+              <table border="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                  <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;" valign="top">
+                    <b><span style="color:#000000">Other Information:</span></b></td>
+                </tr>
+                <tr>
+                  <td align="left" style=" padding-left: 10px;" valign="top"><span style="color:#000000">1. Please reference Bulk MRO Invoice Number when remitting payment.<br>
+                    2. All Banking fees will be to Customer's account.<br>
+                    3. Late payment will attract Interest at the rate of 2% per month.<br>
+                    4. Warranties are applicable as per OEM's Standard warranty only.</span></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                </tbody>
+              </table>
+              <% if record.currency.name.present? %>
+                <% if record.currency.name.to_s == 'USD' || record.currency.name.to_s == 'EUR' || record.currency.name.to_s == 'GBP' %>
+                  <%= render 'shared/layouts/pdf_templates/primary_bank_info', currency: record.currency.name.to_s %>
+                <% else %>
+                  <%= render 'shared/layouts/pdf_templates/bank_info' %>
+                <% end %>
+              <% end %>
+            </div>
+            <br clear="all">
+            <div id="standard-terms-cond" style="border:1px solid; border-radius: 0;">
+              <table border="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                  <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
+                    <b><span style="color:#000000">STANDARD TERMS AND CONDITIONS:</span></b></td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">1.</td>
+
+                  <td align="left" valign="top">
+                    <span style="color:#000000">All the prices are based on products and quantities quoted. Any changes to the products and/or quantities may result in different pricing.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">2.</td>
+                  <td align="left" valign="top">
+                    <span style="color:#000000">  All discrepancies must be reported within 7-days of receipt of goods. No goods may be returned without prior written authorization from Bulk MRO. Bulk MRO will not be responsible for non-authorized returns. This transaction is subject to Warranty, Sales Terms and Conditions.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">3.</td>
+                  <td align="left" valign="top">
+                    <span style="color:#000000">Bulk MRO shall not entertain any claim for any loss arising from damage, shortage, and/or non-delivery of goods as per invoice unless written intimation of such loss is given to the Company within seven (7) days from the date of receipt of goods.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">4.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
+                    Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">5.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
+                    The goods quoted are subject to availability. Bulk MRO does not guarantee delivery of goods within any particular time frame. The customer acknowledges that Bulk MRO shall not be liable for any liquidated damages or un-liquidated damages or loss of business, penalty, etc, for any delay in delivery/supply of goods.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">6.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
+                    The usage of the goods quoted and covered under the invoice is not meant for life saving and/or support equipment purpose, unless specifically provided for by the manufacturer.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">7.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
+                    The terms as provided under Condition 5, 6, and 7 above, shall supersede any other terms and conditions inconsistent therewith.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">8.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
+                    These terms and conditions inter-alia the pricing, terms of payment, etc of this transaction shall be kept confidential by the Customer and shall not be disclosed to any third party without prior written consent of Bulk MRO.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">9.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
+                    All goods may be used by the Customer at its own risk and the Customer shall refer to the relevant technical advice, data, recommendations or services as specified by the manufacturer.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">10.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
+                    The customer shall comply fully with all applicable anti-mafia, anti-bribery, anti-money laundering and anti-corruption statues, rules, or regulations of any national, federal, state, or local jurisdiction anywhere in the world, including the (Indian) Prevention of Corruption Act, 1988 and the (U.S.) Foreign Corrupt Practices Act of 1977.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">11.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
+                    The quotes given above are on the current foreign exchange rate. In event of significant Rupee depreciation on the date of PO or Order confirmation by customer, there could be upward revision of rates accordingly.</span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <br clear="all">
+            <div id="pdf_btn_details">
+              <table border="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td align="center" colspan="22" style="position: relative;top:0px;">
+                    <span style="color:#000000">This is a Computer Generated Quotation.</span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

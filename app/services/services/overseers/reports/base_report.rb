@@ -1,6 +1,7 @@
 class Services::Overseers::Reports::BaseReport < Services::Shared::BaseService
-  def initialize(report)
+  def initialize(report, params)
     @report = report
+    @params = params
   end
 
   def call_base
@@ -30,5 +31,5 @@ class Services::Overseers::Reports::BaseReport < Services::Shared::BaseService
     end
   end
 
-  attr_reader :report, :data
+  attr_reader :report, :data, :params
 end

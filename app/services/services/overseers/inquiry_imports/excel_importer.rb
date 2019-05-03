@@ -1,18 +1,21 @@
 class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::InquiryImports::BaseImporter
   class ExcelInvalidHeader < StandardError; end
+  class ExcelInvalidRows < StandardError; end
 
   def call
-    if import.save
-      set_excel_rows
-      set_and_validate_excel_header_row
-      set_rows
-      set_generated_skus
+    ActiveRecord::Base.transaction do
+      if import.save
+        set_and_validate_excel_rows
+        set_and_validate_excel_header_row
+        set_rows
+        set_generated_skus
 
-      call_base
+        call_base
+      end
     end
   end
 
-  def set_excel_rows
+  def set_and_validate_excel_rows
     excel = SimpleXlsxReader.open(TempfilePath.for(import.file))
     excel_rows = excel.sheets.first.rows
     excel_rows.reject! { |er| er.compact.blank? }
@@ -24,9 +27,10 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
     @excel_header_row = excel_rows.shift
 
     excel_header_row.each do |column|
-      if /^[A-Z]{1}[a-zA-Z]*$/.match?(column) && column.in?(%w(Id Name Brand MPN SKU Quantity))
+      if /^[a-zA-Z_]{1}[_a-zA-Z]*$/i.match?(column) && column.downcase.in?(InquiryImport::HEADERS)
         column.downcase!
       else
+        import.errors.add(:base, ['Invalid excel upload; the columns should be', InquiryImport::HEADERS.to_sentence + '.'].join(' '))
         raise ExcelInvalidHeader
       end
     end
@@ -34,19 +38,30 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
 
   def set_rows
     excel_rows.each do |excel_row|
-      rows.push excel_header_row.zip(excel_row).to_h
+      row = excel_header_row.zip(excel_row).to_h
+      if excel_row.compact.length > 1 && (row['sku'].present? || row['mpn'].present?)
+        rows.push row
+      else
+        excel_rows.delete(excel_row)
+      end
     end
+
+    @rows = rows.reverse
   end
 
   def set_generated_skus
     rows.each do |row|
-      if row['sku'].blank?
-        range = [*'0'..'9',*'A'..'Z',*'a'..'z'];
-        code = Array.new(6){ range.sample }.join.upcase
-        row['sku'] = "BM9" + code;
+      if Product.find_by_sku(row['sku']).blank? || Product.find_by_sku(row['sku']).not_approved?
+        if row['mpn'].to_s.strip.present?
+          row['sku'] = Services::Resources::Shared::UidGenerator.product_sku(rows.map { |r| r['sku'] || r.try(:sku) })
+        else
+          import.errors.add(:base, ['invalid excel rows, sku or mpn are mandatory for every row'].join(' '))
+          raise ExcelInvalidRows
+        end
       end
     end
   end
+
 
   attr_accessor :inquiry, :import, :excel_rows, :excel_header_row, :excel_products
 end

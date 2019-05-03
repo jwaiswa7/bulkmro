@@ -1,0 +1,302 @@
+<div class="page fixed">
+  <div class="main-container col1-layout">
+    <div class="main">
+      <div class="col-main">
+        <div id="compare-wrapper">
+          <div class="compare_open" id="compare_popup"></div>
+
+          <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
+            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
+          </div>
+          <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
+            <b><span style="color:#000; font-size: 30px">Shipment #<%= @metadata[:increment_id] if @metadata.present? %></span></b>
+          </div>
+          <br clear="all">
+          <div style="border:1px solid; border-radius: 5px;padding: 2px">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
+                    <span style="color:#F58220">
+                      <%= @sales_shipment.sales_order.inquiry.bill_from.name if @sales_shipment.sales_order.inquiry.bill_from.present? %>
+                    </span></td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">
+                    <span style="color:#000000">
+                      <%= @sales_shipment.sales_order.inquiry.bill_from.address.to_compact_multiline_s if @sales_shipment.sales_order.inquiry.bill_from.present? %>
+                    </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">
+                  <span style="color:#000000" style="position: relative;top: -5px;">Telephone: +91-22-4921-4921 <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Website: www.bulkmro.com <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Email: sales@bulkmro.com</span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div style=" border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+            <span style="color:#000000"><b>Shipment #<%= @metadata[:increment_id] if @metadata.present? %></b></span>
+          </div>
+          <br clear="all">
+          <div style="border:1px solid; border-radius: 5px;">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Quotation #</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= @sales_shipment.sales_order.inquiry.inquiry_number %></span></td>
+                <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Date of Quotation</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
+                    <span style="color:#000000">
+                      <%= @sales_shipment.sales_order.sales_quote.created_at.strftime("%d-%b-%Y") if @sales_shipment.sales_order.sales_quote.created_at.present? %>
+                    </span>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Customer Purchase Order #</span></b>
+                  <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= @sales_shipment.sales_order.inquiry.customer_po_number if @sales_shipment.sales_order.inquiry.customer_po_number.present? %></span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Customer Purchase Order Date</span></b>
+                  <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= @sales_shipment.sales_order.inquiry.customer_order_date.strftime("%d-%b-%Y") if @sales_shipment.sales_order.inquiry.customer_order_date.present? %></span>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Sales Order #</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= @sales_shipment.sales_order.id %></span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Sales Order Date</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <span style="color:#000000">
+                      <%= @sales_shipment.sales_order.created_at.strftime("%d-%b-%Y") if @sales_shipment.sales_order.created_at.present? %>
+                    </span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Invoice #</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= @metadata[:TrackLine].first[:invoice_number] if @metadata[:TrackLine].present? %></span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Invoice Date</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= Date.parse(@metadata[:TrackLine].first[:order_created_at]).strftime("%d-%b-%Y") if @metadata[:TrackLine].present? && @metadata[:TrackLine].first[:order_created_at].present? %></span>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Payment Method</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <span style="color:#000000">Bank Transfer</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Payment Terms</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <span style="color:#000000">
+                     <%= @sales_shipment.sales_order.inquiry.payment_option.name if @sales_shipment.sales_order.inquiry.payment_option.present? %>
+                    </span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Shipment #</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= @metadata[:increment_id] if @metadata.present? %></span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Shipment Date</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                    <span style="color:#000000">
+                      <%= Date.parse(@metadata[:created_at]).strftime("%d-%b-%Y") if @metadata.present? && @metadata[:created_at].present? %>
+                    </span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">GRN #</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                    <span style="color:#000000">
+                      <%= @metadata[:TrackLine].map {|g| g[:grn]}.join(",") if @metadata.present? && @metadata[:TrackLine].present? %>
+                    </span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Customer ID</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= @metadata[:customer_id] if @metadata.present? %></span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Carrier </span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= @metadata[:TrackLine].map {|g| g[:carrier_code]}.join(",") if @metadata.present? && @metadata[:TrackLine].present? %></span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Tracking Number</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= @metadata[:TrackLine].map {|g| g[:track_number]}.join(",") if @metadata.present? && @metadata[:TrackLine].present? %></span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+            <b><span style="color:#000000">Supplier - Bill from :</span></b>
+          </div>
+          <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px;text-align: center;">
+            <b><span style="color:#000000">Supplier - Ship from :</span></b>
+          </div>
+          <br clear="all">
+          <table border="0" cellspacing="0" style="width: 100%;">
+            <tbody>
+            <tr>
+              <td style="width:48%;">
+                <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 140px;">
+                    <span style="color:#000000">
+                      <%= (@sales_shipment.sales_order.inquiry.bill_from.address.name.to_s + '<br>').html_safe if @sales_shipment.sales_order.inquiry.bill_from.address.name.present? %>
+                      <% if @sales_shipment.sales_order.inquiry.bill_from.present? %>
+                        <%= @sales_shipment.sales_order.inquiry.bill_from.address.to_multiline_s %><br>
+                        GST No. : <%= @sales_shipment.sales_order.inquiry.bill_from.address.gst %><br>
+                      <% end %>
+                      PAN No. : AAGCB7343G</span>
+                </div>
+              </td>
+              <td style="width:4%;"></td>
+              <td style="width:48%;">
+                <div style="height: 140px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
+                    <span style="color:#000000">
+                      <%= (@sales_shipment.sales_order.inquiry.ship_from.address.name.to_s + '<br>').html_safe if @sales_shipment.sales_order.inquiry.ship_from.address.name.present? %>
+                      <% if @sales_shipment.sales_order.inquiry.ship_from.present? %>
+                        <%= @sales_shipment.sales_order.inquiry.ship_from.address.to_multiline_s %><br>
+                        GST No. : <%= @sales_shipment.sales_order.inquiry.ship_from.address.gst %><br>
+                      <% end %>
+                      PAN No. : AAGCB7343G</span>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <br clear="all">
+          <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+            <b><span style="color:#000000">Customer - Bill to :</span></b>
+          </div>
+          <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+            <b><span style="color:#000000">Customer - Ship to :</span></b>
+          </div>
+          <br clear="all">
+          <table border="0" cellspacing="0" style="width: 100%;">
+            <tbody>
+            <tr>
+              <td style="width:48%;">
+                <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;">
+                  <%= @sales_shipment.sales_order.inquiry.contact.full_name if @sales_shipment.sales_order.inquiry.contact.present? %>
+                  <br>
+                  <% if @sales_shipment.sales_order.inquiry.shipping_address.present? %>
+                    <%= @sales_shipment.sales_order.inquiry.shipping_address.name %><br>
+                    <%= @sales_shipment.sales_order.inquiry.shipping_address.to_multiline_s %>
+                    <br>
+                    Tel: <%= @sales_shipment.sales_order.inquiry.shipping_address.phone %><br>
+                    GST No. :<%= @sales_shipment.sales_order.inquiry.shipping_address.gst %><br>
+                  <% end %>
+                </div>
+              </td>
+              <td style="width:4%;"></td>
+              <td style="width:48%;">
+                <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
+                  <%= @sales_shipment.sales_order.inquiry.shipping_contact.present? ? @sales_shipment.sales_order.inquiry.shipping_contact.full_name : @sales_shipment.sales_order.inquiry.contact.full_name %>
+                  <% if @sales_shipment.sales_order.inquiry.billing_address.present? %>
+                    <%= @sales_shipment.sales_order.inquiry.billing_address.name %><br>
+                    <%= @sales_shipment.sales_order.inquiry.billing_address.to_multiline_s %>
+                    <br>
+                    <% if @sales_shipment.sales_order.inquiry.shipping_contact.present? %>
+                      Tel: <%= @sales_shipment.sales_order.inquiry.shipping_contact.phone || @sales_shipment.sales_order.inquiry.shipping_address.phone %>
+                    <% else %>
+                      Tel: <%= @sales_shipment.sales_order.inquiry.contact.phone || @sales_shipment.sales_order.inquiry.shipping_address.phone %>
+                    <% end %> <br>
+                    GST No. :<%= @sales_shipment.sales_order.inquiry.billing_address.gst %><br>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <br clear="all">
+          <div style="width: 100%;">
+            <table border="0" cellspacing="0" style="width: 100%;border-radius: 6px;border-collapse: separate;">
+              <thead>
+              <tr>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;border-top-left-radius: 5px;background: #d3d3d3;border-bottom:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Sr.<br>
+                    No.</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">SKU</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Mfr<br>
+                    Model</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Description</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Make</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">HSN/<br>
+                    SAC<br>
+                    Code</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">UOM</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;border-right:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Qty</span></b></th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @sales_shipment.rows.each_with_index do |item, index| %>
+                <tr>
+                  <td align="center" style="border-left: 1px solid #3c3c3c;font-size: 11px; text-align: center;" valign="top">
+                    <span style="color:#000000"><%= index + 1 %></span></td>
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"><%= item.sku %></span></td>
+
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"></span></td>
+                  <td align="left" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: left;" valign="top">
+                    <span style="color:#000000"><%= item.name %></span></td>
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"><%= item.brand %></span></td>
+                  <td align="center" style="border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"><%= item.hsn %></span></td>
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;text-align: center;" valign="top">
+                    <span style="color:#000000"><%= item.uom %></span></td>
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c; text-align:center;" valign="top">
+                    <span style="color:#000000"><%= item.quantity %></span></td>
+
+                </tr>
+              <% end %>
+              <tr>
+                <td style="border-bottom-left-radius: 5px; font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c; border-bottom-right-radius: 5px;" valign="top"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="stamp" style="width:94%;position:absolute;top:500px; padding-top: 1px;padding-bottom: 1px;">
+            <div id="inner-stamp" style="float: right; position: relative;">
+              <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
+            </div>
+          </div>
+          <br clear="all">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

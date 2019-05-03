@@ -1,53 +1,86 @@
-<%= render layout: 'search_layout' do %>
-  <% @data.geographies.each do |geography| %>
-    <div class="">
-      <p>Geography: <%= geography.name %></p>
-      <p>Count: <%= geography.count %></p>
-      <p>Meeting: <%= geography.meeting %></p>
-      <p>Others: <%= geography.not_meeting %></p>
-    </div>
-  <% end %>
+<% provide :container_fluid, true %>
 
-  <hr/>
-  <table class="table-bordered table">
-    <thead>
-    <tr>
-      <th></th>
-      <% @data.geographies.each do |geography| %>
-        <th colspan="<%= geography.overseers.size %>"><%= geography.name %></th>
-      <% end %>
-    </tr>
+<div class="col-lg-12 mb-0">
+  <div class="page-header mb-0">
+    <h2>Activity Report</h2>
+    <p>Activity report from <strong><%= format_date_without_time(@report.start_at) %></strong> to <strong><%= format_date_without_time(@report.end_at) %></strong>.</p>
+  </div>
+</div>
 
-    <tr>
-      <th></th>
-      <% @data.geographies.each do |geography| %>
-        <% geography.overseers.each do |overseer| %>
-          <td><%= overseer.count %></td>
-        <% end %>
-      <% end %>
-    </tr>
-
-    <tr>
-      <th>Date</th>
-      <% @data.geographies.each do |geography| %>
-        <% geography.overseers.each do |overseer| %>
-          <td><%= overseer.name %></td>
-        <% end %>
-      <% end %>
-    </tr>
-    </thead>
-    <tbody>
-
-    <% @report.start_date.upto(@report.end_date) do |date| %>
-      <tr>
-        <td><%= format_date_without_time(date) %></td>
+<div class="col-12">
+  <%= render layout: 'search_layout' do %>
+    <a class="btn btn-light text-left btn-lg btn-block my-2 collapsed mb-2" type="button" data-toggle="collapse" data-target="#summary">
+      Activity Report Summary
+    </a>
+    <div id="summary" class="collapse">
+      <div class="form-row text-center">
         <% @data.geographies.each do |geography| %>
+          <div class="col-3">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h2><%= geography.meeting + geography.not_meeting %></h2>
+                <h5 class="text-uppercase text-black-50"><%= geography.name %></h5>
+                <div class="form-row">
+                  <div class="col-6">
+                    <p>
+                      Meeting<br>
+                      <strong><%= geography.meeting %></strong>
+                    </p>
+                  </div>
+                  <div class="col-6">
+                    <p>
+                      Others<br>
+                      <strong><%= geography.not_meeting %></strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <table class="table text-center mt-3" data-toggle="wholly">
+      <thead data-toggle="sticky">
+      <tr>
+        <th class="border-right"></th>
+        <% @data.geographies.each.with_index do |geography, index| %>
+          <th class="text-uppercase text-black-50 border-right <% if index.odd? %>bg-highlight-secondary<% end %>" colspan="<%= geography.overseers.size %>">
+            <%= !(geography.name == "") ? geography.name : "-" %></th>
+        <% end %>
+      </tr>
+      <tr>
+        <th class="border-right"></th>
+        <% @data.geographies.each.with_index do |geography, index| %>
           <% geography.overseers.each do |overseer| %>
-            <td><%= get_entry(@data.entries, date, overseer.id) %></td>
+            <td class="border-right <% if index.odd? %>bg-highlight-secondary<% end %>"><h5 class="mb-0 text-black-50"><%= overseer.count %></h5></td>
           <% end %>
         <% end %>
       </tr>
-    <% end %>
-    </tbody>
-  </table>
-<% end %>
+      <tr>
+        <th class="text-right no-sort border-right"></th>
+        <% @data.geographies.each.with_index do |geography, index| %>
+          <% geography.overseers.each do |overseer| %>
+            <td data-toggle="tooltip" title="<%= overseer.name %>" class="border-right <% if index.odd? %>bg-highlight-secondary<% end %>">
+              <strong><%= "#{overseer.name.split(' ').first[0]}. #{overseer.name.split(" ").last[0]}." %></strong>
+            </td>
+          <% end %>
+        <% end %>
+      </tr>
+      </thead>
+      <tbody>
+      <% @report.start_date.upto(@report.end_date) do |date| %>
+        <tr>
+          <td class="text-right border-right"><strong><%= format_date_without_time(date) %></strong></td>
+          <% @data.geographies.each.with_index do |geography, index| %>
+            <% geography.overseers.each do |overseer| %>
+              <td class="border-right <% if index.odd? %>bg-highlight-secondary<% end %>"><%= get_entry(@data.entries, date, overseer.id) != 0 ? get_entry(@data.entries, date, overseer.id) : '-' %></td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

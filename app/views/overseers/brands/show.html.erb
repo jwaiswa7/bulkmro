@@ -1,0 +1,68 @@
+<div class="col-lg-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+      <h3 class="display-5 d-flex align-items-center">
+        <%= @brand.name %>
+      </h3>
+      <% if policy(@brand).edit? %>
+        <a href="<%= edit_overseers_brand_path(@brand) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+          Brand</a>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-1">Brand Details</h6>
+          <div class="form-row">
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Products</strong>
+              <%= @brand_products.count %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Suppliers</strong>
+              <%= @brand_suppliers.count %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Active</strong>
+              <%= format_boolean(@brand.is_active) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <% if @brand_suppliers.present? %>
+    <div class="d-md-flex justify-content-between mt-5">
+      <h3 class="display-5 mb-1">Suppliers List</h3>
+    </div>
+
+    <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="no-sort">ID</th>
+          <th class="no-sort">Supplier name</th>
+        </tr>
+      </thead>
+      <% @brand_suppliers.each do |supplier| %>
+        <tbody>
+          <tr>
+            <td>
+              <% if policy(@brand).show? %>
+                <%= row_action_button(overseers_company_path(supplier), 'eye', 'View Company Details', 'info') %>
+              <% end %>
+            </td>
+            <td><%= supplier.id %></td>
+            <td><%= supplier.name %></td>
+          </tr>
+        </tbody>
+      <% end %>
+    </table>
+  <% end %>
+</div>

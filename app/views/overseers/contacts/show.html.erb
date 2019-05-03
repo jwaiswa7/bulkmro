@@ -1,0 +1,100 @@
+<div class="col-lg-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+      <h3 class="display-5 d-flex align-items-center">
+        <%= @contact.name %>
+      </h3>
+      <a href="<%= edit_overseers_contact_path(@contact) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down">
+        <i class="fal fa-pen mr-1"></i>Edit Contact
+      </a>
+    </div>
+  </section>
+
+  <section class="mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-1">Contact Details</h6>
+          <div class="form-row">
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Name</strong>
+              <%= @contact.name %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Account</strong>
+              <%= @contact.account.name %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Companies</strong>
+              <%= @contact.companies.pluck(:name).to_sentence %>
+            </div>
+
+            <% if @contact.designation %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Designation</strong>
+                <%= @contact.designation %>
+              </div>
+            <% end %>
+
+            <% if @contact.telephone %>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Telephone</strong>
+              <%= @contact.telephone %>
+            </div>
+            <% end %>
+
+            <% if @contact.mobile %>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Mobile</strong>
+              <%= @contact.mobile %>
+            </div>
+            <% end %>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Email</strong>
+              <%= @contact.email %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Status</strong>
+              <%= status_badge(@contact.status) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="d-md-flex justify-content-between">
+    <h3 class="display-5 mb-1 d-none d-md-block">Inquiries</h3>
+    <% if @contact.company.present? && policy(@contact.company).new_inquiry? %>
+      <a href="<%= new_overseers_inquiry_path(company_id: @contact.company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+        Inquiry</a>
+    <% end %>
+  </div>
+  <p class="mt-md-1 d-none d-md-block">
+    All inquiries searchable with relevant term/keywords under <strong><%= @contact.company.name if @contact.company.present? %></strong>.
+  </p>
+
+  <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= index_pg_overseers_inquiries_path(contact_id: @contact.id) %>">
+    <thead>
+    <tr>
+      <th class="no-sort"></th>
+      <th data-name="inquiry_number">IQ #</th>
+      <th class="no-sort">Status</th>
+      <th class="no-sort">Account</th>
+      <th class="no-sort">Company</th>
+      <th class="no-sort">Contact</th>
+      <th class="no-sort">Inside Sales</th>
+      <th class="no-sort">Outside Sales</th>
+      <th class="no-sort">Total</th>
+      <th data-name="created_at">Created</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+</div>
+</div>

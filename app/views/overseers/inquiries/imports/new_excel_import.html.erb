@@ -10,13 +10,17 @@
 <% end %>
 
 <%= render layout: 'shared/layouts/form' do %>
-  <%= simple_form_for([:overseers, @inquiry, @excel_import], url: create_excel_import_overseers_inquiry_imports_path(@inquiry), :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <%= simple_form_for([:overseers, @inquiry, @excel_import], url: create_excel_import_overseers_inquiry_imports_path(@inquiry), :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :import_type %>
-    <div class="card-body">
-      <%= f.input :file, required: true, wrapper: :custom_file, label: 'Products Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
+    <%= render 'shared/snippets/form_errors', f: f %>
 
-      <div class="form-group mb-0">
-        <%= f.submit(class: 'btn btn-success btn-block') %>
+    <div class="card">
+      <div class="card-body">
+        <%= f.input :file, required: true, wrapper: :custom_file, label: 'Products Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
+
+        <div class="form-group mb-0">
+          <%= f.submit(class: 'btn btn-success btn-block') %>
+        </div>
       </div>
     </div>
   <% end %>

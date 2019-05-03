@@ -1,5 +1,23 @@
+# frozen_string_literal: true
+
 class Overseers::DashboardPolicy < Overseers::ApplicationPolicy
   def show?
-    true
+    all_roles?
+  end
+
+  def chewy?
+    developer?
+  end
+
+  def reset_index?
+    developer?
+  end
+
+  def migrations?
+    admin?
+  end
+
+  def console?
+    admin?
   end
 end

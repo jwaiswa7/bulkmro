@@ -12,10 +12,10 @@
       <% if params.has_key?('debug') %>
         <p class="">..or sign in with your email address.</p>
         <div class="form-group">
-          <%= f.input :email, :class => 'form-control', :required => 'required', :placeholder => "name@bulkmro.com", autofocus: true, autocomplete: "email", value: 'ashwin.goyal@bulkmro.com' %>
+          <%= f.input :email, :class => 'form-control', :required => 'required', :placeholder => "name@bulkmro.com", autofocus: true, autocomplete: "email", value: (Rails.env.production? || Rails.env.staging?) ? '' : 'ashwin.goyal@bulkmro.com' %>
         </div>
         <div class="form-group">
-          <%= f.input :password, :class => 'form-control', :required => 'required', :placeholder => "••••••••", autocomplete: "off", value: Rails.env.production? ? '' : 'abc123' %>
+          <%= f.input :password, :class => 'form-control', :required => 'required', :placeholder => "••••••••", autocomplete: "off", value: (Rails.env.production? || Rails.env.staging?) ? '' : 'abc123' %>
         </div>
 
         <% if devise_mapping.rememberable? -%>
@@ -32,7 +32,7 @@
         <% end %>
       <% end %>
       <p class="text-center">
-        <small>Lost? Ping the sysadmin on <a href="mailto:ashwin.goyal@bulkmro.com">ashwin.goyal@bulkmro.com</a>.
+        <small>Lost? Ping the sysadmin on <a href="mailto:tech@bulkmro.com">tech@bulkmro.com</a>.
         </small>
       </p>
     <% end %>

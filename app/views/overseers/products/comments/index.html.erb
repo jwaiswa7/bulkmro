@@ -1,41 +1,89 @@
 <% if @product.inquiry_products.first.try(:inquiry) %>
   <% content_for :heading_button do %>
-    <%= link_to edit_overseers_inquiry_path(@product.inquiry_products.first.try(:inquiry)), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down" do %>
-      <i class="fal fa-external-link mr-1"></i> Check Inquiry
-    <% end %>
+    <div class="d-flex flex-row">
+      <a class="d-sm-block btn btn-warning btn-rounded align-self-center btn-block-sm-down mr-1" href="<%= edit_overseers_product_path(@product) %>" target="_blank"><i class="fal fa-pencil mr-1"></i>Edit</a>
+      <%= link_to edit_overseers_inquiry_path(@product.inquiry_products.first.try(:inquiry)), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down" do %>
+        <i class="fal fa-external-link mr-1"></i> Check Inquiry
+      <% end %>
+    </div>
   <% end %>
 <% end %>
-
 
 <% content_for :heading_byline do %>
   This will <em>'update/approve/reject <%= @product %>'</em> and log it under
   <strong><%= current_overseer.full_name %></strong>.
 <% end %>
 
-
-
-
 <%= render layout: 'shared/layouts/form' do %>
   <div class="card">
-
     <div class="card-body">
-      <h5 class="card-title">Product:  <%= @product %></h5>
-      <div class="card-text">
-        <div class="row">
-          <div class="col-md-6"><strong>Brand: </strong><%= @product.brand %></div>
-          <div class="col-md-6"><strong>Category: </strong><%= @product.category %></div>
-          <div class="col-md-6"><strong>Measurement Unit : </strong><%= @product.measurement_unit %></div>
-          <div class="col-md-6"><strong>HSN: </strong><%= @product.best_tax_code %></div>
-          <div class="col-md-6"><strong>Is Service: </strong><%= @product.is_service %></div>
+      <div>
+        <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
+        <div class="form-row">
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Product</strong>
+            <%= @product %>
+          </div>
+
+          <% if @product.sku? %>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">BM Number</strong>
+              <%= @product.sku %>
+            </div>
+          <% end %>
+
+          <% if @product.category.present? %>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Category</strong>
+              <%= @product.category %>
+            </div>
+          <% end %>
+
+          <% if @product.brand.present? %>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Brand</strong>
+              <%= @product.brand %>
+            </div>
+          <% end %>
+
+          <% if @product.mpn? %>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Manufacturer Part Number</strong>
+              <%= @product.mpn %>
+            </div>
+          <% end %>
+
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Is Service?</strong>
+            <%= format_boolean(@product.is_service) %>
+          </div>
+
         </div>
       </div>
+      <div class="mt-3">
+        <h6 class="text-uppercase text-black-50 mb-1 d-block">Accounting and Logistics</h6>
+        <div class="form-row">
+          <% if @product.tax_code.present? %>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Tax Code</strong>
+              <%= @product.tax_code %>
+            </div>
+          <% end %>
 
+          <% if @product.measurement_unit %>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Unit of Measurement</strong>
+              <%= @product.measurement_unit %>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
   <%= simple_form_for([:overseers, @new_comment], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <div class="card-body">
       <% if @comments.persisted.size > 0 %>
-        <div class="chats mb-3">
+        <div class="chats">
           <% @comments.persisted.each do |comment| %>
             <div class="media chat-item">
               <div class="media-body">
@@ -58,22 +106,30 @@
 
       <%= render 'shared/snippets/form_errors', f: f %>
 
-      <%= f.input :message, required: true, :placeholder => 'Type message' %>
+      <%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
 
       <div class="flex-fill">
-        <div class="row">
+        <div class="form-row">
           <div class="col-lg-6">
-            <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
-            <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@product).approve? %>
-            <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@product).reject? %>
+            <div class="form-row">
+              <div class="col-12 col-md-2">
+                <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark btn-block' %>
+              </div>
+              <div class="col-12 col-md-5 mt-1 mt-md-0">
+                <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-block' if policy(@product).approve? %>
+              </div>
+              <div class="col-12 col-md-5 mt-1 mt-md-0">
+                <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger btn-block' if policy(@product).reject? %>
+              </div>
+            </div>
           </div>
 
           <div class="col-lg-6 text-right">
-            <%= content_tag :div, class: 'row' do %>
-              <div class="col-lg-8">
-                <%= f.input :merge_with_product_id, :as => :select, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path}, label: false %>
+            <%= content_tag :div, class: 'd-flex flex-row align-items-start justify-content-end mt-1 mt-md-0' do %>
+              <div class="mr-1">
+                <%= f.input :merge_with_product_id, :as => :select, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path}, label: false %>
               </div>
-              <div class="col-lg-4">
+              <div>
                 <%= f.submit 'Merge', name: 'merge', class: 'btn btn-warning float-right' %>
               </div>
             <% end if policy(@product).merge? %>

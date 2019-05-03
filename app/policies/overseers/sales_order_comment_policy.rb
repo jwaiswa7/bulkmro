@@ -1,3 +1,4 @@
-class Overseers::SalesOrderCommentPolicy < Overseers::ApplicationPolicy
+# frozen_string_literal: true
 
+class Overseers::SalesOrderCommentPolicy < Overseers::ApplicationPolicy
 end

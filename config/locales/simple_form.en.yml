@@ -1,6 +1,13 @@
 en:
   simple_form:
     placeholders:
+      address:
+        name: 'Name'
+        street1: 'Street1'
+        street2: 'Street2'
+        state_name: 'State name'
+        city_name: 'City name'
+
       overseer:
         first_name: 'First name'
         last_name: 'Last name'
@@ -9,26 +16,28 @@ en:
         designation: 'e.g. Inside Sales Executive'
         department: 'e.g. Inside Sales'
         geography: 'e.g. Mumbai'
-
+        identifier: 'e.g. Inside'
+        function: 'e.g. Sales'
       activity:
         points_discussed: 'Points discussed in the meeting/call/over email'
         actions_required: 'Actions required on behalf of BulkMRO'
-        subject: 'Subject for the Activity'
+        subject: 'Subject for the activity'
       inquiry:
-        bp_catalog_name: 'Business Partner Catalog Name'
+        bp_catalog_name: 'Business partner catalog name'
         subject: 'e.g. Drill machine'
         commercial_terms_and_conditions: 'e.g. 1. Cost does not include any additional certification if required as per Indian regulations'
         comments: 'e.g. Sales Order Amended'
       inquiry_products:
         sr_no: 'Serial Number'
-        bp_catalog_name: 'BP Catalog Name'
-        bp_catalog_sku: 'BP Catalog #'
+        bp_catalog_name: 'Customer Material Name'
+        bp_catalog_sku: 'Customer Material Code'
+        quantity: 'Qty'
       inquiry_product_suppliers:
-        bp_catalog_name: 'BP Catalog Name'
-        bp_catalog_sku: 'BP Catalog #'
-        unit_cost_price: 'Unit Cost Price'
-        lowest_unit_cost_price: 'Lowest Unit Cost Price'
-        latest_unit_cost_price: 'Latest Unit Cost Price'
+        bp_catalog_name: 'Supplier Material Name'
+        bp_catalog_sku: 'Supplier Material Code'
+        unit_cost_price: 'Unit cost price'
+        lowest_unit_cost_price: 'Lowest unit cost price'
+        latest_unit_cost_price: 'Latest unit cost price'
       company:
         name: 'e.g. Reliance Life Sciences'
         site: 'e.g. reliance.com'
@@ -37,16 +46,27 @@ en:
         nature_of_business: 'e.g. Trading'
         email: 'e.g. info@reliance.com'
         telephone: 'e.g. 02240236090'
+        tan: 'e.g. AVVPS12313'
+        pan: 'e.g. AVVPS12313'
+        legacy_id: 'Legacy id'
       contact:
         first_name: 'e.g. Jon'
         last_name: 'e.g. Snow'
         password: 'e.g. password@123'
         password_confirmation: 'e.g. password@123'
-        email: 'e.g. ashwin.goyal@gmail.com'
+        email: 'e.g. ashwin.goyal@bulkmro.com'
         prefix: 'e.g. Mr'
         designation: 'e.g. Admin'
         telephone: 'e.g. 02240236090'
         mobile: 'e.g. 9987480784'
+        legacy_email: 'e.g. ashwin.goyal@bulkmro.com'
+        companies: 'List of companies associated with this contact'
+        legacy_id: 'Legacy id'
+      payment_request_transaction:
+        utr_or_cheque_no: 'check no'
+        amount_paid: 'amount'
+        issue_date: 'eg. 20-Dec-2018'
+        cheque_date: 'eg. 20-Dec-2018'
     "yes": 'Yes'
     "no": 'No'
     required:

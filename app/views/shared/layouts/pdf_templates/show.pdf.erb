@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html class="js no-touch localstorage no-ios" id="top" lang="en" style="">
+<head>
+  <meta charset='utf-8'/>
+  <style>
+    #compare-items .product-name a {
+      white-space: nowrap;
+      width: 118px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+    }
+
+    .actionss a {
+      position: absolute;
+      /* bottom: 0px; */
+      left: 38px;
+      top: -19px;
+    }
+
+    .actionss button {
+      margin-left: 20px;
+    }
+
+  </style>
+  <style type="text/css">
+    body, div, table, thead, tbody, tfoot, tr, th, td, p {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 11px;
+    }
+
+    a.comment-indicator:hover + comment {
+      background: #ffd;
+      position: absolute;
+      display: block;
+      border: 1px solid black;
+      padding: 0.5em;
+    }
+
+    a.comment-indicator {
+      background: red;
+      display: inline-block;
+      border: 1px solid black;
+      width: 0.5em;
+      height: 0.5em;
+    }
+
+    comment {
+      display: none;
+    }
+
+    .invoiceheader {
+      width: 50%;
+      padding-left: 10px;
+    }
+
+    .invoiceheader1 {
+      padding-left: 10px;
+    }
+
+    thead {
+      display: table-header-group
+    }
+
+    tfoot {
+      display: table-row-group
+    }
+
+    tr {
+      page-break-inside: avoid
+    }
+
+    /*#noteInvoiceContainer {*/
+      /*page-break-inside: avoid;*/
+    /*}*/
+
+    /*#OtherinfoInvoice {*/
+      /*page-break-inside: avoid;*/
+    /*}*/
+
+    /*#PaymentinfoInvoice {*/
+      /*page-break-inside: avoid;*/
+    /*}*/
+
+    /*#pdf_btn_details {*/
+      /*page-break-inside: avoid;*/
+    /*}*/
+
+    .pdf-table {
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #3c3c3c;
+      border-collapse: separate;
+      text-align: center
+    }
+
+    .pdf-table, .pdf-table th, .pdf-table td {
+      color: #000;
+    }
+
+    .pdf-table thead {
+      background: #d3d3d3;
+    }
+
+    .pdf-table tr th {
+      padding: 3px;
+      border-right: 1px solid #3c3c3c;
+      border-bottom: 1px solid #3c3c3c;
+      font-size: 10px;
+    }
+
+    .pdf-table tr th:first-child {
+      border-top-left-radius: 5px;
+    }
+
+    .pdf-table tr th:last-child {
+      border-top-right-radius: 5px;
+      border-right: none;
+    }
+
+    .pdf-table tr td {
+      padding: 3px 3px 0;
+      border-right: 1px solid #3c3c3c;
+      border-bottom: 1px solid #3c3c3c;
+      font-size: 9px;
+      vertical-align: middle;
+    }
+
+    .pdf-table tr td:last-child {
+      border-right: none;
+    }
+
+    .pdf-table tr.pdf-table-total-row {
+      background: #d3d3d3;
+    }
+
+    .pdf-table tr.pdf-table-total-row td {
+      border-bottom: none;
+    }
+
+    .pdf-table tr.pdf-table-total-row td:first-child {
+      border-bottom-left-radius: 5px;
+    }
+
+    .pdf-table tr.pdf-table-total-row td:last-child {
+      border-bottom-right-radius: 5px;
+    }
+
+    div.alwaysbreak {
+      page-break-before: always;
+    }
+
+    div.nobreak:before {
+      clear: both;
+    }
+
+    div.nobreak {
+      page-break-inside: avoid;
+    }
+
+    .information-section {
+
+    }
+
+    .information-section .heading {
+      background: #d3d3d3;
+      border: 1px solid;
+      border-radius: 5px;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      text-align: center;
+    }
+
+    .information-section .content-section {
+      border: 1px solid;
+      border-radius: 5px;
+
+    }
+
+    .information-section .content-section  .content-with-border{
+      border-top: 1px solid #3c3c3c;
+    }
+
+    .information-section .content-section .content {
+      width: 25%;
+      padding-left: 10px;
+      font-size: 10px;
+    }
+
+    .address-blocks .heading {
+      background: #d3d3d3;
+      border: 1px solid;
+      border-radius: 5px;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      text-align: center;
+      font-size: 11px;
+    }
+
+    .address-blocks .heading-left {
+      float: left;
+      width: 49%;
+    }
+
+    .address-blocks .heading-right {
+      float: right;
+      width: 49%;
+    }
+
+    .address-wrapper {
+      margin-top: 10px;
+      vertical-align: top;
+      padding: 4px 10px;
+      border: 1px solid;
+      border-radius: 5px;
+      text-align: left;
+      height: 140px;
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .address-wrapper-left {
+      float: left;
+      width: 98%;
+    }
+
+    .address-wrapper-right {
+      float: right;
+      width: 98%;
+    }
+
+    .address-section-holder {
+      width: 47%;
+    }
+
+    .address-section-gap {
+      width: 6%;
+    }
+
+  </style>
+</head>
+<body class="bmropdfprint-index-orderpdf">
+<div class="wrapper">
+  <%= render 'shared/layouts/pdf_templates/pdf_header' %>
+  <%= yield %>
+  <%= render 'shared/layouts/pdf_templates/pdf_footer' %>
+</div>
+</body>
+</html>

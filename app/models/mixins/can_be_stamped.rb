@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mixins::CanBeStamped
   extend ActiveSupport::Concern
 
@@ -7,24 +9,24 @@ module Mixins::CanBeStamped
     belongs_to :created_by, class_name: 'Overseer', foreign_key: 'created_by_id', required: false
     belongs_to :updated_by, class_name: 'Overseer', foreign_key: 'updated_by_id', required: false
 
-    after_initialize :set_created_by, if: :new_record_and_overseer_defined?
-    before_save :set_updated_by, if: :overseer_defined?
-    before_create :set_created_by, if: :overseer_defined?
+    after_initialize :set_created_by_overseer, if: :new_record_and_overseer_defined?
+    before_save :set_updated_by_overseer, if: :overseer_defined?
+    before_create :set_created_by_overseer, if: :overseer_defined?
 
     def overseer_defined?
       overseer.present?
     end
 
     def new_record_and_overseer_defined?
-      self.new_record? && overseer_defined?
+      new_record? && overseer_defined?
     end
 
-    def set_updated_by
-      self.assign_attributes(updated_by: overseer)
+    def set_updated_by_overseer
+      assign_attributes(updated_by: overseer)
     end
 
-    def set_created_by
-      self.assign_attributes(created_by: overseer)
+    def set_created_by_overseer
+      assign_attributes(created_by: overseer)
     end
   end
 end
