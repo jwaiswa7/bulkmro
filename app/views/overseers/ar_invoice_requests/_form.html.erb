@@ -103,24 +103,24 @@
         <div class="card-body">
           <h6 class="text-uppercase text-black-50 mb-1"> Products Details</h6>
           <div class="form-row d-none d-md-flex">
-            <div class="col-6">
+            <div class="col-9">
               <div class="form-group mb-0">
                 <label>Product Name</label>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-1">
               <div class="form-group mb-0">
-                <label>Stock Quantity</label>
+                <label>Stock Qty</label>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-1">
               <div class="form-group mb-0">
-                <label>Quantity To Deliver</label>
+                <label>Qty Deliver</label>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-1">
               <div class="form-group mb-0">
-                <label>Remove Product</label>
+                <label></label>
               </div>
             </div>
           </div>
@@ -128,21 +128,22 @@
             <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
 
               <div class="form-row flex-row align-items-start inward-dispatch-row">
-                <div class="col-6 col-md-6">
+                <div class="col-9 col-md-9">
                   <%= row.hidden_field :inward_dispatch_row_id, label: 'Product' %>
                   <%= row.input :inward_dispatch_row, input_html: { value: row.object.inward_dispatch_row.to_s }, disabled: row.object.inward_dispatch_row.present? && row.object.errors.blank?, label: false %>
                 </div>
-                <div class="col-2 col-md-2">
+                <div class="col-1 col-md-1">
                   <%= row.input :quantity, input_html: { value: row.object.quantity }, readonly: true, label: false %>
                 </div>
-                <div class="col-2 col-md-2">
+                <div class="col-1 col-md-1">
                   <%= row.input :delivered_quantity, input_html: { value: row.object.delivered_quantity }, label: false %>
                 </div>
-                <div class="col-2 col-md-2">
+                <div class="col-1 col-md-1">
                   <%= row.remove_nested_fields_link '', class: 'btn align-self-center delete_row far fa-times text-danger', wrapper_class: 'simple-row'%>
                 </div>
                 <div class="col-6 col-md-6">
                   <%= row.hidden_field :sales_order_id, label: false %>
+                  <%= row.hidden_field :product_id, label: false %>
                 </div>
               </div>
             <% end %>

@@ -31,6 +31,8 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   # GET /ar_invoices/1
   # GET /ar_invoices/1.json
   def show
+    #@rows = @ar_invoice_request.sales_order.rows
+    #@sales_order_row = @ar_invoice_request.sales_order.rows.includes(:product)
     authorize @ar_invoice_request
   end
 
@@ -51,12 +53,12 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   # POST /ar_invoices.json
   def create
     @ar_invoice_request = ArInvoiceRequest.new()
-
     @ar_invoice_request.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
+    @ar_invoice_request.update_status(@ar_invoice_request.status)
     inward_dispatch_ids = params[:inward_dispatch_ids].first.split(',').map(&:to_i)
     authorize @ar_invoice_request
     respond_to do |format|
-      if @ar_invoice_request.save!
+      if @ar_invoice_request.save
         if inward_dispatch_ids.present?
           InwardDispatch.where(id: inward_dispatch_ids).update_all(ar_invoice_request_id: @ar_invoice_request.id)
         end
@@ -140,7 +142,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
           :other_cancellation_reason,
           :ar_invoice_number,
           :e_way,
-          rows_attributes: [ :id, :inward_dispatch_row_id, :sales_order_id, :quantity, :delivered_quantity, :_destroy ],
+          rows_attributes: [ :id, :inward_dispatch_row_id, :sales_order_id, :quantity, :delivered_quantity, :_destroy, :product_id ],
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           )
     end
