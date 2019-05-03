@@ -385,6 +385,7 @@ Rails.application.routes.draw do
         get 'export_kra_report'
         get 'bulk_update'
         get 'pipeline_report'
+        get 'suggestion'
       end
 
       scope module: 'inquiries' do
