@@ -32,12 +32,12 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   # POST /outward_dispatches
   # POST /outward_dispatches.json
   def create
-    @outward_dispatch = OutwardDispatch.new(outward_dispatch_params)
+    @outward_dispatch = OutwardDispatch.new(outward_dispatch_params.merge(overseer: current_overseer))
     authorize @outward_dispatch
 
     respond_to do |format|
       if @outward_dispatch.save
-        format.html { redirect_to @outward_dispatch, notice: 'Outward dispatch was successfully created.' }
+        format.html { redirect_to overseers_outward_dispatch_path (@outward_dispatch), notice: 'Outward dispatch was successfully created.' }
         format.json { render :show, status: :created, location: @outward_dispatch }
       else
         format.html { render :new }
@@ -51,8 +51,8 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   def update
     authorize @outward_dispatch
     respond_to do |format|
-      if @outward_dispatch.update(outward_dispatch_params)
-        format.html { redirect_to @outward_dispatch, notice: 'Outward dispatch was successfully updated.' }
+      if @outward_dispatch.update(outward_dispatch_params.merge(overseer: current_overseer))
+        format.html { redirect_to overseers_outward_dispatch_path (@outward_dispatch), notice: 'Outward dispatch was successfully updated.' }
         format.json { render :show, status: :ok, location: @outward_dispatch }
       else
         format.html { render :edit }
@@ -80,6 +80,9 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def outward_dispatch_params
-      params.fetch(:outward_dispatch, {})
+      params.require(:outward_dispatch).except(:action_name).permit(
+          :ar_invoice_request_id,
+          :sales_order_id
+      )
     end
 end

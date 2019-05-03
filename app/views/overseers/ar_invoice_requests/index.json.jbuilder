@@ -1,4 +1,4 @@
-json.data (@ar_invoices) do |ar_invoice|
+json.data (@ar_invoice_requests) do |ar_invoice|
   json.array! [
                   [
                       if policy(ar_invoice).show?
@@ -19,7 +19,7 @@ json.data (@ar_invoices) do |ar_invoice|
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       end,
-                      row_action_button(new_overseers_outward_dispatch_path(:ar_invoice_request_id => ar_invoice), 'fal fa-eye', 'View AR Invoice', 'info', :_blank)
+                      row_action_button(new_overseers_outward_dispatch_path(:ar_invoice_request_id => ar_invoice), 'fal fa-plus', 'View AR Invoice', 'info', :_blank)
                   ].join(' '),
                   status_badge(ar_invoice.status),
                   ar_invoice.id,
@@ -27,6 +27,6 @@ json.data (@ar_invoices) do |ar_invoice|
                   ar_invoice.sales_order.order_number
               ]
 end
-json.recordsTotal ArInvoiceRequest.all.count
+json.recordsTotal @ar_invoice_requests.count
 json.recordsFiltered @indexed_ar_invoices.total_count
 json.draw params[:draw]
