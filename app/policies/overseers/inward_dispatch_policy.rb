@@ -7,6 +7,10 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
     admin? || logistics? || sales?
   end
 
+  def inward_completed_queue?
+    admin? || logistics? || sales?
+  end
+
   def delivered_material?
     true
   end
@@ -44,6 +48,6 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
   end
 
   def create_ar_invoice?
-    record.status == 'Material Delivered' && (admin? || logistics?) && !record.ar_invoice.present?
+     (admin? || logistics?) && !record.ar_invoice.present?
   end
 end

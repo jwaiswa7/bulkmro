@@ -93,8 +93,7 @@ let loader = {
     documentCreations: documentCreations,
     checkout: checkout,
     taxCodes: taxCodes,
-    companyBanks: companyBanks
-    taxCodes: taxCodes,
+    companyBanks: companyBanks,
     arInvoiceRequests: arInvoiceRequests
 };
 

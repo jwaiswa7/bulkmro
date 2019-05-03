@@ -96,6 +96,10 @@ class InwardDispatch < ApplicationRecord
     status == 'Material Delivered'
   end
 
+  def is_inward_completed?
+    self.invoice_request.present? && (self.invoice_request.status == 'Inward Completed')
+  end
+
   def po_row_size
     purchase_order.rows.size
   end

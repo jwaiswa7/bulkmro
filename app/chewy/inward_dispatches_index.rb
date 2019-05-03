@@ -32,6 +32,7 @@ class InwardDispatchesIndex < BaseIndex
     field :expected_dispatch_date, type: 'date'
     field :expected_delivery_date, type: 'date'
     field :actual_delivery_date, type: 'date'
+    field :is_inward_completed, value: -> (record) { record.is_inward_completed? }, type: 'boolean'
     field :so_date, value: -> (record) { record.purchase_order.po_request.sales_order.mis_date if record.purchase_order.po_request.present? && record.purchase_order.po_request.sales_order.present? }, type: 'date'
     field :updated_at, type: 'date'
     field :created_at, type: 'date'
