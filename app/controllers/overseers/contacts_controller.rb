@@ -22,8 +22,19 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def new
-    @company = Company.find(params[:company_id])
-    @contact = @company.contacts.build(overseer: current_overseer, account: @company.account)
+    if params[:ccr_id].present?
+      requested_contact = ContactCreationRequest.where(id: params[:ccr_id]).last
+      if !requested_contact.nil?
+        @contact = Contact.new({ 'first_name': requested_contact.first_name, 'last_name':  requested_contact.last_name,
+                                 'telephone': requested_contact&.phone_number, 'mobile': requested_contact&.mobile_number,
+                                 'email': requested_contact&.email, 'account_id': requested_contact.activity.company.account_id,
+                                 'contact_creation_request_id': params[:ccr_id]
+                               }.merge(overseer: current_overseer))
+      end
+    else
+      @company = Company.find(params[:company_id])
+      @contact = @company.contacts.build(overseer: current_overseer, account: @company.account)
+    end
     authorize @contact
   end
 
@@ -32,12 +43,24 @@ class Overseers::ContactsController < Overseers::BaseController
     password = Devise.friendly_token[0, 20]
     @contact = @company.contacts.build(contact_params.merge(account: @company.account, overseer: current_overseer, password: password, password_confirmation: password))
     authorize @contact
-
-    if @contact.save_and_sync
-      @company.update_attributes(default_company_contact: @contact.company_contact) if @company.default_company_contact.blank?
-      redirect_to overseers_company_path(@company), notice: flash_message(@contact, action_name)
-    else
-      render 'new'
+    if @contact.save
+      if @contact.contact_creation_request.present?
+        @contact.contact_creation_request.update_attributes(contact_id: @contact.id)
+        @contact.contact_creation_request.activity.update_attributes(contact: @contact)
+        @notification.send_contact_creation_confirmation(
+          @contact.contact_creation_request,
+            action_name.to_sym,
+            @contact,
+            overseers_contact_path(@contact),
+            @contact.name.to_s
+        )
+      end
+      if @contact.save_and_sync
+        @company.update_attributes(default_company_contact: @contact.company_contact) if @company.default_company_contact.blank?
+        redirect_to overseers_company_path(@company), notice: flash_message(@contact, action_name)
+      else
+        render 'new'
+      end
     end
   end
 
