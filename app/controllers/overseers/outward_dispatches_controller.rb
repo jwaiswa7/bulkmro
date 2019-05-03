@@ -1,0 +1,85 @@
+class Overseers::OutwardDispatchesController < Overseers::BaseController
+  before_action :set_outward_dispatch, only: [:show, :edit, :update, :destroy]
+
+  # GET /outward_dispatches
+  # GET /outward_dispatches.json
+  def index
+    authorize :outward_dispatch
+    @outward_dispatches = OutwardDispatch.all
+  end
+
+  # GET /outward_dispatches/1
+  # GET /outward_dispatches/1.json
+  def show
+    authorize @outward_dispatch
+
+  end
+
+  # GET /outward_dispatches/new
+  def new
+    @ar_invoice = ArInvoiceRequest.find( params[:ar_invoice_request_id])
+    @sales_order = @ar_invoice.sales_order
+    @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order, ar_invoice_request: @ar_invoice )
+
+    authorize @outward_dispatch
+  end
+
+  # GET /outward_dispatches/1/edit
+  def edit
+    authorize @outward_dispatch
+  end
+
+  # POST /outward_dispatches
+  # POST /outward_dispatches.json
+  def create
+    @outward_dispatch = OutwardDispatch.new(outward_dispatch_params)
+    authorize @outward_dispatch
+
+    respond_to do |format|
+      if @outward_dispatch.save
+        format.html { redirect_to @outward_dispatch, notice: 'Outward dispatch was successfully created.' }
+        format.json { render :show, status: :created, location: @outward_dispatch }
+      else
+        format.html { render :new }
+        format.json { render json: @outward_dispatch.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /outward_dispatches/1
+  # PATCH/PUT /outward_dispatches/1.json
+  def update
+    authorize @outward_dispatch
+    respond_to do |format|
+      if @outward_dispatch.update(outward_dispatch_params)
+        format.html { redirect_to @outward_dispatch, notice: 'Outward dispatch was successfully updated.' }
+        format.json { render :show, status: :ok, location: @outward_dispatch }
+      else
+        format.html { render :edit }
+        format.json { render json: @outward_dispatch.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /outward_dispatches/1
+  # DELETE /outward_dispatches/1.json
+  def destroy
+    authorize @outward_dispatch
+    @outward_dispatch.destroy
+    respond_to do |format|
+      format.html { redirect_to outward_dispatches_url, notice: 'Outward dispatch was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_outward_dispatch
+      @outward_dispatch = OutwardDispatch.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def outward_dispatch_params
+      params.fetch(:outward_dispatch, {})
+    end
+end

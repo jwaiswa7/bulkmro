@@ -262,7 +262,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :material_dispatches
+    resources :outward_dispatches
 
     resources :sales_orders do
       member do
