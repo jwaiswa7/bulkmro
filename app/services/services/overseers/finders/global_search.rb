@@ -1,10 +1,10 @@
 class Services::Overseers::Finders::GlobalSearch < Services::Overseers::Finders::BaseFinder
   def call
     non_paginated_records = if query_string.present?
-                              perform_query(query_string)
-                            else
-                              all_records
-                            end
+      perform_query(query_string)
+    else
+      all_records
+    end
 
     @indexed_records = non_paginated_records
   end
@@ -33,11 +33,11 @@ class Services::Overseers::Finders::GlobalSearch < Services::Overseers::Finders:
 
   def perform_query(query_string)
     indexed_records = index_klass.query(
-        multi_match: {
-            query: query_string,
-            operator: 'and',
-            fields: index_klass.fields
-        }
+      multi_match: {
+          query: query_string,
+          operator: 'and',
+          fields: index_klass.fields
+      }
     )
 
 
@@ -61,11 +61,11 @@ class Services::Overseers::Finders::GlobalSearch < Services::Overseers::Finders:
 
   def search_as_to_type(indexed_records, prefix)
     indexed_records = indexed_records.query(
-            multi_match:{
-                query: prefix,
-                fields: ["inquiry_number_autocomplete.autocomplete", "products.product_autocomplete.autocomplete", "company.company_autocomplete.autocomplete"],
-                type: "best_fields"
-            }
+      multi_match: {
+          query: prefix,
+          fields: ['inquiry_number_autocomplete.autocomplete', 'products.product_autocomplete.autocomplete', 'company.company_autocomplete.autocomplete'],
+          type: 'best_fields'
+      }
     )
     indexed_records
   end

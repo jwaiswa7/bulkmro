@@ -383,7 +383,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       (inquiries << hash) if !hash.empty?
 
       hash = {}
-      hash['text'] = ["Relationship Map:",record.attributes['inquiry_number_string']].join(' ') if record.attributes['inquiry_number_autocomplete'].present?
+      hash['text'] = ['Relationship Map:', record.attributes['inquiry_number_string']].join(' ') if record.attributes['inquiry_number_autocomplete'].present?
       hash['link'] =  relationship_map_overseers_inquiry_path(record.attributes['id']) if record.attributes['inquiry_number_autocomplete'].present?
       (inquiries << hash) if !hash.empty?
 

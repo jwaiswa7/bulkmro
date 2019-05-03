@@ -3,18 +3,18 @@ class SuggestionsIndex < BaseIndex
     field :id
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
-    field :inquiry_number_autocomplete, type: 'text',value: -> (record) { ['Inquiry: ',record.inquiry_number.to_s].join(' ') } do
+    field :inquiry_number_autocomplete, type: 'text', value: -> (record) { ['Inquiry: ', record.inquiry_number.to_s].join(' ') } do
       field :autocomplete, type: 'text', analyzer: 'autocomplete'
     end
 
     field :final_sales_quote do
-      field :inquiry_order_autocomplete, type: 'text',value: -> (record) {['Inquiry: ', record.inquiry.inquiry_number, ' Sales Quote: ',record.id].join(' ')} do
+      field :inquiry_order_autocomplete, type: 'text', value: -> (record) {['Inquiry: ', record.inquiry.inquiry_number, ' Sales Quote: ', record.id].join(' ')} do
         field :autocomplete, type: 'text', analyzer: 'autocomplete'
       end
     end
 
     field :final_sales_orders do
-      field :inquiry_order_autocomplete, type: 'text',value: -> (record) {['Inquiry: ',record.inquiry.inquiry_number, ' Sales Order: ',record.order_number].join(' ')} do
+      field :inquiry_order_autocomplete, type: 'text', value: -> (record) {['Inquiry: ', record.inquiry.inquiry_number, ' Sales Order: ', record.order_number].join(' ')} do
         field :autocomplete, type: 'text', analyzer: 'autocomplete'
       end
     end
@@ -22,7 +22,7 @@ class SuggestionsIndex < BaseIndex
     field :company do
       field :id, type: 'text'
       field :company_autocomplete, type: 'text', value: -> (record) {['Company: ', record.to_s].join(' ')} do
-          field :autocomplete, type: 'text', analyzer: 'autocomplete'
+        field :autocomplete, type: 'text', analyzer: 'autocomplete'
       end
     end
 
