@@ -1,6 +1,24 @@
 import easyAutocomplete from "../../components/easyAutocomplete";
 
 const newAction = () => {
+    $('#company_bank_account_number_confirmation').on('change',function(e){
+            if($("input[name*=account_number]").val() != $("input[name*=account_number_confirmation]").val()){
+                setTimeout(function(){
+                $("#company_bank_account_number_confirmation").removeClass('is-valid').addClass('is-invalid')
+                $('.company_bank_account_number_confirmation').find('.valid-feedback').remove()
+                $('.company_bank_account_number_confirmation').append("<div class='invalid-feedback'>Account number confirmation doesn\'t match Account number</div>")
+                }, 50);
+            }else{
+                setTimeout(function(){
+                    $('.company_bank_account_number_confirmation').find('.invalid-feedback').remove()
+                    // $('.company_bank_account_number_confirmation').append("<div class='valid-feedback'>Looks good!</div>")
+                    $("#company_bank_account_number_confirmation").removeClass('is-invalid').addClass('is-valid')
+                }, 50);
+
+            }
+
+    })
+
     easyAutocomplete('#company_bank_ifsc_code_number', createOptions('#company_bank_ifsc_code_number'))
 };
 
