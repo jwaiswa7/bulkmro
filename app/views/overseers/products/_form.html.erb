@@ -1,5 +1,6 @@
-
+<div class="col-12">
 <%= render 'shared/snippets/page_header', e: @product %>
+
 <%= simple_form_for([:overseers, @product], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
   <%= render 'shared/snippets/form_errors', f: f %>
 
@@ -69,3 +70,4 @@
     </div>
   </div>
 <% end %>
+</div>
