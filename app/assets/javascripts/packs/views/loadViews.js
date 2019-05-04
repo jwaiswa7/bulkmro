@@ -64,6 +64,9 @@ import taxCodes from "./taxCodes/init"
 
 import companyBanks from "./companyBanks/init"
 
+// Dashboard
+import dashboard from "./dashboard/init"
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -90,7 +93,8 @@ let loader = {
     documentCreations: documentCreations,
     checkout: checkout,
     taxCodes: taxCodes,
-    companyBanks: companyBanks
+    companyBanks: companyBanks,
+    dashboard: dashboard
 };
 
 // Imports

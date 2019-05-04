@@ -196,6 +196,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     manager? || admin?
   end
 
+  def suggestion?
+    true
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
