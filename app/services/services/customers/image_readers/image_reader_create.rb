@@ -27,7 +27,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
   end
 
   def call
-    call_later
+    perform_later
   end
 
   def call_later

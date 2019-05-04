@@ -7,7 +7,7 @@ class Customers::ImageReadersController < Customers::BaseController
     authorize :ImageReader
     Services::Customers::ImageReaders::ImageReaderCreate.new.call
 
-    redirect_to customers_image_readers_path
+    redirect_to customers_image_readers_path, notice: "Your request has been successfully sent. Responce may take a while."
   end
 
   def index
