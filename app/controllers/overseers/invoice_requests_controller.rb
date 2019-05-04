@@ -112,7 +112,6 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def create
     @invoice_request = InvoiceRequest.new(invoice_request_params.merge(overseer: current_overseer))
     authorize @invoice_request
-
     if @invoice_request.valid?
       ActiveRecord::Base.transaction do
         service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)

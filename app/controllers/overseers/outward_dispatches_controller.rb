@@ -5,7 +5,16 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   # GET /outward_dispatches.json
   def index
     authorize :outward_dispatch
-    @outward_dispatches = OutwardDispatch.all
+    service = Services::Overseers::Finders::OutwardDispatches.new(params, current_overseer)
+    service.call
+
+    @indexed_outward_dispatches = service.indexed_records
+    @outward_dispatches = service.records
+
+    respond_to do |format|
+      format.json { render 'index' }
+      format.html { render 'index' }
+    end
   end
 
   # GET /outward_dispatches/1
@@ -17,7 +26,7 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
 
   # GET /outward_dispatches/new
   def new
-    @ar_invoice = ArInvoiceRequest.find( params[:ar_invoice_request_id])
+    @ar_invoice = ArInvoiceRequest.find(params[:ar_invoice_request_id])
     @sales_order = @ar_invoice.sales_order
     @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order, ar_invoice_request: @ar_invoice )
 
@@ -38,6 +47,23 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     respond_to do |format|
       if @outward_dispatch.save
         format.html { redirect_to overseers_outward_dispatch_path (@outward_dispatch), notice: 'Outward dispatch was successfully created.' }
+        format.json { render :show, status: :created, location: @outward_dispatch }
+      else
+        format.html { render :new }
+        format.json { render json: @outward_dispatch.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def create_with_packing_slip
+    @ar_invoice = ArInvoiceRequest.find(params[:ar_invoice_request_id])
+    @sales_order = @ar_invoice.sales_order
+    @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order, ar_invoice_request: @ar_invoice )
+    authorize @outward_dispatch
+
+    respond_to do |format|
+      if @outward_dispatch.save
+        format.html { redirect_to new_overseers_outward_dispatch_packing_slip_url (@outward_dispatch), notice: 'Outward dispatch was successfully created.' }
         format.json { render :show, status: :created, location: @outward_dispatch }
       else
         format.html { render :new }

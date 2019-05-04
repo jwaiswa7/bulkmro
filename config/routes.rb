@@ -269,7 +269,16 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :outward_dispatches
+    resources :outward_dispatches do
+      collection do
+        get 'create_with_packing_slip'
+      end
+      scope module: 'outward_dispatches' do
+        resources :packing_slips
+      end
+    end
+
+
 
     resources :sales_orders do
       member do

@@ -43,4 +43,12 @@
       </div>
     </div>
   <% end %>
+  <span>OR</span>
+    <div class="card">
+      <div class="card-footer">
+        <div class="form-row">
+          <%= link_to "Create outward dispatch and continue to create packing slip", create_with_packing_slip_overseers_outward_dispatches_path(ar_invoice_request_id: params[:ar_invoice_request_id]), :class => "btn btn-success btn-block "%>
+        </div>
+      </div>
+    </div>
 </div>

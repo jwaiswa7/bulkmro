@@ -1,7 +1,6 @@
 json.data (@inward_dispatches) do |inward_dispatch|
   json.array! [
                   [
-
                       if (policy(inward_dispatch).create_ar_invoice?) &&  inward_dispatch.sales_order.present?
                         "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-so-id='#{inward_dispatch.sales_order.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
                       end,
