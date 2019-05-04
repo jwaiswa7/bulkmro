@@ -1,5 +1,5 @@
 class NewCompanyReportsIndex < BaseIndex
-  statuses =  Inquiry.statuses.except('Order Lost','Regret').keys
+  statuses =  Inquiry.statuses.except('Order Lost', 'Regret').keys
   define_type Inquiry.all do
     # default_import_options batch_size: 10000, bulk_size: 10.megabytes, refresh: false
     field :id, type: 'integer'
