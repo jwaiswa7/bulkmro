@@ -65,7 +65,10 @@ import imageReaders from "./imageReaders/init"
 
 import taxCodes from "./taxCodes/init"
 
+import companyBanks from "./companyBanks/init"
 
+// Dashboard
+import dashboard from "./dashboard/init"
 
 let loader = {
     imports: imports,
@@ -93,7 +96,9 @@ let loader = {
     documentCreations: documentCreations,
     checkout: checkout,
     taxCodes: taxCodes,
-    imageReaders: imageReaders
+    imageReaders: imageReaders,
+    companyBanks: companyBanks,
+    dashboard: dashboard
 };
 
 // Imports

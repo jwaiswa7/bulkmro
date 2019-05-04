@@ -1,5 +1,6 @@
   class InquiriesIndex < BaseIndex
     statuses = Inquiry.statuses
+
     define_type Inquiry.all.with_includes do
       field :id, type: 'integer'
       field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
@@ -8,8 +9,8 @@
       field :subject, analyzer: 'substring'
       field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
       field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
-      field :sales_orders_ids, value: -> (record) { record.sales_orders.where.not(order_number: nil).map(&:order_number).compact.join(',') if record.sales_orders.ids.present? }, analyzer: 'substring'
-      field :sales_invoices_ids, value: -> (record) { record.invoices.map(&:invoice_number).compact.join(',') if record.invoices.ids.present? }, analyzer: 'substring'
+      # field :sales_orders_ids, value: -> (record) { record.sales_orders.where.not(order_number: nil).map(&:order_number).compact.join(',') if record.sales_orders.ids.present? }, analyzer: 'substring'
+      # field :sales_invoices_ids, value: -> (record) { record.invoices.map(&:invoice_number).compact.join(',') if record.invoices.ids.present? }, analyzer: 'substring'
       field :potential_amount, value: -> (record) { record.potential_amount.to_f if record.potential_amount.present? }, type: 'integer'
       field :calculated_total, value: -> (record) { record.calculated_total.to_i if record.calculated_total.present? }, type: 'integer'
       field :inside_sales_owner_id, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? }, type: 'integer'
@@ -18,6 +19,7 @@
       field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring'
       field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }
       field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }
+      field :procurement_operations, value: -> (record) { record.procurement_operations_id }
       field :margin_percentage, value: -> (record) { record.margin_percentage }, type: 'float'
       field :company_id, value: -> (record) { record.company_id }
       field :company, value: -> (record) { record.company.to_s }, analyzer: 'substring'
@@ -32,22 +34,11 @@
       field :created_by_id
       field :updated_by_id, value: -> (record) { record.updated_by.to_s }, analyzer: 'letter'
       field :potential_value, value: -> (record) { record.potential_value(record.status.to_s) }, type: 'double'
-      field :sales_quote_value, value: -> (record) { record.final_sales_quote.calculated_total if record.final_sales_quote.present? }, type: 'double'
-      field :sales_quote_created_at, value: -> (record) {record.final_sales_quote.created_at if record.final_sales_quote.present? }, type: 'date'
-
-      field :invoices_count, value: -> (record) {record.invoices.count}, type: 'integer'
-      field :sales_quote_count, value: -> (record) {record.final_sales_quote.present? ? 1 : 0}, type: 'integer'
-      field :sales_order_count, value: -> (record) {record.final_sales_orders.count}, type: 'integer'
-      field :expected_order, value: -> (record) {record.status == 'Expected Order' ? 1 : 0}, type: 'integer'
-      field :order_won, value: -> (record) {record.status == 'Order Won' ? 1 : 0}, type: 'integer'
-      field :company_key, value: -> (record) { record.company_id }, type: 'integer'
-      field :total_quote_value, value: -> (record) {record.final_sales_quote.calculated_total if record.final_sales_quote.present?}, type: 'double'
-      field :total_order_value, value: -> (record) {record.final_sales_orders.compact.uniq.map(&:calculated_total).sum}, type: 'double'
-      field :revenue, value: -> (record) {record.final_sales_orders.compact.uniq.map(&:calculated_total_margin).sum}, type: 'double'
-      field :sku, value: -> (record) {record.final_sales_orders.compact.uniq.map {|s|s.products.map(&:sku).count}.last}, type: 'integer'
+      # field :sales_quote_value, value: -> (record) { record.final_sales_quote.calculated_total if record.final_sales_quote.present? }, type: 'double'
+      # field :sales_quote_created_at, value: -> (record) {record.final_sales_quote.created_at if record.final_sales_quote.present? }, type: 'date'
     end
 
     def self.fields
-      [:status, :status_string, :subject, :inquiry_number_string, :sales_orders_ids, :sales_invoices_ids, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :company, :account, :contact_s, :created_by_id]
+      [:status, :status_string, :subject, :inquiry_number_string, :sales_orders_ids, :sales_invoices_ids, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :procurement_operations, :company, :account, :contact_s, :created_by_id]
     end
   end

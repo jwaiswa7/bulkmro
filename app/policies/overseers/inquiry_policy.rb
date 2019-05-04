@@ -63,8 +63,12 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def tat_report?
+    developer? || admin?
+  end
+
   def export_inquiries_tat?
-    developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
+    tat_report?
   end
 
   def create_excel_import?
@@ -77,6 +81,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def edit_suppliers?
     edit? && record.inquiry_products.present?
+  end
+
+  def sales_owner_status_avg?
+    developer? || admin?
   end
 
   def update_suppliers?
@@ -144,6 +152,9 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     developer? && record.inquiry_products.present?
   end
 
+  def pipeline_report?
+    true
+  end
 
   def has_approved_sales_orders?
     record&.sales_orders&.remote_approved&.any?
@@ -183,6 +194,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def bulk_update?
     manager? || admin?
+  end
+
+  def suggestion?
+    true
   end
 
   class Scope

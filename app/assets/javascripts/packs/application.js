@@ -24,6 +24,8 @@ import hasher from "./components/hasher";
 import notifications from "./components/notifications";
 import treant from "./components/treant";
 import stringManipulations from "./components/stringManipulations";
+import easyAutocomplete from "./components/easyAutocomplete"
+import globalSearch from "./components/globalSearch"
 
 // Namespacing all imports under app
 let app = {};
@@ -54,6 +56,8 @@ app.initializeComponents = () => {
     tableHighlightWholly();
     notifications();
     treant();
+    easyAutocomplete();
+    globalSearch();
 };
 
 // Turbolinks load event
