@@ -167,7 +167,7 @@ class Inquiry < ApplicationRecord
     ]).order(priority: :desc, quotation_followup_date: :asc, calculated_total: :desc)
   }
   scope :won, -> { where(status: :'Order Won') }
-
+  scope :live, -> { where.not(status: :'Order Lost').where.not(status: :'Regret')}
   attr_accessor :force_has_sales_orders, :common_supplier_id, :select_all_products, :select_all_suppliers
 
   with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
