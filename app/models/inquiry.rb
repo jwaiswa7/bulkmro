@@ -54,6 +54,7 @@ class Inquiry < ApplicationRecord
   has_many :email_messages, dependent: :destroy
   has_many :activities, dependent: :nullify
   has_many :inquiry_status_records
+  has_many :inquiry_mapping_tats
   belongs_to :legacy_shipping_company, -> (record) { where(company_id: record.company.id) }, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
   has_one :customer_order, dependent: :nullify
@@ -313,7 +314,7 @@ class Inquiry < ApplicationRecord
   end
 
   def can_be_managed?(overseer)
-    overseer.manager? || overseer.self_and_descendant_ids.include?(self.inside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.outside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.procurement_operations) || overseer.self_and_descendant_ids.include?(self.created_by_id) || false
+    overseer.manager? || overseer.self_and_descendant_ids.include?(self.inside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.procurement_operations_id) || overseer.self_and_descendant_ids.include?(self.outside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.procurement_operations) || overseer.self_and_descendant_ids.include?(self.created_by_id) || false
   end
 
   def last_sr_no

@@ -3,7 +3,7 @@ class IfscCode < ApplicationRecord
   belongs_to :bank
 
   update_index('ifsc_codes#ifsc_code') { self }
-  scope :with_includes, -> {  }
+  scope :with_includes, -> { includes(:bank) }
 
   def to_s
     ['IFSC Code', " ##{self.id}"].join
