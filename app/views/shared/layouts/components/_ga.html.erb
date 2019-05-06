@@ -16,9 +16,10 @@
       document.getElementById("global-search").addEventListener("click", function(){
           if (typeof gtag === 'function') {
               gtag('js', new Date());
+              gtag('config', 'UA-76872832-3');
               gtag('event', 'global-search', {
                   'event_category': 'search',
-                  'event_label': 'Global search',
+                  'event_label': 'Global Search',
                   'value': '1'
               });
           }
