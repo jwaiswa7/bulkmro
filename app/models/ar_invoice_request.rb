@@ -110,6 +110,14 @@ class ArInvoiceRequest < ApplicationRecord
     data
   end
 
+  def total_quantity_delivered
+    self.rows.sum(:delivered_quantity)
+  end
+
+  def outward_dispatched_quantity
+    self.outward_dispatches.sum(&:quantity_in_payment_slips)
+  end
+
   private
 
   def presence_of_reason

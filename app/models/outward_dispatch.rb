@@ -7,4 +7,8 @@ class OutwardDispatch < ApplicationRecord
   scope :with_includes, -> { }
   update_index('outward_dispatches#outward_dispatch') {self}
 
+  def quantity_in_payment_slips
+    self.packing_slips.sum(&:dispatched_quntity)
+  end
+
 end
