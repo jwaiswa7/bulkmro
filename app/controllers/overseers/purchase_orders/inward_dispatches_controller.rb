@@ -15,7 +15,9 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
   def new
     @logistics_owner = (@purchase_order.logistics_owner.present?) ? @purchase_order.logistics_owner : @purchase_order.inquiry.company.logistics_owner
     @inward_dispatch = InwardDispatch.new(purchase_order: @purchase_order, logistics_owner: @logistics_owner)
-
+    if @purchase_order.po_request.present?
+      @inward_dispatch.sales_order = @purchase_order.po_request.sales_order
+    end
     @inward_dispatch.purchase_order.rows.each do |row|
       @inward_dispatch.rows.build(purchase_order_row: row, pickup_quantity: row.get_pickup_quantity)
     end
@@ -91,6 +93,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
           :logistics_aggregator,
           :other_logistics_partner,
           :purchase_order_id,
+          :sales_order_id,
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           rows_attributes: [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :supplier_delivery_date, :_destroy],
           attachments: []

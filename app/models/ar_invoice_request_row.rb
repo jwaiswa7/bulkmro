@@ -4,6 +4,7 @@ class ArInvoiceRequestRow < ApplicationRecord
   belongs_to :sales_order_row, class_name: 'SalesOrderRow'
   belongs_to :inward_dispatch_row, class_name: 'InwardDispatchRow'
   belongs_to :product, class_name: 'Product'
+  has_many :packing_slip_rows
   validate :is_delivered_quantity_less
 
   def is_delivered_quantity_less

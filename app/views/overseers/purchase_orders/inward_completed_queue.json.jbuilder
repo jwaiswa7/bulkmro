@@ -11,7 +11,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                         row_action_button(edit_overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'pencil', 'Edit Inward Dispatch', 'warning', :_blank)
                       end,
                       if policy(inward_dispatch).delivered? && policy(inward_dispatch).create_ar_invoice?
-                        row_action_button(new_overseers_invoice_request_path(purchase_order_id: inward_dispatch.purchase_order, inward_dispatch_id: inward_dispatch), 'plus', 'Create GRPO Request', 'success', target: :_blank)
+                        row_action_button(new_overseers_ar_invoice_request_path(sales_order_id: inward_dispatch.sales_order,ids: inward_dispatch.id), 'plus', 'Create AR Invoice Request', 'success', target: :_blank)
                       elsif inward_dispatch.invoice_request.present? && policy(inward_dispatch.ar_invoice_request).show?
                         row_action_button(overseers_invoice_request_path(inward_dispatch.invoice_request), 'eye', "View #{inward_dispatch.invoice_request.readable_status}", 'success', target: :_blank)
                       end,

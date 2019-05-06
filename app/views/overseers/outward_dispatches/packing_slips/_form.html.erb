@@ -5,7 +5,7 @@
   <%= simple_form_for([:overseers,@outward_dispatch, @packing_slip], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
     <%= f.hidden_field :id %>
-    <%#= f.hidden_field :ar_invoice_request_id %>
+    <%= f.hidden_field :outward_dispatch_id %>
     <%#= f.hidden_field :sales_order_id %>
     <div class="card mb-2">
       <div class="card-body">
@@ -38,12 +38,12 @@
               <label>Sr. No.</label>
             </div>
           </div>
-          <div class="col-5">
+          <div class="col-9 col-md-9">
             <div class="form-group mb-0">
               <label>Product</label>
             </div>
           </div>
-          <div class="col-2">
+          <div class="col-1 col-md-1">
             <div class="form-group mb-0">
               <label>Qty</label>
             </div>
@@ -54,14 +54,16 @@
 
             <div class="form-row flex-row align-items-start">
               <div class="col-1 col-md-1">
-                <%= row.input :delivered_quantity, input_html: { value: row.object.delivery_quantity }, label: false %>
+                #<%= (f.object.rows.index(row.object) || 0) + 1 %>
+                <%= row.hidden_field :id %>
+                <%= row.hidden_field :packing_slip_id %>
+                <%= row.hidden_field :ar_invoice_request_row_id %>
               </div>
               <div class="col-9 col-md-9">
-                <%= row.hidden_field :packing_slip_id%>
                 <%= row.input :ar_invoice_request_row, input_html: { value: row.object.ar_invoice_request_row.to_s }, disabled: row.object.ar_invoice_request_row.present? && row.object.errors.blank?, label: false %>
               </div>
               <div class="col-1 col-md-1">
-                <%= row.input :delivered_quantity, input_html: { value: row.object.delivery_quantity }, label: false %>
+                <%= row.input :delivery_quantity, input_html: { value: row.object.delivery_quantity }, label: false %>
               </div>
               <div class="col-1 col-md-1">
                 <%= row.remove_nested_fields_link '', class: 'btn align-self-center delete_row far fa-times text-danger', wrapper_class: 'simple-row'%>
