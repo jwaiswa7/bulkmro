@@ -14,14 +14,13 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   # GET /packing_slips/1.json
   def show
     authorize @packing_slip
-
   end
 
   # GET /packing_slips/new
   def new
-    @packing_slip = PackingSlip.new(overseer: current_overseer,  outward_dispatch: @outward_dispatch )
+    @packing_slip = PackingSlip.new(overseer: current_overseer, outward_dispatch: @outward_dispatch)
     @packing_slip.outward_dispatch.ar_invoice_request.rows.each do |row|
-      @packing_slip.rows.build( delivery_quantity: row.delivered_quantity, ar_invoice_request_row: row)
+      @packing_slip.rows.build(delivery_quantity: row.delivered_quantity, ar_invoice_request_row: row,ar_invoice_request_row_id: row.id)
     end
     authorize @packing_slip
   end
@@ -34,29 +33,18 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   # POST /packing_slips
   # POST /packing_slips.json
   def create
-    @packing_slip = PackingSlip.new(packing_slip_params.merge(overseer: current_overseer))
+    @packing_slip = @outward_dispatch.packing_slips.new()
+    @packing_slip.assign_attributes(packing_slip_params.merge(overseer: current_overseer))
     authorize @packing_slip
-
     respond_to do |format|
       if @packing_slip.save
-        format.html { redirect_to overseers_packing_slip_path (@packing_slip), notice: 'Packing Slip was successfully created.' }
+        format.html { redirect_to overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip), notice: 'Packing Slip was successfully created.' }
         format.json { render :show, status: :created, location: @packing_slip }
       else
         format.html { render :new }
         format.json { render json: @packing_slip.errors, status: :unprocessable_entity }
       end
     end
-
-    @packing_slip = @outward_dispatch.packing_slips.new()
-    @packing_slip.assign_attributes(packing_slip_params.merge(overseer: current_overseer))
-    authorize @packing_slip
-    if @packing_slip.save
-
-      redirect_to edit_overseers_outward_dispatch_packing_slip(@outward_dispatch, @packing_slip), notice: flash_message(@packing_slip, action_name)
-    else
-      'new'
-    end
-
   end
 
   # PATCH/PUT /packing_slips/1
@@ -65,12 +53,12 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
     authorize @packing_slip
     respond_to do |format|
       if @packing_slip.update(packing_slip_params.merge(overseer: current_overseer))
-        format.html { redirect_to overseers_packing_slip_path (@packing_slip), notice: 'Packing Slip was successfully updated.' }
-        format.json { render :show, status: :ok, location: @packing_slip }
+        format.html {redirect_to overseers_packing_slip_path(@packing_slip), notice: 'Packing Slip was successfully updated.'}
+        format.json {render :show, status: :ok, location: @packing_slip}
       else
-        format.html { render :edit }
-        format.json { render json: @packing_slip.errors, status: :unprocessable_entity }
-        format.json { render json: @packing_slip.errors, status: :unprocessable_entity }
+        format.html {render :edit}
+        format.json {render json: @packing_slip.errors, status: :unprocessable_entity}
+        format.json {render json: @packing_slip.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -81,12 +69,13 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
     authorize @packing_slip
     @packing_slip.destroy
     respond_to do |format|
-      format.html { redirect_to packing_slips_url, notice: 'Packing Slip was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html {redirect_to packing_slips_url, notice: 'Packing Slip was successfully destroyed.'}
+      format.json {head :no_content}
     end
   end
 
   private
+
   def set_outward_dispatch
     @outward_dispatch = OutwardDispatch.find(params[:outward_dispatch_id])
   end
@@ -99,8 +88,11 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   # Never trust parameters from the scary internet, only allow the white list through.
   def packing_slip_params
     params.require(:packing_slip).except(:action_name).permit(
-        :ar_invoice_request_id,
-        :sales_order_id
+        :id,
+        :outward_dispatch_id,
+        :box_number,
+        :box_detail,
+        rows_attributes: [:id, :ar_invoice_request_row_id, :delivery_quantity, :packing_slip_id, :_destroy]
     )
   end
 end
