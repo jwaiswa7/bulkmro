@@ -1,5 +1,4 @@
 class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations::Migrations
-
   def fetch_csv(filename, csv_data)
     overseer = Overseer.find(197)
     temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
@@ -57,13 +56,9 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
         sales_order = SalesOrder.find_by_order_number(x.get_column('#')) || SalesOrder.find_by_old_order_number(x.get_column('#'))
-        sap_total_without_tax = 0
         sap_total_without_tax = x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f
 
         if sales_order.present?
-          # actual_total = (sales_order.calculated_total * sales_order.inquiry_currency.conversion_rate).to_f
-          # actual_total_with_tax = (sales_order.calculated_total_with_tax * sales_order.inquiry_currency.conversion_rate).to_f
-
           actual_total = sales_order.calculated_total.to_f
           actual_total_with_tax = sales_order.calculated_total_with_tax.to_f
 
@@ -84,7 +79,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-02 Bible Data for Migration.csv', 'seed_files_3')
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
-
         bible_order_row_total = x.get_column('Total Selling Price').to_f
         bible_order_tax_total = x.get_column('Tax Amount').to_f
         bible_order_row_total_with_tax = bible_order_row_total + bible_order_tax_total
@@ -109,7 +103,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           end
         end
       end
-      puts "SKIPPED SKUs", skipped_skus
+      puts 'SKIPPED SKUs', skipped_skus
     end
 
     fetch_csv('bible_sales_orders_total_mismatch.csv', csv_data)
@@ -234,6 +228,4 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       puts ex.message
     end
   end
-
-
 end
