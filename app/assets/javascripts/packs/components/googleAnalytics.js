@@ -5,11 +5,12 @@ const googleAnalytics = () => {
         return ga('send', 'pageview');
     }
 
-    $('.global-search').on('click', function(){
+    $('#global-search').on('click', function(){
+        console.log("test")
         if (typeof ga === 'function') {
-            ga('send', 'event', {
-                eventCategory: 'search',
-                eventAction: 'click',
+            return ga('send', 'event', {
+                eventCategory: 'global-search',
+                eventAction: 'click-search',
                 eventLabel: 'Global search'
             });
         }
