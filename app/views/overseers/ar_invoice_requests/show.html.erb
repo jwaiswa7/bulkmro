@@ -119,7 +119,7 @@
             <th class="no-sort">
               <span data-toggle="tooltip" title="Serial Number">Sr.</span>
             </th>
-            <th class="no-sort">
+            <th class="no-sort product-width-adjustment">
               <span data-toggle="tooltip" title="Description">Description</span>
             </th>
             <th class="no-sort">
@@ -162,7 +162,13 @@
               <td><%= row.delivered_quantity %></td>
               <td><%= row.quantity %></td>
               <td><%= row.product.measurement_unit.name %></td>
-              <td></td>
+              <td><%= format_currency(row.sales_order_row.converted_unit_cost_price_with_unit_freight_cost, symbol: row.sales_order.currency_sign) %></td>
+              <td><%= format_currency(row.sales_order_row.converted_unit_selling_price, symbol: row.sales_order.currency_sign) %></td>
+              <td><%= number_with_precision(row.sales_order_row.margin_percentage, precision: 2) %></td>
+              <td><%= row.sales_order_row.best_tax_code %></td>
+              <td><%= row.sales_order_row.best_tax_rate %></td>
+              <td><%= format_currency((row.sales_order_row.converted_total_selling_price_with_tax - row.sales_order_row.converted_unit_selling_price), symbol: row.sales_order.currency_sign) %></td>
+              <td><%= format_currency(row.sales_order_row.converted_total_selling_price_with_tax, symbol: row.sales_order.currency_sign) %></td>
             </tr>
           <% end %>
           </tbody>
