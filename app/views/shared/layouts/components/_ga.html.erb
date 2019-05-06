@@ -13,5 +13,14 @@
               });
           }
       });
+      document.getElementById("global-search").addEventListener("click", function(){
+          if (typeof gtag === 'function') {
+              gtag('js', new Date());
+              gtag('event', 'search', {
+                  'event_category': 'global search',
+                  'event_label': 'Global search'
+              });
+          }
+      });
   </script>
 <% end %>
