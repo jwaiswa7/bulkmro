@@ -222,6 +222,13 @@
             </ul>
           </div>
           <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Outward Dispatches</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_outward_dispatches_path, policy(:outward_dispatch).index? %>
+              <%= nav_dropdown_item 'Material Ready for Dispatch', overseers_outward_dispatches_path(:status => "Material Ready for Dispatch"), policy(:ar_invoice_request).index? %>
+            </ul>
+          </div>
+          <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Freight Requests</a>
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'All Requests', overseers_freight_requests_path, policy(:freight_request).index? %>

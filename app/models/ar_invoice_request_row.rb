@@ -8,10 +8,14 @@ class ArInvoiceRequestRow < ApplicationRecord
   validate :is_delivered_quantity_less
 
   def is_delivered_quantity_less
-      errors.add(:delivered_quantity, 'must be less than Existing Quantity ') if delivered_quantity > quantity
+    errors.add(:delivered_quantity, 'must be less than Existing Quantity ') if delivered_quantity > quantity
   end
 
   def to_s
     self.inward_dispatch_row.to_s
+  end
+
+  def get_remaining_quantity
+    self.delivered_quantity - self.packing_slip_rows.sum(&:delivery_quantity)
   end
 end

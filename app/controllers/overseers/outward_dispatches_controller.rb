@@ -5,7 +5,14 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   # GET /outward_dispatches.json
   def index
     authorize :outward_dispatch
-    service = Services::Overseers::Finders::OutwardDispatches.new(params, current_overseer)
+    if params[:status].present?
+      base_filter = {
+          base_filter_key: 'status',
+
+          base_filter_value: OutwardDispatch.statuses[params[:status]]
+      }
+    end
+    service = Services::Overseers::Finders::OutwardDispatches.new(params.merge(base_filter), current_overseer)
     service.call
 
     @indexed_outward_dispatches = service.indexed_records
