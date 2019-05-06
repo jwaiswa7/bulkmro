@@ -32,7 +32,7 @@ const createOptions = (classname) => {
                 enabled: true
             },
             sort: {
-                enabled: true
+                enabled: false
             }
         },
         theme: "solid"
