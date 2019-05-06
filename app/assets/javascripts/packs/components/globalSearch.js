@@ -2,6 +2,9 @@ import easyAutocomplete from "./easyAutocomplete";
 
 const globalSearch = () => {
     easyAutocomplete('.global-search', createOptions('.global-search'))
+    $('.global-search').on('click', function(){
+        $('.tooltip').toggleClass('show')
+    })
 };
 
 const createOptions = (classname) => {
@@ -32,7 +35,7 @@ const createOptions = (classname) => {
                 enabled: true
             },
             sort: {
-                enabled: true
+                enabled: false
             }
         },
         theme: "solid"
