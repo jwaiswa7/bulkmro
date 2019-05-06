@@ -4,8 +4,13 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def pending
     invoice_requests =
         if params[:status].present?
-          @status = params[:status]
-          InvoiceRequest.where(status: params[:status])
+          if params[:status] == 'rejected'
+            @status = 'Rejected'
+            InvoiceRequest.where(status:  ['AP Invoice Request Rejected', 'GRPO Request Rejected'])
+          else
+            @status = params[:status]
+            InvoiceRequest.where(status: params[:status])
+          end
         else
           InvoiceRequest.all
         end.order(id: :desc)
@@ -69,8 +74,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def show
     authorize @invoice_request
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
-    service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
-    @company_reviews = service.call
+    # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
+    @company_reviews = [@invoice_request.purchase_order.po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @invoice_request.purchase_order.supplier ).first_or_create]
     service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.inward_dispatches.ids, false)
     @products_list = service.call
   end
@@ -126,8 +131,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def edit
     authorize @invoice_request
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
-    service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
-    @company_reviews = service.call
+    # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
+    @company_reviews = [@invoice_request.purchase_order.po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @invoice_request.purchase_order.supplier ).first_or_create]
 
     mpr_ids = @invoice_request.inward_dispatches.map(&:id).join(', ')
     service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids, false)

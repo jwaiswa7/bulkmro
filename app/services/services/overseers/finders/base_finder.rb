@@ -134,6 +134,9 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                 },
                 {
                     terms: {outside_sales_executive: ids}
+                },
+                {
+                    terms: {procurement_operations: ids}
                 }
             ],
             minimum_should_match: 1,
@@ -271,11 +274,12 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
-  def aggregate_by_status(key = 'statuses', aggregation_field = 'potential_value', status_field)
+  def aggregate_by_status(key = 'statuses', aggregation_field = 'potential_value', size = 50, status_field)
     {
         "#{key}": {
             terms: {
-                field: status_field
+                field: status_field,
+                size: size
             },
             aggs: {
                 total_value: {
