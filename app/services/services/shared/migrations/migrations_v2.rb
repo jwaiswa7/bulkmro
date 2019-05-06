@@ -32,7 +32,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
   end
 
-  def missing_sap_orders
+  def missing_bible_orders
     column_headers = ['inquiry_number', 'order_number']
     i = 0
     service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-02 Bible Data for Migration.csv', 'seed_files_3')
@@ -79,7 +79,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   end
 
   def bible_sales_order_totals_mismatch
-    column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax']
+    column_headers = ['inquiry_number', 'order_number', 'SKU', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax']
     skipped_skus = []
     service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-02 Bible Data for Migration.csv', 'seed_files_3')
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
@@ -96,14 +96,16 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
             order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
             row_total = order_row.total_selling_price
-            row_total_with_tax = order_row.total_tax
+            row_total_with_tax = order_row.total_selling_price_with_tax
 
             if ((row_total != bible_order_row_total) || (row_total_with_tax != bible_order_row_total_with_tax)) &&
                 ((row_total - bible_order_row_total).abs > 1 || (row_total_with_tax - bible_order_row_total_with_tax).abs > 1)
-              writer << [sales_order.order_number, row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax]
+              writer << [x.get_column('Inquiry Number'), sales_order.order_number, product_sku, row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax]
             end
           else
-            skipped_skus.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
+            if !(skipped_skus.include?(x.get_column('Bm #')) && skipped_skus.include?(x.get_column('So #')))
+              skipped_skus.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
+            end
           end
         end
       end
