@@ -240,6 +240,7 @@ Rails.application.routes.draw do
       member do
         get 'render_cancellation_form'
         patch 'cancel_porequest'
+        get 'add_comment'
       end
 
     end

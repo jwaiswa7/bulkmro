@@ -1,0 +1,27 @@
+<div class="modal fade" id="addComment">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+           Add Comment
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <%= simple_form_for([:overseers, @po_request], :url => add_comment_overseers_po_request_path(@po_request), :html => {:class => 'col-12 needs-validation bulk-update-form', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+          <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
+          <div class="modal-body">
+            hiiiii
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-warning bulk-update">
+              Add comment
+            </button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

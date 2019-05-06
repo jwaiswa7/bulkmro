@@ -208,6 +208,15 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
+  def add_comment
+    authorize @po_request
+    respond_to do |format|
+      format.html
+      format.js
+    end
+
+  end
+
   private
 
     def po_request_params

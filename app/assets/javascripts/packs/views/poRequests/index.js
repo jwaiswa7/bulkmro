@@ -1,5 +1,7 @@
 const index = () => {
 
+    addComment()
+
     $('.cancellation-form-modal').on('change', 'select[name*=rejection_reason]', function (e) {
         if ($(e.target).val() == "Others") {
             $('#other-rejection-reason').removeClass('disabled');
@@ -58,6 +60,29 @@ let modalSubmit = () => {
             error: function error(_error) {
                 if (_error.responseJSON && _error.responseJSON.error && _error.responseJSON.error.base)
                     $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error.base + "</div>");
+            }
+        });
+        event.preventDefault();
+    });
+}
+
+let addComment = () => {
+    $(".bulk-update-form").on('click', '.bulk-update', function (event) {
+        var formSelector = $(".bulk-update-form"),
+            datastring = $(formSelector).serialize();
+        $.ajax({
+            data: {},
+            url: "/overseers/po_requests/" + id + "/add_comment",
+            success: function (data) {
+                $('.bulk-update-form').empty()
+                $('.bulk-update-form').append(data)
+                $('#addComment').modal('show')
+                modalSubmit()
+                $('#addComment').on('hidden.bs.modal', function () {
+                    $this.removeClass('disabled')
+                })
+            },
+            complete: function complete() {
             }
         });
         event.preventDefault();
