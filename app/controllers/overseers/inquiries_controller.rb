@@ -412,7 +412,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       end if record.attributes['products'].present?
     end
 
-    render json: {inquiries: inquiries}.to_json
+    render json: {inquiries: inquiries.uniq}.to_json
   end
 
   private
