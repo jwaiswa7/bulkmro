@@ -33,19 +33,19 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   def missing_sap_orders
     column_headers = ['inquiry_number', 'order_number']
     i = 0
-    service = Services::Shared::Spreadsheets::CsvImporter.new('latest_sap_so.csv', 'seed_files_3')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-02 Bible Data for Migration.csv', 'seed_files_3')
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |csv|
       service.loop(nil) do |x|
-        sales_order = SalesOrder.find_by_order_number(x.get_column('#')) || SalesOrder.find_by_old_order_number(x.get_column('#'))
+        sales_order = SalesOrder.find_by_order_number(x.get_column('So #').to_i) || SalesOrder.find_by_old_order_number(x.get_column('So #').to_i)
         if sales_order.blank?
-          csv << [x.get_column('Project'), x.get_column('#')]
+          csv << [x.get_column('Inquiry Number'), x.get_column('So #').to_i]
         end
         i = i + 1
-        puts "line #{i}, SO #{x.get_column('#')}"
+        puts "line #{i}, SO #{x.get_column('So #')}"
       end
     end
 
-    fetch_csv('sap_missing_orders.csv', csv_data)
+    fetch_csv('bible_missing_orders.csv', csv_data)
   end
 
   def sap_sales_order_totals_mismatch
@@ -74,6 +74,41 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
 
     fetch_csv('sales_orders_total_mismatch.csv', csv_data)
+  end
+
+  def bible_sales_order_totals_mismatch
+    column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax']
+    skipped_skus = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-02 Bible Data for Migration.csv', 'seed_files_3')
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      service.loop(nil) do |x|
+
+        bible_order_row_total = x.get_column('Total Selling Price').to_f
+        bible_order_tax_total = x.get_column('Tax Amount').to_f
+        bible_order_row_total_with_tax = bible_order_row_total + bible_order_tax_total
+
+        sales_order = SalesOrder.find_by_order_number(x.get_column('So #').to_i) || SalesOrder.find_by_old_order_number(x.get_column('So #').to_i)
+        if sales_order.present?
+          product_sku = x.get_column('Bm #').to_s
+
+          if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
+            order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
+            row_total = order_row.total_selling_price
+            row_total_with_tax = order_row.total_tax
+
+            if ((row_total != bible_order_row_total) || (row_total_with_tax != bible_order_row_total_with_tax)) &&
+                ((row_total - bible_order_row_total).abs > 1 || (row_total_with_tax - bible_order_row_total_with_tax).abs > 1)
+              writer << [sales_order.order_number, row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax]
+            end
+          else
+            skipped_skus.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
+          end
+        end
+      end
+      puts "SKIPPED SKUs", skipped_skus
+    end
+
+    fetch_csv('bible_sales_orders_total_mismatch.csv', csv_data)
   end
 
   def missing_sap_purchase_orders
@@ -182,7 +217,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       end
     end
 
-
     filename = 'companies_export.csv'
     temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
 
@@ -195,7 +229,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     rescue => ex
       puts ex.message
     end
-
   end
+
 
 end

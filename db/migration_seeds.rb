@@ -6,6 +6,9 @@ service.call
 service = Services::Shared::Migrations::MigrationsV2.new(%w(sap_sales_order_totals_mismatch), folder: 'seed_files_3')
 service.call
 
+service = Services::Shared::Migrations::MigrationsV2.new(%w(bible_sales_order_totals_mismatch), folder: 'seed_files_3')
+service.call
+
 # Missing SI
 service = Services::Shared::Migrations::MigrationsV2.new(%w(missing_sap_invoices), folder: 'seed_files_3')
 service.call
