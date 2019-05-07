@@ -6,13 +6,8 @@ const googleAnalytics = () => {
     }
 
     $('#global-search').on('click', function(){
-        console.log("test")
         if (typeof ga === 'function') {
-            return ga('send', 'event', {
-                eventCategory: 'global-search',
-                eventAction: 'click-search',
-                eventLabel: 'Global search'
-            });
+            return ga('send', 'event', { eventCategory: 'global-search', eventAction: 'click-search', eventLabel: 'Global search', eventValue: 0});
         }
 
     })
