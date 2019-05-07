@@ -78,8 +78,8 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
                         }
                       },
                       sales_invoices: {
-                          sum: {
-                              field: 'invoices_count'
+                          value_count: {
+                              field: 'invoices.calculated_total'
                           }
                       },
                       sales_invoices_total: {
@@ -103,8 +103,8 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
                           }
                       },
                       sales_orders: {
-                          sum: {
-                              field: 'sales_order_count'
+                          value_count: {
+                              field: 'final_sales_orders.calculated_total'
                           }
                       },
                       sales_orders_total: {
