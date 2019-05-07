@@ -53,8 +53,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def show
     authorize @po_request
-    service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
-    @company_reviews = service.call
+    # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
+    @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier ).first_or_create]
   end
 
   def new
@@ -95,8 +95,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def edit
     authorize @po_request
-    service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
-    @company_reviews = service.call
+    # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
+    @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier ).first_or_create]
   end
 
   def update

@@ -10,48 +10,12 @@ class Overseers::CompaniesController < Overseers::BaseController
     authorize @companies
   end
 
-
-  # For rendering rating form modal
-  # def render_rating_form
-  #   authorize @company
-  #   type = ""
-  #   review_questions = ReviewQuestion.logistics
-  #   if current_overseer.inside? || current_overseer.outside? || current_overseer.manager?
-  #     type = "Sales"
-  #     review_questions =ReviewQuestion.sales
-  #   elsif current_overseer.logistics?
-  #     type = "Logistics"
-  #     review_questions = ReviewQuestion.logistics
-  #   end
-  #
-  #   company_review = CompanyReview.where(created_by: current_overseer, survey_type: type, company: @company).first_or_create!
-  #   review_questions.each do |question|
-  #     company_review.company_ratings.where({review_question_id: question.id, created_by: current_overseer}).first_or_create!
-  #   end
-  #
-  #   respond_to do |format|
-  #     format.html {render :partial => "rating_modal",  locals: {company_review: company_review,:supplier => @company}}
-  #   end
-  # end
-
-  # For updaring rating form popup
-  # def update_rating
-  #   authorize @company
-  #   company_ratings_attributes = params['company_review']['company_ratings_attributes'] if params['company_review'].present? && params['company_review']['company_ratings_attributes'].present?
-  #   @company_review = CompanyReview.find(params[:company_review][:id])
-  #   if @company_review.present?
-  #     company_ratings_attributes.each do |index,company_rating_attribute|
-  #       @company_review.company_ratings.where(id: company_rating_attribute['id'].to_i).update({rating: company_rating_attribute['rating'].to_i})
-  #     end
-  #     average_company_rating = @company_review.company_ratings.map(&:calculate_rating).sum
-  #     @company_review.update!(rating: average_company_rating)
-  #     overall_rating = CompanyReview.where(company_id: @company_review.company_id).average(:rating)
-  #     @company.update!({rating: overall_rating})
-  #   end
-  #   redirect_to overseers_companies_path
-  # end
-
   def autocomplete
+    @companies = ApplyParams.to(Company.active, params)
+    authorize @companies
+  end
+
+  def autocomplete_company_type
     @companies = ApplyParams.to(Company.active, params)
     authorize @companies
   end
@@ -117,22 +81,33 @@ class Overseers::CompaniesController < Overseers::BaseController
     authorize :company
 
     respond_to do |format|
-      format.html {}
+      format.html {
+        if params['company_report'].present?
+          @date_range = params['company_report']['date_range']
+        end
+      }
       format.json do
         service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer)
         service.call
 
-        @indexed_company_reports = service.indexed_records
+        if params['company_report'].present?
+          @date_range = params['company_report']['date_range']
+        end
+
+        indexed_company_reports = service.indexed_records.aggregations['company_report_over_month']['buckets']['custom-range']['company_report']['buckets']
+        @per = (params['per'] || params['length'] || 20).to_i
+        @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
+        @indexed_company_reports = Kaminari.paginate_array(indexed_company_reports).page(@page).per(@per)
       end
     end
   end
 
   def export_company_report
     authorize :company
-    service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer, paginate: false)
+    service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer)
     service.call
 
-    indexed_company_reports = service.indexed_records
+    indexed_company_reports = service.indexed_records.aggregations['company_report_over_month']['buckets']['custom-range']['company_report']['buckets']
 
     if params['company_report'].present?
       date_range = params['company_report']['date_range']

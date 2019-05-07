@@ -50,7 +50,7 @@
         <%= f.input :geography %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.input :status, as: :select, collection: enum_to_collection(Overseer.statuses) %>
+        <%= f.input :status, as: :check_boxes, :wrapper => :vertical_collection_inline, collection: enum_to_collection(Overseer.statuses.except("inactive")) %>
       </div>
     </div>
 
