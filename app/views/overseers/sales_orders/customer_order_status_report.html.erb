@@ -1,0 +1,61 @@
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+<% provide :container_fluid, true %>
+
+<% content_for :heading do %>
+  Customer Order Status Report
+<% end %>
+
+<div class="col-lg-12 avg_summary_box"></div>
+<% content_for :table_desc do %>
+  Customer Order Status Report <%= "for range " + @date_range.gsub("~", "to") if @date_range.present? %> searchable with relevant term/keywords.
+<% end %>
+<% content_for :controller_is_aliased, false %>
+<% content_for :page_title do %>
+  Reports
+<% end %>
+
+
+<div class="col-lg-12">
+  <% content_for :header_row do %>
+    <th class="no-sort all"></th>
+    <th class="sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
+    <th class="sort desktop" data-name="company">Company.</th>
+    <th class="sort all text-right" data-name="order_number">Sales Order #</th>
+    <th class="sort desktop text-right" data-name="mis_date">Sales Order Date</th>
+    <th class="no-sort desktop text-right" data-name="invoice_total">Committed Customer<br> Delivery Date</th>
+    <th class="no-sort desktop text-right">Supplier PO No.</th>
+    <th class="no-sort desktop">Supplier Name</th>
+    <th class="no-sort desktop text-right">PO Request <br>Date</th>
+    <th class="no-sort desktop text-right">PO Date</th>
+    <th class="no-sort desktop text-right">PO Sent to <br>Supplier Date</th>
+    <th class="no-sort desktop text-right">Payment Request<br> Date</th>
+    <th class="no-sort desktop text-right">Payment Date</th>
+    <th class="no-sort desktop text-right">Committed Date of <br>Material Readiness</th>
+    <th class="no-sort desktop text-right">Actual Date of <br>Material Readiness</th>
+    <th class="no-sort desktop text-right">Date of Pickup</th>
+    <th class="no-sort desktop text-right">Date of Inward</th>
+  <% end %>
+  <% content_for :filter_row do %>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="daterange"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+  <% end %>
+
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

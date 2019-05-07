@@ -278,6 +278,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'not_invoiced'
         get 'export_filtered_records'
+        get 'customer_order_status_report'
       end
 
       scope module: 'sales_orders' do
