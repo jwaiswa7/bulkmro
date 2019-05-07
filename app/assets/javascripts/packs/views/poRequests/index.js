@@ -71,7 +71,7 @@ let addComment = () => {
         var formSelector = $(".bulk-update-form"),
             datastring = $(formSelector).serialize();
         $.ajax({
-            data: {},
+            data: datastring,
             url: "/overseers/po_requests/" + id + "/add_comment",
             success: function (data) {
                 $('.bulk-update-form').empty()

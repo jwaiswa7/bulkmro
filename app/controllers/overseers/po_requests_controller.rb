@@ -211,8 +211,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def add_comment
     authorize @po_request
     respond_to do |format|
-      format.html
-      format.js
+      format.html {render partial: 'cancel_porequest', locals: {purpose: params[:purpose]}}
     end
 
   end

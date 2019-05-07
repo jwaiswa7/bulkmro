@@ -236,11 +236,12 @@ Rails.application.routes.draw do
         get 'pending_stock_approval'
         get 'stock'
         get 'completed_stock'
+        get 'add_comment'
       end
       member do
         get 'render_cancellation_form'
         patch 'cancel_porequest'
-        get 'add_comment'
+
       end
 
     end
