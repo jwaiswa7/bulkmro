@@ -173,7 +173,7 @@
             <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', input_html: {class: "select2-single", :'data-placeholder' => 'Select a Account Owner'}, disabled: policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :procurement_operations, required: true, collection: Overseer.inside_and_obj(f.object.procurement_operations).alphabetical, label: 'Procurement Operations', input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement Operations'}, disabled: policy(f.object).restrict_fields_on_completed_orders? %>
+            <%= f.association :procurement_operations, required: true, collection: Overseer.inside_and_obj(f.object.procurement_operations).alphabetical, label: 'Procurement Operations', input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement Operations'} %>
           </div>
         </div>
       </div>
