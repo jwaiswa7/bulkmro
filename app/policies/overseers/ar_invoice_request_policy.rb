@@ -26,4 +26,8 @@ class Overseers::ArInvoiceRequestPolicy < Overseers::ApplicationPolicy
     (admin? || logistics?) && (record.status == 'Completed AR Invoice Request') && (!record.outward_dispatches.present? || (record.outward_dispatches.present? && (record.total_quantity_delivered > record.outward_dispatched_quantity)))
   end
 
+  def download_eway_bill_format?
+    edit?
+  end
+
 end

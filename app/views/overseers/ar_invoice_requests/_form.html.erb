@@ -178,10 +178,17 @@
             <div class="col-12">
               <%= f.input :ar_invoice_number, as: :string, label: "AR Invoice Number", :input_html => {:maxlength => 8} %>
             </div>
-            <div class="col-6">
-              <%= f.input :e_way, label: 'E-Way Bill' %>
-            </div>
 
+            <% if params[:action] == 'edit' %>
+              <div class="col-2">
+                <%= f.input :e_way, label: 'E-Way Bill' %>
+              </div>
+              <div class="col-2 download-eway <%= f.object.e_way ? '' : 'd-none' %>">
+                  <a href="<%= download_eway_bill_format_overseers_ar_invoice_request_path(@ar_invoice_request, format: :xlsx) %>" target="_blank" class="ml-md-1 btn btn-success" title="E-way bill format">
+                    <i class="fal fa-download mr-1"></i>
+                  </a>
+              </div>
+             <%end %>
             <div class="col-12">
               <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |ar_invoice_request_comment| %>
               <%= ar_invoice_request_comment.hidden_field :created_by_id %>

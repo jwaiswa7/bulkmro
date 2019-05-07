@@ -265,6 +265,7 @@ Rails.application.routes.draw do
       end
       member do
         get 'render_cancellation_form'
+        get 'download_eway_bill_format'
         patch 'cancel_ar_invoice'
       end
     end

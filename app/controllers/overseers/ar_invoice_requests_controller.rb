@@ -1,5 +1,5 @@
 class Overseers::ArInvoiceRequestsController < Overseers::BaseController
-  before_action :set_ar_invoice_request, only: [:show, :edit, :update, :destroy, :cancel_ar_invoice, :render_cancellation_form]
+  before_action :set_ar_invoice_request, only: [:show, :edit, :update, :destroy, :cancel_ar_invoice, :render_cancellation_form, :download_eway_bill_format]
 
   # GET /ar_invoices
   # GET /ar_invoices.json
@@ -119,6 +119,18 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
     authorize @ar_invoice_request
     respond_to do |format|
       format.html {render partial: 'cancel_ar_invoice', :locals => {status: params[:status]}}
+    end
+  end
+
+  def download_eway_bill_format
+    authorize @ar_invoice_request
+    @sales_order = @ar_invoice_request.sales_order
+    @inquiry = @ar_invoice_request.inquiry
+    @ar_invoice_rows = @ar_invoice_request.rows
+    respond_to do |format|
+      format.xlsx do
+        response.headers['Content-Disposition'] = 'attachment; filename="' + ["Eway bill Excel Template", 'xlsx'].join('.') + '"'
+      end
     end
   end
 
