@@ -5,6 +5,7 @@
     <%= render 'shared/snippets/form_errors', f: f %>
 
     <%= f.hidden_field :account_id %>
+    <%= f.hidden_field :contact_creation_request_id, value: params[:ccr_id] %>
 
     <div class="form-row">
       <div class="col-12">

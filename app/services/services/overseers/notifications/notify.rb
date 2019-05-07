@@ -44,8 +44,6 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     @message = "#{msg[0]} has been approved and created in Sprint"
     @to = entity.activity.created_by
     send
-    @to = notifiable.inside_sales_owner
-    send
   end
 
   def send_product_import_confirmation(tos, action, notifiable, url, *msg)

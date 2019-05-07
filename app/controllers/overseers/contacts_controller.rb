@@ -1,5 +1,6 @@
 class Overseers::ContactsController < Overseers::BaseController
   before_action :set_contact, only: [:show, :edit, :update, :become]
+  before_action :set_notification, only: [:create]
 
   def index
     # service = Services::Overseers::Finders::Contacts.new(params)
@@ -26,10 +27,10 @@ class Overseers::ContactsController < Overseers::BaseController
       requested_contact = ContactCreationRequest.where(id: params[:ccr_id]).last
       if !requested_contact.nil?
         @contact = Contact.new({ 'first_name': requested_contact.first_name, 'last_name':  requested_contact.last_name,
-                                 'telephone': requested_contact&.phone_number, 'mobile': requested_contact&.mobile_number,
-                                 'email': requested_contact&.email, 'account_id': requested_contact.activity.company.account_id,
-                                 'contact_creation_request_id': params[:ccr_id]
+                                 'telephone': requested_contact&.telephone, 'mobile': requested_contact&.mobile,
+                                 'email': requested_contact&.email, 'account_id': requested_contact.activity.company.account_id
                                }.merge(overseer: current_overseer))
+        @company = requested_contact.activity.company
       end
     else
       @company = Company.find(params[:company_id])
@@ -109,6 +110,7 @@ class Overseers::ContactsController < Overseers::BaseController
           :status,
           :contact_group,
           :is_active,
+          :contact_creation_request_id,
           company_ids: []
       )
     end

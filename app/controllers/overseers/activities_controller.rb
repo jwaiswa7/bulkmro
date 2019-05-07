@@ -44,7 +44,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
         first_name: company_creation_params['first_name'],
         last_name: company_creation_params['last_name'],
         telephone: company_creation_params['telephone'],
-        mobile_number: company_creation_params['mobile_number']
+        mobile: company_creation_params['mobile_number']
       )
     end
     authorize @activity
@@ -168,11 +168,12 @@ class Overseers::ActivitiesController < Overseers::BaseController
             :create_new_contact
         ],
         contact_creation_request_attributes: [
+            :id,
             :first_name,
             :last_name,
             :email,
-            :phone_number,
-            :mobile_number,
+            :telephone,
+            :mobile,
             :activity_id
         ],
         attachments: []

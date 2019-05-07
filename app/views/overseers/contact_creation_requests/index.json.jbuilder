@@ -14,8 +14,8 @@ json.data (@contact_creation_requests) do |contact|
                     link_to(contact.first_name, overseers_contact_creation_request_path(contact), target: '_blank'),
                     contact.last_name,
                     contact.email,
-                    contact.phone_number.present? ? contact.phone_number : '--',
-                    contact.mobile_number.present? ? contact.mobile_number : '--',
+                    contact.telephone.present? ? contact.telephone : '--',
+                    contact.mobile.present? ? contact.mobile : '--',
                     format_succinct_date(contact.created_at)
                   ]
 end
