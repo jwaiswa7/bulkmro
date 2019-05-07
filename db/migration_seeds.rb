@@ -1,5 +1,5 @@
 # Missing SO
-service = Services::Shared::Migrations::MigrationsV2.new(%w(missing_sap_orders), folder: 'seed_files_3')
+service = Services::Shared::Migrations::MigrationsV2.new(%w(missing_bible_orders), folder: 'seed_files_3')
 service.call
 
 # SO totals mismatch
