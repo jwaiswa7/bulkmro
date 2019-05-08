@@ -5,7 +5,8 @@ class PaymentRequest < ApplicationRecord
   include Mixins::HasComments
 
   pg_search_scope :locate, against: [:id], associated_against: { po_request: [:id, :purchase_order_id], inquiry: [:inquiry_number], purchase_order: [:po_number] }, using: { tsearch: { prefix: true } }
-  update_index('payment_requests#payment_request') {self}
+  update_index('payment_requests#payment_request') { self }
+  update_index('customer_order_status_report#sales_order') { self.purchase_order.po_request.sales_order }
 
   belongs_to :inquiry
   belongs_to :purchase_order
