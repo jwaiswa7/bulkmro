@@ -67,6 +67,9 @@ import taxCodes from "./taxCodes/init"
 
 import companyBanks from "./companyBanks/init"
 
+// Dashboard
+import dashboard from "./dashboard/init"
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -94,7 +97,8 @@ let loader = {
     checkout: checkout,
     taxCodes: taxCodes,
     companyBanks: companyBanks,
-    arInvoiceRequests: arInvoiceRequests
+    arInvoiceRequests: arInvoiceRequests,
+    dashboard: dashboard
 };
 
 // Imports

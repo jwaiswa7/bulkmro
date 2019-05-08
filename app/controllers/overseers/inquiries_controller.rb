@@ -368,6 +368,53 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def suggestion
+    authorize :inquiry
+    service = Services::Overseers::Finders::GlobalSearch.new(params)
+    service.call
+
+    indexed_records = service.indexed_records
+    inquiries = []
+
+    indexed_records.each do |record|
+      hash = {}
+      hash['text'] = record.attributes['inquiry_number_autocomplete'] if record.attributes['inquiry_number_autocomplete'].present?
+      hash['link'] = overseers_inquiry_path(record.attributes['id']) if record.attributes['inquiry_number_autocomplete'].present?
+      (inquiries << hash) if !hash.empty?
+
+      hash = {}
+      hash['text'] = ['Relationship Map:', record.attributes['inquiry_number_string']].join(' ') if record.attributes['inquiry_number_autocomplete'].present?
+      hash['link'] =  relationship_map_overseers_inquiry_path(record.attributes['id']) if record.attributes['inquiry_number_autocomplete'].present?
+      (inquiries << hash) if !hash.empty?
+
+      hash = {}
+      hash['text'] = record.attributes['final_sales_quote']['inquiry_order_autocomplete'] if record.attributes['final_sales_quote'].present?
+      hash['link'] =  overseers_inquiry_sales_quotes_path(record.attributes['id']) if record.attributes['final_sales_quote'].present?
+      (inquiries << hash) if !hash.empty?
+
+      hash = {}
+      record.attributes['final_sales_orders'].each do |order|
+        hash['text'] = order['inquiry_order_autocomplete'] if order['inquiry_order_autocomplete'].present?
+        hash['link'] =  overseers_inquiry_sales_orders_path(record.attributes['id']) if order['inquiry_order_autocomplete'].present?
+        (inquiries << hash) if !hash.empty?
+      end if record.attributes['final_sales_orders'].present?
+
+      hash = {}
+      hash['text'] = record.attributes['company']['company_autocomplete'] if record.attributes['company'].present?
+      hash['link'] =  overseers_company_path(record.attributes['company']['id']) if record.attributes['company'].present?
+      (inquiries << hash) if !hash.empty?
+
+      hash = {}
+      record.attributes['products'].each do |order|
+        hash['text'] = order['product_autocomplete'] if order['product_autocomplete'].present?
+        hash['link'] =  overseers_product_path(order['id']) if order['product_autocomplete'].present?
+        (inquiries << hash) if !hash.empty?
+      end if record.attributes['products'].present?
+    end
+
+    render json: {inquiries: inquiries.uniq}.to_json
+  end
+
   private
 
     def set_inquiry

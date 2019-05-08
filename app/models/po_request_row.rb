@@ -32,7 +32,7 @@ class PoRequestRow < ApplicationRecord
       'Po Requested': 20
   }
 
-  def total_selling_price
+  def total_buying_price
     if unit_selling_price.present?
       if self.quantity.present?
         unit_selling_price * self.quantity
@@ -83,7 +83,7 @@ class PoRequestRow < ApplicationRecord
     converted_total_selling_price_with_tax - converted_total_selling_price
   end
 
-  def total_buying_price
+  def total_selling_price
     if self.quantity
       self.sales_order_row.present? && self.sales_order_row.unit_selling_price.present? ? self.sales_order_row.unit_selling_price * self.quantity : 0.0
     else

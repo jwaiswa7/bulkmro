@@ -4,12 +4,16 @@
 <% provide :can_be_directly_downloaded, true %>
 
 <% content_for :heading do %>Company Report<% end %>
-<% provide :hide_table_desc, true %>
 <% content_for :page_title do %>
   Reports
 <% end %>
-<%#= render layout: 'search_layout' do %>
-<%# end %>
+<% content_for :table_desc do %>
+  Company Report <%= "for range " + @date_range.gsub("~","to") if @date_range.present?%> searchable with relevant term/keywords.
+<% end %>
+<% content_for :controller_is_aliased, false %>
+
+<%= render layout: 'search_layout' do %>
+<% end %>
 
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
