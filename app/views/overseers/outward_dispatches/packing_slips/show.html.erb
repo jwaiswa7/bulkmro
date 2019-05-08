@@ -12,32 +12,36 @@
     <div class="card">
       <div class="card-header">
         <div class="form-row mb-2">
-          <div class="col-6 col-md-4">
+          <div class="col-6 col-md-3">
             <strong class="d-block">Inquiry #</strong>
             <%= @packing_slip.outward_dispatch.sales_order.inquiry.inquiry_number %>
           </div>
-          <div class="col-6 col-md-4">
+          <div class="col-6 col-md-3">
             <strong class="d-block">Order #</strong>
             <%= @packing_slip.outward_dispatch.sales_order.order_number %>
           </div>
-          <div class="col-6 col-md-4">
+          <div class="col-6 col-md-3">
             <strong class="d-block">Customer Reference #</strong>
             <%= @packing_slip.outward_dispatch.sales_order.sales_quote.id %>
           </div>
+          <div class="col-6 col-md-3"></div>
         </div>
         <div class="form-row">
-          <div class="col-6 col-md-4">
-            <strong class="d-block">Inquiry #</strong>
-            <%= @packing_slip.outward_dispatch.sales_order.inquiry.inquiry_number %>
+          <div class="col-6 col-md-3">
+            <strong class="d-block">Packing List#</strong>
+            <%= "#{@packing_slip.outward_dispatch.sales_order.inquiry.inquiry_number}-#{@packing_slip.id}" %>
           </div>
-          <div class="col-6 col-md-4">
+          <div class="col-6 col-md-3">
             <strong class="d-block">Order Date</strong>
             <%= format_succinct_date(@packing_slip.outward_dispatch.sales_order.created_at) %>
           </div>
-          <div class="col-6 col-md-4">
+          <div class="col-6 col-md-3">
             <strong class="d-block">Packing Date</strong>
             <%= format_succinct_date(@packing_slip.created_at) %>
           </div>
+          <!--<div class="col-6 col-md-2">
+            <%#= row_action_button(overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip, format: :pdf), 'file-pdf', 'Download Pdf', 'dark', :_blank) %>
+          </div>-->
         </div>
       </div>
       <div class="card-body ">
@@ -98,6 +102,53 @@
             <strong><em>Email</em></strong>: <%= @packing_slip.outward_dispatch.sales_order.inquiry.shipping_contact.email if @packing_slip.outward_dispatch.sales_order.inquiry.shipping_contact.email.present? %>
             <span class="d-block"><strong><em>GST Number</em></strong>: <%= @packing_slip.outward_dispatch.sales_order.serialized_shipping_address.gst || @packing_slip.outward_dispatch.sales_order.inquiry.company.default_shipping_address.gst %></span>
           </div>
+        </div>
+      </div>
+
+      <div class="card mb-2">
+        <div class="card-body">
+          <h6 class="text-uppercase text-black-50 mb-1"> Products Details</h6>
+          <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
+            <thead>
+            <tr>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+              </th>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="SKU">SKU</span>
+              </th>
+              <th class="no-sort product-width-adjustment">
+                <span data-toggle="tooltip" title="Description">Description</span>
+              </th>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Box Details">Details</span>
+              </th>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Tax Code">HSN / SAC</span>
+              </th>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Unit Of Measurement">UOM</span>
+              </th>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Quantity">Qty</span>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @packing_slip.rows.each_with_index do |row, index| %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td><%= row.ar_invoice_request_row.product.sku %></td>
+                <td><%= row.ar_invoice_request_row.product.to_s %></td>
+                <td><%= row.packing_slip.box_detail %></td>
+                <td><%= row.ar_invoice_request_row.sales_order_row.best_tax_code.to_s[0..3] %></td>
+                <td><%= row.ar_invoice_request_row.sales_order_row.measurement_unit %></td>
+                <td><%= row.ar_invoice_request_row.delivered_quantity %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+
         </div>
       </div>
     </div>
