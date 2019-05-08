@@ -1,6 +1,7 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
+<% provide :can_be_directly_downloaded, true %>
 
 <% content_for :heading do %>
   Customer Order Status Report
@@ -8,7 +9,7 @@
 
 <div class="col-lg-12 avg_summary_box"></div>
 <% content_for :table_desc do %>
-  Customer Order Status Report <%= "for range " + @date_range.gsub("~", "to") if @date_range.present? %> searchable with relevant term/keywords.
+  Customer Order Status Report searchable with relevant term/keywords.
 <% end %>
 <% content_for :controller_is_aliased, false %>
 <% content_for :page_title do %>
@@ -35,6 +36,9 @@
     <th class="no-sort desktop text-right">Actual Date of <br>Material Readiness</th>
     <th class="no-sort desktop text-right">Date of Pickup</th>
     <th class="no-sort desktop text-right">Date of Inward</th>
+    <th class="no-sort desktop text-right">Date of Outward</th>
+    <th class="no-sort desktop text-right">Date of Customer Delivery</th>
+    <th class="no-sort desktop text-right">On Time / Delayed <br>(viz. customer committed date)</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
@@ -42,6 +46,9 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="daterange"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>

@@ -10,6 +10,9 @@ class CustomerOrderStatusReportIndex < BaseIndex
     field :created_at, value: -> (record) { record.created_at }, type: 'date'
     field :mis_date, value: -> (record) { record.mis_date if record.mis_date.present? }, type: 'date'
     field :cp_committed_date, value: -> (record) { record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present? }, type: 'date'
+    field :outward_date, value: -> (record) { record.invoices.last.mis_date if record.invoices.present? && record.invoices.last.status != 'Cancelled' }, type: 'date'
+    field :customer_delivery_date, value: -> (record) { record.invoices.last.delivery_date if record.invoices.present? }, type: 'date'
+    field :on_time_or_delayed_time, value: -> (record) { record.calculate_time_delay }, type: 'integer'
 
     field :po_requests, type: 'nested' do
       field :supplier_po_request_date, value: -> (record) { record.created_at }, type: 'date'
@@ -19,12 +22,12 @@ class CustomerOrderStatusReportIndex < BaseIndex
         field :supplier_po_date, value: -> (record) { record.metadata['PoDate'].to_date if record.metadata['PoDate'].present? && record.valid_po_date? }, type: 'date'
         field :po_email_sent, value: -> (record) { record.email_messages.where(email_type: "Sending PO to Supplier").last.try(:created_at) if record.email_messages.present?  }, type: 'date'
         field :payment_request_date, value: -> (record) { record.payment_request.created_at if record.payment_request.present? }
-        field :payment_date, value: -> (record) { record.payment_request.transactions.first.created_at if record.payment_request.present? && record.payment_request.transactions.present? }
+        field :payment_date, value: -> (record) { record.payment_request.transactions.last.created_at if record.payment_request.present? && record.payment_request.transactions.present? }
         field :supplier_committed_date, value: -> (record) { record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present? }, type: 'date'
         field :committed_material_readiness_date, value: -> (record) { record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present? }, type: 'date'
         field :actual_material_readiness_date, value: -> (record) { record.supplier_dispatch_date if record.supplier_dispatch_date.present? }, type: 'date'
-        field :pickup_date, value: -> (record) { record.inward_dispatches.first.created_at if record.inward_dispatches.present? }, type: 'date'
-        field :inward_date, value: -> (record) { record.inward_dispatches.first.actual_delivery_date if record.inward_dispatches.present? }, type: 'date'
+        field :pickup_date, value: -> (record) { record.inward_dispatches.last.created_at if record.inward_dispatches.present? }, type: 'date'
+        field :inward_date, value: -> (record) { record.inward_dispatches.last.actual_delivery_date if record.inward_dispatches.present? }, type: 'date'
       end
     end
   end

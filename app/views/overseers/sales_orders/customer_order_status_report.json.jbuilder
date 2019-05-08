@@ -1,4 +1,4 @@
-json.data (@sales_orders) do |sales_order|
+json.data (@customer_order_status_records) do |sales_order|
   json.array! [
                   [],
                   sales_order[:inquiry_number],
@@ -16,7 +16,10 @@ json.data (@sales_orders) do |sales_order|
                   sales_order[:cp_committed_date].present? ? format_date_without_time(Date.parse(sales_order[:cp_committed_date])) : '-',
                   sales_order[:actual_material_readiness_date].present? ? format_date_without_time(Date.parse(sales_order[:actual_material_readiness_date])) : '-',
                   sales_order[:pickup_date].present? ? format_date_without_time(Date.parse(sales_order[:pickup_date])) : '-',
-                  sales_order[:inward_date].present? ? format_date_without_time(Date.parse(sales_order[:inward_date])) : '-'
+                  sales_order[:inward_date].present? ? format_date_without_time(Date.parse(sales_order[:inward_date])) : '-',
+                  sales_order[:outward_date].present? ? format_date_without_time(Date.parse(sales_order[:outward_date])) : '-',
+                  sales_order[:customer_delivery_date].present? ? format_date_without_time(Date.parse(sales_order[:customer_delivery_date])) : '-',
+                  sales_order[:on_time_or_delayed_time].present? ? humanize(sales_order[:on_time_or_delayed_time]) : '-',
               ]
 end
 
@@ -37,10 +40,13 @@ json.columnFilters [
                        [],
                        [],
                        [],
+                       [],
+                       [],
+                       [],
                        []
                    ]
 
 
-json.recordsTotal SalesOrder.all.count
-json.recordsFiltered @indexed_sales_orders.count
+json.recordsTotal @sales_orders.count
+json.recordsFiltered @sales_orders.count
 json.draw params[:draw]

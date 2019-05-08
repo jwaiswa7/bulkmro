@@ -4,11 +4,7 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
   end
 
   def all_records
-    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    else
-      super
-    end
+    indexed_records = index_klass.limit(model_klass.count).order(sort_definition)
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)

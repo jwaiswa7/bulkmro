@@ -25,6 +25,9 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
               actual_material_readiness_date: po_request['purchase_order'].present? && po_request['purchase_order']['actual_material_readiness_date'].present? ? po_request['purchase_order']['actual_material_readiness_date'] : '',
               pickup_date: po_request['purchase_order'].present? && po_request['purchase_order']['pickup_date'].present? ? po_request['purchase_order']['pickup_date'] : '',
               inward_date: po_request['purchase_order'].present? && po_request['purchase_order']['inward_date'].present? ? po_request['purchase_order']['inward_date'] : '',
+              outward_date: sales_order.attributes['outward_date'].present? ? sales_order.attributes['outward_date'] : '',
+              customer_delivery_date: sales_order.attributes['customer_delivery_date'].present? ? sales_order.attributes['customer_delivery_date'] : '',
+              on_time_or_delayed_time: sales_order.attributes['on_time_or_delayed_time'].present? ? sales_order.attributes['on_time_or_delayed_time'] : ''
           }
         end
       else
@@ -44,7 +47,10 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
             committed_material_readiness_date: '',
             actual_material_readiness_date: '',
             pickup_date: '',
-            inward_date: ''
+            inward_date: '',
+            outward_date: '',
+            customer_delivery_date: '',
+            on_time_or_delayed_time: ''
         }
       end
     end
