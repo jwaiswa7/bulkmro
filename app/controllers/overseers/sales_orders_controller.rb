@@ -224,7 +224,6 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     export_service.call
 
     redirect_to url_for(Export.customer_order_status_report.not_filtered.last.report)
-
   end
 
   private

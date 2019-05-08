@@ -1,5 +1,4 @@
 class CustomerOrderStatusReportIndex < BaseIndex
-
   define_type SalesOrder.where.not(order_number: nil).with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
@@ -20,7 +19,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
         field :po_number, value: -> (record) { record.po_number }, type: 'integer'
         field :supplier_name, value: -> (record) { record.supplier.try(:name) }, analyzer: 'substring'
         field :supplier_po_date, value: -> (record) { record.metadata['PoDate'].to_date if record.metadata['PoDate'].present? && record.valid_po_date? }, type: 'date'
-        field :po_email_sent, value: -> (record) { record.email_messages.where(email_type: "Sending PO to Supplier").last.try(:created_at) if record.email_messages.present?  }, type: 'date'
+        field :po_email_sent, value: -> (record) { record.email_messages.where(email_type: 'Sending PO to Supplier').last.try(:created_at) if record.email_messages.present?  }, type: 'date'
         field :payment_request_date, value: -> (record) { record.payment_request.created_at if record.payment_request.present? }
         field :payment_date, value: -> (record) { record.payment_request.transactions.last.created_at if record.payment_request.present? && record.payment_request.transactions.present? }
         field :supplier_committed_date, value: -> (record) { record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present? }, type: 'date'

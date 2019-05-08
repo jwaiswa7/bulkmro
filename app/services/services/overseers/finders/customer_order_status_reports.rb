@@ -20,11 +20,11 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
 
   def perform_query(query_string)
     indexed_records = index_klass.query(
-        multi_match: {
-            query: query_string,
-            operator: 'and',
-            fields: %w[inquiry_number_string],
-        }
+      multi_match: {
+          query: query_string,
+          operator: 'and',
+          fields: %w[inquiry_number_string],
+      }
     ).order(sort_definition)
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
