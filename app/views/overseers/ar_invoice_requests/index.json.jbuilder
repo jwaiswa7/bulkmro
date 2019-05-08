@@ -26,7 +26,8 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                   status_badge(ar_invoice.status),
                   ar_invoice.id,
                   ar_invoice.inquiry.inquiry_number,
-                  ar_invoice.sales_order.order_number
+                  ar_invoice.sales_order.order_number,
+                  ar_invoice.outward_dispatches.map { |outward_dispatch| link_to(outward_dispatch.id, overseers_outward_dispatch_path(outward_dispatch), target: '_blank') }.compact.join(' '),
               ]
 end
 json.recordsTotal @ar_invoice_requests.count

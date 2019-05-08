@@ -265,6 +265,7 @@ Rails.application.routes.draw do
       end
       member do
         get 'render_cancellation_form'
+        get 'download_eway_bill_format'
         patch 'cancel_ar_invoice'
       end
     end
@@ -409,6 +410,7 @@ Rails.application.routes.draw do
         get 'export_kra_report'
         get 'bulk_update'
         get 'pipeline_report'
+        get 'suggestion'
       end
 
       scope module: 'inquiries' do

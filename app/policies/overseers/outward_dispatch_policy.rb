@@ -5,6 +5,6 @@ class Overseers::OutwardDispatchPolicy < Overseers::ApplicationPolicy
   end
 
   def can_create_packing_slip?
-    !record.packing_slips.present?
+    (admin? || logistics?) && record.packing_slips.present? && (record.ar_invoice_request.total_quantity_delivered > record.quantity_in_payment_slips)
   end
 end

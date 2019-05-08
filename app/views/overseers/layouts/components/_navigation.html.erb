@@ -222,6 +222,13 @@
             </ul>
           </div>
           <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Outward Dispatches</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_outward_dispatches_path, policy(:outward_dispatch).index? %>
+              <%= nav_dropdown_item 'Material Ready for Dispatch', overseers_outward_dispatches_path(:status => "Material Ready for Dispatch"), policy(:ar_invoice_request).index? %>
+            </ul>
+          </div>
+          <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Freight Requests</a>
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'All Requests', overseers_freight_requests_path, policy(:freight_request).index? %>
@@ -303,11 +310,14 @@
         <%= nav_item 'Docs', overseers_path(page: 'index'), policy(:doc).index? %>
       </li>
     </ul>
+
   </div>
   <!-- Navigation Bar -->
+  <img src="<%= image_path('new-feature.png') %>" class="mr-1" height="30"/>
+  <input id="global-search" class="global-search" placeholder="Search Inquiry, Company, Product" data-toggle="tooltip" title="Use this input search box for global level Inquiry, Company & Product search ">
 
   <% if current_overseer.cannot_send_emails? %>
-    <span class="badge badge-danger text-uppercase p-1 mr-2 d-none d-md-block" data-toggle="tooltip" title="Set your Google Apps SMTP password"><strong>Emails Disallowed</strong></span>
+    <span class="badge badge-danger text-uppercase p-1 mr-2 ml-2 d-none d-md-block" data-toggle="tooltip" title="Set your Google Apps SMTP password"><strong>Emails Disallowed</strong></span>
   <% end %>
 
   <!-- Settings Dropdown DESKTOP -->

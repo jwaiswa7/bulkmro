@@ -10,5 +10,13 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
     end
   end
 
+
+  def createArInvoiceAndRows
+    InvoiceRequest.all.each do |invoice_request|
+      if invoice_request.status == 'Completed AR Invoice Request'
+        invoice_request
+      end
+    end
+  end
 end
 

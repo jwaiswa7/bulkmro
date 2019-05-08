@@ -20,7 +20,9 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   def new
     @packing_slip = PackingSlip.new(overseer: current_overseer, outward_dispatch: @outward_dispatch)
     @packing_slip.outward_dispatch.ar_invoice_request.rows.each do |row|
-      @packing_slip.rows.build(delivery_quantity: row.delivered_quantity, ar_invoice_request_row: row,ar_invoice_request_row_id: row.id)
+      if row.get_remaining_quantity > 0
+        @packing_slip.rows.build(delivery_quantity: row.get_remaining_quantity, ar_invoice_request_row: row,ar_invoice_request_row_id: row.id)
+      end
     end
     authorize @packing_slip
   end
@@ -53,7 +55,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
     authorize @packing_slip
     respond_to do |format|
       if @packing_slip.update(packing_slip_params.merge(overseer: current_overseer))
-        format.html {redirect_to overseers_packing_slip_path(@packing_slip), notice: 'Packing Slip was successfully updated.'}
+        format.html {redirect_to overseers_outward_dispatch_packing_slip_path(@outward_dispatch,@packing_slip), notice: 'Packing Slip was successfully updated.'}
         format.json {render :show, status: :ok, location: @packing_slip}
       else
         format.html {render :edit}

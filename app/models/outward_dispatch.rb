@@ -7,4 +7,17 @@ class OutwardDispatch < ApplicationRecord
   scope :with_includes, -> { }
   update_index('outward_dispatches#outward_dispatch') {self}
 
+  enum status: {
+      'Material Ready for Dispatch': 10,
+      'Dispatch Approval Pending': 20,
+      'Dispatch Rejected': 30,
+      'Material In Trainsit': 40,
+      'Material Delivered Pending GRN': 50,
+      'Material Delivered': 60
+  }
+
+  def quantity_in_payment_slips
+    self.packing_slips.sum(&:dispatched_quntity)
+  end
+
 end

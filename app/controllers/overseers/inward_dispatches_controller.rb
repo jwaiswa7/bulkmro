@@ -17,7 +17,10 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
     @inward_dispatch = InwardDispatch.new(purchase_order: @purchase_order, logistics_owner: @logistics_owner)
 
     @inward_dispatch.purchase_order.rows.each do |row|
-      @inward_dispatch.rows.build(purchase_order_row: row, pickup_quantity: row.get_pickup_quantity)
+      pickup_quantity = row.get_pickup_quantity
+      if pickup_quantity > 0
+        @inward_dispatch.rows.build(purchase_order_row: row, pickup_quantity: pickup_quantity )
+      end
     end
     authorize @inward_dispatch
   end

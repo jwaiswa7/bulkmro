@@ -1,0 +1,77 @@
+<div class="card mb-2">
+  <div class="card-header d-md-flex justify-content-between">
+    <h5 class="text-uppercase text-black-50 mb-1 "> Packing Slip <%= index %></h5>
+    <a href="<%= edit_overseers_outward_dispatch_packing_slip_path(@outward_dispatch,packing_slip) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down">
+      <i class="fal fa-pen mr-1"></i>Edit AR Invoice
+    </a>
+  </div>
+  <div class="card-body">
+    <div class="form-row">
+      <div class="col-6 col-md-3 mb-2">
+        <strong class="d-block">Box Number </strong>
+        <%= packing_slip.box_number  %>
+      </div>
+      <div class="col-6 col-md-3 mb-2">
+        <strong class="d-block">Box Detail </strong>
+        <%= packing_slip.box_detail  %>
+      </div>
+    </div>
+    <table class="w-100 table table-bordered dt-responsive wrap-whitespace" data-fixed-header="false">
+      <thead>
+      <tr>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+        </th>
+        <th class="no-sort product-width-adjustment">
+          <span data-toggle="tooltip" title="Description">Description</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Quantity">Qty</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Unit of Measurement">UoM</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Unit Cost">UC</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Unit Selling Price">USP</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Margin Percentage">%</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Tax Code">T. Code</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Tax Amount">T. Amount</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Total">Total</span>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <% packing_slip.rows.each_with_index do |row, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= row.ar_invoice_request_row.to_s %></td>
+          <td><%= row.delivery_quantity %></td>
+          <td><%= row.ar_invoice_request_row.product.measurement_unit.name %></td>
+          <td><%= format_currency(row.ar_invoice_request_row.sales_order_row.converted_unit_cost_price_with_unit_freight_cost, symbol: row.ar_invoice_request_row.sales_order.currency_sign) %></td>
+          <td><%= format_currency(row.ar_invoice_request_row.sales_order_row.converted_unit_selling_price, symbol: row.ar_invoice_request_row.sales_order.currency_sign) %></td>
+          <td><%= number_with_precision(row.ar_invoice_request_row.sales_order_row.margin_percentage, precision: 2) %></td>
+          <td><%= row.ar_invoice_request_row.sales_order_row.best_tax_code %></td>
+          <td><%= row.ar_invoice_request_row.sales_order_row.best_tax_rate %></td>
+          <td><%= format_currency((row.ar_invoice_request_row.sales_order_row.converted_total_selling_price_with_tax - row.ar_invoice_request_row.sales_order_row.converted_unit_selling_price), symbol: row.ar_invoice_request_row.sales_order.currency_sign) %></td>
+          <td><%= format_currency(row.ar_invoice_request_row.sales_order_row.converted_total_selling_price_with_tax, symbol: row.ar_invoice_request_row.sales_order.currency_sign) %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
