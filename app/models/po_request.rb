@@ -139,7 +139,7 @@ class PoRequest < ApplicationRecord
   end
 
   def po_margin_percentage
-    (((self.buying_price - self.selling_price) / self.buying_price) * 100).round(2) if self.buying_price > 0
+    (((self.selling_price - self.buying_price) / self.selling_price) * 100).round(2) if self.selling_price > 0
   end
 
   def show_supplier_delivery_date
