@@ -32,6 +32,7 @@ const bindRatingModalTabClick = () => {
                                     }
                                 }
                             });
+                        gtag('event','submit-rating', { event_category: 'supplier-rating',  event_label: 'Supplier Rating ', value: score})
                     }})
             },
             complete: function complete() {
