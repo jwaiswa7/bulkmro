@@ -22,7 +22,7 @@
         <div class="">
           <div class="form-row">
             <div class="col-4 col-md-4">
-              <%= f.input :box_number%>
+              <%= f.input :box_number, required:true%>
             </div>
             <div class="col-4 col-md-4">
               <%= f.input :box_detail %>
@@ -63,11 +63,13 @@
                 <%= row.input :ar_invoice_request_row, input_html: { value: row.object.ar_invoice_request_row.to_s }, disabled: row.object.ar_invoice_request_row.present? && row.object.errors.blank?, label: false %>
               </div>
               <div class="col-1 col-md-1">
-                <%= row.input :delivery_quantity, input_html: { value: row.object.delivery_quantity }, label: false %>
+                <%= row.input :delivery_quantity, input_html: { value: row.object.delivery_quantity}, label: false %>
               </div>
-              <div class="col-1 col-md-1">
-                <%= row.remove_nested_fields_link '', class: 'btn align-self-center delete_row far fa-times text-danger', wrapper_class: 'simple-row'%>
-              </div>
+              <% if f.object.rows.present? && f.object.rows.length > 1 %>
+                <div class="col-1 col-md-1">
+                  <%= row.remove_nested_fields_link '', class: 'btn align-self-center delete_row far fa-times text-danger', wrapper_class: 'simple-row', data: {id: (f.object.rows.index(row.object) || 0)}%>
+                </div>
+              <%end %>
             </div>
           <% end %>
         <% end %>

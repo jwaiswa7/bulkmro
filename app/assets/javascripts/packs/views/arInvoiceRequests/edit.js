@@ -1,4 +1,5 @@
 import bindStatusChange from './bindStatusChange'
+import hideRemoveBtnInRows from "../common/hideRemoveBtnInRows"
 
 const edit = () => {
     bindStatusChange()
