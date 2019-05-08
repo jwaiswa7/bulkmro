@@ -37,12 +37,15 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-02 Bible Data for Migration.csv', 'seed_files_3')
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |csv|
       service.loop(nil) do |x|
-        sales_order = SalesOrder.find_by_order_number(x.get_column('So #').to_i) || SalesOrder.find_by_old_order_number(x.get_column('So #'))
-        if sales_order.blank?
-          csv << [x.get_column('Inquiry Number'), x.get_column('So #')]
+        order_number = x.get_column('So #')
+        if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
+          sales_order = SalesOrder.find_by_old_order_number(x.get_column('So #'))
+          if sales_order.blank?
+            csv << [x.get_column('Inquiry Number'), x.get_column('So #')]
+          end
+          i = i + 1
+          puts "line #{i}, SO #{x.get_column('So #')}"
         end
-        i = i + 1
-        puts "line #{i}, SO #{x.get_column('So #')}"
       end
     end
 
@@ -205,11 +208,14 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-02 Bible Data for Migration.csv', 'seed_files_3')
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
+        order_number = x.get_column('So #')
+        next if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
+
         bible_order_row_total = x.get_column('Total Selling Price').to_f
         bible_order_tax_total = x.get_column('Tax Amount').to_f
         bible_order_row_total_with_tax = bible_order_row_total + bible_order_tax_total
 
-        sales_order = SalesOrder.find_by_old_order_number(x.get_column('So #')) || SalesOrder.find_by_order_number(x.get_column('So #').to_i)
+        sales_order = SalesOrder.find_by_order_number(x.get_column('So #').to_i)
         if sales_order.present?
           product_sku = x.get_column('Bm #').to_s
 
@@ -221,7 +227,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             if ((row_total != bible_order_row_total) || (row_total_with_tax != bible_order_row_total_with_tax)) &&
                 ((row_total - bible_order_row_total).abs > 1 || (row_total_with_tax - bible_order_row_total_with_tax).abs > 1)
               mismatch_orders.push(x.get_column('So #'))
-              writer << [x.get_column('Inquiry Number'), x.get_column('Client Order Date'), sales_order.order_number, sales_order.old_order_number, x.get_column('Order Date'), product_sku, row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax]
+              writer << [x.get_column('Inquiry Number'), x.get_column('Client Order Date'), sales_order.order_number, sales_order.old_order_number || 'nil', x.get_column('Order Date'), product_sku, row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax]
             else
               matching_orders.push(x.get_column('So #'))
             end
@@ -231,16 +237,18 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             end
           end
         else
-          missing_orders.push(x.get_column('So #'))
+          # missing_orders.push(x.get_column('So #'))
         end
+        # end
       end
       puts 'SKIPPED SKUs', skipped_skus
-      puts 'Missing orders', missing_orders.uniq.count, missing_orders
-      puts 'Mismatch orders', mismatch_orders.uniq.count, mismatch_orders
-      puts 'Matching orders', matching_orders.uniq.count, matching_orders
+      puts 'Mismatch orders uniq', mismatch_orders.uniq.count
+      puts 'Mismatch orders', mismatch_orders.count
+      puts 'Matching orders uniq', matching_orders.uniq.count
+      puts 'Matching orders', matching_orders.count
     end
 
-    fetch_csv('full_bible_sales_orders_total_mismatch.csv', csv_data)
+    fetch_csv('odd_bible_sales_orders_total_mismatch.csv', csv_data)
   end
 
   # def check_product_type_for_skipped_skus
@@ -251,6 +259,45 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   #     end
   #   end
   # end
+
+  def set_is_kit_flag_in_mismatch_file
+    column_headers = ['inquiry_number', 'client order date', 'order_number', 'old_order_number', 'order date', 'SKU', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax', 'kit order']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('updated_order_mismatch_file.csv', 'seed_files_3')
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      service.loop(nil) do |x|
+        old_order_number = x.get_column('old_order_number')
+        if old_order_number == 'nil'
+          sales_order = SalesOrder.find_by_order_number(x.get_column('order_number').to_i)
+        else
+          sales_order = SalesOrder.find_by_old_order_number(old_order_number)
+        end
+        bible_order_row_total = x.get_column('bible_total').to_f
+        bible_order_row_total_with_tax = x.get_column('bible_total_with_tax').to_f
+
+        if sales_order.present?
+          product_sku = x.get_column('SKU').to_s
+
+          if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
+            order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
+            row_total = order_row.total_selling_price
+            row_total_with_tax = order_row.total_selling_price_with_tax
+
+            if ((row_total != bible_order_row_total) || (row_total_with_tax != bible_order_row_total_with_tax)) &&
+                ((row_total - bible_order_row_total).abs > 1 || (row_total_with_tax - bible_order_row_total_with_tax).abs > 1)
+              if sales_order.calculated_total.to_f == bible_order_row_total &&
+                  sales_order.calculated_total_with_tax.to_f == bible_order_row_total_with_tax
+                writer << [x.get_column('inquiry_number'), x.get_column('client order date'), sales_order.order_number, sales_order.old_order_number || 'nil', x.get_column('order date'), product_sku, row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax, 'Yes']
+              else
+                writer << [x.get_column('inquiry_number'), x.get_column('client order date'), sales_order.order_number, sales_order.old_order_number || 'nil', x.get_column('order date'), product_sku, row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax, 'No']
+              end
+            end
+          end
+        end
+      end
+    end
+    fetch_csv('updated_order_mismatch_file_with_is_kit_flag.csv', csv_data)
+  end
 
   def companies_export
     overseer = Overseer.find(197)
