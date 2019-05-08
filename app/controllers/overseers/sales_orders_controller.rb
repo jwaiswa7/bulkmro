@@ -196,6 +196,36 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     redirect_to pending_and_rejected_overseers_po_requests_path
   end
 
+  def customer_order_status_report
+    authorize :sales_order
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::CustomerOrderStatusReports.new(params, current_overseer, paginate: false)
+        service.call
+        indexed_sales_orders = service.indexed_records
+        @sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders).call
+        @per = (params['per'] || params['length'] || 20).to_i
+        @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
+        @customer_order_status_records = Kaminari.paginate_array(@sales_orders).page(@page).per(@per)
+      end
+    end
+  end
+
+  def export_customer_order_status_report
+    authorize :sales_order
+
+    service = Services::Overseers::Finders::CustomerOrderStatusReports.new(params, current_overseer, paginate: false)
+    service.call
+    indexed_sales_orders = service.indexed_records
+    sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders).call
+
+    export_service = Services::Overseers::Exporters::CustomerOrderStatusReportsExporter.new([], current_overseer, sales_orders, [])
+    export_service.call
+
+    redirect_to url_for(Export.customer_order_status_report.not_filtered.last.report)
+  end
+
   private
 
     def set_sales_order

@@ -2,7 +2,7 @@ class Services::Overseers::Exporters::CompanyReportsExporter < Services::Oversee
   def initialize(*params)
     super(*params)
     @model = Company
-    @export_name = [@date_range.present? ? @date_range : '', 'Company Report'].join(' ')
+    @export_name = [@params.present? ? @params['date_range'] : 'Overall', 'Company Report'].join(' ')
     @path = Rails.root.join('tmp', filename)
     @columns = [
         'Company Name',
@@ -33,34 +33,34 @@ class Services::Overseers::Exporters::CompanyReportsExporter < Services::Oversee
     if @indexed_records.present?
       records = @indexed_records
     end
-    records.each do |inquiry|
+    records.each do |company|
       rows.push(
-          company_key: Company.find(inquiry.attributes['company_key']).name,
-          account: inquiry.attributes['account'],
-          live_inquiries: number_with_delimiter(inquiry.attributes['live_inquiries'].to_i, delimiter: ','),
-          sales_quote_count: number_with_delimiter(inquiry.attributes['sales_quote_count'].to_i, delimiter: ','),
-          total_quote_value: format_currency(inquiry.attributes['final_sales_quotes'].present? ? inquiry.attributes['final_sales_quotes'].map{|f| f['calculated_total'].to_f}.sum : 0 ),
-          expected_order: number_with_delimiter(inquiry.attributes['expected_order'].present? ? inquiry.attributes['expected_order'].count : 0, delimiter: ',') ,
-          expected_value:  format_currency(inquiry.attributes['expected_order'].present? ? inquiry.attributes['expected_order'].map{|f| f['calculated_total'].to_f}.sum : 0),
-          sales_order_count: number_with_delimiter(inquiry.attributes['final_sales_orders'].present? ? inquiry.attributes['final_sales_orders'].count : 0, delimiter: ','),
-          total_order_value: format_currency(inquiry.attributes['final_sales_orders'].present? ? inquiry.attributes['final_sales_orders'].map{|f| f['calculated_total'].to_f}.sum : 0),
-          total_margin: format_currency(inquiry.attributes['final_sales_orders'].present? ? inquiry.attributes['final_sales_orders'].map{|f| f['calculated_total_margin'].to_f}.sum : 0),
-          margin: if inquiry.attributes['final_sales_orders'].present?
-                    percentage(inquiry.attributes['final_sales_orders'].map{|f| f['calculated_total_margin_percentage'].to_f}.sum  / inquiry.attributes['final_sales_orders'].map{|f| f['calculated_total_margin_percentage'].to_f}.count)
-                  else
-                    percentage(0.0)
-                  end,
-          invoices_count: (number_with_delimiter(inquiry.attributes['invoices'].count, delimiter: ',') if inquiry.attributes['invoices'].present?),
-          amount_invoiced: format_currency(inquiry.attributes['invoices'].present? ? inquiry.attributes['invoices'].map{|f| f['calculated_total'].to_f}.sum : 0),
-          margin_percentage: if inquiry.attributes['final_sales_quotes'].present?
-                               percentage(inquiry.attributes['final_sales_quotes'].map{|f| f['calculated_total_margin_percentage'].to_f}.sum / inquiry.attributes['final_sales_quotes'].map{|f| f['calculated_total_margin_percentage'].to_f}.count )
-                             else
-                               percentage(0.0)
-                             end,
-          cancelled_invoiced: number_with_delimiter(inquiry.attributes['cancelled_invoiced'].count, delimiter: ','),
-          cancelled_invoiced_value: format_currency(inquiry.attributes['cancelled_invoiced'].present? ? inquiry.attributes['cancelled_invoiced'].map{|f| f['calculated_total'].to_f}.sum : 0),
-          sku: number_with_delimiter(inquiry.attributes['sku'].to_i, delimiter: ','),
-      ) if inquiry.present?
+        company_key: Company.find(company['key']).name,
+        account: Company.find(company['key']).account.to_s,
+        live_inquiries: number_with_delimiter(Company.find(company['key']).inquiry_size.to_i, delimiter: ','),
+        sales_quote_count: number_with_delimiter(company['sales_quotes']['value'].to_i, delimiter: ','),
+        total_quote_value: format_currency(company['sales_quotes_total']['value'].to_i, precision: 0),
+        expected_order: number_with_delimiter(company['expected_orders']['value'].to_i, delimiter: ','),
+        expected_value: format_currency(company['expected_orders_total']['value'].to_i, precision: 0),
+        sales_order_count: number_with_delimiter(company['sales_orders']['value'].to_i, delimiter: ','),
+        total_order_value: format_currency(company['sales_orders_total']['value'].to_i, precision: 0),
+        total_margin: format_currency(company['sales_orders_margin']['value'].to_i, precision: 0),
+        margin: if company['sales_orders'].present?
+                  percentage(company['sales_orders_margin_percentage']['value'].to_f / company['sales_orders']['value'].to_i)
+                else
+                  percentage(0.0)
+                end,
+        invoices_count: number_with_delimiter(company['sales_invoices']['value'].to_i, delimiter: ','),
+        amount_invoiced: format_currency(company['sales_invoices_total']['value'].to_i, precision: 0),
+        margin_percentage: if company['sales_quotes'].present?
+                             percentage(company['sales_quotes_margin_percentage']['value'].to_f / company['sales_quotes']['value'].to_i)
+                           else
+                             percentage(0.0)
+                           end,
+        cancelled_invoiced: number_with_delimiter(company['cancelled_invoiced']['value'].to_i, delimiter: ','),
+        cancelled_invoiced_value: format_currency(company['cancelled_invoiced_total']['value'].to_i, precision: 0),
+        sku: number_with_delimiter(company['sku']['value'].to_i, delimiter: ','),
+      ) if company.present?
     end
     export = Export.create!(export_type: 91, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     generate_csv(export)
