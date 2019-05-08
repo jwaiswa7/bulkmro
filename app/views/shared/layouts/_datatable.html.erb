@@ -70,7 +70,7 @@
             <% if params['action'].include?'report'
                  report_name = params['action']
                  report_query = params[report_name].as_json.to_query(report_name) if params[report_name].present?
-                 report_url = params[report_name].present? ? "export_#{report_name}?#{report_query}" : "export_#{report_name}"
+                 report_url = params[report_name].present? ? "export_#{report_name}?#{report_query}.csv" : "export_#{report_name}.csv"
                end %>
             <a href="<%= report_url %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" >
               <i class="fal fa-download mr-1"></i><%= action_name.split('/').last.split("_").join(" ").upcase%>
