@@ -143,10 +143,11 @@
                 <div class="col-1 col-md-1">
                   <%= row.input :delivered_quantity, input_html: { value: row.object.delivered_quantity }, label: false %>
                 </div>
-                <div class="col-1 col-md-1">
-                  <%= row.remove_nested_fields_link '', class: 'btn align-self-center delete_row far fa-times text-danger', wrapper_class: 'simple-row'%>
-                </div>
-
+                <% if f.object.rows.length > 1 %>
+                  <div class="col-1 col-md-1">
+                    <%= row.remove_nested_fields_link '', class: 'btn align-self-center delete_row far fa-times text-danger', wrapper_class: 'simple-row', data: {id: (f.object.rows.index(row.object) || 0)}%>
+                  </div>
+                <% end %>
               </div>
             <% end %>
           <% end %>

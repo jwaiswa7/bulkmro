@@ -2,7 +2,11 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
+        Packing Slip #<%= @packing_slip.id %>
       </h3>
+      <% if policy(@outward_dispatch).show? %>
+        <a href="<%= overseers_outward_dispatch_path(@outward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-show mr-1"></i>Go back to Outward Dispatch</a>
+      <% end %>
       <% if policy(@packing_slip).edit? %>
         <a href="<%= edit_overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
       <% end %>
@@ -143,7 +147,7 @@
                 <td><%= row.packing_slip.box_detail %></td>
                 <td><%= row.ar_invoice_request_row.sales_order_row.best_tax_code.to_s[0..3] %></td>
                 <td><%= row.ar_invoice_request_row.sales_order_row.measurement_unit %></td>
-                <td><%= row.ar_invoice_request_row.delivered_quantity %></td>
+                <td><%= row.delivery_quantity %></td>
               </tr>
             <% end %>
             </tbody>

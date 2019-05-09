@@ -57,6 +57,19 @@
                 <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
                   <span><%= format_succinct_date(locals[:packing_slip].created_at) %></span></td>
               </tr>
+              <tr>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <b><span>Box #</span></b>
+                </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <span> <%= "#{locals[:packing_slip].box_number}" %></span>
+                </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <b><span>Box Details</span></b>
+                </td>
+                <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
+                  <span><%= "#{locals[:packing_slip].box_detail}" %></span></td>
+              </tr>
               </tbody>
             </table>
           </div>
@@ -146,8 +159,6 @@
                 <th align="center" valign="center">
                   <b><span>Description</span></b></th>
                 <th align="center" valign="center">
-                  <b><span>Weight and <br> Dimension</span></b></th>
-                <th align="center" valign="center">
                   <b><span>HSN / SAC</span></b></th>
                 <th align="center" valign="center">
                   <b><span>UOM</span></b></th>
@@ -167,13 +178,11 @@
                     <td align="center" valign="top">
                       <span><%= item.ar_invoice_request_row.product.name %></span></td>
                     <td align="center" valign="top">
-                      <span><%= item.packing_slip.box_detail %></span></td>
-                    <td align="center" valign="top">
                       <span><%= item.ar_invoice_request_row.sales_order_row.best_tax_code.to_s[0..3] %></span></td>
                     <td align="center" valign="top">
                       <span><%= item.ar_invoice_request_row.sales_order_row.measurement_unit %></span></td>
                     <td align="center" valign="top">
-                      <span><%= item.ar_invoice_request_row.delivered_quantity %></span></td>
+                      <span><%= item.delivery_quantity %></span></td>
                   </tr>
                 <% end %>
               </tbody>
