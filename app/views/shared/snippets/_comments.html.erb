@@ -20,11 +20,6 @@
         <% end %>
       </span>
       <%= format_times_ago(comment.created_at) %></span>
-      <% if policy(:po_request).index? %>
-        <a href="#" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" data-toggle="modal" data-target="#bulk-update" data-backdrop="static" data-keyboard="false">
-          Add Comment
-        </a>
-      <% end %>
     </div>
     <div class="chat-item-body">
       <% if trimmed && comment.message.length > 48 %>
@@ -33,6 +28,5 @@
         <%= simple_format comment.message %>
       <% end %>
     </div>
-
   </div>
 </div>
