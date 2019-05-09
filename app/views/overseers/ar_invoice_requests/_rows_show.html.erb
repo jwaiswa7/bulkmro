@@ -1,0 +1,66 @@
+<div class="card mb-2">
+  <div class="card-body">
+    <h6 class="text-uppercase text-black-50 mb-1"> Products Details</h6>
+    <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
+      <thead>
+      <tr>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+        </th>
+        <th class="no-sort product-width-adjustment">
+          <span data-toggle="tooltip" title="Description">Description</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Quantity">Qty</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Stock Quantity">Stock Qty</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Unit of Measurement">UoM</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Unit Cost">UC</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Unit Selling Price">USP</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Margin Percentage">%</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Tax Code">T. Code</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Tax Amount">T. Amount</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Total">Total</span>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @ar_invoice_request.rows.each_with_index do |row, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= row.inward_dispatch_row.purchase_order_row.to_s %></td>
+          <td><%= row.delivered_quantity %></td>
+          <td><%= row.quantity %></td>
+          <td><%= row.product.measurement_unit.name %></td>
+          <td><%= format_currency(row.sales_order_row.converted_unit_cost_price_with_unit_freight_cost, symbol: row.sales_order.currency_sign) %></td>
+          <td><%= format_currency(row.converted_unit_selling_price, symbol: row.sales_order.currency_sign) %></td>
+          <td><%= number_with_precision(row.sales_order_row.margin_percentage, precision: 2) %></td>
+          <td><%= row.sales_order_row.best_tax_code %></td>
+          <td><%= row.sales_order_row.best_tax_rate %></td>
+          <td><%= format_currency((row.converted_total_selling_price_with_tax - row.converted_unit_selling_price), symbol: row.sales_order.currency_sign) %></td>
+          <td><%= format_currency(row.converted_total_selling_price_with_tax, symbol: row.sales_order.currency_sign) %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
