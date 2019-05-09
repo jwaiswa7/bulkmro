@@ -49,6 +49,7 @@ import poRequests from "./poRequests/init";
 
 // AR invoices
 import arInvoiceRequests from "./arInvoiceRequests/init";
+import packingSlips from "./packingSlips/init";
 
 // Activities
 import activities from './activities/init'
@@ -98,7 +99,8 @@ let loader = {
     taxCodes: taxCodes,
     companyBanks: companyBanks,
     arInvoiceRequests: arInvoiceRequests,
-    dashboard: dashboard
+    dashboard: dashboard,
+    packingSlips:packingSlips
 };
 
 // Imports
