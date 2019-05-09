@@ -46,7 +46,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
     authorize @packing_slip
     respond_to do |format|
       if @packing_slip.save
-        format.html { redirect_to overseers_outward_dispatch_packing_slips_path(@outward_dispatch, @packing_slip), notice: 'Packing Slip was successfully created.' }
+        format.html { redirect_to overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip), notice: 'Packing Slip was successfully created.' }
         format.json { render :show, status: :created, location: @packing_slip }
       else
         format.html { render :new }
