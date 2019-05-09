@@ -65,8 +65,10 @@ class InvoiceRequest < ApplicationRecord
 
 
   def has_attachments?
-    if !['Cancelled GRPO', 'Cancelled AP Invoice'].include?(self.status) && !self.attachments.any?
-      errors.add(:attachments, "must be present to create or update a #{self.readable_status}")
+    if !['Cancelled GRPO', 'Cancelled AP Invoice'].include?(self.status)
+      if  !self.attachments.any?
+        errors.add(:attachments, "must be present to create or update a #{self.readable_status}")
+      end
     end
   end
 
