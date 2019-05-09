@@ -15,7 +15,7 @@ class InwardDispatch < ApplicationRecord
   has_many :rows, -> { joins(:purchase_order_row) }, class_name: 'InwardDispatchRow', inverse_of: :inward_dispatch, dependent: :destroy
   has_many_attached :attachments
   belongs_to :invoice_request, optional: true
-  belongs_to :ar_invoice, optional: true
+  belongs_to :ar_invoice_request, optional: true
   belongs_to :sales_order, optional: true
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['purchase_order_row_id'].blank? && attributes['id'].blank? }, allow_destroy: true
   validates_associated :rows

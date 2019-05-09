@@ -33,7 +33,7 @@ class Services::Overseers::ArInvoiceRequests::Update < Services::Shared::BaseSer
     when :'AR Invoice Request Rejected'
       @ar_invoice_comment = ArInvoiceRequestComment.new(message: "Status Changed: #{ar_invoice.status}.<br/> AR Invoice Request Rejection Reason: #{ar_invoice.reason_text('rejection')} ", ar_invoice_request: ar_invoice, overseer: current_overseer)
     when :'Cancelled AR Invoice'
-      @ar_invoice_comment = ArInvoiceRequestComment.new(message: "Status Changed: #{ar_invoice.status}.<br/> AR Invoice Request Cancellation Reason: #{ar_invoice.ar_invoice.reason_text('cancellation')} ", ar_invoice_request: ar_invoice, overseer: current_overseer)
+      @ar_invoice_comment = ArInvoiceRequestComment.new(message: "Status Changed: #{ar_invoice.status}.<br/> AR Invoice Request Cancellation Reason: #{ar_invoice.reason_text('cancellation')} ", ar_invoice_request: ar_invoice, overseer: current_overseer)
     else
       @ar_invoice_comment = ArInvoiceRequestComment.new(message: "Status Changed: #{ar_invoice.status}", ar_invoice_request: ar_invoice, overseer: current_overseer)
     end

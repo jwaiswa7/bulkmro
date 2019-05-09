@@ -4,12 +4,14 @@
       <h3 class="display-5 d-flex align-items-center">
         Packing Slip #<%= @packing_slip.id %>
       </h3>
-      <% if policy(@outward_dispatch).show? %>
-        <a href="<%= overseers_outward_dispatch_path(@outward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-show mr-1"></i>Go back to Outward Dispatch</a>
-      <% end %>
-      <% if policy(@packing_slip).edit? %>
-        <a href="<%= edit_overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
-      <% end %>
+      <div>
+        <% if policy(@outward_dispatch).show? %>
+          <a href="<%= overseers_outward_dispatch_path(@outward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-show mr-1"></i>Go back to Outward Dispatch</a>
+        <% end %>
+        <% if policy(@packing_slip).edit? %>
+          <a href="<%= edit_overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
+        <% end %>
+      </div>
     </div>
   </section>
   <section class="mb-3">

@@ -4,15 +4,14 @@ const index = () => {
     updateSummaryBox()
 
     $('.datatable').on('click','.cancel-ar-invoice, .reject-ar-invoice',function () {
-        if( confirm('Do you want to Cancel the AR invoice') ) {
+        var status = $(this).attr('title')
+        if( confirm('Do you want to '+ status.toLocaleLowerCase() +' the AR invoice request') ) {
             var id = $(this).data('invoice-request-id')
             var $this = $(this)
             $(this).addClass('disabled')
-            var status = $this.attr('title')
-            console.log(status)
             $.ajax({
                 data: {},
-                url: "/overseers/ar_invoices/" + id + "/render_cancellation_form?status=" + status,
+                url: "/overseers/ar_invoice_requests/" + id + "/render_cancellation_form?status=" + status,
                 success: function (data) {
                     $('.cancellation-form-modal').empty()
                     $('.cancellation-form-modal').append(data)
