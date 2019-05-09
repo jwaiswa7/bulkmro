@@ -13,6 +13,12 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   # GET /packing_slips/1
   # GET /packing_slips/1.json
   def show
+    respond_to do |format|
+      format.html {render 'show'}
+      format.pdf do
+        render_pdf_for(@packing_slip, locals: {inquiry: @packing_slip.outward_dispatch.sales_order.inquiry, sales_order: @packing_slip.outward_dispatch.sales_order, packing_slip: @packing_slip})
+      end
+    end
     authorize @packing_slip
   end
 
@@ -40,7 +46,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
     authorize @packing_slip
     respond_to do |format|
       if @packing_slip.save
-        format.html { redirect_to overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip), notice: 'Packing Slip was successfully created.' }
+        format.html { redirect_to overseers_outward_dispatch_packing_slips_path(@outward_dispatch, @packing_slip), notice: 'Packing Slip was successfully created.' }
         format.json { render :show, status: :created, location: @packing_slip }
       else
         format.html { render :new }
@@ -60,7 +66,6 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
       else
         format.html {render :edit}
         format.json {render json: @packing_slip.errors, status: :unprocessable_entity}
-        format.json {render json: @packing_slip.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -74,6 +79,10 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
       format.html {redirect_to packing_slips_url, notice: 'Packing Slip was successfully destroyed.'}
       format.json {head :no_content}
     end
+  end
+
+  def packing_slip_pdf
+
   end
 
   private

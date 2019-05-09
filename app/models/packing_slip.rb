@@ -7,4 +7,11 @@ class PackingSlip < ApplicationRecord
   def dispatched_quntity
     self.rows.sum(:delivery_quantity)
   end
+
+  def filename(include_extension: false)
+    [
+        ['packing_slip', id].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
+  end
 end

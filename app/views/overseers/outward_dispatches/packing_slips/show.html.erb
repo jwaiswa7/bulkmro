@@ -39,9 +39,9 @@
             <strong class="d-block">Packing Date</strong>
             <%= format_succinct_date(@packing_slip.created_at) %>
           </div>
-          <!--<div class="col-6 col-md-2">
-            <%#= row_action_button(overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip, format: :pdf), 'file-pdf', 'Download Pdf', 'dark', :_blank) %>
-          </div>-->
+          <div class="col-6 col-md-2">
+            <%= row_action_button(overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip, format: :pdf), 'file-pdf', 'Download Pdf', 'dark', :_blank) %>
+          </div>
         </div>
       </div>
       <div class="card-body ">
