@@ -11,7 +11,7 @@ json.data (@outward_dispatches) do |outward_dispatch|
                   ].join(' '),
                   outward_dispatch.packing_slips.map { |packing_slip| link_to(packing_slip.id, overseers_outward_dispatch_packing_slip_path(outward_dispatch, packing_slip), target: '_blank') }.compact.join(' '),
                   link_to(ar_invoice_request.inquiry.inquiry_number, edit_overseers_inquiry_path(ar_invoice_request.inquiry), target: '_blank'),
-                  link_to(ar_invoice_request.sales_order, edit_overseers_sales_order_path(ar_invoice_request.sales_order), target: '_blank'),
+                  link_to(ar_invoice_request.sales_order, overseers_inquiry_sales_order_path(ar_invoice_request.sales_order.inquiry, ar_invoice_request.sales_order), target: '_blank'),
                   link_to(ar_invoice_request.id, edit_overseers_ar_invoice_request_path(ar_invoice_request), target: '_blank'),
                   format_date(outward_dispatch.created_at),
               ]

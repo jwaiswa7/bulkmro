@@ -63,7 +63,7 @@
                 <%= row.input :ar_invoice_request_row, input_html: { value: row.object.ar_invoice_request_row.to_s }, disabled: row.object.ar_invoice_request_row.present? && row.object.errors.blank?, label: false %>
               </div>
               <div class="col-1 col-md-1">
-                <%= row.input :delivery_quantity, input_html: { value: row.object.delivery_quantity}, label: false %>
+                <%= row.input :delivery_quantity, input_html: { value: row.object.delivery_quantity, onkeydown: "return event.keyCode !== 69"}, label: false %>
               </div>
               <% if f.object.rows.present? && f.object.rows.length > 1 %>
                 <div class="col-1 col-md-1">
