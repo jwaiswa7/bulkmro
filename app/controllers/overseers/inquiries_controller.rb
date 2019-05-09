@@ -111,9 +111,6 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize :inquiry
 
     respond_to do |format|
-      if params.present?
-        @date_range = params['tat_report']['date_range']
-      end
       service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
       service.call
       format.html {
