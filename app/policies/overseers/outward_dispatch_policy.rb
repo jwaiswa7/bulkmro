@@ -1,5 +1,4 @@
 class Overseers::OutwardDispatchPolicy < Overseers::ApplicationPolicy
-
   def create_with_packing_slip?
     create?
   end

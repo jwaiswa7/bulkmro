@@ -1,8 +1,8 @@
 class Services::Overseers::ArInvoiceRequests::New < Services::Shared::BaseService
   def initialize(params, inward_dispatch)
-    @sales_order_id =  params[:so_id] || SalesOrder.decode_id(params[:sales_order_id])
+    @sales_order_id = params[:so_id] || SalesOrder.decode_id(params[:sales_order_id])
     @inward_dispatches = inward_dispatch
-    @current_overseer =   params[:overseer]
+    @current_overseer = params[:overseer]
   end
 
   def call
