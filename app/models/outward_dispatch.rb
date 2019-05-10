@@ -19,5 +19,4 @@ class OutwardDispatch < ApplicationRecord
   def quantity_in_payment_slips
     self.packing_slips.sum(&:dispatched_quntity)
   end
-
 end

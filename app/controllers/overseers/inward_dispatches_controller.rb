@@ -19,7 +19,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
     @inward_dispatch.purchase_order.rows.each do |row|
       pickup_quantity = row.get_pickup_quantity
       if pickup_quantity > 0
-        @inward_dispatch.rows.build(purchase_order_row: row, pickup_quantity: pickup_quantity )
+        @inward_dispatch.rows.build(purchase_order_row: row, pickup_quantity: pickup_quantity)
       end
     end
     authorize @inward_dispatch
@@ -89,23 +89,23 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
 
     def inward_dispatch_params
       params.require(:inward_dispatch).require(:inward_dispatch).except(:action_name)
-          .permit(
-              :status,
-              :expected_dispatch_date,
-              :expected_delivery_date,
-              :actual_delivery_date,
-              :document_type,
-              :logistics_owner_id,
-              :dispatched_by,
-              :shipped_to,
-              :logistics_partner,
-              :tracking_number,
-              :logistics_aggregator,
-              :other_logistics_partner,
-              :purchase_order_id,
-              comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-              rows_attributes: [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :supplier_delivery_date, :_destroy],
-              attachments: []
-          )
+        .permit(
+          :status,
+          :expected_dispatch_date,
+          :expected_delivery_date,
+          :actual_delivery_date,
+          :document_type,
+          :logistics_owner_id,
+          :dispatched_by,
+          :shipped_to,
+          :logistics_partner,
+          :tracking_number,
+          :logistics_aggregator,
+          :other_logistics_partner,
+          :purchase_order_id,
+          comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+          rows_attributes: [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :supplier_delivery_date, :_destroy],
+          attachments: []
+        )
     end
 end

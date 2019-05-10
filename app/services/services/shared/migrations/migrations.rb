@@ -4822,7 +4822,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               contact.first_name = first_name
               contact.last_name = last_name
               contact.telephone = x.get_column('sup_tel')
-              contact.status = "inactive"
+              contact.status = 'inactive'
               contact.password = password
               contact.password_confirmation = password
               contact.legacy_id = entity_id

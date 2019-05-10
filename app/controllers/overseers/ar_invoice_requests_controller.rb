@@ -9,14 +9,14 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
       base_filter = {
           base_filter_key: 'status'
       }
-      if params[:status] == "pending"
-        base_filter[:base_filter_value] = ArInvoiceRequest.statuses["AR Invoice requested"]
-      elsif params[:status] == "cancelled"
-        base_filter[:base_filter_value] = ArInvoiceRequest.statuses["Cancelled AR Invoice"]
-      elsif params[:status] == "rejected"
-        base_filter[:base_filter_value] = ArInvoiceRequest.statuses["AR Invoice Request Rejected"]
-      elsif params[:status] == "completed"
-        base_filter[:base_filter_value] = ArInvoiceRequest.statuses["Completed AR Invoice Request"]
+      if params[:status] == 'pending'
+        base_filter[:base_filter_value] = ArInvoiceRequest.statuses['AR Invoice requested']
+      elsif params[:status] == 'cancelled'
+        base_filter[:base_filter_value] = ArInvoiceRequest.statuses['Cancelled AR Invoice']
+      elsif params[:status] == 'rejected'
+        base_filter[:base_filter_value] = ArInvoiceRequest.statuses['AR Invoice Request Rejected']
+      elsif params[:status] == 'completed'
+        base_filter[:base_filter_value] = ArInvoiceRequest.statuses['Completed AR Invoice Request']
       end
       service = Services::Overseers::Finders::ArInvoiceRequests.new(params.merge(base_filter), current_overseer)
     else
@@ -31,8 +31,8 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   # GET /ar_invoices/1
   # GET /ar_invoices/1.json
   def show
-    #@rows = @ar_invoice_request.sales_order.rows
-    #@sales_order_row = @ar_invoice_request.sales_order.rows.includes(:product)
+    # @rows = @ar_invoice_request.sales_order.rows
+    # @sales_order_row = @ar_invoice_request.sales_order.rows.includes(:product)
     authorize @ar_invoice_request
   end
 
@@ -118,7 +118,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   def render_cancellation_form
     authorize @ar_invoice_request
     respond_to do |format|
-      format.html {render partial: 'cancel_ar_invoice', :locals => {status: params[:status]}}
+      format.html {render partial: 'cancel_ar_invoice', locals: {status: params[:status]}}
     end
   end
 
@@ -129,7 +129,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
     @ar_invoice_rows = @ar_invoice_request.rows
     respond_to do |format|
       format.xlsx do
-        response.headers['Content-Disposition'] = 'attachment; filename="' + ["Eway bill Excel Template", 'xlsx'].join('.') + '"'
+        response.headers['Content-Disposition'] = 'attachment; filename="' + ['Eway bill Excel Template', 'xlsx'].join('.') + '"'
       end
     end
   end

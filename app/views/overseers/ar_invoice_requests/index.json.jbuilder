@@ -2,10 +2,10 @@ json.data (@ar_invoice_requests) do |ar_invoice|
   json.array! [
                   [
                       if policy(ar_invoice).show?
-                        row_action_button(overseers_ar_invoice_request_path(ar_invoice),'fal fa-eye', 'View AR Invoice', 'info', :_blank)
+                        row_action_button(overseers_ar_invoice_request_path(ar_invoice), 'fal fa-eye', 'View AR Invoice', 'info', :_blank)
                       end,
                       if policy(ar_invoice).edit?
-                        row_action_button(edit_overseers_ar_invoice_request_path(ar_invoice),'pencil', 'Edit AR Invoice', 'warning', :_blank)
+                        row_action_button(edit_overseers_ar_invoice_request_path(ar_invoice), 'pencil', 'Edit AR Invoice', 'warning', :_blank)
                       end,
                       if !ar_invoice.status.downcase.include?('cancel') && policy(ar_invoice).can_cancel_or_reject?
                         link_to('', class: ['btn btn-sm btn-danger cancel-ar-invoice'], 'data-invoice-request-id': ar_invoice.id, title: 'Cancel', remote: true) do
@@ -20,7 +20,7 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                         end
                       end,
                       if  policy(ar_invoice).can_create_outward_dispatch?
-                        row_action_button(new_overseers_outward_dispatch_path(:ar_invoice_request_id => ar_invoice), 'fal fa-plus', 'Add outward dispatch', 'info', :_blank)
+                        row_action_button(new_overseers_outward_dispatch_path(ar_invoice_request_id: ar_invoice), 'fal fa-plus', 'Add outward dispatch', 'info', :_blank)
                       end
                   ].join(' '),
                   status_badge(ar_invoice.status),

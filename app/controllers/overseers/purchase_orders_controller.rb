@@ -99,7 +99,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         service.call
         @indexed_inward_dispatches = service.indexed_records
         @inward_dispatches = service.records.try(:reverse)
-
       end
     end
 
@@ -115,7 +114,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
     base_filter = {
         base_filter_key: 'is_inward_completed',
-        base_filter_value:true
+        base_filter_value: true
     }
 
 
@@ -126,7 +125,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         service.call
         @indexed_inward_dispatches = service.indexed_records
         @inward_dispatches = service.records.try(:reverse)
-
       end
     end
 

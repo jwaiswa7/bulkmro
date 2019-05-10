@@ -29,5 +29,4 @@ class Overseers::ArInvoiceRequestPolicy < Overseers::ApplicationPolicy
   def download_eway_bill_format?
     edit?
   end
-
 end

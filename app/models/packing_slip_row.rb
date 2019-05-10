@@ -11,5 +11,4 @@ class PackingSlipRow < ApplicationRecord
 
     errors.add(:delivery_quantity, " need to be less than or equal to #{max_quantity}") if delivery_quantity > max_quantity
   end
-
 end

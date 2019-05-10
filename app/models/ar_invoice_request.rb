@@ -10,7 +10,6 @@ class ArInvoiceRequest < ApplicationRecord
   has_many :inward_dispatches
   has_many :outward_dispatches
   validate :presence_of_reason
-  
 
   has_many :rows, class_name: 'ArInvoiceRequestRow', inverse_of: :ar_invoice_request
 
@@ -66,7 +65,7 @@ class ArInvoiceRequest < ApplicationRecord
 
     elsif overseer.logistics?
       if self.status == 'AR Invoice Request Rejected'
-        statuses =  ArInvoiceRequest.statuses.slice('AR Invoice requested')
+        statuses = ArInvoiceRequest.statuses.slice('AR Invoice requested')
       end
       return {enabled: ArInvoiceRequest.statuses, disabled: ArInvoiceRequest.statuses.except('AR Invoice requested').keys}
     else
@@ -103,7 +102,7 @@ class ArInvoiceRequest < ApplicationRecord
       data[:text] = self.rejection_reason == 'Rejected: Others' ? self.other_rejection_reason : self.rejection_reason
     when 'Cancelled AR Invoice'
       data[:label] = 'AP Cancellation Reason'
-      data[:text] = self.cancellation_reason == 'Others' ? self.other_cancellation_reason: self.cancellation_reason
+      data[:text] = self.cancellation_reason == 'Others' ? self.other_cancellation_reason : self.cancellation_reason
     else
       data[:display] = false
     end
@@ -120,23 +119,21 @@ class ArInvoiceRequest < ApplicationRecord
 
   private
 
-  def presence_of_reason
-    case status
-    when 'AR Invoice Request Rejected'
-      if !rejection_reason.present?
-        errors.add(:base, 'Please enter reason for AR invoice request rejection')
-      elsif rejection_reason == 'Rejected: Others' && !other_rejection_reason.present?
-        errors.add(:base, 'Please enter reason for AR invoice request rejection')
+    def presence_of_reason
+      case status
+      when 'AR Invoice Request Rejected'
+        if !rejection_reason.present?
+          errors.add(:base, 'Please enter reason for AR invoice request rejection')
+        elsif rejection_reason == 'Rejected: Others' && !other_rejection_reason.present?
+          errors.add(:base, 'Please enter reason for AR invoice request rejection')
         end
-    when 'Cancelled AR Invoice'
-      if !cancellation_reason.present?
-        errors.add(:base, 'Please enter reason for AR invoice request cancellation')
-      elsif cancellation_reason == 'Others' && !other_cancellation_reason.present?
-        errors.add(:base, 'Please enter reason for AR invoice request cancellation')
+      when 'Cancelled AR Invoice'
+        if !cancellation_reason.present?
+          errors.add(:base, 'Please enter reason for AR invoice request cancellation')
+        elsif cancellation_reason == 'Others' && !other_cancellation_reason.present?
+          errors.add(:base, 'Please enter reason for AR invoice request cancellation')
+        end
+      else
       end
-    else
     end
-  end
-
-
 end

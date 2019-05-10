@@ -9,10 +9,10 @@ class Services::Overseers::Finders::ArInvoiceRequests < Services::Overseers::Fin
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-                      else
-                        super
-                      end
+      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    else
+      super
+    end
 
     if @base_filter.present?
       indexed_records = indexed_records.filter(@base_filter)

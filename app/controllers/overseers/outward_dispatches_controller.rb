@@ -28,14 +28,13 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   # GET /outward_dispatches/1.json
   def show
     authorize @outward_dispatch
-
   end
 
   # GET /outward_dispatches/new
   def new
     @ar_invoice = ArInvoiceRequest.find(params[:ar_invoice_request_id])
     @sales_order = @ar_invoice.sales_order
-    @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order, ar_invoice_request: @ar_invoice )
+    @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order, ar_invoice_request: @ar_invoice)
 
     authorize @outward_dispatch
   end
@@ -65,7 +64,7 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   def create_with_packing_slip
     @ar_invoice = ArInvoiceRequest.find(params[:ar_invoice_request_id])
     @sales_order = @ar_invoice.sales_order
-    @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order, ar_invoice_request: @ar_invoice )
+    @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order, ar_invoice_request: @ar_invoice)
     authorize @outward_dispatch
 
     respond_to do |format|
@@ -114,8 +113,8 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     # Never trust parameters from the scary internet, only allow the white list through.
     def outward_dispatch_params
       params.require(:outward_dispatch).except(:action_name).permit(
-          :ar_invoice_request_id,
-          :sales_order_id
+        :ar_invoice_request_id,
+        :sales_order_id
       )
     end
 end

@@ -33,7 +33,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
 
       redirect_to edit_overseers_purchase_order_inward_dispatch_path(@purchase_order, @inward_dispatch), notice: flash_message(@inward_dispatch, action_name)
     else
-      render 'new', notice: @inward_dispatch.errors.full_messages.join(", ")
+      render 'new', notice: @inward_dispatch.errors.full_messages.join(', ')
     end
   end
 
@@ -54,7 +54,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
       @purchase_order.update_material_status
       redirect_to overseers_purchase_order_inward_dispatch_path(@inward_dispatch.purchase_order, @inward_dispatch), notice: flash_message(@inward_dispatch, action_name)
     else
-      render 'edit', notice: @inward_dispatch.errors.full_messages.join(", ")
+      render 'edit', notice: @inward_dispatch.errors.full_messages.join(', ')
     end
   end
 

@@ -19,7 +19,7 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
           inward_dispatch_rows = inward_dispatch.rows
           if inward_dispatch.sales_order.present?
             ar_invoice_request = ArInvoiceRequest.new(overseer: invoice_request.created_by, sales_order: inward_dispatch.sales_order, inquiry: inward_dispatch.inquiry,status: 'Completed AR Invoice Request', ar_invoice_number: invoice_request.ar_invoice_number)
-            sales_order_rows= inward_dispatch.sales_order.rows.order(:created_at)
+            sales_order_rows = inward_dispatch.sales_order.rows.order(:created_at)
             sales_order_row_ids = sales_order_rows.pluck(:id)
             product_ids = sales_order_rows.map{|x| x.product.id}
             inward_dispatch_rows.each do |row|
@@ -38,4 +38,10 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
     end
   end
 end
-
+#
+# PurchaseOrder.all.map{|x| if x.po_request.present?; po_products = x.rows.pluck(:product_id);so_products = x.po_request.sales_order.rows.pluck(:product_id);if(po_products.count > so_products.count);x.id;end;end}
+#
+#
+# PurchaseOrder.all.map{|x| if x.po_request.present?; po_products = x.rows.pluck(:product_id).to_set;so_products = x.po_request.sales_order.rows.pluck(:product_id).to_set;if(!po_products.subset?(so_products));x.id;end;end}
+#
+# PurchaseOrder.all.map{|x| if x.po_request.present?; po_products = x.rows.pluck(:product_id).to_set;so_products = x.po_request.sales_order.rows.pluck(:product_id).to_set;if(!po_products.subset?(so_products));if (x.inquiry.status == 'Order Won');x.id;end;end;end}.compact

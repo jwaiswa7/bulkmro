@@ -52,6 +52,4 @@ class ArInvoiceRequestRow < ApplicationRecord
   def converted_total_selling_price_with_tax
     (self.total_selling_price_with_tax / conversion_rate) if unit_selling_price.present?
   end
-
-
 end

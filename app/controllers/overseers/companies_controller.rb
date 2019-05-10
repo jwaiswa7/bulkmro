@@ -117,8 +117,7 @@ class Overseers::CompaniesController < Overseers::BaseController
 
     export_service = Services::Overseers::Exporters::CompanyReportsExporter.new([], current_overseer, indexed_company_reports, date_range)
     export_service.call
-
-      redirect_to url_for(Export.company_report.not_filtered.last.report)
+    redirect_to url_for(Export.company_report.not_filtered.last.report)
   end
 
   private
