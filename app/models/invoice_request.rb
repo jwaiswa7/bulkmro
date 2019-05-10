@@ -184,7 +184,7 @@ class InvoiceRequest < ApplicationRecord
       elsif self.status == 'AP Invoice Request Rejected'
         disabled_statuses =  InvoiceRequest.statuses.except('In stock', 'Pending AP Invoice').keys
       elsif  self.status == 'In stock'
-        disabled_statuses =  InvoiceRequest.statuses.except('Inward Completed')
+        disabled_statuses =  InvoiceRequest.statuses.except('Inward Completed').keys
       else
         disabled_statuses =  InvoiceRequest.statuses.except('In stock').keys
       end
