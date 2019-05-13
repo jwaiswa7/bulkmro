@@ -18,6 +18,9 @@
       position: relative;
       bottom: 2px;
     }
+    &:last-child{
+      font-weight: bold;
+    }
   }
 }
 
@@ -37,6 +40,6 @@
 
 @include media-breakpoint-up(lg) {
   .breadcrumb-bar {
-    min-height: 3.5625rem;
+    min-height: 2.5625rem;
   }
 }
