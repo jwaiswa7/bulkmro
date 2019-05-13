@@ -7,6 +7,7 @@ class NewCompanyReportsIndex < BaseIndex
     field :created_at, value: -> (record) {record.created_at}, type: 'date'
     field :updated_at, value: -> (record) {record.updated_at}, type: 'date'
     field :company_key, value: -> (record) { record.company.id }, type: 'integer'
+    field :account_id, value: -> (record) { record.account.id }, type: 'integer'
     field :expected_order, value: -> (record) {record.status == 'Expected Order' ? 1 : 0}, type: 'integer'
     field :expected_order_total, value: -> (record) {record.status == 'Expected Order' ? record.try(:calculated_total) : 0}, type: 'double'
 

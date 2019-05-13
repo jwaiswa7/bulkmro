@@ -6,6 +6,9 @@ class PoRequest < ApplicationRecord
   include Mixins::HasConvertedCalculations
   include Mixins::GetOverallDate
 
+  update_index('purchase_orders#purchase_order') { purchase_order }
+  update_index('customer_order_status_report#sales_order') { sales_order }
+
   pg_search_scope :locate, against: [:id], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
   belongs_to :sales_order, required: false
