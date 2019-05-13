@@ -13,13 +13,13 @@ json.data (@po_requests) do |po_request|
                         end
                       end,
                       if policy(po_request).can_cancel?
-                        link_to('', class: ['btn btn-sm btn-success comment-po_request'], 'data-po-request-id': po_request.id, title: 'Add Comment', remote: true) do
+                        link_to('', class: ['btn btn-sm btn-danger comment-po-request'], 'data-po-request-id': po_request.id, title: 'Add Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-envelope'].join
                         end
                       end,
                       if po_request.po_request_type == 'Stock' && policy(po_request).can_reject?
-                        link_to('', class: ['btn btn-sm btn-danger comment-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
+                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end

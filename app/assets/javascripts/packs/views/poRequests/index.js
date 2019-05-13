@@ -36,7 +36,7 @@ const index = () => {
 
     })
 
-    $('.datatable').on('click', '.comment-po_request', function (e) {
+    $('.datatable').on('click', '.comment-po-request', function (e) {
             var id = $(this).data('po-request-id')
             var $this = $(this)
             $(this).addClass('disabled')
