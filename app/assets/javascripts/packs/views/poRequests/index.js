@@ -39,8 +39,6 @@ const index = () => {
     $('.datatable').on('click', '.comment-po_request', function (e) {
             var id = $(this).data('po-request-id')
             var $this = $(this)
-            // var title = $(this).attr('title')
-
             $(this).addClass('disabled')
             $.ajax({
                 data: {},
