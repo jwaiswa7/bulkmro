@@ -63,7 +63,7 @@ class Services::Overseers::Finders::GlobalSearch < Services::Overseers::Finders:
     indexed_records = indexed_records.query(
       multi_match: {
           query: prefix,
-          fields: ['inquiry_number_autocomplete.autocomplete', 'products.product_autocomplete.autocomplete', 'company.company_autocomplete.autocomplete'],
+          fields: ['inquiry_number_autocomplete.autocomplete', 'products.product_autocomplete.autocomplete', 'company.company_autocomplete.autocomplete', 'account.account_autocomplete.autocomplete'],
           type: 'best_fields'
       }
     )

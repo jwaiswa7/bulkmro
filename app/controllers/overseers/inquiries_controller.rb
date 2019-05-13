@@ -405,6 +405,11 @@ class Overseers::InquiriesController < Overseers::BaseController
       (inquiries << hash) if !hash.empty?
 
       hash = {}
+      hash['text'] = record.attributes['account']['account_autocomplete'] if record.attributes['account'].present?
+      hash['link'] =  overseers_account_path(record.attributes['account']['id']) if record.attributes['account'].present?
+      (inquiries << hash) if !hash.empty?
+
+      hash = {}
       record.attributes['products'].each do |order|
         hash['text'] = order['product_autocomplete'] if order['product_autocomplete'].present?
         hash['link'] =  overseers_product_path(order['id']) if order['product_autocomplete'].present?
