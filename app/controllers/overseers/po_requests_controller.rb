@@ -230,7 +230,6 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   private
-
   def po_request_params
     params.require(:po_request).permit(
         :id,
