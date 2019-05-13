@@ -13,8 +13,8 @@ json.data (@products) do |product|
       ].join(' '),
       link_to(product.name, overseers_product_path(product), target: '_blank'),
       product.sku,
-      link_to(product.brand.to_s, overseers_brand_path(product.brand), target: '_blank'),
-      link_to(product.category.name, overseers_category_path(product.category), target: '_blank'),
+      (product.brand.present? ? conditional_link(product.brand.to_s, overseers_brand_path(product.brand), policy(product.brand).show?) : '-'),
+      (product.category.present? ? conditional_link(product.category.name, overseers_category_path(product.category), policy(product.category).show?) : '-'),
       format_succinct_date(product.created_at)
   ]
 end
