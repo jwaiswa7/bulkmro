@@ -1,24 +1,24 @@
 <% if content_for?(:heading) || (content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new?) || !content_for?(:hide_table_desc) %>
-  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+  <section class="section-padding-adjustment">
     <div class="d-md-flex justify-content-between">
-      <div>
-        <% if content_for?(:heading) %>
-          <h1 class="display-5 mb-1"><%= yield :heading %></h1>
-        <% else %>
-          <h1 class="display-5 mb-1"><%= current_model.titleize %></h1>
-        <% end unless content_for?(:hide_table_heading) %>
-        <% unless content_for?(:hide_table_desc) %>
-          <% if content_for?(:table_desc) %>
-            <p class="lead mt-1 mb-1">
-              <%#= yield :table_desc %>
-            </p>
-          <%# else %>
-            <p class="lead mt-1 mb-1">
-              All <%#= current_model.humanize.downcase %> searchable with relevant term/keywords.
-            </p>
-          <%# end %>
-        <%# end %>
-      </div>-->
+      <!-- <div>
+       <%# if content_for?(:heading) %>
+         <h1 class="display-5 mb-1"><%#= yield :heading %></h1>
+       <%# else %>
+         <h1 class="display-5 mb-1"><%#= current_model.titleize %></h1>
+       <%# end unless content_for?(:hide_table_heading) %>
+       <%# unless content_for?(:hide_table_desc) %>
+         <%# if content_for?(:table_desc) %>
+           <p class="lead mt-1 mb-1">
+             <%#= yield :table_desc %>
+           </p>
+         <%# else %>
+           <p class="lead mt-1 mb-1">
+             All <%#= current_model.humanize.downcase %> searchable with relevant term/keywords.
+           </p>
+         <%# end %>
+       <%# end %>
+     </div>-->
     </div>
 
     <%= yield :notice_message %>
@@ -27,8 +27,8 @@
 <% end %>
 <section class="pb-4 pb-lg-5">
   <table class="datatable table table-bordered table-hover dt-responsive
-    <% if content_for?(:wrap_whitespace) %> wrap-whitespace
-    <% end %>" data-search="Enter search term/keywords"
+   <% if content_for?(:wrap_whitespace) %> wrap-whitespace
+   <% end %>" data-search="Enter search term/keywords"
          <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.fullpath %>"
          <% end %><% if not content_for?(:enable_sort_on_last_column) %>data-sorting="false"<% end %>>
     <thead>
