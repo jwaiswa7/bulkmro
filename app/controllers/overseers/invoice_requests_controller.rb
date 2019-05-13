@@ -91,7 +91,6 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @sales_order = @purchase_order.try(:po_request).try(:sales_order)
       @invoice_request = InvoiceRequest.new(overseer: current_overseer, purchase_order: @purchase_order, inquiry: @purchase_order.inquiry)
       @inward_dispatches_ids = params[:ids].present? ? params[:ids] : InwardDispatch.decode_id(params[:inward_dispatch_id])
-
       authorize @invoice_request
       if params[:inward_dispatch_id] || params[:ids]
         if params[:inward_dispatch_id]
@@ -111,12 +110,16 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def create
     @invoice_request = InvoiceRequest.new(invoice_request_params.merge(overseer: current_overseer))
+    inward_dispatch_ids = invoice_request_params[:inward_dispatch_ids].split(',').map(&:to_i)
     authorize @invoice_request
     if @invoice_request.valid?
       ActiveRecord::Base.transaction do
         service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
         service.call
         @invoice_request.save!
+        if inward_dispatch_ids.present?
+          InwardDispatch.where(id: inward_dispatch_ids).update_all(invoice_request_id: @invoice_request.id)
+        end
         @invoice_request_comment = InvoiceRequestComment.new(message: 'Invoice Request submitted.', invoice_request: @invoice_request, overseer: current_overseer)
         @invoice_request_comment.save!
       end

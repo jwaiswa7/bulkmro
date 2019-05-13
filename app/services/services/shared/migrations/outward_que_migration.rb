@@ -36,7 +36,7 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
                 if ar_invoice_request.valid?
                   ar_invoice_request.save
                   inward_dispatch.ar_invoice_request_id = ar_invoice_request.id
-                  inward_dispatch.save
+                  inward_dispatch.save(validate: false)
                   invoice_request.status = 'Inward Completed'
                   invoice_request.save
                 else
