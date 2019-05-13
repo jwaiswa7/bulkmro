@@ -229,7 +229,6 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
-
   private
 
   def po_request_params
