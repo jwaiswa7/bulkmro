@@ -183,7 +183,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     if @po_request.valid?
       ActiveRecord::Base.transaction do
         @po_request.save!
-        @po_request_comment = PoRequestComment.new(message: " ", po_request: @po_request, overseer: current_overseer)
+        @po_request_comment = PoRequestComment.new(message: '', po_request: @po_request, overseer: current_overseer)
       end
       render json: {success: 1, message: 'Successfully updated '}, status: 200
     else
