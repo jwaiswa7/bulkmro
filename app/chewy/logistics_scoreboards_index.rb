@@ -5,10 +5,13 @@ class LogisticsScoreboardsIndex < BaseIndex
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
+    field :inquiry_date, value: -> (record) { record.inquiry.created_at if record.inquiry.present? }, type: 'date'
     field :company_id, value: -> (record) { record.inquiry.company.id if record.inquiry.present? }, type: 'integer'
     field :company, value: -> (record) { record.inquiry.company.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :inside_sales_owner_id, value: -> (record) { record.inquiry.inside_sales_owner_id if record.inquiry.present? }, type: 'integer'
+    field :inside_sales_owner, value: -> (record) { record.inquiry.inside_sales_owner.name if record.inquiry.present? }, analyzer: 'substring'
     field :logistics_owner_id, value: -> (record) { record.inquiry.company.logistics_owner_id if record.inquiry.present? }, type: 'integer'
+    field :logistics_owner, value: -> (record) { record.inquiry.company.logistics_owner&.name if record.inquiry.present? && record.inquiry.company.present? }, analyzer: 'substring'
     field :opportunity_type, value: -> (record) {opportunity_type[record.inquiry.opportunity_type] if record.inquiry.present?}, type: 'integer'
     field :rows do
       field :sku, value: -> (record) {record.product.sku if record.product.present?}, analyzer: 'sku_substring'
@@ -18,6 +21,7 @@ class LogisticsScoreboardsIndex < BaseIndex
     end
     field :so_delivery_location, value: -> (record) { record.inquiry.shipping_address.legacy_metadata["state_name"] if record.inquiry.present? && record.inquiry.shipping_address.legacy_metadata.present? }, analyzer: 'substring'
     field :customer_po_date, value: -> (record) { record.inquiry.customer_order_date if record.inquiry.customer_order_date.present? }, type: 'date'
+    field :customer_po_received_date, value: -> (record) { record.inquiry.customer_order_date if record.customer_order_date.present? }, type: 'date'
     field :cp_committed_date, value: -> (record) { record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present? }, type: 'date'
     field :created_at, value: -> (record) { record.created_at }, type: 'date'
 

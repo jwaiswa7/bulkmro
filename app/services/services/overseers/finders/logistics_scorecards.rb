@@ -4,15 +4,7 @@ class Services::Overseers::Finders::LogisticsScorecards < Services::Overseers::F
   end
 
   def all_records
-    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-                      else
-                        super
-                      end
-
-    if @status.present?
-      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
-    end
+    indexed_records = index_klass.limit(model_klass.count).order(sort_definition)
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
@@ -22,25 +14,20 @@ class Services::Overseers::Finders::LogisticsScorecards < Services::Overseers::F
       indexed_records = range_query(indexed_records)
     end
 
-    indexed_records = aggregation_kra_report(indexed_records)
     indexed_records
   end
 
   def perform_query(query_string)
     indexed_records = index_klass.query(
-        multi_match: {
-            query: query_string,
-            operator: 'and',
-            fields: %w[inside_sales_owner]
-        }
+      multi_match: {
+          query: query_string,
+          operator: 'and',
+          fields: %w[inquiry_number_string]
+      }
     ).order(sort_definition)
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    end
-
-    if @status.present?
-      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
     end
 
     if search_filters.present?

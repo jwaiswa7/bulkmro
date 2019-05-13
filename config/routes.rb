@@ -634,6 +634,7 @@ Rails.application.routes.draw do
     end
 
     resources :sales_receipts
+    resources :logistics_scorecards
 
   end
 
