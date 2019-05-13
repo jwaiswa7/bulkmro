@@ -111,9 +111,6 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize :inquiry
 
     respond_to do |format|
-      if params['tat_report'].present?
-        @date_range = params['tat_report']['date_range']
-      end
       service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
       service.call
       format.html {
@@ -130,7 +127,9 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize :inquiry
     respond_to do |format|
       if params.present?
-        @inside_sales_owner = params['inside_sales_owner_id']
+        params['tat_report'] = params
+        @inside_sales_owner = params['tat_report']['inside_sales_owner_id']
+        @date_range = params['tat_report']['date_range']
       end
       service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
       service.call
@@ -139,7 +138,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       unless status_avgs.blank?
         @sales_owner_average_values = status_avgs[0].except('key', 'doc_count')
         statuses = { 'new_inquiry': 0, 'acknowledgment_mail': 0, 'cross_reference': 0, 'preparing_quotation': 0, 'quotation_sent': 0, 'draft_so_appr_by_sales_manager': 0, 'so_reject_by_sales_manager': 0, 'so_draft_pending_acct_approval': 0, 'rejected_by_accounts': 0, 'hold_by_accounts': 0, 'order_won': 0, 'order_lost': 0, 'regret': 0 }
-        @status_average = statuses.map { |status, value| {status: status.to_s, value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / @indexed_tat_reports.count).round(2) : 0 } }
+        @status_average = statuses.map { |status, value| {status: status.to_s, value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / status_avgs.first['doc_count']).round(2) : 0 } }
         format.html { render partial:  'sales_owner_status_average' }
       else
         format.html
