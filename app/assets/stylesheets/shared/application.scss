@@ -1,2 +1,8 @@
 @import "../scss/init";
-
+section.section-padding-adjustment {
+  #padding-top: 1.0rem !important;
+  #padding-bottom: 0.7rem !important;
+  p.lead{
+    font-size: 0.8rem;
+  }
+}
