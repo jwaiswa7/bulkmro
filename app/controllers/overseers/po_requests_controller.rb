@@ -122,7 +122,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
         comment = @po_request_comment.present? ? @po_request_comment.message : nil
         @notification.send_po_request_update(
-            tos - [current_overseer.email],
+           tos - [current_overseer.email],
             action_name.to_sym,
             @po_request,
             overseers_po_request_path(@po_request),
