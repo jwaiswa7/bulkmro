@@ -24,7 +24,7 @@ let preSetup = () => {
                 $('#' + $target.attr('id')).DataTable().search($(this).val()).draw();
             }, 300);
 
-            let $wrapper = "<div class='input-group'>" +
+            let $wrapper = "<div class='input-group mt-2'>" +
                 "<div class='input-group-prepend'>" +
                 "<span class='input-group-text'>" +
                 "<i class='material-icons'>filter_list</i>" +
