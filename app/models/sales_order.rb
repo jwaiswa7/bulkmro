@@ -13,6 +13,8 @@ class SalesOrder < ApplicationRecord
   include DisplayHelper
 
   update_index('sales_orders#sales_order') {self}
+  update_index('customer_order_status_report#sales_order') { self }
+
   pg_search_scope :locate, against: [:status, :id, :order_number], associated_against: {company: [:name], inquiry: [:inquiry_number, :customer_po_number]}, using: {tsearch: {prefix: true}}
   has_closure_tree(name_column: :to_s)
 
@@ -247,6 +249,12 @@ class SalesOrder < ApplicationRecord
         self.update_attributes!(draft_sync_date: draft_remote_request.created_at)
         self.draft_sync_date
       end
+    end
+  end
+
+  def calculate_time_delay
+    if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present?
+      ((self.invoices.last.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
     end
   end
 end

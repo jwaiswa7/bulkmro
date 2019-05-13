@@ -36,7 +36,8 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
           fields: %w[inquiry_number_string inside_sales_owner],
           minimum_should_match: '100%'
       }
-    )
+    ).order(sort_definition)
+
     if @base_filter.present?
       indexed_records = indexed_records.filter(@base_filter)
     end
@@ -54,12 +55,19 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
   end
 
   def aggregation_tat_report(indexed_records)
-    date_range = {from: '01-01-2019', to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
+    if @tat_report_params.present? && @tat_report_params['date_range'].present?
+      dates = @tat_report_params['date_range'].split('~')
+      from = ((dates[0].strip).to_time).strftime('%Y-%m-%d')
+      to = ((dates[1].strip).to_time).strftime('%Y-%m-%d')
+      date_range = { from: from, to: to, key: 'custom-range' }
+    else
+      date_range = { from: '2019-01-01', to: Date.today.strftime('%Y-%m-%d'), key: 'custom-range' }
+    end
     indexed_records = indexed_records.aggregations(
       'tat_by_sales_owner': {
           date_range: {
               field: 'created_at',
-              format: 'dd-MM-yyy',
+              format: 'yyyy-MM-dd',
               ranges: [
                   date_range
               ],

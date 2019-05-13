@@ -21,6 +21,7 @@ class Export < ApplicationRecord
     suppliers: 65,
     sales_order_reco: 70,
     kra_report: 90,
-    company_report: 91
+    company_report: 91,
+    customer_order_status_report: 92
   }
 end
