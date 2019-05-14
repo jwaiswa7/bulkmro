@@ -71,7 +71,7 @@ wb.add_worksheet(name: 'ArInvoiceRequest') do |sheet|
             @sales_order.serialized_shipping_address.try(:pincode),
             product.sku,
             product.name,
-            product.legacy_metadata.present? ? product.legacy_metadata['hsn_code'] : '',
+            product.tax_code.to_s,
             ar_invoice_row.delivered_quantity,
             ar_invoice_row.sales_order_row.measurement_unit,
             ar_invoice_row.total_selling_price,

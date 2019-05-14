@@ -41,6 +41,8 @@ module StatusesHelper
       'color-light-yellow'
     when :'Material Delivered'
       'success'
+    when :'Inward Completed'
+      'success'
     when :'Material Partially Delivered'
       'color-light-green'
 
