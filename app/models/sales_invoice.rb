@@ -4,6 +4,7 @@ class SalesInvoice < ApplicationRecord
   include Mixins::HasConvertedCalculations
   update_index('sales_invoices#sales_invoice') { self }
   update_index('customer_order_status_report#sales_order') { sales_order }
+  update_index('logistics_scorecards#sales_invoice') { self }
 
   pg_search_scope :locate, against: [:id, :invoice_number], associated_against: { company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
 
@@ -214,5 +215,23 @@ class SalesInvoice < ApplicationRecord
 
   def calculated_freight_cost_total
     self.rows.sum(&:freight_cost_subtotal).round(2)
+  end
+
+  def committed_delivery_tat
+    if self.inquiry.customer_committed_date.present? && self.inquiry.customer_po_received_date.present?
+      (self.inquiry.customer_committed_date - self.inquiry.customer_po_received_date).to_i
+    end
+  end
+
+  def actual_delivery_tat
+    if self.delivery_date.present? && self.inquiry.customer_order_date.present?
+      (self.delivery_date - self.inquiry.customer_order_date).to_i
+    end
+  end
+
+  def delay
+    if self.committed_delivery_tat.present? && self.actual_delivery_tat.present?
+      (self.actual_delivery_tat - self.committed_delivery_tat).to_i
+    end
   end
 end

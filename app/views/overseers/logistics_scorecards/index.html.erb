@@ -1,0 +1,30 @@
+<%= provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+
+<% content_for :header_row do %>
+  <th class="no-sort desktop text-right">BM Inquiry #</th>
+  <th class="no-sort desktop">Inquiry Date</th>
+  <th class="no-sort desktop">Company</th>
+  <th class="no-sort desktop">IS Owner</th>
+  <th class="no-sort desktop">Logistics Owner</th>
+  <th class="no-sort desktop">Regular / Route Through</th>
+  <th class="no-sort all text-right" data-name="sku">BM Number</th>
+  <th class="no-sort desktop">Item Description</th>
+  <th class="no-sort desktop">Item Make</th>
+  <th class="no-sort desktop">Quantity</th>
+  <th class="no-sort desktop">Delivery Location</th>
+  <th class="no-sort desktop" data-name="customer_po_date">Customer PO Date</th>
+  <th class="no-sort desktop" data-name="customer_po_received_date">Customer PO Received Date</th>
+  <th class="no-sort desktop" data-name="cp_committed_at">Committed Delivery Date to Customer</th>
+  <th class="no-sort desktop" data-name="created_at">SO Creation Date</th>
+  <th class="no-sort desktop" data-name="actual_delivery_date">Actual Customer Delivery Date</th>
+  <th class="no-sort desktop" data-name="committed_delivery_tat">Committed Delivery TAT (days)</th>
+  <th class="no-sort desktop" data-name="actual_delivery_tat">Actual Delivery TAT (days)</th>
+  <th class="no-sort desktop" data-name="delay">Delay</th>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

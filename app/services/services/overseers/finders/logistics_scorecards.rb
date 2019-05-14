@@ -42,7 +42,7 @@ class Services::Overseers::Finders::LogisticsScorecards < Services::Overseers::F
   end
 
   def model_klass
-    SalesOrder
+    SalesInvoice
   end
 
   def index_klass
