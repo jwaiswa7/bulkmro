@@ -26,6 +26,30 @@ const index = () => {
             })
         }
     })
+
+    $('.datatable').on('click', '.comment-invoice-request', function (e) {
+        var id = $(this).data('invoice-request-id')
+        var $this = $(this)
+        $(this).addClass('disabled')
+        $.ajax({
+            data: {},
+            url: "/overseers/invoice_requests/" + id + "/render_comment_form?",
+            success: function (data) {
+                $('.cancellation-form-modal').empty()
+                $('.cancellation-form-modal').append(data)
+                $('#addComment').modal('show')
+                commentSubmit()
+                $('#addComment').on('hidden.bs.modal', function () {
+                    $this.removeClass('disabled')
+                })
+            },
+            complete: function complete() {
+            }
+        })
+
+
+    })
+
 };
 
 let modalSubmit = () => {
@@ -40,6 +64,32 @@ let modalSubmit = () => {
             success: function success(data) {
                 $('#cancelInvoice').modal('hide');
                 window.location.reload()
+            },
+            error: function error(_error) {
+                if (_error.responseJSON && _error.responseJSON.error && _error.responseJSON.error.base)
+                    $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error.base + "</div>");
+            }
+        });
+        event.preventDefault();
+    });
+}
+
+let commentSubmit = () => {
+    $("#addComment").on('click', '.confirm-cancel', function (event) {
+        var formSelector = "#" + $(this).closest('form').attr('id'),
+            datastring = $(formSelector).serialize();
+        $.ajax({
+            type: "PATCH",
+            url: $(formSelector).attr('action'),
+            data: datastring,
+            dataType: "json",
+            success: function success(data) {
+                $('#addComment').modal('hide');
+                if (data.success == 0) {
+                    alert(data.message);
+                } else {
+                    window.location.reload();
+                }
             },
             error: function error(_error) {
                 if (_error.responseJSON && _error.responseJSON.error && _error.responseJSON.error.base)

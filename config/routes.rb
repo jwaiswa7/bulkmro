@@ -257,6 +257,8 @@ Rails.application.routes.draw do
       member do
         get 'render_cancellation_form'
         patch 'cancel_invoice_request'
+        get 'render_comment_form'
+        patch 'add_comment'
       end
     end
 

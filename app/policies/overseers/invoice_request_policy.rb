@@ -36,4 +36,12 @@ class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
   def cancel_invoice_request?
     update?
   end
+
+  def render_comment_form?
+    update?
+  end
+
+  def add_comment?
+    admin? || accounts? || logistics?
+  end
 end
