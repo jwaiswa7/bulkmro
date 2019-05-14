@@ -10,7 +10,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
     TAG = 'bulkmro_mock_testing'
     KEY = 'qJsaya4SP75m9Wtsz0hj+90PoROrTUlrOYmtmRAEZ0o'
   else
-    URL = 'http://localhost:3002/catch'
+    URL = 'https://api.playment.in/v1/project/10574135-d26d-4352-96e9-adffd9a032d8/feedline'
     CONTAINER = 'staging'
     TAG = 'bulkmro_mock_testing'
     KEY = 'qJsaya4SP75m9Wtsz0hj+90PoROrTUlrOYmtmRAEZ0o'
@@ -27,7 +27,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
   end
 
   def call
-    call_later
+    perform_later
   end
 
   def call_later
@@ -43,18 +43,18 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
           storage_account_name: azure_storage_config[:name],
           storage_access_key: azure_storage_config[:key]
         )
-        nextMarker = nil
+        next_marker = nil
         loop do
           @images = []
-          blobs = blob_client.list_blobs(azure_storage_config[:container], marker: nextMarker, max_results: 1000)
+          blobs = blob_client.list_blobs(azure_storage_config[:container], marker: next_marker, max_results: 1000)
           blobs.each do |blob|
             images << { blob: blob.to_json, image_url: [azure_storage_config[:base_url], blob.name].join, image_name: blob.name }
           end
-          nextMarker = blobs.continuation_token
+          next_marker = blobs.continuation_token
 
 
           send_and_register_request(images)
-          break unless nextMarker && !nextMarker.empty?
+          break unless next_marker && !next_marker.empty?
         end
       rescue Exception => e
         puts e.message
@@ -64,40 +64,43 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
     end
 
     def send_and_register_request(images)
-      images.each do |image|
-        begin
-          ActiveRecord::Base.transaction do
-            blob = image[:blob]
-            image_name = image[:image_name]
-            image_url = image[:image_url]
+      images.each_slice(1000) do |group|
+        group.each do |image|
+          begin
+            ActiveRecord::Base.transaction do
+              blob = image[:blob]
+              image_name = image[:image_name]
+              image_url = image[:image_url]
 
-            if ImageReader.where(image_url: image_url).where.not(status: :failed).blank?
+              if ImageReader.where(image_url: image_url).where.not(status: :failed).blank?
 
-              image_reader = ImageReader.where(image_url: image_url).first_or_create! do |record|
-                record.image_name = image_name
-                record.status = :pending
+                image_reader = ImageReader.where(image_url: image_url).first_or_create! do |record|
+                  record.image_name = image_name
+                  record.status = :pending
+                end
+
+                reference_id = image_reader.to_sgid(expires_in: (24 * 7).hours, for: 'image_reader').to_s
+                image_reader.reference_id = reference_id
+                request = { reference_id: reference_id, data: { image_url: image_url }, tag: TAG }
+                image_reader.request = request.merge(blob: blob)
+                image_reader.save
+
+                response = HTTParty.post(URL, body: request.to_json, headers: { "x-client-key": KEY })
+                validated_response = get_validated_response(response)
+
+                status = validated_response[:feed_line_unit].present? ? :successful : :failed
+
+                image_reader.status = status
+                image_reader.response = validated_response
+                image_reader.flu_id = status == :successful ? validated_response[:feed_line_unit][:flu_id] : nil
+                image_reader.save
               end
-
-              reference_id = image_reader.to_sgid(expires_in: (24 * 7).hours, for: 'image_reader').to_s
-              image_reader.reference_id = reference_id
-              request = { reference_id: reference_id, data: { image_url: image_url }, tag: TAG }
-              image_reader.request = request.merge(blob: blob)
-              image_reader.save
-
-              response = HTTParty.post(URL, body: request.to_json, headers: { "x-client-key": KEY })
-              validated_response = get_validated_response(response)
-
-              status = validated_response[:feed_line_unit].present? ? :successful : :failed
-
-              image_reader.status = status
-              image_reader.response = validated_response
-              image_reader.flu_id = status == :successful ? validated_response[:feed_line_unit][:flu_id] : nil
-              image_reader.save
             end
+          rescue ActiveRecord::RecordInvalid => exception
+            puts exception.message
           end
-        rescue ActiveRecord::RecordInvalid => exception
-          puts exception.message
         end
+        # sleep 5
       end
     end
 

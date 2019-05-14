@@ -18,7 +18,9 @@ class Activity < ApplicationRecord
   has_one :account, through: :company
   belongs_to :contact, required: false
   has_one :company_creation_request, dependent: :destroy, validate: false
+  has_one :contact_creation_request, dependent: :destroy, validate: false
   accepts_nested_attributes_for :company_creation_request, reject_if: lambda { |attributes| attributes['name'].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :contact_creation_request, reject_if: lambda { |attributes| attributes['first_name'].blank? }, allow_destroy: true
 
   has_many_attached :attachments
   scope :with_includes, -> { includes(:company, :contact, :inquiry) }

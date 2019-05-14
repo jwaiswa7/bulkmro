@@ -25,6 +25,8 @@ class Contact < ApplicationRecord
   has_many :customer_products, through: :companies
   has_many :customer_order_comments
   has_many :email_messages
+  belongs_to :contact_creation_request, optional: true
+  belongs_to :company_creation_request, optional: true
 
   enum role: { customer: 10, account_manager: 20 }
   enum status: { active: 10, inactive: 20 }
