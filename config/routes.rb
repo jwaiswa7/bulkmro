@@ -368,6 +368,7 @@ Rails.application.routes.draw do
         get 'stages'
         get 'relationship_map'
         get 'get_relationship_map_json'
+        post 'duplicate'
       end
 
       collection do
@@ -388,7 +389,6 @@ Rails.application.routes.draw do
         get 'bulk_update'
         get 'pipeline_report'
         get 'suggestion'
-        get 'duplicate'
       end
 
       scope module: 'inquiries' do
