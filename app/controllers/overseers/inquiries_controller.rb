@@ -253,6 +253,30 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def duplicate
+    inquiry = Inquiry.find(params[:inquiry_id])
+    @new_inquiry = inquiry.dup
+    authorize @new_inquiry
+    @new_inquiry.inquiry_number = nil
+    @new_inquiry.opportunity_uid = nil
+    @new_inquiry.project_uid = nil
+    @new_inquiry.quotation_uid = nil
+    @new_inquiry.status = nil
+    @new_inquiry.created_by = current_overseer
+    @new_inquiry.inquiry_currency = InquiryCurrency.create(currency_id: inquiry.currency)
+
+    if @new_inquiry.save
+      inquiry.inquiry_products.each do |inquiry_product|
+        new_inquiry_product = inquiry_product.dup
+        new_inquiry_product.inquiry_id = @new_inquiry.id
+        new_inquiry_product.created_by = current_overseer
+        new_inquiry_product.save
+      end
+      Services::Overseers::Inquiries::UpdateStatus.new(@new_inquiry, :new_inquiry).call if @new_inquiry.persisted?
+      redirect_to edit_overseers_inquiry_path(@new_inquiry)
+    end
+  end
+
   def resync_inquiry_products
     authorize @inquiry
     @inquiry_products = @inquiry.products

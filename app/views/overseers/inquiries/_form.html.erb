@@ -7,18 +7,22 @@
     <div class="card-header">
       <div class="form-row">
         <% if policy(@inquiry).new_email_message? && policy(@inquiry).update? %>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark"><i class="fal fa-envelope mr-1"></i>Send
               Acknowledgement</a>
           </div>
         <% end %>
         <% if policy(@inquiry).update? %>
           <div class="mt-1 mt-md-0
-            <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
+            <%= policy(@inquiry).new_email_message? ? "col-md-4" : "col-md-12" %>">
             <%= action_button(action_name, @inquiry) %>
           </div>
         <% end %>
+        <div class="col-md-4">
+          <a href="<%= duplicate_overseers_inquiry_path(id: @inquiry) %>" class="btn-block btn btn-success">Duplicate</a>
+        </div>
       </div>
+
     </div>
     <div class="card-body">
       <div>

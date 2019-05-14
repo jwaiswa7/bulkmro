@@ -388,6 +388,7 @@ Rails.application.routes.draw do
         get 'bulk_update'
         get 'pipeline_report'
         get 'suggestion'
+        get 'duplicate'
       end
 
       scope module: 'inquiries' do
