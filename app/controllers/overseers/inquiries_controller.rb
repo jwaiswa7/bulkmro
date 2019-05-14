@@ -339,7 +339,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         service = Services::Overseers::Finders::PipelineReports.new(params, current_overseer)
         service.call
 
-        @statuses = Inquiry.pipeline_statuses
+        @statuses = Inquiry.statuses
         @custom_statuses = Inquiry.pipeline_statuses
         @indexed_pipeline_report = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['inquiries_over_time']['buckets']
         @indexed_summary_row = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row']
