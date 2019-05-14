@@ -12,7 +12,7 @@ json.data (@po_requests) do |po_request|
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       end,
-                      if policy(po_request).can_cancel?
+                      if policy(po_request).index?
                         link_to('', class: ['btn btn-sm btn-success comment-po-request'], 'data-po-request-id': po_request.id, title: 'Add Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-comment-lines'].join

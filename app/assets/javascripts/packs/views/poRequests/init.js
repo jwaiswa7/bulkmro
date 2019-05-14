@@ -12,7 +12,8 @@ let poRequests= {
     pendingAndRejected: poRequestsIndex,
     new: poRequestsNew,
     underAmend: poRequestsIndex,
-    amended: poRequestsIndex
+    amended: poRequestsIndex,
+    cancelled: poRequestsIndex
 }
 
 export default poRequests
