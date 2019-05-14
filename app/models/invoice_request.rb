@@ -55,6 +55,7 @@ class InvoiceRequest < ApplicationRecord
   validate :has_attachments?
   validate :grpo_number_valid?
   validate :presence_of_reason
+  validate :valid_inward_dispatches?
 
   def grpo_number_valid?
     if self.created_date.present? && self.created_date < '2019-04-01' && self.grpo_number.present? && self.grpo_number <= 50000000
@@ -71,6 +72,16 @@ class InvoiceRequest < ApplicationRecord
         errors.add(:attachments, "must be present to create or update a #{self.readable_status}")
       end
     end
+  end
+
+  def valid_inward_dispatches?
+    error_array = []
+    self.inward_dispatches.each do |inward_dispatch|
+      if !inward_dispatch.valid?
+        error_array << inward_dispatch.errors.full_messages
+      end
+    end
+    errors.add(:inward_dispatches, error_array.uniq.join(', '))
   end
 
   validate :shipment_number_valid?
