@@ -85,14 +85,10 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @sales_order = @purchase_order.try(:po_request).try(:sales_order)
       @invoice_request = InvoiceRequest.new(overseer: current_overseer, purchase_order: @purchase_order, inquiry: @purchase_order.inquiry)
-      @inward_dispatches_ids = params[:ids].present? ? params[:ids] : InwardDispatch.decode_id(params[:inward_dispatch_id])
+      @inward_dispatches_ids = params[:ids].present? ? params[:ids] : [InwardDispatch.decode_id(params[:inward_dispatch_id])]
       authorize @invoice_request
       if params[:inward_dispatch_id] || params[:ids]
-        if params[:inward_dispatch_id]
-          @invoice_request.inward_dispatches << InwardDispatch.find(@inward_dispatches_ids)
-        else
-          @invoice_request.inward_dispatches << InwardDispatch.where(id: @inward_dispatches_ids)
-        end
+        @inward_dispatches = InwardDispatch.where(id: @inward_dispatches_ids)
         service = Services::Overseers::InvoiceRequests::FormProductsList.new(@inward_dispatches_ids, false)
       else
         service = Services::Overseers::InvoiceRequests::FormProductsList.new(@purchase_order, true)
@@ -106,6 +102,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def create
     @invoice_request = InvoiceRequest.new(invoice_request_params.merge(overseer: current_overseer))
     inward_dispatch_ids = invoice_request_params[:inward_dispatch_ids].split(',').map(&:to_i)
+    @inward_dispatches = InwardDispatch.where(id: inward_dispatch_ids)
     authorize @invoice_request
     if @invoice_request.valid?
       ActiveRecord::Base.transaction do
@@ -130,7 +127,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
     # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     @company_reviews = [@invoice_request.purchase_order.po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @invoice_request.purchase_order.supplier).first_or_create]
-
+    @inward_dispatches = @invoice_request.inward_dispatches
     mpr_ids = @invoice_request.inward_dispatches.map(&:id).join(', ')
     service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids, false)
 
@@ -141,10 +138,14 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def update
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
     authorize @invoice_request
-
+    inward_dispatch_ids = invoice_request_params[:inward_dispatch_ids].split(',').map(&:to_i)
+    @inward_dispatches = @invoice_request.inward_dispatches
     if @invoice_request.valid?
       service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
       service.call
+      if inward_dispatch_ids.present?
+        InwardDispatch.where(id: inward_dispatch_ids).update_all(invoice_request_id: @invoice_request.id)
+      end
       redirect_to overseers_invoice_request_path(@invoice_request), notice: flash_message(@invoice_request, action_name)
     else
       render 'edit'
