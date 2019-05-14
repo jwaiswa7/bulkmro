@@ -1,6 +1,9 @@
 <%= provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
+<% content_for :page_title do %>
+  AR Invoice Requests
+<% end %>
 
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
