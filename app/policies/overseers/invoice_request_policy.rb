@@ -38,10 +38,10 @@ class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def render_comment_form?
-    update?
+    index?
   end
 
   def add_comment?
-    admin? || accounts? || logistics?
+    index?
   end
 end
