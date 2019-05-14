@@ -81,7 +81,9 @@ class InvoiceRequest < ApplicationRecord
         error_array << inward_dispatch.errors.full_messages
       end
     end
-    errors.add(:inward_dispatches, error_array.uniq.join(', '))
+    if !error_array.empty?
+      errors.add(:inward_dispatches, error_array.uniq.join(', '))
+    end
   end
 
   validate :shipment_number_valid?
