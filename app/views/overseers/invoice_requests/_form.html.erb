@@ -179,7 +179,7 @@
           <div class="col-6">
             <div class="d-block d-md-flex align-items-end">
               <div class="flex-grow-1">
-                <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
+                <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments',required: (f.object.attachments.count <= 0) %>
               </div>
               <div class="form-group">
                 <% f.object.attachments.each do |attachment| %>
