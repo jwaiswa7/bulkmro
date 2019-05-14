@@ -117,6 +117,10 @@ class ArInvoiceRequest < ApplicationRecord
     self.outward_dispatches.sum(&:quantity_in_payment_slips)
   end
 
+  def title
+    'AR Invoice Request'
+  end
+
   private
 
     def presence_of_reason
