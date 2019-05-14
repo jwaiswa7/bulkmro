@@ -6,32 +6,32 @@ class Overseers::ContactsController < Overseers::BaseController
     # service.call
     # @indexed_contacts = service.indexed_records
     # @contacts = service.records
-    # authorize @contacts
+    # authorize_acl @contacts
 
     @contacts = ApplyDatatableParams.to(Contact.all.includes(:companies), params)
-    authorize @contacts
+    authorize_acl @contacts
   end
 
   def autocomplete
     @contacts = ApplyParams.to(Contact.active, params)
-    authorize @contacts
+    authorize_acl @contacts
   end
 
   def show
-    authorize @contact
+    authorize_acl @contact
   end
 
   def new
     @company = Company.find(params[:company_id])
     @contact = @company.contacts.build(overseer: current_overseer, account: @company.account)
-    authorize @contact
+    authorize_acl @contact
   end
 
   def create
     @company = Company.find(params[:company_id])
     password = Devise.friendly_token[0, 20]
     @contact = @company.contacts.build(contact_params.merge(account: @company.account, overseer: current_overseer, password: password, password_confirmation: password))
-    authorize @contact
+    authorize_acl @contact
 
     if @contact.save_and_sync
       @company.update_attributes(default_company_contact: @contact.company_contact) if @company.default_company_contact.blank?
@@ -42,12 +42,12 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def edit
-    authorize @contact
+    authorize_acl @contact
   end
 
   def update
     @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! { |k, v| (k == 'password' || k == 'password_confirmation') && v.blank? })
-    authorize @contact
+    authorize_acl @contact
 
     if @contact.save_and_sync
       redirect_to overseers_account_path(@contact.account), notice: flash_message(@contact, action_name)
@@ -57,7 +57,7 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def become
-    authorize @contact
+    authorize_acl @contact
     sign_in(:contact, @contact)
     redirect_to customers_dashboard_url(became: true)
   end

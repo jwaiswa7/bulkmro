@@ -2,6 +2,8 @@ module Mixins::HasRole
   extend ActiveSupport::Concern
 
   included do
+    belongs_to :acl_role
+
     enum role: {
         left: 5,
         admin: 10,

@@ -2,7 +2,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
   before_action :set_customer_order, only: [:show, :order_confirmed]
 
   def create
-    authorize :customer_order
+    authorize_acl :customer_order
 
     if params[:cart].present? && current_cart.id == params[:cart][:id].to_i
       payment = OnlinePayment.where(payment_id: params[:razorpay_payment_id]).first_or_create! do |online_payment|
@@ -65,7 +65,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
   end
 
   def show
-    authorize @customer_order
+    authorize_acl @customer_order
   end
 
   def pending
@@ -75,7 +75,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
       current_contact.customer_orders.not_approved.not_rejected
     end.order(id: :desc)
 
-    authorize customer_orders
+    authorize_acl customer_orders
     @customer_orders = ApplyDatatableParams.to(customer_orders, params)
     render 'customers/customer_orders/index'
   end
@@ -87,13 +87,13 @@ class Customers::CustomerOrdersController < Customers::BaseController
       current_contact.customer_orders.approved
     end.order(id: :desc)
 
-    authorize customer_orders
+    authorize_acl customer_orders
     @customer_orders = ApplyDatatableParams.to(customer_orders, params)
     render 'customers/customer_orders/index'
   end
 
   def order_confirmed
-    authorize @customer_order
+    authorize_acl @customer_order
     if @customer_order.not_approved?
       render template: 'customers/customer_orders/approval_pending'
     else
@@ -108,7 +108,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
       current_contact.customer_orders
     end.order(id: :desc)
     @customer_orders = ApplyDatatableParams.to(@customer_orders, params)
-    authorize @customer_orders
+    authorize_acl @customer_orders
   end
 
   private

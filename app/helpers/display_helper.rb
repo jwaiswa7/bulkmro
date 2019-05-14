@@ -281,4 +281,28 @@ module DisplayHelper
       content_tag(:div, content_tag(:strong, "#{self.rows.count}") + ' line item(s)')
     end
   end
+
+  def is_authorised(model)
+    allowed_resources = current_overseer.acl_resources
+    default_resources = Settings.acl.default_resources
+    parsed_json = ActiveSupport::JSON.decode(default_resources)
+    resource_ids = {}
+    parsed_json.map {|x| resource_ids[x['text']] = {}; x['children'].map {|y| resource_ids[x['text']][y['text']] = y['id'] if y['text'].present?}}
+    auth = false
+
+    if model.is_a?(ActiveRecord::Base)
+      resource_model = model.class.name.downcase
+    elsif model.is_a?(ActiveRecord::Relation)
+      resource_model = model.klass.name.downcase
+    else
+      resource_model = model.to_s.gsub(':','')
+    end
+
+    if resource_ids[resource_model][action_name].present?
+      if allowed_resources.include? resource_ids[resource_model][action_name].to_s
+        auth = true
+      end
+    end
+    auth
+  end
 end

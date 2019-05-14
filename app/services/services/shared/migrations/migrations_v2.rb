@@ -333,4 +333,31 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       puts ex.message
     end
   end
+
+  def flex_order_data
+    company = Company.find('gBktb6')
+    column_headers = ['SO #', 'Customer PO Date', 'Customer PO', 'SKU', 'Qty', 'Selling Price', 'Total Selling Price With Tax', 'Unit Freight Cost']
+
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      company.sales_orders.where(:status => 60).each do |sales_order|
+        sales_order.rows.each do |row|
+          writer << [sales_order.order_number, sales_order.inquiry.customer_order_date, sales_order.inquiry.customer_po_number, row.sales_quote_row, row.quantity, row.unit_selling_price, row.converted_total_selling_price_with_tax, row.unit_freight_cost]
+        end
+      end
+    end
+
+    filename = 'flex_order_data.csv'
+    temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
+
+    begin
+      temp_file.write(csv_data)
+      temp_file.close
+      overseer.file.attach(io: File.open(temp_file.path), filename: filename)
+      overseer.save!
+      puts Rails.application.routes.url_helpers.rails_blob_path(overseer.file, only_path: true)
+    rescue => ex
+      puts ex.message
+    end
+
+  end
 end

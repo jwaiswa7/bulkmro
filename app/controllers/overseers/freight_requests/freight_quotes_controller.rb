@@ -7,20 +7,20 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
     freight_quotes = FreightQuote.all.order(id: :desc)
 
     @freight_quotes = ApplyDatatableParams.to(freight_quotes, params)
-    authorize @freight_quotes
+    authorize_acl @freight_quotes
   end
 
   def new
-    authorize @freight_request, :new_freight_quote?
+    authorize_acl @freight_request, :new_freight_quote?
     @freight_quote = @freight_request.build_freight_quote(overseer: current_overseer, inquiry: @freight_request.inquiry)
   end
 
   def show
-    authorize @freight_quote
+    authorize_acl @freight_quote
   end
 
   def create
-    authorize @freight_request, :new_freight_quote?
+    authorize_acl @freight_request, :new_freight_quote?
     @freight_quote = FreightQuote.new(freight_quote_params.merge(overseer: current_overseer))
 
     if @freight_quote.valid?
@@ -39,13 +39,13 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
   end
 
   def edit
-    authorize @freight_request, :edit_freight_quote?
+    authorize_acl @freight_request, :edit_freight_quote?
   end
 
   def update
     filtered_params = freight_quote_params.except(:purchase_order)
     @freight_quote.assign_attributes(filtered_params.merge(overseer: current_overseer))
-    authorize @freight_request, :edit_freight_quote?
+    authorize_acl @freight_request, :edit_freight_quote?
 
     if @freight_quote.valid?
       ActiveRecord::Base.transaction do

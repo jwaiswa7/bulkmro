@@ -1,0 +1,44 @@
+<div class="col-lg-12">
+  <%= render 'shared/snippets/page_header', e: @overseer %>
+
+  <%= simple_form_for([:overseers, @overseer], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <div class="form-row">
+            <div class="col-4">
+              <%= f.input :first_name, disabled: true %>
+            </div>
+            <div class="col-4">
+              <%= f.input :last_name, disabled: true %>
+            </div>
+            <div class="col-4">
+              <%= f.input :email, disabled: true %>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 card-alternative ">
+          <div class="form-row">
+            <div class="col-12 col-md-4">
+              <%= f.association :acl_role, label: 'Select Role', required: true, :wrapper => :custom_multi_select, as: :select, collection: AclRole.all.pluck(:role_name, :id), include_blank: true %>
+            </div>
+
+            <div class="col-12">
+              <button onclick="tree.checkAll()" class="gj-button-md">Check All</button>
+              <button onclick="tree.uncheckAll()" class="gj-button-md">Uncheck All</button>
+              <div id="tree" data-overseer="<%= @overseer.id %>"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="form-row">
+        <button name="button" id="btnSave" type="button" class="btn btn-warning btn-block"><i class="fal fa-pen mr-1"></i><span>Update Roles </span></button>
+      </div>
+    </div>
+  <% end %>
+</div>

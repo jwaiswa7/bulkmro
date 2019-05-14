@@ -3,27 +3,27 @@ class Overseers::MeasurementUnitsController < Overseers::BaseController
 
   def autocomplete
     @measurement_units = ApplyParams.to(MeasurementUnit.all, params).order(:name)
-    authorize @measurement_units
+    authorize_acl @measurement_units
   end
 
   def index
     @measurement_units = ApplyDatatableParams.to(MeasurementUnit.all, params)
-    authorize @measurement_units
+    authorize_acl @measurement_units
   end
 
   def show
     redirect_to overseers_measurement_units_edit_path(@measurement_unit)
-    authorize @measurement_unit
+    authorize_acl @measurement_unit
   end
 
   def new
     @measurement_unit = MeasurementUnit.new()
-    authorize @measurement_unit
+    authorize_acl @measurement_unit
   end
 
   def create
     @measurement_unit = MeasurementUnit.new(measurement_unit_params)
-    authorize @measurement_unit
+    authorize_acl @measurement_unit
 
     if @measurement_unit.save
       redirect_to overseers_measurement_units_path, notice: flash_message(@measurement_unit, action_name)
@@ -33,12 +33,12 @@ class Overseers::MeasurementUnitsController < Overseers::BaseController
   end
 
   def edit
-    authorize @measurement_unit
+    authorize_acl @measurement_unit
   end
 
   def update
     @measurement_unit.assign_attributes(measurement_unit_params)
-    authorize @measurement_unit
+    authorize_acl @measurement_unit
 
     if @measurement_unit.save
       redirect_to overseers_measurement_units_path, notice: flash_message(@measurement_unit, action_name)

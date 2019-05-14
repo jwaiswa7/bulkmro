@@ -89,4 +89,8 @@ class Overseer < ApplicationRecord
     overseer.save!
     overseer
   end
+
+  def self.all_roles
+    AclRole.all
+  end
 end

@@ -1,5 +1,5 @@
 class Overseers::OverseersController < Overseers::BaseController
-  before_action :set_overseer, only: [:edit, :update]
+  before_action :set_overseer, only: [:edit, :update, :save_acl_resources, :get_resources, :edit_acl, :update_acl]
 
   def index
     # service = Services::Overseers::Finders::Overseers.new(params)
@@ -7,18 +7,18 @@ class Overseers::OverseersController < Overseers::BaseController
     # @indexed_overseers = service.indexed_records
     # @overseers = service.records
     @overseers = ApplyDatatableParams.to(Overseer.all, params)
-    authorize @overseers
+    authorize_acl @overseers
   end
 
   def new
     @overseer = Overseer.new(overseer: current_overseer)
-    authorize @overseer
+    authorize_acl @overseer
   end
 
   def create
     password = Devise.friendly_token[0, 20]
     @overseer = Overseer.new(overseer_params.merge(overseer: current_overseer, password: password, password_confirmation: password))
-    authorize @overseer
+    authorize_acl @overseer
     if @overseer.save_and_sync
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
     else
@@ -27,17 +27,117 @@ class Overseers::OverseersController < Overseers::BaseController
   end
 
   def edit
+    # authorize_acl @overseer
+    authorize_acl @overseer
+  end
+
+  def edit_acl
     authorize @overseer
+  end
+
+  def update_acl
+
+    begin
+      acl_role = AclRole.find(params[:acl_role_id])
+      if acl_role.present?
+        @overseer.update_attribute(:acl_resources, params[:checkedIds].to_json)
+        @overseer.update_attribute(:acl_role_id, acl_role.id)
+        render json: {success:1, message: 'Updated successfully.'}
+      else
+        render json: {success:0, message: 'Role not found.'}
+      end
+    rescue StandardError => e
+      render json: {success:0, message: e}
+    end
+
+    authorize_acl :overseer
+    #
+    # if @overseer.save_and_sync
+    #   acl_role = AclRole.find(params[:acl_role_id])
+    #   @overseer.update_attributes(:acl_resources => acl_role.role_resources) if acl_role.present?
+    #   redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
+    # else
+    #   render 'edit_acl'
+    # end
   end
 
   def update
     @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! { |k, v| (k == 'password' || k == 'password_confirmation') && v.blank? })
-    authorize @overseer
+    authorize_acl @overseer
     if @overseer.save_and_sync
+      acl_role = AclRole.find(params[:overseer][:acl_role_id])
+      @overseer.update_attributes(:acl_resources => acl_role.role_resources) if acl_role.present?
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
     else
       render 'edit'
     end
+  end
+
+  def get_resources
+
+    default_resources = Settings.acl.default_resources
+    current_acl = @overseer.acl_resources
+    parsed_json = ActiveSupport::JSON.decode(default_resources)
+    parsed_json.map{|x| x['children'].map{|y| if current_acl.include? y['id'].to_s;y['checked'] = true;end; y['text'] = y['text'].titleize }; x['text'] = x['text'].titleize } if current_acl.present?
+
+    render json: parsed_json.to_json
+    authorize_acl :overseer
+
+    # default_resources = {
+    #     inquiry: {
+    #         create: 1,
+    #         edit: 1,
+    #         show: 1,
+    #         download: 1
+    #     },
+    #     sales_order: {
+    #         create: 1,
+    #         edit: 1,
+    #         show: 1,
+    #         download: 1
+    #     },
+    #     sales_quote:{
+    #         create: 1,
+    #         edit: 1,
+    #         show: 1,
+    #         download: 1
+    #     }
+    # }
+    #
+    # all_acl = []
+    # id = 1
+    #
+    # default_resources.each do |resource_name, access_controls|
+    #   temp_acl = OpenStruct.new
+    #   # temp_acl.id = default_resource_list[resource_name]
+    #   temp_acl.id = id
+    #   temp_acl.text = resource_name
+    #   temp_acl.checked = false
+    #   temp_acl.hasChildren = true
+    #   children = []
+    #
+    #   access_controls.each do |index, control_name|
+    #     id = id + 1
+    #     acl_row = OpenStruct.new
+    #     acl_row.id = id
+    #     acl_row.text = index
+    #     acl_row.checked = false
+    #     acl_row.hasChildren = false
+    #     children.push(acl_row.marshal_dump)
+    #   end
+    #
+    #   temp_acl.children = children
+    #   all_acl.push(temp_acl.marshal_dump)
+    #   id = id + 1
+    # end
+    #
+    # puts all_acl
+  end
+
+  def save_acl_resources
+    authorize_acl @overseer
+    @overseer.update_attribute(:acl_resources, params[:checkedIds].to_json)
+    render json: {'acl_resources' => @overseer.acl_resources}
   end
 
   private
@@ -59,6 +159,7 @@ class Overseers::OverseersController < Overseers::BaseController
           :status,
           :password,
           :password_confirmation,
+          :acl_role
       )
     end
 

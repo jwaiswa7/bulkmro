@@ -116,7 +116,25 @@ Rails.application.routes.draw do
       end
     end
     resource :profile, :controller => :profile, except: [:show, :index]
-    resources :overseers, except: [:show]
+    resources :overseers, except: [:show] do
+      member do
+        patch 'save_acl_resources'
+        get 'get_resources'
+        get 'edit_acl'
+        patch 'update_acl'
+      end
+
+      collection do
+        get 'get_resources'
+      end
+    end
+
+    resources :acl_roles do
+      member do
+        get 'get_acl'
+      end
+    end
+
 
     resources :suppliers do
       collection do

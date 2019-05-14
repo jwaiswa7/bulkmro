@@ -4,14 +4,14 @@ class Customers::ImageReadersController < Customers::BaseController
   before_action :set_headers, only: [:export_all, :export_by_date]
 
   def create
-    authorize :ImageReader
+    authorize_acl :ImageReader
     Services::Customers::ImageReaders::ImageReaderCreate.new.call
 
     redirect_to customers_image_readers_path
   end
 
   def index
-    authorize :ImageReader
+    authorize_acl :ImageReader
     @completed_records = ImageReader.where(status: 'completed').group('DATE(created_at)').count
   end
 

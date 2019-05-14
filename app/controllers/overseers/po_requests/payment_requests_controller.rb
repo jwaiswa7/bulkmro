@@ -2,12 +2,12 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
   before_action :set_payment_request, only: [:edit, :update]
 
   def new
-    authorize @po_request, :new_payment_request?
+    authorize_acl @po_request, :new_payment_request?
     @payment_request = @po_request.build_payment_request(overseer: current_overseer, inquiry: @po_request.inquiry, purchase_order: @po_request.purchase_order)
   end
 
   def create
-    authorize @po_request, :new_payment_request?
+    authorize_acl @po_request, :new_payment_request?
     @payment_request = PaymentRequest.new(payment_request_params.merge(overseer: current_overseer))
 
     # @payment_request.update_status!
@@ -26,12 +26,12 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
   end
 
   def edit
-    authorize @po_request, :edit_payment_request?
+    authorize_acl @po_request, :edit_payment_request?
   end
 
   def update
     @payment_request.assign_attributes(payment_request_params.merge(overseer: current_overseer))
-    authorize @po_request, :edit_payment_request?
+    authorize_acl @po_request, :edit_payment_request?
 
     if @payment_request.valid?
       ActiveRecord::Base.transaction do

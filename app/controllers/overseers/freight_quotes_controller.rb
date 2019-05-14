@@ -11,17 +11,17 @@ class Overseers::FreightQuotesController < Overseers::BaseController
         end.order(id: :desc)
 
     @freight_quotes = ApplyDatatableParams.to(freight_quotes, params)
-    authorize @freight_quotes
+    authorize_acl @freight_quotes
     render 'overseers/freight_requests/freight_quotes/index'
   end
 
   def show
-    authorize @freight_quote
+    authorize_acl @freight_quote
     render 'overseers/freight_requests/freight_quotes/show'
   end
 
   def edit
-    authorize @freight_quote
+    authorize_acl @freight_quote
   end
 
   private

@@ -7,17 +7,17 @@ class Overseers::CompaniesController < Overseers::BaseController
     service.call
     @indexed_companies = service.indexed_records
     @companies = service.records
-    authorize @companies
+    authorize_acl @companies
   end
 
   def autocomplete
     @companies = ApplyParams.to(Company.active, params)
-    authorize @companies
+    authorize_acl @companies
   end
 
   def autocomplete_company_type
     @companies = ApplyParams.to(Company.active, params)
-    authorize @companies
+    authorize_acl @companies
   end
 
   def new
@@ -29,12 +29,12 @@ class Overseers::CompaniesController < Overseers::BaseController
     else
       @account = Company.new(overseer: current_overseer)
     end
-    authorize @company
+    authorize_acl @company
   end
 
   def create
     @company = Company.new(company_params.merge(overseer: current_overseer))
-    authorize @company
+    authorize_acl @company
     if @company.save
       if @company.company_creation_request.present?
         @company.company_creation_request.update_attributes(company_id: @company.id)
@@ -56,11 +56,11 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def show
-    authorize @company
+    authorize_acl @company
   end
 
   def export_all
-    authorize :company
+    authorize_acl :company
     service = Services::Overseers::Exporters::CompaniesExporter.new(params[:q], current_overseer, [])
     service.call
 
@@ -68,7 +68,7 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def export_filtered_records
-    authorize :company
+    authorize_acl :company
 
     service = Services::Overseers::Finders::Companies.new(params, current_overseer, paginate: false)
     service.call
@@ -78,7 +78,7 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def company_report
-    authorize :company
+    authorize_acl :company
 
     respond_to do |format|
       format.html {
@@ -103,7 +103,7 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def export_company_report
-    authorize :company
+    authorize_acl :company
     service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer)
     service.call
 
