@@ -262,6 +262,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     @new_inquiry.quotation_uid = nil
     @new_inquiry.status = nil
     @new_inquiry.created_by = current_overseer
+    @new_inquiry.duplicated_from = @inquiry.id
     @new_inquiry.inquiry_currency = InquiryCurrency.create(currency_id: @inquiry.currency)
 
     if @new_inquiry.save
