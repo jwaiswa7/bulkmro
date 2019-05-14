@@ -269,6 +269,7 @@
             <%= nav_dropdown_item 'Company Report', company_report_overseers_companies_path, policy(:company).index? %>
             <%= nav_dropdown_item 'Pipeline Report', pipeline_report_overseers_inquiries_path, policy(:inquiry).show? %>
             <%= nav_dropdown_item 'TAT Report', tat_report_overseers_inquiries_path, policy(:inquiry).tat_report? %>
+            <%= nav_dropdown_item 'Customer Order Status Report', customer_order_status_report_overseers_sales_orders_path, policy(:sales_order).customer_order_status_report? %>
           </div>
         </li>
       <% end %>
