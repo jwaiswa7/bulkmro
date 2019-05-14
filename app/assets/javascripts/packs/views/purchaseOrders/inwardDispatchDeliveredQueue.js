@@ -39,7 +39,6 @@ let checkValues = (obj) => {
 
 let showOrHideActions = () => {
     var hide = true;
-    console.log('showOrHideActions')
     $('input[type=checkbox][name="the_inward_dispatches[]"]').each((index, element) => {
         if ($(element).is(':checked')) {
             hide = false;

@@ -15,8 +15,9 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
     status = []
     InvoiceRequest.all.each do |invoice_request|
       if invoice_request.status == 'Completed AR Invoice Request'
-        ar_invoice_request = ArInvoiceRequest.where(ar_invoice_number: invoice_request.ar_invoice_number).last
-        if !ar_invoice_request.present?
+        if !invoice_request.ar_invoice_number.present?
+          ar_invoice_request = ArInvoiceRequest.where(ar_invoice_number: invoice_request.ar_invoice_number).last
+          if !ar_invoice_request.present?
           Chewy.strategy(:bypass) do
             if invoice_request.inward_dispatches.present?
               inward_dispatch = invoice_request.inward_dispatches.last
@@ -45,7 +46,8 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
               end
             end
           end
-        end
+          end
+      end
       end
     end
   end
