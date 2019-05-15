@@ -3,6 +3,7 @@ class SalesInvoice < ApplicationRecord
   include DisplayHelper
   include Mixins::HasConvertedCalculations
   update_index('sales_invoices#sales_invoice') { self }
+  update_index('customer_order_status_report#sales_order') { sales_order }
 
   pg_search_scope :locate, against: [:id, :invoice_number], associated_against: { company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
 

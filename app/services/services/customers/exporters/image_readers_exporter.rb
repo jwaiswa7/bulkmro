@@ -1,4 +1,4 @@
-class Services::Overseers::Exporters::ImageReadersExporter < Services::Overseers::Exporters::BaseExporter
+class Services::Customers::Exporters::ImageReadersExporter < Services::Overseers::Exporters::BaseExporter
   def initialize
     super
     @model = ImageReader

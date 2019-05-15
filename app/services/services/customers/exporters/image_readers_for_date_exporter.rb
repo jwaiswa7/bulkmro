@@ -1,4 +1,4 @@
-class Services::Overseers::Exporters::ImageReadersForDateExporter < Services::Overseers::Exporters::BaseExporter
+class Services::Customers::Exporters::ImageReadersForDateExporter < Services::Overseers::Exporters::BaseExporter
   attr_accessor :param, :rows, :date, :start_at, :end_at, :model, :export_name, :path, :columns
 
   def initialize(params)

@@ -11,6 +11,8 @@ class Inquiry < ApplicationRecord
   update_index('suggestions#inquiry') { self }
   update_index('kra_reports#inquiry') { self }
   update_index('new_company_reports#inquiry') { self }
+  update_index('inquiry_mapping_tats#inquiry_mapping_tat') { self.inquiry_mapping_tats }
+
   pg_search_scope :locate, against: [:id, :inquiry_number], associated_against: { company: [:name], account: [:name], contact: [:first_name, :last_name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name], procurement_operations: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :inquiry_currency, dependent: :destroy
@@ -91,6 +93,28 @@ class Inquiry < ApplicationRecord
       'Order Lost': 9,
       'Regret': 10,
   }
+
+  enum pipeline_status: {
+      # 'Lead by O/S': 11,
+      'New Inquiry': 0,
+      'Ack Mail': 2,
+      'Cross Ref': 3,
+      # 'Supplier RFQ Sent': 12,
+      'Preparing Quotation': 4,
+      'Quotation Sent': 5,
+      'Follow Up on Quotation': 6,
+      'Expected Order': 7,
+      # 'SO Not Created-Customer PO Awaited': 13,
+      'Pending Cust PO Revision': 14,
+      'Pending Manager Approval': 15,
+      'Pending Accounts Approval': 8,
+      'Order Won': 18,
+      'Rejected Sales Manager': 17,
+      'Rejected by Accounts': 19,
+      # 'Hold by Accounts': 20,
+      'Order Lost': 9,
+      'Regret': 10,
+  }, _suffix: true
 
   def regrettable_statuses
     Inquiry.statuses.keys.sort.reject { |status| ['Order Lost', 'Regret', 'Expected Order'].include?(status) }
