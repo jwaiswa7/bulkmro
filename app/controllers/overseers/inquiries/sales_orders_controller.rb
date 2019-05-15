@@ -1,7 +1,7 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
   before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation,
                                          :resync, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map,
-                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation]
+                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation, :order_cancellation_modal, :cancellation]
   before_action :set_notification, only: [:create_confirmation, :create_account_confirmation]
 
   def index
@@ -122,26 +122,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   def create_account_confirmation
     authorize @sales_order
 
-    if params['approve'].present?
-      @sales_order.update_attributes(remote_status: :'Supplier PO: Request Pending', status: :'Approved', mis_date: Date.today, order_number: (@sales_order.id + 1))
-      Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, :order_won).call
-      comment = @sales_order.inquiry.comments.create!(message: 'SAP Approved', overseer: Overseer.default_approver, sales_order: @sales_order)
-      if @sales_order.approval.blank?
-        @sales_order.create_approval!(comment: comment, overseer: Overseer.default_approver)
-        @sales_order.rejection.destroy! if @sales_order.rejection.present?
-      end
-      # sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(sales_order)), filename: sales_order.filename)
-      @sales_order.update_index
-    else
-      @sales_order.update_attributes(status: :'SAP Rejected')
-      comment = InquiryComment.where(message: "Rejected by Accounts. Reason: #{sales_order_params[:custom_fields][:message]}",
-                                     inquiry: @sales_order.inquiry, created_by: Overseer.default_approver, updated_by: Overseer.default_approver,
-                                     sales_order: @sales_order).first_or_create! if @sales_order.inquiry.present?
-      Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, :sap_rejected).call
-      @sales_order.create_rejection!(comment: comment, overseer: Overseer.default_approver)
-      @sales_order.approval.destroy! if @sales_order.approval.present?
-      @sales_order.update_index
-    end
+    Services::Overseers::SalesOrders::CreateSalesOrderInSap.new(@sales_order, params).call
 
     redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
@@ -196,6 +177,23 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     render json: {data: inquiry_json}
   end
 
+  def order_cancellation_modal
+    authorize @sales_order
+    respond_to do |format|
+      format.html {render partial: 'cancellation'}
+    end
+  end
+
+  def cancellation
+    authorize @sales_order
+    @status = Services::Overseers::SalesOrders::CancelSalesOrder.new(@sales_order, sales_order_params.merge(status: 'Cancelled', remote_status: 'Cancelled by SAP')).call
+    if @status
+      render json: {sucess: 'Successfully updated '}, status: 200
+    else
+      render json: { error: 'Cancellation Message is Required' }, status: 500
+    end
+  end
+
   private
 
     def save
@@ -230,6 +228,12 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
               :sales_quote_row_id,
               :quantity,
               :_destroy
+          ],
+          comments_attributes: [
+              :message,
+              :inquiry_id,
+              :created_by_id,
+              :sales_order_id
           ]
       )
     end

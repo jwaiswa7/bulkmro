@@ -438,6 +438,8 @@ Rails.application.routes.draw do
             get 'fetch_order_data'
             get 'relationship_map'
             get 'get_relationship_map_json'
+            get 'order_cancellation_modal'
+            patch 'cancellation'
           end
 
           collection do

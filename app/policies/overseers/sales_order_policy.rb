@@ -3,6 +3,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || logistics?
   end
 
+  def cancellation?
+    order_cancellation_modal?
+  end
+
   def company_converted_orders?
     manager_or_sales? || logistics?
   end
@@ -36,7 +40,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def account_approval?
-    record.status == 'Accounts Approval Pending'
+    record.status == 'Accounts Approval Pending' && ( accounts? || admin? )
+  end
+
+  def cancelled_sales_order?
+    record.status == 'Approved' && record.order_number.present? && ( accounts? || admin? )
   end
 
   def update?
@@ -179,6 +187,12 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   def get_relationship_map_json?
     relationship_map?
   end
+
+  def order_cancellation_modal?
+    accounts? || admin?
+  end
+
+
 
   class Scope
     attr_reader :overseer, :scope
