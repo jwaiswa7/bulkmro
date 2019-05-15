@@ -29,12 +29,24 @@ class Overseers::ActivitiesController < Overseers::BaseController
   def new
     @activity = current_overseer.activities.build(overseer: current_overseer)
     @activity.build_company_creation_request(overseer: current_overseer)
+    @activity.build_contact_creation_request(overseer: current_overseer)
     @accounts = Account.all
     authorize @activity
   end
 
   def create
     @activity = Activity.new(activity_params.merge(overseer: current_overseer))
+    company_creation_params = activity_params['company_creation_request_attributes']
+    if company_creation_params['create_new_contact'] == 'true'
+      @activity.build_contact_creation_request(
+        overseer: current_overseer,
+        email: company_creation_params['email'],
+        first_name: company_creation_params['first_name'],
+        last_name: company_creation_params['last_name'],
+        telephone: company_creation_params['telephone'],
+        mobile: company_creation_params['mobile_number']
+      )
+    end
     authorize @activity
     if @activity.save
       redirect_to pending_overseers_activities_path, notice: flash_message(@activity, action_name)
@@ -132,26 +144,39 @@ class Overseers::ActivitiesController < Overseers::BaseController
     def activity_params
       params.require(:activity).permit(
         :inquiry_id,
-          :company_id,
-          :contact_id,
-          :company_type,
-          :subject,
-          :purpose,
-          :activity_date,
-          :activity_type,
-          :points_discussed,
-          :actions_required,
-          :expenses,
-          overseer_ids: [],
-          company_creation_request_attributes: [
-              :name,
-              :email,
-              :first_name,
-              :last_name,
-              :address,
-              :account_type,
-          ],
-          attachments: []
+        :company_id,
+        :contact_id,
+        :company_type,
+        :subject,
+        :purpose,
+        :activity_date,
+        :activity_type,
+        :points_discussed,
+        :actions_required,
+        :expenses,
+        overseer_ids: [],
+        company_creation_request_attributes: [
+            :name,
+            :email,
+            :first_name,
+            :last_name,
+            :address,
+            :account_type,
+            :telephone,
+            :mobile_number,
+            :activity_id,
+            :create_new_contact
+        ],
+        contact_creation_request_attributes: [
+            :id,
+            :first_name,
+            :last_name,
+            :email,
+            :telephone,
+            :mobile,
+            :activity_id
+        ],
+        attachments: []
       )
     end
 
