@@ -378,6 +378,7 @@ Rails.application.routes.draw do
         get 'stages'
         get 'relationship_map'
         get 'get_relationship_map_json'
+        post 'duplicate'
       end
 
       collection do
