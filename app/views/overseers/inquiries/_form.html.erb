@@ -18,9 +18,11 @@
             <%= action_button(action_name, @inquiry) %>
           </div>
         <% end %>
-        <div class="col-md-4">
-          <%= link_to "Duplicate", duplicate_overseers_inquiry_path(@inquiry), method: :post, class: "btn-block btn btn-success", target: '_blank' %>
-        </div>
+        <% if policy(@inquiry).duplicate? %>
+          <div class="col-md-4">
+            <%= link_to "Duplicate", duplicate_overseers_inquiry_path(@inquiry), method: :post, class: "btn-block btn btn-success", target: '_blank' %>
+          </div>
+        <% end %>
       </div>
 
     </div>
