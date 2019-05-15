@@ -201,7 +201,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def duplicate?
-    true
+    record.persisted?
   end
 
   class Scope
