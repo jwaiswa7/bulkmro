@@ -12,7 +12,13 @@ json.data (@invoice_requests) do |invoice_request|
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
-                      end
+                      end,
+                      if policy(invoice_request).index?
+                        link_to('', class: ['btn btn-sm btn-success comment-invoice-request'], 'data-invoice-request-id': invoice_request.id, title: 'Add Comment', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                        end
+                      end,
                   ].join(' '),
                   invoice_request.id,
                   status_badge(invoice_request.status),
