@@ -38,7 +38,7 @@ const index = () => {
                 $('.cancellation-form-modal').empty()
                 $('.cancellation-form-modal').append(data)
                 $('#addComment').modal('show')
-                commentSubmit()
+                modalSubmit()
                 $('#addComment').on('hidden.bs.modal', function () {
                     $this.removeClass('disabled')
                 })
@@ -53,7 +53,7 @@ const index = () => {
 };
 
 let modalSubmit = () => {
-    $("#cancelInvoice").on('click', '.confirm-cancel', function (event) {
+    $("#cancelInvoice,#addComment").on('click', '.confirm-cancel', function (event) {
         var formSelector = "#" + $(this).closest('form').attr('id'),
             datastring = $(formSelector).serialize();
         $.ajax({
@@ -64,32 +64,6 @@ let modalSubmit = () => {
             success: function success(data) {
                 $('#cancelInvoice').modal('hide');
                 window.location.reload()
-            },
-            error: function error(_error) {
-                if (_error.responseJSON && _error.responseJSON.error && _error.responseJSON.error.base)
-                    $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error.base + "</div>");
-            }
-        });
-        event.preventDefault();
-    });
-}
-
-let commentSubmit = () => {
-    $("#addComment").on('click', '.confirm-cancel', function (event) {
-        var formSelector = "#" + $(this).closest('form').attr('id'),
-            datastring = $(formSelector).serialize();
-        $.ajax({
-            type: "PATCH",
-            url: $(formSelector).attr('action'),
-            data: datastring,
-            dataType: "json",
-            success: function success(data) {
-                $('#addComment').modal('hide');
-                if (data.success == 0) {
-                    alert(data.message);
-                } else {
-                    window.location.reload();
-                }
             },
             error: function error(_error) {
                 if (_error.responseJSON && _error.responseJSON.error && _error.responseJSON.error.base)
