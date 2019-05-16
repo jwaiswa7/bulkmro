@@ -7,7 +7,9 @@ let invoiceRequests= {
     pending: invoiceRequestsIndex,
     edit: invoiceRequestsEdit,
     new: invoiceRequestsEdit,
-    show: invoiceRequestsShow
+    show: invoiceRequestsShow,
+    completed: invoiceRequestsIndex,
+    cancelled: invoiceRequestsIndex
 }
 
 export default invoiceRequests

@@ -101,6 +101,16 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :contact_creation_requests do
+      # member do
+      #   post 'exchange_with_existing_company'
+      # end
+      collection do
+        get 'requested'
+        get 'created'
+      end
+    end
+
     resources :activities, except: [:show] do
       collection do
         get 'pending'
@@ -236,10 +246,13 @@ Rails.application.routes.draw do
         get 'pending_stock_approval'
         get 'stock'
         get 'completed_stock'
+        get 'add_comment'
       end
       member do
         get 'render_cancellation_form'
         patch 'cancel_porequest'
+        get 'render_comment_form'
+        patch 'add_comment'
       end
 
     end
@@ -254,6 +267,8 @@ Rails.application.routes.draw do
       member do
         get 'render_cancellation_form'
         patch 'cancel_invoice_request'
+        get 'render_comment_form'
+        patch 'add_comment'
       end
     end
 
@@ -368,6 +383,7 @@ Rails.application.routes.draw do
         get 'stages'
         get 'relationship_map'
         get 'get_relationship_map_json'
+        post 'duplicate'
       end
 
       collection do

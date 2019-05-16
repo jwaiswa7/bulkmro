@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate]
 
   def index
     authorize :inquiry
@@ -253,6 +253,30 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def duplicate
+    @new_inquiry = @inquiry.dup
+    authorize @inquiry
+    @new_inquiry.inquiry_number = nil
+    @new_inquiry.opportunity_uid = nil
+    @new_inquiry.project_uid = nil
+    @new_inquiry.quotation_uid = nil
+    @new_inquiry.status = nil
+    @new_inquiry.created_by = current_overseer
+    @new_inquiry.duplicated_from = @inquiry.id
+    @new_inquiry.inquiry_currency = InquiryCurrency.create(currency_id: @inquiry.currency)
+
+    if @new_inquiry.save
+      @inquiry.inquiry_products.each do |inquiry_product|
+        new_inquiry_product = inquiry_product.dup
+        new_inquiry_product.inquiry_id = @new_inquiry.id
+        new_inquiry_product.created_by = current_overseer
+        new_inquiry_product.save
+      end
+      Services::Overseers::Inquiries::UpdateStatus.new(@new_inquiry, :new_inquiry).call if @new_inquiry.persisted?
+      redirect_to edit_overseers_inquiry_path(@new_inquiry, notice: set_flash_message('Inquiry Duplicated successfully', 'success'))
+    end
+  end
+
   def resync_inquiry_products
     authorize @inquiry
     @inquiry_products = @inquiry.products
@@ -340,6 +364,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         service.call
 
         @statuses = Inquiry.statuses
+        @custom_statuses = Inquiry.pipeline_statuses
         @indexed_pipeline_report = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['inquiries_over_time']['buckets']
         @indexed_summary_row = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row']
         @summary_total = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row_total']
