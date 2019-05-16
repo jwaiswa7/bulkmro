@@ -439,7 +439,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
       if bible_order.present?
         skus_in_order = bible_order.metadata.map {|h| h['sku']}
-        puts "SKU STATUS", skus_in_order.include?(x.get_column('Bm #'))
+        puts 'SKU STATUS', skus_in_order.include?(x.get_column('Bm #'))
 
         order_metadata = bible_order.metadata
         sku_data = {
@@ -475,7 +475,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         bible_order.update_attributes(order_total: bible_order_total, order_tax: bible_order_tax, order_total_with_tax: bible_order_total_with_tax)
       end
     end
-    puts "BibleSO", BibleSalesOrder.count
+    puts 'BibleSO', BibleSalesOrder.count
   end
 
   def check_bible_total
@@ -485,7 +485,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         bible_order_total = bible_order_total + line_item['total_selling_price']
       end
     end
-    puts "BIBLE ORDER TOTAL", bible_order_total
+    puts 'BIBLE ORDER TOTAL', bible_order_total
   end
 
   def flex_dump
@@ -497,7 +497,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         if order.inquiry_currency.currency.id == 2 && order.calculated_total < 75000
           order.rows.each do |record|
             sales_order = record.sales_order
-            order_date = sales_order.inquiry.customer_order_date.strftime("%F")
+            order_date = sales_order.inquiry.customer_order_date.strftime('%F')
             order_id = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.online_order_number : ''
             customer_po_number = sales_order.inquiry.customer_po_number
             part_number = record.product.sku
@@ -518,7 +518,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           fc.push(order.order_number)
         end
       end
-      puts "FC", fc
+      puts 'FC', fc
     end
 
     fetch_csv('flex_export.csv', csv_data)
