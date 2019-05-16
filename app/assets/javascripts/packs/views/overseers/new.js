@@ -29,15 +29,15 @@ const newAction = () => {
             });
         });
 
-        $('#overseer_acl_role_id').on('change', function () {
-            let pp = $('#overseer_acl_role_id').val()
-            let tree2 = $('#tree').tree({
-                primaryKey: 'id',
-                uiLibrary: 'bootstrap4',
-                dataSource: Routes.get_acl_overseers_acl_role_path(pp, {format: "json"}),
-                checkboxes: true
-            });
-        });
+        // $('#overseer_acl_role_id').on('change', function () {
+        //     let pp = $('#overseer_acl_role_id').val()
+        //     let tree2 = $('#tree').tree({
+        //         primaryKey: 'id',
+        //         uiLibrary: 'bootstrap4',
+        //         dataSource: Routes.get_acl_overseers_acl_role_path(pp, {format: "json"}),
+        //         checkboxes: true
+        //     });
+        // });
 
     });
 

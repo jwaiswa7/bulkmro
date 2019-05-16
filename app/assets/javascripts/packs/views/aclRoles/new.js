@@ -3,25 +3,21 @@ const newAction = () => {
         var tree = $('#tree').tree({
             primaryKey: 'id',
             uiLibrary: 'bootstrap4',
-            dataSource: Routes.get_acl_overseers_acl_role_path($('#tree').attr('data-acl'), {format: "json"}),
+            dataSource: Routes.get_default_resources_overseers_acl_roles_path({format: "json"}),
             checkboxes: true
         });
-
-        tree.collapseAll();
 
         $('#btnSave').on('click', function () {
             console.log("button clicked")
             var checkedIds = tree.getCheckedNodes();
             $.ajax({
-                url: Routes.overseers_acl_role_path(
-                    $('#tree').attr('data-acl')
-                ),
+                url: Routes.save_role_overseers_acl_role_path({format: "json"}),
                 dataType: 'json',
-                data: {checkedIds: checkedIds},
-                method: 'PATCH'
+                data: {checkedIds: checkedIds, role_name:$('#acl_role_role_name').val()},
+                method: 'POST'
             })
             .done(function( data ) {
-                window.location.href = Routes.edit_overseers_acl_role_path($('#tree').attr('data-acl'))
+                window.location.href = Routes.overseers_acl_roles_path
             })
             .fail(function () {
                 alert('Failed to save.');

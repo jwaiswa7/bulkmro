@@ -256,6 +256,7 @@
           </a>
           <div class="dropdown-menu">
             <%= nav_dropdown_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
+            <%= nav_dropdown_item 'Overseers Roles', overseers_acl_roles_path, policy(:overseer).index? %>
             <% if (Rails.env.development?) || policy(:remote_request).index? %>
               <div class="dropdown-submenu">
                 <a class="dropdown-item dropdown-toggle" href="#">Tools</a>

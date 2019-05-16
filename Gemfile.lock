@@ -585,6 +585,7 @@ PLATFORMS
 DEPENDENCIES
   activeresource
   async-websocket
+  awesome_acl
   awesome_print
   axlsx (= 3.0.0.pre)
   axlsx_rails (= 0.5.2)

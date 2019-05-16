@@ -282,7 +282,7 @@ module DisplayHelper
     end
   end
 
-  def is_authorised(model)
+  def is_authorised(model, action)
     allowed_resources = current_overseer.acl_resources
     default_resources = Settings.acl.default_resources
     parsed_json = ActiveSupport::JSON.decode(default_resources)
@@ -299,7 +299,7 @@ module DisplayHelper
     end
 
     if resource_ids[resource_model][action_name].present?
-      if allowed_resources.include? resource_ids[resource_model][action_name].to_s
+      if allowed_resources.include? resource_ids[resource_model][action].to_s
         auth = true
       end
     end

@@ -10019,3 +10019,16 @@ a.text-color-grey:hover, a.text-color-grey:focus {
     white-space: normal; }
 
 /*# sourceMappingURL=application.css.map */
+
+
+ul.gj-list {
+    padding: 0px;
+}
+
+ul.gj-list li.list-group-item{
+    padding: 5px;
+}
+
+ul.gj-list li.list-group-item ul li div{
+    padding-left: 15px;
+}

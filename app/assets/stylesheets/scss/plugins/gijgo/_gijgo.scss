@@ -189,6 +189,9 @@
 }
 
 /* List */
+ul.gj-list {
+  padding: 0px;
+}
 ul.gj-list li [data-role="wrapper"] {
   display: table;
   width: 100%;
@@ -5382,4 +5385,16 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
   right: 0px;
   top: 0px;
   font-size: 24px;
+}
+
+ul.gj-list {
+  padding: 0px;
+}
+
+ul.gj-list li.list-group-item{
+  padding: 5px;
+}
+
+ul.gj-list li.list-group-item ul li div{
+  padding-left: 15px;
 }

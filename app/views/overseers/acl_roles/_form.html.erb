@@ -13,23 +13,19 @@
             </div>
           </div>
         </div>
-        <div class="mt-3">
-          <div class="form-row">
-            <div class="col-4">
-              Role Resources
-            </div>
-            <div class="col-12">
-              <div id="tree" data-acl="<%= @acl_role.id %>"></div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
     <div class="card-footer">
-      <div class="form-row">
-        <button name="button" id="btnSave" type="button" class="btn btn-warning btn-block"><i class="fal fa-pen mr-1"></i><span>Update Role</span></button>
-      </div>
+      <% if action_name.capitalize =="New" %>
+        <%= button_tag(type:"submit", class:"btn btn-success btn-block") do %>
+          <i class="fal fa-plus-circle"></i> <%= submit_text(@acl_role) %>
+        <% end %>
+      <% else %>
+        <%= button_tag(type:"submit", class:"btn btn-warning btn-block") do %>
+          <i class="fal fa-pen"></i> <%= submit_text(@acl_role) %>
+        <% end %>
+      <% end %>
     </div>
   <% end %>
 </div>

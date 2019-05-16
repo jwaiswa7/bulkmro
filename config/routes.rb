@@ -132,6 +132,10 @@ Rails.application.routes.draw do
     resources :acl_roles do
       member do
         get 'get_acl'
+        post 'save_role'
+      end
+      collection do
+        get 'get_default_resources'
       end
     end
 

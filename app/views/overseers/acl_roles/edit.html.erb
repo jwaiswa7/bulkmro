@@ -1,1 +1,38 @@
-<%= render 'overseers/acl_roles/form' %>
+<div class="col-lg-12">
+  <%= render 'shared/snippets/page_header', e: @acl_role %>
+
+  <%= simple_form_for([:overseers, @acl_role], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <div class="form-row">
+            <div class="col-4">
+              <%= f.input :role_name %>
+            </div>
+
+          </div>
+        </div>
+        <div class="card-alternative ">
+          <div class="form-row">
+            <div class="col-4">
+              <label class="form-control-label text-capitalize string optional">Role Resourcese</label>
+            </div>
+            <div class="col-4">
+
+            </div>
+            <div class="col-4 sticky-top">
+              <button name="button" id="btnSave" type="button" class="btn btn-warning btn-block">
+                <i class="fal fa-pen mr-1"></i><span>Update Role</span></button>
+            </div>
+            <div class="col-12">
+              <div id="tree" data-acl="<%= @acl_role.id %>"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  <% end %>
+</div>
