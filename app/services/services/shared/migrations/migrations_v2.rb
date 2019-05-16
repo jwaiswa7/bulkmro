@@ -270,8 +270,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     correctly_updating_orders = ['2000041', '2000271', '2000347', '2000363', '2000364', '2000414', '2000431', '2000451', '2000454', '2000510', '2000526', '2000540', '2000543', '2000640', '2000719', '2000779', '2001077', '2001266', '2001279', '2001292', '2001307', '2001311', '2001311', '2001319', '2001345', '2001363', '2001696', '2001776', '2001798', '2001818', '2001865', '2001978', '2002000', '2002200', '2002272', '2002435', '2002586', '2002609', '2002944', '2003271', '2003641', '10200074', '10200177', '10200205', '10200206', '10210027', '10210049', '10210062', '10210074', '10210084', '10210125', '10210145', '10210151', '10210161', '10210198', '10210199', '10210216', '10210278', '10210294', '10210294', '10210295', '10210296', '10210301', '10210314', '10210316', '10210316', '10210460', '10210559', '10210560', '10210580', '10210609', '10210614', '10210615', '10210617', '10210630', '10210645', '10210670', '10210673', '10210681', '10210690', '10210696', '10210707', '10210736', '10210794', '10210810', '10210856', '10210857', '10210897', '10210904', '10210911', '10210919', '10210921', '10210935', '10210962', '10210970', '10210980', '10210987', '10210992', '10211012', '10211024', '10211043', '10211103', '10211179', '10211189', '10211295', '10211550', '10211553', '10211560', '10211566', '10211569', '10211572', '10211737', '10300015', '10300024', '10300030', '10300036', '10300053', '10300068', '10610052', '10610066', '10610082', '10610136', '10610150', '10610239', '10610254', '10610274', '10610287', '10610306', '10610410', '10610423', '10610428', '10610435', '10610874', '10910036', '10910039', '10910067', '10910069', '10910070', '10910088', '10910110', '10910110', '10910129', '11210010', '11210027', '11210033', '11210038', '11210060', '11210066', '99999003', '99999004', '99999007', '99999012', '99999053', '99999055', '99999063']
     service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-02 Bible Data for Migration.csv', 'seed_files_3')
     has_vat = []
-    correctly_updated_orders = []
-    adjustment_entries_in_updated_orders = []
+    updated_orders = []
     updated_orders_total = 0
     bible_total = 0
     i = 0
@@ -324,32 +323,21 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             sales_order.save(validate: false)
             puts '****************************** ORDER SAVED ****************************************'
 
-            if order_row.total_selling_price.to_f == bible_order_row_total && order_row.total_selling_price_with_tax.to_f == bible_order_row_total_with_tax
-              i = i + 1
-              puts 'Matched order count', i
-              correctly_updated_orders.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
-              updated_orders_total = updated_orders_total + order_row.total_selling_price_with_tax.to_f
-              bible_total = bible_total + bible_order_row_total_with_tax
-            end
+            # if order_row.total_selling_price.to_f == bible_order_row_total && order_row.total_selling_price_with_tax.to_f == bible_order_row_total_with_tax
+            i = i + 1
+            puts 'Matched order count', i
+            updated_orders.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
+            updated_orders_total = updated_orders_total + order_row.total_selling_price_with_tax.to_f
+            bible_total = bible_total + bible_order_row_total_with_tax
+            # end
           end
         end
       end
     end
     puts 'HAS VAT', has_vat
-    puts 'CORRECTLY UPDATED ENTRIES', correctly_updated_orders
+    puts 'CORRECTLY UPDATED ENTRIES', updated_orders
     puts 'Totals(sprint/bible)', updated_orders_total.to_f, bible_total.to_f
   end
-
-  # def check_skipped_skus
-  #   # column_headers = ['inquiry_number', 'client order date', 'order_number', 'old_order_number', 'order date', 'SKU', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax', 'kit order', 'adjustment entry']
-  #
-  #   service = Services::Shared::Spreadsheets::CsvImporter.new('skipped_skus.csv', 'seed_files_3')
-  #   csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
-  #     service.loop(nil) do |x|
-  #
-  #     end
-  #   end
-  # end
 
   def set_is_kit_flag_in_mismatch_file
     column_headers = ['inquiry_number', 'client order date', 'order_number', 'old_order_number', 'order date', 'SKU', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax', 'kit order']
@@ -414,6 +402,126 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
 
     fetch_csv('companies_export.csv', csv_data)
+  end
+
+  def create_bible_orders
+    # test_file
+    service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-02 Bible Data for Migration.csv', 'seed_files_3')
+    service.loop(nil) do |x|
+      bible_total_with_tax = x.get_column('Total Selling Price').to_f + x.get_column('Tax Amount').to_f
+
+      if bible_total_with_tax.negative?
+        bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
+                                            order_number: x.get_column('So #'),
+                                            client_order_date: x.get_column('Client Order Date'),
+                                            is_adjustment_entry: true).first_or_create! do |bible_order|
+          bible_order.inside_sales_owner = x.get_column('Inside Sales Name')
+          bible_order.company_name = x.get_column('Magento Company Name')
+          bible_order.account_name = x.get_column('Company Alias')
+          bible_order.currency = x.get_column('Price Currency')
+          bible_order.document_rate = x.get_column('Document Rate')
+          bible_order.metadata = []
+        end
+      else
+        bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
+                                            order_number: x.get_column('So #'),
+                                            client_order_date: x.get_column('Client Order Date')).first_or_create! do |bible_order|
+          bible_order.inside_sales_owner = x.get_column('Inside Sales Name')
+          bible_order.company_name = x.get_column('Magento Company Name')
+          bible_order.account_name = x.get_column('Company Alias')
+          bible_order.mis_date = x.get_column('Order Date')
+          bible_order.currency = x.get_column('Price Currency')
+          bible_order.document_rate = x.get_column('Document Rate')
+          bible_order.metadata = []
+          bible_order.is_adjustment_entry = false
+        end
+      end
+
+      if bible_order.present?
+        skus_in_order = bible_order.metadata.map {|h| h['sku']}
+        puts "SKU STATUS", skus_in_order.include?(x.get_column('Bm #'))
+
+        order_metadata = bible_order.metadata
+        sku_data = {
+            'sku': x.get_column('Bm #'),
+            'description': x.get_column('Description'),
+            'quantity': x.get_column('Order Qty'),
+            'freight_tax_type': x.get_column('Freight	Tax Type'),
+            'total_landed_cost': x.get_column('Total Landed Cost(Total buying price)').to_f,
+            'unit_cost_price': x.get_column('unit cost price').to_f,
+            'margin_amount': x.get_column('Margin').to_f,
+            'margin_percentage': x.get_column('Margin (In %)'),
+            'total_selling_price': x.get_column('Total Selling Price').to_f,
+            'tax_rate': x.get_column('Tax Rate'),
+            'tax_amount': x.get_column('Tax Amount').to_f,
+            'unit_selling_price': x.get_column('Unit selling Price').to_f,
+            'order_date': x.get_column('Order Date')
+        }
+        order_metadata.push(sku_data)
+        bible_order.assign_attributes(metadata: order_metadata)
+        bible_order.save
+      end
+    end
+
+    bible_order_total = 0
+    bible_order_tax = 0
+    bible_order_total_with_tax = 0
+
+    BibleSalesOrder.all.each do |bible_order|
+      bible_order.metadata.each do |line_item|
+        bible_order_total = bible_order_total + line_item['total_selling_price']
+        bible_order_tax = bible_order_tax + line_item['tax_amount']
+        bible_order_total_with_tax = bible_order_total_with_tax + bible_order_total + bible_order_tax
+        bible_order.update_attributes(order_total: bible_order_total, order_tax: bible_order_tax, order_total_with_tax: bible_order_total_with_tax)
+      end
+    end
+    puts "BibleSO", BibleSalesOrder.count
+  end
+
+  def check_bible_total
+    bible_order_total = 0
+    BibleSalesOrder.all.each do |bible_order|
+      bible_order.metadata.each do |line_item|
+        bible_order_total = bible_order_total + line_item['total_selling_price']
+      end
+    end
+    puts "BIBLE ORDER TOTAL", bible_order_total
+  end
+
+  def flex_dump
+    column_headers = ['Order Date', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Order Status', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
+    model = SalesOrder
+    fc = []
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      model.joins(:company).where(companies: {id: 1847}).order(name: :asc).each do |order|
+        if order.inquiry_currency.currency.id == 2 && order.calculated_total < 75000
+          order.rows.each do |record|
+            sales_order = record.sales_order
+            order_date = sales_order.inquiry.customer_order_date.strftime("%F")
+            order_id = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.online_order_number : ''
+            customer_po_number = sales_order.inquiry.customer_po_number
+            part_number = record.product.sku
+            account = sales_order.inquiry.company.name
+
+            line_item_quantity = record.quantity
+            line_item_net_total = record.total_selling_price.to_s
+            sap_status = sales_order.remote_status
+            user_email = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.contact.email : 'sivakumar.ramu@flex.com'
+            shipping_address = sales_order.inquiry.shipping_address
+            currency = sales_order.inquiry.inquiry_currency.currency.name
+            category = record.product.category.name
+            part_number_description = record.product.name
+
+            writer << [order_date, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
+          end
+        elsif order.inquiry_currency.currency.id != 2
+          fc.push(order.order_number)
+        end
+      end
+      puts "FC", fc
+    end
+
+    fetch_csv('flex_export.csv', csv_data)
   end
 end
 
