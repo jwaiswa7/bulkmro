@@ -255,7 +255,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def duplicate
     @new_inquiry = @inquiry.dup
-    authorize @new_inquiry
+    authorize @inquiry
     @new_inquiry.inquiry_number = nil
     @new_inquiry.opportunity_uid = nil
     @new_inquiry.project_uid = nil

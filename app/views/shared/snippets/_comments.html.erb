@@ -19,7 +19,7 @@
           </span>
         <% end %>
       </span>
-      <%= format_times_ago(comment.created_at) %></span>
+      </span>
     </div>
     <div class="chat-item-body">
       <% if trimmed && comment.message.length > 48 %>
@@ -27,6 +27,9 @@
       <% else %>
         <%= simple_format comment.message %>
       <% end %>
+    </div>
+    <div class="mt-2">
+      <%= format_times_ago(comment.created_at) %>
     </div>
   </div>
 </div>
