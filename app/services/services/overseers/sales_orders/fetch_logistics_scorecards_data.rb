@@ -9,6 +9,7 @@ class Services::Overseers::SalesOrders::FetchLogisticsScorecardsData < Services:
       if sales_invoice.attributes['rows'].present?
         sales_invoice.attributes['rows'].each do |row|
           sales_invoices << {
+              id: sales_invoice.attributes['id'],
               inquiry_number: sales_invoice.attributes['inquiry_number'],
               inquiry_date: sales_invoice.attributes['inquiry_date'],
               company: sales_invoice.attributes['company'],
@@ -27,11 +28,16 @@ class Services::Overseers::SalesOrders::FetchLogisticsScorecardsData < Services:
               actual_delivery_date: sales_invoice.attributes['actual_delivery_date'].present? ? sales_invoice.attributes['actual_delivery_date'] : '',
               committed_delivery_tat: sales_invoice.attributes['committed_delivery_tat'].present? ? sales_invoice.attributes['committed_delivery_tat'] : '',
               actual_delivery_tat: sales_invoice.attributes['actual_delivery_tat'].present? ? sales_invoice.attributes['actual_delivery_tat'] : '',
-              delay: sales_invoice.attributes['delay'].present? ? sales_invoice.attributes['delay'] : ''
+              delay: sales_invoice.attributes['delay'].present? ? sales_invoice.attributes['delay'] : '',
+              sla_bucket: sales_invoice.attributes['sla_bucket'].present? ? sales_invoice.attributes['sla_bucket'] : '',
+              delay_bucket: sales_invoice.attributes['delay_bucket'].present? ? sales_invoice.attributes['delay_bucket'] : '',
+              delay_reason: sales_invoice.attributes['delay_reason'].present? ? sales_invoice.attributes['delay_reason'] : '',
+              cp_committed_month: sales_invoice.attributes['cp_committed_date'].present? ? sales_invoice.attributes['cp_committed_date'] : ''
           }
         end
       else
         sales_invoices << {
+            id: sales_invoice.attributes['id'],
             inquiry_number: sales_invoice.attributes['inquiry_number'],
             inquiry_date: sales_invoice.attributes['inquiry_date'],
             company: sales_invoice.attributes['company'],
@@ -50,7 +56,11 @@ class Services::Overseers::SalesOrders::FetchLogisticsScorecardsData < Services:
             actual_delivery_date: sales_invoice.attributes['actual_delivery_date'].present? ? sales_invoice.attributes['actual_delivery_date'] : '',
             committed_delivery_tat: '',
             actual_delivery_tat: '',
-            delay: ''
+            delay: '',
+            sla_bucket: '',
+            delay_bucket: '',
+            delay_reason: '',
+            cp_committed_month: ''
         }
       end
     end

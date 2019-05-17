@@ -14,6 +14,7 @@ class Services::Overseers::Finders::LogisticsScorecards < Services::Overseers::F
       indexed_records = range_query(indexed_records)
     end
 
+    indexed_records = aggregation_logistics_scorecard(indexed_records)
     indexed_records
   end
 
@@ -38,6 +39,44 @@ class Services::Overseers::Finders::LogisticsScorecards < Services::Overseers::F
       indexed_records = range_query(indexed_records)
     end
 
+    indexed_records = aggregation_logistics_scorecard(indexed_records)
+    indexed_records
+  end
+
+  def aggregation_logistics_scorecard(indexed_records)
+    date_range = {from: Date.new(2018, 04, 01).strftime('%Y-%m-%d'), to: Date.today.strftime('%Y-%m-%d'), key: 'custom-range'}
+
+    logistics_scorecard_query = {
+        'overall_scorecard': {
+            'date_histogram': {
+                'field': 'cp_committed_date',
+                'interval': 'month',
+                keyed: true,
+                'order': {_key: 'desc'}
+            },
+            aggs: {
+                'scorecard': {
+                    'terms': {
+                        'field': 'delay_bucket'
+                    }
+                }
+            }
+        }
+    }
+
+    indexed_records = indexed_records.aggregations(
+      'logistics_scorecard_filter': {
+          'date_range': {
+              'field': 'cp_committed_date',
+              'format': 'yyyy-MM-dd',
+              'ranges': [
+                  date_range
+              ],
+              'keyed': 'true'
+          },
+          'aggs': logistics_scorecard_query
+      }
+    )
     indexed_records
   end
 

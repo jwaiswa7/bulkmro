@@ -2,7 +2,32 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+<div class="col-lg-12">
+  <%= render partial: "overall_scorecard" %>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" style="margin: 0 auto;">Select a Delay Reason</h3>
+      </div>
+      <%= form_tag add_delay_reason_overseers_logistics_scorecards_path, method: :get do %>
+        <div class="modal-body">
+          <p><%= select_tag(:selected, options_for_select(SalesInvoice.delay_reasons, 'name'), class: "form-control") %></p>
+        </div>
+        <div class="modal-footer">
+          <%= hidden_field_tag :invoice_id %>
+          <%= submit_tag "Submit", class: "btn btn-default"  %>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 <% content_for :header_row do %>
+  <th class="no-sort all"></th>
   <th class="no-sort desktop text-right">BM Inquiry #</th>
   <th class="no-sort desktop">Inquiry Date</th>
   <th class="no-sort desktop">Company</th>
@@ -14,14 +39,45 @@
   <th class="no-sort desktop">Item Make</th>
   <th class="no-sort desktop">Quantity</th>
   <th class="no-sort desktop">Delivery Location</th>
-  <th class="no-sort desktop" data-name="customer_po_date">Customer PO Date</th>
-  <th class="no-sort desktop" data-name="customer_po_received_date">Customer PO Received Date</th>
-  <th class="no-sort desktop" data-name="cp_committed_at">Committed Delivery Date to Customer</th>
-  <th class="no-sort desktop" data-name="created_at">SO Creation Date</th>
-  <th class="no-sort desktop" data-name="actual_delivery_date">Actual Customer Delivery Date</th>
-  <th class="no-sort desktop" data-name="committed_delivery_tat">Committed Delivery TAT (days)</th>
-  <th class="no-sort desktop" data-name="actual_delivery_tat">Actual Delivery TAT (days)</th>
-  <th class="no-sort desktop" data-name="delay">Delay</th>
+  <th class="no-sort desktop">Customer PO Date</th>
+  <th class="no-sort desktop">Customer PO Received Date</th>
+  <th class="no-sort desktop" data-name="cp_committed_date">Committed Delivery Date to Customer</th>
+  <th class="no-sort desktop">SO Creation Date</th>
+  <th class="no-sort desktop">Actual Customer Delivery Date</th>
+  <th class="no-sort desktop">Committed Delivery TAT (days)</th>
+  <th class="no-sort desktop">Actual Delivery TAT (days)</th>
+  <th class="no-sort desktop">Delay</th>
+  <th class="no-sort desktop">SLA Bucket</th>
+  <th class="no-sort desktop" data-name="delay_bucket">Delay Bucket</th>
+  <th class="no-sort desktop">Delay Reason</th>
+  <th class="no-sort desktop">Committed Month of Delivery</th>
+<% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="daterange"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
 <% end %>
 
 <div class="col-lg-12">

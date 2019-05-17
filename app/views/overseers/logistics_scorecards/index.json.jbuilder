@@ -1,5 +1,8 @@
 json.data (@logistics_scorecard_records) do |record|
   json.array! [
+                  [
+                      modal_button('pencil', 'Add Delay Reason', 'warning', record[:id])
+                  ],
                   record[:inquiry_number],
                   record[:inquiry_date].present? ? format_date_without_time(Date.parse(record[:inquiry_date])) : '-',
                   record[:company],
@@ -18,9 +21,40 @@ json.data (@logistics_scorecard_records) do |record|
                   record[:actual_delivery_date].present? ? format_date_without_time(Date.parse(record[:actual_delivery_date])) : '-',
                   record[:committed_delivery_tat].present? ? record[:committed_delivery_tat] : '-',
                   record[:actual_delivery_tat].present? ? record[:actual_delivery_tat] : '-',
-                  record[:delay].present? ? record[:delay] : '-'
+                  record[:delay].present? ? record[:delay] : '-',
+                  record[:sla_bucket].present? ? record[:sla_bucket] : '-',
+                  record[:delay_bucket].present? ? SalesInvoice.delay_buckets.key(record[:delay_bucket]) : '-',
+                  record[:delay_reason].present? ? SalesInvoice.delay_reasons.key(record[:delay_reason]) : '-',
+                  record[:cp_committed_month].present? ? Date.parse(record[:cp_committed_month]).strftime("%B %Y") : '-'
               ]
 end
+
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       SalesInvoice.delay_buckets.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       [],
+                       []
+]
 
 json.recordsTotal @logistics_scorecard_records.count
 json.recordsFiltered @logistics_scorecard_records.total_count
