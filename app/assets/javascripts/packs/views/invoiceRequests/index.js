@@ -26,10 +26,34 @@ const index = () => {
             })
         }
     })
+
+    $('.datatable').on('click', '.comment-invoice-request', function (e) {
+        var id = $(this).data('invoice-request-id')
+        var $this = $(this)
+        $(this).addClass('disabled')
+        $.ajax({
+            data: {},
+            url: "/overseers/invoice_requests/" + id + "/render_comment_form?",
+            success: function (data) {
+                $('.cancellation-form-modal').empty()
+                $('.cancellation-form-modal').append(data)
+                $('#addComment').modal('show')
+                modalSubmit()
+                $('#addComment').on('hidden.bs.modal', function () {
+                    $this.removeClass('disabled')
+                })
+            },
+            complete: function complete() {
+            }
+        })
+
+
+    })
+
 };
 
 let modalSubmit = () => {
-    $("#cancelInvoice").on('click', '.confirm-cancel', function (event) {
+    $("#cancelInvoice,#addComment").on('click', '.confirm-cancel', function (event) {
         var formSelector = "#" + $(this).closest('form').attr('id'),
             datastring = $(formSelector).serialize();
         $.ajax({
