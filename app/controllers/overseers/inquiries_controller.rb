@@ -255,7 +255,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def duplicate
     @new_inquiry = @inquiry.dup
-    authorize @new_inquiry
+    authorize @inquiry
     @new_inquiry.inquiry_number = nil
     @new_inquiry.opportunity_uid = nil
     @new_inquiry.project_uid = nil
@@ -364,6 +364,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         service.call
 
         @statuses = Inquiry.statuses
+        @custom_statuses = Inquiry.pipeline_statuses
         @indexed_pipeline_report = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['inquiries_over_time']['buckets']
         @indexed_summary_row = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row']
         @summary_total = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row_total']

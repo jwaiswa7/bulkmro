@@ -94,6 +94,28 @@ class Inquiry < ApplicationRecord
       'Regret': 10,
   }
 
+  enum pipeline_status: {
+      # 'Lead by O/S': 11,
+      'New Inquiry': 0,
+      'Ack Mail': 2,
+      'Cross Ref': 3,
+      # 'Supplier RFQ Sent': 12,
+      'Preparing Quotation': 4,
+      'Quotation Sent': 5,
+      'Follow Up on Quotation': 6,
+      'Expected Order': 7,
+      # 'SO Not Created-Customer PO Awaited': 13,
+      'Pending Cust PO Revision': 14,
+      'Pending Manager Approval': 15,
+      'Pending Accounts Approval': 8,
+      'Order Won': 18,
+      'Rejected Sales Manager': 17,
+      'Rejected by Accounts': 19,
+      # 'Hold by Accounts': 20,
+      'Order Lost': 9,
+      'Regret': 10,
+  }, _suffix: true
+
   def regrettable_statuses
     Inquiry.statuses.keys.sort.reject { |status| ['Order Lost', 'Regret', 'Expected Order'].include?(status) }
   end
