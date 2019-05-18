@@ -10,7 +10,7 @@ const edit = () => {
     });
 
     $('.duplicate-inquiry').on('click', function(){
-        gtag('event','click-search', { event_category: 'duplicate-inquiry',  event_label: 'Duplicate Inquiry'})
+        gtag('event','click-duplicate', { event_category: 'duplicate-inquiry',  event_label: 'Duplicate Inquiry'})
     })
 };
 
