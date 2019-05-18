@@ -10,7 +10,9 @@ class KraReportsIndex < BaseIndex
     field :updated_at, type: 'date'
     field :created_by_id
     field :updated_by_id, value: -> (record) { record.updated_by.to_s }, analyzer: 'letter'
-
+    field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }
+    field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }
+    field :procurement_operations, value: -> (record) { record.procurement_operations_id }
     field :invoices_count, value: -> (record) {record.invoices.count}, type: 'integer'
     field :sales_quote_count, value: -> (record) {record.final_sales_quote.present? ? 1 : 0}, type: 'integer'
     field :sales_order_count, value: -> (record) {record.final_sales_orders.count}, type: 'integer'
