@@ -1,0 +1,33 @@
+<div class="modal fade" id="rejectPurchaseOrder">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Reject Purchase Order</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <%= simple_form_for([:overseers, @po_request], :url => rejected_purchase_order_overseers_po_request_path(@po_request.to_param), :'novalidate' => '', :html => {:class => 'needs-validation p-3', :'data-parsley-validate' => ''}) do |f| %>
+          <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
+          <div class="modal-body">
+            <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |po_request_comment| %>
+              <%= po_request_comment.hidden_field :created_by_id %>
+              <%= po_request_comment.hidden_field :po_request_id, :value => @po_request.id %>
+              <div class="mb-2 form-group">
+                <label class="form-control-label text-capitalize">Rejection Reason</label>
+                <%= select_tag "status", options_for_select(PoRequest.rejection_reasons), class: "custom-select is-valid select optional", id: 'rejection-purchase-order-dropdown' %>
+              </div>
+              <div class="mb-2 form-group">
+                <%= po_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '', id:'purchase-order-rejection-textbox' }, :disabled => true %>
+              </div>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-warning confirm-reject">Cancel <%#= @invoice_request.readable_status%></button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -42,7 +42,10 @@ json.data (@po_requests) do |po_request|
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       else
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'warning disabled')
-                      end,
+                      end,'<br/>','<br/>',
+                      if policy(po_request).new_purchase_order? && action_name == "pending_and_rejected"
+                        row_action_button(new_purchase_order_overseers_po_request_path(po_request), 'plus', 'Create New Purchase Order', 'success')
+                      end
 
                   ].join(' '),
                   attribute_boxes([{ request_number: conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?)}, { inquiry_number: conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?) }, { order: po_request.purchase_order.present? && (po_request.status == 'Supplier PO: Created Not Sent') ? link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank') : link_to(po_request.sales_order.order_number, overseers_inquiry_sales_order_path(po_request.inquiry.id, po_request.sales_order.id), target: '_blank')}]),

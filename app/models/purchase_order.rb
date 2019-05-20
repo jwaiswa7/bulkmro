@@ -4,7 +4,7 @@ class PurchaseOrder < ApplicationRecord
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
   update_index('purchase_orders#purchase_order') { self }
-  update_index('customer_order_status_report#sales_order') { self.po_request.sales_order }
+  update_index('customer_order_status_report#sales_order') { self.po_request.sales_order if self.po_request.present?}
 
   pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
 

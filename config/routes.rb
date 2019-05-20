@@ -223,7 +223,12 @@ Rails.application.routes.draw do
     end
 
     resources :po_requests do
+      member do
+        get 'new_purchase_order'
+        post 'create_purchase_order'
+      end
       scope module: 'po_requests' do
+
         resources :payment_requests
         resources :email_messages do
           collection do
@@ -249,6 +254,8 @@ Rails.application.routes.draw do
       end
       member do
         get 'render_cancellation_form'
+        get 'reject_purchase_order_modal'
+        patch 'rejected_purchase_order'
         patch 'cancel_porequest'
       end
 

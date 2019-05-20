@@ -3,6 +3,8 @@ import poRequestsShow from "./show";
 import poRequestsIndex from "./index";
 // import pendingAndRejected from "./pendingAndRejected";
 import poRequestsNew from "./new";
+import poRequestNewPurchaseOrder from './newPurchaseOrder';
+import poRequestRejectPurchaseOrderModal from './rejectPurchaseOrderModal';
 
 let poRequests= {
     edit: poRequestsEdit,
@@ -10,7 +12,9 @@ let poRequests= {
     index: poRequestsIndex,
     // pendingAndRejected: pendingAndRejected,
     pendingAndRejected: poRequestsIndex,
-    new: poRequestsNew
+    newPurchaseOrder: poRequestNewPurchaseOrder,
+    new: poRequestsNew,
+    rejectPurchaseOrderModal: poRequestRejectPurchaseOrderModal
 }
 
 export default poRequests

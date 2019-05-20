@@ -1,5 +1,5 @@
 class Overseers::PoRequestsController < Overseers::BaseController
-  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form]
+  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form, :new_purchase_order, :reject_purchase_order_modal, :rejected_purchase_order, :create_purchase_order]
   before_action :set_notification, only: [:update, :cancel_porequest]
 
   def pending_and_rejected
@@ -208,6 +208,35 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
+  def new_purchase_order
+    authorize @po_request
+  end
+
+  def create_purchase_order
+    authorize @po_request
+    service = Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer))
+    service.call
+    redirect_to overseers_purchase_orders_path
+  end
+
+  def reject_purchase_order_modal
+    authorize @po_request
+    respond_to do |format|
+      format.html { render partial: 'reject_purchase_order'}
+    end
+  end
+
+  def rejected_purchase_order
+    @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
+    authorize @po_request
+    status = Services::Overseers::PurchaseOrders::RejectPurchaseOrder.new(params, @po_request).call
+    if status
+      #redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
+      render json: {sucess: 'Successfully updated ', url: pending_and_rejected_overseers_po_requests_path }, status: 200
+    else
+      render json: {error: @po_request.errors }, status: 500
+    end
+  end
   private
 
     def po_request_params
