@@ -1,5 +1,5 @@
 <% provide :container_fluid, true %>
-
+<% console %>
 <div class="col-lg-12 mb-0">
   <div class="page-header mb-0">
     <h2>Pipeline Report</h2>
@@ -35,6 +35,7 @@
                                     filter_by_value('Inside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
                                     filter_by_value('Outside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
                                     filter_by_value('Status', index, status),
+                                    filter_by_value('Company',params['pipeline_report']['company'],params['pipeline_report']['company']),
                                     filter_by_monthrange('Date', month.to_date)
                                 ]), target: '_blank') %>
               <% else %>
@@ -69,6 +70,7 @@
                             filter_by_value('Inside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
                             filter_by_value('Outside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
                             filter_by_value('Status', index, status),
+                            filter_by_value('Company', params['pipeline_report']['company'], params['pipeline_report']['company']),
                             filter_by_date_range('Date', params['pipeline_report']['date_range'])
                         ]), target: '_blank') %>
           <% else %>
