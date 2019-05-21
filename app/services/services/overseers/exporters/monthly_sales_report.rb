@@ -1,14 +1,14 @@
-class Services::Overseers::Exporters::MonthlySalesReportsExporter < Services::Overseers::Exporters::BaseExporter
+class Services::Overseers::Exporters::MonthlySalesReport < Services::Overseers::Exporters::BaseExporter
   def initialize(*params)
     super(*params)
     @model = Report
-    @export_name = 'monthly_sales_reports'
+    @export_name = 'monthly_sales_report'
     @path = Rails.root.join('tmp', filename)
     @columns = ['Month','inquiry count', 'sales order count', 'total', 'products count', 'product quantities' ]
   end
 
   def call
-    perform_export_later('MonthlySalesReportsExporter', @arguments)
+    perform_export_later('MonthlySalesReport', @arguments)
   end
 
   def build_csv

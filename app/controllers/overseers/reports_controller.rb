@@ -23,18 +23,14 @@ class Overseers::ReportsController < Overseers::BaseController
   end
 
   def export_report
-     # binding.pry
     @report = Report.find_by_uid(params[:id])
     @report.assign_attributes(report_params)
     params[:overseer] = current_overseer
     service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params)
     @indexed_records = service.call
-    # binding.pry
     authorize @report
-    export_service = Services::Overseers::Exporters::MonthlySalesReportsExporter.new([], current_overseer, @indexed_records, params[:id])
+    export_service = ['Services', 'Overseers', 'Exporters', @report.name].join('::').constantize.new([], current_overseer, @indexed_records, params)
     export_service.call
-    # export_service = ['Services', 'Overseers', 'Exports', @report.name].join('::').constantize.send(:new, @indexed_records, params)
-    # export_service.call
     redirect_to url_for(Export.monthly_sales_report.not_filtered.last.report)
   end
 
