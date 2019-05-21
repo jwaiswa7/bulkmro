@@ -404,6 +404,7 @@ Rails.application.routes.draw do
         get 'bulk_update'
         get 'pipeline_report'
         get 'suggestion'
+        get 'export_pipeline_report'
       end
 
       scope module: 'inquiries' do
