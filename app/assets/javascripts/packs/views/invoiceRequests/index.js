@@ -32,7 +32,6 @@ let modalSubmit = () => {
     $("#cancelInvoice").on('click', '.confirm-cancel', function (event) {
         var formSelector = "#" + $(this).closest('form').attr('id'),
             datastring = $(formSelector).serialize();
-        debugger
         $.ajax({
             type: "PATCH",
             url: $(formSelector).attr('action'),
