@@ -23,6 +23,8 @@ class Export < ApplicationRecord
     kra_report: 90,
     company_report: 91,
     customer_order_status_report: 92,
-    pipeline_report: 93
+    pipeline_report: 93,
+    monthly_sales_report: 94
+
   }
 end
