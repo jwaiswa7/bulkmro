@@ -237,11 +237,11 @@
     <div class="card-footer">
       <div class="form-row">
         <div class="col-6">
-          <a id="rejection-purchase-order-button" data-po-request-id="<%= @po_request.id %>" class="btn-block btn btn-danger text-white" remote="true" ><i class="fa fa-ban mr-1"></i>Reject</a>
+          <a id="rejection-purchase-order-button" data-po-request-id="<%= @po_request.id %>" class="btn-block btn btn-danger text-white" remote="true" ><i class="fa fa-ban mr-1"></i>Reject Supplier PO</a>
         </div>
         <div class="col-6">
           <%= button_tag(type: "submit", name: "update_sent_at_field", class: "btn btn-success btn-block") do %>
-            <i class="far fa-check mr-1"></i> Approved
+            <i class="far fa-check mr-1"></i> Create Supplier PO
           <% end %>
         </div>
       </div>
