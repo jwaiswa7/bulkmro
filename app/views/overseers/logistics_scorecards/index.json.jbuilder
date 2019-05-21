@@ -35,7 +35,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [],
+                       Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.reject { |h| h[:label] == 'Logistics Team'}.as_json,
                        [],
                        [],
                        [],

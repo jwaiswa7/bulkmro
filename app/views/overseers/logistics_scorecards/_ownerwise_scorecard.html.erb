@@ -1,0 +1,86 @@
+<a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4" type="button" data-toggle="collapse" data-target="#ownerwise-summary">
+  Logistics Owner-wise Scorecard
+</a>
+<div id="ownerwise-summary" class="collapse">
+  <div class="mt-2 form-row d-flex flex-row align-content-stretch text-right">
+    <% if @ownerwise_records.present? %>
+      <div class="col-12 col-lg-12">
+        <div class="card" style="height:380px; overflow-y: scroll;">
+          <div class="card-body">
+            <% @ownerwise_records.each do |month, record| %>
+              <div style="float: left">
+                <strong><%= Date.parse(month).strftime('%b %Y') %></strong>
+              </div>
+              <table class="table mw-100 table-bordered">
+                <tbody>
+                  <tr>
+                    <th></th>
+                    <% record["scorecard"]["buckets"].each do |bucket| %>
+                      <th><strong><%= get_logistics_owner(bucket["key"]) %></strong></th>
+                    <% end %>
+                  </tr>
+                  <tr>
+                    <th class="text-uppercase text-left">Not Delivered</th>
+                    <% record["scorecard"]["buckets"].each do |bucket| %>
+                      <td class="text-uppercase">
+                        <%= bucket["delay_bucket"]["buckets"].map {|value| value['doc_count'] if value['key'] == 0}.compact.first || 0 %>
+                      </td>
+                    <% end %>
+                  </tr>
+                  <tr>
+                    <th class="text-uppercase text-left">On or Before Time</th>
+                    <% record["scorecard"]["buckets"].each do |bucket| %>
+                      <td class="text-uppercase">
+                        <%= bucket["delay_bucket"]["buckets"].map {|value| value['doc_count'] if value['key'] == 1}.compact.first || 0 %>
+                      </td>
+                    <% end %>
+                  </tr>
+                  <tr>
+                    <th class="text-uppercase text-left">Delay by 2 days</th>
+                    <% record["scorecard"]["buckets"].each do |bucket| %>
+                      <td class="text-uppercase">
+                        <%= bucket["delay_bucket"]["buckets"].map {|value| value['doc_count'] if value['key'] == 2}.compact.first || 0 %>
+                      </td>
+                    <% end %>
+                  </tr>
+                  <tr>
+                    <th class="text-uppercase text-left">Delay by 2-7 days</th>
+                    <% record["scorecard"]["buckets"].each do |bucket| %>
+                      <td class="text-uppercase">
+                        <%= bucket["delay_bucket"]["buckets"].map {|value| value['doc_count'] if value['key'] == 3}.compact.first || 0 %>
+                      </td>
+                    <% end %>
+                  </tr>
+                  <tr>
+                    <th class="text-uppercase text-left">Delay by 7-14 days</th>
+                    <% record["scorecard"]["buckets"].each do |bucket| %>
+                      <td class="text-uppercase">
+                        <%= bucket["delay_bucket"]["buckets"].map {|value| value['doc_count'] if value['key'] == 4}.compact.first || 0 %>
+                      </td>
+                    <% end %>
+                  </tr>
+                  <tr>
+                    <th class="text-uppercase text-left">Delay by 14-28 days</th>
+                    <% record["scorecard"]["buckets"].each do |bucket| %>
+                      <td class="text-uppercase">
+                        <%= bucket["delay_bucket"]["buckets"].map {|value| value['doc_count'] if value['key'] == 5}.compact.first || 0 %>
+                      </td>
+                    <% end %>
+                  </tr>
+                  <tr>
+                    <th class="text-uppercase text-left">Delay by >28 days</th>
+                    <% record["scorecard"]["buckets"].each do |bucket| %>
+                      <td class="text-uppercase">
+                        <%= bucket["delay_bucket"]["buckets"].map {|value| value['doc_count'] if value['key'] == 6}.compact.first || 0 %>
+                      </td>
+                    <% end %>
+                  </tr>
+                </tbody>
+              </table>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 class Overseers::LogisticsScorecardsController < Overseers::BaseController
+  helper_method :get_logistics_owner
 
   def index
     authorize :logistics_scorecard
@@ -8,6 +9,7 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
         service.call
         @months = service.months
         @records = service.records
+        @ownerwise_records = service.ownerwise_records
       }
       format.json do
         service = Services::Overseers::Finders::LogisticsScorecards.new(params, current_overseer, paginate: false)
@@ -21,6 +23,11 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
     end
   end
 
+  def get_logistics_owner(key)
+    @logistics = Overseer.logistics.select('id, first_name, last_name')
+    @logistics.where(id: key).pluck(:first_name, :last_name).first.compact.join(' ')
+  end
+
   def add_delay_reason
     authorize :logistics_scorecard
     SalesInvoice.where(id: params[:invoice_id]).update_all(delay_reason: params[:selected].to_i)
@@ -30,6 +37,5 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
 
   def update
     authorize :logistics_scorecard
-
   end
 end

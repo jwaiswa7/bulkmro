@@ -61,6 +61,28 @@ class Services::Overseers::Finders::LogisticsScorecards < Services::Overseers::F
                     }
                 }
             }
+        },
+        'ownerwise_scorecard': {
+            'date_histogram': {
+                'field': 'cp_committed_date',
+                'interval': 'month',
+                keyed: true,
+                'order': {_key: 'desc'}
+            },
+            aggs: {
+                'scorecard': {
+                    'terms': {
+                        'field': 'logistics_owner_id'
+                    },
+                    aggs: {
+                        'delay_bucket': {
+                            'terms': {
+                                'field': 'delay_bucket'
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
