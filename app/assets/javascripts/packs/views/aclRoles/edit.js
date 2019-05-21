@@ -1,5 +1,5 @@
 // Imports
-import newAction from "./new";
+// import newAction from "./new";
 
 const edit = () => {
     $(document).ready(function () {
@@ -24,7 +24,7 @@ const edit = () => {
                 method: 'PATCH'
             })
                 .done(function( data ) {
-                    // window.location.href = Routes.edit_overseers_acl_role_path($('#tree').attr('data-acl'))
+                    window.location.href = Routes.edit_overseers_acl_role_path($('#tree').attr('data-acl'))
                 })
                 .fail(function () {
                     alert('Failed to save.');

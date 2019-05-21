@@ -1,5 +1,5 @@
 class Overseers::AclRolesController < Overseers::BaseController
-  before_action :set_acl_role, only: [:edit, :update, :get_acl]
+  before_action :set_acl_role, only: [:edit, :update, :get_acl, :get_role_resources]
 
   def index
     @acl_roles = ApplyDatatableParams.to(AclRole.all, params)
@@ -63,6 +63,11 @@ class Overseers::AclRolesController < Overseers::BaseController
     }
     render json: parsed_json.to_json
     authorize_acl @acl_role
+  end
+
+  def get_role_resources
+    render json: @acl_role.role_resources
+    # authorize_acl @acl_role
   end
 
   def get_default_resources
