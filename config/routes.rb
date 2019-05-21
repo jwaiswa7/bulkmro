@@ -317,6 +317,8 @@ Rails.application.routes.draw do
       member do
         get 'edit_material_followup'
         patch 'update_material_followup'
+        get 'cancelled_purchase_modal'
+        patch 'cancelled_purchase_order'
       end
 
       collection do

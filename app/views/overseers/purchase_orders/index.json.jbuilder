@@ -10,7 +10,12 @@ json.data (@purchase_orders) do |purchase_order|
                       if policy(purchase_order).show_document?
                         row_action_button(url_for(purchase_order.document), 'file-pdf', purchase_order.document.filename, 'dark', :_blank)
                       end,
-
+                      if (policy(purchase_order).logistics? || policy(purchase_order).admin?) && purchase_order.status != "cancelled"
+                        link_to('', class: 'btn btn-sm btn-danger cancel-purchase-order', 'data-purchase-order-id': purchase_order.id, title: 'Cancel Purchase Order', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                        end
+                      end
 =begin
                       if policy(purchase_order).can_request_invoice?
                         row_action_button(new_overseers_invoice_request_path(purchase_order_id: purchase_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)

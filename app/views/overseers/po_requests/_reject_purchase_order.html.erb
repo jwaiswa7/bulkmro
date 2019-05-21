@@ -8,6 +8,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <%#= rejected_purchase_order_overseers_po_request_path(@po_request.to_param) %>
         <%= simple_form_for([:overseers, @po_request], :url => rejected_purchase_order_overseers_po_request_path(@po_request.to_param), :'novalidate' => '', :html => {:class => 'needs-validation p-3', :'data-parsley-validate' => ''}) do |f| %>
           <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
           <div class="modal-body">

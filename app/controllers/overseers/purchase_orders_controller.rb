@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup]
+  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :cancelled_purchase_modal, :cancelled_purchase_order]
 
   def index
     authorize :purchase_order
@@ -184,6 +184,24 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @inward_dispatches.each do |pickup_request|
       pickup_request.update_attributes(logistics_owner_id: params[:logistics_owner_id])
     end
+  end
+
+  def cancelled_purchase_modal
+    authorize @purchase_order
+    respond_to do |format|
+      format.html { render partial: 'cancel_purchase_order', locals: { created_by_id: current_overseer.id } }
+    end
+  end
+
+  def cancelled_purchase_order
+    authorize @purchase_order
+    if @purchase_order.present?
+      @purchase_order.status = 'cancelled'
+      @purchase_order.po_request.status = 'Cancelled'
+      @purchase_order.save!
+      @purchase_order.po_request.save!
+    end
+    render json: {sucess: 'Successfully updated ', url: overseers_purchase_orders_path }, status: 200
   end
 
   private

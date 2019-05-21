@@ -80,4 +80,12 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   def get_relationship_map_json?
     relationship_map?
   end
+
+  def cancelled_purchase_modal?
+    logistics? || admin?
+  end
+
+  def cancelled_purchase_order?
+    cancelled_purchase_modal?
+  end
 end

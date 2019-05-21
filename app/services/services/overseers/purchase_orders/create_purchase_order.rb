@@ -8,13 +8,13 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     purchase_order = PurchaseOrder.new
     purchase_order.assign_attributes(set_attributes)
     purchase_order.save!
-    po_request.update_attributes(purchase_order_id: purchase_order.id)
+    po_request.update_attributes({ purchase_order_id: purchase_order.id, status: PoRequest.statuses.key(20) })
   end
 
   def set_attributes
     {
         inquiry_id: po_request.inquiry.id,
-        po_number: nil,
+        po_number: set_purchase_order_number,
         metadata: set_metadata,
         created_by_id: params[:overseer].id,
         updated_by_id: params[:overseer].id,
@@ -29,9 +29,9 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def set_metadata
     {
         "PoCst": "0",
-        "PoNum": "402000311",
+        "PoNum": set_purchase_order_number,
         "PoRcm": "Regular",
-        "PoDate": "2019-04-27",
+        "PoDate": Time.now.strftime("%Y-%m-%d"),
         "PoPaid": "0",
         "PoSent": "0",
         "PoType": "Movement of Goods",
@@ -43,10 +43,10 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         "SlpCode": "",
         "po_type": "",
         "DocEntry": "13564",
-        "ItemLine": [],
+        "ItemLine": item_line_json,
         "JrnlMemo": "",
         "PoStatus": "63",
-        "PoSupNum": "SC-209236",
+        "PoSupNum": po_request.supplier.remote_uid,
         "PoCarrier": "",
         "PoCustCom": "",
         "PoCustGst": "",
@@ -59,7 +59,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         "U_LogoMgr": "0",
         "po_LR_num": "",
         "PoComments": "",
-        "PoCurrency": "INR",
+        "PoCurrency": po_request.sales_order.currency.name,
         "PoCustCity": "",
         "PoCustName": "28788",
         "PoFinished": "0",
@@ -138,39 +138,47 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   end
 
   def item_line_json
-    {
-        "PopHsn": "7308",
-        "PopNum": "",
-        "PopQty": "650",
-        "Linenum": "0",
-        "OcrCode": "",
-        "SlpCode": "79",
-        "UnitMsr": "Manual",
-        "WhsCode": "2",
-        "OcrCode2": "",
-        "OcrCode3": "",
-        "OcrCode4": "",
-        "OcrCode5": "",
-        "PopEcoTax": "0.0000",
-        "PopWeight": "0",
-        "PopPriceHt": "1580",
-        "PopTaxRate": "CSG@18",
-        "PriceBefDi": "1580",
-        "PopDiscount": "0",
-        "PopOrderNum": "402000311",
-        "PopProductId": "2ruLYk",
-        "PopEcoTaxBase": "0.0000",
-        "PopPackagingId": "",
-        "PopPriceHtBase": "1580",
-        "PopProductName": "BULK MRO APPROVED Galvanized Anti Skid Scaffolding Plank, Length 3 Mtr, Width 300 mm",
-        "PopSuppliedQty": "650",
-        "PopSupplierRef": "",
-        "PopDeliveryDate": "2019-04-27",
-        "PopExtendedCosts": "0.000",
-        "PopPackagingName": "",
-        "PopPackagingValue": "",
-        "PopExtendedCostsBase": "0.000"
-    }
+    rows_array = []
+    po_request.rows.each do |row|
+      rows_array << {
+          "PopHsn": row.product.sku,
+          "PopNum": "",
+          "Linenum": "0",
+          "PopQty": row.quantity.to_f,
+          "OcrCode": "",
+          "SlpCode": "79",
+          "UnitMsr": "Manual",
+          "WhsCode": "2",
+          "OcrCode2": "",
+          "OcrCode3": "",
+          "OcrCode4": "",
+          "OcrCode5": "",
+          "PopEcoTax": "0.0000",
+          "PopWeight": "0",
+          "PopPriceHt": "1580",
+          "PopTaxRate": row.tax_rate.to_s.gsub('.0%','').gsub('GST ','CSG@'),
+          "PriceBefDi": "1580",
+          "PopDiscount": "0",
+          "PopOrderNum": "402000311",
+          "PopProductId": "2ruLYk",
+          "PopEcoTaxBase": "0.0000",
+          "PopPackagingId": "",
+          "PopPriceHtBase": "1580",
+          "PopProductName": row.product.name,
+          "PopSuppliedQty": "650",
+          "PopSupplierRef": "",
+          "PopDeliveryDate": "2019-04-27",
+          "PopExtendedCosts": "0.000",
+          "PopPackagingName": "",
+          "PopPackagingValue": "",
+          "PopExtendedCostsBase": "0.000"
+      }
+    end
+    rows_array
+  end
+
+  def set_purchase_order_number
+    rand(9 ** 7).to_s
   end
 
   attr_accessor :po_request, :params
