@@ -5,9 +5,9 @@ class Services::Overseers::PurchaseOrders::RejectPurchaseOrder < Services::Share
   end
 
   def call
-    if PoRequest.rejection_reasons.key(params[:status].to_i) == "Others"
-      if params[:po_request][:comments_attributes]["0"][:message].blank?
-        po_request_obj.errors.add(:base, "Please Enter Message")
+    if PoRequest.rejection_reasons.key(params[:status].to_i) == 'Others'
+      if params[:po_request][:comments_attributes]['0'][:message].blank?
+        po_request_obj.errors.add(:base, 'Please Enter Message')
         false
       else
         add_new_comment(true)
@@ -21,14 +21,14 @@ class Services::Overseers::PurchaseOrders::RejectPurchaseOrder < Services::Share
 
   def add_new_comment(is_message_present)
     comments = PoRequestComment.new
-    json = params[:po_request][:comments_attributes]["0"].as_json
+    json = params[:po_request][:comments_attributes]['0'].as_json
     if !is_message_present
       json['message'] = PoRequest.rejection_reasons.key(params[:status].to_i)
       comments.assign_attributes(json)
     end
     comments.assign_attributes(json)
     comments.save!
-    po_request_obj.update_attribute(:status, "Supplier PO Request Rejected")
+    po_request_obj.update_attribute(:status, 'Supplier PO Request Rejected')
   end
 
   attr_accessor :params, :po_request_obj

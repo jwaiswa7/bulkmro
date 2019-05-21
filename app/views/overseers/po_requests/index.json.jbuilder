@@ -42,8 +42,8 @@ json.data (@po_requests) do |po_request|
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       else
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'warning disabled')
-                      end,'<br/>','<br/>',
-                      if policy(po_request).new_purchase_order? && action_name == "pending_and_rejected" && po_request.status != "Supplier PO Request Rejected"
+                      end, '<br/>', '<br/>',
+                      if policy(po_request).new_purchase_order? && action_name == 'pending_and_rejected' && po_request.status != 'Supplier PO Request Rejected'
                         row_action_button(new_purchase_order_overseers_po_request_path(po_request), 'plus', 'Create New Purchase Order', 'success')
                       end
 
