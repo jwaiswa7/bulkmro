@@ -204,6 +204,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     record.persisted?
   end
 
+  def export_pipeline_report?
+    manager_or_sales? || admin?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
