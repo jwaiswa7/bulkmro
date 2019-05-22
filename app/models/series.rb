@@ -1,5 +1,7 @@
 class Series < ApplicationRecord
   after_save :create_first_number
+  validates_numericality_of :last_number, less_than: ->(series) { series.first_number + 99999 }
+  validates_numericality_of :last_number, greater_than: ->(series) { series.first_number - 1 }
 
   enum document_type: {
       'Sales Quotation': 1,
