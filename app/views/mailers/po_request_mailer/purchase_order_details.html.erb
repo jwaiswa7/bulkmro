@@ -4,6 +4,18 @@
   <p style="color: #555;">Please find attached our Purchase Order No. : <%= format_id(@purchase_order.po_number) %></p>
   <p style="color: #555;">We look forward to receiving your confirmation of the same along with your PI and delivery
     date of the material.</p>
+  <p style="color: #555;">Please use the following guidelines while preparing your PI:</p>
+  <p style="color: #555;">
+    <ul style="color: #555; list-style-type: decimal">
+      <li style="color: #555;">Name of the billing company: <b>Bulk MRO Industrial Supply Pvt. Ltd.</b></li>
+      <li style="color: #555;">Billing Address and GST: <%= @purchase_order.billing_address %><br> GST: <%= @purchase_order.billing_address&.gst %></li>
+      <li style="color: #555;">Please mention the Invoice Date in your Invoice: </li>
+      <li style="color: #555;">Please mention the Invoice Number in your Invoice: </li>
+    </ul>
+  </p>
+  <p style="color: #555;">Please <b>ship</b> the material to the following address: </p>
+  <p style="color: #555;"><%= @purchase_order.shipping_address %> <br>GST: <%= @purchase_order.shipping_address&.gst %></p>
+
   <p style="color: #555;">Kindly treat this as priority and initiate the process at the earliest.</p>
 
   <p style="color: #555;">Thanking you</p>
