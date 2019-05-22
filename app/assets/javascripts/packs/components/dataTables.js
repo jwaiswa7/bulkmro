@@ -86,6 +86,9 @@ let setup = () => {
                             let percentValue = (value / columnData.length)
                             td.empty().append(percentValue.toFixed(2)+'%')
                         }
+                        else if(td.hasClass('no-data')){
+                            td.empty()
+                        }
                         else{
                             td.empty()
                             td.append(value.toLocaleString());
