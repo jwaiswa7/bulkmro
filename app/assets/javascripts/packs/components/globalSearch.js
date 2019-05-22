@@ -4,7 +4,7 @@ const globalSearch = () => {
     easyAutocomplete('.global-search', createOptions('.global-search'))
     $('.global-search').on('click', function(){
         $('[data-toggle="tooltip"]').tooltip("hide");
-        // gtag('event','click-search', { event_category: 'global-search',  event_label: 'Global search'})
+        gtag('event','click-search', { event_category: 'global-search',  event_label: 'Global search'})
     })
 };
 
