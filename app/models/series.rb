@@ -35,4 +35,4 @@ class Series < ApplicationRecord
   end
 end
 
-s = Series.create(:document_type => 2,:series => 102, :series_name => 'LWP 2019', :period_indicator => 'FY2019-20', :number_length => 9)
+#s = Series.create(:document_type => 2,:series => 102, :series_name => 'LWP 2019', :period_indicator => 'FY2019-20', :number_length => 9)

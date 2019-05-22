@@ -11,4 +11,13 @@ class Services::Shared::Migrations::AddSeries < Services::Shared::Migrations::Mi
       p '******************8'
     end
   end
+
+  def set_series_last_number
+    Series.all.each do |series|
+      if series.last_number.nil? && series.first_number.present?
+        json = { last_number: series.first_number }
+        series.update_attributes(json)
+      end
+    end
+  end
 end

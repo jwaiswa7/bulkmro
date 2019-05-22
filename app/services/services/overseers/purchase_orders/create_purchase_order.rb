@@ -7,7 +7,10 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def call
     @purchase_order = PurchaseOrder.new
     purchase_order.assign_attributes(set_attributes(po_request))
-    purchase_order.save!
+    if purchase_order.save!
+      series = set_purchase_order_number(po_request)
+      series.update_attributes({ last_number: series.last_number + 1 })
+    end
     po_request.rows.each do |row|
       row_params = { metadata: set_product(row), created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id }
       row = purchase_order.rows.build(row_params)
@@ -20,7 +23,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def set_attributes(po_request)
     {
         inquiry_id: po_request.inquiry.id,
-        po_number: set_purchase_order_number,
+        po_number: set_purchase_order_number(po_request).last_number + 1,
         metadata: set_metadata(po_request),
         created_by_id: params[:overseer].id,
         updated_by_id: params[:overseer].id,
@@ -36,6 +39,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     {
        PoDate: Time.now.strftime('%Y-%m-%d'),
        PoStatus: "63",
+       DocNum: set_purchase_order_number(po_request).last_number + 1,
        PoSupNum: "",
        PoSupBillFrom: po_request.supplier.billing_address.remote_uid,
        PoSupShipFrom: po_request.supplier.shipping_address.remote_uid,
@@ -64,8 +68,10 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     rows_array
   end
 
-  def set_purchase_order_number
-    rand(9**7).to_s
+  def set_purchase_order_number(po_request)
+    warehouse = Warehouse.where(id: po_request.bill_to.id)
+    series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' 2019').last
+    series
   end
 
   def set_product(row)
