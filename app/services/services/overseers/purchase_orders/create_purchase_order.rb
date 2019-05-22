@@ -5,8 +5,8 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   end
 
   def call
-    purchase_order = PurchaseOrder.new
-    purchase_order.assign_attributes(set_attributes)
+    @purchase_order = PurchaseOrder.new
+    purchase_order.assign_attributes(set_attributes(po_request))
     purchase_order.save!
     po_request.rows.each do |row|
       row_params = { metadata: set_product(row), created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id }
@@ -17,11 +17,11 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     po_request.update_attributes(po_request_params)
   end
 
-  def set_attributes
+  def set_attributes(po_request)
     {
         inquiry_id: po_request.inquiry.id,
         po_number: set_purchase_order_number,
-        metadata: set_metadata,
+        metadata: set_metadata(po_request),
         created_by_id: params[:overseer].id,
         updated_by_id: params[:overseer].id,
         status: PurchaseOrder.statuses.key(35),
@@ -32,114 +32,27 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     }
   end
 
-  def set_metadata
+  def set_metadata(po_request)
     {
-        'PoCst': '0',
-        'PoNum': set_purchase_order_number,
-        'PoRcm': 'Regular',
-        'PoDate': Time.now.strftime('%Y-%m-%d'),
-        'PoPaid': '0',
-        'PoSent': '0',
-        'PoType': 'Movement of Goods',
-        'Series': '',
-        'action': 'create',
-        'DocType': '',
-        'ObjType': '',
-        'ReqDate': '',
-        'SlpCode': '',
-        'po_type': '',
-        'DocEntry': '13564',
-        'ItemLine': item_line_json,
-        'JrnlMemo': '',
-        'PoStatus': '63',
-        'PoSupNum': po_request.supplier.remote_uid,
-        'PoCarrier': '',
-        'PoCustCom': '',
-        'PoCustGst': '',
-        'PoCustZip': '',
-        'PoFreight': 'Extra',
-        'PoOrderId': '402000311',
-        'PoRemarks': '',
-        'PoShipper': '',
-        'PoTaxRate': 'CSG@18',
-        'U_LogoMgr': '0',
-        'po_LR_num': '',
-        'PoComments': '',
-        'PoCurrency': po_request.sales_order.currency.name,
-        'PoCustCity': '',
-        'PoCustName': '28788',
-        'PoFinished': '0',
-        'PoIsLocked': '0',
-        'PoZollCost': '0.00',
-        'ShipToCode': '',
-        'controller': 'callbacks/purchase_orders',
-        'po_LR_date': '',
-        'PoCustCount': '',
-        'PoCustStadd': '',
-        'PoCustState': '',
-        'PoEnquiryId': '33462',
-        'PoUpdatedAt': '2019-04-27',
-        'PoInvoiceRef': ' ',
-        'PoSupplyDate': '2019-04-27',
-        'PoTrackingid': '',
-        'U_LogoPerson': '0',
-        'po_insurance': '',
-        'PoDestination': 'Bulk MRO',
-        'PoInvoiceDate': '2019-04-27',
-        'PoMediaboxNum': '',
-        'PoPaymentDate': '2019-04-27',
-        'PoPaymentType': '',
-        'PoSupBillFrom': 'A218432',
-        'PoSupShipFrom': 'A218432',
-        'PaymentDueDate': '',
-        'PoAccessDuties': '',
-        'PoDataVerified': '0',
-        'PoFollowUpDate': '',
-        'PoMissingPrice': '0',
-        'PoPaymentTerms': '20% Advance and 80% before dispatch',
-        'PoShippingCost': '0',
-        'PoZollCostBase': '0.00',
-        'po_import_port': '',
-        'po_vehicle_num': '',
-        'po_vessel_name': '',
-        'purchase_order': {},
-        'PoAdditionalPdf': '',
-        'PoCommittedDate': '2019-04-27',
-        'PoDeliveryTerms': 'EXW',
-        'PoShipWarehouse': '2',
-        'po_shipping_tax': '',
-        'PoAdditionalPdf1': '',
-        'PoAdditionalPdf2': '',
-        'PoBillingAddress': 'A218432',
-        'PoEndDestination': '',
-        'PoLastNotifyText': '',
-        'PoModeOfTrasport': 'Road',
-        'po_eway_bill_num': '',
-        'po_sales_manager': '',
-        'po_shipping_cost': '',
-        'po_shipping_name': '',
-        'PoDeliveryPercent': '0',
-        'PoTargetWarehouse': '2',
-        'po_overall_margin': '0',
-        'po_shipping_tax_2': '',
-        'po_shipping_tax_3': '',
-        'PoShippingCostBase': '0.00',
-        'PoSupplierOrderRef': '',
-        'po_additional_pdf1': '',
-        'po_port_of_loading': '',
-        'po_shipping_cost_2': '',
-        'po_shipping_cost_3': '',
-        'po_shipping_name_2': '',
-        'po_shipping_name_3': '',
-        'PoPackingForwarding': '',
-        'PoCurrencyChangeRate': '1',
-        'po_port_of_discharge': '',
-        'PoSupplierInvoiceDate': '',
-        'PoExternalExtendedCost': '0',
-        'PoSupplierInvoiceNumber': '',
-        'PoDefaultProductDiscount': '0.00',
-        'PoSupplierNotificationDate': '',
-        'po_terms_of_delivery_payment': ''
+       PoDate: Time.now.strftime('%Y-%m-%d'),
+       PoStatus: "63",
+       PoSupNum: "",
+       PoSupBillFrom: po_request.supplier.billing_address.remote_uid,
+       PoSupShipFrom: po_request.supplier.shipping_address.remote_uid,
+       PoShippingCost: "0",
+       PoTargetWarehouse: po_request.ship_to.remote_uid,
+       DocumentLines: [],
+       BPL_IDAssignedToInvoice: po_request.bill_to.remote_branch_code, #warehouse Id
+       Project: po_request.inquiry.inquiry_number,
+       CardCode: po_request.supplier.remote_uid,
+       CardName: po_request.supplier.to_s,
+       DocDate: Time.now.strftime('%Y-%m-%d'),
+       Series: "134",
+       ProjectCode: 16562,
+       NumAtCard: "123478",
+       DocCurrency: "INR",
+       TaxDate: "2019-05-14",
+       DocDueDate: "2019-05-25"
     }
   end
 
@@ -176,7 +89,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         'PriceBefDi': '1580',
         'PopDiscount': '0',
         'PopOrderNum': '402000311',
-        'PopProductId': '2ruLYk',
+        'PopProductId': row.product.sku,
         'PopEcoTaxBase': '0.0000',
         'PopPackagingId': '',
         'PopPriceHtBase': '1580',
@@ -191,5 +104,6 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     }
   end
 
-  attr_accessor :po_request, :params
+  attr_accessor :po_request, :params, :purchase_order
 end
+
