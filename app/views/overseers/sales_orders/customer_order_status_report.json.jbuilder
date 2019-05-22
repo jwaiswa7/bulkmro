@@ -3,6 +3,7 @@ json.data (@customer_order_status_records) do |sales_order|
                   [],
                   sales_order[:inquiry_number],
                   sales_order[:company],
+                  sales_order[:account],
                   sales_order[:order_number].present? ? sales_order[:order_number] : '-',
                   sales_order[:mis_date].present? ? format_date_without_time(Date.parse(sales_order[:mis_date])) : '-',
                   sales_order[:cp_committed_date].present? ? format_date_without_time(Date.parse(sales_order[:cp_committed_date])) : '-',
@@ -24,6 +25,7 @@ json.data (@customer_order_status_records) do |sales_order|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [],

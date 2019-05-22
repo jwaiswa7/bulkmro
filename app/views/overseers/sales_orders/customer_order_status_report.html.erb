@@ -22,6 +22,7 @@
     <th class="no-sort all"></th>
     <th class="no-sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
     <th class="no-sort desktop" data-name="company">Company.</th>
+    <th class="no-sort desktop" data-name="account">Account</th>
     <th class="no-sort desktop text-right" data-name="order_number">Sales Order #</th>
     <th class="no-sort desktop text-right" data-name="mis_date">Sales Order Date</th>
     <th class="no-sort desktop text-right" data-name="invoice_total">Committed Customer<br> Delivery Date</th>
@@ -41,6 +42,7 @@
     <th class="no-sort desktop text-right">On Time / Delayed <br>(viz. customer committed date)</th>
   <% end %>
   <% content_for :filter_row do %>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>

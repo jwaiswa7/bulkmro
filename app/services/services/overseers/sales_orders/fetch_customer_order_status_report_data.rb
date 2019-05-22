@@ -11,6 +11,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
           sales_orders << {
               inquiry_number: sales_order.attributes['inquiry_number'],
               company: sales_order.attributes['company'],
+              account: sales_order.attributes['account'],
               order_number: sales_order.attributes['order_number'],
               mis_date: sales_order.attributes['mis_date'],
               cp_committed_date: sales_order.attributes['cp_committed_date'],
@@ -34,6 +35,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
         sales_orders << {
             inquiry_number: sales_order.attributes['inquiry_number'],
             company: sales_order.attributes['company'],
+            account: sales_order.attributes['account'],
             order_number: sales_order.attributes['order_number'],
             mis_date: sales_order.attributes['mis_date'],
             cp_committed_date: sales_order.attributes['cp_committed_date'],
