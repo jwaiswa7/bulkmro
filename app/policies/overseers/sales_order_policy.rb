@@ -169,11 +169,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def customer_order_status_report?
-    developer? || admin?
+    developer? || admin? || manager_or_sales?
   end
 
   def export_customer_order_status_report?
-    developer? || admin?
+    developer? || admin? || manager_or_sales?
   end
 
   class Scope
