@@ -16,19 +16,6 @@
                 <% end %>
               </tr>
               <tr>
-                <th class="text-uppercase text-left">Not Delivered</th>
-                <% @records.each do |month, record| %>
-                  <td class="text-uppercase">
-                    <a href="<%= filtered_path(overseers_logistics_scorecards_path, [
-                        filter_by_value('Delay Bucket', 'Not Delivered', 0),
-                        filter_by_monthrange('Committed Delivery Date to Customer', month)
-                    ]) %>">
-                      <%= record["scorecard"]["buckets"].map {|bucket| bucket['doc_count'] if bucket['key'] == 0}.compact.first || 0 %>
-                    </a>
-                  </td>
-                <% end %>
-              </tr>
-              <tr>
                 <th class="text-uppercase text-left">On or Before Time</th>
                 <% @records.each do |month, record| %>
                   <td class="text-uppercase">
@@ -36,8 +23,16 @@
                         filter_by_value('Delay Bucket', 'On or Before Time', 1),
                         filter_by_monthrange('Committed Delivery Date to Customer', month)
                     ]) %>">
-                      <%= record["scorecard"]["buckets"].map {|bucket| bucket['doc_count'] if bucket['key'] == 1}.compact.first || 0 %>
+                      <%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['doc_count']) if bucket['key'] == 1}.compact.first || 0 %>
                     </a>
+                  </td>
+                <% end %>
+              </tr>
+              <tr>
+                <th class="text-uppercase text-left">Delayed</th>
+                <% @records.each do |month, record| %>
+                  <td class="text-uppercase">
+                    <%= calculate_percentage(record["scorecard"]["buckets"].map {|bucket| bucket['doc_count'] if (2..6).to_a.include?(bucket['key'])}.compact.inject(0, :+), record['doc_count']) %>
                   </td>
                 <% end %>
               </tr>
@@ -49,7 +44,7 @@
                         filter_by_value('Delay Bucket', 'Delay by 2 days', 2),
                         filter_by_monthrange('Committed Delivery Date to Customer', month)
                     ]) %>">
-                      <%= record["scorecard"]["buckets"].map {|bucket| bucket['doc_count'] if bucket['key'] == 2}.compact.first || 0 %>
+                      <%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['doc_count']) if bucket['key'] == 2}.compact.first || 0 %>
                     </a>
                   </td>
                 <% end %>
@@ -62,7 +57,7 @@
                         filter_by_value('Delay Bucket', 'Delay by 2-7 days', 3),
                         filter_by_monthrange('Committed Delivery Date to Customer', month)
                     ]) %>">
-                      <%= record["scorecard"]["buckets"].map {|bucket| bucket['doc_count'] if bucket['key'] == 3}.compact.first || 0 %>
+                      <%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['doc_count']) if bucket['key'] == 3}.compact.first || 0 %>
                     </a>
                   </td>
                 <% end %>
@@ -75,7 +70,7 @@
                         filter_by_value('Delay Bucket', 'Delay by 7-14 days', 4),
                         filter_by_monthrange('Committed Delivery Date to Customer', month)
                     ]) %>">
-                      <%= record["scorecard"]["buckets"].map {|bucket| bucket['doc_count'] if bucket['key'] == 4}.compact.first || 0 %>
+                      <%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['doc_count']) if bucket['key'] == 4}.compact.first || 0 %>
                     </a>
                   </td>
                 <% end %>
@@ -88,7 +83,7 @@
                         filter_by_value('Delay Bucket', 'Delay by 14-28 days', 5),
                         filter_by_monthrange('Committed Delivery Date to Customer', month)
                     ]) %>">
-                      <%= record["scorecard"]["buckets"].map {|bucket| bucket['doc_count'] if bucket['key'] == 5}.compact.first || 0 %>
+                      <%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['doc_count']) if bucket['key'] == 5}.compact.first || 0 %>
                     </a>
                   </td>
                 <% end %>
@@ -101,7 +96,7 @@
                         filter_by_value('Delay Bucket', 'Delay by >28 days', 6),
                         filter_by_monthrange('Committed Delivery Date to Customer', month)
                     ]) %>">
-                      <%= record["scorecard"]["buckets"].map {|bucket| bucket['doc_count'] if bucket['key'] == 6}.compact.first || 0 %>
+                      <%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['doc_count']) if bucket['key'] == 6}.compact.first || 0 %>
                     </a>
                   </td>
                 <% end %>

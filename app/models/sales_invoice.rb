@@ -4,7 +4,7 @@ class SalesInvoice < ApplicationRecord
   include Mixins::HasConvertedCalculations
   update_index('sales_invoices#sales_invoice') { self }
   update_index('customer_order_status_report#sales_order') { sales_order }
-  update_index('logistics_scorecards#sales_invoice') {self}
+  update_index('logistics_scorecards#sales_invoice') { self }
 
   pg_search_scope :locate, against: [:id, :invoice_number], associated_against: { company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
 
@@ -238,52 +238,47 @@ class SalesInvoice < ApplicationRecord
     self.rows.sum(&:freight_cost_subtotal).round(2)
   end
 
-  def calculate_committed_delivery_tat
-    if self.inquiry.customer_committed_date.present? && self.inquiry.customer_po_received_date.present?
-      Chewy.strategy(:atomic) do
-        self.update_attribute(:committed_delivery_tat, (self.inquiry.customer_committed_date - self.inquiry.customer_po_received_date).to_i)
-      end
+  def calculated_committed_delivery_tat
+    po_received_date = (self.inquiry.customer_po_received_date.present?) ? self.inquiry.customer_po_received_date : self.inquiry.customer_order_date
+    if self.inquiry.customer_committed_date.present? && po_received_date.present?
+      (self.inquiry.customer_committed_date - po_received_date).to_i
     end
   end
 
-  def calculate_actual_delivery_tat
+  def calculated_actual_delivery_tat
     if self.delivery_date.present? && self.inquiry.customer_order_date.present?
-      Chewy.strategy(:atomic) do
-        self.update_attribute(:actual_delivery_tat, (self.delivery_date - self.inquiry.customer_order_date).to_i)
-      end
+      (self.delivery_date - self.inquiry.customer_order_date).to_i
     end
   end
 
-  def calculate_delay
-    if self.committed_delivery_tat.present? && self.actual_delivery_tat.present?
-      Chewy.strategy(:atomic) do
-        self.update_attribute(:delay, (self.actual_delivery_tat - self.committed_delivery_tat).to_i)
-      end
+  def calculated_delay
+    if self.calculated_committed_delivery_tat.present? && self.calculated_actual_delivery_tat.present?
+      (self.calculated_actual_delivery_tat - self.calculated_committed_delivery_tat).to_i
     end
   end
 
-  def calculate_sla_bucket
-    if ['', nil].include?(self.delay)
+  def calculated_sla_bucket
+    if ['', nil].include?(self.calculated_delay)
       'Not Delivered'
-    elsif self.delay <= 0
+    elsif self.calculated_delay <= 0
       'On or before Time'
     else
       'Delayed'
     end
   end
 
-  def calculate_delay_bucket
-    if ['', nil].include?(self.delay)
+  def calculated_delay_bucket
+    if ['', nil].include?(self.calculated_delay)
       0
-    elsif self.delay <= 0
+    elsif self.calculated_delay <= 0
       1
-    elsif self.delay <= 2
+    elsif self.calculated_delay <= 2
       2
-    elsif self.delay <= 7
+    elsif self.calculated_delay <= 7
       3
-    elsif self.delay <= 14
+    elsif self.calculated_delay <= 14
       4
-    elsif self.delay <= 28
+    elsif self.calculated_delay <= 28
       5
     else
       6

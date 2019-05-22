@@ -34,8 +34,4 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
     LogisticsScorecardsIndex::SalesInvoice.import SalesInvoice.where(id: params[:invoice_id])
     redirect_to overseers_logistics_scorecards_path, notice: 'Delay Reason Updated'
   end
-
-  def update
-    authorize :logistics_scorecard
-  end
 end

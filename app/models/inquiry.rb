@@ -13,7 +13,7 @@ class Inquiry < ApplicationRecord
   update_index('new_company_reports#inquiry') { self }
   update_index('customer_order_status_report#sales_order') { self.sales_orders if self.sales_orders.present? }
   update_index('inquiry_mapping_tats#inquiry_mapping_tat') { self.inquiry_mapping_tats }
-  update_index('logistics_scorecards#sales_invoice') { self.invoices }
+  update_index('logistics_scorecards#sales_invoice') { self }
 
   pg_search_scope :locate, against: [:id, :inquiry_number], associated_against: { company: [:name], account: [:name], contact: [:first_name, :last_name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name], procurement_operations: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
 
