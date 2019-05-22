@@ -3,6 +3,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || logistics?
   end
 
+  def cancellation?
+    order_cancellation_modal?
+  end
+
   def company_converted_orders?
     manager_or_sales? || logistics?
   end
@@ -35,12 +39,28 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved? && not_logistics?
   end
 
+  def account_approval?
+    record.status == 'Accounts Approval Pending' && ( accounts? || admin? )
+  end
+
+  def cancelled_sales_order?
+    record.status == 'Approved' && record.order_number.present? && ( accounts? || admin? )
+  end
+
   def update?
     edit? || admin?
   end
 
   def new_confirmation?
     edit?
+  end
+
+  def new_accounts_confirmation?
+    accounts? || admin?
+  end
+
+  def create_account_confirmation?
+    new_accounts_confirmation?
   end
 
   def create_confirmation?
@@ -174,6 +194,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def export_customer_order_status_report?
     developer? || admin?
+  end
+
+  def order_cancellation_modal?
+    accounts? || admin?
   end
 
   class Scope

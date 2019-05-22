@@ -4,7 +4,7 @@ json.data (@indexed_company_reports) do |company|
                   link_to(Company.find(company['key']).name, overseers_company_path(Company.find(company['key']).name), target: '_blank'),
                   link_to(Company.find(company['key']).account.to_s, overseers_account_path(Company.find(company['key']).account), target: '_blank'),
                   if @date_range.present?
-                    link_to(number_with_delimiter(company['live_inquiries']['value'].to_i, delimiter: ','), filtered_path(overseers_inquiries_path, [filter_by_value('Company', Company.find(company['key']).name, Company.find(company['key']).id), filter_by_date_range('Date+of+inquiry', @date_range)]), target: '_blank')
+                    link_to(number_with_delimiter(company['inquiries_size']['value'].to_i, delimiter: ','), filtered_path(overseers_inquiries_path, [filter_by_value('Company', Company.find(company['key']).name, Company.find(company['key']).id), filter_by_date_range('Date+of+inquiry', @date_range)]), target: '_blank')
                   else
                     link_to(number_with_delimiter(company['live_inquiries']['value'].to_i, delimiter: ','), filtered_path(overseers_inquiries_path, [filter_by_value('Company', Company.find(company['key']).name, Company.find(company['key']).id)]), target: '_blank')
                   end,

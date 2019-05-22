@@ -452,12 +452,17 @@ Rails.application.routes.draw do
             get 'debugging'
             get 'new_revision'
             get 'new_confirmation'
+            get 'new_accounts_confirmation'
             get 'proforma'
             post 'create_confirmation'
+            post 'create_account_confirmation'
+            post 'create_account_rejection'
             post 'resync'
             get 'fetch_order_data'
             get 'relationship_map'
             get 'get_relationship_map_json'
+            get 'order_cancellation_modal'
+            patch 'cancellation'
           end
 
           collection do

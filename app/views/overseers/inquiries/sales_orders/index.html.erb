@@ -37,6 +37,16 @@
             <% elsif policy(sales_order).new_revision? %>
               <%= row_action_button(new_revision_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'redo-alt', 'New Sales Order Revision', 'warning') %>
             <% end %>
+            <% if policy(sales_order).account_approval? %>
+              <%= row_action_button(new_accounts_confirmation_overseers_inquiry_sales_order_path(id: sales_order.to_param), 'comment-alt-check', 'Account Approval', 'warning') %>
+            <% end %>
+
+            <% if policy(sales_order).cancelled_sales_order? %>
+              <%= link_to('', class: ['btn btn-sm btn-danger cancel-invoice cancel-sales-order-button'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Cancel', remote: true) do %>
+                <% concat content_tag(:span, '') %>
+                <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>
+              <% end %>
+            <% end %>
             <% if policy(sales_order).comments? %>
               <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>
             <% end %>
@@ -45,9 +55,9 @@
               <%= row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(id: sales_order), 'calendar-alt', 'Update MIS Date', 'success') %>
             <% end %>
 
-            <% if policy(sales_order).resync? %>
-              <%= row_action_button(resync_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post) %>
-            <% end %>
+            <%# if policy(sales_order).resync? %>
+              <%#= row_action_button(resync_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post) %>
+            <%# end %>
 
             <% if policy(sales_order).show_serialized? %>
               <%= row_action_button(url_for(sales_order.serialized_pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
@@ -58,13 +68,12 @@
             <% if policy(sales_order).fetch_order_data? %>
               <%= row_action_button(fetch_order_data_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'arrows-h', 'SAP Sync', 'success') %>
             <% end %>
-
             <% if policy(sales_order.sales_quote).new_freight_request? %>
               <%= row_action_button(new_overseers_freight_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'New Freight Request', 'warning') %>
             <% end %>
-            <% if policy(sales_order).debugging? %>
-              <%= row_action_button(debugging_overseers_inquiry_sales_order_path(@inquiry,sales_order),'cogs', 'Debugging', 'danger', :_blank) %>
-             <% end %>
+            <%# if policy(sales_order).debugging? %>
+              <%#= row_action_button(debugging_overseers_inquiry_sales_order_path(@inquiry,sales_order),'cogs', 'Debugging', 'danger', :_blank) %>
+             <%# end %>
           </td>
           <td><%= sales_order.order_number %></td>
           <td><%= sales_order.id %></td>
@@ -81,6 +90,7 @@
           <td><%= format_date(sales_order.created_at) %></td>
           <td><%= sales_order.created_by.to_s %></td>
         </tr>
+        <div class="sales-order-cancel" data-inquiry-id="<%= sales_order.inquiry.id %>" data-order-id="<%= sales_order.id %>"></div>
       <% end %>
     <% end %>
   <% end %>

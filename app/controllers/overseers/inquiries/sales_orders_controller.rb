@@ -1,6 +1,8 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map, :get_relationship_map_json]
-  before_action :set_notification, only: [:create_confirmation]
+  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation,
+                                         :resync, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map,
+                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation, :order_cancellation_modal, :cancellation]
+  before_action :set_notification, only: [:create_confirmation, :create_account_confirmation]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -117,7 +119,19 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
 
+  def create_account_confirmation
+    authorize @sales_order
+
+    Services::Overseers::SalesOrders::CreateSalesOrderInSap.new(@sales_order, params).call
+
+    redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
+  end
+
   def new_confirmation
+    authorize @sales_order
+  end
+
+  def new_accounts_confirmation
     authorize @sales_order
   end
 
@@ -163,6 +177,23 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     render json: {data: inquiry_json}
   end
 
+  def order_cancellation_modal
+    authorize @sales_order
+    respond_to do |format|
+      format.html {render partial: 'cancellation'}
+    end
+  end
+
+  def cancellation
+    authorize @sales_order
+    @status = Services::Overseers::SalesOrders::CancelSalesOrder.new(@sales_order, sales_order_params.merge(status: 'Cancelled', remote_status: 'Cancelled by SAP')).call
+    if @status
+      render json: {sucess: 'Successfully updated '}, status: 200
+    else
+      render json: { error: 'Cancellation Message is Required' }, status: 500
+    end
+  end
+
   private
 
     def save
@@ -186,12 +217,23 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
         :mis_date,
           :sales_quote_id,
           :parent_id,
+          :reject,
+          :approve,
+          custom_fields: [
+              :message
+          ],
           rows_attributes: [
               :id,
               :sales_order_id,
               :sales_quote_row_id,
               :quantity,
               :_destroy
+          ],
+          comments_attributes: [
+              :message,
+              :inquiry_id,
+              :created_by_id,
+              :sales_order_id
           ]
       )
     end
