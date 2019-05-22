@@ -25,4 +25,60 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       end
     end
   end
+
+  def get_policies
+    all_policies = {}
+    Dir.glob("/var/www/html/sprint/app/policies/overseers/*") do |policy_file|
+      data = File.read(policy_file)
+      model = File.basename(policy_file, ".rb")
+      policies = []
+      policies = data.scan(/(?:def\ )(?:.*)/)
+      all_policies[model.gsub('_policy','')] = policies.map {|x| x.gsub('def ','').gsub('?','')}
+    end
+    all_policies
+  end
+
+  def generate_resource_json
+
+    all_acl = []
+    id = 1
+    default_controls = ['index','new','create','edit','update','show']
+
+    all_policies.each do |resource_name, access_controls|
+      temp_acl = OpenStruct.new
+      temp_acl.id = id
+      temp_acl.text = resource_name
+      temp_acl.checked = false
+      temp_acl.hasChildren = true
+      children = []
+
+      default_controls.each do |index, control_name|
+        id = id + 1
+        acl_row = OpenStruct.new
+        acl_row.id = id
+        acl_row.text = index
+        acl_row.checked = false
+        acl_row.hasChildren = false
+        children.push(acl_row.marshal_dump)
+      end
+
+      access_controls.each do |index, control_name|
+        if !default_controls.include?index.to_s
+          id = id + 1
+          acl_row = OpenStruct.new
+          acl_row.id = id
+          acl_row.text = index
+          acl_row.checked = false
+          acl_row.hasChildren = false
+          children.push(acl_row.marshal_dump)
+        end
+      end
+
+      temp_acl.children = children
+      all_acl.push(temp_acl.marshal_dump)
+      id = id + 1
+    end
+
+    puts all_acl.to_json
+  end
 end

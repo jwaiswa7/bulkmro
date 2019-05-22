@@ -10,7 +10,6 @@ const newAction = () => {
         // tree.collapseAll();
 
         $('#btnSave').on('click', function () {
-            console.log("button clicked")
             var checkedIds = tree.getCheckedNodes();
             $.ajax({
                 url: Routes.update_acl_overseers_overseer_path(

@@ -81,57 +81,7 @@ class Overseers::OverseersController < Overseers::BaseController
     parsed_json.map{|x| x['children'].map{|y| if current_acl.include? y['id'].to_s;y['checked'] = true;end; y['text'] = y['text'].titleize }; x['text'] = x['text'].titleize } if current_acl.present?
 
     render json: parsed_json.to_json
-    authorize_acl :overseer
-
-    # default_resources = {
-    #     inquiry: {
-    #         create: 1,
-    #         edit: 1,
-    #         show: 1,
-    #         download: 1
-    #     },
-    #     sales_order: {
-    #         create: 1,
-    #         edit: 1,
-    #         show: 1,
-    #         download: 1
-    #     },
-    #     sales_quote:{
-    #         create: 1,
-    #         edit: 1,
-    #         show: 1,
-    #         download: 1
-    #     }
-    # }
-    #
-    # all_acl = []
-    # id = 1
-    #
-    # default_resources.each do |resource_name, access_controls|
-    #   temp_acl = OpenStruct.new
-    #   # temp_acl.id = default_resource_list[resource_name]
-    #   temp_acl.id = id
-    #   temp_acl.text = resource_name
-    #   temp_acl.checked = false
-    #   temp_acl.hasChildren = true
-    #   children = []
-    #
-    #   access_controls.each do |index, control_name|
-    #     id = id + 1
-    #     acl_row = OpenStruct.new
-    #     acl_row.id = id
-    #     acl_row.text = index
-    #     acl_row.checked = false
-    #     acl_row.hasChildren = false
-    #     children.push(acl_row.marshal_dump)
-    #   end
-    #
-    #   temp_acl.children = children
-    #   all_acl.push(temp_acl.marshal_dump)
-    #   id = id + 1
-    # end
-    #
-    # puts all_acl
+    # authorize_acl :overseer
   end
 
   def save_acl_resources

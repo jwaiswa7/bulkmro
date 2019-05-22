@@ -283,12 +283,15 @@ module DisplayHelper
   end
 
   def is_authorised(model, action)
+    action_name = action if action.present?
     allowed_resources = current_overseer.acl_resources
+    allowed_resources = ActiveSupport::JSON.decode(allowed_resources)
     default_resources = Settings.acl.default_resources
     parsed_json = ActiveSupport::JSON.decode(default_resources)
     resource_ids = {}
     parsed_json.map {|x| resource_ids[x['text']] = {}; x['children'].map {|y| resource_ids[x['text']][y['text']] = y['id'] if y['text'].present?}}
-    auth = false
+
+    authorised = false
 
     if model.is_a?(ActiveRecord::Base)
       resource_model = model.class.name.downcase
@@ -299,10 +302,10 @@ module DisplayHelper
     end
 
     if resource_ids[resource_model][action_name].present?
-      if allowed_resources.include? resource_ids[resource_model][action].to_s
-        auth = true
+      if allowed_resources.include? resource_ids[resource_model][action_name].to_s
+        authorised = true
       end
     end
-    auth
+    authorised
   end
 end

@@ -45,16 +45,16 @@
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Accounts / Aliases</a>
             <ul class="dropdown-menu">
-              <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, policy(:account).index? %>
-              <%#= nav_dropdown_item 'Accounts Receivable', payment_collections_overseers_accounts_path, policy(:account).payment_collections? %>
-              <%#= nav_dropdown_item 'Ageing Report', ageing_report_overseers_accounts_path, policy(:account).payment_collections? %>
-              <%#= nav_dropdown_item 'Receipts', overseers_sales_receipts_path, policy(:account).payment_collections? %>
+              <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, is_authorised(:account, 'index') %>
+              <%= nav_dropdown_item 'Accounts Receivable', payment_collections_overseers_accounts_path, is_authorised(:account, 'payment_collections') %>
+              <%= nav_dropdown_item 'Ageing Report', ageing_report_overseers_accounts_path, is_authorised(:account, 'payment_collections') %>
+              <%= nav_dropdown_item 'Receipts', overseers_sales_receipts_path, is_authorised(:account, 'payment_collections') %>
             </ul>
           </div>
-          <%= nav_dropdown_item 'Companies', overseers_companies_path, policy(:company).index? %>
-          <%= nav_dropdown_item 'Suppliers', overseers_suppliers_path, policy(:company).index? %>
-          <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
-          <%= nav_dropdown_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
+          <%= nav_dropdown_item 'Companies', overseers_companies_path, is_authorised(:company, 'index') %>
+          <%= nav_dropdown_item 'Suppliers', overseers_suppliers_path, is_authorised(:company, 'index') %>
+          <%= nav_dropdown_item 'Addresses', overseers_addresses_path, is_authorised(:address, 'index') %>
+          <%= nav_dropdown_item 'Contacts', overseers_contacts_path, is_authorised((:contact), 'index') %>
           <%= nav_dropdown_item 'Banks', overseers_banks_path, policy(:bank).index? %>
           <%= nav_dropdown_item 'IFSC Codes', overseers_ifsc_codes_path, policy(:ifsc_code).index? %>
           <div class="dropdown-divider"></div>
@@ -147,7 +147,7 @@
           <div class="dropdown-divider"></div>
           <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
           <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
-          <div  class="dropdown-divider"></div>
+          <div class="dropdown-divider"></div>
           <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
           <%= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, policy(:activity).pending? %>
         </div>
@@ -183,7 +183,7 @@
             <ul class="dropdown-menu">
               <%#= nav_dropdown_item 'Pending Payment Logistics', overseers_payment_requests_path(:owner => 'Logistics'), policy(:payment_request).edit_payment_logistics? %>
               <%#= nav_dropdown_item 'Pending Payment Accounts', overseers_payment_requests_path(:owner => 'Accounts'), policy(:payment_request).edit_payment_queue? %>
-<!--              <div class="dropdown-divider"></div>-->
+              <!--              <div class="dropdown-divider"></div>-->
               <%= nav_dropdown_item 'All Requests', overseers_payment_requests_path, policy(:payment_request).index? %>
               <%= nav_dropdown_item 'Pending Payment Requests', overseers_payment_requests_path(:status => 'Pending'), policy(:payment_request).index? %>
               <%= nav_dropdown_item 'Completed Payment Requests', overseers_payment_requests_path(:status => 'Completed'), policy(:payment_request).index? %>
@@ -323,8 +323,8 @@
       </div>
       <div class="btn-group">
         <a href="#" data-toggle="dropdown">
-        <i class="fal fa-cog"></i>
-      </a>
+          <i class="fal fa-cog"></i>
+        </a>
         <div class="dropdown-menu dropdown-menu-right">
           <%= link_to destroy_overseer_session_path, method: :delete, :class => 'dropdown-item' do %>
             <i class="fal fa-power-off"></i>&nbsp;Sign Out
