@@ -8,14 +8,14 @@
   <p style="color: #555;">
   <ul style="color: #555; list-style-type: decimal">
     <li style="color: #555;">Name of the billing company: <b>Bulk MRO Industrial Supply Pvt. Ltd.</b></li>
-    <li style="color: #555;">Billing Address and GST: <%= @purchase_order.billing_address %><br>
-      GST: <%= @purchase_order.billing_address&.gst %></li>
+    <li style="color: #555;">Billing Address and GST: <%= @purchase_order.inquiry.bill_from.address %><br>
+      GST: <%= @purchase_order.inquiry.bill_from.address.gst %></li>
     <li style="color: #555;">Please mention the Invoice Date in your Invoice:</li>
     <li style="color: #555;">Please mention the Invoice Number in your Invoice:</li>
   </ul>
   </p>
   <p style="color: #555;">Please <b>ship</b> the material to the following address: </p>
-  <p style="color: #555;"><%= @purchase_order.shipping_address %> <br>GST: <%= @purchase_order.shipping_address&.gst %>
+  <p style="color: #555;"><%= @purchase_order.inquiry.ship_from.address %> <br>GST: <%= @purchase_order.inquiry.ship_from.address.gst %>
   </p>
 
   <p style="color: #555;">Kindly treat this as priority and initiate the process at the earliest.</p>
