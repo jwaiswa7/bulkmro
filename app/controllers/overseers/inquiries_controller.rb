@@ -418,12 +418,16 @@ class Overseers::InquiriesController < Overseers::BaseController
 
       hash = {}
       record.attributes['final_sales_orders'].each do |order|
-        hash['text'] = order['inquiry_order_autocomplete'] if order['inquiry_order_autocomplete'].present?
-        hash['link'] =  overseers_inquiry_sales_orders_path(record.attributes['id']) if order['inquiry_order_autocomplete'].present?
+        order_number = order['inquiry_order_autocomplete'].split('Sales Order:').last
+        if order_number.present?
+          hash['text'] = order['inquiry_order_autocomplete'] if order['inquiry_order_autocomplete'].present?
+          hash['link'] =  overseers_inquiry_sales_orders_path(record.attributes['id']) if order['inquiry_order_autocomplete'].present?
+        end
         (inquiries << hash) if !hash.empty?
       end if record.attributes['final_sales_orders'].present?
 
       hash = {}
+      # binding.pry if record.attributes['company'].present?
       hash['text'] = record.attributes['company']['company_autocomplete'] if record.attributes['company'].present?
       hash['link'] =  overseers_company_path(record.attributes['company']['id']) if record.attributes['company'].present?
       (inquiries << hash) if !hash.empty?
@@ -434,9 +438,9 @@ class Overseers::InquiriesController < Overseers::BaseController
       (inquiries << hash) if !hash.empty?
 
       hash = {}
-      record.attributes['products'].each do |order|
-        hash['text'] = order['product_autocomplete'] if order['product_autocomplete'].present?
-        hash['link'] =  overseers_product_path(order['id']) if order['product_autocomplete'].present?
+      record.attributes['products'].each do |product|
+        hash['text'] = product['product_autocomplete'] if product['product_autocomplete'].present?
+        hash['link'] =  overseers_product_path(record.attributes['id']) if product['product_autocomplete'].present?
         (inquiries << hash) if !hash.empty?
       end if record.attributes['products'].present?
     end
