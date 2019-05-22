@@ -62,11 +62,51 @@ let setup = () => {
                 headerOffset: $('.navbar.navbar-expand-lg').height()
             },
             fnDrawCallback: function (oSettings) {
+                let table = this;
                 if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
                     $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
                 } else {
                     $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
                 }
+                this.api().columns().every(function () {
+                    let column = this;
+                    let td = $(table).find('thead tr:eq(2) td:eq(' + column.index() + ')');
+                    let columnData = column.data();
+                    let value = columnData.sum();
+                    let currencyFormatter = new Intl.NumberFormat('en-IN', {
+                        style: 'currency',
+                        currency: 'INR',
+                        minimumFractionDigits: 2
+                    })
+                    if (value && value != "") {
+                        if (td.hasClass('currency')){
+                            td.empty().append(currencyFormatter.format(value))
+                        }
+                        else if(td.hasClass('percentage')){
+                            let percentValue = (value / columnData.length)
+                            td.empty().append(percentValue.toFixed(2)+'%')
+                        }
+                        else{
+                            td.empty()
+                            td.append(value.toLocaleString());
+
+                        }
+                    }
+                    else{
+                        if (td.hasClass('currency')){
+                            td.empty().append(currencyFormatter.format(0))
+                        }
+                        else if(td.hasClass('percentage')){
+                            td.empty().append('0%')
+                        }else if(td.hasClass('no-data')){
+                            td.empty()
+                        }
+                        else{
+                            td.empty().append('0');
+                        }
+                    }
+
+                });
             },
             info: true,
             dom: "" + //<'row'<'col-12'<'input-group'f>>> <'col-sm-12 col-md-6'l>
@@ -138,31 +178,6 @@ let setup = () => {
 
                 this.api().columns().every(function () {
                     let column = this;
-                    let td = $(table).find('thead tr:eq(2) td:eq(' + column.index() + ')');
-                    let columnData = column.data();
-                    let value = columnData.sum();
-                    let currencyFormatter = new Intl.NumberFormat('en-IN', {
-                        style: 'currency',
-                        currency: 'INR',
-                        minimumFractionDigits: 2
-                    })
-
-                    if (value && value != "") {
-                        if (td.hasClass('currency')){
-                            td.append(currencyFormatter.format(value))
-                        }
-                        else if(td.hasClass('percentage')){
-                            let percentValue = (value / columnData.length)
-                            td.append(percentValue.toFixed(2)+'%')
-                        }
-                        else{
-                            td.append(value.toLocaleString());
-                        }
-                    }
-                });
-
-                this.api().columns().every(function () {
-                    let column = this;
                     let filter = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')').data('filter');
                     let td = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')');
                     let text = $(column.header()).text();
@@ -208,6 +223,8 @@ let setup = () => {
 
                         td.append(input);
                         select2s();
+
+
 
                         // If filters are defined, we use selected to set drodpowns, textboxes and select2 DOM elements to filter the datatable
                         if (selected == "") return;
