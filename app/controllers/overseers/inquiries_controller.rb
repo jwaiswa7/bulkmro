@@ -427,7 +427,6 @@ class Overseers::InquiriesController < Overseers::BaseController
       end if record.attributes['final_sales_orders'].present?
 
       hash = {}
-      # binding.pry if record.attributes['company'].present?
       hash['text'] = record.attributes['company']['company_autocomplete'] if record.attributes['company'].present?
       hash['link'] =  overseers_company_path(record.attributes['company']['id']) if record.attributes['company'].present?
       (inquiries << hash) if !hash.empty?
