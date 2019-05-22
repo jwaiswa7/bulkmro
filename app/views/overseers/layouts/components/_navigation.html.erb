@@ -68,6 +68,15 @@
           </div>
           <div class="dropdown-divider"></div>
           <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Contact Creation Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_contact_creation_requests_path, policy(:contact_creation_request).index? %>
+              <%= nav_dropdown_item 'Requested', requested_overseers_contact_creation_requests_path, policy(:contact_creation_request).requested? %>
+              <%= nav_dropdown_item 'Created/Completed', created_overseers_contact_creation_requests_path, policy(:contact_creation_request).created? %>
+            </ul>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Company Reviews</a>
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'List', overseers_company_reviews_path, policy(:company).index? %>
@@ -245,6 +254,7 @@
             <%= nav_dropdown_item 'Company Report', company_report_overseers_companies_path, policy(:company).index? %>
             <%= nav_dropdown_item 'Pipeline Report', pipeline_report_overseers_inquiries_path, policy(:inquiry).show? %>
             <%= nav_dropdown_item 'TAT Report', tat_report_overseers_inquiries_path, policy(:inquiry).tat_report? %>
+            <%= nav_dropdown_item 'Customer Order Status Report', customer_order_status_report_overseers_sales_orders_path, policy(:sales_order).customer_order_status_report? %>
           </div>
         </li>
       <% end %>

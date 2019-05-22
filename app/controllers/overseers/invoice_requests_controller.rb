@@ -1,5 +1,5 @@
 class Overseers::InvoiceRequestsController < Overseers::BaseController
-  before_action :set_invoice_request, only: [:show, :edit, :update, :cancel_invoice_request, :render_cancellation_form]
+  before_action :set_invoice_request, only: [:show, :edit, :update, :cancel_invoice_request, :render_cancellation_form, :render_comment_form, :add_comment]
 
   def pending
     invoice_requests =
@@ -170,6 +170,27 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize_acl @invoice_request
     respond_to do |format|
       format.html {render partial: 'cancel_invoice_request'}
+    end
+  end
+
+  def render_comment_form
+    authorize @invoice_request
+    respond_to do |format|
+      format.html {render partial: 'add_comment'}
+    end
+  end
+
+  def add_comment
+    @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
+    authorize @invoice_request
+    if @invoice_request.valid?
+      ActiveRecord::Base.transaction do
+        @invoice_request.save!
+        @invoice_request_comment = InvoiceRequestComment.new(message: '', invoice_request: @invoice_request, overseer: current_overseer)
+      end
+      render json: {success: 1, message: 'Successfully updated '}, status: 200
+    else
+      render json: {success: 0, message: 'Cannot reject this PO Request.'}, status: 200
     end
   end
 

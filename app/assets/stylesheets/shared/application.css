@@ -8845,7 +8845,7 @@ button, button:link, button:visited, button:hover, button:active, button:focus {
   outline: 0; }
 
 .btn, .razorpay-payment-button {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   position: relative; }
   .btn[data-badge]:after, [data-badge].razorpay-payment-button:after {
@@ -9021,6 +9021,8 @@ label[class*='col'] {
     height: 1rem;
     position: relative;
     bottom: 2px; }
+  .breadcrumb-item + .breadcrumb-item:last-child {
+    font-weight: bold; }
 
 .breadcrumb-bar {
   display: flex;
@@ -9033,7 +9035,7 @@ label[class*='col'] {
 
 @media (min-width: 992px) {
   .breadcrumb-bar {
-    min-height: 3.5625rem; } }
+    min-height: 2.5625rem; } }
 .page-header {
   padding-top: 1.5rem;
   margin-bottom: 1.5rem; }
@@ -10017,6 +10019,12 @@ a.text-color-grey:hover, a.text-color-grey:focus {
   .notifications .dropdown-item {
     word-wrap: normal;
     white-space: normal; }
+
+section.section-padding-adjustment {
+  #padding-top: 1.0rem !important;
+  #padding-bottom: 0.7rem !important; }
+  section.section-padding-adjustment p.lead {
+    font-size: 0.8rem; }
 
 /*# sourceMappingURL=application.css.map */
 

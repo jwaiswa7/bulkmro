@@ -200,6 +200,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     true
   end
 
+  def duplicate?
+    record.persisted?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 

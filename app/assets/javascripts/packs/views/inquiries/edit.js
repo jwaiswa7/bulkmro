@@ -8,6 +8,10 @@ const edit = () => {
     }).find('select[name*=product_id]').each(function (e) {
         onProductChange(this);
     });
+
+    $('.duplicate-inquiry').on('click', function(){
+        gtag('event','click-duplicate', { event_category: 'duplicate-inquiry',  event_label: 'Duplicate Inquiry'})
+    })
 };
 
 let onProductChange = (container) => {

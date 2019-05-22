@@ -60,6 +60,9 @@ import documentCreations from "./documentCreations/init";
 
 import checkout from "./checkout/init";
 
+// Image Reader
+import imageReaders from "./imageReaders/init"
+
 import taxCodes from "./taxCodes/init"
 
 import companyBanks from "./companyBanks/init"
@@ -99,6 +102,7 @@ let loader = {
     documentCreations: documentCreations,
     checkout: checkout,
     taxCodes: taxCodes,
+    imageReaders: imageReaders,
     companyBanks: companyBanks,
     dashboard: dashboard,
     overseers:overseers,
