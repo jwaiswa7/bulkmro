@@ -251,12 +251,15 @@ Rails.application.routes.draw do
         get 'pending_stock_approval'
         get 'stock'
         get 'completed_stock'
+        get 'add_comment'
       end
       member do
         get 'render_cancellation_form'
         get 'reject_purchase_order_modal'
         patch 'rejected_purchase_order'
         patch 'cancel_porequest'
+        get 'render_comment_form'
+        patch 'add_comment'
       end
 
     end
@@ -271,6 +274,8 @@ Rails.application.routes.draw do
       member do
         get 'render_cancellation_form'
         patch 'cancel_invoice_request'
+        get 'render_comment_form'
+        patch 'add_comment'
       end
     end
 
