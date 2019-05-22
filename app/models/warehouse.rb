@@ -18,18 +18,6 @@ class Warehouse < ApplicationRecord
 
   scope :with_includes, -> { includes(:address) }
 
-  enum series_code: {
-      'LWP': 1,
-      'ALT': 2,
-      'PUN': 3,
-      'BOP': 4,
-      'MAN': 5,
-      'OKH': 6,
-      'JNK': 7,
-      'CHE': 8,
-      'HYD': 9
-  }
-
   def self.default
     find_by_name('Mumbai - Lower Parel')
   end
