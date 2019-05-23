@@ -271,7 +271,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       puts 'Totals(Bible, sprint)', matching_bible_rows.to_f, matching_rows_total.to_f
       puts 'Adjustment entries', adjustment_entries
       puts 'AE amount', ae_amount.to_f
-      puts "REPEATING SKUS", repeating_skus
+      puts 'REPEATING SKUS', repeating_skus
       puts 'TOTALS FOR REPEATING SKUS(BIBLE/Sprint)', repeating_matching_bible_rows, repeating_matching_rows_total
     end
 
@@ -407,8 +407,8 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     puts 'NOT UC ENTRIES', not_uc_list
     puts 'NOT UC Totals(sprint/bible)', not_uc_list_total.to_f, not_uc_bible_total.to_f
 
-    puts "Missing Suppliers", missing_suppliers, missing_suppliers.count
-    puts "Repeating Rows", repeating_rows, repeating_rows.count
+    puts 'Missing Suppliers', missing_suppliers, missing_suppliers.count
+    puts 'Repeating Rows', repeating_rows, repeating_rows.count
   end
 
   def set_is_kit_flag_in_mismatch_file
