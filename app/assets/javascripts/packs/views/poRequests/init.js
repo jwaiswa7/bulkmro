@@ -12,8 +12,11 @@ let poRequests= {
     index: poRequestsIndex,
     // pendingAndRejected: pendingAndRejected,
     pendingAndRejected: poRequestsIndex,
-    newPurchaseOrder: poRequestNewPurchaseOrder,
     new: poRequestsNew,
+    underAmend: poRequestsIndex,
+    amended: poRequestsIndex,
+    cancelled: poRequestsIndex,
+    newPurchaseOrder: poRequestNewPurchaseOrder,
     rejectPurchaseOrderModal: poRequestRejectPurchaseOrderModal
 }
 

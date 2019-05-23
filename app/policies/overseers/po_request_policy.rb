@@ -109,6 +109,14 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     can_cancel? || can_reject?
   end
 
+  def render_comment_form?
+    index?
+  end
+
+  def add_comment?
+    index?
+  end
+
   def stock?
     index? && (sales? || admin?)
   end

@@ -73,6 +73,10 @@
                   <%= @customer_product.moq %>
                 </div>
               <% end %>
+              <div class="col-6 col-md-3">
+                <strong class="d-block">Instock Quantity</strong>
+                <%= @customer_product.product.stocks.sum(&:instock) %>
+              </div>
             </div>
           </div>
         </div>
