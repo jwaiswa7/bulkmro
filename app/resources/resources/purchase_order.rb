@@ -166,36 +166,33 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
           "ProjectCode": row.po_request.inquiry.inquiry_number,
           "UnitPrice": row.unit_price.to_f,
           "Currency": row.po_request.sales_order.currency.name,
-          "TaxCode": row.taxation.to_remote_s, #row.tax_rate.to_s.gsub('.0%', '').gsub('GST ', 'GST@'),
+          "TaxCode": row.taxation.to_remote_s, # row.tax_rate.to_s.gsub('.0%', '').gsub('GST ', 'GST@'),
           "WarehouseCode": 2,
           "LocationCode": 1
       }
       item_row << json
-
     end
 
     {
         PoDate: Time.now.strftime('%Y-%m-%d'),
-        PoStatus: "63",
+        PoStatus: '63',
         DocNum: record.po_number,
-        PoSupNum: "",
+        PoSupNum: '',
         PoSupBillFrom: po_request.supplier.billing_address.remote_uid,
         PoSupShipFrom: po_request.supplier.shipping_address.remote_uid,
-        PoShippingCost: "0",
+        PoShippingCost: '0',
         PoTargetWarehouse: po_request.ship_to.remote_uid,
         DocumentLines: item_row,
-        BPL_IDAssignedToInvoice: po_request.bill_to.remote_branch_code, #warehouse Id
+        BPL_IDAssignedToInvoice: po_request.bill_to.remote_branch_code, # warehouse Id
         Project: po_request.inquiry.inquiry_number,
         CardCode: po_request.supplier.remote_uid,
         CardName: po_request.supplier.to_s,
         DocDate: Time.now.strftime('%Y-%m-%d'),
         ProjectCode: po_request.inquiry.inquiry_number,
-        NumAtCard: "",
+        NumAtCard: '',
         DocCurrency: po_request.sales_order.currency.name,
         TaxDate: Time.now.strftime('%Y-%m-%d'),
         DocDueDate: Time.now.strftime('%Y-%m-%d')
     }
   end
-
-
 end

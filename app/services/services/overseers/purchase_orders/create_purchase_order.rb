@@ -22,15 +22,13 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
       end
       purchase_order
     end
-
   end
 
   def set_attributes(po_request)
     {
         inquiry_id: po_request.inquiry.id,
         po_number: set_purchase_order_number(po_request).last_number + 1,
-        #metadata: set_metadata(po_request),
-        metadata: {},
+        metadata: set_metadata(po_request),
         created_by_id: params[:overseer].id,
         updated_by_id: params[:overseer].id,
         status: PurchaseOrder.statuses.key(35),
@@ -44,25 +42,25 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def set_metadata(po_request)
     {
        PoDate: Time.now.strftime('%Y-%m-%d'),
-       PoStatus: "63",
+       PoStatus: '63',
        DocNum: set_purchase_order_number(po_request).last_number + 1,
-       PoSupNum: "",
+       PoSupNum: '',
        PoSupBillFrom: po_request.supplier.billing_address.remote_uid,
        PoSupShipFrom: po_request.supplier.shipping_address.remote_uid,
-       PoShippingCost: "0",
+       PoShippingCost: '0',
        PoTargetWarehouse: po_request.ship_to.remote_uid,
        DocumentLines: [],
-       BPL_IDAssignedToInvoice: po_request.bill_to.remote_branch_code, #warehouse Id
+       BPL_IDAssignedToInvoice: po_request.bill_to.remote_branch_code, # warehouse Id
        Project: po_request.inquiry.inquiry_number,
        CardCode: po_request.supplier.remote_uid,
        CardName: po_request.supplier.to_s,
        DocDate: Time.now.strftime('%Y-%m-%d'),
-       Series: "134",
+       Series: '134',
        ProjectCode: 16562,
-       NumAtCard: "123478",
-       DocCurrency: "INR",
-       TaxDate: "2019-05-14",
-       DocDueDate: "2019-05-25"
+       NumAtCard: '123478',
+       DocCurrency: 'INR',
+       TaxDate: '2019-05-14',
+       DocDueDate: '2019-05-25'
     }
   end
 
@@ -118,4 +116,3 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
 
   attr_accessor :po_request, :params, :purchase_order
 end
-

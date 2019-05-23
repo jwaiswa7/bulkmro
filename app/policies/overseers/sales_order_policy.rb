@@ -40,11 +40,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def account_approval?
-    record.status == 'Accounts Approval Pending' && ( accounts? || admin? )
+    record.status == 'Accounts Approval Pending' && (accounts? || admin?)
   end
 
   def cancelled_sales_order?
-    record.status == 'Approved' && record.order_number.present? && ( accounts? || admin? )
+    record.status == 'Approved' && record.order_number.present? && (accounts? || admin?)
   end
 
   def update?

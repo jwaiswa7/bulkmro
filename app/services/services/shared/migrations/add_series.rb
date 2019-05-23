@@ -3,8 +3,11 @@ class Services::Shared::Migrations::AddSeries < Services::Shared::Migrations::Mi
     service = Services::Shared::Spreadsheets::CsvImporter.new('series.csv', 'seed_files')
     service.loop(nil) do |x|
       p x.get_column('period_ document_type')
-      s = Series.new(
-          :document_type => x.get_column('document_type'), :series => x.get_column('series'), :series_name => x.get_column('series_name'), :period_indicator => x.get_column('period_ indicator'), :number_length => x.get_column('length').to_i)
+      s = Series.new(document_type: x.get_column('document_type'),
+                     series: x.get_column('series'),
+                     series_name: x.get_column('series_name'),
+                     period_indicator: x.get_column('period_ indicator'),
+                     number_length: x.get_column('length').to_i)
       p '******************8'
       # p s.errors.full_message
       s.save
@@ -13,21 +16,21 @@ class Services::Shared::Migrations::AddSeries < Services::Shared::Migrations::Mi
   end
 
   def last_number_updation
-    start_date = "1-4-2019".to_datetime
-    end_date =  Date.today.end_of_day
+    start_date = '1-4-2019'.to_datetime
+    end_date = Date.today.end_of_day
     Series.all.each do |series|
       if series.last_number.nil? && series.first_number.present?
         # series.update_attributes(json)
         document_type = series.document_type
         case document_type
         when 'Sales Order'
-          sales_order = SalesOrder.where(created_at: start_date..end_date).where(order_number:  series.first_number..(series.first_number + 9998)).order(:order_number).last
+          sales_order = SalesOrder.where(created_at: start_date..end_date).where(order_number: series.first_number..(series.first_number + 9998)).order(:order_number).last
           if sales_order.present?
             order_number = sales_order.order_number
             series.update_attributes(last_number: (order_number + 1))
           end
         when 'Purchase Order'
-          purchase_order = PurchaseOrder.where(created_at: start_date..end_date).where(po_number:  series.first_number..(series.first_number + 9998)).order(:po_number).last
+          purchase_order = PurchaseOrder.where(created_at: start_date..end_date).where(po_number: series.first_number..(series.first_number + 9998)).order(:po_number).last
           if purchase_order.present?
             po_number = purchase_order.po_number
             series.update_attributes(last_number: (po_number + 1))
