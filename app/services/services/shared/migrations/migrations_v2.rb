@@ -202,8 +202,12 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     column_headers = ['inquiry_number', 'client order date', 'order_number', 'old_order_number', 'order date', 'SKU', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax', 'kit order', 'adjustment entry']
     matching_orders = []
     adjustment_entries = []
+    repeating_skus = []
     matching_rows_total = 0
     matching_bible_rows = 0
+    repeating_matching_bible_rows = 0
+    repeating_matching_rows_total = 0
+
     ae_amount = 0
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-02 Bible Data for Migration.csv', 'seed_files_3')
@@ -211,9 +215,9 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       service.loop(nil) do |x|
         is_adjustment_entry = 'No'
         order_number = x.get_column('So #')
-        bible_order_row_total = x.get_column('Total Selling Price').to_f
+        bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
         bible_order_tax_total = x.get_column('Tax Amount').to_f
-        bible_order_row_total_with_tax = bible_order_row_total + bible_order_tax_total
+        bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
 
         if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
           sales_order = SalesOrder.find_by_old_order_number(order_number)
@@ -226,30 +230,38 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
           if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
             order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
-            row_total = order_row.total_selling_price
-            row_total_with_tax = order_row.total_selling_price_with_tax
+            row_total = order_row.total_selling_price.to_f.round(2)
+            row_total_with_tax = order_row.total_selling_price_with_tax.to_f.round(2)
+
+            if order_number == '99999012'
+              binding.pry
+            end
 
             if ((row_total != bible_order_row_total) || (row_total_with_tax != bible_order_row_total_with_tax)) &&
                 ((row_total - bible_order_row_total).abs > 1 || (row_total_with_tax - bible_order_row_total_with_tax).abs > 1)
 
               # adjustment entries
-              if (row_total == -(bible_order_row_total)) && (row_total_with_tax == -(bible_order_row_total_with_tax))
-                adjustment_entries.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
-                ae_amount = ae_amount + row_total_with_tax
+              if (row_total == -(bible_order_row_total)) && (row_total_with_tax == -(bible_order_row_total_with_tax)) || bible_order_row_total_with_tax.negative? || bible_order_row_total.negative?
                 is_adjustment_entry = 'Yes'
               end
 
               # KIT check
-              if sales_order.calculated_total.to_f == bible_order_row_total &&
-                  sales_order.calculated_total_with_tax.to_f == bible_order_row_total_with_tax
+              if sales_order.calculated_total.to_f.round(2) == bible_order_row_total &&
+                  sales_order.calculated_total_with_tax.to_f.round(2) == bible_order_row_total_with_tax
                 writer << [x.get_column('Inquiry Number'), x.get_column('Client Order Date'), sales_order.order_number, sales_order.old_order_number || 'nil', x.get_column('Order Date'), product_sku, row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax, 'Yes', is_adjustment_entry]
               else
                 writer << [x.get_column('Inquiry Number'), x.get_column('Client Order Date'), sales_order.order_number, sales_order.old_order_number || 'nil', x.get_column('Order Date'), product_sku, row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax, 'No', is_adjustment_entry]
               end
             else
-              matching_bible_rows = matching_bible_rows + bible_order_row_total_with_tax
-              matching_rows_total = matching_rows_total + row_total_with_tax
-              matching_orders.push(x.get_column('So #'))
+              if matching_orders.include?(x.get_column('Bm #') + '-' + x.get_column('So #'))
+                repeating_matching_bible_rows = repeating_matching_bible_rows + bible_order_row_total_with_tax
+                repeating_matching_rows_total = repeating_matching_rows_total + row_total_with_tax
+                repeating_skus.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
+              else
+                matching_bible_rows = matching_bible_rows + bible_order_row_total_with_tax
+                matching_rows_total = matching_rows_total + row_total_with_tax
+                matching_orders.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
+              end
             end
           end
         end
@@ -259,28 +271,58 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       puts 'Totals(Bible, sprint)', matching_bible_rows.to_f, matching_rows_total.to_f
       puts 'Adjustment entries', adjustment_entries
       puts 'AE amount', ae_amount.to_f
+      puts "REPEATING SKUS", repeating_skus
+      puts 'TOTALS FOR REPEATING SKUS(BIBLE/Sprint)', repeating_matching_bible_rows, repeating_matching_rows_total
     end
 
-    fetch_csv('first_total_mismatch.csv', csv_data)
+    fetch_csv('initial.csv', csv_data)
   end
 
   def update_mismatching_non_kit_orders
-    mismatching_non_kit_orders = ['201996', '202007', '202038', '202090', '2000015', '2000016', '2000041', '2000110', '2000144', '2000152', '2000170', '2000180', '2000228', '2000238', '2000262', '2000271', '2000272', '2000277', '2000279', '2000280', '2000299', '2000300', '2000318', '2000322', '2000327', '2000347', '2000355', '2000359', '2000360', '2000361', '2000362', '2000363', '2000364', '2000410', '2000411', '2000414', '2000426', '2000428', '2000431', '2000441', '2000451', '2000454', '2000455', '2000462', '2000466', '2000467', '2000468', '2000469', '2000470', '2000471', '2000480', '2000481', '2000482', '2000489', '2000490', '2000493', '2000495', '2000497', '2000510', '2000520', '2000521', '2000522', '2000524', '2000526', '2000527', '2000528', '2000530', '2000532', '2000533', '2000534', '2000536', '2000540', '2000543', '2000584', '2000585', '2000587', '2000588', '2000589', '2000597', '2000599', '2000604', '2000611', '2000614', '2000615', '2000616', '2000623', '2000624', '2000625', '2000629', '2000633', '2000634', '2000640', '2000644', '2000653', '2000654', '2000664', '2000665', '2000666', '2000667', '2000668', '2000671', '2000672', '2000673', '2000674', '2000676', '2000677', '2000679', '2000682', '2000683', '2000684', '2000685', '2000690', '2000696', '2000698', '2000700', '2000701', '2000702', '2000706', '2000719', '2000725', '2000749', '2000779', '2000823', '2000840', '2000942', '2001077', '2001133', '2001189', '2001250', '2001266', '2001279', '2001292', '2001307', '2001311', '2001319', '2001336', '2001345', '2001354', '2001363', '2001373', '2001661', '2001676', '2001677', '2001696', '2001707', '2001776', '2001777', '2001795', '2001798', '2001817', '2001818', '2001853', '2001865', '2001868', '2001873', '2001884', '2001892', '2001940', '2001978', '2002000', '2002012', '2002019', '2002044', '2002062', '2002077', '2002087', '2002107', '2002139', '2002158', '2002200', '2002203', '2002215', '2002230', '2002257', '2002270', '2002271', '2002272', '2002276', '2002435', '2002459', '2002531', '2002571', '2002572', '2002586', '2002599', '2002609', '2002663', '2002686', '2002689', '2002812', '2002944', '2002965', '2003055', '2003058', '2003066', '2003083', '2003085', '2003105', '2003120', '2003271', '2003287', '2003308', '2003411', '2003535', '2003550', '2003552', '2003564', '2003641', '10200023', '10200024', '10200074', '10200085', '10200086', '10200101', '10200106', '10200146', '10200175', '10200177', '10200203', '10200204', '10200205', '10200206', '10200216', '10200233', '10200237', '10210027', '10210031', '10210032', '10210033', '10210049', '10210062', '10210074', '10210084', '10210125', '10210128', '10210139', '10210145', '10210150', '10210151', '10210161', '10210163', '10210198', '10210199', '10210214', '10210216', '10210226', '10210245', '10210251', '10210278', '10210294', '10210294', '10210295', '10210296', '10210301', '10210301', '10210314', '10210316', '10210316', '10210335', '10210348', '10210350', '10210353', '10210365', '10210389', '10210391', '10210399', '10210403', '10210406', '10210425', '10210453', '10210453', '10210453', '10210453', '10210453', '10210453', '10210454', '10210460', '10210461', '10210462', '10210462', '10210469', '10210471', '10210485', '10210486', '10210491', '10210494', '10210528', '10210532', '10210537', '10210544', '10210559', '10210560', '10210564', '10210566', '10210575', '10210580', '10210583', '10210586', '10210603', '10210604', '10210605', '10210606', '10210607', '10210608', '10210609', '10210611', '10210614', '10210615', '10210617', '10210630', '10210645', '10210662', '10210670', '10210671', '10210672', '10210673', '10210681', '10210690', '10210694', '10210696', '10210698', '10210707', '10210709', '10210716', '10210726', '10210736', '10210761', '10210765', '10210766', '10210766', '10210771', '10210789', '10210792', '10210794', '10210796', '10210799', '10210803', '10210810', '10210811', '10210826', '10210831', '10210846', '10210856', '10210857', '10210875', '10210891', '10210896', '10210897', '10210903', '10210904', '10210911', '10210915', '10210915', '10210919', '10210921', '10210935', '10210958', '10210962', '10210970', '10210971', '10210975', '10210979', '10210980', '10210981', '10210987', '10210992', '10210993', '10210998', '10211002', '10211012', '10211013', '10211019', '10211021', '10211023', '10211024', '10211043', '10211046', '10211048', '10211049', '10211050', '10211074', '10211103', '10211107', '10211111', '10211118', '10211131', '10211132', '10211133', '10211179', '10211189', '10211235', '10211258', '10211295', '10211456', '10211550', '10211553', '10211560', '10211566', '10211569', '10211572', '10211737', '10212228', '10300005', '10300006', '10300015', '10300022', '10300024', '10300026', '10300029', '10300030', '10300031', '10300034', '10300036', '10300037', '10300048', '10300052', '10300053', '10300054', '10300059', '10300065', '10300067', '10300068', '10300071', '10300076', '10400009', '10610009', '10610010', '10610037', '10610047', '10610052', '10610066', '10610082', '10610090', '10610094', '10610103', '10610107', '10610111', '10610118', '10610136', '10610143', '10610147', '10610147', '10610150', '10610187', '10610195', '10610198', '10610202', '10610207', '10610212', '10610218', '10610239', '10610241', '10610254', '10610255', '10610274', '10610278', '10610287', '10610306', '10610318', '10610342', '10610345', '10610348', '10610363', '10610370', '10610383', '10610383', '10610302', '10610389', '10610410', '10610423', '10610427', '10610428', '10610432', '10610433', '10610435', '10610465', '10610472', '10610498', '10610509', '10610874', '10710005', '10910022', '10910022', '10910035', '10910036', '10910039', '10910044', '10910064', '10910067', '10910069', '10910070', '10910071', '10910074', '10910087', '10910088', '10910096', '10910109', '10910110', '10910115', '10910123', '10910128', '10910129', '10910145', '10910152', '11210010', '11210027', '11210030', '11210033', '11210038', '11210039', '11210041', '11210045', '11210046', '11210060', '11210062', '11210065', '11210066', '11210075', '11210079', '11210081', '11410013', '11410018', '11410018', '11410026', '99999001', '99999003', '99999004', '99999007', '99999012', '99999013', '99999036', '99999038', '99999039', '99999053', '99999055', '99999063', '99999088', '99999089', '2000134-1', '2000179-1', '2000315-1', '2000380-2', '2000387-1', 'Order1', 'Order2']
+    mismatching_non_kit_non_ae_orders = ['201996', '202007', '202038', '202090', '2000015', '2000016', '2000041', '2000110', '2000144', '2000152', '2000170', '2000180', '2000228', '2000238', '2000262', '2000271', '2000272', '2000277', '2000279', '2000280', '2000299', '2000300', '2000318', '2000322', '2000327', '2000347', '2000355', '2000359', '2000360', '2000361', '2000362', '2000363', '2000364', '2000410', '2000411', '2000414', '2000426', '2000428', '2000431', '2000441', '2000451', '2000454', '2000455', '2000462', '2000466', '2000467', '2000468', '2000469', '2000470', '2000471', '2000480', '2000481', '2000482', '2000489', '2000490', '2000493', '2000495', '2000497', '2000510', '2000520', '2000521', '2000522', '2000524', '2000526', '2000527', '2000528', '2000530', '2000532', '2000533', '2000534', '2000536', '2000540', '2000543', '2000584', '2000585', '2000587', '2000588', '2000589', '2000597', '2000599', '2000604', '2000611', '2000614', '2000615', '2000616', '2000623', '2000624', '2000625', '2000629', '2000633', '2000634', '2000640', '2000644', '2000653', '2000654', '2000664', '2000665', '2000666', '2000667', '2000668', '2000671', '2000672', '2000673', '2000674', '2000676', '2000677', '2000679', '2000682', '2000683', '2000684', '2000685', '2000690', '2000696', '2000698', '2000700', '2000701', '2000702', '2000706', '2000719', '2000725', '2000749', '2000779', '2000823', '2000840', '2000942', '2001077', '2001133', '2001189', '2001250', '2001266', '2001279', '2001292', '2001307', '2001311', '2001319', '2001336', '2001345', '2001354', '2001363', '2001373', '2001661', '2001676', '2001677', '2001696', '2001707', '2001776', '2001777', '2001795', '2001798', '2001817', '2001818', '2001853', '2001865', '2001868', '2001873', '2001884', '2001892', '2001940', '2001978', '2002000', '2002012', '2002019', '2002044', '2002062', '2002077', '2002087', '2002107', '2002139', '2002158', '2002200', '2002203', '2002215', '2002230', '2002257', '2002270', '2002271', '2002272', '2002276', '2002435', '2002459', '2002531', '2002571', '2002572', '2002586', '2002599', '2002609', '2002663', '2002686', '2002689', '2002812', '2002944', '2002965', '2003055', '2003058', '2003066', '2003083', '2003085', '2003105', '2003120', '2003271', '2003287', '2003308', '2003411', '2003535', '2003550', '2003552', '2003564', '2003641', '10200023', '10200024', '10200074', '10200085', '10200086', '10200101', '10200106', '10200146', '10200175', '10200177', '10200203', '10200204', '10200205', '10200206', '10200216', '10200233', '10200237', '10210027', '10210031', '10210032', '10210033', '10210049', '10210062', '10210074', '10210084', '10210125', '10210128', '10210139', '10210145', '10210150', '10210151', '10210161', '10210163', '10210198', '10210199', '10210214', '10210216', '10210226', '10210245', '10210251', '10210294', '10210294', '10210295', '10210296', '10210301', '10210301', '10210314', '10210316', '10210316', '10210335', '10210348', '10210350', '10210353', '10210365', '10210389', '10210391', '10210399', '10210403', '10210406', '10210425', '10210454', '10210460', '10210461', '10210462', '10210462', '10210469', '10210471', '10210485', '10210486', '10210491', '10210494', '10210528', '10210532', '10210537', '10210544', '10210559', '10210560', '10210564', '10210566', '10210575', '10210580', '10210583', '10210586', '10210603', '10210604', '10210605', '10210606', '10210607', '10210608', '10210609', '10210611', '10210614', '10210615', '10210617', '10210630', '10210645', '10210662', '10210670', '10210671', '10210672', '10210673', '10210681', '10210690', '10210694', '10210696', '10210698', '10210707', '10210709', '10210716', '10210726', '10210736', '10210761', '10210765', '10210766', '10210771', '10210789', '10210792', '10210794', '10210796', '10210799', '10210803', '10210810', '10210811', '10210826', '10210831', '10210846', '10210856', '10210857', '10210875', '10210891', '10210896', '10210897', '10210903', '10210904', '10210911', '10210915', '10210915', '10210919', '10210921', '10210935', '10210958', '10210962', '10210970', '10210971', '10210975', '10210979', '10210980', '10210981', '10210987', '10210992', '10210993', '10210998', '10211002', '10211012', '10211013', '10211019', '10211021', '10211023', '10211024', '10211043', '10211046', '10211048', '10211049', '10211050', '10211074', '10211103', '10211107', '10211111', '10211118', '10211131', '10211132', '10211133', '10211179', '10211189', '10211235', '10211258', '10211295', '10211456', '10211560', '10211737', '10212228', '10300005', '10300006', '10300015', '10300022', '10300024', '10300026', '10300029', '10300030', '10300031', '10300034', '10300036', '10300037', '10300048', '10300052', '10300053', '10300054', '10300059', '10300065', '10300067', '10300068', '10300071', '10300076', '10400009', '10610009', '10610010', '10610037', '10610047', '10610052', '10610066', '10610082', '10610090', '10610094', '10610103', '10610107', '10610111', '10610118', '10610136', '10610143', '10610147', '10610147', '10610150', '10610187', '10610195', '10610198', '10610202', '10610207', '10610212', '10610218', '10610239', '10610241', '10610254', '10610255', '10610278', '10610287', '10610306', '10610318', '10610342', '10610345', '10610348', '10610363', '10610370', '10610383', '10610383', '10610389', '10610410', '10610423', '10610427', '10610428', '10610432', '10610433', '10610435', '10610465', '10610472', '10610498', '10610509', '10610874', '10710005', '10910022', '10910022', '10910035', '10910039', '10910044', '10910067', '10910069', '10910070', '10910071', '10910074', '10910087', '10910088', '10910096', '10910109', '10910110', '10910115', '10910123', '10910128', '10910129', '10910145', '10910152', '11210010', '11210027', '11210030', '11210033', '11210038', '11210039', '11210041', '11210045', '11210046', '11210060', '11210062', '11210065', '11210066', '11210075', '11210079', '11210081', '11410013', '11410018', '11410026', '99999001', '99999003', '99999004', '99999007', '99999012', '99999013', '99999036', '99999038', '99999039', '99999053', '99999055', '99999063', '99999088', '99999089', '2000134-1', '2000179-1', '2000315-1', '2000380-2', '2000387-1', 'Order1', 'Order2', '10210957', '10210957', '10210957']
 
-    correctly_updating_orders = ['2000041', '2000271', '2000347', '2000363', '2000364', '2000414', '2000431', '2000451', '2000454', '2000510', '2000526', '2000540', '2000543', '2000640', '2000719', '2000779', '2001077', '2001266', '2001279', '2001292', '2001307', '2001311', '2001311', '2001319', '2001345', '2001363', '2001696', '2001776', '2001798', '2001818', '2001865', '2001978', '2002000', '2002200', '2002272', '2002435', '2002586', '2002609', '2002944', '2003271', '2003641', '10200074', '10200177', '10200205', '10200206', '10210027', '10210049', '10210062', '10210074', '10210084', '10210125', '10210145', '10210151', '10210161', '10210198', '10210199', '10210216', '10210278', '10210294', '10210294', '10210295', '10210296', '10210301', '10210314', '10210316', '10210316', '10210460', '10210559', '10210560', '10210580', '10210609', '10210614', '10210615', '10210617', '10210630', '10210645', '10210670', '10210673', '10210681', '10210690', '10210696', '10210707', '10210736', '10210794', '10210810', '10210856', '10210857', '10210897', '10210904', '10210911', '10210919', '10210921', '10210935', '10210962', '10210970', '10210980', '10210987', '10210992', '10211012', '10211024', '10211043', '10211103', '10211179', '10211189', '10211295', '10211550', '10211553', '10211560', '10211566', '10211569', '10211572', '10211737', '10300015', '10300024', '10300030', '10300036', '10300053', '10300068', '10610052', '10610066', '10610082', '10610136', '10610150', '10610239', '10610254', '10610274', '10610287', '10610306', '10610410', '10610423', '10610428', '10610435', '10610874', '10910036', '10910039', '10910067', '10910069', '10910070', '10910088', '10910110', '10910110', '10910129', '11210010', '11210027', '11210033', '11210038', '11210060', '11210066', '99999003', '99999004', '99999007', '99999012', '99999053', '99999055', '99999063']
+    mismatch_after_first_correction = ['201996', '202007', '202090', '2000485', '2001311', '2001363', '2001775', '2002230', '2002663', '10210580', '10210780', '10210975', '10211002', '10211013', '10211030', '10211112', '10211179', '10300052', '10610009', '10610052', '10610230', '10610422', '10910112', '99999008', '99999014', '99999045', '210200096']
+
+    negative_entries = ['10210151', '10210294', '10210301', '10210316', '10210606', '10210766', '10210915', '10610147', '10610383', '10910022', '11410018']
     service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-02 Bible Data for Migration.csv', 'seed_files_3')
     has_vat = []
-    updated_orders = []
+    neg_entry = []
+    not_uc_list = []
+    repeating_rows = []
+    missing_suppliers = []
+    repeating_matching_bible_rows = 0
+    repeating_matching_rows_total = 0
+    not_uc_list_total = 0
+    not_uc_bible_total = 0
+
+    updated_orders_with_matching_total_with_tax = []
+    updated_orders_total_with_tax = 0
+    bible_total_with_tax = 0
+
+    updated_orders_with_matching_total = []
     updated_orders_total = 0
     bible_total = 0
+
     i = 0
+    j = 0
     service.loop(nil) do |x|
       order_number = x.get_column('So #')
-      if mismatching_non_kit_orders.include?(order_number) && correctly_updating_orders.include?(order_number)
+      if mismatching_non_kit_non_ae_orders.include?(order_number)
+        # CST/VAT
         if x.get_column('Tax Type').include?('VAT') || x.get_column('Tax Type').include?('CST')
           has_vat.push(order_number)
         end
         next if x.get_column('Tax Type').include?('VAT') || x.get_column('Tax Type').include?('CST')
+
+        bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
+        bible_order_tax_total = x.get_column('Tax Amount').to_f
+        bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
+
+        # AE
+        if bible_order_row_total.negative? && bible_order_row_total_with_tax.negative?
+          neg_entry.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
+        end
+        next if bible_order_row_total.negative? && bible_order_row_total_with_tax.negative?
 
         if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
           sales_order = SalesOrder.find_by_old_order_number(order_number)
@@ -293,50 +335,80 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
             order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
             quote_row = order_row.sales_quote_row
-            tax_rate_percentage = (x.get_column('Tax Rate').to_f / 100)
+            tax_rate_percentage = x.get_column('Tax Rate').split('%')[0]
             tax_rate = TaxRate.where(tax_percentage: tax_rate_percentage).first
-
-            bible_order_row_total = x.get_column('Total Selling Price').to_f
-            bible_order_tax_total = x.get_column('Tax Amount').to_f
-            bible_order_row_total_with_tax = bible_order_row_total + bible_order_tax_total
-            row_total = order_row.total_selling_price
-            row_total_with_tax = order_row.total_selling_price_with_tax
-
-            next if (row_total == -(bible_order_row_total)) && (row_total_with_tax == -(bible_order_row_total_with_tax))
 
             quote_row.quantity = x.get_column('Order Qty').to_f if quote_row.quantity == x.get_column('Order Qty').to_f
             quote_row.unit_selling_price = x.get_column('Unit selling Price').to_f
             quote_row.converted_unit_selling_price = x.get_column('Unit selling Price').to_f
-            quote_row.margin_percentage = (x.get_column('Margin (In %)').to_f / 100)
+            quote_row.margin_percentage = x.get_column('Margin (In %)').split('%')[0]
             quote_row.tax_rate = tax_rate || nil
-            quote_row.legacy_applicable_tax_percentage = tax_rate || nil
-            quote_row.created_at = x.get_column('Order Date', to_datetime: true)
+            quote_row.legacy_applicable_tax_percentage = tax_rate_percentage.to_d || nil
+            quote_row.inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('unit cost price').to_f) if inquiry_product_supplier.present?
+            quote_row.created_at = x.get_column('Order Date', to_datetime: true) # check
             quote_row.save(validate: false)
             puts '****************************** QUOTE ROW SAVED ****************************************'
             quote_row.sales_quote.save(validate: false)
             puts '****************************** QUOTE SAVED ****************************************'
 
             order_row.quantity = x.get_column('Order Qty').to_f
-            order_row.created_at = x.get_column('Order Date', to_datetime: true)
+            order_row.created_at = x.get_column('Order Date', to_datetime: true) # check
             order_row.save(validate: false)
             puts '****************************** ORDER ROW SAVED ****************************************'
             sales_order.save(validate: false)
             puts '****************************** ORDER SAVED ****************************************'
 
-            # if order_row.total_selling_price.to_f == bible_order_row_total && order_row.total_selling_price_with_tax.to_f == bible_order_row_total_with_tax
-            i = i + 1
-            puts 'Matched order count', i
-            updated_orders.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
-            updated_orders_total = updated_orders_total + order_row.total_selling_price_with_tax.to_f
-            bible_total = bible_total + bible_order_row_total_with_tax
+            # if order_number == '2000299'
+            # binding.pry
             # end
+
+            row_total = order_row.total_selling_price.to_f.round(2)
+            row_total_with_tax = order_row.total_selling_price_with_tax.to_f.round(2)
+
+            if (row_total == bible_order_row_total) && (row_total_with_tax == bible_order_row_total_with_tax)
+              if updated_orders_with_matching_total_with_tax.include?(x.get_column('Bm #') + '-' + x.get_column('So #'))
+                repeating_rows.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
+                repeating_matching_rows_total = repeating_matching_rows_total + row_total_with_tax
+                repeating_matching_bible_rows = repeating_matching_bible_rows + bible_order_row_total_with_tax
+              else
+                i = i + 1
+                puts 'Matched order count', i
+                updated_orders_with_matching_total_with_tax.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
+                updated_orders_total_with_tax = updated_orders_total_with_tax + row_total_with_tax
+                bible_total_with_tax = bible_total_with_tax + bible_order_row_total_with_tax
+              end
+
+            elsif !((row_total == bible_order_row_total) && (row_total_with_tax == bible_order_row_total_with_tax))
+              j = j + 1
+              puts 'Mismatched order count', j
+              updated_orders_with_matching_total.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
+              updated_orders_total = updated_orders_total + row_total_with_tax
+              bible_total = bible_total + bible_order_row_total_with_tax
+
+            else
+              not_uc_list.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
+              not_uc_list_total = not_uc_list_total + row_total_with_tax
+              not_uc_bible_total = not_uc_bible_total + bible_order_row_total_with_tax
+            end
           end
         end
       end
     end
     puts 'HAS VAT', has_vat
-    puts 'CORRECTLY UPDATED ENTRIES', updated_orders
+    puts 'NEGATIVE ENTRIES', neg_entry
+    puts 'NEG Count', neg_entry.count, neg_entry.uniq.count
+
+    puts 'PARTIALLY MATCHED UPDATED ORDERS', updated_orders_with_matching_total
     puts 'Totals(sprint/bible)', updated_orders_total.to_f, bible_total.to_f
+
+    puts 'COMPLETELY MATCHED UPDATED ORDERS', updated_orders_with_matching_total_with_tax
+    puts 'Totals(sprint/bible)', updated_orders_total_with_tax.to_f, bible_total_with_tax.to_f
+
+    puts 'NOT UC ENTRIES', not_uc_list
+    puts 'NOT UC Totals(sprint/bible)', not_uc_list_total.to_f, not_uc_bible_total.to_f
+
+    puts "Missing Suppliers", missing_suppliers, missing_suppliers.count
+    puts "Repeating Rows", repeating_rows, repeating_rows.count
   end
 
   def set_is_kit_flag_in_mismatch_file
@@ -522,6 +594,57 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
 
     fetch_csv('flex_export.csv', csv_data)
+  end
+
+  def invoices_export
+    column_headers = [
+        'Inquiry Number',
+        'Invoice Number',
+        'Invoice Date',
+        'Invoice MIS Date',
+        'Order Number',
+        'Billing Address',
+        'Shipping Address',
+        # 'Order Date',
+        'Customer Name',
+        # 'Invoice Net Amount',
+        # 'Freight / Packing',
+        # 'Total Net Amount Including Freight',
+        # 'Invoice Tax Amount',
+        # 'Invoice Gross Amount',
+        # 'Branch (Bill From)',
+        'Invoice Status'
+    ]
+
+    model = SalesInvoice
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      model.where.not(sales_order_id: nil).where.not(metadata: nil).order(mis_date: :asc).find_each(batch_size: 2000) do |sales_invoice|
+        sales_order = sales_invoice.sales_order
+        inquiry = sales_invoice.inquiry
+
+        inquiry_number = inquiry.inquiry_number.to_s
+        invoice_number = sales_invoice.invoice_number
+        invoice_date = sales_invoice.created_at.to_date.to_s
+        invoice_mis_date = sales_invoice.mis_date.present? ? sales_invoice.mis_date.to_date.to_s : ''
+        order_number = sales_order.order_number.to_s
+        billing_address = inquiry.billing_address.to_s
+        shipping_address = inquiry.shipping_address.to_s
+        # order_date = sales_invoice.sales_order.created_at.to_date.to_s
+        customer_name = inquiry.company.name.to_s
+        # invoice_net_amount = (('%.2f' % (sales_order.calculated_total_cost.to_f - sales_invoice.metadata['shipping_amount'].to_f)) || '%.2f' % sales_order.calculated_total_cost_without_freight)
+        # freight_and_packaging = (sales_invoice.metadata['shipping_amount'] || '%.2f' % sales_order.calculated_freight_cost_total)
+        # total_with_freight = ('%.2f' % sales_invoice.metadata['subtotal'] if sales_invoice.metadata['subtotal'])
+        # tax_amount = ('%.2f' % sales_invoice.metadata['tax_amount'] if sales_invoice.metadata['tax_amount'])
+        # gross_amount = ('%.2f' % sales_invoice.metadata['grand_total'] if sales_invoice.metadata['grand_total'])
+        # bill_from_branch = (inquiry.bill_from.address.state.name if inquiry.bill_from.present?)
+        invoice_status = sales_order.remote_status
+
+        # invoice_net_amount, freight_and_packaging, total_with_freight, tax_amount, gross_amount,order_date, bill_from_branch,
+        writer << [inquiry_number, invoice_number, invoice_date, invoice_mis_date, order_number, billing_address, shipping_address, customer_name, invoice_status]
+      end
+    end
+
+    fetch_csv('invoices_export.csv', csv_data)
   end
 end
 
