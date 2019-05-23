@@ -4904,4 +4904,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       company.update_attribute(:logistics_owner, Services::Overseers::InwardDispatches::SelectLogisticsOwner.new(nil, company_name: company.name).call)
     end
   end
+
+  def update_owner_for_pos_and_inward_dispatches
+    companies = Company.all
+    overseer = Overseer.find_by_email("ankur.gupta@bulkmro.com")
+    companies.each do |company|
+      Services::Overseers::PurchaseOrders::UpdateLogisticsOwner.new(company, overseer).call
+    end
+  end
 end

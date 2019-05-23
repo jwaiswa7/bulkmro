@@ -33,3 +33,6 @@ service.call
 service = Services::Shared::Migrations::Migrations.new(%w(update_logistics_owner_for_all_companies), folder: 'seed_files')
 service.call
 
+#update logistics owner for all pos and its inward dispatches
+service = Services::Shared::Migrations::Migrations.new(%w(update_owner_for_pos_and_inward_dispatches), folder: 'seed_files')
+service.call
