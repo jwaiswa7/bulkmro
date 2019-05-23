@@ -7,24 +7,30 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def call
     @purchase_order = PurchaseOrder.new
     purchase_order.assign_attributes(set_attributes(po_request))
-    if purchase_order.save!
-      series = set_purchase_order_number(po_request)
-      series.update_attributes({ last_number: series.last_number + 1 })
+    if purchase_order.save
+      po_request_params = { purchase_order_id: purchase_order.id, status: PoRequest.statuses.key(20) }
+      po_request.update_attributes(po_request_params)
+      doc_num = ::Resources::PurchaseOrder.create(purchase_order)
+      if doc_num.present?
+        series = set_purchase_order_number(po_request)
+        series.increment_last_number
+      end
+      po_request.rows.each do |row|
+        row_params = { metadata: set_product(row), created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id }
+        row = purchase_order.rows.build(row_params)
+        row.save!
+      end
+      purchase_order
     end
-    po_request.rows.each do |row|
-      row_params = { metadata: set_product(row), created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id }
-      row = purchase_order.rows.build(row_params)
-      row.save!
-    end
-    po_request_params = { purchase_order_id: purchase_order.id, status: PoRequest.statuses.key(20) }
-    po_request.update_attributes(po_request_params)
+
   end
 
   def set_attributes(po_request)
     {
         inquiry_id: po_request.inquiry.id,
         po_number: set_purchase_order_number(po_request).last_number + 1,
-        metadata: set_metadata(po_request),
+        #metadata: set_metadata(po_request),
+        metadata: {},
         created_by_id: params[:overseer].id,
         updated_by_id: params[:overseer].id,
         status: PurchaseOrder.statuses.key(35),

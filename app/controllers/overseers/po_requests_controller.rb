@@ -215,8 +215,12 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def create_purchase_order
     authorize @po_request
     service = Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer))
-    service.call
-    redirect_to overseers_purchase_orders_path
+    purchase_order =  service.call
+    if purchase_order.present?
+      redirect_to overseers_inquiry_purchase_order_path(purchase_order.inquiry.to_param, purchase_order.to_param)
+    else
+      redirect_to overseers_purchase_orders_path
+    end
   end
 
   def reject_purchase_order_modal

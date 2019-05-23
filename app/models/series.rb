@@ -26,13 +26,16 @@ class Series < ApplicationRecord
   }
 
   def create_first_number
-    if !self.saved_change_to_first_number?
+    if self.saved_change_to_series? || self.saved_change_to_number_length?
       series = self.series
       number_length = self.number_length
       self.first_number = (series.to_s + '0' * (number_length - series.digits.count)).to_i + 1
-      self.save!
+      self.save
     end
   end
-end
 
-#s = Series.create(:document_type => 2,:series => 102, :series_name => 'LWP 2019', :period_indicator => 'FY2019-20', :number_length => 9)
+  def increment_last_number
+    self.update_attributes(last_number: (self.last_number || self.first_number) + 1)
+  end
+
+end

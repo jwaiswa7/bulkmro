@@ -118,4 +118,18 @@ class PoRequestRow < ApplicationRecord
   def to_s
     "#{supplier_product_sku} - #{supplier_product_name}"
   end
+
+  def taxation
+    service = Services::Overseers::PoRequests::Taxation.new(self)
+    service.call
+    service
+  end
+
+  def best_tax_code
+    self.tax_code || self.product.best_tax_code
+  end
+
+  def best_tax_rate
+    self.tax_rate || self.product.best_tax_rate
+  end
 end
