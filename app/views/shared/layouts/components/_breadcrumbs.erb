@@ -4,7 +4,7 @@
       <%= raw breadcrumbs(yield(:page_title), yield(:controller_is_aliased)) %>
     </ol>
   </nav>
-  <% if content_for?(:can_be_directly_created) || content_for?(:can_be_searched_or_created) || content_for?(:can_be_directly_exported) || content_for?(:can_be_directly_export_by_daterange) || content_for?(:heading_buttons) || content_for?(:can_be_directly_downloaded) || content_for?(:can_be_directly_exported_filtered_records) || content_for?(:can_be_directly_exported_inquiry_tat) || content_for?(:can_be_directly_exported_monthly_report) %>
+  <% if content_for?(:can_be_directly_created) || content_for?(:can_be_searched_or_created) || content_for?(:can_be_directly_exported) || content_for?(:can_be_directly_export_by_daterange) || content_for?(:heading_buttons) || content_for?(:can_be_directly_downloaded) || content_for?(:can_be_directly_exported_filtered_records) || content_for?(:can_be_directly_exported_inquiry_tat) || content_for?(:can_exported_report) %>
     <div>
       <% if content_for?(:can_be_searched_or_created) && policy(current_model.singularize.to_sym).search_or_create? %>
         <div class="d-none d-md-inline-block align-top">
@@ -51,7 +51,7 @@
           <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %> TAT
         <% end %>
       <% end %>
-      <% if content_for?(:can_be_directly_exported_monthly_report) && policy(current_model.singularize.to_sym).export_report? %>
+      <% if content_for?(:can_exported_report) && policy(current_model.singularize.to_sym).export_report? %>
         <%= link_to ("#{export_report_overseers_report_path}.csv"), class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1", 'data-badge': ([time_ago_in_words(Export.where(export_type: 2).last.created_at), "ago"].join(' ') if Export.where(export_type: 2).last.present?) do %>
           <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
         <% end %>
