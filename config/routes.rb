@@ -83,6 +83,12 @@ Rails.application.routes.draw do
 
     resources :document_creations
 
+    resources :acl_resources do
+      collection do
+        get 'resource_json'
+      end
+    end
+
     resources :notifications do
       collection do
         post 'mark_as_read'

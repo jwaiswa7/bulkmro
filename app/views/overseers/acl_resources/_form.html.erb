@@ -1,0 +1,32 @@
+<div class="col-lg-12">
+  <%= render 'shared/snippets/page_header', e: @acl_resource %>
+
+  <%= simple_form_for([:overseers, @acl_resource], :html => {:class => 'card needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <div class="card">
+      <div class="card-body">
+        <%= render 'shared/snippets/form_errors', f: f %>
+        <div>
+          <div class="form-row">
+            <div class="col-12">
+              <%= f.input :resource_model_name %>
+            </div>
+            <div class="col-12">
+              <%= f.input :resource_action_name %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <% if action_name.capitalize == "New" %>
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <i class="fal fa-plus-circle"></i> <%= submit_text(@acl_resource) %>
+          <% end %>
+        <% else %>
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+            <i class="fal fa-pen"></i> <%= submit_text(@acl_resource) %>
+          <% end %>
+        <% end %>
+      </div>
+  <% end %>
+  </div>
+</div>

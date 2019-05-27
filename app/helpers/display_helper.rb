@@ -153,13 +153,14 @@ module DisplayHelper
   end
 
   def format_boolean_with_badge(status)
-    (if status == 'complete'
-       '<i class="far fa-check text-success"></i>'
-     elsif status == 'partial'
-       '<i class="far fa-check text-color-dark-blue"> <span class="badge badge-color-dark-blue">Partial</span></i>'
-     else
-       '<i class="far fa-times text-danger"></i>'
-     end).html_safe
+    (
+    if status == 'complete'
+      '<i class="far fa-check text-success"></i>'
+    elsif status == 'partial'
+      '<i class="far fa-check text-color-dark-blue"> <span class="badge badge-color-dark-blue">Partial</span></i>'
+    else
+      '<i class="far fa-times text-danger"></i>'
+    end).html_safe
   end
 
   def format_boolean_label(true_or_false, verb = '')
@@ -213,15 +214,15 @@ module DisplayHelper
   end
 
   def format_comment(comment, trimmed = false)
-    render partial: 'shared/snippets/comments.html', locals: { comment: comment, trimmed: trimmed }
+    render partial: 'shared/snippets/comments.html', locals: {comment: comment, trimmed: trimmed}
   end
 
   def attribute_boxes(data)
-    render partial: 'shared/snippets/attribute_boxes.html', locals: { data: data }
+    render partial: 'shared/snippets/attribute_boxes.html', locals: {data: data}
   end
 
   def humanize(mins)
-    [[60, :minutes], [24, :hours], [Float::INFINITY, :days]].map { |count, name|
+    [[60, :minutes], [24, :hours], [Float::INFINITY, :days]].map {|count, name|
       if mins > 0
         mins, n = mins.divmod(count)
         unless n.to_i == 0
@@ -242,9 +243,9 @@ module DisplayHelper
     due_in_days = (due_date - current_date).to_i
 
     if due_in_days < 0
-      due_string  = 'Overdue'
+      due_string = 'Overdue'
     elsif due_in_days == 0
-      due_string  = 'Due Today'
+      due_string = 'Due Today'
       return due_badge(due_in_days, due_string)
     else
       due_string = 'Due In'
@@ -282,27 +283,29 @@ module DisplayHelper
     end
   end
 
-  def is_authorised(model, action)
-    action_name = action if action.present?
-    allowed_resources = current_overseer.acl_resources
-    allowed_resources = ActiveSupport::JSON.decode(allowed_resources)
-    default_resources = Settings.acl.default_resources
-    parsed_json = ActiveSupport::JSON.decode(default_resources)
-    resource_ids = {}
-    parsed_json.map {|x| resource_ids[x['text']] = {}; x['children'].map {|y| resource_ids[x['text']][y['text']] = y['id'] if y['text'].present?}}
-
+  def is_authorized(model, action)
     authorised = false
-
-    if model.is_a?(ActiveRecord::Base)
-      resource_model = model.class.name.downcase
-    elsif model.is_a?(ActiveRecord::Relation)
-      resource_model = model.klass.name.downcase
+    if current_overseer.is_super_admin
+      authorised = true
     else
-      resource_model = model.to_s.gsub(':','')
-    end
+      action_name = action if action.present?
+      allowed_resources = current_overseer.acl_resources
+      allowed_resources = ActiveSupport::JSON.decode(allowed_resources)
+      default_resources = Settings.acl.default_resources
+      parsed_json = ActiveSupport::JSON.decode(default_resources)
+      resource_ids = {}
+      parsed_json.map {|x| resource_ids[x['text']] = {}; x['children'].map {|y| resource_ids[x['text']][y['text']] = y['id'] if y['text'].present?}}
+      if model.is_a?(ActiveRecord::Base)
+        resource_model = model.class.name.downcase
+      elsif model.is_a?(ActiveRecord::Relation)
+        resource_model = model.klass.name.downcase
+      else
+        resource_model = model.to_s.gsub(':', '')
+      end
 
-    if resource_ids[resource_model][action_name].present?
-      if allowed_resources.include? resource_ids[resource_model][action_name].to_s
+      if resource_ids[resource_model].blank? || resource_ids[resource_model][action_name].blank?
+        authorised = false
+      elsif allowed_resources.include? resource_ids[resource_model][action_name].to_s
         authorised = true
       end
     end

@@ -81,4 +81,17 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
 
     puts all_acl.to_json
   end
+
+  def create_acl_resources
+    current_acl_resources = Settings.acl.default_resources
+    parsed_json = ActiveSupport::JSON.decode(current_acl_resources)
+    overseer = Overseer.find(153)
+    parsed_json.each do |model|
+      model['children'].each do |resource|
+        AclResource.where(:resource_model_name => model['text'], :resource_action_name => resource['text']).first_or_create! do |acl_res|
+          acl_res.assign_attributes(:overseer => overseer)
+        end
+      end
+    end
+  end
 end

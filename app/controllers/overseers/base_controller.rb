@@ -1,5 +1,5 @@
 class Overseers::BaseController < ApplicationController
-  include Pundit
+  # include Pundit
   # include Acl
 
   class NotAuthorised < StandardError
@@ -17,31 +17,32 @@ class Overseers::BaseController < ApplicationController
 
   def authorize_acl(model, options = {})
     if current_overseer.present?
-      allowed_resources = current_overseer.acl_resources
-      default_resources = Settings.acl.default_resources
-      parsed_json = ActiveSupport::JSON.decode(default_resources)
-      resource_ids = {}
-      parsed_json.map {|x| resource_ids[x['text']] = {}; x['children'].map {|y| resource_ids[x['text']][y['text']] = y['id'] if y['text'].present?}}
-
-      @auth = false
-
-      # model.class.to_s.eql?'Symbol' ? resource_model = model.class.name.downcase : resource_model = model.to_s.gsub(':','')
-
-      if model.is_a?(ActiveRecord::Base)
-        resource_model = model.class.name.underscore.downcase
-      elsif model.is_a?(ActiveRecord::Relation)
-        resource_model = model.klass.name.underscore.downcase
+      @authorized = false
+      if current_overseer.is_super_admin
+        @authorized = true
       else
-        resource_model = model.to_s.gsub(':','')
-      end
+        allowed_resources = current_overseer.acl_resources
+        default_resources = Settings.acl.default_resources
+        parsed_json = ActiveSupport::JSON.decode(default_resources)
+        resource_ids = {}
+        parsed_json.map {|x| resource_ids[x['text']] = {}; x['children'].map {|y| resource_ids[x['text']][y['text']] = y['id'] if y['text'].present?}}
+        # model.class.to_s.eql?'Symbol' ? resource_model = model.class.name.downcase : resource_model = model.to_s.gsub(':','')
 
-      if resource_ids[resource_model][action_name].present?
-        if allowed_resources.include? resource_ids[resource_model][action_name].to_s
-          @auth = true
+        if model.is_a?(ActiveRecord::Base)
+          resource_model = model.class.name.underscore.downcase
+        elsif model.is_a?(ActiveRecord::Relation)
+          resource_model = model.klass.name.underscore.downcase
+        else
+          resource_model = model.to_s.gsub(':', '')
+        end
+
+        if resource_ids[resource_model].blank? || resource_ids[resource_model][action_name].blank?
+          @authorized = false
+        elsif allowed_resources.include? resource_ids[resource_model][action_name].to_s
+          @authorized = true
         end
       end
-
-      if @auth == false
+      if @authorized == false
         message = 'You are not authorized to perform this action.'
         set_flash_message(message, :warning, now: false)
         redirect_to(root_path)

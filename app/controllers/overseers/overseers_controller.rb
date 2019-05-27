@@ -109,7 +109,8 @@ class Overseers::OverseersController < Overseers::BaseController
           :status,
           :password,
           :password_confirmation,
-          :acl_role
+          :acl_role,
+          :is_super_admin
       )
     end
 
