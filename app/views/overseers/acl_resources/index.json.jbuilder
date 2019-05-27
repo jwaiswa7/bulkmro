@@ -3,6 +3,9 @@ json.data (@acl_resources) do |acl_resource|
                   [
                       if is_authorized(acl_resource, 'edit')
                         row_action_button(edit_overseers_acl_resource_path(acl_resource), 'pencil', 'Edit Resource', 'warning', :_blank)
+                      end,
+                      if is_authorized(acl_resource, 'destroy')
+                        row_action_button(overseers_acl_resource_path(acl_resource), 'trash', 'Delete Resource', 'primary', :_blank, 'delete')
                       end
                   ].join(' '),
                   acl_resource.resource_model_name,

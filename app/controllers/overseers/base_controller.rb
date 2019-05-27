@@ -21,8 +21,8 @@ class Overseers::BaseController < ApplicationController
       if current_overseer.is_super_admin
         @authorized = true
       else
-        allowed_resources = current_overseer.acl_resources
-        default_resources = Settings.acl.default_resources
+        allowed_resources = ActiveSupport::JSON.decode(current_overseer.acl_resources)
+        default_resources = Rails.cache.fetch('acl_resource_json')
         parsed_json = ActiveSupport::JSON.decode(default_resources)
         resource_ids = {}
         parsed_json.map {|x| resource_ids[x['text']] = {}; x['children'].map {|y| resource_ids[x['text']][y['text']] = y['id'] if y['text'].present?}}

@@ -1,10 +1,10 @@
 json.data (@overseers) do |overseer|
   json.array! [
                   [
-                      if policy(overseer).edit?
+                      if is_authorized('overseer','edit')
                         row_action_button(edit_overseers_overseer_path(overseer), 'pencil', 'Edit Overseer', 'warning')
                       end,
-                      if policy(overseer).edit?
+                      if is_authorized('overseer','edit')
                         row_action_button(edit_acl_overseers_overseer_path(overseer), 'pencil', 'Edit ACL', 'primary')
                       end
                   ].join(' '),

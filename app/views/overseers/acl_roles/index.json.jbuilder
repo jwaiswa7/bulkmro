@@ -1,7 +1,7 @@
 json.data (@acl_roles) do |acl_role|
   json.array! [
                   [
-                      if policy(acl_role).edit?
+                      if is_authorized('acl_role','edit')
                         row_action_button(edit_overseers_acl_role_path(acl_role), 'pencil', 'Edit Role', 'warning')
                       end,
                   ].join(' '),

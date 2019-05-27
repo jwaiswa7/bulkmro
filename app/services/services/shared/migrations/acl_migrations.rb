@@ -1,4 +1,18 @@
 class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseService
+
+  def get_policies
+    all_policies = {}
+    Dir.glob("/var/www/html/sprint/app/policies/overseers/*") do |policy_file|
+      data = File.read(policy_file)
+      model = File.basename(policy_file, ".rb")
+      policies = []
+      policies = data.scan(/(?:def\ )(?:.*)/)
+      all_policies[model.gsub('_policy','')] = policies.map {|x| x.gsub('def ','').gsub('?','')}
+    end
+    all_policies
+  end
+
+
   def create_acl_roles
 
     all_acl_resources = Settings.acl.default_resources
@@ -26,7 +40,8 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     end
   end
 
-  def get_policies
+  def generate_resource_json
+
     all_policies = {}
     Dir.glob("/var/www/html/sprint/app/policies/overseers/*") do |policy_file|
       data = File.read(policy_file)
@@ -35,10 +50,6 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       policies = data.scan(/(?:def\ )(?:.*)/)
       all_policies[model.gsub('_policy','')] = policies.map {|x| x.gsub('def ','').gsub('?','')}
     end
-    all_policies
-  end
-
-  def generate_resource_json
 
     all_acl = []
     id = 1
