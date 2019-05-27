@@ -279,7 +279,7 @@
                 </div>
               </div>
             <% end %>
-            <% if Rails.env.development? || is_authorized(:dashboard).chewy? %>
+            <% if Rails.env.development? || is_authorized(:dashboard, 'chewy') %>
               <div class="dropdown-submenu">
                 <a class="dropdown-item dropdown-toggle" href="#">Chewy</a>
                 <div class="dropdown-menu">
