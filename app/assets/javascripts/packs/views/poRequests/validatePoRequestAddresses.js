@@ -16,17 +16,19 @@ const validatePoRequestAddresses = () => {
 
             var warehouseStates = $(parsleyInstance.$element[0]).data('warehouse-list').split(',');
 
-            if (selectedBillingSupplierState && selectedShippingSupplierState && !warehouseStates.includes(selectedBillingSupplierState) && !warehouseStates.includes(selectedShippingSupplierState)) {
-                return selectedWarehouseState == locations[2];
+            if (selectedBillingSupplierState && selectedShippingSupplierState && !warehouseStates.includes(selectedBillingSupplierState) && !warehouseStates.includes(selectedShippingSupplierState) && supplier_po_type != "Drop Ship") {
+                return selectedWarehouseState == parseInt(locations[2]);
             }
 
             if (supplier_po_type == "Regular" && selectedBillToCity == selectedShipToCity) {
                 return true;
             }
 
+            if ((supplier_po_type == "Route Through") && selectedWarehouse == locations[0]) {
+                return true;
+            }
 
-
-            if ((supplier_po_type == "Route Through" || supplier_po_type == "Drop Ship") && selectedWarehouse == locations[0]) {
+            if (supplier_po_type == "Drop Ship") {
                 return true;
             }
 
