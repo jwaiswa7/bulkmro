@@ -225,13 +225,15 @@ group :test do
   # gem 'chromedriver-helper'
 end
 
-group :production do
-  gem 'bonsai-elasticsearch-rails', '~> 7'
-end
+# group :production do
+#   gem 'bonsai-elasticsearch-rails', '< 7.0.0'
+# end
+#
+# group :staging do
+#   gem 'bonsai-elasticsearch-rails', '< 7.0.0'
+# end
 
-group :staging do
-  gem 'bonsai-elasticsearch-rails', '~> 7'
-end
+gem 'elasticsearch', '< 7.0.0'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

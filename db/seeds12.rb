@@ -30,6 +30,9 @@ service = Services::Shared::Migrations::Migrations.new(%w( update_purchase_order
 service.call
 
 #update logistics owner for all companies
-service = Services::Shared::Migrations::Migrations.new(%w(update_logistics_owner_for_all_companies), folder: 'seed_files')
+service = Services::Shared::Migrations::Migrations.new(%w(update_logistics_owner_for_list_of_companies), folder: 'seed_files')
 service.call
 
+#update logistics owner for all pos and its inward dispatches
+service = Services::Shared::Migrations::Migrations.new(%w(update_owner_for_pos_and_inward_dispatches), folder: 'seed_files')
+service.call
