@@ -31,7 +31,7 @@ const createOptions = (classname) => {
         },
 
         list: {
-            maxNumberOfElements: 15,
+            maxNumberOfElements: 30,
             match: {
                 enabled: true
             },
