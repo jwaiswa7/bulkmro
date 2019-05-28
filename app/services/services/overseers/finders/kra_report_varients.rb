@@ -64,7 +64,13 @@ class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Fin
         date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
       end
       if @kra_report_params['category'].present?
-        terms_field = @kra_report_params['category'] == 'by_sales_order' ? 'inside_sales_owner_id' : @kra_report_params['category']
+        if @kra_report_params['category'] == 'inside_by_sales_order'
+          terms_field ='inside_sales_owner_id'
+        elsif @kra_report_params['category'] == 'outside_by_sales_order'
+          terms_field ='outside_sales_owner_id'
+        else
+          terms_field = @kra_report_params['category']
+        end
       else
         terms_field = 'inside_sales_owner_id'
       end
