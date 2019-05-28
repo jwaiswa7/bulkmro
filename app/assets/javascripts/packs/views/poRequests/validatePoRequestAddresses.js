@@ -1,7 +1,7 @@
 import disableBackdateOption from './../common/disableBackdateOption'
 
 const validatePoRequestAddresses = () => {
-       window.Parsley.addValidator('locations', {
+    window.Parsley.addValidator('locations', {
         validateString: function (_value, locations, parsleyInstance) {
             var locations = locations.split(',');
             var supplier_po_type = $(parsleyInstance.$element[0]).closest('div.po-request-form').find('select[name*=supplier_po_type]').val();
