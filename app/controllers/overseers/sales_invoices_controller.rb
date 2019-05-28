@@ -91,10 +91,6 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
         :delivery_date,
         :delivery_completed,
-        :committed_delivery_tat,
-        :actual_delivery_tat,
-        :delay,
-        :delay_reason,
         pod_rows_attributes: [
             :id,
             :delivery_date,
