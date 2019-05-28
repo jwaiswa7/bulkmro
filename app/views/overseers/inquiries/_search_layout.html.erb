@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="form-row">
         <div class="col-2">
-          <%= f.input :category, as: :select, collection: [['Inside Sales Owner', 'inside_sales_owner_id'],['Company','company_key']], selected: ( @category if @category.present?),input_html: {class: 'select2-single select2-wrap-text'}, :include_blank => false, label: "Category" %>
+          <%= f.input :category, as: :select, collection: [['Inside Sales Owner by Inquiry', 'inside_sales_owner_id'],['Company','company_key'],['Inside Sales Owner by Sales Order', 'by_sales_order']], selected: ( @category if @category.present?),input_html: {class: 'select2-single select2-wrap-text'}, :include_blank => false, label: "Category" %>
         </div>
         <div class="col-4">
           <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range', :value => (@date_range.present? ? @date_range : '')}, required: false, label: 'Pick a Date Range' %>

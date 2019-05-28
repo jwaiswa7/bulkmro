@@ -1,0 +1,143 @@
+class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Finders::BaseFinder
+  def call
+    call_base
+  end
+
+  def all_records
+    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
+                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+                      else
+                        super
+                      end
+
+    if @status.present?
+      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
+    end
+
+    if search_filters.present?
+      indexed_records = filter_query(indexed_records)
+    end
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+
+    indexed_records = aggregation_kra_report(indexed_records)
+    indexed_records
+  end
+
+  def perform_query(query_string)
+    indexed_records = index_klass.query(
+        multi_match: {
+            query: query_string,
+            operator: 'and',
+            fields: %w[inside_sales_owner]
+        }
+    ).order(sort_definition)
+
+    if current_overseer.present? && !current_overseer.allow_inquiries?
+      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    end
+
+    if @status.present?
+      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
+    end
+
+    if search_filters.present?
+      indexed_records = filter_query(indexed_records)
+    end
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+    indexed_records = aggregation_kra_report(indexed_records)
+    indexed_records
+  end
+
+  def aggregation_kra_report(indexed_records)
+    if @kra_report_params.present?
+      if @kra_report_params['date_range'].present?
+        from = @kra_report_params['date_range'].split('~').first.to_date.strftime('%d-%m-%Y')
+        to = @kra_report_params['date_range'].split('~').last.to_date.strftime('%d-%m-%Y')
+        date_range = {from: from, to: to, key: 'custom-range'}
+      else
+        date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
+      end
+      if @kra_report_params['category'].present?
+        terms_field = @kra_report_params['category'] == 'by_sales_order' ? 'inside_sales_owner_id' : @kra_report_params['category']
+      else
+        terms_field = 'inside_sales_owner_id'
+      end
+    else
+      terms_field = 'inside_sales_owner_id'
+      date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
+    end
+    indexed_records = indexed_records.aggregations(
+        'kra_varient_over_month': {
+            date_range: {
+                field: 'created_at',
+                format: 'dd-MM-yyy',
+                ranges: [
+                    date_range
+                ],
+                keyed: true
+            },
+            aggs: {
+                'sales_orders': {
+                    'terms': {'field': terms_field, size: 10000},
+                    aggs: {
+                        sales_invoices: {
+                            sum: {
+                                field: 'invoices_count'
+                            }
+                        },
+                        sales_orders: {
+                          value_count: {
+                              field: 'created_at'
+                          }
+                        },
+                        total_order_value: {
+                            sum: {
+                                field: 'total_order_value'
+                            }
+                        },
+                        revenue: {
+                            sum: {
+                                field: 'revenue'
+                            }
+                        },
+                        sku: {
+                            sum: {
+                                field: 'sku'
+                            }
+                        },
+                        orders_won: {
+                            sum: {
+                                field: 'order_won'
+                            }
+                        },
+                        clients: {
+                            cardinality: {
+                                field: 'company_key'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    )
+    indexed_records
+  end
+
+  def model_klass
+    if @kra_report_params.present? && @kra_report_params['category'] == 'company_key'
+      Company
+    else
+      Inquiry
+    end
+  end
+
+  def index_klass
+    'KraReportVarientsIndex'.constantize
+  end
+end

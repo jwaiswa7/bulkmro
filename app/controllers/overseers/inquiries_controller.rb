@@ -29,6 +29,16 @@ class Overseers::InquiriesController < Overseers::BaseController
         if params['kra_report'].present?
           @date_range = params['kra_report']['date_range']
           @category = params['kra_report']['category']
+          if @category == 'by_sales_order'
+            @indexed_kra_varient_reports = {}
+
+            varient_service = Services::Overseers::Finders::KraReportVarients.new(params, current_overseer)
+            varient_service.call
+            indexed_kra_varient_reports = varient_service.indexed_records.aggregations['kra_varient_over_month']['buckets']['custom-range']['sales_orders']['buckets']
+            indexed_kra_varient_reports.each do |record|
+              @indexed_kra_varient_reports[record['key']] = record
+            end
+          end
         end
       }
       format.json do
@@ -38,6 +48,16 @@ class Overseers::InquiriesController < Overseers::BaseController
         if params['kra_report'].present?
           @date_range = params['kra_report']['date_range']
           @category = params['kra_report']['category']
+          if @category == 'by_sales_order'
+            @indexed_kra_varient_reports = {}
+
+            varient_service = Services::Overseers::Finders::KraReportVarients.new(params, current_overseer)
+            varient_service.call
+            indexed_kra_varient_reports = varient_service.indexed_records.aggregations['kra_varient_over_month']['buckets']['custom-range']['sales_orders']['buckets']
+            indexed_kra_varient_reports.each do |record|
+              @indexed_kra_varient_reports[record['key']] = record
+            end
+          end
         end
 
         indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
