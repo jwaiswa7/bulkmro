@@ -4,7 +4,7 @@ class PurchaseOrder < ApplicationRecord
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
   update_index('purchase_orders#purchase_order') { self }
-  update_index('customer_order_status_report#sales_order') { self.po_request.sales_order }
+  update_index('customer_order_status_report#sales_order') { self.po_request.sales_order if self.po_request.present? }
 
   pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
 
@@ -29,8 +29,8 @@ class PurchaseOrder < ApplicationRecord
 
   scope :with_includes, -> {includes(:inquiry, :po_request, :company)}
   scope :supplier_email_sent, -> { joins(:email_messages).where(email_messages: { email_type: 'Sending PO to Supplier' })}
-  scope :with_inquiry_by_company, -> (company_id) { joins(:inquiry).where(inquiries: { company_id: company_id }, logistics_owner_id: nil) }
-  scope :with_all_material_statuses, -> { where('material_status IN (?)', [10, 20, 25, 35]) }
+  scope :with_inquiry_by_company, -> (company_id) { joins(:inquiry).where(inquiries: { company_id: company_id }) }
+  scope :with_all_material_statuses, -> { where('material_status IN (?)', [10, 20, 25, 30, 35]) }
 
   def filename(include_extension: false)
     [
