@@ -53,7 +53,6 @@ class InvoiceRequest < ApplicationRecord
   validates_numericality_of :ap_invoice_number, allow_blank: true
   validate :has_attachments?
   validate :grpo_number_valid?
-  validate :grpo_number_valid?
   validate :presence_of_reason
 
   def grpo_number_valid?

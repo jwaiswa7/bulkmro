@@ -6,14 +6,19 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
 
   def call
     @purchase_order = PurchaseOrder.new
-    purchase_order.assign_attributes(set_attributes(po_request))
+    warehouse = Warehouse.where(id: po_request.bill_to.id)
+    series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' ' + Date.today.year.to_s).last
+
+    purchase_order.assign_attributes(set_attributes(po_request, series.last_number))
     if purchase_order.save
       po_request_params = { purchase_order_id: purchase_order.id, status: PoRequest.statuses.key(20) }
       po_request.update_attributes(po_request_params)
+      series.increment_last_number
       doc_num = ::Resources::PurchaseOrder.create(purchase_order)
-      if doc_num.present?
-        series = set_purchase_order_number(po_request)
-        series.increment_last_number
+      if doc_num.present? && doc_num.class == "String"
+        po_request_params = { status: PoRequest.statuses.key(20) }
+        po_request.update_attributes(po_request_params)
+        purchase_order.update_attributes(remote_uid: doc_num)
       end
       po_request.rows.each do |row|
         row_params = { metadata: set_product(row), created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id }
@@ -24,11 +29,11 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     end
   end
 
-  def set_attributes(po_request)
+  def set_attributes(po_request, series_number)
     {
         inquiry_id: po_request.inquiry.id,
-        po_number: set_purchase_order_number(po_request).last_number + 1,
-        metadata: set_metadata(po_request),
+        po_number: series_number,# set_purchase_order_number(po_request).last_number + 1,
+        metadata: set_metadata(po_request, series_number),
         created_by_id: params[:overseer].id,
         updated_by_id: params[:overseer].id,
         status: PurchaseOrder.statuses.key(35),
@@ -39,15 +44,17 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     }
   end
 
-  def set_metadata(po_request)
+  def set_metadata(po_request, series_number)
     {
        PoDate: Time.now.strftime('%Y-%m-%d'),
        PoStatus: '63',
-       DocNum: set_purchase_order_number(po_request).last_number + 1,
+       DocNum: series_number,
        PoSupNum: '',
        PoSupBillFrom: po_request.supplier.billing_address.remote_uid,
        PoSupShipFrom: po_request.supplier.shipping_address.remote_uid,
        PoShippingCost: '0',
+       PoPaymentTerms: po_request.payment_option.name,
+       PoEnquiryId: po_request.inquiry.inquiry_number,
        PoTargetWarehouse: po_request.ship_to.remote_uid,
        DocumentLines: [],
        BPL_IDAssignedToInvoice: po_request.bill_to.remote_branch_code, # warehouse Id
@@ -72,11 +79,6 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     rows_array
   end
 
-  def set_purchase_order_number(po_request)
-    warehouse = Warehouse.where(id: po_request.bill_to.id)
-    series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' 2019').last
-    series
-  end
 
   def set_product(row)
     {

@@ -259,6 +259,6 @@ class SalesOrder < ApplicationRecord
   end
 
   def set_so_status_value
-    self.remote_status.present? ?  SalesOrder.remote_statuses[self.remote_status.to_sym] : 32
+    self.remote_status.present? ? SalesOrder.remote_statuses[self.remote_status.to_sym] : 32
   end
 end

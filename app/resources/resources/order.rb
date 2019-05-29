@@ -67,6 +67,5 @@ class Resources::Order < Resources::ApplicationResource
         U_Over_Marg_Amnt: record.calculated_total_margin,
         BPChannelContact: company_shipping_contact.present? ? company_shipping_contact.remote_uid : nil,
     }
-
   end
 end

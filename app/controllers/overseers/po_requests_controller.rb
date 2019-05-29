@@ -236,7 +236,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def create_purchase_order
     authorize @po_request
     service = Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer))
-    purchase_order =  service.call
+    purchase_order = service.call
     if purchase_order.present?
       redirect_to overseers_inquiry_purchase_order_path(purchase_order.inquiry.to_param, purchase_order.to_param)
     else
@@ -256,7 +256,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_request
     status = Services::Overseers::PurchaseOrders::RejectPurchaseOrder.new(params, @po_request).call
     if status
-      #redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
+      # redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
       render json: {sucess: 'Successfully updated ', url: pending_and_rejected_overseers_po_requests_path }, status: 200
     else
       render json: {error: @po_request.errors }, status: 500

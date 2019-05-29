@@ -205,8 +205,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   def calculation_sheet
     authorize @inquiry
 
-    send_file(
-        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+    send_file("#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
         filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
     )
   end

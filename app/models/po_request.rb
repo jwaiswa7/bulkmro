@@ -36,7 +36,7 @@ class PoRequest < ApplicationRecord
   belongs_to :approved_by, class_name: 'Overseer', foreign_key: 'approved_by_id', required: false
   belongs_to :company, required: false
 
-  delegate :default_billing_address, :default_shipping_address,to: :supplier
+  delegate :default_billing_address, :default_shipping_address, to: :supplier
   enum status: {
       'Supplier PO: Request Pending': 10,
       'Supplier PO: Created Not Sent': 20,
