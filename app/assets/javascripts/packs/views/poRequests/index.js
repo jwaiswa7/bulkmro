@@ -1,5 +1,6 @@
 const index = () => {
-    $('.cancellation-form-moadl').on('change', 'select[name*=rejection_reason]', function (e) {
+
+    $('.cancellation-form-modal').on('change', 'select[name*=rejection_reason]', function (e) {
         if ($(e.target).val() == "Others") {
             $('#other-rejection-reason').removeClass('disabled');
             $('#other-rejection-reason').attr("disabled", false);
