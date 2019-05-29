@@ -10,6 +10,7 @@ class ArInvoiceRequest < ApplicationRecord
   has_many :inward_dispatches
   has_many :outward_dispatches
   validate :presence_of_reason
+  after_save :send_notification_on_status_changed
 
   has_many :rows, class_name: 'ArInvoiceRequestRow', inverse_of: :ar_invoice_request
 
@@ -55,6 +56,40 @@ class ArInvoiceRequest < ApplicationRecord
       self.status = :'Completed AR Invoice Request'
     else
       self.status = status
+    end
+  end
+
+  def send_notification_on_status_changed
+    if self.saved_change_to_status?
+      if self.status == 'AR Invoice requested'
+        tos = Services::Overseers::Notifications::Recipients.ar_invoice_request_notifiers
+        comment = "Ar invoice number#{self.ar_invoice_number} requested"
+      else
+        tos = [self.created_by.email]
+        if status == 'AR Invoice Request Rejected'
+          comment = "Ar invoice number#{self.ar_invoice_number} rejected. Reason: " + self.show_display_reason[:text]
+        elsif status == 'Cancelled AR Invoice'
+          comment = "Ar invoice number#{self.ar_invoice_number} cancelled. Reason: " + self.show_display_reason[:text]
+        elsif self.status == 'Completed AR Invoice Request'
+          comment = "Ar invoice number#{self.ar_invoice_number} completed."
+        end
+      end
+      action_name = ''
+      if self.saved_change_to_id?
+        action_name = 'create'
+        overseer = self.created_by
+      else
+        action_name = 'update'
+        overseer = self.updated_by
+      end
+      @notification = Services::Overseers::Notifications::Notify.new(overseer, self.class.parent)
+      @notification.send_ar_invoice_request_update(
+          tos ,
+          action_name.to_sym,
+          self,
+          "/overseers/ar_invoice_requests/#{self.hashid}",
+          comment,
+          )
     end
   end
 

@@ -12,7 +12,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                       end,
                       if policy(inward_dispatch).delivered? && policy(inward_dispatch).create_ar_invoice?
                         row_action_button(new_overseers_ar_invoice_request_path(sales_order_id: inward_dispatch.sales_order,ids: inward_dispatch.id), 'plus', 'Create AR Invoice Request', 'success', target: :_blank)
-                      elsif inward_dispatch.invoice_request.present? && policy(inward_dispatch.ar_invoice_request).show?
+                      elsif inward_dispatch.ar_invoice_request.present? && policy(inward_dispatch.ar_invoice_request).show?
                         row_action_button(overseers_ar_invoice_request_path(inward_dispatch.ar_invoice_request), 'eye', "View Ar Invoice Request", 'success', target: :_blank)
                       end,
                   ].join(' '),

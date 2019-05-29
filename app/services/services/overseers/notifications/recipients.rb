@@ -7,5 +7,9 @@ class Services::Overseers::Notifications::Recipients
     def logistics_owners
       ['dinesh.kumar@bulkmro.com']
     end
+
+    def ar_invoice_request_notifiers
+      %w(pravin.ganekar@bulkmro.com ajay.kondal@bulkmro.com shweta.jadhav@bulkmro.com)
+    end
   end
 end
