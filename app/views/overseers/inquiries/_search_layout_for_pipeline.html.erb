@@ -22,9 +22,19 @@
                       selected: params['pipeline_report'].present? && params['pipeline_report']['company_alias'].present? ? params['pipeline_report']['company_alias'].to_i : '' %>
         </div>
         <div class="col-12 col-md-3">
-          <%= f.input :sales_executive, as: :select, collection: Overseer.pipeline_executives.alphabetical,
+          <%= f.input :sales_executive, as: :select, collection: Overseer.find(Inquiry.pluck(:inside_sales_owner_id)),
                       input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Owner'}, required: false, include_blank: true,
                       selected: params['pipeline_report'].present? && params['pipeline_report']['sales_executive'].present? ? params['pipeline_report']['sales_executive'].to_i : '' %>
+        </div>
+        <div class="col-12 col-md-3">
+          <%= f.input :outside_sales_owner, as: :select, collection: Overseer.find(Inquiry.pluck(:outside_sales_owner_id)),
+                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a Outside Sales Owner'}, required: false, include_blank: true,
+                      selected: params['pipeline_report'].present? && params['pipeline_report']['outside_sales_owner'].present? ? params['pipeline_report']['outside_sales_owner'].to_i : '' %>
+        </div>
+        <div class="col-12 col-md-3">
+          <%= f.input :procurement_operations, as: :select, collection: Overseer.find(Inquiry.pluck(:procurement_operations_id)),
+                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement_Opreations'}, required: false, include_blank: true,
+                      selected: params['pipeline_report'].present? && params['pipeline_report']['procurement_operations'].present? ? params['pipeline_report']['procurement_operations'].to_i : '' %>
         </div>
         <div class="col-12 col-md-3">
           <%= f.input :sales_manager, as: :select, collection: Overseer.all.map {|o| [o.parent.full_name, o.parent.id] if o.parent.present?}.compact.uniq.sort,

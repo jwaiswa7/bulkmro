@@ -23,7 +23,15 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
     end
     if @pipeline_report_params.present? && @pipeline_report_params['sales_executive'].present?
       executives = @pipeline_report_params['sales_executive'].to_i
-      indexed_records = indexed_records.filter(filter_for_self_and_descendants('inside_sales_owner_id', 'outside_sales_owner_id', [executives]))
+      indexed_records = indexed_records.filter(filter_by_value('inside_sales_owner_id', executives))
+    end
+    if @pipeline_report_params.present? && @pipeline_report_params['outside_sales_owner'].present?
+      executives = @pipeline_report_params['outside_sales_owner'].to_i
+      indexed_records = indexed_records.filter(filter_by_value('outside_sales_owner_id', executives))
+    end
+    if @pipeline_report_params.present? && @pipeline_report_params['procurement_operations'].present?
+      executives = @pipeline_report_params['procurement_operations'].to_i
+      indexed_records = indexed_records.filter(filter_by_value('procurement_operations_id', executives))
     end
     if @pipeline_report_params.present? && @pipeline_report_params['sales_manager'].present?
       sales_executives = sales_executives.map {|o| o if (o.parent_id == @pipeline_report_params['sales_manager'].to_i)}.compact
