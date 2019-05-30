@@ -44,23 +44,27 @@
 
     <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;">
       <thead>
-        <tr>
-          <th></th>
-          <th class="no-sort">ID</th>
-          <th class="no-sort">Supplier name</th>
-        </tr>
+      <tr>
+        <th></th>
+        <th class="no-sort">ID</th>
+        <th class="no-sort">Supplier name</th>
+        <th class="no-sort">State</th>
+        <th class="no-sort">City</th>
+      </tr>
       </thead>
       <% @brand_suppliers.each do |supplier| %>
         <tbody>
-          <tr>
-            <td>
-              <% if policy(@brand).show? %>
-                <%= row_action_button(overseers_company_path(supplier), 'eye', 'View Company Details', 'info') %>
-              <% end %>
-            </td>
-            <td><%= supplier.id %></td>
-            <td><%= supplier.name %></td>
-          </tr>
+        <tr>
+          <td>
+            <% if policy(@brand).show? %>
+              <%= row_action_button(overseers_company_path(supplier), 'eye', 'View Company Details', 'info') %>
+            <% end %>
+          </td>
+          <td><%= supplier.id %></td>
+          <td><%= supplier.name %></td>
+          <td><%= supplier.addresses.present? ? supplier.addresses.first.state.to_s : '-' %></td>
+          <td><%= supplier.addresses.present? ? supplier.addresses.first.city_name : '-' %></td>
+        </tr>
         </tbody>
       <% end %>
     </table>

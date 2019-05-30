@@ -4,7 +4,7 @@ const index = () => {
     updateSummaryBox()
 
     $('.datatable').on('click','.cancel-invoice',function () {
-        if( confirm('Do you want to Cancel the GRPO') ) {
+        if( confirm('Do you want to cancel invoice request') ) {
             var id = $(this).data('invoice-request-id')
             var status = $('.cancellation-form-modal').data('status')
             var $this = $(this)
