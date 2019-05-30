@@ -13,7 +13,7 @@ json.data (@purchase_orders) do |purchase_order|
                       if policy(purchase_order).edit_material_followup?
                         row_action_button(edit_material_followup_overseers_purchase_order_path(purchase_order), 'list-alt', 'Edit Material Followup', 'success', :_blank)
                       end,
-                      if policy(purchase_order).new_inward_dispatch?
+                      if policy(purchase_order).new_inward_dispatch? && policy(purchase_order).edit_material_followup?
                         row_action_button(new_overseers_purchase_order_inward_dispatch_path(purchase_order), 'people-carry', 'Create Inward Dispatch', 'success', target: :_blank)
                       end,
                       if purchase_order.po_request.present? && policy(purchase_order.po_request).new_payment_request?
