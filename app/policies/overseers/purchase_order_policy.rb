@@ -38,7 +38,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def material_readiness_queue?
-    edit?
+    logistics? || admin? || manager_or_sales?
   end
 
   def new_inward_dispatch?

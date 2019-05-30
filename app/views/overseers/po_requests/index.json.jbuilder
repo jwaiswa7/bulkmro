@@ -39,11 +39,6 @@ json.data (@po_requests) do |po_request|
                       else
                         row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'dark disabled')
                       end,
-                      if policy(po_request).dispatch_supplier_delayed_new_email_message? && current_overseer.smtp_password.present?
-                        row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'envelope', 'Dispatch from Supplier Delayed', 'success', :_blank)
-                      else
-                        row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'success disabled')
-                      end,
                       if policy(po_request).material_received_in_bm_warehouse_new_email_msg? && current_overseer.smtp_password.present?
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       else
