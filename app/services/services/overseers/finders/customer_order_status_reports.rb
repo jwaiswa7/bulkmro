@@ -23,7 +23,7 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
       multi_match: {
           query: query_string,
           operator: 'and',
-          fields: %w[inquiry_number_string],
+          fields: %w[inquiry_number_string account company order_number_string],
       }
     ).order(sort_definition)
 
