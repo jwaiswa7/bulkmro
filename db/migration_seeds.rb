@@ -46,3 +46,6 @@ service.call
 
 service = Services::Shared::Migrations::MigrationsV2.new(%w(flex_dump), folder: 'seed_files_3')
 service.call
+
+service = Services::Shared::Migrations::CreditNoteEntries.new(%w(create_credit_note_entries), folder: 'seed_files_3')
+service.call
