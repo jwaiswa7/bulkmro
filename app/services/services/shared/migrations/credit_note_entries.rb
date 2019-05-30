@@ -15,7 +15,7 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
     service = Services::Shared::Spreadsheets::CsvImporter.new('ae_entries.csv', 'seed_files_3')
     duplicate_array = []
 
-    service.loop(5) do |x|
+    service.loop(nil) do |x|
       @order_number = x.get_column('So #')
       @product_sku = x.get_column('Bm #')
       @quantity = x.get_column('Order Qty')
@@ -29,42 +29,38 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
       @tax_type = x.get_column('Tax Type')
       sales_order = SalesOrder.where(order_number: order_number.to_i).last
       inquiry_product = sales_order.sales_quote.rows.joins(:product).where('products.sku = ?', product_sku).first
-      # puts "CURRENT ROW", order_number
-      # puts "IP", inquiry_product
+      puts "**************************CURRENT ROW*******************", order_number
+      puts "***************************IP********************", product_sku
 
       if sales_order.present? && inquiry_product.present?
-        if duplicate_array.present?
-          duplicate_order_number = duplicate_array.map {|k| k.values[0] if k.keys[0] == order_number.to_s }.compact.first
-          if duplicate_order_number.present?
-            # binding.pry
-            duplicate_order = SalesOrder.where(order_number: duplicate_order_number).last
-            create_duplicate_order_rows(duplicate_order, sales_order, product_sku, quantity)
-          end
+        duplicate_order_number = duplicate_array.map {|k| k.values[0] if k.keys[0] == order_number.to_s}.compact.first if duplicate_array.present?
+        if duplicate_array.present? && duplicate_order_number.present?
+          duplicate_order = SalesOrder.where(order_number: duplicate_order_number).last
+          create_duplicate_order_rows(duplicate_order, sales_order, product_sku, quantity)
         else
-          duplicate_order_number = false # ?
-        end
-        if duplicate_order_number.blank?
-          duplicate_sales_order = SalesOrder.new
-          duplicate_sales_order.sales_quote_id = create_sales_quote(sales_order, order_date)
-          duplicate_sales_order.old_order_number = order_number
-          duplicate_sales_order.remote_status = sales_order.remote_status
-          duplicate_sales_order.status = sales_order.status
-          duplicate_sales_order.order_number = i
-          duplicate_sales_order.billing_address_id = sales_order.billing_address_id
-          duplicate_sales_order.shipping_address_id = sales_order.shipping_address_id
-          duplicate_sales_order.created_at = Date.parse(order_date).strftime('%Y-%m-%d')
-          duplicate_sales_order.is_credit_note_entry = true
-          duplicate_sales_order.metadata = {
-              credit_note_entry_for_order: sales_order.order_number
-          }
-          if duplicate_sales_order.save(validate: false)
-            create_duplicate_order_rows(duplicate_sales_order, sales_order, product_sku, quantity)
+          if duplicate_order_number.blank?
+            duplicate_sales_order = SalesOrder.new
+            duplicate_sales_order.sales_quote_id = create_sales_quote(sales_order, order_date)
+            duplicate_sales_order.old_order_number = order_number
+            duplicate_sales_order.remote_status = sales_order.remote_status
+            duplicate_sales_order.status = sales_order.status
+            duplicate_sales_order.order_number = i
+            duplicate_sales_order.billing_address_id = sales_order.billing_address_id
+            duplicate_sales_order.shipping_address_id = sales_order.shipping_address_id
+            duplicate_sales_order.created_at = Date.parse(order_date).strftime('%Y-%m-%d')
+            duplicate_sales_order.is_credit_note_entry = true
+            duplicate_sales_order.metadata = {
+                credit_note_entry_for_order: sales_order.order_number
+            }
+            if duplicate_sales_order.save(validate: false)
+              create_duplicate_order_rows(duplicate_sales_order, sales_order, product_sku, quantity)
+            end
+            i = i + 1
+            order_number_json = {}
+            sales_order.sales_quote.id
+            order_number_json[sales_order.order_number.to_s] = duplicate_sales_order.order_number
+            duplicate_array << order_number_json
           end
-          i = i + 1
-          order_number_json = {}
-          sales_order.sales_quote.id
-          order_number_json[sales_order.order_number.to_s] = duplicate_sales_order.order_number
-          duplicate_array << order_number_json
         end
       else
         missing_sku.push("#{sales_order.order_number}-#{product_sku}")
