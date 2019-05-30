@@ -35,6 +35,9 @@ service.call
 service = Services::Shared::Migrations::MigrationsV2.new(%w(update_mismatching_non_kit_orders), folder: 'seed_files_3')
 service.call
 
+service = Services::Shared::Migrations::MigrationsV2.new(%w(update_vat_entries), folder: 'seed_files_3')
+service.call
+
 service = Services::Shared::Migrations::MigrationsV2.new(%w(create_bible_orders), folder: 'seed_files_3')
 service.call
 
