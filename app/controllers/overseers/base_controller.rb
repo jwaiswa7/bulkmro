@@ -1,5 +1,5 @@
 class Overseers::BaseController < ApplicationController
-  # include Pundit
+  include Pundit
   # include Acl
 
   class NotAuthorised < StandardError

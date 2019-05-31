@@ -105,4 +105,18 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       end
     end
   end
+
+  def get_controller_action_list
+    controllers = []
+    routes= Rails.application.routes.routes.map do |route|
+      controllers << [route.name,route.path.spec.to_s,route.defaults[:controller],route.defaults[:action]].join('===')
+    end
+  end
+
+  def get_view_file_list
+    view_files = []
+    Dir.glob("/var/www/html/sprint/app/views/overseers/*") do |view_file|
+      view_files << view_file
+    end
+  end
 end
