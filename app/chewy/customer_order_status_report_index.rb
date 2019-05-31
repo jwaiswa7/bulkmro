@@ -3,6 +3,12 @@ class CustomerOrderStatusReportIndex < BaseIndex
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
+    field :inside_sales_owner_id, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? }, type: 'integer'
+    field :inside_sales_owner, value: -> (record) { record.inquiry.inside_sales_owner.to_s }, analyzer: 'substring'
+    field :outside_sales_owner_id, value: -> (record) { record.inquiry.outside_sales_owner.id if record.inquiry.outside_sales_owner.present? }
+    field :outside_sales_owner, value: -> (record) { record.inquiry.outside_sales_owner.to_s }, analyzer: 'substring'
+    field :procurement_operations_id, value: -> (record) { record.inquiry.procurement_operations.id if record.inquiry.procurement_operations.present? }
+    field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations.to_s }, analyzer: 'substring'
     field :company_id, value: -> (record) { record.inquiry.company.id if record.inquiry.present? }, type: 'integer'
     field :company, value: -> (record) { record.inquiry.company.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :account_id, value: -> (record) { record.inquiry.account.id if record.inquiry.present? }, type: 'integer'

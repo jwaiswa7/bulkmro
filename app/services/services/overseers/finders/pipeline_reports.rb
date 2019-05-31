@@ -22,7 +22,6 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
       indexed_records = indexed_records.filter(filter_by_value('account_id', inquiry_company))
     end
 
-    binding.pry
     if @pipeline_report_params.present? && @pipeline_report_params['procurement_specialist'].present?
       executives = @pipeline_report_params['procurement_specialist'].to_i
       indexed_records = indexed_records.filter(filter_by_value('inside_sales_owner_id', executives))
