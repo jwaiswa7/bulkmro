@@ -11,7 +11,7 @@ class Services::Overseers::PurchaseOrders::UpdateLogisticsOwner < Services::Shar
       po.comments.create(message: "Logistics Owner Set to #{logistics_owner_name}", overseer: current_overseer)
       po.save
 
-      po.inward_dispatches.where(logistics_owner_id: nil).each do |inward_dispatch|
+      po.inward_dispatches.each do |inward_dispatch|
         inward_dispatch.update_attributes(logistics_owner_id: company.logistics_owner_id)
         inward_dispatch.comments.create(message: "Logistics Owner Set to #{logistics_owner_name}", overseer: current_overseer)
         inward_dispatch.save
