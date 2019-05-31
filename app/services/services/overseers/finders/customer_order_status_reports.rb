@@ -14,6 +14,20 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
       indexed_records = range_query(indexed_records)
     end
 
+    if @customer_order_status_report_params.present?
+      if @customer_order_status_report_params['procurement_specialist'].present?
+        executives = @customer_order_status_report_params['procurement_specialist'].to_i
+        indexed_records = indexed_records.filter(filter_by_value('inside_sales_owner_id', executives))
+      end
+      if @customer_order_status_report_params['outside_sales_owner'].present?
+        executives = @customer_order_status_report_params['outside_sales_owner'].to_i
+        indexed_records = indexed_records.filter(filter_by_value('outside_sales_owner_id', executives))
+      end
+      if @customer_order_status_report_params['procurement_operations'].present?
+        executives = @customer_order_status_report_params['procurement_operations'].to_i
+        indexed_records = indexed_records.filter(filter_by_value('procurement_operations_id', executives))
+      end
+    end
 
     indexed_records
   end
@@ -30,7 +44,6 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
     end
-
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
