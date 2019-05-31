@@ -3,13 +3,13 @@ import easyAutocomplete from "./easyAutocomplete";
 const globalSearch = () => {
     easyAutocomplete('.global-search', createOptions('.global-search'))
     $('.global-search').on('click', function(){
-        $('.tooltip').toggleClass('show')
+        $('[data-toggle="tooltip"]').tooltip("hide");
         gtag('event','click-search', { event_category: 'global-search',  event_label: 'Global search'})
     })
 };
 
 const createOptions = (classname) => {
-    let url = Routes.suggestion_overseers_inquiries_path
+    let url = Routes.suggestion_overseers_inquiries_path;
     let options = {
         url: function(phrase) {
             if (phrase !== "") {
@@ -31,7 +31,7 @@ const createOptions = (classname) => {
         },
 
         list: {
-            maxNumberOfElements: 15,
+            maxNumberOfElements: 30,
             match: {
                 enabled: true
             },
