@@ -111,12 +111,21 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     routes= Rails.application.routes.routes.map do |route|
       controllers << [route.name,route.path.spec.to_s,route.defaults[:controller],route.defaults[:action]].join('===')
     end
+    routes
   end
 
   def get_view_file_list
     view_files = []
     Dir.glob("/var/www/html/sprint/app/views/overseers/*") do |view_file|
       view_files << view_file
+    end
+  end
+
+  def set_super_admins
+    overseers = ['pradeep.ketkale@bulkmro.com','bhargav.trivedi@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com','ruta.kambli@bulkmro.com']
+    overseers.each do | email |
+      overseer = Overseer.find_by_email(email)
+      overseer.update_attribute('is_super_admin ', 1) if overseer.present?
     end
   end
 end
