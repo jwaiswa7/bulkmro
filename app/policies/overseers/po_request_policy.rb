@@ -122,11 +122,11 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def pending_stock_approval?
-    index? && (manager? || admin?)
+    index? && (manager_or_sales? || admin?)
   end
 
   def completed_stock?
-    index? && (logistics? || admin?)
+    index? && (logistics? || manager_or_sales? || admin?)
   end
 
   def can_reject_stock_po?

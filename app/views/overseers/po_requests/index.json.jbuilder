@@ -39,11 +39,6 @@ json.data (@po_requests) do |po_request|
                       else
                         row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'dark disabled')
                       end,
-                      if policy(po_request).dispatch_supplier_delayed_new_email_message? && current_overseer.smtp_password.present?
-                        row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'envelope', 'Dispatch from Supplier Delayed', 'success', :_blank)
-                      else
-                        row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'success disabled')
-                      end,
                       if policy(po_request).material_received_in_bm_warehouse_new_email_msg? && current_overseer.smtp_password.present?
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       else
@@ -54,7 +49,7 @@ json.data (@po_requests) do |po_request|
                       end
 
                   ].join(' '),
-                  attribute_boxes([{ request_number: conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?)}, { inquiry_number: conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?) }, { order: po_request.purchase_order.present? && (po_request.status == 'Supplier PO: Created Not Sent') ? link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank') : link_to(po_request.sales_order.order_number, overseers_inquiry_sales_order_path(po_request.inquiry.id, po_request.sales_order.id), target: '_blank')}]),
+                  attribute_boxes([{ request_number: conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?)}, { inquiry_number: conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?) }, { order: po_request.purchase_order.present? && (po_request.status == 'Supplier PO: Created Not Sent') ? link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank') :  po_request.sales_order.present? ? link_to(po_request.sales_order.order_number, overseers_inquiry_sales_order_path(po_request.inquiry.id, po_request.sales_order.id), target: '_blank') : '-'}]),
                   attribute_boxes([{ supplier: po_request.supplier.present? ? conditional_link(po_request.supplier.to_s, overseers_company_path(po_request.supplier), policy(po_request.supplier).show?) : '-'}, { customer: po_request.inquiry.company.present? ? conditional_link(po_request.inquiry.company.to_s, overseers_company_path(po_request.inquiry.company), policy(po_request.inquiry.company).show?) : '-'}]),
                   attribute_boxes([ { supplier: po_request.supplier_committed_date.present? ? po_request.supplier_committed_date : 'N / A' }, { customer: po_request.inquiry.customer_committed_date }]),
                   attribute_boxes([{ buying: po_request.buying_price }, { selling: po_request.selling_price }]),
