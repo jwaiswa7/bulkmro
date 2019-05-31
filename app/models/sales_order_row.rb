@@ -21,6 +21,7 @@ class SalesOrderRow < ApplicationRecord
   delegate :remote_uid, to: :sales_quote_row
   delegate :best_tax_code, to: :sales_quote_row, allow_nil: true
   delegate :best_tax_rate, to: :sales_quote_row, allow_nil: true
+  delegate :tax_type, to: :sales_quote_row, allow_nil: true
   attr_accessor :tax_percentage
 
   validates_presence_of :quantity

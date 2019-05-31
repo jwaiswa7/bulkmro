@@ -49,3 +49,6 @@ service.call
 
 service = Services::Shared::Migrations::CreditNoteEntries.new(%w(create_credit_note_entries), folder: 'seed_files_3')
 service.call
+
+service = Services::Shared::Migrations::AddTaxTypeInSalesOrderRow.new(%w(add_tax_type_in_sales_order_row), folder: 'seed_files')
+service.call
