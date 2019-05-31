@@ -460,7 +460,6 @@ class Overseers::InquiriesController < Overseers::BaseController
           (inquiries << hash) if !hash.empty?
         end if record.attributes['products'].present?
       end
-
     end
 
     render json: {inquiries: inquiries.uniq}.to_json

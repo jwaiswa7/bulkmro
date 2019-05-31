@@ -39,5 +39,4 @@ class Series < ApplicationRecord
   def increment_last_number
     self.update_attributes(last_number: (self.last_number || self.first_number) + 1)
   end
-
 end

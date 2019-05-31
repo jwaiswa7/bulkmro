@@ -15,7 +15,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
       po_request.update_attributes(po_request_params)
       series.increment_last_number
       doc_num = ::Resources::PurchaseOrder.create(purchase_order)
-      if doc_num.present? && doc_num.class == "String"
+      if doc_num.present? && doc_num.class == 'String'
         po_request_params = { status: PoRequest.statuses.key(20) }
         po_request.update_attributes(po_request_params)
         purchase_order.update_attributes(remote_uid: doc_num)
@@ -32,7 +32,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def set_attributes(po_request, series_number)
     {
         inquiry_id: po_request.inquiry.id,
-        po_number: series_number,# set_purchase_order_number(po_request).last_number + 1,
+        po_number: series_number, # set_purchase_order_number(po_request).last_number + 1,
         metadata: set_metadata(po_request, series_number),
         created_by_id: params[:overseer].id,
         updated_by_id: params[:overseer].id,
