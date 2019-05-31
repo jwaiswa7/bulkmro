@@ -15,7 +15,7 @@ class NewCompanyReportsIndex < BaseIndex
     field :final_sales_quote_total, value: -> (record) {(statuses.include?(record.status) && record.final_sales_quote.present?) ? record.final_sales_quote.try(:calculated_total) : 0}, type: 'double'
     field :final_sales_quote_margin_percentage, value: -> (record) {(statuses.include?(record.status) && record.final_sales_quote.present?) ? record.final_sales_quote.try(:calculated_total_margin_percentage) : 0}, type: 'double'
 
-    field :final_sales_orders, value: -> (record) { record.final_sales_orders.where.not(status: 'Cancelled')}  do
+    field :final_sales_orders, value: -> (record) { record.final_sales_orders.where.not(status: 'Cancelled')} do
       field :calculated_total, type: 'double'
       field :calculated_total_margin, type: 'double'
       field :calculated_total_margin_percentage, type: 'double'
