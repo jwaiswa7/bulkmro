@@ -53,6 +53,6 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   end
 
   def show_pending_ap_invoice_queue?
-    index? && (admin? || accounts?)
+    index? && (admin? || accounts? || manager_or_sales?)
   end
 end
