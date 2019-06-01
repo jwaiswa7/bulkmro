@@ -25,19 +25,26 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize :inquiry
 
     respond_to do |format|
-      format.html {
-        if params['kra_report'].present?
-          @date_range = params['kra_report']['date_range']
-          @category = params['kra_report']['category']
-        end
-      }
+      if params['kra_report'].present?
+        @date_range = params['kra_report']['date_range']
+        @category = params['kra_report']['category']
+      end
+      format.html {}
       format.json do
         service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
         service.call
 
         if params['kra_report'].present?
-          @date_range = params['kra_report']['date_range']
-          @category = params['kra_report']['category']
+          if @category.include? 'by_sales_order'
+            @indexed_kra_varient_reports = {}
+
+            varient_service = Services::Overseers::Finders::KraReportVarients.new(params, current_overseer)
+            varient_service.call
+            indexed_kra_varient_reports = varient_service.indexed_records.aggregations['kra_varient_over_month']['buckets']['custom-range']['sales_orders']['buckets']
+            indexed_kra_varient_reports.each do |record|
+              @indexed_kra_varient_reports[record['key']] = record
+            end
+          end
         end
 
         indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
@@ -479,7 +486,6 @@ class Overseers::InquiriesController < Overseers::BaseController
           (inquiries << hash) if !hash.empty?
         end if record.attributes['products'].present?
       end
-
     end
 
     render json: {inquiries: inquiries.uniq}.to_json
