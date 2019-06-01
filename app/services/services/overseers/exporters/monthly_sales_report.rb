@@ -4,7 +4,7 @@ class Services::Overseers::Exporters::MonthlySalesReport < Services::Overseers::
     @model = Report
     @export_name = 'monthly_sales_report'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['Month','inquiry count', 'sales order count', 'total', 'products count', 'product quantities' ]
+    @columns = ['Month', 'inquiry count', 'sales order count', 'total', 'products count', 'product quantities' ]
   end
 
   def call
@@ -16,9 +16,9 @@ class Services::Overseers::Exporters::MonthlySalesReport < Services::Overseers::
       records = @indexed_records
     end
 
-    records.entries.each do |key,value|
+    records.entries.each do |key, value|
       if key.class != Symbol
-        data = {:record => format_month_without_date(key)}
+        data = {record: format_month_without_date(key)}
         entries = data.merge value
         rows.push(entries)
       end

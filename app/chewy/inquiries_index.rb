@@ -1,5 +1,5 @@
   class InquiriesIndex < BaseIndex
-    statuses = Inquiry.statuses.except("Lead by O/S")
+    statuses = Inquiry.statuses.except('Lead by O/S')
 
     define_type Inquiry.all.with_includes do
       field :id, type: 'integer'
