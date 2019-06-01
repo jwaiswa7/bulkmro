@@ -26,6 +26,13 @@ class SuggestionsIndex < BaseIndex
       end
     end
 
+    field :account do
+      field :id, type: 'text'
+      field :account_autocomplete, type: 'text', value: -> (record) {['Account: ', record.to_s].join(' ')} do
+        field :autocomplete, type: 'text', analyzer: 'autocomplete'
+      end
+    end
+
     field :products do
       field :id, type: 'text'
       field :product_autocomplete, value: -> (record) {['Product: ', record.to_s].join(' ')}, type: 'text' do
