@@ -8,4 +8,7 @@ class Overseers::ReportPolicy < Overseers::ApplicationPolicy
   def show?
     admin?
   end
+  def export_report?
+    show?
+  end
 end
