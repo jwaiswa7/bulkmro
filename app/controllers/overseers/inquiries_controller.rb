@@ -35,7 +35,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         service.call
 
         if params['kra_report'].present?
-          if @category.include?'by_sales_order'
+          if @category.include? 'by_sales_order'
             @indexed_kra_varient_reports = {}
 
             varient_service = Services::Overseers::Finders::KraReportVarients.new(params, current_overseer)
@@ -486,7 +486,6 @@ class Overseers::InquiriesController < Overseers::BaseController
           (inquiries << hash) if !hash.empty?
         end if record.attributes['products'].present?
       end
-
     end
 
     render json: {inquiries: inquiries.uniq}.to_json

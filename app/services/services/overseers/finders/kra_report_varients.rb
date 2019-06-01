@@ -5,10 +5,10 @@ class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Fin
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-                      else
-                        super
-                      end
+      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    else
+      super
+    end
 
     if @status.present?
       indexed_records = indexed_records.filter(filter_by_value(:status, @status))
@@ -28,11 +28,11 @@ class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Fin
 
   def perform_query(query_string)
     indexed_records = index_klass.query(
-        multi_match: {
-            query: query_string,
-            operator: 'and',
-            fields: %w[inside_sales_owner]
-        }
+      multi_match: {
+          query: query_string,
+          operator: 'and',
+          fields: %w[inside_sales_owner]
+      }
     ).order(sort_definition)
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
@@ -64,10 +64,10 @@ class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Fin
         date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
       end
       if @kra_report_params['category'].present?
-        if @kra_report_params['category'].include?'inside'
-          terms_field ='inside_sales_owner_id'
-        elsif @kra_report_params['category'].include?'outside'
-          terms_field ='outside_sales_owner_id'
+        if @kra_report_params['category'].include? 'inside'
+          terms_field = 'inside_sales_owner_id'
+        elsif @kra_report_params['category'].include? 'outside'
+          terms_field = 'outside_sales_owner_id'
         else
           terms_field = @kra_report_params['category']
         end
@@ -79,58 +79,58 @@ class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Fin
       date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
     end
     indexed_records = indexed_records.aggregations(
-        'kra_varient_over_month': {
-            date_range: {
-                field: 'created_at',
-                format: 'dd-MM-yyy',
-                ranges: [
-                    date_range
-                ],
-                keyed: true
-            },
-            aggs: {
-                'sales_orders': {
-                    'terms': {'field': terms_field, size: 10000},
-                    aggs: {
-                        sales_invoices: {
-                            sum: {
-                                field: 'invoices_count'
-                            }
-                        },
-                        sales_orders: {
-                          value_count: {
-                              field: 'created_at'
+      'kra_varient_over_month': {
+          date_range: {
+              field: 'created_at',
+              format: 'dd-MM-yyy',
+              ranges: [
+                  date_range
+              ],
+              keyed: true
+          },
+          aggs: {
+              'sales_orders': {
+                  'terms': {'field': terms_field, size: 10000},
+                  aggs: {
+                      sales_invoices: {
+                          sum: {
+                              field: 'invoices_count'
                           }
-                        },
-                        total_order_value: {
-                            sum: {
-                                field: 'total_order_value'
-                            }
-                        },
-                        revenue: {
-                            sum: {
-                                field: 'revenue'
-                            }
-                        },
-                        sku: {
-                            sum: {
-                                field: 'sku'
-                            }
-                        },
-                        orders_won: {
-                            sum: {
-                                field: 'order_won'
-                            }
-                        },
-                        clients: {
-                            cardinality: {
-                                field: 'company_key'
-                            }
+                      },
+                      sales_orders: {
+                        value_count: {
+                            field: 'created_at'
                         }
-                    }
-                }
-            }
-        }
+                      },
+                      total_order_value: {
+                          sum: {
+                              field: 'total_order_value'
+                          }
+                      },
+                      revenue: {
+                          sum: {
+                              field: 'revenue'
+                          }
+                      },
+                      sku: {
+                          sum: {
+                              field: 'sku'
+                          }
+                      },
+                      orders_won: {
+                          sum: {
+                              field: 'order_won'
+                          }
+                      },
+                      clients: {
+                          cardinality: {
+                              field: 'company_key'
+                          }
+                      }
+                  }
+              }
+          }
+      }
     )
     indexed_records
   end
