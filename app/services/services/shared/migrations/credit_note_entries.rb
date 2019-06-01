@@ -11,7 +11,7 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
     @margin_value = ''
     @tax_amount_value = ''
     missing_sku = []
-    i = 1
+    i = 8888888881
     service = Services::Shared::Spreadsheets::CsvImporter.new('ae_entries.csv', 'seed_files_3')
     duplicate_array = []
 
@@ -49,9 +49,7 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
             duplicate_sales_order.shipping_address_id = sales_order.shipping_address_id
             duplicate_sales_order.created_at = Date.parse(order_date).strftime('%Y-%m-%d')
             duplicate_sales_order.is_credit_note_entry = true
-            duplicate_sales_order.metadata = {
-                credit_note_entry_for_order: sales_order.order_number
-            }
+            duplicate_sales_order.parent_id = sales_order.order_number
             if duplicate_sales_order.save(validate: false)
               create_duplicate_order_rows(duplicate_sales_order, sales_order, product_sku, quantity)
             end
@@ -98,9 +96,13 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
     if inquiry_supplier_id.present?
       quote_row.sales_quote_id = sales_quote.id
       quote_row.quantity = quantity
-      quote_row.tax_code_id = product.tax_code.id
-      quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_rate.split('.').first).id || product.tax_rate_id
-      quote_row.tax_type = tax_type
+      if x.get_column('Tax Type').present? && (x.get_column('Tax Type').include?('VAT') || x.get_column('Tax Type').include?('CST') ||  x.get_column('Tax Type').include?('Service'))
+        quote_row.tax_code_id = nil
+        quote_row.tax_type = tax_type
+      else
+        quote_row.tax_code_id = product.tax_code.id
+      end
+      quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(x.get_column('Tax Type').split('%')[0]).id || product.tax_rate_id
       quote_row.legacy_applicable_tax_percentage = tax_rate.to_d
       quote_row.inquiry_product_supplier_id = inquiry_supplier_id
       quote_row.margin_percentage = margin_percentage
