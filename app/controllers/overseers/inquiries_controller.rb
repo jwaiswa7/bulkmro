@@ -25,14 +25,16 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize :inquiry
 
     respond_to do |format|
+      if params['kra_report'].present?
+        @date_range = params['kra_report']['date_range']
+        @category = params['kra_report']['category']
+      end
       format.html {}
       format.json do
         service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
         service.call
 
         if params['kra_report'].present?
-          @date_range = params['kra_report']['date_range']
-          @category = params['kra_report']['category']
           if @category.include?'by_sales_order'
             @indexed_kra_varient_reports = {}
 
