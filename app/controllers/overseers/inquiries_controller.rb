@@ -377,6 +377,24 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def export_pipeline_report
+    authorize :inquiry
+    service = Services::Overseers::Finders::PipelineReports.new(params, current_overseer)
+    service.call
+
+    indexed_pipeline_report = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['inquiries_over_time']['buckets']
+    if params['pipeline_report'].present?
+      date_range = params['pipeline_report']['date_range']
+    else
+      date_range = 'Overall'
+    end
+
+    export_service = Services::Overseers::Exporters::PipelineReportsExporter.new([], current_overseer, indexed_pipeline_report, date_range)
+    export_service.call
+
+    redirect_to url_for(Export.pipeline_report.not_filtered.last.report)
+  end
+
   def bulk_update
     authorize :inquiry
 
