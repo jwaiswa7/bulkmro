@@ -2,26 +2,26 @@ json.data (@activities) do |activity|
   json.array! [
 
                   [
-                      if policy(:activity).perform_actions?;
+                      if is_authorized(:activity, 'perform_actions');
                         "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='activities[]' class='custom-control-input' value='#{activity.id}' id='c-#{activity.id}'><label class='custom-control-label' for='c-#{activity.id}'></label></div>"
                       end,
-                      if policy(activity).edit?;
+                      if is_authorized(activity, 'edit');
                         row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning', :_blank)
                       end,
-                      if activity.company_creation_request.present? && !activity.company_creation_request.company_id.present? && activity.company_creation_request.present? && policy(activity.company_creation_request).show?;
+                      if activity.company_creation_request.present? && !activity.company_creation_request.company_id.present? && activity.company_creation_request.present? && is_authorized(activity.company_creation_request, 'show');
                         row_action_button(overseers_company_creation_request_path(activity.company_creation_request), 'eye', 'View Company Creation Request', 'info', :_blank)
                       end,
-                      if activity.contact_creation_request.present? && !activity.contact_creation_request.contact_id.present? && activity.contact_creation_request.present? && policy(activity.contact_creation_request).show?;
+                      if activity.contact_creation_request.present? && !activity.contact_creation_request.contact_id.present? && activity.contact_creation_request.present? && is_authorized(activity.contact_creation_request, 'show');
                         row_action_button(overseers_contact_creation_request_path(activity.contact_creation_request), 'eye', 'View Contact Creation Request', 'info', :_blank)
                       end,
                   ].join(' '),
                   activity.created_by.to_s,
                   format_date(activity.activity_date),
                   if activity.activity_account.present?
-                    conditional_link(activity.activity_account.to_s, overseers_account_path(activity.activity_account), policy(activity.activity_account))
+                    conditional_link(activity.activity_account.to_s, overseers_account_path(activity.activity_account), is_authorized(activity, 'activity_account'))
                   end,
                   if activity.activity_company.present?
-                    conditional_link(activity.activity_company.to_s, overseers_company_path(activity.activity_company), policy(activity.activity_company))
+                    conditional_link(activity.activity_company.to_s, overseers_company_path(activity.activity_company), is_authorized(activity, 'activity_company'))
                   elsif activity.company_creation_request.present?
                     activity.company_creation_request.name
                   else
