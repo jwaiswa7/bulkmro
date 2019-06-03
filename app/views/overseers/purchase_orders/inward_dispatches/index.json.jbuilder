@@ -1,16 +1,16 @@
 json.data (@kits) do |kit|
   json.array! [
                   [
-                      if policy(kit).show?
+                      if is_authorized(kit, 'show')
                         row_action_button(overseers_kit_path(kit), 'eye', 'View Kit', 'info', :_blank)
                       end,
-                      if policy(kit).edit?
+                      if is_authorized(kit, 'edit')
                         row_action_button(edit_overseers_kit_path(kit), 'pencil', 'Edit Kit', 'warning', :_blank)
                       end
                   ].join(' '),
                   kit.product.name,
                   kit.product.sku,
-                  conditional_link(kit.inquiry.inquiry_number, edit_overseers_inquiry_path(kit.inquiry), policy(kit.inquiry).edit?),
+                  conditional_link(kit.inquiry.inquiry_number, edit_overseers_inquiry_path(kit.inquiry), is_authorized(kit.inquiry, 'edit')),
                   kit.inquiry.inside_sales_owner.full_name,
                   kit.product.brand.to_s,
                   kit.product.category.name,

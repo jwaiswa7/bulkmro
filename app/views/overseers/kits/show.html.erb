@@ -4,7 +4,7 @@
       <h3 class="display-5 d-flex align-items-center">
         <%= @kit.product.name %>
       </h3>
-      <% if policy(@kit).edit? %>
+      <% if is_authorized(@kit, 'edit') %>
         <a href="<%= edit_overseers_kit_path(@kit) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
           Kit</a>
       <% end %>
@@ -20,7 +20,7 @@
             <% if @kit.inquiry.inquiry_number? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Inquiry</strong>
-                <%= conditional_link(@kit.inquiry.inquiry_number, edit_overseers_inquiry_path(@kit.inquiry), policy(@kit.inquiry).edit?) %>
+                <%= conditional_link(@kit.inquiry.inquiry_number, edit_overseers_inquiry_path(@kit.inquiry), is_authorized(@kit.inquiry, 'edit')) %>
               </div>
             <% end %>
 

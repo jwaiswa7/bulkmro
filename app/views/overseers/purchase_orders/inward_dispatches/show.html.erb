@@ -5,24 +5,24 @@
         Inward Dispatch for #<%= @inward_dispatch.purchase_order.po_number %>
       </h3>
       <span>
-        <% if policy(@inward_dispatch).edit? %>
+        <% if is_authorized(@inward_dispatch, 'edit') %>
         <a href="<%= edit_overseers_purchase_order_inward_dispatch_path(@inward_dispatch.purchase_order, @inward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>
           Edit Inward Dispatch</a>
       <% end %>
-        <% if policy(@inward_dispatch).confirm_delivery? %>
+        <% if is_authorized(@inward_dispatch, 'confirm_delivery') %>
         <a href="<%= confirm_delivery_overseers_purchase_order_inward_dispatch_path(@inward_dispatch.purchase_order, @inward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-check mr-1"></i>
           Confirm Delivery</a>
       <% end %>
-        <% if policy(@inward_dispatch).delivered? && policy(@inward_dispatch.purchase_order).can_request_invoice? %>
+        <% if is_authorized(@inward_dispatch, 'delivered') && is_authorized(@inward_dispatch.purchase_order, 'can_request_invoice') %>
         <a href="<%= new_overseers_invoice_request_path(purchase_order_id: @inward_dispatch.purchase_order, inward_dispatch_id: @inward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>
           Create GRPO Request</a>
       <% end %>
 
-        <% if @inward_dispatch.purchase_order.po_request.present? && policy(@inward_dispatch).delivered? && policy(@inward_dispatch.purchase_order.po_request).new_payment_request? %>
+        <% if @inward_dispatch.purchase_order.po_request.present? && is_authorized(@inward_dispatch, 'delivered') && is_authorized(@inward_dispatch.purchase_order.po_request, 'new_payment_request') %>
 
             <a href="<%= new_overseers_po_request_payment_request_path(@inward_dispatch.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i> Create Payment Request
             </a>
-              <% elsif @inward_dispatch.purchase_order.po_request.present? && policy(@inward_dispatch).delivered? && policy(@inward_dispatch.purchase_order.po_request).show_payment_request? %>
+              <% elsif @inward_dispatch.purchase_order.po_request.present? && is_authorized(@inward_dispatch, 'delivered') && is_authorized(@inward_dispatch.purchase_order.po_request, 'show_payment_request') %>
               <a href="<%= overseers_po_request_payment_request_path(@inward_dispatch.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>
                 View Payment Request</a>
         <% end %>
@@ -160,7 +160,7 @@
                   <% if @po_request.inquiry.present? %>
                     <div class="col-6 col-md-3 mb-2">
                       <strong class="d-block">Inquiry #</strong>
-                      <% if policy(@po_request.inquiry).edit? %>
+                      <% if is_authorized(@po_request.inquiry, 'edit') %>
                         <%= link_to overseers_inquiry_path(@po_request.inquiry), target: '_blank' do %>
                           <%= format_id(@po_request.inquiry.inquiry_number) %>
                         <% end %>
@@ -278,7 +278,7 @@
                           <i class="fal fa-download"></i>
                           <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                             <i class="fal fa-trash-alt"></i>
-                          <% end if attachment.present? && policy(:attachment).destroy? %>
+                          <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
                         <% end %>
                       <% end %>
                     </div>
