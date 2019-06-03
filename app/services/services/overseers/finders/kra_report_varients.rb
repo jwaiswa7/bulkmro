@@ -1,4 +1,4 @@
-class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::BaseFinder
+class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Finders::BaseFinder
   def call
     call_base
   end
@@ -79,7 +79,7 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
       date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
     end
     indexed_records = indexed_records.aggregations(
-      'kra_over_month': {
+      'kra_varient_over_month': {
           date_range: {
               field: 'created_at',
               format: 'dd-MM-yyy',
@@ -89,7 +89,7 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
               keyed: true
           },
           aggs: {
-              'inquiries': {
+              'sales_orders': {
                   'terms': {'field': terms_field, size: 10000},
                   aggs: {
                       sales_invoices: {
@@ -97,30 +97,10 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
                               field: 'invoices_count'
                           }
                       },
-                      sales_quotes: {
-                          sum: {
-                              field: 'sales_quote_count'
-                          }
-                      },
                       sales_orders: {
-                          sum: {
-                              field: 'sales_order_count'
-                          }
-                      },
-                      expected_orders: {
-                          sum: {
-                              field: 'expected_order'
-                          }
-                      },
-                      orders_won: {
-                          sum: {
-                              field: 'order_won'
-                          }
-                      },
-                      total_sales_value: {
-                          sum: {
-                              field: 'total_quote_value'
-                          }
+                        value_count: {
+                            field: 'created_at'
+                        }
                       },
                       total_order_value: {
                           sum: {
@@ -137,6 +117,11 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
                               field: 'sku'
                           }
                       },
+                      orders_won: {
+                          sum: {
+                              field: 'order_won'
+                          }
+                      },
                       clients: {
                           cardinality: {
                               field: 'company_key'
@@ -146,7 +131,7 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
               }
           }
       }
-      )
+    )
     indexed_records
   end
 
@@ -159,6 +144,6 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
   end
 
   def index_klass
-    'KraReportsIndex'.constantize
+    'KraReportVarientsIndex'.constantize
   end
 end

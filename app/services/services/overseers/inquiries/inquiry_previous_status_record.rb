@@ -4,7 +4,7 @@ class Services::Overseers::Inquiries::InquiryPreviousStatusRecord < Services::Sh
   end
 
   def call
-    stat = { 'Lead by O/S' => 0, 'New Inquiry' => 1, 'Acknowledgement Mail' => 2, 'Cross Reference' => 3, 'Supplier RFQ Sent' => 4, 'Preparing Quotation' => 5, 'Quotation Sent' => 6, 'Follow Up on Quotation' => 7, 'Expected Order' => 8, 'SO Not Created-Customer PO Awaited' => 9, 'SO Not Created-Pending Customer PO Revision' => 10, 'Draft SO for Approval by Sales Manager' => 11, 'SO Rejected by Sales Manager' => 12, 'SO Draft: Pending Accounts Approval' => 13, 'Rejected by Accounts' => 14, 'SAP Rejected' => 15, 'Hold by Accounts' => 16, 'Order Won' => 17, 'Order Lost' => 18, 'Regret' => 19}
+    stat = { 'New Inquiry' => 1, 'Acknowledgement Mail' => 2, 'Cross Reference' => 3, 'Supplier RFQ Sent' => 4, 'Preparing Quotation' => 5, 'Quotation Sent' => 6, 'Follow Up on Quotation' => 7, 'Expected Order' => 8, 'SO Not Created-Customer PO Awaited' => 9, 'SO Not Created-Pending Customer PO Revision' => 10, 'Draft SO for Approval by Sales Manager' => 11, 'SO Rejected by Sales Manager' => 12, 'SO Draft: Pending Accounts Approval' => 13, 'Rejected by Accounts' => 14, 'SAP Rejected' => 15, 'Hold by Accounts' => 16, 'Order Won' => 17, 'Order Lost' => 18, 'Regret' => 19}
     # status_records = InquiryStatusRecord.where(inquiry_id: i.id).order('id DESC')
     if status_record.present? && status_record.inquiry.inquiry_status_records.count > 1 && !(status_record.status == 'New Inquiry' && stat[status_record.status].present?)
       keys = stat.select {|key, val| val < stat[status_record.status]}.reverse_each.to_h.keys

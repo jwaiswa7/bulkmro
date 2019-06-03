@@ -16,31 +16,36 @@
   Reports
 <% end %>
 
+<%= render layout: 'search_layout' do %>
+<% end %>
+
 
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
-    <th class="no-sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
-    <th class="no-sort desktop" data-name="company">Company.</th>
-    <th class="no-sort desktop text-right" data-name="order_number">Sales Order #</th>
-    <th class="no-sort desktop text-right" data-name="mis_date">Sales Order Date</th>
-    <th class="no-sort desktop text-right" data-name="invoice_total">Committed Customer<br> Delivery Date</th>
-    <th class="no-sort desktop text-right">Supplier PO No.</th>
+    <th class="no-sort desktop text-left" data-name="inquiry_number">Inquiry #</th>
+    <th class="no-sort desktop text-left" data-name="company">Company.</th>
+    <th class="no-sort desktop text-left" data-name="account">Account</th>
+    <th class="no-sort desktop text-left" data-name="order_number">Sales Order #</th>
+    <th class="no-sort desktop text-left" data-name="mis_date">Sales Order Date</th>
+    <th class="no-sort desktop text-left" data-name="invoice_total">Committed Customer<br> Delivery Date</th>
+    <th class="no-sort desktop text-left">Supplier PO No.</th>
     <th class="no-sort desktop">Supplier Name</th>
-    <th class="no-sort desktop text-right">PO Request <br>Date</th>
-    <th class="no-sort desktop text-right">PO Date</th>
-    <th class="no-sort desktop text-right">PO Sent to <br>Supplier Date</th>
-    <th class="no-sort desktop text-right">Payment Request<br> Date</th>
-    <th class="no-sort desktop text-right">Payment Date</th>
-    <th class="no-sort desktop text-right">Committed Date of <br>Material Readiness</th>
-    <th class="no-sort desktop text-right">Actual Date of <br>Material Readiness</th>
-    <th class="no-sort desktop text-right">Date of Pickup</th>
-    <th class="no-sort desktop text-right">Date of Inward</th>
-    <th class="no-sort desktop text-right">Date of Outward</th>
-    <th class="no-sort desktop text-right">Date of Customer Delivery</th>
-    <th class="no-sort desktop text-right">On Time / Delayed <br>(viz. customer committed date)</th>
+    <th class="no-sort desktop text-left">PO Request <br>Date</th>
+    <th class="no-sort desktop text-left">PO Date</th>
+    <th class="no-sort desktop text-left">PO Sent to <br>Supplier Date</th>
+    <th class="no-sort desktop text-left">Payment Request<br> Date</th>
+    <th class="no-sort desktop text-left">Payment Date</th>
+    <th class="no-sort desktop text-left">Committed Date of <br>Material Readiness</th>
+    <th class="no-sort desktop text-left">Actual Date of <br>Material Readiness</th>
+    <th class="no-sort desktop text-left">Date of Pickup</th>
+    <th class="no-sort desktop text-left">Date of Inward</th>
+    <th class="no-sort desktop text-left">Date of Outward</th>
+    <th class="no-sort desktop text-left">Date of Customer Delivery</th>
+    <th class="no-sort desktop text-left">On Time / Delayed <br>(viz. customer committed date)</th>
   <% end %>
   <% content_for :filter_row do %>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
