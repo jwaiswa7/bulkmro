@@ -24,12 +24,12 @@
       <% @imports.each do |import| %>
         <tr>
           <td>
-            <% if policy(import).show? && import.excel? && import.file.attached? %>
+            <% if is_authorized(import,'show') && import.excel? && import.file.attached? %>
               <%= row_action_button(url_for(import.file), 'download', 'Raw Data', 'dark', :_blank) %>
-            <% elsif policy(import).show? %>
+            <% elsif is_authorized(import,'show') %>
               <%= row_action_button(overseers_inquiry_import_path(@inquiry, import, format: :text), 'eye', 'Raw Text', 'warning', :_blank) %>
             <% end %>
-            <%= if policy(import).manage_failed_skus?;
+            <%= if is_authorized(import,'manage_failed_skus');
                   row_action_button(manage_failed_skus_overseers_inquiry_import_path(@inquiry, import), 'redo', 'Manage Failed SKUs', 'warning');
                 end %>
           </td>
