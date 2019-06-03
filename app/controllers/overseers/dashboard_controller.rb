@@ -2,7 +2,7 @@ class Overseers::DashboardController < Overseers::BaseController
   skip_before_action :authenticate_overseer!, only: :migrations
 
   def show
-    # authorize_acl :dashboard, :show?
+    authorize_acl :dashboard
 
     if Rails.env.development?
       render 'default_dashboard'

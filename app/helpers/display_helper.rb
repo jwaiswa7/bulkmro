@@ -302,9 +302,10 @@ module DisplayHelper
         resource_model = model.to_s.gsub(':', '')
       end
 
+      # raise if resource_model == 'remote_request'
       if resource_ids[resource_model].blank? || resource_ids[resource_model][action_name].blank?
         authorised = false
-      elsif allowed_resources.include? resource_ids[resource_model][action_name].to_s
+      elsif allowed_resources.include? resource_ids[resource_model][action_name]
         authorised = true
       end
     end
@@ -326,11 +327,22 @@ module DisplayHelper
         end
 
         models << acl_resource.resource_model_name
+
+        #Parent Node
         acl_parent = OpenStruct.new
         acl_parent.id = acl_resource.id
         acl_parent.text = acl_resource.resource_model_name
         acl_parent.checked = false
         acl_parent.hasChildren = true
+
+        #First Child Node
+        acl_row = OpenStruct.new
+        acl_row.id = acl_resource.id
+        acl_row.text = acl_resource.resource_action_name
+        acl_row.checked = false
+        acl_row.hasChildren = false
+        children.push(acl_row.marshal_dump)
+
       else
         acl_row = OpenStruct.new
         acl_row.id = acl_resource.id
@@ -341,6 +353,7 @@ module DisplayHelper
       end
     end
 
+    #Last child node
     if children.present? && children.size > 0
       acl_parent.children = children
       resource_json.push(acl_parent.marshal_dump)
