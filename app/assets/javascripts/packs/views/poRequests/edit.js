@@ -9,10 +9,16 @@ const edit = () => {
     openRatingModal()
     let form_original_data = $("form").serializeArray();
 
+    let required_fields = $('form').find("select, textarea, input").filter('[required]:visible');
     $('form').on('change', 'select[name*=status]', function (e) {
         if ($(e.target).val() == "Cancelled") {
             $('.status-cancelled').removeClass('d-none');
             $('.status-cancelled').find('textarea').attr("required", true);
+            required_fields.each(function (i, requiredField) {
+                $(requiredField).removeAttr('required');
+                let described_by = $(requiredField).data('parsley-id');
+                $('div#parsley-id-' + described_by).text('');
+            });
         } else if ($(e.target).val() == "Supplier PO Request Rejected") {
             $('.status-rejected').removeClass('d-none');
             $('.status-rejected').find('select').attr("required", true);
@@ -20,6 +26,9 @@ const edit = () => {
         if ($(e.target).val() != "Cancelled") {
             $('.status-cancelled').addClass('d-none');
             $('.status-cancelled').find('textarea').val('').attr("required", false);
+            required_fields.each(function (i, requiredField) {
+                $(requiredField).attr('required', true);
+            });
         }
         if ($(e.target).val() != "Supplier PO Request Rejected") {
             $('.status-rejected').addClass('d-none');
