@@ -2,10 +2,10 @@ json.data (@addresses) do |address|
   json.array! [
 
                   [
-                      if policy(address).show?
+                      if is_authorized(address, 'show')
                         row_action_button(overseers_company_address_path(address.company, address), 'fal fa-eye', 'View Address', 'info', :_blank)
                       end,
-                      if policy(address).edit?
+                      if is_authorized(address, 'edit')
                         row_action_button(edit_overseers_company_address_path(address.company, address), 'pencil', 'Edit Address', 'warning', :_blank)
                       end,
                   ].join(' '),

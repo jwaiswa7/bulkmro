@@ -9,11 +9,11 @@
           <a href="<%= overseers_kit_path(@product.kit) %>" class="btn btn-info btn-rounded align-self-center btn-block-sm-down mr-1"><i class="fal fa-eye mr-1"></i>View
             Kit</a>
         <% end %>
-        <% if policy(@product).edit? %>
+        <% if is_authorized(@product, 'edit') %>
           <a href="<%= edit_overseers_product_path(@product) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down mr-1 mt-1 mt-md-0"><i class="fal fa-pen mr-1"></i>Edit
             Product</a>
         <% end %>
-        <% if policy(@product).resync_inventory? %>
+        <% if is_authorized(@product, 'resync_inventory') %>
           <a href="<%= resync_inventory_overseers_product_path(@product) %>" class="btn btn-primary btn-rounded align-self-center btn-block-sm-down mt-1 mt-md-0"><i class="fal fa-pen mr-1"></i>Resync
             Inventory</a>
         <% end %>
@@ -160,7 +160,7 @@
     </div>
   </section>
 
-  <% if @product.inquiry_products.any? && policy(@product).sku_purchase_history? %>
+  <% if @product.inquiry_products.any? && is_authorized(@product, 'sku_purchase_history') %>
     <div class="d-md-flex justify-content-between mt-5">
       <h3 class="display-5 mb-1">Purchase History</h3>
     </div>
@@ -187,7 +187,7 @@
         <% inquiry_product.inquiry_product_suppliers.each do |inquiry_product_supplier| %>
           <tr>
             <td>
-              <% if policy(inquiry_product.inquiry).edit? %>
+              <% if is_authorized(inquiry_product.inquiry, 'edit') %>
                 <%= row_action_button(edit_overseers_inquiry_path(inquiry_product.inquiry), 'pencil', 'Edit Inquiry', 'warning') %>
               <% end %>
             </td>

@@ -29,7 +29,7 @@
                       <i class="fal fa-download"></i>
                       <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
                         <i class="fal fa-trash-alt"></i>
-                      <% end if attachment.present? && policy(:attachment).destroy? %>
+                      <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
                     <% end %>
                   <% end if f.object.attachments.attached? %>
                 </div>
@@ -75,13 +75,13 @@
           </div>
           <div class="form-row mt-2">
             <% if @activity.persisted? && !(@activity.approved? || @activity.rejected?) %>
-              <% if policy(@activity).approve? %>
+              <% if is_authorized(@activity, 'approve') %>
                 <div class="col-md-6">
                   <a href="<%= approve_overseers_activity_path(@activity) %>" class="btn-block btn btn-success"><i class="fal fa-check mr-1"></i>
                     Approve</a>
                 </div>
               <% end %>
-              <% if policy(@activity).reject? %>
+              <% if is_authorized(@activity, 'reject') %>
                 <div class="col-md-6">
                   <a href="<%= reject_overseers_activity_path(@activity) %>" class="btn-block btn btn-danger"><i class="fal fa-times mr-1"></i>Reject</a>
                 </div>
