@@ -17,12 +17,12 @@
         <tr>
           <td>
             <%= row_action_button(relationship_map_overseers_inquiry_purchase_order_path(@inquiry.to_param, purchase_order.to_param), 'sitemap', 'Relationship Map', 'info', :_blank) %>
-            <% if policy(purchase_order).show? %>
+            <% if is_authorized(purchase_order,'show') %>
               <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, purchase_order), 'eye', 'View Purchase Order ', 'info') %>
               <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
             <% end %>
 
-            <% if policy(purchase_order).show_document? %>
+            <% if is_authorized(purchase_order,'show_document') %>
               <%= row_action_button(url_for(purchase_order.document), 'file-pdf', purchase_order.document.filename, 'dark', :_blank) %>
             <% end %>
           </td>

@@ -11,7 +11,7 @@
 <% end %>
 
 <% content_for(:heading_buttons) do %>
-  <% if policy(:po_request).index? %>
+  <% if is_authorized(:po_request, 'index') %>
     <a href="<%= overseers_po_requests_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
       <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
     </a>

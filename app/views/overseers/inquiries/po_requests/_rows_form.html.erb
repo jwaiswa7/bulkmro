@@ -17,11 +17,11 @@
   <% if f.object.persisted? %>
     <% if stock %>
       <div class="col-12 col-md-4">
-        <% if policy(@po_request).can_cancel? %>
+        <% if is_authorized(@po_request,'can_cancel') %>
           <%= f.input :stock_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.stock_statuses.except("Stock Requested", "Stock Rejected"), alphabetical: false, keep_raw: true), :include_blank => false %>
-        <% elsif policy(@po_request).can_reject_stock_po? %>
+        <% elsif is_authorized(@po_request,'can_reject_stock_po') %>
           <%= f.input :stock_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.stock_statuses.except("Stock Supplier PO Created"), alphabetical: false, keep_raw: true), :include_blank => false %>
-        <% elsif policy(@po_request).can_update_rejected_po_requests? %>
+        <% elsif is_authorized(@po_request,'can_update_rejected_po_requests') %>
           <%= f.input :stock_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.stock_statuses.except("Stock Supplier PO Created"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
         <% else %>
           <%= f.input :stock_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.stock_statuses, alphabetical: false), disabled: true, :include_blank => false %>
@@ -30,13 +30,13 @@
       </div>
     <% else %>
       <div class="col-12 col-md-4">
-        <% if policy(@po_request).can_cancel? %>
+        <% if is_authorized(@po_request,'can_cancel') %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("Requested", "Rejected"), alphabetical: false, keep_raw: true), :include_blank => false %>
-        <% elsif policy(@po_request).can_reject? %>
+        <% elsif is_authorized(@po_request,'can_reject') %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("PO Created", "Cancelled", "Supplier PO: Amendment"), alphabetical: false, keep_raw: true), :include_blank => false %>
-        <% elsif policy(@po_request).can_update_rejected_po_requests? %>
+        <% elsif is_authorized(@po_request,'can_update_rejected_po_requests') %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("PO Created", "Cancelled", "Supplier PO: Amendment"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
-        <% elsif policy(@po_request).can_process_amended_po_requests? %>
+        <% elsif is_authorized(@po_request,'can_process_amended_po_requests') %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.except("Requested", "Rejected", "Cancelled"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
         <% else %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), disabled: true, :include_blank => false %>
@@ -45,10 +45,10 @@
       </div>
     <% end %>
     <div class="col-4 d-none status-rejected">
-      <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !policy(f.object).can_reject_stock_po?, :include_blank => true %>
+      <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !is_authorized(f.object).can_reject_stock_po?, :include_blank => true %>
     </div>
     <div class="col-4 d-none status-cancelled">
-      <%= f.input :cancellation_reason, disabled: !(policy(f.object).can_cancel?), :include_blank => true %>
+      <%= f.input :cancellation_reason, disabled: !(is_authorized(f.object,'can_cancel')), :include_blank => true %>
     </div>
   <% else %>
     <% if stock %>
@@ -167,7 +167,7 @@
               <i class="fal fa-download"></i>
               <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                 <i class="fal fa-trash-alt"></i>
-              <% end if attachment.present? && policy(:attachment).destroy? %>
+              <% end if attachment.present? && is_authorized(:attachment,'destroy') %>
             <% end %>
           <% end if f.object.attachments.attached? %>
         </div>
@@ -335,7 +335,7 @@
           <div class="col-12 col-md-1">
             <%= po_request_row.remove_nested_fields_link(class: 'btn btn-danger form-group align-self-center flex-grow-1 mt-3 ml-2') do %>
               Remove
-            <% end if policy(po_request_row.object).destroy? %>
+            <% end if is_authorized(po_request_row.object,'destroy') %>
           </div>
         <% end %>
       </div>
@@ -344,7 +344,7 @@
   </div>
 <% end %>
 
-<%# if policy(:po_request).add_service_product? %>
+<%# if is_authorized(:po_request,'add_service_product') %>
 <% if !stock %>
   <div class="col-md-3">
     <%= f.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>

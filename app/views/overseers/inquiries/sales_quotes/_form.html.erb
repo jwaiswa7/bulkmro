@@ -61,7 +61,7 @@
                 <%= inquiry_product.product.sku %>
                 - <%= inquiry_product.bp_catalog_name? ? inquiry_product.bp_catalog_name : inquiry_product.product.name %>
                 <%= inquiry_product.bp_catalog_sku? ? '(' + inquiry_product.bp_catalog_sku + ')' : '' %>
-                <% if policy(inquiry_product.product).sku_purchase_history? %>
+                <% if is_authorized(inquiry_product.product, 'sku_purchase_history') %>
                   <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a>
                 <% end %>
               </strong>
