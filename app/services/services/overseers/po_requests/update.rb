@@ -41,7 +41,7 @@ class Services::Overseers::PoRequests::Update < Services::Shared::BaseService
       end
       tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
       @notification.send_po_request_update(
-          tos - [current_overseer.email],
+        tos - [current_overseer.email],
           @action_name.to_sym,
           @po_request,
           @notification_url,
