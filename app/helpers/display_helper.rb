@@ -290,7 +290,7 @@ module DisplayHelper
     else
       action_name = action if action.present?
       allowed_resources = ActiveSupport::JSON.decode(current_overseer.acl_resources)
-      default_resources = Rails.cache.fetch('acl_resource_json')
+      default_resources = get_acl_resource_json
       parsed_json = ActiveSupport::JSON.decode(default_resources)
       resource_ids = {}
       parsed_json.map {|x| resource_ids[x['text']] = {}; x['children'].map {|y| resource_ids[x['text']][y['text']] = y['id'] if y['text'].present?}}
@@ -301,13 +301,45 @@ module DisplayHelper
       else
         resource_model = model.to_s.gsub(':', '')
       end
-
-      if resource_ids[resource_model].blank? || resource_ids[resource_model][action_name].blank?
+      raise if resource_model != 'dashboard'
+      if resource_ids[resource_model].blank? && resource_ids[resource_model][action_name].blank?
         authorised = false
       elsif allowed_resources.include? resource_ids[resource_model][action_name].to_s
         authorised = true
       end
     end
     authorised
+  end
+
+  def get_acl_resource_json
+    resource_json = []
+    models = []
+    children = []
+    acl_parent = []
+
+    AclResource.all.each do |acl_resource|
+      if !models.include? acl_resource.resource_model_name
+        if children.present? && children.size > 0
+          acl_parent.children = children
+          resource_json.push(acl_parent.marshal_dump)
+          children = []
+        end
+
+        models << acl_resource.resource_model_name
+        acl_parent = OpenStruct.new
+        acl_parent.id = acl_resource.id
+        acl_parent.text = acl_resource.resource_model_name
+        acl_parent.checked = false
+        acl_parent.hasChildren = true
+      else
+        acl_row = OpenStruct.new
+        acl_row.id = acl_resource.id
+        acl_row.text = acl_resource.resource_action_name
+        acl_row.checked = false
+        acl_row.hasChildren = false
+        children.push(acl_row.marshal_dump)
+      end
+    end
+    resource_json.to_json
   end
 end

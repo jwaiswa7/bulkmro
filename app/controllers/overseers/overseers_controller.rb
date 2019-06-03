@@ -75,7 +75,7 @@ class Overseers::OverseersController < Overseers::BaseController
 
   def get_resources
 
-    default_resources = Settings.acl.default_resources
+    default_resources = self.get_acl_resource_json
     current_acl = @overseer.acl_resources
     parsed_json = ActiveSupport::JSON.decode(default_resources)
     parsed_json.map{|x| x['children'].map{|y| if current_acl.include? y['id'].to_s;y['checked'] = true;end; y['text'] = y['text'].titleize }; x['text'] = x['text'].titleize } if current_acl.present?
