@@ -295,14 +295,14 @@ module DisplayHelper
       resource_ids = {}
       parsed_json.map {|x| resource_ids[x['text']] = {}; x['children'].map {|y| resource_ids[x['text']][y['text']] = y['id'] if y['text'].present?}}
       if model.is_a?(ActiveRecord::Base)
-        resource_model = model.class.name.downcase
+        resource_model = model.class.name.underscore.downcase
       elsif model.is_a?(ActiveRecord::Relation)
-        resource_model = model.klass.name.downcase
+        resource_model = model.klass.name.underscore.downcase
       else
         resource_model = model.to_s.gsub(':', '')
       end
-      raise if resource_model != 'dashboard'
-      if resource_ids[resource_model].blank? && resource_ids[resource_model][action_name].blank?
+
+      if resource_ids[resource_model].blank? || resource_ids[resource_model][action_name].blank?
         authorised = false
       elsif allowed_resources.include? resource_ids[resource_model][action_name].to_s
         authorised = true
@@ -340,6 +340,13 @@ module DisplayHelper
         children.push(acl_row.marshal_dump)
       end
     end
+
+    if children.present? && children.size > 0
+      acl_parent.children = children
+      resource_json.push(acl_parent.marshal_dump)
+      children = []
+    end
+
     resource_json.to_json
   end
 end

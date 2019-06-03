@@ -12,34 +12,6 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     all_policies
   end
 
-
-  def create_acl_roles
-
-    all_acl_resources = Settings.acl.default_resources
-
-    roles = [
-        'left',
-        'admin',
-        'inside_sales_executive',
-        'inside_sales_manager',
-        'outside_sales_executive',
-        'outside_sales_manager',
-        'outside_sales_team_leader',
-        'inside_sales_team_leader',
-        'procurement',
-        'accounts',
-        'logistics',
-        'cataloging',
-        'hr'
-    ]
-
-    roles.each do |role|
-      AclRole.where(:role_name => role).first_or_create! do |ar|
-        ar.update_attributes(:role_resources => all_acl_resources)
-      end
-    end
-  end
-
   def generate_resource_json
 
     all_policies = {}
@@ -106,6 +78,64 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     end
   end
 
+
+  def create_acl_roles
+
+    resource_json = []
+    models = []
+    children = []
+    acl_parent = []
+
+    AclResource.all.each do |acl_resource|
+      if !models.include? acl_resource.resource_model_name
+        if children.present? && children.size > 0
+          acl_parent.children = children
+          resource_json.push(acl_parent.marshal_dump)
+          children = []
+        end
+
+        models << acl_resource.resource_model_name
+        acl_parent = OpenStruct.new
+        acl_parent.id = acl_resource.id
+        acl_parent.text = acl_resource.resource_model_name
+        acl_parent.checked = false
+        acl_parent.hasChildren = true
+      else
+        acl_row = OpenStruct.new
+        acl_row.id = acl_resource.id
+        acl_row.text = acl_resource.resource_action_name
+        acl_row.checked = false
+        acl_row.hasChildren = false
+        children.push(acl_row.marshal_dump)
+      end
+    end
+
+
+    all_acl_resources = resource_json.to_json
+
+    roles = [
+        'left',
+        'admin',
+        'inside_sales_executive',
+        'inside_sales_manager',
+        'outside_sales_executive',
+        'outside_sales_manager',
+        'outside_sales_team_leader',
+        'inside_sales_team_leader',
+        'procurement',
+        'accounts',
+        'logistics',
+        'cataloging',
+        'hr'
+    ]
+
+    roles.each do |role|
+      AclRole.where(:role_name => role).first_or_create! do |ar|
+        ar.update_attributes(:role_resources => all_acl_resources)
+      end
+    end
+  end
+
   def get_controller_action_list
     controllers = []
     routes= Rails.application.routes.routes.map do |route|
@@ -122,10 +152,36 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   end
 
   def set_super_admins
-    overseers = ['pradeep.ketkale@bulkmro.com','bhargav.trivedi@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com','ruta.kambli@bulkmro.com']
+    overseers = ['pradeep.ketkale@bulkmro.com','bhargav.trivedi@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com']
     overseers.each do | email |
       overseer = Overseer.find_by_email(email)
-      overseer.update_attribute('is_super_admin ', 1) if overseer.present?
+      overseer.is_super_admin = 1
+      overseer.acl_role_id = 1
+      overseer.save
+    end
+  end
+
+  def add_acl_resource_actions
+    overseer = Overseer.find(153)
+    admin_acl_role = AclRole.find_by_role_name('admin')
+    overseers = ['pradeep.ketkale@bulkmro.com','bhargav.trivedi@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com','ruta.kambli@bulkmro.com','meenakshi.naik@bulkmro.com','sourabh.raje@bulkmro.com','saurabh.bhosale@bulkmro.com','sakshi.yadav@bulkmro.com','lopesh.durugkar@bulkmro.com','sufiyan.siddique@bulkmro.com','rucha.parab@bulkmro.com']
+
+    acl_resource_model_actions = ['index','new','edit','create','update','destroy', 'resource_json']
+
+    acl_resource_model_actions.each do |action|
+      AclResource.where(:resource_model_name => 'acl_resource', :resource_action_name => action).first_or_create! do |acl_res|
+        acl_res.assign_attributes(:overseer => overseer)
+      end
+    end
+
+    overseers.each do |overseer_email|
+      o = Overseer.find_by_email(overseer_email)
+      puts overseer_email
+      allowed_resources = []
+      AclResource.all.each do |acl_resource_model|
+        allowed_resources << acl_resource_model.id
+      end
+      o.update_attributes!(:acl_resources => allowed_resources.to_json, :acl_role => admin_acl_role)
     end
   end
 end

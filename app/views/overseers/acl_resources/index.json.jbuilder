@@ -12,8 +12,8 @@ json.data (@acl_resources) do |acl_resource|
                   acl_resource.resource_action_name,
                   format_date(acl_resource.created_at),
                   format_date(acl_resource.updated_at),
-                  acl_resource.created_by.full_name,
-                  acl_resource.updated_by.full_name
+                  acl_resource.created_by.present? ? acl_resource.created_by.full_name : '-',
+                  acl_resource.updated_by.present? ? acl_resource.updated_by.full_name : '-'
               ]
 end
 

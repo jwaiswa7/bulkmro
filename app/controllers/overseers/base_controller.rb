@@ -80,6 +80,13 @@ class Overseers::BaseController < ApplicationController
         children.push(acl_row.marshal_dump)
       end
     end
+
+    if children.present? && children.size > 0
+      acl_parent.children = children
+      resource_json.push(acl_parent.marshal_dump)
+      children = []
+    end
+
     resource_json.to_json
   end
 
