@@ -70,12 +70,6 @@ import companyBanks from "./companyBanks/init"
 // Dashboard
 import dashboard from "./dashboard/init"
 
-//Overseer ACL
-import overseers from "./overseers/init"
-
-//ACL
-import aclRoles from "./aclRoles/init"
-
 let loader = {
     imports: imports,
     reports: reports,
@@ -104,9 +98,7 @@ let loader = {
     taxCodes: taxCodes,
     imageReaders: imageReaders,
     companyBanks: companyBanks,
-    dashboard: dashboard,
-    overseers:overseers,
-    aclRoles:aclRoles
+    dashboard: dashboard
 };
 
 // Imports
