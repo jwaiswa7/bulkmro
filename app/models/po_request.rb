@@ -90,7 +90,7 @@ class PoRequest < ApplicationRecord
   validate :update_reason_for_status_change?
 
   after_initialize :set_defaults, if: :new_record?
-  after_save :update_po_index, if: -> { purchase_order.present? }
+  after_save :update_po_index
 
   def purchase_order_created?
     if self.status == 'Supplier PO: Created Not Sent' && self.purchase_order.blank?
@@ -101,7 +101,11 @@ class PoRequest < ApplicationRecord
   after_initialize :set_defaults, if: :new_record?
 
   def update_po_index
-    PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order.id])
+    if purchase_order.present?
+      PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order.id])
+    elsif self.saved_change_to_status? && self.status == 'Cancelled' && self.purchase_order_id_before_last_save.present?
+      PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order_id_before_last_save])
+    end
   end
 
   def update_reason_for_status_change?
