@@ -27,8 +27,14 @@ class Overseers::CompaniesController < Overseers::BaseController
         @company = Company.new({ 'name': requested_comp.name, 'company_creation_request_id': params[:ccr_id] }.merge(overseer: current_overseer))
       end
     else
-      @account = Company.new(overseer: current_overseer)
+      @company = Company.new(overseer: current_overseer)
+      @company.build_company_creation_request(overseer: current_overseer)
     end
+    authorize @company
+  end
+
+  def new_commpany
+    @company = Company.new(overseer: current_overseer)
     authorize @company
   end
 
