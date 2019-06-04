@@ -1,4 +1,4 @@
-<div class="page-header">
+  <div class="page-header">
   <div class="">
     <h2>
       <% if content_for?(:heading) %>
@@ -24,8 +24,8 @@
 
 <section class="pb-4 pb-lg-5">
   <ul class="nav nav-tabs nav-fill" data-toggle="sticky">
-    <%= nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') %>
-    <%= nav_item('Imports', overseers_inquiry_imports_path(@inquiry), is_authorized(@inquiry,'imports') %>
+    <%= nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit')) %>
+    <%= nav_item('Imports', overseers_inquiry_imports_path(@inquiry), is_authorized(@inquiry,'imports')) %>
     <%= nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit_suppliers')) %>
     <%= nav_item('Sales Quotes', overseers_inquiry_sales_quotes_path(@inquiry), is_authorized(@inquiry,'sales_quotes')) %>
     <%= nav_item('Sales Orders', overseers_inquiry_sales_orders_path(@inquiry), is_authorized(@inquiry,'sales_orders')) %>

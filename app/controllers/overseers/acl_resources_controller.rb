@@ -56,7 +56,7 @@ class Overseers::AclResourcesController < Overseers::BaseController
     acl_parent = []
     Rails.cache.delete('acl_resource_json')
 
-    Rails.cache.fetch('acl_resource_json', expires_in: 30.minutes) do
+    Rails.cache.fetch('acl_resource_json', expires_in: 3.hours) do
 
       AclResource.all.each do |acl_resource|
         if !models.include? acl_resource.resource_model_name
@@ -102,8 +102,8 @@ class Overseers::AclResourcesController < Overseers::BaseController
       resource_json.to_json
     end
 
-    render json: resource_json.to_json
-    authorize_acl :acl_resource
+    render json: Rails.cache.fetch('acl_resource_json')
+    # authorize_acl :acl_resource
   end
 
   private
