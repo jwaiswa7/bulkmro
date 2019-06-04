@@ -59,7 +59,7 @@ class Overseers::BaseController < ApplicationController
       children = []
       acl_parent = []
 
-      AclResource.all.each do |acl_resource|
+      AclResource.all.order(resource_model_name: :asc).each do |acl_resource|
         if !models.include? acl_resource.resource_model_name
           if children.present? && children.size > 0
             acl_parent.children = children

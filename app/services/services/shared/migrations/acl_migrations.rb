@@ -85,7 +85,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     children = []
     acl_parent = []
 
-    AclResource.all.each do |acl_resource|
+    AclResource.all.order(resource_model_name: :asc).each do |acl_resource|
       if !models.include? acl_resource.resource_model_name
         if children.present? && children.size > 0
           acl_parent.children = children
@@ -205,7 +205,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   def assign_all_resources_to_devs
     overseer = Overseer.find(153)
     admin_acl_role = AclRole.find_by_role_name('admin')
-    overseers = ['pradeep.ketkale@bulkmro.com', 'bhargav.trivedi@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com', 'ruta.kambli@bulkmro.com', 'meenakshi.naik@bulkmro.com', 'sourabh.raje@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'sakshi.yadav@bulkmro.com', 'lopesh.durugkar@bulkmro.com', 'sufiyan.siddique@bulkmro.com', 'rucha.parab@bulkmro.com']
+    overseers = ['pradeep.ketkale@bulkmro.com', 'bhargav.trivedi@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com', 'ruta.kambli@bulkmro.com', 'meenakshi.naik@bulkmro.com', 'sourabh.raje@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'sakshi.yadav@bulkmro.com', 'lopesh.durugkar@bulkmro.com', 'sufiyan.siddique@bulkmro.com', 'rucha.parab@bulkmro.com', 'kunal.sheth@bulkmro.com']
 
     overseers.each do |overseer_email|
       o = Overseer.find_by_email(overseer_email)

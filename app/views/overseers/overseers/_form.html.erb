@@ -52,19 +52,10 @@
       <div class="col-12 col-md-4">
         <%= f.input :status, as: :check_boxes, :wrapper => :vertical_collection_inline, collection: enum_to_collection(Overseer.statuses.except("inactive")) %>
       </div>
-
-      <div class="col-12 col-md-4">
-        <%= f.association :acl_role, label: 'Select Role', required: true, :wrapper => :custom_multi_select, as: :select, collection: AclRole.all.pluck(:role_name, :id), include_blank: true %>
-      </div>
     </div>
-
-    <div id="tree" data-overseer="<%= @overseer.id %>"></div>
 
     <%= action_button(action_name, @overseer) %>
 
   <% end %>
-
-<!--  <div id="tree" data-overseer="<%#= @overseer.id %>"></div>-->
-  <%#= submit_tag 'Save', :type => 'button', :id => 'btnSave' %>
 
 </div>

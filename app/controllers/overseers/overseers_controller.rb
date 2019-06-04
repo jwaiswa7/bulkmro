@@ -69,7 +69,12 @@ class Overseers::OverseersController < Overseers::BaseController
     default_resources = self.get_acl_resource_json
     current_acl = @overseer.acl_resources
     parsed_json = ActiveSupport::JSON.decode(default_resources)
-    parsed_json.map{|x| x['children'].map{|y| if current_acl.include? y['id'].to_s;y['checked'] = true;end; y['text'] = y['text'].titleize }; x['text'] = x['text'].titleize } if current_acl.present?
+
+    if current_acl.present?
+      parsed_json.map{|x| x['children'].map{|y| if current_acl.include? y['id'].to_s;y['checked'] = true;end; y['text'] = y['text'].titleize }; x['text'] = x['text'].titleize }
+    else
+      parsed_json.map{|x| x['children'].map{|y| y['text'] = y['text'].titleize }; x['text'] = x['text'].titleize }
+    end
 
     render json: parsed_json.to_json
     # authorize_acl :overseer

@@ -55,10 +55,9 @@ class Overseers::AclResourcesController < Overseers::BaseController
     children = []
     acl_parent = []
     Rails.cache.delete('acl_resource_json')
-
     Rails.cache.fetch('acl_resource_json', expires_in: 3.hours) do
 
-      AclResource.all.each do |acl_resource|
+      AclResource.all.order(resource_model_name: :asc).each do |acl_resource|
         if !models.include? acl_resource.resource_model_name
           if children.present? && children.size > 0
             acl_parent.children = children
