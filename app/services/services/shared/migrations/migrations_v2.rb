@@ -283,7 +283,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   end
 
   def complete_mismatch_sheet
-    column_headers = ['Inside Sales Name',	'Client Order Date',	'Price Currency',	'Document Rate',	'Magento Company Name',	'Company Alias',	'Inquiry Number',	'So #',	'Order Date',	'Bm #',	'Description',	'Order Qty',	'Unit Selling Price',	'Freight',	'Tax Type',	'Tax Rate',	'Tax Amount',	'Total Selling Price',	'Total Landed Cost',	'Unit cost price',	'Margin',	'Margin (In %)',	'Kit',	'AE', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax']
+    column_headers = ['Inside Sales Name', 'Client Order Date', 'Price Currency', 'Document Rate', 'Magento Company Name', 'Company Alias', 'Inquiry Number', 'So #', 'Order Date', 'Bm #', 'Description', 'Order Qty', 'Unit Selling Price', 'Freight', 'Tax Type', 'Tax Rate', 'Tax Amount', 'Total Selling Price', 'Total Landed Cost', 'Unit cost price', 'Margin', 'Margin (In %)', 'Kit', 'AE', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax']
     matching_orders = []
     repeating_skus = []
     missing_skus = []
@@ -301,11 +301,14 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         bible_order_tax_total = x.get_column('Tax Amount').to_f
         bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
 
+        next if bible_order_row_total.to_f.zero?
+
         if bible_order_row_total.negative?
           sales_order = SalesOrder.where(parent_id: order_number, is_credit_note_entry: true).first
         elsif order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
           if order_number == 'Not Booked'
             inquiry_orders = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number')).sales_orders
+            binding.pry
             if inquiry_orders.count > 1
               multiple_not_booked_orders.push(x.get_column('Bm #') + '-' + x.get_column('Order Date') + '-' + x.get_column('So #'))
             else
@@ -326,13 +329,13 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             row_total = order_row.total_selling_price.to_f.round(2)
             row_total_with_tax = order_row.total_selling_price_with_tax.to_f.round(2)
 
+            # adjustment entries
+            if (row_total == -(bible_order_row_total)) || (row_total_with_tax == -(bible_order_row_total_with_tax)) || bible_order_row_total_with_tax.negative? || bible_order_row_total.negative?
+              is_adjustment_entry = 'Yes'
+            end
+
             if ((row_total != bible_order_row_total) || (row_total_with_tax != bible_order_row_total_with_tax)) &&
                 ((row_total - bible_order_row_total).abs > 1 || (row_total_with_tax - bible_order_row_total_with_tax).abs > 1)
-
-              # adjustment entries
-              if (row_total == -(bible_order_row_total)) || (row_total_with_tax == -(bible_order_row_total_with_tax)) || bible_order_row_total_with_tax.negative? || bible_order_row_total.negative?
-                is_adjustment_entry = 'Yes'
-              end
 
               # KIT check
               if sales_order.calculated_total.to_f.round(2) == bible_order_row_total &&
@@ -341,13 +344,13 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
                            x.get_column('Client Order Date'),
                            x.get_column('Price Currency'),
                            x.get_column('Document Rate'),
-                           x.get_column('Magento Company Name').gsub(';',' '),
-                           x.get_column('Company Alias').gsub(';',' '),
+                           x.get_column('Magento Company Name').gsub(';', ' '),
+                           x.get_column('Company Alias').gsub(';', ' '),
                            x.get_column('Inquiry Number'),
                            x.get_column('So #'),
                            x.get_column('Order Date'),
                            x.get_column('Bm #'),
-                           x.get_column('Description').gsub(';',' '),
+                           x.get_column('Description').gsub(';', ' '),
                            x.get_column('Order Qty'),
                            x.get_column('Unit Selling Price'),
                            x.get_column('Freight'),
@@ -365,13 +368,13 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
                            x.get_column('Client Order Date'),
                            x.get_column('Price Currency'),
                            x.get_column('Document Rate'),
-                           x.get_column('Magento Company Name').gsub(';',' '),
-                           x.get_column('Company Alias').gsub(';',' '),
+                           x.get_column('Magento Company Name').gsub(';', ' '),
+                           x.get_column('Company Alias').gsub(';', ' '),
                            x.get_column('Inquiry Number'),
                            x.get_column('So #'),
                            x.get_column('Order Date'),
                            x.get_column('Bm #'),
-                           x.get_column('Description').gsub(';',' '),
+                           x.get_column('Description').gsub(';', ' '),
                            x.get_column('Order Qty'),
                            x.get_column('Unit Selling Price'),
                            x.get_column('Freight'),
@@ -410,7 +413,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       puts 'MULTIPLE NOT BOOKED ORDERS', multiple_not_booked_orders, multiple_not_booked_orders.count
     end
 
-    fetch_csv('bible_mismatch_initial_run.csv', csv_data)
+    fetch_csv('bible_mismatch_after_ae_run.csv', csv_data)
   end
 
   def update_non_kit_non_ae_negative_mismatch
@@ -484,7 +487,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             quote_row.converted_unit_selling_price = x.get_column('Unit Selling Price').to_f
             quote_row.margin_percentage = x.get_column('Margin (In %)').split('%')[0]
             quote_row.tax_rate = tax_rate || nil
-            quote_row.tax_type = x.get_column('Tax Type') if x.get_column('Tax Type').present? && (x.get_column('Tax Type').include?('VAT') || x.get_column('Tax Type').include?('CST') ||  x.get_column('Tax Type').include?('Service'))
+            quote_row.tax_type = x.get_column('Tax Type') if x.get_column('Tax Type').present? && (x.get_column('Tax Type').include?('VAT') || x.get_column('Tax Type').include?('CST') || x.get_column('Tax Type').include?('Service'))
             quote_row.legacy_applicable_tax_percentage = tax_rate_percentage.to_d || nil
             quote_row.inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('Unit cost price').to_f)
 
@@ -495,7 +498,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             puts '****************************** QUOTE SAVED ****************************************'
 
             order_row.quantity = x.get_column('Order Qty').to_f
-            order_row.tax_type = x.get_column('Tax Type') if x.get_column('Tax Type').present? && (x.get_column('Tax Type').include?('VAT') || x.get_column('Tax Type').include?('CST') ||  x.get_column('Tax Type').include?('Service'))
+            # order_row.tax_type = x.get_column('Tax Type') if x.get_column('Tax Type').present? && (x.get_column('Tax Type').include?('VAT') || x.get_column('Tax Type').include?('CST') || x.get_column('Tax Type').include?('Service'))
             sales_order.mis_date = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
             order_row.created_at = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d') # check
             order_row.save(validate: false)
@@ -863,6 +866,35 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
 
     fetch_csv('invoices_export.csv', csv_data)
+  end
+
+
+  def flex_sku_wise_order_export
+    column_headers = ['Inquiry', 'Customer PO Number', 'Sales Order', 'Order Status', 'Order Date', 'Billing Contact',  'Shipping Contact', 'SKU', 'SKU NAME', 'SKU Quantity', 'SKU Total', 'SKU Total with tax']
+    model = SalesOrder
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      model.remote_approved.joins(:company).where(companies: {id: 1847}).order(name: :asc).each do |order|
+        order.rows.each do |record|
+          sales_order = record.sales_order
+          inquiry = sales_order.inquiry.inquiry_number
+          customer_po_number = sales_order.inquiry.customer_po_number
+          order_number = sales_order.order_number.to_s
+          order_status = sales_order.remote_status
+          order_date = sales_order.inquiry.customer_order_date.strftime('%F')
+          billing_contact = sales_order.inquiry.billing_contact.name.to_s + '-' + (sales_order.inquiry.billing_contact.mobile || sales_order.inquiry.billing_contact.telephone).to_s
+          shipping_contact = sales_order.inquiry.shipping_contact.name.to_s + '-' + (sales_order.inquiry.shipping_contact.mobile || sales_order.inquiry.shipping_contact.telephone).to_s
+          sku = record.product.sku
+          sku_name = record.product.name
+          sku_quantity = record.quantity
+          sku_total = record.total_selling_price.to_s
+          sku_total_with_tax = record.total_selling_price_with_tax.to_s
+
+          writer << [ inquiry, customer_po_number, order_number, order_status, order_date, billing_contact, shipping_contact, sku, sku_name, sku_quantity, sku_total, sku_total_with_tax]
+        end
+      end
+    end
+
+    fetch_csv('flex_sku_wise_order_export12.csv', csv_data)
   end
 end
 
