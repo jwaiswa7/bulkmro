@@ -214,7 +214,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       AclResource.all.each do |acl_resource_model|
         allowed_resources << acl_resource_model.id
       end
-      o.update_attributes!(:acl_resources => allowed_resources.to_json, :acl_role => admin_acl_role)
+      o.update_attributes!(:acl_resources => allowed_resources.to_json, :acl_role => admin_acl_role) if o.present?
     end
   end
 end
