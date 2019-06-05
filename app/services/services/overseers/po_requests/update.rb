@@ -14,7 +14,9 @@ class Services::Overseers::PoRequests::Update < Services::Shared::BaseService
         @po_request.purchase_order = nil
 
         if @po_request.payment_request.present?
-          @po_request.payment_request.update!(status: :'Cancelled')
+          payment_request = @po_request.payment_request
+          payment_request.status = 'Cancelled'
+          payment_request.save(validate: false)
           @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
         end
         @po_request.save(validate: false)
@@ -41,7 +43,7 @@ class Services::Overseers::PoRequests::Update < Services::Shared::BaseService
       end
       tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
       @notification.send_po_request_update(
-          tos - [current_overseer.email],
+        tos - [current_overseer.email],
           @action_name.to_sym,
           @po_request,
           @notification_url,
