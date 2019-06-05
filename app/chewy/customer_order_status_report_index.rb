@@ -1,11 +1,20 @@
 class CustomerOrderStatusReportIndex < BaseIndex
-  define_type SalesOrder.where.not(order_number: nil).with_includes do
+  define_type SalesOrder.where.not(order_number: nil, status: 'Cancelled').with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
+    field :inside_sales_owner_id, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? }, type: 'integer'
+    field :inside_sales_owner, value: -> (record) { record.inquiry.inside_sales_owner.to_s }, analyzer: 'substring'
+    field :outside_sales_owner_id, value: -> (record) { record.inquiry.outside_sales_owner.id if record.inquiry.outside_sales_owner.present? }
+    field :outside_sales_owner, value: -> (record) { record.inquiry.outside_sales_owner.to_s }, analyzer: 'substring'
+    field :procurement_operations_id, value: -> (record) { record.inquiry.procurement_operations.id if record.inquiry.procurement_operations.present? }
+    field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations.to_s }, analyzer: 'substring'
     field :company_id, value: -> (record) { record.inquiry.company.id if record.inquiry.present? }, type: 'integer'
     field :company, value: -> (record) { record.inquiry.company.to_s if record.inquiry.present? }, analyzer: 'substring'
+    field :account_id, value: -> (record) { record.inquiry.account.id if record.inquiry.present? }, type: 'integer'
+    field :account, value: -> (record) { record.inquiry.account.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :order_number, value: -> (record) { record.order_number }, type: 'integer'
+    field :order_number_string, value: -> (record) { record.order_number.to_s }, analyzer: 'substring'
     field :created_at, value: -> (record) { record.created_at }, type: 'date'
     field :mis_date, value: -> (record) { record.mis_date if record.mis_date.present? }, type: 'date'
     field :cp_committed_date, value: -> (record) { record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present? }, type: 'date'

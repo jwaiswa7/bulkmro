@@ -8,14 +8,15 @@
   <p style="color: #555;">
   <ul style="color: #555; list-style-type: decimal">
     <li style="color: #555;">Name of the billing company: <b>Bulk MRO Industrial Supply Pvt. Ltd.</b></li>
-    <li style="color: #555;">Billing Address and GST: <%= @purchase_order.po_request.bill_to.address.to_s %><br>
+    <li style="color: #555;">Billing Address and GST: <%= @purchase_order.po_request.bill_to.address.to_singleline_s %><br>
       GST: <%= @purchase_order.po_request.bill_to.address.gst %></li>
-    <li style="color: #555;">Please mention the Invoice Date in your Invoice</li>
-    <li style="color: #555;">Please mention the Invoice Number in your Invoice</li>
+    <li style="color: #555;">Please mention the Invoice Date in your Invoice:</li>
+    <li style="color: #555;">Please mention the Invoice Number in your Invoice:</li>
   </ul>
   </p>
   <p style="color: #555;">Please <b>ship</b> the material to the following address: </p>
-  <p style="color: #555;"><%= @purchase_order.po_request.ship_to.address.to_s %> <br>GST: <%= @purchase_order.po_request.ship_to.address.gst %>
+  <p style="color: #555;"><%= @purchase_order.po_request.ship_to.address.to_singleline_s %>
+    <br>GST: <%= @purchase_order.po_request.ship_to.address.gst %>
   </p>
 
   <p style="color: #555;">Kindly treat this as priority and initiate the process at the earliest.</p>

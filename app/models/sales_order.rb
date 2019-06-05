@@ -124,6 +124,7 @@ class SalesOrder < ApplicationRecord
   scope :remote_approved, -> {where('(sales_orders.status = ? AND sales_orders.remote_status != ? OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled'])}
 
   scope :under_process, -> {where(status: [:'Approved', :'Accounts Approval Pending', 'Requested'])}
+  scope :without_cancelled, -> {where(status: 'Cancelled')}
 
   def confirmed?
     self.confirmation.present?

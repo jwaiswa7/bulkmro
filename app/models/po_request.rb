@@ -91,7 +91,7 @@ class PoRequest < ApplicationRecord
   validate :update_reason_for_status_change?
 
   after_initialize :set_defaults, if: :new_record?
-  after_save :update_po_index, if: -> { purchase_order.present? }
+  after_save :update_po_index
 
   def purchase_order_created?
     if self.status == 'Supplier PO: Created Not Sent' && self.purchase_order.blank?
@@ -102,13 +102,17 @@ class PoRequest < ApplicationRecord
   after_initialize :set_defaults, if: :new_record?
 
   def update_po_index
-    PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order.id])
+    if purchase_order.present?
+      PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order.id])
+    elsif self.saved_change_to_status? && self.status == 'Cancelled' && self.purchase_order_id_before_last_save.present?
+      PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order_id_before_last_save])
+    end
   end
 
   def update_reason_for_status_change?
     if self.po_request_type == 'Regular'
       if (self.status == 'Cancelled' && self.cancellation_reason.blank?) || (self.status == 'Supplier PO Request Rejected' && self.rejection_reason.blank?)
-        errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
+        errors.add(:base, "Provide a reason to change the status to #{self.status}")
       end
     elsif self.po_request_type == 'Stock'
       if self.stock_status == 'Stock Rejected' && self.rejection_reason.blank?

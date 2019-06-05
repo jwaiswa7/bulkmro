@@ -22,6 +22,9 @@ class Export < ApplicationRecord
     suppliers: 65,
     sales_order_reco: 70,
     company_report: 91,
-    customer_order_status_report: 92
+    customer_order_status_report: 92,
+    pipeline_report: 93,
+    monthly_sales_report: 94
+
   }
 end
