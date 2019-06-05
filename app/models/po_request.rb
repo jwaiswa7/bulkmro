@@ -107,7 +107,7 @@ class PoRequest < ApplicationRecord
   def update_reason_for_status_change?
     if self.po_request_type == 'Regular'
       if (self.status == 'Cancelled' && self.cancellation_reason.blank?) || (self.status == 'Supplier PO Request Rejected' && self.rejection_reason.blank?)
-        errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
+        errors.add(:base, "Provide a reason to change the status to #{self.status}")
       end
     elsif self.po_request_type == 'Stock'
       if self.stock_status == 'Stock Rejected' && self.rejection_reason.blank?

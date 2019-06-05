@@ -1,5 +1,5 @@
   class InquiriesIndex < BaseIndex
-    statuses = Inquiry.statuses
+    statuses = Inquiry.statuses.except('Lead by O/S')
 
     define_type Inquiry.all.with_includes do
       field :id, type: 'integer'
@@ -17,6 +17,8 @@
       field :inside_sales_owner, value: -> (record) { record.inside_sales_owner.to_s }, analyzer: 'substring'
       field :outside_sales_owner_id, value: -> (record) { record.outside_sales_owner.id if record.outside_sales_owner.present? }
       field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring'
+      field :procurement_operations_id, value: -> (record) { record.procurement_operations.id if record.procurement_operations.present? }
+      field :procurement_operations, value: -> (record) { record.procurement_operations.to_s }, analyzer: 'substring'
       field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }
       field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }
       field :procurement_operations, value: -> (record) { record.procurement_operations_id }

@@ -90,6 +90,10 @@ class Address < ApplicationRecord
     end
   end
 
+  def to_singleline_s
+    [street1, street2, city_name, pincode, state.to_s, state_name, country_name].reject(&:blank?).join(', ')
+  end
+
   def to_multiline_s
     [
         street1,
