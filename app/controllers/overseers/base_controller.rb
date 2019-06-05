@@ -1,19 +1,18 @@
 class Overseers::BaseController < ApplicationController
-  include Pundit
+  # include Pundit
   # include Acl
+  #
+  helper_method :get_acl_resource_json, :authorized
 
   class NotAuthorised < StandardError
   end
 
   # rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  rescue_from NotAuthorised, with: :user_not_authorized
+  # rescue_from NotAuthorised, with: :user_not_authorized
   layout 'overseers/layouts/application'
 
-  before_action :authenticate_overseer!
-  before_action :set_paper_trail_whodunnit
-  # before_action :authorize_user
-
-  # after_action :verify_authorized
+  # before_action :authenticate_overseer!
+  # before_action :set_paper_trail_whodunnit
 
   def authorize_acl(model, action = nil)
     action = action_name if action.blank?
@@ -52,58 +51,60 @@ class Overseers::BaseController < ApplicationController
 
 
   def get_acl_resource_json
-
     Rails.cache.fetch('acl_resource_json', expires_in: 3.hours) do
-      resource_json = []
-      models = []
-      children = []
-      acl_parent = []
-
-      AclResource.all.order(resource_model_name: :asc).each do |acl_resource|
-        if !models.include? acl_resource.resource_model_name
-          if children.present? && children.size > 0
-            acl_parent.children = children
-            resource_json.push(acl_parent.marshal_dump)
-            children = []
-          end
-
-          models << acl_resource.resource_model_name
-
-          #Parent Node
-          acl_parent = OpenStruct.new
-          acl_parent.id = acl_resource.id
-          acl_parent.text = acl_resource.resource_model_name
-          acl_parent.checked = false
-          acl_parent.hasChildren = true
-
-          #First Child Node
-          acl_row = OpenStruct.new
-          acl_row.id = acl_resource.id
-          acl_row.text = acl_resource.resource_action_name
-          acl_row.checked = false
-          acl_row.hasChildren = false
-          children.push(acl_row.marshal_dump)
-
-        else
-          acl_row = OpenStruct.new
-          acl_row.id = acl_resource.id
-          acl_row.text = acl_resource.resource_action_name
-          acl_row.checked = false
-          acl_row.hasChildren = false
-          children.push(acl_row.marshal_dump)
-        end
-      end
-
-      #Last child node
-      if children.present? && children.size > 0
-        acl_parent.children = children
-        resource_json.push(acl_parent.marshal_dump)
-        children = []
-      end
-      resource_json.to_json
+      self.create_acl_resource_json
     end
   end
 
+  def create_acl_resource_json
+    resource_json = []
+    models = []
+    children = []
+    acl_parent = []
+
+    AclResource.all.order(resource_model_name: :asc).each do |acl_resource|
+      if !models.include? acl_resource.resource_model_name
+        if children.present? && children.size > 0
+          acl_parent.children = children
+          resource_json.push(acl_parent.marshal_dump)
+          children = []
+        end
+
+        models << acl_resource.resource_model_name
+
+        #Parent Node
+        acl_parent = OpenStruct.new
+        acl_parent.id = acl_resource.id
+        acl_parent.text = acl_resource.resource_model_name
+        acl_parent.checked = false
+        acl_parent.hasChildren = true
+
+        #First Child Node
+        acl_row = OpenStruct.new
+        acl_row.id = acl_resource.id
+        acl_row.text = acl_resource.resource_action_name
+        acl_row.checked = false
+        acl_row.hasChildren = false
+        children.push(acl_row.marshal_dump)
+
+      else
+        acl_row = OpenStruct.new
+        acl_row.id = acl_resource.id
+        acl_row.text = acl_resource.resource_action_name
+        acl_row.checked = false
+        acl_row.hasChildren = false
+        children.push(acl_row.marshal_dump)
+      end
+    end
+
+    #Last child node
+    if children.present? && children.size > 0
+      acl_parent.children = children
+      resource_json.push(acl_parent.marshal_dump)
+      children = []
+    end
+    resource_json.to_json
+  end
 
   private
 
@@ -122,6 +123,7 @@ class Overseers::BaseController < ApplicationController
     )
   end
 
+  #Not used anymore
   def user_not_authorized
     message = 'You are not authorized to perform this action.'
     set_flash_message(message, :warning, now: false)
