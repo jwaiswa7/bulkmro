@@ -146,9 +146,12 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
         'hr'
     ]
 
+    all_resources = AclResource.all.pluck(:id)
+    all_resources = all_resources.map{|x| x.to_s }
+
     roles.each do |role|
       AclRole.where(:role_name => role).first_or_create! do |ar|
-        ar.update_attributes(:role_resources => all_acl_resources)
+        ar.update_attributes(:role_resources => all_resources.to_json)
       end
     end
 
@@ -156,7 +159,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     roles.each do |role|
       ar = AclRole.where(:role_name => role).first
       if ar.present?
-        ar.role_resources = all_acl_resources
+        ar.role_resources = all_resources.to_json
         ar.save
       end
     end

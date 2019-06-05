@@ -51,9 +51,6 @@ class Overseers::AclRolesController < Overseers::BaseController
     current_acl = @acl_role.role_resources
     parsed_json = ActiveSupport::JSON.decode(default_resources)
     parsed_json.map{|x| x['children'].map{|y|
-        if y['id'].to_s == 'warehouse_product_stock'
-          raise
-        end
         if current_acl.present? && (current_acl.include?y['id'].to_s)
           y['checked'] = true
         end
