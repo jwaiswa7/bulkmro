@@ -11,8 +11,8 @@ class Overseers::BaseController < ApplicationController
   # rescue_from NotAuthorised, with: :user_not_authorized
   layout 'overseers/layouts/application'
 
-  # before_action :authenticate_overseer!
-  # before_action :set_paper_trail_whodunnit
+  before_action :authenticate_overseer!
+  before_action :set_paper_trail_whodunnit
 
   def authorize_acl(model, action = nil)
     action = action_name if action.blank?

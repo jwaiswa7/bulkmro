@@ -5,7 +5,7 @@ json.data (@overseers) do |overseer|
                         row_action_button(edit_overseers_overseer_path(overseer), 'pencil', 'Edit Overseer', 'warning')
                       end,
                       if is_authorized('overseer','edit')
-                        row_action_button(edit_acl_overseers_overseer_path(overseer), 'pencil', 'Edit ACL', 'primary')
+                        row_action_button(edit_acl_overseers_overseer_path(overseer), 'lock', 'Edit ACL', 'success')
                       end
                   ].join(' '),
                   overseer.hierarchy_to_s,

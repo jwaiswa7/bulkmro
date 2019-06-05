@@ -14,24 +14,41 @@
 
           </div>
         </div>
-        <div class="card-alternative ">
+        <div class="mt-3 sticky-top">
           <div class="form-row">
-            <div class="col-4">
-              <label class="form-control-label text-capitalize string optional">Role Resourcese</label>
-            </div>
-            <div class="col-4">
-
-            </div>
-            <div class="col-4 sticky-top">
+            <div class="col-3">
               <button name="button" id="btnSave" type="button" class="btn btn-warning btn-block">
                 <i class="fal fa-pen mr-1"></i><span>Update Role</span></button>
+            </div>
+            <div class="col-2">
+              <button name="button" id="checkAll" type="button" class="btn btn-warning btn-block">
+                <i class="fal fa-check mr-1"></i><span>Select All</span></button>
+            </div>
+            <div class="col-2">
+              <button name="button" id="uncheckAll" type="button" class="btn btn-warning btn-block">
+                <i class="fal fa-square mr-1"></i><span>Unselect All</span></button>
+            </div>
+            <div class="col-2">
+              <button name="button" id="collapse" type="button" class="btn btn-warning btn-block">
+                <i class="far fa-plus-square mr-1"></i><span>Collapse All</span></button>
+            </div>
+            <div class="col-2">
+              <button name="button" id="expand" type="button" class="btn btn-warning btn-block">
+                <i class="far fa-minus-square mr-1"></i><span>Expand All</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 card-alternative">
+          <div class="form-row">
+            <div class="col-12">
+              <label class="form-control-label text-capitalize string optional">Role Resources</label>
             </div>
             <div class="col-12">
               <div id="tree" data-acl="<%= @acl_role.id %>"></div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   <% end %>

@@ -30,6 +30,23 @@ const edit = () => {
                     alert('Failed to save.');
                 });
         });
+
+        $('#checkAll').on('click', function () {
+            tree.checkAll();
+        });
+
+        $('#uncheckAll').on('click', function () {
+            tree.uncheckAll();
+        });
+
+        $('#expand').on('click', function () {
+            tree.expandAll();
+        });
+
+        $('#collapse').on('click', function () {
+            tree.collapseAll();
+        });
+
     });
 };
 

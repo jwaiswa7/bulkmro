@@ -47,7 +47,7 @@ class Overseers::AclRolesController < Overseers::BaseController
   end
 
   def get_acl
-    default_resources = Settings.acl.default_resources
+    default_resources = get_acl_resource_json
     current_acl = @acl_role.role_resources
     parsed_json = ActiveSupport::JSON.decode(default_resources)
     parsed_json.map{|x| x['children'].map{|y|
