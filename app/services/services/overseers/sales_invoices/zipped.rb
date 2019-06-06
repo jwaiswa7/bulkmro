@@ -17,9 +17,9 @@ class Services::Overseers::SalesInvoices::Zipped < Services::Shared::BaseService
 
     Zip::File.open(invoice_zip, Zip::File::CREATE) do |zip_file|
       files.each do |file|
-        temp_invoice_file = Tempfile.new
-        temp_invoice_file.puts(File.open(file[:path]))
-        temp_invoice_file.close
+        # temp_invoice_file = Tempfile.new
+        # temp_invoice_file.puts(File.open(file[:path]))
+        # temp_invoice_file.close
 
         zip_file.add((file[:name]), File.join(Rails.root.join('tmp'), File.basename(file[:path])))
       end
