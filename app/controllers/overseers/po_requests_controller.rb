@@ -116,19 +116,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
       @po_request = autoupdate_statuses(@po_request)
       if @po_request.status_changed?
-        service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer)
+        service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer, @notification, overseers_po_request_path(@po_request), action_name)
         @po_request_comment = service.call
-        # sends notification
-        tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
-        comment = @po_request_comment.present? ? @po_request_comment.message : nil
-        @notification.send_po_request_update(
-          tos - [current_overseer.email],
-            action_name.to_sym,
-            @po_request,
-            overseers_po_request_path(@po_request),
-            @po_request.id,
-            comment,
-        )
       else
         @po_request.save!
       end
@@ -142,24 +131,20 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def cancel_porequest
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
-    if @po_request.valid?
-      service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer)
+    if @po_request.status == 'Cancelled'
+      if @po_request.cancellation_reason.present?
+        service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer, @notification, overseers_po_request_path(@po_request), action_name)
+        @po_request_comment = service.call
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Cancellation reason is required'}}, status: 500
+      end
+    elsif @po_request.valid?
+      service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer, @notification, overseers_po_request_path(@po_request), action_name)
       @po_request_comment = service.call
-
-      tos = (Services::Overseers::Notifications::Recipients.logistics_owners.include? current_overseer.email) ? [@po_request.created_by.email, @po_request.inquiry.inside_sales_owner.email] : Services::Overseers::Notifications::Recipients.logistics_owners
-      @notification.send_po_request_update(
-        tos - [current_overseer.email],
-        action_name.to_sym,
-        @po_request,
-        overseers_po_request_path(@po_request),
-        @po_request.id,
-        @po_request.last_comment.message,
-      )
       render json: {success: 1, message: 'Successfully updated '}, status: 200
-    elsif @po_request.status == 'Cancelled'
-      render json: {success: 0, message: 'Cannot cancel this PO Request.'}, status: 200
     else
-      render json: {success: 0, message: 'Cannot reject this PO Request.'}, status: 200
+      render json: {error: @po_request.errors}, status: 500
     end
   end
 
