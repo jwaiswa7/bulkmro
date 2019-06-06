@@ -24,7 +24,7 @@ class Services::Shared::Migrations::MultipleSalesQuotesWithSameProduct < Service
                  sales_quote_first_row['converted_total_selling_price'] === sales_quote_row.converted_total_selling_price &&
                  sales_quote_first_row['converted_total_selling_price_with_tax'] === sales_quote_row.converted_total_selling_price_with_tax &&
                  sales_quote_first_row['converted_unit_cost_price_with_unit_freight_cost'] === sales_quote_row.converted_unit_cost_price_with_unit_freight_cost
-                 sales_quote_first_row['tax_rate_id'] === sales_quote_row.tax_rate_id
+                sales_quote_first_row['tax_rate_id'] === sales_quote_row.tax_rate_id
                 common_sales_quote_rows.push(sales_quote_row.sales_quote_id)
               end
             end
@@ -32,8 +32,8 @@ class Services::Shared::Migrations::MultipleSalesQuotesWithSameProduct < Service
         end
       end
     end
-    puts "*****************************"
+    puts '*****************************'
     puts common_sales_quote_rows
-    puts "*****************************"
+    puts '*****************************'
   end
 end
