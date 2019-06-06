@@ -27,6 +27,7 @@ service = Services::Shared::Migrations::MigrationsV2.new(%w(complete_mismatch_sh
 service.call
 
 service = Services::Shared::Migrations::MigrationsV2.new(%w(update_non_kit_non_ae_except_zero_tsp), folder: 'seed_files_3')
+service.call
 
 service = Services::Shared::Migrations::CreditNoteEntries.new(%w(create_credit_note_entries), folder: 'seed_files_3')
 service.call

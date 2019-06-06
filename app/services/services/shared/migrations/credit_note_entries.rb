@@ -99,12 +99,12 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
       if tax_type.present? && (tax_type.include?('VAT') || tax_type.include?('CST') || tax_type.include?('Service'))
         quote_row.tax_code_id = nil
         quote_row.tax_type = tax_type
-        quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_type.split('%')[0]).id || product.tax_rate_id
+        quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_type.scan(/^\d*(?:\.\d+)?/)[0].to_d).id || product.tax_rate_id
       else
         quote_row.tax_code_id = product.tax_code.id
         quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_rate.to_d).id || product.tax_rate_id
       end
-      quote_row.legacy_applicable_tax_percentage = tax_rate.to_d
+      quote_row.legacy_applicable_tax_percentage = tax_rate.split('%')[0].to_d
       quote_row.inquiry_product_supplier_id = inquiry_supplier_id
       quote_row.margin_percentage = margin_percentage
       quote_row.unit_selling_price = unit_selling_price.to_f
