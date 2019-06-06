@@ -65,13 +65,11 @@ class Overseers::CompaniesController < Overseers::BaseController
         @account = Account.find_by_id(params[:company]['account_id'])
       else
         account_params = {name: params[:company]['account_name'], account_type: params[:company]['acc_type']}
-        @account = Account.new(account_params.merge(overseer: current_overseer))
-        @account.save_and_sync
+          @account = Account.new(account_params.merge(overseer: current_overseer))
+          @account.save_and_sync
       end
-
       @company.account = @account
       @company.save_and_sync
-
       redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     end
   end

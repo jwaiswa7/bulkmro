@@ -23,7 +23,7 @@
               </div>
             </div>
           </div>
-          <div class="new box" id="new">
+          <div class="new box">
             <h6 class="text-uppercase mb-1 font-weight-bold">Add new Account details</h6>
               <div class="form-row">
                 <div class="col-12">
@@ -34,7 +34,7 @@
                 </div>
               </div>
           </div>
-          <div class="existing box">
+          <div class="existing box" id="existing">
             <%= f.association :account, collection: selected_option_or_nil(f, :account), input_html: {class: 'select2-ajax ', :'data-source' => autocomplete_overseers_accounts_path}, include_blank: 'Link company with account' %>
           </div>
           <%= render 'overseers/companies/common_form', :f => f %>
