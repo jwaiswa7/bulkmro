@@ -10,6 +10,7 @@ class Company < ApplicationRecord
   update_index('companies#company') {self}
   pg_search_scope :locate, against: [:name], associated_against: {}, using: {tsearch: {prefix: true}}
 
+  attr_accessor :account_name, :acc_type
   belongs_to :account
   belongs_to :default_company_contact, -> (record) {where(company_id: record.id)}, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false
   has_one :default_contact, through: :default_company_contact, source: :contact
@@ -112,8 +113,10 @@ class Company < ApplicationRecord
   validate :name_is_conditionally_unique?
 
   def name_is_conditionally_unique?
-    if Company.joins(:account).where(name: self.name).where.not(id: self.id).where('accounts.account_type = ?', Account.account_types[self.account.account_type]).exists?
-      errors.add :name, 'has to be unique'
+    if self.account.present?
+      if Company.joins(:account).where(name: self.name).where.not(id: self.id).where('accounts.account_type = ?', Account.account_types[self.account.account_type]).exists?
+        errors.add :name, 'has to be unique'
+      end
     end
   end
 

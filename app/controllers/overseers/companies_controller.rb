@@ -24,11 +24,11 @@ class Overseers::CompaniesController < Overseers::BaseController
     if params[:ccr_id].present?
       requested_comp = CompanyCreationRequest.where(id: params[:ccr_id]).last
       if !requested_comp.nil?
-        @company = Company.new({ 'name': requested_comp.name, 'company_creation_request_id': params[:ccr_id] }.merge(overseer: current_overseer))
+        @company = Company.new({'name': requested_comp.name, 'company_creation_request_id': params[:ccr_id]}.merge(overseer: current_overseer))
       end
     else
+      @account = Account.new
       @company = Company.new(overseer: current_overseer)
-      @company.build_company_creation_request(overseer: current_overseer)
     end
     authorize @company
   end
@@ -41,23 +41,38 @@ class Overseers::CompaniesController < Overseers::BaseController
   def create
     @company = Company.new(company_params.merge(overseer: current_overseer))
     authorize @company
-    if @company.save
-      if @company.company_creation_request.present?
-        @company.company_creation_request.update_attributes(company_id: @company.id)
-        @company.company_creation_request.activity.update_attributes(company: @company)
-        @notification.send_company_creation_confirmation(
-          @company.company_creation_request,
-            action_name.to_sym,
-            @company,
-            overseers_company_path(@company),
-            @company.name.to_s
-        )
-      end
-      if @company.save_and_sync
-        redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
+    if params[:ccr_id].present?
+      if @company.save
+        if @company.company_creation_request.present?
+          @company.company_creation_request.update_attributes(company_id: @company.id)
+          @company.company_creation_request.activity.update_attributes(company: @company)
+          @notification.send_company_creation_confirmation(
+              @company.company_creation_request,
+              action_name.to_sym,
+              @company,
+              overseers_company_path(@company),
+              @company.name.to_s
+          )
+        end
+        if @company.save_and_sync
+          redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
+        end
+      else
+        render 'new'
       end
     else
-      render 'new'
+      if params[:company]['account_id'].present?
+        @account = Account.find_by_id(params[:company]['account_id'])
+      else
+        account_params = {name: params[:company]['account_name'], account_type: params[:company]['acc_type']}
+        @account = Account.new(account_params.merge(overseer: current_overseer))
+        @account.save_and_sync
+      end
+
+      @company.account = @account
+      @company.save_and_sync
+
+      redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     end
   end
 
@@ -124,43 +139,45 @@ class Overseers::CompaniesController < Overseers::BaseController
     export_service = Services::Overseers::Exporters::CompanyReportsExporter.new([], current_overseer, indexed_company_reports, date_range)
     export_service.call
 
-      redirect_to url_for(Export.company_report.not_filtered.last.report)
+    redirect_to url_for(Export.company_report.not_filtered.last.report)
   end
 
   private
-    def set_company
-      @company ||= Company.find(params[:id])
-    end
-    def company_params
-      params.require(:company).permit(
+
+  def set_company
+    @company ||= Company.find(params[:id])
+  end
+
+  def company_params
+    params.require(:company).permit(
         :account_id,
-          :name,
-          :industry_id,
-          :remote_uid,
-          :default_company_contact_id,
-          :default_payment_option_id,
-          :default_billing_address_id,
-          :default_shipping_address_id,
-          :inside_sales_owner_id,
-          :outside_sales_owner_id,
-          :sales_manager_id,
-          :company_type,
-          :priority,
-          :site,
-          :company_creation_request_id,
-          :nature_of_business,
-          :creadit_limit,
-          :tan_proof,
-          :pan,
-          :pan_proof,
-          :cen_proof,
-          :logo,
-          :is_msme,
-          :is_active,
-          :is_unregistered_dealer,
-          contact_ids: [],
-          brand_ids: [],
-          product_ids: [],
-          )
-    end
+        :name,
+        :industry_id,
+        :remote_uid,
+        :default_company_contact_id,
+        :default_payment_option_id,
+        :default_billing_address_id,
+        :default_shipping_address_id,
+        :inside_sales_owner_id,
+        :outside_sales_owner_id,
+        :sales_manager_id,
+        :company_type,
+        :priority,
+        :site,
+        :company_creation_request_id,
+        :nature_of_business,
+        :creadit_limit,
+        :tan_proof,
+        :pan,
+        :pan_proof,
+        :cen_proof,
+        :logo,
+        :is_msme,
+        :is_active,
+        :is_unregistered_dealer,
+        contact_ids: [],
+        brand_ids: [],
+        product_ids: [],
+    )
+  end
 end
