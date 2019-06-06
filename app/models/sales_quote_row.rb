@@ -15,7 +15,7 @@ class SalesQuoteRow < ApplicationRecord
 
   attr_accessor :is_selected, :tax_percentage, :tax
 
-  delegate :unit_cost_price, to: :inquiry_product_supplier, allow_nil: true
+  # delegate :unit_cost_price, to: :inquiry_product_supplier, allow_nil: true
   delegate :sr_no, :legacy_id, to: :inquiry_product, allow_nil: true
   delegate :tax_percentage, :gst_rate, to: :tax_code, allow_nil: true
   # delegate :measurement_unit, :to => :product, allow_nil: true
@@ -28,6 +28,14 @@ class SalesQuoteRow < ApplicationRecord
   validates_numericality_of :quantity, less_than_or_equal_to: :maximum_quantity, if: :not_legacy?
 
   # validate :validate_is_unit_selling_price_consistent_with_margin_percentage?, if: :not_legacy?
+
+  def unit_cost_price
+    if !self.sales_quote.is_credit_note_entry
+      self.inquiry_product_supplier.unit_cost_price
+    else
+      self.credit_note_unit_cost_price
+    end
+  end
 
   def validate_is_unit_selling_price_consistent_with_margin_percentage?
     if unit_selling_price.round != calculated_unit_selling_price.round && Rails.env.development?
@@ -130,7 +138,11 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def unit_cost_price_with_unit_freight_cost
-    unit_cost_price + unit_freight_cost if unit_cost_price.present? && unit_freight_cost.present?
+    if !self.sales_quote.is_credit_note_entry
+      unit_cost_price + unit_freight_cost if unit_cost_price.present? && unit_freight_cost.present?
+    else
+      unit_cost_price + 0.0
+    end
   end
 
   def calculated_unit_selling_price
