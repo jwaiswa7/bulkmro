@@ -11,7 +11,8 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
     @margin_value = ''
     @tax_amount_value = ''
     missing_sku = []
-    i = 1
+    # 8888888881
+    i = 2
     service = Services::Shared::Spreadsheets::CsvImporter.new('ae_entries.csv', 'seed_files_3')
     duplicate_array = []
 
@@ -49,9 +50,7 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
             duplicate_sales_order.shipping_address_id = sales_order.shipping_address_id
             duplicate_sales_order.created_at = Date.parse(order_date).strftime('%Y-%m-%d')
             duplicate_sales_order.is_credit_note_entry = true
-            duplicate_sales_order.metadata = {
-                credit_note_entry_for_order: sales_order.order_number
-            }
+            duplicate_sales_order.parent_id = sales_order.id
             if duplicate_sales_order.save(validate: false)
               create_duplicate_order_rows(duplicate_sales_order, sales_order, product_sku, quantity)
             end
@@ -71,7 +70,6 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
 
   def create_duplicate_order_rows(duplicate_order, old_sales_order, product_sku, quantity)
     row = duplicate_order.rows.build
-    row.tax_type = tax_type
     row.sales_quote_row_id = create_sales_quote_row(duplicate_order.sales_quote, old_sales_order)
     row.quantity = quantity.to_f
     row.save(validate: false)
@@ -98,9 +96,14 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
     if inquiry_supplier_id.present?
       quote_row.sales_quote_id = sales_quote.id
       quote_row.quantity = quantity
-      quote_row.tax_code_id = product.tax_code.id
-      quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_rate.split('.').first).id || product.tax_rate_id
-      quote_row.tax_type = tax_type
+      if tax_type.present? && (tax_type.include?('VAT') || tax_type.include?('CST') || tax_type.include?('Service'))
+        quote_row.tax_code_id = nil
+        quote_row.tax_type = tax_type
+        quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_type.split('%')[0]).id || product.tax_rate_id
+      else
+        quote_row.tax_code_id = product.tax_code.id
+        quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_rate.to_d).id || product.tax_rate_id
+      end
       quote_row.legacy_applicable_tax_percentage = tax_rate.to_d
       quote_row.inquiry_product_supplier_id = inquiry_supplier_id
       quote_row.margin_percentage = margin_percentage
