@@ -52,3 +52,6 @@ service.call
 
 service = Services::Shared::Migrations::AddTaxTypeInSalesOrderRow.new(%w(add_tax_type_in_sales_order_row), folder: 'seed_files')
 service.call
+
+service = Services::Shared::Migrations::MultipleSalesQuotesWithSameProduct.new(%w(merge_sales_quote_duplicate_product_rows), folder: 'seed_files')
+service.call
