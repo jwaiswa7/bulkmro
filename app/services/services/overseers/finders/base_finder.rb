@@ -240,39 +240,15 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
-  def filter_for_self_and_descendants(key1, key2, key3 = nil, vals)
-    if key3.present?
-    {
+  def filter_for_self_and_descendants(keys, vals)
+    query_obj = {
         bool: {
-            should: [
-                {
-                    terms: {"#{key1}": vals},
-                },
-                {
-                    terms: {"#{key2}": vals},
-                },
-                {
-                    terms: {"#{key3}": vals},
-                }
-            ],
-            minimum_should_match: 1,
-        },
+            should: [],
+            minimum_should_match: 1
+        }
     }
-    else
-      {
-          bool: {
-              should: [
-                  {
-                      terms: {"#{key1}": vals},
-                  },
-                  {
-                      terms: {"#{key2}": vals},
-                  }
-              ],
-              minimum_should_match: 1,
-          },
-      }
-    end
+    keys.map{|i| query_obj[:bool][:should] << { terms: { "#{i}": vals}}}
+    return  query_obj
   end
 
   def aggregate_by_status(key = 'statuses', aggregation_field = 'potential_value', size = 50, status_field)
