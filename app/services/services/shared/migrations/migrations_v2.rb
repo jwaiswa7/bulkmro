@@ -423,7 +423,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       puts "AE ENTRIES", ae_entries, ae_entries.count
     end
 
-    fetch_csv('mismatch_second_run.csv', csv_data)
+    fetch_csv('new_initial_mismatch.csv', csv_data)
   end
 
   def update_non_kit_non_ae_except_zero_tsp
