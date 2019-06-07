@@ -32,7 +32,7 @@
             <% if policy(sales_order).show? %>
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order), 'eye', 'View Sales Order', 'info') %>
             <% end %>
-            <% if policy(sales_order).edit? %>
+            <% if policy(sales_order).edit? && !sales_order.sales_quote.is_credit_note_entry %>
               <%= row_action_button(edit_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'pencil', 'Edit Sales Order', 'warning') %>
             <% elsif policy(sales_order).new_revision? %>
               <%= row_action_button(new_revision_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'redo-alt', 'New Sales Order Revision', 'warning') %>
