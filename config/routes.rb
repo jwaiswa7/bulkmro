@@ -634,6 +634,11 @@ Rails.application.routes.draw do
     end
 
     resources :sales_receipts
+    resources :logistics_scorecards do
+      collection do
+        get 'add_delay_reason'
+      end
+    end
 
   end
 

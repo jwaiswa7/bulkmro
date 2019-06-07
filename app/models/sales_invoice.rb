@@ -4,6 +4,7 @@ class SalesInvoice < ApplicationRecord
   include Mixins::HasConvertedCalculations
   update_index('sales_invoices#sales_invoice') { self }
   update_index('customer_order_status_report#sales_order') { sales_order }
+  update_index('logistics_scorecards#sales_invoice') { self }
 
   pg_search_scope :locate, against: [:id, :invoice_number], associated_against: { company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
 
@@ -39,8 +40,6 @@ class SalesInvoice < ApplicationRecord
   scope :not_cancelled_invoices, -> { where.not(status: 'Cancelled') }
   scope :not_paid, -> { where.not(payment_status: 'Fully Paid') }
 
-
-
   enum status: {
       'Open': 1,
       'Paid': 2,
@@ -53,6 +52,29 @@ class SalesInvoice < ApplicationRecord
       'Material Ready For Dispatch': 206,
       'Material Rejected': 207
   }
+
+  enum delay_reason: {
+      'Logistics Delivery Delay': 10,
+      'SO Creation Delay': 20,
+      'Supplier PO Creation Delay': 30,
+      'Supplier Delay': 40
+  }
+
+  enum sla_bucket: {
+      'Not Delivered': 0,
+      'On or before Time': 1,
+      'Delayed': 2
+  }
+
+  enum delay_bucket: {
+      'Not Delivered': 0,
+      'No delay': 1,
+      'Delay by 2 days': 2,
+      'Delay by 2-7 days': 3,
+      'Delay by 7-14 days': 4,
+      'Delay by 14-28 days': 5,
+      'Delay by >28 days': 6
+  }, _prefix: true
 
   scope :with_includes, -> { includes(:sales_order) }
   scope :not_cancelled, -> { where.not(status: 'Cancelled') }
@@ -214,5 +236,52 @@ class SalesInvoice < ApplicationRecord
 
   def calculated_freight_cost_total
     self.rows.sum(&:freight_cost_subtotal).round(2)
+  end
+
+  def calculated_committed_delivery_tat
+    po_received_date = (self.inquiry.customer_po_received_date.present?) ? self.inquiry.customer_po_received_date : self.inquiry.customer_order_date
+    if self.inquiry.customer_committed_date.present? && po_received_date.present?
+      (self.inquiry.customer_committed_date - po_received_date).to_i
+    end
+  end
+
+  def calculated_actual_delivery_tat
+    if self.delivery_date.present? && self.inquiry.customer_order_date.present?
+      (self.delivery_date - self.inquiry.customer_order_date).to_i
+    end
+  end
+
+  def calculated_delay
+    if self.calculated_committed_delivery_tat.present? && self.calculated_actual_delivery_tat.present?
+      (self.calculated_actual_delivery_tat - self.calculated_committed_delivery_tat).to_i
+    end
+  end
+
+  def calculated_sla_bucket
+    if ['', nil].include?(self.calculated_delay)
+      'Not Delivered'
+    elsif self.calculated_delay <= 0
+      'On or before Time'
+    else
+      'Delayed'
+    end
+  end
+
+  def calculated_delay_bucket
+    if ['', nil].include?(self.calculated_delay)
+      0
+    elsif self.calculated_delay <= 0
+      1
+    elsif self.calculated_delay <= 2
+      2
+    elsif self.calculated_delay <= 7
+      3
+    elsif self.calculated_delay <= 14
+      4
+    elsif self.calculated_delay <= 28
+      5
+    else
+      6
+    end
   end
 end
