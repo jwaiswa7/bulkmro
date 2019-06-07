@@ -13,11 +13,19 @@
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="col-12">
-        <%= f.input :companies, input_html: {value: format_collection(f.object.companies)}, disabled: true %>
+    <% if params[:company_id].present? %>
+      <div class="form-row">
+        <div class="col-12">
+          <%= f.input :companies, input_html: {value: format_collection(f.object.companies)}, disabled: true %>
+        </div>
       </div>
-    </div>
+    <% else %>
+      <div class="form-row">
+        <div class="col-12">
+          <%= f.input :company_id, as: :select, collection: selected_option_or_nil(f, :companies), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path, label: "Companies"} %>
+        </div>
+      </div>
+    <% end %>
 
     <div class="form-row">
       <div class="col-1">
