@@ -5,7 +5,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def index
     @imports = @inquiry.imports
-    authorize_acl @inquiry, :imports?
+    authorize_acl @inquiry, 'imports'
   end
 
   def show

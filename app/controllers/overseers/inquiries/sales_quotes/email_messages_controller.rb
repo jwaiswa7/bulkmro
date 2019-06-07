@@ -7,7 +7,7 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
       auto_attach: true,
     )
 
-    authorize_acl @sales_quote, :new_email_message?
+    authorize_acl @sales_quote, 'new_email_message'
   end
 
   def create
@@ -22,7 +22,7 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
 
-    authorize_acl @sales_quote, :create_email_message?
+    authorize_acl @sales_quote, 'create_email_message'
 
     if @email_message.auto_attach?
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_quote)), filename: @sales_quote.filename(include_extension: true))

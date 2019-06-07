@@ -28,7 +28,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def proforma
-    authorize_acl @sales_order, :show_pdf?
+    authorize_acl @sales_order, 'show_pdf'
 
     respond_to do |format|
       format.pdf do
@@ -40,7 +40,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   def new
     @sales_quote = SalesQuote.find(params[:sales_quote_id])
     @sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(@sales_quote, current_overseer).call
-    authorize_acl @sales_quote, :new_sales_order?
+    authorize_acl :sales_order, 'new'
   end
 
   def new_revision

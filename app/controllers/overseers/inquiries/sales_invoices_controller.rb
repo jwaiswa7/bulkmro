@@ -21,7 +21,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
   def duplicate
-    authorize_acl @sales_invoice, :show?
+    authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
     locals.merge!(duplicate: true)
     respond_to do |format|
@@ -33,7 +33,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
   def triplicate
-    authorize_acl @sales_invoice, :show?
+    authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
     locals.merge!(triplicate: true)
     respond_to do |format|

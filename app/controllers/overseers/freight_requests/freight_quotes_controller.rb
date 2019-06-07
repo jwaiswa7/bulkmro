@@ -11,7 +11,7 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
   end
 
   def new
-    authorize_acl @freight_request, :new_freight_quote?
+    authorize_acl @freight_request
     @freight_quote = @freight_request.build_freight_quote(overseer: current_overseer, inquiry: @freight_request.inquiry)
   end
 
@@ -20,7 +20,7 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
   end
 
   def create
-    authorize_acl @freight_request, :new_freight_quote?
+    authorize_acl @freight_request
     @freight_quote = FreightQuote.new(freight_quote_params.merge(overseer: current_overseer))
 
     if @freight_quote.valid?
@@ -39,13 +39,13 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
   end
 
   def edit
-    authorize_acl @freight_request, :edit_freight_quote?
+    authorize_acl @freight_request
   end
 
   def update
     filtered_params = freight_quote_params.except(:purchase_order)
     @freight_quote.assign_attributes(filtered_params.merge(overseer: current_overseer))
-    authorize_acl @freight_request, :edit_freight_quote?
+    authorize_acl @freight_request
 
     if @freight_quote.valid?
       ActiveRecord::Base.transaction do

@@ -20,7 +20,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   def new
     @sales_quote = @inquiry.sales_quotes.build(overseer: current_overseer)
     @sales_quote = Services::Overseers::SalesQuotes::BuildRows.new(@sales_quote).call
-    authorize_acl @inquiry, :new_sales_quote?
+    authorize_acl :sales_quote, 'new'
   end
 
   def new_revision

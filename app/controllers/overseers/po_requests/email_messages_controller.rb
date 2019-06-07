@@ -14,7 +14,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
         auto_attach: false
       )
     end
-    authorize_acl @po_request, :sending_po_to_supplier_new_email_message?
+    authorize_acl @po_request, 'sending_po_to_supplier_new_email_message'
     render 'new'
   end
 
@@ -31,7 +31,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:cc].present?
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:bcc].present?
 
-    authorize_acl @po_request, :sending_po_to_supplier_create_email_message?
+    authorize_acl @po_request, 'sending_po_to_supplier_create_email_message'
 
     if @email_message.save
       if PoRequestMailer.send_supplier_notification(@email_message).deliver_now
@@ -54,7 +54,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
         auto_attach: false
       )
     end
-    authorize_acl @po_request, :dispatch_supplier_delayed_new_email_message?
+    authorize_acl @po_request, 'dispatch_supplier_delayed_new_email_message'
     render 'new'
   end
 
@@ -69,7 +69,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:cc].present?
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:bcc].present?
 
-    authorize_acl @po_request, :dispatch_supplier_delayed_create_email_message?
+    authorize_acl @po_request, 'dispatch_supplier_delayed_create_email_message'
 
     if @email_message.save
       PoRequestMailer.send_dispatch_from_supplier_delayed_notification(@email_message).deliver_now
@@ -90,7 +90,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
         auto_attach: false
       )
     end
-    authorize_acl @po_request, :material_received_in_bm_warehouse_new_email_msg?
+    authorize_acl @po_request, 'material_received_in_bm_warehouse_new_email_msg'
     render 'new'
   end
 
@@ -105,7 +105,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:cc].present?
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:bcc].present?
 
-    authorize_acl @po_request, :material_received_in_bm_warehouse_create_email_msg?
+    authorize_acl @po_request, 'material_received_in_bm_warehouse_create_email_msg'
 
     if @email_message.save
       PoRequestMailer.send_material_received_in_bm_warehouse_notification(@email_message).deliver_now

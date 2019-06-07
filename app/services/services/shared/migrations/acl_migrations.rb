@@ -147,7 +147,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     ]
 
     all_resources = AclResource.all.pluck(:id)
-    all_resources = all_resources.map{|x| x.to_s }
+    all_resources = all_resources.map {|x| x.to_s}
 
     roles.each do |role|
       AclRole.where(:role_name => role).first_or_create! do |ar|
@@ -208,7 +208,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   def assign_all_resources_to_devs
     overseer = Overseer.find(153)
     admin_acl_role = AclRole.find_by_role_name('admin')
-    overseers = ['pradeep.ketkale@bulkmro.com', 'bhargav.trivedi@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com', 'ruta.kambli@bulkmro.com', 'meenakshi.naik@bulkmro.com', 'sourabh.raje@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'sakshi.yadav@bulkmro.com', 'lopesh.durugkar@bulkmro.com', 'sufiyan.siddique@bulkmro.com', 'rucha.parab@bulkmro.com', 'kunal.sheth@bulkmro.com','suganya.murugan@bulkmro.com']
+    overseers = ['pradeep.ketkale@bulkmro.com', 'bhargav.trivedi@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com', 'ruta.kambli@bulkmro.com', 'meenakshi.naik@bulkmro.com', 'sourabh.raje@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'sakshi.yadav@bulkmro.com', 'lopesh.durugkar@bulkmro.com', 'sufiyan.siddique@bulkmro.com', 'rucha.parab@bulkmro.com', 'kunal.sheth@bulkmro.com', 'suganya.murugan@bulkmro.com']
 
 
     overseers.each do |overseer_email|
@@ -220,5 +220,13 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       end
       o.update_attributes!(:acl_resources => allowed_resources.to_json, :acl_role => admin_acl_role) if o.present?
     end
+  end
+
+  def get_model_action
+    model_actions = []
+    AclResource.all.order(resource_model_name: :asc).each do |acl_resource|
+      model_actions << [acl_resource.resource_model_name, acl_resource.resource_action_name]
+    end
+    model_actions
   end
 end
