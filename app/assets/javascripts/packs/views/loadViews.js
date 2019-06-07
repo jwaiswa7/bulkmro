@@ -73,6 +73,8 @@ import companyBanks from "./companyBanks/init"
 // Dashboard
 import dashboard from "./dashboard/init"
 
+import logisticsScorecards from "./logisticsScorecards/init";
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -102,7 +104,8 @@ let loader = {
     taxCodes: taxCodes,
     imageReaders: imageReaders,
     companyBanks: companyBanks,
-    dashboard: dashboard
+    dashboard: dashboard,
+    logisticsScorecards: logisticsScorecards
 };
 
 // Imports
