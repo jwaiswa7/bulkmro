@@ -84,6 +84,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
           :state_name,
           :street1,
           :street2,
+          :is_sez,
           :telephone,
           :mobile,
           :gst_proof,
