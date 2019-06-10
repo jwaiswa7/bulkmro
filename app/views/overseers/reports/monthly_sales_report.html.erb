@@ -23,7 +23,7 @@
     <tr>
       <th><%= month == :total ? 'Total' : format_month_without_date(month) %></th>
       <% values.each do |key,value| %>
-        <td class="text-uppercase text-black-50"><%= key == :total || key == :product_quantities ? format_currency(value, precision: 0, show_symbol: false) : value %></td>
+        <td class="text-uppercase text-black-50"><%=  format_currency(value, precision: 0, show_symbol: false) %></td>
       <% end %>
     </tr>
   <% end %>
