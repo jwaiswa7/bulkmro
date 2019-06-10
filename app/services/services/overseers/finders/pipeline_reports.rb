@@ -36,7 +36,7 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
     end
     if @pipeline_report_params.present? && @pipeline_report_params['sales_manager'].present?
       sales_executives = sales_executives.map {|o| o if (o.parent_id == @pipeline_report_params['sales_manager'].to_i)}.compact
-      indexed_records = indexed_records.filter(filter_for_self_and_descendants('inside_sales_owner_id', 'outside_sales_owner_id', 'sales_manager_id', sales_executives.pluck(:id)))
+      indexed_records = indexed_records.filter(filter_for_self_and_descendants(['inside_sales_owner_id', 'outside_sales_owner_id', 'sales_manager_id'], sales_executives.pluck(:id)))
     end
     # if @pipeline_report_params.present? && @pipeline_report_params['business_head'].present?
     #   sales_executives = sales_executives.map {|o| o if (o.parent.parent_id == @pipeline_report_params['business_head'].to_i || o.parent_id == @pipeline_report_params['business_head'].to_i) if o.parent.present?}.compact
