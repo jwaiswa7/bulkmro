@@ -31,27 +31,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
   end
 
-  def missing_bible_orders
-    column_headers = ['inquiry_number', 'order_number']
-    i = 0
-    service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-28 Bible Fields for Migration.csv', 'seed_files_3')
-    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |csv|
-      service.loop(nil) do |x|
-        order_number = x.get_column('So #')
-        if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
-          sales_order = SalesOrder.find_by_old_order_number(x.get_column('So #'))
-          if sales_order.blank?
-            csv << [x.get_column('Inquiry Number'), x.get_column('So #')]
-          end
-          i = i + 1
-          puts "line #{i}, SO #{x.get_column('So #')}"
-        end
-      end
-    end
-
-    fetch_csv('bible_missing_orders.csv', csv_data)
-  end
-
   def sap_sales_order_totals_mismatch
     column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
 
@@ -74,42 +53,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
 
     fetch_csv('sales_orders_total_mismatch.csv', csv_data)
-  end
-
-  def bible_sales_order_totals_mismatch
-    column_headers = ['inquiry_number', 'order_number', 'SKU', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax']
-    skipped_skus = []
-    service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-28 Bible Fields for Migration.csv', 'seed_files_3')
-    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
-      service.loop(nil) do |x|
-        bible_order_row_total = x.get_column('Total Selling Price').to_f
-        bible_order_tax_total = x.get_column('Tax Amount').to_f
-        bible_order_row_total_with_tax = bible_order_row_total + bible_order_tax_total
-
-        sales_order = SalesOrder.find_by_old_order_number(x.get_column('So #')) || SalesOrder.find_by_order_number(x.get_column('So #').to_i)
-        if sales_order.present?
-          product_sku = x.get_column('Bm #').to_s
-
-          if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
-            order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
-            row_total = order_row.total_selling_price
-            row_total_with_tax = order_row.total_selling_price_with_tax
-
-            if ((row_total != bible_order_row_total) || (row_total_with_tax != bible_order_row_total_with_tax)) &&
-                ((row_total - bible_order_row_total).abs > 1 || (row_total_with_tax - bible_order_row_total_with_tax).abs > 1)
-              writer << [x.get_column('Inquiry Number'), sales_order.order_number, product_sku, row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax]
-            end
-          else
-            if !(skipped_skus.include?(x.get_column('Bm #')) && skipped_skus.include?(x.get_column('So #')))
-              skipped_skus.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
-            end
-          end
-        end
-      end
-      puts 'SKIPPED SKUs', skipped_skus
-    end
-
-    fetch_csv('bible_sales_orders_total_mismatch.csv', csv_data)
   end
 
   def missing_sap_purchase_orders
@@ -200,90 +143,8 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   # 8888888881
   # SalesOrder.where('order_number > ? AND order_number < ?', 1, 100).second_to_last.order_number
 
-  # main
-  def complete_bible_orders_mismatch_with_dates
-    column_headers = ['inquiry_number', 'client order date', 'order_number', 'old_order_number', 'order date', 'SKU', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax', 'kit order', 'adjustment entry']
-    matching_orders = []
-    repeating_skus = []
-    missing_skus = []
-    missing_orders = []
-    matching_rows_total = 0
-    matching_bible_rows = 0
-    repeating_matching_bible_rows = 0
-    repeating_matching_rows_total = 0
-
-    service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-28 Bible Fields for Migration.csv', 'seed_files_3')
-    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
-      service.loop(nil) do |x|
-        is_adjustment_entry = 'No'
-        order_number = x.get_column('So #')
-        bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
-        bible_order_tax_total = x.get_column('Tax Amount').to_f
-        bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
-
-        if bible_order_row_total.negative?
-          sales_order = SalesOrder.where("metadata->>'credit_note_entry_for_order' = ?", order_number).first
-        elsif order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
-          sales_order = SalesOrder.find_by_old_order_number(order_number)
-        else
-          sales_order = SalesOrder.find_by_order_number(order_number.to_i)
-        end
-
-        if sales_order.present?
-          product_sku = x.get_column('Bm #').to_s.upcase
-
-          if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
-            order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
-            row_total = order_row.total_selling_price.to_f.round(2)
-            row_total_with_tax = order_row.total_selling_price_with_tax.to_f.round(2)
-
-            if ((row_total != bible_order_row_total) || (row_total_with_tax != bible_order_row_total_with_tax)) &&
-                ((row_total - bible_order_row_total).abs > 1 || (row_total_with_tax - bible_order_row_total_with_tax).abs > 1)
-
-              # adjustment entries
-              if (row_total == -(bible_order_row_total)) || (row_total_with_tax == -(bible_order_row_total_with_tax)) || bible_order_row_total_with_tax.negative? || bible_order_row_total.negative?
-                is_adjustment_entry = 'Yes'
-              end
-
-              # KIT check
-              if sales_order.calculated_total.to_f.round(2) == bible_order_row_total &&
-                  sales_order.calculated_total_with_tax.to_f.round(2) == bible_order_row_total_with_tax
-                writer << [x.get_column('Inquiry Number'), x.get_column('Client Order Date'), sales_order.order_number, sales_order.old_order_number || 'nil', x.get_column('Order Date'), product_sku, row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax, 'Yes', is_adjustment_entry]
-              else
-                writer << [x.get_column('Inquiry Number'), x.get_column('Client Order Date'), sales_order.order_number, sales_order.old_order_number || 'nil', x.get_column('Order Date'), product_sku, row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax, 'No', is_adjustment_entry]
-              end
-            else
-              if matching_orders.include?(x.get_column('Bm #') + '-' + x.get_column('So #'))
-                repeating_matching_bible_rows = repeating_matching_bible_rows + bible_order_row_total_with_tax
-                repeating_matching_rows_total = repeating_matching_rows_total + row_total_with_tax
-                repeating_skus.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
-              else
-                matching_bible_rows = matching_bible_rows + bible_order_row_total_with_tax
-                matching_rows_total = matching_rows_total + row_total_with_tax
-                matching_orders.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
-              end
-            end
-          else
-            missing_skus.push(x.get_column('Bm #') + '-' + x.get_column('Order Date') + '-' + x.get_column('So #'))
-          end
-        else
-          missing_orders.push(x.get_column('Bm #') + '-' + x.get_column('Order Date') + '-' + x.get_column('So #'))
-        end
-      end
-      puts 'Matching orders uniq', matching_orders.uniq.count
-      puts 'Matching orders', matching_orders.count
-      puts 'Totals(Bible, sprint)', matching_bible_rows.to_f, matching_rows_total.to_f
-      puts 'REPEATING SKUS', repeating_skus
-      puts 'MISSING SKUs', missing_skus, missing_skus.count
-      puts 'MISSING ORDERS', missing_orders, missing_orders.count
-      puts 'TOTALS FOR REPEATING SKUS(BIBLE/Sprint)', repeating_matching_bible_rows, repeating_matching_rows_total
-    end
-
-    fetch_csv('fresh_bible_mismatch_first_run30.csv', csv_data)
-  end
-
   def complete_mismatch_sheet
-    column_headers = ['Inside Sales Name', 'Client Order Date', 'Price Currency', 'Document Rate', 'Magento Company Name', 'Company Alias', 'Inquiry Number', 'So #', 'Order Date', 'Bm #', 'Description', 'Order Qty', 'Unit Selling Price', 'Freight', 'Tax Type', 'Tax Rate', 'Tax Amount', 'Total Selling Price', 'Total Landed Cost', 'Unit cost price', 'Margin', 'Margin (In %)', 'Kit', 'AE', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax']
+    column_headers = ['Inside Sales Name', 'Client Order Date', 'Price Currency', 'Document Rate', 'Magento Company Name', 'Company Alias', 'Inquiry Number', 'So #', 'Order Date', 'Bm #', 'Order Qty', 'Unit Selling Price', 'Freight', 'Tax Type', 'Tax Rate', 'Tax Amount', 'Total Selling Price', 'Total Landed Cost', 'Unit cost price', 'Margin', 'Margin (In %)', 'Kit', 'AE', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax', 'Different Tax Rate']
     matching_orders = []
     repeating_skus = []
     missing_skus = []
@@ -300,6 +161,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         puts "********************************* ITERATION ************************************", iteration
         iteration = iteration + 1
         is_adjustment_entry = 'No'
+        tax_rate_different = 'Yes'
         order_number = x.get_column('So #')
         bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
         bible_order_tax_total = x.get_column('Tax Amount').to_f
@@ -342,6 +204,11 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             if ((row_total != bible_order_row_total) || (row_total_with_tax != bible_order_row_total_with_tax)) &&
                 ((row_total - bible_order_row_total).abs > 1 || (row_total_with_tax - bible_order_row_total_with_tax).abs > 1)
 
+              if x.get_column('Tax Rate').present? && x.get_column('Tax Type').present? &&
+                  x.get_column('Tax Type').scan(/^\d*(?:\.\d+)?/)[0].to_f != x.get_column('Tax Rate').split('%')[0].to_f
+                tax_rate_different = 'Yes'
+              end
+
               # KIT check
               if sales_order.calculated_total.to_f.round(2) == bible_order_row_total &&
                   sales_order.calculated_total_with_tax.to_f.round(2) == bible_order_row_total_with_tax
@@ -355,7 +222,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
                            x.get_column('So #'),
                            x.get_column('Order Date'),
                            x.get_column('Bm #'),
-                           x.get_column('Description').gsub(';', ' '),
                            x.get_column('Order Qty'),
                            x.get_column('Unit Selling Price'),
                            x.get_column('Freight'),
@@ -367,7 +233,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
                            x.get_column('Unit cost price'),
                            x.get_column('Margin'),
                            x.get_column('Margin (In %)'), 'Yes', is_adjustment_entry,
-                           row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax]
+                           row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax, tax_rate_different]
               else
                 writer << [x.get_column('Inside Sales Name'),
                            x.get_column('Client Order Date'),
@@ -379,7 +245,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
                            x.get_column('So #'),
                            x.get_column('Order Date'),
                            x.get_column('Bm #'),
-                           x.get_column('Description').gsub(';', ' '),
                            x.get_column('Order Qty'),
                            x.get_column('Unit Selling Price'),
                            x.get_column('Freight'),
@@ -391,7 +256,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
                            x.get_column('Unit cost price'),
                            x.get_column('Margin'),
                            x.get_column('Margin (In %)'), 'No', is_adjustment_entry,
-                           row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax]
+                           row_total, row_total_with_tax, bible_order_row_total, bible_order_row_total_with_tax, tax_rate_different]
               end
             else
               if matching_orders.include?(x.get_column('Bm #') + '-' + x.get_column('So #'))
@@ -423,15 +288,17 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       puts "AE ENTRIES", ae_entries, ae_entries.count
     end
 
-    fetch_csv('new_initial_mismatch.csv', csv_data)
+    fetch_csv('second_run_mismatch.csv', csv_data)
   end
 
   def update_non_kit_non_ae_except_zero_tsp
-    service = Services::Shared::Spreadsheets::CsvImporter.new('initial_mismatch.csv', 'seed_files_3')
-    neg_entry = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('corrected_initial_mismatch.csv', 'seed_files_3')
+    corrected = []
+    tax_mismatch = []
     repeating_rows = []
     quantity_mismatch = []
     multiple_not_booked_orders = []
+    tax_rate_difference = []
     repeating_matching_bible_rows = 0
     repeating_matching_rows_total = 0
 
@@ -484,11 +351,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         bible_order_tax_total = x.get_column('Tax Amount').to_f
         bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
 
-        # AE
-        if bible_order_row_total.negative? && bible_order_row_total_with_tax.negative?
-          neg_entry.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
-        end
-
         if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
           order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
           quote_row = order_row.sales_quote_row
@@ -498,13 +360,18 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             tax_rate_percentage = x.get_column('Tax Type').scan(/^\d*(?:\.\d+)?/)[0].to_d
             tax_rate = TaxRate.where(tax_percentage: tax_rate_percentage).first_or_create!
           else
-            tax_rate_percentage = x.get_column('Tax Rate').split('%')[0]
+            tax_rate_percentage = x.get_column('Tax Rate').split('%')[0].to_d
             tax_rate = TaxRate.where(tax_percentage: tax_rate_percentage).first
           end
 
-          if quote_row.quantity != x.get_column('Order Qty').to_f
-            quantity_mismatch.push(current_row)
+          # main
+          if x.get_column('Tax Rate').present? && x.get_column('Tax Type').present? && x.get_column('Tax Type').scan(/^\d*(?:\.\d+)?/)[0].to_f != x.get_column('Tax Rate').split('%')[0].to_f
+            tax_rate_difference.push(current_row)
           end
+
+          # if quote_row.quantity != x.get_column('Order Qty').to_f
+          #   quantity_mismatch.push(current_row)
+          # end
           quote_row.quantity = x.get_column('Order Qty').to_f
           quote_row.unit_selling_price = x.get_column('Unit Selling Price').to_f
           quote_row.converted_unit_selling_price = x.get_column('Unit Selling Price').to_f
@@ -531,8 +398,9 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
           new_row_total = order_row.total_selling_price.to_f.round(2)
           new_row_total_with_tax = order_row.total_selling_price_with_tax.to_f.round(2)
+          tax_amount = ((tax_rate_percentage.to_f/100) * new_row_total).to_f.round(2)
 
-          if (new_row_total == bible_order_row_total) && (new_row_total_with_tax == bible_order_row_total_with_tax)
+          if (order_row.total_tax.to_f.round(2) == tax_amount) && (new_row_total == bible_order_row_total) && (new_row_total_with_tax == bible_order_row_total_with_tax)
             if updated_orders_with_matching_total_with_tax.include?(current_row)
               repeating_rows.push(current_row)
               repeating_matching_rows_total = repeating_matching_rows_total + new_row_total_with_tax
@@ -543,14 +411,15 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
               updated_orders_with_matching_total_with_tax.push(current_row)
               updated_orders_total_with_tax = updated_orders_total_with_tax + new_row_total_with_tax
               bible_total_with_tax = bible_total_with_tax + bible_order_row_total_with_tax
+              corrected.push(current_row)
             end
-          elsif (new_row_total != bible_order_row_total) || (new_row_total_with_tax != bible_order_row_total_with_tax)
-            j = j + 1
-            puts 'Mismatched order count', j
-            updated_orders_with_matching_total.push(current_row)
-            updated_orders_total = updated_orders_total + new_row_total_with_tax
-            bible_total = bible_total + bible_order_row_total_with_tax
-          else
+          elsif (order_row.total_tax.to_f.round(2) != tax_amount) || (new_row_total != bible_order_row_total) && (new_row_total_with_tax != bible_order_row_total_with_tax)
+              j = j + 1
+              puts 'Mismatched order count', j
+              updated_orders_with_matching_total.push(current_row)
+              updated_orders_total = updated_orders_total + new_row_total_with_tax
+              bible_total = bible_total + bible_order_row_total_with_tax
+              tax_mismatch.push(current_row)
           end
         else
           # add missing skus in sprint
@@ -568,122 +437,8 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     puts "QMismatch", quantity_mismatch
     puts "MATCHED", i
     puts "MISMATCH", j
-  end
-
-  def update_vat_entries
-    service = Services::Shared::Spreadsheets::CsvImporter.new('vat_cst_services.csv', 'seed_files_3')
-    has_vat = []
-    repeating_rows = []
-    repeating_matching_bible_rows = 0
-    repeating_matching_rows_total = 0
-
-    updated_orders_with_matching_total_with_tax = []
-    updated_orders_total_with_tax = 0
-    bible_total_with_tax = 0
-
-    updated_orders_with_matching_total = []
-    updated_orders_total = 0
-    bible_total = 0
-
-    i = 0
-    j = 0
-    iteration = 1
-
-    temporary_skip_list = ['BM0P0P2 - 200227', 'BM1A4X2 - 2001311', 'BM1A7S9 - 100000536', 'BM0Y9N6 - 10041', 'BM1B2L9 - 10094', 'BM9A5W9 - 10140', 'BM9C7Y1 - 10016', 'BM9C7Y1 - 10017', 'BM9C7Y1 - 10018', 'BM9C7Y1 - 10019']
-
-    service.loop(nil) do |x|
-      order_number = x.get_column('So #')
-      product_sku = x.get_column('Bm #').to_s.upcase
-
-      if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
-        sales_order = SalesOrder.find_by_old_order_number(order_number)
-      else
-        sales_order = SalesOrder.find_by_order_number(order_number.to_i)
-      end
-      if sales_order.present?
-        current_order_row = product_sku + ' - ' + sales_order.order_number.to_s
-        next if temporary_skip_list.include?(current_order_row) || x.get_column('Tax Rate').include?('#N/A')
-
-        puts "ITERATION", iteration
-        iteration = iteration + 1
-
-        # CST/VAT
-        if x.get_column('Tax Type').present? && (x.get_column('Tax Type').include?('VAT') || x.get_column('Tax Type').include?('CST'))
-
-          bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
-          bible_order_tax_total = x.get_column('Tax Amount').to_f
-          bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
-
-          # AE
-          next if bible_order_row_total.negative?
-          # && bible_order_row_total_with_tax.negative?
-
-          if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
-            order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
-            quote_row = order_row.sales_quote_row
-            tax_rate_percentage = x.get_column('Tax Rate').split('%')[0]
-            tax_rate = TaxRate.where(tax_percentage: tax_rate_percentage).first
-            # _or_create
-
-            quote_row.quantity = x.get_column('Order Qty').to_f if quote_row.quantity == x.get_column('Order Qty').to_f
-            quote_row.unit_selling_price = x.get_column('Unit Selling Price').to_f
-            quote_row.converted_unit_selling_price = x.get_column('Unit Selling Price').to_f
-            quote_row.margin_percentage = x.get_column('Margin (In %)').split('%')[0]
-            quote_row.tax_rate = tax_rate || nil
-            quote_row.legacy_applicable_tax_percentage = tax_rate_percentage.to_d || nil
-            quote_row.tax_type = x.get_column('Tax Type').to_s
-            quote_row.inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('Unit cost price').to_f)
-            quote_row.created_at = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d') # check
-            quote_row.save(validate: false)
-            puts '****************************** QUOTE ROW SAVED ****************************************'
-            quote_row.sales_quote.save(validate: false)
-            puts '****************************** QUOTE SAVED ****************************************'
-
-            order_row.quantity = x.get_column('Order Qty').to_f
-            sales_order.mis_date = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
-            order_row.created_at = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d') # check
-            order_row.save(validate: false)
-            puts '****************************** ORDER ROW SAVED ****************************************'
-            sales_order.save(validate: false)
-            puts '****************************** ORDER SAVED ****************************************'
-
-            row_total = order_row.total_selling_price.to_f.round(2)
-            row_total_with_tax = order_row.total_selling_price_with_tax.to_f.round(2)
-            # binding.pry
-            if (row_total == bible_order_row_total) && (row_total_with_tax == bible_order_row_total_with_tax)
-              if updated_orders_with_matching_total_with_tax.include?(x.get_column('Bm #') + '-' + x.get_column('So #'))
-                repeating_rows.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
-                repeating_matching_rows_total = repeating_matching_rows_total + row_total_with_tax
-                repeating_matching_bible_rows = repeating_matching_bible_rows + bible_order_row_total_with_tax
-              else
-                i = i + 1
-                puts 'Matched order count', i
-                updated_orders_with_matching_total_with_tax.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
-                updated_orders_total_with_tax = updated_orders_total_with_tax + row_total_with_tax
-                bible_total_with_tax = bible_total_with_tax + bible_order_row_total_with_tax
-              end
-            end
-
-            if !((row_total == bible_order_row_total) && (row_total_with_tax == bible_order_row_total_with_tax))
-              j = j + 1
-              puts 'Mismatched order count', j
-              updated_orders_with_matching_total.push(x.get_column('Bm #') + '-' + x.get_column('So #'))
-              updated_orders_total = updated_orders_total + row_total_with_tax
-              bible_total = bible_total + bible_order_row_total_with_tax
-            end
-          end
-        end
-      end
-    end
-    puts 'HAS VAT', has_vat
-
-    puts 'PARTIALLY MATCHED UPDATED ORDERS', updated_orders_with_matching_total
-    puts 'Totals(sprint/bible)', updated_orders_total.to_f, bible_total.to_f
-
-    puts 'COMPLETELY MATCHED UPDATED ORDERS', updated_orders_with_matching_total_with_tax, updated_orders_with_matching_total_with_tax.count
-    puts 'Totals(sprint/bible)', updated_orders_total_with_tax.to_f, bible_total_with_tax.to_f
-
-    puts 'Repeating Rows', repeating_rows, repeating_rows.count
+    puts "Corrected tax rates", corrected, corrected.count
+    puts "TAX AMT DIFF IN SHEET ", tax_mismatch, tax_mismatch.count
   end
 
   def companies_export
@@ -838,14 +593,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         'Order Number',
         'Billing Address',
         'Shipping Address',
-        # 'Order Date',
         'Customer Name',
-        # 'Invoice Net Amount',
-        # 'Freight / Packing',
-        # 'Total Net Amount Including Freight',
-        # 'Invoice Tax Amount',
-        # 'Invoice Gross Amount',
-        # 'Branch (Bill From)',
         'Invoice Status'
     ]
 
@@ -862,17 +610,9 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         order_number = sales_order.order_number.to_s
         billing_address = inquiry.billing_address.to_s
         shipping_address = inquiry.shipping_address.to_s
-        # order_date = sales_invoice.sales_order.created_at.to_date.to_s
         customer_name = inquiry.company.name.to_s
-        # invoice_net_amount = (('%.2f' % (sales_order.calculated_total_cost.to_f - sales_invoice.metadata['shipping_amount'].to_f)) || '%.2f' % sales_order.calculated_total_cost_without_freight)
-        # freight_and_packaging = (sales_invoice.metadata['shipping_amount'] || '%.2f' % sales_order.calculated_freight_cost_total)
-        # total_with_freight = ('%.2f' % sales_invoice.metadata['subtotal'] if sales_invoice.metadata['subtotal'])
-        # tax_amount = ('%.2f' % sales_invoice.metadata['tax_amount'] if sales_invoice.metadata['tax_amount'])
-        # gross_amount = ('%.2f' % sales_invoice.metadata['grand_total'] if sales_invoice.metadata['grand_total'])
-        # bill_from_branch = (inquiry.bill_from.address.state.name if inquiry.bill_from.present?)
         invoice_status = sales_order.remote_status
 
-        # invoice_net_amount, freight_and_packaging, total_with_freight, tax_amount, gross_amount,order_date, bill_from_branch,
         writer << [inquiry_number, invoice_number, invoice_date, invoice_mis_date, order_number, billing_address, shipping_address, customer_name, invoice_status]
       end
     end
@@ -907,22 +647,43 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
     fetch_csv('flex_sku_wise_order_export12.csv', csv_data)
   end
+
+  def material_readiness_dump
+    column_headers = ['PO Request', 'Inquiry', 'Customer Company Name', 'Material Status', 'Supplier PO', 'Supplier PO Date', 'Supplier Name', 'PO Type', 'Latest Comment', 'Sales Order Date', 'Sales Order', 'Committed Date to Customer', 'IS&P', 'Logistics Owner', 'Material Follow Up Date', 'Expected Delivery Date', 'Payment Request status', 'Percentage Paid', 'Requested Date', 'Buying Price', 'Selling Price', 'PO Margin %', 'Overall Margin %']
+
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      model = PurchaseOrder
+      query = model.all.where(material_status: ['Material Readiness Follow-Up', 'Inward Dispatch', 'Inward Dispatch: Partial', 'Material Partially Delivered']).joins(:po_request).where.not(po_requests: {id: nil}).where(po_requests: {status: 'Supplier PO Sent'})
+      query.find_each(batch_size: 500) do |purchase_order|
+        po_request = purchase_order.po_request.present? ? purchase_order.po_request.id : '-'
+        inquiry_number = purchase_order.inquiry.inquiry_number
+        company_name = purchase_order.inquiry.company.try(:name)
+        material_status = purchase_order.material_status
+        supplier_po = purchase_order.po_number
+        supplier_po_date = (purchase_order.po_date ? format_succinct_date(purchase_order.po_date) : '-')
+
+        supplier_name = purchase_order.supplier.try(:name)
+        po_type = purchase_order.po_request.present? ? purchase_order.po_request.supplier_po_type : '-'
+        latest_comment = (purchase_order.last_comment) if purchase_order.last_comment.present?
+        sales_order_date = (format_succinct_date(purchase_order.po_request.sales_order.mis_date) if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?)
+        sales_order = (purchase_order.po_request.sales_order.order_number if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?)
+        committed_date_to_customer = format_succinct_date(purchase_order.po_request.inquiry.customer_committed_date) if purchase_order.po_request.present?
+        inside_sales_owner = purchase_order.inquiry.inside_sales_owner.to_s
+        logistics_owner = (purchase_order.logistics_owner.present? ? purchase_order.logistics_owner.full_name : 'Unassigned')
+        material_follow_up_date = format_succinct_date(purchase_order.followup_date)
+        expected_delivery_date = format_succinct_date(purchase_order.revised_supplier_delivery_date)
+        payment_request_status = (purchase_order.payment_request.present? ? purchase_order.payment_request.status : 'Payment Request: Pending')
+        percentage_paid = percentage(purchase_order.payment_request.percent_amount_paid, precision: 2) if purchase_order.payment_request.present?
+        requested_date = format_succinct_date(purchase_order.email_sent_to_supplier_date)
+        buying_price = purchase_order.po_request.buying_price if purchase_order.po_request.present?
+        selling_price = purchase_order.po_request.selling_price if purchase_order.po_request.present?
+        po_margin_percentage = purchase_order.po_request.po_margin_percentage if purchase_order.po_request.present?
+        calculated_total_margin_percentage = purchase_order.po_request.sales_order.calculated_total_margin_percentage if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?
+
+        writer << [po_request, inquiry_number, company_name, material_status, supplier_po, supplier_po_date, supplier_name, po_type, latest_comment, sales_order_date, sales_order, committed_date_to_customer, inside_sales_owner, logistics_owner, material_follow_up_date, expected_delivery_date, payment_request_status, percentage_paid, requested_date, buying_price, selling_price, po_margin_percentage, calculated_total_margin_percentage]
+      end
+    end
+
+    fetch_csv('mrq_export.csv', csv_data)
+  end
 end
-
-
-# order_row.unit_selling_price = x.get_column('Unit selling Price').to_f
-# order_row.converted_unit_selling_price = x.get_column('Unit selling Price').to_f
-# order_row.margin_percentage = (x.get_column('Margin (In %)').to_f / 100)
-# order_row.tax_rate = tax_rate || nil
-# order_row.legacy_applicable_tax_percentage = tax_rate || nil
-
-
-# supplier = Company.acts_as_supplier.find_by_name(x.get_column('supplier')) || Company.acts_as_supplier.find_by_name('Local')
-#         inquiry_product_supplier = InquiryProductSupplier.where(supplier_id: supplier.id, inquiry_product: inquiry_product).first_or_create!
-#         inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('unit cost price').to_f)
-# row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
-
-#         row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
-#         row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
-#         row.save!
-#
