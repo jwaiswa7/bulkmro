@@ -61,7 +61,8 @@ class Overseers::ContactsController < Overseers::BaseController
       end
       if @contact.save_and_sync
         @company.update_attributes(default_company_contact: @contact.company_contact) if @company.default_company_contact.blank?
-        redirect_to overseers_company_path(@company), notice: flash_message(@contact, action_name)
+        redirect_path = params[:company_id].present? ? overseers_company_path(@company) : overseers_contact_path(@contact)
+        redirect_to redirect_path, notice: flash_message(@contact, action_name)
       else
         render 'new'
       end
@@ -79,7 +80,7 @@ class Overseers::ContactsController < Overseers::BaseController
     authorize @contact
 
     if @contact.save_and_sync
-      redirect_to overseers_account_path(@contact.account), notice: flash_message(@contact, action_name)
+      redirect_to overseers_contact_path(@contact), notice: flash_message(@contact, action_name)
     else
       render 'edit'
     end
