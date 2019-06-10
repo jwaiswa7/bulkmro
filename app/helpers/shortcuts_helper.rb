@@ -10,6 +10,12 @@ module ShortcutsHelper
     end
   end
 
+  def modal_button(icon, title = '', color = 'warning', id)
+    link_to '', 'data-toggle': 'modal', 'data-target': '#myModal', title: title, data: {entity_id: id}, class: ['btn btn-sm btn-', color].join do
+      concat content_tag :i, nil, class: ['fal fa-', icon].join
+    end
+  end
+
   def breadcrumbs(page_title = nil, controller_is_aliased = false)
     full_path = request.path
     path_so_far = '/'

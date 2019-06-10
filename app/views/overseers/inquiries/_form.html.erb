@@ -270,6 +270,9 @@
           <div class="col-12 col-md-3">
             <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
           </div>
+          <div class="col-12 col-md-4">
+            <%= f.input :customer_po_received_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: 'Customer PO Received Date' %>
+          </div>
           <div class="col-12 col-md-3">
             <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>

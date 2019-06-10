@@ -1,8 +1,4 @@
-# Missing SO --> missing_bible_orders
-#
 # SO totals mismatch --> sap_sales_order_totals_mismatch
-#
-# is kit flag --> set_is_kit_flag_in_mismatch_file
 #
 # Missing SI --> missing_sap_invoices
 #
@@ -17,8 +13,6 @@
 # Check bible total --> check_bible_total
 #
 # flex/companies dump --> flex_dump
-#
-# complete_bible_orders_mismatch_with_dates
 
 service = Services::Shared::Migrations::CreditNoteEntries.new(%w(create_credit_note_entries), folder: 'seed_files_3')
 service.call
@@ -27,9 +21,6 @@ service = Services::Shared::Migrations::MigrationsV2.new(%w(complete_mismatch_sh
 service.call
 
 service = Services::Shared::Migrations::MigrationsV2.new(%w(update_non_kit_non_ae_except_zero_tsp), folder: 'seed_files_3')
-service.call
-
-service = Services::Shared::Migrations::CreditNoteEntries.new(%w(create_credit_note_entries), folder: 'seed_files_3')
 service.call
 
 service = Services::Shared::Migrations::AddTaxTypeInSalesOrderRow.new(%w(add_tax_type_in_sales_order_row), folder: 'seed_files')
