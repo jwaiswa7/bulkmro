@@ -255,6 +255,7 @@
             <%= nav_dropdown_item 'Pipeline Report', pipeline_report_overseers_inquiries_path, policy(:inquiry).show? %>
             <%= nav_dropdown_item 'TAT Report', tat_report_overseers_inquiries_path, policy(:inquiry).tat_report? %>
             <%= nav_dropdown_item 'Customer Order Status Report', customer_order_status_report_overseers_sales_orders_path, policy(:sales_order).customer_order_status_report? %>
+            <%= nav_dropdown_item 'Logistics Scorecard', overseers_logistics_scorecards_path, policy(:logistics_scorecard).index? %>
           </div>
         </li>
       <% end %>

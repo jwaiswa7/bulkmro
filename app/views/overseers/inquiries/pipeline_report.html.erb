@@ -48,14 +48,14 @@
                             ]), target: '_blank') %>
               <% end %>
             </strong><br>
-            <%= format_currency(record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'].to_i if bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true) %>
+            <%= format_currency(record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'].to_i if bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: false) %>
           </td>
         <% end %>
         <td>
           <strong>
             <%= record_bucket['doc_count'] %>
           </strong><br>
-          <%= format_currency(record_bucket['sum_monthly_sales']['value'], precision: 0, show_symbol: true) %></td>
+          <%= format_currency(record_bucket['sum_monthly_sales']['value'], precision: 0, show_symbol: false) %></td>
         <td>
           <!-- <%#= record_bucket['doc_count'] != 0 ? (((record_bucket['pipeline']['buckets'].map{|bucket| bucket['doc_count'] if bucket['key'] == 18 }.compact.first || 0)/record_bucket['doc_count'])*100).round(2) : 0 %> -->
           <%= percentage((((record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == 18}.compact.first || 0) / record_bucket['sum_monthly_sales']['value']) * 100).round(2)) %>
@@ -83,12 +83,12 @@
                         ]), target: '_blank') %>
           <% end %>
           <br>
-          <%= format_currency(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['statuswise_inquiry_summary']['value'].to_i if summary_bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true) %>
+          <%= format_currency(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['statuswise_inquiry_summary']['value'].to_i if summary_bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: false) %>
         </td>
       <% end %>
       <td>
         <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count'].to_i}.sum %><br>
-        <%= format_currency(@summary_total['value'].to_i, precision: 0, show_symbol: true) %>
+        <%= format_currency(@summary_total['value'].to_i, precision: 0, show_symbol: false) %>
       </td>
       <td>
         <%= percentage((((@indexed_summary_row['buckets'].map {|bucket| bucket['statuswise_inquiry_summary']['value'] if bucket['key'] == 18}.compact.first || 0) / @summary_total['value']) * 100).round(2)) %>
