@@ -8,7 +8,31 @@ const newAction = () => {
         let reset = false;
         onShippingCompanyChange(this, reset);
     });
+
+    $('form').on('change', 'select[name*=billing_address_id]', function (e) {
+        onBillingAddressChange(this);
+    })
 };
+
+var onBillingAddressChange = function onBillingAddressChange(container) {
+    var optionSelected = $("option:selected", container);
+    var url = new URL(window.location.href)
+    var company_id = url.searchParams.get('company_id')
+
+    if (optionSelected.exists() && optionSelected.val() !== '' && company_id != '') {
+        $.getJSON({
+            url: Routes.is_sez_params_overseers_company_addresses_path(company_id),
+            data: {
+                address_id: optionSelected.val()
+            },
+            success: function success(response) {
+                $('select#inquiry_is_sez option[value="'+response.is_sez+'"').prop('selected','selected')
+            }
+        });
+
+    }
+};
+
 
 let onShippingCompanyChange = (container, reset) => {
     let optionSelected = $("option:selected", container);

@@ -534,6 +534,7 @@ Rails.application.routes.draw do
         resources :addresses do
           collection do
             get 'autocomplete'
+            get 'is_sez_params'
           end
         end
 
