@@ -12,7 +12,7 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
     @tax_amount_value = ''
     missing_sku = []
     # 8888888881
-    i = 2
+    i = 8888888881
     service = Services::Shared::Spreadsheets::CsvImporter.new('ae_entries.csv', 'seed_files_3')
     duplicate_array = []
 
