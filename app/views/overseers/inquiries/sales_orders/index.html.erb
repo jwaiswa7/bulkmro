@@ -29,7 +29,7 @@
             <% if is_authorized(sales_order, 'relationship_map') %>
               <%= row_action_button(relationship_map_overseers_inquiry_sales_order_path(@inquiry.to_param, sales_order.to_param), 'sitemap', 'Relationship Map', 'info', :_blank) %>
             <% end %>
-            <% if is_authorized(sales_order, 'show') %>
+            <% if is_authorized(sales_order, 'show') && policy(sales_order).show? %>
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order), 'eye', 'View Sales Order', 'info') %>
             <% end %>
             <% if is_authorized(sales_order, 'edit') && policy(sales_order).edit? %>
@@ -41,7 +41,7 @@
               <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>
             <% end %>
 
-            <% if is_authorized(sales_order, 'edit_mis_date') %>
+            <% if is_authorized(sales_order, 'edit_mis_date') && policy(sales_order).edit_mis_date? %>
               <%= row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(id: sales_order), 'calendar-alt', 'Update MIS Date', 'success') %>
             <% end %>
 
@@ -49,13 +49,13 @@
               <%= row_action_button(resync_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post) %>
             <% end %>
 
-            <% if is_authorized(sales_order, 'show_serialized') %>
+            <% if is_authorized(sales_order, 'show_serialized') && policy(sales_order).show_serialized? %>
               <%= row_action_button(url_for(sales_order.serialized_pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
-            <% elsif is_authorized(sales_order, 'show_pdf') %>
+            <% elsif is_authorized(sales_order, 'show_pdf') && policy(sales_order).show_pdf? %>
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
               <%= row_action_button(proforma_overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download Proforma Invoice', 'warning', :_blank) %>
             <% end %>
-            <% if is_authorized(sales_order, 'fetch_order_data') %>
+            <% if is_authorized(sales_order, 'fetch_order_data') && policy(sales_order).fetch_order_data? %>
               <%= row_action_button(fetch_order_data_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'arrows-h', 'SAP Sync', 'success') %>
             <% end %>
 
