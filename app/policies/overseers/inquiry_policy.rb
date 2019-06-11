@@ -31,6 +31,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     record.can_be_managed?(overseer)
   end
 
+  def create_primary_inquiry?
+    can_manage_inquiry? || cataloging? || logistics?
+  end
+
   def edit?
     can_manage_inquiry? || cataloging? || logistics?
   end

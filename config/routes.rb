@@ -510,6 +510,7 @@ Rails.application.routes.draw do
       member do
         get 'render_rating_form'
         put 'update_rating'
+        get 'get_account'
       end
       scope module: 'companies' do
         resources :customer_orders

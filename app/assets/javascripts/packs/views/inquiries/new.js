@@ -8,6 +8,14 @@ const newAction = () => {
         let reset = false;
         onShippingCompanyChange(this, reset);
     });
+
+    $('form').on('change', 'select[name*=company_id]', function (e) {
+        let reset = true;
+        onCompanyChange(this, reset);
+    }).find('select[name*=company_id]').each(function (e) {
+        let reset = false;
+        onCompanyChange(this, reset);
+    });
 };
 
 let onShippingCompanyChange = (container, reset) => {
@@ -22,6 +30,29 @@ let onShippingCompanyChange = (container, reset) => {
         $('#inquiry_shipping_contact_id').attr('data-source', Routes.autocomplete_overseers_company_contacts_path(optionSelected.val())).select2('destroy');
 
         select2s();
+    }
+};
+
+let onCompanyChange = (container, reset) => {
+    let optionSelected = $("option:selected", container);
+    if (optionSelected.exists() && optionSelected.val() !== '') {
+        $.getJSON
+        (
+            {
+                url: Routes.get_account_overseers_company_path(optionSelected.val()),
+                success: function (response) {
+                    console.log(response);
+                    $('#inquiry_account_id').val(response.account_id);
+                    $('#inquiry_account').val(response.account_name);
+                }
+            }
+        );
+
+        $('#inquiry_contact_id').attr('data-source', Routes.autocomplete_overseers_company_contacts_path(optionSelected.val())).select2('destroy');
+        $('#inquiry_shipping_contact_id').attr('data-source', Routes.autocomplete_overseers_company_contacts_path(optionSelected.val())).select2('destroy');
+
+        select2s();
+
     }
 };
 
