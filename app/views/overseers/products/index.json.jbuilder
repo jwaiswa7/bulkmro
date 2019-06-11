@@ -1,19 +1,19 @@
 json.data (@products) do |product|
   json.array! [
                   [
-                      if is_authorized(product, 'show')
+                      if is_authorized(product, 'show') && policy(product).show?
                         row_action_button(overseers_product_path(product), 'eye', 'View Product', 'info', :_blank)
                       end,
-                      if is_authorized(product, 'edit')
+                      if is_authorized(product, 'edit') && policy(product).edit?
                         row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit Product', 'warning', :_blank)
                       end,
-                      if is_authorized(product, 'comments')
+                      if is_authorized(product, 'comments') && policy(product).comments?
                         row_action_button(overseers_product_comments_path(product), 'comment-lines', 'View Comments', 'dark', :_blank)
                       end,
-                      if is_authorized(product, 'sku_purchase_history')
+                      if is_authorized(product, 'sku_purchase_history') && policy(product).sku_purchase_history?
                         row_action_button(sku_purchase_history_overseers_product_path(product), 'history', 'View Purchase History', 'outline-dark', :_blank)
                       end,
-                      if is_authorized(product, 'resync_inventory')
+                      if is_authorized(product, 'resync_inventory') && policy(product).resync_inventory?
                         row_action_button(resync_inventory_overseers_product_path(product), 'inventory', 'Resync Inventory', 'outline-dark', :_blank)
                       end
                   ].join(' '),
