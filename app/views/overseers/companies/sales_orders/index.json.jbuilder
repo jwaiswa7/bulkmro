@@ -7,7 +7,7 @@ json.data (@sales_orders) do |sales_order|
                       if is_authorized(sales_order, 'comments')
                         row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', 'Comments and Approval', 'success')
                       end,
-                      if is_authorized(sales_order, 'go_to_inquiry')
+                      if is_authorized(sales_order, 'go_to_inquiry') && policy(sales_order).go_to_inquiry?
                         row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
                       end,
                       if is_authorized(sales_order, 'edit_mis_date')

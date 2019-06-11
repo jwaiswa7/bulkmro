@@ -16,11 +16,11 @@
   <% if f.object.persisted? %>
     <% if stock %>
       <div class="col-12 col-md-4">
-        <% if is_authorized(@po_request, 'can_cancel') %>
+        <% if is_authorized(@po_request, 'can_cancel') && policy(@po_request).can_cancel? %>
           <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Requested', 'Stock Rejected'), alphabetical: false, keep_raw: true), :include_blank => false %>
         <% elsif is_authorized(@po_request, 'can_reject_stock_po') %>
           <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, keep_raw: true), :include_blank => false %>
-        <% elsif is_authorized(@po_request, 'can_update_rejected_po_requests') %>
+        <% elsif is_authorized(@po_request, 'can_update_rejected_po_requests') && policy(@po_request).can_update_rejected_po_requests? %>
           <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
         <% else %>
           <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses, alphabetical: false), disabled: true, :include_blank => false %>
@@ -30,7 +30,7 @@
       <%= render 'overseers/po_requests/po_request_statuses', f: f %>
     <% end %>
     <div class="col-4 d-none status-rejected">
-      <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false, keep_raw: true), disabled: (stock ? !is_authorized(f.object, 'can_reject_stock_po') : !is_authorized(f.object, 'can_reject')), :include_blank => true %>
+      <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false, keep_raw: true), disabled: (stock ? !is_authorized(f.object, 'can_reject_stock_po') : !is_authorized(f.object, 'can_reject') && policy(f.object).can_reject?), :include_blank => true %>
     </div>
     <div class="col-4 d-none other-rejection-reason">
       <%= f.input :other_rejection_reason, :include_blank => true %>

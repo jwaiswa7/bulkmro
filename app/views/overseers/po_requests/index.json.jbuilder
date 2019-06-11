@@ -6,7 +6,7 @@ json.data (@po_requests) do |po_request|
                       elsif is_authorized(po_request, 'edit') && po_request.status != 'Cancelled'
                         row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
-                      if is_authorized(po_request, 'can_cancel')
+                      if is_authorized(po_request, 'can_cancel')&& policy(po_request).can_cancel?
                         link_to('a', class: ['btn btn-sm btn-dark cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Cancel', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
@@ -18,28 +18,28 @@ json.data (@po_requests) do |po_request|
                           concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
                         end
                       end,
-                      if po_request.po_request_type == 'Stock' && is_authorized(po_request, 'can_reject')
+                      if po_request.po_request_type == 'Stock' && is_authorized(po_request, 'can_reject') && policy(po_request).can_reject?
                         link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
-                      elsif is_authorized(po_request, 'can_reject')
+                      elsif is_authorized(po_request, 'can_reject') && policy(po_request).can_reject?
                         link_to('', class: po_request.status != 'Supplier PO Request Rejected' ? ['btn btn-sm btn-danger cancel-po_request'] : ['btn btn-sm btn-danger cancel-po_request disabled'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       end, '<br/>', '<br/>',
-                      if is_authorized(po_request, 'new_payment_request')
+                      if is_authorized(po_request, 'new_payment_request') && policy(po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif is_authorized(po_request, 'show_payment_request')
                         row_action_button(overseers_payment_request_path(po_request.payment_request), 'eye', 'View Payment Request', 'info', :_blank)
                       end,
-                      if is_authorized(po_request, 'sending_po_to_supplier_new_email_message') && current_overseer.smtp_password.present?
+                      if is_authorized(po_request, 'sending_po_to_supplier_new_email_message') && policy(po_request).sending_po_to_supplier_new_email_message? && current_overseer.smtp_password.present?
                         row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Send Purchase Order to Supplier', 'dark', :_blank)
                       else
                         row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'dark disabled')
                       end,
-                      if is_authorized(po_request, 'material_received_in_bm_warehouse_new_email_msg') && current_overseer.smtp_password.present?
+                      if is_authorized(po_request, 'material_received_in_bm_warehouse_new_email_msg') && policy(po_request).material_received_in_bm_warehouse_new_email_msg? && current_overseer.smtp_password.present?
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       else
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'warning disabled')

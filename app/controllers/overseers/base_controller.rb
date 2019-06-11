@@ -1,11 +1,8 @@
 class Overseers::BaseController < ApplicationController
-  # include Pundit
+  include Pundit
   # include Acl
   #
   helper_method :get_acl_resource_json, :authorized
-
-  class NotAuthorised < StandardError
-  end
 
   # rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   # rescue_from NotAuthorised, with: :user_not_authorized

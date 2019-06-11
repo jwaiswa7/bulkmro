@@ -16,12 +16,12 @@ json.data (@purchase_orders) do |purchase_order|
                       if is_authorized(purchase_order, 'new_inward_dispatch') && is_authorized(purchase_order, 'edit_material_followup')
                         row_action_button(new_overseers_purchase_order_inward_dispatch_path(purchase_order), 'people-carry', 'Create Inward Dispatch', 'success', target: :_blank)
                       end,
-                      if purchase_order.po_request.present? && is_authorized(purchase_order.po_request, 'new_payment_request')
+                      if purchase_order.po_request.present? && is_authorized(purchase_order.po_request, 'new_payment_request') && policy(purchase_order.po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(purchase_order.po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif purchase_order.po_request.present? && is_authorized(purchase_order.po_request, 'show_payment_request')
                         row_action_button(overseers_payment_request_path(purchase_order.po_request.payment_request), 'eye', 'View Payment Request', 'success', :_blank)
                       end,
-                      if purchase_order.po_request.present? && is_authorized(purchase_order.po_request, 'dispatch_supplier_delayed_new_email_message') && current_overseer.smtp_password.present?
+                      if purchase_order.po_request.present? && is_authorized(purchase_order.po_request, 'dispatch_supplier_delayed_new_email_message') && policy(purchase_order.po_request).dispatch_supplier_delayed_new_email_message? && current_overseer.smtp_password.present?
                         row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(purchase_order.po_request), 'envelope', 'Dispatch from Supplier Delayed', 'success', :_blank)
                       end
                   ].join(' '),

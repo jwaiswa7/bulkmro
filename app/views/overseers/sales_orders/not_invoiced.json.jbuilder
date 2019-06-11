@@ -7,7 +7,7 @@ json.data (@sales_orders) do |sales_order|
                       if is_authorized(sales_order,'comments')
                         row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', 'Comments and Approval', 'success', :_blank)
                       end,
-                      if is_authorized(sales_order,'go_to_inquiry')
+                      if is_authorized(sales_order,'go_to_inquiry') && policy(sales_order).go_to_inquiry?
                         row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark', :_blank)
                       end,
                       if is_authorized(sales_order,'edit_mis_date')
@@ -19,7 +19,7 @@ json.data (@sales_orders) do |sales_order|
                       if is_authorized(sales_order,'can_request_invoice')
                         row_action_button(new_overseers_invoice_request_path(sales_order_id: sales_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
                       end,
-                      if is_authorized(sales_order.sales_quote,'new_freight_request')
+                      if is_authorized(sales_order.sales_quote,'new_freight_request') && policy(sales_order.sales_quote).new_freight_request?
                         row_action_button(new_overseers_freight_request_path(sales_order_id: sales_order.to_param), 'external-link', 'New Freight Request', 'warning')
                       end
                   ].join(' '),

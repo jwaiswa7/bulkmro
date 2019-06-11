@@ -32,9 +32,9 @@
             <% if is_authorized(sales_order, 'show') %>
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order), 'eye', 'View Sales Order', 'info') %>
             <% end %>
-            <% if is_authorized(sales_order, 'edit') %>
+            <% if is_authorized(sales_order, 'edit') && policy(sales_order).edit? %>
               <%= row_action_button(edit_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'pencil', 'Edit Sales Order', 'warning') %>
-            <% elsif is_authorized(sales_order, 'new_revision') %>
+            <% elsif is_authorized(sales_order, 'new_revision') && policy(sales_order).new_revision? %>
               <%= row_action_button(new_revision_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'redo-alt', 'New Sales Order Revision', 'warning') %>
             <% end %>
             <% if is_authorized(sales_order, 'comments') %>
@@ -45,7 +45,7 @@
               <%= row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(id: sales_order), 'calendar-alt', 'Update MIS Date', 'success') %>
             <% end %>
 
-            <% if is_authorized(sales_order, 'resync') %>
+            <% if is_authorized(sales_order, 'resync') && policy(sales_order).resync? %>
               <%= row_action_button(resync_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post) %>
             <% end %>
 
@@ -59,7 +59,7 @@
               <%= row_action_button(fetch_order_data_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'arrows-h', 'SAP Sync', 'success') %>
             <% end %>
 
-            <% if is_authorized(sales_order.sales_quote, 'new_freight_request') %>
+            <% if is_authorized(sales_order.sales_quote, 'new_freight_request') && policy(sales_order.sales_quote).new_freight_request? %>
               <%= row_action_button(new_overseers_freight_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'New Freight Request', 'warning') %>
             <% end %>
             <% if is_authorized(sales_order, 'debugging') %>

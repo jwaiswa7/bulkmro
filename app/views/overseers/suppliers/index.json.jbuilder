@@ -16,7 +16,7 @@ json.data (@companies) do |company|
                       if is_authorized(company, 'new_address')
                         row_action_button(new_overseers_company_address_path(company), 'map-marker-alt', 'New Address', 'success', :_blank)
                       end,
-                      if is_authorized(company, 'new_inquiry')
+                      if is_authorized(company, 'new_inquiry') && policy(company).new_inquiry?
                         row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success', :_blank)
                       end# ,
                     # if policy(company).new_rating?

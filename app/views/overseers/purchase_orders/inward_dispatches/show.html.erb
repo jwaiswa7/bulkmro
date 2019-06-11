@@ -18,7 +18,7 @@
           Create GRPO Request</a>
       <% end %>
 
-        <% if @inward_dispatch.purchase_order.po_request.present? && is_authorized(@inward_dispatch, 'delivered') && is_authorized(@inward_dispatch.purchase_order.po_request, 'new_payment_request') %>
+        <% if @inward_dispatch.purchase_order.po_request.present? && is_authorized(@inward_dispatch, 'delivered') && is_authorized(@inward_dispatch.purchase_order.po_request, 'new_payment_request') && policy(@inward_dispatch).new_payment_request? %>
 
             <a href="<%= new_overseers_po_request_payment_request_path(@inward_dispatch.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i> Create Payment Request
             </a>

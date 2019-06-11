@@ -46,15 +46,15 @@
   <% if sales_order.present? %>
     <% if sales_order.calculated_total_margin_percentage.to_f < 10.0 %>
       <% if is_authorized(sales_order,'approve_low_margin') %>
-        <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' %>
+          <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' %>
       <% else %>
         <span data-toggle='tooltip' title="Margin is below 10%; need Devang Shah's, Gaurang Shah's or Nilesh Desai's approval to move forward">
           <%= f.submit 'Reply and Approve', class: 'btn btn-success btn-disabled', disabled: true %>
         </span>
       <% end %>
     <% else %>
-      <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if is_authorized(sales_order,'approve') %>
+      <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if is_authorized(sales_order,'approve') && policy(sales_order).approve? %>
     <% end %>
-    <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if is_authorized(sales_order,'reject') %>
+    <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if is_authorized(sales_order,'reject') && policy(sales_order).reject? %>
   <% end %>
 </div>
