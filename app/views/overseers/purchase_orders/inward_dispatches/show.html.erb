@@ -13,7 +13,7 @@
         <a href="<%= confirm_delivery_overseers_purchase_order_inward_dispatch_path(@inward_dispatch.purchase_order, @inward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-check mr-1"></i>
           Confirm Delivery</a>
       <% end %>
-        <% if is_authorized(@inward_dispatch, 'delivered') && is_authorized(@inward_dispatch.purchase_order, 'can_request_invoice') %>
+        <% if is_authorized(@inward_dispatch, 'delivered') && policy(@inward_dispatch).delivered? && is_authorized(@inward_dispatch.purchase_order, 'can_request_invoice') && policy(@inward_dispatch.purchase_order).can_request_invoice? %>
         <a href="<%= new_overseers_invoice_request_path(purchase_order_id: @inward_dispatch.purchase_order, inward_dispatch_id: @inward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>
           Create GRPO Request</a>
       <% end %>
