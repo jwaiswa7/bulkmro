@@ -5,11 +5,11 @@
         Inward Dispatch for #<%= @inward_dispatch.purchase_order.po_number %>
       </h3>
       <span>
-        <% if is_authorized(@inward_dispatch, 'edit') %>
+        <% if is_authorized(@inward_dispatch, 'edit') && policy(@inward_dispatch).edit? %>
         <a href="<%= edit_overseers_purchase_order_inward_dispatch_path(@inward_dispatch.purchase_order, @inward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>
           Edit Inward Dispatch</a>
       <% end %>
-        <% if is_authorized(@inward_dispatch, 'confirm_delivery') %>
+        <% if is_authorized(@inward_dispatch, 'confirm_delivery') && policy(@inward_dispatch).confirm_delivery? %>
         <a href="<%= confirm_delivery_overseers_purchase_order_inward_dispatch_path(@inward_dispatch.purchase_order, @inward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-check mr-1"></i>
           Confirm Delivery</a>
       <% end %>
@@ -18,11 +18,11 @@
           Create GRPO Request</a>
       <% end %>
 
-        <% if @inward_dispatch.purchase_order.po_request.present? && is_authorized(@inward_dispatch, 'delivered') && is_authorized(@inward_dispatch.purchase_order.po_request, 'new_payment_request') && policy(@inward_dispatch).new_payment_request? %>
+        <% if @inward_dispatch.purchase_order.po_request.present? && is_authorized(@inward_dispatch, 'delivered') && policy(@inward_dispatch).delivered? && is_authorized(@inward_dispatch.purchase_order.po_request, 'new_payment_request') && policy(@inward_dispatch).new_payment_request? %>
 
             <a href="<%= new_overseers_po_request_payment_request_path(@inward_dispatch.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i> Create Payment Request
             </a>
-              <% elsif @inward_dispatch.purchase_order.po_request.present? && is_authorized(@inward_dispatch, 'delivered') && is_authorized(@inward_dispatch.purchase_order.po_request, 'show_payment_request') %>
+              <% elsif @inward_dispatch.purchase_order.po_request.present? && is_authorized(@inward_dispatch, 'delivered') && policy(@inward_dispatch).delivered? && is_authorized(@inward_dispatch.purchase_order.po_request, 'show_payment_request') && policy(@inward_dispatch.purchase_order.po_request).ow_payment_request? %>
               <a href="<%= overseers_po_request_payment_request_path(@inward_dispatch.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>
                 View Payment Request</a>
         <% end %>

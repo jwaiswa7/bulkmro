@@ -4,7 +4,7 @@
       <h3 class="display-5 d-flex align-items-center">
         <%= @kit.product.name %>
       </h3>
-      <% if is_authorized(@kit, 'edit') %>
+      <% if is_authorized(@kit, 'edit') && policy(@kit).edit? %>
         <a href="<%= edit_overseers_kit_path(@kit) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
           Kit</a>
       <% end %>

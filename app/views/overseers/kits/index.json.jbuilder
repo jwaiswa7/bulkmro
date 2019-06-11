@@ -1,10 +1,10 @@
 json.data (@kits) do |kit|
   json.array! [
                   [
-                      if is_authorized(kit, 'show')
+                      if is_authorized(kit, 'show') && policy(kit).show?
                         row_action_button(overseers_kit_path(kit), 'eye', 'View Kit', 'info', :_blank)
                       end,
-                      if is_authorized(kit, 'edit')
+                      if is_authorized(kit, 'edit') && policy(kit).show?
                         row_action_button(edit_overseers_kit_path(kit), 'pencil', 'Edit Kit', 'warning', :_blank)
                       end
                   ].join(' '),
