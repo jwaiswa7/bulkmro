@@ -167,8 +167,8 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
           "UnitPrice": row.unit_price.to_f,
           "Currency": row.po_request.sales_order.currency.name,
           "TaxCode": row.taxation.to_remote_s, # row.tax_rate.to_s.gsub('.0%', '').gsub('GST ', 'GST@'),
-          "WarehouseCode": 2,
-          "LocationCode": 1
+          "WarehouseCode": po_request.purchase_order.warehouse.remote_uid,
+          "LocationCode": po_request.purchase_order.warehouse.location_uid
       }
       item_row << json
     end
