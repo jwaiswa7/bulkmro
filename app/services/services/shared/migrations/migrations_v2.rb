@@ -158,7 +158,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-28 Bible Fields for Migration.csv', 'seed_files_3')
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
-        puts "********************************* ITERATION ************************************", iteration
+        puts '********************************* ITERATION ************************************', iteration
         iteration = iteration + 1
         is_adjustment_entry = 'No'
         tax_rate_different = 'No'
@@ -292,7 +292,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       puts 'MISSING SKUs', missing_skus, missing_skus.count
       puts 'MISSING ORDERS', missing_orders, missing_orders.count
       puts 'MULTIPLE NOT BOOKED ORDERS', multiple_not_booked_orders, multiple_not_booked_orders.count
-      puts "AE ENTRIES", ae_entries, ae_entries.count
+      puts 'AE ENTRIES', ae_entries, ae_entries.count
     end
 
     fetch_csv('mismatch_sheet001.csv', csv_data)
@@ -329,7 +329,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
     duplicate_skus = ['BM0P0P2 - 200227', 'BM1A4X2 - 2001311', 'BM1A7S9 - 100000536', 'BM0Y9N6 - 10041', 'BM1B2L9 - 10094', 'BM9A5W9 - 10140', 'BM9C7Y1 - 10016', 'BM9C7Y1 - 10017', 'BM9C7Y1 - 10018', 'BM9C7Y1 - 10019']
 
-    batch3 = ['BM9L6D8-10210128', 'BM9L6D9-10210128', 'BM9Q1T8-10211012', 'BM0O7G3-10910110','BM9E4Z8-10210566', 'BM9Q5P6-10210696', 'BM9T4N8-10210696', 'BM9X7E1-10210696']
+    batch3 = ['BM9L6D8-10210128', 'BM9L6D9-10210128', 'BM9Q1T8-10211012', 'BM0O7G3-10910110', 'BM9E4Z8-10210566', 'BM9Q5P6-10210696', 'BM9T4N8-10210696', 'BM9X7E1-10210696']
     # make new quote for batch3
     # 'BM0Y9N6-100000352-1', 'BM9A5W9-100001115-1', 'BM9C7Y1-201020-1'] ?
 
@@ -343,7 +343,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       next if kit.include?(current_row)
       # if batch2.include?(current_row) || batch3.include?(current_row)
       # if x.get_column('Abs. Mismatch').to_f < 100000
-      binding.pry
+
       if current_row == 'BM9E4Z8-2000956'
         if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
           if order_number == 'Not Booked'
@@ -363,7 +363,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         end
 
         if sales_order.present?
-          puts "******************************** ITERATION *******************************", iteration
+          puts '******************************** ITERATION *******************************', iteration
           iteration = iteration + 1
 
           bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
@@ -415,7 +415,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             sales_order.save(validate: false)
             puts '****************************** ORDER SAVED ****************************************'
 
-            # binding.pry
             new_row_total = order_row.total_selling_price.to_f.round(2)
             new_row_total_with_tax = order_row.total_selling_price_with_tax.to_f.round(2)
             tax_amount = ((tax_rate_percentage.to_f / 100) * new_row_total).to_f.round(2)
@@ -457,11 +456,11 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
     puts 'COMPLETELY MATCHED UPDATED ORDERS', updated_orders_with_matching_total_with_tax, updated_orders_with_matching_total_with_tax.count
     puts 'Totals(sprint/bible)', updated_orders_total_with_tax.to_f, bible_total_with_tax.to_f
-    puts "QMismatch", quantity_mismatch
-    puts "MATCHED", i
-    puts "MISMATCH", j
-    puts "Corrected tax rates", corrected, corrected.count
-    puts "TAX AMT DIFF IN SHEET ", tax_mismatch, tax_mismatch.count
+    puts 'QMismatch', quantity_mismatch
+    puts 'MATCHED', i
+    puts 'MISMATCH', j
+    puts 'Corrected tax rates', corrected, corrected.count
+    puts 'TAX AMT DIFF IN SHEET ', tax_mismatch, tax_mismatch.count
   end
 
   def add_missing_skus_in_orders
@@ -489,7 +488,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       end
       current_row = product_sku + '-' + order_number
       if sales_order.present? && batch2.include?(current_row)
-        puts "******************************** ITERATION *******************************", iteration
+        puts '******************************** ITERATION *******************************', iteration
         iteration = iteration + 1
 
         bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
@@ -514,7 +513,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           end
 
         else
-          puts "product exists"
+          puts 'product exists'
         end
       end
     end
@@ -782,31 +781,68 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   def temp
     quote_revision = []
     processed_row = []
-    iteration = 1
+    # iteration = 1
+    zero_tsp = []
+    not_updated = []
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-28 Bible Fields for Migration.csv', 'seed_files_3')
     service.loop(nil) do |x|
       order_number = x.get_column('So #')
       product_sku = x.get_column('Bm #').to_s.upcase
 
-
-
-
-      puts "********************************* ITERATION ************************************", iteration
-      iteration = iteration + 1
+      # puts "********************************* ITERATION ************************************"
+      # iteration = iteration + 1
       order_number = x.get_column('So #')
       bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
 
-      next if bible_order_row_total.to_f.zero? || bible_order_row_total.negative?
-      if processed_row.include?(x.get_column('Inquiry Number') + '-' + product_sku)
-        quote_revision.push(x.get_column('Inquiry Number') + '-' + product_sku + '-' + order_number)
+      if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
+        if order_number == 'Not Booked'
+          inquiry_orders = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number')).sales_orders
+          if inquiry_orders.count > 1
+            # multiple_not_booked_orders.push(x.get_column('Bm #') + '-' + x.get_column('Order Date') + '-' + x.get_column('So #'))
+            sales_order = inquiry_orders.where(old_order_number: 'Not Booked').first
+          else
+            sales_order = inquiry_orders.first if inquiry_orders.first.old_order_number == 'Not Booked'
+          end
+        else
+          sales_order = SalesOrder.find_by_old_order_number(order_number)
+        end
       else
-        processed_row.push(x.get_column('Inquiry Number') + '-' + product_sku)
+        sales_order = SalesOrder.find_by_order_number(order_number.to_i)
       end
+
+      if sales_order.present? && bible_order_row_total.to_f.zero?
+        sales_order.status = 'Cancelled'
+        sales_order.remote_status = 'Cancelled by SAP'
+        sales_order.save(validate: false)
+        if sales_order.status == 'Cancelled' && sales_order.remote_status == 'Cancelled by SAP'
+          zero_tsp.push(order_number)
+        else
+          not_updated.push(order_number)
+        end
+      end
+      # next if bible_order_row_total.to_f.zero? || bible_order_row_total.negative?
+      # if processed_row.include?(x.get_column('Inquiry Number') + '-' + product_sku)
+      #   quote_revision.push(x.get_column('Inquiry Number') + '-' + product_sku + '-' + order_number)
+      # else
+      #   processed_row.push(x.get_column('Inquiry Number') + '-' + product_sku)
+      # end
     end
 
-    puts 'PROCESSED ROWS', processed_row, processed_row.count
-    puts 'NEED QUOTE REVISION', quote_revision
+    puts 'ZERO TSP', zero_tsp, zero_tsp.count
+    puts 'NOT UPDATED CORRECTLY', not_updated, not_updated.count
+    # puts 'PROCESSED ROWS', processed_row, processed_row.count
+    # puts 'NEED QUOTE REVISION', quote_revision
+  end
+
+  def fix_mis_date_formats
+    SalesOrder.where('mis_date < ?', Date.new(2015, 01, 01)).each do |order|
+      order.update_attributes(mis_date: Date.parse(Date.parse(order.mis_date.to_s).strftime('%y-%m-%d').to_s).strftime('%Y-%m-%d'))
+    end
+
+    SalesInvoice.where('mis_date < ?', Date.new(2015, 01, 01)).each do |invoice|
+      invoice.update_attributes(mis_date: Date.parse(Date.parse(invoice.mis_date.to_s).strftime('%y-%m-%d').to_s).strftime('%Y-%m-%d'))
+    end
   end
 end
 

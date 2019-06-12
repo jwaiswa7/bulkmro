@@ -45,7 +45,7 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
             duplicate_sales_order.old_order_number = order_number
             duplicate_sales_order.remote_status = sales_order.remote_status
             duplicate_sales_order.status = 'Approved' # sales_order.status
-            duplicate_sales_order.remote_status = 'Approved'
+            duplicate_sales_order.remote_status = 'Invoiced'
             duplicate_sales_order.order_number = i
             duplicate_sales_order.billing_address_id = sales_order.billing_address_id
             duplicate_sales_order.shipping_address_id = sales_order.shipping_address_id
