@@ -158,7 +158,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-28 Bible Fields for Migration.csv', 'seed_files_3')
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
-        puts "********************************* ITERATION ************************************", iteration
+        puts '********************************* ITERATION ************************************', iteration
         iteration = iteration + 1
         is_adjustment_entry = 'No'
         tax_rate_different = 'No'
@@ -292,7 +292,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       puts 'MISSING SKUs', missing_skus, missing_skus.count
       puts 'MISSING ORDERS', missing_orders, missing_orders.count
       puts 'MULTIPLE NOT BOOKED ORDERS', multiple_not_booked_orders, multiple_not_booked_orders.count
-      puts "AE ENTRIES", ae_entries, ae_entries.count
+      puts 'AE ENTRIES', ae_entries, ae_entries.count
     end
 
     fetch_csv('mismatch_sheet001.csv', csv_data)
@@ -329,7 +329,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
     duplicate_skus = ['BM0P0P2 - 200227', 'BM1A4X2 - 2001311', 'BM1A7S9 - 100000536', 'BM0Y9N6 - 10041', 'BM1B2L9 - 10094', 'BM9A5W9 - 10140', 'BM9C7Y1 - 10016', 'BM9C7Y1 - 10017', 'BM9C7Y1 - 10018', 'BM9C7Y1 - 10019']
 
-    batch3 = ['BM9L6D8-10210128', 'BM9L6D9-10210128', 'BM9Q1T8-10211012', 'BM0O7G3-10910110','BM9E4Z8-10210566', 'BM9Q5P6-10210696', 'BM9T4N8-10210696', 'BM9X7E1-10210696']
+    batch3 = ['BM9L6D8-10210128', 'BM9L6D9-10210128', 'BM9Q1T8-10211012', 'BM0O7G3-10910110', 'BM9E4Z8-10210566', 'BM9Q5P6-10210696', 'BM9T4N8-10210696', 'BM9X7E1-10210696']
     # make new quote for batch3
     # 'BM0Y9N6-100000352-1', 'BM9A5W9-100001115-1', 'BM9C7Y1-201020-1'] ?
 
@@ -363,7 +363,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         end
 
         if sales_order.present?
-          puts "******************************** ITERATION *******************************", iteration
+          puts '******************************** ITERATION *******************************', iteration
           iteration = iteration + 1
 
           bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
@@ -456,11 +456,11 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
     puts 'COMPLETELY MATCHED UPDATED ORDERS', updated_orders_with_matching_total_with_tax, updated_orders_with_matching_total_with_tax.count
     puts 'Totals(sprint/bible)', updated_orders_total_with_tax.to_f, bible_total_with_tax.to_f
-    puts "QMismatch", quantity_mismatch
-    puts "MATCHED", i
-    puts "MISMATCH", j
-    puts "Corrected tax rates", corrected, corrected.count
-    puts "TAX AMT DIFF IN SHEET ", tax_mismatch, tax_mismatch.count
+    puts 'QMismatch', quantity_mismatch
+    puts 'MATCHED', i
+    puts 'MISMATCH', j
+    puts 'Corrected tax rates', corrected, corrected.count
+    puts 'TAX AMT DIFF IN SHEET ', tax_mismatch, tax_mismatch.count
   end
 
   def add_missing_skus_in_orders
@@ -488,7 +488,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       end
       current_row = product_sku + '-' + order_number
       if sales_order.present? && batch2.include?(current_row)
-        puts "******************************** ITERATION *******************************", iteration
+        puts '******************************** ITERATION *******************************', iteration
         iteration = iteration + 1
 
         bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
@@ -513,7 +513,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           end
 
         else
-          puts "product exists"
+          puts 'product exists'
         end
       end
     end
