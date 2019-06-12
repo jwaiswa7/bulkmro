@@ -44,7 +44,8 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
             duplicate_sales_order.sales_quote_id = create_sales_quote(sales_order, order_date)
             duplicate_sales_order.old_order_number = order_number
             duplicate_sales_order.remote_status = sales_order.remote_status
-            duplicate_sales_order.status = sales_order.status
+            duplicate_sales_order.status = 'Approved' # sales_order.status
+            duplicate_sales_order.remote_status = 'Approved'
             duplicate_sales_order.order_number = i
             duplicate_sales_order.billing_address_id = sales_order.billing_address_id
             duplicate_sales_order.shipping_address_id = sales_order.shipping_address_id
@@ -102,7 +103,7 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
         quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_type.scan(/^\d*(?:\.\d+)?/)[0].to_d).id || product.tax_rate_id
       else
         quote_row.tax_code_id = product.tax_code.id
-        quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_rate.to_d).id || product.tax_rate_id
+        quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_rate.split('%')[0].to_d).id || product.tax_rate_id
       end
       quote_row.legacy_applicable_tax_percentage = tax_rate.split('%')[0].to_d
       quote_row.inquiry_product_supplier_id = inquiry_supplier_id

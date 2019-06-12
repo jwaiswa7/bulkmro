@@ -13,7 +13,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
     field :company, value: -> (record) { record.inquiry.company.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :account_id, value: -> (record) { record.inquiry.account.id if record.inquiry.present? }, type: 'integer'
     field :account, value: -> (record) { record.inquiry.account.to_s if record.inquiry.present? }, analyzer: 'substring'
-    field :order_number, value: -> (record) { record.order_number }, type: 'integer'
+    field :order_number, value: -> (record) { record.order_number }, type: 'long'
     field :order_number_string, value: -> (record) { record.order_number.to_s }, analyzer: 'substring'
     field :created_at, value: -> (record) { record.created_at }, type: 'date'
     field :mis_date, value: -> (record) { record.mis_date if record.mis_date.present? }, type: 'date'
