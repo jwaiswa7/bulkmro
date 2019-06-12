@@ -788,6 +788,10 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     service.loop(nil) do |x|
       order_number = x.get_column('So #')
       product_sku = x.get_column('Bm #').to_s.upcase
+
+
+
+
       puts "********************************* ITERATION ************************************", iteration
       iteration = iteration + 1
       order_number = x.get_column('So #')
