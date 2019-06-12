@@ -167,7 +167,7 @@
               <i class="fal fa-download"></i>
               <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                 <i class="fal fa-trash-alt"></i>
-              <% end if attachment.present? && is_authorized(:attachment,'destroy') %>
+              <% end if attachment.present? && is_authorized(:attachment,'destroy') && policy(:attachment).destroy? %>
             <% end %>
           <% end if f.object.attachments.attached? %>
         </div>
@@ -335,7 +335,7 @@
           <div class="col-12 col-md-1">
             <%= po_request_row.remove_nested_fields_link(class: 'btn btn-danger form-group align-self-center flex-grow-1 mt-3 ml-2') do %>
               Remove
-            <% end if is_authorized(po_request_row.object,'destroy') %>
+            <% end if is_authorized(po_request_row.object,'destroy') && policy(po_request_row.object).destroy? %>
           </div>
         <% end %>
       </div>

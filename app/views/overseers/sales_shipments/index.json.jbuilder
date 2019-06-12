@@ -11,9 +11,9 @@ json.data (@sales_shipments) do |sales_shipment|
                         row_action_button(url_for(sales_shipment.shipment_pdf), 'file-pdf', sales_shipment.shipment_pdf.filename, 'dark', :_blank)
                       end,
                   ].join(' '),
-                  conditional_link(sales_shipment.shipment_number, overseers_inquiry_sales_shipments_path(sales_shipment.inquiry, sales_shipment), is_authorized(sales_shipment, 'show')),
-                  conditional_link(sales_shipment.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_shipment.inquiry), is_authorized(sales_shipment.inquiry, 'edit')),
-                  conditional_link(sales_shipment.sales_order.order_number, overseers_inquiry_sales_order_path(sales_shipment.inquiry, sales_shipment.sales_order), is_authorized(sales_shipment.sales_order, 'show')),
+                  conditional_link(sales_shipment.shipment_number, overseers_inquiry_sales_shipments_path(sales_shipment.inquiry, sales_shipment), is_authorized(sales_shipment, 'show') && policy(sales_shipment).show?),
+                  conditional_link(sales_shipment.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_shipment.inquiry), is_authorized(sales_shipment.inquiry, 'edit') && policy(sales_shipment.inquiry).edit?),
+                  conditional_link(sales_shipment.sales_order.order_number, overseers_inquiry_sales_order_path(sales_shipment.inquiry, sales_shipment.sales_order), is_authorized(sales_shipment.sales_order, 'show') && policy(sales_shipment.sales_order).show?),
                   sales_shipment.rows.count,
                   sales_shipment.status,
                   sales_shipment.inquiry.inside_sales_owner.to_s,

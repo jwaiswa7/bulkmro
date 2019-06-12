@@ -6,7 +6,7 @@
   <div class="card">
     <div class="card-header">
       <div class="form-row">
-        <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry,'new_email_message') && is_authorized(@inquiry,'update') %>
+        <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry,'new_email_message') && is_authorized(@inquiry,'update') && policy(@inquiry).update? %>
           <div class="col-md-4">
             <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark"><i class="fal fa-envelope mr-1"></i>Send
               Acknowledgement</a>
@@ -121,7 +121,7 @@
       <div class="mt-3 card-alternative ">
         <h6 class="text-uppercase text-black-50 mb-1">Billing / Shipping Details</h6>
 
-        <% if is_authorized(@inquiry,'disable_billing_shipping_details') %>
+        <% if is_authorized(@inquiry,'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
           <div class="form-row">
             <div class="col-12 col-md-6">
               <%= f.input :bill_from, as: :string, disabled: true %>
@@ -133,10 +133,10 @@
         <% else %>
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= f.association :bill_from, label_method: :to_s, include_blank: "Select a bill from", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: is_authorized(@inquiry,'disable_billing_shipping_details') %>
+              <%= f.association :bill_from, label_method: :to_s, include_blank: "Select a bill from", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: is_authorized(@inquiry,'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
             </div>
             <div class="col-12 col-md-6">
-              <%= f.association :ship_from, label_method: :to_s, include_blank: "Select a ship from", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: is_authorized(@inquiry,'disable_billing_shipping_details') %>
+              <%= f.association :ship_from, label_method: :to_s, include_blank: "Select a ship from", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: is_authorized(@inquiry,'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
             </div>
           </div>
         <% end %>
@@ -255,7 +255,7 @@
                     <i class="fal fa-download"></i>
                     <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                       <i class="fal fa-trash-alt"></i>
-                    <% end if attachment.present? && is_authorized(:attachment,'destroy') %>
+                    <% end if attachment.present? && is_authorized(:attachment,'destroy') && policy(:attachment).destroy? %>
                   <% end %>
                 <% end if f.object.supplier_quotes.attached? %>
               </div>
@@ -297,12 +297,12 @@
 
       <div class="form-row mt-3">
         <div class="col-md-6">
-          <% if is_authorized(@inquiry,'resync_inquiry_products') %>
+          <% if is_authorized(@inquiry,'resync_inquiry_products') && policy(@inquiry).resync_inquiry_products? %>
             <a href="<%= resync_inquiry_products_overseers_inquiry_path %>" class="btn btn-success btn-rounded align-self-center btn-block"><i class="fal fa-retweet mr-1"></i>Resync All Products</a>
           <% end %>
         </div>
         <div class="col-md-6">
-          <% if is_authorized(@inquiry,'resync_unsync_inquiry_products') %>
+          <% if is_authorized(@inquiry,'resync_unsync_inquiry_products') && policy(@inquiry).resync_unsync_inquiry_products? %>
             <a href="<%= resync_unsync_inquiry_products_overseers_inquiry_path %>" class="btn btn-success btn-rounded align-self-center btn-block mt-2 mt-md-0"><i class="fal fa-retweet mr-1"></i>Resync Unsynced Products</a>
           <% end %>
         </div>
@@ -421,7 +421,7 @@
                     <div class="form-group align-self-center flex-grow-1 ml-2">
                       <i class="far fa-times text-danger"></i>
                     </div>
-                  <% end if is_authorized(inquiry_product.object,'destroy') %>
+                  <% end if is_authorized(inquiry_product.object,'destroy') && policy(inquiry_product.object).destroy? %>
                 </div>
               </div>
               <div class="col-2 col-md-1 text-center">
@@ -463,15 +463,15 @@
     </div>
     <div class="card-footer">
       <div class="form-row">
-        <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry,'new_email_message') && is_authorized(@inquiry,'update') %>
+        <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry,'new_email_message') && is_authorized(@inquiry,'update') && policy(@inquiry).update? %>
           <div class="col-md-6">
             <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark"><i class="fal fa-envelope mr-1"></i>Send
               Acknowledgement</a>
           </div>
         <% end %>
 
-        <% if is_authorized(@inquiry,'update') %>
-          <div class="mt-1 mt-md-0 <%= is_authorized(@inquiry,'new_email_message') ? "col-md-6" : "col-md-12" %>">
+        <% if is_authorized(@inquiry,'update') && policy(@inquiry).update? %>
+          <div class="mt-1 mt-md-0 <%= is_authorized(@inquiry,'new_email_message') && policy(@inquiry).new_email_message ? "col-md-6" : "col-md-12" %>">
             <%= action_button(action_name, @inquiry) %>
           </div>
         <% end %>

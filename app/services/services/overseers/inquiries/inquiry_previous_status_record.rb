@@ -17,6 +17,7 @@ class Services::Overseers::Inquiries::InquiryPreviousStatusRecord < Services::Sh
             return record
           elsif status_record.subject_type == 'SalesQuote' && status_record.subject.inquiry == record.subject
             return record
+
           end
         end
         return nil

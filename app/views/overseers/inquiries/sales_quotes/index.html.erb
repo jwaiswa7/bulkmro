@@ -3,7 +3,7 @@
     <% provide :hide_table_desc, true %>
     <% provide :hide_table_heading, true %>
 
-    <% if is_authorized(@inquiry, 'new_sales_quote') %>
+    <% if is_authorized(@inquiry, 'new_sales_quote') && policy(@inquiry).new_sales_quote? %>
       <div class="form-row mb-3">
         <div class="col-12">
           <a href="<%= new_overseers_inquiry_sales_quote_path(@inquiry) %>" class="btn-block btn btn-success btn-rounded">
@@ -46,10 +46,10 @@
       <% @sales_quotes.each do |sales_quote| %>
         <tr>
           <td>
-            <% if is_authorized(sales_quote, 'relationship_map') %>
+            <% if is_authorized(sales_quote, 'relationship_map') && policy(sales_quote).relationship_map? %>
               <%= row_action_button(relationship_map_overseers_inquiry_sales_quote_path(@inquiry.to_param, sales_quote.to_param), 'sitemap', 'Relationship Map', 'info', :_blank) %>
             <% end %>
-            <% if is_authorized(sales_quote, 'show') %>
+            <% if is_authorized(sales_quote, 'show') && policy(sales_quote).show? %>
               <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'eye', 'View Sales Quote', 'info') %>
             <% end %>
             <% if policy(sales_quote).edit? && is_authorized(sales_quote, 'edit') %>
@@ -66,7 +66,7 @@
             <% if policy(sales_quote).new_email_message? && is_authorized(sales_quote, 'new_email_message') %>
               <%= row_action_button(new_overseers_inquiry_sales_quote_email_message_path(@inquiry, sales_quote), 'envelope', 'Send Email', 'dark') %>
             <% end %>
-            <% if is_authorized(sales_quote, 'show') %>
+            <% if is_authorized(sales_quote, 'show') && policy(sales_quote).show? %>
               <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
             <% end %>
             <% if is_authorized(sales_quote, 'new_freight_request') && policy(sales_quote).new_freight_request? %>

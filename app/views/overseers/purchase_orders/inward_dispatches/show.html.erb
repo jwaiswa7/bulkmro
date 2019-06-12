@@ -22,7 +22,7 @@
 
             <a href="<%= new_overseers_po_request_payment_request_path(@inward_dispatch.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i> Create Payment Request
             </a>
-              <% elsif @inward_dispatch.purchase_order.po_request.present? && is_authorized(@inward_dispatch, 'delivered') && policy(@inward_dispatch).delivered? && is_authorized(@inward_dispatch.purchase_order.po_request, 'show_payment_request') && policy(@inward_dispatch.purchase_order.po_request).ow_payment_request? %>
+              <% elsif @inward_dispatch.purchase_order.po_request.present? && is_authorized(@inward_dispatch, 'delivered') && policy(@inward_dispatch).delivered? && is_authorized(@inward_dispatch.purchase_order.po_request, 'show_payment_request') && policy(@inward_dispatch.purchase_order.po_request).show_payment_request? %>
               <a href="<%= overseers_po_request_payment_request_path(@inward_dispatch.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>
                 View Payment Request</a>
         <% end %>
@@ -278,7 +278,7 @@
                           <i class="fal fa-download"></i>
                           <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                             <i class="fal fa-trash-alt"></i>
-                          <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
+                          <% end if attachment.present? && is_authorized(:attachment, 'destroy') && policy(:attachment).destroy? %>
                         <% end %>
                       <% end %>
                     </div>

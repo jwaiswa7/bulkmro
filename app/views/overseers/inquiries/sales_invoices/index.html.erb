@@ -19,7 +19,7 @@
       <% @sales_invoices.each do |sales_invoice| %>
         <tr>
           <td>
-            <% if is_authorized(sales_invoice,'relationship_map') %>
+            <% if is_authorized(sales_invoice,'relationship_map') && policy(sales_invoice).relationship_map? %>
               <%= row_action_button(relationship_map_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry.to_param, sales_invoice.to_param), 'sitemap', 'Relationship Map', 'info', :_blank) %>
             <% end %>
             <% if is_authorized(sales_invoice,'show_original_invoice') && policy(sales_invoice).show_original_invoice? %>

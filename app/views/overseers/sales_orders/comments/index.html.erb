@@ -38,8 +38,8 @@
 
       <div class="flex-fill">
         <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
-        <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if is_authorized(@sales_order, 'approve') %>
-        <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if is_authorized(@sales_order, 'reject') %>
+        <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if is_authorized(@sales_order, 'approve') && policy(@sales_order).approve? %>
+        <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if is_authorized(@sales_order, 'reject') && policy(@sales_order).reject? %>
       </div>
     </div>
   <% end %>
