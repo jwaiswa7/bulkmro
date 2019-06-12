@@ -27,9 +27,11 @@ module DisplayHelper
     end
   end
 
-  def percentage(number, precision: 0)
-    if number && !number.nan?
+  def percentage(number, precision: 0, show_symbol: true)
+    if number && !number.nan? && show_symbol
       [number_with_precision(number, precision: precision), '%'].join
+    else
+      number_with_precision(number, precision: precision)
     end
   end
 

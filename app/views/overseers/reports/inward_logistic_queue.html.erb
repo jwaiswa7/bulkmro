@@ -49,7 +49,7 @@
       <th><%= @data.entries[overseer][:name] %></th>
       <% values.each do |key, value| %>
         <% if key != :name %>
-          <td class="text-uppercase text-black-50"><%= value %></td>
+          <td class="text-uppercase text-black-50"><%= format_currency(value, precision: 0, show_symbol: false) %></td>
         <% end %>
       <% end %>
     </tr>
