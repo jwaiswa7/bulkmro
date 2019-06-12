@@ -1,17 +1,17 @@
 json.data (@freight_requests) do |freight_request|
   json.array! [
                   [
-                      if is_authorized(freight_request, 'show')
+                      if is_authorized(freight_request, 'show') && policy(freight_request).show?
                         row_action_button(overseers_freight_request_path(freight_request), 'eye', 'View Freight Request', 'info')
                       end,
                       row_action_button(edit_overseers_freight_request_path(freight_request), 'pencil', 'Edit Freight Request', 'warning'),
-                      if freight_request.freight_quote.present? && is_authorized(:freight_quote, 'show')
+                      if freight_request.freight_quote.present? && is_authorized(:freight_quote, 'show') && policy(freight_request.freight_quote).show?
                         row_action_button(overseers_freight_quote_path(freight_request.freight_quote), 'eye', 'View Freight Quote', 'primary')
                       end,
-                      if freight_request.freight_quote.present? && is_authorized(:freight_quote, 'edit')
+                      if freight_request.freight_quote.present? && is_authorized(:freight_quote, 'edit') && policy(freight_request.freight_quote).edit?
                         row_action_button(edit_overseers_freight_request_freight_quote_path(freight_request, freight_request.freight_quote), 'pencil', 'Edit Freight Quote', 'success')
                       end,
-                      if !freight_request.freight_quote.present? && is_authorized(:freight_quote, 'new')
+                      if !freight_request.freight_quote.present? && is_authorized(:freight_quote, 'new') && policy(freight_request.freight_quote).new?
                         row_action_button(new_overseers_freight_request_freight_quote_path(freight_request), 'external-link', 'New Freight Quote', 'warning')
                       end,
                   ].join(' '),

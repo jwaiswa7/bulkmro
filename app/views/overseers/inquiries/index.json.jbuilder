@@ -1,10 +1,10 @@
 json.data (@inquiries) do |inquiry|
   columns = [
       [
-          if is_authorized(inquiry,'relationship_map')
+          if is_authorized(inquiry,'relationship_map') && policy(inquiry).relationship_map?
             row_action_button(relationship_map_overseers_inquiry_path(inquiry.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
           end,
-          if is_authorized(inquiry,'edit')
+          if is_authorized(inquiry,'edit') && policy(inquiry).edit?
             row_action_button(overseers_inquiry_comments_path(inquiry), 'comment-alt-check', inquiry.comments.last ? inquiry.comments.last.try(:message) : 'No comments', inquiry.comments.last ? 'success' : 'dark', :_blank)
           end,
           if is_authorized(inquiry,'new_freight_request') && policy(inquiry).new_freight_request?
