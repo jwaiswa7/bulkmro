@@ -21,6 +21,9 @@ class CustomerOrderStatusReportIndex < BaseIndex
     field :outward_date, value: -> (record) { record.invoices.last.mis_date if record.invoices.present? && record.invoices.last.status != 'Cancelled' }, type: 'date'
     field :customer_delivery_date, value: -> (record) { record.invoices.last.delivery_date if record.invoices.present? }, type: 'date'
     field :on_time_or_delayed_time, value: -> (record) { record.calculate_time_delay }, type: 'integer'
+    field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id }
+    field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id }
+    field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations_id }
 
     field :po_requests, type: 'nested' do
       field :supplier_po_request_date, value: -> (record) { record.created_at }, type: 'date'
