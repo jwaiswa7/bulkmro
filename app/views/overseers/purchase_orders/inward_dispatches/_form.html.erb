@@ -54,7 +54,7 @@
                       <i class="fal fa-download"></i>
                       <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
                         <i class="fal fa-trash-alt"></i>
-                      <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
+                      <% end if attachment.present? && is_authorized(:attachment, 'destroy') && policy(:attachment).destroy? %>
                     <% end %>
                   <% end if f.object.attachments.attached? %>
                 </div>
@@ -184,7 +184,7 @@
                 </div>
               </div>
             <% end %>
-            <% if is_authorized(f.object, 'remove_products') %>
+            <% if is_authorized(f.object, 'remove_products') && policy(f.object).remove_products? %>
               <div class="col-1">
                 <div class="form-group mb-0">
                   <label>Remove Product</label>
@@ -238,14 +238,14 @@
                     <% end %>
                   </div>
                 <% end %>
-                <% if is_authorized(f.object, 'remove_products') %>
+                <% if is_authorized(f.object, 'remove_products') && policy(f.object).remove_products? %>
                   <div class="col-6 col-md-1">
-                    <%= row.remove_nested_fields_link 'Remove Product', class: 'btn btn-danger align-self-center delete_row', wrapper_class: 'simple-row' if is_authorized(f.object, 'destroy') %>
+                    <%= row.remove_nested_fields_link 'Remove Product', class: 'btn btn-danger align-self-center delete_row', wrapper_class: 'simple-row' if is_authorized(f.object, 'destroy') && policy(f.object).destroy? %>
                   </div>
                 <% end %>
               </div>
             <% end %>
-            <% if is_authorized(f.object, 'add_products') %>
+            <% if is_authorized(f.object, 'add_products') && policy(f.object).add_products? %>
               <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' %>
             <% end %>
           <% end %>
