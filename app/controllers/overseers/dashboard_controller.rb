@@ -4,9 +4,9 @@ class Overseers::DashboardController < Overseers::BaseController
   def show
     authorize :dashboard, :show?
 
-    if Rails.env.development?
-      render 'default_dashboard'
-    else
+    # if Rails.env.development?
+    #   render 'default_dashboard'
+    # else
       if current_overseer.inside_sales_executive?
         @dashboard = Overseers::Dashboard.new(current_overseer)
         render 'sales_dashboard'
@@ -19,7 +19,7 @@ class Overseers::DashboardController < Overseers::BaseController
       else
         render 'default_dashboard'
       end
-    end
+    # end
   end
 
   def serializer
