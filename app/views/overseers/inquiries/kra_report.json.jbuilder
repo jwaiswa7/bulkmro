@@ -22,6 +22,7 @@ json.data (@indexed_kra_reports) do |inquiry|
                   format_currency(inquiry['total_sales_value']['value'].to_i, precision: 0,show_symbol: false),
                   number_with_delimiter(inquiry['expected_orders']['value'].to_i, delimiter: ','),
                   format_currency(inquiry['total_sales_value']['value'].to_i, precision: 0,show_symbol: false),
+                  inquiry['margin_percentage'].present? ? inquiry['margin_percentage']['value'] : '-',
                   if  @category.present? && (@category.include?'by_sales_order')
                     number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['sales_orders']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
@@ -51,11 +52,6 @@ json.data (@indexed_kra_reports) do |inquiry|
                     format_currency(@indexed_kra_varient_reports[inquiry['key']]['revenue']['value'],show_symbol: false) if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
                     format_currency(inquiry['revenue']['value'].to_i, precision: 0,show_symbol: false)
-                  end,
-                  if @category.present? && (@category.include? 'by_sales_order')
-                    number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['clients']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
-                  else
-                    number_with_delimiter(inquiry['clients']['value'].to_i, delimiter: ',')
                   end
               ]
 end
@@ -65,9 +61,9 @@ json.columnFilters [
                        if @category.present? && @category == 'company_key'
                          [{"source": autocomplete_overseers_companies_path}]
                        elsif @category.present? && (@category.include? 'outside')
-                         Overseer.find(Inquiry.pluck(:outside_sales_owner_id).compact).map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json
+                         Inquiry.outside_sales_owners.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json
                        else
-                         Overseer.find(Inquiry.pluck(:inside_sales_owner_id).compact).map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json
+                         Inquiry.procurement_specialists.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json
                        end,
                        if @category.present? && @category == 'company_key'
                          [{"source": autocomplete_overseers_accounts_path}]

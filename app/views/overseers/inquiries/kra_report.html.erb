@@ -19,10 +19,11 @@
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort all" data-name=<%=@category.present? ? @category : "inside_sales_owner_id" %>>Name</th>
-  <% if  @category.present? && @category == 'company_key'  %> <th class="no-sort all" data-name="account_key">Account</th> <%else %> <th></th><%end %>
-  <th class="no-sort all">Inquiries#</th>
+  <% if @category.present? && @category == 'company_key' %> <th class="no-sort all" data-name="account_key">Account</th> <% else %> <th></th><% end %>
+  <th class="no-sort all">Inquiry</th>
   <th class="no-sort all">Sales Quotes#</th>
   <th class="no-sort all">Value of Quotes</th>
+  <th class="no-sort all">Gross Margin %</th>
   <th class="no-sort all">Expected Orders#</th>
   <th class="no-sort all">Value of <br>Expected Orders</th>
   <th class="no-sort all">Sales Orders#</th>
@@ -31,7 +32,6 @@
   <th class="no-sort all">%Inquiries Won</th>
   <th class="no-sort all">Sales Invoices</th>
   <th class="no-sort all">Revenue</th>
-  <th class="no-sort all">Clients</th>
 <% end %>
 
 <% content_for :filter_row do %>
@@ -60,12 +60,12 @@
   <td></td>
   <td class="strong"></td>
   <td></td>
+  <td></td>
   <td class="strong"></td>
   <td></td>
   <td></td>
   <td></td>
   <td class="percentage"></td>
-  <td></td>
   <td></td>
   <td></td>
 <% end %>
