@@ -212,6 +212,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || admin?
   end
 
+  def next_inquiry_step?
+    new?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 

@@ -219,14 +219,26 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def new
-    if params[:company_id].present?
+    if Rails.cache.exist?(:inquiry)
+      @inquiry = Rails.cache.read(:inquiry)
+      Rails.cache.delete(:inquiry)
+    elsif params[:company_id].present? && !Rails.cache.exist?(:inquiry)
       @company = Company.find(params[:company_id])
       @inquiry = @company.inquiries.build(overseer: current_overseer)
-      authorize @inquiry
-    else
+    elsif !params[:company_id].present? && !Rails.cache.exist?(:inquiry)
       @inquiry = Inquiry.new
-      authorize @inquiry
     end
+
+    authorize @inquiry
+  end
+
+  def next_inquiry_step
+    @company = Company.find(params[:inquiry][:company_id])
+    #@inquiry = @company.inquiries.build(inquiry_params.merge(overseer: current_overseer))
+    @inquiry = @company.inquiries.build(inquiry_params)
+    Rails.cache.write(:inquiry, @inquiry, expires_in: 25.minutes)
+    redirect_to new_overseers_inquiry_path(company_id: @company.to_param)
+    authorize @inquiry
   end
 
   def create

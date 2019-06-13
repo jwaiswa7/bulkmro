@@ -11,12 +11,11 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def autocomplete
-    @companies = ApplyParams.to(Company.active, params)
-    authorize @companies
-  end
-
-  def autocomplete_company_type
-    @companies = ApplyParams.to(Company.active, params)
+    if params[:is_customer]
+      @companies = ApplyParams.to(Company.is_customer_active, params)
+    else
+      @companies = ApplyParams.to(Company.active, params)
+    end
     authorize @companies
   end
 

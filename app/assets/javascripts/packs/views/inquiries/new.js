@@ -41,7 +41,12 @@ let onCompanyChange = (container, reset) => {
             {
                 url: Routes.get_account_overseers_company_path(optionSelected.val()),
                 success: function (response) {
-                    console.log(response);
+                    var billing_address = document.getElementById('billing-address-id')
+                    var shipping_address = document.getElementById('shipping-address-id')
+                    if(billing_address!= null && shipping_address!= null){
+                        $(billing_address).removeAttr('disabled', false)
+                        $(shipping_address).removeAttr('disabled', false)
+                    }
                     $('#inquiry_account_id').val(response.account_id);
                     $('#inquiry_account').val(response.account_name);
                 }

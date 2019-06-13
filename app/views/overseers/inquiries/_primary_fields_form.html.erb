@@ -1,6 +1,6 @@
-<%= simple_form_for([:overseers, @inquiry], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+<%= simple_form_for([:overseers, @inquiry ], :url => "/overseers/inquiries/next_inquiry_step",:method => "get", :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
   <%= f.hidden_field :company_id %>
-
+  <%= f.hidden_field 'is_new_inquiry', value: true %>
   <%= render 'shared/snippets/form_errors', f: f %>
 
   <div class="card">
@@ -8,12 +8,10 @@
     <div class="card-body">
       <div>
         <h6 class="text-uppercase text-black-50 mb-1">Primary Details</h6>
-
-
         <div class="form-row">
           <div class="col-6">
             <% if !params[:company_id].present? && params[:action] == 'new' %>
-              <%= f.input :company_id, as: :select, collection: selected_option_or_nil(f, :company), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path, label: "Companies"}, required: true %>
+              <%= f.input :company_id, as: :select, collection: selected_option_or_nil(f, :company), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path(is_customer: true), label: "Companies"}, required: true %>
             <% else %>
               <%= f.input :company, as: :string, disabled: true %>
             <% end %>
@@ -43,23 +41,23 @@
 
       <div class="mt-3 card-alternative ">
         <h6 class="text-uppercase text-black-50 mb-1">Contact Details</h6>
-
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_contacts_path, :'data-placeholder' => "Select a billing contact"}, required: true %>
+            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_contacts_path, :'data-placeholder' => "Select a billing contact", id: 'billing-address-id'}, required: true, disabled: true %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_contacts_path} %>
+            <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_contacts_path, id: 'shipping-address-id'}, disabled: true %>
           </div>
         </div>
-
       </div>
     </div>
     <div class="card-footer">
       <div class="form-row">
         <% if policy(@inquiry).update? %>
           <div class="mt-1 mt-md-0 <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
-            <%= action_button(action_name, @inquiry) %>
+            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+               Next  <i class="fa fa-arrow-right"></i>
+            <% end %>
           </div>
         <% end %>
       </div>

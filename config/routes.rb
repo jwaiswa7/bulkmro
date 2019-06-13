@@ -396,6 +396,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'index_pg'
         get 'smart_queue'
+        get 'next_inquiry_step'
         get 'export_all'
         get 'export_filtered_records'
         get 'tat_report'
