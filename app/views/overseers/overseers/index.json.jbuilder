@@ -1,8 +1,11 @@
 json.data (@overseers) do |overseer|
   json.array! [
                   [
+                      if policy(overseer).show?
+                        row_action_button(overseers_overseer_path(overseer), 'eye', 'View Overseer', 'info')
+                      end,
                       if policy(overseer).edit?
-                        row_action_button(edit_overseers_overseer_path(overseer), 'pencil', 'Edit Overseer', 'warning')
+                            row_action_button(edit_overseers_overseer_path(overseer), 'pencil', 'Edit Overseer', 'warning')
                       end,
                   ].join(' '),
                   overseer.hierarchy_to_s,

@@ -1,5 +1,5 @@
 class Overseers::OverseersController < Overseers::BaseController
-  before_action :set_overseer, only: [:edit, :update]
+  before_action :set_overseer, only: [:show, :edit, :update]
 
   def index
     # service = Services::Overseers::Finders::Overseers.new(params)
@@ -24,6 +24,10 @@ class Overseers::OverseersController < Overseers::BaseController
     else
       render 'new'
     end
+  end
+
+  def show
+    authorize @overseer
   end
 
   def edit
