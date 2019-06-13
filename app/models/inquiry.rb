@@ -238,9 +238,9 @@ class Inquiry < ApplicationRecord
   validates_presence_of :potential_amount, if: :not_legacy? && :should_validate?
   validates_presence_of :quote_category, if: :not_legacy? && :should_validate?
   validates_presence_of :payment_option, if: :not_legacy? && :should_validate?
-  validates_presence_of :billing_address, if: :not_legacy?
+  validates_presence_of :billing_address, if: :not_legacy? && :should_validate?
   validates_presence_of :billing_company, if: :not_legacy? && :should_validate?
-  validates_presence_of :shipping_address, if: :not_legacy?
+  validates_presence_of :shipping_address, if: :not_legacy? && :should_validate?
   validates_presence_of :shipping_company, if: :not_legacy? && :should_validate?
   validates_presence_of :contact, if: :not_legacy?
 
@@ -348,11 +348,11 @@ class Inquiry < ApplicationRecord
   end
 
   def self.procurement_specialists
-    Overseer.active.where(id: Inquiry.pluck(:inside_sales_owner_id)).alphabetical
+    Overseer.active.where(id: Inquiry.pluck(:inside_sales_owner_id), role: 'inside_sales_executive').alphabetical
   end
 
   def self.outside_sales_owners
-    Overseer.active.where(id: Inquiry.pluck(:outside_sales_owner_id)).alphabetical
+    Overseer.active.where(id: Inquiry.pluck(:outside_sales_owner_id), role: 'outside_sales_executive').alphabetical
   end
 
   def self.procurement_operations

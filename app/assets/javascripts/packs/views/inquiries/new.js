@@ -53,6 +53,10 @@ let onCompanyChange = (container, reset) => {
             }
         );
 
+        if (reset) {
+            $("#inquiry_contact_id, #inquiry_shipping_contact_id").val(null);
+        }
+
         $('#inquiry_contact_id').attr('data-source', Routes.autocomplete_overseers_company_contacts_path(optionSelected.val())).select2('destroy');
         $('#inquiry_shipping_contact_id').attr('data-source', Routes.autocomplete_overseers_company_contacts_path(optionSelected.val())).select2('destroy');
 
