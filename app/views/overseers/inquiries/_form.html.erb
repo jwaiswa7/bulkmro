@@ -471,7 +471,7 @@
         <% end %>
 
         <% if is_authorized(@inquiry,'update') && policy(@inquiry).update? %>
-          <div class="mt-1 mt-md-0 <%= (is_authorized(@inquiry,'new_email_message') && policy(@inquiry).new_email_message?) ? "col-md-6" : "col-md-12" %>">
+          <div class="mt-1 mt-md-0 <%= is_authorized(@inquiry,'new_email_message') && policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
             <%= action_button(action_name, @inquiry) %>
           </div>
         <% end %>
