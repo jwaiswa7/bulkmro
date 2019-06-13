@@ -836,6 +836,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   end
 
   def fix_mis_date_formats
+    # mis_dates
     SalesOrder.where('mis_date < ?', Date.new(2015, 01, 01)).each do |order|
       order.update_attributes(mis_date: Date.parse(Date.parse(order.mis_date.to_s).strftime('%y-%m-%d').to_s).strftime('%Y-%m-%d'))
     end
@@ -843,6 +844,78 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     SalesInvoice.where('mis_date < ?', Date.new(2015, 01, 01)).each do |invoice|
       invoice.update_attributes(mis_date: Date.parse(Date.parse(invoice.mis_date.to_s).strftime('%y-%m-%d').to_s).strftime('%Y-%m-%d'))
     end
+
+    # created_at
+    SalesOrder.where('created_at < ?', Date.new(2015, 01, 01)).each do |order|
+      order.update_attributes(created_at: DateTime.parse(DateTime.parse(order.created_at.to_s).strftime('%y-%m-%d %H:%M:%S').to_s).strftime('%Y-%m-%d %H:%M:%S'))
+    end
+
+    SalesInvoice.where('created_at < ?', Date.new(2015, 01, 01)).each do |invoice|
+      invoice.update_attributes(created_at: DateTime.parse(DateTime.parse(invoice.created_at.to_s).strftime('%y-%m-%d %H:%M:%S').to_s).strftime('%Y-%m-%d %H:%M:%S'))
+    end
+  end
+
+  def check_statuses_of_credit_entries
+    SalesOrder.where(is_credit_note_entry: true, status: 'Approved').each do |order|
+      parent_order = SalesOrder.find(order.parent_id)
+      if parent_order.status.present?
+        puts 'POrder S', parent_order.status
+      else
+        puts 'POrder RS', parent_order.legacy_request_status
+      end
+    end
+  end
+
+  def october_to_may_order_dump
+    column_headers = [
+        'Inquiry Number',
+        'Order Number',
+        'Order Date',
+        'Mis Date',
+        'Company Name',
+        'Company Alias',
+        'Order Net Amount',
+        'Order Tax Amount',
+        'Order Total Amount',
+        'Sprint Status',
+        'SAP Status',
+        'Inside Sales',
+        'Outside Sales',
+        'Sales Manager',
+        'Credit Note Entry',
+        'Quote Type',
+        'Opportunity Type'
+    ]
+
+    start_at = Date.new(2018, 10, 01).beginning_of_month.beginning_of_day
+    end_at = Date.new(2019, 05, 31).end_of_month.end_of_day
+
+    model = SalesOrder
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      model.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc).each do |sales_order|
+        inquiry = sales_order.inquiry
+        inquiry_number= inquiry.try(:inquiry_number) || ''
+            order_number= sales_order.order_number
+            order_date= sales_order.created_at.to_date.to_s
+            mis_date= sales_order.mis_date.to_date.to_s
+            company_alias= inquiry.try(:account).try(:name)
+            company_name= inquiry.try(:company).try(:name) ? inquiry.try(:company).try(:name).gsub(/;/, ' ') : ''
+            gt_exc= (sales_order.calculated_total == 0) ? (sales_order.calculated_total == nil ? 0 : '%.2f' % sales_order.calculated_total) : ('%.2f' % sales_order.calculated_total)
+            tax_amount= ('%.2f' % sales_order.calculated_total_tax if sales_order.inquiry.present?)
+            gt_inc= ('%.2f' % sales_order.calculated_total_with_tax if sales_order.inquiry.present?)
+            status = sales_order.status
+            remote_status= sales_order.remote_status
+            inside_sales= sales_order.inside_sales_owner.try(:full_name)
+            outside_sales= sales_order.outside_sales_owner.try(:full_name)
+            sales_manager= inquiry.sales_manager.full_name
+            credit_note_entry = sales_order.is_credit_note_entry ? 'Yes' : 'No'
+            quote_type= inquiry.try(:quote_category) || ''
+            opportunity_type= inquiry.try(:opportunity_type) || ''
+
+          writer << [inquiry_number, order_number, order_date, mis_date, company_alias, company_name, gt_exc, tax_amount, gt_inc, status, remote_status, inside_sales, outside_sales, sales_manager, credit_note_entry, quote_type, opportunity_type]
+        end
+      end
+    fetch_csv('sprint_order_data1.csv', csv_data)
   end
 end
 
