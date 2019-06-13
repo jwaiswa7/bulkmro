@@ -38,9 +38,9 @@ json.data (@indexed_kra_reports) do |inquiry|
                     number_with_delimiter(inquiry['sku']['value'].to_i, delimiter: ',')
                   end,
                   if @category.present? && (@category.include? 'by_sales_order')
-                    @indexed_kra_varient_reports[inquiry['key']]['orders_won']['value'].to_i > 0 ? percentage(@indexed_kra_varient_reports[inquiry['key']]['orders_won']['value'] * 100.0 / @indexed_kra_varient_reports[inquiry['key']]['doc_count']) : 0 if @indexed_kra_varient_reports[inquiry['key']].present?
+                    @indexed_kra_varient_reports[inquiry['key']]['orders_won']['value'].to_i > 0 ? percentage(@indexed_kra_varient_reports[inquiry['key']]['orders_won']['value'] * 100.0 / @indexed_kra_varient_reports[inquiry['key']]['doc_count'], show_symbol: false) : 0 if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
-                    inquiry['orders_won']['value'].to_i > 0 ? percentage(inquiry['orders_won']['value'] * 100.0 / inquiry['doc_count']) : 0
+                    inquiry['orders_won']['value'].to_i > 0 ? percentage(inquiry['orders_won']['value'] * 100.0 / inquiry['doc_count'], show_symbol: false) : 0
                   end,
                   if @category.present? && (@category.include? 'by_sales_order')
                     number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['sales_invoices']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
