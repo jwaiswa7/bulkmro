@@ -54,8 +54,34 @@
 
     <div class="form-row">
       <div class="col-12 col-md-6">
-        <%= f.input :gst, label: 'GST Number' %>
-      </div>
+        <div class="form-group string optional address_telephone">
+        <label class="form-control-label text-capitalize string optional" >GST Number</label>
+
+        <%#= f.label 'GST Number' %>
+        <%#= f.input :gst, label: 'GST Number' %>
+        <div class="form-inline" style="margin-bottom: 8px">
+          <input type="text" class="form-control col-2 col-md-2 gst-change" id="cd1" maxlength="2" disabled style="
+          margin-right: 6px;
+          ">
+          <input type="text" class="form-control gst-change" id="cd2" maxlength="10" style="
+          margin-right: 6px;
+          ">
+          <input type="text" class="form-control col-1 col-md-1 gst-change" id="cd3" maxlength="1" style="
+          margin-right: 6px;
+          ">
+          <input type="text" class="form-control col-1 col-md-1 gst-change" id="cd4" maxlength="1" style="
+          margin-right: 6px;
+          ">
+          <input type="text" class="form-control col-1 col-md-1 gst-change" id="cd5" maxlength="1" style="
+          margin-right: 6px;
+          ">
+        </div>
+
+
+        <%= f.input :gst, label: false, readonly: true%>
+        </div>
+        </div>
+
       <div class="col-6 col-md-4 d-none">
         <%= f.input :gst_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Address.gst_types), label: 'GST Type' %>
       </div>

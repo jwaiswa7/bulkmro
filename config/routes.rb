@@ -177,6 +177,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'warehouse_addresses'
+        get 'get_gst_code'
       end
     end
 

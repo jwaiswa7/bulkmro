@@ -16,4 +16,8 @@ class Overseers::AddressPolicy < Overseers::ApplicationPolicy
   def warehouse_addresses?
     true
   end
+
+  def get_gst_code?
+    true
+  end
 end

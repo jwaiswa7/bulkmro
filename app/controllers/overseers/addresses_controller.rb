@@ -24,4 +24,11 @@ class Overseers::AddressesController < Overseers::BaseController
     authorize @addresses
     render 'autocomplete'
   end
+
+
+  def get_gst_code
+    authorize :address
+    @address_state = AddressState.indian.find(params[:state_id])
+    render json: { gst_code: @address_state.gst_code }
+  end
 end
