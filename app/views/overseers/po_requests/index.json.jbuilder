@@ -31,7 +31,7 @@ json.data (@po_requests) do |po_request|
                       end, '<br/>', '<br/>',
                       if is_authorized(po_request, 'new_payment_request') && policy(po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
-                      elsif is_authorized(po_request, 'show_payment_request')
+                      elsif is_authorized(po_request, 'show_payment_request') && po_request.payment_request.present?
                         row_action_button(overseers_payment_request_path(po_request.payment_request), 'eye', 'View Payment Request', 'info', :_blank)
                       end,
                       if is_authorized(po_request, 'sending_po_to_supplier_new_email_message') && policy(po_request).sending_po_to_supplier_new_email_message? && current_overseer.smtp_password.present?
