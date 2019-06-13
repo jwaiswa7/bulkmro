@@ -33,11 +33,6 @@ class Overseers::CompaniesController < Overseers::BaseController
     authorize @company
   end
 
-  def new_commpany
-    @company = Company.new(overseer: current_overseer)
-    authorize @company
-  end
-
   def create
     @company = Company.new(company_params.merge(overseer: current_overseer))
     authorize @company
