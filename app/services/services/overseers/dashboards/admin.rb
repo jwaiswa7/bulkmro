@@ -17,13 +17,13 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
 
     sales_orders = SalesOrder.remote_approved.includes(:rows).where(mis_date: filter_by_dates)
     purchase_orders = PurchaseOrder.not_cancelled.includes(:rows).where(created_at: filter_by_dates)
-    sales_invoices = SalesInvoice.not_cancelled.includes(:rows).where(created_at: filter_by_dates).where.not(sales_order_id: nil).where.not(metadata: nil)
+    sales_invoices = SalesInvoice.not_cancelled.includes(:rows).where(mis_date: filter_by_dates).where.not(sales_order_id: nil).where.not(metadata: nil)
 
     inquiry_groups = inquiries.group_by_month(:created_at, default_value: nil).count
     sales_quotes_groups = sales_quotes.group_by_month(:created_at, default_value: nil).count
     sales_order_groups = sales_orders.group_by_month(:mis_date, default_value: nil).count
     purchase_orders_groups = purchase_orders.group_by_month(:created_at, default_value: nil).count
-    sales_invoices_groups = sales_invoices.group_by_month(:created_at, default_value: nil).count
+    sales_invoices_groups = sales_invoices.group_by_month(:mis_date, default_value: nil).count
 
     months = inquiry_groups.keys
 
