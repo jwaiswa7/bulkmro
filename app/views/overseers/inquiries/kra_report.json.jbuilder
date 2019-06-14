@@ -22,7 +22,6 @@ json.data (@indexed_kra_reports) do |inquiry|
                   format_currency(inquiry['total_quote_value']['value'].to_i, precision: 0,show_symbol: false),
                   number_with_delimiter(inquiry['expected_order']['value'].to_i, delimiter: ','),
                   format_currency(inquiry['total_quote_value']['value'].to_i, precision: 0,show_symbol: false),
-                  inquiry['margin_percentage'].present? ? inquiry['margin_percentage']['value'] : '-',
                   if  @category.present? && (@category.include?'by_sales_order')
                     number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['sales_orders']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
@@ -52,11 +51,6 @@ json.data (@indexed_kra_reports) do |inquiry|
                     @indexed_kra_varient_reports[inquiry['key']]['revenue']['value'].to_i if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
                     inquiry['revenue']['value'].to_i
-                  end,
-                  if @category.present? && (@category.include? 'by_sales_order')
-                    number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['company_key']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
-                  else
-                    number_with_delimiter(inquiry['company_key']['value'].to_i, delimiter: ',')
                   end
               ]
 end
@@ -73,7 +67,6 @@ json.columnFilters [
                        if @category.present? && @category == 'company_key'
                          [{"source": autocomplete_overseers_accounts_path}]
                        end,
-                       [],
                        [],
                        [],
                        [],
