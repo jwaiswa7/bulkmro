@@ -13,6 +13,7 @@ class Overseers::OverseersController < Overseers::BaseController
   def new
     @overseer = Overseer.new(overseer: current_overseer)
     authorize @overseer
+
   end
 
   def create
