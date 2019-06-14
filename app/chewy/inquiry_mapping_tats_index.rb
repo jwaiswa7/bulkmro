@@ -11,7 +11,7 @@ class InquiryMappingTatsIndex < BaseIndex
     field :sales_quote, value: -> (record) {record.sales_quote_id if record.sales_quote_id.present?}, type: 'integer'
     field :so_doc_id, value: -> (record) {record.sales_order_id if record.sales_order.present?}, type: 'integer'
 
-    field :sales_order_number, value: -> (record) {record.sales_order.order_number if record.sales_order.present?}, type: 'integer'
+    field :sales_order_number, value: -> (record) {record.sales_order.order_number if record.sales_order.present?}, type: 'long'
     field :sales_order_status, value: -> (record) {record.sales_order.status if record.sales_order.present?}, analyzer: 'substring'
 
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id }

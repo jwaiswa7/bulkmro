@@ -23,7 +23,7 @@ class Services::Overseers::Finders::LogisticsScorecards < Services::Overseers::F
       multi_match: {
           query: query_string,
           operator: 'and',
-          fields: %w[inquiry_number_string]
+          fields: %w[inquiry_number_string company]
       }
     ).order(sort_definition)
 
