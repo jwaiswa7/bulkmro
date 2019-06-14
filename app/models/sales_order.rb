@@ -122,7 +122,7 @@ class SalesOrder < ApplicationRecord
   }, _prefix: true
 
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
-  scope :remote_approved, -> {where('(sales_orders.status = ? AND sales_orders.remote_status != ? OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled'])}
+  scope :remote_approved, -> {where('(((sales_orders.status = ? OR sales_orders.status = ?) AND sales_orders.remote_status != ?) OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'CO'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled'])}
 
   scope :under_process, -> {where(status: [:'Approved', :'SAP Approval Pending', 'Requested'])}
   scope :without_cancelled, -> {where.not(status: 'Cancelled')}
@@ -132,7 +132,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def remote_approved?
-    self.status == 'Approved' || self.legacy_request_status == 'Approved'
+    self.status == 'Approved' || self.legacy_request_status == 'Approved' || self.status == 'CO'
   end
 
   def legacy?
