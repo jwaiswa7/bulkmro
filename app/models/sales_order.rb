@@ -96,7 +96,8 @@ class SalesOrder < ApplicationRecord
       'Cancelled': 50,
       'Approved': 60,
       'Order Deleted': 70,
-      'Hold by Finance': 80
+      'Hold by Finance': 80,
+      'CO': 90
   }, _prefix: true
 
   enum remote_status: {

@@ -43,8 +43,7 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
             duplicate_sales_order = SalesOrder.new
             duplicate_sales_order.sales_quote_id = create_sales_quote(sales_order, order_date)
             # duplicate_sales_order.old_order_number = order_number
-            duplicate_sales_order.remote_status = sales_order.remote_status
-            duplicate_sales_order.status = sales_order.status
+            duplicate_sales_order.status = 'CO'
             duplicate_sales_order.remote_status = 'Short Close'
             duplicate_sales_order.order_number = i
             duplicate_sales_order.billing_address_id = sales_order.billing_address_id
