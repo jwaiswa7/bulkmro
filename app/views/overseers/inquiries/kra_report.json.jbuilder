@@ -19,9 +19,9 @@ json.data (@indexed_kra_reports) do |inquiry|
                   end,
                   number_with_delimiter(inquiry['doc_count'], delimiter: ','),
                   number_with_delimiter(inquiry['sales_quote_count']['value'].to_i, delimiter: ','),
-                  format_currency(inquiry['total_quote_value']['value'].to_i, precision: 0,show_symbol: false),
+                  inquiry['total_quote_value']['value'].to_i,
                   number_with_delimiter(inquiry['expected_order']['value'].to_i, delimiter: ','),
-                  format_currency(inquiry['total_quote_value']['value'].to_i, precision: 0,show_symbol: false),
+                  inquiry['total_quote_value']['value'].to_i,
                   if  @category.present? && (@category.include?'by_sales_order')
                     number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['sales_orders']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
                   else

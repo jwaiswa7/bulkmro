@@ -579,13 +579,13 @@ class Overseers::InquiriesController < Overseers::BaseController
       value_present = indexed_kra_reports[0][sort_by].present? && indexed_kra_reports[0][sort_by]['value'].present?
       case
       when !value_present && sort_order == 'asc'
-        indexed_kra_reports.sort! { |a,b| a['doc_count'] <=> b['doc_count'] }
+        indexed_kra_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }
       when !value_present && sort_order == 'desc'
-        indexed_kra_reports.sort! { |a,b| a['doc_count'] <=> b['doc_count'] }.reverse!
+        indexed_kra_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }.reverse!
       when value_present && sort_order == 'asc'
-        indexed_kra_reports.sort! { |a,b| a[sort_by]['value'] <=> b[sort_by]['value'] }
+        indexed_kra_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }
       when value_present && sort_order == 'desc'
-        indexed_kra_reports.sort! { |a,b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
+        indexed_kra_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
       end
     end
 
