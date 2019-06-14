@@ -54,7 +54,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_cancel?
-    (manager_or_sales? || logistics? || admin?) && record.status != 'Cancelled'
+    (manager? || logistics? || admin?) && record.status != 'Cancelled'
   end
 
   def can_reject?
@@ -118,11 +118,11 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def stock?
-    index? && (sales? || admin?)
+    index? && (sales? || admin? || logistics?)
   end
 
   def pending_stock_approval?
-    index? && (manager_or_sales? || admin?)
+    index? && (manager_or_sales? || admin? || logistics?)
   end
 
   def completed_stock?
@@ -130,7 +130,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_reject_stock_po?
-    record.purchase_order.blank? && (manager? || admin?)
+    record.purchase_order.blank? && (manager? || admin? || logistics?)
   end
 
   class Scope
