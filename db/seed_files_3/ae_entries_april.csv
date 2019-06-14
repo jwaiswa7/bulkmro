@@ -1,3 +1,6 @@
 Company Alias,Month-Year,Inquiry Number,So #,Order Date,Bm #,Description,Order Qty,Unit Selling Price,Freight,Tax Type,Tax Rate,Tax Amount,Total Selling Price,Total Landed Cost,Unit cost price,Margin,Margin (In %),Invoice Qty,Invoice Value,Invoice Value With Tax,So Month Code,Quote Category *,MRO Project Direct,Order Status,Supplier Name
 #REF!,4-2019,28933,10211295,1-Apr-2019,BM9T5N6,"OUTOKUMPU ASTM Type 310S Stainless Steel Quarto Plate, Thickness 10 mm, Size 2000 X 8917 mm",36726,-372.3,0,IG@18,18.00%,-2461156.16,-13673089.8,-19363323,-372.3,0,0.00%,#N/A,#N/A,#N/A,201904,ONG,#REF!,Short Closed,No Supplier Details
 ,,28933,10211295,1-Apr-2019,BM9E4Z0,"OUTOKUMPU ASTM Type 310S Stainless Steel Quarto Plate, Thickness 8.0 mm, Size 2000 X 8917 mm",15284,-372.3,0,IG@18,18.00%,-1024241.98,-5690233.2,,-372.3,0,0.00%,,,,,,,Short Closed,
+,,25338,10211350,15-Apr-19,BM9Q4N4,,2,-12000,0,IG@18,18.00%,-4320,-24000,,-6390,,42.25%,,,,,,,,
+,,25388,10211350,15-Apr-19,BM9X5X1,,2,-900,0,IG@18,18.00%,-324,-2124,,-250,,72.22%,,,,,,,,
+,,28933,10211297,01-Apr-19,BM9Q5S0,,12692,-384.71,0,IG@18,18.00%,-878893.08,-4882739.32,-4840377.24,-381.37,-42362.08,0.87%,,,,,,,,
