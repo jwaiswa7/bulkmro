@@ -248,7 +248,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     # if @inquiry.save_and_sync
     if @inquiry.save
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :new_inquiry).call if @inquiry.persisted?
-      redirect_to edit_overseers_inquiry_path(@inquiry, notice: flash_message(@inquiry, action_name))
+      redirect_to new_overseers_inquiry_email_message_path(@inquiry)
     else
       render 'new'
     end
