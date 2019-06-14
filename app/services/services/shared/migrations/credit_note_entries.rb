@@ -12,15 +12,15 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
     @tax_amount_value = ''
     missing_sku = []
     # 8888888881
-    i = 8888888881
-    service = Services::Shared::Spreadsheets::CsvImporter.new('ae_entries.csv', 'seed_files_3')
+    i = 8888888907
+    service = Services::Shared::Spreadsheets::CsvImporter.new('ae_entries_april.csv', 'seed_files_3')
     duplicate_array = []
 
     service.loop(nil) do |x|
       @order_number = x.get_column('So #')
       @product_sku = x.get_column('Bm #')
       @quantity = x.get_column('Order Qty')
-      @order_date = x.get_column('Client Order Date')
+      @order_date = x.get_column('Order Date')
       @margin_percentage = x.get_column('Margin (In %)')
       @unit_selling_price = x.get_column('Unit Selling Price')
       @unit_cost_price = x.get_column('Unit cost price')
@@ -42,13 +42,15 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
           if duplicate_order_number.blank?
             duplicate_sales_order = SalesOrder.new
             duplicate_sales_order.sales_quote_id = create_sales_quote(sales_order, order_date)
-            duplicate_sales_order.old_order_number = order_number
+            # duplicate_sales_order.old_order_number = order_number
             duplicate_sales_order.remote_status = sales_order.remote_status
             duplicate_sales_order.status = sales_order.status
+            duplicate_sales_order.remote_status = 'Short Close'
             duplicate_sales_order.order_number = i
             duplicate_sales_order.billing_address_id = sales_order.billing_address_id
             duplicate_sales_order.shipping_address_id = sales_order.shipping_address_id
             duplicate_sales_order.created_at = Date.parse(order_date).strftime('%Y-%m-%d')
+            duplicate_sales_order.mis_date = Date.parse(order_date).strftime('%Y-%m-%d')
             duplicate_sales_order.is_credit_note_entry = true
             duplicate_sales_order.parent_id = sales_order.id
             if duplicate_sales_order.save(validate: false)
@@ -102,7 +104,7 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
         quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_type.scan(/^\d*(?:\.\d+)?/)[0].to_d).id || product.tax_rate_id
       else
         quote_row.tax_code_id = product.tax_code.id
-        quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_rate.to_d).id || product.tax_rate_id
+        quote_row.tax_rate_id = TaxRate.find_by_tax_percentage(tax_rate.split('%')[0].to_d).id || product.tax_rate_id
       end
       quote_row.legacy_applicable_tax_percentage = tax_rate.split('%')[0].to_d
       quote_row.inquiry_product_supplier_id = inquiry_supplier_id

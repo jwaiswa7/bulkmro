@@ -7,10 +7,10 @@ json.data (@inquiries) do |inquiry|
                   format_succinct_date(inquiry.created_at),
                   inquiry.final_sales_quote.present? ? format_currency(inquiry.final_sales_quote.calculated_total) : '-',
                   inquiry.final_sales_quote.present? ? format_succinct_date(inquiry.final_sales_quote.created_at) : '-',
-                  inquiry.final_sales_orders.present? ? inquiry.final_sales_orders.map { |order| format_currency(order.calculated_total)}.compact.join('<br/>') : '-',
+                  inquiry.final_sales_orders.present? ? inquiry.final_sales_orders.map { |order| order.calculated_total.to_i}.compact.join('<br/>') : '-',
                   inquiry.final_sales_orders.present? ? inquiry.final_sales_orders.map { |order| format_succinct_date(order.created_at)}.compact.join('<br/>') : '-',
                   inquiry.final_sales_orders.present? ? inquiry.final_sales_orders.map { |order| percentage(order.calculated_total_margin_percentage)}.compact.join('<br/>') : '-',
-                  inquiry.final_sales_orders.present? ? inquiry.final_sales_orders.map { |order| format_currency(order.calculated_total_margin)}.compact.join('<br/>') : '-',
+                  inquiry.final_sales_orders.present? ? inquiry.final_sales_orders.map { |order| order.calculated_total_margin.to_i}.compact.join('<br/>') : '-',
                   number_with_delimiter(inquiry.invoices.count, delimiter: ','),
                   inquiry.invoices.present? ? inquiry.invoices.map { |invoice| invoice.mis_date}.uniq.compact.join('<br/>') : '-'
               ]

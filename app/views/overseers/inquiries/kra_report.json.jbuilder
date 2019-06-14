@@ -29,9 +29,9 @@ json.data (@indexed_kra_reports) do |inquiry|
                     number_with_delimiter(inquiry['sales_orders']['value'].to_i, delimiter: ',')
                   end,
                   if @category.present? && (@category.include? 'by_sales_order')
-                    format_currency(@indexed_kra_varient_reports[inquiry['key']]['total_order_value']['value'],show_symbol: false) if @indexed_kra_varient_reports[inquiry['key']].present?
+                    @indexed_kra_varient_reports[inquiry['key']]['total_order_value']['value'].to_i if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
-                    format_currency(inquiry['total_order_value']['value'].to_i, precision: 0,show_symbol: false)
+                    inquiry['total_order_value']['value'].to_i
                   end,
                   if @category.present? && (@category.include? 'by_sales_order')
                     number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['sku']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
@@ -49,9 +49,14 @@ json.data (@indexed_kra_reports) do |inquiry|
                     number_with_delimiter(inquiry['sales_invoices']['value'].to_i, delimiter: ',')
                   end,
                   if @category.present? && (@category.include? 'by_sales_order')
-                    format_currency(@indexed_kra_varient_reports[inquiry['key']]['revenue']['value'],show_symbol: false) if @indexed_kra_varient_reports[inquiry['key']].present?
+                    @indexed_kra_varient_reports[inquiry['key']]['revenue']['value'].to_i if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
-                    format_currency(inquiry['revenue']['value'].to_i, precision: 0,show_symbol: false)
+                    inquiry['revenue']['value'].to_i
+                  end,
+                  if @category.present? && (@category.include? 'by_sales_order')
+                    number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['clients']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
+                  else
+                    number_with_delimiter(inquiry['clients']['value'].to_i, delimiter: ',')
                   end
               ]
 end

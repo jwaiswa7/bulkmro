@@ -80,11 +80,11 @@ let setup = () => {
                     })
                     if (value && value != "") {
                         if (td.hasClass('currency')){
-                            td.empty().append(currencyFormatter.format(value))
+                            td.empty().append(parseInt(value))
                         }
                         else if(td.hasClass('percentage')){
                             let percentValue = (value / columnData.length)
-                            td.empty().append(percentValue)
+                            td.empty().append(parseInt(percentValue))
                         }
                         else if(td.hasClass('no-data')){
                             td.empty()
@@ -97,7 +97,7 @@ let setup = () => {
                     }
                     else{
                         if (td.hasClass('currency')){
-                            td.empty().append(currencyFormatter.format(0))
+                            td.empty().append(parseInt(0))
                         }
                         else if(td.hasClass('percentage')){
                             td.empty().append('0')
