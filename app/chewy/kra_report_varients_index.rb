@@ -1,5 +1,5 @@
 class KraReportVarientsIndex < BaseIndex
-  define_type SalesOrder.where.not(sent_at: nil) do
+  define_type SalesOrder.without_cancelled.where.not(sent_at: nil) do
     default_import_options batch_size: 1000, bulk_size: 10.megabytes, refresh: false
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i }, type: 'integer'

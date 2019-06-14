@@ -7,7 +7,7 @@ json.data (@po_requests) do |po_request|
                         row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
                       if policy(po_request).can_cancel?
-                        link_to('a', class: ['btn btn-sm btn-dark cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Cancel', remote: true) do
+                        link_to('', class: ['btn btn-sm btn-dark cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Cancel', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
