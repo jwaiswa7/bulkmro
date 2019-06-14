@@ -208,7 +208,7 @@
             <%= f.input :expected_closing_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
           <div class="col-12 col-md-4">
-            <%= f.input :quotation_followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+            <%= f.input :quotation_followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: @inquiry.sales_quotes.present? ? true : false %>
           </div>
         </div>
       </div>
