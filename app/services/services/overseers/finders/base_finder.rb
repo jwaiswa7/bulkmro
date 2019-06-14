@@ -77,7 +77,11 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
 
   def all_records
-    index_klass.all.order(sort_definition)
+     if current_overseer.present? && !current_overseer.allow_inquiries?
+      index_klass.all.order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    else
+      index_klass.all.order(sort_definition)
+    end
   end
 
   def perform_query(query_string)
