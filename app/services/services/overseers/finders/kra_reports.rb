@@ -92,32 +92,32 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
               'inquiries': {
                   'terms': {'field': terms_field, size: 10000},
                   aggs: {
-                      sales_invoices: {
+                      invoices_count: {
                           sum: {
                               field: 'invoices_count'
                           }
                       },
-                      sales_quotes: {
+                      sales_quote_count: {
                           sum: {
                               field: 'sales_quote_count'
                           }
                       },
-                      sales_orders: {
+                      sales_order_count: {
                           sum: {
                               field: 'sales_order_count'
                           }
                       },
-                      expected_orders: {
+                      expected_order: {
                           sum: {
                               field: 'expected_order'
                           }
                       },
-                      orders_won: {
+                      order_won: {
                           sum: {
                               field: 'order_won'
                           }
                       },
-                      total_sales_value: {
+                      total_quote_value: {
                           sum: {
                               field: 'total_quote_value'
                           }
@@ -137,7 +137,7 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
                               field: 'sku'
                           }
                       },
-                      clients: {
+                      company_key: {
                           cardinality: {
                               field: 'company_key'
                           }

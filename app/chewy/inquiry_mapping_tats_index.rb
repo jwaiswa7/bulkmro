@@ -14,6 +14,10 @@ class InquiryMappingTatsIndex < BaseIndex
     field :sales_order_number, value: -> (record) {record.sales_order.order_number if record.sales_order.present?}, type: 'long'
     field :sales_order_status, value: -> (record) {record.sales_order.status if record.sales_order.present?}, analyzer: 'substring'
 
+    field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id }
+    field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id }
+    field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations_id }
+
     field :time_new_inquiry, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'New Inquiry').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'New Inquiry').present?}, type: 'date'
 
     field :status_acknowledgment_mail, value: -> (record) {record.calculate_turn_around_time('Acknowledgement Mail') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'Acknowledgement Mail').present?}, type: 'integer'
