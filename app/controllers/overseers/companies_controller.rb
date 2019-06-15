@@ -42,7 +42,7 @@ class Overseers::CompaniesController < Overseers::BaseController
           @company.company_creation_request.update_attributes(company_id: @company.id)
           @company.company_creation_request.activity.update_attributes(company: @company)
           @notification.send_company_creation_confirmation(
-              @company.company_creation_request,
+            @company.company_creation_request,
               action_name.to_sym,
               @company,
               overseers_company_path(@company),
@@ -143,7 +143,7 @@ class Overseers::CompaniesController < Overseers::BaseController
 
     def company_params
       params.require(:company).permit(
-          :account_id,
+        :account_id,
           :name,
           :industry_id,
           :remote_uid,
