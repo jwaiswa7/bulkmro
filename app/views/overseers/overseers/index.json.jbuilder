@@ -7,6 +7,9 @@ json.data (@overseers) do |overseer|
                       if policy(overseer).edit?
                             row_action_button(edit_overseers_overseer_path(overseer), 'pencil', 'Edit Overseer', 'warning')
                       end,
+                      if policy(overseer).can_add_edit_target?
+                        overseer.annual_target.present? ? row_action_button(overseers_annual_target_path(overseer.annual_target), 'bullseye', 'View Target', 'success') : row_action_button(new_overseers_annual_target_path(overseer_id: overseer), 'bullseye', 'Add Target', 'danger')
+                      end,
                   ].join(' '),
                   overseer.hierarchy_to_s,
                   format_enum(overseer.role),

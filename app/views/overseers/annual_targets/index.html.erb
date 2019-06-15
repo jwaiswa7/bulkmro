@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Overseers Targets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @overseers_targets.each do |overseers_target| %>
+      <tr>
+        <td><%= link_to 'Show', overseers_target %></td>
+        <td><%= link_to 'Edit', edit_overseers_target_path(overseers_target) %></td>
+        <td><%= link_to 'Destroy', overseers_target, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Overseers Target', new_overseers_target_path %>

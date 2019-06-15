@@ -1,0 +1,52 @@
+<div class="col-lg-12">
+  <%= render 'shared/snippets/page_header', e: @annual_target %>
+  <%= simple_form_for([:overseers, @annual_target], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+    <div class="form-row">
+      <div class="col-6 col-md-6">
+        <%= f.hidden_field :overseer_id, value: params[:overseer_id].present? ? params[:overseer_id]: @annual_target.overseer_id  %>
+        <%= f.input :overseer, label: 'Name', :required => 'true', :class => 'form-control', disabled: true %>
+      </div>
+
+      <div class="col-6 col-md-6">
+        <%= f.input :year, as: :select, collection: AnnualTarget.year_range, label: 'Year', :placeholder => 'Year', :required => 'true', :class => 'form-control', include_blank: 'Select Year'  %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.input :inquiry_target, label: 'Inquiry Target', :required => 'true', :class => 'form-control', :input_html => { :type => "number" } %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :company_target, label: 'Company Target', :class => 'form-control', :input_html => { :type => "number" } %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :invoice_target, label: 'Invoice Target', :class => 'form-control', :input_html => { :type => "number" } %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.input :invoice_margin_target, label: 'Invoice Margin Target', :class => 'form-control', :input_html => { :type => "number" } %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :order_target, label: 'Order Target', :class => 'form-control', :input_html => { :type => "number" } %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :order_margin_target, label: 'Order Margin Target', :class => 'form-control', :input_html => { :type => "number" } %>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.input :new_client_target, label: 'New Client Target', :class => 'form-control', :input_html => { :type => "number" } %>
+      </div>
+    </div>
+
+    <%= action_button(action_name, @annual_target) %>
+  <% end %>
+</div>
+
+
+
+
+

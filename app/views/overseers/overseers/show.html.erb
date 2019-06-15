@@ -31,10 +31,12 @@
               <%= @overseer.role %>
             </div>
 
-            <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Parent</strong>
-              <%= @overseer.parent.full_name %>
-            </div>
+            <% if @overseer.parent.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Parent</strong>
+                <%= @overseer.parent.full_name %>
+              </div>
+            <% end %>
 
             <% if @overseer.designation.present? %>
               <div class="col-6 col-md-3 mb-2">
@@ -69,5 +71,62 @@
       </div>
     </div>
   </section>
+  <% if @annual_target.present? %>
+    <section class="pt-3 pt-lg-4 pb-2">
+      <div class="d-md-flex justify-content-between">
+        <h3 class="display-5 d-flex align-items-center">
+          Annual Target
+        </h3>
+        <a href="<%= edit_overseers_annual_target_path(@annual_target) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down">
+          <i class="fal fa-pen mr-1"></i>Edit Annual Target
+        </a>
+      </div>
+    </section>
+    <section class="mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <div class="form-row">
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Inquiry Target</strong>
+              <%= @annual_target.inquiry_target %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Company Target</strong>
+              <%= @annual_target.company_target %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Invoice Target</strong>
+              <%= @annual_target.invoice_target %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Invoice Margin Target</strong>
+              <%= @annual_target.invoice_margin_target %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Inquiry Target</strong>
+              <%= @annual_target.order_target %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Order Margin Target</strong>
+              <%= @annual_target.order_margin_target %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">New Cilent Target</strong>
+              <%= @annual_target.new_client_target %>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <% end %>
 </div>
 </div>

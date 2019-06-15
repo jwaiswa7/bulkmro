@@ -132,6 +132,7 @@ Rails.application.routes.draw do
     end
     resource :profile, :controller => :profile, except: [:show, :index]
     resources :overseers#, except: [:show]
+    resources :annual_targets
 
     resources :suppliers do
       collection do
