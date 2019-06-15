@@ -60,8 +60,8 @@ class Overseers::CompaniesController < Overseers::BaseController
         @account = Account.find_by_id(params[:company]['account_id'])
       else
         account_params = {name: params[:company]['account_name'], account_type: params[:company]['acc_type']}
-          @account = Account.new(account_params.merge(overseer: current_overseer))
-          @account.save_and_sync
+        @account = Account.new(account_params.merge(overseer: current_overseer))
+        @account.save_and_sync
       end
       @company.account = @account
       @company.save_and_sync
@@ -137,40 +137,40 @@ class Overseers::CompaniesController < Overseers::BaseController
 
   private
 
-  def set_company
-    @company ||= Company.find(params[:id])
-  end
+    def set_company
+      @company ||= Company.find(params[:id])
+    end
 
-  def company_params
-    params.require(:company).permit(
-        :account_id,
-        :name,
-        :industry_id,
-        :remote_uid,
-        :default_company_contact_id,
-        :default_payment_option_id,
-        :default_billing_address_id,
-        :default_shipping_address_id,
-        :inside_sales_owner_id,
-        :outside_sales_owner_id,
-        :sales_manager_id,
-        :company_type,
-        :priority,
-        :site,
-        :company_creation_request_id,
-        :nature_of_business,
-        :creadit_limit,
-        :tan_proof,
-        :pan,
-        :pan_proof,
-        :cen_proof,
-        :logo,
-        :is_msme,
-        :is_active,
-        :is_unregistered_dealer,
-        contact_ids: [],
-        brand_ids: [],
-        product_ids: [],
-    )
-  end
+    def company_params
+      params.require(:company).permit(
+          :account_id,
+          :name,
+          :industry_id,
+          :remote_uid,
+          :default_company_contact_id,
+          :default_payment_option_id,
+          :default_billing_address_id,
+          :default_shipping_address_id,
+          :inside_sales_owner_id,
+          :outside_sales_owner_id,
+          :sales_manager_id,
+          :company_type,
+          :priority,
+          :site,
+          :company_creation_request_id,
+          :nature_of_business,
+          :creadit_limit,
+          :tan_proof,
+          :pan,
+          :pan_proof,
+          :cen_proof,
+          :logo,
+          :is_msme,
+          :is_active,
+          :is_unregistered_dealer,
+          contact_ids: [],
+          brand_ids: [],
+          product_ids: [],
+      )
+    end
 end
