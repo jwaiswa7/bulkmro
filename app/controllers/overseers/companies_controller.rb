@@ -1,5 +1,5 @@
 class Overseers::CompaniesController < Overseers::BaseController
-  before_action :set_company, only: [:show, :render_rating_form, :update_rating]
+  before_action :set_company, only: [:show, :render_rating_form, :update_rating, :get_account]
   before_action :set_notification, only: [:create]
 
   def index
@@ -11,12 +11,11 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def autocomplete
-    @companies = ApplyParams.to(Company.active, params)
-    authorize @companies
-  end
-
-  def autocomplete_company_type
-    @companies = ApplyParams.to(Company.active, params)
+    if params[:is_customer]
+      @companies = ApplyParams.to(Company.is_customer_active, params)
+    else
+      @companies = ApplyParams.to(Company.active, params)
+    end
     authorize @companies
   end
 
@@ -135,6 +134,11 @@ class Overseers::CompaniesController < Overseers::BaseController
     redirect_to url_for(Export.company_report.not_filtered.last.report)
   end
 
+  def get_account
+    authorize @company
+    render json: {account_id: @company.account.id, account_name: @company.account.name}
+  end
+
   private
 
     def set_company
@@ -144,33 +148,33 @@ class Overseers::CompaniesController < Overseers::BaseController
     def company_params
       params.require(:company).permit(
         :account_id,
-          :name,
-          :industry_id,
-          :remote_uid,
-          :default_company_contact_id,
-          :default_payment_option_id,
-          :default_billing_address_id,
-          :default_shipping_address_id,
-          :inside_sales_owner_id,
-          :outside_sales_owner_id,
-          :sales_manager_id,
-          :company_type,
-          :priority,
-          :site,
-          :company_creation_request_id,
-          :nature_of_business,
-          :creadit_limit,
-          :tan_proof,
-          :pan,
-          :pan_proof,
-          :cen_proof,
-          :logo,
-          :is_msme,
-          :is_active,
-          :is_unregistered_dealer,
-          contact_ids: [],
-          brand_ids: [],
-          product_ids: [],
+        :name,
+        :industry_id,
+        :remote_uid,
+        :default_company_contact_id,
+        :default_payment_option_id,
+        :default_billing_address_id,
+        :default_shipping_address_id,
+        :inside_sales_owner_id,
+        :outside_sales_owner_id,
+        :sales_manager_id,
+        :company_type,
+        :priority,
+        :site,
+        :company_creation_request_id,
+        :nature_of_business,
+        :creadit_limit,
+        :tan_proof,
+        :pan,
+        :pan_proof,
+        :cen_proof,
+        :logo,
+        :is_msme,
+        :is_active,
+        :is_unregistered_dealer,
+        contact_ids: [],
+        brand_ids: [],
+        product_ids: []
       )
     end
 end

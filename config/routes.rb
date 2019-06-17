@@ -397,6 +397,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'index_pg'
         get 'smart_queue'
+        get 'next_inquiry_step'
         get 'export_all'
         get 'export_filtered_records'
         get 'tat_report'
@@ -511,6 +512,7 @@ Rails.application.routes.draw do
       member do
         get 'render_rating_form'
         put 'update_rating'
+        get 'get_account'
       end
       scope module: 'companies' do
         resources :customer_orders
