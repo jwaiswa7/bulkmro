@@ -8,10 +8,37 @@
 </div>
 
 <div class="col-12">
+  <div class="sticky-top" style="width: 100%;display: none" id="stick-tid">
+    <table class="table-bordered table" style="margin-top: 0px !important;margin-bottom: 0px" >
+      <thead>
+      <tr>
+        <th style="font-weight:bold;width: 100px;">Month</th>
+        <th style="font-weight:bold;white-space:normal;width: 69px;">New Inquiry</th>
+        <th style="font-weight:bold;white-space:normal;width: 51px;">Ack Mail</th>
+        <th style="font-weight:bold;white-space:normal;width: 57px;">Cross Ref</th>
+        <th style="font-weight:bold;white-space:normal;width: 114px;">Preparing Quotation</th>
+        <th style="font-weight:bold;white-space:normal;width: 88px;">Quotation Sent</th>
+        <th style="font-weight:bold;white-space:normal;width: 131px;">Follow Up on Quotation</th>
+        <th style="font-weight:bold;white-space:normal;width: 89px;">Expected Order</th>
+        <th style="font-weight:bold;white-space:normal;width: 143px;">Pending Cust PO Revision</th>
+        <th style="font-weight:bold;white-space:normal;width: 150px;">Pending Manager Approval</th>
+        <th style="font-weight:bold;white-space:normal;width: 153px;">Pending Accounts Approval</th>
+        <th style="font-weight:bold;white-space:normal;width: 78px;">Order Won</th>
+        <th style="font-weight:bold;white-space:normal;width: 132px;">Rejected Sales Manager</th>
+        <th style="font-weight:bold;white-space:normal;width: 119px;">Rejected by Accounts</th>
+        <th style="font-weight:bold; white-space:normal;">Order Lost</th>
+        <th style="font-weight:bold;white-space:normal;width: 78px;">Regret</th>
+        <th style="font-weight:bold;">Grand Total</th>
+        <th style="font-weight:bold;">Won %</th>
+      </tr>
+      </thead>
+    </table>
+  </div>
+
   <%= render layout: 'search_layout_for_pipeline' do %>
   <% end %><br>
 
-  <table class="table-bordered table">
+  <table class="table-bordered table" id="sticky-nav">
     <thead>
     <tr>
       <th style="font-weight:bold;">Month</th>

@@ -50,6 +50,11 @@ class Overseers::InquiriesController < Overseers::BaseController
         indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
         @per = (params['per'] || params['length'] || 20).to_i
         @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
+        if params[:order].present? && params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
+          sort_by = params[:columns][params[:order].values.first['column']][:name]
+          sort_order = params[:order].values.first['dir']
+          indexed_kra_reports = sort_buckets(sort_by, sort_order, indexed_kra_reports)
+        end
         @indexed_kra_reports = Kaminari.paginate_array(indexed_kra_reports).page(@page).per(@per)
       end
     end
@@ -567,6 +572,20 @@ class Overseers::InquiriesController < Overseers::BaseController
         )
       else
         {}
+      end
+    end
+
+    def sort_buckets(sort_by, sort_order, indexed_kra_reports)
+      value_present = indexed_kra_reports[0][sort_by].present? && indexed_kra_reports[0][sort_by]['value'].present?
+      case
+      when !value_present && sort_order == 'asc'
+        indexed_kra_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }
+      when !value_present && sort_order == 'desc'
+        indexed_kra_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }.reverse!
+      when value_present && sort_order == 'asc'
+        indexed_kra_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }
+      when value_present && sort_order == 'desc'
+        indexed_kra_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
       end
     end
 

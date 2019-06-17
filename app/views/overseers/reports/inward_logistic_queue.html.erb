@@ -33,7 +33,21 @@
   </div>
 </div>
 
-<table class="table text-center mt-3">
+<div class="sticky-top" style="width: 100%;display: none" id="stick-tid">
+  <table class="table text-center mt-3" style="margin-top: 0px !important;margin-bottom: 0px" >
+    <thead >
+    <tr>
+      <th class="text-uppercase">Logistics Owner</th>
+      <th class="text-uppercase text-black-50">Material Not Ready</th>
+      <th class="text-uppercase text-black-50">Material Pickups Pending</th>
+      <th class="text-uppercase text-black-50">Inward Pending</th>
+      <th class="text-uppercase text-black-50">Status Partial Grpo Done</th>
+    </tr>
+    </thead>
+  </table>
+</div>
+
+<table class="table text-center mt-3" id="sticky-nav">
   <thead data-toggle="sticky">
   <tr>
     <th class="text-uppercase">Logistics Owner</th>

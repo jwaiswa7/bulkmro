@@ -77,7 +77,11 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
 
   def all_records
-    index_klass.all.order(sort_definition)
+    if current_overseer.present? && !current_overseer.allow_inquiries?
+      index_klass.all.order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    else
+      index_klass.all.order(sort_definition)
+    end
   end
 
   def perform_query(query_string)
@@ -247,8 +251,8 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
             minimum_should_match: 1
         }
     }
-    keys.map{|i| query_obj[:bool][:should] << { terms: { "#{i}": vals}}}
-    return  query_obj
+    keys.map {|i| query_obj[:bool][:should] << { terms: { "#{i}": vals}}}
+    query_obj
   end
 
   def aggregate_by_status(key = 'statuses', aggregation_field = 'potential_value', size = 50, status_field)
