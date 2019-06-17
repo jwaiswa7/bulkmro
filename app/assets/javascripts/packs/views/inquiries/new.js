@@ -16,12 +16,9 @@ const newAction = () => {
 
 var onBillingAddressChange = function onBillingAddressChange(container) {
     var optionSelected = $("option:selected", container);
-    var url = new URL(window.location.href)
-    var company_id = url.searchParams.get('company_id')
-
-    if (optionSelected.exists() && optionSelected.val() !== '' && company_id != '') {
+    if (optionSelected.exists() && optionSelected.val() !== '') {
         $.getJSON({
-            url: Routes.is_sez_params_overseers_company_addresses_path(company_id),
+            url: Routes.is_sez_params_overseers_addresses_path(),
             data: {
                 address_id: optionSelected.val()
             },
