@@ -1,6 +1,6 @@
 <div class="card mb-2">
   <div class="card-header d-md-flex justify-content-between">
-    <h5 class="text-uppercase text-black-50 mb-1 "> Packing Slip <%= index %></h5>
+    <h5 class="text-uppercase text-black-50 mb-1 "> Packing Slip <%= index + 1 %></h5>
     <div>
       <%= row_action_button(overseers_outward_dispatch_packing_slip_path(@outward_dispatch, packing_slip, format: :pdf), 'file-pdf', 'Download Pdf', 'dark', :_blank) %>
       <a href="<%= edit_overseers_outward_dispatch_packing_slip_path(@outward_dispatch,packing_slip) %>" class="btn btn-warning align-self-center btn-block-sm-down">
