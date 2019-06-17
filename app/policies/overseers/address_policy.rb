@@ -14,7 +14,7 @@ class Overseers::AddressPolicy < Overseers::ApplicationPolicy
   end
 
   def is_sez_params?
-    super && record.company.is_active if record.company.present?
+    edit?
   end
 
   def warehouse_addresses?

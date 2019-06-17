@@ -43,7 +43,6 @@ let onBillingAddressChange = function onBillingAddressChange(container) {
     let optionSelected = $("option:selected", container);
     let url = new URL(window.location.href)
     let company_id = url.searchParams.get('company_id')
-
     if (optionSelected.exists() && optionSelected.val() !== '' && company_id != '') {
         $.getJSON({
             url: Routes.is_sez_params_overseers_company_addresses_path(company_id),

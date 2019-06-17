@@ -85,7 +85,7 @@
                 <%= f.input :opportunity_source, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources) %>
               </div>
               <div class="col-6 col-md-6">
-                <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, disabled: true, selected: (f.object.company.default_billing_address.is_sez == true) %>
+                <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, disabled: true, selected: (f.object.company.default_billing_address.present? ? f.object.company.default_billing_address.is_sez : '') %>
               </div>
             </div>
           </div>
