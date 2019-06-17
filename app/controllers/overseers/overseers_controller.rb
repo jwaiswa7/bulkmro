@@ -27,7 +27,7 @@ class Overseers::OverseersController < Overseers::BaseController
   end
 
   def show
-    @annual_target = @overseer.annual_target
+    @annual_targets = @overseer.annual_targets
     authorize @overseer
   end
 

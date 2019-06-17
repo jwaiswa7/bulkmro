@@ -4,7 +4,8 @@ class AnnualTarget < ApplicationRecord
   belongs_to :manager, class_name: 'Overseer', foreign_key: :manager_id, required: false
   belongs_to :business_head, class_name: 'Overseer', foreign_key: :business_head_id, required: false
 
-  validates_uniqueness_of :overseer_id, on: :create
+  validates_uniqueness_of :year, :scope => :overseer_id
+
   validates_presence_of :inquiry_target
 
   after_initialize :set_defaults, if: :new_record?
@@ -20,6 +21,10 @@ class AnnualTarget < ApplicationRecord
       years["#{year}-#{year+1}"] = "#{year}-#{year+1}"
     end
     years
+  end
+
+  def monthly_target(type)
+    (("#{type}_target")) / 12.0
   end
 
 end

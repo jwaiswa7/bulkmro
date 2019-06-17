@@ -2,19 +2,20 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
   before_action :set_target, only: [:show, :edit, :update, :destroy]
 
   def index
-    @annual_targets = AnnualTarget.all
+    @annual_targets = ApplyDatatableParams.to(AnnualTarget.all, params)
     authorize :annual_target
   end
 
   def show
+    authorize @annual_target
   end
 
   def new
     if params[:overseer_id].present?
       @overseer = Overseer.find(params[:overseer_id])
-      @annual_target = AnnualTarget.new(overseer: @overseer)
+      @annual_target = @overseer.annual_targets.build(overseer: current_overseer)
     else
-      @annual_target = AnnualTarget.new
+      @annual_target = AnnualTarget.new(overseer: current_overseer)
     end
     authorize @annual_target
   end
@@ -25,7 +26,7 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
 
   def create
     @overseer = Overseer.find(annual_target_params[:overseer_id])
-    @annual_target = AnnualTarget.new(annual_target_params.merge(overseer: @overseer))
+    @annual_target = @overseer.annual_targets.build(annual_target_params.merge(overseer: current_overseer))
     authorize @annual_target
 
     if @annual_target.save
