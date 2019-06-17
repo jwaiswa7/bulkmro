@@ -96,11 +96,24 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def filter_query(indexed_records)
     search_filters.each do |search_filter|
-      indexed_records = indexed_records.filter(
-        term: {
-            :"#{search_filter[:name]}" => search_filter[:search][:value]
-        }
-      ) if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
+      if (['inside_sales_executive','outside_sales_executive'].include?search_filter[:name])
+        if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
+          overseer = Overseer.where(id: search_filter[:search][:value].to_i).last
+          if overseer.present?
+            indexed_records = indexed_records.filter(
+                terms: {
+                    :"#{search_filter[:name]}" => overseer.self_and_descendant_ids
+                }
+            )
+          end
+        end
+      else
+        indexed_records = indexed_records.filter(
+          term: {
+              :"#{search_filter[:name]}" => search_filter[:search][:value]
+          }
+        ) if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
+      end
     end
 
     indexed_records
