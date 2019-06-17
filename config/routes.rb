@@ -144,6 +144,7 @@ Rails.application.routes.draw do
     resources :contacts do
       collection do
         get 'autocomplete'
+        get 'fetch_company_account'
       end
 
       member do
