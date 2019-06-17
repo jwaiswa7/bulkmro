@@ -6,7 +6,7 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   end
 
   def edit_mis_date?
-    record.persisted? && ['vijay.manjrekar@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com'].include?(overseer.email)
+    record.persisted? && ['vijay.manjrekar@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com', 'bhargav.trivedi@bulkmro.com'].include?(overseer.email)
   end
 
   def update_mis_date?
@@ -53,6 +53,6 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   end
 
   def show_pending_ap_invoice_queue?
-    index? && (admin? || accounts?)
+    index? && (admin? || accounts? || manager_or_sales?)
   end
 end

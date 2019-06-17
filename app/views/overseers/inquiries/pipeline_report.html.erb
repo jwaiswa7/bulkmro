@@ -1,4 +1,5 @@
 <% provide :container_fluid, true %>
+<% provide :can_be_directly_downloaded, true %>
 
 <div class="col-lg-12 mb-0">
   <div class="page-header mb-0">
@@ -14,7 +15,7 @@
     <thead>
     <tr>
       <th style="font-weight:bold;">Month</th>
-      <% @custom_statuses.invert.each do |index, status| %>
+      <% @pipeline_statuses.invert.each do |index, status| %>
         <th style="font-weight:bold; white-space:normal;"><%= status %></th>
       <% end %>
       <th style="font-weight:bold;">Grand Total</th>
@@ -26,17 +27,19 @@
     <% @indexed_pipeline_report.each do |month, record_bucket| %>
       <tr>
         <td style="text-align:left;"><%= format_month_without_date(month) %></td>
-        <% @custom_statuses.each do |index, status| %>
+        <% @pipeline_statuses.each do |index, status| %>
           <td>
             <strong>
               <% if params.present? && params['pipeline_report'].present? %>
-                <%= link_to(record_bucket['pipeline']['buckets'].map {|bucket| bucket['doc_count'] if bucket['key'] == status}.compact.first || 0,
-                                filtered_path(overseers_inquiries_path, [
-                                    filter_by_value('Inside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
-                                    filter_by_value('Outside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
-                                    filter_by_value('Status', index, status),
-                                    filter_by_monthrange('Date', month.to_date)
-                                ]), target: '_blank') %>
+                <%= link_to(record_bucket['pipeline']['buckets'].map {|bucket| bucket['doc_count'].to_i if bucket['key'] == status}.compact.first || 0,
+                            filtered_path(overseers_inquiries_path, [
+                                filter_by_value('Inside+Sales', params['pipeline_report']['procurement_specialist'], params['pipeline_report']['procurement_specialist']),
+                                filter_by_value('Outside+Sales', params['pipeline_report']['outside_sales_owner'], params['pipeline_report']['outside_sales_owner']),
+                                filter_by_value('Company', Company.where(id: params['pipeline_report']['company']).last.to_s, params['pipeline_report']['company']),
+                                filter_by_value('Account', Account.where(id: params['pipeline_report']['company_alias']).last.to_s, params['pipeline_report']['company_alias']),
+                                filter_by_value('Status', index, status),
+                                filter_by_monthrange('Date', month.to_date)
+                            ]), target: '_blank') %>
               <% else %>
                 <%= link_to(record_bucket['pipeline']['buckets'].map {|bucket| bucket['doc_count'] if bucket['key'] == status}.compact.first || 0,
                             filtered_path(overseers_inquiries_path, [
@@ -45,7 +48,7 @@
                             ]), target: '_blank') %>
               <% end %>
             </strong><br>
-            <%= format_currency(record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true) %>
+            <%= format_currency(record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'].to_i if bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true) %>
           </td>
         <% end %>
         <td>
@@ -61,29 +64,31 @@
     <% end %>
     <tr style="font-weight:bold;">
       <td>Total Summary</td>
-      <% @custom_statuses.each do |index, status| %>
+      <% @pipeline_statuses.each do |index, status| %>
         <td>
           <% if params.present? && params['pipeline_report'].present? %>
-            <%= link_to(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count'] if summary_bucket['key'] == status}.compact.first || 0,
+            <%= link_to(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count'].to_i if summary_bucket['key'] == status}.compact.first || 0,
                         filtered_path(overseers_inquiries_path, [
-                            filter_by_value('Inside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
-                            filter_by_value('Outside+Sales', params['pipeline_report']['sales_executive'], params['pipeline_report']['sales_executive']),
+                            filter_by_value('Inside+Sales', params['pipeline_report']['procurement_specialist'], params['pipeline_report']['procurement_specialist']),
+                            filter_by_value('Outside+Sales', params['pipeline_report']['outside_sales_owner'], params['pipeline_report']['outside_sales_owner']),
                             filter_by_value('Status', index, status),
+                            filter_by_value('Company', Company.where(id: params['pipeline_report']['company']).last.to_s, params['pipeline_report']['company']),
+                            filter_by_value('Account', Account.where(id: params['pipeline_report']['company_alias']).last.to_s, params['pipeline_report']['company_alias']),
                             filter_by_date_range('Date', params['pipeline_report']['date_range'])
                         ]), target: '_blank') %>
           <% else %>
-            <%= link_to(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count'] if summary_bucket['key'] == status}.compact.first || 0,
-                filtered_path(overseers_inquiries_path, [
-                    filter_by_value('Status', index, status),
-                ]), target: '_blank') %>
+            <%= link_to(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count'].to_i if summary_bucket['key'] == status}.compact.first || 0,
+                        filtered_path(overseers_inquiries_path, [
+                            filter_by_value('Status', index, status),
+                        ]), target: '_blank') %>
           <% end %>
           <br>
-          <%= format_currency(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['statuswise_inquiry_summary']['value'] if summary_bucket['key'] == status}.compact.first || 0) %>
+          <%= format_currency(@indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['statuswise_inquiry_summary']['value'].to_i if summary_bucket['key'] == status}.compact.first || 0, precision: 0, show_symbol: true) %>
         </td>
       <% end %>
       <td>
-        <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count']}.sum %><br>
-        <%= format_currency(@summary_total['value'], precision: 0, show_symbol: true) %>
+        <%= @indexed_summary_row['buckets'].map {|summary_bucket| summary_bucket['doc_count'].to_i}.sum %><br>
+        <%= format_currency(@summary_total['value'].to_i, precision: 0, show_symbol: true) %>
       </td>
       <td>
         <%= percentage((((@indexed_summary_row['buckets'].map {|bucket| bucket['statuswise_inquiry_summary']['value'] if bucket['key'] == 18}.compact.first || 0) / @summary_total['value']) * 100).round(2)) %>

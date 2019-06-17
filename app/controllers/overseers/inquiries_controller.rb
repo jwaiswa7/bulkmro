@@ -25,19 +25,26 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize :inquiry
 
     respond_to do |format|
-      format.html {
-        if params['kra_report'].present?
-          @date_range = params['kra_report']['date_range']
-          @category = params['kra_report']['category']
-        end
-      }
+      if params['kra_report'].present?
+        @date_range = params['kra_report']['date_range']
+        @category = params['kra_report']['category']
+      end
+      format.html {}
       format.json do
         service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
         service.call
 
         if params['kra_report'].present?
-          @date_range = params['kra_report']['date_range']
-          @category = params['kra_report']['category']
+          if @category.include? 'by_sales_order'
+            @indexed_kra_varient_reports = {}
+
+            varient_service = Services::Overseers::Finders::KraReportVarients.new(params, current_overseer)
+            varient_service.call
+            indexed_kra_varient_reports = varient_service.indexed_records.aggregations['kra_varient_over_month']['buckets']['custom-range']['sales_orders']['buckets']
+            indexed_kra_varient_reports.each do |record|
+              @indexed_kra_varient_reports[record['key']] = record
+            end
+          end
         end
 
         indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
@@ -364,12 +371,30 @@ class Overseers::InquiriesController < Overseers::BaseController
         service.call
 
         @statuses = Inquiry.statuses
-        @custom_statuses = Inquiry.pipeline_statuses
+        @pipeline_statuses = Inquiry.pipeline_statuses
         @indexed_pipeline_report = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['inquiries_over_time']['buckets']
         @indexed_summary_row = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row']
         @summary_total = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['summary_row_total']
       }
     end
+  end
+
+  def export_pipeline_report
+    authorize :inquiry
+    service = Services::Overseers::Finders::PipelineReports.new(params, current_overseer)
+    service.call
+
+    indexed_pipeline_report = service.indexed_records.aggregations['pipeline_filter']['buckets']['custom-range']['inquiries_over_time']['buckets']
+    if params['pipeline_report'].present?
+      date_range = params['pipeline_report']['date_range']
+    else
+      date_range = 'Overall'
+    end
+
+    export_service = Services::Overseers::Exporters::PipelineReportsExporter.new([], current_overseer, indexed_pipeline_report, date_range)
+    export_service.call
+
+    redirect_to url_for(Export.pipeline_report.not_filtered.last.report)
   end
 
   def bulk_update
@@ -401,39 +426,66 @@ class Overseers::InquiriesController < Overseers::BaseController
     inquiries = []
 
     indexed_records.each do |record|
-      hash = {}
-      hash['text'] = record.attributes['inquiry_number_autocomplete'] if record.attributes['inquiry_number_autocomplete'].present?
-      hash['link'] = overseers_inquiry_path(record.attributes['id']) if record.attributes['inquiry_number_autocomplete'].present?
-      (inquiries << hash) if !hash.empty?
-
-      hash = {}
-      hash['text'] = ['Relationship Map:', record.attributes['inquiry_number_string']].join(' ') if record.attributes['inquiry_number_autocomplete'].present?
-      hash['link'] =  relationship_map_overseers_inquiry_path(record.attributes['id']) if record.attributes['inquiry_number_autocomplete'].present?
-      (inquiries << hash) if !hash.empty?
-
-      hash = {}
-      hash['text'] = record.attributes['final_sales_quote']['inquiry_order_autocomplete'] if record.attributes['final_sales_quote'].present?
-      hash['link'] =  overseers_inquiry_sales_quotes_path(record.attributes['id']) if record.attributes['final_sales_quote'].present?
-      (inquiries << hash) if !hash.empty?
-
-      hash = {}
-      record.attributes['final_sales_orders'].each do |order|
-        hash['text'] = order['inquiry_order_autocomplete'] if order['inquiry_order_autocomplete'].present?
-        hash['link'] =  overseers_inquiry_sales_orders_path(record.attributes['id']) if order['inquiry_order_autocomplete'].present?
+      if params['prefix'].to_i != 0
+        hash = {}
+        hash['text'] = record.attributes['inquiry_number_autocomplete'] if record.attributes['inquiry_number_autocomplete'].present?
+        hash['link'] = overseers_inquiry_path(record.attributes['id']) if record.attributes['inquiry_number_autocomplete'].present?
         (inquiries << hash) if !hash.empty?
-      end if record.attributes['final_sales_orders'].present?
 
-      hash = {}
-      hash['text'] = record.attributes['company']['company_autocomplete'] if record.attributes['company'].present?
-      hash['link'] =  overseers_company_path(record.attributes['company']['id']) if record.attributes['company'].present?
-      (inquiries << hash) if !hash.empty?
-
-      hash = {}
-      record.attributes['products'].each do |order|
-        hash['text'] = order['product_autocomplete'] if order['product_autocomplete'].present?
-        hash['link'] =  overseers_product_path(order['id']) if order['product_autocomplete'].present?
+        hash = {}
+        hash['text'] = ['Relationship Map:', record.attributes['inquiry_number_string']].join(' ') if record.attributes['inquiry_number_autocomplete'].present?
+        hash['link'] =  relationship_map_overseers_inquiry_path(record.attributes['id']) if record.attributes['inquiry_number_autocomplete'].present?
         (inquiries << hash) if !hash.empty?
-      end if record.attributes['products'].present?
+
+        hash = {}
+        hash['text'] = record.attributes['final_sales_quote']['inquiry_order_autocomplete'] if record.attributes['final_sales_quote'].present?
+        hash['link'] =  overseers_inquiry_sales_quotes_path(record.attributes['id']) if record.attributes['final_sales_quote'].present?
+        (inquiries << hash) if !hash.empty?
+
+        hash = {}
+        record.attributes['final_sales_orders'].each do |order|
+          order_number = order['inquiry_order_autocomplete'].split('Sales Order:').last
+          if order_number.present?
+            hash['text'] = order['inquiry_order_autocomplete'] if order['inquiry_order_autocomplete'].present?
+            hash['link'] =  overseers_inquiry_sales_orders_path(record.attributes['id']) if order['inquiry_order_autocomplete'].present?
+          end
+          (inquiries << hash) if !hash.empty?
+        end if record.attributes['final_sales_orders'].present?
+
+        hash = {}
+        hash['text'] = record.attributes['company']['company_autocomplete'] if record.attributes['company'].present?
+        hash['link'] =  overseers_company_path(record.attributes['company']['id']) if record.attributes['company'].present?
+        (inquiries << hash) if !hash.empty?
+
+        hash = {}
+        hash['text'] = record.attributes['account']['account_autocomplete'] if record.attributes['account'].present?
+        hash['link'] =  overseers_account_path(record.attributes['account']['id']) if record.attributes['account'].present?
+        (inquiries << hash) if !hash.empty?
+
+        hash = {}
+        record.attributes['products'].each do |product|
+          hash['text'] = product['product_autocomplete'] if product['product_autocomplete'].present?
+          hash['link'] =  overseers_product_path(record.attributes['id']) if product['product_autocomplete'].present?
+          (inquiries << hash) if !hash.empty?
+        end if record.attributes['products'].present?
+      else
+        hash = {}
+        hash['text'] = record.attributes['company']['company_autocomplete'] if record.attributes['company'].present?
+        hash['link'] =  overseers_company_path(record.attributes['company']['id']) if record.attributes['company'].present?
+        (inquiries << hash) if !hash.empty?
+
+        hash = {}
+        hash['text'] = record.attributes['account']['account_autocomplete'] if record.attributes['account'].present?
+        hash['link'] =  overseers_account_path(record.attributes['account']['id']) if record.attributes['account'].present?
+        (inquiries << hash) if !hash.empty?
+
+        hash = {}
+        record.attributes['products'].each do |product|
+          hash['text'] = product['product_autocomplete'] if product['product_autocomplete'].present?
+          hash['link'] =  overseers_product_path(record.attributes['id']) if product['product_autocomplete'].present?
+          (inquiries << hash) if !hash.empty?
+        end if record.attributes['products'].present?
+      end
     end
 
     render json: {inquiries: inquiries.uniq}.to_json
@@ -472,6 +524,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         :customer_order_date,
         :valid_end_time,
         :quotation_followup_date,
+        :customer_po_received_date,
         :procurement_date,
         :expected_closing_date,
         :quote_category,

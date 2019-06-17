@@ -4,7 +4,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
     @model = Inquiry
     @export_name = 'inquiries'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'potential amount', 'total (Exc. Tax)', 'comments', 'reason']
+    @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'quote_date', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'potential amount', 'total (Exc. Tax)', 'comments', 'reason', 'customer_order_date', 'customer_po_number']
     @start_at = Date.new(2018, 04, 01)
   end
 
@@ -26,6 +26,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
         committed_customer_date: (record.customer_committed_date.present? ? record.customer_committed_date.to_date.to_s : nil),
         updated_at: record.updated_at.to_date.to_s,
         quote_type: record.quote_category,
+        quote_date: record.quotation_date.present? ? record.quotation_date : '-',
         status: record.status,
         opportunity_type: record.opportunity_type,
         inside_sales_owner: record.inside_sales_owner.try(:full_name),
@@ -40,7 +41,9 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
         potential_amount: record.potential_amount,
         total: record.final_sales_quote.try(:calculated_total),
         comments: record.comments.pluck(:message).join(','),
-        reason: ''
+        reason: '',
+        customer_order_date: record.customer_order_date,
+        customer_po_number: record.customer_po_number
                 )
     end
     filtered = @ids.present?

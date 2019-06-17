@@ -14,7 +14,7 @@ class SalesOrderRow < ApplicationRecord
   has_one :product, through: :inquiry_product
   has_many :po_request_rows
 
-  delegate :unit_cost_price_with_unit_freight_cost, :unit_selling_price, :converted_unit_selling_price, :margin_percentage, :unit_freight_cost, :freight_cost_subtotal, :converted_unit_cost_price_with_unit_freight_cost, :converted_unit_selling_price, :converted_margin_percentage, :converted_unit_freight_cost, :converted_freight_cost_subtotal, to: :sales_quote_row, allow_nil: true
+  delegate :unit_cost_price_with_unit_freight_cost, :unit_selling_price, :converted_unit_selling_price, :margin_percentage, :unit_freight_cost, :freight_cost_subtotal, :converted_unit_cost_price_with_unit_freight_cost, :converted_unit_selling_price, :converted_margin_percentage, :converted_unit_freight_cost, :converted_freight_cost_subtotal, :tax_type, to: :sales_quote_row, allow_nil: true
   delegate :sr_no, to: :inquiry_product, allow_nil: true
   delegate :taxation, to: :sales_quote_row
   delegate :is_service, to: :sales_quote_row
@@ -22,6 +22,7 @@ class SalesOrderRow < ApplicationRecord
   delegate :remote_uid, to: :sales_quote_row
   delegate :best_tax_code, to: :sales_quote_row, allow_nil: true
   delegate :best_tax_rate, to: :sales_quote_row, allow_nil: true
+  delegate :tax_type, to: :sales_quote_row, allow_nil: true
   attr_accessor :tax_percentage
 
   validates_presence_of :quantity

@@ -74,6 +74,8 @@ import companyBanks from "./companyBanks/init"
 // Dashboard
 import dashboard from "./dashboard/init"
 
+import logisticsScorecards from "./logisticsScorecards/init";
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -102,8 +104,9 @@ let loader = {
     taxCodes: taxCodes,
     imageReaders: imageReaders,
     companyBanks: companyBanks,
-    arInvoiceRequests: arInvoiceRequests,
     dashboard: dashboard,
+    logisticsScorecards: logisticsScorecards,
+    arInvoiceRequests: arInvoiceRequests,
     packingSlips:packingSlips
 };
 

@@ -296,6 +296,7 @@
             <%= nav_dropdown_item 'Pipeline Report', pipeline_report_overseers_inquiries_path, policy(:inquiry).show? %>
             <%= nav_dropdown_item 'TAT Report', tat_report_overseers_inquiries_path, policy(:inquiry).tat_report? %>
             <%= nav_dropdown_item 'Customer Order Status Report', customer_order_status_report_overseers_sales_orders_path, policy(:sales_order).customer_order_status_report? %>
+            <%= nav_dropdown_item 'Logistics Scorecard', overseers_logistics_scorecards_path, policy(:logistics_scorecard).index? %>
           </div>
         </li>
       <% end %>
@@ -341,7 +342,7 @@
   </div>
   <!-- Navigation Bar -->
   <img src="<%= image_path('new-feature.png') %>" class="mr-1" height="30"/>
-  <input id="global-search" class="global-search" placeholder="Search Inquiry, Company, Product" data-toggle="tooltip" title="Use this input search box for global level Inquiry, Company & Product search ">
+  <input id="global-search" class="global-search" placeholder="Search Inquiry, Account, Company, Product" data-toggle="tooltip" title="Use this input search box for global level Inquiry, Account, Company & Product search ">
 
   <% if current_overseer.cannot_send_emails? %>
     <span class="badge badge-danger text-uppercase p-1 mr-2 ml-2 d-none d-md-block" data-toggle="tooltip" title="Set your Google Apps SMTP password"><strong>Emails Disallowed</strong></span>

@@ -17,10 +17,17 @@ class Services::Overseers::SalesInvoices::Zipped < Services::Shared::BaseService
 
     Zip::File.open(invoice_zip, Zip::File::CREATE) do |zip_file|
       files.each do |file|
-        temp_invoice_file = Tempfile.new
-        temp_invoice_file.puts(File.open(file[:path]))
-        temp_invoice_file.close
-
+        unless File.exist?(file[:path])
+          file_type = file[:name].split('_')[0]
+          if file_type == 'triplicate'
+            locals_values = locals.merge(triplicate: true)
+          elsif file_type == 'duplicate'
+            locals_values = locals.merge(duplicate: true)
+          elsif file_type == 'original'
+            locals_values = locals
+          end
+          file = { name: "#{file_type}_#{record.filename}.pdf", path: RenderPdfToFile.for(record, locals_values) }
+        end
         zip_file.add((file[:name]), File.join(Rails.root.join('tmp'), File.basename(file[:path])))
       end
     end
