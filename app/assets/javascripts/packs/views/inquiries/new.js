@@ -1,7 +1,6 @@
 import select2s from "../../components/select2s";
 
 const newAction = () => {
-
     $('form').on('change', 'select[name*=shipping_company_id]', function (e) {
         let reset = true;
         onShippingCompanyChange(this, reset);
@@ -41,11 +40,9 @@ let onShippingCompanyChange = (container, reset) => {
 
 let onBillingAddressChange = function onBillingAddressChange(container) {
     let optionSelected = $("option:selected", container);
-    let url = new URL(window.location.href)
-    let company_id = url.searchParams.get('company_id')
-    if (optionSelected.exists() && optionSelected.val() !== '' && company_id != '') {
+    if (optionSelected.exists() && optionSelected.val() !== '') {
         $.getJSON({
-            url: Routes.is_sez_params_overseers_company_addresses_path(company_id),
+            url: Routes.is_sez_params_overseers_addresses_path(),
             data: {
                 address_id: optionSelected.val()
             },
@@ -58,6 +55,7 @@ let onBillingAddressChange = function onBillingAddressChange(container) {
 
 let onCompanyChange = (container, reset) => {
     let optionSelected = $("option:selected", container);
+
     if (optionSelected.exists() && optionSelected.val() !== '') {
         $.getJSON
         (

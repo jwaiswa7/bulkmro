@@ -178,6 +178,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'warehouse_addresses'
+        get 'is_sez_params'
       end
     end
 
@@ -537,7 +538,6 @@ Rails.application.routes.draw do
         resources :addresses do
           collection do
             get 'autocomplete'
-            get 'is_sez_params'
           end
         end
 
