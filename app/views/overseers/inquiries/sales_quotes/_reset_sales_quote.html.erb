@@ -1,0 +1,57 @@
+<div class="modal fade" id="reset-sales-quote-by-manager">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Reset Sales Quote</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <% if @sales_quote.sales_orders.empty? || (!@sales_quote.sales_orders.empty? && (@sales_quote.sales_orders.last.status == "Approved" || @sales_quote.sales_orders.last.status == "Rejected")) %>
+            <%= simple_form_for([:overseers, @inquiry], :url => sales_quote_reset_by_manager_overseers_inquiry_sales_quote_path(@inquiry, @sales_quote), :html => {:class => 'needs-validation p-3', :id => "reset-sales-quote-form", :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+              <div class="card mb-2">
+                <div class="card-body">
+                  <h6 class="text-uppercase text-black-50 mb-2">Condition To Reset Quote</h6>
+                  <!--<table class="table w-100 wrap-whitespace">
+                    <tbody>
+                    <tr>
+                      <th class="text-titlecase text-left"> Use this button if you want to revise  and quote which is sync with SAP.</th>
+                    </tr>
+                    <tr>
+                      <th class="text-uppercase text-left"> Make sure that there is no SO in pending state.</th>
+                    </tr>
+                    </tbody>
+                  </table>-->
+                  <ul class="list-group text-info mb-3">
+                    <li class="list-group-item"><i class="fas fa-info mr-2"></i>Make sure that there is no SO in pending state.</li>
+                    <li class="list-group-item"><i class="fas fa-info mr-2"></i>To unlock <strong>Bill To</strong>  and <strong> Ship To</strong> but before that make sure SO against this Quote should in Rejected or Approved State. </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
+              <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |sales_quote| %>
+                <%= sales_quote.hidden_field :created_by_id %>
+                <%= sales_quote.hidden_field :inquiry_id, :value => @inquiry.id %>
+                <%= sales_quote.hidden_field 'sales_quote_id', :value => @sales_quote.id %>
+
+                <%= sales_quote.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''}, required: true %>
+              <% end %>
+
+              <%= button_tag(type: "submit", name: "update_sent_at_field", class: "btn btn-success btn-block confirm-cancel manager-sales-quote-reset") do %>
+                <i class="far fa-check mr-1"></i> Reset
+              <% end %>
+            <% end %>
+          <% else %>
+            <div>
+              <ul class="list-group text-info mb-3">
+                <li class="list-group-item"><i class="fas fa-info mr-2"></i>Please make sure there is no order in "Requested", "SAP Approval Pending" status for this inquiry. All the orders should be either in "Approved" or "Rejected" status to reset quote.</li>
+              </ul>
+            </div>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
