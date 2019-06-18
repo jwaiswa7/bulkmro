@@ -1,12 +1,10 @@
 class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseService
 
-  @not_applicable_resource_models = ['acl_resource', 'acl_role', 'activity', 'activity_overseer', 'address_state', 'application', 'application_record', 'attachment', 'average_cache', 'bank', 'bible_sales_order', 'brand', 'brand_supplier', 'callback_request', 'cart', 'cart_item', 'category', 'category_supplier', 'chat_message', 'company_bank', 'company_contact', 'company_creation_request', 'company_rating', 'company_review', 'contact', 'contact_creation_request', 'currency', 'currency_rate', 'customer_order_approval', 'customer_order_rejection', 'customer_order_row', 'customer_product_import', 'customer_product_import_row', 'customer_product_tag', 'dashboard', 'doc', 'document_creation', 'email_message', 'export', 'extensions', 'freight_quote_comment', 'freight_request_comment', 'ifsc_code', 'image_reader', 'industry', 'inquiry_comment', 'inquiry_currency', 'inquiry_import', 'inquiry_import_row', 'inquiry_mapping_tat', 'inquiry_product', 'inquiry_product_supplier', 'inquiry_status_record', 'invoice_request', 'invoice_request_comment', 'inward_dispatch', 'inward_dispatch_comment', 'inward_dispatch_row', 'kit_product_row', 'lead_time_option', 'measurement_unit', 'mpr_row', 'notification', 'overall_average', 'payment_collection_emails', 'payment_option', 'payment_request', 'payment_request_comment', 'payment_request_transaction', 'po_comment', 'pod_row', 'po_request_comment', 'po_request_row', 'product_approval', 'product_comment', 'product_rejection', 'product_supplier', 'profile', 'purchase_order_row', 'rate', 'rating_cache', 'report', 'sales_invoice_row', 'sales_order_approval', 'sales_order_comment', 'sales_order_confirmation', 'sales_order_rejection', 'sales_order_row', 'sales_purchase_order', 'sales_quote', 'sales_quote_row', 'sales_receipt', 'sales_receipt_row', 'sales_shipment', 'sales_shipment_comment', 'sales_shipment_package', 'sales_shipment_row', 'sprint_log', 'tag', 'target', 'target_period', 'tax_code']
-
   @default_resource_list = []
 
   # 1. Create acl resources for all models with default actions
   def create_acl_resource_for_all_models
-    default_actions = ['index', 'new', 'edit', 'create', 'update', 'destroy', 'show']
+    default_actions = ['index', 'new', 'edit', 'create', 'update', 'destroy', 'show', 'autocomplete']
     overseer = Overseer.find(153)
     Dir.foreach("#{Rails.root}/app/models") do |model_path|
       model_name = File.basename(model_path, ".rb")
@@ -88,6 +86,23 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_role.role_resources = resources.uniq.to_json
     acl_role.save
 
+
+    #create default role
+    create_default_role
+
+    #Add autocomplete action in all roles
+    autocomplete_resources = AclResource.where(:resource_action_name => 'autocomplete').pluck(:id)
+
+    AclRole.all.each do |acl_role|
+      role_resources = ActiveSupport::JSON.decode(acl_role.role_resources)
+      autocomplete_resources_ids = []
+      autocomplete_resources.map {|x| autocomplete_resources_ids << x.to_s}
+      role_resources = role_resources + autocomplete_resources_ids
+      role_resources = role_resources.map {|x| x.to_s}
+      acl_role.role_resources = role_resources.uniq.to_json
+      acl_role.save
+    end
+
   end
 
   #4 Set default resources to all roles
@@ -158,7 +173,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     Dir.foreach("#{Rails.root}/app/models") do |model_path|
       model_name = File.basename(model_path, ".rb")
       if model_name.present? && model_name != '.' && model_name != '..'
-        resource_ids << AclResource.where('resource_model_name = ? and resource_action_name in (?, ?)', model_name, 'index', 'show').pluck(:id)
+        resource_ids << AclResource.where('resource_model_name = ? and resource_action_name in (?, ?, ?)', model_name, 'index', 'show', 'autocomplete').pluck(:id)
       end
     end
 
