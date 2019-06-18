@@ -167,8 +167,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         bible_order_tax_total = x.get_column('Tax Amount').to_f
         bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
 
-        next if bible_order_row_total.to_f.zero?
-        # || x.get_column('Inquiry Number').to_i != 7407
+        next if bible_order_row_total.to_f.zero? || x.get_column('Inquiry Number').to_i != 25329
 
         if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
           if order_number == 'Not Booked'
@@ -746,25 +745,25 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
       model.joins(:company).where(companies: {id: 1847}).order(name: :asc).each do |order|
         # if order.inquiry_currency.currency.id == 2 && order.calculated_total < 75000
-          order.rows.each do |record|
-            sales_order = record.sales_order
-            order_date = sales_order.inquiry.customer_order_date.strftime('%F')
-            order_id = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.online_order_number : ''
-            customer_po_number = sales_order.inquiry.customer_po_number
-            part_number = record.product.sku
-            account = sales_order.inquiry.company.name
+        order.rows.each do |record|
+          sales_order = record.sales_order
+          order_date = sales_order.inquiry.customer_order_date.strftime('%F')
+          order_id = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.online_order_number : ''
+          customer_po_number = sales_order.inquiry.customer_po_number
+          part_number = record.product.sku
+          account = sales_order.inquiry.company.name
 
-            line_item_quantity = record.quantity
-            line_item_net_total = record.total_selling_price.to_s
-            sap_status = sales_order.remote_status
-            user_email = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.contact.email : 'sivakumar.ramu@flex.com'
-            shipping_address = sales_order.inquiry.shipping_address
-            currency = sales_order.inquiry.inquiry_currency.currency.name
-            category = record.product.category.name
-            part_number_description = record.product.name
+          line_item_quantity = record.quantity
+          line_item_net_total = record.total_selling_price.to_s
+          sap_status = sales_order.remote_status
+          user_email = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.contact.email : 'sivakumar.ramu@flex.com'
+          shipping_address = sales_order.inquiry.shipping_address
+          currency = sales_order.inquiry.inquiry_currency.currency.name
+          category = record.product.category.name
+          part_number_description = record.product.name
 
-            writer << [order_date, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
-          end
+          writer << [order_date, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
+        end
         # elsif order.inquiry_currency.currency.id != 2
         #   fc.push(order.order_number)
         # end
@@ -1118,14 +1117,16 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     kit = ['BM9P9A1-10212364', 'BM00043-10300070', 'BM9R6D3-10610467']
     except_vat_cst = ['BM9E4Z8-2000956', 'BM1A4X2-2001311', 'BM9G1U8-2001775', 'BM9L6D8-10210328', 'BM9L6D9-10210328', 'BM9Q5P6-10210580', 'BM9T4N8-10210580', 'BM9X7E1-10210580', 'BM9S5M2-10210696', 'BM9V3M1-10210696', 'BM9P7B6-10210736', 'BM00008-10210780', 'BM9P8D8-10210780', 'BM9Y8U9-10210780', 'BM9Q1T8-10211030', 'BM0O7G3-10910112', 'BM9M5D3-11410018', 'BM9M5D3-11410025', 'BM9K1B2-99999036', 'BM9K1B4-99999036', 'BM9K1B4-210200096', 'BM0C8Y9-Order2', 'BM0C9M9-Order2']
 
-    selected = ['BM9E4Z8-2000956', 'BM9Q5P6-10210580', 'BM9T4N8-10210580', 'BM9X7E1-10210580']
+    selected = ['10210780']
+    # 10210559
+    #10210780
 
     service.loop(nil) do |x|
       order_number = x.get_column('So #')
       product_sku = x.get_column('Bm #').to_s.upcase
       current_row = product_sku + '-' + order_number
 
-      if selected.include?(current_row)
+      if selected.include?(order_number)
         if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
           if order_number == 'Not Booked'
             inquiry_orders = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number')).sales_orders
@@ -1149,12 +1150,13 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           # if !order_being_processed.include?(sales_order.order_number)
           #   if sales_order.inquiry.final_sales_quote == sales_order.sales_quote
           #     overseer = Overseer.find_by_first_name(x.get_column('Inside Sales Name').split(' ')[0])
+          #     binding.pry
           #     revised_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(sales_order.sales_quote, overseer).call
           #     revised_quote.save(validate: false)
           #     revised_quote.update_attributes(created_at: DateTime.parse(x.get_column('Client Order Date')).strftime('%Y-%m-%d %H:%M:%S'), sent_at: DateTime.parse(x.get_column('Client Order Date')).strftime('%Y-%m-%d %H:%M:%S'))
           #     binding.pry
           #
-          #     extra_rows = revised_quote.rows.joins(:product).where.not(products: {sku: ['BM9L6D8', 'BM9L6D9']})
+          #     extra_rows = revised_quote.rows.joins(:product).where.not(products: {sku: ['BM9P8D8', 'BM9Y8U9', 'BM00008']})
           #     extra_rows.delete_all
           #
           #     sales_order.update_attributes(sales_quote_id: revised_quote.id)
@@ -1165,6 +1167,10 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           # else
           #   order_being_processed.push(sales_order.order_number)
           # end
+          #
+          # order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
+          # quote_row = sales_order.sales_quote.rows.joins(:product).where('products.sku = ?', product_sku).first
+          # order_row.update_attributes(sales_quote_row_id: quote_row.id)
 
           bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
           bible_order_tax_total = x.get_column('Tax Amount').to_f
@@ -1204,6 +1210,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             puts '****************************** QUOTE SAVED ****************************************'
             binding.pry
             order_row.quantity = x.get_column('Order Qty').to_f
+            sales_order.sent_at = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
             sales_order.mis_date = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
             order_row.created_at = x.get_column('Order Date') == '#N/A' ? sales_order.created_at : Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
             order_row.save(validate: false)
