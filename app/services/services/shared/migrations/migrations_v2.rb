@@ -168,6 +168,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
 
         next if bible_order_row_total.to_f.zero?
+        # || x.get_column('Inquiry Number').to_i != 7407
 
         if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
           if order_number == 'Not Booked'
@@ -298,7 +299,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       puts 'AE ENTRIES', ae_entries, ae_entries.count
     end
 
-    fetch_csv('live_mismatch.csv', csv_data)
+    fetch_csv('current_mismatch1.csv', csv_data)
   end
 
   def update_non_kit_non_ae_except_zero_tsp
@@ -744,7 +745,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     fc = []
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
       model.joins(:company).where(companies: {id: 1847}).order(name: :asc).each do |order|
-        if order.inquiry_currency.currency.id == 2 && order.calculated_total < 75000
+        # if order.inquiry_currency.currency.id == 2 && order.calculated_total < 75000
           order.rows.each do |record|
             sales_order = record.sales_order
             order_date = sales_order.inquiry.customer_order_date.strftime('%F')
@@ -764,14 +765,14 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
             writer << [order_date, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
           end
-        elsif order.inquiry_currency.currency.id != 2
-          fc.push(order.order_number)
-        end
+        # elsif order.inquiry_currency.currency.id != 2
+        #   fc.push(order.order_number)
+        # end
       end
-      puts 'FC', fc
+      # puts 'FC', fc
     end
 
-    fetch_csv('flex_export.csv', csv_data)
+    fetch_csv('flex_order_data_export.csv', csv_data)
   end
 
   def invoices_export
@@ -917,7 +918,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     puts 'NOT UPDATED CORRECTLY', not_updated, not_updated.count
   end
 
-  def fix_mis_date_formats
+  def fix_date_formats_in_orders
     # mis_dates
     SalesOrder.where('mis_date < ?', Date.new(2015, 01, 01)).each do |order|
       order.update_attributes(mis_date: Date.parse(Date.parse(order.mis_date.to_s).strftime('%y-%m-%d').to_s).strftime('%Y-%m-%d'))
@@ -940,11 +941,12 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   def check_statuses_of_credit_entries
     SalesOrder.where(is_credit_note_entry: true).each do |order|
       parent_order = SalesOrder.find(order.parent_id)
-      # puts '************STATUS**************', parent_order.status
-      # puts '************REMOTE STATUS**************', parent_order.remote_status
-      parent_order.status = 'CO'
-      # parent_order.remote_status = 'Short Close'
-      parent_order.save(validate: false)
+      puts '************STATUS**************', parent_order.status
+      puts '************REMOTE STATUS**************', parent_order.remote_status
+      # if parent_order.status != 'CO'
+      #   parent_order.status = 'CO'
+      #   parent_order.save(validate: false)
+      # end
     end
   end
 
@@ -1103,6 +1105,8 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     updated_orders_total_with_tax = 0
     bible_total_with_tax = 0
 
+    order_being_processed = []
+
     updated_orders_with_matching_total = []
     updated_orders_total = 0
     bible_total = 0
@@ -1114,14 +1118,14 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     kit = ['BM9P9A1-10212364', 'BM00043-10300070', 'BM9R6D3-10610467']
     except_vat_cst = ['BM9E4Z8-2000956', 'BM1A4X2-2001311', 'BM9G1U8-2001775', 'BM9L6D8-10210328', 'BM9L6D9-10210328', 'BM9Q5P6-10210580', 'BM9T4N8-10210580', 'BM9X7E1-10210580', 'BM9S5M2-10210696', 'BM9V3M1-10210696', 'BM9P7B6-10210736', 'BM00008-10210780', 'BM9P8D8-10210780', 'BM9Y8U9-10210780', 'BM9Q1T8-10211030', 'BM0O7G3-10910112', 'BM9M5D3-11410018', 'BM9M5D3-11410025', 'BM9K1B2-99999036', 'BM9K1B4-99999036', 'BM9K1B4-210200096', 'BM0C8Y9-Order2', 'BM0C9M9-Order2']
 
-    selected = ['10210328']
+    selected = ['BM9E4Z8-2000956', 'BM9Q5P6-10210580', 'BM9T4N8-10210580', 'BM9X7E1-10210580']
 
     service.loop(nil) do |x|
       order_number = x.get_column('So #')
       product_sku = x.get_column('Bm #').to_s.upcase
       current_row = product_sku + '-' + order_number
 
-      if selected.include?(order_number)
+      if selected.include?(current_row)
         if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
           if order_number == 'Not Booked'
             inquiry_orders = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number')).sales_orders
@@ -1142,15 +1146,30 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           puts '******************************** ITERATION *******************************', iteration
           iteration = iteration + 1
 
-          if sales_order.inquiry.final_sales_quote == sales_order.sales_quote
-            revised_quote = create_quote_revision(sales_order, product_sku)
-          end
+          # if !order_being_processed.include?(sales_order.order_number)
+          #   if sales_order.inquiry.final_sales_quote == sales_order.sales_quote
+          #     overseer = Overseer.find_by_first_name(x.get_column('Inside Sales Name').split(' ')[0])
+          #     revised_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(sales_order.sales_quote, overseer).call
+          #     revised_quote.save(validate: false)
+          #     revised_quote.update_attributes(created_at: DateTime.parse(x.get_column('Client Order Date')).strftime('%Y-%m-%d %H:%M:%S'), sent_at: DateTime.parse(x.get_column('Client Order Date')).strftime('%Y-%m-%d %H:%M:%S'))
+          #     binding.pry
+          #
+          #     extra_rows = revised_quote.rows.joins(:product).where.not(products: {sku: ['BM9L6D8', 'BM9L6D9']})
+          #     extra_rows.delete_all
+          #
+          #     sales_order.update_attributes(sales_quote_id: revised_quote.id)
+          #     order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
+          #     quote_row = revised_quote.rows.joins(:product).where('products.sku = ?', product_sku).first
+          #     order_row.update_attributes(sales_quote_row_id: quote_row.id)
+          #   end
+          # else
+          #   order_being_processed.push(sales_order.order_number)
+          # end
 
           bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
           bible_order_tax_total = x.get_column('Tax Amount').to_f
           bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
 
-          sales_order.update_attributes(sales_quote_id: revised_quote.id)
           if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
             order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
             quote_row = order_row.sales_quote_row
@@ -1167,13 +1186,14 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             if x.get_column('Tax Rate').present? && x.get_column('Tax Type').present? && x.get_column('Tax Type').scan(/^\d*(?:\.\d+)?/)[0].to_f != x.get_column('Tax Rate').split('%')[0].to_f
               tax_rate_difference.push(current_row)
             end
-
+            binding.pry
             quote_row.quantity = x.get_column('Order Qty').to_f
             quote_row.unit_selling_price = x.get_column('Unit Selling Price').to_f
             quote_row.converted_unit_selling_price = x.get_column('Unit Selling Price').to_f
             quote_row.margin_percentage = x.get_column('Margin (In %)').split('%')[0].to_d
             quote_row.tax_rate = tax_rate || nil
             quote_row.tax_type = x.get_column('Tax Type') if x.get_column('Tax Type').present? && (x.get_column('Tax Type').include?('VAT') || x.get_column('Tax Type').include?('CST') || x.get_column('Tax Type').include?('Service'))
+
             quote_row.legacy_applicable_tax_percentage = tax_rate_percentage.to_d || nil
             quote_row.inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('Unit cost price').to_f)
             # quote_row.created_at = Date.parse(Date.new(2019,04,01)).strftime('%Y-%m-%d')
@@ -1182,9 +1202,9 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             puts '****************************** QUOTE ROW SAVED ****************************************'
             quote_row.sales_quote.save(validate: false)
             puts '****************************** QUOTE SAVED ****************************************'
-
+            binding.pry
             order_row.quantity = x.get_column('Order Qty').to_f
-            sales_order.mis_date = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d') if x.get_column('Order Date') != '#N/A'
+            sales_order.mis_date = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
             order_row.created_at = x.get_column('Order Date') == '#N/A' ? sales_order.created_at : Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
             order_row.save(validate: false)
             puts '****************************** ORDER ROW SAVED ****************************************'
@@ -1244,7 +1264,11 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     old_sales_quote = sales_order.sales_quote
     revised_quote = old_sales_quote.deep_clone
 
+    overseer = Overseer.find_by_first_name()
+
     # overseer?
+    #
+    # call service and then delete rows?
     revised_quote.assign_attributes(overseer: overseer)
     revised_quote.assign_attributes(parent_id: old_sales_quote.id)
     revised_quote.assign_attributes(sent_at: nil) # check
