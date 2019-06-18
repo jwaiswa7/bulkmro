@@ -21,24 +21,24 @@ const index = () => {
                         $this.removeClass('disabled')
                     })
                     if(status == 'Cancel'){
-                        $('[name="ar_invoice[cancellation_reason]"]').unbind().bind('change', function(){
+                        $('[name="ar_invoice_request[cancellation_reason]"]').unbind().bind('change', function(){
                             let val = $(this).val()
                             if(val == 'Others'){
-                                $(".ar_invoice_other_cancellation_reason").removeClass('d-none')
-                                $(".ar_invoice_other_cancellation_reason").find('input').prop('required',true)
+                                $(".ar_invoice_request_other_cancellation_reason").removeClass('d-none')
+                                $(".ar_invoice_request_other_cancellation_reason").find('input').prop('required',true)
                             }
                             else{
-                                $(".ar_invoice_other_cancellation_reason").addClass('d-none')
-                                $(".ar_invoice_other_cancellation_reason").find('input').prop('required',false)
+                                $(".ar_invoice_request_other_cancellation_reason").addClass('d-none')
+                                $(".ar_invoice_request_other_cancellation_reason").find('input').prop('required',false)
                             }
                         })
                     }
                     else if( status == 'Reject'){
-                        $('[name="ar_invoice[rejection_reason]"]').unbind().bind('change', function(){
+                        $('[name="ar_invoice_request_request[rejection_reason]"]').unbind().bind('change', function(){
                             let val = $(this).val()
                             if(val == 'Rejected: Others'){
-                                $(".ar_invoice_other_rejection_reason").removeClass('d-none')
-                                $(".ar_invoice_other_rejection_reason").find('input').prop('required',true)
+                                $(".ar_invoice_request_other_rejection_reason").removeClass('d-none')
+                                $(".ar_invoice_request_other_rejection_reason").find('input').prop('required',true)
 
                             }
                             else{
