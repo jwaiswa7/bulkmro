@@ -199,8 +199,15 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def customer_order_status_report
     authorize :sales_order
     respond_to do |format|
-      format.html {}
+      format.html {
+        if params['customer_order_status_report'].present?
+          @category = params['customer_order_status_report']['category']
+        end
+      }
       format.json do
+        if params['customer_order_status_report'].present?
+          @category = params['customer_order_status_report']['category']
+        end
         service = Services::Overseers::Finders::CustomerOrderStatusReports.new(params, current_overseer, paginate: false)
         service.call
         indexed_sales_orders = service.indexed_records

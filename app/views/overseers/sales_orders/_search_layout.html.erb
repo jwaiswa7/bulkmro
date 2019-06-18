@@ -1,0 +1,34 @@
+<%= simple_form_for(:customer_order_status_report, :url => customer_order_status_report_overseers_sales_orders_path, :method => :get, :html => {:class => 'col-12 needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <div class="card mt-3">
+    <div class="card-body">
+      <div class="form-row">
+        <div class="col-12 col-md-4">
+          <%= f.input :procurement_specialist, as: :select, collection: Inquiry.procurement_specialists,
+                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement Specialist'}, required: false, include_blank: true,
+                      selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['procurement_specialist'].present? ? params['customer_order_status_report']['procurement_specialist'].to_i : '' %>
+        </div>
+        <div class="col-12 col-md-4">
+          <%= f.input :outside_sales_owner, as: :select, collection: Inquiry.outside_sales_owners,
+                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a Outside Sales Owner'}, required: false, include_blank: true,
+                      selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['outside_sales_owner'].present? ? params['customer_order_status_report']['outside_sales_owner'].to_i : '' %>
+        </div>
+        <div class="col-12 col-md-4">
+          <%= f.input :procurement_operations, as: :select, collection: Inquiry.procurement_operations,
+                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement_Opreations'}, required: false, include_blank: true,
+                      selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['procurement_operations'].present? ? params['customer_order_status_report']['procurement_operations'].to_i : '' %>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-3 text-center">
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block mt-3") do %>
+            <i class="fal fa-hand-point-down mr-2"></i>Fetch Report
+          <% end %>
+        </div>
+        <div class="col-3 text-center">
+          <a href="<%= customer_order_status_report_overseers_sales_orders_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 mt-3">
+            <i class="fal fa-redo mr-2"></i> Reset Report</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

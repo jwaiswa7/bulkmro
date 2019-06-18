@@ -62,7 +62,8 @@
             <%= @inquiry.bill_from.address.name.to_s %>
             <%= @inquiry.bill_from.address.to_compact_multiline_s %><br>
             <% if @inquiry.bill_from.address.phone.present? %>
-              <strong><em>Contact</em></strong>: <%= @inquiry.contact.full_name %> - <%= @inquiry.bill_from.address.phone %><br>
+              <strong><em>Contact</em></strong>: <%= @inquiry.contact.full_name %>
+              - <%= @inquiry.bill_from.address.phone %><br>
             <% end %>
             <% if @inquiry.bill_from.address.gst %>
               <strong><em>GST Number</em></strong>: <%= @inquiry.bill_from.address.gst %><br>
@@ -75,7 +76,8 @@
             <%= @inquiry.ship_from.address.name.to_s %><br>
             <%= @inquiry.ship_from.address.to_compact_multiline_s %><br>
             <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
-              <strong><em>Contact</em></strong>: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %><br>
+              <strong><em>Contact</em></strong>: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
+              <br>
             <% end %>
             <% if @inquiry.ship_from.address.gst %>
               <strong><em>GST Number</em></strong>: <%= @inquiry.ship_from.address.gst %><br>
@@ -92,7 +94,7 @@
           <% if @inquiry.contact.phone.present? %>
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
           <% end %>
-          <strong ><em>Email</em></strong>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+          <strong><em>Email</em></strong>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
           <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
@@ -292,7 +294,7 @@
       </div>
       <div class="col-6 col-md-1">
         Total Freight
-        <strong class="d-block"><%= format_currency(sales_order.sales_quote.calculated_freight_cost_total, symbol: sales_order.currency_sign) %></strong>
+        <strong class="d-block"><%= format_currency(sales_order.calculated_freight_cost_total, symbol: sales_order.currency_sign) %></strong>
       </div>
       <div class="col-6 col-md-2">
         Cost

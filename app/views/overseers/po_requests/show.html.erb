@@ -4,7 +4,7 @@
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
         PO Request for
-        Order <%= format_id(@po_request.sales_order.order_number) %>&nbsp;<%= status_badge(@po_request.status) %>
+        Order <%= @po_request.sales_order.present? ? format_id(@po_request.sales_order.order_number) : '-' %>&nbsp;<%= status_badge(@po_request.status) %>
       </h3>
       <div>
         <% if is_authorized(@po_request, 'edit') && @po_request.status != 'Cancelled' %>

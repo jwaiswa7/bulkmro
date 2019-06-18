@@ -96,7 +96,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :reports
+    # resources :reports
+    resources :reports do
+      member do
+        get 'export_report'
+      end
+    end
     resources :company_creation_requests do
       # member do
       #   post 'exchange_with_existing_company'
@@ -433,6 +438,7 @@ Rails.application.routes.draw do
         get 'bulk_update'
         get 'pipeline_report'
         get 'suggestion'
+        get 'export_pipeline_report'
       end
 
       scope module: 'inquiries' do
@@ -657,6 +663,11 @@ Rails.application.routes.draw do
     end
 
     resources :sales_receipts
+    resources :logistics_scorecards do
+      collection do
+        get 'add_delay_reason'
+      end
+    end
 
   end
 

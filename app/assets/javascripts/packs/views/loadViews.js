@@ -76,6 +76,8 @@ import overseers from "./overseers/init"
 //ACL
 import aclRoles from "./aclRoles/init"
 
+import logisticsScorecards from "./logisticsScorecards/init";
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -106,7 +108,8 @@ let loader = {
     companyBanks: companyBanks,
     dashboard: dashboard,
     overseers:overseers,
-    aclRoles:aclRoles
+    aclRoles:aclRoles,
+    logisticsScorecards: logisticsScorecards
 };
 
 // Imports

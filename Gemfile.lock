@@ -358,6 +358,7 @@ GEM
     parallel (1.17.0)
     parser (2.6.3.0)
       ast (~> 2.4.0)
+    percentage (1.2.0)
     pg (1.1.4)
     pg_search (2.1.7)
       activerecord (>= 4.2)
@@ -633,6 +634,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   paper_trail
   parser
+  percentage
   pg
   pg_search
   phony_rails
