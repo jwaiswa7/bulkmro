@@ -86,6 +86,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
           :street2,
           :telephone,
           :mobile,
+          :is_sez,
           :gst_proof,
           :cst_proof,
           :vat_proof,
@@ -96,7 +97,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
           :tan,
           :excise,
           :gst_type,
-        :company_id
-    )
-  end
+          :company_id
+      )
+    end
 end
