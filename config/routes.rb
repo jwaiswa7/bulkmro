@@ -179,6 +179,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'warehouse_addresses'
         get 'is_sez_params'
+        get 'get_gst_code'
       end
     end
 

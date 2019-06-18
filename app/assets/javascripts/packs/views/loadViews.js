@@ -75,6 +75,9 @@ import dashboard from "./dashboard/init"
 
 import logisticsScorecards from "./logisticsScorecards/init";
 
+// Addresses
+import addresses from "./addresses/init";
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -105,7 +108,8 @@ let loader = {
     imageReaders: imageReaders,
     companyBanks: companyBanks,
     dashboard: dashboard,
-    logisticsScorecards: logisticsScorecards
+    logisticsScorecards: logisticsScorecards,
+    addresses: addresses
 };
 
 // Imports
