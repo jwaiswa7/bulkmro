@@ -265,8 +265,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
 
-    # if @inquiry.save_and_sync
-    if @inquiry.save
+    if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call if @inquiry.inquiry_products.present?
       if @inquiry.status == 'Order Lost'
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :order_lost).call
