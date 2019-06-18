@@ -5,7 +5,7 @@ class SalesShipmentsIndex < BaseIndex
     field :id
 
     field :sales_order_id, value: -> (record) { record.sales_order.id if record.sales_order.present? }
-    field :sales_order_number, value: -> (record) { record.sales_order.order_number.to_i }, type: 'integer'
+    field :sales_order_number, value: -> (record) { record.sales_order.order_number.to_i }, type: 'long'
     field :sales_order_number_s, value: -> (record) { record.sales_order.order_number.to_s }, analyzer: 'substring'
     field :shipment_number, value: -> (record) { record.shipment_number.to_i }, type: 'integer'
     field :shipment_number_s, value: -> (record) { record.shipment_number.to_s }, analyzer: 'substring'
