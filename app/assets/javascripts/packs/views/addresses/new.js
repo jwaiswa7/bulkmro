@@ -15,8 +15,7 @@ const newAction = () => {
 
     })
 
-    $(document).ready(function() {
-        if ($('#address_gst').val() != ''){
+    if ($('#address_gst').val() != ''){
             var full_gst_code = $('#address_gst').val()
             console.log('full_gst_cd.length'+full_gst_code.length)
             var gst_cd1 = full_gst_code.substring(0, 2);
@@ -36,8 +35,7 @@ const newAction = () => {
             }else{
                 $('#gst_code_2,#gst_code_3,#gst_code_4,#gst_code_5').val('')
             }
-        }
-    })
+    }
 
 
     $('.gst-change').on('input', function() {
