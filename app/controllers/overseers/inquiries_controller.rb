@@ -141,12 +141,12 @@ class Overseers::InquiriesController < Overseers::BaseController
       service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
       service.call
       @indexed_tat_reports = service.indexed_records
-      status_avgs = @indexed_tat_reports.aggregations['tat_by_sales_owner']['buckets']['custom-range']['inquiry_mapping_tats']['buckets'].select { |avg| avg['key'] == @inside_sales_owner.to_i }
+      status_avgs = @indexed_tat_reports.aggregations['tat_by_sales_owner']['buckets']['custom-range']['inquiry_mapping_tats']['buckets'].select {|avg| avg['key'] == @inside_sales_owner.to_i}
       unless status_avgs.blank?
         @sales_owner_average_values = status_avgs[0].except('key', 'doc_count')
-        statuses = { 'new_inquiry': 0, 'acknowledgment_mail': 0, 'cross_reference': 0, 'preparing_quotation': 0, 'quotation_sent': 0, 'draft_so_appr_by_sales_manager': 0, 'so_reject_by_sales_manager': 0, 'so_draft_pending_acct_approval': 0, 'rejected_by_accounts': 0, 'hold_by_accounts': 0, 'order_won': 0, 'order_lost': 0, 'regret': 0 }
-        @status_average = statuses.map { |status, value| {status: status.to_s, value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / status_avgs.first['doc_count']).round(2) : 0 } }
-        format.html { render partial:  'sales_owner_status_average' }
+        statuses = {'new_inquiry': 0, 'acknowledgment_mail': 0, 'cross_reference': 0, 'preparing_quotation': 0, 'quotation_sent': 0, 'draft_so_appr_by_sales_manager': 0, 'so_reject_by_sales_manager': 0, 'so_draft_pending_acct_approval': 0, 'rejected_by_accounts': 0, 'hold_by_accounts': 0, 'order_won': 0, 'order_lost': 0, 'regret': 0}
+        @status_average = statuses.map {|status, value| {status: status.to_s, value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / status_avgs.first['doc_count']).round(2) : 0}}
+        format.html {render partial: 'sales_owner_status_average'}
       else
         format.html
       end
@@ -219,8 +219,25 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def new
-    @company = Company.find(params[:company_id])
-    @inquiry = @company.inquiries.build(overseer: current_overseer)
+    if Rails.cache.exist?(:inquiry)
+      @inquiry = Rails.cache.read(:inquiry)
+      Rails.cache.delete(:inquiry)
+    elsif params[:company_id].present? && !Rails.cache.exist?(:inquiry)
+      @company = Company.find(params[:company_id])
+      @inquiry = @company.inquiries.build(overseer: current_overseer)
+    elsif !params[:company_id].present? && !Rails.cache.exist?(:inquiry)
+      @inquiry = Inquiry.new
+    end
+
+    authorize @inquiry
+  end
+
+  def next_inquiry_step
+    @company = Company.find(params[:inquiry][:company_id])
+    # @inquiry = @company.inquiries.build(inquiry_params.merge(overseer: current_overseer))
+    @inquiry = @company.inquiries.build(inquiry_params)
+    Rails.cache.write(:inquiry, @inquiry, expires_in: 25.minutes)
+    redirect_to new_overseers_inquiry_path(company_id: @company.to_param)
     authorize @inquiry
   end
 
@@ -228,9 +245,14 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry = Inquiry.new(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
 
-    if @inquiry.save_and_sync
+    # if @inquiry.save_and_sync
+    if @inquiry.save
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :new_inquiry).call if @inquiry.persisted?
-      redirect_to edit_overseers_inquiry_path(@inquiry, notice: flash_message(@inquiry, action_name))
+      if !current_overseer.cannot_send_emails?
+        redirect_to new_overseers_inquiry_email_message_path(@inquiry)
+      else
+        redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      end
     else
       render 'new'
     end
@@ -244,7 +266,8 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
 
-    if @inquiry.save_and_sync
+    # if @inquiry.save_and_sync
+    if @inquiry.save
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call if @inquiry.inquiry_products.present?
       if @inquiry.status == 'Order Lost'
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :order_lost).call
@@ -410,10 +433,10 @@ class Overseers::InquiriesController < Overseers::BaseController
         inquiries.update_all(update_query)
         redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
       else
-        render json: { error: 'Please select any one field to update' }, status: 500
+        render json: {error: 'Please select any one field to update'}, status: 500
       end
     else
-      render json: { error: 'No such inquiries present' }, status: 500
+      render json: {error: 'No such inquiries present'}, status: 500
     end
   end
 
@@ -434,12 +457,12 @@ class Overseers::InquiriesController < Overseers::BaseController
 
         hash = {}
         hash['text'] = ['Relationship Map:', record.attributes['inquiry_number_string']].join(' ') if record.attributes['inquiry_number_autocomplete'].present?
-        hash['link'] =  relationship_map_overseers_inquiry_path(record.attributes['id']) if record.attributes['inquiry_number_autocomplete'].present?
+        hash['link'] = relationship_map_overseers_inquiry_path(record.attributes['id']) if record.attributes['inquiry_number_autocomplete'].present?
         (inquiries << hash) if !hash.empty?
 
         hash = {}
         hash['text'] = record.attributes['final_sales_quote']['inquiry_order_autocomplete'] if record.attributes['final_sales_quote'].present?
-        hash['link'] =  overseers_inquiry_sales_quotes_path(record.attributes['id']) if record.attributes['final_sales_quote'].present?
+        hash['link'] = overseers_inquiry_sales_quotes_path(record.attributes['id']) if record.attributes['final_sales_quote'].present?
         (inquiries << hash) if !hash.empty?
 
         hash = {}
@@ -447,42 +470,42 @@ class Overseers::InquiriesController < Overseers::BaseController
           order_number = order['inquiry_order_autocomplete'].split('Sales Order:').last
           if order_number.present?
             hash['text'] = order['inquiry_order_autocomplete'] if order['inquiry_order_autocomplete'].present?
-            hash['link'] =  overseers_inquiry_sales_orders_path(record.attributes['id']) if order['inquiry_order_autocomplete'].present?
+            hash['link'] = overseers_inquiry_sales_orders_path(record.attributes['id']) if order['inquiry_order_autocomplete'].present?
           end
           (inquiries << hash) if !hash.empty?
         end if record.attributes['final_sales_orders'].present?
 
         hash = {}
         hash['text'] = record.attributes['company']['company_autocomplete'] if record.attributes['company'].present?
-        hash['link'] =  overseers_company_path(record.attributes['company']['id']) if record.attributes['company'].present?
+        hash['link'] = overseers_company_path(record.attributes['company']['id']) if record.attributes['company'].present?
         (inquiries << hash) if !hash.empty?
 
         hash = {}
         hash['text'] = record.attributes['account']['account_autocomplete'] if record.attributes['account'].present?
-        hash['link'] =  overseers_account_path(record.attributes['account']['id']) if record.attributes['account'].present?
+        hash['link'] = overseers_account_path(record.attributes['account']['id']) if record.attributes['account'].present?
         (inquiries << hash) if !hash.empty?
 
         hash = {}
         record.attributes['products'].each do |product|
           hash['text'] = product['product_autocomplete'] if product['product_autocomplete'].present?
-          hash['link'] =  overseers_product_path(record.attributes['id']) if product['product_autocomplete'].present?
+          hash['link'] = overseers_product_path(record.attributes['id']) if product['product_autocomplete'].present?
           (inquiries << hash) if !hash.empty?
         end if record.attributes['products'].present?
       else
         hash = {}
         hash['text'] = record.attributes['company']['company_autocomplete'] if record.attributes['company'].present?
-        hash['link'] =  overseers_company_path(record.attributes['company']['id']) if record.attributes['company'].present?
+        hash['link'] = overseers_company_path(record.attributes['company']['id']) if record.attributes['company'].present?
         (inquiries << hash) if !hash.empty?
 
         hash = {}
         hash['text'] = record.attributes['account']['account_autocomplete'] if record.attributes['account'].present?
-        hash['link'] =  overseers_account_path(record.attributes['account']['id']) if record.attributes['account'].present?
+        hash['link'] = overseers_account_path(record.attributes['account']['id']) if record.attributes['account'].present?
         (inquiries << hash) if !hash.empty?
 
         hash = {}
         record.attributes['products'].each do |product|
           hash['text'] = product['product_autocomplete'] if product['product_autocomplete'].present?
-          hash['link'] =  overseers_product_path(record.attributes['id']) if product['product_autocomplete'].present?
+          hash['link'] = overseers_product_path(record.attributes['id']) if product['product_autocomplete'].present?
           (inquiries << hash) if !hash.empty?
         end if record.attributes['products'].present?
       end
@@ -500,53 +523,53 @@ class Overseers::InquiriesController < Overseers::BaseController
     def inquiry_params
       params.require(:inquiry).permit(
         :project_uid,
-        :company_id,
-        :contact_id,
-        :industry_id,
-        :inside_sales_owner_id,
-        :outside_sales_owner_id,
-        :sales_manager_id,
-        :procurement_operations_id,
-        :billing_address_id,
-        :billing_company_id,
-        :shipping_address_id,
-        :shipping_company_id,
-        :shipping_contact_id,
-        :bill_from_id,
-        :ship_from_id,
-        :status,
-        :opportunity_type,
-        :opportunity_source,
-        :subject,
-        :gross_profit_percentage,
-        :quotation_date,
-        :customer_committed_date,
-        :customer_order_date,
-        :valid_end_time,
-        :quotation_followup_date,
-        :customer_po_received_date,
-        :procurement_date,
-        :expected_closing_date,
-        :quote_category,
-        :price_type,
-        :potential_amount,
-        :freight_option,
-        :freight_cost,
-        :total_freight_cost,
-        :customer_po_number,
-        :packing_and_forwarding_option,
-        :payment_option_id,
-        :weight_in_kgs,
-        :customer_po_sheet,
-        :final_supplier_quote,
-        :copy_of_email,
-        :is_sez,
-        :calculation_sheet,
-        :commercial_terms_and_conditions,
-        :comments,
-        :product_type,
-        supplier_quotes: [],
-        inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
+          :company_id,
+          :contact_id,
+          :industry_id,
+          :inside_sales_owner_id,
+          :outside_sales_owner_id,
+          :sales_manager_id,
+          :procurement_operations_id,
+          :billing_address_id,
+          :billing_company_id,
+          :shipping_address_id,
+          :shipping_company_id,
+          :shipping_contact_id,
+          :bill_from_id,
+          :ship_from_id,
+          :status,
+          :opportunity_type,
+          :opportunity_source,
+          :subject,
+          :gross_profit_percentage,
+          :quotation_date,
+          :customer_committed_date,
+          :customer_order_date,
+          :valid_end_time,
+          :quotation_followup_date,
+          :customer_po_received_date,
+          :procurement_date,
+          :expected_closing_date,
+          :quote_category,
+          :price_type,
+          :potential_amount,
+          :freight_option,
+          :freight_cost,
+          :total_freight_cost,
+          :customer_po_number,
+          :packing_and_forwarding_option,
+          :payment_option_id,
+          :weight_in_kgs,
+          :customer_po_sheet,
+          :final_supplier_quote,
+          :copy_of_email,
+          :is_sez,
+          :calculation_sheet,
+          :commercial_terms_and_conditions,
+          :comments,
+          :product_type,
+          supplier_quotes: [],
+          inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
       )
     end
 
@@ -574,56 +597,56 @@ class Overseers::InquiriesController < Overseers::BaseController
       if params.has_key?(:inquiry)
         params.require(:inquiry).permit(
           :id,
-          po_requests_attributes: [
-              :id,
-              :supplier_id,
-              :inquiry_id,
-              :company_id,
-              :reason_to_stock,
-              :estimated_date_to_unstock,
-              :requested_by_id,
-              :approved_by_id,
-              :_destroy,
-              :logistics_owner_id,
-              :address_id,
-              :contact_id,
-              :payment_option_id,
-              :stock_status,
-              :supplier_committed_date,
-              :blobs,
-              :supplier_po_type,
-              :contact_email,
-              :contact_phone,
-              :bill_from_id,
-              :ship_from_id,
-              :bill_to_id,
-              :ship_to_id,
-              attachments: [],
-              rows_attributes: [
-                  :id,
-                  :_destroy,
-                  :status,
-                  :quantity,
-                  :sales_order_row_id,
-                  :product_id,
-                  :brand,
-                  :tax_code_id,
-                  :tax_rate_id,
-                  :measurement_unit_id,
-                  :unit_price,
-                  :conversion,
-                  :lead_time,
-                  :discount_percentage
-              ],
-              comments_attributes: [
-                  :created_by_id,
-                  :updated_by_id,
-                  :message
-              ]
-          ]
-      )
+            po_requests_attributes: [
+                :id,
+                :supplier_id,
+                :inquiry_id,
+                :company_id,
+                :reason_to_stock,
+                :estimated_date_to_unstock,
+                :requested_by_id,
+                :approved_by_id,
+                :_destroy,
+                :logistics_owner_id,
+                :address_id,
+                :contact_id,
+                :payment_option_id,
+                :stock_status,
+                :supplier_committed_date,
+                :blobs,
+                :supplier_po_type,
+                :contact_email,
+                :contact_phone,
+                :bill_from_id,
+                :ship_from_id,
+                :bill_to_id,
+                :ship_to_id,
+                attachments: [],
+                rows_attributes: [
+                    :id,
+                    :_destroy,
+                    :status,
+                    :quantity,
+                    :sales_order_row_id,
+                    :product_id,
+                    :brand,
+                    :tax_code_id,
+                    :tax_rate_id,
+                    :measurement_unit_id,
+                    :unit_price,
+                    :conversion,
+                    :lead_time,
+                    :discount_percentage
+                ],
+                comments_attributes: [
+                    :created_by_id,
+                    :updated_by_id,
+                    :message
+                ]
+            ]
+        )
       else
         {}
       end
-  end
+    end
 end

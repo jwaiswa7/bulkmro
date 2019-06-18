@@ -7,23 +7,23 @@ class Inquiry < ApplicationRecord
   include Mixins::HasManagers
   include Mixins::HasComments
 
-  update_index('inquiries#inquiry') { self }
-  update_index('suggestions#inquiry') { self }
-  update_index('kra_reports#inquiry') { self }
-  update_index('new_company_reports#inquiry') { self }
-  update_index('customer_order_status_report#sales_order') { self.sales_orders if self.sales_orders.present? }
-  update_index('inquiry_mapping_tats#inquiry_mapping_tat') { self.inquiry_mapping_tats }
-  update_index('logistics_scorecards#sales_invoice') { self }
+  update_index('inquiries#inquiry') {self}
+  update_index('suggestions#inquiry') {self}
+  update_index('kra_reports#inquiry') {self}
+  update_index('new_company_reports#inquiry') {self}
+  update_index('customer_order_status_report#sales_order') {self.sales_orders if self.sales_orders.present?}
+  update_index('inquiry_mapping_tats#inquiry_mapping_tat') {self.inquiry_mapping_tats}
+  update_index('logistics_scorecards#sales_invoice') {self}
 
-  pg_search_scope :locate, against: [:id, :inquiry_number], associated_against: { company: [:name], account: [:name], contact: [:first_name, :last_name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name], procurement_operations: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:id, :inquiry_number], associated_against: {company: [:name], account: [:name], contact: [:first_name, :last_name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name], procurement_operations: [:first_name, :last_name]}, using: {tsearch: {prefix: true}}
 
   belongs_to :inquiry_currency, dependent: :destroy
   has_one :currency, through: :inquiry_currency
   # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
   belongs_to :contact, required: false
   belongs_to :company
-  belongs_to :billing_company, -> (record) { where('id in (?)', record.account.companies.pluck(:id)) }, class_name: 'Company', foreign_key: 'billing_company_id'
-  belongs_to :shipping_company, -> (record) { where('id in (?)', record.account.companies.pluck(:id)) }, class_name: 'Company', foreign_key: 'shipping_company_id'
+  belongs_to :billing_company, -> (record) {where('id in (?)', record.account.companies.pluck(:id))}, class_name: 'Company', foreign_key: 'billing_company_id'
+  belongs_to :shipping_company, -> (record) {where('id in (?)', record.account.companies.pluck(:id))}, class_name: 'Company', foreign_key: 'shipping_company_id'
   belongs_to :shipping_contact, class_name: 'Contact', foreign_key: 'shipping_contact_id'
   has_one :account, through: :company
   has_one :industry, through: :company
@@ -32,10 +32,10 @@ class Inquiry < ApplicationRecord
   belongs_to :last_synced_quote, class_name: 'SalesQuote', foreign_key: :last_synced_quote_id, required: false
 
   has_one :account, through: :company
-  has_many :inquiry_products, -> { order(sr_no: :asc) }, inverse_of: :inquiry, dependent: :destroy
-  accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? && attributes['id'].blank? }, allow_destroy: true
+  has_many :inquiry_products, -> {order(sr_no: :asc)}, inverse_of: :inquiry, dependent: :destroy
+  accepts_nested_attributes_for :inquiry_products, reject_if: lambda {|attributes| attributes['product_id'].blank? && attributes['id'].blank?}, allow_destroy: true
   belongs_to :payment_option, required: false
-  belongs_to :billing_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :billing_address_id, required: false
+  belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
   belongs_to :shipping_address, class_name: 'Address', foreign_key: :shipping_address_id, required: false
   has_many :products, through: :inquiry_products
   has_many :approvals, through: :products, class_name: 'ProductApproval'
@@ -48,21 +48,21 @@ class Inquiry < ApplicationRecord
   has_many :po_requests
   accepts_nested_attributes_for :po_requests, allow_destroy: true
   has_many :sales_quote_rows, through: :sales_quotes
-  has_one :final_sales_quote, -> { where.not(sent_at: nil).latest }, class_name: 'SalesQuote'
-  has_many :draft_sales_quotes, -> { where(sent_at: nil) }, class_name: 'SalesQuote'
+  has_one :final_sales_quote, -> {where.not(sent_at: nil).latest}, class_name: 'SalesQuote'
+  has_many :draft_sales_quotes, -> {where(sent_at: nil)}, class_name: 'SalesQuote'
   has_many :final_sales_orders, through: :final_sales_quote, class_name: 'SalesOrder'
-  has_one :approved_final_sales_order, -> { approved }, through: :final_sales_quote, class_name: 'SalesOrder'
-  has_one :sales_quote, -> { latest }
+  has_one :approved_final_sales_order, -> {approved}, through: :final_sales_quote, class_name: 'SalesOrder'
+  has_one :sales_quote, -> {latest}
   has_many :sales_orders, through: :sales_quotes, dependent: :destroy
   has_many :shipments, through: :sales_orders, class_name: 'SalesShipment', source: :shipments
   has_many :invoices, through: :sales_orders, class_name: 'SalesInvoice'
   has_many :sales_order_rows, through: :sales_orders
-  has_many :final_sales_orders, -> { where.not(sent_at: nil).latest }, through: :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
+  has_many :final_sales_orders, -> {where.not(sent_at: nil).latest}, through: :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
   has_many :email_messages, dependent: :destroy
   has_many :activities, dependent: :nullify
   has_many :inquiry_status_records
   has_many :inquiry_mapping_tats
-  belongs_to :legacy_shipping_company, -> (record) { where(company_id: record.company.id) }, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
+  belongs_to :legacy_shipping_company, -> (record) {where(company_id: record.company.id)}, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
   has_one :customer_order, dependent: :nullify
   has_one :freight_request
@@ -119,7 +119,7 @@ class Inquiry < ApplicationRecord
   }, _suffix: true
 
   def regrettable_statuses
-    Inquiry.statuses.keys.sort.reject { |status| ['Order Lost', 'Regret', 'Expected Order'].include?(status) }
+    Inquiry.statuses.keys.sort.reject {|status| ['Order Lost', 'Regret', 'Expected Order'].include?(status)}
   end
 
   enum stage: {
@@ -188,7 +188,7 @@ class Inquiry < ApplicationRecord
   end
 
   # scope :with_includes, -> { includes(:created_by, :updated_by, :contact, :inside_sales_owner, :outside_sales_owner, :company, :account, :final_sales_orders, :invoices, final_sales_quote: [rows: [:inquiry_product_supplier]]) }
-  scope :with_includes, -> { includes(:created_by, :updated_by, :contact, :inside_sales_owner, :outside_sales_owner, :company, :account) }
+  scope :with_includes, -> {includes(:created_by, :updated_by, :contact, :inside_sales_owner, :outside_sales_owner, :company, :account)}
   scope :smart_queue, -> {
     where('status NOT IN (?)', [
         Inquiry.statuses[:'Lead by O/S'],
@@ -196,9 +196,9 @@ class Inquiry < ApplicationRecord
         Inquiry.statuses[:'Regret']
     ]).order(priority: :desc, quotation_followup_date: :asc, calculated_total: :desc)
   }
-  scope :won, -> { where(status: :'Order Won') }
-  scope :live, -> { where.not(status: :'Order Lost').where.not(status: :'Regret')}
-  attr_accessor :force_has_sales_orders, :common_supplier_id, :select_all_products, :select_all_suppliers
+  scope :won, -> {where(status: :'Order Won')}
+  scope :live, -> {where.not(status: :'Order Lost').where.not(status: :'Regret')}
+  attr_accessor :force_has_sales_orders, :common_supplier_id, :select_all_products, :select_all_suppliers, :inquiry_from
 
   with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
     # inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
@@ -226,27 +226,28 @@ class Inquiry < ApplicationRecord
   validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
-  validates_numericality_of :potential_amount, greater_than: 0.00, if: :not_legacy?
+  validates_numericality_of :potential_amount, greater_than: 0.00, if: :not_legacy? && :should_validate?
 
   # validates_uniqueness_of :subject, :if => :not_legacy?
   validates_presence_of :inquiry_currency
   validates_presence_of :company
   validates_presence_of :expected_closing_date, if: :not_legacy?
   validates_presence_of :valid_end_time, if: :not_legacy?
-  validates_presence_of :inside_sales_owner, if: :not_legacy?
-  validates_presence_of :outside_sales_owner, if: :not_legacy?
-  validates_presence_of :potential_amount, if: :not_legacy?
-  validates_presence_of :quote_category, if: :not_legacy?
-  validates_presence_of :payment_option, if: :not_legacy?
-  validates_presence_of :billing_address, if: :not_legacy?
-  validates_presence_of :billing_company, if: :not_legacy?
-  validates_presence_of :shipping_address, if: :not_legacy?
-  validates_presence_of :shipping_company, if: :not_legacy?
+  validates_presence_of :inside_sales_owner, if: :not_legacy? && :should_validate?
+  validates_presence_of :outside_sales_owner, if: :not_legacy? && :should_validate?
+  validates_presence_of :potential_amount, if: :not_legacy? && :should_validate?
+  validates_presence_of :quote_category, if: :not_legacy? && :should_validate?
+  validates_presence_of :payment_option, if: :not_legacy? && :should_validate?
+  validates_presence_of :billing_address, if: :not_legacy? && :should_validate?
+  validates_presence_of :billing_company, if: :not_legacy? && :should_validate?
+  validates_presence_of :shipping_address, if: :not_legacy? && :should_validate?
+  validates_presence_of :shipping_company, if: :not_legacy? && :should_validate?
   validates_presence_of :contact, if: :not_legacy?
 
   validate :every_product_is_only_added_once?
 
   validate :company_is_active, if: :new_record?
+
 
   def company_is_active
     if !self.company.is_active
@@ -255,7 +256,7 @@ class Inquiry < ApplicationRecord
   end
 
   def every_product_is_only_added_once?
-    if self.inquiry_products.uniq { |ip| ip.product_id }.size != self.inquiry_products.size
+    if self.inquiry_products.uniq {|ip| ip.product_id}.size != self.inquiry_products.size
       errors.add(:inquiry_products, 'every product can only be included once in a particular inquiry')
     end
   end
@@ -312,6 +313,10 @@ class Inquiry < ApplicationRecord
     end
   end
 
+  def should_validate?
+    !self.payment_option.blank? || self.potential_amount != 0.0
+  end
+
   def draft?
     !inquiry_products.any?
   end
@@ -343,11 +348,11 @@ class Inquiry < ApplicationRecord
   end
 
   def self.procurement_specialists
-    Overseer.active.where(id: Inquiry.pluck(:inside_sales_owner_id)).alphabetical
+    Overseer.active.where(id: Inquiry.pluck(:inside_sales_owner_id), role: 'inside_sales_executive').alphabetical
   end
 
   def self.outside_sales_owners
-    Overseer.active.where(id: Inquiry.pluck(:outside_sales_owner_id)).alphabetical
+    Overseer.active.where(id: Inquiry.pluck(:outside_sales_owner_id), role: 'outside_sales_executive').alphabetical
   end
 
   def self.procurement_operations

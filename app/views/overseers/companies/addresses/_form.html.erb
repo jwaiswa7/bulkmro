@@ -45,40 +45,40 @@
 
     <div class="form-row">
       <div class="col-6">
-        <%= f.input :telephone, label: 'Office Telephone' %>
+        <%= f.input :telephone, label: 'Telephone' %>
       </div>
       <div class="col-6">
-        <%= f.input :mobile, label: 'Office Mobile' %>
+        <%= f.input :mobile, label: 'Mobile' %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="col-12 col-md-6">
         <div class="form-group string optional address_telephone">
-        <label class="form-control-label text-capitalize string optional" >GST Number</label>
+          <label class="form-control-label text-capitalize string optional">GST Number</label>
+          <div class="form-inline" style="margin-bottom: 8px">
+            <%= text_field_tag 'gst_code_1', nil, class: 'form-control col-2 col-md-2 gst-change', id: 'gst_code_1', maxlength: '2', disabled: true %>
 
-        <div class="form-inline" style="margin-bottom: 8px">
+            <%= text_field_tag 'gst_code_2', nil, class: 'form-control gst-change', id: 'gst_code_2', maxlength: '10' %>
 
-          <%= text_field_tag 'gst_code_1', nil, class: 'form-control col-2 col-md-2 gst-change', id: 'gst_code_1', maxlength:'2', disabled: true %>
+            <%= text_field_tag 'gst_code_3', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_3', maxlength: '1' %>
 
-          <%= text_field_tag 'gst_code_2', nil, class: 'form-control gst-change', id: 'gst_code_2', maxlength:'10' %>
+            <%= text_field_tag 'gst_code_4', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_4', maxlength: '1' %>
 
-          <%= text_field_tag 'gst_code_3', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_3', maxlength:'1' %>
-
-          <%= text_field_tag 'gst_code_4', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_4', maxlength:'1' %>
-
-          <%= text_field_tag 'gst_code_5', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_5', maxlength:'1' %>
-
+            <%= text_field_tag 'gst_code_5', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_5', maxlength: '1' %>
+          </div>
+          <%= f.input :gst, label: false, readonly: true %>
         </div>
+      </div>
 
+      <div class="col-6 col-md-6">
+        <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true %>
+      </div>
 
-        <%= f.input :gst, label: false, readonly: true%>
-        </div>
-        </div>
-
-      <div class="col-6 col-md-4 d-none">
+      <div class="col-6 col-md-6 d-none">
         <%= f.input :gst_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Address.gst_types), label: 'GST Type' %>
       </div>
+
       <div class="col-12 col-md-6">
         <%= f.input :gst_proof, :wrapper => :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'GST Number Proof' %>
       </div>
