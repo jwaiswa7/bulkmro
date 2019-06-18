@@ -8,7 +8,7 @@ const newAction = () => {
             dataType: "json",
 
             success: function (data) {
-                $('#cd1').val(data.gst_code)
+                $('#gst_code_1').val(data.gst_code)
                 $('#address_gst').val('');
             }
         });
@@ -24,17 +24,17 @@ const newAction = () => {
             var gst_cd4 = full_gst_code.substring(13, 14);
             var gst_cd5 = full_gst_code.substring(14, 15);
 
-            $('#cd1').val(gst_cd1)
-            $('#cd2').val(gst_cd2)
-            $('#cd3').val(gst_cd3)
-            $('#cd4').val(gst_cd4)
-            $('#cd5').val(gst_cd5)
+            $('#gst_code_1').val(gst_cd1)
+            $('#gst_code_2').val(gst_cd2)
+            $('#gst_code_3').val(gst_cd3)
+            $('#gst_code_4').val(gst_cd4)
+            $('#gst_code_5').val(gst_cd5)
         }
     })
 
 
     $('.gst-change').on('input', function() {
-        $('#address_gst').val($('#cd1').val()+$('#cd2').val()+$('#cd3').val()+$('#cd4').val()+$('#cd5').val());
+        $('#address_gst').val($('#gst_code_1').val()+$('#gst_code_2').val()+$('#gst_code_3').val()+$('#gst_code_4').val()+$('#gst_code_5').val());
     });
 }
 

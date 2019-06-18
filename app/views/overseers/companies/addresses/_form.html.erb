@@ -60,21 +60,17 @@
         <%#= f.label 'GST Number' %>
         <%#= f.input :gst, label: 'GST Number' %>
         <div class="form-inline" style="margin-bottom: 8px">
-          <input type="text" class="form-control col-2 col-md-2 gst-change" id="cd1" maxlength="2" disabled style="
-          margin-right: 6px;
-          ">
-          <input type="text" class="form-control gst-change" id="cd2" maxlength="10" style="
-          margin-right: 6px;
-          ">
-          <input type="text" class="form-control col-1 col-md-1 gst-change" id="cd3" maxlength="1" style="
-          margin-right: 6px;
-          ">
-          <input type="text" class="form-control col-1 col-md-1 gst-change" id="cd4" maxlength="1" style="
-          margin-right: 6px;
-          ">
-          <input type="text" class="form-control col-1 col-md-1 gst-change" id="cd5" maxlength="1" style="
-          margin-right: 6px;
-          ">
+
+          <%= text_field_tag 'gst_code_1', nil, class: 'form-control col-2 col-md-2 gst-change', id: 'gst_code_1', maxlength:'2', disabled: true %>
+
+          <%= text_field_tag 'gst_code_2', nil, class: 'form-control gst-change', id: 'gst_code_2', maxlength:'10' %>
+
+          <%= text_field_tag 'gst_code_3', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_3', maxlength:'1' %>
+
+          <%= text_field_tag 'gst_code_4', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_4', maxlength:'1' %>
+
+          <%= text_field_tag 'gst_code_5', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_5', maxlength:'1' %>
+
         </div>
 
 
