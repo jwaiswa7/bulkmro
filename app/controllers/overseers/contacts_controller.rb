@@ -44,7 +44,7 @@ class Overseers::ContactsController < Overseers::BaseController
     password = Devise.friendly_token[0, 20]
     @contact = @company.contacts.build(contact_params.merge(account: @company.account, overseer: current_overseer, password: password, password_confirmation: password))
     authorize @contact
-    if @contact.save
+    if @contact.save!
       if @contact.contact_creation_request.present?
         @contact.contact_creation_request.update_attributes(contact_id: @contact.id)
         @contact.contact_creation_request.activity.update_attributes(contact: @contact)
@@ -96,6 +96,7 @@ class Overseers::ContactsController < Overseers::BaseController
     def contact_params
       params.require(:contact).permit(
         :company_id,
+          :account_id,
           :first_name,
           :last_name,
           :legacy_email,
