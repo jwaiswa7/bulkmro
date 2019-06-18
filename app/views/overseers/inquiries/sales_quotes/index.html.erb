@@ -40,6 +40,9 @@
       <th class="no-sort desktop text-right">Total(Excl. Tax)</th>
       <th class="no-sort desktop text-right">Total(Incl. Tax)</th>
       <th class="no-sort desktop text-right">Created At</th>
+      <% if policy(@sales_quotes).reset_quote_form? %>
+        <th class="no-sort desktop text-right">Last SO Status</th>
+      <% end %>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>
@@ -85,6 +88,15 @@
           <td><%= format_currency(sales_quote.calculated_total) %></td>
           <td><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
           <td><%= format_date(sales_quote.created_at) %></td>
+          <td>
+            <% if policy(sales_quote).reset_quote_form? %>
+              <% if sales_quote.sales_orders.present? %>
+                <%= status_badge(sales_quote.sales_orders.last.status) %>
+              <% else %>
+                N / A
+              <% end %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     <% end %>
