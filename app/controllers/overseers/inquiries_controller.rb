@@ -245,8 +245,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry = Inquiry.new(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
 
-    # if @inquiry.save_and_sync
-    if @inquiry.save
+    if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :new_inquiry).call if @inquiry.persisted?
       if !current_overseer.cannot_send_emails?
         redirect_to new_overseers_inquiry_email_message_path(@inquiry)
