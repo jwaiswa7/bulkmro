@@ -216,6 +216,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     new?
   end
 
+  def is_acknowledgement_enable?
+    record.id.present? && new_email_message?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
