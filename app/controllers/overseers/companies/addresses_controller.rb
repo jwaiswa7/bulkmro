@@ -69,35 +69,35 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
 
   private
 
-  def set_address
-    @address ||= Address.find(params[:id])
-  end
+    def set_address
+      @address ||= Address.find(params[:id])
+    end
 
-  def address_params
-    params.require(:address).permit(
+    def address_params
+      params.require(:address).permit(
         :name,
-        :country_code,
-        :pincode,
-        :city_name,
-        :remote_uid,
-        :address_state_id,
-        :state_name,
-        :street1,
-        :street2,
-        :telephone,
-        :mobile,
-        :is_sez,
-        :gst_proof,
-        :cst_proof,
-        :vat_proof,
-        :excise_proof,
-        :gst,
-        :cst,
-        :vat,
-        :tan,
-        :excise,
-        :gst_type,
-        :company_id
-    )
-  end
+          :country_code,
+          :pincode,
+          :city_name,
+          :remote_uid,
+          :address_state_id,
+          :state_name,
+          :street1,
+          :street2,
+          :telephone,
+          :mobile,
+          :is_sez,
+          :gst_proof,
+          :cst_proof,
+          :vat_proof,
+          :excise_proof,
+          :gst,
+          :cst,
+          :vat,
+          :tan,
+          :excise,
+          :gst_type,
+          :company_id
+      )
+    end
 end
