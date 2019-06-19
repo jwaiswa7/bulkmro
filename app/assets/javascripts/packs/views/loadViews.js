@@ -54,7 +54,10 @@ import packingSlips from "./packingSlips/init";
 // Activities
 import activities from './activities/init'
 
+import contacts from './contacts/init'
+
 import companies from './companies/init'
+
 import suppliers from  './suppliers/init'
 
 import companyReviews from './companyReviews/init'
@@ -75,6 +78,9 @@ import companyBanks from "./companyBanks/init"
 import dashboard from "./dashboard/init"
 
 import logisticsScorecards from "./logisticsScorecards/init";
+
+// Addresses
+import addresses from "./addresses/init";
 
 let loader = {
     imports: imports,
@@ -97,6 +103,7 @@ let loader = {
     poRequests: poRequests,
     activities: activities,
     companies: companies,
+    contacts: contacts,
     suppliers: suppliers,
     companyReviews: companyReviews,
     documentCreations: documentCreations,
@@ -107,7 +114,8 @@ let loader = {
     dashboard: dashboard,
     logisticsScorecards: logisticsScorecards,
     arInvoiceRequests: arInvoiceRequests,
-    packingSlips:packingSlips
+    packingSlips:packingSlips,
+    addresses: addresses
 };
 
 // Imports
