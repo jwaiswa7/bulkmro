@@ -4,7 +4,7 @@
   <section class="mb-3 pt-3 pt-lg-5 pb-2">
     <div class="card">
       <div class="card-body">
-        <div class="row">
+        <div class="row mb-4">
           <div class="col-md-3">
             <% if @customer_product.best_image.present?%>
               <%= image_tag @customer_product.medium_best_image, fallback_url: image_path('coming_soon.png'), check_remote: false %>
@@ -78,6 +78,15 @@
                 <%= @customer_product.product.stocks.sum(&:instock) %>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <% Dir.glob("#{Rails.root}/app/assets/images/product_images/*.png") do |icon| %>
+              <% if @customer_product.hashid == File.basename(icon).gsub('.png', '') %>
+                <img class="mx-auto d-block" src="<%= image_path("product_images/#{File.basename(icon)}") %>" alt="<%= @customer_product.sku %>">
+              <% end %>
+            <% end %>
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@
 
             <div class="col-6 col-md-3 mb-2">
               <strong class="d-block">Account</strong>
-              <%= @contact.account.name %>
+              <%= link_to(@contact.account.name, overseers_account_path(@contact.account), target: '_blank') %>
             </div>
 
             <div class="col-6 col-md-3 mb-2">

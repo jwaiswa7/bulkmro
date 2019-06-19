@@ -11,7 +11,7 @@ class InquiryMappingTatsIndex < BaseIndex
     field :sales_quote, value: -> (record) {record.sales_quote_id if record.sales_quote_id.present?}, type: 'integer'
     field :so_doc_id, value: -> (record) {record.sales_order_id if record.sales_order.present?}, type: 'integer'
 
-    field :sales_order_number, value: -> (record) {record.sales_order.order_number if record.sales_order.present?}, type: 'integer'
+    field :sales_order_number, value: -> (record) {record.sales_order.order_number if record.sales_order.present?}, type: 'long'
     field :sales_order_status, value: -> (record) {record.sales_order.status if record.sales_order.present?}, analyzer: 'substring'
 
     field :time_new_inquiry, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'New Inquiry').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'New Inquiry').present?}, type: 'date'
