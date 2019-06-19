@@ -56,7 +56,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
         end
         service = Services::Overseers::ArInvoiceRequests::Update.new(@ar_invoice_request, current_overseer)
         service.call
-        format.html { redirect_to overseers_ar_invoice_request_path(@ar_invoice_request), notice: 'Ar invoice was successfully created.' }
+        format.html { redirect_to overseers_ar_invoice_request_path(@ar_invoice_request), notice: 'AR invoice was successfully created.' }
         format.json { render :show, status: :created, location: @ar_invoice_request }
       else
         format.html { render :new }
@@ -75,7 +75,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
       if @ar_invoice_request.valid?
         service = Services::Overseers::ArInvoiceRequests::Update.new(@ar_invoice_request, current_overseer)
         service.call
-        format.html { redirect_to overseers_ar_invoice_request_path(@ar_invoice_request), notice: 'Ar invoice was successfully updated.' }
+        format.html { redirect_to overseers_ar_invoice_request_path(@ar_invoice_request), notice: 'AR invoice was successfully updated.' }
         format.json { render :show, status: :ok, location: @ar_invoice_request }
       else
         format.html { render :edit }
@@ -90,7 +90,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
     authorize @ar_invoice_request
     @ar_invoice_request.destroy
     respond_to do |format|
-      format.html { redirect_to ar_invoice_requests_url, notice: 'Ar invoice was successfully destroyed.' }
+      format.html { redirect_to ar_invoice_requests_url, notice: 'AR invoice was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

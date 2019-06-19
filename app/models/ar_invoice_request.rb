@@ -63,15 +63,15 @@ class ArInvoiceRequest < ApplicationRecord
     if self.saved_change_to_status?
       if self.status == 'AR Invoice requested'
         tos = Services::Overseers::Notifications::Recipients.ar_invoice_request_notifiers
-        comment = "Ar invoice number#{self.ar_invoice_number} requested"
+        comment = "AR invoice number#{self.ar_invoice_number} requested"
       else
         tos = [self.created_by.email]
         if status == 'AR Invoice Request Rejected'
-          comment = "Ar invoice number#{self.ar_invoice_number} rejected. Reason: " + self.show_display_reason[:text]
+          comment = "AR invoice number#{self.ar_invoice_number} rejected. Reason: " + self.show_display_reason[:text]
         elsif status == 'Cancelled AR Invoice'
-          comment = "Ar invoice number#{self.ar_invoice_number} cancelled. Reason: " + self.show_display_reason[:text]
+          comment = "AR invoice number#{self.ar_invoice_number} cancelled. Reason: " + self.show_display_reason[:text]
         elsif self.status == 'Completed AR Invoice Request'
-          comment = "Ar invoice number#{self.ar_invoice_number} completed."
+          comment = "AR invoice number#{self.ar_invoice_number} completed."
         end
       end
       action_name = ''
