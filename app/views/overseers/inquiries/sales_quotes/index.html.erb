@@ -40,6 +40,9 @@
       <th class="no-sort desktop text-right">Total(Excl. Tax)</th>
       <th class="no-sort desktop text-right">Total(Incl. Tax)</th>
       <th class="no-sort desktop text-right">Created At</th>
+      <% if policy(@sales_quotes).reset_quote_form? %>
+        <th class="no-sort desktop text-right">Last SO Status</th>
+      <% end %>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>
@@ -59,6 +62,11 @@
             <% end %>
             <% if policy(sales_quote).reset_quote? %>
               <%= row_action_button(reset_quote_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'retweet-alt', 'Reset Quote', 'dark') %>
+            <% elsif policy(sales_quote).reset_quote_for_manager? %>
+              <%= link_to('', class: ['btn btn-sm btn-danger manager-sales-quote-reset'], 'data-sales-quote-id': sales_quote.to_param, 'data-inquiry-id': @inquiry.to_param , title: 'Reset Quote', remote: true) do
+                concat content_tag(:span, '')
+                concat content_tag :i, nil, class: ['fal fa-retweet-alt'].join
+              end %>
             <% end %>
             <% if policy(sales_quote).new_sales_order? %>
               <%= row_action_button(new_overseers_inquiry_sales_order_path(@inquiry, sales_quote_id: sales_quote.to_param), 'external-link', 'Add to Order', 'success') %>
@@ -80,9 +88,19 @@
           <td><%= format_currency(sales_quote.calculated_total) %></td>
           <td><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
           <td><%= format_date(sales_quote.created_at) %></td>
+          <td>
+            <% if policy(sales_quote).reset_quote_form? %>
+              <% if sales_quote.sales_orders.present? %>
+                <%= status_badge(sales_quote.sales_orders.last.status) %>
+              <% else %>
+                N / A
+              <% end %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     <% end %>
 
   <% end %>
+  <div class="sales-quote-cancel-manager-form"></div>
 </div>
