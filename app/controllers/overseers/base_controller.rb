@@ -53,6 +53,13 @@ class Overseers::BaseController < ApplicationController
     end
   end
 
+  def refresh_acl_resource_json
+    Rails.cache.delete('acl_resource_json')
+    Rails.cache.fetch('acl_resource_json', expires_in: 3.hours) do
+      self.create_acl_resource_json
+    end
+  end
+
   def create_acl_resource_json
     resource_json = []
     models = []

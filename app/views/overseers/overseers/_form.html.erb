@@ -17,7 +17,7 @@
 
     </div>
 
-    <%= f.input :role, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Overseer.roles), include_blank: false %>
+    <%#= f.input :role, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Overseer.roles), include_blank: false %>
 
     <% if @overseer.persisted? %>
       <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s, collection: Overseer.except_objects(@overseer.self_and_descendants), include_blank: 'Select a parent' %>

@@ -16,6 +16,7 @@ class Overseers::AclRolesController < Overseers::BaseController
     @acl_role = AclRole.new(acl_role_params.merge(overseer: current_overseer))
 
     if @acl_role.save
+      refresh_acl_resource_json
       redirect_to edit_overseers_acl_role_path(@acl_role), notice: flash_message(@acl_role, action_name)
     else
       render 'new'
@@ -30,7 +31,9 @@ class Overseers::AclRolesController < Overseers::BaseController
     authorize_acl @acl_role
     begin
       if @acl_role.present?
-        @acl_role.update_attribute(:role_resources, params[:checkedIds].to_json)
+        @acl_role.update_attribute(:role_resources, params[:checked_ids].to_json)
+        @acl_role.update_attribute(:is_default, params[:is_default])
+        refresh_acl_resource_json
         success = 1
         message = 'Updated successfully.'
       else
@@ -43,7 +46,6 @@ class Overseers::AclRolesController < Overseers::BaseController
     end
 
     render json: {success:success, message: message}
-
   end
 
   def get_acl

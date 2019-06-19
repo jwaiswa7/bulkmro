@@ -14,17 +14,17 @@ const edit = () => {
 
         $('#btnSave').on('click', function () {
             console.log("button clicked")
-            var checkedIds = tree.getCheckedNodes();
+            var checked_ids = tree.getCheckedNodes();
             $.ajax({
                 url: Routes.overseers_acl_role_path(
                     $('#tree').attr('data-acl')
                 ),
                 dataType: 'json',
-                data: {checkedIds: checkedIds},
+                data: {checked_ids: checked_ids, is_default: $('#acl_role_is_default').is(':checked')},
                 method: 'PATCH'
             })
                 .done(function( data ) {
-                    window.location.href = Routes.edit_overseers_acl_role_path($('#tree').attr('data-acl'))
+                    // window.location.href = Routes.edit_overseers_acl_role_path($('#tree').attr('data-acl'))
                 })
                 .fail(function () {
                     alert('Failed to save.');
