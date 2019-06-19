@@ -31,9 +31,16 @@
         </div>
       </div>
       <div class="card-footer">
-        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-          <i class="fal fa-paper-plane"></i> Send Email
-        <% end %>
+        <div class="row">
+          <div class="col-md-6">
+            <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+              <i class="fal fa-paper-plane"></i> Send Email
+            <% end %>
+          </div>
+          <div class="col-md-6">
+            <%= link_to 'Skip', edit_overseers_inquiry_path(@inquiry),class: "btn-block btn btn-warning duplicate-inquiry" %>
+          </div>
+        </div>
       </div>
     <% end %>
   <% end %>
