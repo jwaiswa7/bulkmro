@@ -42,7 +42,9 @@ class Services::Overseers::Finders::MaterialReadinessQueues  < Services::Oversee
       indexed_records = indexed_records.filter(@base_filter)
     end
 
-    indexed_records = indexed_records.filter(filter_by_array('material_status', PurchaseOrder.material_statuses.except(:'Material Delivered').values))
+    statuses = ['Material Readiness Follow-Up', 'Inward Dispatch', 'Inward Dispatch: Partial', 'Material Partially Delivered']
+    status_values = PurchaseOrder.material_statuses.map {|key, val| if statuses.include?(key); val; end}.compact
+    indexed_records = indexed_records.filter(filter_by_array('material_status', status_values))
     indexed_records = indexed_records.filter(filter_by_value('po_request_present', true))
     indexed_records = indexed_records.filter(filter_by_value('po_email_sent', true))
 
