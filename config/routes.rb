@@ -173,6 +173,7 @@ Rails.application.routes.draw do
     resources :contacts do
       collection do
         get 'autocomplete'
+        get 'fetch_company_account'
       end
 
       member do
@@ -206,6 +207,8 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'warehouse_addresses'
+        get 'is_sez_params'
+        get 'get_gst_code'
       end
     end
 
@@ -425,6 +428,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'index_pg'
         get 'smart_queue'
+        get 'next_inquiry_step'
         get 'export_all'
         get 'export_filtered_records'
         get 'tat_report'
@@ -503,6 +507,8 @@ Rails.application.routes.draw do
             get 'reset_quote'
             get 'relationship_map'
             get 'get_relationship_map_json'
+            get 'reset_quote_form'
+            patch 'sales_quote_reset_by_manager'
           end
 
           scope module: 'sales_quotes' do
@@ -539,6 +545,7 @@ Rails.application.routes.draw do
       member do
         get 'render_rating_form'
         put 'update_rating'
+        get 'get_account'
       end
       scope module: 'companies' do
         resources :customer_orders

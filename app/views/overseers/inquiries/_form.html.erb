@@ -2,19 +2,18 @@
   <%= f.hidden_field :company_id %>
 
   <%= render 'shared/snippets/form_errors', f: f %>
-
   <div class="card">
     <div class="card-header">
       <div class="form-row">
-        <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry,'new_email_message') && is_authorized(@inquiry,'update') && policy(@inquiry).update? %>
+        <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry,'new_email_message') && is_authorized(@inquiry,'update') && policy(@inquiry).update? && action_name != "new" %>
           <div class="col-md-4">
-            <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark"><i class="fal fa-envelope mr-1"></i>Send
+            <a href="<%= @inquiry.id.present? ? new_overseers_inquiry_email_message_path(@inquiry) : "#" %>" class='<%= policy(@inquiry).is_acknowledgement_enable? ? "btn-block btn btn-dark" : "btn-block btn btn-dark disabled" %>'><i class="fal fa-envelope mr-1"></i>Send
               Acknowledgement</a>
           </div>
         <% end %>
         <% if is_authorized(@inquiry,'update') %>
           <div class="mt-1 mt-md-0
-            <%= policy(@inquiry).new_email_message? && is_authorized(@inquiry,'new_email_message') ? "col-md-4" : "col-md-12" %>">
+            <%=  action_name != "new" ? "col-md-4" : "col-md-12" %>">
             <%= action_button(action_name, @inquiry) %>
           </div>
         <% end %>
@@ -31,15 +30,12 @@
         <h6 class="text-uppercase text-black-50 mb-1">Opportunity Details</h6>
         <%= f.input :company, as: :string, disabled: true %>
         <div class="form-row">
-          <div class="col-4">
+          <div class="col-12 col-md-6">
             <%= f.input :inquiry_number, label: 'Inquiry #', disabled: true %>
           </div>
-          <div class="col-8">
-            <%= f.input :legacy_contact_name, disabled: true %>
-          </div>
-        </div>
-
-        <div class="form-row">
+          <!--          <div class="col-8">-->
+          <%#= f.input :legacy_contact_name, disabled: true %>
+          <!--          </div>-->
           <div class="col-6 col-md-3">
             <%= f.input :status, as: :string, disabled: true %>
             <%# #, :disabled => ['Lead by O/S','New Inquiry','Acknowledgement Mail','Cross Reference','Supplier RFQ Sent','Preparing Quotation','Draft SO for Approval by Sales Manager','SO Rejected by Sales Manager','SO Draft: Pending Accounts Approval','Rejected by Accounts','Hold by Accounts','Order Won','Quotation Sent'] %>
@@ -75,7 +71,9 @@
               </div>
             </div>
           <% end %>
-          <div class="col-12 col-md-6">
+        </div>
+        <div class="form-row">
+          <div class="col-12">
             <%= f.input :subject, required: true %>
           </div>
         </div>
@@ -87,7 +85,7 @@
                 <%= f.input :opportunity_source, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources) %>
               </div>
               <div class="col-6 col-md-6">
-                <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true %>
+                <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez) %>
               </div>
             </div>
           </div>
@@ -210,76 +208,77 @@
             <%= f.input :expected_closing_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
           <div class="col-12 col-md-4">
-            <%= f.input :quotation_followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+            <%= f.input :quotation_followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: @inquiry.sales_quotes.present? ? true : false %>
           </div>
         </div>
       </div>
+      <% if f.object.sales_quote.present? %>
+        <div class="mt-3">
+          <h6 class="text-uppercase text-black-50 mb-1">Order Details</h6>
+          <div class="form-row">
+            <div class="col-12 col-md-6">
+              <%= f.input :customer_po_number, label: 'Customer purchase order number' %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer purchase order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_sheet.filename}".html_safe) : false %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.copy_of_email.filename}".html_safe) : false %>
+            </div>
 
-      <div class="mt-3">
-        <h6 class="text-uppercase text-black-50 mb-1">Order Details</h6>
-        <div class="form-row">
-          <div class="col-12 col-md-6">
-            <%= f.input :customer_po_number, label: 'Customer purchase order number' %>
-          </div>
-          <div class="col-12 col-md-6">
-            <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer purchase order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_sheet.filename}".html_safe) : false %>
-          </div>
-          <div class="col-12 col-md-6">
-            <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.copy_of_email.filename}".html_safe) : false %>
-          </div>
-
-          <div class="col-12 col-md-6">
-            <div class="d-flex flex-row">
-              <div class="flex-grow-1">
-                <% if f.object.calculation_sheet.attached? %>
-                  <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: "#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe %>
-                <% else %>
-                  <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: false %>
+            <div class="col-12 col-md-6">
+              <div class="d-flex flex-row">
+                <div class="flex-grow-1">
+                  <% if f.object.calculation_sheet.attached? %>
+                    <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: "#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe %>
+                  <% else %>
+                    <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: false %>
+                  <% end %>
+                </div>
+                <% if f.object.persisted? %>
+                  <a class="btn btn-sm text-success ml-1 mt-2 align-self-center text-small mt-0" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path(id: f.object.to_param) %>" target="_blank">
+                    <i class="fal fa-download"></i>
+                  </a>
                 <% end %>
               </div>
-              <% if f.object.persisted? %>
-                <a class="btn btn-sm text-success ml-1 mt-2 align-self-center text-small mt-0" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path(id: f.object.to_param) %>" target="_blank">
-                  <i class="fal fa-download"></i>
-                </a>
-              <% end %>
             </div>
-          </div>
-          <div class="col-12 col-md-12">
-            <div class="d-block d-md-flex align-items-end">
-              <div class="flex-grow-1">
-                <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: {multiple: true}, label: 'Supplier quotes' %>
-              </div>
-              <div class="form-group">
-                <% f.object.supplier_quotes.attachments.each do |attachment| %>
-                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                    <i class="fal fa-download"></i>
-                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                      <i class="fal fa-trash-alt"></i>
-                    <% end if attachment.present? && is_authorized(:attachment,'destroy') && policy(:attachment).destroy? %>
-                  <% end %>
-                <% end if f.object.supplier_quotes.attached? %>
+            <div class="col-12 col-md-12">
+              <div class="d-block d-md-flex align-items-end">
+                <div class="flex-grow-1">
+                  <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: {multiple: true}, label: 'Supplier quotes' %>
+                </div>
+                <div class="form-group">
+                  <% f.object.supplier_quotes.attachments.each do |attachment| %>
+                    <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                      <i class="fal fa-download"></i>
+                      <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                        <i class="fal fa-trash-alt"></i>
+                      <% end if attachment.present? && is_authorized(:attachment,'destroy') && policy(:attachment).destroy? %>
+                    <% end %>
+                  <% end if f.object.supplier_quotes.attached? %>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-12 col-md-3">
-            <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
-          </div>
-          <div class="col-12 col-md-3">
-            <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
-          </div>
-          <div class="col-12 col-md-3">
-            <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
-          </div>
-          <div class="col-12 col-md-4">
-            <%= f.input :customer_po_received_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: 'Customer PO Received Date' %>
-          </div>
-          <div class="col-12 col-md-3">
-            <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: {:'data-toggle' => 'datepicker'} %>
+            <div class="col-12 col-md-3">
+              <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
+            </div>
+            <div class="col-12 col-md-3">
+              <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
+            </div>
+            <div class="col-12 col-md-3">
+              <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
+            </div>
+            <div class="col-12 col-md-4">
+              <%= f.input :customer_po_received_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: 'Customer PO Received Date' %>
+            </div>
+            <div class="col-12 col-md-3">
+              <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: {:'data-toggle' => 'datepicker'} %>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
 
-      <div class="mt-2 card-alternative">
+      <div class="mt-2 <%= f.object.sales_quote.present? ? 'card-alternative' : '' %>">
         <h6 class="text-uppercase text-black-50 mb-1">Terms and Conditions</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">

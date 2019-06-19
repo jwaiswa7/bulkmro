@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote, :relationship_map, :get_relationship_map_json]
+  before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote, :relationship_map, :get_relationship_map_json, :reset_quote_form, :sales_quote_reset_by_manager]
 
   def index
     @sales_quotes = @inquiry.sales_quotes
@@ -84,6 +84,25 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     authorize_acl @sales_quote
     inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, [@sales_quote]).call
     render json: {data: inquiry_json}
+  end
+
+  def reset_quote_form
+    authorize @sales_quote
+    @sales_quote = SalesQuote.find(params[:id])
+    @inquiry = Inquiry.find(params[:inquiry_id])
+    respond_to do |format|
+      format.html {render partial: 'reset_sales_quote', locals: {inquiry: @inquiry, sales_quote: @sales_quote}}
+    end
+  end
+
+  def sales_quote_reset_by_manager
+    if params['inquiry']['comments_attributes']['0']['message'].present?
+      service = Services::Overseers::SalesQuotes::SalesQuoteResetByManager.new(@sales_quote, params.merge(overseer: current_overseer))
+      service.call
+    else
+      render json: {error: {base: 'Reset Quote Reason must be present.'}}, status: 500
+    end
+    authorize @sales_quote
   end
 
   private

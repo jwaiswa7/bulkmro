@@ -24,4 +24,17 @@ class Overseers::AddressesController < Overseers::BaseController
     authorize_acl @addresses
     render 'autocomplete'
   end
+
+  def is_sez_params
+    @addresses = Address.find(params[:address_id])
+    render json: { is_sez: @addresses.is_sez}.to_json
+    authorize @addresses
+  end
+
+
+  def get_gst_code
+    authorize :address
+    @address_state = AddressState.indian.find(params[:state_id])
+    render json: { gst_code: @address_state.gst_code }
+  end
 end
