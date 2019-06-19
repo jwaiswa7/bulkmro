@@ -73,9 +73,21 @@
           <% end %>
         </div>
         <div class="form-row">
-          <div class="col-12">
+          <div class="col-6">
             <%= f.input :subject, required: true %>
           </div>
+          <div class="col-6">
+            <% if f.object.calculation_sheet.attached? %>
+              <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: "#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe %>
+            <% else %>
+              <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: false %>
+            <% end %>
+          </div>
+          <% if f.object.persisted? %>
+            <a class="btn btn-sm text-success ml-1 mt-2 align-self-center text-small mt-0" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path(id: f.object.to_param) %>" target="_blank">
+              <i class="fal fa-download"></i>
+            </a>
+          <% end %>
         </div>
 
         <div class="form-row">
@@ -227,22 +239,6 @@
             </div>
 
             <div class="col-12 col-md-6">
-              <div class="d-flex flex-row">
-                <div class="flex-grow-1">
-                  <% if f.object.calculation_sheet.attached? %>
-                    <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: "#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe %>
-                  <% else %>
-                    <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: false %>
-                  <% end %>
-                </div>
-                <% if f.object.persisted? %>
-                  <a class="btn btn-sm text-success ml-1 mt-2 align-self-center text-small mt-0" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path(id: f.object.to_param) %>" target="_blank">
-                    <i class="fal fa-download"></i>
-                  </a>
-                <% end %>
-              </div>
-            </div>
-            <div class="col-12 col-md-12">
               <div class="d-block d-md-flex align-items-end">
                 <div class="flex-grow-1">
                   <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: {multiple: true}, label: 'Supplier quotes' %>
