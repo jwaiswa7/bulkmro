@@ -29,6 +29,10 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
     developer? && record == record.inquiry.final_sales_quote
   end
 
+  def reset_quote_for_manager?
+    record == record.inquiry.final_sales_quote && (['nilesh.desai@bulkmro.com', 'lavanya.jamma@bulkmro.com'].include? overseer.email)
+  end
+
   def preview?
     edit?
   end
@@ -39,6 +43,14 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
 
   def relationship_map?
     all_roles?
+  end
+
+  def reset_quote_form?
+    (['nilesh.desai@bulkmro.com', 'lavanya.jamma@bulkmro.com'].include? overseer.email)
+  end
+
+  def sales_quote_reset_by_manager?
+    reset_quote_form?
   end
 
   def get_relationship_map_json?
