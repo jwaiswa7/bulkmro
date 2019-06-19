@@ -26,9 +26,9 @@
                 <td align="left" style="width:25%;padding-left: 10px;padding-bottom: 5px;" valign="top">
                   <b><span>Customer Inquiry Reference</span></b></td>
                 <td align="left" style="width:25%; padding-left: 10px;padding-bottom: 5px;" valign="top">
-                    <span>
-                      This is Pending
-                    </span>
+                  <span>
+                    <%= @packing_slip.outward_dispatch.sales_order.sales_quote.id %>
+                  </span>
                 </td>
               </tr>
               <tr>
@@ -68,7 +68,7 @@
                   <b><span>Box Details</span></b>
                 </td>
                 <td align="left" style="border-top: 1px solid #3c3c3c;padding-left: 10px;padding-bottom: 5px;" valign="top">
-                  <span><%= "#{locals[:packing_slip].box_detail}" %></span></td>
+                  <span><%= "#{locals[:packing_slip].box_dimension}" %></span></td>
               </tr>
               </tbody>
             </table>

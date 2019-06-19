@@ -28,7 +28,7 @@ class Services::Overseers::Finders::OutwardDispatches < Services::Overseers::Fin
       multi_match: {
                         query: query,
                         operator: 'and',
-                        fields: %w[inquiry_number_string sales_order_number_string ar_invoice_request_no]
+                        fields: %w[inquiry_number_string sales_order_number_string ar_invoice_request_number_string]
                     }
     )
 

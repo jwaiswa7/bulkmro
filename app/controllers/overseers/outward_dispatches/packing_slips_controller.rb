@@ -101,7 +101,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
         :id,
         :outward_dispatch_id,
         :box_number,
-        :box_detail,
+        :box_dimension,
         rows_attributes: [:id, :ar_invoice_request_row_id, :delivery_quantity, :packing_slip_id, :_destroy]
       )
     end
