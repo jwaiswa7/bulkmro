@@ -86,6 +86,7 @@ Rails.application.routes.draw do
     resources :acl_resources do
       collection do
         get 'resource_json'
+        get 'menu_resource_json'
       end
     end
 
@@ -141,6 +142,7 @@ Rails.application.routes.draw do
       member do
         patch 'save_acl_resources'
         get 'get_resources'
+        get 'get_menu_resources'
         get 'edit_acl'
         patch 'update_acl'
       end
@@ -153,6 +155,7 @@ Rails.application.routes.draw do
     resources :acl_roles do
       member do
         get 'get_acl'
+        get 'get_acl_menu'
         get 'get_role_resources'
         post 'save_role'
       end

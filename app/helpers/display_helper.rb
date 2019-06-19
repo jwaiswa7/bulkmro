@@ -295,10 +295,8 @@ module DisplayHelper
     else
       action_name = action if action.present?
       allowed_resources = ActiveSupport::JSON.decode(current_overseer.acl_resources)
-      default_resources = get_acl_resource_json
-      parsed_json = ActiveSupport::JSON.decode(default_resources)
-      resource_ids = {}
-      parsed_json.map {|x| resource_ids[x['text']] = {}; x['children'].map {|y| resource_ids[x['text']][y['text']] = y['id'] if y['text'].present?}}
+      resource_ids = get_acl_resource_ids
+
       if model.is_a?(ActiveRecord::Base)
         resource_model = model.class.name.underscore.downcase
       elsif model.is_a?(ActiveRecord::Relation)
@@ -306,7 +304,7 @@ module DisplayHelper
       else
         resource_model = model.to_s.gsub(':', '')
       end
-      # raise if resource_model == 'remote_request'
+
       if resource_ids[resource_model].blank? || resource_ids[resource_model][action_name].blank?
         authorised = false
       elsif allowed_resources.include? resource_ids[resource_model][action_name].to_s
@@ -316,7 +314,9 @@ module DisplayHelper
     authorised
   end
 
-  def get_acl_resource_json
-    Rails.cache.fetch('acl_resource_json')
+  def get_acl_resource_ids
+    Rails.cache.fetch('acl_resource_ids', expires_in: 3.hours) do
+      AclResource.acl_resource_ids
+    end
   end
 end

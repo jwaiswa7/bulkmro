@@ -49,60 +49,40 @@ class Overseers::AclResourcesController < Overseers::BaseController
     end
   end
 
+  def menu_resource_json
+    refresh_acl_menu_resource_json
+    render json: Rails.cache.fetch('acl_menu_resource_json')
+  end
+
   def resource_json
-    resource_json = []
-    models = []
-    children = []
-    acl_parent = []
-    Rails.cache.delete('acl_resource_json')
-    Rails.cache.fetch('acl_resource_json', expires_in: 3.hours) do
-
-      AclResource.all.order(resource_model_name: :asc).each do |acl_resource|
-        if !models.include? acl_resource.resource_model_name
-          if children.present? && children.size > 0
-            acl_parent.children = children
-            resource_json.push(acl_parent.marshal_dump)
-            children = []
-          end
-
-          models << acl_resource.resource_model_name
-
-          #Parent Node
-          acl_parent = OpenStruct.new
-          acl_parent.id = acl_resource.id
-          acl_parent.text = acl_resource.resource_model_name
-          acl_parent.checked = false
-          acl_parent.hasChildren = true
-
-          #First Child Node
-          acl_row = OpenStruct.new
-          acl_row.id = acl_resource.id
-          acl_row.text = acl_resource.resource_action_name
-          acl_row.checked = false
-          acl_row.hasChildren = false
-          children.push(acl_row.marshal_dump)
-        else
-          acl_row = OpenStruct.new
-          acl_row.id = acl_resource.id
-          acl_row.text = acl_resource.resource_action_name
-          acl_row.checked = false
-          acl_row.hasChildren = false
-          children.push(acl_row.marshal_dump)
-        end
-      end
-
-      #Last child node
-      if children.present? && children.size > 0
-        acl_parent.children = children
-        resource_json.push(acl_parent.marshal_dump)
-        children = []
-      end
-
-      resource_json.to_json
-    end
-
+    refresh_acl_resource_json
     render json: Rails.cache.fetch('acl_resource_json')
     # authorize_acl :acl_resource
+  end
+
+
+  def refresh_acl_resource_json
+    refresh_acl_menu_resource_json
+    refresh_acl_resource_ids
+
+    Rails.cache.delete('acl_resource_json')
+    Rails.cache.fetch('acl_resource_json', expires_in: 3.hours) do
+      AclResource.acl_resource_json
+    end
+  end
+
+  def refresh_acl_menu_resource_json
+    Rails.cache.delete('acl_menu_resource_json')
+    Rails.cache.fetch('acl_menu_resource_json', expires_in: 3.hours) do
+      AclResource.acl_menu_resource_json
+    end
+  end
+
+  def refresh_acl_resource_ids
+    Rails.cache.delete('acl_resource_ids')
+    Rails.cache.fetch('acl_resource_ids', expires_in: 3.hours) do
+      AclResource.acl_resource_ids
+    end
   end
 
   private
@@ -110,7 +90,11 @@ class Overseers::AclResourcesController < Overseers::BaseController
   def acl_resource_params
     params.require(:acl_resource).permit(
         :resource_model_name,
-        :resource_action_name
+        :resource_model_alias,
+        :resource_action_name,
+        :resource_action_alias,
+        :sort_order,
+        :is_menu_item
     )
   end
 

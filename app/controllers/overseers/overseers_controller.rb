@@ -1,5 +1,5 @@
 class Overseers::OverseersController < Overseers::BaseController
-  before_action :set_overseer, only: [:edit, :update, :save_acl_resources, :get_resources, :edit_acl, :update_acl]
+  before_action :set_overseer, only: [:edit, :update, :save_acl_resources, :get_resources, :get_menu_resources, :edit_acl, :update_acl]
 
   def index
     # service = Services::Overseers::Finders::Overseers.new(params)
@@ -40,20 +40,24 @@ class Overseers::OverseersController < Overseers::BaseController
     begin
       acl_role = AclRole.find(params[:acl_role_id])
       if acl_role.present?
-        @overseer.update_attribute(:acl_resources, params[:checkedIds].to_json)
+        checked_ids = params[:checked_ids]
+        menu_checked_ids = params[:menu_checked_ids]
+        checked_ids = checked_ids + menu_checked_ids
+
+        @overseer.update_attribute(:acl_resources, checked_ids.uniq.to_json)
         @overseer.update_attribute(:acl_role_id, acl_role.id)
-        render json: {success:1, message: 'Updated successfully.'}
+        render json: {success: 1, message: 'Updated successfully.'}
       else
-        render json: {success:0, message: 'Role not found.'}
+        render json: {success: 0, message: 'Role not found.'}
       end
     rescue StandardError => e
-      render json: {success:0, message: e}
+      render json: {success: 0, message: e}
     end
 
   end
 
   def update
-    @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! { |k, v| (k == 'password' || k == 'password_confirmation') && v.blank? })
+    @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! {|k, v| (k == 'password' || k == 'password_confirmation') && v.blank?})
     authorize_acl @overseer
     if @overseer.save_and_sync
       acl_role = AclRole.find(params[:overseer][:acl_role_id])
@@ -66,14 +70,36 @@ class Overseers::OverseersController < Overseers::BaseController
 
   def get_resources
 
-    default_resources = self.get_acl_resource_json
+    default_resources = get_acl_resource_json
     current_acl = @overseer.acl_resources
     parsed_json = ActiveSupport::JSON.decode(default_resources)
 
     if current_acl.present?
-      parsed_json.map{|x| x['children'].map{|y| if current_acl.include? y['id'].to_s;y['checked'] = true;end; y['text'] = y['text'].titleize }; x['text'] = x['text'].titleize }
+      parsed_json.map {|x| x['children'].map {|y|
+        if current_acl.include? y['id'].to_s;
+          y['checked'] = true;
+        end; y['text'] = y['text'].titleize}; x['text'] = x['text'].titleize}
     else
-      parsed_json.map{|x| x['children'].map{|y| y['text'] = y['text'].titleize }; x['text'] = x['text'].titleize }
+      parsed_json.map {|x| x['children'].map {|y| y['text'] = y['text'].titleize}; x['text'] = x['text'].titleize}
+    end
+
+    render json: parsed_json.to_json
+    # authorize_acl :overseer
+  end
+
+  def get_menu_resources
+
+    default_resources = get_acl_menu_resource_json
+    current_acl = @overseer.acl_resources
+    parsed_json = ActiveSupport::JSON.decode(default_resources)
+
+    if current_acl.present?
+      parsed_json.map {|x| x['children'].map {|y|
+        if current_acl.include? y['id'].to_s;
+          y['checked'] = true;
+        end; y['text'] = y['text'].titleize}; x['text'] = x['text'].titleize}
+    else
+      parsed_json.map {|x| x['children'].map {|y| y['text'] = y['text'].titleize}; x['text'] = x['text'].titleize}
     end
 
     render json: parsed_json.to_json
@@ -88,29 +114,29 @@ class Overseers::OverseersController < Overseers::BaseController
 
   private
 
-    def overseer_params
-      params.require(:overseer).permit(
+  def overseer_params
+    params.require(:overseer).permit(
         :first_name,
-          :last_name,
-          :role,
-          :parent_id,
-          :email,
-          :mobile,
-          :telephone,
-          :identifier,
-          :designation,
-          :department,
-          :function,
-          :geography,
-          :status,
-          :password,
-          :password_confirmation,
-          :acl_role,
-          :is_super_admin
-      )
-    end
+        :last_name,
+        :role,
+        :parent_id,
+        :email,
+        :mobile,
+        :telephone,
+        :identifier,
+        :designation,
+        :department,
+        :function,
+        :geography,
+        :status,
+        :password,
+        :password_confirmation,
+        :acl_role,
+        :is_super_admin
+    )
+  end
 
-    def set_overseer
-      @overseer = Overseer.find(params[:id])
-    end
+  def set_overseer
+    @overseer = Overseer.find(params[:id])
+  end
 end

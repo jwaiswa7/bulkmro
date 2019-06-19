@@ -12,7 +12,9 @@ json.data (@acl_resources) do |acl_resource|
                       end
                   ].join(' '),
                   acl_resource.resource_model_name,
+                  acl_resource.resource_model_alias,
                   acl_resource.resource_action_name,
+                  acl_resource.resource_action_alias,
                   format_date(acl_resource.created_at),
                   format_date(acl_resource.updated_at),
                   acl_resource.created_by.present? ? acl_resource.created_by.full_name : '-',

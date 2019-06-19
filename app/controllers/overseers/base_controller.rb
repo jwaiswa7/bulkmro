@@ -19,11 +19,7 @@ class Overseers::BaseController < ApplicationController
         @authorized = true
       else
         allowed_resources = ActiveSupport::JSON.decode(current_overseer.acl_resources)
-        default_resources = self.get_acl_resource_json
-        parsed_json = ActiveSupport::JSON.decode(default_resources)
-        resource_ids = {}
-        parsed_json.map {|x| resource_ids[x['text']] = {}; x['children'].map {|y| resource_ids[x['text']][y['text']] = y['id'] if y['text'].present?}}
-        # model.class.to_s.eql?'Symbol' ? resource_model = model.class.name.downcase : resource_model = model.to_s.gsub(':','')
+        resource_ids = get_acl_resource_ids
 
         if model.is_a?(ActiveRecord::Base)
           resource_model = model.class.name.underscore.downcase
@@ -46,68 +42,22 @@ class Overseers::BaseController < ApplicationController
     end
   end
 
-
   def get_acl_resource_json
     Rails.cache.fetch('acl_resource_json', expires_in: 3.hours) do
-      self.create_acl_resource_json
+      AclResource.acl_resource_json
     end
   end
 
-  def refresh_acl_resource_json
-    Rails.cache.delete('acl_resource_json')
-    Rails.cache.fetch('acl_resource_json', expires_in: 3.hours) do
-      self.create_acl_resource_json
+  def get_acl_menu_resource_json
+    Rails.cache.fetch('acl_menu_resource_json', expires_in: 3.hours) do
+      AclResource.acl_menu_resource_json
     end
   end
 
-  def create_acl_resource_json
-    resource_json = []
-    models = []
-    children = []
-    acl_parent = []
-
-    AclResource.all.order(resource_model_name: :asc).each do |acl_resource|
-      if !models.include? acl_resource.resource_model_name
-        if children.present? && children.size > 0
-          acl_parent.children = children
-          resource_json.push(acl_parent.marshal_dump)
-          children = []
-        end
-
-        models << acl_resource.resource_model_name
-
-        #Parent Node
-        acl_parent = OpenStruct.new
-        acl_parent.id = acl_resource.id
-        acl_parent.text = acl_resource.resource_model_name
-        acl_parent.checked = false
-        acl_parent.hasChildren = true
-
-        #First Child Node
-        acl_row = OpenStruct.new
-        acl_row.id = acl_resource.id
-        acl_row.text = acl_resource.resource_action_name
-        acl_row.checked = false
-        acl_row.hasChildren = false
-        children.push(acl_row.marshal_dump)
-
-      else
-        acl_row = OpenStruct.new
-        acl_row.id = acl_resource.id
-        acl_row.text = acl_resource.resource_action_name
-        acl_row.checked = false
-        acl_row.hasChildren = false
-        children.push(acl_row.marshal_dump)
-      end
+  def get_acl_resource_ids
+    Rails.cache.fetch('acl_resource_ids', expires_in: 3.hours) do
+      AclResource.acl_resource_ids
     end
-
-    #Last child node
-    if children.present? && children.size > 0
-      acl_parent.children = children
-      resource_json.push(acl_parent.marshal_dump)
-      children = []
-    end
-    resource_json.to_json
   end
 
   private

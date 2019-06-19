@@ -1,5 +1,8 @@
 <%#= render 'overseers/layouts/components/headway' %>
 
+<%# is_authorized(:account, 'index') %>
+<%# raise %>
+
 <div class="navbar navbar-expand-lg bg-light navbar-light sticky-top">
   <!-- Drawer Toggle -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,8 +50,8 @@
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, is_authorized(:account, 'index') %>
               <%= nav_dropdown_item 'Accounts Receivable', payment_collections_overseers_accounts_path, is_authorized(:account, 'payment_collections') %>
-              <%= nav_dropdown_item 'Ageing Report', ageing_report_overseers_accounts_path, is_authorized(:account, 'payment_collections') %>
-              <%= nav_dropdown_item 'Receipts', overseers_sales_receipts_path, is_authorized(:account, 'payment_collections') %>
+              <%= nav_dropdown_item 'Ageing Report', ageing_report_overseers_accounts_path, is_authorized(:account, 'ageing_report') %>
+              <%= nav_dropdown_item 'Receipts', overseers_sales_receipts_path, is_authorized(:sales_receipt, 'index') %>
             </ul>
           </div>
           <%= nav_dropdown_item 'Companies', overseers_companies_path, is_authorized(:company, 'index') %>

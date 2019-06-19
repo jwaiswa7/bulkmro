@@ -5,14 +5,21 @@
 
 <% provide :heading_buttons do %>
   <div class="btn-group">
-    <a target="_blank" href="<%= resource_json_overseers_acl_resources_path(format: :json) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales orders" ><i class="fa fa-refresh mr-1"></i>Refresh Resources Cache</a>
+    <a target="_blank" href="<%= resource_json_overseers_acl_resources_path(format: :json) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales orders"><i class="fa fa-refresh mr-1"></i>Refresh
+      Resources Cache</a>
+  </div>
+  <div class="btn-group">
+    <a target="_blank" href="<%= menu_resource_json_overseers_acl_resources_path(format: :json) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales orders"><i class="fa fa-refresh mr-1"></i>Refresh
+      Menu Resources Cache</a>
   </div>
 <% end %>
 
 <% content_for :header_row do %>
   <th class="no-sort all" data-width="70px"></th>
   <th class="no-sort all">Model Name</th>
+  <th class="no-sort all">Model Alias</th>
   <th class="no-sort all">Action name</th>
+  <th class="no-sort all">Action Alias</th>
   <th class="no-sort desktop text-right">Created At</th>
   <th class="no-sort desktop text-right">Updated At</th>
   <th class="no-sort desktop text-right">Created By</th>

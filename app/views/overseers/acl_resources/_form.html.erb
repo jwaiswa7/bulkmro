@@ -7,11 +7,23 @@
         <%= render 'shared/snippets/form_errors', f: f %>
         <div>
           <div class="form-row">
-            <div class="col-12">
+            <div class="col-6">
               <%= f.input :resource_model_name %>
             </div>
-            <div class="col-12">
+            <div class="col-6">
+              <%= f.input :resource_model_alias %>
+            </div>
+            <div class="col-6">
               <%= f.input :resource_action_name %>
+            </div>
+            <div class="col-6">
+              <%= f.input :resource_action_alias %>
+            </div>
+            <div class="col-6">
+              <%= f.input :sort_order %>
+            </div>
+            <div class="col-12">
+              <%= f.input :is_menu_item %>
             </div>
           </div>
         </div>

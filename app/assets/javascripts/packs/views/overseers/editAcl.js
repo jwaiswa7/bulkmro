@@ -12,17 +12,27 @@ const editAcl = () => {
             lazyLoading: true
         });
 
+        var menu_tree = $('#menu_tree').tree({
+            primaryKey: 'id',
+            uiLibrary: 'bootstrap4',
+            dataSource: Routes.get_menu_resources_overseers_overseer_path($('#tree').attr('data-overseer'), {format: "json"}),
+            checkboxes: true,
+            lazyLoading: true
+        });
+
+
         // tree.collapseAll();
 
         $('#btnSave').on('click', function () {
-            var checkedIds = tree.getCheckedNodes();
+            var checked_ids = tree.getCheckedNodes();
+            var menu_checked_ids = menu_tree.getCheckedNodes();
             $.ajax({
                 url: Routes.update_acl_overseers_overseer_path(
                     $('#tree').attr('data-overseer'),
                     {format: "json"}
                 ),
                 dataType: 'json',
-                data: {checkedIds: checkedIds, acl_role_id: $('#overseer_acl_role_id').val()},
+                data: {checked_ids: checked_ids, menu_checked_ids: menu_checked_ids, acl_role_id: $('#overseer_acl_role_id').val()},
                 method: 'PATCH'
             })
                 .done(function( data ) {
