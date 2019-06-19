@@ -54,7 +54,7 @@ wb.add_worksheet(name: 'ArInvoiceRequest') do |sheet|
             'Outward',
             'Supply',
             'Tax Invoice',
-            '',
+            @ar_invoice_request.ar_invoice_number,
             '',
             @inquiry.company.name,
             @sales_order.serialized_shipping_address.gst || @inquiry.company.default_shipping_address.gst,
