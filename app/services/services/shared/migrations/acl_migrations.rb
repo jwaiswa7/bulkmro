@@ -36,7 +36,8 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   # 3. Create roles and assign role resources
   #
   def create_new_roles
-    # AclRole.all.destroy_all
+    Overseer.update_all(:acl_role_id => nil)
+    AclRole.all.destroy_all
 
     # Create admin role with all permissions
     acl_role = AclRole.where(:role_name => 'Admin').first_or_create!
@@ -103,17 +104,21 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       acl_role.save
     end
 
+    #Assign default resources
+    set_default_resources_to_all_roles
+
+    #Assign roles to all overseers
+    assign_roles_to_overseers
   end
 
   #4 Set default resources to all roles
   def set_default_resources_to_all_roles
-    AclRole.where.not(:role_name => 'Default - Read Only').each do |role|
+    AclRole.all.each do |role|
       resources = []
       role_resources = ActiveSupport::JSON.decode(role.role_resources)
-      role_resources << get_default_resource_list
-      role_resources.map {|x| resources << x.to_s}
-      role_resources = resources.uniq
-      role.role_resources = role_resources.to_json
+      role_resources =  role_resources + get_default_resource_list
+      role_resources.uniq.map {|x| resources << x.to_s}
+      role.role_resources = resources.to_json
       role.save
     end
   end
