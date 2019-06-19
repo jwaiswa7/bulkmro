@@ -8,7 +8,7 @@ class Company < ApplicationRecord
   include Mixins::HasPaymentCollections
 
   update_index('companies#company') {self}
-  pg_search_scope :locate, against: [:name], associated_against: { account: [:name] }, using: {tsearch: {prefix: true}}
+  pg_search_scope :locate, against: [:name], associated_against: {}, using: {tsearch: {prefix: true}}
 
   attr_accessor :account_name, :acc_type
   belongs_to :account
