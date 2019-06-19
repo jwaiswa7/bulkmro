@@ -28,3 +28,6 @@ service.call
 
 service = Services::Shared::Migrations::MultipleSalesQuotesWithSameProduct.new(%w(merge_sales_quote_duplicate_product_rows), folder: 'seed_files')
 service.call
+
+service = Services::Shared::Migrations::MigrationsV2.new(%w(oct_to_march_mismatch), folder: 'seed_files')
+service.call
