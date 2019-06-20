@@ -45,7 +45,8 @@
   <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
   <% if sales_order.present? %>
     <% if sales_order.calculated_total_margin_percentage.to_f < 10.0 %>
-      <% if is_authorized(sales_order,'approve_low_margin') && policy(sales_order).approve_low_margin? %>
+      <% if is_authorized(sales_order,'approve_low_margin')  %>
+<!--        && policy(sales_order).approve_low_margin?-->
           <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' %>
       <% else %>
         <span data-toggle='tooltip' title="Margin is below 10%; need Devang Shah's, Gaurang Shah's or Nilesh Desai's approval to move forward">
