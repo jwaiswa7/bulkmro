@@ -13,7 +13,15 @@ class Overseers::AddressPolicy < Overseers::ApplicationPolicy
     super && record.company.is_active if record.company.present?
   end
 
+  def is_sez_params?
+    edit?
+  end
+
   def warehouse_addresses?
+    true
+  end
+
+  def get_gst_code?
     true
   end
 end

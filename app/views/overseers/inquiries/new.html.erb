@@ -1,5 +1,8 @@
 <div class="col-lg-12">
   <%= render 'shared/snippets/page_header', e: @inquiry %>
-
-  <%= render 'overseers/inquiries/form' %>
+  <% if params[:company_id].present? %>
+    <%= render 'overseers/inquiries/form' %>
+  <% else %>
+    <%= render 'overseers/inquiries/primary_fields_form' %>
+  <% end %>
 </div>
