@@ -4,6 +4,9 @@ json.data (@overseers) do |overseer|
                       if policy(overseer).edit?
                         row_action_button(edit_overseers_overseer_path(overseer), 'pencil', 'Edit Overseer', 'warning')
                       end,
+                   if policy(overseer).add_password_form?
+                       row_action_button(add_password_form_overseers_overseer_path(overseer), 'pencil', 'EditPassword Overseer', 'danger')
+                   end
                   ].join(' '),
                   overseer.hierarchy_to_s,
                   format_enum(overseer.role),

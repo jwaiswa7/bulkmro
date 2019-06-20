@@ -131,7 +131,12 @@ Rails.application.routes.draw do
       end
     end
     resource :profile, :controller => :profile, except: [:show, :index]
-    resources :overseers, except: [:show]
+    resources :overseers, except: [:show] do
+      member do
+        get 'add_password_form'
+        patch 'update_password'
+      end
+    end
 
     resources :suppliers do
       collection do

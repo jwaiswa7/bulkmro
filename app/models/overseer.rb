@@ -27,6 +27,10 @@ class Overseer < ApplicationRecord
   validates_presence_of :email
   validates_presence_of :password, if: :new_record?
   validates_presence_of :password_confirmation, if: :new_record?
+  # validates_presence_of :password
+  # validates_confirmation_of :password, if: :new_record?
+  # validates_confirmation_of :password, if: :smtp_password_changed?
+  # validates_presence_of :password_confirmation, if: :smtp_password_changed?
 
   after_initialize :set_defaults, if: :new_record?
 
