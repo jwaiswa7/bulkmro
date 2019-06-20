@@ -5,11 +5,11 @@ class Overseers::Inquiries::SalesInvoices::EmailMessagesController < Overseers::
 
   def new
     @email_message = @sales_invoice.email_messages.build(overseer: current_overseer, contact: @inquiry.contact, inquiry: @inquiry)
-    subject = "Ref# #{@inquiry.inquiry_number.to_s}- Your Order #{@inquiry.customer_po_number.to_s} - Delivery Notification."
+    subject = "Ref# #{@inquiry.inquiry_number}- Your Order #{@inquiry.customer_po_number} - Delivery Notification."
     @email_message.assign_attributes(
-        subject: subject,
-        body: SalesInvoiceMailer.acknowledgement(@email_message).body.raw_source,
-        auto_attach: true,
+      subject: subject,
+      body: SalesInvoiceMailer.acknowledgement(@email_message).body.raw_source,
+      auto_attach: true,
         )
 
     authorize @sales_invoice, :new_email_message?
@@ -39,26 +39,23 @@ class Overseers::Inquiries::SalesInvoices::EmailMessagesController < Overseers::
 
   private
 
-  def email_message_params
-    params.require(:email_message).permit(
+    def email_message_params
+      params.require(:email_message).permit(
         :subject,
-        :body,
-        :to,
-        :cc,
-        :bcc,
-        files: []
-    )
-  end
-
-  def set_sales_invoice
-    @inquiry = Inquiry.find(params[:inquiry_id])
-    @sales_invoice = @inquiry.invoices.find(params[:sales_invoice_id])
-    @locals = { stamp: false }
-    if params[:stamp].present?
-      @locals = { stamp: true }
+          :body,
+          :to,
+          :cc,
+          :bcc,
+          files: []
+      )
     end
-  end
 
-
+    def set_sales_invoice
+      @inquiry = Inquiry.find(params[:inquiry_id])
+      @sales_invoice = @inquiry.invoices.find(params[:sales_invoice_id])
+      @locals = { stamp: false }
+      if params[:stamp].present?
+        @locals = { stamp: true }
+      end
+    end
 end
-

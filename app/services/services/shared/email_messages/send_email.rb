@@ -5,10 +5,9 @@ class Services::Shared::EmailMessages::SendEmail < Services::Shared::EmailMessag
 
   def new
     @email_message = @entity.email_messages.build(overseer: current_overseer, contact: @entity.contact, inquiry: @entity)
-    @email_message.assign_attributes(
-        subject: @entity.subject,
+    @email_message.assign_attributes(subject: @entity.subject,
         body: InquiryMailer.acknowledgement(@email_message).body.raw_source,
-        )
+    )
 
     authorize @entity, :new_email_message?
   end
@@ -37,14 +36,14 @@ class Services::Shared::EmailMessages::SendEmail < Services::Shared::EmailMessag
 
   private
 
-  def email_message_params
-    params.require(:email_message).permit(
+    def email_message_params
+      params.require(:email_message).permit(
         :subject,
-        :body,
-        :to,
-        :cc,
-        :bcc,
-        files: []
-    )
-  end
+          :body,
+          :to,
+          :cc,
+          :bcc,
+          files: []
+      )
+    end
 end
