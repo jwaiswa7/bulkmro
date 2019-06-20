@@ -71,7 +71,7 @@ class Overseers::OverseersController < Overseers::BaseController
   def get_resources
 
     default_resources = get_acl_resource_json
-    current_acl = @overseer.acl_resources
+    current_acl = ActiveSupport::JSON.decode(@overseer.acl_resources)
     parsed_json = ActiveSupport::JSON.decode(default_resources)
 
     if current_acl.present?
@@ -90,11 +90,12 @@ class Overseers::OverseersController < Overseers::BaseController
   def get_menu_resources
 
     default_resources = get_acl_menu_resource_json
-    current_acl = @overseer.acl_resources
+    current_acl = ActiveSupport::JSON.decode(@overseer.acl_resources)
     parsed_json = ActiveSupport::JSON.decode(default_resources)
 
     if current_acl.present?
       parsed_json.map {|x| x['children'].map {|y|
+        # raise
         if current_acl.include? y['id'].to_s;
           y['checked'] = true;
         end; y['text'] = y['text'].titleize}; x['text'] = x['text'].titleize}
