@@ -39,6 +39,22 @@ const edit = () => {
                 });
         });
 
+        $('#checkAllMenu').on('click', function () {
+            menu_tree.checkAll();
+        });
+
+        $('#uncheckAllMenu').on('click', function () {
+            menu_tree.uncheckAll();
+        });
+
+        $('#expandMenu').on('click', function () {
+            menu_tree.expandAll();
+        });
+
+        $('#collapseMenu').on('click', function () {
+            menu_tree.collapseAll();
+        });
+
         $('#checkAll').on('click', function () {
             tree.checkAll();
         });
@@ -54,6 +70,8 @@ const edit = () => {
         $('#collapse').on('click', function () {
             tree.collapseAll();
         });
+
+        $('.fa-spinner-third').hide()
 
     });
 };

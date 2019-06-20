@@ -26,6 +26,7 @@ const editAcl = () => {
         $('#btnSave').on('click', function () {
             var checked_ids = tree.getCheckedNodes();
             var menu_checked_ids = menu_tree.getCheckedNodes();
+            // alert(menu_checked_ids)
             $.ajax({
                 url: Routes.update_acl_overseers_overseer_path(
                     $('#tree').attr('data-overseer'),

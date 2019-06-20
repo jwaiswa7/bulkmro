@@ -17,7 +17,9 @@ class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
     true
   end
 
+
   def edit_acl?
+    # overseer != record
     true
   end
 

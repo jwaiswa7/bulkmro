@@ -4,7 +4,7 @@ json.data (@overseers) do |overseer|
                       if is_authorized('overseer','edit')
                         row_action_button(edit_overseers_overseer_path(overseer), 'pencil', 'Edit Overseer', 'warning')
                       end,
-                      if is_authorized('overseer','edit')
+                      if is_authorized('overseer','edit') && policy(overseer).edit_acl?
                         row_action_button(edit_acl_overseers_overseer_path(overseer), 'lock', 'Edit ACL', 'success')
                       end
                   ].join(' '),

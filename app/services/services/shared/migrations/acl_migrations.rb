@@ -208,6 +208,28 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     @default_resource_list = access_to_all_resource_ids
   end
 
+  def create_acl_menu_resource_json
+    service = Services::Shared::Spreadsheets::CsvImporter.new('acl_menu_resources.csv', 'seed_files_3')
+    sort_order = 1
+    service.loop(nil) do |x|
+      parent_menu = x.get_column('Parent Menu')
+      submenu = x.get_column('Submenu')
+      resource_model_name = x.get_column('Module').downcase.strip
+      resource_action_name = x.get_column('Action').downcase.strip
+
+      acl_resource = AclResource.where(:resource_model_name => resource_model_name, :resource_action_name => resource_action_name).first_or_create!
+
+      if acl_resource.present?
+        acl_resource.resource_model_alias = parent_menu
+        acl_resource.resource_action_alias = submenu
+        acl_resource.sort_order = sort_order
+        acl_resource.is_menu_item = true
+        acl_resource.save
+        sort_order = sort_order + 1
+      end
+    end
+  end
+
   #NOT USED ANYMORE
   def create_acl_roles
 

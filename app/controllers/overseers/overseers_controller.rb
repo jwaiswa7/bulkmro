@@ -41,8 +41,10 @@ class Overseers::OverseersController < Overseers::BaseController
       acl_role = AclRole.find(params[:acl_role_id])
       if acl_role.present?
         checked_ids = params[:checked_ids]
-        menu_checked_ids = params[:menu_checked_ids]
-        checked_ids = checked_ids + menu_checked_ids
+
+        if params[:menu_checked_ids].present?
+          checked_ids = checked_ids + params[:menu_checked_ids]
+        end
 
         @overseer.update_attribute(:acl_resources, checked_ids.uniq.to_json)
         @overseer.update_attribute(:acl_role_id, acl_role.id)
@@ -60,8 +62,8 @@ class Overseers::OverseersController < Overseers::BaseController
     @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! {|k, v| (k == 'password' || k == 'password_confirmation') && v.blank?})
     authorize_acl @overseer
     if @overseer.save_and_sync
-      acl_role = AclRole.find(params[:overseer][:acl_role_id])
-      @overseer.update_attributes(:acl_resources => acl_role.role_resources) if acl_role.present?
+      # acl_role = AclRole.find(params[:overseer][:acl_role_id])
+      # @overseer.update_attributes(:acl_resources => acl_role.role_resources) if acl_role.present?
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
     else
       render 'edit'
