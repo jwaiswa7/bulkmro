@@ -438,6 +438,8 @@ Rails.application.routes.draw do
           end
         end
 
+
+
         resources :sales_invoices do
           member do
             get 'edit_mis_date'
@@ -448,6 +450,10 @@ Rails.application.routes.draw do
             get 'make_zip'
             get 'relationship_map'
             get 'get_relationship_map_json'
+          end
+
+          scope module: 'sales_invoices' do
+            resources :email_messages
           end
         end
 

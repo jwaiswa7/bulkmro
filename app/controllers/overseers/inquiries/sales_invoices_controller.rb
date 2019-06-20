@@ -81,7 +81,6 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@sales_invoice.inquiry, [@sales_invoice.sales_order.sales_quote]).call
     render json: {data: inquiry_json}
   end
-
   private
 
     def save
@@ -102,6 +101,18 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
     def sales_invoice_params
       params.require(:sales_invoice).permit(:mis_date)
+    end
+
+
+    def email_message_params
+    params.require(:email_message).permit(
+        :subject,
+        :body,
+        :to,
+        :cc,
+        :bcc,
+        files: []
+    )
     end
 
     attr_accessor :locals
