@@ -32,12 +32,16 @@ const editAcl = () => {
                     {format: "json"}
                 ),
                 dataType: 'json',
-                data: {checked_ids: checked_ids, menu_checked_ids: menu_checked_ids, acl_role_id: $('#overseer_acl_role_id').val()},
+                data: {
+                    checked_ids: checked_ids,
+                    menu_checked_ids: menu_checked_ids,
+                    acl_role_id: $('#overseer_acl_role_id').val()
+                },
                 method: 'PATCH'
             })
-                .done(function( data ) {
+                .done(function (data) {
                     window.location.href = Routes.edit_acl_overseers_overseer_path($('#tree').attr('data-overseer'))
-                }) 
+                })
                 .fail(function () {
                     alert('Failed to save.');
                 });
@@ -47,27 +51,46 @@ const editAcl = () => {
             let role_id = $('#overseer_acl_role_id').val()
             $.ajax(Routes.get_role_resources_overseers_acl_role_path(role_id, {format: "json"}),   // request url
                 {
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.fa-spinner-third').show()
                         $('#tree').hide()
                     },
                     success: function (data, status, xhr) {// success callback function
                         tree.uncheckAll();
-                        $.each(data, function( index, value ) {
-                            tree.check(tree.getNodeById(value))
+                        $.each(data, function (index, value) {
+                            if (typeof tree.getNodeById(value) !== "undefined") {
+                                tree.check(tree.getNodeById(value))
+                            }
                         });
                         $('.fa-spinner-third').hide()
                         $('#tree').show()
                     },
-                    complete: function() {
+                    complete: function () {
                         $('.fa-spinner-third').hide()
                         $('#tree').show()
                     },
-                    error: function(xhr) { // if error occured
+                    error: function (xhr) { // if error occured
                         alert("Error occured.please try again");
                     }
                 });
         });
+
+        $('#checkAllMenu').on('click', function () {
+            menu_tree.checkAll();
+        });
+
+        $('#uncheckAllMenu').on('click', function () {
+            menu_tree.uncheckAll();
+        });
+
+        $('#expandMenu').on('click', function () {
+            menu_tree.expandAll();
+        });
+
+        $('#collapseMenu').on('click', function () {
+            menu_tree.collapseAll();
+        });
+
 
         $('#checkAll').on('click', function () {
             tree.checkAll();
