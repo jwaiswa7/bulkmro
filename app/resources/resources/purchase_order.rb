@@ -177,6 +177,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         PoDate: Time.now.strftime('%Y-%m-%d'),
         PoStatus: '63',
         DocNum: record.po_number,
+        HandWritten: "tYES",
         PoSupNum: '',
         PoSupBillFrom: po_request.supplier.billing_address.remote_uid,
         PoSupShipFrom: po_request.supplier.shipping_address.remote_uid,
@@ -192,7 +193,10 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         NumAtCard: '',
         DocCurrency: po_request.sales_order.currency.name,
         TaxDate: Time.now.strftime('%Y-%m-%d'),
-        DocDueDate: Time.now.strftime('%Y-%m-%d')
+        DocDueDate: Time.now.strftime('%Y-%m-%d'),
+        U_SalesMgr: po_request.inquiry.sales_manager.to_s,
+        U_In_Sales_Own: po_request.inquiry.inside_sales_owner.to_s,
+        U_Out_Sales_Own: po_request.inquiry.inside_sales_owner.to_s
     }
   end
 end

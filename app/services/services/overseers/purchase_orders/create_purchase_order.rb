@@ -73,18 +73,18 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
 
   def item_line_json
     rows_array = []
-    po_request.rows.each do |row|
-      rows_array << set_product(row)
+    po_request.rows.each_with_index do |index, row|
+      rows_array << set_product(row, index + 1)
     end
     rows_array
   end
 
 
-  def set_product(row)
+  def set_product(row, index)
     {
         'PopHsn': row.product.sku,
         'PopNum': '',
-        'Linenum': '0',
+        'Linenum': index,
         'PopQty': row.quantity.to_f,
         'OcrCode': '',
         'SlpCode': '79',
