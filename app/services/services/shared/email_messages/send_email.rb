@@ -39,11 +39,11 @@ class Services::Shared::EmailMessages::SendEmail < Services::Shared::EmailMessag
     def email_message_params
       params.require(:email_message).permit(
         :subject,
-          :body,
-          :to,
-          :cc,
-          :bcc,
-          files: []
+        :body,
+        :to,
+        :cc,
+        :bcc,
+        files: []
       )
     end
 end
