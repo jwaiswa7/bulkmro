@@ -24,8 +24,8 @@ class Overseers::Inquiries::SalesInvoices::EmailMessagesController < Overseers::
 
     authorize @sales_invoice, :create_email_message?
 
-    if  params["email_message"]["auto_attach"]
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice,@locals)), filename: @sales_invoice.filename(include_extension: true))
+    if  params['email_message']['auto_attach']
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, @locals)), filename: @sales_invoice.filename(include_extension: true))
     end
     if @email_message.save!
       SalesInvoiceMailer.send_acknowledgement(@email_message).deliver_now
