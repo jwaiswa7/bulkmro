@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   mount Maily::Engine, at: '/maily' if Rails.env.development?
   mount ActionCable.server, at: '/cable'
 
-  root :to => 'overseers/dashboard#show'
+  root to: 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
   get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
 
@@ -30,7 +30,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-    post '1de9b0a30075ae8c303eb420c103c320', :to => 'image_readers#update'
+    post '1de9b0a30075ae8c303eb420c103c320', to: 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
-    get "/docs/*page" => "docs#index"
+    get '/docs/*page' => 'docs#index'
     resources :payment_collection_emails
     resources :attachments
     resources :review_questions
@@ -49,7 +49,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :dashboard, :controller => :dashboard do
+    resource :dashboard, controller: :dashboard do
       get 'chewy'
       get 'reset_index'
       get 'serializer'
@@ -130,7 +130,7 @@ Rails.application.routes.draw do
         get 'reject'
       end
     end
-    resource :profile, :controller => :profile, except: [:show, :index]
+    resource :profile, controller: :profile, except: [:show, :index]
     resources :overseers, except: [:show]
 
     resources :suppliers do
@@ -227,7 +227,6 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
       end
-
     end
 
     resources :po_requests do
@@ -262,7 +261,6 @@ Rails.application.routes.draw do
         get 'render_comment_form'
         patch 'add_comment'
       end
-
     end
 
     resources :invoice_requests do
@@ -373,7 +371,6 @@ Rails.application.routes.draw do
       scope module: 'customer_orders' do
         resources :comments
         resources :inquiries do
-
         end
       end
 
@@ -574,11 +571,9 @@ Rails.application.routes.draw do
         end
 
         resources :purchase_orders do
-
         end
 
         resources :products do
-
         end
       end
     end
@@ -624,7 +619,6 @@ Rails.application.routes.draw do
     end
 
     resources :freight_requests do
-
       scope module: 'freight_requests' do
         resources :freight_quotes
       end
@@ -651,7 +645,6 @@ Rails.application.routes.draw do
         get 'add_delay_reason'
       end
     end
-
   end
 
   namespace 'customers' do
@@ -660,7 +653,7 @@ Rails.application.routes.draw do
       get 'edit_current_company'
       patch 'update_current_company'
     end
-    resource :profile, :controller => :profile, except: [:show, :index]
+    resource :profile, controller: :profile, except: [:show, :index]
 
     resources :reports, only: %i[index] do
       member do
@@ -675,7 +668,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :dashboard, :controller => :dashboard
+    resource :dashboard, controller: :dashboard
     resources :cart_items, only: %i[new create destroy update]
     resources :customer_orders, only: %i[index create show] do
       member do
@@ -692,7 +685,7 @@ Rails.application.routes.draw do
         resources :comments
       end
     end
-    resources :products, :controller => :customer_products, only: %i[index create show] do
+    resources :products, controller: :customer_products, only: %i[index create show] do
       collection do
         get 'generate_all'
         get 'most_ordered_products'
@@ -700,7 +693,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :quotes, :controller => :sales_quotes, only: %i[index show] do
+    resources :quotes, controller: :sales_quotes, only: %i[index show] do
       member do
         post 'inquiry_comments'
       end
@@ -714,19 +707,19 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :orders, :controller => :sales_orders, only: %i[index show] do
+    resources :orders, controller: :sales_orders, only: %i[index show] do
       collection do
         get 'export_all'
       end
     end
 
-    resources :invoices, :controller => :sales_invoices, only: %i[index show] do
+    resources :invoices, controller: :sales_invoices, only: %i[index show] do
       collection do
         get 'export_all'
       end
     end
 
-    resource :checkout, :controller => :checkout do
+    resource :checkout, controller: :checkout do
       collection do
         get 'final_checkout'
       end
@@ -742,7 +735,7 @@ Rails.application.routes.draw do
     #   end
     # end
 
-    resource :cart, :controller => :cart, except: [:index] do
+    resource :cart, controller: :cart, except: [:index] do
       collection do
         get 'checkout'
         post 'update_cart_details'
@@ -772,6 +765,5 @@ Rails.application.routes.draw do
         get 'contact_companies'
       end
     end
-
   end
 end
