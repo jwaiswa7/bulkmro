@@ -25,7 +25,12 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
 
   def get_logistics_owner(key)
     @logistics = Overseer.logistics.select('id, first_name, last_name')
-    @logistics.where(id: key).pluck(:first_name, :last_name).first.compact.join(' ')
+    @owner_ids = @logistics.pluck :id
+    if @owner_ids.include? key
+      @logistics.where(id: key).pluck(:first_name, :last_name).first.compact.join(' ')
+    else
+      ''
+    end
   end
 
   def add_delay_reason
