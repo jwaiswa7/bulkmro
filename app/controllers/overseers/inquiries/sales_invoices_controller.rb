@@ -84,25 +84,25 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
   private
 
-  def save
-    @sales_invoice.save
-  end
-
-  def set_sales_invoice
-    @sales_invoice = @inquiry.invoices.find(params[:id])
-    @locals = { stamp: false }
-    if params[:stamp].present?
-      @locals = { stamp: true }
+    def save
+      @sales_invoice.save
     end
-  end
 
-  def set_invoice_items
-    Resources::SalesInvoice.set_multiple_items([@sales_invoice.invoice_number])
-  end
+    def set_sales_invoice
+      @sales_invoice = @inquiry.invoices.find(params[:id])
+      @locals = { stamp: false }
+      if params[:stamp].present?
+        @locals = { stamp: true }
+      end
+    end
 
-  def sales_invoice_params
-    params.require(:sales_invoice).permit(:mis_date)
-  end
+    def set_invoice_items
+      Resources::SalesInvoice.set_multiple_items([@sales_invoice.invoice_number])
+    end
 
-  attr_accessor :locals
+    def sales_invoice_params
+      params.require(:sales_invoice).permit(:mis_date)
+    end
+
+    attr_accessor :locals
 end

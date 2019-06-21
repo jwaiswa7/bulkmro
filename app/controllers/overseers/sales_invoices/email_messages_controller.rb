@@ -1,5 +1,5 @@
 class Overseers::SalesInvoices::EmailMessagesController < Overseers::SalesInvoices::BaseController
-before_action :set_inquiry, only: [:new, :create]
+  before_action :set_inquiry, only: [:new, :create]
 
   def new
     @email_message = @sales_invoice.email_messages.build(overseer: current_overseer, contact: @inquiry.contact, inquiry: @inquiry, sales_invoice: @sales_invoice)
