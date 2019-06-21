@@ -14,6 +14,48 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
   end
 
+  def so_dump
+    columns = [
+        'Inquiry Number',
+        'Order Number',
+        'AE Parent Order Number',
+        'Order Date',
+        'MIS Date',
+        'Company Name',
+        'Company Alias',
+        'Order Net Amount',
+        'Order Tax Amount',
+        'Sprint Status',
+        'SAP Order Status',
+        'Quote Type',
+        'Opportunity Type'
+    ]
+
+    model = SalesOrder
+    csv_data = CSV.generate(write_headers: true, headers: columns) do |writer|
+      model.remote_approved.order(mis_date: :desc).find_each(batch_size: 2000) do |sales_order|
+        inquiry = sales_order.inquiry
+        writer << [
+            inquiry.try(:inquiry_number) || '',
+            sales_order.order_number,
+            sales_order.is_credit_note_entry ? SalesOrder.where(id: sales_order.parent_id).first.order_number : '',
+            sales_order.created_at.to_date.to_s,
+            sales_order.mis_date.present? ? sales_order.mis_date.to_date.to_s : '-',
+            inquiry.try(:account).try(:name),
+            inquiry.try(:company).try(:name) ? inquiry.try(:company).try(:name).gsub(/;/, ' ') : '',
+            (sales_order.calculated_total == 0 || sales_order.calculated_total == nil) ? 0 : '%.2f' % (sales_order.calculated_total),
+            ('%.2f' % sales_order.calculated_total_tax if sales_order.inquiry.present?),
+            sales_order.status,
+            sales_order.remote_status,
+            inquiry.try(:quote_category) || '',
+            inquiry.try(:opportunity_type) || ''
+        ]
+      end
+    end
+
+    fetch_csv('sprint_sales_orders_export.csv', csv_data)
+  end
+
   def company_wise_po_dump
     columns = ['Customer PO No.', 'Inquiry no.', 'Supplier PO no', 'Supplier name', 'Supplier PO date', 'Supplier PO status']
     inquiries = Inquiry.where(company_id: [8227, 8283])
@@ -1293,6 +1335,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   end
 
 
+
   def oct_to_march_mismatch
     column_headers = ['Inside Sales Name',
                       'Posting Date',
@@ -1439,7 +1482,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       puts 'AE ENTRIES', ae_entries, ae_entries.count
     end
 
-    fetch_csv('range_two_mismatch0010.csv', csv_data)
+    fetch_csv('mismatch_after_usd.csv', csv_data)
   end
 
   def update_selected_in_oct_to_march
@@ -1447,6 +1490,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     corrected = []
     tax_mismatch = []
     repeating_rows = []
+    order_being_processed = []
 
     repeating_matching_bible_rows = 0
     repeating_matching_rows_total = 0
@@ -1458,10 +1502,10 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     updated_orders_with_matching_total = []
     updated_orders_total = 0
     bible_total = 0
-    # 'BM9P9Y2-10211658','BM9P0U7-10212459', 'BM9P0U7-10212466',
-
-    selected = ['33341-BM9C6A0-10212550', '32963-BM9Y6N1-10212424', '32115-BM9P2I4-10212157', '27035-BM9P9Y2-10211658']
-    # selected= []
+    # selected = ['33341-BM9C6A0-10212550', '32963-BM9Y6N1-10212424', '32115-BM9P2I4-10212157', '27035-BM9P9Y2-10211658']
+    # selected = ['32291-BM9T7U6-10212558', '32291-BM9Y9T0-10212558'] # USD
+    # selected = ['BM9P0U7-10212459', 'BM9P0U7-10212466']
+    # selected = ['BM9R4B8-10610837', 'BM0C8G8-10211991', 'BM0O7C5-10211991']
 
     updates_correctly = ['31298-BM9Q0B2-10212546', '33341-BM9C6A0-10212550', '29459-BM9D4P4-10610738', '29459-BM9D4P3-10610738', '32963-BM9Y6N1-10212424', '29130-BM9I7E1-10610575', '29130-BM9Y9D0-10610575', '27427-BM9Z9T9-10211487', '30944-BM9G3O2-10610744', '28372-BM9A5Y0-10610498', '29130-BM9Q9L7-10610620', '29130-BM9F6D4-10610620', '29130-BM9V7Z4-10610627', '29130-BM9V5M3-10610627', '29130-BM9S1K4-10610627', '29130-BM9V7Z4-10610676', '29459-BM9G5Y3-10610738', '29459-BM9N9G5-10610738', '29459-BM1A4W7-10610738', '29459-BM0N1S2-10610738', '29459-BM0K9A5-10610738', '29459-BM9E7D8-10610738', '30229-BM9U9B5-10211632', '30229-BM9W8U3-10211632', '30229-BM9P8H5-10211632', '30229-BM9Z6T2-10211632', '30229-BM9R7E3-10211632', '30229-BM9R7U2-10211632', '30229-BM9R4Y5-10211632', '30229-BM9R2H4-10211632', '30229-BM9Q2C6-10211632', '30229-BM9V6H6-10211632', '29459-BM9N1N3-10610738', '31727-BM9U9B5-10212120', '31727-BM9W8U3-10212120', '31727-BM9P8H5-10212120', '31727-BM9Z6T2-10212120', '31727-BM9R7E3-10212120', '31727-BM9R7U2-10212120', '31727-BM9R4Y5-10212120', '31727-BM9R2H4-10212120', '31727-BM9Q2C6-10212120', '31727-BM9V6H6-10212120', '29459-BM9U2Z2-10610738', '29459-BM9M4J9-10610738', '29114-BM9D2A6-10211325', '30795-BM9F4G0-10211805', '31977-BM9J8I6-10610838', '33100-BM9Q3B2-10610949', '33118-BM9Q7X0-10212502', '31281-BM99992-10211991', '30239-BM4H8M5-10610693', '26252-BM9P7B6-10211307', '32909-BM9P0U7-10212459', '32909-BM9P0U7-10212466', '29095-BM9Q1T8-10211322', '30239-BM4H8M5-10610668', '29568-BM9U6V6-10211502', '25225-BM9P2X7-10610556', '31036-BM9Y7G7-10212272', '27986-BM9R6D3-10610467', '28044-BM9Q3J6-10211131', '28043-BM9U6V6-10211118', '28146-BM9R1P5-10211132', '26644-BM9M5D3-11410025', '31500-BM9B7V0-10212221', '31500-BM9O7Q3-10212221', '32115-BM9P2I4-10212157']
     i = 0
@@ -1473,7 +1517,11 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       product_sku = x.get_column('Bm #').to_s.upcase
       current_row = product_sku + '-' + order_number
       # next if product_sku == 'BM00008'
-      next if !selected.include?(x.get_column('Inquiry Number') + '-' + current_row)
+      # x.get_column('Inquiry Number') + '-' + current_row
+      # next if !selected.include?(current_row) || x.get_column('Price Currency') != 'USD'
+      # next if !selected.include?(current_row)
+
+      next if x.get_column('Inquiry Number').to_i == 32291 || x.get_column('Price Currency') != 'USD'
       if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
         if order_number == 'Not Booked'
           inquiry_orders = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number')).sales_orders
@@ -1494,6 +1542,31 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         puts '******************************** ITERATION *******************************', iteration
         iteration = iteration + 1
 
+        # if !order_being_processed.include?(sales_order.order_number)
+        #   if sales_order.inquiry.final_sales_quote == sales_order.sales_quote
+        #     overseer = Overseer.find_by_email('vijay.manjrekar@bulkmro.com')
+        #     binding.pry
+        #     revised_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(sales_order.sales_quote, overseer).call
+        #     revised_quote.save(validate: false)
+        #     revised_quote.update_attributes(created_at: DateTime.parse(x.get_column('Posting Date')).strftime('%Y-%m-%d %H:%M:%S'), sent_at: DateTime.parse(x.get_column('Posting Date')).strftime('%Y-%m-%d %H:%M:%S'))
+        #     binding.pry
+        #
+        #     extra_rows = revised_quote.rows.joins(:product).where.not(products: {sku: ['BM9P0U7']})
+        #     extra_rows.delete_all
+        #
+        #     sales_order.update_attributes(sales_quote_id: revised_quote.id)
+        #     order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
+        #     quote_row = revised_quote.rows.joins(:product).where('products.sku = ?', product_sku).first
+        #     order_row.update_attributes(sales_quote_row_id: quote_row.id)
+        #   end
+        # else
+        #   order_being_processed.push(sales_order.order_number)
+        # end
+        #
+        # order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
+        # quote_row = sales_order.sales_quote.rows.joins(:product).where('products.sku = ?', product_sku).first
+        # order_row.update_attributes(sales_quote_row_id: quote_row.id)
+
         bible_order_row_total = x.get_column('Total Selling Price').to_f.round(2)
         bible_order_tax_total = x.get_column('Tax Amount').to_f
         bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
@@ -1504,14 +1577,22 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
           tax_rate_percentage = x.get_column('Tax Rate').split('%')[0].to_d
           tax_rate = TaxRate.where(tax_percentage: tax_rate_percentage).first
-          binding.pry
           quote_row.quantity = x.get_column('Order Qty').to_f
           quote_row.unit_selling_price = x.get_column('Unit Selling Price').to_f
-          quote_row.converted_unit_selling_price = x.get_column('Unit Selling Price').to_f
+          if x.get_column('Price Currency') == 'USD'
+            quote_row.inquiry.inquiry_currency.conversion_rate = x.get_column('Document Rate').to_d
+            quote_row.inquiry.inquiry_currency.save(validate: false)
+            quote_row.converted_unit_selling_price = (x.get_column('Unit Selling Price').to_f/x.get_column('Document Rate').to_f)
+
+            quote_row.freight_cost_subtotal = 0
+            quote_row.unit_freight_cost = 0
+          else
+            quote_row.converted_unit_selling_price = x.get_column('Unit Selling Price').to_f
+          end
+          quote_row.inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('Unit cost price').to_f)
           quote_row.margin_percentage = x.get_column('Margin (In %)').split('%')[0].to_d
           quote_row.tax_rate = tax_rate || nil
           quote_row.legacy_applicable_tax_percentage = tax_rate_percentage.to_d || nil
-          quote_row.inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('Unit cost price').to_f)
           quote_row.created_at = Date.parse(x.get_column('Posting Date')).strftime('%Y-%m-%d')
           quote_row.save(validate: false)
           puts '****************************** QUOTE ROW SAVED ****************************************'
@@ -1525,11 +1606,11 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           puts '****************************** ORDER ROW SAVED ****************************************'
           sales_order.save(validate: false)
           puts '****************************** ORDER SAVED ****************************************'
-          binding.pry
           new_row_total = order_row.total_selling_price.to_f.round(2)
           new_row_total_with_tax = order_row.total_selling_price_with_tax.to_f.round(2)
           tax_amount = ((tax_rate_percentage.to_f / 100) * new_row_total).to_f.round(2)
 
+          binding.pry
           if (order_row.total_tax.to_f.round(2) == tax_amount) && (new_row_total == bible_order_row_total)
             if updated_orders_with_matching_total_with_tax.include?(current_row)
               repeating_rows.push(current_row)
