@@ -8,38 +8,38 @@
       <%= render 'overseers/companies/common_form', :f => f %>
     <% else %>
       <div class="card">
-        <div class="card-footer">
-          <div class="form-row">
-            <div class="form-check-inline">
-              <div class="col-12">
-                <label class="d-flex justify-content-center align-items-center flex-row">
-                  <input type="radio" name="account" value="existing">&nbsp; Add existing Account
-                </label>
-              </div>
-              <div class="col-12">
-                <label class="d-flex justify-content-center align-items-center flex-row">
-                  <input type="radio" name="account" value="new">&nbsp; Add new Account
-                </label>
-              </div>
+        <div class="card-body">
+          <div class="form-row ">
+            <div class="col-md-6">
+              <label class="d-flex justify-content-center align-items-center flex-row btn btn-success">
+                <%= radio_button_tag :account, 'existing', class: 'custom-control-input' %> &nbsp; Add Existing Account
+              </label>
+            </div>
+            <div class="col-md-6">
+              <label class="d-flex justify-content-center align-items-center flex-row btn btn-success">
+                <%= radio_button_tag :account, 'new', class: 'custom-control-input' %> &nbsp; Add New Account
+              </label>
             </div>
           </div>
+          <br>
           <div class="new box">
-            <h6 class="text-uppercase mb-1 font-weight-bold">Add new Account details</h6>
-              <div class="form-row">
-                <div class="col-12">
-                  <%= f.input 'account_name' %>
-                </div>
-                <div class="col-12">
-                  <%= f.input 'acc_type', as: :select, include_blank: false, label: 'Account type', collection: enum_to_collection(Account.account_types) %>
-                </div>
+            <h6 class="text-uppercase text-black-50 mb-1">Add Account details</h6>
+            <div class="form-row">
+              <div class="col-12">
+                <%= f.input 'account_name' %>
               </div>
+              <div class="col-12">
+                <%= f.input 'acc_type', as: :select, include_blank: false, label: 'Account type', collection: enum_to_collection(Account.account_types) %>
+              </div>
+            </div>
           </div>
           <div class="existing box" id="existing">
             <%= f.association :account, collection: selected_option_or_nil(f, :account), input_html: {class: 'select2-ajax ', :'data-source' => autocomplete_overseers_accounts_path}, include_blank: 'Link company with account' %>
           </div>
-          <%= render 'overseers/companies/common_form', :f => f %>
         </div>
       </div>
+      <br>
+      <%= render 'overseers/companies/common_form', :f => f %>
     <% end %>
   <% end %>
 </div>

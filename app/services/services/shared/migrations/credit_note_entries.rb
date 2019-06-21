@@ -13,6 +13,7 @@ class Services::Shared::Migrations::CreditNoteEntries < Services::Shared::Migrat
     missing_sku = []
     # 8888888881
     # i = 8888888907
+    # 8888888910  31
     i = SalesOrder.where(is_credit_note_entry: true).order(order_number: :asc).last.order_number
     service = Services::Shared::Spreadsheets::CsvImporter.new('ae_entries_oct_to_march.csv', 'seed_files_3')
     duplicate_array = []

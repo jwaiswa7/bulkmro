@@ -478,6 +478,8 @@ Rails.application.routes.draw do
             get 'reset_quote'
             get 'relationship_map'
             get 'get_relationship_map_json'
+            get 'reset_quote_form'
+            patch 'sales_quote_reset_by_manager'
           end
 
           scope module: 'sales_quotes' do
