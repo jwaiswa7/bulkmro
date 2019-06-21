@@ -1,7 +1,7 @@
 class SalesInvoiceMailer < ApplicationMailer
   default template_path: "mailers/#{self.name.underscore}"
 
-  def acknowledgement(email_message)
+  def delivery_mail(email_message)
     @overseer = email_message.overseer
     @contact = email_message.contact
     @inquiry = email_message.inquiry
@@ -9,7 +9,7 @@ class SalesInvoiceMailer < ApplicationMailer
     standard_email(email_message)
   end
 
-  def send_acknowledgement(email_message)
+  def send_delivery_mail(email_message)
     @overseer = email_message.overseer
     @contact = email_message.contact
     @inquiry = email_message.inquiry

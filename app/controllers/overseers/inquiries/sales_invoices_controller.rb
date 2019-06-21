@@ -81,39 +81,28 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@sales_invoice.inquiry, [@sales_invoice.sales_order.sales_quote]).call
     render json: {data: inquiry_json}
   end
+
   private
 
-    def save
-      @sales_invoice.save
+  def save
+    @sales_invoice.save
+  end
+
+  def set_sales_invoice
+    @sales_invoice = @inquiry.invoices.find(params[:id])
+    @locals = { stamp: false }
+    if params[:stamp].present?
+      @locals = { stamp: true }
     end
+  end
 
-    def set_sales_invoice
-      @sales_invoice = @inquiry.invoices.find(params[:id])
-      @locals = { stamp: false }
-      if params[:stamp].present?
-        @locals = { stamp: true }
-      end
-    end
+  def set_invoice_items
+    Resources::SalesInvoice.set_multiple_items([@sales_invoice.invoice_number])
+  end
 
-    def set_invoice_items
-      Resources::SalesInvoice.set_multiple_items([@sales_invoice.invoice_number])
-    end
+  def sales_invoice_params
+    params.require(:sales_invoice).permit(:mis_date)
+  end
 
-    def sales_invoice_params
-      params.require(:sales_invoice).permit(:mis_date)
-    end
-
-
-    def email_message_params
-    params.require(:email_message).permit(
-        :subject,
-        :body,
-        :to,
-        :cc,
-        :bcc,
-        files: []
-    )
-    end
-
-    attr_accessor :locals
+  attr_accessor :locals
 end

@@ -1,14 +1,12 @@
-class Overseers::Inquiries::SalesInvoices::EmailMessagesController < Overseers::Inquiries::SalesInvoicesController
-  before_action :set_sales_invoice, only: [:new, :create]
-
-
+class Overseers::SalesInvoices::EmailMessagesController < Overseers::SalesInvoices::BaseController
+before_action :set_inquiry, only: [:new, :create]
 
   def new
-    @email_message = @sales_invoice.email_messages.build(overseer: current_overseer, contact: @inquiry.contact, inquiry: @inquiry)
+    @email_message = @sales_invoice.email_messages.build(overseer: current_overseer, contact: @inquiry.contact, inquiry: @inquiry, sales_invoice: @sales_invoice)
     subject = "Ref# #{@inquiry.inquiry_number}- Your Order #{@inquiry.customer_po_number} - Delivery Notification."
     @email_message.assign_attributes(
       subject: subject,
-      body: SalesInvoiceMailer.acknowledgement(@email_message).body.raw_source,
+      body: SalesInvoiceMailer.delivery_mail(@email_message).body.raw_source,
       auto_attach: true,
         )
 
@@ -16,7 +14,7 @@ class Overseers::Inquiries::SalesInvoices::EmailMessagesController < Overseers::
   end
 
   def create
-    @email_message = @sales_invoice.email_messages.build(overseer: current_overseer, contact: @inquiry.contact, inquiry: @inquiry)
+    @email_message = @sales_invoice.email_messages.build(overseer: current_overseer, contact: @inquiry.contact, inquiry: @inquiry, sales_invoice: @sales_invoice)
     @email_message.assign_attributes(email_message_params)
 
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:cc].present?
@@ -28,7 +26,7 @@ class Overseers::Inquiries::SalesInvoices::EmailMessagesController < Overseers::
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, @locals)), filename: @sales_invoice.filename(include_extension: true))
     end
     if @email_message.save!
-      SalesInvoiceMailer.send_acknowledgement(@email_message).deliver_now
+      SalesInvoiceMailer.send_delivery_mail(@email_message).deliver_now
       Services::Overseers::Inquiries::UpdateStatus.new(@sales_invoice, :ack_email_sent).call
 
       redirect_to overseers_sales_invoices_path, notice: flash_message(@sales_invoice, action_name)
@@ -50,9 +48,8 @@ class Overseers::Inquiries::SalesInvoices::EmailMessagesController < Overseers::
       )
     end
 
-    def set_sales_invoice
-      @inquiry = Inquiry.find(params[:inquiry_id])
-      @sales_invoice = @inquiry.invoices.find(params[:sales_invoice_id])
+    def set_inquiry
+      @inquiry = @sales_invoice.inquiry
       @locals = { stamp: true }
     end
 end

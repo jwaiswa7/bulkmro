@@ -22,11 +22,9 @@ json.data (@sales_invoices) do |sales_invoice|
                       end,
                       if policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count == 0)
                         row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success')
-                        row_action_button(new_overseers_inquiry_sales_invoice_email_message_path(sales_invoice.inquiry, sales_invoice), 'envelope', 'Email POD', 'success')
+                        row_action_button(new_overseers_sales_invoice_email_message_path(sales_invoice), 'envelope', 'Email POD', 'success')
                       end,
-                      # if policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count == 0)
-                      #   row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'envelope', 'Email POD', 'success')
-                      # end
+
                       if policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count > 0)
                         [
                             row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info'),
