@@ -13,6 +13,7 @@ class SalesInvoice < ApplicationRecord
   belongs_to :shipping_address, class_name: 'Address', required: false
 
   has_one :inquiry, through: :sales_order
+  has_one :sales_invoice
 
   has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice

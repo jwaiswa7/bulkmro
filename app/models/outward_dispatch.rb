@@ -4,6 +4,7 @@ class OutwardDispatch < ApplicationRecord
   belongs_to :ar_invoice_request, default: false
   belongs_to :sales_order, default: false
   has_many :packing_slips
+  has_many :email_messages
   scope :with_includes, -> { }
   update_index('outward_dispatches#outward_dispatch') {self}
 

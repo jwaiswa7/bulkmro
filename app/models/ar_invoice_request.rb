@@ -9,6 +9,7 @@ class ArInvoiceRequest < ApplicationRecord
   belongs_to :inquiry
   has_many :inward_dispatches
   has_many :outward_dispatches
+  belongs_to :sales_invoice, required: false
   validate :presence_of_reason
   after_save :send_notification_on_status_changed
 
@@ -44,19 +45,23 @@ class ArInvoiceRequest < ApplicationRecord
   }
 
   with_options if: :"Completed AR Invoice Request?" do |invoice_request|
-    invoice_request.validates_presence_of :ar_invoice_number
-    invoice_request.validates :ar_invoice_number, length: { is: 8 }, allow_blank: true
-    invoice_request.validates_numericality_of :ar_invoice_number, allow_blank: true
+    invoice_request.validates_presence_of :sales_invoice_id
+    # invoice_request.validates :ar_invoice_number, length: { is: 8 }, allow_blank: true
+    # invoice_request.validates_numericality_of :ar_invoice_number, allow_blank: true
   end
 
   def update_status(status)
     if ['Cancelled AR Invoice', 'AR Invoice Request Rejected'].include? (status)
       self.status = status
-    elsif self.ar_invoice_number.present?
+    elsif self.sales_invoice.present?
       self.status = :'Completed AR Invoice Request'
     else
       self.status = status
     end
+  end
+
+  def ar_invoice_number
+    self.sales_invoice.invoice_number if self.sales_invoice.present?
   end
 
   def send_notification_on_status_changed

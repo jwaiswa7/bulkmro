@@ -30,4 +30,11 @@ class Overseers::OutwardDispatchPolicy < Overseers::ApplicationPolicy
     admin? || logistics?
   end
 
+  def dispatch_mail_to_customer?
+    admin? || logistics?
+    end
+  def dispatch_mail_to_customer_notification?
+    dispatch_mail_to_customer?
+  end
+
 end

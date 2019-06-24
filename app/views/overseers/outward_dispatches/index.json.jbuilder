@@ -7,6 +7,9 @@ json.data (@outward_dispatches) do |outward_dispatch|
                       end,
                       if policy(outward_dispatch).can_create_packing_slip?
                         row_action_button(new_overseers_outward_dispatch_packing_slip_path(outward_dispatch), 'plus', 'Create Packing Slip', 'success', :_blank)
+                      end,
+                      if true
+                        row_action_button(dispatch_mail_to_customer_overseers_outward_dispatch_email_messages_path(outward_dispatch), 'envelope', 'Send Dispatch Mail', 'dark', :_blank)
                       end
                   ].join(' '),
                   outward_dispatch.packing_slips.map.with_index { |packing_slip,i| link_to("#{packing_slip.outward_dispatch.ar_invoice_request.ar_invoice_number}-#{i+1}", overseers_outward_dispatch_packing_slip_path(outward_dispatch, packing_slip), target: '_blank') }.compact.join(' '),

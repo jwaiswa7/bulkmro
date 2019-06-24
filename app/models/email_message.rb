@@ -8,6 +8,7 @@ class EmailMessage < ApplicationRecord
   belongs_to :purchase_order, required: false
   belongs_to :sales_order, required: false
   belongs_to :sales_invoice, required: false
+  belongs_to :outward_dispatch, required: false
 
   has_many_attached :files
 

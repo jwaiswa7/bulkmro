@@ -15,7 +15,7 @@ class Services::Overseers::ArInvoiceRequests::Update < Services::Shared::BaseSer
     elsif @ar_invoice.cancellation_reason_changed? && @ar_invoice.cancellation_reason != 'Others'
       @ar_invoice.other_cancellation_reason = nil
       @ar_invoice.save
-    elsif @ar_invoice.ar_invoice_number_changed?
+    elsif @ar_invoice.sales_invoice_id_changed?
       @ar_invoice_comment = ArInvoiceRequestComment.new(message: "AR invoice Number Changed: #{@ar_invoice.ar_invoice_number}", ar_invoice_request: @ar_invoice, overseer: current_overseer)
       @ar_invoice_comment.save
     else

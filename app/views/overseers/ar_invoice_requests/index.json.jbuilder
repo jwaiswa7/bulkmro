@@ -24,7 +24,7 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                       end
                   ].join(' '),
                   status_badge(ar_invoice.status),
-                  ar_invoice.id,
+                  ar_invoice.ar_invoice_number,
                   ar_invoice.inquiry.present? ? conditional_link(ar_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(ar_invoice.inquiry), policy(ar_invoice.inquiry).edit?) : '-',
                   ar_invoice.inquiry.company.to_s,
                   ar_invoice.sales_order.order_number,

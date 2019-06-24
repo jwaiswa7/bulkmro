@@ -299,6 +299,12 @@ Rails.application.routes.draw do
       end
       scope module: 'outward_dispatches' do
         resources :packing_slips
+        resources :email_messages do
+          collection do
+            get 'dispatch_mail_to_customer'
+            post 'dispatch_mail_to_customer_notification'
+          end
+        end
       end
     end
 
@@ -378,6 +384,7 @@ Rails.application.routes.draw do
         patch 'update_pod'
       end
       collection do
+        get 'autocomplete'
         get 'export_all'
         get 'export_rows'
         get 'export_for_logistics'

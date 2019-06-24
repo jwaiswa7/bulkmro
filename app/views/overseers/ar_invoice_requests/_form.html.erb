@@ -136,7 +136,11 @@
             </div>
 
             <div class="col-12">
-              <%= f.input :ar_invoice_number, as: :string, label: "AR Invoice Number", :input_html => {:maxlength => 8} %>
+              <% if f.object.persisted? %>
+                <div class="col-4">
+                  <%= f.association :sales_invoice, collection: [f.object.sales_invoice], label_method: :to_s, include_blank: 'Type AR Invoice Number', input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_sales_invoices_path(:inquiry_id => f.object.inquiry.id), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: 'AR Invoice Number' %>
+                </div>
+              <% end %>
             </div>
 
             <% if params[:action] == 'edit' %>

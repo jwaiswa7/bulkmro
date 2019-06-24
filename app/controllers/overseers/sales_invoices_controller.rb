@@ -80,6 +80,16 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     redirect_to url_for(Export.sales_invoice_logistics.last.report)
   end
 
+  def autocomplete
+    sales_invoices = SalesInvoice.all
+    if params[:inquiry_id].present?
+      sales_invoices = SalesInvoice.joins(:inquiry).where(inquiries: {id: params[:inquiry_id]})
+    end
+    @sales_invoices = ApplyParams.to(sales_invoices, params)
+
+    authorize :sales_invoice
+  end
+
   private
 
     def set_invoice
