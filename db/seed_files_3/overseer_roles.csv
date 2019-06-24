@@ -1,5 +1,5 @@
 id,email,role
-2,ashwin.goyal@bulkmro.com,Admin
+2,ashwin.goyal@bulkmro.com,Default - Read Only
 155,ravi.ranjan@bulkmro.com,Default - Read Only
 8,davinder.singh@bulkmro.com,Default - Read Only
 199,approver@bulkmro.com,Inside Sales Executive
@@ -14,21 +14,21 @@ id,email,role
 11,parveen.bano@bulkmro.com,Default - Read Only
 60,rupesh.desai@bulkmro.com,Default - Read Only
 31,sandeep.jannu@bulkmro.com,Default - Read Only
-171,paresh.suvarna@bulkmro.com,Admin
+171,paresh.suvarna@bulkmro.com,Default - Read Only
 13,saqib.shaikh@bulkmro.com,Default - Read Only
 24,vrushali.lawangare@bulkmro.com,Default - Read Only
 26,meenal.paradkar@bulkmro.com,Default - Read Only
 203,deepa.gade@bulkmro.com,Inside Sales Executive
 71,asif.rajwadkar@bulkmro.com,Default - Read Only
-188,trunal.shah@bulkmro.com,Cataloging
+188,trunal.shah@bulkmro.com,Default - Read Only
 34,mohit.sardana@bulkmro.com,Default - Read Only
 36,ali.shaikh@bulkmro.com,Default - Read Only
 222,manish.jadhav@bulkmro.com,Default - Read Only
-146,content@bulkmro.com,Inside Sales Executive
+146,content@bulkmro.com,Default - Read Only
 18,swapnil.bhogle@bulkmro.com,Default - Read Only
 43,swapnil.kadam@bulkmro.com,Default - Read Only
-241,syed.tajuddin@bulkmro.com,Outside Sales Executive
-160,praxis@bulkmro.com,Inside Sales Executive
+241,syed.tajuddin@bulkmro.com,Default - Read Only
+160,praxis@bulkmro.com,Default - Read Only
 20,mp.felix@bulkmro.com,Default - Read Only
 47,henisha.patel@bulkmro.com,Default - Read Only
 132,prashant.ramtekkar@bulkmro.com,Default - Read Only
@@ -47,7 +47,7 @@ id,email,role
 70,rehana.mulani@bulkmro.com,Default - Read Only
 5,sarika.tanawade@bulkmro.com,Inside Sales Executive
 28,paresh@dsnglobal.com,Default - Read Only
-161,akshay.jindal@bulkmro.com,Admin
+161,akshay.jindal@bulkmro.com,Accounts
 73,sachin.thakur@bulkmro.com,Default - Read Only
 148,abhishek.shingane@bulkmro.com,Default - Read Only
 191,pooja.tirwadkar@bulkmro.com,Default - Read Only
@@ -105,7 +105,7 @@ id,email,role
 116,ashish.dobariya@bulkmro.com,Outside Sales Executive
 187,oindrilla.paul@bulkmro.com,Inside Sales Executive
 80,mohammed.mujeebuddin@bulkmro.com,Outside Sales Executive
-200,ajay.kondal@bulkmro.com,Admin
+200,ajay.kondal@bulkmro.com,Accounts
 93,poonam.mohite@bulkmro.com,Inside Sales Team Leader
 192,abhishek.dolle@bulkmro.com,Default - Read Only
 193,sysadmin+test-api-user@bulkmro.com,Inside Sales Executive
@@ -120,10 +120,10 @@ id,email,role
 224,suyash.vichare@bulkmro.com,Inside Sales Executive
 178,vinayak.degwekar@bulkmro.com,Outside Sales Executive
 195,rajani.ong@bulkmro.com,Default - Read Only
-143,dinesh.kumar@bulkmro.com,Admin
+143,dinesh.kumar@bulkmro.com,Default - Read Only
 9,suvidha.shinde@bulkmro.com,Default - Read Only
 25,jigar.joshi@bulkmro.com,Inside Sales Executive
-214,vishal.biradar@bulkmro.com,Admin
+214,vishal.biradar@bulkmro.com,Default - Read Only
 232,meenakshi.naik@bulkmro.com,Admin
 66,ajay.dave@bulkmro.com,Default - Read Only
 72,vinayak.deshpande@bulkmro.com,Default - Read Only
@@ -148,13 +148,13 @@ id,email,role
 245,harpal.bedi@bulkmro.com,Inside Sales Executive
 151,bhargav.trivedi@bulkmro.com,Admin
 15,rahul.dhanani@bulkmro.com,Outside Sales Executive
-176,priyanka.rajpurkar@bulkmro.com,Admin
+176,priyanka.rajpurkar@bulkmro.com,Inside Sales Executive
 231,prashant.kumar@bulkmro.com,Inside Sales Executive
 12,apeksha.khambe@bulkmro.com,Default - Read Only
 16,tejasvi.bhosale@bulkmro.com,Default - Read Only
 179,shishir.jain@bulkmro.com,Outside Sales Executive
 153,pradeep.ketkale@bulkmro.com,Admin
-186,shravan.agarwal@bulkmro.com,Admin
+186,shravan.agarwal@bulkmro.com,Default - Read Only
 225,sultan.qazi@bulkmro.com,Inside Sales Executive
 98,chirag.gohil@bulkmro.com,Default - Read Only
 138,vignesh.g@bulkmro.com,Outside Sales Executive
@@ -178,10 +178,10 @@ id,email,role
 37,atul.thakur@bulkmro.com,Outside Sales Executive
 107,ajay.rathod@bulkmro.com,Logistics
 147,gaurang.shah@bulkmro.com,Admin
-239,auditor@bulkmro.com,Admin
+239,auditor@bulkmro.com,Default - Read Only
 206,prathamesh.saigaonkar@bulkmro.com,Inside Sales Executive
 244,shivam.kumar@bulkmro.com,Inside Sales Executive
-136,subrata.baruah@bulkmro.com,Admin
+136,subrata.baruah@bulkmro.com,Cataloging
 221,vijay.singh@bulkmro.com,Outside Sales Executive
 167,vignesh.gounder@bulkmro.com,Logistics
 87,mayur.salunke@bulkmro.com,Inside Sales Executive
@@ -191,14 +191,14 @@ id,email,role
 33,neha.mundhe@bulkmro.com,Inside Sales Executive
 91,vijay.narayan@bulkmro.com,Outside Sales Executive
 96,diksha.tambe@bulkmro.com,Logistics
-227,rucha.parab@bulkmro.com,Admin
+227,rucha.parab@bulkmro.com,Default - Read Only
 81,pravin.shinde@bulkmro.com,Inside Sales Executive
-121,vijay.manjrekar@bulkmro.com,Admin
+121,vijay.manjrekar@bulkmro.com,Accounts
 177,yash.gajjar@bulkmro.com,Inside Sales Executive
 246,vasanthi@bulkmro.com,Inside Sales Executive
-130,nida.khan@bulkmro.com,Admin
+130,nida.khan@bulkmro.com,Accounts
 152,devang.shah@bulkmro.com,Admin
-170,prikesh.savla@bulkmro.com,Admin
+170,prikesh.savla@bulkmro.com,Default - Read Only
 184,shailender.agarwal@bulkmro.com,Outside Sales Manager
 213,amit.rawool@bulkmro.com,Default - Read Only
 286,vishal.redake@bulkmro.com,Inside Sales Executive
@@ -208,10 +208,10 @@ id,email,role
 140,rahul.dwivedi@bulkmro.com,Outside Sales Executive
 55,ved.prakash@bulkmro.com,Outside Sales Manager
 82,vishwajeet.chavan@bulkmro.com,Outside Sales Executive
-131,uday.salvi@bulkmro.com,Admin
+131,uday.salvi@bulkmro.com,Accounts
 90,jignesh.shah@bulkmro.com,Outside Sales Executive
 112,suhas.nair@bulkmro.com,Inside Sales Executive
-102,ovais.ansari@bulkmro.com,Admin
+102,ovais.ansari@bulkmro.com,Logistics
 14,ketan.makwana@bulkmro.com,Outside Sales Executive
 288,ashish.kumar@bulkmro.com,Outside Sales Executive
 181,mitesh.mandaliya@bulkmro.com,Inside Sales Executive
@@ -223,7 +223,7 @@ id,email,role
 240,mehul.vegda@bulkmro.com,Inside Sales Executive
 207,arul.patwardhan@bulkmro.com,Inside Sales Executive
 289,sujata.keer@bulkmro.com,Accounts
-166,nilesh.desai@bulkmro.com,Admin
+166,nilesh.desai@bulkmro.com,Inside Sales Manager
 220,pooja.poojary@bulkmro.com,Logistics
 145,chetan.utekar@bulkmro.com,Cataloging
 56,madan.sharma@bulkmro.com,Outside Sales Manager
@@ -236,12 +236,12 @@ id,email,role
 196,lopesh.durugkar@bulkmro.com,Admin
 284,shweta.jadhav@bulkmro.com,Admin
 180,sumit.sharma@bulkmro.com,Logistics
-174,gitesh.ganekar@bulkmro.com,Admin
-164,sanchit.sharma@bulkmro.com,Admin
+174,gitesh.ganekar@bulkmro.com,Default - Read Only
+164,sanchit.sharma@bulkmro.com,Logistics
 84,aditya.andankar@bulkmro.com,Inside Sales Team Leader
 118,farhan.ansari@bulkmro.com,Logistics
 197,saurabh.bhosale@bulkmro.com,Admin
-201,soni.pathre@bulkmro.com,Admin
+201,soni.pathre@bulkmro.com,Accounts
 67,komal.nagar@bulkmro.com,Inside Sales Executive
 38,rajesh.sharma@bulkmro.com,Outside Sales Executive
 89,mithun.trisule@bulkmro.com,Inside Sales Executive
@@ -251,20 +251,20 @@ id,email,role
 242,kaushal.patel@bulkmro.com,Inside Sales Executive
 290,divyang.patel@bulkmro.com,Inside Sales Executive
 119,ankit.shah@bulkmro.com,Outside Sales Executive
-243,ruchika.tarve@bulkmro.com,Admin
+243,ruchika.tarve@bulkmro.com,Accounts
 293,admin@bulkmro.com,Accounts
 233,ruta.kambli@bulkmro.com,Admin
 69,rajani.kyatham@bulkmro.com,Inside Sales Executive
 182,anand.negi@bulkmro.com,Inside Sales Executive
-169,ankur.gupta@bulkmro.com,Admin
+169,ankur.gupta@bulkmro.com,Logistics
 229,mahendra.kolekar@bulkmro.com,Logistics
 134,kevin.kunnassery@bulkmro.com,Inside Sales Executive
 76,kartik.pai@bulkmro.com,Inside Sales Executive
-128,lavanya.j@bulkmro.com,Admin
+128,lavanya.j@bulkmro.com,Inside Sales Manager
 217,mrunal.malkar@bulkmro.com,Inside Sales Executive
-185,malav.desai@bulkmro.com,Admin
+185,malav.desai@bulkmro.com,Default - Read Only
 95,logistics@bulkmro.com,Logistics
-127,pravin.ganekar@bulkmro.com,Admin
+127,pravin.ganekar@bulkmro.com,Accounts
 75,rahul.sonawane@bulkmro.com,Inside Sales Executive
 189,seller@bulkmro.com,Cataloging
 49,dipali.ghanvat@bulkmro.com,Inside Sales Executive

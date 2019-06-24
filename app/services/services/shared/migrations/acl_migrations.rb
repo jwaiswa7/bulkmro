@@ -36,9 +36,83 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   # 3. Create roles and assign role resources
   #
   def create_new_roles
+    # s = Services::Shared::Migrations::AclMigrations.new
+    # s.create_new_roles
     Overseer.update_all(:acl_role_id => nil)
     AclRole.all.destroy_all
 
+    # Create admin role with all permissions
+    acl_role = AclRole.where(:role_name => 'Admin').first_or_create!
+    role_resources = AclResource.all.order(id: :asc).pluck(:id)
+    resources = []
+    role_resources.map {|x| resources << x.to_s}
+    acl_role.role_resources = resources.uniq.to_json
+    acl_role.save
+
+    roles_to_create = ['Inside Sales Executive', 'Inside Sales Manager', 'Outside Sales Executive', 'Outside Sales Manager', 'Outside Sales Team Leader', 'Inside Sales Team Leader', 'Accounts', 'Logistics', 'Cataloging']
+
+    # roles_to_create = ['Inside Sales Executive']
+
+    roles_to_create.each do |role_name|
+      service = Services::Shared::Spreadsheets::CsvImporter.new('acl_roles_permissions.csv', 'seed_files_3')
+      role_resources = []
+      service.loop(nil) do |x|
+        if x.get_column('Permission for').present? && x.get_column('Module').present?
+          resource_model = x.get_column('Module')
+          resource_action = x.get_column('Permission for').downcase.strip
+          is_permitted = x.get_column(role_name)
+
+          if is_permitted.present? && is_permitted == 'Yes'
+            acl_resource = AclResource.where(:resource_model_name => resource_model, :resource_action_name => resource_action).first_or_create!
+            role_resources << acl_resource.id
+            #if current resource_action is create or update, then assign permission to edit and new
+            if resource_action == 'create'
+              acl_resource = AclResource.where(:resource_model_name => resource_model, :resource_action_name => 'new').first_or_create!
+              role_resources << acl_resource.id
+            elsif resource_action == 'update'
+              acl_resource = AclResource.where(:resource_model_name => resource_model, :resource_action_name => 'edit').first_or_create!
+              role_resources << acl_resource.id
+            end
+          end
+        end
+      end
+
+      role_resources = role_resources.sort {|x, y| (x <=> y)}
+      role_resources.map {|x| x.to_s}
+      acl_role = AclRole.where(:role_name => role_name).first_or_create!
+      acl_role.role_resources = role_resources.uniq.to_json
+      acl_role.save
+
+    end
+
+    #create default role
+    create_default_role
+
+    #Add autocomplete action in all roles
+    autocomplete_resources = AclResource.where(:resource_action_name => 'autocomplete').pluck(:id)
+
+    AclRole.all.each do |acl_role|
+      role_resources = ActiveSupport::JSON.decode(acl_role.role_resources)
+      autocomplete_resources_ids = []
+      autocomplete_resources.map {|x| autocomplete_resources_ids << x.to_s}
+      role_resources = role_resources + autocomplete_resources_ids
+      role_resources = role_resources.map {|x| x.to_s}
+      acl_role.role_resources = role_resources.uniq.to_json
+      acl_role.save
+    end
+
+    #Assign default resources
+    set_default_resources_to_all_roles
+
+    #Assign roles to all overseers
+    assign_roles_to_overseers
+
+    #Menu resources
+    create_acl_menu_resource_json
+  end
+
+  # Deprecated
+  def set_role_permissions
     # Create admin role with all permissions
     acl_role = AclRole.where(:role_name => 'Admin').first_or_create!
     role_resources = AclResource.all.pluck(:id)
@@ -86,29 +160,6 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_role = AclRole.where(:role_name => last_role_name).first_or_create!
     acl_role.role_resources = resources.uniq.to_json
     acl_role.save
-
-
-    #create default role
-    create_default_role
-
-    #Add autocomplete action in all roles
-    autocomplete_resources = AclResource.where(:resource_action_name => 'autocomplete').pluck(:id)
-
-    AclRole.all.each do |acl_role|
-      role_resources = ActiveSupport::JSON.decode(acl_role.role_resources)
-      autocomplete_resources_ids = []
-      autocomplete_resources.map {|x| autocomplete_resources_ids << x.to_s}
-      role_resources = role_resources + autocomplete_resources_ids
-      role_resources = role_resources.map {|x| x.to_s}
-      acl_role.role_resources = role_resources.uniq.to_json
-      acl_role.save
-    end
-
-    #Assign default resources
-    set_default_resources_to_all_roles
-
-    #Assign roles to all overseers
-    assign_roles_to_overseers
   end
 
   #4 Set default resources to all roles
@@ -116,7 +167,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     AclRole.all.each do |role|
       resources = []
       role_resources = ActiveSupport::JSON.decode(role.role_resources)
-      role_resources =  role_resources + get_default_resource_list
+      role_resources = role_resources + get_default_resource_list
       role_resources.uniq.map {|x| resources << x.to_s}
       role.role_resources = resources.to_json
       role.save
@@ -196,7 +247,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
 
   def get_default_resource_list
     resource_ids = []
-    not_applicable_resource_models = ['address_state', 'application', 'application_record', 'attachment', 'average_cache', 'bank', 'bible_sales_order', 'brand', 'brand_supplier', 'chat_message', 'currency', 'currency_rate', 'customer_order_approval', 'customer_order_rejection', 'customer_order_row', 'customer_product_import', 'customer_product_import_row', 'customer_product_tag', 'dashboard', 'doc', 'document_creation', 'email_message', 'export', 'extensions', 'ifsc_code', 'image_reader', 'industry', 'inquiry_comment', 'inquiry_currency', 'inquiry_import', 'inquiry_import_row', 'inquiry_mapping_tat', 'inquiry_product', 'inquiry_product_supplier', 'inquiry_status_record', 'invoice_request_comment', 'inward_dispatch_comment', 'inward_dispatch_row', 'kit_product_row', 'mpr_row', 'notification', 'overall_average', 'payment_request_comment', 'payment_request_transaction', 'po_comment', 'pod_row', 'po_request_comment', 'product_comment', 'profile', 'purchase_order_row', 'rate', 'rating_cache', 'report', 'sales_invoice_row','sales_order_comment', 'sales_order_row', 'sales_purchase_order', 'sales_quote_row', 'sales_receipt_row',  'sales_shipment_comment', 'sales_shipment_package', 'sales_shipment_row', 'sprint_log', 'tag', 'target', 'target_period', 'tax_code']
+    not_applicable_resource_models = ['address_state', 'application', 'application_record', 'attachment', 'average_cache', 'bank', 'bible_sales_order', 'brand', 'brand_supplier', 'chat_message', 'currency', 'currency_rate', 'customer_order_approval', 'customer_order_rejection', 'customer_order_row', 'customer_product_import', 'customer_product_import_row', 'customer_product_tag', 'dashboard', 'doc', 'document_creation', 'email_message', 'export', 'extensions', 'ifsc_code', 'image_reader', 'industry', 'inquiry_comment', 'inquiry_currency', 'inquiry_import', 'inquiry_import_row', 'inquiry_mapping_tat', 'inquiry_product', 'inquiry_product_supplier', 'inquiry_status_record', 'invoice_request_comment', 'inward_dispatch_comment', 'inward_dispatch_row', 'kit_product_row', 'mpr_row', 'notification', 'overall_average', 'payment_request_comment', 'payment_request_transaction', 'po_comment', 'pod_row', 'po_request_comment', 'product_comment', 'profile', 'purchase_order_row', 'rate', 'rating_cache', 'report', 'sales_invoice_row', 'sales_order_comment', 'sales_order_row', 'sales_purchase_order', 'sales_quote_row', 'sales_receipt_row', 'sales_shipment_comment', 'sales_shipment_package', 'sales_shipment_row', 'sprint_log', 'tag', 'target', 'target_period', 'tax_code']
 
     not_applicable_resource_models.each do |na_model|
       resource_ids << AclResource.where(resource_model_name: na_model).pluck(:id)
@@ -354,6 +405,47 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       model_actions << [acl_resource.resource_model_name, acl_resource.resource_action_name]
     end
     model_actions
+  end
+
+  #Utility Functions
+
+  def assign_action_to_overseer
+    resource_action_name = 'get_account'
+    resource_model_name = 'company'
+    role_name = 'all'
+    acl_resource = AclResource.where(:resource_model_name => resource_model_name, :resource_action_name => resource_action_name).first_or_create!
+
+    #update role
+    if role_name != 'all'
+      acl_role = AclRole.find_by_role_name(role_name)
+      update_role_resource(acl_role, acl_resource.id)
+    else
+      AclRole.all.each do |acl_role|
+        update_role_resource(acl_role, acl_resource.id)
+      end
+    end
+    # AclResource.update_acl_resource_cache
+  end
+
+  def update_role_resource(acl_role, resource_id)
+    role_resources = ActiveSupport::JSON.decode(acl_role.role_resources)
+    role_resources << resource_id
+    role_resources = role_resources.map {|x| x.to_i}
+    role_resources = role_resources.sort {|x,y| (x <=> y)}
+    role_resources = role_resources.map {|x| x.to_s}
+    acl_role.role_resources = role_resources.uniq.to_json
+    acl_role.save
+
+    #update overseer resources
+    Overseer.where(acl_role: acl_role).each do |overseer|
+      overseer_resources = ActiveSupport::JSON.decode(overseer.acl_resources)
+      new_resources = overseer_resources + ActiveSupport::JSON.decode(acl_role.role_resources)
+      new_resources = new_resources.map {|x| x.to_i}
+      new_resources = new_resources.sort {|x,y| (x <=> y)}
+      new_resources = new_resources.map {|x| x.to_s}
+      overseer.update_attribute(:acl_resources, new_resources.uniq.to_json)
+      puts overseer
+    end
   end
 
 end
