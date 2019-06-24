@@ -5,9 +5,9 @@ class Overseers::SalesInvoices::EmailMessagesController < Overseers::SalesInvoic
     @email_message = @sales_invoice.email_messages.build(overseer: current_overseer, contact: @inquiry.contact, inquiry: @inquiry, sales_invoice: @sales_invoice)
     subject = "Ref# #{@inquiry.inquiry_number}- Your Order #{@inquiry.customer_po_number} - Delivery Notification."
     @email_message.assign_attributes(
-        subject: subject,
-        body: SalesInvoiceMailer.delivery_mail(@email_message).body.raw_source,
-        auto_attach: true,
+      subject: subject,
+      body: SalesInvoiceMailer.delivery_mail(@email_message).body.raw_source,
+      auto_attach: true,
     )
 
     authorize @sales_invoice, :new_email_message?
@@ -37,19 +37,19 @@ class Overseers::SalesInvoices::EmailMessagesController < Overseers::SalesInvoic
 
   private
 
-  def email_message_params
-    params.require(:email_message).permit(
+    def email_message_params
+      params.require(:email_message).permit(
         :subject,
-        :body,
-        :to,
-        :cc,
-        :bcc,
-        files: []
-    )
-  end
+          :body,
+          :to,
+          :cc,
+          :bcc,
+          files: []
+      )
+    end
 
-  def set_inquiry
-    @inquiry = @sales_invoice.inquiry
-    @locals = {stamp: true}
-  end
+    def set_inquiry
+      @inquiry = @sales_invoice.inquiry
+      @locals = {stamp: true}
+    end
 end
