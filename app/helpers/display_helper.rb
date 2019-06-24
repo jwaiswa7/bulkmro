@@ -158,13 +158,14 @@ module DisplayHelper
   end
 
   def format_boolean_with_badge(status)
-    (if status == 'complete'
-       '<i class="far fa-check text-success"></i>'
-     elsif status == 'partial'
-       '<i class="far fa-check text-color-dark-blue"> <span class="badge badge-color-dark-blue">Partial</span></i>'
-     else
-       '<i class="far fa-times text-danger"></i>'
-     end).html_safe
+    (
+    if status == 'complete'
+      '<i class="far fa-check text-success"></i>'
+    elsif status == 'partial'
+      '<i class="far fa-check text-color-dark-blue"> <span class="badge badge-color-dark-blue">Partial</span></i>'
+    else
+      '<i class="far fa-times text-danger"></i>'
+    end).html_safe
   end
 
   def format_boolean_label(true_or_false, verb = '')
@@ -218,15 +219,15 @@ module DisplayHelper
   end
 
   def format_comment(comment, trimmed = false)
-    render partial: 'shared/snippets/comments.html', locals: { comment: comment, trimmed: trimmed }
+    render partial: 'shared/snippets/comments.html', locals: {comment: comment, trimmed: trimmed}
   end
 
   def attribute_boxes(data)
-    render partial: 'shared/snippets/attribute_boxes.html', locals: { data: data }
+    render partial: 'shared/snippets/attribute_boxes.html', locals: {data: data}
   end
 
   def humanize(mins)
-    [[60, :minutes], [24, :hours], [Float::INFINITY, :days]].map { |count, name|
+    [[60, :minutes], [24, :hours], [Float::INFINITY, :days]].map {|count, name|
       if mins > 0
         mins, n = mins.divmod(count)
         unless n.to_i == 0
@@ -247,9 +248,9 @@ module DisplayHelper
     due_in_days = (due_date - current_date).to_i
 
     if due_in_days < 0
-      due_string  = 'Overdue'
+      due_string = 'Overdue'
     elsif due_in_days == 0
-      due_string  = 'Due Today'
+      due_string = 'Due Today'
       return due_badge(due_in_days, due_string)
     else
       due_string = 'Due In'
@@ -284,6 +285,38 @@ module DisplayHelper
       content_tag(:div, content_tag(:strong, "#{self.rows.first.product.kit.kit_product_rows.count}") + ' kit line item(s)')
     else
       content_tag(:div, content_tag(:strong, "#{self.rows.count}") + ' line item(s)')
+    end
+  end
+
+  def is_authorized(model, action)
+    authorised = false
+    if current_overseer.is_super_admin
+      authorised = true
+    else
+      action_name = action if action.present?
+      allowed_resources = ActiveSupport::JSON.decode(current_overseer.acl_resources)
+      resource_ids = get_acl_resource_ids
+
+      if model.is_a?(ActiveRecord::Base)
+        resource_model = model.class.name.underscore.downcase
+      elsif model.is_a?(ActiveRecord::Relation)
+        resource_model = model.klass.name.underscore.downcase
+      else
+        resource_model = model.to_s.gsub(':', '')
+      end
+
+      if resource_ids[resource_model].blank? || resource_ids[resource_model][action_name].blank?
+        authorised = false
+      elsif allowed_resources.include? resource_ids[resource_model][action_name].to_s
+        authorised = true
+      end
+    end
+    authorised
+  end
+
+  def get_acl_resource_ids
+    Rails.cache.fetch('acl_resource_ids', expires_in: 3.hours) do
+      AclResource.acl_resource_ids
     end
   end
 end

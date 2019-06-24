@@ -7,17 +7,17 @@
         Order <%= @po_request.sales_order.present? ? format_id(@po_request.sales_order.order_number) : '-' %>&nbsp;<%= status_badge(@po_request.status) %>
       </h3>
       <div>
-        <% if policy(@po_request).edit? && @po_request.status != 'Cancelled' %>
+        <% if is_authorized(@po_request, 'edit') && @po_request.status != 'Cancelled' %>
           <a href="<%= edit_overseers_po_request_path(@po_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
         <% end %>
         <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm">Add/Edit
           Supplier Rating</a>
         <% if @po_request.purchase_order.present? && !@po_request.purchase_order.is_legacy? %>
-          <% if policy(@po_request).new_payment_request? %>
+          <% if is_authorized(@po_request, 'new_payment_request') && policy(@po_request).new_payment_request? %>
             <a href="<%= new_overseers_po_request_payment_request_path(@po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
               Request</a>
           <% end %>
-          <% if @po_request.payment_request.present? && policy(@po_request.payment_request).show? %>
+          <% if @po_request.payment_request.present? && is_authorized(@po_request.payment_request, 'show') %>
             <a href="<%= overseers_payment_request_path(@po_request.payment_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
               Request</a>
           <% end %>

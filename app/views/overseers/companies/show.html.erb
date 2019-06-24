@@ -7,7 +7,7 @@
         &nbsp;<%= format_star(@company.rating) if @company.rating.present? && @company.rating > 0 %>
       </h3>
 
-      <% if policy(@company).edit? %>
+      <% if is_authorized(@company, 'edit') %>
         <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
           Company</a>
       <% end %>
@@ -332,7 +332,7 @@
           <th class="no-sort desktop text-right" data-name="created_at">Created</th>
         <% end %>
         <% content_for :heading_buttons, flush: true do %>
-          <% if policy(:address).new? && policy(@company).new_address? %>
+          <% if is_authorized(:address, 'new') && is_authorized(@company, 'new_address') %>
             <a href="<%= new_overseers_company_address_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
               Address</a>
           <% end %>
@@ -354,7 +354,7 @@
           <th class="desktop text-right" data-name="created_at">Created</th>
         <% end %>
         <% content_for :heading_buttons, flush: true do %>
-          <% if policy(:contact).new? && policy(@company).new_contact? %>
+          <% if is_authorized(:contact, 'new') && is_authorized(@company, 'new_contact') %>
             <a href="<%= new_overseers_contact_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
               Contact</a>
           <% end %>
@@ -377,7 +377,7 @@
           <th class="desktop text-right" data-name="created_at">Created</th>
         <% end %>
         <% content_for :heading_buttons, flush: true do %>
-          <% if policy(:contact).new? %>
+          <% if is_authorized(:contact, 'new') %>
             <a href="<%= new_overseers_company_company_bank_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
               Bank</a>
           <% end %>
@@ -410,15 +410,15 @@
           <% end %>
           <% content_for :heading_buttons, flush: true do %>
             <div>
-              <% if policy(:customer_product).generate_catalog? %>
+              <% if is_authorized(:customer_product, 'generate_catalog') %>
                 <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-plus-circle mr-1"></i>Generate
                   Catalog</a>
               <% end %>
-              <% if policy(:customer_product).destroy_all? %>
+              <% if is_authorized(:customer_product, 'destroy_all') %>
                 <a href="<%= destroy_all_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-minus-circle mr-1"></i>Destroy
                   Catalog</a>
               <% end %>
-              <% if policy(:customer_product).new? %>
+              <% if is_authorized(:customer_product, 'new') %>
                 <a href="<%= new_overseers_company_customer_product_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-plus-circle mr-1"></i>New
                   Customer Product</a>
               <% end %>
@@ -434,7 +434,7 @@
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Product Categories</h3>
           <div>
-            <% if policy(:tag).new? %>
+            <% if is_authorized(:tag, 'new') %>
               <a href="<%= new_overseers_company_tag_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
                 Product Category</a>
             <% end %>
@@ -459,23 +459,23 @@
       </div>
 
 
-        <div class="tab-pane fade" id="inquiries" role="tabpanel">
-          <% content_for :ajax_url, flush: true do %><%= index_pg_overseers_inquiries_path(company_id: @company.id) %>
-          <% end %>
-          <% content_for :header_row, flush: true do %>
-            <th class="no-sort"></th>
-            <th data-name="inquiry_number">IQ #</th>
-            <th class="no-sort">Status</th>
-            <th class="no-sort">Account</th>
-            <th class="no-sort">Company</th>
-            <th class="no-sort">Contact</th>
-            <th class="no-sort">Inside Sales</th>
-            <th class="no-sort">Outside Sales</th>
-            <th class="no-sort">Total</th>
-            <th data-name="created_at">Created</th>
-          <% end %>
-          <% content_for :heading_buttons, flush: true do %>
-            <% if policy(@company).new_inquiry? %>
+      <div class="tab-pane fade" id="inquiries" role="tabpanel">
+        <% content_for :ajax_url, flush: true do %><%= index_pg_overseers_inquiries_path(company_id: @company.id) %>
+        <% end %>
+        <% content_for :header_row, flush: true do %>
+          <th class="no-sort"></th>
+          <th data-name="inquiry_number">IQ #</th>
+          <th class="no-sort">Status</th>
+          <th class="no-sort">Account</th>
+          <th class="no-sort">Company</th>
+          <th class="no-sort">Contact</th>
+          <th class="no-sort">Inside Sales</th>
+          <th class="no-sort">Outside Sales</th>
+          <th class="no-sort">Total</th>
+          <th data-name="created_at">Created</th>
+        <% end %>
+        <% content_for :heading_buttons, flush: true do %>
+          <% if is_authorized(@company, 'new_inquiry') && policy(@company).new_inquiry? %>
             <a href="<%= new_overseers_inquiry_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
               Inquiry</a>
           <% else %>

@@ -3,22 +3,22 @@ class Overseers::WarehousesController < Overseers::BaseController
 
   def index
     @warehouses = ApplyDatatableParams.to(Warehouse.all, params)
-    authorize @warehouses
+    authorize_acl @warehouses
   end
 
   def new
     @warehouse = Warehouse.new
-    authorize @warehouse
+    authorize_acl @warehouse
   end
 
   def autocomplete
-    authorize :warehouse
+    authorize_acl :warehouse
     @warehouse = ApplyParams.to(Warehouse.all.active, params)
   end
 
   def create
     @warehouse = Warehouse.new(warehouse_params)
-    authorize @warehouse
+    authorize_acl @warehouse
     if @warehouse.save
       redirect_to overseers_warehouse_path(@warehouse), notice: flash_message(@warehouse, action_name)
     else
@@ -27,12 +27,12 @@ class Overseers::WarehousesController < Overseers::BaseController
   end
 
   def edit
-    authorize @warehouse
+    authorize_acl @warehouse
   end
 
   def update
     @warehouse.assign_attributes(warehouse_params)
-    authorize @warehouse
+    authorize_acl @warehouse
     if @warehouse.save
       redirect_to overseers_warehouse_path(@warehouse), notice: flash_message(@warehouse, action_name)
     else
@@ -41,7 +41,7 @@ class Overseers::WarehousesController < Overseers::BaseController
   end
 
   def show
-    authorize @warehouse
+    authorize_acl @warehouse
   end
 
   private
