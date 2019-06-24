@@ -131,6 +131,26 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
+  def filter_by_owner(ids)
+    {
+        bool: {
+            should: [
+                {
+                    terms: {inside_sales_executive: ids},
+                },
+                {
+                    terms: {outside_sales_executive: ids}
+                },
+                {
+                    terms: {procurement_operations: ids}
+                }
+            ],
+            minimum_should_match: 1,
+        },
+
+    }
+  end
+
   def filter_by_status(only_remote_approved: false)
     if only_remote_approved
       {

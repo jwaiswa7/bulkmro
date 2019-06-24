@@ -66,7 +66,6 @@
     </div>
   </div>
 <% end %>
-
 <div class="form-row mt-2" id="product-grid">
   <% if @customer_products.count > 0 %>
     <% @customer_products.each do |customer_product| %>
@@ -79,7 +78,8 @@
               <%# else %>
               <!--                <img data-src="<%#= image_path('coming_soon.png') %>" alt="<%#= customer_product.sku %>" width="500" class="lazy-load" src="<%#= image_path('coming_soon.png') %>" />-->
               <%# end %>
-              <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.name, :length => 100) %></strong></h5>
+              <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.name, :length => 100) %></strong>
+              </h5>
               <h5 class="mb-0 text-small"><strong>(#<%= customer_product.sku %>)</strong></h5>
               <h5 class="mb-0 mt-1 text-small text-black-50">
                 <strong><%= format_currency(customer_product.customer_price) %></strong>
@@ -88,7 +88,14 @@
               <p class="mb-0 text-small text-black-50">
                 <strong class="d-block"><%= customer_product.best_brand.name if customer_product.best_brand.present? %></strong>
                 <em class="float-left">MOQ - <%= customer_product.moq %></em>
-                <em class="float-right">Instock Qty - <%= customer_product.product.stocks.sum(&:instock) if customer_product.product.present?%></em>
+                <em class="float-right">Instock Qty
+                  - <%= customer_product.product.stocks.sum(&:instock) if customer_product.product.present? %></em><br>
+                <% if @henkel_company.include?(current_company.id) %>
+                  <em class="float-left">BP Catalog No
+                    - <%= customer_product.bp_catalog_sku if customer_product.bp_catalog_sku.present? %></em><br>
+                  <em class="float-left"> BP Catalog Name
+                    - <%= customer_product.bp_catalog_name if customer_product.bp_catalog_name.present? %></em>
+                <% end %>
               </p>
             </a>
           </div>
