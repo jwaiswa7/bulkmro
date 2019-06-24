@@ -431,7 +431,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     role_resources = ActiveSupport::JSON.decode(acl_role.role_resources)
     role_resources << resource_id
     role_resources = role_resources.map {|x| x.to_i}
-    role_resources = role_resources.sort {|x,y| (x <=> y)}
+    role_resources = role_resources.sort {|x, y| (x <=> y)}
     role_resources = role_resources.map {|x| x.to_s}
     acl_role.role_resources = role_resources.uniq.to_json
     acl_role.save
@@ -441,11 +441,17 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       overseer_resources = ActiveSupport::JSON.decode(overseer.acl_resources)
       new_resources = overseer_resources + ActiveSupport::JSON.decode(acl_role.role_resources)
       new_resources = new_resources.map {|x| x.to_i}
-      new_resources = new_resources.sort {|x,y| (x <=> y)}
+      new_resources = new_resources.sort {|x, y| (x <=> y)}
       new_resources = new_resources.map {|x| x.to_s}
       overseer.update_attribute(:acl_resources, new_resources.uniq.to_json)
       puts overseer
     end
   end
 
+  def reset_overseer_password
+    Overseer.all.each do |overseer|
+      overseer.password = 123456
+      overseer.save
+    end
+  end
 end
