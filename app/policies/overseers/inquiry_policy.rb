@@ -31,6 +31,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     record.can_be_managed?(overseer)
   end
 
+  def create_primary_inquiry?
+    can_manage_inquiry? || cataloging? || logistics?
+  end
+
   def edit?
     can_manage_inquiry? || cataloging? || logistics?
   end
@@ -206,6 +210,14 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def export_pipeline_report?
     manager_or_sales? || admin?
+  end
+
+  def next_inquiry_step?
+    new?
+  end
+
+  def is_acknowledgement_enable?
+    record.id.present? && new_email_message?
   end
 
   class Scope
