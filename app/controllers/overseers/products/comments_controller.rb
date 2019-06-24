@@ -4,12 +4,12 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
   def index
     @comments = @product.comments.earliest
     @new_comment = @product.comments.build
-    authorize @comments
+    authorize_acl @comments
   end
 
   def create
     @comment = @product.comments.build(product_comment_params.merge(overseer: current_overseer))
-    authorize @comment
+    authorize_acl @comment
 
     if @comment.save!
       callback_method = %w(approve reject merge).detect { |action| params[action] }

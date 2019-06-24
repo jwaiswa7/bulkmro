@@ -51,7 +51,7 @@
             <% end %>
             <h6 class="text-uppercase mb-0">
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= row.object.sales_quote_row.sr_no %></span>
-              <strong><%= row.object.sales_quote_row.product.sku %> - <%= row.object.sales_quote_row.inquiry_product.bp_catalog_name? ? row.object.sales_quote_row.inquiry_product.bp_catalog_name : row.object.sales_quote_row.inquiry_product.product.name %> <% if policy(row.object.sales_quote_row.inquiry_product.product).sku_purchase_history? %>
+              <strong><%= row.object.sales_quote_row.product.sku %> - <%= row.object.sales_quote_row.inquiry_product.bp_catalog_name? ? row.object.sales_quote_row.inquiry_product.bp_catalog_name : row.object.sales_quote_row.inquiry_product.product.name %> <% if is_authorized(row.object.sales_quote_row.inquiry_product.product, 'sku_purchase_history') && policy(row.object.sales_quote_row.inquiry_product.product).sku_purchase_history? %>
                   <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(row.object.sales_quote_row.inquiry_product.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a><% end %>
               </strong>
               <%= row.object.sales_quote_row.inquiry_product.bp_catalog_sku? ? '(' + row.object.sales_quote_row.inquiry_product.bp_catalog_sku + ')' : '' %>

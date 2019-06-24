@@ -48,12 +48,15 @@ class Overseer < ApplicationRecord
       password = Devise.friendly_token[0, 20]
 
       overseer = Overseer.where(email: data['email']).first_or_create do |overseer|
+        acl_role = AclRole.where(is_default: true).first
         overseer.password_confirmation = password
         overseer.password = password
         overseer.first_name = data['first_name']
         overseer.last_name = data['last_name']
         overseer.google_oauth2_uid = data['uid']
         overseer.username = 'none'
+        overseer.acl_role = acl_role
+        overseer.acl_resources = acl_role.role_resources
       end
 
       overseer.update_attributes(username: 'nousername') if overseer.username.blank?
@@ -88,5 +91,9 @@ class Overseer < ApplicationRecord
 
     overseer.save!
     overseer
+  end
+
+  def self.all_roles
+    AclRole.all
   end
 end

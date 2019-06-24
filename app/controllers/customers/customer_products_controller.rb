@@ -2,7 +2,7 @@ class Customers::CustomerProductsController < Customers::BaseController
   before_action :set_customer_product, only: [:show, :to_cart]
 
   def index
-    authorize :customer_product
+    authorize_acl :customer_product
 
     if params[:view] == 'list_view'
       params[:per] = 20
@@ -29,15 +29,15 @@ class Customers::CustomerProductsController < Customers::BaseController
 
     @indexed_customer_products = service.indexed_records
     @customer_products = service.records
-    authorize @customer_products
+    authorize_acl @customer_products
   end
 
   def show
-    authorize @customer_product
+    authorize_acl @customer_product
   end
 
   def most_ordered_products
-    authorize :customer_product
+    authorize_acl :customer_product
 
     skip_skus = ['BM9L3P1', 'BM9C4L6']
     skip_product_ids = Product.where('sku ILIKE ANY ( array[?] )', skip_skus).uniq.pluck(:id)

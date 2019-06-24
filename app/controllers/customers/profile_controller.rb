@@ -3,11 +3,11 @@ class Customers::ProfileController < Customers::BaseController
 
   def edit
     @contact = current_contact
-    authorize :profile
+    authorize_acl :profile
   end
 
   def update
-    authorize :profile
+    authorize_acl :profile
     @contact = current_contact
     if @contact.valid_password?(profile_params[:current_password].to_s)
       @contact.assign_attributes(profile_params)

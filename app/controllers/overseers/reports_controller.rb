@@ -6,7 +6,7 @@ class Overseers::ReportsController < Overseers::BaseController
     Report.inward_logistic_queue
 
     @reports = ApplyDatatableParams.to(Report.all, params)
-    authorize @reports
+    authorize_acl @reports
   end
 
   def show
@@ -17,7 +17,7 @@ class Overseers::ReportsController < Overseers::BaseController
     service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params)
     @data = service.call
 
-    authorize @report
+    authorize_acl @report
 
     render @report.uid
   end
