@@ -266,7 +266,7 @@
           <div class="col-12 col-md-1">
             <%= po_request_row.remove_nested_fields_link(class: 'btn btn-danger form-group align-self-center flex-grow-1 mt-3 ml-2') do %>
               Remove
-            <% end if is_authorized(po_request_row.object, 'destroy') %>
+            <% end if is_authorized(:po_request_row, 'destroy') %>
           </div>
         <% end %>
       </div>
