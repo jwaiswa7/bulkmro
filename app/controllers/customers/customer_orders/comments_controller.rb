@@ -1,7 +1,7 @@
 class Customers::CustomerOrders::CommentsController < Customers::CustomerOrders::BaseController
   def create
     @comment = @customer_order.comments.build(comment_params.merge(contact: current_contact))
-    authorize_acl @comment
+    authorize @comment
 
     if @comment.save
       callback_method = %w(approve reject).detect { |action| params[action] }

@@ -9,11 +9,11 @@ class Customers::CompaniesController < Customers::BaseController
     else
       render 'shared/layouts/choose_company'
     end
-    authorize_acl @contact
+    authorize @contact
   end
 
   def contact_companies
     @companies = ApplyParams.to(current_contact.companies, params)
-    authorize_acl @companies
+    authorize @companies
   end
 end

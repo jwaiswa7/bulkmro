@@ -3,7 +3,7 @@ class Customers::CartItemsController < Customers::BaseController
   before_action :cart_item_params, only: [:create]
 
   def create
-    authorize_acl :cart_item
+    authorize :cart_item
 
     @cart_item = current_cart.items.where(product_id: cart_item_params[:product_id], customer_product_id: cart_item_params[:customer_product_id]).first_or_create
 
@@ -15,11 +15,11 @@ class Customers::CartItemsController < Customers::BaseController
   end
 
   def update
-    authorize_acl :cart_item
+    authorize :cart_item
   end
 
   def destroy
-    authorize_acl @cart_item
+    authorize @cart_item
 
     if @cart_item.destroy
       respond_to do |format|

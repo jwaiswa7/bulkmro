@@ -2,7 +2,7 @@ class Customers::SalesQuotesController < Customers::BaseController
   before_action :set_sales_quote, only: [:show]
 
   def index
-    authorize_acl :sales_quote
+    authorize :sales_quote
 
     respond_to do |format|
       format.html { }
@@ -17,7 +17,7 @@ class Customers::SalesQuotesController < Customers::BaseController
   end
 
   def show
-    authorize_acl @sales_quote
+    authorize @sales_quote
     @sales_quote_rows = @sales_quote.sales_quote_rows
     respond_to do |format|
       format.html { }
@@ -28,7 +28,7 @@ class Customers::SalesQuotesController < Customers::BaseController
   end
 
   def export_all
-    authorize_acl :sales_order
+    authorize :sales_order
 
     service = Services::Customers::Exporters::SalesQuotesExporter.new(headers, current_company)
     self.response_body = service.call
