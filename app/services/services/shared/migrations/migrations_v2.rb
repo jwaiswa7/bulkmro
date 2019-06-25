@@ -600,10 +600,18 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   def create_missing_orders
     service = Services::Shared::Spreadsheets::CsvImporter.new('missing_orders.csv', 'seed_files_3')
     service.loop(nil) do |x|
-      puts '*********************** INQUIRY ', x.get_column('inquiry number')
+      next if x.get_column('Total Selling Price').to_f.negative? || x.get_column('Inquiry Number').to_i != 6076
+      selected = ['BM0K8Q5-200305-6076']
+      puts '*********************** INQUIRY ', x.get_column('Inquiry Number')
+      order_being_processed = []
+      product_sku = x.get_column('Bm #').upcase
+      puts 'SKU', product_sku
+      product = Product.find_by_sku(product_sku)
 
-      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry number'))
-      if inquiry.present?
+
+      current_row = product_sku + '-' + x.get_column('So #') + '-' + x.get_column('Inquiry Number')
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number'))
+      if inquiry.present? && selected.include?(current_row)
         if !inquiry.billing_address.present?
           inquiry.update(billing_address: inquiry.company.addresses.first)
         end
@@ -616,34 +624,31 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           inquiry.update(shipping_contact: inquiry.billing_contact)
         end
 
-        # sales_quote = inquiry.sales_quotes.last
+        sales_quote = inquiry.sales_quotes.last
         if sales_quote.blank?
           sales_quote = inquiry.sales_quotes.create!(overseer: inquiry.inside_sales_owner)
         end
 
-        product_sku = x.get_column('product sku').upcase
-        puts 'SKU', product_sku
-        product = Product.find_by_sku(product_sku)
-
-        inquiry_products = inquiry.inquiry_products.where(product_id: product.id)
-        if inquiry_products.blank?
+        # inquiry_products = inquiry.inquiry_products.where(product_id: product.id)
+        # if inquiry_products.blank?
           # similar_products = Product.where(name: product.name).where.not(sku: product.sku)
           # if similar_products.present?
           #   similar_products.update_all(is_active: false)
           # end
-          sr_no = inquiry.inquiry_products.present? ? (inquiry.inquiry_products.last.sr_no + 1) : 1
-          inquiry_product = inquiry.inquiry_products.where(product_id: product.id, sr_no: sr_no, quantity: x.get_column('quantity')).first_or_create!
-        else
-          inquiry_product = inquiry_products.first
+          # sr_no = inquiry.inquiry_products.present? ? (inquiry.inquiry_products.last.sr_no + 1) : 1
+          # inquiry_product = inquiry.inquiry_products.where(product_id: product.id, sr_no: sr_no, quantity: x.get_column('quantity')).first_or_create!
+        # else
+          # inquiry_product = inquiry_products.first
           # if quantity < sheet_quantity
-          inquiry_product.update_attribute('quantity', inquiry_product.quantity + x.get_column('quantity').to_f)
-        end
+          # inquiry_product.update_attribute('quantity', inquiry_product.quantity + x.get_column('quantity').to_f)
+        # end
 
-        supplier = Company.acts_as_supplier.find_by_name('Local')
+        # supplier = Company.acts_as_supplier.find_by_name('Local')
         # check
-        inquiry_product_supplier = inquiry_product.suppliers.first || InquiryProductSupplier.where(supplier_id: supplier.id, inquiry_product: inquiry_product).first_or_create!
-        inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('unit cost price').to_f)
-        row = nil
+        # inquiry_product_supplier = inquiry_product.suppliers.first
+        # || InquiryProductSupplier.where(supplier_id: supplier.id, inquiry_product: inquiry_product).first_or_create!
+        # inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('unit cost price').to_f)
+        # row = nil
         # if inquiry.sales_orders.pluck(:order_number).include?(x.get_column('order number').to_i)
         #   so = SalesOrder.find_by_order_number(x.get_column('order number').to_i)
         #   if so.rows.map {|r| r.product.sku}.include?(x.get_column('product sku'))
@@ -651,50 +656,57 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         #   end
         # end
         # if row.blank?
-        row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
-        # end
+        # row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
+        # # end
+        #
+        # tax_rate = TaxRate.where(tax_percentage: x.get_column('tax rate').to_f).first_or_create!
+        # row.unit_selling_price = x.get_column('unit selling price (INR)').to_f
+        # row.quantity = x.get_column('quantity')
+        # row.margin_percentage = x.get_column('margin percentage')
+        # row.converted_unit_selling_price = x.get_column('unit selling price (INR)').to_f
+        # row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
+        # row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
+        # row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
+        # row.tax_rate = tax_rate || nil
+        # row.created_at = x.get_column('created at', to_datetime: true)
+        #
+        # row.save!
+        #
+        # puts '**************** QUOTE ROW SAVED ********************'
 
-        tax_rate = TaxRate.where(tax_percentage: x.get_column('tax rate').to_f).first_or_create!
-        row.unit_selling_price = x.get_column('unit selling price (INR)').to_f
-        row.quantity = x.get_column('quantity')
-        row.margin_percentage = x.get_column('margin percentage')
-        row.converted_unit_selling_price = x.get_column('unit selling price (INR)').to_f
-        row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
-        row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
-        row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
-        row.tax_rate = tax_rate || nil
-        row.created_at = x.get_column('created at', to_datetime: true)
+        if !order_being_processed.include?(x.get_column('So #'))
+          overseer = Overseer.find_by_first_name(x.get_column('Inside Sales Name').split(' ')[0])
+          revised_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(inquiry.sales_quotes.last, overseer).call
+          revised_quote.save(validate: false)
+          revised_quote.update_attributes(created_at: DateTime.parse(x.get_column('Order Date')).strftime('%Y-%m-%d %H:%M:%S'), sent_at: DateTime.parse(x.get_column('Order Date')).strftime('%Y-%m-%d %H:%M:%S'))
 
-        row.save!
+          extra_rows = revised_quote.rows.joins(:product).where.not(products: {sku: ['BM0K8Q5', 'BM0K8V4', 'BM0L0A6']})
+          extra_rows.delete_all
+          sales_order = revised_quote.sales_orders.where(order_number: x.get_column('So #')).first_or_create!
+          sales_order.order_number = x.get_column('So #')
 
-        puts '**************** QUOTE ROW SAVED ********************'
+          # sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(revised_quote, overseer).call
+          # sales_order.update_attributes(sent_at: Time.now, status: 'Approved')
 
+          sales_order.overseer = inquiry.inside_sales_owner
+          sales_order.created_at = DateTime.parse(x.get_column('Order Date')).strftime('%Y-%m-%d %H:%M:%S')
+          sales_order.mis_date = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
 
-        sales_order = sales_quote.sales_orders.where(order_number: x.get_column('order number')).first_or_create!
-        sales_order.overseer = inquiry.inside_sales_owner
-        sales_order.order_number = x.get_column('order number')
-        sales_order.created_at = x.get_column('created at', to_datetime: true)
-        sales_order.mis_date = x.get_column('created at', to_datetime: true)
-
-        sales_order.status = x.get_column('status') || 'Approved'
-        sales_order.remote_status = x.get_column('SAP status') || 'Processing'
-        sales_order.sent_at = sales_quote.created_at
-        sales_order.save!
-        row_object = {sku: product_sku, supplier: x.get_column('supplier'), total_with_tax: row.total_selling_price_with_tax.to_f}
-        totals[sales_order.order_number] ||= []
-        totals[sales_order.order_number].push(row_object)
-        puts '************************** ORDER SAVED *******************************'
-        so_row = sales_order.rows.where(sales_quote_row: row).first_or_create!
-
-        puts '****************** ORDER TOTAL ****************************', sales_order.order_number, sales_order.calculated_total_with_tax
-      else
-        if !inquiry.present?
-          inquiry_not_found.push(x.get_column('inquiry number'))
+          sales_order.status = 'Approved'
+          sales_order.remote_status = 'Processing'
+          sales_order.sent_at = revised_quote.created_at
+          sales_order.save!
+        else
+          order_being_processed.push(x.get_column('So #'))
         end
+
+        sales_order = SalesOrder.find_by_order_number(x.get_column('So #').to_i)
+        quote_row = sales_order.sales_quote.rows.joins(:product).where('products.sku = ?', product_sku).first
+
+        puts '************************** ORDER SAVED *******************************'
+        sales_order.rows.where(sales_quote_row: quote_row).first_or_create!
+        puts '****************** ORDER TOTAL ****************************', sales_order.order_number, sales_order.calculated_total_with_tax
       end
-      puts totals
-      puts '<----------------------------------------INQUIRIES--------------------------------------------------->'
-      puts inquiry_not_found.inspect
     end
   end
 
@@ -1482,7 +1494,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       puts 'AE ENTRIES', ae_entries, ae_entries.count
     end
 
-    fetch_csv('mismatch_after_usd.csv', csv_data)
+    fetch_csv('mismatch_after_usd_1.csv', csv_data)
   end
 
   def update_selected_in_oct_to_march
@@ -1506,6 +1518,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     # selected = ['32291-BM9T7U6-10212558', '32291-BM9Y9T0-10212558'] # USD
     # selected = ['BM9P0U7-10212459', 'BM9P0U7-10212466']
     # selected = ['BM9R4B8-10610837', 'BM0C8G8-10211991', 'BM0O7C5-10211991']
+    selected = ['BM9U6V6-10211502', 'BM00008-10211502'] # 26252
 
     updates_correctly = ['31298-BM9Q0B2-10212546', '33341-BM9C6A0-10212550', '29459-BM9D4P4-10610738', '29459-BM9D4P3-10610738', '32963-BM9Y6N1-10212424', '29130-BM9I7E1-10610575', '29130-BM9Y9D0-10610575', '27427-BM9Z9T9-10211487', '30944-BM9G3O2-10610744', '28372-BM9A5Y0-10610498', '29130-BM9Q9L7-10610620', '29130-BM9F6D4-10610620', '29130-BM9V7Z4-10610627', '29130-BM9V5M3-10610627', '29130-BM9S1K4-10610627', '29130-BM9V7Z4-10610676', '29459-BM9G5Y3-10610738', '29459-BM9N9G5-10610738', '29459-BM1A4W7-10610738', '29459-BM0N1S2-10610738', '29459-BM0K9A5-10610738', '29459-BM9E7D8-10610738', '30229-BM9U9B5-10211632', '30229-BM9W8U3-10211632', '30229-BM9P8H5-10211632', '30229-BM9Z6T2-10211632', '30229-BM9R7E3-10211632', '30229-BM9R7U2-10211632', '30229-BM9R4Y5-10211632', '30229-BM9R2H4-10211632', '30229-BM9Q2C6-10211632', '30229-BM9V6H6-10211632', '29459-BM9N1N3-10610738', '31727-BM9U9B5-10212120', '31727-BM9W8U3-10212120', '31727-BM9P8H5-10212120', '31727-BM9Z6T2-10212120', '31727-BM9R7E3-10212120', '31727-BM9R7U2-10212120', '31727-BM9R4Y5-10212120', '31727-BM9R2H4-10212120', '31727-BM9Q2C6-10212120', '31727-BM9V6H6-10212120', '29459-BM9U2Z2-10610738', '29459-BM9M4J9-10610738', '29114-BM9D2A6-10211325', '30795-BM9F4G0-10211805', '31977-BM9J8I6-10610838', '33100-BM9Q3B2-10610949', '33118-BM9Q7X0-10212502', '31281-BM99992-10211991', '30239-BM4H8M5-10610693', '26252-BM9P7B6-10211307', '32909-BM9P0U7-10212459', '32909-BM9P0U7-10212466', '29095-BM9Q1T8-10211322', '30239-BM4H8M5-10610668', '29568-BM9U6V6-10211502', '25225-BM9P2X7-10610556', '31036-BM9Y7G7-10212272', '27986-BM9R6D3-10610467', '28044-BM9Q3J6-10211131', '28043-BM9U6V6-10211118', '28146-BM9R1P5-10211132', '26644-BM9M5D3-11410025', '31500-BM9B7V0-10212221', '31500-BM9O7Q3-10212221', '32115-BM9P2I4-10212157']
     i = 0
@@ -1519,9 +1532,9 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       # next if product_sku == 'BM00008'
       # x.get_column('Inquiry Number') + '-' + current_row
       # next if !selected.include?(current_row) || x.get_column('Price Currency') != 'USD'
-      # next if !selected.include?(current_row)
+      next if !selected.include?(current_row)
 
-      next if x.get_column('Inquiry Number').to_i == 32291 || x.get_column('Price Currency') != 'USD'
+      # next if x.get_column('Inquiry Number').to_i == 32291 || x.get_column('Price Currency') != 'USD'
       if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
         if order_number == 'Not Booked'
           inquiry_orders = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number')).sales_orders
@@ -1579,16 +1592,16 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           tax_rate = TaxRate.where(tax_percentage: tax_rate_percentage).first
           quote_row.quantity = x.get_column('Order Qty').to_f
           quote_row.unit_selling_price = x.get_column('Unit Selling Price').to_f
-          if x.get_column('Price Currency') == 'USD'
-            quote_row.inquiry.inquiry_currency.conversion_rate = x.get_column('Document Rate').to_d
-            quote_row.inquiry.inquiry_currency.save(validate: false)
-            quote_row.converted_unit_selling_price = (x.get_column('Unit Selling Price').to_f/x.get_column('Document Rate').to_f)
-
-            quote_row.freight_cost_subtotal = 0
-            quote_row.unit_freight_cost = 0
-          else
+          # if x.get_column('Price Currency') == 'USD'
+          #   quote_row.inquiry.inquiry_currency.conversion_rate = x.get_column('Document Rate').to_d
+          #   quote_row.inquiry.inquiry_currency.save(validate: false)
+          #   quote_row.converted_unit_selling_price = (x.get_column('Unit Selling Price').to_f/x.get_column('Document Rate').to_f)
+          #
+          #   quote_row.freight_cost_subtotal = 0
+          #   quote_row.unit_freight_cost = 0
+          # else
             quote_row.converted_unit_selling_price = x.get_column('Unit Selling Price').to_f
-          end
+          # end
           quote_row.inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('Unit cost price').to_f)
           quote_row.margin_percentage = x.get_column('Margin (In %)').split('%')[0].to_d
           quote_row.tax_rate = tax_rate || nil
