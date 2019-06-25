@@ -240,7 +240,7 @@
                 <% end %>
                 <% if is_authorized(f.object, 'remove_products') && policy(f.object).remove_products? %>
                   <div class="col-6 col-md-1">
-                    <%= row.remove_nested_fields_link 'Remove Product', class: 'btn btn-danger align-self-center delete_row', wrapper_class: 'simple-row' if is_authorized(f.object, 'destroy') && policy(f.object).destroy? %>
+                    <%= row.remove_nested_fields_link 'Remove Product', class: 'btn btn-danger align-self-center delete_row', wrapper_class: 'simple-row' if is_authorized(:inward_dispatch_row, 'destroy') %>
                   </div>
                 <% end %>
               </div>
