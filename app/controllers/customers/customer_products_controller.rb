@@ -2,7 +2,7 @@ class Customers::CustomerProductsController < Customers::BaseController
   before_action :set_customer_product, only: [:show, :to_cart]
 
   def index
-    authorize_acl :customer_product
+    authorize :customer_product
 
     if params[:view] == 'list_view'
       params[:per] = 20
@@ -10,12 +10,12 @@ class Customers::CustomerProductsController < Customers::BaseController
       params[:page] = 1 unless params[:page].present?
       params[:per] = 24
     end
-
+    @henkel_company = Account.find(7).companies.pluck(:id)
     service = Services::Customers::Finders::CustomerProducts.new(params, current_contact, current_company)
     service.call
-
     @indexed_customer_products = service.indexed_records
     @customer_products = service.records.try(:reverse)
+
 
     @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{ |t| [t.id, t.name] }
     @checked_tags = (params['custom_filters']['tags'].nil? ? [] : params['custom_filters']['tags'].map(&:to_i)) if params['custom_filters'].present?
@@ -29,15 +29,16 @@ class Customers::CustomerProductsController < Customers::BaseController
 
     @indexed_customer_products = service.indexed_records
     @customer_products = service.records
-    authorize_acl @customer_products
+    authorize @customer_products
   end
 
   def show
-    authorize_acl @customer_product
+    authorize @customer_product
+    @account = Account.find(7)
   end
 
   def most_ordered_products
-    authorize_acl :customer_product
+    authorize :customer_product
 
     skip_skus = ['BM9L3P1', 'BM9C4L6']
     skip_product_ids = Product.where('sku ILIKE ANY ( array[?] )', skip_skus).uniq.pluck(:id)
