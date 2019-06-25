@@ -37,7 +37,8 @@ json.data (@purchase_orders) do |purchase_order|
                     status_badge(purchase_order.payment_request.status)
                   end,
                   (percentage(purchase_order.payment_request.percent_amount_paid, precision: 2) if purchase_order.payment_request.present?),
-                  format_succinct_date(purchase_order.created_at)
+                  format_succinct_date(purchase_order.created_at),
+                  status_badge(purchase_order.sap_sync)
               ]
 end
 
@@ -52,6 +53,7 @@ json.columnFilters [
                        [],
                        Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        Overseer.outside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       [],
                        [],
                        []
                    ]

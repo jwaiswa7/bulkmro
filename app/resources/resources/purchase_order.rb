@@ -155,20 +155,23 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
     }
   end
 
-  def self.to_remote(record)
+  def self.to_remote(record, po_request)
     item_row = []
-    po_request = PoRequest.find_by_purchase_order_id(record.id)
     po_request.rows.each do |row|
       json = {
-          "ItemCode": row.product.sku,
-          "DiscountPercent": row.discount_percentage,
-          "Quantity": row.quantity.to_f,
-          "ProjectCode": row.po_request.inquiry.inquiry_number,
-          "UnitPrice": row.unit_price.to_f,
-          "Currency": row.po_request.sales_order.currency.name,
-          "TaxCode": row.taxation.to_remote_s, # row.tax_rate.to_s.gsub('.0%', '').gsub('GST ', 'GST@'),
-          "WarehouseCode": po_request.purchase_order.warehouse.remote_uid,
-          "LocationCode": po_request.purchase_order.warehouse.location_uid
+          ItemCode: row.product.sku,
+          DiscountPercent: row.discount_percentage,
+          Quantity: row.quantity.to_f,
+          ProjectCode: po_request.inquiry.inquiry_number,
+          UnitPrice: row.unit_price.to_f,
+          Currency: po_request.sales_order.currency.name,
+          TaxCode: row.taxation.to_remote_s, # row.tax_rate.to_s.gsub('.0%', '').gsub('GST ', 'GST@'),
+          HSNEntry: row.product.is_service ? nil : row.tax_code.remote_uid,
+          SACEntry: row.product.is_service ? row.tax_code.remote_uid : nil,
+          WarehouseCode: po_request.bill_to.remote_uid,
+          LocationCode: po_request.bill_to.location_uid,
+          MeasureUnit: row.measurement_unit.name,
+          U_ProdBrand: row.brand_id.present? ? row.brand.name : row.product.brand.name
       }
       item_row << json
     end
@@ -196,7 +199,10 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         DocDueDate: Time.now.strftime('%Y-%m-%d'),
         U_SalesMgr: po_request.inquiry.sales_manager.to_s,
         U_In_Sales_Own: po_request.inquiry.inside_sales_owner.to_s,
-        U_Out_Sales_Own: po_request.inquiry.inside_sales_owner.to_s
+        U_Out_Sales_Own: po_request.inquiry.inside_sales_owner.to_s,
+        U_CnfrmAddB: 'A',
+        U_CnfrmAddS: 'A',
+        U_BM_BillFromTo: po_request.bill_to.remote_uid
     }
   end
 end

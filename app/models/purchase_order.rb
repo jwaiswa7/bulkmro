@@ -3,7 +3,7 @@ class PurchaseOrder < ApplicationRecord
 
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
-  update_index('purchase_orders#purchase_order') { self }
+  #update_index('purchase_orders#purchase_order') { self }
   update_index('customer_order_status_report#sales_order') { self.po_request.sales_order if self.po_request.present? }
 
   pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
@@ -96,6 +96,10 @@ class PurchaseOrder < ApplicationRecord
       'Sea': 3
   }
 
+  enum sap_sync: {
+      'Sync': 10,
+      'Not Sync': 20
+  }
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
   scope :material_pickup_queue, -> {where(material_status: :'Inward Dispatch')}
   scope :material_delivered_queue, -> {where(material_status: :'Material Delivered')}

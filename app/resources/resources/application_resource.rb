@@ -88,12 +88,16 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     nil
   end
 
-  def self.to_remote(record)
-    record
+  def self.to_remote(record, dependent_record = nil)
+    if !dependent_record.nil?
+      [record, dependent_record]
+    else
+      record
+    end
   end
 
   def self.to_remote_json(record)
-    self.to_remote(record).to_json
+    self.to_remote(record, dependent_record).to_json
   end
 
   def self.all
@@ -136,11 +140,15 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     end
   end
 
-  def self.create(record)
+  def self.create(record, dependent_record = nil)
     url = "/#{collection_name}"
-    body = to_remote(record).to_json
+    if dependent_record.nil?
+      body = to_remote(record).to_json
+    else
+      body = to_remote(record, dependent_record).to_json
+    end
     response = perform_remote_sync_action('post', url, body)
-    log_request(:post, record)
+    log_request(:post, record, dependent_record)
     validated_response = get_validated_response(response)
     log_response(validated_response, 'post', url, body)
 
@@ -173,13 +181,22 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     end
   end
 
-  def self.log_request(method, record, is_find: false)
+  def self.log_request(method, record, dependent_record = nil, is_find: false)
+    @resource = if dependent_record.nil?
+      if record.is_a?(String)
+        record
+      else
+        to_remote(record)
+      end
+    else
+      to_remote(record, dependent_record)
+    end
     @remote_request = RemoteRequest.create!(
         subject: record.is_a?(String) ? nil : record,
         method: method,
         is_find: is_find,
         resource: collection_name,
-        request: record.is_a?(String) ? record : to_remote(record),
+        request: @resource,
         url: [ENDPOINT, "/#{collection_name}"].join(''),
         status: :pending
     )
