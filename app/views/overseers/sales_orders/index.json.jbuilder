@@ -18,7 +18,7 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(new_overseers_invoice_request_path(sales_order_id: sales_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
                       end,
 =end
-                      if is_authorized(sales_order, 'new_freight_request') && policy(sales_order).new_freight_request?
+                      if is_authorized(sales_order, 'new_freight_request') && policy(sales_order.sales_quote).new_freight_request?
                         row_action_button(new_overseers_freight_request_path(sales_order_id: sales_order.to_param), 'external-link', 'New Freight Request', 'warning')
                       end, '<br/>', '<br/>',
                       if is_authorized(sales_order, 'material_dispatched_to_customer_new_email_msg')
