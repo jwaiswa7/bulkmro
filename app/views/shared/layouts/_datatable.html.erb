@@ -1,4 +1,5 @@
-<% if content_for?(:heading) || (content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new?) || !content_for?(:hide_table_desc) %>
+<% if content_for?(:heading) || (content_for?(:can_be_directly_created) && is_authorized(current_model.singularize.downcase, 'new')) || !content_for?(:hide_table_desc) %>
+  <%# raise %>
   <section class="section-padding-adjustment">
     <div class="d-md-flex justify-content-between">
       <!-- <div>

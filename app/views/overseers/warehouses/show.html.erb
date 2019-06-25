@@ -4,7 +4,7 @@
       <h3 class="display-5 d-flex align-items-center">
         <%= @warehouse.name %>
       </h3>
-      <% if policy(@warehouse).edit? %>
+      <% if is_authorized(@warehouse, 'edit') %>
         <a href="<%= edit_overseers_warehouse_path(@warehouse) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
           Warehouse</a>
       <% end %>
@@ -70,7 +70,7 @@
     </div>
   </section>
 
-  <% if @warehouse.product_stocks.any? && policy(@warehouse).show_product_stocks? %>
+  <% if @warehouse.product_stocks.any? && is_authorized(@warehouse, 'show_product_stocks') %>
     <div class="d-md-flex justify-content-between mt-5">
       <h3 class="display-5 mb-1">Product Stock</h3>
     </div>

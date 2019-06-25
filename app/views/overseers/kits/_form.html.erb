@@ -126,7 +126,7 @@
                       <div class="form-group align-self-center flex-grow-1 ml-2">
                         <i class="far fa-times text-danger"></i>
                       </div>
-                    <% end if policy(kit_product.object).destroy? %>
+                    <% end if is_authorized(kit_product.object, 'destroy') %>
                   </div>
 
                 </div>

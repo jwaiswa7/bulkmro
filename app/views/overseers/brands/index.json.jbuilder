@@ -1,10 +1,10 @@
 json.data (@brands) do |brand|
   json.array! [
                   [
-                      if policy(brand).show?
+                      if is_authorized(brand, 'show')
                         row_action_button(overseers_brand_path(brand), 'eye', 'View Details', 'info', :_blank)
                       end,
-                      if policy(brand).edit?
+                      if is_authorized(brand, 'edit')
                         row_action_button(edit_overseers_brand_path(brand), 'pencil', 'Edit Brand', 'warning', :_blank)
                       end
                   ].join(' '),
