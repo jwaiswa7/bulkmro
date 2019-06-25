@@ -87,13 +87,14 @@
               <hr class="my-2">
               <p class="mb-0 text-small text-black-50">
                 <strong class="d-block"><%= customer_product.best_brand.name if customer_product.best_brand.present? %></strong>
-                <em class="float-left">MOQ - <%= customer_product.moq %></em>
-                <em class="float-right">Instock Qty
+                <em>MOQ - <%= customer_product.moq %></em><br>
+                <em>Instock Qty
                   - <%= customer_product.product.stocks.sum(&:instock) if customer_product.product.present? %></em><br>
                 <% if @henkel_company.include?(current_company.id) %>
-                  <em class="float-left">BP Catalog No
+                  <strong class="d-block mt-2">BP Catalog</strong>
+                  <em>No
                     - <%= customer_product.bp_catalog_sku if customer_product.bp_catalog_sku.present? %></em><br>
-                  <em class="float-left"> BP Catalog Name
+                  <em> Name
                     - <%= customer_product.bp_catalog_name if customer_product.bp_catalog_name.present? %></em>
                 <% end %>
               </p>
