@@ -57,7 +57,12 @@ class Services::Overseers::Finders::LogisticsScorecards < Services::Overseers::F
             aggs: {
                 'scorecard': {
                     'terms': {
-                        'field': 'delay_bucket'
+                        'field': 'delay_bucket',
+                    }
+                },
+                'sum_delay_buckets': {
+                    'sum_bucket': {
+                        'buckets_path': 'scorecard>_count'
                     }
                 }
             }
