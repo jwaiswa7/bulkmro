@@ -2,7 +2,7 @@ class Customers::SalesOrdersController < Customers::BaseController
   before_action :set_sales_order, only: [:show]
 
   def index
-    authorize_acl :sales_order
+    authorize :sales_order
 
     respond_to do |format|
       format.html { }
@@ -17,7 +17,7 @@ class Customers::SalesOrdersController < Customers::BaseController
   end
 
   def show
-    authorize_acl @sales_order
+    authorize @sales_order
 
     respond_to do |format|
       format.html { }
@@ -28,7 +28,7 @@ class Customers::SalesOrdersController < Customers::BaseController
   end
 
   def export_all
-    authorize_acl :sales_order
+    authorize :sales_order
 
     service = Services::Customers::Exporters::SalesOrdersExporter.new(headers, current_company)
     self.response_body = service.call
