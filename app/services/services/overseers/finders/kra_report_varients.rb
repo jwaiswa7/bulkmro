@@ -31,7 +31,7 @@ class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Fin
       multi_match: {
           query: query_string,
           operator: 'and',
-          fields: %w[inside_sales_owner]
+          fields: %w[inside_sales_owner outside_sales_owner]
       }
     ).order(sort_definition)
 
