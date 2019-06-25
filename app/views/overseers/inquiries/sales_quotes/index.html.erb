@@ -13,7 +13,7 @@
       </div>
     <% end %>
 
-    <% if @sales_quotes.present? && @inquiry.final_sales_quote.present? && !is_authorized(@inquiry.final_sales_quote, 'new_sales_order') && !policy(@inquiry.final_sales_quote).new_sales_order? %>
+    <% if @sales_quotes.present? && @inquiry.final_sales_quote.present? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
       <ul class="list-group text-info mb-3">
         <li class="list-group-item">
           <h5 class="text-info mb-0">Before making a sales order, Please fulfill the following.</h5>
