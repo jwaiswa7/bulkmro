@@ -9,7 +9,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
     @payment_requests = service.records
 
 
-    authorize :payment_request
+    authorize_acl :payment_request
     status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_payment_requests, PaymentRequest)
     status_service.call
 
@@ -19,7 +19,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
 
   def update_payment_status
     @payment_requests = PaymentRequest.where(id: params[:payment_requests])
-    authorize @payment_requests
+    authorize_acl @payment_requests
     @payment_requests.update_all(status: params[:status_id].to_i)
     @payment_requests.each do |payment_request|
       payment_comment = PaymentRequestComment.new(message: "Status Changed:#{PaymentRequest.statuses.invert[params[:status_id].to_i]}", payment_request: payment_request, overseer: current_overseer)
@@ -28,7 +28,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
   end
 
   def show
-    authorize @payment_request
+    authorize_acl @payment_request
   end
 
   private

@@ -2,11 +2,11 @@ class Customers::CartController < Customers::BaseController
   before_action :set_cart
 
   def show
-    authorize @cart
+    authorize_acl @cart
   end
 
   def update
-    authorize @cart
+    authorize_acl @cart
 
     @cart.assign_attributes(cart_params)
 
@@ -22,18 +22,18 @@ class Customers::CartController < Customers::BaseController
   end
 
   def checkout
-    authorize @cart
+    authorize_acl @cart
   end
 
   def empty_cart
-    authorize @cart
+    authorize_acl @cart
     @cart.items.destroy_all
 
     redirect_to customers_products_path
   end
 
   def update_cart_details
-    authorize @cart
+    authorize_acl @cart
     @cart.assign_attributes(cart_params)
     @cart.save
     redirect_to final_checkout_customers_checkout_path(next_step: 'summary')

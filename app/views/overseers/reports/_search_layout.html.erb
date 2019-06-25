@@ -15,7 +15,7 @@
           <%= f.input :date_range, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Report.date_ranges), include_blank: false %>
         </div>
         <%#= yield :overseers_filter %>
-        <% if content_for?(:overseer_filters) && policy(current_model.singularize.to_sym).show? %>
+        <% if content_for?(:overseer_filters) && is_authorized(current_model.singularize.to_sym,'show') %>
           <div class="col-3">
             <div class="form-group select optional report_date_range form-group-valid">
               <label class="form-control-label select optional" for="report_date_range">Designation</label>

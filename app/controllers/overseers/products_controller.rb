@@ -6,7 +6,7 @@ class Overseers::ProductsController < Overseers::BaseController
     service.call
     @indexed_products = service.indexed_records
     @products = service.records
-    authorize @products
+    authorize_acl @products
   end
 
   def autocomplete
@@ -14,11 +14,11 @@ class Overseers::ProductsController < Overseers::BaseController
     service.call
     @indexed_products = service.indexed_records
     @products = service.records.active
-    authorize @products
+    authorize_acl @products
   end
 
   def suggestion
-    authorize :product
+    authorize_acl :product
     service = Services::Overseers::Finders::Products.new(params)
     service.call
 
@@ -32,7 +32,7 @@ class Overseers::ProductsController < Overseers::BaseController
     service.call
     @indexed_products = service.indexed_records
     @products = service.records.active
-    authorize @products
+    authorize_acl @products
   end
 
   def non_kit_autocomplete
@@ -46,7 +46,7 @@ class Overseers::ProductsController < Overseers::BaseController
 
     @indexed_products = service.indexed_records
     @products = service.records
-    authorize @products
+    authorize_acl @products
   end
 
   def service_autocomplete
@@ -59,27 +59,27 @@ class Overseers::ProductsController < Overseers::BaseController
 
     @indexed_products = service.indexed_records
     @products = service.records
-    authorize @products
+    authorize_acl @products
   end
 
   def pending
     @products = ApplyDatatableParams.to(Product.all.not_rejected.left_joins(:inquiry_products, :approval).merge(ProductApproval.where(product_id: nil)), params)
-    authorize @products
+    authorize_acl @products
   end
 
   def show
     @inquiry_products = @product.inquiry_products
-    authorize @product
+    authorize_acl @product
   end
 
   def new
     @product = Product.new(overseer: current_overseer)
-    authorize @product
+    authorize_acl @product
   end
 
   def create
     @product = Product.new(product_params.merge(overseer: current_overseer))
-    authorize @product
+    authorize_acl @product
     if @product.approved? ? @product.save_and_sync : @product.save
       redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
@@ -88,12 +88,12 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def edit
-    authorize @product
+    authorize_acl @product
   end
 
   def update
     @product.assign_attributes(product_params.merge(overseer: current_overseer))
-    authorize @product
+    authorize_acl @product
     if @product.approved? ? @product.save_and_sync : @product.save
       redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
@@ -104,7 +104,7 @@ class Overseers::ProductsController < Overseers::BaseController
   def best_prices_and_supplier_bp_catalog
     @supplier = Company.acts_as_supplier.find(params[:supplier_id])
     @inquiry_product_supplier = InquiryProductSupplier.find(params[:inquiry_product_supplier_id]) if params[:inquiry_product_supplier_id].present?
-    authorize @product
+    authorize_acl @product
 
     bp_catalog = @product.bp_catalog_for_supplier(@supplier)
 
@@ -121,7 +121,7 @@ class Overseers::ProductsController < Overseers::BaseController
 
   def customer_bp_catalog
     @company = Company.find(params[:company_id])
-    authorize @product
+    authorize_acl @product
 
     bp_catalog = @product.bp_catalog_for_customer(@company)
 
@@ -132,26 +132,26 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def sku_purchase_history
-    authorize @product
+    authorize_acl @product
     redirect_to overseers_product_path(@product)
   end
 
   def resync
-    authorize @product
+    authorize_acl @product
     if @product.save_and_sync
       redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     end
   end
 
   def resync_inventory
-    authorize @product
+    authorize_acl @product
     service = Services::Resources::Products::UpdateInventory.new([@product])
     service.resync
     redirect_to overseers_product_path(@product, anchor: 'inventory'), notice: flash_message(@product, action_name)
   end
 
   def export_all
-    authorize :product
+    authorize_acl :product
     service = Services::Overseers::Exporters::ProductsExporter.new(params[:q], current_overseer, [])
     service.call
 
@@ -159,7 +159,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def export_filtered_records
-    authorize :product
+    authorize_acl :product
     service = Services::Overseers::Finders::Products.new(params, current_overseer, paginate: false)
     service.call
 
@@ -169,7 +169,7 @@ class Overseers::ProductsController < Overseers::BaseController
 
 
   def autocomplete_suppliers
-    authorize @product
+    authorize_acl @product
     suppliers = {}
     @product.suppliers.each do |supplier|
       [supplier.name, supplier.id]
@@ -178,7 +178,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def get_product_details
-    authorize @product
+    authorize_acl @product
     product_details = {}
     product_details['brand'] = @product.brand.to_s
     product_details['tax_code_id'] = @product.best_tax_code.id

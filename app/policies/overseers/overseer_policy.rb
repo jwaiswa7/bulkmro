@@ -6,6 +6,24 @@ class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    (admin? || hr?) && record != overseer
+    (admin? || hr?)
+  end
+
+  def get_resources?
+    true
+  end
+
+  def save_acl_resources?
+    true
+  end
+
+
+  def edit_acl?
+    # overseer != record
+    true
+  end
+
+  def update_acl?
+    true
   end
 end
