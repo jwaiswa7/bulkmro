@@ -10,7 +10,7 @@ class Customers::CustomerProductsController < Customers::BaseController
       params[:page] = 1 unless params[:page].present?
       params[:per] = 24
     end
-    @henkel_company=Account.find(7).companies.pluck(:id)
+    @henkel_company = Account.find(7).companies.pluck(:id)
     service = Services::Customers::Finders::CustomerProducts.new(params, current_contact, current_company)
     service.call
     @indexed_customer_products = service.indexed_records
