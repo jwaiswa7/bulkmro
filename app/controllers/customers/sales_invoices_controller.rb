@@ -2,7 +2,7 @@ class Customers::SalesInvoicesController < Customers::BaseController
   before_action :set_sales_invoice, only: [:show]
 
   def index
-    authorize_acl :sales_invoice
+    authorize :sales_invoice
 
     respond_to do |format|
       format.html { }
@@ -17,7 +17,7 @@ class Customers::SalesInvoicesController < Customers::BaseController
   end
 
   def show
-    authorize_acl @sales_invoice
+    authorize @sales_invoice
 
     respond_to do |format|
       format.html { }
@@ -28,7 +28,7 @@ class Customers::SalesInvoicesController < Customers::BaseController
   end
 
   def export_all
-    authorize_acl :sales_invoice
+    authorize :sales_invoice
 
     service = Services::Customers::Exporters::SalesInvoicesExporter.new(headers, current_company)
     self.response_body = service.call
