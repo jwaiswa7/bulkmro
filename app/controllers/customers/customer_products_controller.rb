@@ -34,6 +34,7 @@ class Customers::CustomerProductsController < Customers::BaseController
 
   def show
     authorize @customer_product
+    @account = Account.find(7)
   end
 
   def most_ordered_products
