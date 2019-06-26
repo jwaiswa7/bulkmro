@@ -14,7 +14,6 @@ class LogisticsScorecardsIndex < BaseIndex
     field :logistics_owner_id, value: -> (record) { record.inquiry.company.logistics_owner_id if record.inquiry.present? }, type: 'integer'
     field :logistics_owner, value: -> (record) { record.inquiry.company.logistics_owner&.name if record.inquiry.present? && record.inquiry.company.present? }, analyzer: 'substring'
     field :opportunity_type, value: -> (record) { opportunity_type[record.inquiry.opportunity_type] if record.inquiry.present? }, type: 'integer'
-    field :created_at, value: -> (record) { record.created_at }, type: 'date'
 
     field :rows do
       field :sku, value: -> (record) { record.try(:sku) }, analyzer: 'sku_substring'
@@ -34,7 +33,7 @@ class LogisticsScorecardsIndex < BaseIndex
     field :delay, value: -> (record) { record.try(:calculated_delay) }, type: 'date'
     field :sla_bucket, value: -> (record) { record.try(:calculated_sla_bucket) }, analyzer: 'substring', fielddata: true
     field :delay_bucket, value: -> (record) { record.try(:calculated_delay_bucket) }, type: 'integer'
-    field :delay_reason, value: -> (record) { delay_reason[record.delay_reason] }, analyzer: 'substring', fielddata: true
+    field :delay_reason, value: -> (record) { record.delay_reason.present? ? delay_reason[record.delay_reason] : 50 }, type: 'integer'
 
     field :sales_order, type: 'nested' do
       field :po_requests, type: 'nested' do
@@ -43,5 +42,6 @@ class LogisticsScorecardsIndex < BaseIndex
         end
       end
     end
+    field :created_at, value: -> (record) { record.created_at }, type: 'date'
   end
 end

@@ -57,7 +57,8 @@ class SalesInvoice < ApplicationRecord
       'Logistics Delivery Delay': 10,
       'SO Creation Delay': 20,
       'Supplier PO Creation Delay': 30,
-      'Supplier Delay': 40
+      'Supplier Delay': 40,
+      'Unassigned': 50
   }
 
   enum sla_bucket: {
