@@ -1,5 +1,5 @@
 class Overseers::OverseersController < Overseers::BaseController
-  before_action :set_overseer, only: [:edit, :update, :save_acl_resources, :get_resources, :get_menu_resources, :edit_acl, :update_acl]
+  before_action :set_overseer, only: [:show, :edit, :update, :save_acl_resources, :get_resources, :get_menu_resources, :edit_acl, :update_acl]
 
   def index
     # service = Services::Overseers::Finders::Overseers.new(params)
@@ -24,6 +24,11 @@ class Overseers::OverseersController < Overseers::BaseController
     else
       render 'new'
     end
+  end
+
+  def show
+    @annual_targets = @overseer.annual_targets
+    authorize_acl @overseer
   end
 
   def edit

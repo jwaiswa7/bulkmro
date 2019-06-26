@@ -26,4 +26,8 @@ class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
   def update_acl?
     true
   end
+
+  def can_add_edit_target?
+    record.role == 'inside_sales_executive' && (admin? || developer?)
+  end
 end
