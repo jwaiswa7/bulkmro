@@ -7,7 +7,7 @@ class Overseers::CompaniesController < Overseers::BaseController
     service.call
     @indexed_companies = service.indexed_records
     @companies = service.records
-    authorize @companies
+    authorize_acl @companies
   end
 
   def autocomplete
@@ -16,7 +16,7 @@ class Overseers::CompaniesController < Overseers::BaseController
     else
       @companies = ApplyParams.to(Company.active, params)
     end
-    authorize @companies
+    authorize_acl @companies
   end
 
   def new
@@ -29,12 +29,12 @@ class Overseers::CompaniesController < Overseers::BaseController
       @account = Account.new
       @company = Company.new(overseer: current_overseer)
     end
-    authorize @company
+    authorize_acl @company
   end
 
   def create
     @company = Company.new(company_params.merge(overseer: current_overseer))
-    authorize @company
+    authorize_acl @company
     if params[:ccr_id].present?
       if @company.save
         if @company.company_creation_request.present?
@@ -69,11 +69,11 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def show
-    authorize @company
+    authorize_acl @company
   end
 
   def export_all
-    authorize :company
+    authorize_acl :company
     service = Services::Overseers::Exporters::CompaniesExporter.new(params[:q], current_overseer, [])
     service.call
 
@@ -81,7 +81,7 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def export_filtered_records
-    authorize :company
+    authorize_acl :company
 
     service = Services::Overseers::Finders::Companies.new(params, current_overseer, paginate: false)
     service.call
@@ -91,7 +91,7 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def company_report
-    authorize :company
+    authorize_acl :company
 
     respond_to do |format|
       format.html {
@@ -116,7 +116,7 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def export_company_report
-    authorize :company
+    authorize_acl :company
     service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer)
     service.call
 
@@ -135,7 +135,7 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def get_account
-    authorize @company
+    authorize_acl @company
     render json: {account_id: @company.account.id, account_name: @company.account.name}
   end
 

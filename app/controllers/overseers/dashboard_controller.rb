@@ -2,7 +2,7 @@ class Overseers::DashboardController < Overseers::BaseController
   skip_before_action :authenticate_overseer!, only: :migrations
 
   def show
-    authorize :dashboard, :show?
+    authorize_acl :dashboard
 
     if Rails.env.development?
       render 'default_dashboard'
@@ -23,14 +23,14 @@ class Overseers::DashboardController < Overseers::BaseController
   end
 
   def serializer
-    authorize :dashboard, :show?
+    authorize_acl :dashboard, :show?
     render json: Serializers::InquirySerializer.new(Inquiry.find(1004),
         include: [
         ]).serialized_json
   end
 
   def chewy
-    authorize :dashboard
+    authorize_acl :dashboard
     Dir[[Chewy.indices_path, '/*'].join()].map do |path|
       path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
     end
@@ -39,7 +39,7 @@ class Overseers::DashboardController < Overseers::BaseController
   end
 
   def reset_index
-    authorize :dashboard
+    authorize_acl :dashboard
     if params.present? && params[:index].present?
       index_class = params[:index].to_s.classify.constantize
       if index_class <= BaseIndex
@@ -50,7 +50,7 @@ class Overseers::DashboardController < Overseers::BaseController
   end
 
   def console
-    authorize :dashboard
+    authorize_acl :dashboard
 
     CustomerProduct.with_attachments.each do |customer_product|
       customer_product.best_images.each do |image|
@@ -62,7 +62,7 @@ class Overseers::DashboardController < Overseers::BaseController
   end
 
   def migrations
-    authorize :dashboard
+    authorize_acl :dashboard
     Services::Shared::Migrations::Migrations.new.call
     render json: {}, status: :ok
   end

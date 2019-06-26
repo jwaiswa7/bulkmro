@@ -8,7 +8,7 @@ class Overseers::SalesOrders::EmailMessagesController < Overseers::SalesOrders::
       auto_attach: true
     )
 
-    authorize @sales_order, :material_dispatched_to_customer_new_email_msg?
+    authorize_acl @sales_order, :material_dispatched_to_customer_new_email_msg?
     render 'new'
   end
 
@@ -24,7 +24,7 @@ class Overseers::SalesOrders::EmailMessagesController < Overseers::SalesOrders::
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:cc].present?
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:bcc].present?
 
-    authorize @sales_order, :material_dispatched_to_customer_create_email_msg?
+    authorize_acl @sales_order, :material_dispatched_to_customer_create_email_msg?
 
     if @email_message.save
       SalesOrderMailer.material_dispatched_to_customer_notification(@email_message).deliver_now
@@ -43,7 +43,7 @@ class Overseers::SalesOrders::EmailMessagesController < Overseers::SalesOrders::
       auto_attach: true
     )
 
-    authorize @sales_order, :material_delivered_to_customer_new_email_msg?
+    authorize_acl @sales_order, :material_delivered_to_customer_new_email_msg?
     render 'new'
   end
 
@@ -59,7 +59,7 @@ class Overseers::SalesOrders::EmailMessagesController < Overseers::SalesOrders::
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:cc].present?
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:bcc].present?
 
-    authorize @sales_order, :material_delivered_to_customer_create_email_msg?
+    authorize_acl @sales_order, :material_delivered_to_customer_create_email_msg?
 
     if @email_message.save
       SalesOrderMailer.material_delivered_to_customer_notification(@email_message).deliver_now

@@ -6,16 +6,16 @@ class Overseers::RemoteRequestsController < Overseers::BaseController
     service.call
     @indexed_remote_requests = service.indexed_records
     @remote_requests = service.records
-    authorize @remote_requests
+    authorize_acl @remote_requests
   end
 
   def show
-    authorize @remote_request
+    authorize_acl @remote_request
     render :show
   end
 
   def resend_failed_requests
-    authorize :remote_request
+    authorize_acl :remote_request
     service = Services::Overseers::RemoteRequests::ResyncFailedRequests.new
     service.call
 

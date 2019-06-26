@@ -83,6 +83,13 @@ Rails.application.routes.draw do
 
     resources :document_creations
 
+    resources :acl_resources do
+      collection do
+        get 'resource_json'
+        get 'menu_resource_json'
+      end
+    end
+
     resources :notifications do
       collection do
         post 'mark_as_read'
@@ -131,7 +138,31 @@ Rails.application.routes.draw do
       end
     end
     resource :profile, controller: :profile, except: [:show, :index]
-    resources :overseers, except: [:show]
+    resources :overseers, except: [:show] do
+      member do
+        patch 'save_acl_resources'
+        get 'get_resources'
+        get 'get_menu_resources'
+        get 'edit_acl'
+        patch 'update_acl'
+      end
+
+      collection do
+        get 'get_resources'
+      end
+    end
+
+    resources :acl_roles do
+      member do
+        get 'get_acl'
+        get 'get_acl_menu'
+        get 'get_role_resources'
+        post 'save_role'
+      end
+      collection do
+        get 'get_default_resources'
+      end
+    end
 
     resources :suppliers do
       collection do
@@ -437,8 +468,6 @@ Rails.application.routes.draw do
             post 'preview_stock'
           end
         end
-
-
 
         resources :sales_invoices do
           member do
