@@ -55,4 +55,12 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def show_pending_ap_invoice_queue?
     index? && (admin? || accounts? || manager_or_sales?)
   end
+
+  def new_email_message?
+    record.persisted? && overseer.can_send_emails?
+  end
+
+  def create_email_message?
+    new_email_message?
+  end
 end

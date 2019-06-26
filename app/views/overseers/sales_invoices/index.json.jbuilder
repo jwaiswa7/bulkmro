@@ -14,11 +14,14 @@ json.data (@sales_invoices) do |sales_invoice|
                          row_action_button(make_zip_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :zip), 'file-archive', 'Zip without Signature', 'info', :_blank)
                         ]
                       end,
+                      if is_authorized(sales_invoice, 'can_send_pod_email') && policy(sales_invoice).create_email_message?
+                        row_action_button(new_overseers_sales_invoice_email_message_path(sales_invoice), 'envelope', 'Email POD', 'success')
+                      end,
                       if is_authorized(sales_invoice, 'show_original_invoice') && policy(sales_invoice).show_original_invoice? && sales_invoice.inquiry.present?
                         [row_action_button(url_for(sales_invoice.original_invoice), 'none', sales_invoice.original_invoice.filename, 'success', :_blank, 'get', false, 'O'),
-                         row_action_button(url_for(sales_invoice.duplicate_invoice), 'none', sales_invoice.duplicate_invoice.filename, 'success', :_blank, 'get', false, 'D'),
-                         row_action_button(url_for(sales_invoice.triplicate_invoice), 'none', sales_invoice.triplicate_invoice.filename, 'success', :_blank, 'get', false, 'T'),
-                        ]
+                     row_action_button(url_for(sales_invoice.duplicate_invoice), 'none', sales_invoice.duplicate_invoice.filename, 'success', :_blank, 'get', false, 'D'),
+                     row_action_button(url_for(sales_invoice.triplicate_invoice), 'none', sales_invoice.triplicate_invoice.filename, 'success', :_blank, 'get', false, 'T'),
+                    ]
                       end,
                       if is_authorized(sales_invoice, 'edit_pod') && policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count == 0)
                         row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success')
