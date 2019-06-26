@@ -1,6 +1,6 @@
 class Overseers::Accounts::SalesInvoicesController < Overseers::Accounts::BaseController
   def show
-    authorize @account
+    authorize_acl :sales_invoice, 'show'
   end
 
   def index
@@ -8,7 +8,7 @@ class Overseers::Accounts::SalesInvoicesController < Overseers::Accounts::BaseCo
         base_filter_key: 'account_id',
         base_filter_value: params[:account_id]
     }
-    authorize @account
+    authorize_acl :sales_invoice, 'index'
     respond_to do |format|
       format.html { }
       format.json do

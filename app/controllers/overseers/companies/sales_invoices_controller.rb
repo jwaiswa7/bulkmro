@@ -6,7 +6,7 @@ class Overseers::Companies::SalesInvoicesController < Overseers::Companies::Base
         base_filter_key: 'company_id',
         base_filter_value: params[:company_id]
     }
-    authorize @company
+    authorize_acl :sales_invoice
     respond_to do |format|
       format.html { }
       format.json do

@@ -11,7 +11,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         end.order(id: :desc)
 
     @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
-    authorize @invoice_requests
+    authorize_acl @invoice_requests
 
     respond_to do |format|
       format.json { render 'index' }
@@ -21,7 +21,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def completed
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.ar_invoice_generated.order(id: :desc), params)
-    authorize @invoice_requests
+    authorize_acl @invoice_requests
 
     #####################################################################################################
     ## Below code is for POD Summary on AR completed queue
@@ -52,7 +52,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         end.order(id: :desc)
 
     @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
-    authorize @invoice_requests
+    authorize_acl @invoice_requests
 
     respond_to do |format|
       format.json {render 'index'}
@@ -62,12 +62,12 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def index
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.order(id: :desc), params)
-    authorize @invoice_requests
+    authorize_acl @invoice_requests
     @statuses = @invoice_requests.pluck(:status)
   end
 
   def show
-    authorize @invoice_request
+    authorize_acl @invoice_request
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
     # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     @company_reviews = [@invoice_request.purchase_order.po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @invoice_request.purchase_order.supplier).first_or_create]
@@ -80,13 +80,13 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @sales_order = SalesOrder.find(params[:sales_order_id])
       @invoice_request = InvoiceRequest.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
 
-      authorize @invoice_request
+      authorize_acl @invoice_request
     elsif params[:purchase_order_id].present?
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @sales_order = @purchase_order.try(:po_request).try(:sales_order)
       @invoice_request = InvoiceRequest.new(overseer: current_overseer, purchase_order: @purchase_order, inquiry: @purchase_order.inquiry)
       @inward_dispatches_ids = params[:ids].present? ? params[:ids] : [InwardDispatch.decode_id(params[:inward_dispatch_id])]
-      authorize @invoice_request
+      authorize_acl @invoice_request
       if params[:inward_dispatch_id] || params[:ids]
         @inward_dispatches = InwardDispatch.where(id: @inward_dispatches_ids)
         service = Services::Overseers::InvoiceRequests::FormProductsList.new(@inward_dispatches_ids, false)
@@ -101,6 +101,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def create
     @invoice_request = InvoiceRequest.new(invoice_request_params.merge(overseer: current_overseer))
+    authorize_acl @invoice_request
+
     inward_dispatch_ids = invoice_request_params[:inward_dispatch_ids].split(',').map(&:to_i)
     @inward_dispatches = InwardDispatch.where(id: inward_dispatch_ids)
     authorize @invoice_request
@@ -123,7 +125,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   end
 
   def edit
-    authorize @invoice_request
+    authorize_acl @invoice_request
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
     # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     @company_reviews = [@invoice_request.purchase_order.po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @invoice_request.purchase_order.supplier).first_or_create]
@@ -137,7 +139,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def update
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
-    authorize @invoice_request
+    authorize_acl @invoice_request
     inward_dispatch_ids = invoice_request_params[:inward_dispatch_ids].split(',').map(&:to_i)
     @inward_dispatches = @invoice_request.inward_dispatches
     if @invoice_request.valid?
@@ -154,7 +156,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def cancel_invoice_request
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
-    authorize @invoice_request
+    authorize_acl @invoice_request
     if @invoice_request.valid?
       service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
       service.call
@@ -165,7 +167,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   end
 
   def render_cancellation_form
-    authorize @invoice_request
+    authorize_acl @invoice_request
     respond_to do |format|
       format.html {render partial: 'cancel_invoice_request'}
     end

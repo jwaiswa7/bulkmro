@@ -1,7 +1,7 @@
 <%= render layout: 'overseers/dashboard/show' do %>
 
   <div class="form-row mt-2 mt-lg-4">
-    <% if policy(:account).index? %>
+    <% if is_authorized(:account,'index') %>
       <div class="col-md-3">
         <div class="card mb-3">
           <div class="card-body">
@@ -16,7 +16,7 @@
         </div>
       </div>
     <% end %>
-    <% if policy(:company).index? %>
+    <% if is_authorized(:company,'index') %>
       <div class="col-md-3">
         <div class="card mb-3">
           <div class="card-body">
@@ -32,7 +32,7 @@
         </div>
       </div>
     <% end %>
-    <% if policy(:contact).index? %>
+    <% if is_authorized(:contact,'index') %>
       <div class="col-md-3">
         <div class="card mb-3">
           <div class="card-body">
@@ -47,7 +47,7 @@
         </div>
       </div>
     <% end %>
-    <% if policy(:product).index? %>
+    <% if is_authorized(:product,'index') %>
       <div class="col-md-3">
         <div class="card mb-3">
           <div class="card-body">

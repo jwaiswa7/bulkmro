@@ -1,0 +1,33 @@
+<div class="col-lg-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+      <h3 class="display-5 d-flex align-items-center">
+        <%= @acl_resource.resource_model_name %>
+      </h3>
+      <% if is_authorized(@acl_resource, 'edit') %>
+        <a href="<%= edit_overseers_acl_resource_path(@acl_resource) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+          Resource</a>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-1">Resource Details</h6>
+          <div class="form-row">
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Model Name</strong>
+                <%= @acl_resource.resource_model_name %>
+              </div>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Action Name</strong>
+                <%= @acl_resource.resource_action_name %>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

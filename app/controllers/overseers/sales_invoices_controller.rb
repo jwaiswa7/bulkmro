@@ -2,7 +2,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   before_action :set_invoice, only: [:edit_pod, :update_pod]
 
   def index
-    authorize :sales_invoice
+    authorize_acl :sales_invoice
 
     respond_to do |format|
       format.html {
@@ -28,14 +28,14 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   end
 
   def edit_pod
-    authorize @invoice
+    authorize_acl @invoice
     if !@invoice.pod_rows.present?
       @invoice.pod_rows.build
     end
   end
 
   def update_pod
-    authorize @invoice
+    authorize_acl @invoice
     @invoice.assign_attributes(invoice_params)
     if @invoice.save
       redirect_to edit_pod_overseers_sales_invoice_path, notice: flash_message(@invoice, action_name)
@@ -44,11 +44,11 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
   def autocomplete
     @sales_invoices = ApplyParams.to(SalesInvoice.all, params)
-    authorize @sales_invoices
+    authorize_acl @sales_invoices
   end
 
   def export_all
-    authorize :sales_invoice
+    authorize_acl :sales_invoice
     service = Services::Overseers::Exporters::SalesInvoicesExporter.new([], current_overseer, [])
     service.call
 
@@ -56,7 +56,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   end
 
   def export_filtered_records
-    authorize :sales_invoice
+    authorize_acl :sales_invoice
     service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer, paginate: false)
     service.call
 
@@ -65,7 +65,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   end
 
   def export_rows
-    authorize :sales_invoice
+    authorize_acl :sales_invoice
     service = Services::Overseers::Exporters::SalesInvoiceRowsExporter.new
     service.call
 
@@ -73,7 +73,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   end
 
   def export_for_logistics
-    authorize :sales_invoice
+    authorize_acl :sales_invoice
     service = Services::Overseers::Exporters::SalesInvoicesLogisticsExporter.new
     service.call
 

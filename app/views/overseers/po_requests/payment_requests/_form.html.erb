@@ -136,19 +136,19 @@
             <%= f.nested_fields_for :transactions, wrapper_tag: :div do |transaction| %>
               <div class="form-row flex-row align-items-start">
                 <div class="col-2">
-                  <%= transaction.input :payment_type, placeholder: 'Payment Type', placeholder: placeholder_for(transaction, :utr_or_cheque_no), :required => policy(@payment_request).edit_payment_queue?, as: :select, disabled: !policy(@payment_request).edit_payment_queue? || (PaymentRequest.Rejected.include? (f.object)), collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => 'Select a Payment Type' %>
+                  <%= transaction.input :payment_type, placeholder: 'Payment Type', placeholder: placeholder_for(transaction, :utr_or_cheque_no), :required => is_authorized(@payment_request, 'edit_payment_queue'), as: :select, disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)), collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => 'Select a Payment Type' %>
                 </div>
                 <div class="col-2">
-                  <%= transaction.input :utr_or_cheque_no, placeholder: 'UTR/Cheque Number', label: 'UTR/Cheque Number', :required => false, disabled: !policy(@payment_request).edit_payment_queue? || (PaymentRequest.Rejected.include? (f.object)) %>
+                  <%= transaction.input :utr_or_cheque_no, placeholder: 'UTR/Cheque Number', label: 'UTR/Cheque Number', :required => false, disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)) %>
                 </div>
                 <div class="col-2">
-                  <%= transaction.input :issue_date, placeholder: 'NEFT/Cheque Issue Date', label:'NEFT/Cheque Issue Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, placeholder: placeholder_for(transaction, :issue_date), disabled: !policy(@payment_request).edit_payment_queue? || (PaymentRequest.Rejected.include? (f.object)) %>
+                  <%= transaction.input :issue_date, placeholder: 'NEFT/Cheque Issue Date', label:'NEFT/Cheque Issue Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, placeholder: placeholder_for(transaction, :issue_date), disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)) %>
                 </div>
                 <div class="col-2">
-                  <%= transaction.input :cheque_date, placeholder: 'Cheque Date', label: 'Cheque Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: !policy(@payment_request).edit_payment_queue? || (PaymentRequest.Rejected.include? (f.object)) %>
+                  <%= transaction.input :cheque_date, placeholder: 'Cheque Date', label: 'Cheque Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)) %>
                 </div>
                 <div class="col-1">
-                  <%= transaction.input :status, placeholder: 'Status', :required => policy(@payment_request).edit_payment_queue?, as: :select, disabled: !policy(@payment_request).edit_payment_queue? || (PaymentRequest.Rejected.include? (f.object)), collection: enum_to_collection(PaymentRequestTransaction.statuses, alphabetical: true, keep_raw: true), :include_blank => 'Select a Status' %>
+                  <%= transaction.input :status, placeholder: 'Status', :required => is_authorized(@payment_request, 'edit_payment_queue'), as: :select, disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)), collection: enum_to_collection(PaymentRequestTransaction.statuses, alphabetical: true, keep_raw: true), :include_blank => 'Select a Status' %>
                 </div>
                 <div class="col-2">
                   <%= transaction.input :transaction_due_date, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'transaction-due-date', :'data-due-date'=> (f.object.due_date if f.object.due_date.present?) },  placeholder: 'Due Date', label: 'Due Date', required: true %>
@@ -156,13 +156,13 @@
                 <div class="col-1">
                   <div class="d-flex">
                     <div class="flex-grow-1">
-                      <%= transaction.input :amount_paid, placeholder: 'Amount', placeholder: placeholder_for(transaction, :amount_paid), label: "Amount", :required => policy(@payment_request).payment_request_logistics_and_accounts?, disabled: !policy(@payment_request).payment_request_logistics_and_accounts? || (PaymentRequest.Rejected.include? (f.object)) %>
+                      <%= transaction.input :amount_paid, placeholder: 'Amount', placeholder: placeholder_for(transaction, :amount_paid), label: "Amount", :required => is_authorized(@payment_request, 'payment_request_logistics_and_accounts'), disabled: !is_authorized(@payment_request, 'payment_request_logistics_and_accounts') || (PaymentRequest.Rejected.include? (f.object)) %>
                     </div>
                     <%= transaction.remove_nested_fields_link do %>
                       <span class="align-self-center ml-2">
                         <i class="far fa-times text-danger"></i>
                       </span>
-                    <% end if policy(transaction.object).destroy? && (!PaymentRequest.Rejected.include? (f.object)) %>
+                    <% end if is_authorized(transaction.object, 'destroy') && (!PaymentRequest.Rejected.include? (f.object)) %>
                   </div>
                 </div>
               </div>
@@ -210,7 +210,7 @@
                         <i class="fal fa-download"></i>
                         <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                           <i class="fal fa-trash-alt"></i>
-                        <% end if attachment.present? && policy(:attachment).destroy? %>
+                        <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
                       <% end %>
                     <% end if f.object.attachments.attached? %>
                   </div>
@@ -228,7 +228,7 @@
                   <% if @payment_request.purchase_order.present? %>
                     <div class="col-6">
                       <strong class="d-block">Supplier Purchase Order</strong>
-                      <% if policy(@payment_request.purchase_order).show? %>
+                      <% if is_authorized(@payment_request.purchase_order, 'show') %>
                         <%= link_to overseers_inquiry_purchase_order_path(@payment_request.inquiry, @payment_request.purchase_order, format: :pdf), target: '_blank' do %>
                           <%= @payment_request.purchase_order.filename(include_extension: true) %>
                         <% end %>

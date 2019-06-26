@@ -61,14 +61,14 @@
               <% end %>
 
               <% if @customer_product.best_measurement_unit.present? %>
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">Measurement Unit</strong>
                   <%= @customer_product.best_measurement_unit.name %>
                 </div>
               <% end %>
 
               <% if @customer_product.moq? %>
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">Minimum Order Quantity</strong>
                   <%= @customer_product.moq %>
                 </div>
@@ -77,6 +77,16 @@
                 <strong class="d-block">Instock Quantity</strong>
                 <%= @customer_product.product.stocks.sum(&:instock) %>
               </div>
+              <% if @account == current_company.account %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">BP Catalog No</strong>
+                  <%= @customer_product.bp_catalog_sku if @customer_product.bp_catalog_sku.present?  %>
+                </div>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">BP Catalog Name</strong>
+                  <%= @customer_product.bp_catalog_name if @customer_product.bp_catalog_name.present? %>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>

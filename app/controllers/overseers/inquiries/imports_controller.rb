@@ -5,11 +5,11 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def index
     @imports = @inquiry.imports
-    authorize @inquiry, :imports?
+    authorize_acl @inquiry, 'imports'
   end
 
   def show
-    authorize @import
+    authorize_acl @import
 
     respond_to do |format|
       format.text { render plain: @import.import_text }
@@ -18,12 +18,12 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def new_list_import
     @list_import = @inquiry.imports.build(import_type: :list, overseer: current_overseer)
-    authorize @inquiry
+    authorize_acl @inquiry
   end
 
   def create_list_import
     @list_import = @inquiry.imports.build(create_list_import_params.merge(import_type: :list, overseer: current_overseer))
-    authorize @inquiry
+    authorize_acl @inquiry
 
     service = Services::Overseers::InquiryImports::ListImporter.new(@inquiry, @list_import)
 
@@ -36,11 +36,11 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def new_excel_import
     @excel_import = @inquiry.imports.build(import_type: :excel, overseer: current_overseer)
-    authorize @inquiry
+    authorize_acl @inquiry
   end
 
   def excel_template
-    authorize @inquiry
+    authorize_acl @inquiry
     respond_to do |format|
       format.xlsx {
         response.headers['Content-Disposition'] = 'attachment; filename="' + ["#{@inquiry.to_s} Excel Template", 'xlsx'].join('.') + '"'
@@ -50,7 +50,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def create_excel_import
     @excel_import = @inquiry.imports.build(create_excel_import_params.merge(import_type: :excel, overseer: current_overseer))
-    authorize @inquiry
+    authorize_acl @inquiry
 
     service = Services::Overseers::InquiryImports::ExcelImporter.new(@inquiry, @excel_import)
 
@@ -70,7 +70,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
   end
 
   def manage_failed_skus
-    authorize @excel_import
+    authorize_acl @excel_import
 
     service = Services::Overseers::InquiryImports::BuildInquiryProducts.new(@inquiry, @excel_import)
     service.call
@@ -79,7 +79,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
   def create_failed_skus
     @excel_import.assign_attributes(create_failed_skus_params)
 
-    authorize @excel_import
+    authorize_acl @excel_import
     service = Services::Overseers::InquiryImports::CreateFailedSkus.new(@inquiry, @excel_import)
 
     if service.call
