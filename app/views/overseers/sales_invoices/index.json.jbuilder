@@ -14,7 +14,7 @@ json.data (@sales_invoices) do |sales_invoice|
                          row_action_button(make_zip_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :zip), 'file-archive', 'Zip without Signature', 'info', :_blank)
                         ]
                       end,
-                      if policy(sales_invoice).create_email_message?
+                      if is_authorized(sales_invoice, 'can_send_pod_email') && policy(sales_invoice).create_email_message?
                         row_action_button(new_overseers_sales_invoice_email_message_path(sales_invoice), 'envelope', 'Email POD', 'success')
                       end,
                       if is_authorized(sales_invoice, 'show_original_invoice') && policy(sales_invoice).show_original_invoice? && sales_invoice.inquiry.present?

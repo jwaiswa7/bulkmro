@@ -10,7 +10,8 @@ class Overseers::SalesInvoices::EmailMessagesController < Overseers::SalesInvoic
       auto_attach: true,
     )
 
-    authorize @sales_invoice, :new_email_message?
+    # authorize @sales_invoice, :new_email_message?
+    authorize_acl @email_message
   end
 
   def create
@@ -20,7 +21,8 @@ class Overseers::SalesInvoices::EmailMessagesController < Overseers::SalesInvoic
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
 
-    authorize @sales_invoice, :create_email_message?
+    # authorize @sales_invoice, :create_email_message?
+    authorize_acl @sales_invoice
 
     if params['email_message']['auto_attach']
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, @locals)), filename: @sales_invoice.filename(include_extension: true))
