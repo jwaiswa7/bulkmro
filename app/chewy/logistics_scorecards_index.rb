@@ -2,7 +2,7 @@ class LogisticsScorecardsIndex < BaseIndex
   opportunity_type = Inquiry.opportunity_types
   delay_reason = SalesInvoice.delay_reasons
 
-  define_type SalesInvoice.where.not(invoice_number: nil, status: 'Cancelled').with_includes do
+  define_type SalesInvoice.eager_load(:rows).with_inquiry.not_cancelled.with_includes.ignore_freight_bm do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
@@ -34,6 +34,7 @@ class LogisticsScorecardsIndex < BaseIndex
     field :sla_bucket, value: -> (record) { record.try(:calculated_sla_bucket) }, analyzer: 'substring', fielddata: true
     field :delay_bucket, value: -> (record) { record.try(:calculated_delay_bucket) }, type: 'integer'
     field :delay_reason, value: -> (record) { record.delay_reason.present? ? delay_reason[record.delay_reason] : 50 }, type: 'integer'
+    field :created_at, value: -> (record) { record.created_at }, type: 'date'
 
     field :sales_order, type: 'nested' do
       field :po_requests, type: 'nested' do
@@ -42,6 +43,5 @@ class LogisticsScorecardsIndex < BaseIndex
         end
       end
     end
-    field :created_at, value: -> (record) { record.created_at }, type: 'date'
   end
 end

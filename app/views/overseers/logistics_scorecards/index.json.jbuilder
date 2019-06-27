@@ -18,6 +18,7 @@ json.data (@logistics_scorecard_records) do |record|
                   record[:customer_po_received_date].present? ? format_date_without_time(Date.parse(record[:customer_po_received_date])) : '--',
                   record[:cp_committed_date].present? ? format_date_without_time(Date.parse(record[:cp_committed_date])) : '--',
                   record[:so_created_at].present? ? format_date_without_time(Date.parse(record[:so_created_at])) : '--',
+                  record[:po_created_date].present? ? format_date_without_time(Date.parse(record[:po_created_date])) : '--',
                   record[:actual_delivery_date].present? ? format_date_without_time(Date.parse(record[:actual_delivery_date])) : '--',
                   record[:committed_delivery_tat].present? ? record[:committed_delivery_tat] : '--',
                   record[:actual_delivery_tat].present? ? record[:actual_delivery_tat] : '--',
@@ -51,8 +52,9 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       SalesInvoice.delay_buckets.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
+                       SalesInvoice.delay_buckets.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       SalesInvoice.delay_reasons.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        []
 ]
 

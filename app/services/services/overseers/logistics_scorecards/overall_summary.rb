@@ -12,7 +12,6 @@ class Services::Overseers::LogisticsScorecards::OverallSummary < Services::Share
     @records = indexed_sales_invoices.aggregations['logistics_scorecard_filter']['buckets']['custom-range']['overall_scorecard']['buckets']
     @ownerwise_records = indexed_sales_invoices.aggregations['logistics_scorecard_filter']['buckets']['custom-range']['ownerwise_scorecard']['buckets']
     @delay_bucket_monthwise_records = indexed_sales_invoices.aggregations['logistics_scorecard_filter']['buckets']['custom-range']['delay_reason_monthwise_scorecard']['buckets']
-    @delay_bucket_ownerwise_records = indexed_sales_invoices.aggregations['logistics_scorecard_filter']['buckets']['custom-range']['delay_reason_ownerwise_scorecard']['buckets']
   end
 
   attr_accessor :months, :records, :ownerwise_records, :delay_bucket_monthwise_records, :delay_bucket_ownerwise_records

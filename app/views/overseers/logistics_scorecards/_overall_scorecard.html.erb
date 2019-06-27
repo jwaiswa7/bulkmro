@@ -1,7 +1,7 @@
 <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4" type="button" data-toggle="collapse" data-target="#pod-summary">
-  Overall Scorecard
+  Overall Scorecard <i class="fa fa-chevron-down"></i>
 </a>
-<div id="pod-summary" class="collapse show">
+<div id="pod-summary" class="collapse">
   <div class="mt-2 form-row d-flex flex-row align-content-stretch text-right">
     <% if @months.present? %>
       <div class="col-12 col-lg-12">
@@ -133,7 +133,12 @@
                 <th class="text-uppercase text-left" style="font-size: 12px;"><b>Unassigned</b></th>
                 <% @delay_bucket_monthwise_records.each do |month, record| %>
                   <td class="text-uppercase">
+                    <a href="<%= filtered_path(overseers_logistics_scorecards_path, [
+                        filter_by_value('Delay Reason', 'Unassigned', 50),
+                        filter_by_monthrange('Committed Delivery Date to Customer', month)
+                    ]) %>">
                     <b><%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['sum_delay_buckets']['value'].to_i) if bucket['key'] == 50}.compact.first || '0%' %></b>
+                    </a>
                   </td>
                 <% end %>
               </tr>
@@ -149,7 +154,12 @@
                 <th class="text-uppercase logistics-scorecard" style="font-size: 12px;">Logistics Delivery Delay</th>
                 <% @delay_bucket_monthwise_records.each do |month, record| %>
                   <td class="text-uppercase">
+                    <a href="<%= filtered_path(overseers_logistics_scorecards_path, [
+                        filter_by_value('Delay Reason', 'Logistics Delivery Delay', 10),
+                        filter_by_monthrange('Committed Delivery Date to Customer', month)
+                    ]) %>">
                     <%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['sum_delay_buckets']['value'].to_i) if bucket['key'] == 10}.compact.first || '0%' %>
+                    </a>
                   </td>
                 <% end %>
               </tr>
@@ -157,7 +167,12 @@
                 <th class="text-uppercase logistics-scorecard" style="font-size: 12px;">SO Creation Delay</th>
                 <% @delay_bucket_monthwise_records.each do |month, record| %>
                   <td class="text-uppercase">
+                    <a href="<%= filtered_path(overseers_logistics_scorecards_path, [
+                        filter_by_value('Delay Reason', 'SO Creation Delay', 20),
+                        filter_by_monthrange('Committed Delivery Date to Customer', month)
+                    ]) %>">
                     <%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['sum_delay_buckets']['value'].to_i) if bucket['key'] == 20}.compact.first || '0%' %>
+                    </a>
                   </td>
                 <% end %>
               </tr>
@@ -165,7 +180,12 @@
                 <th class="text-uppercase logistics-scorecard" style="font-size: 12px;">Supplier PO Creation Delay</th>
                 <% @delay_bucket_monthwise_records.each do |month, record| %>
                   <td class="text-uppercase">
+                    <a href="<%= filtered_path(overseers_logistics_scorecards_path, [
+                        filter_by_value('Delay Reason', 'Supplier PO Creation Delay', 30),
+                        filter_by_monthrange('Committed Delivery Date to Customer', month)
+                    ]) %>">
                     <%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['sum_delay_buckets']['value'].to_i) if bucket['key'] == 30}.compact.first || '0%' %>
+                    </a>
                   </td>
                 <% end %>
               </tr>
@@ -173,7 +193,12 @@
                 <th class="text-uppercase logistics-scorecard" style="font-size: 12px;">Supplier Delay</th>
                 <% @delay_bucket_monthwise_records.each do |month, record| %>
                   <td class="text-uppercase">
+                    <a href="<%= filtered_path(overseers_logistics_scorecards_path, [
+                        filter_by_value('Delay Reason', 'Supplier Delay', 40),
+                        filter_by_monthrange('Committed Delivery Date to Customer', month)
+                    ]) %>">
                     <%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['sum_delay_buckets']['value'].to_i) if bucket['key'] == 40}.compact.first || '0%' %>
+                    </a>
                   </td>
                 <% end %>
               </tr>

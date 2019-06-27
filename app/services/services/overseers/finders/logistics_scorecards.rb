@@ -90,6 +90,16 @@ class Services::Overseers::Finders::LogisticsScorecards < Services::Overseers::F
                             'sum_bucket': {
                                 'buckets_path': 'delay_bucket>_count'
                             }
+                        },
+                        'delay_reason': {
+                            'terms': {
+                                'field': 'delay_reason'
+                            }
+                        },
+                        'sum_delay_reason_buckets': {
+                            'sum_bucket': {
+                                'buckets_path': 'delay_reason>_count'
+                            }
                         }
                     }
                 }
@@ -111,34 +121,6 @@ class Services::Overseers::Finders::LogisticsScorecards < Services::Overseers::F
                 'sum_delay_buckets': {
                     'sum_bucket': {
                         'buckets_path': 'scorecard>_count'
-                    }
-                }
-            }
-        },
-        'delay_reason_ownerwise_scorecard': {
-            'date_histogram': {
-                'field': 'cp_committed_date',
-                'interval': 'month',
-                keyed: true,
-                'order': { _key: 'asc' }
-            },
-            aggs: {
-                'scorecard': {
-                    'terms': {
-                        'field': 'logistics_owner_id',
-                        'order': { _key: 'asc'}
-                    },
-                    aggs: {
-                        'delay_bucket': {
-                            'terms': {
-                                'field': 'delay_reason'
-                            }
-                        },
-                        'sum_delay_buckets': {
-                            'sum_bucket': {
-                                'buckets_path': 'delay_bucket>_count'
-                            }
-                        }
                     }
                 }
             }

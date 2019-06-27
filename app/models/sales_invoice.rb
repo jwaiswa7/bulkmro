@@ -39,6 +39,8 @@ class SalesInvoice < ApplicationRecord
 
   scope :not_cancelled_invoices, -> { where.not(status: 'Cancelled') }
   scope :not_paid, -> { where.not(payment_status: 'Fully Paid') }
+  scope :ignore_freight_bm, -> { where.not('sales_invoice_rows.sku = ?', 'BM00008') }
+  scope :with_inquiry, -> { where.not(invoice_number: nil) }
 
   enum status: {
       'Open': 1,
