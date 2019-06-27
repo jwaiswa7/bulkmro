@@ -31,7 +31,6 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         new_row = purchase_order.rows.build(row_params)
         new_row.save!
       end
-      binding.pry
       PurchaseOrdersIndex::PurchaseOrder.import purchase_order
       po_request_params = {purchase_order_id: purchase_order.id, status: PoRequest.statuses.key(20)}
       po_request.update_attributes(po_request_params)
