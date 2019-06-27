@@ -1,5 +1,9 @@
 class Services::Shared::Migrations::AddSeries < Services::Shared::Migrations::Migrations
-  def call
+
+  #s = Services::Shared::Migrations::AddSeries.new
+  #s.set_warehouse_series
+
+  def set_warehouse_series
     service = Services::Shared::Spreadsheets::CsvImporter.new('series.csv', 'seed_files')
     service.loop(nil) do |x|
       p x.get_column('period_ document_type')
@@ -10,7 +14,7 @@ class Services::Shared::Migrations::AddSeries < Services::Shared::Migrations::Mi
                      number_length: x.get_column('length').to_i)
       p '******************8'
       # p s.errors.full_message
-      s.save
+      s.save(validate: false)
       p '******************8'
     end
   end
@@ -39,4 +43,20 @@ class Services::Shared::Migrations::AddSeries < Services::Shared::Migrations::Mi
       end
     end
   end
+
+  def series_code_in_warehouses
+    service = Services::Shared::Spreadsheets::CsvImporter.new('warehouse_codes.csv', 'seed_files_3')
+    service.loop(nil) do |x|
+      warehouse_name = x.get_column('Warehouse Name')
+      code = x.get_column('Series Code')
+      if warehouse_name.present?
+        warehouse = Warehouse.find_by_name(warehouse_name)
+        if warehouse.present?
+          warehouse.series_code = code
+          warehouse.save
+        end
+      end
+    end
+  end
+
 end

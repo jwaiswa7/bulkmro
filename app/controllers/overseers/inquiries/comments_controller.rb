@@ -4,7 +4,8 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
   def index
     @sales_order = @inquiry.sales_orders.find(params[:sales_order_id]) if params[:sales_order_id].present?
     @comments = if @sales_order.present?
-      @inquiry.comments.where(sales_order_id: [nil, @sales_order.id]).latest
+      @inquiry.comments.where(sales_order_id: [@sales_order.id]).latest
+      # @inquiry.comments.where(sales_order_id: [nil, @sales_order.id]).latest
     else
       @inquiry.comments.latest
     end
