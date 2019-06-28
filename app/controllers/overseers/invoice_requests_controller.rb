@@ -174,7 +174,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   end
 
   def render_comment_form
-    authorize @invoice_request
+    authorize_acl @invoice_request
     respond_to do |format|
       format.html {render partial: 'add_comment'}
     end
@@ -182,7 +182,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def add_comment
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
-    authorize @invoice_request
+    authorize_acl @invoice_request
     if @invoice_request.valid?
       ActiveRecord::Base.transaction do
         @invoice_request.save!

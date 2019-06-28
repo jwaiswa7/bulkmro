@@ -120,7 +120,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def create_account_confirmation
-    authorize @sales_order
+    authorize_acl @sales_order
 
     Services::Overseers::SalesOrders::CreateSalesOrderInSap.new(@sales_order, params).call
 
@@ -132,7 +132,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def new_accounts_confirmation
-    authorize @sales_order
+    authorize_acl @sales_order
   end
 
   def edit_mis_date
@@ -178,14 +178,14 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def order_cancellation_modal
-    authorize @sales_order
+    authorize_acl @sales_order
     respond_to do |format|
       format.html {render partial: 'cancellation'}
     end
   end
 
   def cancellation
-    authorize @sales_order
+    authorize_acl @sales_order
     @status = Services::Overseers::SalesOrders::CancelSalesOrder.new(@sales_order, sales_order_params.merge(status: 'Cancelled', remote_status: 'Cancelled by SAP')).call
     if @status
       render json: {sucess: 'Successfully updated '}, status: 200

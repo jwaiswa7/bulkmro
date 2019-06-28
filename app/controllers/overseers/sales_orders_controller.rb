@@ -197,7 +197,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def customer_order_status_report
-    authorize :sales_order
+    authorize_acl :sales_order
     respond_to do |format|
       format.html {
         if params['customer_order_status_report'].present?
@@ -220,7 +220,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def export_customer_order_status_report
-    authorize :sales_order
+    authorize_acl :sales_order
 
     service = Services::Overseers::Finders::CustomerOrderStatusReports.new(params, current_overseer, paginate: false)
     service.call

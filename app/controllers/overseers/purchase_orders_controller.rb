@@ -187,14 +187,14 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def cancelled_purchase_modal
-    authorize @purchase_order
+    authorize_acl @purchase_order
     respond_to do |format|
       format.html { render partial: 'cancel_purchase_order', locals: { created_by_id: current_overseer.id } }
     end
   end
 
   def cancelled_purchase_order
-    authorize @purchase_order
+    authorize_acl @purchase_order
     if @purchase_order.present?
       @purchase_order.status = 'cancelled'
       @purchase_order.po_request.status = 'Cancelled'

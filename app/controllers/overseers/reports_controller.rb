@@ -28,7 +28,7 @@ class Overseers::ReportsController < Overseers::BaseController
     params[:overseer] = current_overseer
     service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params)
     @indexed_records = service.call
-    authorize @report
+    authorize_acl @report
     export_service = ['Services', 'Overseers', 'Exporters', @report.name].join('::').constantize.new([], current_overseer, @indexed_records, params)
     export_service.call
     redirect_to url_for(Export.monthly_sales_report.not_filtered.last.report)

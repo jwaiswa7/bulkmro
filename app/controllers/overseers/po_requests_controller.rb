@@ -215,11 +215,11 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def new_purchase_order
-    authorize @po_request
+    authorize_acl @po_request
   end
 
   def create_purchase_order
-    authorize @po_request
+    authorize_acl @po_request
     service = Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer))
     purchase_order = service.call
     if purchase_order.present?
@@ -230,7 +230,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def reject_purchase_order_modal
-    authorize @po_request
+    authorize_acl @po_request
     respond_to do |format|
       format.html { render partial: 'reject_purchase_order'}
     end
@@ -238,7 +238,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def rejected_purchase_order
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
-    authorize @po_request
+    authorize_acl @po_request
     status = Services::Overseers::PurchaseOrders::RejectPurchaseOrder.new(params, @po_request).call
     if status
       # redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
