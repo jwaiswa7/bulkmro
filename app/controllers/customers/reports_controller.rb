@@ -1,6 +1,6 @@
 class Customers::ReportsController < Customers::BaseController
   def monthly_purchase_data
-    authorize_acl :report, :show_aggregate_reports?
+    authorize :report, :show_aggregate_reports?
 
     service = Services::Customers::Charts::MonthlyPurchaseData.send(:new, (params['daterange'].present? ? params['daterange'] : nil))
     @chart = service.call(current_company)
@@ -9,7 +9,7 @@ class Customers::ReportsController < Customers::BaseController
   end
 
   def revenue_trend
-    authorize_acl :report, :show_aggregate_reports?
+    authorize :report, :show_aggregate_reports?
 
     service = Services::Customers::Charts::RevenueTrend.send(:new, (params['daterange'].present? ? params['daterange'] : nil))
     @chart = service.call(current_company)
@@ -18,7 +18,7 @@ class Customers::ReportsController < Customers::BaseController
   end
 
   def unique_skus
-    authorize_acl :report, :show_aggregate_reports?
+    authorize :report, :show_aggregate_reports?
 
     service = Services::Customers::Charts::UniqueSkus.send(:new, (params['daterange'].present? ? params['daterange'] : nil))
     @chart = service.call(current_company)
@@ -27,7 +27,7 @@ class Customers::ReportsController < Customers::BaseController
   end
 
   def order_count
-    authorize_acl :report, :show_aggregate_reports?
+    authorize :report, :show_aggregate_reports?
 
     service = Services::Customers::Charts::OrderCount.send(:new, (params['daterange'].present? ? params['daterange'] : nil))
     @chart = service.call(current_company)
@@ -36,7 +36,7 @@ class Customers::ReportsController < Customers::BaseController
   end
 
   def categorywise_revenue
-    authorize_acl :report, :show_aggregate_reports?
+    authorize :report, :show_aggregate_reports?
 
     service = Services::Customers::Charts::CategorywiseRevenue.send(:new, (params['daterange'].present? ? params['daterange'] : nil))
     @chart = service.call(current_company)
