@@ -1,4 +1,4 @@
-const callAjaxFunction = function (json) {
+const callAjaxFunction = function(json){
     $(json.this).addClass('disabled')
     var data;
     if (json.title != '') {
@@ -15,19 +15,22 @@ const callAjaxFunction = function (json) {
             $(json.className).empty()
             $(json.className).append(data)
             $(json.modalId).modal('show')
-            commentSubmit(json.modalId, json.buttonClassName)
+            modalSubmit(json.modalId, json.buttonClassName)
             $(json.modalId).on('hidden.bs.modal', function () {
                 json.this.removeClass('disabled')
             })
+        },
+        error: function error(_error) {
+
         }
     })
 };
 
-const commentSubmit = (modalId, buttonClassName) => {
+const modalSubmit = (modalId, buttonClassName) => {
     $(modalId).on('click', buttonClassName, function (event) {
-
-        var formSelector = ".modal #" + $(this).closest('form').attr('id'),
+        var formSelector = "#" + $(this).closest('form').attr('id'),
             datastring = $(formSelector).serialize();
+
         $.ajax({
             type: "PATCH",
             url: $(formSelector).attr('action'),
@@ -35,7 +38,6 @@ const commentSubmit = (modalId, buttonClassName) => {
             dataType: "json",
             success: function success(data) {
                 $(modalId).modal('hide');
-                console.log(data)
                 if (data.success == 0) {
                     alert(data.message);
                 } else {
@@ -47,9 +49,10 @@ const commentSubmit = (modalId, buttonClassName) => {
                 }
             },
             error: function error(_error) {
-                console.log(_error)
+                console.log($(formSelector))
                 if (_error.responseJSON && _error.responseJSON.error && _error.responseJSON.error.base)
                     $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error.base + "</div>");
+                    console.log(_error);
             }
         });
         event.preventDefault();

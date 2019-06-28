@@ -54,7 +54,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_cancel?
-    (manager_or_sales? || logistics? || admin?) && record.status != 'Cancelled'
+    (manager? || logistics? || admin?) && record.status != 'Cancelled'
   end
 
   def can_reject?
@@ -118,11 +118,11 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def stock?
-    index? && (sales? || admin?)
+    index? && (sales? || admin? || logistics?)
   end
 
   def pending_stock_approval?
-    index? && (manager_or_sales? || admin?)
+    index? && (manager_or_sales? || admin? || logistics?)
   end
 
   def completed_stock?
@@ -130,7 +130,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_reject_stock_po?
-    record.purchase_order.blank? && (manager? || admin?)
+    record.purchase_order.blank? && (manager? || admin? || logistics?)
   end
 
   def new_purchase_order?
@@ -161,7 +161,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
       if overseer.allow_inquiries?
         scope.all
       else
-        scope.joins('INNER JOIN inquiries ON inquiries.id = po_requests.inquiry_id').where('inquiries.inside_sales_owner_id IN (:overseer) OR inquiries.outside_sales_owner_id IN (:overseer) OR po_requests.created_by_id IN (:overseer)', overseer: overseer.self_and_descendants.pluck(:id))
+        scope.joins('INNER JOIN inquiries ON inquiries.id = po_requests.inquiry_id').where('inquiries.inside_sales_owner_id IN (:overseer) OR inquiries.outside_sales_owner_id IN (:overseer) OR inquiries.procurement_operations_id IN (:overseer) OR po_requests.created_by_id IN (:overseer)', overseer: overseer.self_and_descendants.pluck(:id))
       end
     end
   end

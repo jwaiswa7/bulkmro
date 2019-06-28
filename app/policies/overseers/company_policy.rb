@@ -64,4 +64,8 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def export_company_report?
     manager_or_sales? || admin?
   end
+
+  def get_account?
+    manager_or_sales? || cataloging? || logistics? || admin?
+  end
 end

@@ -26,15 +26,15 @@
       <% @sales_orders.each do |sales_order| %>
         <tr>
           <td>
-            <% if policy(sales_order).relationship_map? %>
+            <% if is_authorized(sales_order, 'relationship_map') && policy(sales_order).relationship_map? %>
               <%= row_action_button(relationship_map_overseers_inquiry_sales_order_path(@inquiry.to_param, sales_order.to_param), 'sitemap', 'Relationship Map', 'info', :_blank) %>
             <% end %>
-            <% if policy(sales_order).show? %>
+            <% if is_authorized(sales_order, 'show') && policy(sales_order).show? %>
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order), 'eye', 'View Sales Order', 'info') %>
             <% end %>
-            <% if policy(sales_order).edit? %>
+            <% if is_authorized(sales_order, 'edit') && policy(sales_order).edit? %>
               <%= row_action_button(edit_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'pencil', 'Edit Sales Order', 'warning') %>
-            <% elsif policy(sales_order).new_revision? %>
+            <% elsif is_authorized(sales_order, 'new_revision') && policy(sales_order).new_revision? %>
               <%= row_action_button(new_revision_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'redo-alt', 'New Sales Order Revision', 'warning') %>
             <% end %>
             <% if policy(sales_order).account_approval? %>
@@ -47,31 +47,31 @@
                 <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>
               <% end %>
             <% end %>
-            <% if policy(sales_order).comments? %>
+            <% if is_authorized(sales_order, 'comments') && policy(sales_order).comments? %>
               <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>
             <% end %>
 
-            <% if policy(sales_order).edit_mis_date? %>
+            <% if is_authorized(sales_order, 'edit_mis_date') && policy(sales_order).edit_mis_date? %>
               <%= row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(id: sales_order), 'calendar-alt', 'Update MIS Date', 'success') %>
             <% end %>
 
-            <%# if policy(sales_order).resync? %>
+            <%# if is_authorized(sales_order, 'resync') && policy(sales_order).resync? %>
               <%#= row_action_button(resync_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post) %>
             <%# end %>
 
-            <% if policy(sales_order).show_serialized? %>
+            <% if is_authorized(sales_order, 'show_serialized') && policy(sales_order).show_serialized? %>
               <%= row_action_button(url_for(sales_order.serialized_pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
-            <% elsif policy(sales_order).show_pdf? %>
+            <% elsif is_authorized(sales_order, 'show_pdf') && policy(sales_order).show_pdf? %>
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
               <%= row_action_button(proforma_overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download Proforma Invoice', 'warning', :_blank) %>
             <% end %>
-            <% if policy(sales_order).fetch_order_data? %>
+            <% if is_authorized(sales_order, 'fetch_order_data') && policy(sales_order).fetch_order_data? %>
               <%= row_action_button(fetch_order_data_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'arrows-h', 'SAP Sync', 'success') %>
             <% end %>
-            <% if policy(sales_order.sales_quote).new_freight_request? %>
+            <% if is_authorized(sales_order.sales_quote, 'new_freight_request') && policy(sales_order.sales_quote).new_freight_request? %>
               <%= row_action_button(new_overseers_freight_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'New Freight Request', 'warning') %>
             <% end %>
-            <%# if policy(sales_order).debugging? %>
+            <%# if is_authorized(sales_order, 'debugging') %>
               <%#= row_action_button(debugging_overseers_inquiry_sales_order_path(@inquiry,sales_order),'cogs', 'Debugging', 'danger', :_blank) %>
              <%# end %>
           </td>

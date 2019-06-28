@@ -3,7 +3,7 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
 
   def index
     @customer_orders = ApplyDatatableParams.to(CustomerOrder.all.order(id: :desc), params)
-    authorize @customer_orders
+    authorize_acl @customer_orders
   end
 
   def payments
@@ -13,11 +13,11 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
       OnlinePayment.all
     end.order(id: :desc)
     @payments = ApplyDatatableParams.to(payments, params.except(:company_id))
-    authorize :customer_order
+    authorize_acl :customer_order
   end
 
   def refresh_payment
-    authorize :customer_order
+    authorize_acl :customer_order
     if params[:payment_id].present?
       payment = OnlinePayment.where(payment_id: params[:payment_id])
       if payment.present?
@@ -28,7 +28,7 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
   end
 
   def show
-    authorize @customer_order
+    authorize_acl @customer_order
   end
 
   private

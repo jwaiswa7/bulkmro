@@ -1,8 +1,45 @@
 <div class="col-lg-12">
   <%= render 'shared/snippets/page_header', e: @company %>
 
+
   <%= simple_form_for([:overseers, @company], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%= f.association :account, collection: selected_option_or_nil(f, :account), input_html: {class: 'select2-ajax ', :'data-source' => autocomplete_overseers_accounts_path}, include_blank: 'Link company with account' %>
-    <%= render 'overseers/companies/common_form', :f => f %>
+    <% if params[:ccr_id].present? %>
+      <%= f.association :account, collection: selected_option_or_nil(f, :account), input_html: {class: 'select2-ajax ', :'data-source' => autocomplete_overseers_accounts_path}, include_blank: 'Link company with account' %>
+      <%= render 'overseers/companies/common_form', :f => f %>
+    <% else %>
+      <div class="card">
+        <div class="card-body">
+          <div class="form-row ">
+            <div class="col-md-6">
+              <label class="d-flex justify-content-center align-items-center flex-row btn btn-success">
+                <%= radio_button_tag :account, 'existing', class: 'custom-control-input' %> &nbsp; Add Existing Account
+              </label>
+            </div>
+            <div class="col-md-6">
+              <label class="d-flex justify-content-center align-items-center flex-row btn btn-success">
+                <%= radio_button_tag :account, 'new', class: 'custom-control-input' %> &nbsp; Add New Account
+              </label>
+            </div>
+          </div>
+          <br>
+          <div class="new box">
+            <h6 class="text-uppercase text-black-50 mb-1">Add Account details</h6>
+            <div class="form-row">
+              <div class="col-12">
+                <%= f.input 'account_name' %>
+              </div>
+              <div class="col-12">
+                <%= f.input 'acc_type', as: :select, include_blank: false, label: 'Account type', collection: enum_to_collection(Account.account_types) %>
+              </div>
+            </div>
+          </div>
+          <div class="existing box" id="existing">
+            <%= f.association :account, collection: selected_option_or_nil(f, :account), input_html: {class: 'select2-ajax ', :'data-source' => autocomplete_overseers_accounts_path}, include_blank: 'Link company with account' %>
+          </div>
+        </div>
+      </div>
+      <br>
+      <%= render 'overseers/companies/common_form', :f => f %>
+    <% end %>
   <% end %>
 </div>

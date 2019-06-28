@@ -3,8 +3,8 @@ class CustomerProduct < ApplicationRecord
   include Mixins::HasImages
   include Mixins::CanBeWatermarked
 
-  update_index('customer_products#customer_product') { self }
-  pg_search_scope :locate, against: [:sku, :name], associated_against: { brand: [:name] }, using: { tsearch: { prefix: true } }
+  update_index('customer_products#customer_product') {self}
+  pg_search_scope :locate, against: [:sku, :name], associated_against: {brand: [:name]}, using: {tsearch: {prefix: true}}
 
   belongs_to :brand, required: false
   belongs_to :category, required: false
@@ -27,7 +27,7 @@ class CustomerProduct < ApplicationRecord
   validates_uniqueness_of :product_id, scope: :company_id
   validates_presence_of :moq
 
-  scope :with_includes, -> { includes(:brand, :category) }
+  scope :with_includes, -> {includes(:brand, :category)}
 
   after_initialize :set_defaults, if: :new_record?
 
@@ -61,6 +61,27 @@ class CustomerProduct < ApplicationRecord
     self.category || self.product.category
   end
 
+  def bp_catalog_name
+    # self.product.inquiry_products.present? ? self.product.inquiry_products.last.bp_catalog_name : self.name
+    if self.product.inquiry_products.last.bp_catalog_name.present?
+      self.product.inquiry_products.last.bp_catalog_name
+    elsif self.product.present?
+      self.product.name
+    else
+      self.name
+    end
+  end
+
+  def bp_catalog_sku
+    if self.product.inquiry_products.last.bp_catalog_sku.present?
+      self.product.inquiry_products.last.bp_catalog_sku
+    elsif self.product.present?
+      self.product.sku
+    else
+      self.sku
+    end
+  end
+
   def best_images
     if self.images.present?
       self.images
@@ -84,31 +105,30 @@ class CustomerProduct < ApplicationRecord
   def has_images?
     self.best_images.attached?
   end
+# def set_unit_selling_price
+# self.unit_selling_price ||= price!
+# end
 
-  # def set_unit_selling_price
-  # self.unit_selling_price ||= price!
-  # end
-
-  # def price
-  #   if self.customer_price.present?
-  #     self.customer_price
-  #   else
-  #     company_inquiries = Inquiry.includes(:sales_quote_rows, :sales_order_rows).where(company_id: self.company_id)
-  #     sales_order_rows = company_inquiries.map {|i| i.sales_order_rows.joins(:product).where('products.id = ?', self.product_id)}.flatten.compact
-  #     sales_order_row_price = sales_order_rows.map {|r| r.unit_selling_price}.flatten if sales_order_rows.present?
-  #     if sales_order_row_price.present?
-  #       sales_order_row_price.min
-  #     else
-  #       sales_quote_rows = company_inquiries.map {|i| i.sales_quote_rows.joins(:product).where('products.id = ?', self.product_id)}.flatten.compact
-  #       sales_quote_row_price = sales_quote_rows.pluck(:unit_selling_price)
-  #       sales_quote_row_price.min
-  #     end
-  #   end
-  # end
-  #
-  # def price!
-  #   Rails.cache.fetch("#{self.class}-#{self.to_param}/price", expires_in: 12.hours) do
-  #     self.price
-  #   end
-  # end
+# def price
+#   if self.customer_price.present?
+#     self.customer_price
+#   else
+#     company_inquiries = Inquiry.includes(:sales_quote_rows, :sales_order_rows).where(company_id: self.company_id)
+#     sales_order_rows = company_inquiries.map {|i| i.sales_order_rows.joins(:product).where('products.id = ?', self.product_id)}.flatten.compact
+#     sales_order_row_price = sales_order_rows.map {|r| r.unit_selling_price}.flatten if sales_order_rows.present?
+#     if sales_order_row_price.present?
+#       sales_order_row_price.min
+#     else
+#       sales_quote_rows = company_inquiries.map {|i| i.sales_quote_rows.joins(:product).where('products.id = ?', self.product_id)}.flatten.compact
+#       sales_quote_row_price = sales_quote_rows.pluck(:unit_selling_price)
+#       sales_quote_row_price.min
+#     end
+#   end
+# end
+#
+# def price!
+#   Rails.cache.fetch("#{self.class}-#{self.to_param}/price", expires_in: 12.hours) do
+#     self.price
+#   end
+# end
 end

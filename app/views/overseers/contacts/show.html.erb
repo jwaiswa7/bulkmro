@@ -23,7 +23,7 @@
 
             <div class="col-6 col-md-3 mb-2">
               <strong class="d-block">Account</strong>
-              <%= @contact.account.name %>
+              <%= link_to(@contact.account.name, overseers_account_path(@contact.account), target: '_blank') %>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
@@ -68,7 +68,7 @@
   </section>
   <div class="d-md-flex justify-content-between">
     <h3 class="display-5 mb-1 d-none d-md-block">Inquiries</h3>
-    <% if @contact.company.present? && policy(@contact.company).new_inquiry? %>
+    <% if @contact.company.present? && is_authorized(@contact.company, 'new_inquiry') && policy(@contact.company).new_inquiry? %>
       <a href="<%= new_overseers_inquiry_path(company_id: @contact.company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
         Inquiry</a>
     <% end %>

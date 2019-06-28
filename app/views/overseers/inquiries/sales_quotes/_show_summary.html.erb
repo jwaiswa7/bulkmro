@@ -212,7 +212,7 @@
               <span><%= row.best_tax_code.chapter %></span>
             </td>
             <td>
-              <span><%= percentage(row.best_tax_rate.tax_percentage) %></span>
+              <span><%= row.best_tax_rate.tax_percentage.to_s + '%' %></span>
             </td>
           </tr>
         <% end %>
