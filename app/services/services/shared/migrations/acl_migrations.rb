@@ -454,4 +454,15 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       overseer.save
     end
   end
+
+  def duplicate_role
+    acl_role1 = AclRole.find(2)
+    acl_role2 = AclRole.find(10)
+
+    acl_role = AclRole.find(12)
+
+    combined_role = ActiveSupport::JSON.decode(acl_role1.role_resources) + ActiveSupport::JSON.decode(acl_role2.role_resources)
+    acl_role.role_resources = combined_role.uniq.to_json
+    acl_role.save
+  end
 end
