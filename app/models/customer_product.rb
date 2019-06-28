@@ -63,20 +63,28 @@ class CustomerProduct < ApplicationRecord
 
   def bp_catalog_name
     # self.product.inquiry_products.present? ? self.product.inquiry_products.last.bp_catalog_name : self.name
-    if self.product.inquiry_products.last.bp_catalog_name.present?
-      self.product.inquiry_products.last.bp_catalog_name
-    elsif self.product.present?
-      self.product.name
+    if product.inquiry_products.present?
+      if self.product.inquiry_products.last.bp_catalog_name.present?
+        self.product.inquiry_products.last.bp_catalog_name
+      elsif self.product.present?
+        self.product.name
+      else
+        self.name
+      end
     else
       self.name
     end
   end
 
   def bp_catalog_sku
-    if self.product.inquiry_products.last.bp_catalog_sku.present?
-      self.product.inquiry_products.last.bp_catalog_sku
-    elsif self.product.present?
-      self.product.sku
+    if product.inquiry_products.present?
+      if self.product.inquiry_products.last.bp_catalog_sku.present?
+        self.product.inquiry_products.last.bp_catalog_sku
+      elsif self.product.present?
+        self.product.sku
+      else
+        self.sku
+      end
     else
       self.sku
     end
