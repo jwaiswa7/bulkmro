@@ -7,13 +7,13 @@ class Customers::Inquiries::CommentsController < Customers::Inquiries::BaseContr
       @inquiry.comments.earliest
     end
 
-    authorize_acl @comments
+    authorize @comments
   end
 
   def create
     @comment = @inquiry.comments.build(inquiry_comment_params.merge(overseer: current_overseer))
 
-    authorize_acl @comment
+    authorize @comment
 
     if @comment.sales_order.present? && @comment.save
       callback_method = %w(approve reject).detect { |action| params[action] }

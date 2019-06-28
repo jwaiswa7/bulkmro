@@ -17,7 +17,7 @@
             <%= action_button(action_name, @inquiry) %>
           </div>
         <% end %>
-        <% if is_authorized(@inquiry,'duplicate') %>
+        <% if (is_authorized(@inquiry,'duplicate') && policy(@inquiry).duplicate?) %>
           <div class="col-md-4">
             <%= link_to "Duplicate", duplicate_overseers_inquiry_path(@inquiry), method: :post, class: "btn-block btn btn-success duplicate-inquiry", target: '_blank', 'data-confirm': 'Are you sure want to duplicate this inquiry? It will generate New Inquiry.' %>
           </div>
@@ -116,15 +116,15 @@
 
       <div class="form-row">
         <div class="col-6 col-md-4">
-          <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), required: true, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') %>
+          <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), required: true, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
 
         <div class="col-6 col-md-4">
-          <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), required: true, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') %>
+          <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), required: true, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
 
         <div class="col-6 col-md-4">
-          <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), required: true, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') %>
+          <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), required: true, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
       </div>
 
@@ -180,13 +180,13 @@
         <h6 class="text-uppercase text-black-50 mb-1">Owner Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
-            <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label:'Procurement Specialist', input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement Specialist'}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') %>
+            <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label:'Procurement Specialist', input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement Specialist'}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner'}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') %>
+            <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner'}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', input_html: {class: "select2-single", :'data-placeholder' => 'Select a Account Owner'}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') %>
+            <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', input_html: {class: "select2-single", :'data-placeholder' => 'Select a Account Owner'}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.association :procurement_operations, required: true, collection: Overseer.inside_and_obj(f.object.procurement_operations).alphabetical, label: 'Procurement Operations', input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement Operations'} %>

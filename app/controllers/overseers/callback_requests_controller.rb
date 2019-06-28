@@ -6,11 +6,11 @@ class Overseers::CallbackRequestsController < Overseers::BaseController
     service.call
     @indexed_callback_request = service.indexed_records
     @callback_requests = service.records
-    authorize_acl @callback_requests
+    authorize @callback_requests
   end
 
   def show
-    authorize_acl @callback_request
+    authorize @callback_request
     render :show
   end
 
