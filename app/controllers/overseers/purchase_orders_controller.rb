@@ -2,7 +2,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :cancelled_purchase_modal, :cancelled_purchase_order, :resync_po]
 
   def index
-    authorize :purchase_order
+    authorize_acl :purchase_order
     respond_to do |format|
       format.html {}
       format.json do
@@ -40,7 +40,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def show
-    authorize @purchase_order
+    authorize_acl @purchase_order
     @inquiry = @purchase_order.inquiry
     @metadata = @purchase_order.metadata.deep_symbolize_keys
     @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
@@ -55,7 +55,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def material_readiness_queue
-    authorize :purchase_order
+    authorize_acl :purchase_order
 
     respond_to do |format|
       format.html {}
@@ -97,7 +97,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       end
     end
 
-    authorize :inward_dispatch
+    authorize_acl :inward_dispatch
     render 'inward_dispatch_pickup_queue'
   end
 
@@ -123,17 +123,17 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       end
     end
 
-    authorize :inward_dispatch
+    authorize_acl :inward_dispatch
     render 'inward_dispatch_pickup_queue'
   end
 
   def edit_material_followup
-    authorize @purchase_order
+    authorize_acl @purchase_order
     @po_request = @purchase_order.po_request
   end
 
   def update_material_followup
-    authorize @purchase_order
+    authorize_acl @purchase_order
     @purchase_order.assign_attributes(purchase_order_params)
 
     if @purchase_order.valid?
@@ -158,7 +158,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
     @purchase_orders = ApplyParams.to(purchase_orders, params)
 
-    authorize :purchase_order
+    authorize_acl :purchase_order
   end
 
   def autocomplete_without_po_requests
@@ -169,11 +169,11 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
     @purchase_orders = ApplyParams.to(purchase_orders, params)
 
-    authorize :purchase_order
+    authorize_acl :purchase_order
   end
 
   def export_all
-    authorize :purchase_order
+    authorize_acl :purchase_order
     service = Services::Overseers::Exporters::PurchaseOrdersExporter.new([], current_overseer, [])
     service.call
 
@@ -181,7 +181,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def export_filtered_records
-    authorize :purchase_order
+    authorize_acl :purchase_order
     service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer, paginate: false)
     service.call
 
@@ -191,7 +191,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def update_logistics_owner
     @purchase_orders = PurchaseOrder.where(id: params[:purchase_orders])
-    authorize @purchase_orders
+    authorize_acl @purchase_orders
     @purchase_orders.each do |purchase_order|
       purchase_order.update_attributes(logistics_owner_id: params[:logistics_owner_id])
     end
@@ -199,21 +199,21 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def update_logistics_owner_for_inward_dispatches
     @inward_dispatches = InwardDispatch.where(id: params[:inward_dispatches])
-    authorize @inward_dispatches
+    authorize_acl @inward_dispatches
     @inward_dispatches.each do |pickup_request|
       pickup_request.update_attributes(logistics_owner_id: params[:logistics_owner_id])
     end
   end
 
   def cancelled_purchase_modal
-    authorize @purchase_order
+    authorize_acl @purchase_order
     respond_to do |format|
       format.html { render partial: 'cancel_purchase_order', locals: { created_by_id: current_overseer.id } }
     end
   end
 
   def cancelled_purchase_order
-    authorize @purchase_order
+    authorize_acl @purchase_order
     if @purchase_order.present?
       @purchase_order.status = 'cancelled'
       @purchase_order.po_request.status = 'Cancelled'

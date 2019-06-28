@@ -3,9 +3,15 @@ module ShortcutsHelper
     controller_name.capitalize.pluralize
   end
 
-  def row_action_button(url, icon, title = '', color = 'success', target = :_self, method = :get, remote = false, label = '')
+  def row_action_button(url, icon, title = '', color = 'success', target = :_self, method = :get, remote = false, label = '', data = '')
     link_to url, 'data-toggle': 'tooltip', 'data-placement': 'top', target: target, title: title, method: method, remote: remote, class: ['btn btn-sm btn-', color].join do
       concat content_tag(:span, label)
+      concat content_tag :i, nil, class: ['fal fa-', icon].join
+    end
+  end
+
+  def modal_button(icon, title = '', color = 'warning', id)
+    link_to '', 'data-toggle': 'modal', 'data-target': '#myModal', title: title, data: {entity_id: id}, class: ['btn btn-sm btn-', color].join do
       concat content_tag :i, nil, class: ['fal fa-', icon].join
     end
   end

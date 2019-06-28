@@ -2,7 +2,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   before_action :set_sales_order, only: [:resync, :new_purchase_orders_requests, :preview_purchase_orders_requests, :create_purchase_orders_requests]
 
   def pending
-    authorize :sales_order
+    authorize_acl :sales_order
 
     respond_to do |format|
       format.html { render 'pending' }
@@ -35,7 +35,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def cancelled
-    authorize :sales_order
+    authorize_acl :sales_order
     respond_to do |format|
       format.html { render 'pending' }
       format.json do
@@ -56,7 +56,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def export_all
-    authorize :sales_order
+    authorize_acl :sales_order
     service = Services::Overseers::Exporters::SalesOrdersExporter.new
     service.call
 
@@ -64,7 +64,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def export_rows
-    authorize :sales_order
+    authorize_acl :sales_order
     service = Services::Overseers::Exporters::SalesOrderRowsExporter.new
     service.call
 
@@ -72,7 +72,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def export_for_logistics
-    authorize :sales_order
+    authorize_acl :sales_order
     service = Services::Overseers::Exporters::SalesOrdersLogisticsExporter.new
     service.call
 
@@ -80,7 +80,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def export_for_sap
-    authorize :sales_order
+    authorize_acl :sales_order
     service = Services::Overseers::Exporters::SalesOrdersSapExporter.new
     service.call
 
@@ -88,13 +88,13 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def export_for_reco
-    authorize :sales_order
+    authorize_acl :sales_order
     service = Services::Overseers::Exporters::SalesOrdersRecoExporter.new([], current_overseer, [])
     service.call
   end
 
   def export_filtered_records
-    authorize :sales_order
+    authorize_acl :sales_order
     service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer, paginate: false)
     service.call
 
@@ -103,7 +103,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def index
-    authorize :sales_order
+    authorize_acl :sales_order
     respond_to do |format|
       format.html { }
       format.json do
@@ -124,7 +124,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def not_invoiced
-    authorize :sales_order
+    authorize_acl :sales_order
     respond_to do |format|
       format.html { render 'not_invoiced' }
       format.json do
@@ -152,11 +152,11 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     @indexed_sales_orders = service.indexed_records
     @sales_orders = service.records.reverse
 
-    authorize :sales_order
+    authorize_acl :sales_order
   end
 
   def drafts_pending
-    authorize :sales_order
+    authorize_acl :sales_order
 
     #sales_orders = SalesOrder.where.not(sent_at: nil).where(draft_uid: nil, status: :'SAP Approval Pending').not_legacy
     sales_orders = SalesOrder.where.not(sent_at: nil).where(remote_uid: nil, status: :'Approved').where.not(order_number: nil)
@@ -171,14 +171,14 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def resync
-    authorize :sales_order
+    authorize_acl :sales_order
     if @sales_order.save_and_sync
       redirect_to drafts_pending_overseers_sales_orders_path
     end
   end
 
   def new_purchase_orders_requests
-    authorize :sales_order
+    authorize_acl :sales_order
 
     if Rails.cache.exist?(:po_requests)
       @po_requests = Rails.cache.read(:po_requests)
@@ -190,7 +190,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def preview_purchase_orders_requests
-    authorize :sales_order
+    authorize_acl :sales_order
 
     service = Services::Overseers::SalesOrders::PreviewPoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
     @po_requests = service.call
@@ -199,7 +199,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def create_purchase_orders_requests
-    authorize :sales_order
+    authorize_acl :sales_order
 
     service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
     service.call
@@ -208,7 +208,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def customer_order_status_report
-    authorize :sales_order
+    authorize_acl :sales_order
     respond_to do |format|
       format.html {
         if params['customer_order_status_report'].present?
@@ -231,7 +231,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   end
 
   def export_customer_order_status_report
-    authorize :sales_order
+    authorize_acl :sales_order
 
     service = Services::Overseers::Finders::CustomerOrderStatusReports.new(params, current_overseer, paginate: false)
     service.call

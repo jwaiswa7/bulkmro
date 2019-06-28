@@ -7,19 +7,19 @@ class Overseers::ContactsController < Overseers::BaseController
     # service.call
     # @indexed_contacts = service.indexed_records
     # @contacts = service.records
-    # authorize @contacts
+    # authorize_acl @contacts
 
     @contacts = ApplyDatatableParams.to(Contact.all.includes(:companies), params)
-    authorize @contacts
+    authorize_acl @contacts
   end
 
   def autocomplete
     @contacts = ApplyParams.to(Contact.active, params)
-    authorize @contacts
+    authorize_acl @contacts
   end
 
   def show
-    authorize @contact
+    authorize_acl @contact
   end
 
   def new
@@ -33,18 +33,21 @@ class Overseers::ContactsController < Overseers::BaseController
         @company = requested_contact.activity.company
       end
     else
-      @company = Company.find(params[:company_id])
-      @contact = @company.contacts.build(overseer: current_overseer, account: @company.account)
+      @contact = Contact.new(overseer: current_overseer)
+      if params[:company_id].present?
+        @company = Company.find(params[:company_id])
+        @contact = @company.contacts.build(overseer: current_overseer, account: @company.account)
+      end
     end
-    authorize @contact
+    authorize_acl @contact
   end
 
   def create
-    @company = Company.find(params[:company_id])
+    @company = params[:company_id].present? ? Company.find(params[:company_id]) : Company.find(params[:contact][:company_id])
     password = Devise.friendly_token[0, 20]
     @contact = @company.contacts.build(contact_params.merge(account: @company.account, overseer: current_overseer, password: password, password_confirmation: password))
-    authorize @contact
-    if @contact.save
+    authorize_acl @contact
+    if @contact.save!
       if @contact.contact_creation_request.present?
         @contact.contact_creation_request.update_attributes(contact_id: @contact.id)
         @contact.contact_creation_request.activity.update_attributes(contact: @contact)
@@ -58,32 +61,41 @@ class Overseers::ContactsController < Overseers::BaseController
       end
       if @contact.save_and_sync
         @company.update_attributes(default_company_contact: @contact.company_contact) if @company.default_company_contact.blank?
-        redirect_to overseers_company_path(@company), notice: flash_message(@contact, action_name)
+        redirect_path = params[:company_id].present? ? overseers_company_path(@company) : overseers_contact_path(@contact)
+        redirect_to redirect_path, notice: flash_message(@contact, action_name)
       else
         render 'new'
       end
+    else
+      render 'new'
     end
   end
 
   def edit
-    authorize @contact
+    authorize_acl @contact
   end
 
   def update
     @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! { |k, v| (k == 'password' || k == 'password_confirmation') && v.blank? })
-    authorize @contact
+    authorize_acl @contact
 
     if @contact.save_and_sync
-      redirect_to overseers_account_path(@contact.account), notice: flash_message(@contact, action_name)
+      redirect_to overseers_contact_path(@contact), notice: flash_message(@contact, action_name)
     else
       render 'edit'
     end
   end
 
   def become
-    authorize @contact
+    authorize_acl @contact
     sign_in(:contact, @contact)
     redirect_to customers_dashboard_url(became: true)
+  end
+
+  def fetch_company_account
+    authorize_acl :contact
+    @company = Company.find(params[:company_id])
+    render json: { account_name: @company.account.name }
   end
 
   private
@@ -96,6 +108,7 @@ class Overseers::ContactsController < Overseers::BaseController
     def contact_params
       params.require(:contact).permit(
         :company_id,
+          :account_id,
           :first_name,
           :last_name,
           :legacy_email,

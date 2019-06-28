@@ -6,7 +6,7 @@ class Overseers::AddressesController < Overseers::BaseController
     @indexed_addresses = service.indexed_records
     @addresses = service.records
 
-    authorize :address
+    authorize_acl :address
   end
 
   def autocomplete
@@ -15,13 +15,26 @@ class Overseers::AddressesController < Overseers::BaseController
     addresses = (account || company).addresses
 
     @addresses = ApplyParams.to(addresses.includes(:state), params)
-    authorize @addresses
+    authorize_acl @addresses
   end
 
   def warehouse_addresses
     addresses = Address.joins(:warehouse)
     @addresses = ApplyParams.to(addresses.includes(:state), params)
-    authorize @addresses
+    authorize_acl @addresses
     render 'autocomplete'
+  end
+
+    def is_sez_params
+    @addresses = Address.find(params[:address_id])
+    render json: { is_sez: @addresses.is_sez}.to_json
+    authorize_acl @addresses
+  end
+
+
+  def get_gst_code
+    authorize_acl :address
+    @address_state = AddressState.indian.find(params[:state_id])
+    render json: { gst_code: @address_state.gst_code }
   end
 end

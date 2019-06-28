@@ -17,7 +17,10 @@ let poRequests= {
     amended: poRequestsIndex,
     cancelled: poRequestsIndex,
     newPurchaseOrder: poRequestNewPurchaseOrder,
-    rejectPurchaseOrderModal: poRequestRejectPurchaseOrderModal
+    rejectPurchaseOrderModal: poRequestRejectPurchaseOrderModal,
+    pendingStockApproval: poRequestsIndex,
+    stock: poRequestsIndex,
+    completedStock: poRequestsIndex
 }
 
 export default poRequests

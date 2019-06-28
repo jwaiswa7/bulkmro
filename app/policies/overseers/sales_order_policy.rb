@@ -20,7 +20,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_mis_date?
-    record.persisted? && ['vijay.manjrekar@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com', 'nilesh.desai@bulkmro.com'].include?(overseer.email)
+    record.persisted? && ['vijay.manjrekar@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com', 'nilesh.desai@bulkmro.com', 'bhargav.trivedi@bulkmro.com','pradeep.ketkale@bulkmro.com'].include?(overseer.email)
   end
 
   def update_mis_date?
@@ -57,6 +57,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def new_accounts_confirmation?
     accounts? || admin?
+    binding.pry
   end
 
   def create_account_confirmation?

@@ -32,7 +32,7 @@ class Series < ApplicationRecord
       series = self.series
       number_length = self.number_length
       self.first_number = (series.to_s + '0' * (number_length - series.digits.count)).to_i + 1
-      self.save
+      self.save(validate: false)
     end
   end
 

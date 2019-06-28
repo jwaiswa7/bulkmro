@@ -30,7 +30,7 @@
                 </span>
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.object.sr_no %></span>
               <strong><%= inquiry_product.object.product.sku %> - <%= inquiry_product.object.product.name %>
-                <% if policy(inquiry_product.object.product).sku_purchase_history? %>
+                <% if is_authorized(inquiry_product.object.product,'sku_purchase_history') && policy(inquiry_product.object.product).sku_purchase_history? %>
                   <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a>
                   <a class="ml-2 text-small" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-inventory mr-1 text-small"></i>Resync Inventory</a>
                 <% end %></strong>
@@ -85,7 +85,7 @@
                       <div class="ml-1 <%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'align-self-center' : '' %>">
                         <%= inquiry_product_supplier.remove_nested_fields_link do %>
                           <i class="far fa-times text-danger"></i>
-                        <% end if policy(inquiry_product_supplier.object).destroy? %>
+                        <% end if is_authorized(inquiry_product_supplier.object,'destroy') && policy(inquiry_product_supplier.object).destroy? %>
                       </div>
                     </div>
                   </div>
@@ -100,7 +100,7 @@
           <% end %>
         </div>
         <div class="card-footer">
-          <% if policy(@inquiry).update_suppliers? %>
+          <% if is_authorized(@inquiry,'update_suppliers') %>
             <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
               <i class="fal fa-pen"></i> Update Suppliers
             <% end %>
