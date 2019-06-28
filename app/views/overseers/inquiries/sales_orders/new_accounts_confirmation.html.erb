@@ -10,8 +10,10 @@
             <ul style="padding: 0;" class="summary-list">
               <li class="fas fa-times sales_order_confirm_purchase_order_number"> PO Number</li>
               <li class="fas fa-times sales_order_confirm_payment_terms"> Payment Terms</li>
-              <li class="fas fa-times sales_order_confirm_shipping_address"> Shipping Address</li>
+              <li class="fas fa-times sales_order_confirm_billing_warehouse"> Billing Warehouse</li>
+              <li class="fas fa-times sales_order_confirm_shipping_warehouse"> Shipping Warehouse</li>
               <li class="fas fa-times sales_order_confirm_billing_address"> Billing Address</li>
+              <li class="fas fa-times sales_order_confirm_shipping_address"> Shipping Address</li>
               <li class="fas fa-times sales_order_confirm_attachments"> Attachments</li>
               <li class="fas fa-times sales_order_confirm_hsn_codes"> HSN Codes</li>
               <li class="fas fa-times sales_order_confirm_tax_rates"> Tax Rates</li>
@@ -113,6 +115,15 @@
                         <strong><em>GST Number</em></strong>: <%= @inquiry.ship_from.address.gst %><br>
                       <% end %>
                     <% end %>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="col-md-6 mt-2">
+                    <%= f.input :confirm_billing_warehouse, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                  </div>
+                  <div class="col-md-6 mt-2">
+                    <%= f.input :confirm_shipping_warehouse, as: :boolean, wrapper: :custom_boolean, :required => true %>
                   </div>
                 </div>
 
