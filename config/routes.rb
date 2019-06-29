@@ -327,6 +327,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'pending'
+        get 'account_approval_pending'
         get 'cancelled'
         get 'export_all'
         get 'drafts_pending'
@@ -361,9 +362,11 @@ Rails.application.routes.draw do
         patch 'update_material_followup'
         get 'cancelled_purchase_modal'
         patch 'cancelled_purchase_order'
+        get 'resync_po'
       end
 
       collection do
+        get 'pending_sap_sync'
         get 'export_all'
         get 'export_filtered_records'
         get 'autocomplete'

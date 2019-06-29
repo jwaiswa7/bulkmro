@@ -123,7 +123,7 @@ class SalesOrder < ApplicationRecord
 
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
   scope :remote_approved, -> {where('(((sales_orders.status = ? OR sales_orders.status = ?) AND sales_orders.remote_status != ?) OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'CO'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled'])}
-
+  scope :accounts_approval_pending, -> {where(status: 'Accounts Approval Pending')}
   scope :under_process, -> {where(status: [:'Approved', :'Accounts Approval Pending', 'Requested'])}
   scope :without_cancelled, -> {where.not(status: 'Cancelled')}
 

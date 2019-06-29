@@ -57,6 +57,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def new_accounts_confirmation?
     accounts? || admin?
+    binding.pry
   end
 
   def create_account_confirmation?
@@ -77,6 +78,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def pending?
     manager_or_sales?
+  end
+
+  def account_approval_pending?
+    accounts? || admin?
   end
 
   def cancelled?
@@ -138,6 +143,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def resync?
     record.sent? && record.approved? && record.not_synced? && admin?
+  end
+
+  def sales_order_sync_pending?
+    record.order_number.present? && record.remote_uid?
   end
 
   def new_purchase_orders_requests?

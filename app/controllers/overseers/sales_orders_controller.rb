@@ -24,6 +24,16 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
+  def account_approval_pending
+    @sales_orders = ApplyDatatableParams.to(SalesOrder.accounts_approval_pending.order(id: :desc), params)
+    authorize @sales_orders
+
+    respond_to do |format|
+      format.json {render 'account_approval_pending'}
+      format.html {render 'account_approval_pending'}
+    end
+  end
+
   def cancelled
     authorize_acl :sales_order
     respond_to do |format|
@@ -148,7 +158,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def drafts_pending
     authorize_acl :sales_order
 
-    sales_orders = SalesOrder.where.not(sent_at: nil).where(draft_uid: nil, status: :'SAP Approval Pending').not_legacy
+    #sales_orders = SalesOrder.where.not(sent_at: nil).where(draft_uid: nil, status: :'SAP Approval Pending').not_legacy
+    sales_orders = SalesOrder.where.not(sent_at: nil).where(remote_uid: nil, status: :'Approved').where.not(order_number: nil)
     respond_to do |format|
       format.html { }
       format.json do
@@ -231,6 +242,10 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     export_service.call
 
     redirect_to url_for(Export.customer_order_status_report.not_filtered.last.report)
+  end
+
+  def filter_by_status(scope)
+    ApplyDatatableParams.to(policy_scope(SalesOrder.all.send(scope).order(id: :desc)), params)
   end
 
   private

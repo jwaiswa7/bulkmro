@@ -215,7 +215,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def new_purchase_order
-    authorize_acl @po_request
+    authorize @po_request
   end
 
   def create_purchase_order

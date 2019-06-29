@@ -9,7 +9,7 @@
           </button>
         </div>
         <%#= rejected_purchase_order_overseers_po_request_path(@po_request.to_param) %>
-        <%= simple_form_for([:overseers, @po_request], :url => rejected_purchase_order_overseers_po_request_path(@po_request.to_param), :'novalidate' => '', :html => {:class => 'needs-validation p-3', :'data-parsley-validate' => ''}) do |f| %>
+        <%= simple_form_for([:overseers, @po_request], :url => rejected_purchase_order_overseers_po_request_path(@po_request.to_param), :'novalidate' => '', :html => {:class => 'needs-validation p-3', :'data-parsley-validate' => '', :id => 'reject_purchase_order_form'}) do |f| %>
           <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
           <div class="modal-body">
             <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |po_request_comment| %>
@@ -25,7 +25,7 @@
             <% end %>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-warning confirm-reject">Cancel <%#= @invoice_request.readable_status%></button>
+            <button type="submit" class="btn btn-warning confirm-reject">Reject <%#= @invoice_request.readable_status%></button>
           </div>
         <% end %>
       </div>

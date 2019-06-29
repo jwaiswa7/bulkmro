@@ -178,7 +178,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def order_cancellation_modal
-    authorize_acl @sales_order
+    authorize @sales_order
     respond_to do |format|
       format.html {render partial: 'cancellation'}
     end
