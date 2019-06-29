@@ -12,20 +12,20 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     purchase_order.assign_attributes(set_attributes(po_request, series.last_number))
     if purchase_order.save
       series.increment_last_number
-      doc_num = ::Resources::PurchaseOrder.create(purchase_order, po_request)
-      last_remote_request_status = RemoteRequest.where(subject_type: 'PurchaseOrder', subject_id: purchase_order.id).last.status
-      if last_remote_request_status == "success"
-        @metadata = ::Resources::PurchaseOrder.custom_find(purchase_order.po_number)
-      else
+      doc_num = purchase_order.save_and_sync(po_request)
+      remote_request = RemoteRequest.where(subject_type: 'PurchaseOrder', subject_id: purchase_order.id).last
+      @metadata = remote_request.request
+      if remote_request.status == 'failed'
         purchase_order.update_attributes(sap_sync: 20)
       end
       if doc_num.present?
-        po_request_params = {status: PoRequest.statuses.key(20)}
-        po_request.update_attributes(po_request_params)
-          purchase_order.remote_uid = doc_num
-          purchase_order.metadata = ::Resources::PurchaseOrder.build_metadata(@metadata) if @metadata.present?
-        purchase_order.save!
+        purchase_order.remote_uid = doc_num
       end
+      po_request_params = {status: PoRequest.statuses.key(20)}
+      po_request.update_attributes(po_request_params)
+      purchase_order.metadata = ::Resources::PurchaseOrder.build_metadata(@metadata) if @metadata.present?
+      purchase_order.save!
+
       po_request.rows.each_with_index do |row, index|
         row_params = {metadata: purchase_order.metadata['ItemLine'][index], created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id, product_id: row.product_id, po_request_row_id: row.id}
         new_row = purchase_order.rows.build(row_params)
