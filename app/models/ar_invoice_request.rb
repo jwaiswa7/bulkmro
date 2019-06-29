@@ -15,7 +15,7 @@ class ArInvoiceRequest < ApplicationRecord
 
   has_many :rows, class_name: 'ArInvoiceRequestRow', inverse_of: :ar_invoice_request
 
-  accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['inward_dispatch_row_id'].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['sales_order_row_id'].blank? }, allow_destroy: true
   validates_associated :rows, dependent: :destroy
 
   update_index('ar_invoice_Requests#ar_invoice_request') {self}

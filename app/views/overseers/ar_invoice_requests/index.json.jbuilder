@@ -1,25 +1,25 @@
 json.data (@ar_invoice_requests) do |ar_invoice|
   json.array! [
                   [
-                      if policy(ar_invoice).show?
+                      if is_authorized(ar_invoice ,'show')
                         row_action_button(overseers_ar_invoice_request_path(ar_invoice), 'fal fa-eye', 'View AR Invoice', 'info', :_blank)
                       end,
-                      if policy(ar_invoice).edit?
+                      if is_authorized(ar_invoice ,'edit')
                         row_action_button(edit_overseers_ar_invoice_request_path(ar_invoice), 'pencil', 'Edit AR Invoice', 'warning', :_blank)
                       end,
-                      if !ar_invoice.status.downcase.include?('cancel') && policy(ar_invoice).can_cancel_or_reject?
+                      if !ar_invoice.status.downcase.include?('cancel') && is_authorized(ar_invoice ,'can_cancel_or_reject')
                         link_to('', class: ['btn btn-sm btn-danger cancel-ar-invoice'], 'data-invoice-request-id': ar_invoice.id, title: 'Cancel', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       end,
-                      if !ar_invoice.status.downcase.include?('reject') && policy(ar_invoice).can_cancel_or_reject?
+                      if !ar_invoice.status.downcase.include?('reject') &&is_authorized(ar_invoice ,'can_cancel_or_reject')
                         link_to('', class: ['btn btn-sm btn-warning reject-ar-invoice'], 'data-invoice-request-id': ar_invoice.id, title: 'Reject', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       end,
-                      if  policy(ar_invoice).can_create_outward_dispatch?
+                      if is_authorized(ar_invoice ,'can_create_outward_dispatch')
                         row_action_button(new_overseers_outward_dispatch_path(ar_invoice_request_id: ar_invoice), 'fal fa-plus', 'Add outward dispatch', 'info', :_blank)
                       end
                   ].join(' '),

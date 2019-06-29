@@ -4,7 +4,7 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   # GET /outward_dispatches
   # GET /outward_dispatches.json
   def index
-    authorize :outward_dispatch
+    authorize_acl :outward_dispatch
     if params[:status].present?
       base_filter = {
           base_filter_key: 'status',
@@ -27,7 +27,7 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   # GET /outward_dispatches/1
   # GET /outward_dispatches/1.json
   def show
-    authorize @outward_dispatch
+    authorize_acl @outward_dispatch
   end
 
   # GET /outward_dispatches/new
@@ -36,19 +36,19 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     @sales_order = @ar_invoice.sales_order
     @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order, ar_invoice_request: @ar_invoice)
 
-    authorize @outward_dispatch
+    authorize_acl @outward_dispatch
   end
 
   # GET /outward_dispatches/1/edit
   def edit
-    authorize @outward_dispatch
+    authorize_acl @outward_dispatch
   end
 
   # POST /outward_dispatches
   # POST /outward_dispatches.json
   def create
     @outward_dispatch = OutwardDispatch.new(outward_dispatch_params.merge(overseer: current_overseer))
-    authorize @outward_dispatch
+    authorize_acl @outward_dispatch
 
     respond_to do |format|
       if @outward_dispatch.save
@@ -65,7 +65,7 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     @ar_invoice = ArInvoiceRequest.find(params[:ar_invoice_request_id])
     @sales_order = @ar_invoice.sales_order
     @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order, ar_invoice_request: @ar_invoice)
-    authorize @outward_dispatch
+    authorize_acl @outward_dispatch
 
     respond_to do |format|
       if @outward_dispatch.save
@@ -81,7 +81,7 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   # PATCH/PUT /outward_dispatches/1
   # PATCH/PUT /outward_dispatches/1.json
   def update
-    authorize @outward_dispatch
+    authorize_acl @outward_dispatch
     respond_to do |format|
       if @outward_dispatch.update(outward_dispatch_params.merge(overseer: current_overseer))
         format.html { redirect_to overseers_outward_dispatch_path (@outward_dispatch), notice: 'Outward dispatch was successfully updated.' }
@@ -96,7 +96,7 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   # DELETE /outward_dispatches/1
   # DELETE /outward_dispatches/1.json
   def destroy
-    authorize @outward_dispatch
+    authorize_acl @outward_dispatch
     @outward_dispatch.destroy
     respond_to do |format|
       format.html { redirect_to outward_dispatches_url, notice: 'Outward dispatch was successfully destroyed.' }

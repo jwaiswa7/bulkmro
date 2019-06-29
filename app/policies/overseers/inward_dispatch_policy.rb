@@ -48,6 +48,6 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
   end
 
   def create_ar_invoice?
-    (admin? || logistics?) && !record.ar_invoice_request.present?
+    !record.ar_invoice_request.present?
   end
 end

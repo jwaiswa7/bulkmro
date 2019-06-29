@@ -6,7 +6,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   # GET /packing_slips
   # GET /packing_slips.json
   def index
-    authorize :packing_slip
+    authorize_acl :packing_slip
     @packing_slips = PackingSlip.all
   end
 
@@ -19,7 +19,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
         render_pdf_for(@packing_slip, locals: {inquiry: @packing_slip.outward_dispatch.sales_order.inquiry, sales_order: @packing_slip.outward_dispatch.sales_order, packing_slip: @packing_slip})
       end
     end
-    authorize @packing_slip
+    authorize_acl @packing_slip
   end
 
   # GET /packing_slips/new
@@ -30,12 +30,13 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
         @packing_slip.rows.build(delivery_quantity: row.get_remaining_quantity, ar_invoice_request_row: row, ar_invoice_request_row_id: row.id)
       end
     end
-    authorize @packing_slip
+    authorize_acl @packing_slip
   end
 
   # GET /packing_slips/1/edit
   def edit
-    authorize @packing_slip
+    authorize_acl @packing_slip
+    binding.pry
   end
 
   # POST /packing_slips
@@ -43,7 +44,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   def create
     @packing_slip = @outward_dispatch.packing_slips.new()
     @packing_slip.assign_attributes(packing_slip_params.merge(overseer: current_overseer))
-    authorize @packing_slip
+    authorize_acl @packing_slip
     respond_to do |format|
       if @packing_slip.save
         format.html { redirect_to overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip), notice: 'Packing Slip was successfully created.' }
@@ -58,7 +59,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   # PATCH/PUT /packing_slips/1
   # PATCH/PUT /packing_slips/1.json
   def update
-    authorize @packing_slip
+    authorize_acl @packing_slip
     respond_to do |format|
       if @packing_slip.update(packing_slip_params.merge(overseer: current_overseer))
         format.html {redirect_to overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip), notice: 'Packing Slip was successfully updated.'}
@@ -73,7 +74,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   # DELETE /packing_slips/1
   # DELETE /packing_slips/1.json
   def destroy
-    authorize @packing_slip
+    authorize_acl @packing_slip
     @packing_slip.destroy
     respond_to do |format|
       format.html {redirect_to overseers_outward_dispatch_packing_slips, notice: 'Packing Slip was successfully destroyed.'}

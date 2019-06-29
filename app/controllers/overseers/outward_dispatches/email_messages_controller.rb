@@ -2,10 +2,8 @@ class Overseers::OutwardDispatches::EmailMessagesController < Overseers::Outward
   before_action :set_other_dispatch, only: [:dispatch_mail_to_customer, :dispatch_mail_to_customer_notification]
 
   def dispatch_mail_to_customer
-    # @to = @inquiry.contact.try(:email)
-    @to = current_overseer.try(:email)
-    # cc_addresses = [@inquiry.inside_sales_owner.try(:email), @inquiry.outside_sales_owner.try(:email), @inquiry.procurement_operations.try(:email), 'sales@bulkmro.com', 'logistics@bulkmro.com'].compact.join(', ')
-    cc_addresses = []
+    @to = @inquiry.contact.try(:email)
+    cc_addresses = [@inquiry.inside_sales_owner.try(:email), @inquiry.outside_sales_owner.try(:email), @inquiry.procurement_operations.try(:email), 'sales@bulkmro.com', 'logistics@bulkmro.com'].compact.join(', ')
 
     @email_message = @outward_dispatch.email_messages.build(overseer: current_overseer, contact: @contact, inquiry: @inquiry, sales_order: @sales_order, outward_dispatch: @outward_dispatch, cc: cc_addresses)
     @action = 'dispatch_mail_to_customer_notification'

@@ -32,8 +32,8 @@
             <%= row.hidden_field :sales_order_row_id, label: false%>
           </div>
           <div class="col-9 col-md-9">
-            <%= row.hidden_field :inward_dispatch_row_id, label: 'Product' %>
-            <%= row.input :inward_dispatch_row, input_html: { value: row.object.inward_dispatch_row.to_s }, disabled: row.object.inward_dispatch_row.present? && row.object.errors.blank?, label: false %>
+            <%= row.hidden_field :product_id, label: 'Product' %>
+            <%= row.input :inward_dispatch_row, input_html: { value: row.object.product.to_s }, disabled: row.object.product_id.present? && row.object.errors.blank?, label: false %>
           </div>
           <div class="col-1 col-md-1">
             <%= row.input :quantity, input_html: { value: row.object.quantity }, readonly: true, label: false %>

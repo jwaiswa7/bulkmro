@@ -2,11 +2,11 @@ class ArInvoiceRequestRow < ApplicationRecord
   belongs_to :ar_invoice_request, class_name: 'ArInvoiceRequest'
   belongs_to :sales_order, class_name: 'SalesOrder'
   belongs_to :sales_order_row, class_name: 'SalesOrderRow'
-  belongs_to :inward_dispatch_row, class_name: 'InwardDispatchRow'
+  # belongs_to :inward_dispatch_row, class_name: 'InwardDispatchRow'
   belongs_to :product, class_name: 'Product'
   has_many :packing_slip_rows
   validates_numericality_of :delivered_quantity, greater_than: 0, allow_nil: true
-  validate :is_delivered_quantity_less
+  validate :is_delivered_quantity_less, on: :update
   delegate :converted_unit_selling_price, to: :sales_order_row, allow_nil: true
   delegate :best_tax_code, to: :sales_order_row, allow_nil: true
   delegate :best_tax_rate, to: :sales_order_row, allow_nil: true

@@ -30,7 +30,7 @@ class Services::Overseers::Finders::ArInvoiceRequests < Services::Overseers::Fin
   end
 
   def perform_query(query_string)
-    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[ inquiry_number_string sales_order_number_string ] }).order(sort_definition)
+    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[ inquiry_number_string sales_order_number_string ar_invoice_number_string ] }).order(sort_definition)
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))

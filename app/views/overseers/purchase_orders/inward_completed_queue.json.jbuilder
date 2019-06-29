@@ -1,18 +1,15 @@
 json.data (@inward_dispatches) do |inward_dispatch|
   json.array! [
                   [
-                      if (policy(inward_dispatch).create_ar_invoice?) &&  inward_dispatch.sales_order.present?
+                      if is_authorized(inward_dispatch, 'can_create_ar_invoice') && (policy(inward_dispatch).create_ar_invoice?) &&  inward_dispatch.sales_order.present?
                         "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-so-id='#{inward_dispatch.sales_order.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
                       end,
-                      if policy(inward_dispatch).show?
+                      if is_authorized(inward_dispatch, 'show')
                         row_action_button(overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'eye', 'View Inward Dispatch', 'info', target: :_blank)
                       end,
-                      if policy(inward_dispatch).edit?
-                        row_action_button(edit_overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'pencil', 'Edit Inward Dispatch', 'warning', :_blank)
-                      end,
-                      if policy(inward_dispatch).delivered? && policy(inward_dispatch).create_ar_invoice?
+                      if policy(inward_dispatch).delivered? && is_authorized(inward_dispatch, 'can_create_ar_invoice') && policy(inward_dispatch).create_ar_invoice?
                         row_action_button(new_overseers_ar_invoice_request_path(sales_order_id: inward_dispatch.sales_order,ids: inward_dispatch.id), 'plus', 'Create AR Invoice Request', 'success', target: :_blank)
-                      elsif inward_dispatch.ar_invoice_request.present? && policy(inward_dispatch.ar_invoice_request).show?
+                      elsif inward_dispatch.ar_invoice_request.present? && is_authorized(inward_dispatch.ar_invoice_request, 'show')
                         row_action_button(overseers_ar_invoice_request_path(inward_dispatch.ar_invoice_request), 'eye', "View Ar Invoice Request", 'success', target: :_blank)
                       end,
                   ].join(' '),

@@ -5,7 +5,7 @@
       <h3 class="display-5 d-flex align-items-center">
         Outward Dispatch for Order #<%= @outward_dispatch.sales_order.order_number %>
       </h3>
-      <% if policy(@outward_dispatch).can_create_packing_slip? %>
+      <% if is_authorized(:outward_dispatch, 'can_create_packing_slip') && policy(@outward_dispatch).can_create_packing_slip? %>
         <a href="<%= new_overseers_outward_dispatch_packing_slip_path(@outward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down">
           <i class="fal fa-pen mr-1"></i>Add Packing Slip
         </a>
