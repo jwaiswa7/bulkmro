@@ -102,6 +102,21 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
       end
     end
   end
+
+  def add_association_of_sales_invoice
+    invoice_request_ids = []
+    invoice_requests =  InvoiceRequest.where.not(ar_invoice_number: nil)
+    invoice_requests.each do |invoice_request|
+      sales_invoice = SalesInvoice.where(invoice_number:  invoice_request.ar_invoice_number).last
+      if sales_invoice.present? && (invoice_request.inquiry == invoice_request.inquiry)
+        invoice_request.sales_invoice_id = sales_invoice.id
+        invoice_request.save(validate: false)
+      else
+        invoice_request_ids << invoice_request.id
+      end
+    end
+    binding.pry
+  end
 end
 #
 # PurchaseOrder.all.map{|x| if x.po_request.present?; po_products = x.rows.pluck(:product_id);so_products = x.po_request.sales_order.rows.pluck(:product_id);if(po_products.count > so_products.count);x.id;end;end}
@@ -112,4 +127,3 @@ end
 # PurchaseOrder.all.map{|x| if x.po_request.present?; po_products = x.rows.pluck(:product_id).to_set;so_products = x.po_request.sales_order.rows.pluck(:product_id).to_set;if(!po_products.subset?(so_products));if (x.inquiry.status == 'Order Won');x.id;end;end;end}.compact
 #
 #
-105000100

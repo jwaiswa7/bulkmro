@@ -13,6 +13,7 @@ class InvoiceRequest < ApplicationRecord
   has_many :inward_dispatches
   has_many_attached :attachments
   has_many :company_reviews, as: :rateable
+  belongs_to :sales_invoice, required: false
   ratyrate_rateable 'CompanyReview'
 
   enum status: {
