@@ -1,13 +1,13 @@
 json.data (@inquiries) do |inquiry|
   columns = [
       [
-          if is_authorized(inquiry,'relationship_map') && policy(inquiry).relationship_map?
+          if is_authorized(inquiry, 'relationship_map') && policy(inquiry).relationship_map?
             row_action_button(relationship_map_overseers_inquiry_path(inquiry.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
           end,
-          if is_authorized(inquiry,'edit') && policy(inquiry).edit?
+          if is_authorized(inquiry, 'edit') && policy(inquiry).edit?
             row_action_button(overseers_inquiry_comments_path(inquiry), 'comment-alt-check', inquiry.comments.last ? inquiry.comments.last.try(:message) : 'No comments', inquiry.comments.last ? 'success' : 'dark', :_blank)
           end,
-          if is_authorized(inquiry,'new_freight_request') && policy(inquiry).new_freight_request?
+          if is_authorized(inquiry, 'new_freight_request') && policy(inquiry).new_freight_request?
             row_action_button(new_overseers_freight_request_path(inquiry_id: inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
           end
       ].join(' '),
@@ -25,8 +25,8 @@ json.data (@inquiries) do |inquiry|
       inquiry.inside_sales_owner.to_s,
       inquiry.outside_sales_owner.to_s,
       inquiry.margin_percentage,
-      format_currency(inquiry.try(:potential_amount),show_symbol: false),
-      format_currency(inquiry.final_sales_quote.try(:calculated_total),show_symbol: false),
+      format_currency(inquiry.try(:potential_amount), show_symbol: false),
+      format_currency(inquiry.final_sales_quote.try(:calculated_total), show_symbol: false),
       format_succinct_date(inquiry.created_at)
   ]
   columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
