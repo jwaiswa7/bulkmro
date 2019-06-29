@@ -12,7 +12,7 @@ class OutwardDispatch < ApplicationRecord
       'Material Ready for Dispatch': 10,
       'Dispatch Approval Pending': 20,
       'Dispatch Rejected': 30,
-      'Material In Trainsit': 40,
+      'Material In Transit': 40,
       'Material Delivered Pending GRN': 50,
       'Material Delivered': 60
   }

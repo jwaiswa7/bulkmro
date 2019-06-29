@@ -9,6 +9,9 @@ class Services::Overseers::ArInvoiceRequests::Update < Services::Shared::BaseSer
       status_changed(@ar_invoice)
       @ar_invoice.save
       @ar_invoice_comment.save
+      if !@ar_invoice.outward_dispatches.present?
+        @ar_invoice.inward_dispatches.map{|inward_dispatch| inward_dispatch.set_outward_status}
+      end
     elsif @ar_invoice.rejection_reason_changed? && @ar_invoice.rejection_reason != 'Rejected: Others'
       @ar_invoice.other_rejection_reason = nil
       @ar_invoice.save
@@ -21,7 +24,6 @@ class Services::Overseers::ArInvoiceRequests::Update < Services::Shared::BaseSer
     else
       @ar_invoice.save
     end
-
     messages = FieldModifiedMessage.for(@ar_invoice, message_fields(@ar_invoice))
     if messages.present?
       @ar_invoice.comments.create(message: messages, overseer: current_overseer)

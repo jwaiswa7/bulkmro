@@ -33,6 +33,20 @@ class InwardDispatch < ApplicationRecord
       'AP Invoice Request Rejected': 40
   }
 
+  enum outward_status: {
+      'AR Invoice requested': 10,
+      'Cancelled AR Invoice': 20,
+      'AR Invoice Request Rejected': 30,
+      'Completed AR Invoice Request': 40,
+      'Material Ready for Dispatch': 50,
+      'Dispatch Approval Pending': 60,
+      'Dispatch Rejected': 70,
+      'Material In Transit': 80,
+      'Material Delivered Pending GRN': 90,
+      'Material Delivered': 100
+  }
+
+
   enum dispatched_bies: {
       'Supplier': 10,
       'Bulk MRO': 20
@@ -119,6 +133,21 @@ class InwardDispatch < ApplicationRecord
 
   def set_defaults
     self.expected_delivery_date = purchase_order.po_request.supplier_committed_date if purchase_order.po_request.present?
+  end
+
+  def set_outward_status
+    if self.ar_invoice_request.present?
+      ar_invoice_requests = self.ar_invoice_requests.order(:updated_at)
+      outward_dispatches = OutwardDispatch.where(id: ar_invoice_requests.pluck(:id)).order(:updated_at)
+      if !outward_dispatches.empty?
+        outward_dispatch_status = outward_dispatches.pluck(:status).last
+        self.update_attribute(:status, outward_dispatch_status)
+      else
+        ar_invoice_request_status = ar_invoice_requests.pluck(:status).last
+        self.update_attribute(:status, ar_invoice_request_status)
+      end
+    end
+
   end
 
   def readable_status
