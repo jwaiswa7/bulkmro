@@ -243,6 +243,7 @@
         </a>
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'Warehouses', overseers_warehouses_path, is_authorized(:warehouse, 'index') %>
+          <%= nav_dropdown_item 'Document Series', series_overseers_warehouses_path, is_authorized(:warehouse, 'series') %>
         </div>
       </li>
 

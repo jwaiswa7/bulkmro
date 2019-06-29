@@ -21,6 +21,11 @@ class Overseers::WarehousesController < Overseers::BaseController
     @warehouse = ApplyParams.to(warehouses, params)
   end
 
+  def series
+    @serieses = ApplyDatatableParams.to(Series.all.order(document_type: :asc), params)
+    authorize_acl :warehouse
+  end
+
   def create
     @warehouse = Warehouse.new(warehouse_params)
     authorize_acl @warehouse

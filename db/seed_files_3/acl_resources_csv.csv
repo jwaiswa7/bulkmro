@@ -69,3 +69,4 @@ Admin,po_request,reject_purchase_order_modal
 Admin,po_request,rejected_purchase_order
 Admin,purchase_order,cancelled_purchase_modal
 Admin,purchase_order,cancelled_purchase_order
+Admin,warehouse,series
