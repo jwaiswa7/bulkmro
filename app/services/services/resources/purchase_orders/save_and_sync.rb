@@ -8,7 +8,10 @@ class Services::Resources::PurchaseOrders::SaveAndSync < Services::Shared::BaseS
     if purchase_order.save
       if purchase_order.persisted?
         if !purchase_order.remote_uid.present? && po_request.present?
-          purchase_order.update_attributes(remote_uid: ::Resources::PurchaseOrder.create(purchase_order, po_request))
+          doc_num = ::Resources::PurchaseOrder.create(purchase_order, po_request)
+          if doc_num.present?
+            purchase_order.update_attributes(remote_uid: doc_num, sap_status: 'Sync')
+          end
         end
       end
     end
