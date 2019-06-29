@@ -16,29 +16,28 @@
 <%= render layout: 'search_layout' do %>
 <% end %>
 
+
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort all" data-name=<%=@category.present? ? @category : "inside_sales_owner_id" %>>Name</th>
   <% if  @category.present? && @category == 'company_key'  %> <th class="no-sort all" data-name="account_key">Account</th> <%else %> <th></th><%end %>
-  <th class="no-sort all">Inquiries#</th>
-  <th class="no-sort all">Sales Quotes#</th>
-  <th class="no-sort all">Value of Quotes</th>
-  <th class="no-sort all">Expected Orders#</th>
-  <th class="no-sort all">Value of <br>Expected Orders</th>
-  <th class="no-sort all">Sales Orders#</th>
-  <th class="no-sort all">Value of Orders</th>
-  <th class="no-sort all">Unique Ordered SKU#</th>
-  <th class="no-sort all">%Inquiries Won</th>
-  <th class="no-sort all">Sales Invoices</th>
-  <th class="no-sort all">Revenue</th>
-  <th class="no-sort all">Clients</th>
+  <th class="sort all" data-name="inquiry_number">Inquiries#</th>
+  <th class="sort all" data-name="sales_quote_count">Sales Quotes#</th>
+  <th class="sort all" data-name="total_quote_value">Value of Quotes</th>
+  <th class="sort all" data-name="expected_order">Expected Orders#</th>
+  <th class="sort all" data-name="total_quote_value">Value of <br>Expected Orders</th>
+  <th class="sort all" data-name="sales_order_count">Sales Orders#</th>
+  <th class="sort all" data-name="total_order_value">Value of Orders</th>
+  <th class="sort all" data-name="sku">Unique Ordered SKU#</th>
+  <th class="no-sort all" >%Inquiries Won</th>
+  <th class="sort all" data-name="invoices_count" >Sales Invoices</th>
+  <th class="sort all" data-name="revenue">Revenue</th>
 <% end %>
 
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
   <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'dropdown' %>></td>
   <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'false' %>></td>
-  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
@@ -58,15 +57,14 @@
   <td class="no-data"></td>
   <td></td>
   <td></td>
-  <td class="currency strong"></td>
+  <td class="strong"></td>
   <td></td>
-  <td class="currency strong"></td>
+  <td class="strong"></td>
   <td></td>
-  <td class="currency"></td>
+  <td></td>
   <td></td>
   <td class="percentage"></td>
   <td></td>
-  <td class="currency"></td>
   <td></td>
 <% end %>
 
