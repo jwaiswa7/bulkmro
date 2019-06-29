@@ -13,5 +13,7 @@ class CustomerProductsIndex < BaseIndex
     field :customer_price, type: 'integer'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
+    field :bp_catalog_name, value: -> (record) { record.try(:bp_catalog_name) }, analyzer: 'substring'
+    field :bp_catalog_sku, value: -> (record) { record.try(:bp_catalog_sku) }, analyzer: 'substring'
   end
 end

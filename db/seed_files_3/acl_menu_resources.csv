@@ -1,0 +1,76 @@
+Parent Menu,Submenu,Module,Action
+B. Partners,Accounts / Aliases,account,index
+B. Partners,Accounts Receivable,account,payment_collections
+B. Partners,Ageing Report,account,ageing_report
+B. Partners,Receipts,sales_receipt,index
+B. Partners,Companies,company,index
+B. Partners,Suppliers,company,index
+B. Partners,Addresses,address,index
+B. Partners,Contacts,contact,index
+B. Partners,Banks,bank,index
+B. Partners,IFSC Codes,ifsc_code,index
+B. Partners,All Contact Creation Requests,contact_creation_request,index
+B. Partners,Contact Create Requested,contact_creation_request,requested
+B. Partners,Contact Created/Completed,contact_creation_request,created
+B. Partners,All Company Creation Requests,company_creation_request,index
+B. Partners,Company Create Requested,company_creation_request,requested
+B. Partners,Company Created/Completed,company_creation_request,created
+B. Partners,Company Review List,company_review,index
+B. Partners,Review Questions,review_questions,index
+Catalog,Product List,product,index
+Catalog,Product Approval Queue,product,pending
+Catalog,Kits,kit,index
+Catalog,Categories,category,index
+Catalog,Brands,brand,index
+Catalog,Measurement Units,measurement_unit,index
+Catalog,HSN / SAC Codes,tax_code,index
+Catalog,Payment Terms,payment_option,index
+Sales,Inquiries,inquiry,index
+Sales,Customer Order List,customer_order,index
+Sales,Online Payments List,customer_order,payments
+Sales,Sales Orders List,sales_order,index
+Sales,SO Not Invoiced,sales_order,not_invoiced
+Sales,Pending Approval,sales_order,pending
+Sales,Pending SAP Sync,sales_order,drafts_pending
+Sales,Cancelled SO,sales_order,cancelled
+Sales,Sales Invoices List,sales_invoice,index
+Sales,All AR Invoice Requests,invoice_request,index
+Sales,GRPO Pending,invoice_request,pending
+Sales,Completed,invoice_request,completed
+Sales,Cancelled,invoice_request,cancelled
+Sales,Sales Receipt,sales_receipt,index
+Sales,All Freight Requests,freight_request,index
+Sales,Smart Queue,inquiry,smart_queue
+Sales,Sales Shipments,sales_shipment,index
+Sales,Activities,activity,index
+Sales,Activities Approval Queue,activity,pending
+Logistics,Purchase Orders List,purchase_order,index
+Logistics,Pending Purchase Order Requests,po_request,pending_and_rejected
+Logistics,Under Amend Purchase Order Requests,po_request,under_amend
+Logistics,Amended Purchase Order Requests,po_request,amended
+Logistics,Cancelled Purchase Order Requests,po_request,cancelled
+Logistics,Completed Purchase Order Requests,po_request,index
+Logistics,All Stock Requests,po_request,stock
+Logistics,Pending Stock Approval,po_request,pending_stock_approval
+Logistics,Completed Stock Requests,po_request,completed_stock
+Logistics,Material Readiness Queue,purchase_order,material_readiness_queue
+Logistics,Inward Dispatch Queue,purchase_order,inward_dispatch_pickup_queue
+Logistics,Inward Delivered Queue,purchase_order,inward_dispatch_delivered_queue
+Logistics,All Payment Requests,payment_request,index
+Logistics,Pending AP Invoice,invoice_request,show_pending_ap_invoice_queue
+Logistics,All Requests,freight_request,index
+Logistics,All Quotes,freight_quote,index
+Inventory,Warehouses,warehouse,index
+Reports,KRA Report,inquiry,kra_report
+Reports,Company Report,company,company_report
+Reports,Pipeline Report,inquiry,pipeline_report
+Reports,TAT Report,inquiry,tat_report
+Reports,Customer Order Status Report,sales_order,customer_order_status_report
+Reports,Logistics Scorecard,purchase_order,logistics_scorecard
+Admin,Overseers,overseer,index
+Admin,Remote Requests,remote_request,index
+Admin,Callback Requests,callback_request,index
+Admin,Resync Remote Requests,resync_remote_request,index
+Admin,Document Creation Form,document_creation,new
+Admin,ACL Resources,acl_resource,index
+Docs,Docs,doc,index

@@ -3,7 +3,7 @@ class Overseers::Companies::TagsController < Overseers::Companies::BaseControlle
 
   def index
     @tags = ApplyDatatableParams.to(@company.tags, params.reject! { |k, v| k == 'company_id' })
-    authorize @tags
+    authorize_acl @tags
   end
 
   def autocomplete
@@ -11,22 +11,22 @@ class Overseers::Companies::TagsController < Overseers::Companies::BaseControlle
     tags = company.tags
 
     @tags = ApplyParams.to(tags, params)
-    authorize @tags
+    authorize_acl @tags
   end
 
   def show
-    authorize @tag
+    authorize_acl @tag
   end
 
   def new
     @tag = @company.tags.new(overseer: current_overseer)
-    authorize @tag
+    authorize_acl @tag
   end
 
   def create
     @tag = @company.tags.where(name: tag_params[:name]).first_or_initialize
 
-    authorize @tag
+    authorize_acl @tag
 
     if @tag.save
       redirect_to overseers_company_tag_path(@company, @tag), notice: flash_message(@tag, action_name)
@@ -36,13 +36,13 @@ class Overseers::Companies::TagsController < Overseers::Companies::BaseControlle
   end
 
   def edit
-    authorize @tag
+    authorize_acl @tag
   end
 
   def update
     @tag.assign_attributes(tag_params)
 
-    authorize @tag
+    authorize_acl @tag
 
     if @tag.save
       redirect_to overseers_company_tag_path(@tag.company, @tag), notice: flash_message(@tag, action_name)
@@ -52,7 +52,7 @@ class Overseers::Companies::TagsController < Overseers::Companies::BaseControlle
   end
 
   def destroy
-    authorize @tag
+    authorize_acl @tag
     @tag.destroy!
 
     redirect_to overseers_company_path(@company)

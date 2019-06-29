@@ -4,7 +4,7 @@
       <h3 class="display-5 d-flex align-items-center">
         <%= @invoice_request.readable_status %> for Order #<%= @invoice_request.sales_order.order_number %>:&nbsp;<%= status_badge(@invoice_request.status) %>
       </h3>
-      <% if policy(@invoice_request).edit? %>
+      <% if is_authorized(@invoice_request, 'edit') %>
         <a href="<%= edit_overseers_invoice_request_path(@invoice_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
       <% end %>
 
@@ -30,7 +30,7 @@
             <% if @invoice_request.inquiry.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Inquiry #</strong>
-                <% if policy(@invoice_request.inquiry).edit? %>
+                <% if is_authorized(@invoice_request.inquiry, 'edit') %>
                   <%= link_to overseers_inquiry_path(@invoice_request.inquiry), target: '_blank' do %>
                     <%= format_id(@invoice_request.inquiry.inquiry_number) %>
                   <% end %>
@@ -50,7 +50,7 @@
             <% if @invoice_request.purchase_order.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Purchase Order #</strong>
-                <% if policy(@invoice_request.purchase_order).show? %>
+                <% if is_authorized(@invoice_request.purchase_order, 'show') %>
                   <%= link_to overseers_inquiry_purchase_order_path(@invoice_request.inquiry, @invoice_request.purchase_order, format: :pdf), target: '_blank' do %>
                     #<%= @invoice_request.purchase_order.po_number %>
                   <% end %>
@@ -118,7 +118,7 @@
                     <i class="fal fa-download"></i>
                     <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                       <i class="fal fa-trash-alt"></i>
-                    <% end if attachment.present? && policy(:attachment).destroy? %>
+                    <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
                   <% end %>
                 <% end %>
               </div>

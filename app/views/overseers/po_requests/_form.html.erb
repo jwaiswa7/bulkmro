@@ -46,7 +46,7 @@
       </div>
       <div class="card-header">
         <div class="form-row">
-          <% if policy(@po_request).update? %>
+          <% if is_authorized(@po_request, 'update') %>
             <div class="col-lg-12 submit-form">
               <%= action_button(action_name, @po_request) %>
             </div>

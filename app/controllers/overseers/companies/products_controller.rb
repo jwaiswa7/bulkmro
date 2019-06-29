@@ -9,6 +9,6 @@ class Overseers::Companies::ProductsController < Overseers::Companies::BaseContr
     service.call
     @products = service.records
     @indexed_products = service.indexed_records
-    authorize @products
+    authorize_acl @products
   end
 end

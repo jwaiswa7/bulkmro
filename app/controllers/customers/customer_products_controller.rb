@@ -10,12 +10,12 @@ class Customers::CustomerProductsController < Customers::BaseController
       params[:page] = 1 unless params[:page].present?
       params[:per] = 24
     end
-
+    @henkel_company = Account.find(7).companies.pluck(:id)
     service = Services::Customers::Finders::CustomerProducts.new(params, current_contact, current_company)
     service.call
-
     @indexed_customer_products = service.indexed_records
     @customer_products = service.records.try(:reverse)
+
 
     @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{ |t| [t.id, t.name] }
     @checked_tags = (params['custom_filters']['tags'].nil? ? [] : params['custom_filters']['tags'].map(&:to_i)) if params['custom_filters'].present?
@@ -34,6 +34,7 @@ class Customers::CustomerProductsController < Customers::BaseController
 
   def show
     authorize @customer_product
+    @account = Account.find(7)
   end
 
   def most_ordered_products
