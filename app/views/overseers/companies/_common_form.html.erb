@@ -2,9 +2,8 @@
   <div class="card-body">
     <%= render 'shared/snippets/form_errors', f: f %>
     <%= f.hidden_field :company_creation_request_id %>
-
     <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
-    <% if policy(@company).edit_remote_uid? %>
+    <% if is_authorized(@company, 'edit_remote_uid') %>
       <div class="form-row">
         <div class="col-12 col-md-8">
           <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
@@ -21,18 +20,18 @@
       </div>
     <% end %>
     <div class="form-row">
-      <div class="col-6 col-md-3">
+      <div class="col-12 col-md-12">
         <%= f.input :site %>
       </div>
-      <div class="col-6 col-md-3">
-        <%= f.input :mobile, disabled: true %>
-      </div>
-      <div class="col-6 col-md-3">
-        <%= f.input :email, disabled: true %>
-      </div>
-      <div class="col-6 col-md-3">
-        <%= f.input :telephone, disabled: true %>
-      </div>
+<!--      <div class="col-6 col-md-3">-->
+        <%#= f.input :mobile, disabled: true %>
+<!--      </div>-->
+<!--      <div class="col-6 col-md-3">-->
+        <%#= f.input :email, disabled: true %>
+<!--      </div>-->
+<!--      <div class="col-6 col-md-3">-->
+        <%#= f.input :telephone, disabled: true %>
+<!--      </div>-->
     </div>
     <div class="form-row">
       <div class="col-6 col-md-4">
@@ -71,7 +70,7 @@
 
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :logistics_owner, collection: Overseer.logistics.alphabetical, include_blank: 'Select a Logistics Owner', input_html: {class: "select2-single"}%>
+        <%= f.association :logistics_owner, collection: Overseer.logistics.alphabetical, include_blank: 'Select a Logistics Owner', input_html: {class: "select2-single"} %>
       </div>
     </div>
 

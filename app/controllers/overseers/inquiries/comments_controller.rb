@@ -11,13 +11,13 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
 
     @internal_comments = @comments.internal_comments.page(params[:internal]).per(10)
     @customer_comments = @comments.customer_comments.page(params[:customer]).per(10)
-    authorize @comments
+    authorize_acl @comments
   end
 
   def create
     @comment = @inquiry.comments.build(inquiry_comment_params.merge(overseer: current_overseer))
 
-    authorize @comment
+    authorize_acl @comment
 
     if @comment.sales_order.present? && @comment.save
       callback_method = %w(approve reject).detect { |action| params[action] }

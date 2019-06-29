@@ -1,7 +1,7 @@
 class Overseers::CustomerOrders::CommentsController < Overseers::CustomerOrders::BaseController
   def create
     @comment = @customer_order.comments.build(comment_params.merge(overseer: current_overseer))
-    authorize @comment
+    authorize_acl :customer_order
     if @comment.save
       redirect_to overseers_customer_order_path(@customer_order), notice: flash_message(@comment, action_name)
     else

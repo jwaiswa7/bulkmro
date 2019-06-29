@@ -1,13 +1,13 @@
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote, :relationship_map, :get_relationship_map_json]
+  before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote, :relationship_map, :get_relationship_map_json, :reset_quote_form, :sales_quote_reset_by_manager]
 
   def index
     @sales_quotes = @inquiry.sales_quotes
-    authorize @sales_quotes
+    authorize_acl @sales_quotes
   end
 
   def show
-    authorize @sales_quote
+    authorize_acl @sales_quote
 
     respond_to do |format|
       format.html {}
@@ -20,20 +20,20 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   def new
     @sales_quote = @inquiry.sales_quotes.build(overseer: current_overseer)
     @sales_quote = Services::Overseers::SalesQuotes::BuildRows.new(@sales_quote).call
-    authorize @inquiry, :new_sales_quote?
+    authorize_acl :sales_quote, 'new'
   end
 
   def new_revision
     @old_sales_quote = @inquiry.sales_quotes.find(params[:id])
     @sales_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(@old_sales_quote, current_overseer).call
 
-    authorize @old_sales_quote
+    authorize_acl @old_sales_quote
     render 'new'
   end
 
   def create
     @sales_quote = SalesQuote.new(sales_quote_params.merge(overseer: current_overseer))
-    authorize @sales_quote
+    authorize_acl @sales_quote
 
     callback_method = %w(save update_sent_at_field save_and_preview).detect {|action| params[action]}
 
@@ -47,12 +47,12 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
 
   def edit
     @sales_quote = Services::Overseers::SalesQuotes::BuildRows.new(@sales_quote).call
-    authorize @sales_quote
+    authorize_acl @sales_quote
   end
 
   def update
     @sales_quote.assign_attributes(sales_quote_params.merge(overseer: current_overseer))
-    authorize @sales_quote
+    authorize_acl @sales_quote
 
     callback_method = %w(save update_sent_at_field save_and_preview).detect {|action| params[action]}
 
@@ -64,11 +64,11 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   def preview
-    authorize @sales_quote
+    authorize_acl @sales_quote
   end
 
   def reset_quote
-    authorize @sales_quote
+    authorize_acl @sales_quote
     @inquiry.update_attributes(quotation_uid: '')
     @inquiry.final_sales_quote.update_attributes(remote_uid: '')
     # @inquiry.final_sales_quote.save_and_sync
@@ -77,13 +77,32 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
 
 
   def relationship_map
-    authorize @sales_quote
+    authorize_acl @sales_quote
   end
 
   def get_relationship_map_json
-    authorize @sales_quote
+    authorize_acl @sales_quote
     inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@inquiry, [@sales_quote]).call
     render json: {data: inquiry_json}
+  end
+
+  def reset_quote_form
+    authorize @sales_quote
+    @sales_quote = SalesQuote.find(params[:id])
+    @inquiry = Inquiry.find(params[:inquiry_id])
+    respond_to do |format|
+      format.html {render partial: 'reset_sales_quote', locals: {inquiry: @inquiry, sales_quote: @sales_quote}}
+    end
+  end
+
+  def sales_quote_reset_by_manager
+    if params['inquiry']['comments_attributes']['0']['message'].present?
+      service = Services::Overseers::SalesQuotes::SalesQuoteResetByManager.new(@sales_quote, params.merge(overseer: current_overseer))
+      service.call
+    else
+      render json: {error: {base: 'Reset Quote Reason must be present.'}}, status: 500
+    end
+    authorize @sales_quote
   end
 
   private

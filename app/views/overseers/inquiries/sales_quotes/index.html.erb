@@ -3,7 +3,7 @@
     <% provide :hide_table_desc, true %>
     <% provide :hide_table_heading, true %>
 
-    <% if policy(@inquiry).new_sales_quote? %>
+    <% if is_authorized(@inquiry, 'new_sales_quote') && policy(@inquiry).new_sales_quote? %>
       <div class="form-row mb-3">
         <div class="col-12">
           <a href="<%= new_overseers_inquiry_sales_quote_path(@inquiry) %>" class="btn-block btn btn-success btn-rounded">
@@ -40,36 +40,44 @@
       <th class="no-sort desktop text-right">Total(Excl. Tax)</th>
       <th class="no-sort desktop text-right">Total(Incl. Tax)</th>
       <th class="no-sort desktop text-right">Created At</th>
+      <% if policy(@sales_quotes).reset_quote_form? %>
+        <th class="no-sort desktop text-right">Last SO Status</th>
+      <% end %>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>
       <% @sales_quotes.each do |sales_quote| %>
         <tr>
           <td>
-            <% if policy(sales_quote).relationship_map? %>
+            <% if is_authorized(sales_quote, 'relationship_map') && policy(sales_quote).relationship_map? %>
               <%= row_action_button(relationship_map_overseers_inquiry_sales_quote_path(@inquiry.to_param, sales_quote.to_param), 'sitemap', 'Relationship Map', 'info', :_blank) %>
             <% end %>
-            <% if policy(sales_quote).show? %>
+            <% if is_authorized(sales_quote, 'show') && policy(sales_quote).show? %>
               <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'eye', 'View Sales Quote', 'info') %>
             <% end %>
-            <% if policy(sales_quote).edit? %>
+            <% if policy(sales_quote).edit? && is_authorized(sales_quote, 'edit') %>
               <%= row_action_button(edit_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'pencil', 'Edit Sales Quote', 'warning') %>
-            <% elsif policy(sales_quote).new_revision? && policy(sales_quote).display_revision_button? %>
+            <% elsif is_authorized(sales_quote, 'new_revision') && is_authorized(sales_quote, 'display_revision_button') && policy(sales_quote).new_revision? && policy(sales_quote).display_revision_button?  %>
               <%= row_action_button(new_revision_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'redo-alt', 'Create Sales Quote Revision', 'warning') %>
             <% end %>
-            <% if policy(sales_quote).reset_quote? %>
+            <% if is_authorized(sales_quote, 'reset_quote') && policy(sales_quote).reset_quote? %>
               <%= row_action_button(reset_quote_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'retweet-alt', 'Reset Quote', 'dark') %>
+            <% elsif policy(sales_quote).reset_quote_for_manager? %>
+              <%= link_to('', class: ['btn btn-sm btn-danger manager-sales-quote-reset'], 'data-sales-quote-id': sales_quote.to_param, 'data-inquiry-id': @inquiry.to_param , title: 'Reset Quote', remote: true) do
+                concat content_tag(:span, '')
+                concat content_tag :i, nil, class: ['fal fa-retweet-alt'].join
+              end %>
             <% end %>
-            <% if policy(sales_quote).new_sales_order? %>
+            <% if @inquiry.final_sales_quote.present? && is_authorized(sales_quote, 'new_sales_order') && policy(@inquiry.final_sales_quote).new_sales_order? %>
               <%= row_action_button(new_overseers_inquiry_sales_order_path(@inquiry, sales_quote_id: sales_quote.to_param), 'external-link', 'Add to Order', 'success') %>
             <% end %>
-            <% if policy(sales_quote).new_email_message? %>
+            <% if policy(sales_quote).new_email_message? && is_authorized(sales_quote, 'new_email_message') %>
               <%= row_action_button(new_overseers_inquiry_sales_quote_email_message_path(@inquiry, sales_quote), 'envelope', 'Send Email', 'dark') %>
             <% end %>
-            <% if policy(sales_quote).show? %>
+            <% if is_authorized(sales_quote, 'show') && policy(sales_quote).show? %>
               <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
             <% end %>
-            <% if policy(sales_quote).new_freight_request? %>
+            <% if is_authorized(sales_quote, 'new_freight_request') && policy(sales_quote).new_freight_request? %>
               <%= row_action_button(new_overseers_freight_request_path(:sales_quote_id => sales_quote.to_param), 'external-link', 'New Freight Request', 'warning') %>
             <% end %>
           </td>
@@ -80,9 +88,19 @@
           <td><%= format_currency(sales_quote.calculated_total) %></td>
           <td><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
           <td><%= format_date(sales_quote.created_at) %></td>
+          <td>
+            <% if policy(sales_quote).reset_quote_form? %>
+              <% if sales_quote.sales_orders.present? %>
+                <%= status_badge(sales_quote.sales_orders.last.status) %>
+              <% else %>
+                N / A
+              <% end %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     <% end %>
 
   <% end %>
+  <div class="sales-quote-cancel-manager-form"></div>
 </div>

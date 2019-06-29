@@ -1,4 +1,5 @@
 <% provide :container_fluid, true %>
+<% provide :can_be_directly_created, policy(:inquiry).new? %>
 <% provide :can_be_directly_exported, true %>
 <% provide :can_be_directly_exported_filtered_records, true %>
 <% provide :can_be_ajaxed, true %>
@@ -10,7 +11,7 @@
 
 <% content_for(:heading_buttons) do %>
 
-  <% if policy(:inquiry).index? %>
+  <% if is_authorized(:inquiry,'index') %>
     <a href="#" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" data-toggle="modal" data-target="#bulkUpdate" data-backdrop="static" data-keyboard="false">
       Bulk Update
     </a>

@@ -4,7 +4,7 @@ class Overseers::Companies::PurchaseOrdersController < Overseers::Companies::Bas
         base_filter_key: 'supplier_id',
         base_filter_value: params[:company_id]
     }
-    authorize :purchase_order
+    authorize_acl :purchase_order
     respond_to do |format|
       format.html { }
       format.json do

@@ -1,7 +1,7 @@
 json.data (@sales_quotes) do |sales_quote|
   json.array! [
                   [
-                      if policy(sales_quote.inquiry).edit?
+                      if is_authorized(sales_quote.inquiry, 'edit')
                         row_action_button(edit_overseers_inquiry_path(sales_quote.inquiry.to_param), 'pencil', 'Edit Inquiry', 'warning', target: '_blank')
                       end,
                   ].join(' '),

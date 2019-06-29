@@ -10,6 +10,7 @@ class Company < ApplicationRecord
   update_index('companies#company') {self}
   pg_search_scope :locate, against: [:name], associated_against: {}, using: {tsearch: {prefix: true}}
 
+  attr_accessor :account_name, :acc_type
   belongs_to :account
   belongs_to :default_company_contact, -> (record) {where(company_id: record.id)}, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false
   has_one :default_contact, through: :default_company_contact, source: :contact
@@ -95,9 +96,9 @@ class Company < ApplicationRecord
   alias_attribute :gst, :tax_identifier
 
   scope :with_includes, -> {includes(:addresses, :inquiries, :contacts, :invoices, :final_sales_orders, :final_sales_quotes)}
-  scope :acts_as_supplier, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier])}
-  scope :acts_as_customer, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer])}
-
+  scope :acts_as_supplier, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier]).order(name: :asc)}
+  scope :acts_as_customer, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer]).order(name: :asc)}
+  scope :is_customer_active, -> { Company.acts_as_customer.where(is_active: true)}
   validates_presence_of :name
   validates :credit_limit, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validates_presence_of :pan

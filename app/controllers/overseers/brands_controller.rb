@@ -3,29 +3,29 @@ class Overseers::BrandsController < Overseers::BaseController
 
   def autocomplete
     @brands = ApplyParams.to(Brand.active, params).order(:name)
-    authorize @brands
+    authorize_acl @brands
   end
 
   def index
     @brands = ApplyDatatableParams.to(Brand.all, params)
-    authorize @brands
+    authorize_acl @brands
   end
 
   def show
     @brand_products = Product.where(brand_id: @brand.id)
     @brand_suppliers = (@brand_products.map{ |p| p.suppliers.map{ |ps| ps }.compact.flatten.uniq }.compact.flatten.uniq)
 
-    authorize @brand
+    authorize_acl @brand
   end
 
   def new
     @brand = Brand.new(overseer: current_overseer)
-    authorize @brand
+    authorize_acl @brand
   end
 
   def create
     @brand = Brand.new(brand_params.merge(overseer: current_overseer))
-    authorize @brand
+    authorize_acl @brand
 
     if @brand.save_and_sync
       redirect_to overseers_brands_path, notice: flash_message(@brand, action_name)
@@ -35,12 +35,12 @@ class Overseers::BrandsController < Overseers::BaseController
   end
 
   def edit
-    authorize @brand
+    authorize_acl @brand
   end
 
   def update
     @brand.assign_attributes(brand_params.merge(overseer: current_overseer))
-    authorize @brand
+    authorize_acl @brand
 
     if @brand.save_and_sync
       redirect_to overseers_brands_path, notice: flash_message(@brand, action_name)

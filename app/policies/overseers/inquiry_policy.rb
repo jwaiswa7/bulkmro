@@ -31,6 +31,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     record.can_be_managed?(overseer)
   end
 
+  def create_primary_inquiry?
+    can_manage_inquiry? || cataloging? || logistics?
+  end
+
   def edit?
     can_manage_inquiry? || cataloging? || logistics?
   end
@@ -161,7 +165,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def restrict_fields_on_completed_orders?
-    has_approved_sales_orders? && !admin?
+    has_approved_sales_orders? && (overseer.acl_role.role_name.downcase != 'admin')
   end
 
   def has_no_approved_sales_orders?
@@ -206,6 +210,14 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def export_pipeline_report?
     manager_or_sales? || admin?
+  end
+
+  def next_inquiry_step?
+    new?
+  end
+
+  def is_acknowledgement_enable?
+    record.id.present? && new_email_message?
   end
 
   class Scope
