@@ -444,7 +444,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_role.save
 
     #update overseer resources
-    Overseer.where(acl_role: acl_role).each do |overseer|
+    Overseer.where(acl_role_id: acl_role.id).each do |overseer|
       overseer_resources = ActiveSupport::JSON.decode(overseer.acl_resources)
       new_resources = overseer_resources + ActiveSupport::JSON.decode(acl_role.role_resources)
       new_resources = new_resources.map {|x| x.to_i}
