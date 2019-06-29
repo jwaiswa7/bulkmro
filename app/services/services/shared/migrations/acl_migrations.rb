@@ -410,6 +410,25 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   #Utility Functions
 
   def assign_action_to_overseer
+    resource_action_name = 'get_account'
+    resource_model_name = 'company'
+    role_name = 'all'
+    acl_resource = AclResource.where(:resource_model_name => resource_model_name, :resource_action_name => resource_action_name).first_or_create!
+
+    #update role
+    if role_name != 'all'
+      acl_role = AclRole.find_by_role_name(role_name)
+      update_role_resource(acl_role, acl_resource.id)
+    else
+      AclRole.all.each do |acl_role|
+        update_role_resource(acl_role, acl_resource.id)
+      end
+    end
+    # AclResource.update_acl_resource_cache
+  end
+
+  # function for applying acl to outward ques
+  def assign_action_of_outward_que_to_overseer
     resource_action_names = %w(can_create_ar_invoice)
     resource_model_name = 'inward_dispatch'
     # resource_model_name = 'ar_invoice_request'
