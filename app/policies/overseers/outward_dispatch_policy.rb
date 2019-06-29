@@ -10,9 +10,6 @@ class Overseers::OutwardDispatchPolicy < Overseers::ApplicationPolicy
     admin? || logistics?
   end
 
-  def show?
-    admin? || logistics?
-  end
 
   def new?
     admin? || logistics?

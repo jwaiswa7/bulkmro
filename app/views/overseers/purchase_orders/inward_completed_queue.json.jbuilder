@@ -7,7 +7,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                       if is_authorized(inward_dispatch, 'show')
                         row_action_button(overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'eye', 'View Inward Dispatch', 'info', target: :_blank)
                       end,
-                      if policy(inward_dispatch).delivered? && is_authorized(inward_dispatch, 'can_create_ar_invoice') && policy(inward_dispatch).create_ar_invoice?
+                      if policy(inward_dispatch).delivered? && is_authorized(inward_dispatch, 'can_create_ar_invoice') && policy(inward_dispatch).create_ar_invoice? &&  inward_dispatch.sales_order.present?
                         row_action_button(new_overseers_ar_invoice_request_path(sales_order_id: inward_dispatch.sales_order,ids: inward_dispatch.id), 'plus', 'Create AR Invoice Request', 'success', target: :_blank)
                       elsif inward_dispatch.ar_invoice_request.present? && is_authorized(inward_dispatch.ar_invoice_request, 'show')
                         row_action_button(overseers_ar_invoice_request_path(inward_dispatch.ar_invoice_request), 'eye', "View Ar Invoice Request", 'success', target: :_blank)

@@ -18,7 +18,7 @@ class ArInvoiceRequestRow < ApplicationRecord
   end
 
   def to_s
-    self.inward_dispatch_row.to_s
+    self.product.to_s
   end
 
   def conversion_rate

@@ -412,9 +412,6 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   def assign_action_to_overseer
     resource_action_names = %w(can_create_ar_invoice)
     resource_model_name = 'inward_dispatch'
-    # resource_action_names = %w(index show new edit create update destroy can_create_packing_slip create_with_packing_slip can_send_dispatch_email )
-    # resource_model_name = 'outward_dispatch'
-    # resource_action_names = %w(index show new edit create update destroy cancel_ar_invoice render_cancellation_form download_eway_bill_format can_create_outward_dispatch)
     # resource_model_name = 'ar_invoice_request'
     # resource_action_names = %w(index show new edit create update destroy)
     # resource_model_name = 'ar_invoice_request_comment'
@@ -424,6 +421,9 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     # resource_model_name = 'packing_slip'
     # resource_action_names = %w(index show new edit create update destroy)
     # resource_model_name = 'packing_slip_row'
+    # resource_action_names = %w(index show new edit create update destroy can_create_packing_slip create_with_packing_slip can_send_dispatch_email )
+    # resource_model_name = 'outward_dispatch'
+    # resource_action_names = %w(index show new edit create update destroy cancel_ar_invoice render_cancellation_form download_eway_bill_format can_create_outward_dispatch)
     # role_name = 'Accounts'
     role_name = 'Logistics'
 

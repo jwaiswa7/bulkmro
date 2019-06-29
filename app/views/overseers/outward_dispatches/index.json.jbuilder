@@ -2,7 +2,7 @@ json.data (@outward_dispatches) do |outward_dispatch|
   ar_invoice_request = outward_dispatch.ar_invoice_request
   json.array! [
                   [
-                      if policy(outward_dispatch).show?
+                      if is_authorized(outward_dispatch ,'show')
                         row_action_button(overseers_outward_dispatch_path(outward_dispatch), 'eye', 'View Outward Dispatch', 'info', :_blank)
                       end,
                       if is_authorized(:outward_dispatch, 'can_create_packing_slip') && policy(outward_dispatch).can_create_packing_slip?

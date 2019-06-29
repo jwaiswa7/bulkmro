@@ -19,13 +19,13 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       end,
-                      if is_authorized(ar_invoice ,'can_create_outward_dispatch')
+                      if is_authorized(ar_invoice ,'can_create_outward_dispatch') && ar_invoice.status == 'Completed AR Invoice Request'
                         row_action_button(new_overseers_outward_dispatch_path(ar_invoice_request_id: ar_invoice), 'fal fa-plus', 'Add outward dispatch', 'info', :_blank)
                       end
                   ].join(' '),
                   status_badge(ar_invoice.status),
                   ar_invoice.ar_invoice_number,
-                  ar_invoice.inquiry.present? ? conditional_link(ar_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(ar_invoice.inquiry), policy(ar_invoice.inquiry).edit?) : '-',
+                  ar_invoice.inquiry.present? ? conditional_link(ar_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(ar_invoice.inquiry), is_authorized(ar_invoice.inquiry ,'edit')) : '-',
                   ar_invoice.inquiry.company.to_s,
                   ar_invoice.sales_order.order_number,
                   ar_invoice.outward_dispatches.map { |outward_dispatch| link_to(outward_dispatch.id, overseers_outward_dispatch_path(outward_dispatch), target: '_blank') }.compact.join(' '),
