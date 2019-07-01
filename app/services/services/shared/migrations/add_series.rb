@@ -32,12 +32,16 @@ class Services::Shared::Migrations::AddSeries < Services::Shared::Migrations::Mi
           if sales_order.present?
             order_number = sales_order.order_number
             series.update_attributes(last_number: (order_number + 1))
+          else
+            series.update_attributes(last_number: (series.first_number))
           end
         when 'Purchase Order'
           purchase_order = PurchaseOrder.where(created_at: start_date..end_date).where(po_number: series.first_number..(series.first_number + 9998)).order(:po_number).last
           if purchase_order.present?
             po_number = purchase_order.po_number
             series.update_attributes(last_number: (po_number + 1))
+          else
+            series.update_attributes(last_number: (series.first_number))
           end
         end
       end
@@ -58,5 +62,4 @@ class Services::Shared::Migrations::AddSeries < Services::Shared::Migrations::Mi
       end
     end
   end
-
 end
