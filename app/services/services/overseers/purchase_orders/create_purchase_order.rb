@@ -9,18 +9,18 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' ' + Date.today.year.to_s).last
     @purchase_order = PurchaseOrder.where(po_number: series.last_number).first_or_create! do |purchase_order|
       purchase_order_params = assign_purchase_order_attributes(series.last_number)
-      purchase_order.assign_attributes(purchase_order_params)
-      purchase_order.assign_attributes(logistics_owner: purchase_order.inquiry.company.logistics_owner)
-      purchase_order.assign_attributes(payment_option: po_request.payment_option)
-      purchase_order.assign_attributes(sap_sync: 'Not Sync')
+      purchase_order.update_attributes(purchase_order_params)
+      purchase_order.update_attributes(
+          logistics_owner: purchase_order.inquiry.company.logistics_owner,
+          payment_option: po_request.payment_option,
+          sap_sync: 'Not Sync'
+      )
     end
     po_request.rows.each_with_index do |row, index|
       @purchase_order.rows.where(product_id: row.product_id).first_or_create! do |po_row|
-        po_row.assign_attributes(
-            metadata: set_product(row, index)
-        )
-        po_row.assign_attributes(
-            product: row.product_id
+        po_row.update_attributes(
+            metadata: set_product(row, index),
+            product: row.product
         )
       end
     end
