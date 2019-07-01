@@ -14,6 +14,41 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
   end
 
+  def alias_with_po_total
+    column_headers = ['Company Alias', 'Company', 'Order Status', 'Order Total']
+    model = PurchaseOrder
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      model.find_each(batch_size: 1000) do |po|
+        supplier_alias = po.supplier.present? ? po.supplier.account.name : po.inquiry.inquiry_number.to_s + po.po_number.to_s
+        supplier_name = po.supplier.present? ? po.supplier.name : po.inquiry.inquiry_number.to_s + po.po_number.to_s
+        po_total = po.converted_total.to_s
+        writer << [supplier_alias, supplier_name, po_total]
+      end
+    end
+
+    fetch_csv('alias_with_po_total.csv', csv_data)
+  end
+
+  def alias_with_order_total
+    column_headers = ['Company Alias', 'Company', 'Order Status', 'Order Total']
+    model = Company
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      model.acts_as_customer.includes(:account).all.order(name: :asc).find_each(batch_size: 500) do |company|
+        company.inquiries.each do |company_inquiry|
+          company_inquiry.sales_orders.remote_approved.each do |order|
+            company_alias = company.account.name
+            company_name = company.name
+            order_status = order.status
+            order_total = order.converted_total.to_s
+            writer << [company_alias, company_name, order_status, order_total]
+          end
+        end
+      end
+    end
+
+    fetch_csv('alias_with_order_total.csv', csv_data)
+  end
+
   def so_dump
     columns = [
         'Inquiry Number',
@@ -732,6 +767,10 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
     fetch_csv('companies_export.csv', csv_data)
   end
+
+
+
+  #purchase order
 
   def create_bible_orders
     # test_file
