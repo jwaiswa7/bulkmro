@@ -15,7 +15,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
       purchase_order.assign_attributes(sap_sync: 'Not Sync')
     end
     po_request.rows.each_with_index do |row, index|
-      purchase_order.rows.where(product_id: row.product_id).first_or_create! do |po_row|
+      @purchase_order.rows.where(product_id: row.product_id).first_or_create! do |po_row|
         po_row.assign_attributes(
             metadata: set_product(row, index)
         )
