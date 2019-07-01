@@ -27,6 +27,12 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     if @purchase_order.save_and_sync(po_request)
       series.increment_last_number
     end
+
+    po_request.update_attributes(
+        status: 'Supplier PO: Created Not Sent',
+        purchase_order: @purchase_order
+    )
+
     @purchase_order
   end
 
