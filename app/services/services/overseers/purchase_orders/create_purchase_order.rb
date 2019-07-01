@@ -12,7 +12,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
       purchase_order.assign_attributes(purchase_order_params)
       purchase_order.assign_attributes(logistics_owner: purchase_order.inquiry.company.logistics_owner)
       purchase_order.assign_attributes(payment_option: po_request.payment_option)
-      purchase_order.assign_attributes(sap_status: 'Not Sync')
+      purchase_order.assign_attributes(sap_sync: 'Not Sync')
       po_request.rows.each_with_index do |row, index|
         purchase_order.rows.where(product_id: row.product_id) do |po_row|
           po_row.assign_attributes(
