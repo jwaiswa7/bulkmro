@@ -13,20 +13,21 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
       purchase_order.assign_attributes(logistics_owner: purchase_order.inquiry.company.logistics_owner)
       purchase_order.assign_attributes(payment_option: po_request.payment_option)
       purchase_order.assign_attributes(sap_sync: 'Not Sync')
-      po_request.rows.each_with_index do |row, index|
-        purchase_order.rows.where(product_id: row.product_id) do |po_row|
-          po_row.assign_attributes(
-              metadata: set_product(row, index)
-          )
-          po_row.assign_attributes(
-              product: row.product_id
-          )
-        end
-      end
-      if purchase_order.save_and_sync(po_request)
-        series.increment_last_number
+    end
+    po_request.rows.each_with_index do |row, index|
+      purchase_order.rows.where(product_id: row.product_id).first_or_create! do |po_row|
+        po_row.assign_attributes(
+            metadata: set_product(row, index)
+        )
+        po_row.assign_attributes(
+            product: row.product_id
+        )
       end
     end
+    if @purchase_order.save_and_sync(po_request)
+      series.increment_last_number
+    end
+    @purchase_order
   end
 
   def assign_purchase_order_attributes(series_number)
