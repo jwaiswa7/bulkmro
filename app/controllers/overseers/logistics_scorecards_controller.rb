@@ -10,6 +10,8 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
         @months = service.months
         @records = service.records
         @ownerwise_records = service.ownerwise_records
+        @delay_bucket_monthwise_records = service.delay_bucket_monthwise_records
+        @delay_bucket_ownerwise_records = service.delay_bucket_ownerwise_records
       }
       format.json do
         service = Services::Overseers::Finders::LogisticsScorecards.new(params, current_overseer, paginate: false)
