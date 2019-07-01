@@ -5,7 +5,7 @@ class PurchaseOrderRow < ApplicationRecord
 
   after_create :increase_product_count
   before_destroy :decrease_product_count
-  belongs_to :po_request_row
+  belongs_to :po_request_row, required: false
 
   def increase_product_count
     product = self.get_product
