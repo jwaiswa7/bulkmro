@@ -39,6 +39,8 @@ class SalesInvoice < ApplicationRecord
 
   scope :not_cancelled_invoices, -> { where.not(status: 'Cancelled') }
   scope :not_paid, -> { where.not(payment_status: 'Fully Paid') }
+  scope :ignore_freight_bm, -> { where.not('sales_invoice_rows.sku = ?', 'BM00008') }
+  scope :with_inquiry, -> { where.not(invoice_number: nil) }
 
   enum status: {
       'Open': 1,
@@ -57,17 +59,16 @@ class SalesInvoice < ApplicationRecord
       'Logistics Delivery Delay': 10,
       'SO Creation Delay': 20,
       'Supplier PO Creation Delay': 30,
-      'Supplier Delay': 40
+      'Supplier Delay': 40,
+      'Unassigned': 50
   }
 
   enum sla_bucket: {
-      'Not Delivered': 0,
       'On or before Time': 1,
       'Delayed': 2
   }
 
   enum delay_bucket: {
-      'Not Delivered': 0,
       'No delay': 1,
       'Delay by 2 days': 2,
       'Delay by 2-7 days': 3,
@@ -239,9 +240,8 @@ class SalesInvoice < ApplicationRecord
   end
 
   def calculated_committed_delivery_tat
-    po_received_date = (self.inquiry.customer_po_received_date.present?) ? self.inquiry.customer_po_received_date : self.inquiry.customer_order_date
-    if self.inquiry.customer_committed_date.present? && po_received_date.present?
-      (self.inquiry.customer_committed_date - po_received_date).to_i
+    if self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
+      (self.inquiry.customer_committed_date - self.inquiry.customer_order_date).to_i
     end
   end
 
@@ -258,30 +258,30 @@ class SalesInvoice < ApplicationRecord
   end
 
   def calculated_sla_bucket
-    if ['', nil].include?(self.calculated_delay)
-      'Not Delivered'
-    elsif self.calculated_delay <= 0
-      'On or before Time'
-    else
-      'Delayed'
+    if !self.calculated_delay.nil?
+      if self.calculated_delay <= 0
+        'On or before Time'
+      else
+        'Delayed'
+      end
     end
   end
 
   def calculated_delay_bucket
-    if ['', nil].include?(self.calculated_delay)
-      0
-    elsif self.calculated_delay <= 0
-      1
-    elsif self.calculated_delay <= 2
-      2
-    elsif self.calculated_delay <= 7
-      3
-    elsif self.calculated_delay <= 14
-      4
-    elsif self.calculated_delay <= 28
-      5
-    else
-      6
+    if !self.calculated_delay.nil?
+      if self.calculated_delay <= 0
+        1
+      elsif self.calculated_delay <= 2
+        2
+      elsif self.calculated_delay <= 7
+        3
+      elsif self.calculated_delay <= 14
+        4
+      elsif self.calculated_delay <= 28
+        5
+      else
+        6
+      end
     end
   end
 end
