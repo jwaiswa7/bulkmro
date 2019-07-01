@@ -11,11 +11,11 @@ class Overseers::FreightRequestsController < Overseers::BaseController
         end
 
     @freight_requests = ApplyDatatableParams.to(freight_requests, params)
-    authorize @freight_requests
+    authorize_acl @freight_requests
   end
 
   def show
-    authorize @freight_request
+    authorize_acl @freight_request
   end
 
   def new
@@ -37,7 +37,7 @@ class Overseers::FreightRequestsController < Overseers::BaseController
       freight_params[:sales_order] = @sales_order if @sales_order.present?
 
       @freight_request = FreightRequest.new(freight_params)
-      authorize @freight_request
+      authorize_acl @freight_request
     else
       redirect_to overseers_freight_requests_path
     end
@@ -45,7 +45,7 @@ class Overseers::FreightRequestsController < Overseers::BaseController
 
   def create
     @freight_request = FreightRequest.new(freight_request_params.merge(overseer: current_overseer))
-    authorize @freight_request
+    authorize_acl @freight_request
     if @freight_request.valid?
       ActiveRecord::Base.transaction do
         @freight_request.save!
@@ -60,12 +60,12 @@ class Overseers::FreightRequestsController < Overseers::BaseController
   end
 
   def edit
-    authorize @freight_request
+    authorize_acl @freight_request
   end
 
   def update
     @freight_request.assign_attributes(freight_request_params.merge(overseer: current_overseer))
-    authorize @freight_request
+    authorize_acl @freight_request
     if @freight_request.valid?
       ActiveRecord::Base.transaction do
         if @freight_request.status_changed?

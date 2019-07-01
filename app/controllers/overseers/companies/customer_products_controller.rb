@@ -3,7 +3,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
 
   def index
     @products = ApplyDatatableParams.to(@company.customer_products, params.reject! { |k, v| k == 'company_id' })
-    authorize @products
+    authorize_acl @products
   end
 
   def autocomplete
@@ -12,17 +12,17 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     customer_products = (account || company).customer_products
 
     @products = ApplyParams.to(customer_products, params)
-    authorize @products
+    authorize_acl @products
   end
 
   def show
-    authorize @customer_product
+    authorize_acl @customer_product
   end
 
   def new
     @tags = Tag.all
     @customer_product = @company.customer_products.new(overseer: current_overseer)
-    authorize @customer_product
+    authorize_acl @customer_product
   end
 
   def create
@@ -43,7 +43,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     @customer_product.assign_attributes(name: @product.name) if @customer_product.name.blank?
     @customer_product.assign_attributes(sku: @product.sku) if @customer_product.sku.blank?
 
-    authorize @customer_product
+    authorize_acl @customer_product
 
     if @customer_product.save
       redirect_to overseers_company_customer_product_path(@company, @customer_product), notice: flash_message(@customer_product, action_name)
@@ -53,14 +53,14 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   end
 
   def generate_catalog
-    authorize :customer_product
+    authorize_acl :customer_product
     @company.generate_catalog(current_overseer)
 
     redirect_to overseers_company_path(@company)
   end
 
   def destroy_all
-    authorize :customer_product
+    authorize_acl :customer_product
     @company.customer_products.destroy_all
 
     redirect_to overseers_company_path(@company)
@@ -68,7 +68,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
 
 
   def edit
-    authorize @customer_product
+    authorize_acl @customer_product
     @tags = Tag.all
   end
 
@@ -89,7 +89,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     @customer_product.assign_attributes(custom_params)
     @customer_product.assign_attributes(name: @product.name) if @customer_product.name.blank?
     @customer_product.assign_attributes(sku: @product.sku) if @customer_product.sku.blank?
-    authorize @customer_product
+    authorize_acl @customer_product
 
     if @customer_product.save
       redirect_to overseers_company_customer_product_path(@customer_product.company, @customer_product), notice: flash_message(@customer_product, action_name)
@@ -99,7 +99,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   end
 
   def destroy
-    authorize @customer_product
+    authorize_acl @customer_product
     @customer_product.destroy!
 
     redirect_to overseers_company_path(@company)

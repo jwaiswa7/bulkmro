@@ -1,6 +1,7 @@
 class Services::Overseers::Reports::MonthlySalesReport < Services::Overseers::Reports::BaseReport
   def call
     call_base
+    @current_overseer
 
     @data = OpenStruct.new(
       geographies: [],
@@ -12,8 +13,14 @@ class Services::Overseers::Reports::MonthlySalesReport < Services::Overseers::Re
 
     ActiveRecord::Base.default_timezone = :utc
 
-    inquiries = Inquiry.includes(:products).where(created_at: start_at.beginning_of_month..end_at.end_of_month)
-    sales_orders = SalesOrder.includes([rows: :sales_quote_row]).where(created_at: start_at.beginning_of_month..end_at.end_of_month).where('sales_orders.status = ? OR sales_orders.legacy_request_status = ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'])
+    if @current_overseer.present? && !@current_overseer.allow_inquiries?
+      inquiries = Inquiry.includes(:products).where(created_at: start_at.beginning_of_month..end_at.end_of_month).where('inside_sales_owner_id = ? or outside_sales_owner_id = ? or procurement_operations_id = ?', @current_overseer.id, @current_overseer.id, @current_overseer.id)
+      sales_orders = SalesOrder.includes([rows: :sales_quote_row]).joins(:inquiry).where(created_at: start_at.beginning_of_month..end_at.end_of_month).where('sales_orders.status = ? OR sales_orders.legacy_request_status = ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved']).where('inquiries.inside_sales_owner_id = ? or inquiries.outside_sales_owner_id = ? or inquiries.procurement_operations_id = ?', @current_overseer.id, @current_overseer.id, @current_overseer.id)
+    else
+      inquiries = Inquiry.includes(:products).where(created_at: start_at.beginning_of_month..end_at.end_of_month)
+      sales_orders = SalesOrder.without_cancelled.includes([rows: :sales_quote_row]).where(created_at: start_at.beginning_of_month..end_at.end_of_month).where('sales_orders.status = ? OR sales_orders.legacy_request_status = ? ', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'])
+    end
+
 
     inquiry_groups = inquiries.group_by_month(:created_at, default_value: nil).count
     sales_order_groups = sales_orders.group_by_month(:created_at, default_value: nil).count

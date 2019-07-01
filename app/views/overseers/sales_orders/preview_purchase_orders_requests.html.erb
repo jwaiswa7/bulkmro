@@ -211,7 +211,7 @@
           <% end %>
         </div>
         <div class="card-footer">
-          <% if policy(@sales_order).create_purchase_orders_requests? %>
+          <% if is_authorized(@sales_order, 'create_purchase_orders_requests') %>
             <div class="form-row">
               <div class="col-md-6">
                 <%= link_to :back, :class => "btn btn-warning btn-block" do %>

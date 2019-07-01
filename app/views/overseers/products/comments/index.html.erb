@@ -116,10 +116,10 @@
                 <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark btn-block' %>
               </div>
               <div class="col-12 col-md-5 mt-1 mt-md-0">
-                <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-block' if policy(@product).approve? %>
+                <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-block' if is_authorized(@product, 'approve') && policy(@product).approve? %>
               </div>
               <div class="col-12 col-md-5 mt-1 mt-md-0">
-                <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger btn-block' if policy(@product).reject? %>
+                <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger btn-block' if is_authorized(@product, 'reject') && policy(@product).reject? %>
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@
               <div>
                 <%= f.submit 'Merge', name: 'merge', class: 'btn btn-warning float-right' %>
               </div>
-            <% end if policy(@product).merge? %>
+            <% end if is_authorized(@product, 'merge')  %>
           </div>
         </div>
       </div>

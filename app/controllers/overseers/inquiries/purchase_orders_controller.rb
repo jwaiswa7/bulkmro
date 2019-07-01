@@ -4,11 +4,11 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
 
   def index
     @purchase_orders = @inquiry.purchase_orders
-    authorize @purchase_orders
+    authorize_acl @purchase_orders
   end
 
   def show
-    authorize @purchase_order
+    authorize_acl @purchase_order
 
     @metadata = @purchase_order.metadata.deep_symbolize_keys
     @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
@@ -23,11 +23,11 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
   end
 
   def relationship_map
-    authorize @inquiry
+    authorize_acl @inquiry
   end
 
   def get_relationship_map_json
-    authorize @purchase_order
+    authorize_acl @purchase_order
     purchase_order = PurchaseOrder.joins(po_request: :sales_order).where(purchase_orders: {id: @purchase_order.id}).where.not(po_requests: {id: nil}).select('sales_orders.id as sales_order_id')
 
     if purchase_order.present? && purchase_order.first.sales_order_id.present?

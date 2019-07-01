@@ -3,12 +3,12 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
 
   def show
     redirect_to edit_overseers_account_company_path(@account, @company)
-    authorize @account
+    authorize_acl @account
   end
 
   def new
     @company = @account.companies.build(overseer: current_overseer)
-    authorize @company
+    authorize_acl @company
   end
 
   def index
@@ -16,7 +16,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         base_filter_key: 'account_id',
         base_filter_value: params[:account_id]
     }
-    authorize @account
+    authorize_acl @account
     respond_to do |format|
       format.html { }
       format.json do
@@ -37,7 +37,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         base_filter_value: @account.id
     }
 
-    authorize :company
+    authorize_acl :company
     respond_to do |format|
       format.html { }
       format.json do
@@ -59,7 +59,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         base_filter_value: @account.id
     }
 
-    authorize :company
+    authorize_acl :company
     respond_to do |format|
       format.html { }
       format.json do
@@ -73,7 +73,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
 
   def create
     @company = @account.companies.build(company_params.merge(overseer: current_overseer))
-    authorize @company
+    authorize_acl @company
 
     if @company.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
@@ -83,12 +83,12 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   end
 
   def edit
-    authorize @company
+    authorize_acl @company
   end
 
   def update
     @company.assign_attributes(company_params.merge(overseer: current_overseer))
-    authorize @company
+    authorize_acl @company
 
     if @company.logistics_owner_id_changed?
       Services::Overseers::PurchaseOrders::UpdateLogisticsOwner.new(@company, current_overseer).call

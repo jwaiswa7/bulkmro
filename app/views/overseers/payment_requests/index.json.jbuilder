@@ -1,10 +1,10 @@
 json.data (@payment_requests) do |payment_request|
   json.array! [
                   [
-                      if policy(payment_request).show?
+                      if is_authorized(payment_request,'show')
                         row_action_button(overseers_payment_request_path(payment_request), 'eye', 'View Payment Request', 'info')
                       end,
-                      if policy(payment_request).edit? && !payment_request.Cancelled?
+                      if is_authorized(payment_request,'edit') && !payment_request.Cancelled?
                         row_action_button(edit_overseers_po_request_payment_request_path(payment_request.po_request, payment_request), 'pencil', 'Edit Payment Request', 'warning')
                       end
                   ].join(' '),

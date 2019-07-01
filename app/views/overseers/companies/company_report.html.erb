@@ -17,23 +17,23 @@
 
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
-  <th class="no-sort all" data-name="company_key"> Company Name</th>
-  <th class="no-sort all" data-name="account_id"> Company Alias</th>
-  <th class="no-sort all text-left">Live Inquiries #</th>
-  <th class="no-sort all text-left">Live Quotation #</th>
-  <th class="no-sort all text-left">Value of Quotations</th>
-  <th class="no-sort all text-left">Live Expected <br>Orders #</th>
-  <th class="no-sort all text-left">Value of<br> Expected Orders</th>
-  <th class="no-sort all text-left">Orders #</th>
-  <th class="no-sort all text-left">Value of Orders</th>
-  <th class="no-sort all text-left">Order Margin</th>
-  <th class="no-sort all text-left">%Margin</th>
-  <th class="no-sort all text-left">Invoices #</th>
-  <th class="no-sort all text-left">Amount Invoiced<br> (Excl. Taxes)</th>
-  <th class="no-sort all text-left">Invoice Margin<br> (Excl. Taxes)</th>
-  <th class="no-sort all text-left">Cancelled Invoices #</th>
-  <th class="no-sort all text-left">Value of<br> Cancelled Invoices</th>
-  <th class="no-sort all text-left">Uniq SKUs #</th>
+  <th class="no-sort all"> Company Name</th>
+  <th class="no-sort all"> Company Alias</th>
+  <th class="no-sort all text-left" data-name="live_inquiries">Live Inquiries #</th>
+  <th class="no-sort all text-left" data-name="sales_quotes">Live Quotation #</th>
+  <th class="no-sort all text-left" data-name="sales_quotes_total">Value of Quotations</th>
+  <th class="no-sort all text-left" data-name="expected_orders">Live Expected <br>Orders #</th>
+  <th class="no-sort all text-left" data-name="expected_orders_total">Value of<br> Expected Orders</th>
+  <th class="no-sort all text-left" data-name="sales_orders">Orders #</th>
+  <th class="no-sort all text-left" data-name="sales_orders_total">Value of Orders</th>
+  <th class="no-sort all text-left" data-name="sales_orders_margin">Order Margin</th>
+  <th class="no-sort all text-left" data-name="sales_orders_margin_percentage">%Margin</th>
+  <th class="no-sort all text-left" data-name="sales_invoices">Invoices #</th>
+  <th class="no-sort all text-left" data-name="sales_invoices_total">Amount Invoiced<br> (Excl. Taxes)</th>
+  <th class="no-sort all text-left" data-name="sales_quotes_margin_percentage">Invoice Margin<br> (Excl. Taxes)</th>
+  <th class="no-sort all text-left" data-name="cancelled_invoiced">Cancelled Invoices #</th>
+  <th class="no-sort all text-left" data-name="cancelled_invoiced_total">Value of<br> Cancelled Invoices</th>
+  <th class="no-sort all text-left" data-name="sku">Uniq SKUs #</th>
 <% end %>
 
 <% content_for :filter_row do %>
@@ -64,18 +64,18 @@
   <td class="text-left no-data"></td>
   <td class="text-left no-data"></td>
   <td class="text-left"></td>
-  <td class="text-left currency"></td>
+  <td class="text-left"></td>
   <td class="text-left no-data"></td>
-  <td class="text-left currency"></td>
+  <td class="text-left"></td>
   <td class="text-left no-data"></td>
-  <td class="text-left currency"></td>
-  <td class="text-left currency"></td>
-  <td class="text-left no-data"></td>
-  <td class="text-left no-data"></td>
-  <td class="text-left currency"></td>
+  <td class="text-left"></td>
+  <td class="text-left"></td>
   <td class="text-left no-data"></td>
   <td class="text-left no-data"></td>
-  <td class="text-left currency"></td>
+  <td class="text-left"></td>
+  <td class="text-left no-data"></td>
+  <td class="text-left no-data"></td>
+  <td class="text-left"></td>
   <td class="text-left"></td>
 <% end %>
 
