@@ -19,18 +19,18 @@ json.data (@indexed_kra_reports) do |inquiry|
                   end,
                   number_with_delimiter(inquiry['doc_count'], delimiter: ','),
                   number_with_delimiter(inquiry['sales_quote_count']['value'].to_i, delimiter: ','),
-                  inquiry['total_quote_value']['value'].to_i,
+                  number_with_delimiter(inquiry['total_quote_value']['value'].to_i, delimiter: ','),
                   number_with_delimiter(inquiry['expected_order']['value'].to_i, delimiter: ','),
-                  inquiry['total_quote_value']['value'].to_i,
+                  number_with_delimiter(inquiry['total_quote_value']['value'].to_i, delimiter: ','),
                   if  @category.present? && (@category.include?'by_sales_order')
                     number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['sales_orders']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
                     number_with_delimiter(inquiry['sales_order_count']['value'].to_i, delimiter: ',')
                   end,
                   if @category.present? && (@category.include? 'by_sales_order')
-                    @indexed_kra_varient_reports[inquiry['key']]['total_order_value']['value'].to_i if @indexed_kra_varient_reports[inquiry['key']].present?
+                    number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['total_order_value']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
-                    inquiry['total_order_value']['value'].to_i
+                    number_with_delimiter(inquiry['total_order_value']['value'].to_i, delimiter: ',')
                   end,
                   if @category.present? && (@category.include? 'by_sales_order')
                     number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['sku']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
@@ -48,9 +48,9 @@ json.data (@indexed_kra_reports) do |inquiry|
                     number_with_delimiter(inquiry['invoices_count']['value'].to_i, delimiter: ',')
                   end,
                   if @category.present? && (@category.include? 'by_sales_order')
-                    @indexed_kra_varient_reports[inquiry['key']]['revenue']['value'].to_i if @indexed_kra_varient_reports[inquiry['key']].present?
+                    number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['revenue']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
-                    inquiry['revenue']['value'].to_i
+                    number_with_delimiter(inquiry['revenue']['value'].to_i, delimiter: ',')
                   end
               ]
 end
