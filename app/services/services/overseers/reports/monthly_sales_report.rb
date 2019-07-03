@@ -50,7 +50,8 @@ class Services::Overseers::Reports::MonthlySalesReport < Services::Overseers::Re
     @data.entries[:total] = summary
 
     ActiveRecord::Base.default_timezone = :local
+    Rails.cache.write('monthly_sales_report_data', @data, expires_in: 1.hour)
 
-    data
+    @data
   end
 end
