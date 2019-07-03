@@ -14574,4 +14574,9 @@ section.section-padding-adjustment {
   section.section-padding-adjustment p.lead {
     font-size: 0.8rem; }
 
+th.logistics-scorecard {
+    padding-left: 35px !important;
+    text-align: start;
+    width: 10rem;
+}
 /*# sourceMappingURL=application.css.map */

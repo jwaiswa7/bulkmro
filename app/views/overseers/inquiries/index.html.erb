@@ -5,10 +5,11 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+<% if Settings.reports.show_summary %>
 <div class="col-lg-12">
   <%= render partial: "shared/layouts/summary", locals: {klass: Inquiry, statuses: Inquiry.statuses} %>
 </div>
-
+<% end %>
 <% content_for(:heading_buttons) do %>
 
   <% if is_authorized(:inquiry,'index') %>

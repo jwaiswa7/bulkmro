@@ -1,0 +1,24 @@
+Inside Sales Name,Client Order Date,Price Currency,Document Rate,Magento Company Name,Company Alias,Inquiry Number,So #,Order Date,Bm #,Order Qty,Unit Selling Price,Freight,Tax Type,Tax Rate,Tax Amount,Total Selling Price,Total Landed Cost,Unit cost price,Margin,Margin (In %)
+Prit Patel,8-Sep-16,INR,1,Ingersoll Rand (India) Ltd.,IR,6076,200305,8-Sep-16,BM0K8Q5,100,11,0,15.0% VAT,15.00%,165,1100,1100,11,0,0.00%
+Prit Patel,8-Sep-16,INR,1,Ingersoll Rand (India) Ltd.,IR,6076,200305,8-Sep-16,BM0K8V4,24,207.3,0,15.0% VAT,15.00%,746.28,4975.2,4769,198.708333333333,206.200000000001,4.14%
+Sandeep Pal,8-Sep-16,INR,1,Ingersoll Rand (India) Ltd.,IR,6076,200305,8-Sep-16,BM0L0A6,2,524.1,0,15.0% VAT,15.00%,157.23,1048.2,787,393.5,261.2,24.92%
+Suvidha Shinde,18-Oct-16,INR,1,Alstom Bharat Forge Power Pvt. Ltd.,Alstom,6517,201255,18-Oct-16,BM9A4C2,30,3447.81,0,15.0% VAT,15.00%,15515.145,103434.3,103344,3444.8,90.3000000000029,0.09%
+Jigar Patel,23-Jul-18,INR,1,Applied Materials India Pvt. Ltd.,AMAT,20612,10210599,23-Jul-18,BM9V8B3,1,-67617,0,IG@18,18.00%,-12171.06,-67617,-63560,-63560,-4057,6.00%
+Jigar Patel,23-Jul-18,INR,1,Applied Materials India Pvt. Ltd.,AMAT,20612,10210599,23-Jul-18,BM9Z4H7,1,-13523,0,IG@18,18.00%,-2434.14,-13523,-12712,-12712,-811,6.00%
+Avni Shah,8-Aug-18,INR,1,Henkel Adhesive Technologies India Pvt. Ltd.,Henkel,26062,10210710,8-Aug-18,BM9X4C8,1,-539.47,0,CSG@18,18.00%,-97.1046,-539.47,-500,-500,-39.47,7.32%
+Avni Shah,8-Aug-18,INR,1,Henkel Adhesive Technologies India Pvt. Ltd.,Henkel,26062,10210710,8-Aug-18,BM9X9J4,1,-539.47,0,CSG@18,18.00%,-97.1046,-539.47,-500,-500,-39.47,7.32%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9P5M7,2,13305.6,0,IG@18,18.00%,4790.016,26611.2,17516,8758,9095.2,34.18%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9Q8J8,10,241.92,0,IG@12,12.00%,290.304,2419.2,1900,190,519.2,21.46%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9R3S5,1,6240.64,0,IG@18,18.00%,1123.3152,6240.64,5160,5160,1080.64,17.32%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9R4W1,2,24978.24,0,IG@12,12.00%,5994.7776,49956.48,41300,20650,8656.48,17.33%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9S6V8,6,613.27,0,IG@0,0.00%,0,3679.62,2889.9,481.65,789.72,21.46%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9T1G9,6,84.67,0,IG@0,0.00%,0,508.02,399,66.5,109.02,21.46%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9V2N9,2,6664.9,0,IG@18,18.00%,2399.364,13329.8,11020,5510,2309.8,17.33%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9V4S2,8,1251.94,0,IG@18,18.00%,1802.7936,10015.52,7200,900,2815.52,28.11%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9W6T1,2,4717.44,0,IG@12,12.00%,1132.1856,9434.88,6365,3182.5,3069.88,32.54%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9W7Q5,4,1395.88,0,IG@0,0.00%,0,5583.52,4385.2,1096.3,1198.32,21.46%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9X4H5,2,515.29,0,IG@0,0.00%,0,1030.58,809.4,404.7,221.18,21.46%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9Z5D4,3,303.61,0,IG@0,0.00%,0,910.83,715.35,238.45,195.48,21.46%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9Z7C2,2,558.84,0,IG@0,0.00%,0,1117.68,878,439,239.68,21.44%
+Sanjeev Shukla,30-May-18,INR,1,Compass India Support Services Pvt. Ltd.,Compass Group,20004,10910149,30-May-18,BM9Z7G7,3,353.2,0,IG@0,0.00%,0,1059.6,831,277,228.6,21.57%
+Husna Khan,,INR,1,Konkan Barge Builders Pvt.Ltd.,KBB,CUM01,CUM01,1-Oct-18,CUM01,1,5800000,0,IG@0,0.00%,0,5800000,5043478.26,5043478.26,756521.74,13.04%
