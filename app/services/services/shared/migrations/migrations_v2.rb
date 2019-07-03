@@ -53,11 +53,11 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     columns = [
         'Inquiry Number',
         'Order Number',
+        'Old Order Number',
         'AE Parent Order Number',
         'Order Date',
         'MIS Date',
         'Company Name',
-        'Company Alias',
         'Order Net Amount',
         'Order Tax Amount',
         'Sprint Status',
@@ -72,11 +72,11 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         inquiry = sales_order.inquiry
         writer << [
             inquiry.try(:inquiry_number) || '',
-            sales_order.order_number,
-            sales_order.is_credit_note_entry ? SalesOrder.where(id: sales_order.parent_id).first.order_number : '',
+            sales_order.is_credit_note_entry ? SalesOrder.where(id: sales_order.parent_id).first.order_number : sales_order.order_number,
+            sales_order.old_order_number.present? ? sales_order.old_order_number : '',
+            sales_order.is_credit_note_entry ? sales_order.order_number : '',
             sales_order.created_at.to_date.to_s,
             sales_order.mis_date.present? ? sales_order.mis_date.to_date.to_s : '-',
-            inquiry.try(:account).try(:name),
             inquiry.try(:company).try(:name) ? inquiry.try(:company).try(:name).gsub(/;/, ' ') : '',
             (sales_order.calculated_total == 0 || sales_order.calculated_total == nil) ? 0 : '%.2f' % (sales_order.calculated_total),
             ('%.2f' % sales_order.calculated_total_tax if sales_order.inquiry.present?),
@@ -88,7 +88,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       end
     end
 
-    fetch_csv('sprint_sales_orders_export.csv', csv_data)
+    fetch_csv('sprint_sales_orders_export_new.csv', csv_data)
   end
 
   def company_wise_po_dump
@@ -113,7 +113,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         writer << [record.id, record.name]
       end
     end
-    fetch_csv('sez_addresses.csv', csv_data)
+    # fetch_csv('sez_addresses.csv', csv_data)
   end
 
   def create_ifsc_code
@@ -635,113 +635,120 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   def create_missing_orders
     service = Services::Shared::Spreadsheets::CsvImporter.new('missing_orders.csv', 'seed_files_3')
     service.loop(nil) do |x|
-      next if x.get_column('Total Selling Price').to_f.negative? || x.get_column('Inquiry Number').to_i != 6076
-      selected = ['BM0K8Q5-200305-6076']
+      # next if x.get_column('Total Selling Price').to_f.negative? || x.get_column('Inquiry Number').to_i != 6076
+      next if x.get_column('Inquiry Number') != 'CUM01'
+      # selected = ['BM0K8Q5-200305-6076']
       puts '*********************** INQUIRY ', x.get_column('Inquiry Number')
       order_being_processed = []
       product_sku = x.get_column('Bm #').upcase
       puts 'SKU', product_sku
       product = Product.find_by_sku(product_sku)
 
+      # current_row = product_sku + '-' + x.get_column('So #') + '-' + x.get_column('Inquiry Number')
+      inquiry = Inquiry.create
 
-      current_row = product_sku + '-' + x.get_column('So #') + '-' + x.get_column('Inquiry Number')
-      inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number'))
-      if inquiry.present? && selected.include?(current_row)
-        if !inquiry.billing_address.present?
-          inquiry.update(billing_address: inquiry.company.addresses.first)
-        end
+        company = Company.find('jVtpmz')
+        # if !inquiry.billing_address.present?
+          inquiry.billing_address= company.addresses.first
+        # end
 
-        if !inquiry.shipping_address.present?
-          inquiry.update(shipping_address: inquiry.company.addresses.first)
-        end
+        # if !inquiry.shipping_address.present?
+          inquiry.shipping_address= company.addresses.first
+        # end
 
-        if !inquiry.shipping_contact.present?
-          inquiry.update(shipping_contact: inquiry.billing_contact)
-        end
+        # if !inquiry.shipping_contact.present?
+          inquiry.shipping_contact= company.contacts.first
+        # end
+        inquiry.inside_sales_owner = Overseer.find_by_first_name(x.get_column('Inside Sales Name').split(' ')[0])
+        inquiry.created_at = Date.parse(2018, 10, 01).strftime('%y-%m-%d')
+        inquiry.old_inquiry_number = 'CUM01'
 
-        sales_quote = inquiry.sales_quotes.last
-        if sales_quote.blank?
-          sales_quote = inquiry.sales_quotes.create!(overseer: inquiry.inside_sales_owner)
-        end
-
-        # inquiry_products = inquiry.inquiry_products.where(product_id: product.id)
+      #
+      #   sales_quote = inquiry.sales_quotes.last
+      #   if sales_quote.blank?
+      #     sales_quote = inquiry.sales_quotes.create!(overseer: inquiry.inside_sales_owner)
+      #   end
+      #
+        inquiry_product = inquiry.inquiry_products.where(product_id: product.id).first_or_create!
         # if inquiry_products.blank?
-          # similar_products = Product.where(name: product.name).where.not(sku: product.sku)
-          # if similar_products.present?
-          #   similar_products.update_all(is_active: false)
-          # end
-          # sr_no = inquiry.inquiry_products.present? ? (inquiry.inquiry_products.last.sr_no + 1) : 1
-          # inquiry_product = inquiry.inquiry_products.where(product_id: product.id, sr_no: sr_no, quantity: x.get_column('quantity')).first_or_create!
-        # else
-          # inquiry_product = inquiry_products.first
-          # if quantity < sheet_quantity
-          # inquiry_product.update_attribute('quantity', inquiry_product.quantity + x.get_column('quantity').to_f)
-        # end
-
-        # supplier = Company.acts_as_supplier.find_by_name('Local')
-        # check
-        # inquiry_product_supplier = inquiry_product.suppliers.first
-        # || InquiryProductSupplier.where(supplier_id: supplier.id, inquiry_product: inquiry_product).first_or_create!
-        # inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('unit cost price').to_f)
-        # row = nil
-        # if inquiry.sales_orders.pluck(:order_number).include?(x.get_column('order number').to_i)
-        #   so = SalesOrder.find_by_order_number(x.get_column('order number').to_i)
-        #   if so.rows.map {|r| r.product.sku}.include?(x.get_column('product sku'))
-        #     row = sales_quote.rows.joins(:product).where('products.sku = ?', x.get_column('product sku')).first
+        #   similar_products = Product.where(name: product.name).where.not(sku: product.sku)
+        #   if similar_products.present?
+        #     similar_products.update_all(is_active: false)
         #   end
+        #   sr_no = inquiry.inquiry_products.present? ? (inquiry.inquiry_products.last.sr_no + 1) : 1
+        #   inquiry_product = inquiry.inquiry_products.where(product_id: product.id, sr_no: sr_no, quantity: x.get_column('quantity')).first_or_create!
+        # else
+        #   inquiry_product = inquiry_products.first
+        #   if quantity < sheet_quantity
+      inquiry_product.update_attribute('quantity', x.get_column('quantity').to_f)
         # end
-        # if row.blank?
-        # row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
-        # # end
-        #
-        # tax_rate = TaxRate.where(tax_percentage: x.get_column('tax rate').to_f).first_or_create!
-        # row.unit_selling_price = x.get_column('unit selling price (INR)').to_f
-        # row.quantity = x.get_column('quantity')
-        # row.margin_percentage = x.get_column('margin percentage')
-        # row.converted_unit_selling_price = x.get_column('unit selling price (INR)').to_f
-        # row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
-        # row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
-        # row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
-        # row.tax_rate = tax_rate || nil
-        # row.created_at = x.get_column('created at', to_datetime: true)
-        #
-        # row.save!
-        #
-        # puts '**************** QUOTE ROW SAVED ********************'
+      inquiry_product.save(validate: false)
+      inquiry.save(validate: false)
 
-        if !order_being_processed.include?(x.get_column('So #'))
-          overseer = Overseer.find_by_first_name(x.get_column('Inside Sales Name').split(' ')[0])
-          revised_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(inquiry.sales_quotes.last, overseer).call
-          revised_quote.save(validate: false)
-          revised_quote.update_attributes(created_at: DateTime.parse(x.get_column('Order Date')).strftime('%Y-%m-%d %H:%M:%S'), sent_at: DateTime.parse(x.get_column('Order Date')).strftime('%Y-%m-%d %H:%M:%S'))
-
-          extra_rows = revised_quote.rows.joins(:product).where.not(products: {sku: ['BM0K8Q5', 'BM0K8V4', 'BM0L0A6']})
-          extra_rows.delete_all
-          sales_order = revised_quote.sales_orders.where(order_number: x.get_column('So #')).first_or_create!
-          sales_order.order_number = x.get_column('So #')
-
-          # sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(revised_quote, overseer).call
-          # sales_order.update_attributes(sent_at: Time.now, status: 'Approved')
-
-          sales_order.overseer = inquiry.inside_sales_owner
-          sales_order.created_at = DateTime.parse(x.get_column('Order Date')).strftime('%Y-%m-%d %H:%M:%S')
-          sales_order.mis_date = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
-
-          sales_order.status = 'Approved'
-          sales_order.remote_status = 'Processing'
-          sales_order.sent_at = revised_quote.created_at
-          sales_order.save!
-        else
-          order_being_processed.push(x.get_column('So #'))
-        end
-
-        sales_order = SalesOrder.find_by_order_number(x.get_column('So #').to_i)
-        quote_row = sales_order.sales_quote.rows.joins(:product).where('products.sku = ?', product_sku).first
-
-        puts '************************** ORDER SAVED *******************************'
-        sales_order.rows.where(sales_quote_row: quote_row).first_or_create!
-        puts '****************** ORDER TOTAL ****************************', sales_order.order_number, sales_order.calculated_total_with_tax
-      end
+      #   # supplier = Company.acts_as_supplier.find_by_name('Local')
+      #   # check
+      #   # inquiry_product_supplier = inquiry_product.suppliers.first
+      #   # || InquiryProductSupplier.where(supplier_id: supplier.id, inquiry_product: inquiry_product).first_or_create!
+      #   # inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('unit cost price').to_f)
+      #   # row = nil
+      #   # if inquiry.sales_orders.pluck(:order_number).include?(x.get_column('order number').to_i)
+      #   #   so = SalesOrder.find_by_order_number(x.get_column('order number').to_i)
+      #   #   if so.rows.map {|r| r.product.sku}.include?(x.get_column('product sku'))
+      #   #     row = sales_quote.rows.joins(:product).where('products.sku = ?', x.get_column('product sku')).first
+      #   #   end
+      #   # end
+      #   # if row.blank?
+      #   # row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
+      #   # # end
+      #   #
+      #   # tax_rate = TaxRate.where(tax_percentage: x.get_column('tax rate').to_f).first_or_create!
+      #   # row.unit_selling_price = x.get_column('unit selling price (INR)').to_f
+      #   # row.quantity = x.get_column('quantity')
+      #   # row.margin_percentage = x.get_column('margin percentage')
+      #   # row.converted_unit_selling_price = x.get_column('unit selling price (INR)').to_f
+      #   # row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
+      #   # row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
+      #   # row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
+      #   # row.tax_rate = tax_rate || nil
+      #   # row.created_at = x.get_column('created at', to_datetime: true)
+      #   #
+      #   # row.save!
+      #   #
+      #   # puts '**************** QUOTE ROW SAVED ********************'
+      #
+      #   if !order_being_processed.include?(x.get_column('So #'))
+      #     overseer = Overseer.find_by_first_name(x.get_column('Inside Sales Name').split(' ')[0])
+      #     revised_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(inquiry.sales_quotes.last, overseer).call
+      #     revised_quote.save(validate: false)
+      #     revised_quote.update_attributes(created_at: DateTime.parse(x.get_column('Order Date')).strftime('%Y-%m-%d %H:%M:%S'), sent_at: DateTime.parse(x.get_column('Order Date')).strftime('%Y-%m-%d %H:%M:%S'))
+      #
+      #     extra_rows = revised_quote.rows.joins(:product).where.not(products: {sku: ['BM0K8Q5', 'BM0K8V4', 'BM0L0A6']})
+      #     extra_rows.delete_all
+      #     sales_order = revised_quote.sales_orders.where(order_number: x.get_column('So #')).first_or_create!
+      #     sales_order.order_number = x.get_column('So #')
+      #
+      #     # sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(revised_quote, overseer).call
+      #     # sales_order.update_attributes(sent_at: Time.now, status: 'Approved')
+      #
+      #     sales_order.overseer = inquiry.inside_sales_owner
+      #     sales_order.created_at = DateTime.parse(x.get_column('Order Date')).strftime('%Y-%m-%d %H:%M:%S')
+      #     sales_order.mis_date = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
+      #
+      #     sales_order.status = 'Approved'
+      #     sales_order.remote_status = 'Processing'
+      #     sales_order.sent_at = revised_quote.created_at
+      #     sales_order.save!
+      #   else
+      #     order_being_processed.push(x.get_column('So #'))
+      #   end
+      #
+      #   sales_order = SalesOrder.find_by_order_number(x.get_column('So #').to_i)
+      #   quote_row = sales_order.sales_quote.rows.joins(:product).where('products.sku = ?', product_sku).first
+      #
+      #   puts '************************** ORDER SAVED *******************************'
+      #   sales_order.rows.where(sales_quote_row: quote_row).first_or_create!
+      #   puts '****************** ORDER TOTAL ****************************', sales_order.order_number, sales_order.calculated_total_with_tax
+      # end
     end
   end
 
@@ -767,10 +774,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
     fetch_csv('companies_export.csv', csv_data)
   end
-
-
-
-  #purchase order
 
   def create_bible_orders
     # test_file
@@ -856,16 +859,20 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     puts 'BIBLE ORDER TOTAL', bible_order_total
   end
 
+
+
+
   def flex_dump
-    column_headers = ['Order Date', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Order Status', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
+    column_headers = ['Order Date', 'OD', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Order Status', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
     model = SalesOrder
     fc = []
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
-      model.joins(:company).where(companies: {id: 1847}).order(name: :asc).each do |order|
+      model.joins(:company).where(companies: {id: 1847}).where(created_at: Date.new(2019,06,23).beginning_of_day..Date.new(2019,06,29).end_of_day).order(name: :asc).each do |order|
         # if order.inquiry_currency.currency.id == 2 && order.calculated_total < 75000
         order.rows.each do |record|
           sales_order = record.sales_order
           order_date = sales_order.inquiry.customer_order_date.strftime('%F')
+          order_cd = sales_order.created_at.strftime('%F')
           order_id = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.online_order_number : ''
           customer_po_number = sales_order.inquiry.customer_po_number
           part_number = record.product.sku
@@ -880,7 +887,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           category = record.product.category.name
           part_number_description = record.product.name
 
-          writer << [order_date, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
+          writer << [order_date, order_cd, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
         end
         # elsif order.inquiry_currency.currency.id != 2
         #   fc.push(order.order_number)
@@ -889,7 +896,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       # puts 'FC', fc
     end
 
-    fetch_csv('flex_order_data_export.csv', csv_data)
+    fetch_csv('flex_order_data_export_weekly1.csv', csv_data)
   end
 
   def invoices_export
@@ -1030,7 +1037,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         end
       end
     end
-
+    # 3RSvVY
     puts 'ZERO TSP', zero_tsp, zero_tsp.count
     puts 'NOT UPDATED CORRECTLY', not_updated, not_updated.count
   end
@@ -1204,6 +1211,33 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
 
     fetch_csv('missing_orders.csv', csv_data)
+  end
+
+  def update_mis_date
+    service = Services::Shared::Spreadsheets::CsvImporter.new('update_mis_date.csv', 'seed_files_3')
+    i = 1
+    service.loop(nil) do |x|
+      order_number = x.get_column('Order Number')
+      if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
+        sales_order = SalesOrder.find_by_old_order_number(order_number)
+      else
+        sales_order = SalesOrder.find_by_order_number(order_number.to_i)
+      end
+      sales_order.mis_date = Date.parse(x.get_column('Bible MIS Date')).strftime('%Y-%m-%d')
+      sales_order.save(validate: false)
+      puts 'ITERATION', i
+      i = i + 1
+    end
+  end
+
+  # on hold
+  def update_order_status_to_cancelled
+    order_numbers = ['2003288', '10290', '10228', '10216', '10260', '10008', '10278', '10038', '10210', '10072', '10283', '10280', '10253', '10247', '10106', '10197', '10248', '10080', '10291', '10240', '10160', '10100', '10243', '10204', '10137', '10225', '10128', '10131', '10062', '10089', '10101', '10147', '10156', '10148', '10221', '10149', '10150', '10203', '10173', '10199', '10146', '10198', '10172', '10120', '10121', '10122', '10123', '10154', '10104', '10155', '10125', '10159', '10077', '10126', '10135', '10130', '10143', '10127', '10174', '10136', '10129', '10113', '10176', '10001', '10029', '10242', '10002', '10003', '10004', '10005', '10006', '10007', '10009', '10010', '10011', '10012', '10013', '10014', '10015', '10016', '10017', '10018', '10019', '10020', '10021', '10022', '10023', '10024', '10025', '10026', '10027', '10028', '10030', '10031', '10032', '10033', '10034', '10035', '10036', '10037', '10039', '10040', '10041', '10042', '10043', '10044', '10045', '10046', '10047', '10048', '10049', '10050', '10051', '10052', '10053', '10054', '10055', '10056', '10057', '10058', '10059', '10060', '10061', '10063', '10064', '10065', '10066', '10067', '10068', '10069', '10070', '10071', '10073', '10074', '10075', '10076', '10078', '10079', '10081', '10082', '10083', '10084', '10085', '10086', '10087', '10088', '10090', '10091', '10092', '10093', '10094', '10095', '10096', '10097', '10098', '10099', '10102', '10103', '10105', '10107', '10108', '10109', '10110', '10111', '10112', '10114', '10115', '10116', '10117', '10118', '10119', '10124', '10132', '10133', '10134', '10138', '10139', '10140', '10141', '10142', '10144', '10145', '10151', '10152', '10153', '10157', '10158', '10161', '10162', '10163', '10164', '10165', '10166', '10167', '10168', '10169', '10170', '10171', '10175', '10177', '10178', '10179', '10180', '10181', '10182', '10183', '10184', '10185', '10186', '10187', '10188', '10189', '10190', '10191', '10192', '10193', '10194', '10195', '10196', '10200', '10201', '10202', '10205', '10206', '10207', '10208', '10209', '10211', '10212', '10213', '10214', '10215', '10217', '10218', '10219', '10220', '10222', '10223', '10224', '10226', '10227', '10229', '10230', '10231', '10232', '10233', '10234', '10235', '10236', '10237', '10238', '10239', '10241', '10244', '10245', '10246', '10249', '10250', '10251', '10252', '10254', '10255', '10256', '10257', '10258', '10259', '10261', '10262', '10263', '10264', '10265', '10266', '10267', '10268', '10269', '10270', '10271', '10272', '10273', '10274', '10275', '10276', '10277', '10279', '10281', '10282', '10284', '10285', '10286', '10287', '10288', '10289', '10292', '10293', '10294', '10295', '10296', '10297', '10298', '10299', '10300', '10301', '10302', '10303', '10304', '10305', '10306', '10307', '10308', '10309', '10310', '10311', '10312', '10313', '10314', '10315', '10316', '10317', '10318']
+    order_numbers.each do |order_number|
+      sales_order = SalesOrder.find_by_order_number(order_number.to_i)
+      sales_order.status = 'Cancelled'
+      sales_order.save(validate: false)
+    end
   end
 
   def update_selected
@@ -1703,4 +1737,70 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     puts 'MISMATCH', j
     puts 'Corrected tax rates', corrected, corrected.count
   end
+
+
+
+  def update_mis_dates_for_may
+    service = Services::Shared::Spreadsheets::CsvImporter.new('may_bible.csv', 'seed_files_3')
+    service.loop(nil) do |x|
+      order_number = x.get_column('So #')
+      if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
+        if order_number == 'Not Booked'
+          inquiry_orders = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number')).sales_orders
+          if inquiry_orders.count > 1
+            sales_order = inquiry_orders.where(old_order_number: 'Not Booked').first
+          else
+            sales_order = inquiry_orders.first if inquiry_orders.first.old_order_number == 'Not Booked'
+          end
+        else
+          sales_order = SalesOrder.find_by_old_order_number(order_number)
+        end
+      else
+        sales_order = SalesOrder.find_by_order_number(order_number.to_i)
+      end
+
+      if sales_order.present?
+        sales_order.mis_date = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
+        sales_order.save(validate: false)
+      end
+    end
+  end
+
+
+  def all_invoice_dump
+    columns = [
+        'Inquiry Number',
+        'Invoice Number',
+        'Invoice MIS Date',
+        'Order Number',
+        'Order MIS Date',
+        'Order Status',
+        'Customer Name',
+        'Invoice Net Amount',
+        'Invoice Status'
+    ]
+
+    model = SalesInvoice
+    csv_data = CSV.generate(write_headers: true, headers: columns) do |writer|
+      model.not_cancelled.includes(:rows).where.not(sales_order_id: nil).where.not(metadata: nil).order(invoice_number: :asc).find_each(batch_size: 2000) do |sales_invoice|
+        inquiry = sales_invoice.inquiry
+        sales_order = sales_invoice.sales_order
+        writer << [
+            inquiry.try(:inquiry_number) || '',
+            sales_invoice.old_invoice_number.present? ? sales_invoice.old_invoice_number : sales_invoice.invoice_number,
+            sales_invoice.mis_date.present? ? sales_invoice.mis_date : '-',
+            sales_order.old_order_number.present? ? sales_order.old_order_number : sales_order.order_number,
+            sales_order.mis_date.present? ? sales_order.mis_date.to_date.to_s : '-',
+            sales_order.remote_status,
+            inquiry.try(:company).try(:name) ? inquiry.try(:company).try(:name).gsub(/;/, ' ') : '',
+            (sales_invoice.calculated_total == 0 || sales_invoice.calculated_total == nil) ? 0 : '%.2f' % (sales_invoice.calculated_total),
+            # ('%.2f' % sales_invoice.metadata['subtotal'] if sales_invoice.metadata['subtotal']),
+            sales_invoice.status
+        ]
+      end
+    end
+
+    fetch_csv('sprint_si_dump.csv', csv_data)
+  end
+
 end
