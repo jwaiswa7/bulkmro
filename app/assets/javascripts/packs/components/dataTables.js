@@ -92,11 +92,13 @@ let setup = () => {
                         else{
                             td.empty()
                             td.append(value.toLocaleString());
-
                         }
                     }
                     else{
-                        if (td.hasClass('currency')){
+                        if (td.hasClass('total')){
+                            td.empty().append('<strong>Total</strong>');
+                        }
+                        else if (td.hasClass('currency')){
                             td.empty().append(parseInt(0))
                         }
                         else if(td.hasClass('percentage')){
