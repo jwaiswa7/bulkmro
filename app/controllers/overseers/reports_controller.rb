@@ -14,10 +14,8 @@ class Overseers::ReportsController < Overseers::BaseController
     @report.assign_attributes(report_params)
     params[:overseer] = current_overseer
     # @report.designation = 'Inside'
-    @data = Rails.cache.fetch('monthly_sales_report_data') do
-      service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params, current_overseer)
-      @data = service.call
-    end
+    service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params, current_overseer)
+    @data = service.call
     authorize_acl @report
 
     render @report.uid
