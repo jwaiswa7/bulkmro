@@ -24,8 +24,7 @@ class Services::Overseers::Reports::MonthlySalesReport < Services::Overseers::Re
 
     inquiry_groups = inquiries.group_by_month(:created_at, default_value: nil).count
     sales_order_groups = sales_orders.group_by_month(:created_at, default_value: nil).count
-
-    months = inquiry_groups.keys
+    months = inquiry_groups.keys.reverse
 
     summary = { inquiry_count: 0, sales_order_count: 0, total: 0, products_count: 0, product_quantities: 0 }
 
