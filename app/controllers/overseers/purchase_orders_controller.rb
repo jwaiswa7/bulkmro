@@ -21,7 +21,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def pending_sap_sync
-    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.where(remote_uid: nil).order(id: :desc), params)
+    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.where(remote_uid: nil, sap_status: 'Not Sync').order(id: :desc), params)
     authorize @purchase_orders
 
     respond_to do |format|
