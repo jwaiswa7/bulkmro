@@ -39,7 +39,7 @@ module DisplayHelper
     if val2 == 0
       '0%'
     else
-      value = (val1.as_percentage_of(val2).to_f).round(2)
+      value = (val1.as_percentage_of(val2).to_f).round
       percentage(value)
     end
   end
