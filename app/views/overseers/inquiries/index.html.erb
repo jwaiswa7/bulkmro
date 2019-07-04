@@ -5,13 +5,14 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+<% if Settings.reports.show_summary %>
 <div class="col-lg-12">
   <%= render partial: "shared/layouts/summary", locals: {klass: Inquiry, statuses: Inquiry.statuses} %>
 </div>
-
+<% end %>
 <% content_for(:heading_buttons) do %>
 
-  <% if policy(:inquiry).index? %>
+  <% if is_authorized(:inquiry,'index') %>
     <a href="#" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" data-toggle="modal" data-target="#bulkUpdate" data-backdrop="static" data-keyboard="false">
       Bulk Update
     </a>

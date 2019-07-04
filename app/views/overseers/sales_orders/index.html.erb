@@ -5,7 +5,7 @@
 
 <% provide :heading_buttons do %>
   <div class="btn-group">
-    <a href="<%= export_all_overseers_sales_orders_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales orders" ><i class="fal fa-download mr-1"></i>Sales
+    <a href="<%= export_all_overseers_sales_orders_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales orders"><i class="fal fa-download mr-1"></i>Sales
       Orders</a>
     <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
     <div class="dropdown-menu dropdown-menu-right">
@@ -14,17 +14,19 @@
       <a class="dropdown-item" href="<%= export_rows_overseers_sales_orders_path(format: :csv) %>">Sales Order Rows</a>
       <a class="dropdown-item" href="<%= export_for_sap_overseers_sales_orders_path(format: :csv) %>">Sales Order
         (SAP)</a>
-      <% if policy(:sales_order).export_for_reco?%>
+      <% if is_authorized(:sales_order, 'export_for_reco') && policy(:sales_order).export_for_reco? %>
         <a class="dropdown-item" href="<%= export_for_reco_overseers_sales_orders_path(format: :csv) %>">Sales Order
-        For Inquiry RECO</a>
-       <% end %>
+          For Inquiry RECO</a>
+      <% end %>
     </div>
   </div>
 <% end %>
 
-<div class="col-lg-12">
-  <%= render partial: "summary_with_extra_box", locals: {klass: SalesOrder, statuses: SalesOrder.remote_statuses, label: 'Total Sales Order'} %>
-</div>
+<% if Settings.reports.show_summary %>
+  <div class="col-lg-12">
+    <%= render partial: "summary_with_extra_box", locals: {klass: SalesOrder, statuses: SalesOrder.remote_statuses, label: 'Total Sales Order'} %>
+  </div>
+<% end %>
 
 <div class="col-lg-12">
   <% content_for :header_row do %>
@@ -41,7 +43,7 @@
     <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
     <th class="sort desktop text-right" data-name="quote_total">Quote Total</th>
     <th class="sort desktop text-right" data-name="order_total">Order Total</th>
-    <th class="no-sort desktop text-right" data-name="margin">Margin(%)</th>
+    <th class="no-sort desktop text-right" data-name="margin">Margin</th>
     <th class="sort desktop text-right" data-name="created_at">Created Date</th>
   <% end %>
   <% content_for :filter_row do %>

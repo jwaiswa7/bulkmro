@@ -2,7 +2,7 @@ class Overseers::AttachmentsController < Overseers::BaseController
   before_action :set_attachment, only: [:destroy]
 
   def destroy
-    authorize :attachment
+    authorize_acl :attachment
 
     blob = @attachment.blob
     if @attachment.destroy

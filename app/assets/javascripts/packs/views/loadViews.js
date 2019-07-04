@@ -73,6 +73,12 @@ import companyBanks from "./companyBanks/init"
 // Dashboard
 import dashboard from "./dashboard/init"
 
+//Overseer ACL
+import overseers from "./overseers/init"
+
+//ACL
+import aclRoles from "./aclRoles/init"
+
 import logisticsScorecards from "./logisticsScorecards/init";
 
 // Addresses
@@ -108,6 +114,8 @@ let loader = {
     imageReaders: imageReaders,
     companyBanks: companyBanks,
     dashboard: dashboard,
+    overseers:overseers,
+    aclRoles:aclRoles,
     logisticsScorecards: logisticsScorecards,
     addresses: addresses
 };

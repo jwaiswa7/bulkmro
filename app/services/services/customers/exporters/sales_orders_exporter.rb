@@ -22,6 +22,7 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
     Enumerator.new do |yielder|
       yielder << CSV.generate_line(rows)
       if company.id == 1847
+        # created_at, order.calculated_total < params_amount
         model.remote_approved.joins(:company).where(companies: {id: 1847}).order(name: :asc).each do |order|
           order.rows.each do |record|
             sales_order = record.sales_order

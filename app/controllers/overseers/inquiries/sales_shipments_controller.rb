@@ -3,11 +3,11 @@ class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::Bas
 
   def index
     @sales_shipments = @inquiry.shipments
-    authorize @sales_shipments
+    authorize_acl @sales_shipments
   end
 
   def show
-    authorize @sales_shipment
+    authorize_acl @sales_shipment
     @metadata = @sales_shipment.metadata.present? ? @sales_shipment.metadata.deep_symbolize_keys : nil
     if @metadata.nil?
       set_flash_message('There is no information to show for this Sales Shipment', :warning, now: false)
@@ -23,11 +23,11 @@ class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::Bas
   end
 
   def relationship_map
-    authorize @sales_shipment
+    authorize_acl @sales_shipment
   end
 
   def get_relationship_map_json
-    authorize @sales_shipment
+    authorize_acl @sales_shipment
     inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@sales_shipment.inquiry, [@sales_shipment.sales_order.sales_quote]).call
     render json: {data: inquiry_json}
   end

@@ -26,7 +26,7 @@
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                   <span><%= locals[:metadata][:PoEnquiryId] %></span></td>
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                  <b><span>Date of Quotation</span></b> <span style="float:right">:</span></td>
+                  <b><span>Purchase Order Date</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
                     <span>
                       <%= Date.parse(locals[:metadata][:PoDate]).strftime("%d-%b-%Y") if locals[:metadata][:PoDate].present? %>
