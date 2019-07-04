@@ -5,12 +5,12 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   end
 
   def call
-    warehouse = Warehouse.where(id: po_request.bill_to.id)
-    series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' ' + Date.today.year.to_s).last
-    @purchase_order = PurchaseOrder.where(po_number: series.last_number).first_or_create! do |purchase_order|
-      purchase_order_params = assign_purchase_order_attributes(series.last_number)
-      #purchase_order.update_attributes(purchase_order_params)
-      ActiveRecord::Base.transaction do
+    ActiveRecord::Base.transaction do
+      warehouse = Warehouse.where(id: po_request.bill_to.id)
+      series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' ' + Date.today.year.to_s).last
+      @purchase_order = PurchaseOrder.where(po_number: series.last_number).first_or_create! do |purchase_order|
+        purchase_order_params = assign_purchase_order_attributes(series.last_number)
+        #purchase_order.update_attributes(purchase_order_params)
         purchase_order.update_attributes(
             purchase_order_params.merge(
                 logistics_owner: po_request.inquiry.company.logistics_owner,
@@ -19,21 +19,18 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
             )
         )
       end
-    end
-    po_request.rows.each_with_index do |row, index|
-      @purchase_order.rows.where(product_id: row.product_id).first_or_create! do |po_row|
-        ActiveRecord::Base.transaction do
+      po_request.rows.each_with_index do |row, index|
+        @purchase_order.rows.where(product_id: row.product_id).first_or_create! do |po_row|
           po_row.update_attributes(
               metadata: set_product(row, index),
               product: row.product
           )
+
         end
       end
-    end
-    if @purchase_order.save_and_sync(po_request)
-      series.increment_last_number
-    end
-    ActiveRecord::Base.transaction do
+      if @purchase_order.save_and_sync(po_request)
+        series.increment_last_number
+      end
       po_request.update_attributes(
           status: 'Supplier PO: Created Not Sent',
           purchase_order: @purchase_order
