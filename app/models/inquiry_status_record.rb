@@ -6,7 +6,7 @@ class InquiryStatusRecord < ApplicationRecord
 
   scope :last_inquiry, -> { where(subject_type: 'Inquiry').last.subject }
   scope :not_expected_order, -> { where.not(status: 'Expected Order') }
-  scope :valid_status_records, -> { where.not(id: InquiryStatusRecord.where(subject_type: 'Inquiry', status: ['Preparing Quotation', 'Quotation Sent'])) }
+  scope :valid_status_records, -> { where.not(id: InquiryStatusRecord.where(subject_type: 'Inquiry', status: ['Preparing Quotation', 'Quotation Sent', 'Rejected by Accounts'])) }
 
   enum status: {
       'New Inquiry': 0,
@@ -81,6 +81,24 @@ class InquiryStatusRecord < ApplicationRecord
 
   def save_inquiry_mapping_tat_record
     InquiryMappingTat.save_record(self.inquiry, self.subject)
+  end
+
+  def self.tat_created_at(inquiry_id, type, subject_id, status)
+    inquiry_status_record = InquiryStatusRecord.where(inquiry_id: inquiry_id, subject_id: subject_id, subject_type: type, status: status)
+    inquiry_status_record.present? ? inquiry_status_record.last.created_at : ''
+  end
+
+  def self.turn_around_time(inquiry_id, type, subject_id, status)
+    inquiry_status_record = InquiryStatusRecord.where(inquiry_id: inquiry_id, subject_id: subject_id, subject_type: type, status: status).last
+    if inquiry_status_record.present?
+      prev_status = inquiry_status_record.previous_status_record
+      prev_status_time = prev_status.present? ? prev_status.created_at.to_time.to_i : 0
+      current_status_time = inquiry_status_record.created_at
+
+      minutes = ((current_status_time.to_time.to_i - prev_status_time) / 60.0).ceil.abs
+      tat = minutes
+    end
+    tat
   end
 
   belongs_to :inquiry
