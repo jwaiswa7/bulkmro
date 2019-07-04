@@ -429,36 +429,51 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
 
   # function for applying acl to outward ques
   def assign_action_of_outward_que_to_overseer
-    resource_action_names = %w(can_create_ar_invoice)
-    resource_model_name = 'inward_dispatch'
-    # resource_model_name = 'ar_invoice_request'
-    # resource_action_names = %w(index show new edit create update destroy)
-    # resource_model_name = 'ar_invoice_request_comment'
-    # resource_action_names = %w(index show new edit create update destroy)
-    # resource_model_name = 'ar_invoice_request_row'
-    # resource_action_names = %w(index show new edit create update destroy)
-    # resource_model_name = 'packing_slip'
-    # resource_action_names = %w(index show new edit create update destroy)
-    # resource_model_name = 'packing_slip_row'
-    # resource_action_names = %w(index show new edit create update destroy can_create_packing_slip create_with_packing_slip can_send_dispatch_email )
-    # resource_model_name = 'outward_dispatch'
-    # resource_action_names = %w(index show new edit create update destroy cancel_ar_invoice render_cancellation_form download_eway_bill_format can_create_outward_dispatch)
-    # role_name = 'Accounts'
     role_name = 'Logistics'
-
-    resource_action_names.each do |resource_action_name|
-      acl_resource = AclResource.where(:resource_model_name => resource_model_name, :resource_action_name => resource_action_name).first_or_create!
-      #update role
-      if role_name != 'all'
-        acl_role = AclRole.find_by_role_name(role_name)
-        update_role_resource(acl_role, acl_resource.id)
-      else
-        AclRole.all.each do |acl_role|
+    acl_for_logistics_in_outward_que = {
+        'inward_dispatch': %w(can_create_ar_invoice),
+        'ar_invoice_request': %w(index show new edit create update destroy can_create_outward_dispatch download_eway_bill_format render_cancellation_form cancel_ar_invoice),
+        'ar_invoice_request_comment':  %w(index show new edit create update destroy),
+        'ar_invoice_request_row': %w(index show new edit create update destroy),
+        'outward_dispatch': %w(index show new edit create update destroy can_create_packing_slip create_with_packing_slip),
+        'packing_slip': %w(index show new edit create update destroy can_send_dispatch_email),
+        'packing_slip_row': %w(index show new edit create update destroy)
+    }
+    acl_for_logistics_in_outward_que.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(:resource_model_name => key, :resource_action_name => action_name).first_or_create!
+        #update role
+        if role_name != 'all'
+          acl_role = AclRole.find_by_role_name(role_name)
           update_role_resource(acl_role, acl_resource.id)
+        else
+          AclRole.all.each do |acl_role|
+            update_role_resource(acl_role, acl_resource.id)
+          end
         end
       end
     end
 
+    role_name = 'Accounts'
+    acl_for_account_in_outward_que = {
+        'ar_invoice_request': %w(index show new edit create update destroy download_eway_bill_format render_cancellation_form cancel_ar_invoice),
+        'ar_invoice_request_comment':  %w(index show new edit create update destroy),
+        'ar_invoice_request_row': %w(index show new edit create update destroy),
+    }
+    acl_for_account_in_outward_que.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(:resource_model_name => key, :resource_action_name => action_name).first_or_create!
+        #update role
+        if role_name != 'all'
+          acl_role = AclRole.find_by_role_name(role_name)
+          update_role_resource(acl_role, acl_resource.id)
+        else
+          AclRole.all.each do |acl_role|
+            update_role_resource(acl_role, acl_resource.id)
+          end
+        end
+      end
+    end
     acl_resource = AclResource.new
     acl_resource.update_acl_resource_cache
   end
