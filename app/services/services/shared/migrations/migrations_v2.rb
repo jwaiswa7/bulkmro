@@ -157,6 +157,86 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     fetch_csv('sales_orders_total_mismatch.csv', csv_data)
   end
 
+
+  def update_company_and_alias
+    not_in_sap = []
+    account_not_in_sap = []
+    i = 1
+    missing_companies = []
+    missing_account = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('company_accounts.csv', 'seed_files_3')
+    service.loop(nil) do |x|
+      puts 'ITERATION', i
+      i = i + 1
+      next if x.get_column('Duplicate Company Name? - Final (Yes / No)') == 'Yes'
+      company = Company.acts_as_customer.where(name: x.get_column('Company Name')).last
+      if company.present?
+        company.name = x.get_column('Corrected Company Name - Final')
+        # company.save(validate: false)
+        remote_uid = ::Resources::BusinessPartner.custom_find(company.name, company.is_supplier? ? 'cSupplier' : 'cCustomer')
+        if remote_uid.present?
+          company.remote_uid = remote_uid
+        else
+          company.remote_uid = nil
+        end
+        company.save(validate: false)
+        if company.remote_uid.blank?
+          not_in_sap.push(x.get_column('Company Name'))
+          # remote_uid = ::Resources::BusinessPartner.create(company)
+          # if remote_uid.present?
+          #   company.remote_uid = remote_uid
+          #   company.save(validate: false)
+          # end
+        else
+          ::Resources::BusinessPartner.temp_update(company.remote_uid, company)
+        end
+        if company.account.present?
+          account = company.account
+          account.name = x.get_column('Corrected Alias Name - Final')
+          # account.save(validate: false)
+          if account.remote_uid.present?
+            ::Resources::BusinessPartnerGroup.update(account.remote_uid, account)
+          else
+            account_not_in_sap.push(x.get_column('Company Name'))
+            # remote_uid = ::Resources::BusinessPartnerGroup.create(account)
+            # if remote_uid.present?
+            #   account.remote_uid = remote_uid
+            #   account.save(validate: false)
+            # end
+          end
+        else
+          missing_account.push(x.get_column('Company Name'))
+        end
+      else
+        missing_companies.push(x.get_column('Company Name'))
+      end
+    end
+    puts 'Missing Companies', missing_companies
+    puts 'Missing Accounts', missing_account
+    puts 'C not in SAP', not_in_sap
+    puts 'A not in SAP', account_not_in_sap
+  end
+
+  def check_missing_companies
+    missing_companies = []
+    missing_in_sprint = []
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('company_accounts.csv', 'seed_files_3')
+    service.loop(nil) do |x|
+      company = Company.acts_as_customer.where(name: x.get_column('Company Name')).last
+      if company.present?
+        remote_uid = ::Resources::BusinessPartner.custom_find(company.name, company.is_supplier? ? 'cSupplier' : 'cCustomer')
+        if remote_uid.blank?
+          missing_companies.push(x.get_column('Company Name'))
+        end
+      else
+        missing_in_sprint.push(x.get_column('Company Name'))
+      end
+    end
+    puts 'Missing in sprint', missing_in_sprint
+    puts 'Missing Companies', missing_companies
+  end
+
   def missing_sap_purchase_orders
     column_headers = ['inquiry', 'po_number']
 
