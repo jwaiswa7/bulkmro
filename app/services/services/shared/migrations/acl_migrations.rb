@@ -435,7 +435,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
         'ar_invoice_request': %w(index show new edit create update destroy can_create_outward_dispatch download_eway_bill_format render_cancellation_form cancel_ar_invoice),
         'ar_invoice_request_comment':  %w(index show new edit create update destroy),
         'ar_invoice_request_row': %w(index show new edit create update destroy),
-        'outward_dispatch': %w(index show new edit create update destroy can_create_packing_slip create_with_packing_slip),
+        'outward_dispatch': %w(index show new edit create update destroy can_create_packing_slip create_with_packing_slip can_send_dispatch_email),
         'packing_slip': %w(index show new edit create update destroy can_send_dispatch_email),
         'packing_slip_row': %w(index show new edit create update destroy)
     }

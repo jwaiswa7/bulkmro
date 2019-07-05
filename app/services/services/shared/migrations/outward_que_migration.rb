@@ -58,6 +58,35 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
   #   end
   # end
   #
+  def csv_for_wrong_entry
+    data = []
+    invoice_requests = InvoiceRequest.where(status: ['Completed AR Invoice Request']).group_by(&:ar_invoice_number)
+    invoice_requests.each do |key, val|
+      if key.present?
+        sales_invoice = SalesInvoice.where(invoice_number: key).last
+        if sales_invoice.present? && val.length > 1
+          number_array = []
+          invoice_request_array = []
+          val.each do |invoice_request|
+            number_array << invoice_request.inquiry.inquiry_number
+            invoice_request_array << invoice_request.id
+          end
+          uniq_number_array = number_array.uniq
+          if uniq_number_array.length > 1
+            data << {req_id: invoice_request_array * ",", ar_invoice_number: key, sales_invoice_inquiry_number: sales_invoice.inquiry.inquiry_number, inquiry_number: uniq_number_array * "," }
+          end
+        elsif sales_invoice.present? && val.length == 1
+          if sales_invoice.inquiry != val[0].inquiry
+            data << {req_id: val[0].id, ar_invoice_number: key, sales_invoice_inquiry_number: sales_invoice.inquiry.inquiry_number, inquiry_number: val[0].inquiry.inquiry_number }
+          end
+        else
+          val.each do |invoice_request|
+            data << {req_id: invoice_request.id, ar_invoice_number: key, sales_invoice_inquiry_number: '-', inquiry_number: invoice_request.inquiry.inquiry_number}
+          end
+        end
+      end
+    end
+  end
   def createArInvoiceAndRows
     status = []
     invoice_requests = InvoiceRequest.where(status: 'Completed AR Invoice Request').group_by(&:ar_invoice_number)
