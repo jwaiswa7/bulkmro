@@ -89,7 +89,11 @@ class InquiryStatusRecord < ApplicationRecord
   end
 
   def self.turn_around_time(inquiry_id, type, subject_id, status)
-    inquiry_status_record = InquiryStatusRecord.where(inquiry_id: inquiry_id, subject_id: subject_id, subject_type: type, status: status).last
+    if status == 'Order Won'
+      subject_id = type == 'Inquiry' ? inquiry_id : subject_id
+      type = ['Inquiry', 'SalesOrder']
+    end
+    inquiry_status_record = InquiryStatusRecord.valid_status_records.where(inquiry_id: inquiry_id, subject_id: subject_id, subject_type: type, status: status).last
     if inquiry_status_record.present?
       prev_status = inquiry_status_record.previous_status_record
       prev_status_time = prev_status.present? ? prev_status.created_at.to_time.to_i : 0
