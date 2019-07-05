@@ -47,14 +47,14 @@ class InquiryMappingTatsIndex < BaseIndex
     field :status_hold_by_accounts, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Hold by Accounts') }, type: 'integer'
     field :time_hold_by_accounts, value: -> (record) { InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Hold by Accounts') }, analyzer: 'substring'
 
-    field :status_order_won, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Order Won') }, type: 'integer'
-    field :time_order_won, value: -> (record) { InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Order Won') }, analyzer: 'substring', fielddata: true
+    field :status_order_won, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Order Won') }, type: 'integer'
+    field :time_order_won, value: -> (record) { InquiryStatusRecord.tat_created_at(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Order Won') }, analyzer: 'substring', fielddata: true
 
-    field :status_order_lost, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Order Lost') }, type: 'integer'
-    field :time_order_lost, value: -> (record) { InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Order Lost') }, analyzer: 'substring'
+    field :status_order_lost, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Order Lost') }, type: 'integer'
+    field :time_order_lost, value: -> (record) { InquiryStatusRecord.tat_created_at(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Order Lost') }, analyzer: 'substring'
 
-    field :status_regret, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Regret') }, type: 'integer'
-    field :time_regret, value: -> (record) { InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Regret') }, analyzer: 'substring'
+    field :status_regret, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Regret') }, type: 'integer'
+    field :time_regret, value: -> (record) { InquiryStatusRecord.tat_created_at(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Regret') }, analyzer: 'substring'
 
     field :created_at, value: -> (record) {record.inquiry.created_at}, type: 'date'
   end
