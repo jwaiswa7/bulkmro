@@ -15,7 +15,7 @@ class Services::Overseers::Reports::MonthlySalesReport < Services::Overseers::Re
 
     if @current_overseer.present? && !@current_overseer.allow_inquiries?
       inquiries = Inquiry.includes(:products).where(created_at: start_at.beginning_of_month..end_at.end_of_month).where('inside_sales_owner_id = ? or outside_sales_owner_id = ? or procurement_operations_id = ?', @current_overseer.id, @current_overseer.id, @current_overseer.id)
-      sales_orders = SalesOrder.includes([rows: :sales_quote_row]).joins(:inquiry).where(created_at: start_at.beginning_of_month..end_at.end_of_month).where('sales_orders.status = ? OR sales_orders.legacy_request_status = ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved']).where('inquiries.inside_sales_owner_id = ? or inquiries.outside_sales_owner_id = ? or inquiries.procurement_operations_id = ?', @current_overseer.id, @current_overseer.id, @current_overseer.id)
+      sales_orders = SalesOrder.without_cancelled.includes([rows: :sales_quote_row]).joins(:inquiry).where(created_at: start_at.beginning_of_month..end_at.end_of_month).where('sales_orders.status = ? OR sales_orders.legacy_request_status = ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved']).where('inquiries.inside_sales_owner_id = ? or inquiries.outside_sales_owner_id = ? or inquiries.procurement_operations_id = ?', @current_overseer.id, @current_overseer.id, @current_overseer.id)
     else
       inquiries = Inquiry.includes(:products).where(created_at: start_at.beginning_of_month..end_at.end_of_month)
       sales_orders = SalesOrder.without_cancelled.includes([rows: :sales_quote_row]).where(created_at: start_at.beginning_of_month..end_at.end_of_month).where('sales_orders.status = ? OR sales_orders.legacy_request_status = ? ', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'])
@@ -24,8 +24,7 @@ class Services::Overseers::Reports::MonthlySalesReport < Services::Overseers::Re
 
     inquiry_groups = inquiries.group_by_month(:created_at, default_value: nil).count
     sales_order_groups = sales_orders.group_by_month(:created_at, default_value: nil).count
-
-    months = inquiry_groups.keys
+    months = inquiry_groups.keys.reverse
 
     summary = { inquiry_count: 0, sales_order_count: 0, total: 0, products_count: 0, product_quantities: 0 }
 
@@ -51,6 +50,7 @@ class Services::Overseers::Reports::MonthlySalesReport < Services::Overseers::Re
     @data.entries[:total] = summary
 
     ActiveRecord::Base.default_timezone = :local
+    Rails.cache.write('monthly_sales_report_data', @data, expires_in: 1.hour)
 
     data
   end

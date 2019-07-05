@@ -16,7 +16,6 @@ class Overseers::ReportsController < Overseers::BaseController
     # @report.designation = 'Inside'
     service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params, current_overseer)
     @data = service.call
-
     authorize_acl @report
 
     render @report.uid

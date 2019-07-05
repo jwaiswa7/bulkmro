@@ -8,9 +8,11 @@
   </div>
 <% end %>
 
+<% if Settings.reports.show_summary %>
 <div class="col-lg-12">
   <%= render partial: "shared/layouts/summary", locals: {klass: InvoiceRequest, statuses: InvoiceRequest.statuses} %>
 </div>
+<% end %>
 
 <% content_for :heading do %>
   Invoice Requests<% if @status.present? %><%= ": #{@status}" %><% end %>
