@@ -1,6 +1,6 @@
 class Overseers::OverseersController < Overseers::BaseController
 
-  before_action :set_overseer, only: [:edit, :update, :save_acl_resources, :get_resources, :get_menu_resources, :edit_acl, :update_acl, :add_password_form, :update_password]
+  before_action :set_overseer, only: [:edit, :update, :save_acl_resources, :get_resources, :get_menu_resources, :edit_acl, :update_acl, :change_password, :update_password]
 
   def index
     # service = Services::Overseers::Finders::Overseers.new(params)
@@ -72,20 +72,20 @@ class Overseers::OverseersController < Overseers::BaseController
     else
       render 'edit'
     end
-    authorize @overseer
+    authorize_acl @overseer
   end
 
-  def add_password_form
-    authorize @overseer
+  def change_password
+    authorize_acl @overseer
   end
 
   def update_password
-    authorize @overseer
-    @overseer.assign_attributes(overseer_password_params.merge(overseer: current_overseer, changed_by: current_overseer, changed_at: DateTime.now).reject! {|k, v| (k == 'password' || k == 'password_confirmation') && v.blank?})
+    authorize_acl @overseer
+    @overseer.assign_attributes(overseer_password_params.merge(overseer: current_overseer, changed_by: current_overseer, changed_at: DateTime.now))
     if @overseer.save!
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
     else
-      render 'add_password_form'
+      render 'change_password'
     end
   end
 

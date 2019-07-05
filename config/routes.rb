@@ -146,7 +146,7 @@ Rails.application.routes.draw do
         get 'get_menu_resources'
         get 'edit_acl'
         patch 'update_acl'
-        get 'add_password_form'
+        get 'change_password'
         patch 'update_password'
       end
 

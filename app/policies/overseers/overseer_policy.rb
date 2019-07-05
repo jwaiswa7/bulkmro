@@ -19,16 +19,15 @@ class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
 
 
   def edit_acl?
-    # overseer != record
-    true
+    developer? || overseer != record
   end
 
   def update_acl?
-    true
+    developer? || overseer != record
   end
 
-  def add_password_form?
-    (admin? || hr?) && record != overseer
+  def change_password?
+    true
   end
 
   def update_password?

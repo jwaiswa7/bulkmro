@@ -7,8 +7,8 @@ json.data (@overseers) do |overseer|
                       if is_authorized('overseer','edit') && policy(overseer).edit_acl?
                         row_action_button(edit_acl_overseers_overseer_path(overseer), 'lock', 'Edit ACL', 'success')
                       end,
-                      if policy(overseer).add_password_form?
-                        row_action_button(add_password_form_overseers_overseer_path(overseer), 'pencil', 'EditPassword Overseer', 'danger')
+                        if is_authorized('overseer','change_password') && policy(overseer).change_password?
+                        row_action_button(change_password_overseers_overseer_path(overseer), 'key', 'EditPassword Overseer', 'danger')
                       end
                   ].join(' '),
                   overseer.hierarchy_to_s,
