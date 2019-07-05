@@ -15,21 +15,9 @@ let aggregateSummaryBox = () => {
     let table = $('.datatable').DataTable();
     table.on('xhr', function () {
         let json = table.ajax.json() ? table.ajax.json() : {};
-        $('.overall-status-count').html(new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusCount));
+        $('.overall-status-count').html( new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusCount));
         $('.overall-status-value').html("&#8377;" + new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusValue));
     });
-
-
-    $('.message-in-order').on('click', function (e) {
-        // alert('Welcome')
-        // $("#modal-window").find(".modal-content").html("new.html.erb");
-        // $("#modal-window").modal();
-
-        $("#modal-window").find(".modal-content").html();
-        $("#modal-window").modal();
-    });
-
 }
-
 
 export default index
