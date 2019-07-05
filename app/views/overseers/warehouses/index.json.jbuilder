@@ -1,14 +1,14 @@
 json.data (@warehouses) do |warehouse|
   json.array! [
                   [
-                      if policy(warehouse).edit?
+                      if is_authorized(warehouse, 'show')
                         row_action_button(overseers_warehouse_path(warehouse), 'eye', 'View Warehouse', 'info', :_blank)
                       end,
-                      if policy(warehouse).edit?
+                      if is_authorized(warehouse, 'edit')
                         row_action_button(edit_overseers_warehouse_path(warehouse), 'pencil', 'Edit Warehouse', 'warning', :_blank)
                       end,
                   ].join(' '),
-                  conditional_link(warehouse.name.to_s, overseers_warehouse_path(warehouse), policy(warehouse).edit?),
+                  conditional_link(warehouse.name.to_s, overseers_warehouse_path(warehouse), is_authorized(warehouse, 'edit')),
                   warehouse.address.state.name.to_s,
                   if warehouse.address.gst.to_s.empty?
                     'N/A'

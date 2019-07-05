@@ -6,7 +6,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
         base_filter_key: 'company_id',
         base_filter_value: params[:company_id]
     }
-    authorize :address
+    authorize_acl :address
     respond_to do |format|
       format.html { }
       format.json do
@@ -20,22 +20,22 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
 
   def autocomplete
     @addresses = ApplyParams.to(@company.addresses, params)
-    authorize @addresses
+    authorize_acl @addresses
   end
 
   def show
-    authorize @address
+    authorize_acl @address
   end
 
   def new
     @address = @company.addresses.build(overseer: current_overseer)
-    authorize @address
+    authorize_acl @address
   end
 
 
   def create
     @address = @company.addresses.build(address_params.merge(overseer: current_overseer))
-    authorize @address
+    authorize_acl @address
     @address.remove_gst_whitespace
 
     if @address.save
@@ -49,12 +49,12 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
   end
 
   def edit
-    authorize @address
+    authorize_acl @address
   end
 
   def update
     @address.assign_attributes(address_params.merge(overseer: current_overseer))
-    authorize @address
+    authorize_acl @address
     @address.remove_gst_whitespace
 
     if @address.save

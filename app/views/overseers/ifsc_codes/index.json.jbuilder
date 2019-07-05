@@ -2,10 +2,10 @@ json.data (@ifsc_codes) do |ifsc_code|
   json.array! [
 
                   [
-                      if policy(ifsc_code).edit?
+                      if is_authorized(ifsc_code, 'edit')
                         row_action_button(edit_overseers_ifsc_code_path(ifsc_code), 'fal fa-pen', 'Edit IFSC Code', 'success', :_blank)
                       end,
-                      if policy(ifsc_code).show?
+                      if is_authorized(ifsc_code, 'show')
                         row_action_button(overseers_ifsc_code_path(ifsc_code), 'fal fa-eye', 'View IFSC Code', 'info', :_blank)
                       end
                   ].join(' '),

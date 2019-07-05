@@ -6,26 +6,26 @@ class Overseers::BanksController < Overseers::BaseController
     service.call
     @indexed_banks = service.indexed_records
     @banks = service.records
-    authorize @banks
+    authorize_acl @banks
   end
 
   def autocomplete
     @banks = ApplyParams.to(Bank.all, params)
-    authorize @banks
+    authorize_acl @banks
   end
 
   def show
-    authorize @bank
+    authorize_acl @bank
   end
 
   def new
     @bank = Bank.new
-    authorize @bank
+    authorize_acl @bank
   end
 
   def create
     @bank = Bank.new(bank_params)
-    authorize @bank
+    authorize_acl @bank
 
     if @bank.save_and_sync
       redirect_to overseers_banks_path, notice: flash_message(@bank, action_name)
@@ -35,12 +35,12 @@ class Overseers::BanksController < Overseers::BaseController
   end
 
   def edit
-    authorize @bank
+    authorize_acl @bank
   end
 
   def update
     @bank.assign_attributes(bank_params)
-    authorize @bank
+    authorize_acl @bank
 
     if @bank.save_and_sync
       redirect_to overseers_bank_path(@bank), notice: flash_message(@bank, action_name)

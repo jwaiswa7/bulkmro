@@ -3,22 +3,22 @@ class Overseers::PaymentOptionsController < Overseers::BaseController
 
   def index
     @payment_options = ApplyDatatableParams.to(PaymentOption.all, params)
-    authorize @payment_options
+    authorize_acl @payment_options
   end
 
   def new
     @payment_option = PaymentOption.new(overseer: current_overseer)
-    authorize @payment_option
+    authorize_acl @payment_option
   end
 
   def autocomplete
     @payment_options = ApplyParams.to(PaymentOption.all, params)
-    authorize @payment_options
+    authorize_acl @payment_options
   end
 
   def create
     @payment_option = PaymentOption.new(payment_option_params.merge(overseer: current_overseer))
-    authorize @payment_option
+    authorize_acl @payment_option
     if @payment_option.save_and_sync
       redirect_to overseers_payment_option_path(@payment_option), notice: flash_message(@payment_option, action_name)
     else
@@ -27,12 +27,12 @@ class Overseers::PaymentOptionsController < Overseers::BaseController
   end
 
   def edit
-    authorize @payment_option
+    authorize_acl @payment_option
   end
 
   def update
     @payment_option.assign_attributes(payment_option_params.merge(overseer: current_overseer))
-    authorize @payment_option
+    authorize_acl @payment_option
     if @payment_option.save_and_sync
       redirect_to overseers_payment_option_path(@payment_option), notice: flash_message(@payment_option, action_name)
     else
@@ -41,7 +41,7 @@ class Overseers::PaymentOptionsController < Overseers::BaseController
   end
 
   def show
-    authorize @payment_option
+    authorize_acl @payment_option
   end
 
   private

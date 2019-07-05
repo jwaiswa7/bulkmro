@@ -92,7 +92,7 @@ class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Fin
               'sales_orders': {
                   'terms': {'field': terms_field, size: 10000},
                   aggs: {
-                      sales_invoices: {
+                      invoices_count: {
                           sum: {
                               field: 'invoices_count'
                           }
@@ -117,12 +117,12 @@ class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Fin
                               field: 'sku'
                           }
                       },
-                      orders_won: {
+                      order_won: {
                           sum: {
                               field: 'order_won'
                           }
                       },
-                      clients: {
+                      company_key: {
                           cardinality: {
                               field: 'company_key'
                           }

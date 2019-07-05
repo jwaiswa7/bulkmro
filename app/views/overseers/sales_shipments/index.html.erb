@@ -2,10 +2,11 @@
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
 
-<div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: SalesShipment, statuses: SalesShipment.statuses} %>
-</div>
-
+<% if Settings.reports.show_summary %>
+  <div class="col-lg-12">
+    <%= render partial: "shared/layouts/summary", locals: {klass: SalesShipment, statuses: SalesShipment.statuses} %>
+  </div>
+<% end %>
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all"></th>

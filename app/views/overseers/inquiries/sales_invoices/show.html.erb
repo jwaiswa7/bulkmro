@@ -24,7 +24,7 @@
           </div>
 
           <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
-            <% if policy(@sales_invoice).show? %>
+            <% if is_authorized(@sales_invoice,'show') && policy(@sales_invoice).show? %>
               <%= row_action_button(overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get', false, 'O') %>
               <%= row_action_button(duplicate_overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get', false, 'D') %>
               <%= row_action_button(triplicate_overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get', false, 'T') %>

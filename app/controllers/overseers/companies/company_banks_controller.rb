@@ -6,7 +6,7 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
         base_filter_key: 'company_id',
         base_filter_value: params[:company_id]
     }
-    authorize :company_bank
+    authorize_acl :company_bank
     respond_to do |format|
       format.html { }
       format.json do
@@ -20,17 +20,17 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
 
   def autocomplete
     @company_banks = ApplyParams.to(@company.company_banks, params)
-    authorize @company_banks
+    authorize_acl @company_banks
   end
 
   def show
-    authorize @company_bank
+    authorize_acl @company_bank
   end
 
   def new
     @company = Company.find(params[:company_id])
     @company_bank = @company.company_banks.build
-    authorize @company_bank
+    authorize_acl @company_bank
   end
 
   def create
@@ -40,7 +40,7 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
     @company_bank = @company.company_banks.build(company_bank_params.except('ifsc_code_id', 'ifsc_code_number'))
     @company_bank.ifsc_code = ifsc
     @company_bank.ifsc_code_number = ifsc_code_number
-    authorize @company_bank
+    authorize_acl @company_bank
     if @company_bank.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@company_bank, action_name)
     else
@@ -49,7 +49,7 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
   end
 
   def edit
-    authorize @company_bank
+    authorize_acl @company_bank
   end
 
   def update
@@ -58,7 +58,7 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
     @company_bank.assign_attributes(company_bank_params.except('ifsc_code_id', 'ifsc_code_number'))
     @company_bank.ifsc_code = ifsc
     @company_bank.ifsc_code_number = ifsc_code_number
-    authorize @company_bank
+    authorize_acl @company_bank
 
     if @company_bank.save_and_sync
       redirect_to overseers_company_company_bank_path(@company, @company_bank), notice: flash_message(@company_bank, action_name)

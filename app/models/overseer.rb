@@ -10,7 +10,7 @@ class Overseer < ApplicationRecord
   has_many :activities, foreign_key: :created_by_id
   has_one_attached :file
 
-  pg_search_scope :locate, against: [:first_name, :last_name, :email], associated_against: {}, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:first_name, :last_name, :email], associated_against: {acl_role: [:role_name]}, using: { tsearch: { prefix: true } }
   has_closure_tree(name_column: :to_s)
 
   # Include default devise modules. Others available are:
@@ -52,12 +52,15 @@ class Overseer < ApplicationRecord
       password = Devise.friendly_token[0, 20]
 
       overseer = Overseer.where(email: data['email']).first_or_create do |overseer|
+        acl_role = AclRole.where(is_default: true).first
         overseer.password_confirmation = password
         overseer.password = password
         overseer.first_name = data['first_name']
         overseer.last_name = data['last_name']
         overseer.google_oauth2_uid = data['uid']
         overseer.username = 'none'
+        overseer.acl_role = acl_role
+        overseer.acl_resources = acl_role.role_resources
       end
 
       overseer.update_attributes(username: 'nousername') if overseer.username.blank?
@@ -92,5 +95,9 @@ class Overseer < ApplicationRecord
 
     overseer.save!
     overseer
+  end
+
+  def self.all_roles
+    AclRole.all
   end
 end

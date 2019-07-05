@@ -1,13 +1,13 @@
 json.data (@products) do |product|
   json.array! [
       [
-          if policy(product).show?
+          if is_authorized(product, 'show') && policy(product).show?
             row_action_button(overseers_product_path(product), 'eye', 'View Product', 'info')
           end,
-          if policy(product).edit?
+          if is_authorized(product, 'edit') && policy(product).edit?
             row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit Product', 'warning')
           end,
-          if policy(product).comments?
+          if is_authorized(product, 'comments') && policy(product).comments?
             row_action_button(overseers_product_comments_path(product), 'comment-lines', 'View Comments', 'dark')
           end
       ].join(' '),

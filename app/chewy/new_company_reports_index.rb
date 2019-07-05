@@ -1,6 +1,6 @@
 class NewCompanyReportsIndex < BaseIndex
   statuses =  Inquiry.statuses.except('Order Lost', 'Regret').keys
-  define_type Inquiry.all do
+  define_type Inquiry.where.not(company_id: 1) do
     # default_import_options batch_size: 10000, bulk_size: 10.megabytes, refresh: false
     field :id, type: 'integer'
     field :live_inquiry, value: -> (record) { statuses.include?(record.status) ? 1 : 0 }, type: 'integer'
@@ -10,6 +10,9 @@ class NewCompanyReportsIndex < BaseIndex
     field :account_id, value: -> (record) { record.account.id }, type: 'integer'
     field :expected_order, value: -> (record) {record.status == 'Expected Order' ? 1 : 0}, type: 'integer'
     field :expected_order_total, value: -> (record) {record.status == 'Expected Order' ? record.try(:calculated_total) : 0}, type: 'double'
+    field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }
+    field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }
+    field :procurement_operations, value: -> (record) { record.procurement_operations_id }
 
     field :final_sales_quote, value: -> (record) {(statuses.include?(record.status) && record.final_sales_quote.present?) ? 1 : 0}, type: 'integer'
     field :final_sales_quote_total, value: -> (record) {(statuses.include?(record.status) && record.final_sales_quote.present?) ? record.final_sales_quote.try(:calculated_total) : 0}, type: 'double'
