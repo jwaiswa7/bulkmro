@@ -25,13 +25,10 @@ class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
 
   def update_acl?
     true
-<<<<<<< HEAD
   end
 
   def add_password_form?
     (admin? || hr?) && record != overseer
-=======
->>>>>>> 9b9b9e6e2fe602351e784691b108e1a7c3fb3753
   end
 
   def update_password?
