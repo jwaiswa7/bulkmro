@@ -137,15 +137,7 @@ Rails.application.routes.draw do
         get 'reject'
       end
     end
-# <<<<<<< HEAD
-    end
-    resource :profile, :controller => :profile, except: [:show, :index]
-    resources :overseers, except: [:show] do
-      member do
-        get 'add_password_form'
-        patch 'update_password'
-# =======
-# >>>>>>> 9b9b9e6e2fe602351e784691b108e1a7c3fb3753
+
     resource :profile, controller: :profile, except: [:show, :index]
     resources :overseers, except: [:show] do
       member do
@@ -154,6 +146,8 @@ Rails.application.routes.draw do
         get 'get_menu_resources'
         get 'edit_acl'
         patch 'update_acl'
+        get 'add_password_form'
+        patch 'update_password'
       end
 
       collection do
@@ -170,10 +164,6 @@ Rails.application.routes.draw do
       end
       collection do
         get 'get_default_resources'
-# <<<<<<< HEAD
-
-# =======
-# >>>>>>> 9b9b9e6e2fe602351e784691b108e1a7c3fb3753
       end
     end
 
@@ -808,8 +798,4 @@ Rails.application.routes.draw do
       end
     end
   end
-    end
 end
-
-
-
