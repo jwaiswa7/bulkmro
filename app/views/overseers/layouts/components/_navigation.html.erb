@@ -247,14 +247,14 @@
             Reports
           </a>
           <div class="dropdown-menu">
-            <% Report.where(uid: 'monthly_sales_report').each do |report| %>
+            <% Report.all.each do |report| %>
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), is_authorized(report, 'show') %>
             <% end %>
             <%= nav_dropdown_item 'KRA Report', kra_report_overseers_inquiries_path, is_authorized(:inquiry, 'kra_report') %>
-            <%#= nav_dropdown_item 'Company Report', company_report_overseers_companies_path, is_authorized(:company, 'company_report') %>
-            <%#= nav_dropdown_item 'Pipeline Report', pipeline_report_overseers_inquiries_path, is_authorized(:inquiry, 'pipeline_report') %>
+            <%= nav_dropdown_item 'Company Report', company_report_overseers_companies_path, is_authorized(:company, 'company_report') %>
+            <%= nav_dropdown_item 'Pipeline Report', pipeline_report_overseers_inquiries_path, is_authorized(:inquiry, 'pipeline_report') %>
             <%= nav_dropdown_item 'TAT Report', tat_report_overseers_inquiries_path, is_authorized(:inquiry, 'tat_report') %>
-            <%#= nav_dropdown_item 'Customer Order Status Report', customer_order_status_report_overseers_sales_orders_path, is_authorized(:sales_order, 'customer_order_status_report') %>
+            <%= nav_dropdown_item 'Customer Order Status Report', customer_order_status_report_overseers_sales_orders_path, is_authorized(:sales_order, 'customer_order_status_report') %>
             <%= nav_dropdown_item 'Logistics Scorecard', overseers_logistics_scorecards_path, is_authorized(:purchase_order, 'logistics_scorecard') %>
           </div>
         </li>
