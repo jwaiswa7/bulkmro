@@ -5,6 +5,7 @@ json.data (@overseers) do |overseer|
                         row_action_button(edit_overseers_overseer_path(overseer), 'pencil', 'Edit Overseer', 'warning')
                       end,
 <<<<<<< HEAD
+<<<<<<< HEAD
                    if policy(overseer).add_password_form?
                        row_action_button(add_password_form_overseers_overseer_path(overseer), 'pencil', 'EditPassword Overseer', 'danger')
                    end
@@ -13,6 +14,11 @@ json.data (@overseers) do |overseer|
                         row_action_button(edit_acl_overseers_overseer_path(overseer), 'lock', 'Edit ACL', 'success')
                       end
 >>>>>>> 7efe7c034d873c53515ce9b9cd7ec5a2912b00e5
+=======
+                      if is_authorized('overseer','edit') && policy(overseer).edit_acl?
+                        row_action_button(edit_acl_overseers_overseer_path(overseer), 'lock', 'Edit ACL', 'success')
+                      end
+>>>>>>> 9b9b9e6e2fe602351e784691b108e1a7c3fb3753
                   ].join(' '),
                   overseer.hierarchy_to_s,
                   if overseer.acl_role.present?

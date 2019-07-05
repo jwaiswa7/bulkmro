@@ -1,9 +1,13 @@
 class Overseers::OverseersController < Overseers::BaseController
 <<<<<<< HEAD
+<<<<<<< HEAD
   before_action :set_overseer, only: [:edit, :update, :add_password_form, :update_password]
 =======
   before_action :set_overseer, only: [:edit, :update, :save_acl_resources, :get_resources, :get_menu_resources, :edit_acl, :update_acl]
 >>>>>>> 7efe7c034d873c53515ce9b9cd7ec5a2912b00e5
+=======
+  before_action :set_overseer, only: [:edit, :update, :save_acl_resources, :get_resources, :get_menu_resources, :edit_acl, :update_acl]
+>>>>>>> 9b9b9e6e2fe602351e784691b108e1a7c3fb3753
 
   def index
     # service = Services::Overseers::Finders::Overseers.new(params)
@@ -65,12 +69,15 @@ class Overseers::OverseersController < Overseers::BaseController
   def update
     @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! {|k, v| (k == 'password' || k == 'password_confirmation') && v.blank?})
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     if @overseer.save_and_sync
       if params[:overseer].present?
         redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
       end
 =======
+=======
+>>>>>>> 9b9b9e6e2fe602351e784691b108e1a7c3fb3753
     authorize_acl @overseer
     if @overseer.save_and_sync
       # acl_role = AclRole.find(params[:overseer][:acl_role_id])
@@ -83,6 +90,7 @@ class Overseers::OverseersController < Overseers::BaseController
     authorize @overseer
   end
 
+<<<<<<< HEAD
   def add_password_form
     authorize @overseer
   end
@@ -131,6 +139,10 @@ class Overseers::OverseersController < Overseers::BaseController
         :changed_by,
         :changed_at
 =======
+=======
+  def get_resources
+
+>>>>>>> 9b9b9e6e2fe602351e784691b108e1a7c3fb3753
     default_resources = get_acl_resource_json
     current_acl = ActiveSupport::JSON.decode(@overseer.acl_resources)
     parsed_json = ActiveSupport::JSON.decode(default_resources)
@@ -195,7 +207,10 @@ class Overseers::OverseersController < Overseers::BaseController
         :password_confirmation,
         :acl_role,
         :is_super_admin
+<<<<<<< HEAD
 >>>>>>> 7efe7c034d873c53515ce9b9cd7ec5a2912b00e5
+=======
+>>>>>>> 9b9b9e6e2fe602351e784691b108e1a7c3fb3753
     )
   end
 
