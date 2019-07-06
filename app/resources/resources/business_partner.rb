@@ -28,8 +28,6 @@ class Resources::BusinessPartner < Resources::ApplicationResource
   end
 
   def self.temp_update(id, record)
-    # super(:update).call(id, record, quotes: true)
-    # super.instance_method(:update).bind(self).call(id, record, quotes: true)
     super(id, record, quotes: true)
   end
 

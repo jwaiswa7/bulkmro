@@ -159,6 +159,9 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
 
   def update_company_and_alias
+    issue_in_update = []
+    issue_in_account_update = []
+
     not_in_sap = []
     account_not_in_sap = []
     i = 1
@@ -166,43 +169,70 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     missing_account = []
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_accounts.csv', 'seed_files_3')
     service.loop(nil) do |x|
-      puts 'ITERATION', i
+      puts '********************** ITERATION ***************************', i
       i = i + 1
-      next if x.get_column('Duplicate Company Name? - Final (Yes / No)') == 'Yes'
-      company = Company.acts_as_customer.where(name: x.get_column('Company Name')).last
-      if company.present?
-        company.name = x.get_column('Corrected Company Name - Final')
-        # company.save(validate: false)
-        remote_uid = ::Resources::BusinessPartner.custom_find(company.name, company.is_supplier? ? 'cSupplier' : 'cCustomer')
-        if remote_uid.present?
-          company.remote_uid = remote_uid
-        else
-          company.remote_uid = nil
+      next if x.get_column('Duplicate Company Name? - Final (Yes / No)') == 'Yes' || x.get_column('Corrected Alias Name - Final').to_s == 'adani'
+
+      company = Company.acts_as_customer.find_by_name(x.get_column('Company Name').to_s)
+
+      if company.blank?
+        probable_companies = Company.acts_as_customer.where("companies.name like ?", "%#{x.get_column('Company Name').to_s}%")
+        probable_companies.each do |probable_company|
+          if probable_company.name.squish == x.get_column('Company Name').to_s
+            company = probable_company
+            break
+          end
         end
+      end
+
+      # updates company
+      if company.present?
+        remote_uid = ::Resources::BusinessPartner.custom_find(company.name, company.is_supplier? ? 'cSupplier' : 'cCustomer')
+        remote_uid.present? ? company.update_attributes(remote_uid: remote_uid) : company.update_attributes(remote_uid: nil)
+
+        company.name = x.get_column('Corrected Company Name - Final')
         company.save(validate: false)
         if company.remote_uid.blank?
-          not_in_sap.push(x.get_column('Company Name'))
-          # remote_uid = ::Resources::BusinessPartner.create(company)
-          # if remote_uid.present?
-          #   company.remote_uid = remote_uid
-          #   company.save(validate: false)
-          # end
+          begin
+            remote_uid = ::Resources::BusinessPartner.create(company)
+          rescue
+            not_in_sap.push(x.get_column('Company Name'))
+          else
+            company.update_attributes(remote_uid: remote_uid) if remote_uid.present?
+          ensure
+            # ensure that this code always runs, no matter what
+            # does not change the final value of the block
+          end
         else
-          ::Resources::BusinessPartner.temp_update(company.remote_uid, company)
+          begin
+            ::Resources::BusinessPartner.update(company.remote_uid, company)
+          rescue
+            issue_in_update.push(x.get_column('Company Name'))
+          end
         end
+
+        # updates account
         if company.account.present?
           account = company.account
           account.name = x.get_column('Corrected Alias Name - Final')
-          # account.save(validate: false)
+          account.save(validate: false)
           if account.remote_uid.present?
-            ::Resources::BusinessPartnerGroup.update(account.remote_uid, account)
+            begin
+              ::Resources::BusinessPartnerGroup.update(account.remote_uid, account)
+            rescue
+              issue_in_account_update.push(x.get_column('Company Name'))
+            end
           else
-            account_not_in_sap.push(x.get_column('Company Name'))
-            # remote_uid = ::Resources::BusinessPartnerGroup.create(account)
-            # if remote_uid.present?
-            #   account.remote_uid = remote_uid
-            #   account.save(validate: false)
-            # end
+            begin
+              remote_uid = ::Resources::BusinessPartnerGroup.create(account)
+            rescue
+              account_not_in_sap.push(x.get_column('Company Name'))
+            else
+              account.update_attributes(remote_uid: remote_uid) if remote_uid.present?
+            ensure
+              # ensure that this code always runs, no matter what
+              # does not change the final value of the block
+            end
           end
         else
           missing_account.push(x.get_column('Company Name'))
@@ -211,10 +241,12 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         missing_companies.push(x.get_column('Company Name'))
       end
     end
-    puts 'Missing Companies', missing_companies
-    puts 'Missing Accounts', missing_account
-    puts 'C not in SAP', not_in_sap
-    puts 'A not in SAP', account_not_in_sap
+    puts '***************************** Missing Companies *******************************', missing_companies
+    puts '****************************** ISSUE IN COMPANY UPDATE *********************', issue_in_update
+    puts '***************************** Missing Accounts *******************************', missing_account
+    puts '*************************** ISSUE IN ACC UPDATE ********************************', issue_in_account_update
+    puts '**************************** C not in SAP ********************************', not_in_sap
+    puts '************************ A not in SAP *****************************', account_not_in_sap
   end
 
   def check_missing_companies
@@ -727,21 +759,21 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       # current_row = product_sku + '-' + x.get_column('So #') + '-' + x.get_column('Inquiry Number')
       inquiry = Inquiry.create
 
-        company = Company.find('jVtpmz')
-        # if !inquiry.billing_address.present?
-          inquiry.billing_address= company.addresses.first
-        # end
+      company = Company.find('jVtpmz')
+      # if !inquiry.billing_address.present?
+      inquiry.billing_address = company.addresses.first
+      # end
 
-        # if !inquiry.shipping_address.present?
-          inquiry.shipping_address= company.addresses.first
-        # end
+      # if !inquiry.shipping_address.present?
+      inquiry.shipping_address = company.addresses.first
+      # end
 
-        # if !inquiry.shipping_contact.present?
-          inquiry.shipping_contact= company.contacts.first
-        # end
-        inquiry.inside_sales_owner = Overseer.find_by_first_name(x.get_column('Inside Sales Name').split(' ')[0])
-        inquiry.created_at = Date.parse(2018, 10, 01).strftime('%y-%m-%d')
-        inquiry.old_inquiry_number = 'CUM01'
+      # if !inquiry.shipping_contact.present?
+      inquiry.shipping_contact = company.contacts.first
+      # end
+      inquiry.inside_sales_owner = Overseer.find_by_first_name(x.get_column('Inside Sales Name').split(' ')[0])
+      inquiry.created_at = Date.parse(2018, 10, 01).strftime('%y-%m-%d')
+      inquiry.old_inquiry_number = 'CUM01'
 
       #
       #   sales_quote = inquiry.sales_quotes.last
@@ -749,19 +781,19 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       #     sales_quote = inquiry.sales_quotes.create!(overseer: inquiry.inside_sales_owner)
       #   end
       #
-        inquiry_product = inquiry.inquiry_products.where(product_id: product.id).first_or_create!
-        # if inquiry_products.blank?
-        #   similar_products = Product.where(name: product.name).where.not(sku: product.sku)
-        #   if similar_products.present?
-        #     similar_products.update_all(is_active: false)
-        #   end
-        #   sr_no = inquiry.inquiry_products.present? ? (inquiry.inquiry_products.last.sr_no + 1) : 1
-        #   inquiry_product = inquiry.inquiry_products.where(product_id: product.id, sr_no: sr_no, quantity: x.get_column('quantity')).first_or_create!
-        # else
-        #   inquiry_product = inquiry_products.first
-        #   if quantity < sheet_quantity
+      inquiry_product = inquiry.inquiry_products.where(product_id: product.id).first_or_create!
+      # if inquiry_products.blank?
+      #   similar_products = Product.where(name: product.name).where.not(sku: product.sku)
+      #   if similar_products.present?
+      #     similar_products.update_all(is_active: false)
+      #   end
+      #   sr_no = inquiry.inquiry_products.present? ? (inquiry.inquiry_products.last.sr_no + 1) : 1
+      #   inquiry_product = inquiry.inquiry_products.where(product_id: product.id, sr_no: sr_no, quantity: x.get_column('quantity')).first_or_create!
+      # else
+      #   inquiry_product = inquiry_products.first
+      #   if quantity < sheet_quantity
       inquiry_product.update_attribute('quantity', x.get_column('quantity').to_f)
-        # end
+      # end
       inquiry_product.save(validate: false)
       inquiry.save(validate: false)
 
@@ -940,14 +972,12 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   end
 
 
-
-
   def flex_dump
     column_headers = ['Order Date', 'OD', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Order Status', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
     model = SalesOrder
     fc = []
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
-      model.joins(:company).where(companies: {id: 1847}).where(created_at: Date.new(2019,06,23).beginning_of_day..Date.new(2019,06,29).end_of_day).order(name: :asc).each do |order|
+      model.joins(:company).where(companies: {id: 1847}).where(created_at: Date.new(2019, 06, 23).beginning_of_day..Date.new(2019, 06, 29).end_of_day).order(name: :asc).each do |order|
         # if order.inquiry_currency.currency.id == 2 && order.calculated_total < 75000
         order.rows.each do |record|
           sales_order = record.sales_order
@@ -1500,7 +1530,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   end
 
 
-
   def oct_to_march_mismatch
     column_headers = ['Inside Sales Name',
                       'Posting Date',
@@ -1753,7 +1782,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           #   quote_row.freight_cost_subtotal = 0
           #   quote_row.unit_freight_cost = 0
           # else
-            quote_row.converted_unit_selling_price = x.get_column('Unit Selling Price').to_f
+          quote_row.converted_unit_selling_price = x.get_column('Unit Selling Price').to_f
           # end
           quote_row.inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('Unit cost price').to_f)
           quote_row.margin_percentage = x.get_column('Margin (In %)').split('%')[0].to_d
@@ -1817,7 +1846,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     puts 'MISMATCH', j
     puts 'Corrected tax rates', corrected, corrected.count
   end
-
 
 
   def update_mis_dates_for_may
