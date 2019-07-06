@@ -14,47 +14,48 @@ class InquiryMappingTatsIndex < BaseIndex
     field :sales_order_number, value: -> (record) {record.sales_order.order_number if record.sales_order.present?}, type: 'long'
     field :sales_order_status, value: -> (record) {record.sales_order.status if record.sales_order.present?}, analyzer: 'substring'
 
-    field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id }
-    field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id }
-    field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations_id }
+    field :inside_sales_executive, value: -> (record) {record.inquiry.inside_sales_owner_id}
+    field :outside_sales_executive, value: -> (record) {record.inquiry.outside_sales_owner_id}
+    field :procurement_operations, value: -> (record) {record.inquiry.procurement_operations_id}
 
     field :time_new_inquiry, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'New Inquiry').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'New Inquiry').present?}, type: 'date'
 
-    field :status_acknowledgment_mail, value: -> (record) {record.calculate_turn_around_time('Acknowledgement Mail') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'Acknowledgement Mail').present?}, type: 'integer'
-    field :time_acknowledgment_mail, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'Acknowledgement Mail').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'Acknowledgement Mail').present?}, analyzer: 'substring'
+    field :status_acknowledgment_mail, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'Inquiry', record.inquiry_id, 'Acknowledgement Mail')}, type: 'integer'
+    field :time_acknowledgment_mail, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'Inquiry', record.inquiry_id, 'Acknowledgement Mail')}, analyzer: 'substring', fielddata: true
 
-    field :status_cross_reference, value: -> (record) {record.calculate_turn_around_time('Cross Reference') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'Cross Reference').present?}, type: 'integer'
-    field :time_cross_reference, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'Cross Reference').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'Cross Reference').present?}, analyzer: 'substring'
+    field :status_cross_reference, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'Inquiry', record.inquiry_id, 'Cross Reference')}, type: 'integer'
+    field :time_cross_reference, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'Inquiry', record.inquiry_id, 'Cross Reference')}, analyzer: 'substring', fielddata: true
 
-    field :status_preparing_quotation, value: -> (record) {record.calculate_turn_around_time('Preparing Quotation') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'Preparing Quotation').present?}, type: 'integer'
-    field :time_preparing_quotation, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'Preparing Quotation').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'Preparing Quotation').present?}, analyzer: 'substring'
+    field :status_preparing_quotation, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesQuote', record.sales_quote_id, 'Preparing Quotation')}, type: 'integer'
+    field :time_preparing_quotation, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesQuote', record.sales_quote_id, 'Preparing Quotation')}, analyzer: 'substring', fielddata: true
 
-    field :status_quotation_sent, value: -> (record) {record.calculate_turn_around_time('Quotation Sent') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'Quotation Sent').present?}, type: 'integer'
-    field :time_quotation_sent, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'Quotation Sent').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'Quotation Sent').present?}, analyzer: 'substring'
+    field :status_quotation_sent, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesQuote', record.sales_quote_id, 'Quotation Sent')}, type: 'integer'
+    field :time_quotation_sent, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesQuote', record.sales_quote_id, 'Quotation Sent')}, analyzer: 'substring', fielddata: true
 
-    field :status_draft_so_appr_by_sales_manager, value: -> (record) {record.calculate_turn_around_time('Draft SO for Approval by Sales Manager') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'Draft SO for Approval by Sales Manager').present?}, type: 'integer'
-    field :time_draft_so_appr_by_sales_manager, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'Draft SO for Approval by Sales Manager').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'Draft SO for Approval by Sales Manager').present?}, analyzer: 'substring'
+    field :status_draft_so_appr_by_sales_manager, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Draft SO for Approval by Sales Manager')}, type: 'integer'
+    field :time_draft_so_appr_by_sales_manager, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Draft SO for Approval by Sales Manager')}, analyzer: 'substring'
 
-    field :status_so_reject_by_sales_manager, value: -> (record) {record.calculate_turn_around_time('SO Rejected by Sales Manager') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'SO Rejected by Sales Manager').present?}, type: 'integer'
-    field :time_so_reject_by_sales_manager, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'SO Rejected by Sales Manager').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'SO Rejected by Sales Manager').present?}, analyzer: 'substring'
+    field :status_so_reject_by_sales_manager, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'SO Rejected by Sales Manager')}, type: 'integer'
+    field :time_so_reject_by_sales_manager, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'SO Rejected by Sales Manager')}, analyzer: 'substring'
 
-    field :status_so_draft_pending_acct_approval, value: -> (record) {record.calculate_turn_around_time('SO Draft: Pending Accounts Approval') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'SO Draft: Pending Accounts Approval').present?}, type: 'integer'
-    field :time_so_draft_pending_acct_approval, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'SO Draft: Pending Accounts Approval').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'SO Draft: Pending Accounts Approval').present?}, analyzer: 'substring'
+    field :status_so_draft_pending_acct_approval, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'SO Draft: Pending Accounts Approval')}, type: 'integer'
+    field :time_so_draft_pending_acct_approval, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'SO Draft: Pending Accounts Approval')}, analyzer: 'substring'
 
-    field :status_rejected_by_accounts, value: -> (record) {record.calculate_turn_around_time('Rejected by Accounts') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'Rejected by Accounts').present?}, type: 'integer'
-    field :time_rejected_by_accounts, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'Rejected by Accounts').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'Rejected by Accounts').present?}, analyzer: 'substring'
+    field :status_rejected_by_accounts, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Rejected by Accounts')}, type: 'integer'
+    field :time_rejected_by_accounts, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Rejected by Accounts')}, analyzer: 'substring'
 
-    field :status_hold_by_accounts, value: -> (record) {record.calculate_turn_around_time('Hold by Accounts') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'Hold by Accounts').present?}, type: 'integer'
-    field :time_hold_by_accounts, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'Hold by Accounts').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'Hold by Accounts').present?}, analyzer: 'substring'
+    field :status_hold_by_accounts, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Hold by Accounts')}, type: 'integer'
+    field :time_hold_by_accounts, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Hold by Accounts')}, analyzer: 'substring'
 
-    field :status_order_won, value: -> (record) {record.calculate_turn_around_time('Order Won') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'Order Won').present?}, type: 'integer'
-    field :time_order_won, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'Order Won').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'Order Won').present?}, analyzer: 'substring'
+    field :status_order_won, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Order Won')}, type: 'integer'
+    field :time_order_won, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Order Won')}, analyzer: 'substring', fielddata: true
 
-    field :status_order_lost, value: -> (record) {record.calculate_turn_around_time('Order Lost') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'Order Lost').present?}, type: 'integer'
-    field :time_order_lost, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'Order Lost').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'Order Lost').present?}, analyzer: 'substring'
+    field :status_order_lost, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Order Lost')}, type: 'integer'
+    field :time_order_lost, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Order Lost')}, analyzer: 'substring'
 
-    field :status_regret, value: -> (record) {record.calculate_turn_around_time('Regret') if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.where(status: 'Regret').present?}, type: 'integer'
-    field :time_regret, value: -> (record) {record.inquiry.inquiry_status_records.find_by(status: 'Regret').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'Regret').present?}, analyzer: 'substring'
+    field :status_regret, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Regret')}, type: 'integer'
+    field :time_regret, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Regret')}, analyzer: 'substring'
+
     field :created_at, value: -> (record) {record.inquiry.created_at}, type: 'date'
   end
 end

@@ -21,19 +21,19 @@
   <th class="no-sort all"></th>
   <th class="no-sort all" data-name=<%=@category.present? ? @category : "inside_sales_owner_id" %>>Name</th>
   <% if  @category.present? && @category == 'company_key'  %> <th class="no-sort all" data-name="account_key">Account</th> <%else %> <th></th><%end %>
-  <th class="sort all" data-name="inquiry_number">Inquiries#</th>
-  <th class="sort all" data-name="sales_quote_count">Sales Quotes#</th>
-  <th class="sort all" data-name="total_quote_value">Value of Quotes</th>
-  <th class="sort all" data-name="expected_order">Expected Orders#</th>
-  <th class="sort all" data-name="total_quote_value">Value of <br>Expected Orders</th>
-  <th class="sort all" data-name="sales_order_count">Sales Orders#</th>
-  <th class="sort all" data-name="total_order_value">Value of Orders</th>
-  <th class="sort all" data-name="gross_margin_assumed">Gross Margin(Assumed)</th>
+  <th class="no-sort all" data-name="inquiry_number">Inquiries#</th>
+  <th class="no-sort all" data-name="sales_quote_count">Sales Quotes#</th>
+  <th class="no-sort all" data-name="total_quote_value">Value of Quotes</th>
+  <th class="no-sort all" data-name="expected_order">Expected Orders#</th>
+  <th class="no-sort all" data-name="total_quote_value">Value of <br>Expected Orders</th>
+  <th class="no-sort all" data-name="sales_order_count">Sales Orders#</th>
+  <th class="no-sort all" data-name="total_order_value">Value of Orders</th>
+  <th class="no-sort all" data-name="gross_margin_assumed">Gross Margin(Assumed)</th>
   <th class="sort all" data-name="gross_margin_percentage">Gross Margin %</th>
   <th class="sort all" data-name="sku">Unique Ordered SKU#</th>
   <th class="no-sort all">%Inquiries Won</th>
-  <th class="sort all" data-name="invoices_count" >Sales Invoices</th>
-  <th class="sort all" data-name="revenue">Revenue</th>
+  <th class="no-sort all" data-name="invoices_count" >Sales Invoices</th>
+  <th class="no-sort all" data-name="revenue">Revenue</th>
   <th class="sort all" data-name="gross_margin_actual">Gross Margin Actual</th>
 <% end %>
 
@@ -59,7 +59,7 @@
 
 <% content_for :summary_row do %>
   <td class="no-data"></td>
-  <td class="no-data"></td>
+  <td class="total"></td>
   <td class="no-data"></td>
   <td></td>
   <td></td>

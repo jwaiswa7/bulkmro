@@ -11,7 +11,7 @@ class Overseer < ApplicationRecord
   has_many :annual_targets
   has_one_attached :file
 
-  pg_search_scope :locate, against: [:first_name, :last_name, :email], associated_against: {}, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:first_name, :last_name, :email], associated_against: {acl_role: [:role_name]}, using: { tsearch: { prefix: true } }
   has_closure_tree(name_column: :to_s)
 
   # Include default devise modules. Others available are:
