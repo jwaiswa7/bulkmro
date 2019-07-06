@@ -82,7 +82,7 @@ class Overseers::OverseersController < Overseers::BaseController
   def update_password
     authorize_acl @overseer
     @overseer.assign_attributes(overseer_password_params.merge(overseer: current_overseer, changed_by: current_overseer, changed_at: DateTime.now))
-    if @overseer.save!
+    if @overseer.save
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
     else
       render 'change_password'
