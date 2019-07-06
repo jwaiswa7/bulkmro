@@ -4,7 +4,7 @@
   <%= simple_form_for([:overseers, @warehouse], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <div class="form-group">
       <%= f.input :name, label: 'Warehouse Name', :placeholder => 'e.g. Reliance Industries', :required => 'true', :class => 'form-control' %>
-      <%= f.nested_fields_for :address, f.object.address.build(:overseer => warehouse) do |address| %>
+      <%= f.nested_fields_for :address, f.object.address.build(:overseer => warehouses) do || %>
     </div>
     <%= f.simple_fields_for :address do |address| %>
        <div class="form-group">
