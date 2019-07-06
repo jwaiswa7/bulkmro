@@ -15,14 +15,13 @@ class Services::Overseers::Exporters::CustomerProductsExporter < Services::Overs
   def build_csv
     records = model.where(company: Company.find(company_id)).order(created_at: :desc)
     records.each do |record|
-      rows.push(
-          company_name: record.company.to_s,
+      rows.push(company_name: record.company.to_s,
           product_name: record.to_s,
           sku: record.sku,
           customer_price: record.customer_price,
           moq: is_present(record.moq, 'to_s'),
           tax_code: is_present(record.tax_code, 'code'),
-          tax_rate: is_present(record.tax_rate,'tax_percentage','%'),
+          tax_rate: is_present(record.tax_rate, 'tax_percentage', '%'),
           measurement_unit: is_present(record.measurement_unit, 'name'),
           brand: is_present(record.brand, 'to_s')
       )
