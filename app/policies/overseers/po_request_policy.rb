@@ -105,12 +105,8 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     update?
   end
 
-  def render_cancellation_form?
-    can_cancel? || can_reject?
-  end
-
-  def render_comment_form?
-    index?
+  def render_modal_form?
+    add_comment? || can_cancel? || can_reject?
   end
 
   def add_comment?

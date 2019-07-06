@@ -10,16 +10,16 @@
         </div>
       </div>
       <div class="modal-body mb-3 px-0 p-0">
-        <%= simple_form_for([:overseers, @po_request], :url => add_comment_overseers_po_request_path(@po_request), :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+        <%= simple_form_for([:overseers, obj], :url => url, :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
           <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
           <div class="card">
             <div class="card-body">
               <div class="form-row">
                 <div class="col">
-                  <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |po_request_comment| %>
-                    <%= po_request_comment.hidden_field :created_by_id %>
-                    <%= po_request_comment.hidden_field :updated_by_id %>
-                    <%= po_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+                  <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |comment| %>
+                    <%= comment.hidden_field :created_by_id %>
+                    <%= comment.hidden_field :updated_by_id %>
+                    <%= comment.input :message, :placeholder => 'Type message', :id => 'commentsId', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
                   <% end %>
                 </div>
               </div>
@@ -28,21 +28,21 @@
                   Add Comment
                 </button>
               </div>
-              <% if @po_request.comments.persisted.size > 0 %>
+              <% if obj.comments.persisted.size > 0 %>
                 <div class="card">
                   <div class="card-body">
                     <div class="flex-fill">
                       <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
                     </div>
                     <div class="chats">
-                      <% @po_request.comments.all.limit(5).each do |comment| %>
+                      <% obj.comments.all.limit(5).each do |comment| %>
                         <% if comment.persisted? %>
                           <%= format_comment(comment, trimmed: true) %>
                         <% end %>
                       <% end %>
                     </div>
                     <div class="card-footer">
-                      <a href="<%= overseers_po_request_path(@po_request) %>" class="btn btn-success btn-block align-self-center btn-block-sm-down">View
+                      <a href="<%= view_more %>" class="btn btn-success btn-block align-self-center btn-block-sm-down">View
                         More</a>
                     </div>
                   </div>
@@ -55,6 +55,3 @@
     </div>
   </div>
 </div>
-
-
-

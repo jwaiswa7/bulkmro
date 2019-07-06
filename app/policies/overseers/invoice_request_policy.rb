@@ -30,14 +30,14 @@ class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def render_cancellation_form?
-    admin? || accounts?
+    can_cancel_or_reject? || add_comment?
   end
 
   def cancel_invoice_request?
     update?
   end
 
-  def render_comment_form?
+  def render_modal_form?
     index?
   end
 

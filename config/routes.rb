@@ -287,9 +287,8 @@ Rails.application.routes.draw do
         get 'add_comment'
       end
       member do
-        get 'render_cancellation_form'
+        get 'render_modal_form'
         patch 'cancel_porequest'
-        get 'render_comment_form'
         patch 'add_comment'
       end
     end
@@ -302,9 +301,8 @@ Rails.application.routes.draw do
         get 'cancelled'
       end
       member do
-        get 'render_cancellation_form'
+        get 'render_modal_form'
         patch 'cancel_invoice_request'
-        get 'render_comment_form'
         patch 'add_comment'
       end
     end
@@ -644,6 +642,10 @@ Rails.application.routes.draw do
       collection do
         get 'completed'
         post 'update_payment_status'
+      end
+      member do
+        get 'render_modal_form'
+        patch 'add_comment'
       end
     end
 
