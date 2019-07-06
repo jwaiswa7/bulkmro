@@ -23,5 +23,9 @@ class KraReportVarientsIndex < BaseIndex
     field :total_order_value, value: -> (record) {record.try(&:calculated_total)}, type: 'double'
     field :revenue, value: -> (record) {record.try(&:calculated_total_margin)}, type: 'double'
     field :sku, value: -> (record) {record.products.map(&:sku).count}, type: 'integer'
+
+    field :gross_margin_assumed, value: -> (record) { record.inquiry.final_sales_quote.calculated_total_margin if record.inquiry.final_sales_quote.present? }, type: 'double'
+    field :gross_margin_percentage, value: -> (record) { record.inquiry.margin_percentage }, type: 'double'
+    field :gross_margin_actual, value: -> (record) { record.inquiry.final_sales_orders.without_cancelled.compact.uniq.map(&:calculated_total_margin).sum if record.inquiry.final_sales_orders.present? }, type: 'double'
   end
 end

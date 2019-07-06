@@ -24,7 +24,7 @@ class AnnualTarget < ApplicationRecord
   end
 
   def monthly_target(type)
-    (("#{type}_target")) / 12.0
+    (self["#{type}_target"]) / 12.0
   end
 
 end

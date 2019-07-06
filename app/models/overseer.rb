@@ -97,4 +97,9 @@ class Overseer < ApplicationRecord
   def self.all_roles
     AclRole.all
   end
+
+  def get_inquiry_target
+    year_range = "#{Date.today.year}-#{(Date.today.year+1)}"
+    self.annual_targets.where(year: year_range).last.inquiry_target if self.annual_targets.present?
+  end
 end

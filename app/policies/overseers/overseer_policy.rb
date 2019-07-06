@@ -9,6 +9,10 @@ class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
     (admin? || hr?)
   end
 
+  def show?
+    (admin? || hr?)
+  end
+
   def get_resources?
     true
   end

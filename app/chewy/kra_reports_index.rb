@@ -1,5 +1,5 @@
 class KraReportsIndex < BaseIndex
-  define_type Inquiry.all.with_includes do
+  define_type Inquiry.where(status: 'Order Won').with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
@@ -27,5 +27,8 @@ class KraReportsIndex < BaseIndex
     field :total_order_value, value: -> (record) {record.final_sales_orders.without_cancelled.compact.uniq.map(&:calculated_total).sum}, type: 'double'
     field :revenue, value: -> (record) {record.final_sales_orders.without_cancelled.compact.uniq.map(&:calculated_total_margin).sum}, type: 'double'
     field :sku, value: -> (record) {record.final_sales_orders.without_cancelled.compact.uniq.map {|s|s.products.map(&:sku).count}.last}, type: 'integer'
+    field :gross_margin_assumed, value: -> (record) { record.final_sales_quote.calculated_total_margin if record.final_sales_quote.present? }, type: 'double'
+    field :gross_margin_percentage, value: -> (record) { record.margin_percentage }, type: 'double'
+    field :gross_margin_actual, value: -> (record) { record.final_sales_orders.without_cancelled.compact.uniq.map(&:calculated_total_margin).sum if record.final_sales_orders.present? }, type: 'double'
   end
 end

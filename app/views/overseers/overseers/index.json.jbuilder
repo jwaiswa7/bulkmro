@@ -10,7 +10,7 @@ json.data (@overseers) do |overseer|
                       if is_authorized('overseer','edit') && policy(overseer).edit_acl?
                         row_action_button(edit_acl_overseers_overseer_path(overseer), 'lock', 'Edit ACL', 'success')
                       end,
-                      if is_authorized('overseer','can_add_edit_target')
+                      if is_authorized('overseer','can_add_edit_target') && policy(overseer).can_add_edit_target?
                         overseer.annual_targets.present? ? '' : row_action_button(new_overseers_annual_target_path(overseer_id: overseer), 'bullseye', 'Add Target', 'danger')
                       end,
                   ].join(' '),

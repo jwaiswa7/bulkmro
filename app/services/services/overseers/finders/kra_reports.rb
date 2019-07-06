@@ -141,6 +141,21 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
                           cardinality: {
                               field: 'company_key'
                           }
+                      },
+                      gross_margin_assumed: {
+                          sum: {
+                              field: 'gross_margin_assumed'
+                          }
+                      },
+                      gross_margin_percentage: {
+                          sum: {
+                              field: 'gross_margin_percentage'
+                          }
+                      },
+                      gross_margin_actual: {
+                          sum: {
+                              field: 'gross_margin_actual'
+                          }
                       }
                   }
               }

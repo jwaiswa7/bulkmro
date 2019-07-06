@@ -145,6 +145,10 @@ class PoRequest < ApplicationRecord
     rows.sum(&:converted_total_buying_price).round(2)
   end
 
+  def po_margin
+    (self.selling_price - self.buying_price).round(2) if self.selling_price > 0
+  end
+
   def po_margin_percentage
     (((self.selling_price - self.buying_price) / self.selling_price) * 100).round(2) if self.selling_price > 0
   end

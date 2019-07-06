@@ -50,7 +50,7 @@ json.data (@po_requests) do |po_request|
                   attribute_boxes([{ supplier: po_request.supplier.present? ? conditional_link(po_request.supplier.to_s, overseers_company_path(po_request.supplier), is_authorized(po_request.supplier, 'show')) : '-'}, { customer: po_request.inquiry.company.present? ? conditional_link(po_request.inquiry.company.to_s, overseers_company_path(po_request.inquiry.company), is_authorized(po_request.inquiry.company, 'show')) : '-'}]),
                   attribute_boxes([ { supplier: po_request.supplier_committed_date.present? ? po_request.supplier_committed_date : 'N / A' }, { customer: po_request.inquiry.customer_committed_date }]),
                   attribute_boxes([{ buying: po_request.buying_price }, { selling: po_request.selling_price }]),
-                  attribute_boxes([{ margin: po_request.po_margin_percentage }, { overal: po_request.sales_order.present? ? po_request.sales_order.calculated_total_margin_percentage : 0 }]),
+                  attribute_boxes([{ margin: po_request.po_margin_percentage.to_s+"-"+po_request.po_margin.to_s  }, { overal: po_request.sales_order.present? ? po_request.sales_order.calculated_total_margin_percentage : 0 }]),
                   attribute_boxes([{ po_status: status_badge(po_request.status) }, { email_status: status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? 'Supplier PO Sent' : 'Supplier PO: Not Sent to Supplier') }]),
                   if po_request.last_comment.present?
                     format_comment(po_request.last_comment, trimmed: true)

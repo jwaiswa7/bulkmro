@@ -4,7 +4,7 @@ class SalesOrdersIndex < BaseIndex
   remote_statuses = SalesOrder.remote_statuses
   effective_statuses = SalesOrder.effective_statuses
 
-  define_type SalesOrder.all.with_includes do
+  define_type SalesOrder.without_cancelled.with_includes do
     witchcraft!
     field :id, type: 'integer'
     field :order_number, value: -> (record) { record.order_number }, type: 'long'
