@@ -86,10 +86,10 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     subject = "Ref# #{@invoice.inquiry.inquiry_number}- Your Order #{@invoice.inquiry.customer_po_number} - Delivery Notification"
     @action = 'delivery_mail_to_customer_notification'
     @email_message.assign_attributes(
-        subject: subject,
-        body: SalesInvoiceMailer.delivery_mail(@email_message).body.raw_source,
-        auto_attach: true,
-        cc: 'logistics@bulkmro.com, sales@bulkmro.com, gitesh.ganekar@bulkmro.com'
+      subject: subject,
+      body: SalesInvoiceMailer.delivery_mail(@email_message).body.raw_source,
+      auto_attach: true,
+      cc: 'logistics@bulkmro.com, sales@bulkmro.com, gitesh.ganekar@bulkmro.com'
         )
     @params = {
         record: [:overseers, @invoice, @email_message],
@@ -112,9 +112,9 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     authorize_acl @invoice
 
     if params['email_message']['auto_attach']
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, {stamp:true})), filename: 'Original_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, {stamp:true})), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, {stamp:true})), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Original_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
     end
 
 
@@ -135,10 +135,10 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     subject = "Ref# #{@invoice.inquiry.inquiry_number}- Your Order #{@invoice.inquiry.customer_po_number} - Disptach Notification"
     @action = 'delivery_mail_to_customer_notification'
     @email_message.assign_attributes(
-        subject: subject,
-        body: SalesInvoiceMailer.dispatch_mail(@email_message).body.raw_source,
-        auto_attach: true,
-        cc: 'logistics@bulkmro.com, sales@bulkmro.com, gitesh.ganekar@bulkmro.com'
+      subject: subject,
+      body: SalesInvoiceMailer.dispatch_mail(@email_message).body.raw_source,
+      auto_attach: true,
+      cc: 'logistics@bulkmro.com, sales@bulkmro.com, gitesh.ganekar@bulkmro.com'
     )
     @params = {
         record: [:overseers, @invoice, @email_message],
@@ -161,9 +161,9 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     authorize_acl @invoice
 
     if params['email_message']['auto_attach']
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, {stamp:true})), filename: 'Original_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, {stamp:true})), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, {stamp:true})), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Original_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
     end
 
 
@@ -202,7 +202,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
     def email_message_params
       params.require(:email_message).permit(
-          :subject,
+        :subject,
           :body,
           :to,
           :cc,
@@ -210,5 +210,4 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
           files: []
       )
     end
-
 end
