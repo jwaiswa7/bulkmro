@@ -11,15 +11,13 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
       @purchase_order = PurchaseOrder.where(po_number: series.last_number).first_or_create! do |purchase_order|
         purchase_order_params = assign_purchase_order_attributes(series.last_number)
         #purchase_order.update_attributes(purchase_order_params)
-        purchase_order.with_lock do
-          purchase_order.update_attributes(
-              purchase_order_params.merge(
-                  logistics_owner: po_request.inquiry.company.logistics_owner,
-                  payment_option: po_request.payment_option,
-                  sap_sync: 'Not Sync'
-              )
-          )
-        end
+        purchase_order.update_attributes(
+            purchase_order_params.merge(
+                logistics_owner: po_request.inquiry.company.logistics_owner,
+                payment_option: po_request.payment_option,
+                sap_sync: 'Not Sync'
+            )
+        )
       end
       po_request.rows.each_with_index do |row, index|
         @purchase_order.rows.where(product_id: row.product_id).first_or_create! do |po_row|
