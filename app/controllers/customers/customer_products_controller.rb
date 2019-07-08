@@ -41,8 +41,10 @@ class Customers::CustomerProductsController < Customers::BaseController
     @account = Account.find(7)
     @default_quantity = @customer_product.moq
     @is_henkel = (current_company.account == @account)
+    @display_class = ''
     if @is_henkel
       @default_quantity = 0
+      @display_class = (@customer_product.product.stocks.sum(&:instock) > 0) ? '': 'd-none'
     end
   end
 

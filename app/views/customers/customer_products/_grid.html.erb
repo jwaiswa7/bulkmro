@@ -100,7 +100,8 @@
               </p>
             </a>
           </div>
-          <div class="card-footer pt-2 pb-0">
+          <% if  @is_henkel && customer_product.product.present? && (customer_product.product.stocks.sum(&:instock) > 0) %>
+            <div class="card-footer pt-2 pb-0">
             <%= simple_form_for([:customers, CartItem.new], :url => customers_cart_items_path, :method => :post, :remote => true) do |f| %>
               <%= f.hidden_field :product_id, value: customer_product.product_id %>
               <%= f.hidden_field :customer_product_id, value: customer_product.id %>
@@ -114,6 +115,7 @@
               </div>
             <% end %>
           </div>
+          <%end %>
         </div>
       </div>
     <% end %>
