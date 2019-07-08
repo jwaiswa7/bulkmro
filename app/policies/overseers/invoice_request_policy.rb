@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
-  def index?
-    accounts? || manager_or_sales? || logistics? || admin?
-  end
-
   def pending?
     index?
   end
@@ -18,7 +14,7 @@ class Overseers::InvoiceRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_cancel_or_reject?
-    admin? || accounts?
+    index?
   end
 
   def edit?
