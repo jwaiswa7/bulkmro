@@ -1,46 +1,46 @@
-<div class="col-lg-12">
-    <%= simple_form_for([:overseers, @sales_invoice, @email_message], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+<!--<div class="col-lg-12">-->
+    <%#= simple_form_for([:overseers, @invoice, @email_message], url: {action: @action, controller: 'overseers/sales_invoices'}, :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
 
-      <div class="card-body">
-        <div class="form-group">
-          <%= f.input :from, disabled: true %>
-        </div>
+<!--      <div class="card-body">-->
+<!--        <div class="form-group">-->
+          <%#= f.input :from, disabled: true %>
+<!--        </div>-->
 
-        <div class="form-group">
-          <%= f.input :to %>
-        </div>
+<!--        <div class="form-group">-->
+          <%#= f.input :to %>
+<!--        </div>-->
 
-        <div class="form-group">
-          <%= f.input :cc %>
-        </div>
-        <div class="form-group">
-          <%= f.input :bcc %>
-        </div>
+<!--        <div class="form-group">-->
+          <%#= f.input :cc %>
+<!--        </div>-->
+<!--        <div class="form-group">-->
+          <%#= f.input :bcc %>
+<!--        </div>-->
 
-        <div class="form-group">
-          <%= f.input :subject %>
-        </div>
+<!--        <div class="form-group">-->
+          <%#= f.input :subject %>
+<!--        </div>-->
 
-        <div class="form-group">
-          <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} %>
-          <div class="d-flex flex-row align-items-center">
-            <div class="form-group mr-2">
-              <%= link_to overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf, target: :_blank), :class => 'btn btn-success' do %>
-                <i class="fal fa-file-pdf mr-2"></i>Invoice
-              <% end %>
-            </div>
-            <%= f.input :auto_attach, wrapper: :custom_boolean, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
-          </div>
-        </div>
+<!--        <div class="form-group">-->
+          <%#= f.input :files, wrapper: :custom_file, input_html: {multiple: true} %>
+<!--          <div class="d-flex flex-row align-items-center">-->
+<!--            <div class="form-group mr-2">-->
+              <%#= link_to overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), :class => 'btn btn-success' do %>
+<!--                <i class="fal fa-file-pdf mr-2"></i>Invoice-->
+              <%# end %>
+<!--            </div>-->
+            <%#= f.input :auto_attach, wrapper: :custom_boolean, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+<!--          </div>-->
+<!--        </div>-->
 
-        <div class="form-group">
-          <%= f.input :body, input_html: {class: 'html-editor'} %>
-        </div>
-      </div>
-      <div class="card-footer">
-        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-          <i class="fal fa-paper-plane"></i> Send Email
-        <% end %>
-      </div>
-    <% end %>
-</div>
+<!--        <div class="form-group">-->
+          <%#= f.input :body, input_html: {class: 'html-editor'} %>
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card-footer">-->
+        <%#= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+<!--          <i class="fal fa-paper-plane"></i> Send Email-->
+        <%# end %>
+<!--      </div>-->
+    <%# end %>
+<!--</div>-->
