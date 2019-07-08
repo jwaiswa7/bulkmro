@@ -22,7 +22,7 @@
               <%= f.hidden_field :customer_product_id, value: @customer_product.id %>
               <div class="form-row">
                 <div class="col-4 col-md-2">
-                  <%= f.input :quantity, label: false, :class => 'form-control', input_html: {placeholder: 'Quantity', step: @customer_product.moq, min: @customer_product.moq, value: @customer_product.moq} %>
+                  <%= f.input :quantity, label: false, :class => 'form-control', input_html: {placeholder: 'Quantity', step: @customer_product.moq, min: @customer_product.moq, value: @default_quantity} %>
                 </div>
                 <div class="col-8 col-md-4">
                   <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
@@ -77,7 +77,7 @@
                 <strong class="d-block">Instock Quantity</strong>
                 <%= @customer_product.product.stocks.sum(&:instock) %>
               </div>
-              <% if @account == current_company.account %>
+              <% if @is_henkel%>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">BP Catalog No</strong>
                   <%= @customer_product.bp_catalog_sku if @customer_product.bp_catalog_sku.present?  %>

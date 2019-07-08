@@ -90,7 +90,7 @@
                 <em>MOQ - <%= customer_product.moq %></em><br>
                 <em>Instock Qty
                   - <%= customer_product.product.stocks.sum(&:instock) if customer_product.product.present? %></em><br>
-                <% if @henkel_company.include?(current_company.id) %>
+                <% if @is_henkel %>
                   <strong class="d-block mt-2">BP Catalog</strong>
                   <em>No
                     - <%= customer_product.bp_catalog_sku if customer_product.bp_catalog_sku.present? %></em><br>
@@ -106,7 +106,7 @@
               <%= f.hidden_field :customer_product_id, value: customer_product.id %>
               <div class="form-row">
                 <div class="col-4">
-                  <%= f.input :quantity, label: false, input_html: {placeholder: 'Quantity', step: customer_product.moq, min: customer_product.moq, value: customer_product.moq} %>
+                  <%= f.input :quantity, label: false, input_html: {placeholder: 'Quantity', step: customer_product.moq, min: customer_product.moq, value: @default_quantity || customer_product.moq} %>
                 </div>
                 <div class="col-8">
                   <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
