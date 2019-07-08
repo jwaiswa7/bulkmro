@@ -9,7 +9,9 @@ json.data (@overseers) do |overseer|
                       end
                   ].join(' '),
                   overseer.hierarchy_to_s,
-                  format_enum(overseer.role),
+                  if overseer.acl_role.present?
+                    overseer.acl_role.role_name
+                  end,
                   format_succinct_date(overseer.created_at)
               ]
 end

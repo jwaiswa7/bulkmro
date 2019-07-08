@@ -13,7 +13,7 @@
       </div>
     <% end %>
 
-    <% if @sales_quotes.present? && @inquiry.final_sales_quote.present? && !is_authorized(@inquiry.final_sales_quote, 'new_sales_order') && !policy(@inquiry.final_sales_quote).new_sales_order? %>
+    <% if @sales_quotes.present? && @inquiry.final_sales_quote.present? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
       <ul class="list-group text-info mb-3">
         <li class="list-group-item">
           <h5 class="text-info mb-0">Before making a sales order, Please fulfill the following.</h5>
@@ -68,7 +68,7 @@
                 concat content_tag :i, nil, class: ['fal fa-retweet-alt'].join
               end %>
             <% end %>
-            <% if is_authorized(sales_quote, 'new_sales_order') && policy(@inquiry.final_sales_quote).new_sales_order? %>
+            <% if @inquiry.final_sales_quote.present? && is_authorized(sales_quote, 'new_sales_order') && policy(@inquiry.final_sales_quote).new_sales_order? %>
               <%= row_action_button(new_overseers_inquiry_sales_order_path(@inquiry, sales_quote_id: sales_quote.to_param), 'external-link', 'Add to Order', 'success') %>
             <% end %>
             <% if policy(sales_quote).new_email_message? && is_authorized(sales_quote, 'new_email_message') %>
