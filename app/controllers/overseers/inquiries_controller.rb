@@ -34,6 +34,8 @@ class Overseers::InquiriesController < Overseers::BaseController
         service = Services::Overseers::Finders::KraReports.new(params, current_overseer)
         service.call
 
+        @inquiry_records = service.indexed_records
+
         if params['kra_report'].present?
           if @category.include? 'by_sales_order'
             @indexed_kra_varient_reports = {}
