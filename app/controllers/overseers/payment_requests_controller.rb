@@ -32,7 +32,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
   end
 
   def render_modal_form
-    authorize @payment_request
+    authorize_acl @payment_request
     respond_to do |format|
       if params[:title] == 'Comment'
         format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @payment_request, url: add_comment_overseers_payment_request_path(@payment_request), view_more: overseers_payment_request_path(@payment_request)}}
@@ -42,7 +42,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
 
   def add_comment
     @payment_request.assign_attributes(payment_request_params.merge(overseer: current_overseer))
-    authorize @payment_request
+    authorize_acl @payment_request
     @payment_request.skip_validation = true
     @payment_request.skip_due_date_validation = true
     if @payment_request.valid?

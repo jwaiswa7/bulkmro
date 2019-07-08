@@ -167,7 +167,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   end
 
   def render_modal_form
-    authorize @invoice_request
+    authorize_acl @invoice_request
     respond_to do |format|
       if params[:title] == 'Comment'
         format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @invoice_request, url: add_comment_overseers_invoice_request_path(@invoice_request), view_more: overseers_invoice_request_path(@invoice_request)}}
@@ -179,7 +179,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def add_comment
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
-    authorize @invoice_request
+    authorize_acl @invoice_request
     @invoice_request.skip_grpo_number_validation = true
     if @invoice_request.valid?
       if params['invoice_request']['comments_attributes']['0']['message'].present?

@@ -149,7 +149,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def render_modal_form
-    authorize @po_request
+    authorize_acl @po_request
     respond_to do |format|
       if params[:title] == 'Comment'
         format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @po_request, url: add_comment_overseers_po_request_path(@po_request), view_more: overseers_po_request_path(@po_request)}}
@@ -161,7 +161,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def add_comment
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
-    authorize @po_request
+    authorize_acl @po_request
     if @po_request.valid?
       if params['po_request']['comments_attributes']['0']['message'].present?
         ActiveRecord::Base.transaction do
