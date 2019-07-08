@@ -2,6 +2,7 @@ json.data (@inquiries) do |inquiry|
   json.array! [
                   [],
                   inquiry.inside_sales_owner.to_s,
+                  inquiry.outside_sales_owner.to_s,
                   status_badge(inquiry.status),
                   link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),
                   format_succinct_date(inquiry.created_at),
@@ -19,6 +20,7 @@ end
 json.columnFilters [
                        [],
                        Overseer.inside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+                       Overseer.outside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
                        Inquiry.statuses.except('Lead by O/S').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        [],

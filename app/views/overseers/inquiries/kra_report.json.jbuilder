@@ -4,14 +4,18 @@ json.data (@indexed_kra_reports) do |inquiry|
                   if @date_range.present?
                     if @category.present? && @category == 'company_key'
                       link_to(Company.find(inquiry['key']).to_s, overseers_company_path(inquiry['key']), target: '_blank')
+                    elsif @category.present? && @category.include?('outside')
+                      link_to(Overseer.find(inquiry['key']).to_s, filtered_path(kra_report_per_sales_owner_overseers_inquiries_path, [filter_by_value('Outside Sales Owner', Overseer.find(inquiry['key']).to_s, inquiry['key']), filter_by_date_range('Date+of+inquiry', @date_range)]), target: '_blank')
                     else
-                      link_to(Overseer.find(inquiry['key']).to_s, filtered_path(kra_report_per_sales_owner_overseers_inquiries_path, [filter_by_value('Name', Overseer.find(inquiry['key']).to_s, inquiry['key']), filter_by_date_range('Date+of+inquiry', @date_range)]), target: '_blank')
+                      link_to(Overseer.find(inquiry['key']).to_s, filtered_path(kra_report_per_sales_owner_overseers_inquiries_path, [filter_by_value('Inside Sales Owner', Overseer.find(inquiry['key']).to_s, inquiry['key']), filter_by_date_range('Date+of+inquiry', @date_range)]), target: '_blank')
                     end
                   else
                     if @category.present? && @category == 'company_key'
                       link_to(Company.find(inquiry['key']).to_s, overseers_company_path(inquiry['key']), target: '_blank')
+                    elsif @category.present? && @category.include?('outside')
+                      link_to(Overseer.find(inquiry['key']).to_s, filtered_path(kra_report_per_sales_owner_overseers_inquiries_path, [filter_by_value('Outside Sales Owner', Overseer.find(inquiry['key']).to_s, inquiry['key'])]), target: '_blank')
                     else
-                      link_to(Overseer.find(inquiry['key']).to_s, filtered_path(kra_report_per_sales_owner_overseers_inquiries_path, [filter_by_value('Name', Overseer.find(inquiry['key']).to_s, inquiry['key'])]), target: '_blank')
+                      link_to(Overseer.find(inquiry['key']).to_s, filtered_path(kra_report_per_sales_owner_overseers_inquiries_path, [filter_by_value('Inside Sales Owner', Overseer.find(inquiry['key']).to_s, inquiry['key'])]), target: '_blank')
                     end
                   end,
                   if @category.present? && @category == 'company_key'

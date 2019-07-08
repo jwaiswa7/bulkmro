@@ -27,4 +27,9 @@ class AnnualTarget < ApplicationRecord
     (self["#{type}_target"]) / 12.0
   end
 
+  def self.current_year
+    current = Date.today.year
+    "#{current}-#{current+1}"
+  end
+
 end
