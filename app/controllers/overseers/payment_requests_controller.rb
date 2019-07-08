@@ -64,7 +64,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
 
     def payment_request_params
       params.require(:payment_request).permit(
-          :id,
+        :id,
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
       )
     end
