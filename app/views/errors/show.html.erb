@@ -14,8 +14,6 @@
           beforeSend: (event) => {
               // Check if it is an exception -> Show report dialog
               event.exception && Sentry.showReportDialog();
-              console.log('event.exception')
-              console.log(event.exception)
               return event;
           }
       });
