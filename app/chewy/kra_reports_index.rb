@@ -1,5 +1,7 @@
 class KraReportsIndex < BaseIndex
-  define_type Inquiry.where(status: 'Order Won').with_includes do
+  start_date = '01-04-2019'
+  end_date = '06-07-2019'
+  define_type Inquiry.where(created_at: start_date..end_date).with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
