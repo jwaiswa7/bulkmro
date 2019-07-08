@@ -262,12 +262,14 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     issue_in_account_sync = []
     missing_companies = []
     missing_account = []
+    different_account_name = []
 
     i = 1
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_accounts.csv', 'seed_files_3')
-    service.loop(100) do |x|
+    service.loop(nil) do |x|
       puts '********************** ITERATION ***************************', i
       i = i + 1
+      # next if i <= 300
       next if x.get_column('Duplicate Company Name? - Final (Yes / No)') == 'Yes'
 
       company = Company.acts_as_customer.find_by_name(x.get_column('Company Name').to_s)
@@ -298,15 +300,22 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
           if new_account.present?
             company.account = new_account
+            company.save(validate: false)
           else
-            account = company.account
-            account.name = x.get_column('Corrected Alias Name - Final').to_s
-            account.save(validate: false)
+            old_account_name = company.account.name.downcase
+            new_account_name = x.get_column('Corrected Alias Name - Final').to_s.downcase
+            if old_account_name.include?(new_account_name) || new_account_name.include?(old_account_name)
+              account = company.account
+              account.name = x.get_column('Corrected Alias Name - Final').to_s
+              account.save(validate: false)
+              company.save(validate: false)
+            else
+              different_account_name.push(x.get_column('Corrected Alias Name - Final').to_s)
+            end
           end
 
-          company.save(validate: false)
-          account = company.account
           begin
+            account = company.account
             account.save_and_sync
           rescue StandardError => e
             issue_in_account_sync.push(x.get_column('Company Name'))
@@ -322,27 +331,27 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     puts '****************************** ISSUE IN COMPANY SYNC *********************', company_not_synced_in_sap
     puts '***************************** Missing Accounts *******************************', missing_account
     puts '*************************** ISSUE IN ACC SYNC ********************************', issue_in_account_sync
+    puts '**************************** DIFFERENT ACCOUNT NAME *****************************', different_account_name
   end
 
   def check_new_company_names_and_accounts
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_accounts.csv', 'seed_files_3')
     updated_correctly = 1
     to_be_checked = []
-    service.loop(100) do |x|
+    service.loop(nil) do |x|
       next if x.get_column('Duplicate Company Name? - Final (Yes / No)') == 'Yes'
-      old_company = Company.acts_as_customer.where(name: x.get_column('Company Name')).last
+      # old_company = Company.acts_as_customer.where(name: x.get_column('Company Name')).last
       new_company = Company.acts_as_customer.where(name: x.get_column('Corrected Company Name - Final')).last
-      if (old_company.present? && new_company.present? && old_company.id == new_company.id) ||
-          (new_company.present? && new_company.account.name == x.get_column('Corrected Alias Name - Final').to_s)
+      # if (old_company.present? && new_company.present? && old_company.id == new_company.id) ||
+      if (new_company.present? && new_company.account.name == x.get_column('Corrected Alias Name - Final').to_s && new_company.name == x.get_column('Corrected Company Name - Final').to_s )
         puts '*************Correct******************', updated_correctly
         updated_correctly = updated_correctly + 1
       else
-
         to_be_checked.push(x.get_column('Company Name'))
       end
     end
     puts 'UPDATED CORRECTLY', updated_correctly
-    puts 'TO BE CHECKED', to_be_checked
+    puts 'TO BE CHECKED', to_be_checked, to_be_checked.count
   end
 
   def check_missing_companies
