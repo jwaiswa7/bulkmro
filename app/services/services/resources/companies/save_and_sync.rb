@@ -31,7 +31,7 @@ class Services::Resources::Companies::SaveAndSync < Services::Shared::BaseServic
         remote_uid = ::Resources::BusinessPartner.create(company)
         company.update_attributes(remote_uid: remote_uid) if remote_uid.present?
       else
-        ::Resources::BusinessPartner.update(company.remote_uid, company)
+        ::Resources::BusinessPartner.temp_update(company.remote_uid, company)
       end
     end
   end

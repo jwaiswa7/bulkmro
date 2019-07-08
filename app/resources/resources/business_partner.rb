@@ -13,6 +13,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         address.save!
       end
 
+      # temp
       # update_associated_records(response)
     end
 

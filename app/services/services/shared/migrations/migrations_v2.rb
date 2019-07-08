@@ -168,10 +168,11 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     missing_companies = []
     missing_account = []
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_accounts.csv', 'seed_files_3')
-    service.loop(nil) do |x|
+    service.loop(100) do |x|
       puts '********************** ITERATION ***************************', i
       i = i + 1
-      next if x.get_column('Duplicate Company Name? - Final (Yes / No)') == 'Yes' || x.get_column('Corrected Alias Name - Final').to_s == 'adani'
+      # next if i < 300
+      next if x.get_column('Duplicate Company Name? - Final (Yes / No)') == 'Yes'
 
       company = Company.acts_as_customer.find_by_name(x.get_column('Company Name').to_s)
 
@@ -205,21 +206,31 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           end
         else
           begin
-            ::Resources::BusinessPartner.update(company.remote_uid, company)
-          rescue
+            ::Resources::BusinessPartner.temp_update(company.remote_uid, company)
+          rescue StandardError => e
+            puts '--------------------------------- C UPDATE Error ------------------------------------', e.inspect
             issue_in_update.push(x.get_column('Company Name'))
           end
         end
 
         # updates account
         if company.account.present?
+          new_account = Account.find_by_name(x.get_column('Corrected Alias Name - Final').to_s)
+
+          if new_account.present?
+            company.account = new_account
+            company.save(validate: false)
+          else
+            account = company.account
+            account.name = x.get_column('Corrected Alias Name - Final').to_s
+            account.save(validate: false)
+          end
           account = company.account
-          account.name = x.get_column('Corrected Alias Name - Final')
-          account.save(validate: false)
           if account.remote_uid.present?
             begin
               ::Resources::BusinessPartnerGroup.update(account.remote_uid, account)
-            rescue
+            rescue StandardError => e
+              puts '--------------------------------- A UPDATE Error ------------------------------------', e.inspect
               issue_in_account_update.push(x.get_column('Company Name'))
             end
           else
@@ -229,9 +240,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
               account_not_in_sap.push(x.get_column('Company Name'))
             else
               account.update_attributes(remote_uid: remote_uid) if remote_uid.present?
-            ensure
-              # ensure that this code always runs, no matter what
-              # does not change the final value of the block
             end
           end
         else
@@ -247,6 +255,94 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     puts '*************************** ISSUE IN ACC UPDATE ********************************', issue_in_account_update
     puts '**************************** C not in SAP ********************************', not_in_sap
     puts '************************ A not in SAP *****************************', account_not_in_sap
+  end
+
+  def update_company_and_alias_new
+    company_not_synced_in_sap = []
+    issue_in_account_sync = []
+    missing_companies = []
+    missing_account = []
+
+    i = 1
+    service = Services::Shared::Spreadsheets::CsvImporter.new('company_accounts.csv', 'seed_files_3')
+    service.loop(100) do |x|
+      puts '********************** ITERATION ***************************', i
+      i = i + 1
+      next if x.get_column('Duplicate Company Name? - Final (Yes / No)') == 'Yes'
+
+      company = Company.acts_as_customer.find_by_name(x.get_column('Company Name').to_s)
+
+      if company.blank?
+        probable_companies = Company.acts_as_customer.where("companies.name like ?", "%#{x.get_column('Company Name').to_s}%")
+        probable_companies.each do |probable_company|
+          if probable_company.name.squish == x.get_column('Company Name').to_s
+            company = probable_company
+            break
+          end
+        end
+      end
+
+      # updates company
+      if company.present?
+        company.name = x.get_column('Corrected Company Name - Final')
+        company.save(validate: false)
+        begin
+          company.save_and_sync
+        rescue
+          company_not_synced_in_sap.push(x.get_column('Company Name'))
+        end
+
+        # updates account
+        if company.account.present?
+          new_account = Account.find_by_name(x.get_column('Corrected Alias Name - Final').to_s)
+
+          if new_account.present?
+            company.account = new_account
+          else
+            account = company.account
+            account.name = x.get_column('Corrected Alias Name - Final').to_s
+            account.save(validate: false)
+          end
+
+          company.save(validate: false)
+          account = company.account
+          begin
+            account.save_and_sync
+          rescue StandardError => e
+            issue_in_account_sync.push(x.get_column('Company Name'))
+          end
+        else
+          missing_account.push(x.get_column('Company Name'))
+        end
+      else
+        missing_companies.push(x.get_column('Company Name'))
+      end
+    end
+    puts '***************************** Missing Companies *******************************', missing_companies
+    puts '****************************** ISSUE IN COMPANY SYNC *********************', company_not_synced_in_sap
+    puts '***************************** Missing Accounts *******************************', missing_account
+    puts '*************************** ISSUE IN ACC SYNC ********************************', issue_in_account_sync
+  end
+
+  def check_new_company_names_and_accounts
+    service = Services::Shared::Spreadsheets::CsvImporter.new('company_accounts.csv', 'seed_files_3')
+    updated_correctly = 1
+    to_be_checked = []
+    service.loop(100) do |x|
+      next if x.get_column('Duplicate Company Name? - Final (Yes / No)') == 'Yes'
+      old_company = Company.acts_as_customer.where(name: x.get_column('Company Name')).last
+      new_company = Company.acts_as_customer.where(name: x.get_column('Corrected Company Name - Final')).last
+      if (old_company.present? && new_company.present? && old_company.id == new_company.id) ||
+          (new_company.present? && new_company.account.name == x.get_column('Corrected Alias Name - Final').to_s)
+        puts '*************Correct******************', updated_correctly
+        updated_correctly = updated_correctly + 1
+      else
+
+        to_be_checked.push(x.get_column('Company Name'))
+      end
+    end
+    puts 'UPDATED CORRECTLY', updated_correctly
+    puts 'TO BE CHECKED', to_be_checked
   end
 
   def check_missing_companies
@@ -974,11 +1070,38 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
   def flex_dump
     column_headers = ['Order Date', 'OD', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Order Status', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
-    model = SalesOrder
-    fc = []
+    start_at = Date.today.last_week.beginning_of_week.beginning_of_day
+    end_at = Date.today.last_week.end_of_week.end_of_day
+
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
-      model.joins(:company).where(companies: {id: 1847}).where(created_at: Date.new(2019, 06, 23).beginning_of_day..Date.new(2019, 06, 29).end_of_day).order(name: :asc).each do |order|
-        # if order.inquiry_currency.currency.id == 2 && order.calculated_total < 75000
+      flex_offline_orders = SalesOrder.joins(:company).where(companies: {id: 1847}).where(created_at: start_at..end_at).order(name: :asc)
+      flex_offline_orders.each do |order|
+        if !order.inquiry.customer_order.present?
+          order.rows.each do |record|
+            sales_order = record.sales_order
+            order_date = sales_order.inquiry.customer_order_date.strftime('%F')
+            order_cd = sales_order.created_at.strftime('%F')
+            order_id = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.online_order_number : ''
+            customer_po_number = sales_order.inquiry.customer_po_number
+            part_number = record.product.sku
+            account = sales_order.inquiry.company.name
+
+            line_item_quantity = record.quantity
+            line_item_net_total = record.total_selling_price.to_s
+            sap_status = sales_order.remote_status
+            user_email = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.contact.email : 'sivakumar.ramu@flex.com'
+            shipping_address = sales_order.inquiry.shipping_address
+            currency = sales_order.inquiry.inquiry_currency.currency.name
+            category = record.product.category.name
+            part_number_description = record.product.name
+
+            writer << [order_date, order_cd, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
+          end
+        end
+      end
+
+      flex_online_orders = CustomerOrder.joins(:company).where(companies: {id: 1847}).where(created_at: start_at..end_at).order(name: :asc)
+      flex_online_orders.each do |order|
         order.rows.each do |record|
           sales_order = record.sales_order
           order_date = sales_order.inquiry.customer_order_date.strftime('%F')
@@ -999,14 +1122,10 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
           writer << [order_date, order_cd, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
         end
-        # elsif order.inquiry_currency.currency.id != 2
-        #   fc.push(order.order_number)
-        # end
       end
-      # puts 'FC', fc
     end
 
-    fetch_csv('flex_order_data_export_weekly1.csv', csv_data)
+    fetch_csv('flex_order_data_export_weekly2.csv', csv_data)
   end
 
   def invoices_export
