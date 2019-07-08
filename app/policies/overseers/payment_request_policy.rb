@@ -28,4 +28,12 @@ class Overseers::PaymentRequestPolicy < Overseers::ApplicationPolicy
   def edit?
     accounts? || logistics? || admin?
   end
+
+  def render_modal_form?
+    add_comment?
+  end
+
+  def add_comment?
+    index?
+  end
 end
