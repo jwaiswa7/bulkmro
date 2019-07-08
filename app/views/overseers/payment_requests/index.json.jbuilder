@@ -1,13 +1,13 @@
 json.data (@payment_requests) do |payment_request|
   json.array! [
                   [
-                      if is_authorized(payment_request,'show')
+                      if is_authorized(payment_request, 'show')
                         row_action_button(overseers_payment_request_path(payment_request), 'eye', 'View Payment Request', 'info')
                       end,
-                      if is_authorized(payment_request,'edit') && !payment_request.Cancelled?
+                      if is_authorized(payment_request, 'edit') && !payment_request.Cancelled?
                         row_action_button(edit_overseers_po_request_payment_request_path(payment_request.po_request, payment_request), 'pencil', 'Edit Payment Request', 'warning')
                       end,
-                      if is_authorized(payment_request,'index')
+                      if is_authorized(payment_request, 'index')
                         link_to('', class: ['btn btn-sm btn-success comment-payment-request'], 'data-payment-request-id': payment_request.id, title: 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
