@@ -14,9 +14,8 @@ class Overseers::ReportsController < Overseers::BaseController
     @report.assign_attributes(report_params)
     params[:overseer] = current_overseer
     # @report.designation = 'Inside'
-    service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params)
+    service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params, current_overseer)
     @data = service.call
-
     authorize_acl @report
 
     render @report.uid
@@ -26,7 +25,7 @@ class Overseers::ReportsController < Overseers::BaseController
     @report = Report.find_by_uid(params[:id])
     @report.assign_attributes(report_params)
     params[:overseer] = current_overseer
-    service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params)
+    service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params, current_overseer)
     @indexed_records = service.call
     authorize_acl @report
     export_service = ['Services', 'Overseers', 'Exporters', @report.name].join('::').constantize.new([], current_overseer, @indexed_records, params)

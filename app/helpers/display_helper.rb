@@ -27,15 +27,21 @@ module DisplayHelper
     end
   end
 
-  def percentage(number, precision: 0)
-    if number && !number.nan?
+  def percentage(number, precision: 0, show_symbol: true)
+    if number && !number.nan? && show_symbol
       [number_with_precision(number, precision: precision), '%'].join
+    else
+      number_with_precision(number, precision: precision)
     end
   end
 
-  def calculate_percentage(val1, val2, precision: 2)
-    value = (val1.as_percentage_of(val2).to_f).round(2)
-    percentage(value, precision: precision)
+  def calculate_percentage(val1, val2, precision: 0)
+    if val2 == 0
+      '0%'
+    else
+      value = (val1.as_percentage_of(val2).to_f).round(2)
+      percentage(value, precision: precision)
+    end
   end
 
   def capitalize(text)

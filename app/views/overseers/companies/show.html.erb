@@ -424,6 +424,9 @@
               <% end %>
               <a href="<%= new_excel_customer_product_import_overseers_company_imports_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-file-excel mr-1"></i>Add
                 products using excel</a>
+              <% if @company.customer_products.count > 0 && is_authorized(:customer_product, 'export_customer_product') %>
+                <a href="<%= export_customer_product_overseers_company_customer_products_path(@company, format: :csv) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-download mr-1"></i>Company Product Export</a>
+              <% end %>
             </div>
           <% end %>
           <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'products' %>

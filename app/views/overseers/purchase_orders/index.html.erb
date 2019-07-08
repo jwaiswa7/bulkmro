@@ -5,9 +5,11 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_directly_exported_filtered_records, true %>
 
+<% if Settings.reports.show_summary %>
 <div class="col-lg-12">
   <%= render partial: "shared/layouts/summary", locals: {klass: PurchaseOrder, statuses: PurchaseOrder.statuses} %>
 </div>
+<% end %>
 
 <div class="col-lg-12">
   <% content_for :header_row do %>

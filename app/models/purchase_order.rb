@@ -68,7 +68,8 @@ class PurchaseOrder < ApplicationRecord
       'Payment to Supplier Delayed': 68,
       'payment_done_out_from_bm_warehouse': 69,
       'cancelled': 95,
-      'Closed': 96
+      'Closed': 96,
+      'Delivered': 97
   }
 
   enum material_status: {

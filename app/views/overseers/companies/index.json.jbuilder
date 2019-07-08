@@ -33,6 +33,7 @@ json.data (@companies) do |company|
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
+                  company.customer_products.size,
                   (company.addresses.present? && company.is_international) ? 'International' : company.pan,
                   format_boolean(company.validate_pan),
                   if company.is_supplier? && company.rating.present? && company.rating > 0
@@ -49,6 +50,7 @@ json.columnFilters [
                        [],
                        [],
                        [{ "source": autocomplete_overseers_accounts_path }],
+                       [],
                        [],
                        [],
                        [],

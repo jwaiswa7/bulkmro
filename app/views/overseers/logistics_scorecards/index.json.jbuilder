@@ -1,7 +1,7 @@
 json.data (@logistics_scorecard_records) do |record|
   json.array! [
                   [
-                      modal_button('pencil', 'Add Delay Reason', 'warning', record[:id])
+                      modal_button('user-clock', 'Add Delay Reason', 'warning', record[:id])
                   ],
                   record[:inquiry_number],
                   record[:inquiry_date].present? ? format_date_without_time(Date.parse(record[:inquiry_date])) : '--',
@@ -23,7 +23,7 @@ json.data (@logistics_scorecard_records) do |record|
                   record[:actual_delivery_tat].present? ? record[:actual_delivery_tat] : '--',
                   record[:delay].present? ? record[:delay] : '--',
                   record[:sla_bucket].present? ? record[:sla_bucket] : '--',
-                  record[:delay_bucket].present? ? SalesInvoice.delay_buckets.key(record[:delay_bucket]) : '--',
+                  record[:delay_bucket].present? ? SalesInvoice.delay_buckets.key(record[:delay_bucket]) : 'Not Delivered',
                   record[:delay_reason].present? ? SalesInvoice.delay_reasons.key(record[:delay_reason]) : '--',
                   record[:cp_committed_month].present? ? Date.parse(record[:cp_committed_month]).strftime("%B %Y") : '-'
               ]
@@ -33,7 +33,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [],
+                       Company.all.map {|s| {"label": s.name, "value": s.id.to_s}}.as_json,
                        [],
                        Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.reject { |h| h[:label] == 'Logistics Team'}.as_json,
                        [],
@@ -52,7 +52,7 @@ json.columnFilters [
                        [],
                        [],
                        SalesInvoice.delay_buckets.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
-                       [],
+                       SalesInvoice.delay_reasons.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        []
 ]
 

@@ -573,7 +573,7 @@ Rails.application.routes.draw do
           collection do
             post 'generate_catalog'
             post 'destroy_all'
-
+            get 'export_customer_product'
             get 'autocomplete'
           end
         end
