@@ -40,6 +40,9 @@ class Series < ApplicationRecord
   end
 
   def increment_last_number
-    self.update_attributes(last_number: (self.last_number || self.first_number) + 1)
+    self.with_lock do
+      self.last_number = ((self.last_number || self.first_number) + 1)
+      self.save!
+    end
   end
 end
