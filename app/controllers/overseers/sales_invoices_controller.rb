@@ -89,7 +89,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
       subject: subject,
       body: SalesInvoiceMailer.delivery_mail(@email_message).body.raw_source,
       auto_attach: true,
-      cc: 'logistics@bulkmro.com, sales@bulkmro.com, gitesh.ganekar@bulkmro.com'
+      cc: 'logistics@bulkmro.com, sales@bulkmro.com'
         )
     @params = {
         record: [:overseers, @invoice, @email_message],
@@ -132,13 +132,13 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
   def dispatch_mail_to_customer
     @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice)
-    subject = "Ref# #{@invoice.inquiry.inquiry_number}- Your Order #{@invoice.inquiry.customer_po_number} - Disptach Notification"
+    subject = "Ref# #{@invoice.inquiry.inquiry_number}- Your Order #{@invoice.inquiry.customer_po_number} - Dispatch Notification"
     @action = 'delivery_mail_to_customer_notification'
     @email_message.assign_attributes(
       subject: subject,
       body: SalesInvoiceMailer.dispatch_mail(@email_message).body.raw_source,
       auto_attach: true,
-      cc: 'logistics@bulkmro.com, sales@bulkmro.com, gitesh.ganekar@bulkmro.com'
+      cc: 'logistics@bulkmro.com, sales@bulkmro.com'
     )
     @params = {
         record: [:overseers, @invoice, @email_message],
@@ -151,31 +151,31 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     render 'shared/layouts/email_messages/new'
   end
 
-  def dispatch_mail_to_customer_notification
-    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice)
-    @email_message.assign_attributes(email_message_params)
-
-    @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
-    @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
-
-    authorize_acl @invoice
-
-    if params['email_message']['auto_attach']
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Original_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
-    end
-
-
-    if @email_message.save!
-      SalesInvoiceMailer.send_delivery_mail(@email_message).deliver_now
-      Services::Overseers::Inquiries::UpdateStatus.new(@invoice, :ack_email_sent).call
-
-      redirect_to overseers_sales_invoices_path, notice: flash_message(@invoice, action_name)
-    else
-      render 'shared/layouts/email_messages/new'
-    end
-  end
+  # def dispatch_mail_to_customer_notification
+  #   @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice)
+  #   @email_message.assign_attributes(email_message_params)
+  #
+  #   @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
+  #   @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
+  #
+  #   authorize_acl @invoice
+  #
+  #   if params['email_message']['auto_attach']
+  #     @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Original_' + @invoice.filename(include_extension: true))
+  #     @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
+  #     @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
+  #   end
+  #
+  #
+  #   if @email_message.save!
+  #     SalesInvoiceMailer.send_delivery_mail(@email_message).deliver_now
+  #     Services::Overseers::Inquiries::UpdateStatus.new(@invoice, :ack_email_sent).call
+  #
+  #     redirect_to overseers_sales_invoices_path, notice: flash_message(@invoice, action_name)
+  #   else
+  #     render 'shared/layouts/email_messages/new'
+  #   end
+  # end
 
 
 

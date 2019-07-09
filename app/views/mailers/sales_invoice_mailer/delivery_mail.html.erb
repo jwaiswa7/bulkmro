@@ -1,7 +1,7 @@
 <div class="font-family: Arial; font-size: 14.5px;">
   <p style="color: #555;">Dear Sir/Madam,</p>
-  <p style="color: #555;">Thank you for your Order <%= @inquiry.customer_po_number.to_s %><%= ' dated - '+format_date(@inquiry.customer_po_received_date) if @inquiry.customer_po_received_date!=nil %><br/></p>
-  <p style="color: #555;">We are pleased to inform you that your shipment has been delivered on.</p>
+  <p style="color: #555;">Thank you for your Order <%= @inquiry.customer_po_number.to_s %><%= ' dated - '+format_date(@inquiry.customer_po_received_date) if @inquiry.customer_po_received_date!=nil %>.<br/></p>
+  <p style="color: #555;">We are pleased to inform you that your shipment has been delivered on xx.</p>
 
   <p style="color: #555;"><b>Please find attached our Tax Invoice for your reference and provide GRN.</b></p>
   <p style="color: #555;">If any modifications are required in the invoice, please communicate the same in writing within 2 working days otherwise the invoice will be deemed accepted.</p>
