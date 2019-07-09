@@ -114,24 +114,24 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
 
   private
 
-  def set_customer_product
-    @customer_product ||= CustomerProduct.find(params[:id])
-  end
+    def set_customer_product
+      @customer_product ||= CustomerProduct.find(params[:id])
+    end
 
-  def customer_product_params
-    params.require(:customer_product).permit(
+    def customer_product_params
+      params.require(:customer_product).permit(
         :name,
-        :company_id,
-        :product_id,
-        :tax_code_id,
-        :tax_rate_id,
-        :measurement_unit_id,
-        :customer_price,
-        :sku,
-        :brand_id,
-        :moq,
-        tag_ids: [],
-        images: []
-    )
-  end
+          :company_id,
+          :product_id,
+          :tax_code_id,
+          :tax_rate_id,
+          :measurement_unit_id,
+          :customer_price,
+          :sku,
+          :brand_id,
+          :moq,
+          tag_ids: [],
+          images: []
+      )
+    end
 end
