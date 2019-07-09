@@ -2,7 +2,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   before_action :set_customer_product, only: [:show, :edit, :update, :destroy]
 
   def index
-    @products = ApplyDatatableParams.to(@company.customer_products, params.reject! { |k, v| k == 'company_id' })
+    @products = ApplyDatatableParams.to(@company.customer_products, params.reject! {|k, v| k == 'company_id'})
     authorize_acl @products
   end
 
@@ -66,6 +66,13 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     redirect_to overseers_company_path(@company)
   end
 
+  def export_customer_product
+    authorize_acl :customer_product
+    service = Services::Overseers::Exporters::CustomerProductsExporter.new(params, current_overseer, [])
+    service.call
+
+    redirect_to url_for(Export.customer_product.last.report)
+  end
 
   def edit
     authorize_acl @customer_product
@@ -115,7 +122,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
       params.require(:customer_product).permit(
         :name,
           :company_id,
-        :product_id,
+          :product_id,
           :tax_code_id,
           :tax_rate_id,
           :measurement_unit_id,
