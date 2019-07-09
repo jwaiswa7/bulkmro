@@ -94,17 +94,17 @@
           <div class="col-md-8">
             <div class="form-row">
               <div class="col-6 col-md-6">
-                <%= f.input :opportunity_source, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources) %>
+                <%= f.input :opportunity_source, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources), disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
               </div>
               <div class="col-6 col-md-6">
-                <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez) %>
+                <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
               </div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-row">
               <div class="col-6 col-md-8">
-                <%= f.input :potential_amount, required: true, input_html: {min: 0.01} %>
+                <%= f.input :potential_amount, required: true, input_html: {min: 0.01}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
               </div>
               <div class="col-6 col-md-4">
                 <%= f.input :gross_profit_percentage, label: 'Gross profit %' %>
@@ -189,7 +189,7 @@
             <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', input_html: {class: "select2-single", :'data-placeholder' => 'Select a Account Owner'}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :procurement_operations, required: true, collection: Overseer.inside_and_obj(f.object.procurement_operations).alphabetical, label: 'Procurement Operations', input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement Operations'} %>
+            <%= f.association :procurement_operations, required: false, collection: Overseer.inside_and_obj(f.object.procurement_operations).alphabetical, label: 'Procurement Operations', input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement Operations'}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
         </div>
       </div>
@@ -229,7 +229,7 @@
           <h6 class="text-uppercase text-black-50 mb-1">Order Details</h6>
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= f.input :customer_po_number, label: 'Customer purchase order number' %>
+              <%= f.input :customer_po_number, label: 'Customer purchase order number', disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
             </div>
             <div class="col-12 col-md-6">
               <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer purchase order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_sheet.filename}".html_safe) : false %>
