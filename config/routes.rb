@@ -391,9 +391,6 @@ Rails.application.routes.draw do
         get 'export_for_logistics'
         get 'export_filtered_records'
       end
-      scope module: 'sales_invoices' do
-        resources :email_messages
-      end
     end
 
     resources :sales_shipments do
