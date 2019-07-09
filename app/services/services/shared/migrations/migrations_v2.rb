@@ -177,7 +177,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       company = Company.acts_as_customer.find_by_name(x.get_column('Company Name').to_s)
 
       if company.blank?
-        probable_companies = Company.acts_as_customer.where("companies.name like ?", "%#{x.get_column('Company Name').to_s}%")
+        probable_companies = Company.acts_as_customer.where('companies.name like ?', "%#{x.get_column('Company Name')}%")
         probable_companies.each do |probable_company|
           if probable_company.name.squish == x.get_column('Company Name').to_s
             company = probable_company
@@ -275,7 +275,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       company = Company.acts_as_customer.find_by_name(x.get_column('Company Name').to_s)
 
       if company.blank?
-        probable_companies = Company.acts_as_customer.where("companies.name like ?", "%#{x.get_column('Company Name').to_s}%")
+        probable_companies = Company.acts_as_customer.where('companies.name like ?', "%#{x.get_column('Company Name')}%")
         probable_companies.each do |probable_company|
           if probable_company.name.downcase.squish == x.get_column('Company Name').to_s.downcase
             company = probable_company
@@ -343,7 +343,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       # old_company = Company.acts_as_customer.where(name: x.get_column('Company Name')).last
       new_company = Company.acts_as_customer.where(name: x.get_column('Corrected Company Name - Final')).last
       # if (old_company.present? && new_company.present? && old_company.id == new_company.id) ||
-      if (new_company.present? && new_company.account.name == x.get_column('Corrected Alias Name - Final').to_s && new_company.name == x.get_column('Corrected Company Name - Final').to_s )
+      if new_company.present? && new_company.account.name == x.get_column('Corrected Alias Name - Final').to_s && new_company.name == x.get_column('Corrected Company Name - Final').to_s
         puts '*************Correct******************', updated_correctly
         updated_correctly = updated_correctly + 1
       else
@@ -1509,7 +1509,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
     selected = ['10210780']
     # 10210559
-    #10210780
+    # 10210780
 
     service.loop(nil) do |x|
       order_number = x.get_column('So #')
@@ -2038,5 +2038,4 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
     fetch_csv('sprint_si_dump.csv', csv_data)
   end
-
 end
