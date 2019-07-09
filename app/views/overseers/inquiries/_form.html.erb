@@ -107,7 +107,7 @@
                 <%= f.input :potential_amount, required: true, input_html: {min: 0.01}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
               </div>
               <div class="col-6 col-md-4">
-                <%= f.input :gross_profit_percentage, label: 'Gross profit %' %>
+                <%= f.input :gross_profit_percentage, label: 'Gross profit %', disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
               </div>
             </div>
           </div>
