@@ -12,17 +12,28 @@
         <div class="">
           <h6 class="text-uppercase text-black-50 mb-1"> Entity Details</h6>
           <div class="form-row">
-            <div class="col-6 col-md-3 mb-2">
+            <div class="col-6 col-md-4 mb-2">
               <strong class="d-block">Inquiry </strong>
               <%= f.object.sales_order.inquiry %>
             </div>
-            <div class="col-6 col-md-3 mb-2">
+            <div class="col-6 col-md-4 mb-2">
               <strong class="d-block">Order </strong>
               #<%= f.object.sales_order.order_number %>
             </div>
-            <div class="col-6 col-md-3 mb-2">
+            <div class="col-6 col-md-4 mb-2">
               <strong class="d-block">AR invoice </strong>
               #<%= f.object.ar_invoice_request.ar_invoice_number %>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-4 mt-2">
+              <%= f.input :dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.dispatch_date.try(:strftime, "%d-%b-%Y"), class: ''}, required: true %>
+            </div>
+            <div class="col-4 mt-2">
+              <%= f.input :expected_date_of_delivery, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.dispatch_date.try(:strftime, "%d-%b-%Y"), class: ''}, required: true %>
+            </div>
+            <div class="col-4 mt-2">
+              <%= f.input :actual_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.dispatch_date.try(:strftime, "%d-%b-%Y"), class: ''}, required: true %>
             </div>
           </div>
         </div>
