@@ -14,7 +14,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       end
 
       # temp
-      # update_associated_records(response)
+      update_associated_records(response)
     end
 
     id

@@ -277,7 +277,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       if company.blank?
         probable_companies = Company.acts_as_customer.where("companies.name like ?", "%#{x.get_column('Company Name').to_s}%")
         probable_companies.each do |probable_company|
-          if probable_company.name.squish == x.get_column('Company Name').to_s
+          if probable_company.name.downcase.squish == x.get_column('Company Name').to_s.downcase
             company = probable_company
             break
           end
