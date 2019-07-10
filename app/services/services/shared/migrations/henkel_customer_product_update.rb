@@ -1,5 +1,4 @@
 class Services::Shared::Migrations::HenkelCustomerProductUpdate < Services::Shared::Migrations::Migrations
-
   def update_name_sku
     service = Services::Shared::Spreadsheets::CsvImporter.new('henkelsheet.csv', 'seed_files_3')
     @customer_array = Array.new
@@ -12,7 +11,7 @@ class Services::Shared::Migrations::HenkelCustomerProductUpdate < Services::Shar
       @bp_catalog_sku = x.get_column('bp_catalog_sku')
       @company = x.get_column('company')
 
-      customer_products = CustomerProduct.where(sku: @sku,company_id: 143)
+      customer_products = CustomerProduct.where(sku: @sku, company_id: 143)
       if !customer_products.empty?
         customer_products = customer_products.compact
         if customer_products.count > 1
@@ -33,5 +32,4 @@ class Services::Shared::Migrations::HenkelCustomerProductUpdate < Services::Shar
       end
     end
   end
-
 end

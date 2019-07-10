@@ -44,7 +44,7 @@ class Customers::CustomerProductsController < Customers::BaseController
     @display_class = ''
     if @is_henkel
       @default_quantity = 0
-      @display_class = (@customer_product.product.stocks.sum(&:instock) > 0) ? '': 'd-none'
+      @display_class = (@customer_product.product.stocks.sum(&:instock) > 0) ? '' : 'd-none'
     end
   end
 
