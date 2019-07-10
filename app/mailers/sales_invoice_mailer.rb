@@ -18,4 +18,13 @@ class SalesInvoiceMailer < ApplicationMailer
     email = htmlized_email(email_message)
     email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
   end
+
+  def dispatch_mail(email_message)
+    @overseer = email_message.overseer
+    @contact = email_message.contact
+    @inquiry = email_message.inquiry
+
+    standard_email(email_message)
+  end
+
 end
