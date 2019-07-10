@@ -378,15 +378,16 @@ Rails.application.routes.draw do
       member do
         get 'edit_pod'
         patch 'update_pod'
+        get 'delivery_mail_to_customer'
+        post 'delivery_mail_to_customer_notification'
+        get 'dispatch_mail_to_customer'
+        post 'dispatch_mail_to_customer_notification'
       end
       collection do
         get 'export_all'
         get 'export_rows'
         get 'export_for_logistics'
         get 'export_filtered_records'
-      end
-      scope module: 'sales_invoices' do
-        resources :email_messages
       end
     end
 
