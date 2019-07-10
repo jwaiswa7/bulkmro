@@ -9,7 +9,7 @@ class Services::Overseers::Exporters::CustomerProductsExporter < Services::Overs
   end
 
   def call
-    perform_export_later('CustomerProductsExporter', @arguments)
+    ApplicationExportJob.perform_now('CustomerProductsExporter', @arguments)
   end
 
   def build_csv
