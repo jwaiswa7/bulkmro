@@ -80,11 +80,11 @@
               <% if @is_henkel%>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">BP Catalog No</strong>
-                  <%= @customer_product.bp_catalog_sku if @customer_product.bp_catalog_sku.present?  %>
+                  <%= @customer_product.sku if @customer_product.sku.present?  %>
                 </div>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">BP Catalog Name</strong>
-                  <%= @customer_product.bp_catalog_name if @customer_product.bp_catalog_name.present? %>
+                  <%= @customer_product.name if @customer_product.name.present? %>
                 </div>
               <% end %>
             </div>

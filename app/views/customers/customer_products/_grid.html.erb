@@ -93,9 +93,9 @@
                 <% if @is_henkel %>
                   <strong class="d-block mt-2">BP Catalog</strong>
                   <em>No
-                    - <%= customer_product.bp_catalog_sku if customer_product.bp_catalog_sku.present? %></em><br>
+                    - <%= customer_product.sku if customer_product.sku.present? %></em><br>
                   <em> Name
-                    - <%= customer_product.bp_catalog_name if customer_product.bp_catalog_name.present? %></em>
+                    - <%= customer_product.name if customer_product.name.present? %></em>
                 <% end %>
               </p>
             </a>
