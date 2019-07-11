@@ -23,6 +23,7 @@ class Overseers::OutwardDispatches::EmailMessagesController < Overseers::Outward
         contact: @contact,
         inquiry: @inquiry,
         sales_order: @sales_order,
+        email_type: 'Material Dispatched to Customer'
     )
     @email_message.assign_attributes(email_message_params)
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:cc].present?
