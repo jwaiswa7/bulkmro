@@ -54,9 +54,11 @@ class InvoiceRequest < ApplicationRecord
   validates_presence_of :inquiry
   validates_numericality_of :ap_invoice_number, allow_blank: true
   validate :has_attachments?
-  validate :grpo_number_valid?
+  validate :grpo_number_valid?, unless: :skip_grpo_number_validation
   validate :presence_of_reason
   validate :valid_inward_dispatches?
+
+  attr_accessor :skip_grpo_number_validation
 
   def grpo_number_valid?
     if self.created_date.present? && self.created_date < '2019-04-01' && self.grpo_number.present? && self.grpo_number <= 50000000
