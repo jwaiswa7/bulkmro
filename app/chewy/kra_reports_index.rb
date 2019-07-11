@@ -1,5 +1,5 @@
 class KraReportsIndex < BaseIndex
-  define_type Inquiry.all.with_includes do
+  define_type Inquiry.where(:inquiry_number => BibleSalesOrder.all.pluck(:inquiry_number)).with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
@@ -27,7 +27,7 @@ class KraReportsIndex < BaseIndex
     field :sales_order_count, value: -> (record) {record.final_sales_orders.without_cancelled.count}, type: 'integer'
     field :margin_percentage, value: -> (record) { record.margin_percentage }, type: 'float'
     field :total_order_value, value: -> (record) {BibleSalesOrder.where(:inquiry_number => record.inquiry_number).pluck(:order_total).sum}, type: 'double'
-    field :revenue, value: -> (record) {BibleSalesOrder.where(:inquiry_number => record.inquiry_number).pluck(:margin_amount).sum}, type: 'double'
+    # field :revenue, value: -> (record) {BibleSalesOrder.where(:inquiry_number => record.inquiry_number).pluck(:margin_amount).sum}, type: 'double'
 
   end
 end

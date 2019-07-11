@@ -994,22 +994,22 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
   def create_bible_orders
     # test_file
-    service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-28 Bible Fields for Migration.csv', 'seed_files_3')
-    service.loop(nil) do |x|
+    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_till_june.csv', 'seed_files_3')
+    service.loop(100) do |x|
       bible_total_with_tax = x.get_column('Total Selling Price').to_f + x.get_column('Tax Amount').to_f
 
       if bible_total_with_tax.negative?
-        bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
-                                            order_number: x.get_column('So #'),
-                                            client_order_date: x.get_column('Client Order Date'),
-                                            is_adjustment_entry: true).first_or_create! do |bible_order|
-          bible_order.inside_sales_owner = x.get_column('Inside Sales Name')
-          bible_order.company_name = x.get_column('Magento Company Name')
-          bible_order.account_name = x.get_column('Company Alias')
-          bible_order.currency = x.get_column('Price Currency')
-          bible_order.document_rate = x.get_column('Document Rate')
-          bible_order.metadata = []
-        end
+        # bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
+        #                                     order_number: x.get_column('So #'),
+        #                                     client_order_date: x.get_column('Client Order Date'),
+        #                                     is_adjustment_entry: true).first_or_create! do |bible_order|
+        #   bible_order.inside_sales_owner = x.get_column('Inside Sales Name')
+        #   bible_order.company_name = x.get_column('Magento Company Name')
+        #   bible_order.account_name = x.get_column('Company Alias')
+        #   bible_order.currency = x.get_column('Price Currency')
+        #   bible_order.document_rate = x.get_column('Document Rate')
+        #   bible_order.metadata = []
+        # end
       else
         bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
                                             order_number: x.get_column('So #'),
@@ -1021,7 +1021,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           bible_order.currency = x.get_column('Price Currency')
           bible_order.document_rate = x.get_column('Document Rate')
           bible_order.metadata = []
-          bible_order.is_adjustment_entry = false
+          # bible_order.is_adjustment_entry = false
         end
       end
 
@@ -1055,14 +1055,14 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     bible_order_tax = 0
     bible_order_total_with_tax = 0
 
-    # BibleSalesOrder.all.each do |bible_order|
-    #   bible_order.metadata.each do |line_item|
-    #     bible_order_total = bible_order_total + line_item['total_selling_price']
-    #     bible_order_tax = bible_order_tax + line_item['tax_amount']
-    #     bible_order_total_with_tax = bible_order_total_with_tax + bible_order_total + bible_order_tax
-    #     bible_order.update_attributes(order_total: bible_order_total, order_tax: bible_order_tax, order_total_with_tax: bible_order_total_with_tax)
-    #   end
-    # end
+    BibleSalesOrder.all.each do |bible_order|
+      bible_order.metadata.each do |line_item|
+        bible_order_total = bible_order_total + line_item['total_selling_price']
+        bible_order_tax = bible_order_tax + line_item['tax_amount']
+        bible_order_total_with_tax = bible_order_total_with_tax + bible_order_total + bible_order_tax
+        bible_order.update_attributes(order_total: bible_order_total, order_tax: bible_order_tax, order_total_with_tax: bible_order_total_with_tax)
+      end
+    end
     puts 'BibleSO', BibleSalesOrder.count
   end
 
