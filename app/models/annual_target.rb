@@ -3,6 +3,7 @@ class AnnualTarget < ApplicationRecord
   belongs_to :overseer, required: true
   belongs_to :manager, class_name: 'Overseer', foreign_key: :manager_id, required: false
   belongs_to :business_head, class_name: 'Overseer', foreign_key: :business_head_id, required: false
+  has_many :targets
 
   validates_uniqueness_of :year, :scope => :overseer_id
 

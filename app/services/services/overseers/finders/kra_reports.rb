@@ -156,12 +156,12 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
                           sum: {
                               field: 'gross_margin_actual'
                           }
-                      },
-                      inquiry_target: {
-                          sum: {
-                              field: 'inquiry_target'
-                          }
                       }
+                      # inquiry_target_monthly: {
+                      #     sum: {
+                      #         field: 'inquiry_target_monthly'
+                      #     }
+                      # }
                   }
               }
           }

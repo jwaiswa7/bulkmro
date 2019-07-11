@@ -21,7 +21,7 @@
   <th class="no-sort all"></th>
   <th class="no-sort all" data-name=<%=@category.present? ? @category : "inside_sales_owner_id" %>>Name</th>
   <% if  @category.present? && @category == 'company_key'  %> <th class="no-sort all" data-name="account_key">Account</th> <% else %> <th></th><% end %>
-  <th class="no-sort all" data-name="inquiry_target">Inquiry Target#</th>
+  <th class="no-sort all">Inquiry Target#</th>
   <th class="sort all" data-name="inquiry_number">Inquiries#</th>
   <th class="sort all" data-name="sales_quote_count">Sales Quotes#</th>
   <th class="sort all" data-name="total_quote_value">Value of Quotes</th>

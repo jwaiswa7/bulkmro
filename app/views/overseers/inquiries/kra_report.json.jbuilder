@@ -21,10 +21,7 @@ json.data (@indexed_kra_reports) do |inquiry|
                   if @category.present? && @category == 'company_key'
                     link_to(Company.find(inquiry['key']).account.to_s, overseers_account_path(Company.find(inquiry['key']).account), target: '_blank')
                   end,
-                  'dfsfsdf',
-                  # if @category.present? && @category.include?('inside') #&& inquiry['inquiry_target']['value'] != 0.0
-                  #   @inquiry_records[0].attributes['inquiry_target']
-                  # end,
+                  "Overseer.find(inquiry['key']).get_monthly_target('Inquiry', params['kra_report'])",
                   number_with_delimiter(inquiry['doc_count'], delimiter: ','),
                   number_with_delimiter(inquiry['sales_quote_count']['value'].to_i, delimiter: ','),
                   number_with_delimiter(inquiry['total_quote_value']['value'].to_i, delimiter: ','),
@@ -109,3 +106,4 @@ json.columnFilters [
 json.recordsTotal @indexed_kra_reports.count
 json.recordsFiltered @indexed_kra_reports.total_count
 json.draw params[:draw]
+json.test params

@@ -1,6 +1,6 @@
 class KraReportsIndex < BaseIndex
-  start_date = '01-04-2019'
-  end_date = '06-07-2019'
+  start_date = '01-01-2019'
+  end_date = Date.today.strftime('%d-%m-%Y')
   define_type Inquiry.where(created_at: start_date..end_date).with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
@@ -29,7 +29,8 @@ class KraReportsIndex < BaseIndex
     field :total_order_value, value: -> (record) {record.final_sales_orders.without_cancelled.compact.uniq.map(&:calculated_total).sum}, type: 'double'
     field :revenue, value: -> (record) {record.final_sales_orders.without_cancelled.compact.uniq.map(&:calculated_total_margin).sum}, type: 'double'
     field :sku, value: -> (record) {record.final_sales_orders.without_cancelled.compact.uniq.map {|s|s.products.map(&:sku).count}.last}, type: 'integer'
-    field :inquiry_target, value: -> (record) {record.inside_sales_owner.annual_targets.where(year: AnnualTarget.current_year).last.inquiry_target if record.inside_sales_owner.annual_targets.present?}, type: 'double'
+    # field :inquiry_target_yearly, value: -> (record) {record.inside_sales_owner.get_annual_target.inquiry_target if record.inside_sales_owner.annual_targets.present?}, type: 'double'
+    # field :inquiry_target_monthly, value: -> (record) {record.inside_sales_owner.get_monthly_target('Inquiry') if record.inside_sales_owner.annual_targets.present?}, type: 'double'
     field :gross_margin_assumed, value: -> (record) { record.final_sales_quote.calculated_total_margin if record.final_sales_quote.present? }, type: 'double'
     field :gross_margin_percentage, value: -> (record) { record.margin_percentage }, type: 'double'
     field :gross_margin_actual, value: -> (record) { record.final_sales_orders.without_cancelled.compact.uniq.map(&:calculated_total_margin).sum if record.final_sales_orders.present? }, type: 'double'

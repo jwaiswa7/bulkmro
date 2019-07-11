@@ -9,6 +9,7 @@ class Overseer < ApplicationRecord
 
   has_many :activities, foreign_key: :created_by_id
   has_many :annual_targets
+  has_many :targets
   has_one_attached :file
 
   pg_search_scope :locate, against: [:first_name, :last_name, :email], associated_against: {acl_role: [:role_name]}, using: { tsearch: { prefix: true } }
@@ -98,8 +99,26 @@ class Overseer < ApplicationRecord
     AclRole.all
   end
 
-  def get_inquiry_target
-    year_range = "#{Date.today.year}-#{(Date.today.year+1)}"
-    self.annual_targets.where(year: year_range).last.inquiry_target if self.annual_targets.present?
+  def get_monthly_target(target_type, date_range = nil)
+    if date_range['date_range'].present?
+      from = date_range['date_range'].split('~').first.to_date.strftime('%Y-%m-01')
+      to = date_range['date_range'].split('~').last.to_date.strftime('%Y-%m-01')
+      target_periods = TargetPeriod.where(period_month: from..to).pluck(:id)
+    else
+      from = "#{Date.today.year}-04-01"
+      to = Date.today.strftime('%Y-%m-%d')
+      target_periods = TargetPeriod.where(period_month: from..to).pluck(:id)
+    end
+    if self.targets.present?
+      monthly_targets = self.targets.where(target_type: target_type, target_period_id: target_periods)
+      monthly_targets.pluck(:target_value).sum.to_i if monthly_targets.present?
+    else
+      0
+    end
+  end
+
+
+  def get_annual_target
+    self.annual_targets.where(year: AnnualTarget.current_year).last
   end
 end

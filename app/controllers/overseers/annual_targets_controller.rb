@@ -30,6 +30,8 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
     authorize @annual_target
 
     if @annual_target.save
+      service = Services::Overseers::Targets::CreateMonthlyTargets.new(@overseer, @annual_target)
+      service.call
       redirect_to overseers_overseer_path(@overseer), notice: 'Annual Target was successfully created.'
     else
       render :new
