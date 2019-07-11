@@ -116,7 +116,15 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     def outward_dispatch_params
       params.require(:outward_dispatch).except(:action_name).permit(
         :ar_invoice_request_id,
-        :sales_order_id
+        :sales_order_id,
+        :material_dispatch_date,
+        :expected_date_of_delivery,
+        :material_delivery_date,
+        :dispatched_by,
+        :dispatch_mail_sent_to_the_customer,
+        :logistics_partner,
+        :tracking_number,
+        :material_delivered_mail_sent_to_customer
       )
     end
 end

@@ -18,7 +18,7 @@ class ArInvoiceRequest < ApplicationRecord
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['sales_order_row_id'].blank? }, allow_destroy: true
   validates_associated :rows, dependent: :destroy
 
-  update_index('ar_invoice_Requests#ar_invoice_request') {self}
+  update_index('ar_invoice_requests#ar_invoice_request') {self}
 
   enum status: {
       'AR Invoice requested': 10,
@@ -38,8 +38,8 @@ class ArInvoiceRequest < ApplicationRecord
 
   enum cancellation_reason: {
 
-      'Freight Charges': 10,
-      'Installation Charges': 20,
+      'Freight charges not added': 10,
+      'Installation charges not added': 20,
       'Others': 30
 
   }

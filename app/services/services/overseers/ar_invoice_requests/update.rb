@@ -9,6 +9,8 @@ class Services::Overseers::ArInvoiceRequests::Update < Services::Shared::BaseSer
       status_changed(@ar_invoice)
       @ar_invoice.save
       @ar_invoice_comment.save
+      @ar_invoice.inward_dispatches.update_all(ar_invoice_request_status: ar_invoice_request_status(ar_invoice))
+      InwardDispatchesIndex::InwardDispatch.import([@ar_invoice.inward_dispatches.pluck(:id)])
       if !@ar_invoice.outward_dispatches.present?
         @ar_invoice.inward_dispatches.map{|inward_dispatch| inward_dispatch.set_outward_status}
       end
@@ -30,6 +32,18 @@ class Services::Overseers::ArInvoiceRequests::Update < Services::Shared::BaseSer
     end
   end
 
+  def ar_invoice_request_status(ar_invoice)
+    case ar_invoice.status.to_sym
+    when :'AR Invoice Request Rejected'
+      'Rejected'
+    when :'Cancelled AR Invoice'
+      'Cancelled'
+    when :'Completed AR Invoice Request'
+      'Completed'
+    else
+      'Requested'
+    end
+  end
   def status_changed(ar_invoice)
     case ar_invoice.status.to_sym
     when :'AR Invoice Request Rejected'

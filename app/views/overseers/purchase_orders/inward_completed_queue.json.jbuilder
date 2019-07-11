@@ -27,6 +27,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                   (inward_dispatch.purchase_order.po_request.status if inward_dispatch.purchase_order.po_request.present?),
                   (inward_dispatch.purchase_order.payment_request.status if inward_dispatch.purchase_order.payment_request.present?),
                   inward_dispatch.purchase_order.material_status,
+                  inward_dispatch.ar_invoice_request_status,
                   if inward_dispatch.last_comment.present?
                     format_comment(inward_dispatch.last_comment, trimmed: true)
                   end,
@@ -52,6 +53,8 @@ json.columnFilters [
                        [],
                        [],
                        [],
+                       [],
+                       InwardDispatch.ar_invoice_request_statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        [],
                        [],

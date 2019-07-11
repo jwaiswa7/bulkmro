@@ -1,7 +1,7 @@
 class ArInvoiceRequestsIndex < BaseIndex
   statuses = ArInvoiceRequest.statuses
   define_type ArInvoiceRequest.all do
-    field :id
+    field :id, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :ar_invoice_number_string, value: -> (record) { record.ar_invoice_number.to_s}, analyzer: 'substring', fielddata: true
     field :ar_invoice_number, value: -> (record) { record.ar_invoice_number}, type: 'integer'

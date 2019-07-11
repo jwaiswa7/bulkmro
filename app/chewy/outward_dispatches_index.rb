@@ -11,5 +11,9 @@ class OutwardDispatchesIndex < BaseIndex
     field :status, value: -> (record) { statuses[record.status] }
     field :status_string, value: -> (record) { record.status.to_s }
     field :created_at, type: 'date'
+    field :material_dispatch_date, type: 'date'
+    field :expected_date_of_delivery, type: 'date'
+    field :material_delivery_date, type: 'date'
+    field :material_delivery_date, type: 'date'
   end
 end

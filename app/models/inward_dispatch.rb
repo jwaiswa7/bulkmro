@@ -40,7 +40,14 @@ class InwardDispatch < ApplicationRecord
       'Dispatch Rejected': 70,
       'Material In Transit': 80,
       'Material Delivered Pending GRN': 90,
-      'Material Delivered': 100
+  }
+
+  enum ar_invoice_request_status: {
+      'Not Requested': 10,
+      'Requested': 20,
+      'Completed': 30,
+      'Rejected': 40,
+      'Cancelled': 50
   }
 
   # enum outward_status: {

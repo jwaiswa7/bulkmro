@@ -10,6 +10,10 @@
           <i class="fal fa-pen mr-1"></i>Add Packing Slip
         </a>
       <%end %>
+      <% if is_authorized(@outward_dispatch, 'edit') && policy(@outward_dispatch).edit? %>
+        <a href="<%= edit_overseers_outward_dispatch_path(@outward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>
+          Edit Outward Dispatch</a>
+      <% end %>
     </div>
   </section>
   <section class="mb-3">
@@ -32,6 +36,34 @@
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">AR Invoice #</strong>
             <%= @outward_dispatch.ar_invoice_request.ar_invoice_number %>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Material Dispatch Date</strong>
+            <%= @outward_dispatch.material_dispatch_date %>
+          </div>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Expected Date Of Delivery</strong>
+            <%= @outward_dispatch.expected_date_of_delivery %>
+          </div>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Material Delivery Date</strong>
+            <%= @outward_dispatch.material_delivery_date %>
+          </div>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Material Dispatched By</strong>
+            <%= @outward_dispatch.dispatched_by %>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Logistics Partner</strong>
+            <%= @outward_dispatch.logistics_partner %>
+          </div>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Tracking Number</strong>
+            <%= @outward_dispatch.tracking_number %>
           </div>
         </div>
       </div>

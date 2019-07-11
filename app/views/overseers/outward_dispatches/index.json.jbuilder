@@ -5,6 +5,9 @@ json.data (@outward_dispatches) do |outward_dispatch|
                       if is_authorized(outward_dispatch ,'show')
                         row_action_button(overseers_outward_dispatch_path(outward_dispatch), 'eye', 'View Outward Dispatch', 'info', :_blank)
                       end,
+                      if is_authorized(outward_dispatch,'edit')
+                        row_action_button(edit_overseers_outward_dispatch_path(outward_dispatch), 'edit', 'Edit Outward Dispatch', 'warning', :_blank)
+                      end,
                       if is_authorized(:outward_dispatch, 'can_create_packing_slip') && policy(outward_dispatch).can_create_packing_slip?
                         row_action_button(new_overseers_outward_dispatch_packing_slip_path(outward_dispatch), 'plus', 'Create Packing Slip', 'success', :_blank)
                       end,
@@ -16,9 +19,35 @@ json.data (@outward_dispatches) do |outward_dispatch|
                   link_to(ar_invoice_request.inquiry.inquiry_number, edit_overseers_inquiry_path(ar_invoice_request.inquiry), target: '_blank'),
                   link_to(ar_invoice_request.sales_order, overseers_inquiry_sales_order_path(ar_invoice_request.sales_order.inquiry, ar_invoice_request.sales_order), target: '_blank'),
                   link_to(ar_invoice_request.ar_invoice_number, edit_overseers_ar_invoice_request_path(ar_invoice_request), target: '_blank'),
+                  outward_dispatch.logistics_partner,
+                  outward_dispatch.tracking_number,
+                  format_boolean(outward_dispatch.dispatch_mail_sent_to_the_customer),
+                  format_boolean(outward_dispatch.material_delivered_mail_sent_to_customer),
+                  format_date(outward_dispatch.material_dispatch_date),
+                  format_date(outward_dispatch.expected_date_of_delivery),
+                  format_date(outward_dispatch.material_delivery_date),
                   format_date(outward_dispatch.created_at),
               ]
 end
+
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       []
+                   ]
 
 json.recordsTotal @indexed_outward_dispatches.count
 json.recordsFiltered @indexed_outward_dispatches.total_count

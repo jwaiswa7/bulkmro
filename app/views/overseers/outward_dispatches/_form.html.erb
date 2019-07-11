@@ -1,7 +1,5 @@
-<div class="col-lg-12">
-
+<div>
   <%= render 'shared/snippets/page_header', e: @outward_dispatch %>
-
   <%= simple_form_for([:overseers, @outward_dispatch], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
     <%= f.hidden_field :id %>
@@ -27,13 +25,22 @@
           </div>
           <div class="form-row">
             <div class="col-4 mt-2">
-              <%= f.input :dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.dispatch_date.try(:strftime, "%d-%b-%Y"), class: ''}, required: true %>
+              <%= f.input :material_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.material_dispatch_date.try(:strftime, "%d-%b-%Y"), class: ''}, required: true %>
             </div>
             <div class="col-4 mt-2">
-              <%= f.input :expected_date_of_delivery, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.dispatch_date.try(:strftime, "%d-%b-%Y"), class: ''}, required: true %>
+              <%= f.input :expected_date_of_delivery, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_date_of_delivery.try(:strftime, "%d-%b-%Y"), class: ''}, required: true %>
             </div>
             <div class="col-4 mt-2">
-              <%= f.input :actual_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.dispatch_date.try(:strftime, "%d-%b-%Y"), class: ''}, required: true %>
+              <%= f.input :material_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.material_delivery_date.try(:strftime, "%d-%b-%Y"), class: ''}%>
+            </div>
+            <div class="col-4 mt-2">
+              <%= f.input :dispatched_by, collection: enum_to_collection(InwardDispatch.dispatched_bies, keep_raw: true), label: "Material Dispatched By", input_html: {class: "select2-single"}, required: true %>
+            </div>
+            <div class="col-4 mt-2">
+              <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: true%>
+            </div>
+            <div class="col-4 mt-2">
+              <%= f.input :tracking_number, label: 'Tracking Number' %>
             </div>
           </div>
         </div>
@@ -54,12 +61,4 @@
       </div>
     </div>
   <% end %>
-    <div class="text-center mt-2 mb-2"><strong>OR</strong></div>
-    <div class="card">
-      <div class="card-footer">
-        <div class="form-row">
-          <%= link_to "Create outward dispatch and continue to create packing slip", create_with_packing_slip_overseers_outward_dispatches_path(ar_invoice_request_id: params[:ar_invoice_request_id]), :class => "btn btn-success btn-block "%>
-        </div>
-      </div>
-    </div>
 </div>

@@ -2,6 +2,7 @@ class InwardDispatchesIndex < BaseIndex
   # material_statuses = PurchaseOrder.material_statuses
   po_statuses = PoRequest.statuses
   statuses = InwardDispatch.statuses
+  ar_invoice_request_statuses = InwardDispatch.ar_invoice_request_statuses
   # payment_request_statuses = PaymentRequest.statuses
   # supplier_po_type = PoRequest.supplier_po_types
 
@@ -13,6 +14,8 @@ class InwardDispatchesIndex < BaseIndex
     field :inquiry, value: -> (record) { record.purchase_order.inquiry.to_s }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] }
     field :status_string, value: -> (record) { record.status.to_s }
+    field :ar_invoice_request_status, value: -> (record) { ar_invoice_request_statuses[record.ar_invoice_request_status] }
+    field :ar_invoice_request_status_string, value: -> (record) { record.ar_invoice_request_status.to_s }
     field :po_number, value: -> (record) { record.purchase_order.po_number.to_i }, type: 'integer'
     field :po_number_string, value: -> (record) { record.purchase_order.po_number.to_s }, analyzer: 'substring'
     field :so_number, value: -> (record) { record.sales_order.order_number.to_i if record.sales_order.present? }, type: 'integer'

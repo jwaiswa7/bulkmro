@@ -100,11 +100,13 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
           sales_order_ids =  val.pluck(:sales_order_id).uniq
           if !ar_invoice_request.present? && (inquiry_ids.count == 1) && (sales_order_ids.count == 1)
             Chewy.strategy(:bypass) do
-              ar_invoice_request = ArInvoiceRequest.create(overseer: val[0].created_by, sales_order_id: sales_order_ids[0], inquiry_id: inquiry_ids[0], status: 'Completed AR Invoice Request', sales_invoice_id: sales_invoice.id)
+              ar_invoice_request = ArInvoiceRequest.new(overseer: val[0].created_by, sales_order_id: sales_order_ids[0], inquiry_id: inquiry_ids[0], status: 'Completed AR Invoice Request', sales_invoice_id: sales_invoice.id)
+              ar_invoice_request.save!
               val.each do |invoice_request|
                 invoice_request.status = 'Inward Completed'
-                invoice_request.save
+                invoice_request.save(validate: false)
                 if invoice_request.inward_dispatches.present?
+                  invoice_request.inward_dispatches.map { |d|  d.ar_invoice_request_id= ar_invoice_request.id; d.save(validate: false)}
                   inward_dispatch_rows = invoice_request.inward_dispatches.map {|x| x.rows}.flatten
                   inward_dispatch_rows.each do |row|
                     sales_order_row = SalesOrderRow.where(sales_order_id: sales_order_ids[0]).joins(:product).where(products: {id: row.purchase_order_row.product_id}).last
@@ -116,10 +118,11 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
                         row_product.quantity = sales_order_row.quantity
                         row_product.sales_order_id = sales_order_ids[0]
                         row_product.sales_order_row_id = sales_order_row.id
-                        row_product.save!
+                        row_product.save(validate: false)
+
                       else
                         row_product.delivered_quantity = row_product.delivered_quantity + row.delivered_quantity
-                        row_product.save!
+                        row_product..save(validate: false)
                       end
                     end
                   end
@@ -146,7 +149,31 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
     end
     binding.pry
   end
+
+  def set_ar_invoice_request_status
+    inward_dispatches = InwardDispatch.joins(:invoice_request).where(invoice_requests: {status: 'Inward Completed'},status: 'Material Delivered').where(ar_invoice_request_id: nil)
+    inward_dispatches.update_all(ar_invoice_request_status: 'Not Requested')
+    inward_dispatches = InwardDispatch.where.not(ar_invoice_request_id: nil)
+    inward_dispatches.each do |inward_dispatch|
+      ar_invoice_request = inward_dispatch.ar_invoice_request
+      if ar_invoice_request.present?
+        case ar_invoice_request.status
+        when 'AR Invoice requested'
+          inward_dispatch.ar_invoice_request_status = 'Requested'
+        when 'Cancelled AR Invoice'
+          inward_dispatch.ar_invoice_request_status = 'Cancelled AR Invoice'
+        when 'AR Invoice Request Rejected'
+          inward_dispatch.ar_invoice_request_status = 'Rejected'
+        when 'Completed AR Invoice Request'
+          inward_dispatch.ar_invoice_request_status = 'Completed'
+        end
+        inward_dispatch.save(validate: false)
+      end
+    end
+  end
 end
+
+
 #
 # PurchaseOrder.all.map{|x| if x.po_request.present?; po_products = x.rows.pluck(:product_id);so_products = x.po_request.sales_order.rows.pluck(:product_id);if(po_products.count > so_products.count);x.id;end;end}
 #
