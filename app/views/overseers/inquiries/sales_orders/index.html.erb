@@ -20,6 +20,7 @@
       <th class="no-sort desktop text-right">Order Date</th>
       <th class="no-sort desktop text-right">Created At</th>
       <th>Created By</th>
+      <th>SAP Status</th>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>
@@ -89,6 +90,7 @@
           <td><%= format_date(sales_order.mis_date) %></td>
           <td><%= format_date(sales_order.created_at) %></td>
           <td><%= sales_order.created_by.to_s %></td>
+          <td><%= status_badge(sales_order.remote_uid.present? ? 'Sync' : 'Not Sync') %></td>
         </tr>
         <div class="sales-order-cancel" data-inquiry-id="<%= sales_order.inquiry.id %>" data-order-id="<%= sales_order.id %>"></div>
       <% end %>

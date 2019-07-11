@@ -1,7 +1,7 @@
 json.data (@sales_orders) do |sales_order|
   json.array! [
                  [
-                     row_action_button(new_accounts_confirmation_overseers_inquiry_sales_order_path(sales_order.inquiry.to_param, sales_order.to_param), 'eye', 'Sales Order Approval', 'info')
+                     row_action_button(new_accounts_confirmation_overseers_inquiry_sales_order_path(sales_order.inquiry.to_param, sales_order.to_param), 'comment-alt-check', 'Account Approval', 'warning')
                  ],
                  sales_order.inquiry.inquiry_number,
                  sales_order.rows.count,
