@@ -15,7 +15,10 @@ json.data (@sales_invoices) do |sales_invoice|
                         ]
                       end,
                       if is_authorized(sales_invoice, 'can_send_pod_email') && policy(sales_invoice).create_email_message?
-                        row_action_button(new_overseers_sales_invoice_email_message_path(sales_invoice), 'envelope', 'Email POD', 'success')
+                        [
+                            row_action_button(dispatch_mail_to_customer_overseers_sales_invoice_path(sales_invoice), 'envelope', 'Dispatch Email', 'primary'),
+                            row_action_button(delivery_mail_to_customer_overseers_sales_invoice_path(sales_invoice), 'envelope', 'Delivery Email', 'success')
+                        ]
                       end,
                       if is_authorized(sales_invoice, 'show_original_invoice') && policy(sales_invoice).show_original_invoice? && sales_invoice.inquiry.present?
                         [row_action_button(url_for(sales_invoice.original_invoice), 'none', sales_invoice.original_invoice.filename, 'success', :_blank, 'get', false, 'O'),

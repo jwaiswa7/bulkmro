@@ -161,6 +161,19 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     id
   end
 
+  def self.temp_update(id, record, quotes: false)
+    url = "/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})"
+    body = to_remote(record).to_json
+    response = perform_remote_sync_action('patch', url, body)
+    log_request(:patch, record)
+    validated_response = get_validated_response(response)
+
+    log_response(validated_response, 'patch', url, body)
+
+    yield validated_response if block_given?
+    id
+  end
+
   def self.get_validated_response(raw_response)
     if raw_response['odata.metadata'] || (200...300).include?(raw_response.code)
       OpenStruct.new(raw_response.parsed_response)

@@ -1,5 +1,5 @@
 class Overseers::SalesInvoicesController < Overseers::BaseController
-  before_action :set_invoice, only: [:edit_pod, :update_pod]
+  before_action :set_invoice, only: [:edit_pod, :update_pod, :delivery_mail_to_customer, :delivery_mail_to_customer_notification, :dispatch_mail_to_customer, :dispatch_mail_to_customer_notification]
 
   def index
     authorize_acl :sales_invoice
@@ -80,6 +80,101 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     redirect_to url_for(Export.sales_invoice_logistics.last.report)
   end
 
+
+  def delivery_mail_to_customer
+    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice)
+    subject = "Ref# #{@invoice.inquiry.inquiry_number}- Your Order #{@invoice.inquiry.customer_po_number} - Delivery Notification"
+    @action = 'delivery_mail_to_customer_notification'
+    @email_message.assign_attributes(
+      subject: subject,
+      body: SalesInvoiceMailer.delivery_mail(@email_message).body.raw_source,
+      auto_attach: true,
+      cc: 'logistics@bulkmro.com, sales@bulkmro.com'
+        )
+    @params = {
+        record: [:overseers, @invoice, @email_message],
+        url: {action: @action, controller: 'overseers/sales_invoices'},
+        attachment: {'Original Invoice' => overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), 'Duplicate Invoice' => duplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), 'Triplicate Invoice' => triplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank)}
+    }
+
+
+    authorize_acl @invoice
+    render 'shared/layouts/email_messages/new'
+  end
+
+  def delivery_mail_to_customer_notification
+    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice, email_type: 'Material Delivered to Customer')
+    @email_message.assign_attributes(email_message_params)
+
+    @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
+    @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
+
+    authorize_acl @invoice
+
+    if params['email_message']['auto_attach']
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Original_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
+    end
+
+
+    if @email_message.save!
+      SalesInvoiceMailer.send_delivery_mail(@email_message).deliver_now
+      redirect_to overseers_sales_invoices_path, notice: flash_message(@invoice, action_name)
+    else
+      render 'shared/layouts/email_messages/new'
+    end
+  end
+
+
+
+  def dispatch_mail_to_customer
+    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice)
+    subject = "Ref# #{@invoice.inquiry.inquiry_number}- Your Order #{@invoice.inquiry.customer_po_number} - Dispatch Notification"
+    @action = 'dispatch_mail_to_customer_notification'
+    @email_message.assign_attributes(
+      subject: subject,
+      body: SalesInvoiceMailer.dispatch_mail(@email_message).body.raw_source,
+      auto_attach: true,
+      cc: 'logistics@bulkmro.com, sales@bulkmro.com'
+    )
+    @params = {
+        record: [:overseers, @invoice, @email_message],
+        url: {action: @action, controller: 'overseers/sales_invoices'},
+        attachment: {'Original Invoice' => overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), 'Duplicate Invoice' => duplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), 'Triplicate Invoice' => triplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank)}
+    }
+
+
+    authorize_acl @invoice
+    render 'shared/layouts/email_messages/new'
+  end
+
+  def dispatch_mail_to_customer_notification
+    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice, email_type: 'Material Dispatched to Customer')
+    @email_message.assign_attributes(email_message_params)
+
+    @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
+    @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
+
+    authorize_acl @invoice
+
+    if params['email_message']['auto_attach']
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Original_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
+    end
+
+
+    if @email_message.save!
+      SalesInvoiceMailer.send_delivery_mail(@email_message).deliver_now
+      redirect_to overseers_sales_invoices_path, notice: flash_message(@invoice, action_name)
+    else
+      render 'shared/layouts/email_messages/new'
+    end
+  end
+
+
+
   private
 
     def set_invoice
@@ -98,6 +193,17 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
             :_destroy,
             attachments: []
         ]
+      )
+    end
+
+    def email_message_params
+      params.require(:email_message).permit(
+        :subject,
+          :body,
+          :to,
+          :cc,
+          :bcc,
+          files: []
       )
     end
 end
