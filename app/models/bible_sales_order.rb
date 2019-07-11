@@ -1,2 +1,3 @@
 class BibleSalesOrder < ApplicationRecord
+
 end
