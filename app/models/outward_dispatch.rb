@@ -5,6 +5,7 @@ class OutwardDispatch < ApplicationRecord
   belongs_to :sales_order, default: false
   has_many :packing_slips
   has_many :email_messages
+  after_save :status_auto_update
   scope :with_includes, -> { }
   update_index('outward_dispatches#outward_dispatch') {self}
 
@@ -43,9 +44,10 @@ class OutwardDispatch < ApplicationRecord
     self.packing_slips.sum(&:dispatched_quntity)
   end
 
-  def send_notification_on_status_changed
-    if self.saved_change_to_material_delivery_date?
-
+  def status_auto_update
+    if self.saved_change_to_material_delivery_date? && !material_delivery_date_before_last_save.present?
+      self.status = 'Material Delivered'
+      self.save
     end
   end
 

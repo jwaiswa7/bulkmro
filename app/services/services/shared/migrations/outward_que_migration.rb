@@ -147,7 +147,6 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
         invoice_request_ids << invoice_request.id
       end
     end
-    binding.pry
   end
 
   def set_ar_invoice_request_status

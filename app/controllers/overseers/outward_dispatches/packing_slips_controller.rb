@@ -36,7 +36,6 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   # GET /packing_slips/1/edit
   def edit
     authorize_acl @packing_slip
-    binding.pry
   end
 
   # POST /packing_slips
