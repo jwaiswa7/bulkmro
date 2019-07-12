@@ -272,6 +272,7 @@
               <div class="dropdown-submenu">
                 <a class="dropdown-item dropdown-toggle" href="#">Tools</a>
                 <div class="dropdown-menu">
+                  <%= nav_dropdown_item 'Bible Upload', new_excel_bible_order_import_overseers_bible_sales_orders_imports_path %>
                   <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, is_authorized(:remote_request, 'index') %>
                   <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, is_authorized(:callback_request, 'index') %>
                   <%= nav_dropdown_item 'Resync Remote Requests', overseers_resync_remote_requests_path, is_authorized(:resync_remote_request, 'index') %>
