@@ -24,7 +24,7 @@
       </div>
     </div>
     <% if @ar_invoice_request.rows.present? %>
-      <%= f.nested_fields_for :rows, f.object.rows.joins(:product).order(:is_service), wrapper_tag: :div do |row| %>
+      <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
         <div class="form-row flex-row align-items-start inward-dispatch-row">
           <div class="col-6 col-md-6">
             <%= row.hidden_field :sales_order_id, label: false %>
