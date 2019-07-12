@@ -431,6 +431,10 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   def assign_action_of_outward_que_to_overseer
     role_name = 'Logistics'
     acl_for_logistics_in_outward_que = {
+        'purchase_order': %w(inward_completed_queue),
+        'po_request': %w(render_modal_form add_comment can_cancel cancel_porequest render_cancellation_form render_comment_form can_cancel_or_reject),
+        'payment_request': %w(add_comment render_modal_form),
+        'invoice_request': %w(render_modal_form cancel_invoice_request render_cancellation_form render_comment_form can_cancel_or_reject),
         'inward_dispatch': %w(can_create_ar_invoice),
         'ar_invoice_request': %w(index show new edit create update destroy can_create_outward_dispatch download_eway_bill_format render_cancellation_form cancel_ar_invoice),
         'ar_invoice_request_comment':  %w(index show new edit create update destroy),
@@ -456,6 +460,9 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
 
     role_name = 'Accounts'
     acl_for_account_in_outward_que = {
+        'po_request': %w(render_modal_form add_comment cancel_porequest render_cancellation_form render_comment_form can_cancel_or_reject),
+        'payment_request': %w(add_comment render_modal_form),
+        'invoice_request': %w(render_modal_form cancel_invoice_request render_cancellation_form render_comment_form can_cancel_or_reject),
         'ar_invoice_request': %w(index show new edit create update destroy download_eway_bill_format render_cancellation_form cancel_ar_invoice),
         'ar_invoice_request_comment':  %w(index show new edit create update destroy),
         'ar_invoice_request_row': %w(index show new edit create update destroy),
