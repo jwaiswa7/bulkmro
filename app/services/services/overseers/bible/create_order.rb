@@ -3,6 +3,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
   end
 
   def call
+    error = []
     service = Services::Shared::Spreadsheets::CsvImporter.new('bible_till_june1.csv', 'seed_files_3')
     service.loop(nil) do |x|
       order_number = x.get_column('So #')
@@ -34,18 +35,23 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
       isp_first_name = isp_full_name[0]
       isp_last_name = isp_full_name[1] if isp_full_name.length > 1
 
-      bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
-                                          sales_order: sales_order.present? ? sales_order.id : nil,
-                                          mis_date: Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')).first_or_create! do |bible_order|
-        bible_order.inside_sales_owner = Overseer.where(first_name: isp_first_name).last
-        bible_order.outside_sales_owner = inquiry.outside_sales_owner
-        bible_order.order_number = x.get_column('So #')
-        bible_order.company = inquiry.company # || x.get_column('Magento Company Name')
-        bible_order.account = inquiry.company.account # || x.get_column('Company Alias')
-        bible_order.client_order_date = Date.parse(x.get_column('Client Order Date')).strftime('%Y-%m-%d') if x.get_column('Inquiry Number') != '31647'
-        bible_order.currency = x.get_column('Price Currency')
-        bible_order.document_rate = x.get_column('Document Rate')
-        bible_order.metadata = []
+      begin
+        bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
+                                            order_number: x.get_column('So #'),
+                                            mis_date: Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')).first_or_create! do |bible_order|
+          bible_order.inside_sales_owner = Overseer.where(first_name: isp_first_name).last
+          bible_order.outside_sales_owner = inquiry.outside_sales_owner
+
+          bible_order.sales_order = sales_order.present? ? sales_order.id : nil
+          bible_order.company = inquiry.company # || x.get_column('Magento Company Name')
+          bible_order.account = inquiry.company.account # || x.get_column('Company Alias')
+          bible_order.client_order_date = Date.parse(x.get_column('Client Order Date')).strftime('%Y-%m-%d') if x.get_column('Inquiry Number') != '31647'
+          bible_order.currency = x.get_column('Price Currency')
+          bible_order.document_rate = x.get_column('Document Rate')
+          bible_order.metadata = []
+        end
+      rescue
+        error.push(order_number)
       end
 
       if bible_order.present?
@@ -78,6 +84,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
 
     calculate_totals
     puts 'BibleSO', BibleSalesOrder.count
+    puts 'ERROR', error
   end
 
   def calculate_totals
