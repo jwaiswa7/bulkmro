@@ -1,5 +1,6 @@
 json.data (@outward_dispatches) do |outward_dispatch|
   ar_invoice_request = outward_dispatch.ar_invoice_request
+  sales_invoice = ar_invoice_request.sales_invoice
   json.array! [
                   [
                       if is_authorized(outward_dispatch ,'show')
@@ -13,7 +14,15 @@ json.data (@outward_dispatches) do |outward_dispatch|
                       end,
                       if is_authorized(:outward_dispatch, 'can_send_dispatch_email') && current_overseer.can_send_emails?
                         row_action_button(dispatch_mail_to_customer_overseers_outward_dispatch_email_messages_path(outward_dispatch), 'envelope', 'Send Dispatch Mail', 'dark', :_blank)
-                      end
+                      end,
+                      if is_authorized(sales_invoice, 'edit_pod') && policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count == 0)
+                        row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success')
+                      end,
+                      if is_authorized(sales_invoice, 'edit_pod') && policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count > 0)
+                        [
+                            row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info'),
+                        ]
+                      end,
                   ].join(' '),
                   outward_dispatch.packing_slips.map.with_index { |packing_slip,i| link_to("#{packing_slip.outward_dispatch.ar_invoice_request.ar_invoice_number}-#{i + 1}", overseers_outward_dispatch_packing_slip_path(outward_dispatch, packing_slip), target: '_blank') }.compact.join(' '),
                   link_to(ar_invoice_request.inquiry.inquiry_number, edit_overseers_inquiry_path(ar_invoice_request.inquiry), target: '_blank'),

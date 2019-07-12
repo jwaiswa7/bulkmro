@@ -49,6 +49,11 @@ import poRequests from "./poRequests/init";
 
 // AR invoices
 import arInvoiceRequests from "./arInvoiceRequests/init";
+
+// Outward dispatch
+import outwardDispatches from './outwardDispatches/init'
+
+// PackingSlip
 import packingSlips from "./packingSlips/init";
 
 // Activities
@@ -122,6 +127,7 @@ let loader = {
     aclRoles:aclRoles,
     logisticsScorecards: logisticsScorecards,
     arInvoiceRequests: arInvoiceRequests,
+    outwardDispatches: outwardDispatches,
     packingSlips:packingSlips,
     addresses: addresses
 };
