@@ -1067,13 +1067,23 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   end
 
   def check_bible_total
-    bible_order_total = 0
+    @bible_order_total = 0
+    @bible_order_tax = 0
+    @bible_order_total_with_tax = 0
+    @margin_amount = 0
+
     BibleSalesOrder.all.each do |bible_order|
       bible_order.metadata.each do |line_item|
-        bible_order_total = bible_order_total + line_item['total_selling_price']
+        @bible_order_total = @bible_order_total + line_item['total_selling_price']
+        @bible_order_tax = @bible_order_tax + line_item['tax_amount']
+        @bible_order_total_with_tax = @bible_order_total_with_tax + line_item['total_selling_price_with_tax']
+        @margin_amount = @margin_amount + line_item['margin_amount']
       end
     end
-    puts 'BIBLE ORDER TOTAL', bible_order_total
+    puts 'BIBLE ORDER TOTAL', @bible_order_total
+    puts 'Bible TAX', @bible_order_tax
+    puts 'TwTax', @bible_order_total_with_tax
+    puts 'Total margin', @margin_amount
   end
 
 
