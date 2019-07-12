@@ -1,5 +1,5 @@
 class AddTotalMarginToBibleSalesOrder < ActiveRecord::Migration[5.2]
   def change
-    add_column :bible_sales_orders, :total_margin, :float
+    add_column :bible_sales_orders, :total_margin, :float, :default => 0
   end
 end
