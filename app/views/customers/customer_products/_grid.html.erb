@@ -89,7 +89,7 @@
                 <strong class="d-block"><%= customer_product.best_brand.name if customer_product.best_brand.present? %></strong>
                 <em>MOQ - <%= customer_product.moq %></em><br>
                 <em>Instock Qty
-                  - <%= customer_product.product.stocks.sum(&:instock) if customer_product.product.present? %></em><br>
+                  - <%= customer_product.product.stocks.sum(&:instock).to_i if customer_product.product.present? %></em><br>
               </p>
             </a>
           </div>
