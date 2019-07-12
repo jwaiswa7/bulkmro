@@ -688,6 +688,10 @@ Rails.application.routes.draw do
         get 'add_delay_reason'
       end
     end
+
+    resources :bible_sales_orders
+
+    resources :bible_sales_orders
   end
 
   namespace 'customers' do

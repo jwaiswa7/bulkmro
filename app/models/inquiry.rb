@@ -444,7 +444,7 @@ class Inquiry < ApplicationRecord
   end
 
   def has_final_sales_quote?
-    self.sales_orders.remote_approved.present?
+    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).present?
   end
 
   def total_quote_value
