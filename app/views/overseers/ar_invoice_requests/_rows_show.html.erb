@@ -43,7 +43,7 @@
       </tr>
       </thead>
       <tbody>
-      <% @ar_invoice_request.rows.each_with_index do |row, index| %>
+      <% @ar_invoice_request.rows.joins(:product).order(:is_service).each_with_index do |row, index| %>
         <tr>
           <td><%= index + 1 %></td>
           <td><%= row.product.to_s %></td>
