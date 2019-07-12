@@ -26,6 +26,6 @@ class KraReportsIndex < BaseIndex
     field :sales_order_count, value: -> (record) {record.bible_sales_orders.count}, type: 'integer'
     field :margin_percentage, value: -> (record) {record.bible_margin_percentage}, type: 'float'
     field :total_order_value, value: -> (record) {record.bible_sales_order_total}, type: 'double'
-    # field :revenue, value: -> (record) {BibleSalesOrder.where(:inquiry_number => record.inquiry_number).pluck(:margin_amount).sum}, type: 'double'
+    field :revenue, value: -> (record) {record.bible_revenue}, type: 'double'
   end
 end

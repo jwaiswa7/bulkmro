@@ -458,11 +458,12 @@ class Inquiry < ApplicationRecord
           sales_quotes_ids >> sales_order.sales_quote.id
         end
       end
-
-      if self.final_sales_quote.present? && !(sales_quotes_ids.include? self.final_sales_quote.id)
-        total_quote_value += self.final_sales_quote.calculated_total_with_tax
-      end
     end
+
+    if self.final_sales_quote.present? && !(sales_quotes_ids.include? self.final_sales_quote.id)
+      total_quote_value += self.final_sales_quote.calculated_total_with_tax
+    end
+
     total_quote_value
   end
 
@@ -489,5 +490,9 @@ class Inquiry < ApplicationRecord
 
   def bible_sales_order_total
     BibleSalesOrder.where(:inquiry_number => record.inquiry_number).pluck(:order_total).sum
+  end
+
+  def bible_revenue
+    BibleSalesOrder.where(:inquiry_number => record.inquiry_number).pluck(:margin_amount).sum
   end
 end
