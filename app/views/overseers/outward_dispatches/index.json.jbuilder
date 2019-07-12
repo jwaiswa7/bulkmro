@@ -36,6 +36,8 @@ json.data (@outward_dispatches) do |outward_dispatch|
                   format_date(outward_dispatch.material_dispatch_date),
                   format_date(outward_dispatch.expected_date_of_delivery),
                   format_date(outward_dispatch.material_delivery_date),
+                  outward_dispatch.ar_invoice_request.inquiry.inside_sales_owner.to_s,
+                  outward_dispatch.ar_invoice_request.inquiry.company.logistics_owner.present? ? outward_dispatch.ar_invoice_request.inquiry.company.logistics_owner.full_name : 'Unassigned',
                   format_date(outward_dispatch.created_at),
               ]
 end
@@ -49,6 +51,8 @@ json.columnFilters [
                        [],
                        [],
                        OutwardDispatch.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       [],
+                       [],
                        [],
                        [],
                        [],
