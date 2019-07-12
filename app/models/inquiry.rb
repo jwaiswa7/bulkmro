@@ -442,4 +442,52 @@ class Inquiry < ApplicationRecord
       Services::Overseers::Inquiries::InquiryPreviousStatusRecord.new(inquiry_status_record).call
     end
   end
+
+  def has_final_sales_quote?
+    self.sales_orders.remote_approved.present?
+  end
+
+  def total_quote_value
+    total_quote_value = 0
+    sales_quotes_ids = []
+    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).each do |bso|
+      sales_order = SalesOrder.find_by_order_number(bso.order_number)
+      if sales_order.present?
+        if !sales_quotes_ids.include? sales_order.sales_quote.id
+          total_quote_value += sales_order.sales_quote.calculated_total_with_tax
+          sales_quotes_ids >> sales_order.sales_quote.id
+        end
+      end
+
+      if self.final_sales_quote.present? && !(sales_quotes_ids.include? self.final_sales_quote.id)
+        total_quote_value += self.final_sales_quote.calculated_total_with_tax
+      end
+    end
+    total_quote_value
+  end
+
+  def unique_skus_in_order
+    skus = []
+    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).each do |bso|
+      skus >> bso.sku #TODO Saurabh to add sku logic
+    end
+    skus.compact
+  end
+
+  def bible_sales_orders
+    BibleSalesOrder.where(:inquiry_number => self.inquiry_number)
+  end
+
+  def bible_sales_invoices
+    BibleSalesInvoice.where(:inquiry_number => self.inquiry_number)
+  end
+
+  def bible_margin_percentage
+    margin_percentages = BibleSalesOrder.where(:inquiry_number => self.inquiry_number).pluck(:margin_percentage)
+    margin_percentages.sum / margin_percentages.count
+  end
+
+  def bible_sales_order_total
+    BibleSalesOrder.where(:inquiry_number => record.inquiry_number).pluck(:order_total).sum
+  end
 end
