@@ -1087,6 +1087,19 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   end
 
 
+  def check_bible_invoice_total
+    @bible_invoice_total = 0
+    @invoice_margin = 0
+    BibleInvoice.all.each do |bible_invoice|
+      bible_invoice.metadata.each do |line_item|
+        @bible_invoice_total = @bible_invoice_total + line_item['total_selling_price']
+        @invoice_margin = @invoice_margin + line_item['margin_amount']
+      end
+    end
+    puts 'BIBLE ORDER TOTAL', @bible_invoice_total
+    puts 'Total margin', @invoice_margin
+  end
+
   def flex_dump
     column_headers = ['Order Date', 'OD', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Order Status', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
     start_at = Date.today.last_week.beginning_of_week.beginning_of_day
