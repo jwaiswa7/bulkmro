@@ -9,15 +9,15 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
 
   def show
     authorize_acl @purchase_order
-
     @metadata = @purchase_order.metadata.deep_symbolize_keys
+    @payment_terms = PaymentOption.find_by(remote_uid: @metadata[:PoPaymentTerms])
     @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
     @metadata[:packing] = get_packing(@metadata)
 
     respond_to do |format|
       format.html {render 'show'}
       format.pdf do
-        render_pdf_for(@purchase_order, locals: {inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier})
+        render_pdf_for(@purchase_order, locals: {inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier, payment_terms: @payment_terms})
       end
     end
   end
