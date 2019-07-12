@@ -7,12 +7,11 @@ class AddIspAndCompanyKeysInBso < ActiveRecord::Migration[5.2]
     add_column :bible_sales_orders, :inside_sales_owner_id, :integer
     add_column :bible_sales_orders, :outside_sales_owner_id, :integer
 
-    add_foreign_key :bible_sales_orders, :overseer, column: :outside_sales_owner_id
-    add_foreign_key :bible_sales_orders, :overseer, column: :inside_sales_owner_id
+    add_foreign_key :bible_sales_orders, :overseers, column: :outside_sales_owner_id
+    add_foreign_key :bible_sales_orders, :overseers, column: :inside_sales_owner_id
 
     remove_column :bible_sales_orders, :company_name
     remove_column :bible_sales_orders, :account_name
-    remove_column :bible_sales_orders, :overseer_id
     remove_column :bible_sales_orders, :inside_sales_owner
   end
 end
