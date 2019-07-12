@@ -27,6 +27,8 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                   ar_invoice.ar_invoice_number,
                   ar_invoice.inquiry.present? ? conditional_link(ar_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(ar_invoice.inquiry), is_authorized(ar_invoice.inquiry ,'edit')) : '-',
                   ar_invoice.inquiry.company.to_s,
+                  ar_invoice.inquiry.inside_sales_owner.to_s,
+                  ar_invoice.inquiry.company.logistics_owner.present? ? ar_invoice.inquiry.company.logistics_owner.to_s : 'Unassigned',
                   ar_invoice.sales_order.order_number,
                   ar_invoice.outward_dispatches.map { |outward_dispatch| link_to(outward_dispatch.id, overseers_outward_dispatch_path(outward_dispatch), target: '_blank') }.compact.join(' '),
               ]
