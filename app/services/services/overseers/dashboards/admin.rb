@@ -17,7 +17,8 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
 
     sales_orders = BibleSalesOrder.where(mis_date: filter_by_dates)
     purchase_orders = PurchaseOrder.not_cancelled.includes(:rows).where(created_at: filter_by_dates)
-    sales_invoices = SalesInvoice.not_cancelled.includes(:rows).where(mis_date: filter_by_dates).where.not(sales_order_id: nil).where.not(metadata: nil)
+    # sales_invoices = SalesInvoice.not_cancelled.includes(:rows).where(mis_date: filter_by_dates).where.not(sales_order_id: nil).where.not(metadata: nil)
+    sales_invoices = BibleInvoice.where(mis_date: filter_by_dates)
 
     inquiry_groups = inquiries.group_by_month(:created_at, default_value: nil).count
     sales_quotes_groups = sales_quotes.group_by_month(:created_at, default_value: nil).count
@@ -57,11 +58,11 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
       }
 
       # INVOICES
-      si = sales_invoices.where(mis_date: filter_by_dates)
+      si = BibleInvoice.where(mis_date: filter_by_dates)
       # si = sales_invoices
       @data.entries[month.to_s][:sales_invoice] = {
           count: sales_invoices_groups[month].present? ? sales_invoices_groups[month] : 0,
-          total: si.sum(&:calculated_total)
+          total: si.sum(&:invoice_total)
       }
 
       # PURCHASE ORDERS
