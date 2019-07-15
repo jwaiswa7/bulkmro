@@ -11,8 +11,8 @@ class KraReportsIndex < BaseIndex
     field :updated_at, type: 'date'
     field :created_by_id
     field :updated_by_id, value: -> (record) {record.updated_by.to_s}, analyzer: 'letter'
-    field :inside_sales_executive, value: -> (record) {BibleSalesOrder.where(:inquiry_number => record.inquiry_number).first.inside_sales_owner_id}
-    field :outside_sales_executive, value: -> (record) {BibleSalesOrder.where(:inquiry_number => record.inquiry_number).first.outside_sales_owner_id}
+    field :inside_sales_executive, value: -> (record) {record.bible_inside_sales_owner}
+    field :outside_sales_executive, value: -> (record) {record.bible_outside_sales_owner}
     field :procurement_operations, value: -> (record) {record.procurement_operations_id.present? ? record.procurement_operations_id : record.inside_sales_owner_id}
     field :sales_quote_count, value: -> (record) {record.has_final_sales_quote? ? 1 : 0}, type: 'integer'
     field :expected_order, value: -> (record) {record.status == 'Expected Order' ? 1 : 0}, type: 'integer'
@@ -21,7 +21,8 @@ class KraReportsIndex < BaseIndex
     field :account_key, value: -> (record) {record.company.account_id}, type: 'integer'
     field :total_quote_value, value: -> (record) {record.total_quote_value if record.has_final_sales_quote?}, type: 'double'
 
-    field :sku, value: -> (record) {record.unique_skus_in_order.count}, type: 'integer'
+    # field :sku, value: -> (record) {record.unique_skus_in_order.count}, type: 'integer'
+    field :sku, value: -> (record) {record.id}, type: 'integer'
     field :invoices_count, value: -> (record) {record.bible_sales_invoices.count}, type: 'integer'
     field :sales_order_count, value: -> (record) {record.bible_sales_orders.count}, type: 'integer'
     field :margin_percentage, value: -> (record) {record.bible_margin_percentage}, type: 'float'

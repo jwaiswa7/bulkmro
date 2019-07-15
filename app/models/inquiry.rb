@@ -455,7 +455,7 @@ class Inquiry < ApplicationRecord
       if sales_order.present?
         if !sales_quotes_ids.include? sales_order.sales_quote.id
           total_quote_value += sales_order.sales_quote.calculated_total_with_tax
-          sales_quotes_ids >> sales_order.sales_quote.id
+          sales_quotes_ids << sales_order.sales_quote.id
         end
       end
     end
@@ -480,19 +480,27 @@ class Inquiry < ApplicationRecord
   end
 
   def bible_sales_invoices
-    BibleSalesInvoice.where(:inquiry_number => self.inquiry_number)
+    BibleInvoice.where(:inquiry_number => self.inquiry_number)
   end
 
   def bible_margin_percentage
-    margin_percentages = BibleSalesOrder.where(:inquiry_number => self.inquiry_number).pluck(:margin_percentage)
-    margin_percentages.sum / margin_percentages.count
+    margin_percentages = BibleSalesOrder.where(:inquiry_number => self.inquiry_number).pluck(:total_margin)
+    margin_percentages.count ? 0 : margin_percentages.sum / margin_percentages.count
   end
 
   def bible_sales_order_total
-    BibleSalesOrder.where(:inquiry_number => record.inquiry_number).pluck(:order_total).sum
+    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).pluck(:order_total).sum
   end
 
   def bible_revenue
-    BibleSalesOrder.where(:inquiry_number => record.inquiry_number).pluck(:margin_amount).sum
+    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).pluck(:total_margin).sum
+  end
+
+  def bible_inside_sales_owner
+    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).first.try(:inside_sales_owner_id) || self.inside_sales_owner_id
+  end
+
+  def bible_outside_sales_owner
+    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).first.try(:outside_sales_owner_id) || self.outside_sales_owner_id
   end
 end
