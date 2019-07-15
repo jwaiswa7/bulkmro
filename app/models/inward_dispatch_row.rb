@@ -1,6 +1,7 @@
 class InwardDispatchRow < ApplicationRecord
   belongs_to :inward_dispatch
   belongs_to :purchase_order_row
+  belongs_to :product
   has_one :ar_invoice_row
 
   validates_uniqueness_of :purchase_order_row_id, scope: :inward_dispatch

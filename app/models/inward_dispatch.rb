@@ -152,6 +152,12 @@ class InwardDispatch < ApplicationRecord
     self.expected_delivery_date = purchase_order.po_request.supplier_committed_date if purchase_order.po_request.present?
   end
 
+
+  def show_ar_invoice_requests
+    product_ids_array = self.rows.pluck(:product_id).uniq
+    ar_invoices = ArInvoiceRequest.joins(:rows).where(ar_invoice_request_rows: {sales_order_id: self.sales_order.id, product_id: product_ids_array})
+  end
+
   def set_outward_status
     if self.ar_invoice_request.present?
       ar_invoice_request = self.ar_invoice_request
