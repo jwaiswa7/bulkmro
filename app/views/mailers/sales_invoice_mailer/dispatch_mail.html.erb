@@ -6,9 +6,9 @@
 
   <p style="color: #555;"><b>Below are the Dispatch Details:</b></p>
 
-  <p style="color: #555;">Courier Company:</p>
-  <p style="color: #555;">Docket Number:</p>
-  <p style="color: #555;">Expected Date of Delivery:</p>
+  <p style="color: #555;"><b>Courier Company:</b> <%= @outward_dispatch.logistics_partner if @outward_dispatch.present? %></p>
+  <p style="color: #555;"><b>Docket Number:</b> <%= @outward_dispatch.tracking_number if @outward_dispatch.present? %></p>
+  <p style="color: #555;"><b>Expected Date of Delivery:</b> <%= @outward_dispatch.expected_date_of_delivery if @outward_dispatch.present?%></p>
 
   <br>
 
