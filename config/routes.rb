@@ -266,6 +266,9 @@ Rails.application.routes.draw do
         post 'create_purchase_order'
         get 'manager_amended'
       end
+      collection do
+        get 'product_resync_inventory'
+      end
       scope module: 'po_requests' do
 
         resources :payment_requests

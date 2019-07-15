@@ -1,7 +1,7 @@
 class Overseers::PoRequestsController < Overseers::BaseController
   before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form, :new_purchase_order, :reject_purchase_order_modal, :rejected_purchase_order, :create_purchase_order, :render_comment_form, :add_comment, :manager_amended]
   before_action :set_notification, only: [:update, :cancel_porequest]
-
+  before_action :set_product, only: [:product_resync_inventory]
   def pending_and_rejected
     @po_requests = filter_by_status(:pending_and_rejected)
     authorize_acl @po_requests
@@ -254,6 +254,14 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize_acl @po_request
   end
 
+  def product_resync_inventory
+    service = Services::Resources::Products::UpdateInventory.new([@product])
+    service.resync
+    respond_to do |format|
+      format.html {render partial: 'product_resync_inventory', locals: {product: @product}}
+    end
+  end
+
   private
 
     def po_request_params
@@ -289,5 +297,9 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
     def set_po_request
       @po_request = PoRequest.find(params[:id])
+    end
+
+    def set_product
+      @product = Product.find(params[:product_id])
     end
 end
