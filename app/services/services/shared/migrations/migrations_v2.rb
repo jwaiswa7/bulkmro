@@ -1101,7 +1101,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   end
 
   def flex_dump
-    column_headers = ['Order Date', 'OD', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Order Status', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
+    column_headers = ['Order Date', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Order Status', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
     start_at = Date.today.last_week.beginning_of_week.beginning_of_day
     end_at = Date.today.last_week.end_of_week.end_of_day
 
@@ -1112,7 +1112,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           order.rows.each do |record|
             sales_order = record.sales_order
             order_date = sales_order.inquiry.customer_order_date.strftime('%F')
-            order_cd = sales_order.created_at.strftime('%F')
             order_id = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.online_order_number : ''
             customer_po_number = sales_order.inquiry.customer_po_number
             part_number = record.product.sku
@@ -1127,37 +1126,36 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             category = record.product.category.name
             part_number_description = record.product.name
 
-            writer << [order_date, order_cd, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
+            writer << [order_date, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
           end
         end
       end
 
       flex_online_orders = CustomerOrder.joins(:company).where(companies: {id: 1847}).where(created_at: start_at..end_at).order(name: :asc)
-      flex_online_orders.each do |order|
-        order.rows.each do |record|
-          sales_order = record.sales_order
-          order_date = sales_order.inquiry.customer_order_date.strftime('%F')
-          order_cd = sales_order.created_at.strftime('%F')
-          order_id = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.online_order_number : ''
-          customer_po_number = sales_order.inquiry.customer_po_number
+      flex_online_orders.each do |customer_order|
+        customer_order.rows.each do |record|
+          inquiry = customer_order.inquiry
+          order_date = customer_order.created_at.strftime('%F')
+          order_id = customer_order.online_order_number
+          customer_po_number = inquiry.present? ? inquiry.customer_po_number : ''
           part_number = record.product.sku
-          account = sales_order.inquiry.company.name
+          account = customer_order.company_id.to_s
 
           line_item_quantity = record.quantity
-          line_item_net_total = record.total_selling_price.to_s
-          sap_status = sales_order.remote_status
-          user_email = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.contact.email : 'sivakumar.ramu@flex.com'
-          shipping_address = sales_order.inquiry.shipping_address
-          currency = sales_order.inquiry.inquiry_currency.currency.name
+          line_item_net_total = '' # record.total_selling_price.to_s
+          sap_status = ''
+          user_email = Contact.find(customer_order.contact_id).email.to_s
+          shipping_address = Address.find(customer_order.shipping_address_id).to_s
+          currency = inquiry.present? ? inquiry.inquiry_currency.currency.name : ''
           category = record.product.category.name
           part_number_description = record.product.name
 
-          writer << [order_date, order_cd, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
+          writer << [order_date, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
         end
       end
     end
 
-    fetch_csv('flex_order_data_export_weekly2.csv', csv_data)
+    fetch_csv('flex_order_data_export_weekly4.csv', csv_data)
   end
 
   def invoices_export
