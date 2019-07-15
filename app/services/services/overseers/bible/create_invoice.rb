@@ -41,8 +41,8 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
       end
 
       if bible_invoice.present?
-        skus_in_invoice = bible_invoice.metadata.map {|h| h['sku']}
-        puts 'SKU STATUS', skus_in_invoice.include?(x.get_column('Bm #'))
+        # skus_in_invoice = bible_invoice.metadata.map {|h| h['sku']}
+        # puts 'SKU STATUS', skus_in_invoice.include?(x.get_column('Bm #'))
 
         invoice_metadata = bible_invoice.metadata
         sku_data = {
@@ -61,7 +61,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
             # 'tax_rate': x.get_column('Tax Rate'),
             # 'tax_amount': x.get_column('Tax Amount').to_f,
             # 'total_selling_price_with_tax': x.get_column('Total Selling Price').to_f + x.get_column('Tax Amount').to_f,
-            'margin_percentage': x.get_column('Gross Margin %').present? ? x.get_column('Gross Margin %') : 0,
+            'margin_percentage': x.get_column('Gross Margin %').present? ? x.get_column('Gross Margin %') : '0%',
             'margin_amount': x.get_column('Gross Margin Amount').present? ? x.get_column('Gross Margin Amount').to_f : 0,
             'invoice_date': Date.parse(x.get_column('Invoice Date')).strftime('%Y-%m-%d')
         }
