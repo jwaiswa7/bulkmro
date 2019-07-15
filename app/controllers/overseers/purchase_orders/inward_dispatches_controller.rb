@@ -95,7 +95,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
           :purchase_order_id,
           :sales_order_id,
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-          rows_attributes: [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :supplier_delivery_date, :_destroy],
+          rows_attributes: [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :supplier_delivery_date, :_destroy, :product_id],
           attachments: []
         )
     end
