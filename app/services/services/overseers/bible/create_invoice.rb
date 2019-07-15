@@ -83,7 +83,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
         @bible_invoice_total = @bible_invoice_total + line_item['total_selling_price']
         # @bible_invoice_tax = @bible_invoice_tax + line_item['tax_amount']
         # @bible_invoice_total_with_tax = @bible_invoice_total_with_tax + line_item['total_selling_price_with_tax']
-        @invoice_margin = @invoice_margin + line_item['total_margin']
+        @invoice_margin = @invoice_margin + line_item['margin_amount']
       end
       bible_invoice.update_attributes(invoice_total: @bible_invoice_total, total_margin: @invoice_margin)
     end
