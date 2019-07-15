@@ -39,7 +39,7 @@
             <%= row.input :quantity, input_html: { value: row.object.quantity }, readonly: true, label: false %>
           </div>
           <div class="col-1 col-md-1 " >
-            <%= row.input :delivered_quantity, input_html: { value: row.object.delivered_quantity , onkeydown: "return event.keyCode !== 69"}, label: false %>
+            <%= row.input :delivered_quantity, input_html: { value: row.object.delivered_quantity , min: 1, max: (row.object.quantity.to_i if row.object.quantity.to_i > 1), onkeydown: "return event.keyCode !== 69"}, label: false %>
           </div>
           <% if f.object.rows.length > 1 %>
             <div class="col-1 col-md-1">
