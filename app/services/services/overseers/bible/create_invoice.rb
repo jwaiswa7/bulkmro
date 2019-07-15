@@ -85,10 +85,10 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
       @overall_margin_percentage = 0
 
       bible_invoice.metadata.each do |line_item|
-        @bible_invoice_total = @bible_invoice_total + line_item['total_selling_price']
+        @bible_invoice_total = @bible_invoice_total + line_item['total_selling_price'].to_f
         @margin_sum = @margin_sum + line_item['margin_percentage'].split('%')[0].to_f
         @invoice_items = @invoice_items + line_item['quantity'].to_f
-        @invoice_margin = @invoice_margin + line_item['margin_amount']
+        @invoice_margin = @invoice_margin + line_item['margin_amount'].to_f
       end
       @overall_margin_percentage = (@margin_sum/@invoice_items).to_f
       bible_invoice.update_attributes(invoice_total: @bible_invoice_total, total_margin: @invoice_margin, overall_margin_percentage: @overall_margin_percentage)
