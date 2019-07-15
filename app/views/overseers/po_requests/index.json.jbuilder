@@ -46,8 +46,10 @@ json.data (@po_requests) do |po_request|
                       end, '<br/>', '<br/>',
                       if policy(po_request).new_purchase_order? && action_name == 'pending_and_rejected' && po_request.status != 'Supplier PO Request Rejected'
                         row_action_button(new_purchase_order_overseers_po_request_path(po_request), 'plus', 'Create New Purchase Order', 'success')
+                      end,
+                      if po_request.status == 'Supplier PO: Amendment Pending'
+                        row_action_button(overseers_po_request_path(po_request), 'eye', 'Amendement Changes', 'success')
                       end
-
                   ].join(' '),
                   attribute_boxes([{ request_number: conditional_link(po_request.id, overseers_po_request_path(po_request), is_authorized(po_request, 'show'))}, { inquiry_number: conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), is_authorized(po_request.inquiry, 'edit')) }, { order: po_request.purchase_order.present? && (po_request.status == 'Supplier PO: Created Not Sent') ? link_to(po_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(po_request.inquiry, po_request.purchase_order), target: '_blank') :  po_request.sales_order.present? ? link_to(po_request.sales_order.order_number, overseers_inquiry_sales_order_path(po_request.inquiry.id, po_request.sales_order.id), target: '_blank') : '-'}]),
                   attribute_boxes([{ supplier: po_request.supplier.present? ? conditional_link(po_request.supplier.to_s, overseers_company_path(po_request.supplier), is_authorized(po_request.supplier, 'show')) : '-'}, { customer: po_request.inquiry.company.present? ? conditional_link(po_request.inquiry.company.to_s, overseers_company_path(po_request.inquiry.company), is_authorized(po_request.inquiry.company, 'show')) : '-'}]),

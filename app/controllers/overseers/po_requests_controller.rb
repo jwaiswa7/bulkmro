@@ -1,5 +1,5 @@
 class Overseers::PoRequestsController < Overseers::BaseController
-  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form, :new_purchase_order, :reject_purchase_order_modal, :rejected_purchase_order, :create_purchase_order, :render_comment_form, :add_comment]
+  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form, :new_purchase_order, :reject_purchase_order_modal, :rejected_purchase_order, :create_purchase_order, :render_comment_form, :add_comment, :manager_amended]
   before_action :set_notification, only: [:update, :cancel_porequest]
 
   def pending_and_rejected
@@ -221,7 +221,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def create_purchase_order
     authorize_acl @po_request
     service = Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer))
-    purchase_order = service.call
+    purchase_order = service.create
     if purchase_order.present?
       redirect_to overseers_inquiry_purchase_order_path(purchase_order.inquiry.to_param, purchase_order.to_param)
     else
@@ -247,6 +247,13 @@ class Overseers::PoRequestsController < Overseers::BaseController
       render json: {error: @po_request.errors }, status: 500
     end
   end
+
+  def manager_amended
+    Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer)).update
+    redirect_to overseers_inquiry_purchase_order_path(@po_request.inquiry.to_param, @po_request.purchase_order.to_param)
+    authorize_acl @po_request
+  end
+
   private
 
     def po_request_params

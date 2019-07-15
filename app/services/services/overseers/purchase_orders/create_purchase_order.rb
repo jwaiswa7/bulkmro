@@ -4,7 +4,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     @params = params
   end
 
-  def call
+  def create
     ActiveRecord::Base.transaction do
       warehouse = Warehouse.where(id: po_request.bill_to.id)
       series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' ' + Date.today.year.to_s).last
@@ -15,7 +15,8 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
             purchase_order_params.merge(
                 logistics_owner: po_request.inquiry.company.logistics_owner,
                 payment_option: po_request.payment_option,
-                sap_sync: 'Not Sync'
+                sap_sync: 'Not Sync',
+                created_by_id: params[:overseer].id
             )
         )
       end
@@ -23,12 +24,17 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         @purchase_order.rows.where(product_id: row.product_id).first_or_create! do |po_row|
           po_row.update_attributes(
               metadata: set_product(row, index),
-              product: row.product
+              product: row.product,
+              created_by_id: params[:overseer].id,
+              updated_by_id: params[:overseer].id,
+              po_request_row_id: row.id
           )
-
         end
       end
       if @purchase_order.save_and_sync(po_request)
+        comments = po_request.comments.build(created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id)
+        comments.message = "Purchase Order ##{@purchase_order.po_number} Approved by #{params[:overseer].to_s}"
+        comments.save!
         series.increment_last_number
       end
       po_request.update_attributes(
@@ -39,11 +45,30 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     @purchase_order
   end
 
+  def update
+    @purchase_order = po_request.purchase_order
+    if @purchase_order.present?
+      purchase_order_params = assign_purchase_order_attributes(@purchase_order.po_number)
+      purchase_order.update_attributes(purchase_order_params)
+      purchase_order_row = purchase_order.rows
+      po_request.rows.each_with_index do |row, index|
+        purchase_order_row[index].update_attributes(
+            metadata: set_product(row, index),
+            updated_by_id: params[:overseer].id
+        )
+      end
+      @purchase_order.save_and_sync(po_request)
+      po_request.update_attributes(status: 'Supplier PO: Amended')
+      comments = po_request.comments.build(created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id)
+      comments.message = "Status Changed: #{po_request.status}"
+      comments.save!
+    end
+  end
+
   def assign_purchase_order_attributes(series_number)
     {
         inquiry_id: po_request.inquiry.id,
         po_number: series_number, # set_purchase_order_number(po_request).last_number + 1,
-        created_by_id: params[:overseer].id,
         updated_by_id: params[:overseer].id,
         status: PurchaseOrder.statuses.key(35),
         payment_option_id: po_request.payment_option.present? ? po_request.payment_option.id : nil,

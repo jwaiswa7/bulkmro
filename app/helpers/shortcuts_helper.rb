@@ -3,8 +3,8 @@ module ShortcutsHelper
     controller_name.capitalize.pluralize
   end
 
-  def row_action_button(url, icon, title = '', color = 'success', target = :_self, method = :get, remote = false, label = '', data = '')
-    link_to url, 'data-toggle': 'tooltip', 'data-placement': 'top', target: target, title: title, method: method, remote: remote, class: ['btn btn-sm btn-', color].join do
+  def row_action_button(url, icon, title = '', color = 'success', target = :_self, method = :get, remote = false, label = '', data = nil)
+    link_to url, 'data-toggle': 'tooltip', 'data-placement': 'top',  target: target, title: title, data: data.present? ?  data : '' , method: method, remote: remote, class: ['btn btn-sm btn-', color].join do
       concat content_tag(:span, label)
       concat content_tag :i, nil, class: ['fal fa-', icon].join
     end

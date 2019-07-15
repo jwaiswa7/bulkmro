@@ -264,6 +264,7 @@ Rails.application.routes.draw do
       member do
         get 'new_purchase_order'
         post 'create_purchase_order'
+        get 'manager_amended'
       end
       scope module: 'po_requests' do
 
