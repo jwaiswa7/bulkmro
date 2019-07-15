@@ -4,8 +4,11 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
 
   def call
     error = []
+    i = 0
     service = Services::Shared::Spreadsheets::CsvImporter.new('bible_till_june1.csv', 'seed_files_3')
     service.loop(nil) do |x|
+      puts '******************************** ITERATION ***********************************', i
+      i = i + 1
       order_number = x.get_column('So #')
       bible_order_row_total = x.get_column('Total Selling Price').to_f
       bible_total_with_tax = x.get_column('Total Selling Price').to_f + x.get_column('Tax Amount').to_f
@@ -30,7 +33,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
         sales_order = ae_sales_order
       end
 
-      inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number').to_i)
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry #').to_i) || Inquiry.find_by_old_inquiry_number(x.get_column('Inquiry #'))
       isp_full_name = x.get_column('Inside Sales Name').to_s.strip.split
       isp_first_name = isp_full_name[0]
       isp_last_name = isp_full_name[1] if isp_full_name.length > 1
@@ -39,9 +42,9 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
         bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
                                             order_number: x.get_column('So #'),
                                             mis_date: Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')).first_or_create! do |bible_order|
+          bible_order.inquiry = inquiry
           bible_order.inside_sales_owner = Overseer.where(first_name: isp_first_name).last
           bible_order.outside_sales_owner = inquiry.outside_sales_owner
-
           bible_order.sales_order = sales_order.present? ? sales_order.id : nil
           bible_order.company = inquiry.company # || x.get_column('Magento Company Name')
           bible_order.account = inquiry.company.account # || x.get_column('Company Alias')
@@ -93,14 +96,20 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
       @bible_order_tax = 0
       @bible_order_total_with_tax = 0
       @order_margin = 0
+      @margin_sum = 0
+      @order_line_items = 0
+      @overall_margin_percentage = 0
 
       bible_order.metadata.each do |line_item|
         @bible_order_total = @bible_order_total + line_item['total_selling_price']
         @bible_order_tax = @bible_order_tax + line_item['tax_amount']
         @bible_order_total_with_tax = @bible_order_total_with_tax + line_item['total_selling_price_with_tax']
         @order_margin = @order_margin + line_item['margin_amount']
+        @margin_sum = @margin_sum + line_item['margin_percentage'].split('%')[0].to_f
+        @order_line_items = @order_line_items + line_item['quantity']
       end
-      bible_order.update_attributes(order_total: @bible_order_total, order_tax: @bible_order_tax, order_total_with_tax: @bible_order_total_with_tax, total_margin: @order_margin)
+      @overall_margin_percentage = (@margin_sum/@invoice_items).to_f
+      bible_order.update_attributes(order_total: @bible_order_total, order_tax: @bible_order_tax, order_total_with_tax: @bible_order_total_with_tax, total_margin: @order_margin, overall_margin_percentage: @overall_margin_percentage)
     end
   end
 end

@@ -30,6 +30,8 @@ class Inquiry < ApplicationRecord
   belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: false
   belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: false
   belongs_to :last_synced_quote, class_name: 'SalesQuote', foreign_key: :last_synced_quote_id, required: false
+  # belongs_to :bible_invoice, required: false
+  # belongs_to :bible_sales_order, required: false
 
   has_one :account, through: :company
   has_many :inquiry_products, -> {order(sr_no: :asc)}, inverse_of: :inquiry, dependent: :destroy

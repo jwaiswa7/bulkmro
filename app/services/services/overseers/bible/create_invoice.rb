@@ -3,11 +3,14 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
   end
 
   def call
+    i = 0
     error = []
     service = Services::Shared::Spreadsheets::CsvImporter.new('bible_invoices_17_to19.csv', 'seed_files_3')
     service.loop(nil) do |x|
       invoice_number = x.get_column('Invoice Number')
       bible_invoice_row_total = x.get_column('Invoice Amount in INR').to_f
+      puts '************************************ ITERATION *******************************', i
+      i = i + 1
 
       if invoice_number.include?('.') || invoice_number.include?('/') || invoice_number.include?('-') || invoice_number.match?(/[a-zA-Z]/)
         sales_invoice = SalesInvoice.find_by_old_invoice_number(invoice_number)
@@ -20,6 +23,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
         bible_invoice = BibleInvoice.where(inquiry_number: x.get_column('Inquiry Number').to_i,
                                             invoice_number: invoice_number,
                                             mis_date: Date.parse(x.get_column('Invoice Date')).strftime('%Y-%m-%d')).first_or_create! do |bible_invoice|
+          # bible_invoice.inquiry = inquiry
           bible_invoice.inside_sales_owner = inquiry.inside_sales_owner
           bible_invoice.outside_sales_owner = inquiry.outside_sales_owner
           bible_invoice.invoice_type = x.get_column('Invoice/Credit Note')
@@ -75,17 +79,19 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
   def calculate_totals
     BibleInvoice.all.each do |bible_invoice|
       @bible_invoice_total = 0
-      @bible_invoice_tax = 0
-      @bible_invoice_total_with_tax = 0
+      @margin_sum = 0
+      @invoice_items = 0
       @invoice_margin = 0
+      @overall_margin_percentage = 0
 
       bible_invoice.metadata.each do |line_item|
         @bible_invoice_total = @bible_invoice_total + line_item['total_selling_price']
-        # @bible_invoice_tax = @bible_invoice_tax + line_item['tax_amount']
-        # @bible_invoice_total_with_tax = @bible_invoice_total_with_tax + line_item['total_selling_price_with_tax']
+        @margin_sum = @margin_sum + line_item['margin_percentage'].split('%')[0].to_f
+        @invoice_items = @invoice_items + line_item['quantity'].to_f
         @invoice_margin = @invoice_margin + line_item['margin_amount']
       end
-      bible_invoice.update_attributes(invoice_total: @bible_invoice_total, total_margin: @invoice_margin)
+      @overall_margin_percentage = (@margin_sum/@invoice_items).to_f
+      bible_invoice.update_attributes(invoice_total: @bible_invoice_total, total_margin: @invoice_margin, overall_margin_percentage: @overall_margin_percentage)
     end
   end
 end
