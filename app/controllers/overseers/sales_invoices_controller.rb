@@ -129,7 +129,8 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
 
   def dispatch_mail_to_customer
-    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice)
+    @outward_dispatch = @invoice.ar_invoice_request.outward_dispatches.last if @invoice.ar_invoice_request.present?
+    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice, outward_dispatch: @outward_dispatch)
     subject = "Ref# #{@invoice.inquiry.inquiry_number}- Your Order #{@invoice.inquiry.customer_po_number} - Dispatch Notification"
     @action = 'dispatch_mail_to_customer_notification'
     @email_message.assign_attributes(
@@ -150,7 +151,8 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   end
 
   def dispatch_mail_to_customer_notification
-    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice, email_type: 'Material Dispatched to Customer')
+    @outward_dispatch = @invoice.ar_invoice_request.outward_dispatches.last if @invoice.ar_invoice_request.present?
+    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice, email_type: 'Material Dispatched to Customer', outward_dispatch: @outward_dispatch)
     @email_message.assign_attributes(email_message_params)
 
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
