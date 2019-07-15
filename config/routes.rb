@@ -289,6 +289,7 @@ Rails.application.routes.draw do
       member do
         get 'render_modal_form'
         patch 'cancel_porequest'
+        get 'render_comment_form'
         patch 'add_comment'
       end
     end
@@ -797,5 +798,6 @@ Rails.application.routes.draw do
         get 'contact_companies'
       end
     end
+
   end
 end

@@ -111,6 +111,13 @@ class Address < ApplicationRecord
     ].reject(&:blank?).join('<br>').html_safe
   end
 
+  def pdf_compact_multiline_s
+    [
+        [street1, street2].reject(&:blank?).join(''),
+        [city_name, pincode, state.to_s, country_name].reject(&:blank?).join(', ')
+    ].reject(&:blank?).join('<br>').html_safe
+  end
+
   def footer
     [city_name, pincode, state.to_s, country_name].reject(&:blank?).join(', ').html_safe
   end
