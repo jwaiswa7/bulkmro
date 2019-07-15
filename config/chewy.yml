@@ -4,7 +4,10 @@ test:
   host: 'localhost:9250'
   prefix: 'test'
 development:
-  host: 'localhost:9200'
+  host: 'https://827f5059a1434cff07f01679651d5284.eu-west-1.aws.found.io'
+  user: 'elastic'
+  password: 'bDLp8QA9dujzvMm2WlHKstos'
+  scheme: 'https'
 production:
   host: <%= ENV["FOUNDELASTICSEARCH_URL"] %>
   user: <%= ENV["ELASTIC_USER_NAME"] %>

@@ -8,7 +8,12 @@ default: &default
 
 development:
   <<: *default
-  database: sprint_dev
+  host: ec2-63-32-225-60.eu-west-1.compute.amazonaws.com
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 50000
+  username: u1omrvhgml0ng8
+  password: pd504aa12c9aa250dbf3cfd4eaa8395350f589ceae55a4357d123f72edf56ee97
+  database: d13f0t55rlgm5f
 
 test:
   <<: *default
@@ -16,7 +21,6 @@ test:
 
 staging:
   <<: *default
-  database: sprint_staging
 
 production:
   <<: *default
