@@ -26,7 +26,7 @@
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                   <span><%= locals[:metadata][:PoEnquiryId] %></span></td>
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                  <b><span>Date of Quotation</span></b> <span style="float:right">:</span></td>
+                  <b><span>Purchase Order Date</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
                     <span>
                       <%= Date.parse(locals[:metadata][:PoDate]).strftime("%d-%b-%Y") if locals[:metadata][:PoDate].present? %>
@@ -35,7 +35,7 @@
               </tr>
               <tr>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <b><span>Contact Name</span></b>
+                  <b><span>Contact Person</span></b>
                   <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <span></span>Mr. Ajay Rathod
@@ -66,7 +66,7 @@
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span>Mode of Transport</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span><%= locals[:metadata][:PoModeOfTrasport] %></span></td>
+                    <span><%= locals[:metadata][:PoModeOfTrasport] %></span></td>
               </tr>
               <tr>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
@@ -86,10 +86,10 @@
 
 
             <div style=" " class="heading heading-left">
-              <b><span>Supplier - Bill to:</span></b>
+              <b><span>Supplier - Bill from:</span></b>
             </div>
             <div class="heading heading-right">
-              <b><span>Supplier - Ship to:</span></b>
+              <b><span>Supplier - Ship from:</span></b>
             </div>
 
             <br clear="all">
@@ -103,7 +103,7 @@
                     <br>
                     Tel: <%= record.billing_address&.phone || locals[:supplier]&.phone %>
                     <br>
-                    GST No.: <%= record.billing_address&.gst %><br>
+                    GST No.: <%= record.billing_address&.gst %>
                   <% end %>
                 </td>
                 <td style="width: 2%;"></td>
