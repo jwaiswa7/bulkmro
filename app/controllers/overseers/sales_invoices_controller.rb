@@ -89,7 +89,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
       subject: subject,
       body: SalesInvoiceMailer.delivery_mail(@email_message).body.raw_source,
       auto_attach: true,
-      cc: 'logistics@bulkmro.com, sales@bulkmro.com'
+      cc: ['logistics@bulkmro.com', 'sales@bulkmro.com', @invoice.inquiry.inside_sales_owner.email, @invoice.inquiry.outside_sales_owner.email].join(', ')
         )
     @params = {
         record: [:overseers, @invoice, @email_message],
@@ -103,7 +103,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   end
 
   def delivery_mail_to_customer_notification
-    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice)
+    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice, email_type: 'Material Delivered to Customer')
     @email_message.assign_attributes(email_message_params)
 
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
@@ -120,8 +120,6 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
     if @email_message.save!
       SalesInvoiceMailer.send_delivery_mail(@email_message).deliver_now
-      Services::Overseers::Inquiries::UpdateStatus.new(@invoice, :ack_email_sent).call
-
       redirect_to overseers_sales_invoices_path, notice: flash_message(@invoice, action_name)
     else
       render 'shared/layouts/email_messages/new'
@@ -133,12 +131,12 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   def dispatch_mail_to_customer
     @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice)
     subject = "Ref# #{@invoice.inquiry.inquiry_number}- Your Order #{@invoice.inquiry.customer_po_number} - Dispatch Notification"
-    @action = 'delivery_mail_to_customer_notification'
+    @action = 'dispatch_mail_to_customer_notification'
     @email_message.assign_attributes(
       subject: subject,
       body: SalesInvoiceMailer.dispatch_mail(@email_message).body.raw_source,
       auto_attach: true,
-      cc: 'logistics@bulkmro.com, sales@bulkmro.com'
+      cc: ['logistics@bulkmro.com', 'sales@bulkmro.com', @invoice.inquiry.inside_sales_owner.email, @invoice.inquiry.outside_sales_owner.email].join(', ')
     )
     @params = {
         record: [:overseers, @invoice, @email_message],
@@ -152,7 +150,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   end
 
   def dispatch_mail_to_customer_notification
-    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice)
+    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice, email_type: 'Material Dispatched to Customer')
     @email_message.assign_attributes(email_message_params)
 
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
@@ -169,8 +167,6 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
     if @email_message.save!
       SalesInvoiceMailer.send_delivery_mail(@email_message).deliver_now
-      Services::Overseers::Inquiries::UpdateStatus.new(@invoice, :ack_email_sent).call
-
       redirect_to overseers_sales_invoices_path, notice: flash_message(@invoice, action_name)
     else
       render 'shared/layouts/email_messages/new'
