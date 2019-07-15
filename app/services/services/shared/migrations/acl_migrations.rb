@@ -463,7 +463,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
         'po_request': %w(render_modal_form add_comment cancel_porequest render_cancellation_form render_comment_form can_cancel_or_reject),
         'payment_request': %w(add_comment render_modal_form),
         'invoice_request': %w(render_modal_form cancel_invoice_request render_cancellation_form render_comment_form can_cancel_or_reject),
-        'ar_invoice_request': %w(index show new edit create update destroy download_eway_bill_format render_cancellation_form cancel_ar_invoice),
+        'ar_invoice_request': %w(index show new edit create update destroy download_eway_bill_format render_cancellation_form cancel_ar_invoice can_cancel_or_reject),
         'ar_invoice_request_comment':  %w(index show new edit create update destroy),
         'ar_invoice_request_row': %w(index show new edit create update destroy),
     }

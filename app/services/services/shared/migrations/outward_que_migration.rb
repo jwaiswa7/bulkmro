@@ -10,6 +10,17 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
     end
   end
 
+  def add_product_row_in_inward_dispatch
+      InwardDispatchRow.all.each do |inward_dispatch_row|
+        inward_dispatch_row.product = inward_dispatch_row.purchase_order_row.product
+        inward_dispatch_row.save(validate: false)
+      end
+
+      SalesOrderRow.all.each do |sales_order_row|
+        sales_order_row.product_id = sales_order_row.product.id
+        sales_order_row.save(validate: false)
+      end
+  end
 
   # def createArInvoiceAndRows
   #   status = []
@@ -101,6 +112,7 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
           if !ar_invoice_request.present? && (inquiry_ids.count == 1) && (sales_order_ids.count == 1)
             Chewy.strategy(:bypass) do
               ar_invoice_request = ArInvoiceRequest.new(overseer: val[0].created_by, sales_order_id: sales_order_ids[0], inquiry_id: inquiry_ids[0], status: 'Completed AR Invoice Request', sales_invoice_id: sales_invoice.id)
+               # data_present = val.map{|x| x.inward_dispatches.count > 0 && (x.inward_dispatches.map{|y| y.rows.count}.flatten.compact.sum > 0)}
               ar_invoice_request.save!
               val.each do |invoice_request|
                 invoice_request.status = 'Inward Completed'
