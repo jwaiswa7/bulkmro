@@ -42,7 +42,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
         bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
                                             order_number: x.get_column('So #'),
                                             mis_date: Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')).first_or_create! do |bible_order|
-          bible_order.inquiry = inquiry
+          # bible_order.inquiry = inquiry
           bible_order.inside_sales_owner = Overseer.where(first_name: isp_first_name).last
           bible_order.outside_sales_owner = inquiry.outside_sales_owner
           bible_order.sales_order = sales_order.present? ? sales_order.id : nil
@@ -108,7 +108,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
         @margin_sum = @margin_sum + line_item['margin_percentage'].split('%')[0].to_f
         @order_line_items = @order_line_items + line_item['quantity']
       end
-      @overall_margin_percentage = (@margin_sum/@invoice_items).to_f
+      @overall_margin_percentage = (@margin_sum/@order_line_items).to_f
       bible_order.update_attributes(order_total: @bible_order_total, order_tax: @bible_order_tax, order_total_with_tax: @bible_order_total_with_tax, total_margin: @order_margin, overall_margin_percentage: @overall_margin_percentage)
     end
   end
