@@ -3,26 +3,26 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
 
   def index
     @po_requests = @inquiry.po_requests
-    authorize @po_requests
+    authorize_acl @po_requests
   end
 
   def show
-    authorize @po_request
+    authorize_acl @po_request
   end
 
   def new
     @po_requests = @inquiry.po_requests.build
     @po_request_rows = @po_requests.rows.build
-    authorize @po_requests
+    authorize_acl @po_requests
   end
 
   def edit
-    authorize @po_request
+    authorize_acl @po_request
   end
 
   def update
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
-    authorize @po_request
+    authorize_acl @po_request
     if @po_request.valid?
       # todo allow only in case of zero form errors
       if @po_request.purchase_order.present? && @po_request.stock_status == 'Stock Requested'

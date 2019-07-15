@@ -6,7 +6,7 @@ class Overseers::ReportsController < Overseers::BaseController
     Report.inward_logistic_queue
 
     @reports = ApplyDatatableParams.to(Report.all, params)
-    authorize @reports
+    authorize_acl @reports
   end
 
   def show
@@ -14,10 +14,9 @@ class Overseers::ReportsController < Overseers::BaseController
     @report.assign_attributes(report_params)
     params[:overseer] = current_overseer
     # @report.designation = 'Inside'
-    service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params)
+    service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params, current_overseer)
     @data = service.call
-
-    authorize @report
+    authorize_acl @report
 
     render @report.uid
   end
@@ -26,9 +25,9 @@ class Overseers::ReportsController < Overseers::BaseController
     @report = Report.find_by_uid(params[:id])
     @report.assign_attributes(report_params)
     params[:overseer] = current_overseer
-    service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params)
+    service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params, current_overseer)
     @indexed_records = service.call
-    authorize @report
+    authorize_acl @report
     export_service = ['Services', 'Overseers', 'Exporters', @report.name].join('::').constantize.new([], current_overseer, @indexed_records, params)
     export_service.call
     redirect_to url_for(Export.monthly_sales_report.not_filtered.last.report)

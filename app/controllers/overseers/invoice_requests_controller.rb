@@ -1,12 +1,12 @@
 class Overseers::InvoiceRequestsController < Overseers::BaseController
-  before_action :set_invoice_request, only: [:show, :edit, :update, :cancel_invoice_request, :render_cancellation_form, :render_comment_form, :add_comment]
+  before_action :set_invoice_request, only: [:show, :edit, :update, :cancel_invoice_request, :render_modal_form, :add_comment]
 
   def pending
     invoice_requests =
         if params[:status].present?
           if params[:status] == 'rejected'
             @status = 'Rejected'
-            InvoiceRequest.where(status:  ['AP Invoice Request Rejected', 'GRPO Request Rejected'])
+            InvoiceRequest.where(status: ['AP Invoice Request Rejected', 'GRPO Request Rejected'])
           else
             @status = params[:status]
             InvoiceRequest.where(status: params[:status])
@@ -16,17 +16,17 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         end.order(id: :desc)
 
     @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
-    authorize @invoice_requests
+    authorize_acl @invoice_requests
 
     respond_to do |format|
-      format.json { render 'index' }
-      format.html { render 'index' }
+      format.json {render 'index'}
+      format.html {render 'index'}
     end
   end
 
   def completed
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.ar_invoice_generated.order(id: :desc), params)
-    authorize @invoice_requests
+    authorize_acl @invoice_requests
 
     #####################################################################################################
     ## Below code is for POD Summary on AR completed queue
@@ -38,12 +38,12 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @invoice_over_month = service.invoice_over_month
     @regular_pod_over_month = service.regular_pod_over_month
     @route_through_pod_over_month = service.route_through_pod_over_month
-    @pod_over_month = @regular_pod_over_month.merge(@route_through_pod_over_month) { |key, regular_value, route_through_value| regular_value['doc_count'] + route_through_value['doc_count'] }
+    @pod_over_month = @regular_pod_over_month.merge(@route_through_pod_over_month) {|key, regular_value, route_through_value| regular_value['doc_count'] + route_through_value['doc_count']}
     #####################################################################################################
 
     respond_to do |format|
-      format.json { render 'index' }
-      format.html { render 'index' }
+      format.json {render 'index'}
+      format.html {render 'index'}
     end
   end
 
@@ -57,7 +57,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         end.order(id: :desc)
 
     @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
-    authorize @invoice_requests
+    authorize_acl @invoice_requests
 
     respond_to do |format|
       format.json {render 'index'}
@@ -67,15 +67,15 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def index
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.order(id: :desc), params)
-    authorize @invoice_requests
+    authorize_acl @invoice_requests
     @statuses = @invoice_requests.pluck(:status)
   end
 
   def show
-    authorize @invoice_request
+    authorize_acl @invoice_request
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
     # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
-    @company_reviews = [@invoice_request.purchase_order.po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @invoice_request.purchase_order.supplier ).first_or_create]
+    @company_reviews = [@invoice_request.purchase_order.po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @invoice_request.purchase_order.supplier).first_or_create]
     service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.inward_dispatches.ids, false)
     @products_list = service.call
   end
@@ -85,14 +85,14 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @sales_order = SalesOrder.find(params[:sales_order_id])
       @invoice_request = InvoiceRequest.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
 
-      authorize @invoice_request
+      authorize_acl @invoice_request
     elsif params[:purchase_order_id].present?
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @sales_order = @purchase_order.try(:po_request).try(:sales_order)
       @invoice_request = InvoiceRequest.new(overseer: current_overseer, purchase_order: @purchase_order, inquiry: @purchase_order.inquiry)
       @inward_dispatches_ids = params[:ids].present? ? params[:ids] : InwardDispatch.decode_id(params[:inward_dispatch_id])
 
-      authorize @invoice_request
+      authorize_acl @invoice_request
       if params[:inward_dispatch_id] || params[:ids]
         if params[:inward_dispatch_id]
           @invoice_request.inward_dispatches << InwardDispatch.find(@inward_dispatches_ids)
@@ -111,7 +111,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def create
     @invoice_request = InvoiceRequest.new(invoice_request_params.merge(overseer: current_overseer))
-    authorize @invoice_request
+    authorize_acl @invoice_request
 
     if @invoice_request.valid?
       ActiveRecord::Base.transaction do
@@ -129,10 +129,10 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   end
 
   def edit
-    authorize @invoice_request
+    authorize_acl @invoice_request
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
     # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
-    @company_reviews = [@invoice_request.purchase_order.po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @invoice_request.purchase_order.supplier ).first_or_create]
+    @company_reviews = [@invoice_request.purchase_order.po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @invoice_request.purchase_order.supplier).first_or_create]
 
     mpr_ids = @invoice_request.inward_dispatches.map(&:id).join(', ')
     service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids, false)
@@ -143,7 +143,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def update
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
-    authorize @invoice_request
+    authorize_acl @invoice_request
 
     if @invoice_request.valid?
       service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
@@ -156,7 +156,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def cancel_invoice_request
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
-    authorize @invoice_request
+    authorize_acl @invoice_request
     if @invoice_request.valid?
       service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
       service.call
@@ -166,31 +166,33 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     end
   end
 
-  def render_cancellation_form
-    authorize @invoice_request
+  def render_modal_form
+    authorize_acl @invoice_request
     respond_to do |format|
-      format.html {render partial: 'cancel_invoice_request'}
-    end
-  end
-
-  def render_comment_form
-    authorize @invoice_request
-    respond_to do |format|
-      format.html {render partial: 'add_comment'}
+      if params[:title] == 'Comment'
+        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @invoice_request, url: add_comment_overseers_invoice_request_path(@invoice_request), view_more: overseers_invoice_request_path(@invoice_request)}}
+      else
+        format.html {render partial: 'cancel_invoice_request'}
+      end
     end
   end
 
   def add_comment
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
-    authorize @invoice_request
+    authorize_acl @invoice_request
+    @invoice_request.skip_grpo_number_validation = true
     if @invoice_request.valid?
-      ActiveRecord::Base.transaction do
-        @invoice_request.save!
-        @invoice_request_comment = InvoiceRequestComment.new(message: '', invoice_request: @invoice_request, overseer: current_overseer)
+      if params['invoice_request']['comments_attributes']['0']['message'].present?
+        ActiveRecord::Base.transaction do
+          @invoice_request.save!
+          @invoice_request_comment = InvoiceRequestComment.new(message: '', invoice_request: @invoice_request, overseer: current_overseer)
+        end
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
       end
-      render json: {success: 1, message: 'Successfully updated '}, status: 200
     else
-      render json: {success: 0, message: 'Cannot reject this PO Request.'}, status: 200
+      render json: {error: @invoice_request.errors}, status: 500
     end
   end
 

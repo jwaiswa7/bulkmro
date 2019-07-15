@@ -68,10 +68,14 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def tat_report?
-    developer? || admin?
+    manager_or_sales? || developer? || admin?
   end
 
   def export_inquiries_tat?
+    tat_report?
+  end
+
+  def sales_owner_status_avg?
     tat_report?
   end
 
@@ -85,10 +89,6 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def edit_suppliers?
     edit? && record.inquiry_products.present?
-  end
-
-  def sales_owner_status_avg?
-    developer? || admin?
   end
 
   def update_suppliers?
@@ -165,7 +165,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def restrict_fields_on_completed_orders?
-    has_approved_sales_orders? && !admin?
+    has_approved_sales_orders?
   end
 
   def has_no_approved_sales_orders?

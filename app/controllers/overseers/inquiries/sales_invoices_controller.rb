@@ -4,11 +4,11 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
   def index
     @sales_invoices = @inquiry.invoices
-    authorize @sales_invoices
+    authorize_acl @sales_invoices
   end
 
   def show
-    authorize @sales_invoice
+    authorize_acl @sales_invoice
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
 
 
@@ -21,7 +21,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
   def duplicate
-    authorize @sales_invoice, :show?
+    authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
     locals.merge!(duplicate: true)
     respond_to do |format|
@@ -33,7 +33,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
   def triplicate
-    authorize @sales_invoice, :show?
+    authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
     locals.merge!(triplicate: true)
     respond_to do |format|
@@ -45,7 +45,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
   def make_zip
-    authorize @sales_invoice
+    authorize_acl @sales_invoice
 
     service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice, locals)
     zip = service.call
@@ -58,12 +58,12 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
       @sales_invoice.mis_date = @sales_invoice.created_at.strftime('%d-%b-%Y')
     end
 
-    authorize @sales_invoice
+    authorize_acl @sales_invoice
   end
 
   def update_mis_date
     @sales_invoice.assign_attributes(sales_invoice_params)
-    authorize @sales_invoice
+    authorize_acl @sales_invoice
 
     if @sales_invoice.save
       redirect_to overseers_inquiry_sales_invoices_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -73,11 +73,11 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
   def relationship_map
-    authorize @sales_invoice
+    authorize_acl @sales_invoice
   end
 
   def get_relationship_map_json
-    authorize @sales_invoice
+    authorize_acl @sales_invoice
     inquiry_json = Services::Overseers::Inquiries::RelationshipMap.new(@sales_invoice.inquiry, [@sales_invoice.sales_order.sales_quote]).call
     render json: {data: inquiry_json}
   end

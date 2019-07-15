@@ -1,7 +1,7 @@
 json.data (@reports) do |report|
   json.array! [
                   [
-                      if policy(report).show?
+                      if is_authorized(report,'show')
                         row_action_button(overseers_report_path(report), 'eye', 'Show Report', 'info')
                       end,
                   ].join(' '),

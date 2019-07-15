@@ -10,6 +10,8 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
         @months = service.months
         @records = service.records
         @ownerwise_records = service.ownerwise_records
+        @delay_bucket_monthwise_records = service.delay_bucket_monthwise_records
+        @delay_bucket_ownerwise_records = service.delay_bucket_ownerwise_records
       }
       format.json do
         service = Services::Overseers::Finders::LogisticsScorecards.new(params, current_overseer, paginate: false)
@@ -25,7 +27,12 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
 
   def get_logistics_owner(key)
     @logistics = Overseer.logistics.select('id, first_name, last_name')
-    @logistics.where(id: key).pluck(:first_name, :last_name).first.compact.join(' ')
+    @owner_ids = @logistics.pluck :id
+    if @owner_ids.include? key
+      @logistics.where(id: key).pluck(:first_name, :last_name).first.compact.join(' ')
+    else
+      ''
+    end
   end
 
   def add_delay_reason

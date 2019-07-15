@@ -6,7 +6,7 @@
 <% provide :wrap_whitespace, true %>
 
 <% provide :heading_buttons do %>
-  <% if policy(:activity).add_to_inquiry? %>
+  <% if is_authorized(:activity, 'add_to_inquiry') %>
     <div class="mr-2 d-block d-md-inline-block export_daterange_wrapper">
       <%= select_tag :inquiry, '', class: 'select2-ajax select2-wrap add_to_inquiry_wrapper', 'data-source' => autocomplete_overseers_inquiries_path, include_blank: 'Choose an Inquiry to Assign to Activity', id: 'inquiry_select' %>
     </div>
@@ -16,6 +16,7 @@
   <% end %>
 <% end %>
 
+<% if Settings.reports.show_summary %>
 <div class="col-lg-12">
   <a class="btn btn-light text-left btn-lg btn-block mt-2 mt-lg-4" type="button" data-toggle="collapse" data-target="#summary">
     Activities Summary
@@ -38,10 +39,11 @@
     </div>
   </div>
 </div>
+<% end %>
 
 <% content_for :header_row do %>
   <th class="no-sort all">
-    <% if policy(:activity).perform_actions? %>
+    <% if is_authorized(:activity, 'perform_actions') %>
       <div class="custom-control custom-checkbox d-none d-md-block">
         <input type="checkbox" class="custom-control-input" name="all_activities" id="all_activities">
         <label class="custom-control-label" for="all_activities">Select All</label>

@@ -2,7 +2,7 @@
 
   <div class="form-row mt-3 mt-lg-4">
 
-    <% if policy(:inquiry).index? %>
+    <% if is_authorized(:inquiry,'index') %>
       <div class="col-md-3">
         <div class="card mb-3 ">
           <div class="card-body">
@@ -20,7 +20,7 @@
       </div>
     <% end %>
 
-    <% if policy(:company).index? %>
+    <% if is_authorized(:company,'index') %>
       <div class="col-md-3">
         <div class="card mb-3 ">
           <div class="card-body">
@@ -36,7 +36,7 @@
         </div>
       </div>
     <% end %>
-    <% if policy(:product).index? %>
+    <% if is_authorized(:product,'index') %>
       <div class="col-md-3">
         <div class="card mb-3 ">
           <div class="card-body">
@@ -51,7 +51,7 @@
         </div>
       </div>
     <% end %>
-    <% if policy(:brand).index? %>
+    <% if is_authorized(:brand,'index') %>
       <div class="col-md-3">
         <div class="card mb-3 ">
           <div class="card-body">
@@ -67,7 +67,7 @@
       </div>
     <% end %>
 
-    <% if policy(:overseer).index? %>
+    <% if is_authorized(:overseer,'index') %>
       <div class="col-md-3">
         <div class="card mb-3 ">
           <div class="card-body">
@@ -82,7 +82,7 @@
         </div>
       </div>
     <% end %>
-    <% if policy(:category).index? %>
+    <% if is_authorized(:category,'index') %>
       <div class="col-md-3">
         <div class="card mb-3 ">
           <div class="card-body">
@@ -97,7 +97,7 @@
         </div>
       </div>
     <% end %>
-    <% if policy(:account).index? %>
+    <% if is_authorized(:account,'index') %>
       <div class="col-md-3">
         <div class="card mb-3 ">
           <div class="card-body">
@@ -113,7 +113,7 @@
         </div>
       </div>
     <% end %>
-    <% if policy(:tax_code).index? %>
+    <% if is_authorized(:tax_code,'index') %>
       <div class="col-md-3">
         <div class="card mb-3 ">
           <div class="card-body">
@@ -125,7 +125,7 @@
         </div>
       </div>
     <% end %>
-    <% if policy(:contact).index? %>
+    <% if is_authorized(:contact,'index') %>
 
       <div class="col-md-3">
         <div class="card mb-3 ">
@@ -139,7 +139,7 @@
       </div>
     <% end %>
 
-    <% if policy(:industry).index? %>
+    <% if is_authorized(:industry,'index') %>
       <div class="col-md-3">
         <div class="card mb-3 ">
           <div class="card-body">
@@ -152,7 +152,7 @@
       </div>
     <% end %>
 
-    <% if policy(:address_state).index? %>
+    <% if is_authorized(:address_state,'index') %>
 
       <div class="col-md-3">
         <div class="card mb-3 ">
@@ -165,7 +165,7 @@
         </div>
       </div>
     <% end %>
-    <% if policy(:warehouse).index? %>
+    <% if is_authorized(:warehouse,'index') %>
 
       <div class="col-md-3">
         <div class="card mb-3 ">

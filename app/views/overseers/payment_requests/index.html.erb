@@ -2,16 +2,18 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
-<div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: PaymentRequest, statuses: PaymentRequest.statuses} %>
-</div>
+<% if Settings.reports.show_summary %>
+  <div class="col-lg-12">
+    <%= render partial: "shared/layouts/summary", locals: {klass: PaymentRequest, statuses: PaymentRequest.statuses} %>
+  </div>
+<% end %>
 
 <% content_for :heading do %>
   <% ['Payment Requests', @param].compact.join(': ') %>
 <% end %>
 
 <% content_for(:heading_buttons) do %>
-  <% if policy(:po_request).index? %>
+  <% if is_authorized(:po_request, 'index') %>
     <a href="<%= overseers_po_requests_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
       <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
     </a>
@@ -27,7 +29,7 @@
   <th class="no-sort all">Owner</th>
   <!--<th class="no-sort all">Payment Type</th>
   <th class="no-sort all">UTR/Cheque No</th>-->
-  <th class="no-sort all" title="Inside Sales & Procurement" data-toggle="tooltip" >IS&P</th>
+  <th class="no-sort all" title="Inside Sales & Procurement" data-toggle="tooltip">IS&P</th>
   <th class="desktop" data-name="due_date">Due Date</th>
   <th class="no-sort desktop">Total Amount</th>
   <th class="no-sort desktop">Remaining Amount</th>
@@ -58,3 +60,5 @@
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>
+
+<div class="open-modal-form" data-status="<%= params[:status] %>"></div>

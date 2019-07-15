@@ -99,7 +99,7 @@
                 <td class="address-wrapper" style="height: auto;width: 49%;">
                   <% if locals[:supplier].present? %>
                     <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
-                    <%= record.billing_address&.to_multiline_s %>
+                    <%= locals[:supplier].billing_address&.to_multiline_s %>
                     <br>
                     Tel: <%= record.billing_address&.phone || locals[:supplier]&.phone %>
                     <br>
@@ -110,7 +110,7 @@
                 <td class="address-wrapper" style="height: auto;width: 49%;">
                   <% if locals[:supplier].present? %>
                     <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
-                    <%= record.shipping_address&.to_multiline_s %>
+                    <%= locals[:supplier].shipping_address&.to_multiline_s %>
                     <br>
                     Tel: <%= record.shipping_address&.phone || locals[:supplier]&.phone %>
                     <br>

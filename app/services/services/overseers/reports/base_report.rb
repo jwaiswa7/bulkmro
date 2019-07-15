@@ -1,7 +1,8 @@
 class Services::Overseers::Reports::BaseReport < Services::Shared::BaseService
-  def initialize(report, params)
+  def initialize(report, params, current_overseer)
     @report = report
     @params = params
+    @current_overseer = current_overseer
   end
 
   def call_base

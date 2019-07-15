@@ -77,7 +77,11 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
 
   def all_records
-    index_klass.all.order(sort_definition)
+    if current_overseer.present? && !current_overseer.allow_inquiries?
+      index_klass.all.order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    else
+      index_klass.all.order(sort_definition)
+    end
   end
 
   def perform_query(query_string)
@@ -92,11 +96,24 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def filter_query(indexed_records)
     search_filters.each do |search_filter|
-      indexed_records = indexed_records.filter(
-        term: {
-            :"#{search_filter[:name]}" => search_filter[:search][:value]
-        }
-      ) if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
+      if ['inside_sales_executive', 'outside_sales_executive'].include? search_filter[:name]
+        if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
+          overseer = Overseer.where(id: search_filter[:search][:value].to_i).last
+          if overseer.present?
+            indexed_records = indexed_records.filter(
+              terms: {
+                  :"#{search_filter[:name]}" => overseer.self_and_descendant_ids
+              }
+            )
+          end
+        end
+      else
+        indexed_records = indexed_records.filter(
+          term: {
+              :"#{search_filter[:name]}" => search_filter[:search][:value]
+          }
+        ) if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
+      end
     end
 
     indexed_records
@@ -108,6 +125,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
       indexed_records = indexed_records.query(
         range: {
             :"#{range_filter[:name]}" => {
+                "time_zone": "+05:30",
                 gte: range[0].strip.to_date,
                 lte: range[1].strip.to_date
             }
@@ -240,39 +258,15 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
-  def filter_for_self_and_descendants(key1, key2, key3 = nil, vals)
-    if key3.present?
-    {
+  def filter_for_self_and_descendants(keys, vals)
+    query_obj = {
         bool: {
-            should: [
-                {
-                    terms: {"#{key1}": vals},
-                },
-                {
-                    terms: {"#{key2}": vals},
-                },
-                {
-                    terms: {"#{key3}": vals},
-                }
-            ],
-            minimum_should_match: 1,
-        },
+            should: [],
+            minimum_should_match: 1
+        }
     }
-    else
-      {
-          bool: {
-              should: [
-                  {
-                      terms: {"#{key1}": vals},
-                  },
-                  {
-                      terms: {"#{key2}": vals},
-                  }
-              ],
-              minimum_should_match: 1,
-          },
-      }
-    end
+    keys.map {|i| query_obj[:bool][:should] << { terms: { "#{i}": vals}}}
+    query_obj
   end
 
   def aggregate_by_status(key = 'statuses', aggregation_field = 'potential_value', size = 50, status_field)
