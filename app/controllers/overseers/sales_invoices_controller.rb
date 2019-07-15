@@ -89,7 +89,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
       subject: subject,
       body: SalesInvoiceMailer.delivery_mail(@email_message).body.raw_source,
       auto_attach: true,
-      cc: 'logistics@bulkmro.com, sales@bulkmro.com'
+      cc: 'logistics@bulkmro.com, sales@bulkmro.com, '+ @invoice.inquiry.inside_sales_owner.email+', '+ @invoice.inquiry.outside_sales_owner.email
         )
     @params = {
         record: [:overseers, @invoice, @email_message],
@@ -138,7 +138,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
       subject: subject,
       body: SalesInvoiceMailer.dispatch_mail(@email_message).body.raw_source,
       auto_attach: true,
-      cc: 'logistics@bulkmro.com, sales@bulkmro.com'
+      cc: 'logistics@bulkmro.com, sales@bulkmro.com, '+ @invoice.inquiry.inside_sales_owner.email+', '+ @invoice.inquiry.outside_sales_owner.email
     )
     @params = {
         record: [:overseers, @invoice, @email_message],
