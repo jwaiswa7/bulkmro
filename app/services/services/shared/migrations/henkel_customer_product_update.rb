@@ -1,4 +1,5 @@
 class Services::Shared::Migrations::HenkelCustomerProductUpdate < Services::Shared::Migrations::Migrations
+  #for henkel company specific
   def update_name_sku
     service = Services::Shared::Spreadsheets::CsvImporter.new('henkelsheet.csv', 'seed_files_3')
     @customer_array = Array.new

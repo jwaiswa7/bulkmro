@@ -15,6 +15,7 @@ class Customers::CustomerProductsController < Customers::BaseController
     service.call
     @indexed_customer_products = service.indexed_records
     @customer_products = service.records.try(:reverse)
+    # for henkel company specific changes
     @is_henkel = (current_company.account == account)
     @default_quantity = nil
     if @is_henkel
@@ -40,6 +41,7 @@ class Customers::CustomerProductsController < Customers::BaseController
     authorize @customer_product
     @account = Account.find(7)
     @default_quantity = @customer_product.moq
+    # for henkel company specific changes
     @is_henkel = (current_company.account == @account)
     @display_class = ''
     if @is_henkel
