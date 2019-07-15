@@ -5,7 +5,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
   def call
     i = 0
     error = []
-    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_invoices_17_to19.csv', 'seed_files_3')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_invoices.csv', 'seed_files_3')
     service.loop(nil) do |x|
       invoice_number = x.get_column('Invoice Number')
       bible_invoice_row_total = x.get_column('Invoice Amount in INR').to_f
