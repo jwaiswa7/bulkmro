@@ -1,7 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    abstract_type (0.0.7)
     actioncable (5.2.3)
       actionpack (= 5.2.3)
       nio4r (~> 2.0)
@@ -51,9 +50,6 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    adamantium (0.2.0)
-      ice_nine (~> 0.11.0)
-      memoizable (~> 0.4.0)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     arel (9.0.0)
@@ -74,7 +70,6 @@ GEM
       async-http (~> 0.43)
       async-io (~> 1.23)
       protocol-websocket (~> 0.7.0)
-    awesome_print (1.8.0)
     axlsx (3.0.0.pre)
       htmlentities (~> 4.3, >= 4.3.4)
       mimemagic (~> 0.3)
@@ -100,7 +95,6 @@ GEM
       azure-core (~> 0.1.13)
       nokogiri (~> 1.6, >= 1.6.8)
     bcrypt (3.1.13)
-    bindex (0.7.0)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
     builder (3.2.3)
@@ -125,9 +119,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concord (0.1.5)
-      adamantium (~> 0.2.0)
-      equalizer (~> 0.0.9)
     concurrent-ruby (1.1.5)
     config (2.0.0)
       activesupport (>= 4.2)
@@ -143,7 +134,6 @@ GEM
       countries (~> 3.0)
       sort_alphabetical (~> 1.0)
     crass (1.0.4)
-    dalli (2.7.10)
     declarative (0.0.10)
     declarative-option (0.1.0)
     deep_cloneable (2.3.2)
@@ -155,7 +145,6 @@ GEM
       railties (>= 4.1.0, < 6.0)
       responders
       warden (~> 1.2.3)
-    diff-lcs (1.3)
     dry-configurable (0.8.3)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.4, >= 0.4.7)
@@ -195,8 +184,6 @@ GEM
     elasticsearch-transport (6.8.0)
       faraday
       multi_json
-    encryptor (3.0.0)
-    equalizer (0.0.11)
     equatable (0.6.0)
     erubi (1.8.0)
     erubis (2.7.0)
@@ -261,7 +248,6 @@ GEM
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
     i18n_data (0.8.0)
-    ice_nine (0.11.2)
     jaro_winkler (1.5.3)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
@@ -308,8 +294,6 @@ GEM
       rdiscount (>= 1.6.8, < 2.0)
     memcachier (0.0.2)
     memoist (0.16.0)
-    memoizable (0.4.2)
-      thread_safe (~> 0.3, >= 0.3.1)
     method_source (0.9.2)
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
@@ -324,7 +308,6 @@ GEM
       i18n (>= 0.6.4, <= 2)
     money-open-exchange-rates (1.3.0)
       money (~> 6.12)
-    msg91ruby (1.0.2)
     msgpack (1.3.0)
     multi_json (1.13.1)
     multi_xml (0.6.0)
@@ -381,7 +364,6 @@ GEM
       heroics (~> 0.0.25)
       moneta (~> 1.0.0)
     powerpack (0.1.2)
-    procto (0.0.3)
     protocol-hpack (1.4.1)
     protocol-http (0.8.1)
     protocol-http1 (0.8.2)
@@ -432,7 +414,6 @@ GEM
       thor (>= 0.19.0, < 2.0)
     rainbow (3.0.0)
     rake (12.3.2)
-    randexp (0.1.7)
     ratyrate (1.2.2.alpha)
     razorpay (2.4.1)
       httparty (~> 0.14)
@@ -451,8 +432,6 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     retriable (3.1.2)
-    rotp (5.0.0)
-      addressable (~> 2.5)
     rubocop (0.63.1)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -461,9 +440,6 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.4.0)
-    rubocop-rails_config (0.5.1)
-      railties (>= 3.0)
-      rubocop (~> 0.60)
     ruby-ole (1.2.12.2)
     ruby-progressbar (1.10.1)
     ruby_dep (1.5.0)
@@ -550,16 +526,6 @@ GEM
     turbolinks (5.2.0)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
-    twilio-ruby (5.11.2)
-      faraday (~> 0.9)
-      jwt (>= 1.5, <= 2.5)
-      nokogiri (>= 1.6, < 2.0)
-    two_factor_authentication (2.2.0)
-      devise
-      encryptor
-      rails (>= 3.1.1)
-      randexp
-      rotp (>= 4.0.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     uber (0.1.0)
@@ -567,23 +533,10 @@ GEM
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.4.1)
     unicode_utils (1.4.0)
-    unparser (0.4.5)
-      abstract_type (~> 0.0.7)
-      adamantium (~> 0.2.0)
-      concord (~> 0.1.5)
-      diff-lcs (~> 1.3)
-      equalizer (~> 0.0.9)
-      parser (~> 2.6.3)
-      procto (~> 0.0.2)
     validates_timeliness (5.0.0.alpha4)
       timeliness (>= 0.3.10, < 1)
     warden (1.2.8)
       rack (>= 2.0.6)
-    web-console (3.7.0)
-      actionview (>= 5.0)
-      activemodel (>= 5.0)
-      bindex (>= 0.4.0)
-      railties (>= 5.0)
     webpacker (3.6.0)
       activesupport (>= 4.2)
       rack-proxy (>= 0.6.1)
@@ -593,7 +546,6 @@ GEM
     websocket-extensions (0.1.4)
     wicked_pdf (1.4.0)
       activesupport
-    wit (6.0.0)
     with_advisory_lock (4.0.0)
       activerecord (>= 4.2)
 
@@ -603,7 +555,6 @@ PLATFORMS
 DEPENDENCIES
   activeresource
   async-websocket
-  awesome_print
   axlsx (= 3.0.0.pre)
   axlsx_rails (= 0.5.2)
   azure-storage
@@ -615,10 +566,8 @@ DEPENDENCIES
   clockwork
   closure_tree
   cocoon
-  coffee-rails (~> 4.2)
   config
   country_select
-  dalli
   deep_cloneable (~> 2.3.2)
   devise
   elasticsearch (< 7.0.0)
@@ -636,20 +585,17 @@ DEPENDENCIES
   js-routes
   kaminari
   letter_opener
-  listen (>= 3.0.5, < 3.2)
   maily
   markdown-rails
   memcachier
   mini_magick
   money-open-exchange-rates
-  msg91ruby
   nested_form_fields
   net-scp
   newrelic_rpm
   oj
   omniauth-google-oauth2
   paper_trail
-  parser
   percentage
   pg
   pg_search
@@ -661,9 +607,7 @@ DEPENDENCIES
   rails (~> 5.2.0)
   ratyrate
   razorpay
-  rotp
   rubocop (~> 0.63.0)
-  rubocop-rails_config
   rubyzip (~> 1.2)
   sass-rails (~> 5.0)
   seed_dump
@@ -678,16 +622,11 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)
-  twilio-ruby (~> 5.11.2)
-  two_factor_authentication
   tzinfo-data
   uglifier (>= 1.3.0)
-  unparser
   validates_timeliness (~> 5.0.0.alpha3)
-  web-console (>= 3.3.0)
   webpacker (~> 3.5)
   wicked_pdf
-  wit
 
 BUNDLED WITH
    2.0.1

@@ -1,3 +1,6 @@
+# The gem 'wit' has been removed as on 16-07-2019
+# Please add the gem in order to use this service
+
 require 'wit'
 require_relative './config/../config/environment'
 

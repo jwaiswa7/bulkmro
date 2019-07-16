@@ -52,3 +52,6 @@ yarn-debug.log*
 
 # DB Schema
 /db/schema.rb
+
+#Old gem file
+/old_gemfile
