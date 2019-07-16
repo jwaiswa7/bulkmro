@@ -26,19 +26,19 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
           order.rows.each do |record|
             sales_order = record.sales_order
             rows.push(
-              order_date: sales_order.inquiry.customer_order_date.strftime('%F'),
-              order_id: sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.online_order_number : '',
-              customer_po_number: sales_order.inquiry.customer_po_number,
-              part_number: record.product.sku,
-              account: sales_order.inquiry.company.name,
-              line_item_quantity: record.quantity,
-              line_item_net_total: record.total_selling_price.to_s,
-              sap_status: sales_order.remote_status,
-              user_email: sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.contact.email : 'sivakumar.ramu@flex.com',
-              shipping_address: sales_order.inquiry.shipping_address,
-              currency: sales_order.inquiry.inquiry_currency.currency.name,
-              category: record.product.category.name,
-              part_number_description: record.product.name
+                order_date: sales_order.inquiry.customer_order_date.strftime('%F'),
+                order_id: sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.online_order_number : '',
+                customer_po_number: sales_order.inquiry.customer_po_number,
+                part_number: record.product.sku,
+                account: sales_order.inquiry.company.name,
+                line_item_quantity: record.quantity,
+                line_item_net_total: record.total_selling_price.to_s,
+                sap_status: sales_order.remote_status,
+                user_email: sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.contact.email : 'sivakumar.ramu@flex.com',
+                shipping_address: sales_order.inquiry.shipping_address,
+                currency: sales_order.inquiry.inquiry_currency.currency.name,
+                category: record.product.category.name,
+                part_number_description: record.product.name
             )
           end
         end
@@ -47,17 +47,17 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
           inquiry = sales_order.inquiry
 
           rows.push(
-            inquiry_number: inquiry.try(:inquiry_number) || '',
-            order_number: sales_order.order_number,
-            order_date: sales_order.created_at.to_date.to_s,
-            mis_date: sales_order.mis_date.to_date.to_s,
-            company_alias: inquiry.try(:account).try(:name),
-            company_name: inquiry.try(:company).try(:name) ? inquiry.try(:company).try(:name).gsub(/;/, ' ') : '',
-            gt_exc: (sales_order.calculated_total == 0) ? (sales_order.calculated_total == nil ? 0 : '%.2f' % sales_order.calculated_total) : ('%.2f' % sales_order.calculated_total),
-            tax_amount: ('%.2f' % sales_order.calculated_total_tax if sales_order.inquiry.present?),
-            gt_inc: ('%.2f' % sales_order.calculated_total_with_tax if sales_order.inquiry.present?),
-            status: sales_order.remote_status,
-          ) if inquiry.present?
+              inquiry_number: inquiry.try(:inquiry_number) || '',
+              order_number: sales_order.order_number,
+              order_date: sales_order.created_at.to_date.to_s,
+              mis_date: sales_order.mis_date.to_date.to_s,
+              company_alias: inquiry.try(:account).try(:name),
+              company_name: inquiry.try(:company).try(:name) ? inquiry.try(:company).try(:name).gsub(/;/, ' ') : '',
+              gt_exc: (sales_order.calculated_total == 0) ? (sales_order.calculated_total == nil ? 0 : '%.2f' % sales_order.calculated_total) : ('%.2f' % sales_order.calculated_total),
+              tax_amount: ('%.2f' % sales_order.calculated_total_tax if sales_order.inquiry.present?),
+              gt_inc: ('%.2f' % sales_order.calculated_total_with_tax if sales_order.inquiry.present?),
+              status: sales_order.remote_status,
+              ) if inquiry.present?
         end
       end
       rows.drop(columns.count).each do |row|

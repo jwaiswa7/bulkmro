@@ -1,5 +1,6 @@
 class Overseers::OverseersController < Overseers::BaseController
-  before_action :set_overseer, only: [:edit, :update, :save_acl_resources, :get_resources, :get_menu_resources, :edit_acl, :update_acl]
+
+  before_action :set_overseer, only: [:edit, :update, :save_acl_resources, :get_resources, :get_menu_resources, :edit_acl, :update_acl, :change_password, :update_password]
 
   def index
     # service = Services::Overseers::Finders::Overseers.new(params)
@@ -60,18 +61,35 @@ class Overseers::OverseersController < Overseers::BaseController
 
   def update
     @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! {|k, v| (k == 'password' || k == 'password_confirmation') && v.blank?})
+
     authorize_acl @overseer
     if @overseer.save_and_sync
       # acl_role = AclRole.find(params[:overseer][:acl_role_id])
       # @overseer.update_attributes(:acl_resources => acl_role.role_resources) if acl_role.present?
-      redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
+      if params[:overseer].present?
+        redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
+      end
     else
       render 'edit'
+    end
+    authorize_acl @overseer
+  end
+
+  def change_password
+    authorize_acl @overseer
+  end
+
+  def update_password
+    authorize_acl @overseer
+    @overseer.assign_attributes(overseer_password_params.merge(overseer: current_overseer, changed_by: current_overseer, changed_at: DateTime.now))
+    if @overseer.save
+      redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
+    else
+      render 'change_password'
     end
   end
 
   def get_resources
-
     default_resources = get_acl_resource_json
     current_acl = ActiveSupport::JSON.decode(@overseer.acl_resources)
     parsed_json = ActiveSupport::JSON.decode(default_resources)
@@ -132,11 +150,18 @@ class Overseers::OverseersController < Overseers::BaseController
         :function,
         :geography,
         :status,
-        :password,
-        :password_confirmation,
         :acl_role,
         :is_super_admin
     )
+  end
+
+  def overseer_password_params
+    params.require(:overseer).permit(
+        :password,
+        :password_confirmation,
+        :changed_by,
+        :changed_at
+      )
   end
 
   def set_overseer

@@ -137,6 +137,7 @@ Rails.application.routes.draw do
         get 'reject'
       end
     end
+
     resource :profile, controller: :profile, except: [:show, :index]
     resources :overseers, except: [:show] do
       member do
@@ -145,6 +146,8 @@ Rails.application.routes.draw do
         get 'get_menu_resources'
         get 'edit_acl'
         patch 'update_acl'
+        get 'change_password'
+        patch 'update_password'
       end
 
       collection do
