@@ -66,7 +66,7 @@
 
     </div>
   <% end %>
-  <div class="col-12 col-md-4">
+  <div class="col-12 col-md-3">
     <%= f.input :contact_email, label: 'Contact Email', placeholder: 'Contact email', required: !stock %>
   </div>
   <div class="col-12 col-md-4">
@@ -80,11 +80,11 @@
   <div class="col-12 col-md-4">
     <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', required: true, label: 'Payment Terms:', collection: PaymentOption.active.pluck(:name, :id) %>
   </div>
-  <div class="col-12 col-md-4 d-none late_lead_date_reason">
-    <%= f.input :delivery_type, as: :select, collection: enum_to_collection(PoRequest.delivery_types, alphabetical: false, keep_raw: true), required: true  %>
+  <div class="col-12 col-md-4">
+    <%= f.input :delivery_type, as: :select, collection: enum_to_collection(PoRequest.delivery_types, alphabetical: false, keep_raw: true), required: true, selected: 'Door delivery' %>
   </div>
   <div class="col-12 col-md-4">
-    <%= f.input :transport_mode, as: :select, collection: enum_to_collection(PoRequest.transport_modes, alphabetical: false, keep_raw: true), required: true  %>
+    <%= f.input :transport_mode, as: :select, collection: enum_to_collection(PoRequest.transport_modes, alphabetical: false, keep_raw: true), required: true, selected: 'Road'   %>
   </div>
   <div class="col-12 col-md-4 d-none late_lead_date_reason">
     <%= f.input :late_lead_date_reason, placeholder: 'Reason for late lead date', label: 'Late Lead Date Reason:' %>

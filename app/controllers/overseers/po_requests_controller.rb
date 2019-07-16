@@ -1,5 +1,5 @@
 class Overseers::PoRequestsController < Overseers::BaseController
-  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form, :render_comment_form, :render_modal_form, :add_comment]
+  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form, :render_comment_form, :render_modal_form, :add_comment, :new_purchase_order, :create_purchase_order, :manager_amended]
   before_action :set_notification, only: [:update, :cancel_porequest]
   before_action :set_product, only: [:product_resync_inventory]
   def pending_and_rejected
@@ -216,7 +216,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def new_purchase_order
-    authorize @po_request
+    authorize_acl @po_request
   end
 
   def create_purchase_order

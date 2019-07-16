@@ -38,11 +38,11 @@
             <% elsif is_authorized(sales_order, 'new_revision') && policy(sales_order).new_revision? %>
               <%= row_action_button(new_revision_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'redo-alt', 'New Sales Order Revision', 'warning') %>
             <% end %>
-            <% if is_authorized(sales_order, 'account_approval') && policy(sales_order).account_approval? %>
+            <% if is_authorized(sales_order, 'account_approval') && sales_order.status == 'Accounts Approval Pending' %>
               <%= row_action_button(new_accounts_confirmation_overseers_inquiry_sales_order_path(id: sales_order.to_param), 'comment-alt-check', 'Account Approval', 'warning') %>
             <% end %>
 
-            <% if is_authorized(sales_order, 'can_cancel_order') && policy(sales_order).can_cancel_order? %>
+            <% if is_authorized(sales_order, 'can_cancel_order') && sales_order.status == 'Approved' && sales_order.order_number.present? %>
               <%= link_to('', class: ['btn btn-sm btn-danger cancel-invoice cancel-sales-order-button'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Cancel', remote: true) do %>
                 <% concat content_tag(:span, '') %>
                 <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>

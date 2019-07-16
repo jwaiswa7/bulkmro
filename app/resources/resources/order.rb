@@ -24,6 +24,8 @@ class Resources::Order < Resources::ApplicationResource
         HandWritten: "tYES",
         DocNum: record.order_number,
         AttachmentEntry: record.inquiry.attachment_uid, # 6383, #$quote['attachment_entry'] ------------
+        DocumentStatus: record.status == "Cancelled" ? 'C' : 'O',
+        Canceled: record.status == "Cancelled" ? 'Y' : 'N',
         BPL_IDAssignedToInvoice: record.inquiry.bill_from.remote_branch_code, # record.inquiry.bill_from.remote_uid, #record.warehouser.remote_branch_code ----------
         CardCode: record.inquiry.company.remote_uid, # record.inquiry.contact.remote_uid, #customer_id ------
         CntctCode: record.inquiry.contact.full_name,
