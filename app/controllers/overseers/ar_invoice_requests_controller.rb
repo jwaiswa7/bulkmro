@@ -51,10 +51,6 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
     authorize_acl @ar_invoice_request
     respond_to do |format|
       if @ar_invoice_request.save
-        if inward_dispatch_ids.present?
-          InwardDispatch.where(id: inward_dispatch_ids).update_all(ar_invoice_request_status: 'Requested')
-          InwardDispatchesIndex::InwardDispatch.import([inward_dispatch_ids])
-        end
         service = Services::Overseers::ArInvoiceRequests::Update.new(@ar_invoice_request, current_overseer)
         service.call
         format.html { redirect_to overseers_ar_invoice_request_path(@ar_invoice_request), notice: 'AR invoice was successfully created.' }

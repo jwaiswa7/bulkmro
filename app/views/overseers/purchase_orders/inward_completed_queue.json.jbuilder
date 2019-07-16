@@ -11,9 +11,8 @@ json.data (@inward_dispatches) do |inward_dispatch|
                         row_action_button(new_overseers_ar_invoice_request_path(sales_order_id: inward_dispatch.sales_order,ids: inward_dispatch.id), 'plus', 'Create AR Invoice Request', 'success', target: :_blank)
                       end,
                   ].join(' '),
-                  inward_dispatch.show_ar_invoice_requests.map.with_index { |ar_invoice_request, index| link_to(ar_invoice_request.ar_invoice_number || "# #{index}", overseers_ar_invoice_request_path(ar_invoice_request), target: '_blank') }.compact.join(' <br>'),
+                  inward_dispatch.show_ar_invoice_requests.map.with_index { |ar_invoice_request, index| link_to(ar_invoice_request.ar_invoice_number || "# #{index+1}", overseers_ar_invoice_request_path(ar_invoice_request), target: '_blank') }.compact.join(' <br>'),
                   link_to(inward_dispatch.purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(inward_dispatch.purchase_order.inquiry), target: '_blank'),
-                  (conditional_link(inward_dispatch.purchase_order.inquiry.company.try(:name), overseers_company_path(inward_dispatch.purchase_order.inquiry.company), policy(inward_dispatch.purchase_order.inquiry).show?) if inward_dispatch.purchase_order.po_request.present? && inward_dispatch.purchase_order.po_request.sales_order.present?),
                   (conditional_link(inward_dispatch.purchase_order.inquiry.company.try(:name), overseers_company_path(inward_dispatch.purchase_order.inquiry.company), policy(inward_dispatch.purchase_order.inquiry).show?) if inward_dispatch.purchase_order.po_request.present? && inward_dispatch.purchase_order.po_request.sales_order.present?),
                   (inward_dispatch.purchase_order.po_request.sales_order.order_number if inward_dispatch.purchase_order.po_request.present? && inward_dispatch.purchase_order.po_request.sales_order.present?),
                   (format_succinct_date(inward_dispatch.purchase_order.po_request.sales_order.mis_date) if inward_dispatch.purchase_order.po_request.present? && inward_dispatch.purchase_order.po_request.sales_order.present?),
@@ -27,7 +26,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                   (inward_dispatch.purchase_order.po_request.status if inward_dispatch.purchase_order.po_request.present?),
                   (inward_dispatch.purchase_order.payment_request.status if inward_dispatch.purchase_order.payment_request.present?),
                   inward_dispatch.purchase_order.material_status,
-                  inward_dispatch.ar_invoice_request_status,
+                  inward_dispatch.calculative_ar_invoice_req_status,
                   if inward_dispatch.last_comment.present?
                     format_comment(inward_dispatch.last_comment, trimmed: true)
                   end,

@@ -155,7 +155,7 @@ class InwardDispatch < ApplicationRecord
     if self.sales_order.present?
       product_ids_array = self.rows.pluck(:product_id).uniq
       ar_invoce_rows = ArInvoiceRequestRow.where(sales_order_id: self.sales_order.id, product_id: product_ids_array)
-      if ar_invoce_rows.length > 0
+      if ar_invoce_rows.pluck(:ar_invoice_request_id).length > 0
         sales_order_rows =  SalesOrderRow.where(sales_order_id: self.sales_order_id, product_id: product_ids_array)
         total_quantity = sales_order_rows.sum(&:quantity)
         ar_invoce_rows = ArInvoiceRequestRow.where(sales_order_id: self.sales_order.id, product_id: product_ids_array)
