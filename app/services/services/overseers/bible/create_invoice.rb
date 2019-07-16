@@ -21,30 +21,27 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry #').to_i) || Inquiry.find_by_old_inquiry_number(x.get_column('Inquiry #'))
       begin
         bible_invoice = BibleInvoice.where(inquiry_number: x.get_column('Inquiry Number').to_i,
-                                            invoice_number: invoice_number,
-                                            mis_date: Date.parse(x.get_column('Invoice Date')).strftime('%Y-%m-%d')).first_or_create! do |bible_invoice|
+                                           invoice_number: invoice_number,
+                                           mis_date: Date.parse(x.get_column('Invoice Date')).strftime('%Y-%m-%d')).first_or_create! do |bsi|
           # bible_invoice.inquiry = inquiry
-          bible_invoice.inside_sales_owner = inquiry.present? ? inquiry.inside_sales_owner : nil
-          bible_invoice.outside_sales_owner = inquiry.present? ? inquiry.outside_sales_owner : nil
-          bible_invoice.invoice_type = x.get_column('Invoice/Credit Note')
-          bible_invoice.branch_type = x.get_column('Branch')
-          bible_invoice.sales_invoice = sales_invoice.present? ? sales_invoice : nil
-          bible_invoice.company_name = x.get_column('Company Name')
-          bible_invoice.company = inquiry.present? ? inquiry.company : Company.find_by_name(x.get_column('Company Name'))
-          bible_invoice.account = Company.find_by_name(x.get_column('Company Name')).account || nil
-          bible_invoice.currency = x.get_column('Invoice Currency')
-          bible_invoice.document_rate = x.get_column('Exchange Rate')
-          bible_invoice.is_credit_note_entry = bible_invoice_row_total.negative? ? true : false
-          bible_invoice.metadata = []
+          bsi.inside_sales_owner = inquiry.present? ? inquiry.inside_sales_owner : nil
+          bsi.outside_sales_owner = inquiry.present? ? inquiry.outside_sales_owner : nil
+          bsi.invoice_type = x.get_column('Invoice/Credit Note')
+          bsi.branch_type = x.get_column('Branch')
+          bsi.sales_invoice = sales_invoice.present? ? sales_invoice : nil
+          bsi.company_name = x.get_column('Company Name')
+          bsi.company = inquiry.present? ? inquiry.company : Company.find_by_name(x.get_column('Company Name'))
+          bsi.account = inquiry.present? ? inquiry.company.account : Company.find_by_name(x.get_column('Company Name')).account
+          bsi.currency = x.get_column('Invoice Currency')
+          bsi.document_rate = x.get_column('Exchange Rate')
+          bsi.is_credit_note_entry = bible_invoice_row_total.negative? ? true : false
+          bsi.metadata = []
         end
       rescue Exception => e
         error.push({error: e.message, invoice: invoice_number})
       end
 
       if bible_invoice.present?
-        # skus_in_invoice = bible_invoice.metadata.map {|h| h['sku']}
-        # puts 'SKU STATUS', skus_in_invoice.include?(x.get_column('Bm #'))
-
         invoice_metadata = bible_invoice.metadata
         sku_data = {
             'sku': x.get_column('New SKU'),
@@ -92,7 +89,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
         @invoice_margin = @invoice_margin + line_item['margin_amount'].to_f
       end
 
-      @overall_margin_percentage = (@margin_sum/@invoice_items).to_f
+      @overall_margin_percentage = (@margin_sum / @invoice_items).to_f
       bible_invoice.update_attributes(invoice_total: @bible_invoice_total, total_margin: @invoice_margin, overall_margin_percentage: @overall_margin_percentage)
     end
   end

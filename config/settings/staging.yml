@@ -91,8 +91,7 @@ sap:
   PASSWORD: 'vm1234'
   ATTACHMENT_ENDPOINT: 'https://35.200.144.191:22'
   ATTACHMENT_DIRECTORY: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments'
-  ATTACHMENT_API: '35.200.144.191/b1_shf/Attachments
-  '
+  ATTACHMENT_API: '35.200.144.191/b1_shf/Attachments'
   ATTACHMENT_USERNAME: 'pradeep'
   ATTACHMENT_PASSWORD: ''
 

@@ -13,13 +13,14 @@ class AddColumnsToBibleOrderAndInvoices < ActiveRecord::Migration[5.2]
     add_foreign_key :bible_sales_orders, :overseers, column: :inside_sales_owner_id
 
     remove_column :bible_sales_orders, :inside_sales_owner
-    # remove_column :bible_sales_orders, :account_name
+    remove_column :bible_sales_orders, :account_name
 
 
 
     add_reference :bible_invoices, :company, foreign_key: true
     add_reference :bible_invoices, :account, foreign_key: true
     add_column :bible_invoices, :overall_margin_percentage, :float, :default => 0
+    add_column :bible_invoices, :company_name, :string, default: nil
 
     add_reference :bible_invoices, :sales_invoice, foreign_key: true
     add_column :bible_invoices, :inside_sales_owner_id, :integer

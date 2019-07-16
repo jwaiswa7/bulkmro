@@ -5,7 +5,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
   def call
     error = []
     i = 0
-    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_till_june1.csv', 'seed_files_3')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_orders_till_june.csv', 'seed_files_3')
     service.loop(nil) do |x|
       puts '******************************** ITERATION ***********************************', i
       i = i + 1
