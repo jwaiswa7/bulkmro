@@ -353,6 +353,7 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get 'export_material_readiness'
         get 'export_all'
         get 'export_filtered_records'
         get 'autocomplete'

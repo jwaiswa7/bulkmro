@@ -71,6 +71,12 @@
           <i class="fal fa-download mr-1"></i>Generate <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
         </a>
       <% end %>
+      <% if content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness') %>
+        <a href= "<%= [request.path.chomp('material_readiness_queue'), 'export_material_readiness.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
+          <i class="fal fa-download mr-1"></i>Material Readiness Queue
+        </a>
+      <% end %>
+
     </div>
   <% end %>
 </div>
