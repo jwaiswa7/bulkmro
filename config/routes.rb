@@ -689,9 +689,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :bible_sales_orders
-
-    resources :bible_sales_orders
+    # resources :bible_sales_orders
   end
 
   namespace 'customers' do

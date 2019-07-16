@@ -9,7 +9,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
     service.loop(nil) do |x|
       puts '******************************** ITERATION ***********************************', i
       i = i + 1
-      if Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d') < Date.new(2019,04,30).end_of_day
+      # if Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d') < Date.new(2019,04,30).end_of_day
         order_number = x.get_column('So #')
         bible_order_row_total = x.get_column('Total Selling Price').to_f
         bible_total_with_tax = x.get_column('Total Selling Price').to_f + x.get_column('Tax Amount').to_f
@@ -85,7 +85,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
         bible_order.assign_attributes(metadata: order_metadata)
         bible_order.save
         end
-      end
+      # end
     end
 
     calculate_totals
