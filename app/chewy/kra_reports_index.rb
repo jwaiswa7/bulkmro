@@ -19,7 +19,7 @@ class KraReportsIndex < BaseIndex
     field :order_won, value: -> (record) {record.status == 'Order Won' ? 1 : 0}, type: 'integer'
     field :company_key, value: -> (record) {record.company_id}, type: 'integer'
     field :account_key, value: -> (record) {record.company.account_id}, type: 'integer'
-    field :total_quote_value, value: -> (record) {record.total_quote_value if record.has_final_sales_quote?}, type: 'double'
+    field :total_quote_value, value: -> (record) {record.total_quote_value}, type: 'double'
 
     # field :sku, value: -> (record) {record.unique_skus_in_order.count}, type: 'integer'
     field :sku, value: -> (record) {record.unique_skus_in_order}, type: 'integer'
