@@ -3,11 +3,11 @@ class Overseers::BibleSalesOrdersController < Overseers::BaseController
 
   def index
     @sales_orders = ApplyDatatableParams.to(BibleSalesOrder.all, params)
-    authorize_acl :sales_order, 'index'
+    authorize_acl :bible_sales_order, 'index'
   end
 
   def show
-    authorize_acl :sales_order, 'show'
+    authorize_acl :bible_sales_order, 'show'
 
     respond_to do |format|
       format.html {}

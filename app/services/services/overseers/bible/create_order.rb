@@ -9,57 +9,56 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
     service.loop(nil) do |x|
       puts '******************************** ITERATION ***********************************', i
       i = i + 1
-      # if Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d') < Date.new(2019,04,30).end_of_day
-        order_number = x.get_column('So #')
-        bible_order_row_total = x.get_column('Total Selling Price').to_f
-        bible_total_with_tax = x.get_column('Total Selling Price').to_f + x.get_column('Tax Amount').to_f
+      order_number = x.get_column('So #')
+      bible_order_row_total = x.get_column('Total Selling Price').to_f
+      bible_total_with_tax = x.get_column('Total Selling Price').to_f + x.get_column('Tax Amount').to_f
 
-        if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
-          if order_number == 'Not Booked'
-            inquiry_orders = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number')).sales_orders
-            if inquiry_orders.count > 1
-              sales_order = inquiry_orders.where(old_order_number: 'Not Booked').first
-            else
-              sales_order = inquiry_orders.first if inquiry_orders.first.old_order_number == 'Not Booked'
-            end
+      if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
+        if order_number == 'Not Booked'
+          inquiry_orders = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number')).sales_orders
+          if inquiry_orders.count > 1
+            sales_order = inquiry_orders.where(old_order_number: 'Not Booked').first
           else
-            sales_order = SalesOrder.find_by_old_order_number(order_number)
+            sales_order = inquiry_orders.first if inquiry_orders.first.old_order_number == 'Not Booked'
           end
         else
-          sales_order = SalesOrder.find_by_order_number(order_number.to_i)
+          sales_order = SalesOrder.find_by_old_order_number(order_number)
         end
+      else
+        sales_order = SalesOrder.find_by_order_number(order_number.to_i)
+      end
 
-        if bible_order_row_total.negative?
-          ae_sales_order = SalesOrder.where(parent_id: sales_order.id, is_credit_note_entry: true).first
-          sales_order = ae_sales_order
+      if bible_order_row_total.negative?
+        ae_sales_order = SalesOrder.where(parent_id: sales_order.id, is_credit_note_entry: true).first
+        sales_order = ae_sales_order
+      end
+
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry #').to_i) || Inquiry.find_by_old_inquiry_number(x.get_column('Inquiry #'))
+      isp_full_name = x.get_column('Inside Sales Name').to_s.strip.split
+      isp_first_name = isp_full_name[0]
+      isp_last_name = isp_full_name[1] if isp_full_name.length > 1
+
+      begin
+        bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
+                                            order_number: x.get_column('So #'),
+                                            mis_date: Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')).first_or_create! do |bo|
+          # bible_order.inquiry = inquiry
+          bo.inside_sales_owner = Overseer.where(first_name: isp_first_name).last
+          bo.outside_sales_owner = inquiry.outside_sales_owner
+          bo.sales_order = sales_order.present? ? sales_order : nil
+          bo.company_name = x.get_column('Magento Company Name')
+          bo.company = inquiry.company
+          bo.account = inquiry.company.account # || x.get_column('Company Alias')
+          bo.client_order_date = Date.parse(x.get_column('Client Order Date')).strftime('%Y-%m-%d') if x.get_column('Inquiry Number') != '31647'
+          bo.currency = x.get_column('Price Currency')
+          bo.document_rate = x.get_column('Document Rate')
+          bo.metadata = []
         end
+      rescue Exception => e
+        error.push({error: e.message, order: order_number})
+      end
 
-        inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry #').to_i) || Inquiry.find_by_old_inquiry_number(x.get_column('Inquiry #'))
-        isp_full_name = x.get_column('Inside Sales Name').to_s.strip.split
-        isp_first_name = isp_full_name[0]
-        isp_last_name = isp_full_name[1] if isp_full_name.length > 1
-
-        begin
-          bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
-                                              order_number: x.get_column('So #'),
-                                              mis_date: Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')).first_or_create! do |bo|
-            # bible_order.inquiry = inquiry
-            bo.inside_sales_owner = Overseer.where(first_name: isp_first_name).last
-            bo.outside_sales_owner = inquiry.outside_sales_owner
-            bo.sales_order = sales_order.present? ? sales_order : nil
-            bo.company_name = x.get_column('Magento Company Name')
-            bo.company = inquiry.company
-            bo.account = inquiry.company.account # || x.get_column('Company Alias')
-            bo.client_order_date = Date.parse(x.get_column('Client Order Date')).strftime('%Y-%m-%d') if x.get_column('Inquiry Number') != '31647'
-            bo.currency = x.get_column('Price Currency')
-            bo.document_rate = x.get_column('Document Rate')
-            bo.metadata = []
-          end
-        rescue Exception => e
-          error.push({error:e.message, order: order_number})
-        end
-
-        if bible_order.present?
+      if bible_order.present?
         # skus_in_order = bible_order.metadata.map {|h| h['sku']}
         # puts 'SKU STATUS', skus_in_order.include?(x.get_column('Bm #'))
 
@@ -84,8 +83,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
         order_metadata.push(sku_data)
         bible_order.assign_attributes(metadata: order_metadata)
         bible_order.save
-        end
-      # end
+      end
     end
 
     calculate_totals
@@ -111,7 +109,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
         @margin_sum = @margin_sum + line_item['margin_percentage'].split('%')[0].to_f
         @order_line_items = @order_line_items + line_item['quantity'].to_f
       end
-      @overall_margin_percentage = (@margin_sum/@order_line_items).to_f
+      @overall_margin_percentage = (@margin_sum / @order_line_items).to_f
       bible_order.update_attributes(order_total: @bible_order_total, order_tax: @bible_order_tax, order_total_with_tax: @bible_order_total_with_tax, total_margin: @order_margin, overall_margin_percentage: @overall_margin_percentage)
     end
   end
