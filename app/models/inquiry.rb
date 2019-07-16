@@ -445,8 +445,25 @@ class Inquiry < ApplicationRecord
     end
   end
 
-  def has_final_sales_quote?
-    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).present?
+  def bible_final_sales_quotes
+    sales_quotes_ids = []
+    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).each do |bso|
+      sales_order = SalesOrder.find_by_order_number(bso.order_number)
+      if sales_order.present?
+        if !sales_quotes_ids.include? sales_order.sales_quote.id
+          sales_quotes_ids << sales_order.sales_quote.id
+        end
+      end
+    end
+
+    sales_quotes_ids << self.final_sales_quote.id if self.final_sales_quote.present?
+    sales_quotes_ids.compact
+
+    if sales_quotes_ids.count > 0
+      SalesQuote.where(id: sales_quotes_ids)
+    else
+      nil
+    end
   end
 
   def total_quote_value
@@ -456,7 +473,7 @@ class Inquiry < ApplicationRecord
       sales_order = SalesOrder.find_by_order_number(bso.order_number)
       if sales_order.present?
         if !sales_quotes_ids.include? sales_order.sales_quote.id
-          total_quote_value += sales_order.sales_quote.calculated_total_with_tax
+          total_quote_value += sales_order.sales_quote.calculated_total
           sales_quotes_ids << sales_order.sales_quote.id
         end
       end
@@ -483,8 +500,7 @@ class Inquiry < ApplicationRecord
   end
 
   def bible_margin_percentage
-    margin_percentages = BibleSalesOrder.where(:inquiry_number => self.inquiry_number).pluck(:total_margin)
-    margin_percentages.count ? 0 : margin_percentages.sum / margin_percentages.count
+    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).first.try(:overall_margin_percentage)
   end
 
   def bible_sales_order_total
