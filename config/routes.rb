@@ -296,11 +296,11 @@ Rails.application.routes.draw do
         get 'add_comment'
       end
       member do
+        get 'render_modal_form'
         get 'render_cancellation_form'
         get 'reject_purchase_order_modal'
         patch 'rejected_purchase_order'
         patch 'cancel_porequest'
-        get 'render_comment_form'
         patch 'add_comment'
       end
     end
@@ -313,9 +313,8 @@ Rails.application.routes.draw do
         get 'cancelled'
       end
       member do
-        get 'render_cancellation_form'
+        get 'render_modal_form'
         patch 'cancel_invoice_request'
-        get 'render_comment_form'
         patch 'add_comment'
       end
     end
@@ -396,15 +395,16 @@ Rails.application.routes.draw do
       member do
         get 'edit_pod'
         patch 'update_pod'
+        get 'delivery_mail_to_customer'
+        post 'delivery_mail_to_customer_notification'
+        get 'dispatch_mail_to_customer'
+        post 'dispatch_mail_to_customer_notification'
       end
       collection do
         get 'export_all'
         get 'export_rows'
         get 'export_for_logistics'
         get 'export_filtered_records'
-      end
-      scope module: 'sales_invoices' do
-        resources :email_messages
       end
     end
 
@@ -666,6 +666,10 @@ Rails.application.routes.draw do
       collection do
         get 'completed'
         post 'update_payment_status'
+      end
+      member do
+        get 'render_modal_form'
+        patch 'add_comment'
       end
     end
 
