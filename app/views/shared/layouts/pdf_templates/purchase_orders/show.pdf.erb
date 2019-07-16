@@ -5,7 +5,7 @@
         <div id="compare-wrapper">
           <div class="compare_open" id="compare_popup"></div>
           <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
-            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png',:width => "50%" %>
+            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
           </div>
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
             <b><span style="color:#000; font-size: 17.5px;">Purchase Order #<%= locals[:metadata][:PoNum] %></span></b>
@@ -80,7 +80,7 @@
                     <span><%= locals[:payment_terms].name.to_s %></span>
                     </td>
                   <% else %>
-                  '-'
+                    -
                   <% end %>
                   </tr>
               </tbody>
@@ -108,7 +108,7 @@
                     <br>
                     Tel: <%= record.billing_address&.phone || locals[:supplier]&.phone %>
                     <br>
-                    GST No.: <%= record.billing_address&.gst %>
+                    GST No.: <%= record.billing_address&.gst %><br>
                   <% end %>
                 </td>
                 <td style="width: 2%;"></td>
@@ -323,7 +323,7 @@
           <div class="bottom-info" style="position: relative">
             <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
               <div id="inner-stamp" style="float: right; position: relative;">
-                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png',:width => "95",:height => "95" %>
+                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
               </div>
             </div>
 
@@ -359,13 +359,14 @@
                 <tr>
                   <td height="" style="padding-left:10px;" valign="top">4.</td>
                   <td align="left" valign="top"><span>
-                      Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</span>
+                      Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not later than 3 business days in advance of delivery schedule that will not be met or if material is on back order.</span>
                   </td>
                 </tr>
                 <tr>
                   <td height="" style="padding-left:10px;" valign="top">5.</td>
-                  <td align="left" valign="top"><span>
-                      Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not later than 3 business days in advance of delivery schedule that will not be met or if material is on back order.</span>
+                  <td align="left" valign="top">
+                    <span>If Seller for any reason does not meet the time of delivery as to all goods ordered. Buyer may at it's option either approve the revised delivery schedule, reduce the total quantity covered by the Purchase Order by the amount of omitted shipments reducing the price pro rata, or terminate the Purchase Order, without liability for any such revision, reduction or termination. In such cases the Seller shall promptly refund any advances received from the customer.</span>
+                    <!--                    <span>Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</span>-->
                   </td>
                 </tr>
                 </tbody>
@@ -386,9 +387,9 @@
                       when shipping goods.
                       <% end %>
 
-                        </span></td>
+                        </span>
+                  </td>
                 </tr>
-
 
                 </tbody>
               </table>
