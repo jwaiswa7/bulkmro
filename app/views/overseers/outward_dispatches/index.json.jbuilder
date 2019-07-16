@@ -30,7 +30,7 @@ json.data (@outward_dispatches) do |outward_dispatch|
                   outward_dispatch.packing_slips.map.with_index { |packing_slip,i| link_to("#{packing_slip.outward_dispatch.ar_invoice_request.ar_invoice_number}-#{i + 1}", overseers_outward_dispatch_packing_slip_path(outward_dispatch, packing_slip), target: '_blank') }.compact.join(' '),
                   link_to(ar_invoice_request.inquiry.inquiry_number, edit_overseers_inquiry_path(ar_invoice_request.inquiry), target: '_blank'),
                   link_to(ar_invoice_request.sales_order, overseers_inquiry_sales_order_path(ar_invoice_request.sales_order.inquiry, ar_invoice_request.sales_order), target: '_blank'),
-                  link_to(ar_invoice_request.ar_invoice_number, edit_overseers_ar_invoice_request_path(ar_invoice_request), target: '_blank'),
+                  link_to((ar_invoice_request.ar_invoice_number || 'AR Invoice'), edit_overseers_ar_invoice_request_path(ar_invoice_request), target: '_blank'),
                   outward_dispatch.logistics_partner,
                   outward_dispatch.tracking_number,
                   outward_dispatch.status,
