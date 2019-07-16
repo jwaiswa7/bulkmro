@@ -74,13 +74,13 @@
           <div class="card-body">
             <a href="<%= customers_product_path(customer_product) %>">
               <%# if customer_product.best_image.present? %>
-              <img data-src="<%= url_for(customer_product.medium_best_image) %>" src="<%= image_path('coming_soon.png') %>" class="lazy-load" alt="<%= customer_product.sku %>" width="500"/>
+              <img data-src="<%= url_for(customer_product.medium_best_image) %>" src="<%= image_path('coming_soon.png') %>" class="lazy-load" alt="<%= customer_product.product.sku %>" width="500"/>
               <%# else %>
               <!--                <img data-src="<%#= image_path('coming_soon.png') %>" alt="<%#= customer_product.sku %>" width="500" class="lazy-load" src="<%#= image_path('coming_soon.png') %>" />-->
               <%# end %>
               <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.name, :length => 100) %></strong>
               </h5>
-              <h5 class="mb-0 text-small"><strong>(#<%= customer_product.sku %>)</strong></h5>
+              <h5 class="mb-0 text-small"><strong>(#<%= customer_product.product.sku %>)</strong></h5>
               <h5 class="mb-0 mt-1 text-small text-black-50">
                 <strong><%= format_currency(customer_product.customer_price) %></strong>
               </h5>
@@ -90,9 +90,32 @@
                 <em>MOQ - <%= customer_product.moq %></em><br>
                 <em>Instock Qty
                   - <%= customer_product.product.stocks.sum(&:instock).to_i if customer_product.product.present? %></em><br>
+
+                  <strong class="d-block mt-2">BP Catalog</strong>
+                  <em>No
+                    - <%= customer_product.sku if customer_product.sku.present? %></em><br>
+                  <em> Name
+                    - <%= customer_product.name if customer_product.name.present? %></em>
+
               </p>
             </a>
           </div>
+          <% if  customer_product.product.present? && (customer_product.product.stocks.sum(&:instock) > 0) %>
+            <div class="card-footer pt-2 pb-0">
+              <%= simple_form_for([:customers, CartItem.new], :url => customers_cart_items_path, :method => :post, :remote => true) do |f| %>
+                <%= f.hidden_field :product_id, value: customer_product.product_id %>
+                <%= f.hidden_field :customer_product_id, value: customer_product.id %>
+                <div class="form-row">
+                  <div class="col-4">
+                    <%= f.input :quantity, label: false, input_html: {placeholder: 'Quantity', step: customer_product.moq, min: customer_product.moq,max: customer_product.product.stocks.sum(&:instock), value: @default_quantity || customer_product.moq} %>
+                  </div>
+                  <div class="col-8">
+                    <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <%end %>
         </div>
       </div>
     <% end %>
