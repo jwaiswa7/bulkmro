@@ -210,7 +210,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         :followup_date,
         :logistics_owner_id,
         :revised_supplier_delivery_date,
-        comments_attributes: [:id, :message, :created_by_id],
+        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
         attachments: []
       )
     end
