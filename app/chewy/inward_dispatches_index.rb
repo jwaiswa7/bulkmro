@@ -40,5 +40,6 @@ class InwardDispatchesIndex < BaseIndex
     field :updated_at, type: 'date'
     field :created_at, type: 'date'
     field :latest_comment, value: -> (record) { record.last_comment.present? ? record.last_comment.created_at : Date.today }, type: 'date'
+    field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id if record.inquiry.present? }, type: 'integer'
   end
 end
