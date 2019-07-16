@@ -26,5 +26,4 @@ class SalesInvoiceMailer < ApplicationMailer
     @outward_dispatch = email_message.outward_dispatch
     standard_email(email_message)
   end
-
 end
