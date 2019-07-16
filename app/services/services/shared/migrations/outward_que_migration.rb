@@ -117,7 +117,8 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
           sales_order_ids =  val.pluck(:sales_order_id).uniq
           if !ar_invoice_request.present? && (inquiry_ids.count == 1) && (sales_order_ids.count == 1)
             Chewy.strategy(:bypass) do
-              if val.length > 0
+              inward_dispatch_array = val.map {|x| x.inward_dispatches}.flatten
+              if inward_dispatch_array.length > 0
                 ar_invoice_request = ArInvoiceRequest.new(overseer: val[0].created_by, sales_order_id: sales_order_ids[0], inquiry_id: inquiry_ids[0], status: 'Completed AR Invoice Request', sales_invoice_id: sales_invoice.id)
                  # data_present = val.map{|x| x.inward_dispatches.count > 0 && (x.inward_dispatches.map{|y| y.rows.count}.flatten.compact.sum > 0)}
                 ar_invoice_request.save!
