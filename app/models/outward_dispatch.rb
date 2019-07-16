@@ -62,4 +62,12 @@ class OutwardDispatch < ApplicationRecord
     end
     grouped_status
   end
+
+  def is_owner
+    self.ar_invoice_request.inquiry.inside_sales_owner.to_s
+  end
+
+  def logistics_owner
+    self.ar_invoice_request.inquiry.company.logistics_owner.full_name
+  end
 end
