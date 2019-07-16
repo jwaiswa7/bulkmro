@@ -111,30 +111,32 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
           sales_order_ids =  val.pluck(:sales_order_id).uniq
           if !ar_invoice_request.present? && (inquiry_ids.count == 1) && (sales_order_ids.count == 1)
             Chewy.strategy(:bypass) do
-              ar_invoice_request = ArInvoiceRequest.new(overseer: val[0].created_by, sales_order_id: sales_order_ids[0], inquiry_id: inquiry_ids[0], status: 'Completed AR Invoice Request', sales_invoice_id: sales_invoice.id)
-               # data_present = val.map{|x| x.inward_dispatches.count > 0 && (x.inward_dispatches.map{|y| y.rows.count}.flatten.compact.sum > 0)}
-              ar_invoice_request.save!
-              val.each do |invoice_request|
-                invoice_request.status = 'Inward Completed'
-                invoice_request.save(validate: false)
-                if invoice_request.inward_dispatches.present?
-                  invoice_request.inward_dispatches.map { |d|  d.ar_invoice_request_id= ar_invoice_request.id; d.save(validate: false)}
-                  inward_dispatch_rows = invoice_request.inward_dispatches.map {|x| x.rows}.flatten
-                  inward_dispatch_rows.each do |row|
-                    sales_order_row = SalesOrderRow.where(sales_order_id: sales_order_ids[0]).joins(:product).where(products: {id: row.purchase_order_row.product_id}).last
-                    if sales_order_row.present?
-                      row_product = ar_invoice_request.rows.where(product_id: row.purchase_order_row.product_id, sales_order_id: sales_order_ids[0],sales_order_row_id: sales_order_row.id).last
-                      if !row_product
-                        row_product = ar_invoice_request.rows.where(product_id: row.purchase_order_row.product_id, sales_order_id: sales_order_ids[0],sales_order_row_id: sales_order_row.id).first_or_initialize
-                        row_product.delivered_quantity = row.delivered_quantity
-                        row_product.quantity = sales_order_row.quantity
-                        row_product.sales_order_id = sales_order_ids[0]
-                        row_product.sales_order_row_id = sales_order_row.id
-                        row_product.save(validate: false)
+              if val.length > 0
+                ar_invoice_request = ArInvoiceRequest.new(overseer: val[0].created_by, sales_order_id: sales_order_ids[0], inquiry_id: inquiry_ids[0], status: 'Completed AR Invoice Request', sales_invoice_id: sales_invoice.id)
+                 # data_present = val.map{|x| x.inward_dispatches.count > 0 && (x.inward_dispatches.map{|y| y.rows.count}.flatten.compact.sum > 0)}
+                ar_invoice_request.save!
+                val.each do |invoice_request|
+                  invoice_request.status = 'Inward Completed'
+                  invoice_request.save(validate: false)
+                  if invoice_request.inward_dispatches.present?
+                    # invoice_request.inward_dispatches.map { |d|  d.ar_invoice_request_id= ar_invoice_request.id; d.save(validate: false)}
+                    inward_dispatch_rows = invoice_request.inward_dispatches.map {|x| x.rows}.flatten
+                    inward_dispatch_rows.each do |row|
+                      sales_order_row = SalesOrderRow.where(sales_order_id: sales_order_ids[0]).joins(:product).where(products: {id: row.purchase_order_row.product_id}).last
+                      if sales_order_row.present?
+                        row_product = ar_invoice_request.rows.where(product_id: row.purchase_order_row.product_id, sales_order_id: sales_order_ids[0],sales_order_row_id: sales_order_row.id).last
+                        if !row_product
+                          row_product = ar_invoice_request.rows.where(product_id: row.purchase_order_row.product_id, sales_order_id: sales_order_ids[0],sales_order_row_id: sales_order_row.id).first_or_initialize
+                          row_product.delivered_quantity = row.delivered_quantity
+                          row_product.quantity = sales_order_row.quantity
+                          row_product.sales_order_id = sales_order_ids[0]
+                          row_product.sales_order_row_id = sales_order_row.id
+                          row_product.save(validate: false)
 
-                      else
-                        row_product.delivered_quantity = row_product.delivered_quantity + row.delivered_quantity
-                        row_product..save(validate: false)
+                        else
+                          row_product.delivered_quantity = row_product.delivered_quantity + row.delivered_quantity
+                          row_product..save(validate: false)
+                        end
                       end
                     end
                   end
