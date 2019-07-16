@@ -177,8 +177,12 @@ class InwardDispatch < ApplicationRecord
   end
 
   def show_ar_invoice_requests
-    product_ids_array = self.rows.pluck(:product_id).uniq
-    ar_invoices = ArInvoiceRequest.joins(:rows).where(ar_invoice_request_rows: {sales_order_id: self.sales_order.id, product_id: product_ids_array})
+    if self.sales_order.present?
+      product_ids_array = self.rows.pluck(:product_id).uniq
+      ar_invoices = ArInvoiceRequest.joins(:rows).where(ar_invoice_request_rows: {sales_order_id: self.sales_order.id, product_id: product_ids_array})
+    else
+      []
+    end
   end
 
   def set_outward_status
