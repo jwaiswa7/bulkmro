@@ -260,6 +260,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     respond_to do |format|
       format.html {render partial: 'product_resync_inventory', locals: {product: @product}}
     end
+    authorize_acl :po_request
   end
 
   private
