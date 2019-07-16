@@ -4,22 +4,28 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
       purchase_order = inward_dispatch.purchase_order
       sales_order = purchase_order.try(:po_request).try(:sales_order)
       if sales_order.present?
-        inward_dispatch.sales_order = sales_order
-        inward_dispatch.save(validate: false)
+        Chewy.strategy(:bypass) do
+          inward_dispatch.sales_order = sales_order
+          inward_dispatch.save(validate: false)
+        end
       end
     end
   end
 
   def add_product_row_in_inward_dispatch
-      InwardDispatchRow.all.each do |inward_dispatch_row|
+    InwardDispatchRow.all.each do |inward_dispatch_row|
+      Chewy.strategy(:bypass) do
         inward_dispatch_row.product = inward_dispatch_row.purchase_order_row.product
         inward_dispatch_row.save(validate: false)
       end
+    end
 
-      SalesOrderRow.all.each do |sales_order_row|
+    SalesOrderRow.all.each do |sales_order_row|
+      Chewy.strategy(:bypass) do
         sales_order_row.product_id = sales_order_row.product.id
         sales_order_row.save(validate: false)
       end
+    end
   end
 
   # def createArInvoiceAndRows

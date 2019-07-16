@@ -30,8 +30,9 @@
             <div class="col-4 mt-2">
               <%= f.input :expected_date_of_delivery, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_date_of_delivery.try(:strftime, "%d-%b-%Y"), class: ''}, required: true %>
             </div>
-            <div class="col-4 mt-2">
+            <div class="col-4 mt-2 material_delivery_date">
               <%= f.input :material_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.material_delivery_date.try(:strftime, "%d-%b-%Y"), class: ''}%>
+              <i class="fa fa-times clear-date" aria-hidden="true" id="" title="Clear the material delivery date"></i>
             </div>
             <div class="col-4 mt-2">
               <%= f.input :dispatched_by, collection: enum_to_collection(InwardDispatch.dispatched_bies, keep_raw: true), label: "Material Dispatched By", input_html: {class: "select2-single"}, required: true %>
