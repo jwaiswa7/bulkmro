@@ -44,10 +44,9 @@ class InwardDispatch < ApplicationRecord
 
   enum ar_invoice_request_status: {
       'Not Requested': 10,
-      'Requested': 20,
-      'Completed': 30,
-      'Rejected': 40,
-      'Cancelled': 50
+      'Partially Completed': 20,
+      'Invoiced': 30,
+      'Fully Cancelled': 40,
   }
 
   # enum outward_status: {
@@ -152,6 +151,30 @@ class InwardDispatch < ApplicationRecord
     self.expected_delivery_date = purchase_order.po_request.supplier_committed_date if purchase_order.po_request.present?
   end
 
+  def calculative_ar_invoice_req_status
+    if self.sales_order.present?
+      product_ids_array = self.rows.pluck(:product_id).uniq
+      ar_invoce_rows = ArInvoiceRequestRow.where(sales_order_id: self.sales_order.id, product_id: product_ids_array)
+      if ar_invoce_rows.length > 0
+        sales_order_rows =  SalesOrderRow.where(sales_order_id: self.sales_order_id, product_id: product_ids_array)
+        total_quantity = sales_order_rows.sum(&:quantity)
+        ar_invoce_rows = ArInvoiceRequestRow.where(sales_order_id: self.sales_order.id, product_id: product_ids_array)
+        ar_invoce_rows_without_cancelled = ar_invoce_rows.joins(:ar_invoice_request).where.not(ar_invoice_requests: {status: "Cancelled AR Invoice"})
+        delivered_quantity = ar_invoce_rows_without_cancelled.sum(&:delivered_quantity)
+        if total_quantity != delivered_quantity
+          if ar_invoce_rows_without_cancelled.length == 0
+            'Fully Cancelled'
+          else
+            'Partially Completed'
+          end
+        else
+          'Invoiced'
+        end
+      else
+        'Not Requested'
+      end
+    end
+  end
 
   def show_ar_invoice_requests
     product_ids_array = self.rows.pluck(:product_id).uniq
