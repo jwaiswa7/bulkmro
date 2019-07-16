@@ -21,7 +21,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def pending_sap_sync
-    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.where(remote_uid: nil, sap_status: 'Not Sync').order(id: :desc), params)
+    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.where(remote_uid: nil, sap_sync: 'Not Sync').order(id: :desc), params)
     authorize @purchase_orders
 
     respond_to do |format|
@@ -32,7 +32,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def resync_po
     authorize @purchase_order
-    if @purchase_order.save_and_sync
+    if @purchase_order.save_and_sync(@purchase_order.po_request)
       redirect_to overseers_inquiry_purchase_order_path(@purchase_order.inquiry.to_param, @purchase_order.to_param)
     else
       redirect_to pending_sap_sync_overseers_purchase_orders
