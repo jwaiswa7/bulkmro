@@ -15,5 +15,9 @@ class OutwardDispatchesIndex < BaseIndex
     field :expected_date_of_delivery, type: 'date'
     field :material_delivery_date, type: 'date'
     field :material_delivery_date, type: 'date'
+    field :logistics_owner_id, value: -> (record) { record.ar_invoice_request.inquiry.company.logistics_owner_id if record.ar_invoice_request.present? && record.ar_invoice_request.inquiry.present? && record.ar_invoice_request.inquiry.company.present? }, type: 'integer'
+    field :logistics_owner, value: -> (record) { record.ar_invoice_request.inquiry.company.logistics_owner&.name if record.ar_invoice_request.present? && record.ar_invoice_request.inquiry.present? && record.ar_invoice_request.inquiry.company.present? }, analyzer: 'substring'
+    field :is_owner_id, value: -> (record) { record.ar_invoice_request.inquiry.inside_sales_owner_id if record.ar_invoice_request.present? && record.ar_invoice_request.inquiry.present? }, type: 'integer'
+    field :is_owner, value: -> (record) { record.ar_invoice_request.inquiry.inside_sales_owner&.name if record.ar_invoice_request.present? && record.ar_invoice_request.inquiry.present? }, analyzer: 'substring'
   end
 end

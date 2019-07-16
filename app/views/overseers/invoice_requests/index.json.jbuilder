@@ -37,6 +37,20 @@ json.data (@invoice_requests) do |invoice_request|
               ]
 end
 
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.reject { |h| h[:label] == 'Logistics Team'}.as_json,
+                       [],
+                       [],
+                       []
+                   ]
+
 json.recordsTotal @invoice_requests.count
 json.recordsFiltered @invoice_requests.total_count
 json.draw params[:draw]
