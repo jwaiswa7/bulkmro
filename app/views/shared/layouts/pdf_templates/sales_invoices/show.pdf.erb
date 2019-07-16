@@ -24,6 +24,7 @@
           </div>
           <br clear="all">
           <%#= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record %>
+          <% inquiry = record.sales_order.inquiry %>
           <div style="border:1px solid; border-radius: 5px;padding: 2px">
             <table border="0" cellspacing="0" style="width: 100%;">
               <tbody>
@@ -34,7 +35,7 @@
               <tr>
                 <td style="text-align: center;">
                     <span style="color:#000000">
-                       <%= record.sales_order.inquiry.bill_from.address.to_compact_multiline_s if record.sales_order.inquiry.bill_from.present? %>
+                       <%= inquiry.bill_from.address.to_compact_multiline_s if inquiry.bill_from.present? %>
                     </span>
                 </td>
               </tr>
@@ -46,7 +47,13 @@
               </tbody>
             </table>
           </div>
-          <br clear="all">
+          <% if record.inquiry.is_sez? || record.serialized_billing_address.country_code != 'IN' %>
+            <div style="text-align: center; margin: 1px">
+              <b><span><small>* Supply Meant for SEZ/Export Under Letter of Undertaking without payment of IGST</small></span></b>
+            </div>
+          <% else %>
+            <br clear="all">
+          <% end %>
           <div class="information-section">
             <div class="heading">
               <span><b>Tax Invoice #<%= record.metadata['increment_id'] %></b></span>
@@ -59,13 +66,13 @@
                   <td align="left" colspan="5" height="15" class="content" valign="top">
                     <b><span>Quotation #</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" class="content" valign="top">
-                    <span><%= record.sales_order.inquiry.inquiry_number %></span></td>
+                    <span><%= inquiry.inquiry_number %></span></td>
                   <td align="left" colspan="5" class="content" valign="top">
                     <b><span>Customer Inquiry Reference</span></b>
                     <span style="float:right">:</span></td>
                   <td align="left" colspan="6" class="content" valign="top">
                     <span>
-                      <%= [record.sales_order.inquiry.inquiry_number, record.sales_order.inquiry.subject].join(" - ") %>
+                      <%= [inquiry.inquiry_number, inquiry.subject].join(" - ") %>
                     </span>
                   </td>
                 </tr>
@@ -74,13 +81,13 @@
                     <b><span>Customer Purchase Order #</span></b>
                     <span style="float:right">:</span></td>
                   <td align="left" colspan="5" class="content content-with-border" valign="top">
-                    <span><%= record.sales_order.inquiry.customer_po_number if record.sales_order.inquiry.customer_po_number.present? %></span>
+                    <span><%= inquiry.customer_po_number if inquiry.customer_po_number.present? %></span>
                   </td>
                   <td align="left" colspan="5" class="content content-with-border" valign="top">
                     <b><span>Customer Purchase Order Date</span></b>
                     <span style="float:right">:</span></td>
                   <td align="left" colspan="6" class="content content-with-border" valign="top">
-                    <span><%= record.sales_order.inquiry.customer_order_date.strftime("%d-%b-%Y") if record.sales_order.inquiry.customer_order_date.present? %></span>
+                    <span><%= inquiry.customer_order_date.strftime("%d-%b-%Y") if inquiry.customer_order_date.present? %></span>
                   </td>
                 </tr>
                 <tr>
@@ -117,7 +124,7 @@
                     <b><span>Payment Terms</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" class="content content-with-border" valign="top">
                   <span>
-                  <%= record.sales_order.inquiry.payment_option.name if record.sales_order.inquiry.payment_option.present? %>
+                  <%= inquiry.payment_option.name if inquiry.payment_option.present? %>
                   </span></td>
                 </tr>
                 </tbody>
@@ -140,36 +147,45 @@
               <tbody>
               <tr>
                 <td class="address-wrapper" style="height: auto;width: 49%;">
-                    <% if record.sales_order.inquiry.bill_from.address.present? %>
-                      <%= record.sales_order.inquiry.bill_from.address.name.to_s %><br>
+                  <% if inquiry.bill_from.address.present? %>
+                    <%= inquiry.bill_from.address.name.to_s %><br>
+                  <% end %>
+                  <% if inquiry.bill_from.present? %>
+                    <%= inquiry.bill_from.address.to_multiline_s %><br>
+                    GST No.: <%= inquiry.bill_from.address.gst %><br>
+                  <% end %>
+                  PAN No.: AAGCB7343G
+                  <% if record.inquiry.is_sez? || record.serialized_billing_address.country_code != 'IN' %>
+                    <br>
+                    <% if record.metadata['created_at'].present? && Date.parse(Settings.accounts.arn_date_2019) <= Date.parse(record.metadata['created_at']) %>
+                      ARN # <%= Settings.accounts.arn_number_2019 %>,
+                      DOF: <%= Date.parse(Settings.accounts.arn_date_2019) %>
+                    <% else %>
+                      ARN # <%= Settings.accounts.arn_number_2018 %>,
+                      DOF: <%= Date.parse(Settings.accounts.arn_date_2018) %>
                     <% end %>
-                    <% if record.sales_order.inquiry.bill_from.present? %>
-                      <%= record.sales_order.inquiry.bill_from.address.to_multiline_s %><br>
-                      GST No.: <%= record.sales_order.inquiry.bill_from.address.gst %><br>
-                    <% end %>
-                    PAN No.: AAGCB7343G
-                  <% if record.inquiry.is_sez? %>
-                      <br>
-                      <% if  record.metadata['created_at'].present? && Date.parse(Settings.accounts.arn_date_2019) <=  Date.parse(record.metadata['created_at']) %>
-                        ARN No. : <%= Settings.accounts.arn_number_2019 %>
-                        ARN Date: <%= Date.parse(Settings.accounts.arn_date_2019) %>
-                      <% else %>
-                        ARN No. : <%= Settings.accounts.arn_number_2018 %>
-                        ARN Date: <%= Date.parse(Settings.accounts.arn_date_2018) %>
-                      <%end %>
-                    <% end %>
-                    </span>
+                  <% end %>
                 </td>
                 <td style="width: 2%;"></td>
                 <td class="address-wrapper" style="height: auto;width: 49%;">
-                    <% if record.sales_order.inquiry.ship_from.present? %>
-                      <%= record.sales_order.inquiry.ship_from.address.name.to_s %><br>
+                  <% if inquiry.ship_from.present? %>
+                    <%= inquiry.ship_from.address.name.to_s %><br>
+                  <% end %>
+                  <% if inquiry.ship_from.present? %>
+                    <%= inquiry.ship_from.address.to_multiline_s %><br>
+                    GST No.: <%= inquiry.ship_from.address.gst %><br>
+                  <% end %>
+                  PAN No.: AAGCB7343G
+                  <% if record.inquiry.is_sez? || record.serialized_shipping_address.country_code != 'IN' %>
+                    <br>
+                    <% if record.metadata['created_at'].present? && Date.parse(Settings.accounts.arn_date_2019) <= Date.parse(record.metadata['created_at']) %>
+                      ARN # <%= Settings.accounts.arn_number_2019 %>,
+                      DOF: <%= Date.parse(Settings.accounts.arn_date_2019) %>
+                    <% else %>
+                      ARN # <%= Settings.accounts.arn_number_2018 %>,
+                      DOF: <%= Date.parse(Settings.accounts.arn_date_2018) %>
                     <% end %>
-                    <% if record.sales_order.inquiry.ship_from.present? %>
-                      <%= record.sales_order.inquiry.ship_from.address.to_multiline_s %><br>
-                      GST No.: <%= record.sales_order.inquiry.ship_from.address.gst %><br>
-                    <% end %>
-                    PAN No.: AAGCB7343G</span>
+                  <% end %>
                 </td>
               </tr>
               </tbody>
@@ -192,35 +208,37 @@
               <tbody>
               <tr>
                 <td class="address-wrapper" style="height: auto;width: 49%;">
-                    <%= record.sales_order.inquiry.contact.full_name %><br>
-                    <%= record.serialized_billing_address.name %><br>
-                    <%= record.serialized_billing_address.to_multiline_s if record.serialized_billing_address.present? %>
-                    <br>
-                    <% if record.sales_order.inquiry.billing_contact.present? %>
-                      Tel: <%= record.sales_order.inquiry.billing_contact.phone || record.serialized_billing_address.phone %>
-                    <% else %>
-                      Tel: <%= record.sales_order.inquiry.contact.phone || record.serialized_billing_address.phone %>
-                    <% end %> <br>
+                  <%= inquiry.contact.full_name %><br>
+                  <%= record.serialized_billing_address.name %><br>
+                  <%= record.serialized_billing_address.to_multiline_s if record.serialized_billing_address.present? %>
+                  <br>
+                  <% if inquiry.billing_contact.present? %>
+                    Tel: <%= inquiry.billing_contact.phone || record.serialized_billing_address.phone %>
+                  <% else %>
+                    Tel: <%= inquiry.contact.phone || record.serialized_billing_address.phone %>
+                  <% end %> <br>
+                  <% if record.serialized_billing_address.gst.present? %>
                     GST No.:<%= record.serialized_billing_address.gst %><br>
+                  <% end %>
                 </td>
                 <td style="width: 2%;"></td>
                 <td class="address-wrapper" style="height: auto;width: 49%;">
-                    <%= record.sales_order.inquiry.shipping_contact.present? ? record.sales_order.inquiry.shipping_contact.full_name : record.sales_order.inquiry.contact.full_name %>
-                    <br>
-                    <%= record.serialized_shipping_address.name if record.serialized_shipping_address.present? %>
-                    <br>
-                    <%= record.serialized_shipping_address.to_multiline_s if record.serialized_shipping_address.present? %>
-                    <br>
+                  <%= inquiry.shipping_contact.present? ? inquiry.shipping_contact.full_name : inquiry.contact.full_name %>
+                  <br>
+                  <%= record.serialized_shipping_address.name if record.serialized_shipping_address.present? %>
+                  <br>
+                  <%= record.serialized_shipping_address.to_multiline_s if record.serialized_shipping_address.present? %>
+                  <br>
 
-                    <% if record.sales_order.inquiry.shipping_contact.present? %>
-                      Tel: <%= record.sales_order.inquiry.shipping_contact.phone || record.serialized_shipping_address.phone %>
-                    <% else %>
-                      Tel: <%= record.sales_order.inquiry.contact.phone || record.serialized_shipping_address.phone %>
-                    <% end %> <br>
-
-                    GST
-                    No.:<%= record.serialized_shipping_address.gst if record.serialized_shipping_address.present? %>
-                    <br>
+                  <% if inquiry.shipping_contact.present? %>
+                    Tel: <%= inquiry.shipping_contact.phone || record.serialized_shipping_address.phone %>
+                  <% else %>
+                    Tel: <%= inquiry.contact.phone || record.serialized_shipping_address.phone %>
+                  <% end %> <br>
+                  <% if record.serialized_shipping_address.present? %>
+                    GST No.:<%= record.serialized_shipping_address.gst %>
+                  <% end %>
+                  <br>
                 </td>
               </tr>
               </tbody>
@@ -400,7 +418,7 @@
                 </div>
               </div>
             <% end %>
-            <% if record.sales_order.inquiry.bill_from.present? && record.sales_order.inquiry.bill_from.legacy_id == 12 %>
+            <% if inquiry.bill_from.present? && inquiry.bill_from.legacy_id == 12 %>
               <div id="noteInvoiceContainer" style="border:1px solid; border-radius: 5px;">
                 <table border="0" cellspacing="0" style="width: 100%;">
                   <tbody>
