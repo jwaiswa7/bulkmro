@@ -68,6 +68,6 @@ class OutwardDispatch < ApplicationRecord
   end
 
   def logistics_owner
-    self.ar_invoice_request.inquiry.company.logistics_owner.full_name if self.ar_invoice_request.company.present? && self.ar_invoice_request.inquiry.company.present? && self.ar_invoice_request.inquiry.company.logistics_owner.present?
+    self.ar_invoice_request.inquiry.company.logistics_owner.full_name if self.ar_invoice_request.inquiry.present? && self.ar_invoice_request.inquiry.company.present? && self.ar_invoice_request.inquiry.company.logistics_owner.present?
   end
 end
