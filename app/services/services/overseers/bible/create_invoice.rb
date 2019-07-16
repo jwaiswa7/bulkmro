@@ -90,7 +90,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
         @invoice_items = @invoice_items + line_item['quantity'].to_f
         @invoice_margin = @invoice_margin + line_item['margin_amount'].to_f
       end
-      binding.pry
+
       @overall_margin_percentage = (@margin_sum/@invoice_items).to_f
       bible_invoice.update_attributes(invoice_total: @bible_invoice_total, total_margin: @invoice_margin, overall_margin_percentage: @overall_margin_percentage)
     end
