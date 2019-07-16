@@ -29,8 +29,9 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
           bible_invoice.invoice_type = x.get_column('Invoice/Credit Note')
           bible_invoice.branch_type = x.get_column('Branch')
           bible_invoice.sales_invoice = sales_invoice.present? ? sales_invoice : nil
-          bible_invoice.company = inquiry.present? ? inquiry.company : Company.find_by_name(x.get_column('Company Name')) || x.get_column('Company Name')
-          bible_invoice.account = inquiry.present? ? inquiry.company.account : nil
+          bible_invoice.company_name = x.get_column('Company Name')
+          bible_invoice.company = inquiry.present? ? inquiry.company : Company.find_by_name(x.get_column('Company Name'))
+          bible_invoice.account = Company.find_by_name(x.get_column('Company Name')).account || nil
           bible_invoice.currency = x.get_column('Invoice Currency')
           bible_invoice.document_rate = x.get_column('Exchange Rate')
           bible_invoice.is_credit_note_entry = bible_invoice_row_total.negative? ? true : false

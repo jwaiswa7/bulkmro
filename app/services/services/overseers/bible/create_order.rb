@@ -47,7 +47,8 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
             bo.inside_sales_owner = Overseer.where(first_name: isp_first_name).last
             bo.outside_sales_owner = inquiry.outside_sales_owner
             bo.sales_order = sales_order.present? ? sales_order : nil
-            bo.company = inquiry.company # || x.get_column('Magento Company Name')
+            bo.company_name = x.get_column('Magento Company Name')
+            bo.company = inquiry.company
             bo.account = inquiry.company.account # || x.get_column('Company Alias')
             bo.client_order_date = Date.parse(x.get_column('Client Order Date')).strftime('%Y-%m-%d') if x.get_column('Inquiry Number') != '31647'
             bo.currency = x.get_column('Price Currency')
