@@ -129,17 +129,32 @@
             </ul>
           </div>
           <div class="dropdown-submenu">
-            <a class="dropdown-item dropdown-toggle" href="#">AR Invoices</a>
+            <a class="dropdown-item dropdown-toggle" href="#">GRPO</a>
             <ul class="dropdown-menu">
-              <%= nav_dropdown_item 'Sales Invoices List', overseers_sales_invoices_path, is_authorized(:sales_invoice, 'index') %>
               <%= nav_dropdown_item 'All Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
-              <%= nav_dropdown_item 'GRPO Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), is_authorized(:invoice_request, 'pending') %>
-              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), is_authorized(:invoice_request, 'pending') %>
-              <%= nav_dropdown_item 'Inward Completed', pending_overseers_invoice_requests_path(:status => 'Inward Completed'), is_authorized(:invoice_request, 'pending') %>
-              <%= nav_dropdown_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'rejected'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_item 'Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'GRPO Request Rejected'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_item 'Cancelled', cancelled_overseers_invoice_requests_path(:status => 'Cancelled GRPO'), is_authorized(:invoice_request, 'cancelled') %>
+            </ul>
+          </div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">AP Invoice Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
+              <%= nav_dropdown_item 'Pending', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), is_authorized(:invoice_request, 'show_pending_ap_invoice_queue') %>
+              <%= nav_dropdown_item 'Completed', pending_overseers_invoice_requests_path(:status => 'Inward Completed'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'AP Invoice Request Rejected'), is_authorized(:invoice_request, 'pending') %>
               <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, is_authorized(:invoice_request, 'completed') %>
-              <%= nav_dropdown_item 'Cancelled AP Invoice', cancelled_overseers_invoice_requests_path(:status => 'Cancelled AP Invoice'), is_authorized(:invoice_request, 'cancelled') %>
-              <%= nav_dropdown_item 'Cancelled GRPO', cancelled_overseers_invoice_requests_path(:status => 'Cancelled'), is_authorized(:invoice_request, 'cancelled') %>
+            </ul>
+          </div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">AR Invoice Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_ar_invoice_requests_path, policy(:ar_invoice_request).index? %>
+              <%= nav_dropdown_item 'Pending', overseers_ar_invoice_requests_path(:status => "AR Invoice requested"), policy(:ar_invoice_request).index? %>
+              <%= nav_dropdown_item 'Cancelled', overseers_ar_invoice_requests_path(:status => "Cancelled AR Invoice"), policy(:ar_invoice_request).index? %>
+              <%= nav_dropdown_item 'Rejected', overseers_ar_invoice_requests_path(:status => "AR Invoice Request Rejected"), policy(:ar_invoice_request).index? %>
+              <%= nav_dropdown_item 'Completed', overseers_ar_invoice_requests_path(:status => "Completed AR Invoice Request"), policy(:ar_invoice_request).index? %>
             </ul>
           </div>
           <%= nav_dropdown_item 'Sales Receipt', overseers_sales_receipts_path, is_authorized(:sales_receipt, 'index') %>
@@ -185,6 +200,7 @@
               <%= nav_dropdown_item 'Material Readiness Queue', material_readiness_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'material_readiness_queue') %>
               <%= nav_dropdown_item 'Inward Dispatch Queue', inward_dispatch_pickup_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'inward_dispatch_pickup_queue') %>
               <%= nav_dropdown_item 'Inward Delivered Queue', inward_dispatch_delivered_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'inward_dispatch_delivered_queue') %>
+              <%= nav_dropdown_item 'Inward Completed Queue', inward_completed_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'inward_completed_queue') %>
             </ul>
           </div>
           <div class="dropdown-submenu">
@@ -199,18 +215,43 @@
               <%= nav_dropdown_item 'Rejected Payment Requests', overseers_payment_requests_path(:status => 'Rejected'), is_authorized(:payment_request, 'index') %>
             </ul>
           </div>
+          <%= nav_dropdown_item 'AR Invoices', overseers_sales_invoices_path, is_authorized(:sales_invoice, 'index') %>
           <div class="dropdown-submenu">
-            <a class="dropdown-item dropdown-toggle" href="#">AR Invoices</a>
+            <a class="dropdown-item dropdown-toggle" href="#">GRPO</a>
             <ul class="dropdown-menu">
-              <%= nav_dropdown_item 'Sales Invoices List', overseers_sales_invoices_path, is_authorized(:sales_invoice, 'index') %>
               <%= nav_dropdown_item 'All Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
-              <%= nav_dropdown_item 'GRPO Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), is_authorized(:invoice_request, 'index') %>
-              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), is_authorized(:invoice_request, 'show_pending_ap_invoice_queue') %>
-              <%= nav_dropdown_item 'Inward Completed', pending_overseers_invoice_requests_path(:status => 'Inward Completed'), is_authorized(:invoice_request, 'index') %>
-              <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
-              <%= nav_dropdown_item 'Cancelled AP Invoice', cancelled_overseers_invoice_requests_path(:status => 'Cancelled AP Invoice'), is_authorized(:invoice_request, 'index') %>
-              <%= nav_dropdown_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'rejected'), is_authorized(:invoice_request, 'index') %>
-              <%= nav_dropdown_item 'Cancelled GRPO', cancelled_overseers_invoice_requests_path(:status => 'Cancelled'), is_authorized(:invoice_request, 'cancelled') %>
+              <%= nav_dropdown_item 'Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), is_authorized(:invoice_request, 'index') %>
+              <%= nav_dropdown_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'GRPO Request Rejected'), is_authorized(:invoice_request, 'index')%>
+              <%= nav_dropdown_item 'Cancelled', cancelled_overseers_invoice_requests_path(:status => 'Cancelled GRPO'), is_authorized(:invoice_request, 'cancelled') %>
+            </ul>
+          </div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">AP Invoices Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
+              <%= nav_dropdown_item 'Pending', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), is_authorized(:invoice_request, 'show_pending_ap_invoice_queue') %>
+              <%= nav_dropdown_item 'Completed', pending_overseers_invoice_requests_path(:status => 'Inward Completed'), is_authorized(:invoice_request, 'show_pending_ap_invoice_queue')%>
+              <%= nav_dropdown_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'AP Invoice Request Rejected'), is_authorized(:invoice_request, 'show_pending_ap_invoice_queue') %>
+              <%= nav_dropdown_item 'Completed', is_authorized(:invoice_request, 'index') %>
+              <%= nav_dropdown_item 'Cancelled AP Invoice', cancelled_overseers_invoice_requests_path(:status => 'Cancelled AP Invoice'), is_authorized(:invoice_request, 'show_pending_ap_invoice_queue') %>
+            </ul>
+          </div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">AR Invoice Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_ar_invoice_requests_path, is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_item 'Pending', overseers_ar_invoice_requests_path(:status => "AR Invoice requested"), is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_item 'Cancelled', overseers_ar_invoice_requests_path(:status => "Cancelled AR Invoice"), is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_item 'Rejected', overseers_ar_invoice_requests_path(:status => "AR Invoice Request Rejected"), is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_item 'Completed', overseers_ar_invoice_requests_path(:status => "Completed AR Invoice Request"), is_authorized(:ar_invoice_request, 'index') %>
+            </ul>
+          </div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Outward Dispatches</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_outward_dispatches_path, is_authorized(:outward_dispatch, 'index') %>
+              <%= nav_dropdown_item 'Material Ready for Dispatch', overseers_outward_dispatches_path(:status => "Material Ready for Dispatch"), is_authorized(:outward_dispatch, 'index') %>
+              <%= nav_dropdown_item 'Material Delivered', overseers_outward_dispatches_path(:status => 'Material Delivered'), is_authorized(:outward_dispatch, 'index') %>
             </ul>
           </div>
           <div class="dropdown-submenu">
