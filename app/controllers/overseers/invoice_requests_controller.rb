@@ -138,14 +138,9 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def update
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
     authorize_acl @invoice_request
-    inward_dispatch_ids = invoice_request_params[:inward_dispatch_ids].split(',').map(&:to_i)
-    @inward_dispatches = @invoice_request.inward_dispatches
     if @invoice_request.valid?
       service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
       service.call
-      if inward_dispatch_ids.present?
-        InwardDispatch.where(id: inward_dispatch_ids).update_all(invoice_request_id: @invoice_request.id)
-      end
       redirect_to overseers_invoice_request_path(@invoice_request), notice: flash_message(@invoice_request, action_name)
     else
       render 'edit'
