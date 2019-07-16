@@ -12,7 +12,7 @@ const newPurchaseOrdersRequests = () => {
         $('#warehouse-div').attr('data-warehouse-id',$('#sales_order_po_requests_attributes_0_bill_to_id option:selected').data('warehouse-state'));
     })
 
-    $('#product-stock-inventory').on('click',function(){
+    $('.product-stock-inventory').on('click',function(){
         var productId = $(this).data('product-id')
         var url = '/overseers/po_requests/product_resync_inventory?product_id='+productId
         $.ajax({

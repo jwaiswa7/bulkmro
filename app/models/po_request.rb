@@ -75,6 +75,24 @@ class PoRequest < ApplicationRecord
       'Stock Supplier PO Created': 30
   }
 
+  enum transport_mode: {
+      'Road': 1,
+      'Air': 2,
+      'Sea': 3
+  }
+
+  enum delivery_type: {
+      'EXW': 10,
+      'FOB': 20,
+      'CIF': 30,
+      'CFR': 40,
+      'DAP': 50,
+      'Door delivery': 60,
+      'FCA Mumbai': 70,
+      'CIP': 80,
+      'CIP Mumbai airport': 100
+  }
+
   scope :pending_and_rejected, -> { where(status: [:'Supplier PO: Request Pending', :'Supplier PO Request Rejected', :'Supplier PO: Amendment Pending']) }
   scope :handled, -> { where.not(status: [:'Supplier PO: Request Pending', :'Cancelled', :'Supplier PO: Amendment Pending']) }
   scope :not_cancelled, -> { where.not(status: [:'Cancelled']) }

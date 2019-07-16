@@ -16,7 +16,9 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
                 logistics_owner: po_request.inquiry.company.logistics_owner,
                 payment_option: po_request.payment_option,
                 sap_sync: 'Not Sync',
-                created_by_id: params[:overseer].id
+                created_by_id: params[:overseer].id,
+                transport_mode: po_request.transport_mode,
+                delivery_type: po_request.delivery_type
             )
         )
       end
@@ -75,7 +77,9 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         logistics_owner_id: params[:overseer].id,
         company_id: po_request.supplier_id,
         is_partial: false,
-        metadata: get_metadata(series_number)
+        metadata: get_metadata(series_number),
+        transport_mode: po_request.transport_mode,
+        delivery_type: po_request.delivery_type
     }
   end
 
@@ -110,10 +114,10 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         PoInvoiceDate: '',
         PoPaymentDate: '',
         PoPaymentType: '',
-        PoDeliveryTerms: '',
-        PoModeOfTrasport: '',
+        PoDeliveryTerms: po_request.delivery_type.present? ? po_request.delivery_type : 'Door delivery',
+        PoModeOfTrasport: po_request.transport_mode.present? ? po_request.transport_mode : 'Road',
         PoPackingForwarding: '',
-        DocumentLines: item_line_json,
+        DocumentLines: item_line_json
         #Project: po_request.inquiry.inquiry_number,
         #CardCode: po_request.supplier.remote_uid,
         #CardName: po_request.supplier.to_s,

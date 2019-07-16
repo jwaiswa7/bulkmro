@@ -81,6 +81,12 @@
     <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', required: true, label: 'Payment Terms:', collection: PaymentOption.active.pluck(:name, :id) %>
   </div>
   <div class="col-12 col-md-4 d-none late_lead_date_reason">
+    <%= f.input :delivery_type, as: :select, collection: enum_to_collection(PoRequest.delivery_types, alphabetical: false, keep_raw: true), required: true  %>
+  </div>
+  <div class="col-12 col-md-4">
+    <%= f.input :transport_mode, as: :select, collection: enum_to_collection(PoRequest.transport_modes, alphabetical: false, keep_raw: true), required: true  %>
+  </div>
+  <div class="col-12 col-md-4 d-none late_lead_date_reason">
     <%= f.input :late_lead_date_reason, placeholder: 'Reason for late lead date', label: 'Late Lead Date Reason:' %>
   </div>
 
@@ -212,7 +218,7 @@
       <%#= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, disabled: true %>
     </div>
     <div class="col-12 col-md-12 mb-1 ml-2">
-      <%= link_to  product_resync_inventory_overseers_po_requests_path(product_id: po_request_row.object.product_id), 'data-toggle': 'tooltip', 'data-placement': 'top', 'data-toggle': 'modal', 'data-product-id': po_request_row.object.product_id, 'data-warehouse-id': po_request_row.object.product_id, title: 'Show Inventory', class: 'btn btn-sm btn-outline-dark', id: 'product-stock-inventory' do %>
+      <%= link_to  product_resync_inventory_overseers_po_requests_path(product_id: po_request_row.object.product_id), 'data-toggle': 'tooltip', 'data-placement': 'top', 'data-toggle': 'modal', 'data-product-id': po_request_row.object.product_id, 'data-warehouse-id': po_request_row.object.product_id, title: 'Show Inventory', class: 'btn btn-sm btn-outline-dark product-stock-inventory' do %>
         <% concat content_tag(:span, '') %>
         <% concat content_tag :i, nil, class: 'fal fa-inventory' %>
       <% end %>

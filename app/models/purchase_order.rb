@@ -102,6 +102,19 @@ class PurchaseOrder < ApplicationRecord
       'Sync': 10,
       'Not Sync': 20
   }
+
+  enum delivery_type: {
+      'EXW': 10,
+      'FOB': 20,
+      'CIF': 30,
+      'CFR': 40,
+      'DAP': 50,
+      'Door delivery': 60,
+      'FCA Mumbai': 70,
+      'CIP': 80,
+      'CIP Mumbai airport': 100
+  }
+
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
   scope :material_pickup_queue, -> {where(material_status: :'Inward Dispatch')}
   scope :material_delivered_queue, -> {where(material_status: :'Material Delivered')}
