@@ -27,12 +27,25 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                   ar_invoice.ar_invoice_number,
                   ar_invoice.inquiry.present? ? conditional_link(ar_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(ar_invoice.inquiry), is_authorized(ar_invoice.inquiry ,'edit')) : '-',
                   ar_invoice.inquiry.company.to_s,
-                  ar_invoice.inquiry.inside_sales_owner.to_s,
-                  ar_invoice.inquiry.company.logistics_owner.present? ? ar_invoice.inquiry.company.logistics_owner.to_s : 'Unassigned',
+                  ar_invoice.is_owner.present? ? ar_invoice.is_owner : "--",
+                  ar_invoice.logistics_owner.present? ? ar_invoice.logistics_owner.to_s : 'Unassigned',
                   ar_invoice.sales_order.order_number,
                   ar_invoice.outward_dispatches.map { |outward_dispatch| link_to(outward_dispatch.id, overseers_outward_dispatch_path(outward_dispatch), target: '_blank') }.compact.join(' '),
               ]
 end
+
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       Overseer.inside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+                       Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.reject { |h| h[:label] == 'Logistics Team'}.as_json,
+                       [],
+                       []
+                   ]
+
 json.recordsTotal @ar_invoice_requests.count
 json.recordsFiltered @indexed_ar_invoices.total_count
 json.draw params[:draw]

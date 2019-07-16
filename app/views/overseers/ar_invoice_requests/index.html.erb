@@ -11,11 +11,24 @@
   <th class="sort" data-toggle="tooltip" title="AR Invoice ID" data-name="ar_invoice_number"> AR Invoice number</th>
   <th class="no-sort">Inquiry #</th>
   <th class="no-sort">Company name</th>
-  <th class="no-sort all text-center" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
-  <th class="no-sort all text-center">Logistics Owner</th>
+  <th class="no-sort all text-center" data-toggle="tooltip" title="Inside Sales & Procurement" data-name="is_owner_id">IS&P</th>
+  <th class="no-sort all text-center" data-name="logistics_owner_id">Logistics Owner</th>
   <th class="no-sort">Order #</th>
   <th class="no-sort">Outward dispatches</th>
 <% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+<% end %>
+
 <div class="col-lg-12">
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
