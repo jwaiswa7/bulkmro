@@ -26,7 +26,7 @@ json.data (@invoice_requests) do |invoice_request|
                   invoice_request.sales_order.present? ? conditional_link(invoice_request.sales_order.order_number, overseers_inquiry_sales_order_path(invoice_request.inquiry, invoice_request.sales_order), is_authorized(invoice_request.sales_order, 'show')) : '-',
                   (link_to(invoice_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(invoice_request.inquiry, invoice_request.purchase_order), target: '_blank') if invoice_request.purchase_order.present?),
                   '<div class="text-center">' + invoice_request.inquiry.inside_sales_owner.to_s + '</div>',
-                  invoice_request.purchase_order.logistics_owner.to_s,
+                  invoice_request.purchase_order.present? ? invoice_request.purchase_order.logistics_owner.to_s : 'Unassigned',
                   format_succinct_date(invoice_request.created_at),
                   if invoice_request.last_comment.present?
                     format_succinct_date(invoice_request.last_comment.created_at)
@@ -36,20 +36,6 @@ json.data (@invoice_requests) do |invoice_request|
                   end
               ]
 end
-
-json.columnFilters [
-                       [],
-                       [],
-                       [],
-                       [],
-                       [],
-                       [],
-                       [],
-                       Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.reject { |h| h[:label] == 'Logistics Team'}.as_json,
-                       [],
-                       [],
-                       []
-                   ]
 
 json.recordsTotal @invoice_requests.count
 json.recordsFiltered @invoice_requests.total_count

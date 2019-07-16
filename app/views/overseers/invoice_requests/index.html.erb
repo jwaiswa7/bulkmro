@@ -34,25 +34,25 @@
   <th class="no-sort all text-right">Order #</th>
   <th class="no-sort all text-right">PO #</th>
   <th class="no-sort all text-center" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
-  <th class="no-sort all text-center" data-name="logistics_owner_id">Logistics Owner</th>
-  <th class="sort desktop text-right" data-name="created_at">Requested At</th>
+  <th class="no-sort all text-center" >Logistics Owner</th>
+  <th class="sort desktop text-right" >Requested At</th>
   <th class="no-sort desktop text-right">Updated At</th>
   <th class="no-sort desktop">Latest Comment</th>
 <% end %>
 
-<% content_for :filter_row do %>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="dropdown"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-  <td data-filter="false"></td>
-<% end %>
+<%# content_for :filter_row do %>
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="dropdown"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<%# end %>
 
 <div class="col-lg-12">
   <%= render layout: 'shared/layouts/datatable' do %>
