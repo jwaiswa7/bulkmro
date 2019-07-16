@@ -161,6 +161,14 @@ class ArInvoiceRequest < ApplicationRecord
     'AR Invoice Request'
   end
 
+  def is_owner
+    self.inquiry.inside_sales_owner.to_s
+  end
+
+  def logistics_owner
+    self.inquiry.company.logistics_owner.to_s
+  end
+
   private
 
     def presence_of_reason
