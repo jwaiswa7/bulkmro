@@ -470,11 +470,8 @@ class Inquiry < ApplicationRecord
   end
 
   def unique_skus_in_order
-    skus = []
-    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).each do |bso|
-      skus >> bso.sku #TODO Saurabh to add sku logic
-    end
-    skus.compact
+    bible_orders = BibleSalesOrder.where(:inquiry_number => self.inquiry_number)
+    bible_orders.map {|bo| bo.metadata.map{|m| m['sku']} }.flatten.compact.uniq.count
   end
 
   def bible_sales_orders

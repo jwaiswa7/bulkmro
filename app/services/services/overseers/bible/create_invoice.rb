@@ -24,13 +24,13 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
                                             invoice_number: invoice_number,
                                             mis_date: Date.parse(x.get_column('Invoice Date')).strftime('%Y-%m-%d')).first_or_create! do |bible_invoice|
           # bible_invoice.inquiry = inquiry
-          bible_invoice.inside_sales_owner = inquiry.inside_sales_owner
-          bible_invoice.outside_sales_owner = inquiry.outside_sales_owner
+          bible_invoice.inside_sales_owner = inquiry.present? ? inquiry.inside_sales_owner : nil
+          bible_invoice.outside_sales_owner = inquiry.present? ? inquiry.outside_sales_owner : nil
           bible_invoice.invoice_type = x.get_column('Invoice/Credit Note')
           bible_invoice.branch_type = x.get_column('Branch')
           bible_invoice.sales_invoice = sales_invoice.present? ? sales_invoice : nil
-          bible_invoice.company = inquiry.company # || x.get_column('Company Name ')
-          bible_invoice.account = inquiry.company.account
+          bible_invoice.company = inquiry.present? ? inquiry.company : Company.find_by_name(x.get_column('Company Name')) || x.get_column('Company Name')
+          bible_invoice.account = inquiry.present? ? inquiry.company.account : nil
           bible_invoice.currency = x.get_column('Invoice Currency')
           bible_invoice.document_rate = x.get_column('Exchange Rate')
           bible_invoice.is_credit_note_entry = bible_invoice_row_total.negative? ? true : false
@@ -90,6 +90,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
         @invoice_items = @invoice_items + line_item['quantity'].to_f
         @invoice_margin = @invoice_margin + line_item['margin_amount'].to_f
       end
+      binding.pry
       @overall_margin_percentage = (@margin_sum/@invoice_items).to_f
       bible_invoice.update_attributes(invoice_total: @bible_invoice_total, total_margin: @invoice_margin, overall_margin_percentage: @overall_margin_percentage)
     end
