@@ -165,7 +165,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def restrict_fields_on_completed_orders?
-    has_approved_sales_orders? && (overseer.acl_role.role_name.downcase != 'admin')
+    has_approved_sales_orders?
   end
 
   def has_no_approved_sales_orders?

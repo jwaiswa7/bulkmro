@@ -17,7 +17,7 @@ class SalesShipment < ApplicationRecord
   scope :with_includes, -> { includes(:sales_order) }
   enum status: {
     default: 10,
-    cancelled: 3, # This is SAP status for
+    cancelled: 3, # This is SAP status for shipment
     'Delivered': 4
   }, _prefix: true
 

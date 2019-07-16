@@ -24,7 +24,8 @@ class Export < ApplicationRecord
     company_report: 91,
     customer_order_status_report: 92,
     pipeline_report: 93,
-    monthly_sales_report: 94
+    monthly_sales_report: 94,
+    customer_product: 95
 
   }
 end

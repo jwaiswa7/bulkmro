@@ -240,16 +240,40 @@ class SalesInvoice < ApplicationRecord
   end
 
   def calculated_committed_delivery_tat
-    if self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
-      (self.inquiry.customer_committed_date - self.inquiry.customer_order_date).to_i
+    if [143, 725, 1444, 1392].include?(self.inquiry.company.id)
+      if self.created_at.present? && self.inquiry.customer_order_date.present?
+        (self.created_at.to_date - self.inquiry.customer_order_date).to_i
+      end
+    else
+      if self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
+        (self.inquiry.customer_committed_date - self.inquiry.customer_order_date).to_i
+      end
     end
   end
 
+  # def calculated_committed_delivery_tat
+  #   if self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
+  #     (self.inquiry.customer_committed_date - self.inquiry.customer_order_date).to_i
+  #   end
+  # end
+
   def calculated_actual_delivery_tat
-    if self.delivery_date.present? && self.inquiry.customer_order_date.present?
-      (self.delivery_date - self.inquiry.customer_order_date).to_i
+    if [143, 725, 1444, 1392].include?(self.inquiry.company.id)
+      if self.created_at.present? && self.inquiry.customer_order_date.present?
+        (self.created_at.to_date - self.inquiry.customer_order_date).to_i
+      end
+    else
+      if self.delivery_date.present? && self.inquiry.customer_order_date.present?
+        (self.delivery_date - self.inquiry.customer_order_date).to_i
+      end
     end
   end
+
+  # def calculated_actual_delivery_tat
+  #   if self.delivery_date.present? && self.inquiry.customer_order_date.present?
+  #     (self.delivery_date - self.inquiry.customer_order_date).to_i
+  #   end
+  # end
 
   def calculated_delay
     if self.calculated_committed_delivery_tat.present? && self.calculated_actual_delivery_tat.present?

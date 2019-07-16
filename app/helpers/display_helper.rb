@@ -35,7 +35,7 @@ module DisplayHelper
     end
   end
 
-  def calculate_percentage(val1, val2, precision: 2)
+  def calculate_percentage(val1, val2, precision: 0)
     if val2 == 0
       '0%'
     else

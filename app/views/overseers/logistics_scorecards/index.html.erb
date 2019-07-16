@@ -6,9 +6,9 @@
   <%= render partial: "overall_scorecard" %>
 </div>
 
-<div class="col-lg-12">
-  <%= render partial: "ownerwise_scorecard" %>
-</div>
+<!--<div class="col-lg-12">-->
+  <%#= render partial: "ownerwise_scorecard" %>
+<!--</div>-->
 
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -34,7 +34,7 @@
   <th class="no-sort all"></th>
   <th class="no-sort desktop text-right">BM Inquiry #</th>
   <th class="no-sort desktop">Inquiry Date</th>
-  <th class="no-sort desktop">Company</th>
+  <th class="no-sort desktop" data-name="company_id">Company</th>
   <th class="no-sort desktop">IS Owner</th>
   <th class="no-sort desktop" data-name="logistics_owner_id">Logistics Owner</th>
   <th class="no-sort desktop">Regular / Route Through</th>
@@ -47,7 +47,6 @@
   <th class="no-sort desktop">Customer PO Received Date</th>
   <th class="no-sort desktop" data-name="cp_committed_date">Committed Delivery Date to Customer</th>
   <th class="no-sort desktop">SO Creation Date</th>
-  <th class="no-sort desktop">PO Creation Date</th>
   <th class="no-sort desktop">Actual Customer Delivery Date</th>
   <th class="no-sort desktop">Committed Delivery TAT (days)</th>
   <th class="no-sort desktop">Actual Delivery TAT (days)</th>
@@ -62,7 +61,7 @@
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
-  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
   <td data-filter="false"></td>
   <td data-filter="dropdown"></td>
   <td data-filter="false"></td>
@@ -74,7 +73,6 @@
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="daterange"></td>
-  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>

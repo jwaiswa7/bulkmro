@@ -48,7 +48,7 @@
               <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, is_authorized(:account, 'index') %>
               <%= nav_dropdown_item 'Accounts Receivable', payment_collections_overseers_accounts_path, is_authorized(:account, 'payment_collections') %>
               <%= nav_dropdown_item 'Ageing Report', ageing_report_overseers_accounts_path, is_authorized(:account, 'ageing_report') %>
-              <%#= nav_dropdown_item 'Receipts', overseers_sales_receipts_path, is_authorized(:sales_receipt, 'index') %>
+              <%= nav_dropdown_item 'Receipts', overseers_sales_receipts_path, is_authorized(:sales_receipt, 'index') %>
             </ul>
           </div>
           <%= nav_dropdown_item 'Companies', overseers_companies_path, is_authorized(:company, 'index') %>
@@ -142,7 +142,7 @@
               <%= nav_dropdown_item 'Cancelled GRPO', cancelled_overseers_invoice_requests_path(:status => 'Cancelled'), is_authorized(:invoice_request, 'cancelled') %>
             </ul>
           </div>
-          <%#= nav_dropdown_item 'Sales Receipt', overseers_sales_receipts_path, is_authorized(:sales_receipt, 'index') %>
+          <%= nav_dropdown_item 'Sales Receipt', overseers_sales_receipts_path, is_authorized(:sales_receipt, 'index') %>
           <div class="dropdown-divider"></div>
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Freight Requests</a>
@@ -272,6 +272,7 @@
               <div class="dropdown-submenu">
                 <a class="dropdown-item dropdown-toggle" href="#">Tools</a>
                 <div class="dropdown-menu">
+                  <%#= nav_dropdown_item 'Bible Upload', new_excel_bible_order_import_overseers_bible_sales_orders_imports_path %>
                   <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, is_authorized(:remote_request, 'index') %>
                   <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, is_authorized(:callback_request, 'index') %>
                   <%= nav_dropdown_item 'Resync Remote Requests', overseers_resync_remote_requests_path, is_authorized(:resync_remote_request, 'index') %>
