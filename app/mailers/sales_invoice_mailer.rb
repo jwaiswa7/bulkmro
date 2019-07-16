@@ -26,5 +26,4 @@ class SalesInvoiceMailer < ApplicationMailer
 
     standard_email(email_message)
   end
-
 end
