@@ -102,7 +102,7 @@ accounts:
   arn_date_2018: '2018-05-25'
 
 reports:
-  show_summary: false
+  show_summary: true
 
 flex_ftp:
   host: 'ftpas.flextronics.com'

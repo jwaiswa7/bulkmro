@@ -14,6 +14,34 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
   end
 
+  def company_orders_export
+    column_headers = ['Inquiry Number', 'Order Number', 'Company Name', 'Company Alias', 'SKU', 'Line Item Net Total', 'SKU Name', 'Customer Material Code', 'Brand', 'HSN', 'Tax percentage', 'UOM']
+    model = SalesOrder
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      model.joins(:company).where(companies: {id: 479}).order(name: :asc).each do |sales_order|
+        inquiry = sales_order.inquiry
+        sales_order.rows.each do |order_row|
+          writer << [
+              inquiry.inquiry_number,
+              sales_order.order_number.to_s,
+              inquiry.company.name,
+              inquiry.company.account.name,
+              order_row.product.sku,
+              order_row.total_selling_price.to_s,
+              order_row.product.name,
+              order_row.inquiry_product.bp_catalog_sku,
+              order_row.product.brand.name,
+              order_row.tax_code.code,
+              percentage(order_row.sales_quote_row.tax_rate.tax_percentage.to_f),
+              order_row.measurement_unit
+          ]
+        end
+      end
+    end
+
+    fetch_csv('abbott_orders1.csv', csv_data)
+  end
+
   def alias_with_po_total
     column_headers = ['Company Alias', 'Company', 'Order Status', 'Order Total']
     model = PurchaseOrder
