@@ -20,7 +20,7 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
       end
     end
 
-    SalesOrderRow.all.each do |sales_order_row|
+    SalesOrderRow.where(product_id: nil).each do |sales_order_row|
       Chewy.strategy(:bypass) do
         sales_order_row.product_id = sales_order_row.product.id
         sales_order_row.save(validate: false)
@@ -122,8 +122,8 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
                 # data_present = val.map{|x| x.inward_dispatches.count > 0 && (x.inward_dispatches.map{|y| y.rows.count}.flatten.compact.sum > 0)}
                 ar_invoice_request.save!
                 val.each do |invoice_request|
-                  invoice_request.status = 'Inward Completed'
-                  invoice_request.save(validate: false)
+                  # invoice_request.status = 'Inward Completed'
+                  # invoice_request.save(validate: false)
                   if invoice_request.inward_dispatches.present?
                     # invoice_request.inward_dispatches.map { |d|  d.ar_invoice_request_id= ar_invoice_request.id; d.save(validate: false)}
                     inward_dispatch_rows = invoice_request.inward_dispatches.map {|x| x.rows}.flatten
@@ -153,6 +153,7 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
         end
       end
     end
+    # InvoiceRequest.where(status: 'Completed AR Invoice Request').update_all(status: 'Inward Completed')
   end
 
   def add_association_of_sales_invoice
