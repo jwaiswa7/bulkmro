@@ -218,7 +218,7 @@
               </tr>
               </thead>
               <tbody>
-              <% locals[:purchase_order].rows.each_with_index do |item, index| %>
+              <% locals[:purchase_order].rows.joins(:product).order(:is_service).each_with_index do |item, index| %>
                 <tr>
                   <td align="center" valign="top">
                     <span><%= index + 1 %></span></td>

@@ -1,6 +1,8 @@
 class InwardDispatchRow < ApplicationRecord
   belongs_to :inward_dispatch
   belongs_to :purchase_order_row
+  belongs_to :product
+  has_one :ar_invoice_row
 
   validates_uniqueness_of :purchase_order_row_id, scope: :inward_dispatch
   validates_numericality_of :pickup_quantity, greater_than: 0
@@ -37,6 +39,10 @@ class InwardDispatchRow < ApplicationRecord
     max_quantity = purchase_order_row.get_pickup_quantity + previous_pickup_quantity
 
     errors.add(:pickup_quantity, " need to be less than or equal to #{max_quantity}") if pickup_quantity > max_quantity
+  end
+
+  def to_s
+    self.purchase_order_row.to_s
   end
 
   attr_accessor :quantity
