@@ -57,7 +57,7 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
             tax_amount: ('%.2f' % sales_order.calculated_total_tax if sales_order.inquiry.present?),
             gt_inc: ('%.2f' % sales_order.calculated_total_with_tax if sales_order.inquiry.present?),
             status: sales_order.remote_status,
-          ) if inquiry.present?
+              ) if inquiry.present?
         end
       end
       rows.drop(columns.count).each do |row|

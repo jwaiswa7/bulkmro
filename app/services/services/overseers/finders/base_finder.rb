@@ -125,6 +125,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
       indexed_records = indexed_records.query(
         range: {
             :"#{range_filter[:name]}" => {
+                "time_zone": "+05:30",
                 gte: range[0].strip.to_date,
                 lte: range[1].strip.to_date
             }
