@@ -30,7 +30,12 @@ class Customers::SalesOrdersController < Customers::BaseController
   def export_all
     authorize :sales_order
 
-    service = Services::Customers::Exporters::SalesOrdersExporter.new(headers, current_company)
+    if params.present?
+      service = Services::Customers::Exporters::SalesOrdersExporter.new(headers, current_company, params)
+    else
+      puts '****************************** ABESENT PARAMS *******************************'
+      binding.pry
+    end
     self.response_body = service.call
 
     # Set the status to success

@@ -18,10 +18,10 @@ let aggregateSummaryBox = () => {
         $('.overall-status-count').html( new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusCount));
         $('.overall-status-value').html("&#8377;" + new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusValue));
     });
-    $('.message-in-order').on('click', function (e) {
-        // alert('Welcome')
-        $("#modal-window").find(".modal-content").html();
-        $("#modal-window").modal();
+
+    $('.order-filter').on('click', function (e) {
+        $("#export-filters").find(".modal-content").html();
+        $("#export-filters").modal();
     });
 }
 
