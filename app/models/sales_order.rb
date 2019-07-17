@@ -37,11 +37,16 @@ class SalesOrder < ApplicationRecord
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
+  has_many :inward_dispatches
+  has_many :outward_dispatches
+
 
   has_one :confirmation, class_name: 'SalesOrderConfirmation', dependent: :destroy
   has_many :po_requests, inverse_of: :sales_order, dependent: :destroy
   accepts_nested_attributes_for :po_requests, allow_destroy: true
   has_many :invoice_requests
+  has_many :ar_invoice_requests
+  has_many :ar_invoice_request_rows, through: :ar_invoice_request
   has_many :email_messages
   belongs_to :billing_address, class_name: 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, class_name: 'Address', dependent: :destroy, required: false

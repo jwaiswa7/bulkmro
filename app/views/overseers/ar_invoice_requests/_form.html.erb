@@ -1,0 +1,200 @@
+<%= provide :container_fluid, true %>
+<% content_for :page_title do %>
+  <%= @ar_invoice_request.title %>
+<% end %>
+
+<div class="col-lg-12">
+  <div class="page-header">
+    <h2><%= action_name.capitalize %> AR Invoice Request</h2>
+    <p>This will <em>'<%= @ar_invoice_request.new_record? ? 'create' : 'update' %> AR invoice request'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
+  </div>
+
+  <%= simple_form_for([:overseers, @ar_invoice_request], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+    <%= f.hidden_field :id %>
+    <%= f.hidden_field :sales_order_id %>
+    <%= f.hidden_field :inquiry_id %>
+    <%#= f.hidden_field :inward_dispatches %>
+    <%= hidden_field_tag "inward_dispatch_ids[]", action_name == "new"  ? @inward_dispatches.pluck(:id).join(',') :  @ar_invoice_request.inward_dispatches.pluck(:id).join(',') %>
+
+    <section class="mb-3">
+      <div class="card mb-2">
+        <div class="card-body">
+          <h6 class="text-uppercase text-black-50 mb-1"> Entity Details</h6>
+          <div class="form-row">
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Inquiry </strong>
+              <%= f.object.inquiry %>
+            </div>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Order </strong>
+              #<%= f.object.sales_order.order_number %>
+            </div>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Customer PO </strong>
+              <%= f.object.inquiry.customer_po_number.present? ? '#'+f.object.inquiry.customer_po_number : ' - ' %>
+            </div>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Currency </strong>
+              <%= f.object.inquiry.customer_order_date %>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Currency </strong>
+              <%= f.object.sales_order.currency.name %>
+            </div>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Payment Terms </strong>
+              <%= f.object.inquiry.payment_option %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-2">
+        <div class="card-body">
+          <h6 class="text-uppercase text-black-50 mb-1"> Addresses Details</h6>
+          <div class="form-row">
+            <div class="col-6 col-md-6 mb-2">
+              <strong class="d-block">Bulk MRO Billing Address </strong>
+              <% if f.object.inquiry.bill_from.present? %>
+                <%= f.object.inquiry.bill_from.address.name.to_s %>
+                <%= f.object.inquiry.bill_from.address.to_compact_multiline_s %><br>
+                <% if f.object.inquiry.bill_from.address.phone.present? %>
+                  <em>Contact</em>: <%= f.object.inquiry.contact.full_name %> - <%= f.object.inquiry.bill_from.address.phone %><br>
+                <% end %>
+                <% if f.object.inquiry.bill_from.address.gst %>
+                  <strong><em>GST Number</em></strong>: <%= f.object.inquiry.bill_from.address.gst %><br>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="col-6 col-md-6 mb-2">
+              <strong class="d-block">Bulk MRO Shipping Address </strong>
+              <% if f.object.inquiry.ship_from.present? %>
+                <%= f.object.inquiry.ship_from.address.name.to_s %><br>
+                <%= f.object.inquiry.ship_from.address.to_compact_multiline_s %><br>
+                <% if f.object.inquiry.ship_from.address.mobile || f.object.inquiry.ship_from.address.telephone %>
+                  <em>Contact</em>: <%= f.object.inquiry.ship_from.address.mobile || f.object.inquiry.ship_from.address.telephone %><br>
+                <% end %>
+                <% if f.object.inquiry.ship_from.address.gst %>
+                  <strong><em>GST Number</em></strong>: <%= f.object.inquiry.ship_from.address.gst %><br>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-6 col-md-6 mb-2">
+              <strong class="d-block">Customer - Billing Address</strong>
+              <%= (f.object.inquiry.company.name) %><br>
+              <%= f.object.sales_order.serialized_billing_address.to_compact_multiline_s %><br>
+              <% if f.object.inquiry.contact.phone.present? %>
+                Contact: <%= f.object.inquiry.contact.full_name %> - <%= f.object.inquiry.contact.phone %><br>
+              <% end %>
+              <strong><em>Email</em></strong>: <%= f.object.inquiry.contact.email if f.object.inquiry.contact.email.present? %>
+              <span class="d-block"><strong><em>GST Number</em></strong>: <%= f.object.sales_order.serialized_billing_address.gst || f.object.inquiry.company.default_billing_address.gst %></span>
+            </div>
+            <div class="col-6 col-md-6 mb-2">
+              <strong class="d-block">Customer - Shipping Address</strong>
+              <span class="d-block"><%= (f.object.inquiry.shipping_company.name) %></span>
+              <span class="d-block"><%= f.object.sales_order.serialized_shipping_address.to_compact_multiline_s %></span>
+              <% if f.object.inquiry.shipping_contact.phone.present? %>
+                <span class="d-block"><em>Contact</em>: <%= f.object.inquiry.shipping_contact.full_name %>
+                  - <%= f.object.inquiry.shipping_contact.phone %></span>
+              <% end %>
+              <strong><em>Email</em></strong>: <%= f.object.inquiry.shipping_contact.email if f.object.inquiry.shipping_contact.email.present? %>
+              <span class="d-block"><strong><em>GST Number</em></strong>: <%= f.object.sales_order.serialized_shipping_address.gst || f.object.inquiry.company.default_shipping_address.gst %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% if f.object.status == 'Completed AR Invoice Request' %>
+        <%= render 'rows_show' %>
+      <% else %>
+        <%= render 'overseers/ar_invoice_requests/rows_form', f: f %>
+    <% end %>
+    </section>
+    <div class="card">
+      <div class="card-body pt-0 pb-0">
+        <div class="card-alternative">
+          <div class="form-row">
+            <div class="col-12">
+              <% status_list = f.object.allow_statuses(current_overseer) %>
+              <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(status_list[:enabled], alphabetical: false, keep_raw: true), :include_blank => false, disabled:status_list[:disabled]  %>
+            </div>
+            <div class="col-12 ">
+              <%= f.input :cancellation_reason,as: :select, :label => "AR Cancellation Reason", :wrapper => :custom_multi_select, wrapper_html: {class: @ar_invoice_request.display_reason('cancellation')}, collection: enum_to_collection(ArInvoiceRequest.cancellation_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Cancellation Reason'  %>
+            </div>
+            <div class="col-12 ">
+              <%= f.input :rejection_reason, as: :select, :label => "AR Rejection Reason", :wrapper => :custom_multi_select, wrapper_html: {class: @ar_invoice_request.display_reason('rejection')}, collection: enum_to_collection(ArInvoiceRequest.rejection_reasons, alphabetical: false, keep_raw: true), :include_blank => 'Select Reason' %>
+            </div>
+            <div class="col-12 ">
+              <%= f.input :other_rejection_reason, :label => "AR Other Rejection Reason", :placeholder => 'Type Rejection Reason', wrapper_html: {class: @ar_invoice_request.display_reason('other_rejection')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+            </div>
+
+            <div class="col-12 ">
+              <%= f.input :other_cancellation_reason, :label => "AR Other Cancellation Reason", :placeholder => 'Type Cancellation Reason', wrapper_html: {class: @ar_invoice_request.display_reason('other_cancellation')}, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+            </div>
+
+            <div class="col-12">
+              <% if f.object.persisted? %>
+                <div class="col-4">
+                  <%= f.association :sales_invoice, collection: [f.object.sales_invoice], label_method: :to_s, include_blank: 'Type AR Invoice Number', input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_sales_invoices_path(:inquiry_id => f.object.inquiry.id), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: 'AR Invoice Number' %>
+                </div>
+              <% end %>
+            </div>
+
+            <% if params[:action] == 'edit' %>
+              <div class="col-2">
+                <%= f.input :e_way, label: 'E-Way Bill' %>
+              </div>
+              <div class="col-2 download-eway <%= f.object.e_way ? '' : 'd-none' %>">
+                  <a href="<%= download_eway_bill_format_overseers_ar_invoice_request_path(@ar_invoice_request, format: :xlsx) %>" target="_blank" class="ml-md-1 btn btn-success" title="E-way bill format">
+                    <i class="fal fa-download mr-1"></i>
+                  </a>
+              </div>
+             <%end %>
+            <div class="col-12">
+              <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |ar_invoice_request_comment| %>
+              <%= ar_invoice_request_comment.hidden_field :created_by_id %>
+              <%= ar_invoice_request_comment.hidden_field :updated_by_id %>
+              <%= ar_invoice_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <% end %>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="form-row">
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block submit-form") do %>
+            <% if action_name.capitalize == "New" %>
+              <i class="fal fa-plus-circle"></i>
+            <% else %>
+              <i class="fal fa-pen"></i>
+            <% end %>
+            <%= submit_text(@ar_invoice_request).downcase %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if action_name.capitalize != "New" %>
+    <div class="card">
+      <div class="card-body">
+        <div class="flex-fill">
+          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+        </div>
+
+        <% if @ar_invoice_request.comments.persisted.size > 0 %>
+          <div class="chats">
+            <% @ar_invoice_request.comments.each do |comment| %>
+              <% if comment.persisted? %>
+                <%= format_comment(comment) %>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

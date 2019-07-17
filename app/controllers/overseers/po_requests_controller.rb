@@ -1,5 +1,5 @@
 class Overseers::PoRequestsController < Overseers::BaseController
-  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form, :render_comment_form, :add_comment]
+  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_modal_form, :add_comment]
   before_action :set_notification, only: [:update, :cancel_porequest]
 
   def pending_and_rejected
@@ -148,17 +148,14 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
-  def render_cancellation_form
+  def render_modal_form
     authorize_acl @po_request
     respond_to do |format|
-      format.html {render partial: 'cancel_porequest', locals: {purpose: params[:purpose]}}
-    end
-  end
-
-  def render_comment_form
-    authorize_acl @po_request
-    respond_to do |format|
-      format.html {render partial: 'add_comment'}
+      if params[:title] == 'Comment'
+        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @po_request, url: add_comment_overseers_po_request_path(@po_request), view_more: overseers_po_request_path(@po_request)}}
+      else
+        format.html {render partial: 'cancel_porequest', locals: {purpose: params[:title]}}
+      end
     end
   end
 
@@ -166,13 +163,17 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize_acl @po_request
     if @po_request.valid?
-      ActiveRecord::Base.transaction do
-        @po_request.save!
-        @po_request_comment = PoRequestComment.new(message: '', po_request: @po_request, overseer: current_overseer)
+      if params['po_request']['comments_attributes']['0']['message'].present?
+        ActiveRecord::Base.transaction do
+          @po_request.save!
+          @po_request_comment = PoRequestComment.new(message: '', po_request: @po_request, overseer: current_overseer)
+        end
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
       end
-      render json: {success: 1, message: 'Successfully updated '}, status: 200
     else
-      render json: {success: 0, message: 'Cannot reject this PO Request.'}, status: 200
+      render json: {error: @po_request.errors}, status: 500
     end
   end
 
@@ -244,8 +245,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion],
           attachments: []
-        )
-      end
+      )
+    end
 
     def set_po_request
       @po_request = PoRequest.find(params[:id])

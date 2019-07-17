@@ -18,6 +18,11 @@ let aggregateSummaryBox = () => {
         $('.overall-status-count').html( new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusCount));
         $('.overall-status-value').html("&#8377;" + new Intl.NumberFormat('en-IN').format(json.recordsOverallStatusValue));
     });
+
+    $('.order-filter').on('click', function (e) {
+        $("#export-filters").find(".modal-content").html();
+        $("#export-filters").modal();
+    });
 }
 
 export default index

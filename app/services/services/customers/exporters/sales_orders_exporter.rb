@@ -1,5 +1,5 @@
 class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers::Exporters::BaseExporter
-  def initialize(headers, company)
+  def initialize(headers, company, filters = nil)
     @file_name = 'sales_orders_for_customer'
     super(headers, @file_name)
     @company = company
@@ -12,6 +12,9 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
     @columns.each do |column|
       rows.push(column)
     end
+    @start_at = filters['date_range'].split('~').first.to_date.strftime('%Y-%m-%d')
+    @end_at = filters['date_range'].split('~').last.to_date.strftime('%Y-%m-%d')
+    @amount_filter = filters['amount'].to_i
   end
 
   def call
@@ -57,7 +60,7 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
             tax_amount: ('%.2f' % sales_order.calculated_total_tax if sales_order.inquiry.present?),
             gt_inc: ('%.2f' % sales_order.calculated_total_with_tax if sales_order.inquiry.present?),
             status: sales_order.remote_status,
-          ) if inquiry.present?
+              ) if inquiry.present?
         end
       end
       rows.drop(columns.count).each do |row|

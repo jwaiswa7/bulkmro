@@ -34,7 +34,8 @@
   <th class="no-sort all text-right">Order #</th>
   <th class="no-sort all text-right">PO #</th>
   <th class="no-sort all text-center" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
-  <th class="sort desktop text-right" data-name="created_at">Requested At</th>
+  <th class="no-sort all text-center" >Logistics Owner</th>
+  <th class="sort desktop text-right" >Requested At</th>
   <th class="no-sort desktop text-right">Updated At</th>
   <th class="no-sort desktop">Latest Comment</th>
 <% end %>
@@ -47,6 +48,10 @@
 <!--  <td data-filter="false"></td>-->
 <!--  <td data-filter="false"></td>-->
 <!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="dropdown"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
 <%# end %>
 
 <div class="col-lg-12">
@@ -54,4 +59,4 @@
   <% end %>
 </div>
 
-<div class="cancellation-form-modal" data-status="<%= params[:status] %>"></div>
+<div class="open-modal-form" data-status="<%= params[:status] %>"></div>

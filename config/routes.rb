@@ -137,6 +137,7 @@ Rails.application.routes.draw do
         get 'reject'
       end
     end
+
     resource :profile, controller: :profile, except: [:show, :index]
     resources :overseers, except: [:show] do
       member do
@@ -145,6 +146,8 @@ Rails.application.routes.draw do
         get 'get_menu_resources'
         get 'edit_acl'
         patch 'update_acl'
+        get 'change_password'
+        patch 'update_password'
       end
 
       collection do
@@ -287,7 +290,7 @@ Rails.application.routes.draw do
         get 'add_comment'
       end
       member do
-        get 'render_cancellation_form'
+        get 'render_modal_form'
         patch 'cancel_porequest'
         get 'render_comment_form'
         patch 'add_comment'
@@ -302,12 +305,41 @@ Rails.application.routes.draw do
         get 'cancelled'
       end
       member do
-        get 'render_cancellation_form'
+        get 'render_modal_form'
         patch 'cancel_invoice_request'
-        get 'render_comment_form'
         patch 'add_comment'
       end
     end
+
+    resources :ar_invoice_requests do
+      collection do
+        get 'pending'
+        get 'completed'
+        get 'cancelled'
+      end
+      member do
+        get 'render_cancellation_form'
+        get 'download_eway_bill_format'
+        patch 'cancel_ar_invoice'
+      end
+    end
+
+    resources :outward_dispatches do
+      collection do
+        get 'create_with_packing_slip'
+      end
+      scope module: 'outward_dispatches' do
+        resources :packing_slips
+        resources :email_messages do
+          collection do
+            get 'dispatch_mail_to_customer'
+            post 'dispatch_mail_to_customer_notification'
+          end
+        end
+      end
+    end
+
+
 
     resources :sales_orders do
       member do
@@ -362,6 +394,7 @@ Rails.application.routes.draw do
         get 'material_readiness_queue'
         get 'inward_dispatch_pickup_queue'
         get 'inward_dispatch_delivered_queue'
+        get 'inward_completed_queue'
         post 'update_logistics_owner'
         post 'update_logistics_owner_for_inward_dispatches'
       end
@@ -380,15 +413,17 @@ Rails.application.routes.draw do
       member do
         get 'edit_pod'
         patch 'update_pod'
+        get 'delivery_mail_to_customer'
+        post 'delivery_mail_to_customer_notification'
+        get 'dispatch_mail_to_customer'
+        post 'dispatch_mail_to_customer_notification'
       end
       collection do
+        get 'autocomplete'
         get 'export_all'
         get 'export_rows'
         get 'export_for_logistics'
         get 'export_filtered_records'
-      end
-      scope module: 'sales_invoices' do
-        resources :email_messages
       end
     end
 
@@ -536,6 +571,17 @@ Rails.application.routes.draw do
       end
     end
 
+    namespace 'bible_sales_orders' do
+      resources :imports do
+        collection do
+          get 'new_excel_bible_order_import'
+          get 'download_bible_order_template'
+          post 'create_bible_orders'
+          # , to: 'imports#create_bible_orders'
+        end
+      end
+    end
+
     resources :companies do
       collection do
         get 'autocomplete'
@@ -556,7 +602,7 @@ Rails.application.routes.draw do
           collection do
             post 'generate_catalog'
             post 'destroy_all'
-
+            get 'export_customer_product'
             get 'autocomplete'
           end
         end
@@ -645,6 +691,10 @@ Rails.application.routes.draw do
         get 'completed'
         post 'update_payment_status'
       end
+      member do
+        get 'render_modal_form'
+        patch 'add_comment'
+      end
     end
 
     resources :freight_requests do
@@ -674,6 +724,8 @@ Rails.application.routes.draw do
         get 'add_delay_reason'
       end
     end
+
+    # resources :bible_sales_orders
   end
 
   namespace 'customers' do
@@ -794,5 +846,6 @@ Rails.application.routes.draw do
         get 'contact_companies'
       end
     end
+
   end
 end

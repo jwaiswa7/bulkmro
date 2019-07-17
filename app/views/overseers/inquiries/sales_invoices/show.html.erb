@@ -1,5 +1,5 @@
 <% content_for :heading do %>
-  View Sales Invoice #<%= @sales_invoice.invoice_number %>
+  View AR Invoice #<%= @sales_invoice.invoice_number %>
 <% end %>
 <div class="col-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
@@ -223,7 +223,7 @@
           </tr>
           </thead>
           <tbody>
-          <% @sales_invoice.rows.each_with_index do |item, index| %>
+          <% @sales_invoice.rows.order(:created_at).each_with_index do |item, index| %>
             <tr>
               <td>
                 <span>#<%= index + 1 %></span>

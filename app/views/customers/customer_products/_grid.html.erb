@@ -89,30 +89,9 @@
                 <strong class="d-block"><%= customer_product.best_brand.name if customer_product.best_brand.present? %></strong>
                 <em>MOQ - <%= customer_product.moq %></em><br>
                 <em>Instock Qty
-                  - <%= customer_product.product.stocks.sum(&:instock) if customer_product.product.present? %></em><br>
-                <% if @henkel_company.include?(current_company.id) %>
-                  <strong class="d-block mt-2">BP Catalog</strong>
-                  <em>No
-                    - <%= customer_product.bp_catalog_sku if customer_product.bp_catalog_sku.present? %></em><br>
-                  <em> Name
-                    - <%= customer_product.bp_catalog_name if customer_product.bp_catalog_name.present? %></em>
-                <% end %>
+                  - <%= customer_product.product.stocks.sum(&:instock).to_i if customer_product.product.present? %></em><br>
               </p>
             </a>
-          </div>
-          <div class="card-footer pt-2 pb-0">
-            <%= simple_form_for([:customers, CartItem.new], :url => customers_cart_items_path, :method => :post, :remote => true) do |f| %>
-              <%= f.hidden_field :product_id, value: customer_product.product_id %>
-              <%= f.hidden_field :customer_product_id, value: customer_product.id %>
-              <div class="form-row">
-                <div class="col-4">
-                  <%= f.input :quantity, label: false, input_html: {placeholder: 'Quantity', step: customer_product.moq, min: customer_product.moq, value: customer_product.moq} %>
-                </div>
-                <div class="col-8">
-                  <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
-                </div>
-              </div>
-            <% end %>
           </div>
         </div>
       </div>
