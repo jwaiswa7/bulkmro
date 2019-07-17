@@ -11,7 +11,7 @@ class ArInvoiceRequest < ApplicationRecord
   has_many :outward_dispatches
   belongs_to :sales_invoice, required: false
   validate :presence_of_reason
-  after_save :send_notification_on_status_changed
+  # after_save :send_notification_on_status_changed
 
   has_many :rows, class_name: 'ArInvoiceRequestRow', inverse_of: :ar_invoice_request
 
