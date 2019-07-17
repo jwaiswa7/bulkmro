@@ -1,6 +1,6 @@
-class Services::Shared::Migrations::AddSeries < Services::Shared::Migrations::Migrations
+class Services::Shared::Migrations::SoPoMigrations < Services::Shared::Migrations::Migrations
 
-  #s = Services::Shared::Migrations::AddSeries.new
+  #s = Services::Shared::Migrations::SoPoMigrations.new
   #s.set_warehouse_series
 
   def set_warehouse_series
