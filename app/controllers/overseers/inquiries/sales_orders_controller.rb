@@ -53,7 +53,6 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   def create
     @sales_order = SalesOrder.new(sales_order_params.merge(overseer: current_overseer))
     authorize_acl @sales_order
-
     callback_method = %w(save save_and_confirm).detect { |action| params[action] }
 
     if callback_method.present? && send(callback_method)
@@ -191,6 +190,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
               :sales_order_id,
               :sales_quote_row_id,
               :quantity,
+              :product_id,
               :_destroy
           ]
       )

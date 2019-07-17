@@ -23,6 +23,7 @@ class Product < ApplicationRecord
   belongs_to :measurement_unit, required: false
   has_one :import, through: :inquiry_import_row, class_name: 'InquiryImport'
   has_one :inquiry, through: :import
+  has_many :ar_invoice_request_rows
   has_many :product_suppliers, dependent: :destroy
   has_many :inquiry_products, dependent: :destroy
   has_many :inquiry_product_suppliers, through: :inquiry_products

@@ -34,10 +34,11 @@ Sales,Pending Approval,sales_order,pending
 Sales,Pending SAP Sync,sales_order,drafts_pending
 Sales,Cancelled SO,sales_order,cancelled
 Sales,Sales Invoices List,sales_invoice,index
-Sales,All AR Invoice Requests,invoice_request,index
+Sales,All Invoice Requests,invoice_request,index
 Sales,GRPO Pending,invoice_request,pending
 Sales,Completed,invoice_request,completed
 Sales,Cancelled,invoice_request,cancelled
+Sales,All AR Invoice Requests,ar_invoice_request,index
 Sales,Sales Receipt,sales_receipt,index
 Sales,All Freight Requests,freight_request,index
 Sales,Smart Queue,inquiry,smart_queue
@@ -56,8 +57,10 @@ Logistics,Completed Stock Requests,po_request,completed_stock
 Logistics,Material Readiness Queue,purchase_order,material_readiness_queue
 Logistics,Inward Dispatch Queue,purchase_order,inward_dispatch_pickup_queue
 Logistics,Inward Delivered Queue,purchase_order,inward_dispatch_delivered_queue
+Logistics,Inward Completed Queue,purchase_order,inward_completed_queue
 Logistics,All Payment Requests,payment_request,index
 Logistics,Pending AP Invoice,invoice_request,show_pending_ap_invoice_queue
+Logistics,All Outward Dispatch,outward_dispatch,index
 Logistics,All Requests,freight_request,index
 Logistics,All Quotes,freight_quote,index
 Inventory,Warehouses,warehouse,index

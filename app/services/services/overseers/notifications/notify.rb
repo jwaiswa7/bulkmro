@@ -21,6 +21,15 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     end
   end
 
+  def send_ar_invoice_request_update(tos, action, notifiable, url, *msg)
+    @action = action; @notifiable = notifiable; @url = url
+    @message = msg[0]
+    tos.uniq.each do | to |
+      @to = Overseer.find_by_email(to)
+      send
+    end
+  end
+
   def send_stock_po_request_creation(tos, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     @message = "Inquiry ##{msg[0]} Stock PO is requested"
@@ -87,7 +96,6 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
 
   def send_order_comment(to, action, notifiable, url, *msg)
     @to = to; @action = action; @notifiable = notifiable; @url = url
-
     if msg[0].present?
       @message = "Order for Inquiry ##{msg[1]} has been #{msg[0]}"
     else

@@ -311,6 +311,36 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :ar_invoice_requests do
+      collection do
+        get 'pending'
+        get 'completed'
+        get 'cancelled'
+      end
+      member do
+        get 'render_cancellation_form'
+        get 'download_eway_bill_format'
+        patch 'cancel_ar_invoice'
+      end
+    end
+
+    resources :outward_dispatches do
+      collection do
+        get 'create_with_packing_slip'
+      end
+      scope module: 'outward_dispatches' do
+        resources :packing_slips
+        resources :email_messages do
+          collection do
+            get 'dispatch_mail_to_customer'
+            post 'dispatch_mail_to_customer_notification'
+          end
+        end
+      end
+    end
+
+
+
     resources :sales_orders do
       member do
         get 'new_purchase_order'
@@ -364,6 +394,7 @@ Rails.application.routes.draw do
         get 'material_readiness_queue'
         get 'inward_dispatch_pickup_queue'
         get 'inward_dispatch_delivered_queue'
+        get 'inward_completed_queue'
         post 'update_logistics_owner'
         post 'update_logistics_owner_for_inward_dispatches'
       end
@@ -388,6 +419,7 @@ Rails.application.routes.draw do
         post 'dispatch_mail_to_customer_notification'
       end
       collection do
+        get 'autocomplete'
         get 'export_all'
         get 'export_rows'
         get 'export_for_logistics'
@@ -539,6 +571,17 @@ Rails.application.routes.draw do
       end
     end
 
+    namespace 'bible_sales_orders' do
+      resources :imports do
+        collection do
+          get 'new_excel_bible_order_import'
+          get 'download_bible_order_template'
+          post 'create_bible_orders'
+          # , to: 'imports#create_bible_orders'
+        end
+      end
+    end
+
     resources :companies do
       collection do
         get 'autocomplete'
@@ -681,6 +724,8 @@ Rails.application.routes.draw do
         get 'add_delay_reason'
       end
     end
+
+    # resources :bible_sales_orders
   end
 
   namespace 'customers' do
