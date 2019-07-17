@@ -1,72 +1,38 @@
 role_name,model_name,action_name
-N/A,activity,index
-N/A,activity,pending
-N/A,activity,new
-N/A,activity,create
-N/A,activity,edit
-N/A,activity,update
-N/A,activity,approve
-N/A,activity,authorize_acl
-N/A,activity,reject_selected
-N/A,activity,reject
-N/A,activity,add_to_inquiry
-N/A,activity,export_all
-N/A,activity,export_filtered_records
-N/A,address,is_sez_params
-N/A,address,get_gst_code
-N/A,callback_request,index
-N/A,callback_request,show
-N/A,contact_creation_request,requested
-N/A,contact_creation_request,created
-N/A,contact_creation_request,update
-N/A,contact_creation_request,index
-N/A,contact_creation_request,show
-N/A,contact,index
-N/A,contact,autocomplete
-N/A,contact,show
-N/A,contact,new
-N/A,contact,create
-N/A,contact,edit
-N/A,contact,update
-N/A,contact,become
-N/A,contact,fetch_company_account
-N/A,inquiry,duplicate
-N/A,inquiry,export_pipeline_report
-N/A,invoice_request,render_comment_form
-N/A,invoice_request,add_comment
-N/A,logistics_scorecard,index
-N/A,logistics_scorecard,add_delay_reason
-Logistics,po_request,new_purchase_order
-Logistics,po_request,create_purchase_order
-Logistics,po_request,reject_purchase_order_modal
-Logistics,po_request,rejected_purchase_order
-Logistics,purchase_order,cancelled_purchase_modal
-Logistics,purchase_order,cancelled_purchase_order
-N/A,report,export_report
-Accounts,sales_order,create_account_confirmation
-Accounts,sales_order,new_accounts_confirmation
-Accounts,sales_order,order_cancellation_modal
-Accounts,sales_order,cancellation
-Accounts,sales_order,export_customer_order_status_report
-Accounts,sales_order,customer_order_status_report
-Logistics,sales_order,create_purchase_orders_requests
-N/A,sales_quote,reset_quote_form
-N/A,sales_quote,sales_quote_reset_by_manager
-Accounts,sales_order,can_cancel_order
-Admin,sales_order,create_account_confirmation
-Admin,sales_order,new_accounts_confirmation
-Admin,sales_order,order_cancellation_modal
-Admin,sales_order,cancellation
-Admin,sales_order,export_customer_order_status_report
-Admin,sales_order,customer_order_status_report
-Admin,sales_order,create_purchase_orders_requests
-Admin,sales_order,can_cancel_order
-Admin,sales_order,account_approval
-Accounts,sales_order,account_approval
+Inside Sales Manager,po_request,new_purchase_order
+Inside Sales Manager,po_request,po_amended
+Inside Sales Manager,po_request,product_resync_inventory
+Inside Sales Manager,po_request,manager_amended
+Inside Sales Manager,po_request,create_purchase_order
+Inside Sales Executive,po_request,new_purchase_order
+Inside Sales Executive,po_request,po_amended
+Inside Sales Executive,po_request,product_resync_inventory
+Inside Sales Executive,po_request,manager_amended
+Inside Sales Executive,po_request,create_purchase_order
 Admin,po_request,new_purchase_order
+Admin,po_request,po_amended
+Admin,po_request,product_resync_inventory
+Admin,po_request,manager_amended
 Admin,po_request,create_purchase_order
-Admin,po_request,reject_purchase_order_modal
-Admin,po_request,rejected_purchase_order
-Admin,purchase_order,cancelled_purchase_modal
-Admin,purchase_order,cancelled_purchase_order
-Admin,warehouse,series
+Logistics,po_request,new_purchase_order
+Logistics,po_request,po_amended
+Logistics,po_request,product_resync_inventory
+Logistics,po_request,manager_amended
+Logistics,po_request,create_purchase_order
+Accounts,po_request,new_purchase_order
+Accounts,po_request,po_amended
+Accounts,po_request,product_resync_inventory
+Accounts,po_request,manager_amended
+Accounts,po_request,create_purchase_order
+Inside Sales Team Leader,po_request,new_purchase_order
+Inside Sales Team Leader,po_request,po_amended
+Inside Sales Team Leader,po_request,product_resync_inventory
+Inside Sales Team Leader,po_request,manager_amended
+Inside Sales Team Leader,po_request,create_purchase_order
+Accounts,sales_order,account_approval
+Accounts,sales_order,new_account_confirmation
+Accounts,sales_order,create_account_confirmation
+Accounts,sales_order,order_cancellation_model
+Accounts,sales_order,cancellation
+Logistics,purchase_order,cancelled_purchase_order
+Logistics,purchase_order,cancelled_purchase_modal
