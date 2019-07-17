@@ -13,12 +13,15 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
   end
 
   def add_product_row_in_inward_dispatch
-    InwardDispatchRow.all.each do |inward_dispatch_row|
+    InwardDispatchRow.where(product_id: nil).each do |inward_dispatch_row|
       Chewy.strategy(:bypass) do
         inward_dispatch_row.product = inward_dispatch_row.purchase_order_row.product
         inward_dispatch_row.save(validate: false)
       end
     end
+    # purchase_order_row_don't have product
+    # [39440, 40603, 40878, 41116, 41554, 41260, 41259, 42137, 29509, 42454, 42795, 42794, 41355, 43246, 42372, 43797, 42901, 41486, 44741, 44902]
+
 
     SalesOrderRow.all.each do |sales_order_row|
       Chewy.strategy(:bypass) do
