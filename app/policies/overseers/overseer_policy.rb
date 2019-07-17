@@ -33,5 +33,4 @@ class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
   def update_password?
     edit?
   end
-
 end

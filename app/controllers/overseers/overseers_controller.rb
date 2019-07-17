@@ -1,5 +1,4 @@
 class Overseers::OverseersController < Overseers::BaseController
-
   before_action :set_overseer, only: [:edit, :update, :save_acl_resources, :get_resources, :get_menu_resources, :edit_acl, :update_acl, :change_password, :update_password]
 
   def index
@@ -56,7 +55,6 @@ class Overseers::OverseersController < Overseers::BaseController
     rescue StandardError => e
       render json: {success: 0, message: e}
     end
-
   end
 
   def update
@@ -96,8 +94,8 @@ class Overseers::OverseersController < Overseers::BaseController
 
     if current_acl.present?
       parsed_json.map {|x| x['children'].map {|y|
-        if current_acl.include? y['id'].to_s;
-          y['checked'] = true;
+        if current_acl.include? y['id'].to_s
+          y['checked'] = true
         end; y['text'] = y['text'].titleize}; x['text'] = x['text'].titleize}
     else
       parsed_json.map {|x| x['children'].map {|y| y['text'] = y['text'].titleize}; x['text'] = x['text'].titleize}
@@ -108,7 +106,6 @@ class Overseers::OverseersController < Overseers::BaseController
   end
 
   def get_menu_resources
-
     default_resources = get_acl_menu_resource_json
     current_acl = ActiveSupport::JSON.decode(@overseer.acl_resources)
     parsed_json = ActiveSupport::JSON.decode(default_resources)
@@ -116,8 +113,8 @@ class Overseers::OverseersController < Overseers::BaseController
     if current_acl.present?
       parsed_json.map {|x| x['children'].map {|y|
         # raise
-        if current_acl.include? y['id'].to_s;
-          y['checked'] = true;
+        if current_acl.include? y['id'].to_s
+          y['checked'] = true
         end; y['text'] = y['text'].titleize}; x['text'] = x['text'].titleize}
     else
       parsed_json.map {|x| x['children'].map {|y| y['text'] = y['text'].titleize}; x['text'] = x['text'].titleize}
@@ -135,36 +132,36 @@ class Overseers::OverseersController < Overseers::BaseController
 
   private
 
-  def overseer_params
-    params.require(:overseer).permit(
+    def overseer_params
+      params.require(:overseer).permit(
         :first_name,
-        :last_name,
-        :role,
-        :parent_id,
-        :email,
-        :mobile,
-        :telephone,
-        :identifier,
-        :designation,
-        :department,
-        :function,
-        :geography,
-        :status,
-        :acl_role,
-        :is_super_admin
-    )
-  end
-
-  def overseer_password_params
-    params.require(:overseer).permit(
-        :password,
-        :password_confirmation,
-        :changed_by,
-        :changed_at
+          :last_name,
+          :role,
+          :parent_id,
+          :email,
+          :mobile,
+          :telephone,
+          :identifier,
+          :designation,
+          :department,
+          :function,
+          :geography,
+          :status,
+          :acl_role,
+          :is_super_admin
       )
-  end
+    end
 
-  def set_overseer
-    @overseer = Overseer.find(params[:id])
-  end
+    def overseer_password_params
+      params.require(:overseer).permit(
+        :password,
+          :password_confirmation,
+          :changed_by,
+          :changed_at
+        )
+    end
+
+    def set_overseer
+      @overseer = Overseer.find(params[:id])
+    end
 end
