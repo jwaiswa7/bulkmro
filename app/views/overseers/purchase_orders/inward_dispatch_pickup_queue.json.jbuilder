@@ -1,12 +1,13 @@
 json.data (@inward_dispatches) do |inward_dispatch|
   json.array! [
                   [
-                      if is_authorized(inward_dispatch, 'update_logistics_owner_for_inward_dispatches') && policy(inward_dispatch).update_logistics_owner_for_inward_dispatches? && (inward_dispatch.status != 'Material Delivered')
-                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
+
+                      if is_authorized(inward_dispatch, 'update_logistics_owner_for_inward_dispatches') && (policy(inward_dispatch).update_logistics_owner_for_inward_dispatches? || policy(inward_dispatch).can_request_invoice?) && inward_dispatch.sales_order.present? #&& (inward_dispatch.status != 'Material Delivered')
+                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-so-id='#{inward_dispatch.sales_order.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
                       end,
-                      if is_authorized(inward_dispatch, 'delivered') && policy(inward_dispatch).delivered? && is_authorized(inward_dispatch, 'can_request_invoice') && policy(inward_dispatch).can_request_invoice?
-                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
-                      end,
+                      # if is_authorized(inward_dispatch, 'delivered') && policy(inward_dispatch).delivered? && is_authorized(inward_dispatch, 'can_request_invoice') && policy(inward_dispatch).can_request_invoice?
+                      #   "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
+                      # end,
                       if is_authorized(inward_dispatch, 'show') && policy(inward_dispatch).show?
                         row_action_button(overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'eye', 'View Inward Dispatch', 'info', target: :_blank)
                       end,

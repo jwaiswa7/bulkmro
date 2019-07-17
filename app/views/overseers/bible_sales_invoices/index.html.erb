@@ -1,0 +1,48 @@
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+<% provide :container_fluid, true %>
+
+<div class="col-lg-12 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
+  <a class="summary_box card w-100 mb-2 rim rim-bottom" href="#">
+    <div class="text-center d-flex flex-column h-100">
+      <p class="mb-1 text-small text-uppercase">
+        <strong>Total Orders</strong>
+      </p>
+      <h5 class="mb-0 mt-auto"><%= @sales_invoices.size %></h5>
+      <hr class="my-2">
+      <h5 class="my-0 text-small">
+        &#8377;<%= number_to_currency(@sales_invoices.sum(:invoice_total), precision: 0, unit: '') %>
+      </h5>
+    </div>
+  </a>
+</div>
+
+<div class="col-lg-12">
+  <% content_for :header_row do %>
+    <th class="no-sort all"></th>
+    <th class="no-sort desktop" data-name="branch_type">Branch Type</th>
+    <th class="sort all text-right" data-name="invoice_number">Invoice Number</th>
+    <th class="sort desktop text-right" data-name="mis_date">Invoice Date</th>
+    <th class="sort desktop text-right" data-name="inquiry_number">Inquiry</th>
+    <th class="no-sort desktop" data-name="company_id">Company</th>
+    <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
+    <th class="no-sort desktop" data-name="invoice_type">Invoice Type</th>
+    <th class="sort desktop text-right" data-name="invoice_total">Invoice Total</th>
+    <th class="no-sort desktop text-right" data-name="margin">Margin</th>
+  <% end %>
+  <% content_for :filter_row do %>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+  <% end %>
+
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

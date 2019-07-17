@@ -115,9 +115,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       format.html {}
       format.json do
         service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
-
         service.call
-
         @indexed_inward_dispatches = service.indexed_records
         @inward_dispatches = service.records.try(:reverse)
       end
@@ -125,6 +123,32 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
     authorize_acl :inward_dispatch
     render 'inward_dispatch_pickup_queue'
+  end
+
+  def inward_completed_queue
+    @status = 'Inward Completed Queue'
+
+    base_filter = {
+        base_filter_key: 'is_inward_completed',
+        base_filter_value: true
+    }
+
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
+        service.call
+        @indexed_inward_dispatches = service.indexed_records
+        @inward_dispatches = service.records.try(:reverse)
+      end
+    end
+
+
+
+
+    authorize :inward_dispatch
+    render 'inward_completed_queue'
   end
 
   def edit_material_followup
@@ -247,7 +271,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         :followup_date,
         :logistics_owner_id,
         :revised_supplier_delivery_date,
-        comments_attributes: [:id, :message, :created_by_id],
+        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
         attachments: []
       )
     end

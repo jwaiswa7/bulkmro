@@ -28,7 +28,7 @@
     <%= f.hidden_field :sales_order_id %>
     <%= f.hidden_field :inquiry_id %>
     <%= f.hidden_field :purchase_order_id %>
-    <%= f.hidden_field :inward_dispatch_ids, value: @invoice_request.inward_dispatches.map(&:id).join(", ") %>
+    <%= hidden_field_tag "inward_dispatch_ids[]", action_name == "new"  ? @inward_dispatches.pluck(:id).join(',') :  @invoice_request.inward_dispatches.pluck(:id).join(',') %>
 
     <div class="card">
       <div class="card-header">
@@ -177,9 +177,15 @@
           </div>
 
           <div class="col-6">
+            <% if f.object.persisted? %>
+              <%= f.association :sales_invoice, collection: [f.object.sales_invoice], label_method: :to_s, include_blank: 'Type AR Invoice Number', input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_sales_invoices_path(:inquiry_id => f.object.inquiry.id), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: 'AR Invoice Number' %>
+            <% end %>
+          </div>
+
+          <div class="col-6">
             <div class="d-block d-md-flex align-items-end">
               <div class="flex-grow-1">
-                <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
+                <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments',required: (f.object.attachments.count <= 0) %>
               </div>
               <div class="form-group">
                 <% f.object.attachments.each do |attachment| %>
