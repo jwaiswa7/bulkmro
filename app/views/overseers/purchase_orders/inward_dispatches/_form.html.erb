@@ -50,7 +50,6 @@
 
                 <div class="form-group">
                   <% f.object.attachments.each do |attachment| %>
-                    <% binding.pry %>
                     <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                       <% if attachment.id.present? %>
                         <i class="fal fa-download"></i>
