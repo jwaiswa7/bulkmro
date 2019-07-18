@@ -59,9 +59,6 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
       end
 
       if bible_order.present?
-        # skus_in_order = bible_order.metadata.map {|h| h['sku']}
-        # puts 'SKU STATUS', skus_in_order.include?(x.get_column('Bm #'))
-
         order_metadata = bible_order.metadata
         sku_data = {
             'sku': x.get_column('Bm #'),

@@ -137,6 +137,7 @@ Rails.application.routes.draw do
         get 'reject'
       end
     end
+
     resource :profile, controller: :profile, except: [:show, :index]
     resources :overseers, except: [:show] do
       member do
@@ -145,6 +146,8 @@ Rails.application.routes.draw do
         get 'get_menu_resources'
         get 'edit_acl'
         patch 'update_acl'
+        get 'change_password'
+        patch 'update_password'
       end
 
       collection do
@@ -301,6 +304,7 @@ Rails.application.routes.draw do
         get 'reject_purchase_order_modal'
         patch 'rejected_purchase_order'
         patch 'cancel_porequest'
+        get 'render_comment_form'
         patch 'add_comment'
       end
     end
@@ -865,5 +869,6 @@ Rails.application.routes.draw do
         get 'contact_companies'
       end
     end
+
   end
 end
