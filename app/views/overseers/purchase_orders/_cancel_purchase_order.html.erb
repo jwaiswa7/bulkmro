@@ -1,0 +1,35 @@
+<div class="modal fade" id="cancelPurchaseOrder">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Cancel Purchase Order</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <%= simple_form_for([:overseers, @purchase_order], :url => cancelled_purchase_order_overseers_purchase_order_path(@purchase_order.to_param), :'novalidate' => '', :html => {:class => 'needs-validation', :'data-parsley-validate' => ''}) do |f| %>
+          <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
+          <div class="modal-body" style="padding: 0px 1.5rem;">
+            <%= f.hidden_field :created_by_id %>
+              <div class="mb-2 form-group">
+                <strong> Do you want cancelled this #<%= @purchase_order.po_number %> Purchase Order?</strong>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <div class="form-row">
+              <div class="col-6">
+                <%= button_tag(type: "submit", name: "update_sent_at_field", class: "btn btn-success btn-block confirm-cancel") do %>
+                  <i class="far fa-check mr-1"></i> YES
+                <% end %>
+              </div>
+              <div class="col-6">
+                <a id="rejection-purchase-order-button" data-purchase_order-id="<%= @purchase_order.id %>" class="btn-block btn btn-danger text-white" remote="true" ><i class="fa fa-ban mr-1"></i>No</a>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

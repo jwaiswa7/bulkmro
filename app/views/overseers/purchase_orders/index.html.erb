@@ -28,6 +28,7 @@
     <th class="no-sort desktop" data-name="payment_status">Payment Status</th>
     <th class="no-sort desktop" data-name="percentage">Percentage</th>
     <th class="sort desktop text-right" data-name="created_at">Created</th>
+    <th class="no-sort all">SAP Status</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
@@ -45,8 +46,11 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
+    <td data-filter="false"></td>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>
+
+<div class="cancellation-form-modal"></div>
