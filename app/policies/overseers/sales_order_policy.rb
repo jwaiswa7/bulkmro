@@ -113,7 +113,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     developer? || %w(nilesh.desai@bulkmro.com bhargav.trivedi@bulkmro.com).include?(overseer.email)
   end
 
-  def drafts_pending?
+  def so_sync_pending?
     admin?
   end
 

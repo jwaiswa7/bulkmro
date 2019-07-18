@@ -155,7 +155,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize_acl :sales_order
   end
 
-  def drafts_pending
+  def so_sync_pending
     authorize_acl :sales_order
 
     #sales_orders = SalesOrder.where.not(sent_at: nil).where(draft_uid: nil, status: :'SAP Approval Pending').not_legacy
@@ -165,7 +165,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       format.json do
         @drafts_pending_count = sales_orders.count
         @sales_orders = ApplyDatatableParams.to(sales_orders, params)
-        render 'drafts_pending'
+        render 'so_sync_pending'
       end
     end
   end
@@ -173,7 +173,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def resync
     authorize_acl :sales_order
     if @sales_order.save_and_sync
-      redirect_to drafts_pending_overseers_sales_orders_path
+      redirect_to so_sync_pending_overseers_sales_orders_path
     end
   end
 

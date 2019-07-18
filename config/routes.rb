@@ -363,7 +363,7 @@ Rails.application.routes.draw do
         get 'account_approval_pending'
         get 'cancelled'
         get 'export_all'
-        get 'drafts_pending'
+        get 'so_sync_pending'
         get 'export_rows'
         get 'export_for_logistics'
         get 'export_for_sap'
