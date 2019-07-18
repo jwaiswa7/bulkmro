@@ -87,7 +87,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   def reset_quote_form
-    authorize @sales_quote
+    authorize_acl @sales_quote
     @sales_quote = SalesQuote.find(params[:id])
     @inquiry = Inquiry.find(params[:inquiry_id])
     respond_to do |format|
@@ -102,7 +102,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     else
       render json: {error: {base: 'Reset Quote Reason must be present.'}}, status: 500
     end
-    authorize @sales_quote
+    authorize_acl @sales_quote
   end
 
   private

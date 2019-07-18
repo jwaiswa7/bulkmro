@@ -5,7 +5,10 @@ const inwardCompletedQueue = () => {
     $('#create_ar_invoice').unbind('click').bind('click', function() {
         createArInvoice();
     })
-
+    $('.datatable').on('click', '.able_to_create_ar_invoice', function (e) {
+        $('#order_number').html($(this).attr('data-sales-order-number'))
+        $('#arInvoiceStatusModal').modal('show')
+    })
 };
 
 let toggleCheckboxes = () => {

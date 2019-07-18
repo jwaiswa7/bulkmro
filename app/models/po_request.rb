@@ -36,6 +36,7 @@ class PoRequest < ApplicationRecord
   belongs_to :approved_by, class_name: 'Overseer', foreign_key: 'approved_by_id', required: false
   belongs_to :company, required: false
 
+  delegate :default_billing_address, :default_shipping_address, to: :supplier
   enum status: {
       'Supplier PO: Request Pending': 10,
       'Supplier PO: Created Not Sent': 20,
@@ -72,6 +73,24 @@ class PoRequest < ApplicationRecord
       'Stock Requested': 10,
       'Stock Rejected': 20,
       'Stock Supplier PO Created': 30
+  }
+
+  enum transport_mode: {
+      'Road': 1,
+      'Air': 2,
+      'Sea': 3
+  }
+
+  enum delivery_type: {
+      'EXW': 10,
+      'FOB': 20,
+      'CIF': 30,
+      'CFR': 40,
+      'DAP': 50,
+      'Door delivery': 60,
+      'FCA Mumbai': 70,
+      'CIP': 80,
+      'CIP Mumbai airport': 100
   }
 
   scope :pending_and_rejected, -> { where(status: [:'Supplier PO: Request Pending', :'Supplier PO Request Rejected', :'Supplier PO: Amendment Pending']) }

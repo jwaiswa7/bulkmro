@@ -123,8 +123,9 @@
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'Sales Orders List', overseers_sales_orders_path, is_authorized(:sales_order, 'index') %>
               <%= nav_dropdown_item 'SO Not Invoiced', not_invoiced_overseers_sales_orders_path, is_authorized(:sales_order, 'not_invoiced') %>
-              <%= nav_dropdown_item 'Pending Approval', pending_overseers_sales_orders_path, is_authorized(:sales_order, 'pending') %>
-              <%= nav_dropdown_item 'Pending SAP Sync', drafts_pending_overseers_sales_orders_path, is_authorized(:sales_order, 'drafts_pending') %>
+              <%= nav_dropdown_item 'Manager Approval Pending', pending_overseers_sales_orders_path, is_authorized(:sales_order, 'pending') %>
+              <%= nav_dropdown_item 'Accounts Approval Pending', account_approval_pending_overseers_sales_orders_path, is_authorized(:sales_order, 'account_approval_pending') %>
+              <%= nav_dropdown_item 'Pending SAP Sync', so_sync_pending_overseers_sales_orders_path, is_authorized(:sales_order, 'so_sync_pending') %>
               <%= nav_dropdown_item 'Cancelled SO', cancelled_overseers_sales_orders_path, is_authorized(:sales_order, 'cancelled') %>
             </ul>
           </div>
@@ -186,6 +187,7 @@
             <a class="dropdown-item dropdown-toggle" href="#">Purchase Orders</a>
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'Purchase Orders List', overseers_purchase_orders_path, is_authorized(:purchase_order, 'index') %>
+              <%= nav_dropdown_item 'Pending SAP Sync', pending_sap_sync_overseers_purchase_orders_path, is_authorized(:purchase_order, 'pending_sap_sync') %>
               <div class="dropdown-divider"></div>
               <%= nav_dropdown_item 'Pending Purchase Order Requests', pending_and_rejected_overseers_po_requests_path, is_authorized(:po_request, 'pending_and_rejected') %>
               <%= nav_dropdown_item 'Under Amend Purchase Order Requests', under_amend_overseers_po_requests_path, is_authorized(:po_request, 'under_amend') %>
@@ -279,6 +281,7 @@
         </a>
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'Warehouses', overseers_warehouses_path, is_authorized(:warehouse, 'index') %>
+          <%= nav_dropdown_item 'Document Series', series_overseers_warehouses_path, is_authorized(:warehouse, 'series') %>
         </div>
       </li>
 

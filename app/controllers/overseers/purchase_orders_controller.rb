@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup]
+  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :cancelled_purchase_modal, :cancelled_purchase_order, :resync_po]
 
   def index
     authorize_acl :purchase_order
@@ -17,6 +17,25 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
       end
+    end
+  end
+
+  def pending_sap_sync
+    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.where(remote_uid: nil, sap_sync: 'Not Sync').order(id: :desc), params)
+    authorize @purchase_orders
+
+    respond_to do |format|
+      format.json {render 'pending_sap_sync'}
+      format.html {render 'pending_sap_sync'}
+    end
+  end
+
+  def resync_po
+    authorize @purchase_order
+    if @purchase_order.save_and_sync(@purchase_order.po_request)
+      redirect_to overseers_inquiry_purchase_order_path(@purchase_order.inquiry.to_param, @purchase_order.to_param)
+    else
+      redirect_to pending_sap_sync_overseers_purchase_orders
     end
   end
 
@@ -125,9 +144,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       end
     end
 
-
-
-
     authorize :inward_dispatch
     render 'inward_completed_queue'
   end
@@ -208,6 +224,24 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @inward_dispatches.each do |pickup_request|
       pickup_request.update_attributes(logistics_owner_id: params[:logistics_owner_id])
     end
+  end
+
+  def cancelled_purchase_modal
+    authorize_acl @purchase_order
+    respond_to do |format|
+      format.html { render partial: 'cancel_purchase_order', locals: { created_by_id: current_overseer.id } }
+    end
+  end
+
+  def cancelled_purchase_order
+    authorize_acl @purchase_order
+    if @purchase_order.present?
+      @purchase_order.status = 'cancelled'
+      @purchase_order.po_request.status = 'Cancelled'
+      @purchase_order.save!
+      @purchase_order.po_request.save!
+    end
+    render json: {sucess: 'Successfully updated ', url: overseers_purchase_orders_path }, status: 200
   end
 
   private

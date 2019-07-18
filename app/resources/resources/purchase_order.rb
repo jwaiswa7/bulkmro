@@ -148,10 +148,61 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         'PoTargetWarehouse' => remote_response['U_BM_BillFromTo'],
         'po_overall_margin' => remote_response['U_Ovr_Margin'],
         'PoPackingForwarding' => remote_response['U_PackFwd'],
-        'PoCurrencyChangeRate' => remote_response['DocRate'],
-        'PoModeOfTrasport' => PurchaseOrder.transport_modes.key(remote_response['DocumentLines'][0]['ShippingMethod'].to_i),
+        'PoCurrencyChangeRate' => remote_response['DocRate'] || "1",
+        'PoModeOfTrasport' => PurchaseOrder.transport_modes.key(remote_response['ShippingMethod'].to_i),
         'LineTotal' => freight,
         'TaxSum' => freight_tax
+    }
+  end
+
+  def self.to_remote(record, po_request)
+    item_row = []
+    po_request.rows.each do |row|
+      json = {
+          ItemCode: row.product.sku,
+          DiscountPercent: row.discount_percentage,
+          Quantity: row.quantity.to_f,
+          ProjectCode: po_request.inquiry.inquiry_number,
+          UnitPrice: row.unit_price.to_f,
+          Currency: po_request.sales_order.currency.name,
+          TaxCode: row.taxation.to_remote_s, # row.tax_rate.to_s.gsub('.0%', '').gsub('GST ', 'GST@'),
+          HSNEntry: row.product.is_service ? nil : row.tax_code.remote_uid,
+          SACEntry: row.product.is_service ? row.tax_code.remote_uid : nil,
+          WarehouseCode: po_request.bill_to.remote_uid,
+          LocationCode: po_request.bill_to.location_uid,
+          MeasureUnit: row.measurement_unit.name,
+          U_ProdBrand: row.brand_id.present? ? row.brand.name : row.product.brand.name
+      }
+      item_row << json
+    end
+
+    {
+        PoDate: Time.now.strftime('%Y-%m-%d'),
+        PoStatus: '63',
+        DocNum: record.po_number,
+        HandWritten: "tYES",
+        PoSupNum: '',
+        PoSupBillFrom: po_request.supplier.billing_address.remote_uid,
+        PoSupShipFrom: po_request.supplier.shipping_address.remote_uid,
+        PoShippingCost: '0',
+        PoTargetWarehouse: po_request.ship_to.remote_uid,
+        DocumentLines: item_row,
+        BPL_IDAssignedToInvoice: po_request.bill_to.remote_branch_code, # warehouse Id
+        Project: po_request.inquiry.inquiry_number,
+        CardCode: po_request.supplier.remote_uid,
+        CardName: po_request.supplier.to_s,
+        DocDate: Time.now.strftime('%Y-%m-%d'),
+        ProjectCode: po_request.inquiry.inquiry_number,
+        NumAtCard: '',
+        DocCurrency: po_request.sales_order.currency.name,
+        TaxDate: Time.now.strftime('%Y-%m-%d'),
+        DocDueDate: Time.now.strftime('%Y-%m-%d'),
+        U_SalesMgr: po_request.inquiry.sales_manager.to_s,
+        U_In_Sales_Own: po_request.inquiry.inside_sales_owner.to_s,
+        U_Out_Sales_Own: po_request.inquiry.inside_sales_owner.to_s,
+        U_CnfrmAddB: 'A',
+        U_CnfrmAddS: 'A',
+        U_BM_BillFromTo: po_request.bill_to.remote_uid
     }
   end
 end

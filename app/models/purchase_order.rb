@@ -3,7 +3,8 @@ class PurchaseOrder < ApplicationRecord
 
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
-  update_index('purchase_orders#purchase_order') { self }
+  include Mixins::CanBeSynced
+  #update_index('purchase_orders#purchase_order') { self }
   update_index('customer_order_status_report#sales_order') { self.po_request.sales_order if self.po_request.present? }
 
   pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
@@ -95,6 +96,23 @@ class PurchaseOrder < ApplicationRecord
       'Road': 1,
       'Air': 2,
       'Sea': 3
+  }
+
+  enum sap_sync: {
+      'Sync': 10,
+      'Not Sync': 20
+  }
+
+  enum delivery_type: {
+      'EXW': 10,
+      'FOB': 20,
+      'CIF': 30,
+      'CFR': 40,
+      'DAP': 50,
+      'Door delivery': 60,
+      'FCA Mumbai': 70,
+      'CIP': 80,
+      'CIP Mumbai airport': 100
   }
 
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
@@ -216,19 +234,21 @@ class PurchaseOrder < ApplicationRecord
     inward_dispatches = self.inward_dispatches.order(created_at: :desc)
     if inward_dispatches.any?
       invoice_request = inward_dispatches.first.invoice_request
+      partial = true
+      if self.rows.sum(&:get_pickup_quantity) <= 0
+        partial = false
+      end
       if invoice_request.present?
-        self.update_attribute(:material_status, invoice_request.status)
+        json = { material_status: invoice_request.status, is_partial: partial }
+        self.update_attributes(json)
       else
-        partial = true
-        if self.rows.sum(&:get_pickup_quantity) <= 0
-          partial = false
-        end
         if 'Material Pickup'.in? self.inward_dispatches.map(&:status)
           status = partial ? 'Inward Dispatch: Partial' : 'Inward Dispatch'
         elsif 'Material Delivered'.in? self.inward_dispatches.map(&:status)
           status = partial ? 'Material Partially Delivered' : 'Material Delivered'
         end
-        self.update_attribute(:material_status, status)
+        json = { material_status: status, is_partial: partial }
+        self.update_attributes(json)
       end
     else
       self.update_attribute(:material_status, 'Material Readiness Follow-Up')

@@ -1,0 +1,37 @@
+<div class="modal fade" id="product_inventory" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header pb-0">
+        <h4 class="modal-title">Product Inventory</h4>
+      </div>
+      <div class="modal-body py-0 px-2">
+        <table class="table table-bordered dt-responsive datatable w-100" data-sort="false">
+          <thead>
+          <tr>
+            <th class="no-sort">Warehouse</th>
+            <th class="no-sort">In Stock</th>
+            <th class="no-sort">Committed</th>
+            <th class="no-sort">Ordered</th>
+            <th class="no-sort">Available</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @product.stocks.order(instock: :desc).each do |stock| %>
+            <tr>
+              <td><%= stock.warehouse.name %></td>
+              <td><%= stock.instock %></td>
+              <td><%= stock.committed %></td>
+              <td><%= stock.ordered %></td>
+              <td><%= (stock.instock - stock.committed) %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger btn-block" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
