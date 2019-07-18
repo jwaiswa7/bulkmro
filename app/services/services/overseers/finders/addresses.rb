@@ -8,7 +8,7 @@ class Services::Overseers::Finders::Addresses < Services::Overseers::Finders::Ba
   end
 
   def all_records
-    indexed_records = super
+    indexed_records = index_klass.all.order(sort_definition)
 
     if @base_filter.present?
       indexed_records = indexed_records.filter(@base_filter)
