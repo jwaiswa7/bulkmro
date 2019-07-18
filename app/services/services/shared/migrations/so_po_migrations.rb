@@ -4,7 +4,7 @@ class Services::Shared::Migrations::SoPoMigrations < Services::Shared::Migration
   #s.set_warehouse_series
 
   def set_warehouse_series
-    service = Services::Shared::Spreadsheets::CsvImporter.new('series.csv', 'seed_files')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('series.csv', 'seed_files_3')
     service.loop(nil) do |x|
       p x.get_column('period_ document_type')
       s = Series.new(document_type: x.get_column('document_type'),
@@ -59,6 +59,21 @@ class Services::Shared::Migrations::SoPoMigrations < Services::Shared::Migration
           warehouse.series_code = code
           warehouse.save
         end
+      end
+    end
+  end
+
+  def set_last_number_in_series
+    service = Services::Shared::Spreadsheets::CsvImporter.new('warehouse_codes.csv', 'seed_files_3')
+    service.loop(nil) do |x|
+      document_type = x.get_column('document_type')
+      series_name = x.get_column('series_name')
+      last_number = x.get_column('last_number')
+
+      series = Series.where(document_type: document_type, series_name: series_name).first
+
+      if series.present?
+        series.update_attributes(last_number: last_number)
       end
     end
   end
