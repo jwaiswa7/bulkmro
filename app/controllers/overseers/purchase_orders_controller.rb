@@ -144,9 +144,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       end
     end
 
-
-
-
     authorize :inward_dispatch
     render 'inward_completed_queue'
   end

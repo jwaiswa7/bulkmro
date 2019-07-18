@@ -72,3 +72,6 @@ Inside Sales Manager,sales_order,account_approval_pending
 Inside Sales Executive,sales_order,account_approval_pending
 Inside Sales Team Leader,sales_order,account_approval_pending
 Accounts,sales_order,account_approval_pending
+Admin,purchase_order,pending_sap_sync
+Logistics,purchase_order,pending_sap_sync
+Accounts,purchase_order,pending_sap_sync
