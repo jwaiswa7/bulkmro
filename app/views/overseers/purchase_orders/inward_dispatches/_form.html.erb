@@ -37,7 +37,7 @@
               <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single"}, label: "Logistics Owner" %>
             </div>
 
-            <% if action_name == "confirm_delivery" ||  action_name == "edit" %>
+            <% if action_name == "confirm_delivery" || action_name == "edit" %>
               <div class="col-3">
                 <%= f.input :show_supplier_delivery_date, disabled: true, label: "Supplier Delivery Date(Overall)" %>
               </div>
@@ -54,7 +54,7 @@
                       <i class="fal fa-download"></i>
                       <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
                         <i class="fal fa-trash-alt"></i>
-                      <% end if attachment.present? && is_authorized(:attachment, 'destroy') && policy(:attachment).destroy? %>
+                      <% end if attachment.present? && attachment.id.present? && is_authorized(:attachment, 'destroy') && policy(:attachment).destroy? %>
                     <% end %>
                   <% end if f.object.attachments.attached? %>
                 </div>
@@ -68,6 +68,7 @@
             <div class="col-6">
               <%#= f.input :status, as: :select, collection: enum_to_collection(InwardDispatch.statuses, keep_raw: true), disabled: true, readonly: true %>
               <%= f.hidden_field :status %>
+              <%= f.hidden_field :sales_order_id %>
             </div>
 
             <div class="col-6">
@@ -83,7 +84,7 @@
             </div>
 
             <div class="col-6">
-              <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: true%>
+              <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: true %>
             </div>
 
             <div class="col-6">
@@ -121,22 +122,22 @@
         </div>
         <% if params[:action] != 'confirm_delivery' %>
           <div class="card-body">
-          <div class="form-row ml-1">
-            <div class="col-12 col-md-2 custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" name="all_supplier_delivery_dates" id="all_supplier_delivery_dates">
-              <label class="custom-control-label" for="all_supplier_delivery_dates">Select All</label>
+            <div class="form-row ml-1">
+              <div class="col-12 col-md-2 custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="all_supplier_delivery_dates" id="all_supplier_delivery_dates">
+                <label class="custom-control-label" for="all_supplier_delivery_dates">Select All</label>
+              </div>
+              <div class="col-12 col-md-4 update_supplier_delivery_date_wrapper">
+                <%= f.input :common_supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: 'Supplier Delivery Date' %>
+              </div>
+              <div class="col-12 col-md-6 mt-3">
+                <button type="button" id="update_supplier_delivery_date" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_supplier_delivery_date_wrapper">
+                  <i class="fal fa-plus mr-1"></i>Update Supplier Delivery Date
+                </button>
+              </div>
             </div>
-            <div class="col-12 col-md-4 update_supplier_delivery_date_wrapper">
-              <%= f.input :common_supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: 'Supplier Delivery Date' %>
-            </div>
-            <div class="col-12 col-md-6 mt-3">
-              <button type="button" id="update_supplier_delivery_date" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_supplier_delivery_date_wrapper">
-                <i class="fal fa-plus mr-1"></i>Update Supplier Delivery Date
-              </button>
-            </div>
+            <hr>
           </div>
-          <hr>
-        </div>
         <% end %>
         <div class="card-body">
           <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
@@ -208,7 +209,8 @@
                 </div>
 
                 <div class="col-6 col-md-3">
-                  <%= row.hidden_field :purchase_order_row_id, label: 'Product' %>
+                  <%= row.hidden_field :purchase_order_row_id, label: 'PurchaseOrderRow' %>
+                  <%= row.hidden_field :product_id, label: 'Product', value: row.object.product_id %>
                   <%= row.input :purchase_order_row, input_html: {value: row.object.purchase_order_row.to_s}, disabled: row.object.purchase_order_row.present? && row.object.errors.blank?, label: false %>
                 </div>
 

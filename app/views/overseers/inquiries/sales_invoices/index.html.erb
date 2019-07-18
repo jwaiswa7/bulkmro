@@ -28,10 +28,10 @@
               <%= row_action_button(url_for(sales_invoice.triplicate_invoice), 'none', sales_invoice.triplicate_invoice.filename, 'success', :_blank, 'get', false, 'T') %>
             <% end %>
             <% if is_authorized(sales_invoice,'show') && policy(sales_invoice).show? %>
-              <%= row_action_button(overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice), 'eye', 'View Sales Invoice ', 'info') %>
-              <%= row_action_button(overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get', false, 'O') %>
-              <%= row_action_button(duplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get', false, 'D') %>
-              <%= row_action_button(triplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get', false, 'T') %>
+              <%= row_action_button(overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice), 'eye', 'View AR Invoice ', 'info') %>
+              <%= row_action_button(overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get','', false, 'O') %>
+              <%= row_action_button(duplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get','', false, 'D') %>
+              <%= row_action_button(triplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get','', false, 'T') %>
               <%= row_action_button(make_zip_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :zip), 'file-archive', 'Download zip', 'info', :_blank) %>
             <% end %>
             <% if is_authorized(sales_invoice,'edit_mis_date') && policy(sales_invoice).edit_mis_date? %>

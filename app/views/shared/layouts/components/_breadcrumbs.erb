@@ -11,7 +11,11 @@
           <%= simple_form_for(:document_creation, :url => overseers_document_creations_path, class: 'd-flex', :method => :post) do |f| %>
             <div class="mr-2 d-md-inline-block align-top">
               <%= f.hidden_field :option, value: current_model.singularize.titleize.gsub('_', '') %>
+              <% if current_model == "Sales_invoices" %>
+                <%= f.input :document_number, as: :integer, input_html: { value: session[:number] }, label: false, placeholder: "Enter AR Invoice #" %>
+                <% else %>
               <%= f.input :document_number, as: :integer, input_html: { value: session[:number] }, label: false, placeholder: "Enter #{current_model.singularize.titleize.gsub('_', '')} #" %>
+                <% end %>
             </div>
             <%= f.submit "Request from SAP", class: "btn btn-rounded btn-dark" %>
           <% end %>

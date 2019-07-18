@@ -35,6 +35,7 @@ class Overseers::AclRolesController < Overseers::BaseController
         checked_ids = checked_ids + menu_checked_ids
         @acl_role.update_attribute(:role_resources, checked_ids.uniq.to_json)
         @acl_role.update_attribute(:is_default, params[:is_default])
+
         @acl_role.update_attribute(:updated_by, current_overseer)
 
         #update overseer resources
