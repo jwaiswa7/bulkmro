@@ -125,7 +125,7 @@
               <%= nav_dropdown_item 'SO Not Invoiced', not_invoiced_overseers_sales_orders_path, is_authorized(:sales_order, 'not_invoiced') %>
               <%= nav_dropdown_item 'Manager Approval Pending', pending_overseers_sales_orders_path, is_authorized(:sales_order, 'pending') %>
               <%= nav_dropdown_item 'Accounts Approval Pending', account_approval_pending_overseers_sales_orders_path, is_authorized(:sales_order, 'account_approval_pending') %>
-              <%= nav_dropdown_item 'Pending SAP Sync', drafts_pending_overseers_sales_orders_path, is_authorized(:sales_order, 'drafts_pending') %>
+              <%= nav_dropdown_item 'Pending SAP Sync', so_sync_pending_overseers_sales_orders_path, is_authorized(:sales_order, 'so_sync_pending') %>
               <%= nav_dropdown_item 'Cancelled SO', cancelled_overseers_sales_orders_path, is_authorized(:sales_order, 'cancelled') %>
             </ul>
           </div>
