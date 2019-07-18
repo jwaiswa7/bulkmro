@@ -20,6 +20,15 @@ class Resources::Order < Resources::ApplicationResource
     company_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.contact.email).first
     company_shipping_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.shipping_contact.email).first
 
+    sez = if record.inquiry.is_sez
+            {
+                'ImportOrExport': 'tYES',
+                'ImportOrExportType': 'et_SEZ_Unit',
+            }
+          else
+            nil
+          end
+
     {
         HandWritten: "tYES",
         DocNum: record.order_number,
@@ -70,6 +79,7 @@ class Resources::Order < Resources::ApplicationResource
         U_Ovr_Margin: record.calculated_total_margin_percentage,
         U_Over_Marg_Amnt: record.calculated_total_margin,
         BPChannelContact: company_shipping_contact.present? ? company_shipping_contact.remote_uid : nil,
+        TaxExtension: sez
     }
   end
 end
