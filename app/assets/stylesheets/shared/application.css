@@ -14579,4 +14579,11 @@ th.logistics-scorecard {
     text-align: start;
     width: 10rem;
 }
+.clear-date {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+}
 /*# sourceMappingURL=application.css.map */
