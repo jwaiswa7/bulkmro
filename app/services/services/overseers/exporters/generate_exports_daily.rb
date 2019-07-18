@@ -8,7 +8,8 @@ class Services::Overseers::Exporters::GenerateExportsDaily < Services::Shared::B
         'SalesInvoicesExporter',
         'SalesInvoicesLogisticsExporter',
         'SalesOrderRowsExporter',
-        'SalesOrdersLogisticsExporter'
+        'SalesOrdersLogisticsExporter',
+        'MaterialReadinessExporter'
     ]
     export_arr.each do |value|
       ['Services', 'Overseers', 'Exporters', value].join('::').constantize.new.call
