@@ -14,6 +14,8 @@ Admin,po_request,po_amended
 Admin,po_request,product_resync_inventory
 Admin,po_request,manager_amended
 Admin,po_request,create_purchase_order
+Admin,po_request,reject_purchase_order_modal
+Admin,po_request,rejected_purchase_order
 Logistics,po_request,new_purchase_order
 Logistics,po_request,po_amended
 Logistics,po_request,product_resync_inventory
@@ -36,3 +38,5 @@ Accounts,sales_order,order_cancellation_model
 Accounts,sales_order,cancellation
 Logistics,purchase_order,cancelled_purchase_order
 Logistics,purchase_order,cancelled_purchase_modal
+Logistics,po_request,reject_purchase_order_modal
+Logistics,po_request,rejected_purchase_order
