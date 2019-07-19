@@ -119,7 +119,7 @@ class PoRequestRow < ApplicationRecord
   def to_s
     if supplier_product_name.present? && supplier_product_sku.present?
       "#{supplier_product_sku} - #{supplier_product_name}"
-    else
+    elsif self.product.present?
       product = self.product
       "#{product.sku} - #{product.name}"
     end
