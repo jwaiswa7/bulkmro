@@ -29,7 +29,6 @@
               <span data-v-html="calculated_total_margin">
                 #<%= f.object.id %></span>
             </div>
-
           </div>
 
           <div class="form-row mb-1">
@@ -51,7 +50,6 @@
               <span data-v-html="calculated_total_margin">
                 <%= f.object.supplier.sales_manager.to_s %></span>
             </div>
-
           </div>
 
           <div class="form-row mb-1">
@@ -66,6 +64,10 @@
             <div class="col-8 col-md-3">
               <strong>Overall Margin</strong><br>
               <%= f.object.sales_order.calculated_total_margin_percentage %>%
+            </div>
+            <div class="col-8 col-md-3">
+              <strong>Payment Term</strong><br>
+              <%= f.object.payment_option.present? ? f.object.payment_option.to_s : '-'%>
             </div>
           </div>
         </div>
@@ -83,7 +85,15 @@
             </div>
             <div class="col-4 col-md-4 mt-2 mt-md-0">
               <strong>Contact</strong><br>
-              <span data-v-html="calculated_total_margin"><%= f.object.supplier.default_contact %></span>
+              <span data-v-html="calculated_total_margin"><%= f.object.contact.to_s %></span>
+            </div>
+            <div class="col-4 col-md-4 mt-2 mt-md-0">
+              <strong>Delivery Term</strong><br>
+              <span data-v-html="delivery_type"><%= f.object.delivery_type.present? ? f.object.delivery_type : ' - ' %></span>
+            </div>
+            <div class="col-4 col-md-4 mt-2 mt-md-0">
+              <strong>Transport Mode</strong><br>
+              <span data-v-html="transport_mode"><%= f.object.transport_mode.present? ? f.object.transport_mode : ' - ' %></span>
             </div>
           </div>
         </div>
@@ -170,6 +180,9 @@
               <span data-toggle="tooltip" title="Lead Time">L. Time</span>
             </th>
             <th class="no-sort">
+              <span data-toggle="tooltip" title="Quantity">Quantity</span>
+            </th>
+            <th class="no-sort">
               <span data-toggle="tooltip" title="Unit Price">U. Price</span>
             </th>
             <th class="no-sort">
@@ -209,6 +222,9 @@
               </td>
               <td>
                 <span><%= row.lead_time.present? ? format_succinct_date(row.lead_time) : '-' %></span>
+              </td>
+              <td>
+                <span><%= row.quantity.to_f %></span>
               </td>
               <td>
                 <span><%= format_currency(row.unit_price) %></span>
