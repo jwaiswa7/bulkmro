@@ -456,13 +456,29 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   end
 
   def duplicate_role
-    acl_role1 = AclRole.find(2)
-    acl_role2 = AclRole.find(10)
+    acl_role_names = ["Inside Sales and Logistic Manager", "Outside Sales Manager", "Inside Sales Manager", "Outside Sales Executive", "Inside Sales Executive", "Accounts", "Logistics", "Cataloging", "Outside Sales Team Leader", "Inside Sales Team Leader"]
+    acl_role = AclRole.find_by_role_name('Manager')
+    combined_role = []
 
-    acl_role = AclRole.find(12)
+    acl_role_names.each do |arn|
+      ar = AclRole.find_by_role_name(arn)
+      combined_role += ActiveSupport::JSON.decode(ar.role_resources)
+    end
 
-    combined_role = ActiveSupport::JSON.decode(acl_role1.role_resources) + ActiveSupport::JSON.decode(acl_role2.role_resources)
+    # combined_role = ActiveSupport::JSON.decode(acl_role1.role_resources) + ActiveSupport::JSON.decode(acl_role2.role_resources) + ActiveSupport::JSON.decode(overseer.acl_resources)
     acl_role.role_resources = combined_role.uniq.to_json
     acl_role.save
+
+    overseer_emails = ['ankur.gupta@bulkmro.com','vijay.manjrekar@bulkmro.com','nilesh.desai@bulkmro.com','priyanka.rajpurkar@bulkmro.com','lavanya.j@bulkmro.com','shailender.agarwal@bulkmro.com','ved.prakash@bulkmro.com','akshay.jindal@bulkmro.com']
+    overseer_emails.each do |email|
+      overseer = Overseer.find_by_email(email)
+      if overseer.present?
+        overseer_resources = overseer.acl_resources
+        overseer_combined_resources = ActiveSupport::JSON.decode(overseer_resources) + ActiveSupport::JSON.decode(acl_role.role_resources)
+        overseer.acl_resources = overseer_combined_resources.uniq.to_json
+        overseer.acl_role_id = acl_role.id
+        overseer.save
+      end
+    end
   end
 end
