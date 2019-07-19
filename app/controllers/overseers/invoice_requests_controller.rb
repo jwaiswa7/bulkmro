@@ -1,5 +1,5 @@
 class Overseers::InvoiceRequestsController < Overseers::BaseController
-  before_action :set_invoice_request, only: [:show, :edit, :update, :cancel_invoice_request, :render_modal_form, :add_comment]
+  before_action :set_invoice_request, only: [:show, :edit, :update, :cancel_invoice_request, :render_cancellation_form, :render_comment_form, :render_modal_form, :add_comment]
 
   def pending
     invoice_requests =

@@ -16,6 +16,7 @@ json.data (@sales_orders) do |sales_order|
                   ].join(' '),
                   sales_order.id,
                   conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
+                  sales_order.order_number,
                   status_badge(format_enum(sales_order.order_status || sales_order.legacy_request_status, humanize_text: false)),
                   format_succinct_date(sales_order.sent_at),
                   sales_order.created_by.to_s,

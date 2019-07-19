@@ -8,6 +8,7 @@ import salesOrdersIndex from "./index";
 import salesOrdersPending from "./pending";
 import notInvoiced from "./notInvoiced";
 import newPurchaseOrdersRequests from "./newPurchaseOrdersRequests";
+import salesOrdersNewAccountsConfirmation from "./newAccountsConfirmation";
 
 
 let salesOrders = {
@@ -20,7 +21,8 @@ let salesOrders = {
     index: salesOrdersIndex,
     pending: salesOrdersPending,
     notInvoiced: notInvoiced,
-    newPurchaseOrdersRequests: newPurchaseOrdersRequests
+    newPurchaseOrdersRequests: newPurchaseOrdersRequests,
+    newAccountsConfirmation: salesOrdersNewAccountsConfirmation
 }
 
 export default salesOrders
