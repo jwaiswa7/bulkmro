@@ -264,6 +264,14 @@ Rails.application.routes.draw do
     end
 
     resources :po_requests do
+      member do
+        get 'new_purchase_order'
+        post 'create_purchase_order'
+        get 'manager_amended'
+      end
+      collection do
+        get 'product_resync_inventory'
+      end
       scope module: 'po_requests' do
         resources :payment_requests
         resources :email_messages do
@@ -291,6 +299,9 @@ Rails.application.routes.draw do
       end
       member do
         get 'render_modal_form'
+        get 'render_cancellation_form'
+        get 'reject_purchase_order_modal'
+        patch 'rejected_purchase_order'
         patch 'cancel_porequest'
         get 'render_comment_form'
         patch 'add_comment'
@@ -352,9 +363,10 @@ Rails.application.routes.draw do
 
       collection do
         get 'pending'
+        get 'account_approval_pending'
         get 'cancelled'
         get 'export_all'
-        get 'drafts_pending'
+        get 'so_sync_pending'
         get 'export_rows'
         get 'export_for_logistics'
         get 'export_for_sap'
@@ -384,10 +396,14 @@ Rails.application.routes.draw do
       member do
         get 'edit_material_followup'
         patch 'update_material_followup'
+        get 'cancelled_purchase_modal'
+        patch 'cancelled_purchase_order'
+        get 'resync_po'
       end
 
       collection do
         get 'export_material_readiness'
+        get 'pending_sap_sync'
         get 'export_all'
         get 'export_filtered_records'
         get 'autocomplete'
@@ -525,12 +541,17 @@ Rails.application.routes.draw do
             get 'debugging'
             get 'new_revision'
             get 'new_confirmation'
+            get 'new_accounts_confirmation'
             get 'proforma'
             post 'create_confirmation'
+            post 'create_account_confirmation'
+            post 'create_account_rejection'
             post 'resync'
             get 'fetch_order_data'
             get 'relationship_map'
             get 'get_relationship_map_json'
+            get 'order_cancellation_modal'
+            patch 'cancellation'
           end
 
           collection do
@@ -676,6 +697,7 @@ Rails.application.routes.draw do
     resources :warehouses do
       collection do
         get 'autocomplete'
+        get 'series'
       end
       scope module: 'warehouses' do
         resources :product_stocks, only: %i[index]

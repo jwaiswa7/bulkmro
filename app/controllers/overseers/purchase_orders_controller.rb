@@ -20,6 +20,25 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
   end
 
+  def pending_sap_sync
+    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.where(remote_uid: nil, sap_sync: 'Not Sync').order(id: :desc), params)
+    authorize @purchase_orders
+
+    respond_to do |format|
+      format.json {render 'pending_sap_sync'}
+      format.html {render 'pending_sap_sync'}
+    end
+  end
+
+  def resync_po
+    authorize @purchase_order
+    if @purchase_order.save_and_sync(@purchase_order.po_request)
+      redirect_to overseers_inquiry_purchase_order_path(@purchase_order.inquiry.to_param, @purchase_order.to_param)
+    else
+      redirect_to pending_sap_sync_overseers_purchase_orders
+    end
+  end
+
   def show
     authorize_acl @purchase_order
     @inquiry = @purchase_order.inquiry
@@ -125,9 +144,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       end
     end
 
-
-
-
     authorize :inward_dispatch
     render 'inward_completed_queue'
   end
@@ -216,6 +232,24 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     service.call
 
     redirect_to url_for(Export.material_readiness_queue.not_filtered.last.report)
+  end
+
+  def cancelled_purchase_modal
+    authorize_acl @purchase_order
+    respond_to do |format|
+      format.html { render partial: 'cancel_purchase_order', locals: { created_by_id: current_overseer.id } }
+    end
+  end
+
+  def cancelled_purchase_order
+    authorize_acl @purchase_order
+    if @purchase_order.present?
+      @purchase_order.status = 'cancelled'
+      @purchase_order.po_request.status = 'Cancelled'
+      @purchase_order.save!
+      @purchase_order.po_request.save!
+    end
+    render json: {sucess: 'Successfully updated ', url: overseers_purchase_orders_path }, status: 200
   end
 
   private

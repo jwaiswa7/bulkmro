@@ -199,6 +199,10 @@ module StatusesHelper
       'warning'
     when :'default'
       'info'
+    when :'Sync'
+      'success'
+    when 'Not Sync'
+      'danger'
     else
       'danger'
     end

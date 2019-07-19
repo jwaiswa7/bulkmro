@@ -129,6 +129,22 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     record.purchase_order.blank? && (manager? || admin? || logistics?)
   end
 
+  def new_purchase_order?
+    logistics? || admin?
+  end
+
+  def reject_purchase_order_modal?
+    logistics? || admin?
+  end
+
+  def rejected_purchase_order?
+    reject_purchase_order_modal?
+  end
+
+  def create_purchase_order?
+    reject_purchase_order_modal?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 

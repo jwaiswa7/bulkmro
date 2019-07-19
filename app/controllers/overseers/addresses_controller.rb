@@ -25,7 +25,7 @@ class Overseers::AddressesController < Overseers::BaseController
     render 'autocomplete'
   end
 
-  def is_sez_params
+    def is_sez_params
     @addresses = Address.find(params[:address_id])
     render json: { is_sez: @addresses.is_sez}.to_json
     authorize_acl @addresses

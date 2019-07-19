@@ -1,0 +1,411 @@
+<div class="col-12">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <div class="row flex-lg-row-reverse">
+      <div class="col-lg-2">
+        <div class="card mb-3" data-toggle="sticky">
+          <div class="card-header">
+            <h5 class="mb-0"><strong class="d-block">Summary</strong></h5>
+          </div>
+          <div class="card-body" style="padding-left: 1rem;">
+            <ul style="padding: 0;" class="summary-list">
+              <li class="fas fa-times sales_order_confirm_purchase_order_number"> PO Number</li>
+              <li class="fas fa-times sales_order_confirm_payment_terms"> Payment Terms</li>
+              <li class="fas fa-times sales_order_confirm_billing_warehouse"> Billing Warehouse</li>
+              <li class="fas fa-times sales_order_confirm_shipping_warehouse"> Shipping Warehouse</li>
+              <li class="fas fa-times sales_order_confirm_billing_address"> Billing Address</li>
+              <li class="fas fa-times sales_order_confirm_shipping_address"> Shipping Address</li>
+              <li class="fas fa-times sales_order_confirm_attachments"> Attachments</li>
+              <li class="fas fa-times sales_order_confirm_hsn_codes"> HSN Codes</li>
+              <li class="fas fa-times sales_order_confirm_tax_rates"> Tax Rates</li>
+              <li class="fas fa-times sales_order_confirm_tax_types"> Tax Types</li>
+              <li class="fas fa-times sales_order_confirm_ord_values"> Order Values</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-10">
+        <%= simple_form_for(@sales_order, url: create_account_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), method: :post, :html => {:class => 'was-validated needs-validation new_accounts_confirmation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+          <%= f.hidden_field :parent_id %>
+          <%= f.hidden_field :sales_quote_id %>
+
+          <% if f.object.errors.any? %>
+            <% f.object.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          <% end %>
+          <div class="card">
+            <div class="card-header">
+              <div class=form-row>
+
+                <div class="col-6 col-md-3">
+                  <strong class="d-block">Order Number</strong>
+                  #<%= @sales_order.try(:order_number).blank? ? "SAP Request Pending" : @sales_order.order_number %>
+                </div>
+                <div class="col-6 col-md-3">
+                  <strong class="d-block">Status</strong>
+                  <%= @sales_order.status || @sales_order.legacy_request_status %>
+                </div>
+                <div class="col-6 col-md-2 mt-2 mt-md-0">
+                  <strong class="d-block">SAP Status</strong>
+                  <%= @sales_order.remote_status.blank? ? "SAP Request Pending" : @sales_order.remote_status %>
+                </div>
+                <div class="col-6 col-md-2 mt-2 mt-md-0">
+                  <strong class="d-block">Opportunity Type</strong>
+                  <%= @sales_order.inquiry.present? ? @sales_order.inquiry.opportunity_type.capitalize.titleize : '-' %>
+                </div>
+              </div>
+
+            </div>
+            <div class="card-body">
+              <div class="form-row mb-1">
+                <div class="col-6 col-md-3">
+                  <strong class="d-block">Customer Purchase Order No.</strong>
+                  #<%= @inquiry.customer_po_number %>
+                </div>
+                <div class="col-6 col-md-3">
+                  <strong class="d-block">Customer Order Date</strong>
+                  <%= @inquiry.customer_order_date %>
+                </div>
+                <div class="col-6 col-md-2 mt-2 mt-md-0">
+                  <strong class="d-block">Customer Committed Date</strong>
+                  <%= @inquiry.customer_committed_date %>
+                </div>
+                <div class="col-6 col-md-2 mt-2 mt-md-0">
+                  <strong class="d-block">Currency</strong>
+                  <%= @sales_order.currency %> (<%= @sales_order.conversion_rate %>)
+                </div>
+                <div class="col-6 col-md-2 mt-2 mt-md-0">
+                  <strong class="d-block">Payment Terms</strong>
+                  <%= @inquiry.payment_option %>
+                </div>
+                <div class="col-6 col-md-6 mt-2 mt-md-2">
+                  <%= f.input :confirm_purchase_order_number, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                </div>
+                <div class="col-6 col-md-6 mt-2 mt-md-2">
+                  <%= f.input :confirm_payment_terms, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                </div>
+              </div>
+
+              <div class="card-alternative mt-3">
+                <div class="form-row">
+                  <div class="col-md-6 mt-2 mt-md-0">
+                    <strong class="d-block">Supplier - Billing Address</strong>
+                    <% if @inquiry.bill_from.present? %>
+                      <%= @inquiry.bill_from.address.name.to_s %>
+                      <%= @inquiry.bill_from.address.to_compact_multiline_s %><br>
+                      <% if @inquiry.bill_from.address.phone.present? %>
+                        <strong><em>Contact</em></strong>: <%= @inquiry.contact.full_name %>
+                        - <%= @inquiry.bill_from.address.phone %><br>
+                      <% end %>
+                      <% if @inquiry.bill_from.address.gst %>
+                        <strong><em>GST Number</em></strong>: <%= @inquiry.bill_from.address.gst %><br>
+                      <% end %>
+                    <% end %>
+                  </div>
+                  <div class="col-md-6 mt-2 mt-md-0">
+                    <strong class="d-block">Supplier - Shipping Address</strong>
+                    <% if @inquiry.ship_from.present? %>
+                      <%= @inquiry.ship_from.address.name.to_s %><br>
+                      <%= @inquiry.ship_from.address.to_compact_multiline_s %><br>
+                      <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
+                        <strong><em>Contact</em></strong>: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
+                        <br>
+                      <% end %>
+                      <% if @inquiry.ship_from.address.gst %>
+                        <strong><em>GST Number</em></strong>: <%= @inquiry.ship_from.address.gst %><br>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="col-md-6 mt-2">
+                    <%= f.input :confirm_billing_warehouse, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                  </div>
+                  <div class="col-md-6 mt-2">
+                    <%= f.input :confirm_shipping_warehouse, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                  </div>
+                </div>
+
+                <div class="form-row mt-0 mt-md-2">
+                  <div class="col-md-6 mt-2 mt-md-0">
+                    <strong class="d-block">Customer - Billing Address</strong>
+                    <%= (@inquiry.company.name) %><br>
+                    <%= @sales_order.serialized_billing_address.to_compact_multiline_s %><br>
+                    <% if @inquiry.contact.phone.present? %>
+                      Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
+                    <% end %>
+                    <strong><em>Email</em></strong>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+                    <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
+                  </div>
+                  <div class="col-md-6 mt-2 mt-md-0">
+                    <strong class="d-block">Customer - Shipping Address</strong>
+                    <span class="d-block"><%= (@inquiry.shipping_company.name) %></span>
+                    <span class="d-block"><%= @sales_order.serialized_shipping_address.to_compact_multiline_s %></span>
+                    <% if @inquiry.shipping_contact.phone.present? %>
+            <span class="d-block"><strong><em>Contact</em></strong>: <%= @inquiry.shipping_contact.full_name %>
+              - <%= @inquiry.shipping_contact.phone %></span>
+                    <% end %>
+                    <strong><em>Email</em></strong>: <%= @inquiry.shipping_contact.email if @inquiry.shipping_contact.email.present? %>
+                    <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col-md-6 mt-2">
+                    <%= f.input :confirm_billing_address, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                  </div>
+                  <div class="col-md-6 mt-2">
+                    <%= f.input :confirm_shipping_address, as: :boolean, wrapper: :custom_boolean, :required => true %>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row mt-3">
+                <% if @inquiry.calculation_sheet.attached? %>
+
+                  <div class="col-6 mb-1">
+                    <strong class="d-block">Calculation Sheet</strong>
+                    <%= link_to @inquiry.calculation_sheet, target: '_blank' do %>
+                      <%= @inquiry.calculation_sheet.filename %>
+                    <% end %>
+                  </div>
+
+                <% end %>
+
+                <% if @inquiry.attachments.present? %>
+
+                  <div class="col-6 mb-1">
+                    <strong class="d-block">Customer Purchase Order</strong>
+                    <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
+                      <%= @inquiry.customer_po_sheet.filename %>
+                    <% end if @inquiry.customer_po_sheet.attached? %>
+                  </div>
+                  <div class="col-6 mb-1">
+                    <% if @inquiry.copy_of_email.attached? %>
+                      <strong class="d-block">Email attachment</strong>
+                      <%= link_to @inquiry.copy_of_email, target: '_blank' do %>
+                        <%= @inquiry.copy_of_email.filename %>
+                      <% end %>
+                    <% end %>
+                  </div>
+                  <div class="col-6 mb-1">
+                    <strong class="d-block">Supplier Quotes Attachment</strong>
+                    <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
+                      <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
+                        <span class="d-block"><%= attachment.filename %></span>
+                      <% end %>
+                    <% end if @inquiry.supplier_quotes.attached? %>
+                  </div>
+                  <div class="col-6 mt-2">
+                    <%= f.input :confirm_attachments, as: :boolean, wrapper: :custom_boolean, label: 'Confirm attachments', :required => true %>
+                  </div>
+                <% end %>
+              </div>
+              <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
+                <thead>
+                <tr>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+                  </th>
+                  <th class="no-sort product-width-adjustment">
+                    <span>Product</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Quantity">Qty</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Unit of Measurement">UoM</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Unit Cost">UC</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Margin Percentage">%</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Unit Selling Price">USP</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Total Selling Price">TSP</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Tax Code">T. Code</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
+                  </th>
+                  <% if @sales_order.sales_quote.tax_summary.strip == '0' ||
+                      (@sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
+                    <th class="no-sort">
+                      <span data-toggle="tooltip" title="Tax Rate">IGST Rate</span>
+                    </th>
+                    <th class="no-sort">
+                      <span data-toggle="tooltip" title="Tax Rate">IGST Amt</span>
+                    </th>
+                  <% else %>
+                    <th class="no-sort">
+                      <span data-toggle="tooltip" title="Tax Rate">CGST Rate</span>
+                    </th>
+                    <th class="no-sort">
+                      <span data-toggle="tooltip" title="Tax Rate">CGST Amt</span>
+                    </th>
+                    <th class="no-sort">
+                      <span data-toggle="tooltip" title="Tax Rate">SGST Rate</span>
+                    </th>
+                    <th class="no-sort">
+                      <span data-toggle="tooltip" title="Tax Rate">SGST Amt</span>
+                    </th>
+                  <% end %>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Total Freight">T. Freight</span>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @sales_order.rows.each do |row| %>
+                  <tr>
+                    <td>
+                      <span>#<%= row.sr_no %></span>
+                    </td>
+                    <td>
+                      <span><%= row.sales_quote_row %></span>
+                    </td>
+                    <td>
+                      <span><%= row.quantity %></span>
+                    </td>
+                    <td>
+                      <span><%= row.measurement_unit %></span>
+                    </td>
+                    <td>
+                      <span><%= format_currency(row.converted_unit_cost_price_with_unit_freight_cost, symbol: @sales_order.currency_sign) %></span>
+                    </td>
+                    <td>
+                      <span><%= number_with_precision(row.margin_percentage, precision: 2) %></span>
+                    </td>
+                    <td>
+                      <span><%= format_currency(row.converted_unit_selling_price, symbol: @sales_order.currency_sign) %></span>
+                    </td>
+                    <td>
+                      <span><%= format_currency(row.converted_total_selling_price, symbol: @sales_order.currency_sign) %></span>
+                    </td>
+                    <td>
+                      <span><%= format_currency(row.converted_total_selling_price_with_tax, symbol: @sales_order.currency_sign) %></span>
+                    </td>
+                    <td>
+                      <span><%= row.best_tax_code %></span>
+                    </td>
+                    <td>
+                      <span><%= row.best_tax_rate %></span>
+                    </td>
+                    <% if @sales_order.sales_quote.tax_summary.strip == '0' ||
+                        (@sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
+                      <td>
+                        <span><%= row.sales_quote_row.applicable_tax_percentage * 100 %>%</span>
+                      </td>
+                      <td>
+                        <span><%= format_currency(row.sales_quote_row.converted_total_tax, precision: 2, symbol: nil) %></span>
+                      </td>
+                    <% else %>
+                      <td>
+                        <span><%= row.sales_quote_row.best_tax_rate.tax_percentage / 2 if row.sales_quote_row.best_tax_rate.present? %>%</span>
+                      </td>
+                      <td>
+                        <span><%= number_to_currency(row.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
+                      </td>
+                      <td>
+                        <span><%= row.sales_quote_row.best_tax_rate.tax_percentage / 2 if row.sales_quote_row.best_tax_rate.present? %>%</span>
+                      </td>
+                      <td>
+                        <span><%= number_to_currency(row.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
+                      </td>
+                    <% end %>
+                    <td>
+                      <span><%= format_currency(row.freight_cost_subtotal, symbol: @sales_order.currency_sign) %></span>
+                    </td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+              <div class="form-row">
+                <div class="col-4">
+                  <%= f.input :confirm_hsn_codes, as: :boolean, wrapper: :custom_boolean, label: 'Confirm HSN Codes', :required => true %>
+                </div>
+                <div class="col-4">
+                  <%= f.input :confirm_tax_rates, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Tax Rates', :required => true %>
+                </div>
+                <div class="col-4">
+                  <%= f.input :confirm_tax_types, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Tax Types', :required => true %>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class=form-row>
+                <div class="col-5 col-md-1">
+                  Products
+                  <strong class="d-block"><%= @sales_order.rows.size %></strong>
+                </div>
+                <div class="col-5 col-md-1">
+                  Total Freight
+                  <strong class="d-block"><%= format_currency(@sales_order.calculated_freight_cost_total, symbol: @sales_order.currency_sign) %></strong>
+                </div>
+                <div class="col-5 col-md-1">
+                  Cost
+                  <strong class="d-block"><%= format_currency(@sales_order.converted_total_cost, symbol: @sales_order.currency_sign) %></strong>
+                </div>
+                <div class="col-5 col-md-2 mt-2 mt-md-0">
+                  Margin
+                  <strong class="d-block"><%= format_currency(@sales_order.converted_total_margin, symbol: @sales_order.currency_sign) %>
+                    (<%= @sales_order.calculated_total_margin_percentage %>%)</strong>
+                </div>
+                <div class="col-5 col-md-2 mt-2 mt-md-0">
+                  Selling Price (E. tax)
+                  <strong class="d-block"><%= format_currency(@sales_order.converted_total, symbol: @sales_order.currency_sign) %></strong>
+                </div>
+                <div class="col-5 col-md-1 mt-2 mt-md-0">
+                  Tax
+                  <strong class="d-block"><%= format_currency(@sales_order.converted_total_tax, symbol: @sales_order.currency_sign) %></strong>
+                </div>
+                <div class="col-5 col-md-2 mt-2 mt-md-0">
+                  Selling Price (I. tax)
+                  <strong class="d-block"><%= format_currency(@sales_order.converted_total_with_tax, symbol: @sales_order.currency_sign) %></strong>
+                </div>
+                <div class="col-5 col-md-2 mt-2 mt-md-0 d-flex align-items-center">
+                  <%= f.input :confirm_ord_values, as: :boolean, wrapper: :custom_boolean, label: 'Confirm order values', :required => true %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="form-row">
+              <div class="col-6">
+                <a class="btn btn-danger btn-block account-rejection" data-parent="#rejection-comments" data-toggle="collapse" data-target="#internal-comments" style="color: #FFFFFF;">Reject</a>
+              </div>
+              <div class="col-6">
+                <%= f.submit 'Approve', class: 'btn btn-success btn-block account-approval', name: 'approve' %>
+              </div>
+            </div>
+            <div><br></div>
+            <div class="form-row" id="rejection-comments">
+              <div class="col-12">
+                <div id="accordion">
+                  <div class="card ">
+                    <div id="internal-comments" class="collapse" data-parent="#accordion">
+                      <div class="card-body">
+                        <%= f.simple_fields_for :custom_fields do |c| %>
+                          <%= c.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+                          <%= c.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@sales_order).reject? %>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -9,6 +9,20 @@ const edit = () => {
     openRatingModal()
     let form_original_data = $("form").serializeArray();
 
+    $('.product-stock-inventory').on('click',function(){
+        var productId = $(this).data('product-id')
+        var url = '/overseers/po_requests/product_resync_inventory?product_id='+productId
+        $.ajax({
+            url: url,
+            data: {},
+            success: function(data){
+                $('#product_inventory_div').empty()
+                $('#product_inventory_div').append(data)
+                $('#product_inventory').modal('show')
+            }
+        })
+    })
+
     let required_fields = $('form').find("select, textarea, input").filter('[required]:visible');
     $('form').on('change', 'select[name*=status]', function (e) {
         if ($(e.target).val() == "Cancelled") {

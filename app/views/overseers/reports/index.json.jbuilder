@@ -5,7 +5,7 @@ json.data (@reports) do |report|
                         row_action_button(overseers_report_path(report), 'eye', 'Show Report', 'info')
                       end,
                   ].join(' '),
-                  report.name,
+                  report.name.titlecase,
                   report.uid,
                   format_succinct_date(report.updated_at)
               ]
