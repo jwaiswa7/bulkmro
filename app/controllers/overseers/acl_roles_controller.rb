@@ -77,7 +77,7 @@ class Overseers::AclRolesController < Overseers::BaseController
 
   def get_acl_menu
     default_resources = get_acl_menu_resource_json
-    current_acl = ActiveSupport::JSON.decode(@acl_role.role_resources)
+    current_acl = ActiveSupport::JSON.decode(@acl_role.role_resources) if @acl_role.role_resources.present?
     parsed_json = ActiveSupport::JSON.decode(default_resources)
 
     parsed_json.map{|x| x['children'].map{|y|
