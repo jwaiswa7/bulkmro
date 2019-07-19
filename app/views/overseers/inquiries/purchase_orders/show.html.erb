@@ -199,7 +199,7 @@
           </tr>
           </thead>
           <tbody>
-          <% @purchase_order.rows.each_with_index do |item, index| %>
+          <% @purchase_order.rows.order(:created_at).each_with_index do |item, index| %>
             <tr>
               <td>
                 <span><%= index + 1 %></span>

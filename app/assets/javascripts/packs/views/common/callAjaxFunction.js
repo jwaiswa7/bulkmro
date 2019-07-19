@@ -1,8 +1,15 @@
 const callAjaxFunction = function(json){
     $(json.this).addClass('disabled')
+    var data;
+    if (json.title != '') {
+        data = {'title': json.title}
+    } else {
+        data = {}
+    }
     $.ajax({
-        data: {},
+        data: data,
         url: json.url,
+        type: 'GET',
         success: function (data) {
             $(this).addClass('disabled')
             $(json.className).empty()
@@ -16,7 +23,6 @@ const callAjaxFunction = function(json){
         error: function error(_error) {
 
         }
-
     })
 };
 
@@ -35,7 +41,11 @@ const modalSubmit = (modalId, buttonClassName) => {
                 if (data.success == 0) {
                     alert(data.message);
                 } else {
-                    window.location.reload();
+                    if (data.hasOwnProperty("url") && data.url != null) {
+                        window.location = data.url
+                    } else {
+                        window.location.reload();
+                    }
                 }
             },
             error: function error(_error) {

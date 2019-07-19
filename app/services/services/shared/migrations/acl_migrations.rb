@@ -410,21 +410,86 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   #Utility Functions
 
   def assign_action_to_overseer
-    resource_action_name = 'get_account'
-    resource_model_name = 'company'
-    role_name = 'all'
-    acl_resource = AclResource.where(:resource_model_name => resource_model_name, :resource_action_name => resource_action_name).first_or_create!
+    resource_action_names = %w(index show new edit create update destroy)
+    resource_model_name = 'packing_slip_row'
+    # role_name = 'Accounts'
+    role_name = 'Logistics'
 
-    #update role
-    if role_name != 'all'
-      acl_role = AclRole.find_by_role_name(role_name)
-      update_role_resource(acl_role, acl_resource.id)
-    else
-      AclRole.all.each do |acl_role|
+    resource_action_names.each do |resource_action_name|
+      acl_resource = AclResource.where(:resource_model_name => resource_model_name, :resource_action_name => resource_action_name).first_or_create!
+      #update role
+      if role_name != 'all'
+        acl_role = AclRole.find_by_role_name(role_name)
         update_role_resource(acl_role, acl_resource.id)
+      else
+        AclRole.all.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
       end
     end
-    # AclResource.update_acl_resource_cache
+
+    acl_resource = AclResource.new
+    acl_resource.update_acl_resource_cache
+    Message Input
+    Direct message with Ruta ashok kambli
+  end
+
+  # function for applying acl to outward ques
+  def assign_action_of_outward_que_to_overseer
+    role_name = 'Logistics'
+    acl_for_logistics_in_outward_que = {
+        'purchase_order': %w(inward_completed_queue),
+        'po_request': %w(render_modal_form add_comment can_cancel cancel_porequest render_cancellation_form render_comment_form can_cancel_or_reject),
+        'payment_request': %w(add_comment render_modal_form),
+        'invoice_request': %w(render_modal_form cancel_invoice_request render_cancellation_form render_comment_form can_cancel_or_reject),
+        'inward_dispatch': %w(can_create_ar_invoice),
+        'ar_invoice_request': %w(index show new edit create update destroy can_create_outward_dispatch download_eway_bill_format render_cancellation_form cancel_ar_invoice),
+        'ar_invoice_request_comment':  %w(index show new edit create update destroy),
+        'ar_invoice_request_row': %w(index show new edit create update destroy),
+        'outward_dispatch': %w(index show new edit create update destroy can_create_packing_slip create_with_packing_slip can_send_dispatch_email),
+        'packing_slip': %w(index show new edit create update destroy can_send_dispatch_email),
+        'packing_slip_row': %w(index show new edit create update destroy)
+    }
+    acl_for_logistics_in_outward_que.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(:resource_model_name => key, :resource_action_name => action_name).first_or_create!
+        #update role
+        if role_name != 'all'
+          acl_role = AclRole.find_by_role_name(role_name)
+          update_role_resource(acl_role, acl_resource.id)
+        else
+          AclRole.all.each do |acl_role|
+            update_role_resource(acl_role, acl_resource.id)
+          end
+        end
+      end
+    end
+
+    role_name = 'Accounts'
+    acl_for_account_in_outward_que = {
+        'po_request': %w(render_modal_form add_comment cancel_porequest render_cancellation_form render_comment_form can_cancel_or_reject),
+        'payment_request': %w(add_comment render_modal_form),
+        'invoice_request': %w(render_modal_form cancel_invoice_request render_cancellation_form render_comment_form can_cancel_or_reject),
+        'ar_invoice_request': %w(index show new edit create update destroy download_eway_bill_format render_cancellation_form cancel_ar_invoice can_cancel_or_reject),
+        'ar_invoice_request_comment':  %w(index show new edit create update destroy),
+        'ar_invoice_request_row': %w(index show new edit create update destroy),
+    }
+    acl_for_account_in_outward_que.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(:resource_model_name => key, :resource_action_name => action_name).first_or_create!
+        #update role
+        if role_name != 'all'
+          acl_role = AclRole.find_by_role_name(role_name)
+          update_role_resource(acl_role, acl_resource.id)
+        else
+          AclRole.all.each do |acl_role|
+            update_role_resource(acl_role, acl_resource.id)
+          end
+        end
+      end
+    end
+    acl_resource = AclResource.new
+    acl_resource.update_acl_resource_cache
   end
 
   def update_role_resource(acl_role, resource_id)
@@ -437,7 +502,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_role.save
 
     #update overseer resources
-    Overseer.where(acl_role: acl_role).each do |overseer|
+    Overseer.where(acl_role_id: acl_role.id).each do |overseer|
       overseer_resources = ActiveSupport::JSON.decode(overseer.acl_resources)
       new_resources = overseer_resources + ActiveSupport::JSON.decode(acl_role.role_resources)
       new_resources = new_resources.map {|x| x.to_i}
@@ -453,6 +518,30 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       overseer.password = 123456
       overseer.save
     end
+  end
+
+  def create_acl_resources_using_csv
+    service = Services::Shared::Spreadsheets::CsvImporter.new('acl_resources_csv.csv', 'seed_files_3')
+    service.loop(nil) do |x|
+      role_name = x.get_column('role_name')
+      resource_model_name = x.get_column('model_name')
+      resource_action_name = x.get_column('action_name')
+      acl_resource = AclResource.where(:resource_model_name => resource_model_name, :resource_action_name => resource_action_name).first_or_create!
+
+      #update role
+      if role_name != 'N/A'
+        if role_name != 'All'
+          acl_role = AclRole.find_by_role_name(role_name)
+          update_role_resource(acl_role, acl_resource.id)
+        else
+          AclRole.all.each do |acl_role|
+            update_role_resource(acl_role, acl_resource.id)
+          end
+        end
+      end
+    end
+    acl_resource = AclResource.new
+    acl_resource.update_acl_resource_cache
   end
 
   def duplicate_role

@@ -3,7 +3,7 @@ class Overseers::ContactCreationRequestsController < Overseers::BaseController
 
   def requested
     @contact_creation_requests = ApplyDatatableParams.to(ContactCreationRequest.all.requested.order(id: :desc), params)
-    authorize @contact_creation_requests
+    authorize_acl @contact_creation_requests
     respond_to do |format|
       format.json { render 'index' }
       format.html { render 'index' }
@@ -12,7 +12,7 @@ class Overseers::ContactCreationRequestsController < Overseers::BaseController
 
   def created
     @contact_creation_requests = ApplyDatatableParams.to(ContactCreationRequest.all.created.order(id: :desc), params)
-    authorize @contact_creation_requests
+    authorize_acl @contact_creation_requests
     respond_to do |format|
       format.json { render 'index' }
       format.html { render 'index' }
@@ -20,7 +20,7 @@ class Overseers::ContactCreationRequestsController < Overseers::BaseController
   end
 
   def update
-    authorize @contact_creation_request
+    authorize_acl @contact_creation_request
     contact = Contact.where(id: params[:contact_creation_request][:contact_id]).last
     @contact_creation_request.activity.update_attributes!(contact_id: params[:contact_id]) if @contact_creation_request.activity.present?
     @contact_creation_request.update_attributes(contact: contact)
@@ -29,11 +29,11 @@ class Overseers::ContactCreationRequestsController < Overseers::BaseController
 
   def index
     @contact_creation_requests = ApplyDatatableParams.to(ContactCreationRequest.all.order(id: :desc), params)
-    authorize @contact_creation_requests
+    authorize_acl @contact_creation_requests
   end
 
   def show
-    authorize @contact_creation_request
+    authorize_acl @contact_creation_request
   end
 
   private

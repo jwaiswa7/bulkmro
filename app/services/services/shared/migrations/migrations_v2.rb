@@ -14,6 +14,34 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
   end
 
+  def company_orders_export
+    column_headers = ['Inquiry Number', 'Order Number', 'Company Name', 'Company Alias', 'SKU', 'Line Item Net Total', 'SKU Name', 'Customer Material Code', 'Brand', 'HSN', 'Tax percentage', 'UOM']
+    model = SalesOrder
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      model.joins(:company).where(companies: {id: 479}).order(name: :asc).each do |sales_order|
+        inquiry = sales_order.inquiry
+        sales_order.rows.each do |order_row|
+          writer << [
+              inquiry.inquiry_number,
+              sales_order.order_number.to_s,
+              inquiry.company.name,
+              inquiry.company.account.name,
+              order_row.product.sku,
+              order_row.total_selling_price.to_s,
+              order_row.product.name,
+              order_row.inquiry_product.bp_catalog_sku,
+              order_row.product.brand.name,
+              order_row.tax_code.code,
+              percentage(order_row.sales_quote_row.tax_rate.tax_percentage.to_f),
+              order_row.measurement_unit
+          ]
+        end
+      end
+    end
+
+    fetch_csv('abbott_orders1.csv', csv_data)
+  end
+
   def alias_with_po_total
     column_headers = ['Company Alias', 'Company', 'Order Status', 'Order Total']
     model = PurchaseOrder
@@ -994,22 +1022,22 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
   def create_bible_orders
     # test_file
-    service = Services::Shared::Spreadsheets::CsvImporter.new('2019-05-28 Bible Fields for Migration.csv', 'seed_files_3')
-    service.loop(nil) do |x|
+    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_till_june.csv', 'seed_files_3')
+    service.loop(100) do |x|
       bible_total_with_tax = x.get_column('Total Selling Price').to_f + x.get_column('Tax Amount').to_f
 
       if bible_total_with_tax.negative?
-        bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
-                                            order_number: x.get_column('So #'),
-                                            client_order_date: x.get_column('Client Order Date'),
-                                            is_adjustment_entry: true).first_or_create! do |bible_order|
-          bible_order.inside_sales_owner = x.get_column('Inside Sales Name')
-          bible_order.company_name = x.get_column('Magento Company Name')
-          bible_order.account_name = x.get_column('Company Alias')
-          bible_order.currency = x.get_column('Price Currency')
-          bible_order.document_rate = x.get_column('Document Rate')
-          bible_order.metadata = []
-        end
+        # bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
+        #                                     order_number: x.get_column('So #'),
+        #                                     client_order_date: x.get_column('Client Order Date'),
+        #                                     is_adjustment_entry: true).first_or_create! do |bible_order|
+        #   bible_order.inside_sales_owner = x.get_column('Inside Sales Name')
+        #   bible_order.company_name = x.get_column('Magento Company Name')
+        #   bible_order.account_name = x.get_column('Company Alias')
+        #   bible_order.currency = x.get_column('Price Currency')
+        #   bible_order.document_rate = x.get_column('Document Rate')
+        #   bible_order.metadata = []
+        # end
       else
         bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
                                             order_number: x.get_column('So #'),
@@ -1021,7 +1049,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           bible_order.currency = x.get_column('Price Currency')
           bible_order.document_rate = x.get_column('Document Rate')
           bible_order.metadata = []
-          bible_order.is_adjustment_entry = false
+          # bible_order.is_adjustment_entry = false
         end
       end
 
@@ -1055,30 +1083,53 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     bible_order_tax = 0
     bible_order_total_with_tax = 0
 
-    # BibleSalesOrder.all.each do |bible_order|
-    #   bible_order.metadata.each do |line_item|
-    #     bible_order_total = bible_order_total + line_item['total_selling_price']
-    #     bible_order_tax = bible_order_tax + line_item['tax_amount']
-    #     bible_order_total_with_tax = bible_order_total_with_tax + bible_order_total + bible_order_tax
-    #     bible_order.update_attributes(order_total: bible_order_total, order_tax: bible_order_tax, order_total_with_tax: bible_order_total_with_tax)
-    #   end
-    # end
+    BibleSalesOrder.all.each do |bible_order|
+      bible_order.metadata.each do |line_item|
+        bible_order_total = bible_order_total + line_item['total_selling_price']
+        bible_order_tax = bible_order_tax + line_item['tax_amount']
+        bible_order_total_with_tax = bible_order_total_with_tax + bible_order_total + bible_order_tax
+        bible_order.update_attributes(order_total: bible_order_total, order_tax: bible_order_tax, order_total_with_tax: bible_order_total_with_tax)
+      end
+    end
     puts 'BibleSO', BibleSalesOrder.count
   end
 
   def check_bible_total
-    bible_order_total = 0
+    @bible_order_total = 0
+    @bible_order_tax = 0
+    @bible_order_total_with_tax = 0
+    @margin_amount = 0
+
     BibleSalesOrder.all.each do |bible_order|
       bible_order.metadata.each do |line_item|
-        bible_order_total = bible_order_total + line_item['total_selling_price']
+        @bible_order_total = @bible_order_total + line_item['total_selling_price']
+        @bible_order_tax = @bible_order_tax + line_item['tax_amount']
+        @bible_order_total_with_tax = @bible_order_total_with_tax + line_item['total_selling_price_with_tax']
+        @margin_amount = @margin_amount + line_item['margin_amount']
       end
     end
-    puts 'BIBLE ORDER TOTAL', bible_order_total
+    puts 'BIBLE ORDER TOTAL', @bible_order_total
+    puts 'Bible TAX', @bible_order_tax
+    puts 'TwTax', @bible_order_total_with_tax
+    puts 'Total margin', @margin_amount
   end
 
 
+  def check_bible_invoice_total
+    @bible_invoice_total = 0
+    @invoice_margin = 0
+    BibleInvoice.all.each do |bible_invoice|
+      bible_invoice.metadata.each do |line_item|
+        @bible_invoice_total = @bible_invoice_total + line_item['total_selling_price']
+        @invoice_margin = @invoice_margin + line_item['margin_amount']
+      end
+    end
+    puts 'BIBLE ORDER TOTAL', @bible_invoice_total
+    puts 'Total margin', @invoice_margin
+  end
+
   def flex_dump
-    column_headers = ['Order Date', 'OD', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Order Status', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
+    column_headers = ['Order Date', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Order Status', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
     start_at = Date.today.last_week.beginning_of_week.beginning_of_day
     end_at = Date.today.last_week.end_of_week.end_of_day
 
@@ -1089,7 +1140,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           order.rows.each do |record|
             sales_order = record.sales_order
             order_date = sales_order.inquiry.customer_order_date.strftime('%F')
-            order_cd = sales_order.created_at.strftime('%F')
             order_id = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.online_order_number : ''
             customer_po_number = sales_order.inquiry.customer_po_number
             part_number = record.product.sku
@@ -1104,37 +1154,36 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             category = record.product.category.name
             part_number_description = record.product.name
 
-            writer << [order_date, order_cd, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
+            writer << [order_date, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
           end
         end
       end
 
       flex_online_orders = CustomerOrder.joins(:company).where(companies: {id: 1847}).where(created_at: start_at..end_at).order(name: :asc)
-      flex_online_orders.each do |order|
-        order.rows.each do |record|
-          sales_order = record.sales_order
-          order_date = sales_order.inquiry.customer_order_date.strftime('%F')
-          order_cd = sales_order.created_at.strftime('%F')
-          order_id = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.online_order_number : ''
-          customer_po_number = sales_order.inquiry.customer_po_number
+      flex_online_orders.each do |customer_order|
+        customer_order.rows.each do |record|
+          inquiry = customer_order.inquiry
+          order_date = customer_order.created_at.strftime('%F')
+          order_id = customer_order.online_order_number
+          customer_po_number = inquiry.present? ? inquiry.customer_po_number : ''
           part_number = record.product.sku
-          account = sales_order.inquiry.company.name
+          account = customer_order.company_id.to_s
 
           line_item_quantity = record.quantity
-          line_item_net_total = record.total_selling_price.to_s
-          sap_status = sales_order.remote_status
-          user_email = sales_order.inquiry.customer_order.present? ? sales_order.inquiry.customer_order.contact.email : 'sivakumar.ramu@flex.com'
-          shipping_address = sales_order.inquiry.shipping_address
-          currency = sales_order.inquiry.inquiry_currency.currency.name
+          line_item_net_total = '' # record.total_selling_price.to_s
+          sap_status = ''
+          user_email = Contact.find(customer_order.contact_id).email.to_s
+          shipping_address = Address.find(customer_order.shipping_address_id).to_s
+          currency = inquiry.present? ? inquiry.inquiry_currency.currency.name : ''
           category = record.product.category.name
           part_number_description = record.product.name
 
-          writer << [order_date, order_cd, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
+          writer << [order_date, order_id, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
         end
       end
     end
 
-    fetch_csv('flex_order_data_export_weekly2.csv', csv_data)
+    fetch_csv('flex_order_data_export_weekly4.csv', csv_data)
   end
 
   def invoices_export

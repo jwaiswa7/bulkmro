@@ -8,7 +8,6 @@ class Services::Overseers::SalesInvoices::ProofOfDeliverySummary < Services::Sha
     service = Services::Overseers::Finders::SalesInvoices.new(@params, @current_overseer)
     service.call
     indexed_sales_invoices = service.indexed_records
-
     @invoice_over_month = indexed_sales_invoices.aggregations['invoice_over_time']['buckets']
     @regular_pod_over_month = indexed_sales_invoices.aggregations['regular_pod_over_time']['buckets']
     @route_through_pod_over_month = indexed_sales_invoices.aggregations['route_through_pod_over_time']['buckets']

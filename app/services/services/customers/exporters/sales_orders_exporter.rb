@@ -7,7 +7,7 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
     if company.id == 1847
       @columns = ['Order Date', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Order Status', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
     else
-      @columns = ['Inquiry Number', 'Order Number', 'Order Date', 'Mis Date', 'Company Name', 'Company Alias', 'Order Net Amount', 'Order Tax Amount', 'Order Total Amount', 'Order Status']
+      @columns = ['Inquiry Number', 'Order Number', 'Order Date', 'Company Name', 'Company Alias', 'Order Net Amount', 'Order Tax Amount', 'Order Total Amount', 'Order Status']
     end
     @columns.each do |column|
       rows.push(column)
@@ -50,14 +50,13 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
             inquiry_number: inquiry.try(:inquiry_number) || '',
             order_number: sales_order.order_number,
             order_date: sales_order.created_at.to_date.to_s,
-            mis_date: sales_order.mis_date.to_date.to_s,
-            company_alias: inquiry.try(:account).try(:name),
             company_name: inquiry.try(:company).try(:name) ? inquiry.try(:company).try(:name).gsub(/;/, ' ') : '',
+            company_alias: inquiry.try(:account).try(:name),
             gt_exc: (sales_order.calculated_total == 0) ? (sales_order.calculated_total == nil ? 0 : '%.2f' % sales_order.calculated_total) : ('%.2f' % sales_order.calculated_total),
             tax_amount: ('%.2f' % sales_order.calculated_total_tax if sales_order.inquiry.present?),
             gt_inc: ('%.2f' % sales_order.calculated_total_with_tax if sales_order.inquiry.present?),
             status: sales_order.remote_status,
-          ) if inquiry.present?
+              ) if inquiry.present?
         end
       end
       rows.drop(columns.count).each do |row|

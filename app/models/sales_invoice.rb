@@ -13,6 +13,8 @@ class SalesInvoice < ApplicationRecord
   belongs_to :shipping_address, class_name: 'Address', required: false
 
   has_one :inquiry, through: :sales_order
+  has_one :ar_invoice_request
+  has_one :invoice_request
 
   has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
@@ -307,5 +309,9 @@ class SalesInvoice < ApplicationRecord
         6
       end
     end
+  end
+
+  def to_s
+    self.invoice_number
   end
 end

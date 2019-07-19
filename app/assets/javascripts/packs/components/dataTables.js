@@ -129,7 +129,10 @@ let setup = () => {
             }, {
                 "targets": 'text-right',
                 "class": 'text-right text-nowrap'
-            }],
+            }, {
+                    "targets": 'text-center',
+                    "class": 'text-center text-nowrap'
+                }],
             fnServerParams: function (data) {
                 data['columns'].forEach(function (items, index) {
                     data['columns'][index]['name'] = $(that).find('th:eq(' + index + ')').data('name');

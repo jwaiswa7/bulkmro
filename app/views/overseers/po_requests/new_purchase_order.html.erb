@@ -1,0 +1,251 @@
+
+<div class="col-12 mt-3">
+  <%= simple_form_for [:overseers, @po_request], :url => create_purchase_order_overseers_po_request_path(@po_request), :method => :post do |f| %>
+  <%#= simple_form_for([:overseers, @po_request],:url => create_purchase_order_overseers_po_request_path(@po_request), :method => :post, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= f.hidden_field :id %>
+    <div class="card mb-2">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-2">Details</h6>
+          <div class="form-row mb-1">
+            <div class="col-8 col-md-3 mt-2 mt-md-0">
+              <strong>Sales Order</strong><br>
+              <%= link_to overseers_inquiry_sales_order_path(@po_request.inquiry, @po_request.sales_order), target: '_blank' do %>
+                <%= format_id(@po_request.sales_order.order_number) %>
+              <% end %>
+            </div>
+            <div class="col-8 col-md-3">
+              <strong>Inquiry</strong><br>
+              <%= link_to edit_overseers_inquiry_path(@po_request.inquiry), target: '_blank' do %>
+                <%= format_id(@po_request.inquiry.inquiry_number) %>
+              <% end %>
+            </div>
+            <div class="col-4 col-md-3 mt-2 mt-md-0">
+              <strong>Currency</strong><br>
+              <span data-v-html="calculated_total_margin"><%= f.object.sales_order.currency %></span>
+            </div>
+            <div class="col-4 col-md-3 mt-2 mt-md-0">
+              <strong>Purchase Order Request</strong><br>
+              <span data-v-html="calculated_total_margin">
+                #<%= f.object.id %></span>
+            </div>
+
+          </div>
+
+          <div class="form-row mb-1">
+            <div class="col-8 col-md-3 mt-2 mt-md-0">
+              <strong>Procurement Specialist</strong><br>
+              <%= f.object.inquiry.inside_sales_owner.to_s %>
+            </div>
+            <div class="col-4 col-md-3 mt-2 mt-md-0">
+              <strong>Procurement Specialist</strong><br>
+              <span data-v-html="calculated_total_margin"><%= f.object.inquiry.procurement_operations.to_s %></span>
+            </div>
+            <div class="col-8 col-md-3">
+              <strong>Outside Sales</strong><br>
+              <%= f.object.inquiry.outside_sales_owner.to_s %>
+            </div>
+
+            <div class="col-4 col-md-3 mt-2 mt-md-0">
+              <strong>Account Owner</strong><br>
+              <span data-v-html="calculated_total_margin">
+                <%= f.object.supplier.sales_manager.to_s %></span>
+            </div>
+
+          </div>
+
+          <div class="form-row mb-1">
+            <div class="col-8 col-md-3 mt-2 mt-md-0">
+              <strong>Customer Name</strong><br>
+              <%= f.object.inquiry.company.to_s %>
+            </div>
+            <div class="col-4 col-md-3 mt-2 mt-md-0">
+              <strong>PO Margin</strong><br>
+              <span data-v-html="calculated_total_margin"><%= f.object.po_margin_percentage %>%</span>
+            </div>
+            <div class="col-8 col-md-3">
+              <strong>Overall Margin</strong><br>
+              <%= f.object.sales_order.calculated_total_margin_percentage %>%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-2">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-2">Supplier Details</h6>
+          <h6 class="text-uppercase mb-1"><strong><%= f.object.supplier.to_s %></strong></h6>
+          <div class="form-row">
+            <div class="col-8 col-md-4 mt-2 mt-md-0">
+              <strong>Supplier Code</strong><br>
+              <span><%= f.object.supplier.remote_uid %></span>
+            </div>
+            <div class="col-4 col-md-4 mt-2 mt-md-0">
+              <strong>Contact</strong><br>
+              <span data-v-html="calculated_total_margin"><%= f.object.supplier.default_contact %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h6 class="text-uppercase text-black-50 mb-2">Address Details</h6>
+        <div>
+          <div class="form-row ">
+            <div class="col-md-6 mt-md-0 mb-2">
+              <strong class="d-block">Supplier - Bill To</strong>
+              <% if f.object.supplier.default_billing_address.present? %>
+                <i><%= f.object.supplier.default_billing_address.name.to_s %></i><br>
+                <%= f.object.supplier.default_billing_address.to_compact_multiline_s %><br>
+                <% if f.object.supplier.default_contact.present? %>
+                  <strong><em>Contact</em></strong>: <%= f.object.supplier.default_contact.phone.present? ? " #{f.object.supplier.default_contact}" : '-' %>
+                  <br>
+                <% end %>
+                <% if f.object.supplier.default_billing_address.gst.present? %>
+                  <strong><em>GST Number</em></strong>: <%= f.object.supplier.default_billing_address.gst %><br>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong class="d-block">Supplier - Ship To</strong>
+              <% if f.object.supplier.default_shipping_address.present? %>
+                <i><%= f.object.supplier.default_shipping_address.name.to_s %></i><br>
+                <%= f.object.supplier.default_shipping_address.to_compact_multiline_s %><br>
+                <% if f.object.supplier.default_contact.present? %>
+                  <strong><em>Contact</em></strong>: <%= f.object.supplier.default_contact.phone.present? ? " #{f.object.supplier.default_contact}" : '-' %>
+                  <br>
+                <% end %>
+                <% if f.object.supplier.default_shipping_address.gst.present? %>
+                  <strong><em>GST Number</em></strong>: <%= f.object.supplier.default_shipping_address.gst %><br>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-6 mt-2 mt-md-0 mb-2">
+              <strong class="d-block">Bulk MRO - Bill To</strong>
+              <% if f.object.bill_to.present? %>
+                <i><%= f.object.bill_to.address.name.to_s %></i><br>
+                <%= f.object.bill_to.address.to_compact_multiline_s %><br>
+                <% if f.object.bill_to.address.gst.present? %>
+                  <strong><em>GST Number</em></strong>: <%= f.object.bill_to.address.gst %><br>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong class="d-block">Bulk MRO - Ship To</strong>
+              <% if f.object.bill_to.present? %>
+                <i><%= f.object.ship_to.address.name.to_s %></i><br>
+                <%= f.object.ship_to.address.to_compact_multiline_s %><br>
+                <% if f.object.ship_to.address.gst.present? %>
+                  <strong><em>GST Number</em></strong>: <%= f.object.ship_to.address.gst %><br>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <h6 class="text-uppercase text-black-50 mb-0 mt-2">Products Details</h6>
+        <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
+          <thead>
+          <tr>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+            </th>
+            <th class="no-sort product-width-adjustment">
+              <span>Product</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Brand">Brand</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Unit of Measurement">UoM</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Manufacturer Part Number">MPN</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Lead Time">L. Time</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Unit Price">U. Price</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Discount">Discount</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Freight">Freight</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="HSN / SAC Code">T. Code</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Total With Tax">T. Price</span>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @po_request.rows.each_with_index do |row, index| %>
+            <tr>
+              <td>
+                <span><%= index + 1 %></span>
+              </td>
+              <td>
+                <span><%= row.to_s %></span>
+              </td>
+              <td>
+                <span><%= row.product.brand.to_s %></span>
+              </td>
+              <td>
+                <span><%= row.measurement_unit %></span>
+              </td>
+              <td>
+                <span><%= row.product.mpn.present? ? row.product.mpn : '-' %></span>
+              </td>
+              <td>
+                <span><%= row.lead_time.present? ? format_succinct_date(row.lead_time) : '-' %></span>
+              </td>
+              <td>
+                <span><%= format_currency(row.unit_price) %></span>
+              </td>
+              <td>
+                <span><%= row.discount_percentage %>%</span>
+              </td>
+              <td>
+                <span> - </span>
+              </td>
+              <td>
+                <span><%= row.tax_code.code[0..3] %></span>
+              </td>
+              <td>
+                <span><%= row.tax_code.tax_percentage.to_f %>%</span>
+              </td>
+              <td>
+                <span><%= format_currency(row.converted_total_selling_price_with_tax.to_f) %></span>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="form-row">
+        <div class="col-6">
+          <a id="rejection-purchase-order-button" data-po-request-id="<%= @po_request.id %>" class="btn-block btn btn-danger text-white" remote="true" ><i class="fa fa-ban mr-1"></i>Reject Supplier PO</a>
+        </div>
+        <div class="col-6">
+          <%= button_tag(type: "submit", name: "update_sent_at_field", class: "btn btn-success btn-block") do %>
+            <i class="far fa-check mr-1"></i> Create Supplier PO
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="rejection-purchase-order"></div>
+  <% end %>
+</div>

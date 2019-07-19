@@ -254,7 +254,7 @@
               </tr>
               </thead>
               <tbody>
-              <% @sales_shipment.rows.each_with_index do |item, index| %>
+              <% @sales_shipment.rows.order(:created_at).each_with_index do |item, index| %>
                 <tr>
                   <td align="center" style="border-left: 1px solid #3c3c3c;font-size: 11px; text-align: center;" valign="top">
                     <span style="color:#000000"><%= index + 1 %></span></td>
