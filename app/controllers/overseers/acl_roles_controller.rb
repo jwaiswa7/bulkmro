@@ -61,7 +61,7 @@ class Overseers::AclRolesController < Overseers::BaseController
 
   def get_acl
     default_resources = get_acl_resource_json
-    current_acl = ActiveSupport::JSON.decode(@acl_role.role_resources)
+    current_acl = ActiveSupport::JSON.decode(@acl_role.role_resources) if @acl_role.role_resources.present?
     parsed_json = ActiveSupport::JSON.decode(default_resources)
     parsed_json.map{|x| x['children'].map{|y|
         if current_acl.present? && (current_acl.include?y['id'].to_s)
