@@ -175,7 +175,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
       }
       item_row << json
     end
-
+    company_contact = CompanyContact.where(company_id: po_request.supplier_id, contacts_id: po_request.contact_id).last
     {
         PoDate: Time.now.strftime('%Y-%m-%d'),
         PoStatus: '63',
@@ -202,7 +202,10 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         U_Out_Sales_Own: po_request.inquiry.inside_sales_owner.to_s,
         U_CnfrmAddB: 'A',
         U_CnfrmAddS: 'A',
-        U_BM_BillFromTo: po_request.bill_to.remote_uid
+        U_BM_BillFromTo: po_request.bill_to.remote_uid,
+        CntctCode: company_contact.present? ? company_contact.remote_uid : '',
+        TrnspCode: po_request.transport_mode.present? ? po_request.transport_mode.to_s : 'Road',
+        U_TrmDeli: po_request.delivery_type.present? ? po_request.delivery_type : 'Door Delivery'
     }
   end
 end

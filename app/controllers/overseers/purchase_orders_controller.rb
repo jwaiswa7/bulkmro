@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :cancelled_purchase_modal, :cancelled_purchase_order, :resync_po]
+  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup]
 
   def index
     authorize_acl :purchase_order
@@ -224,6 +224,14 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @inward_dispatches.each do |pickup_request|
       pickup_request.update_attributes(logistics_owner_id: params[:logistics_owner_id])
     end
+  end
+
+  def export_material_readiness
+    authorize_acl :purchase_order
+    service = Services::Overseers::Exporters::MaterialReadinessExporter.new([], current_overseer, [])
+    service.call
+
+    redirect_to url_for(Export.material_readiness_queue.not_filtered.last.report)
   end
 
   def cancelled_purchase_modal
