@@ -273,7 +273,6 @@ Rails.application.routes.draw do
         get 'product_resync_inventory'
       end
       scope module: 'po_requests' do
-
         resources :payment_requests
         resources :email_messages do
           collection do
@@ -403,6 +402,7 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get 'export_material_readiness'
         get 'pending_sap_sync'
         get 'export_all'
         get 'export_filtered_records'
