@@ -10,8 +10,12 @@
           <div class="form-row mb-1">
             <div class="col-8 col-md-3 mt-2 mt-md-0">
               <strong>Sales Order</strong><br>
-              <%= link_to overseers_inquiry_sales_order_path(@po_request.inquiry, @po_request.sales_order), target: '_blank' do %>
-                <%= format_id(@po_request.sales_order.order_number) %>
+              <% if @po_request.sales_order.present? %>
+                <%= link_to overseers_inquiry_sales_order_path(@po_request.inquiry, @po_request.sales_order), target: '_blank' do %>
+                  <%= format_id(@po_request.sales_order.order_number) %>
+                <% end %>
+              <% else %>
+                '-'
               <% end %>
             </div>
             <div class="col-8 col-md-3">
@@ -22,7 +26,7 @@
             </div>
             <div class="col-4 col-md-3 mt-2 mt-md-0">
               <strong>Currency</strong><br>
-              <span data-v-html="calculated_total_margin"><%= f.object.sales_order.currency %></span>
+              <span data-v-html="calculated_total_margin"><%= f.object.sales_order.present? ? f.object.sales_order.currency : '-' %></span>
             </div>
             <div class="col-4 col-md-3 mt-2 mt-md-0">
               <strong>Purchase Order Request</strong><br>
@@ -63,7 +67,7 @@
             </div>
             <div class="col-8 col-md-3">
               <strong>Overall Margin</strong><br>
-              <%= f.object.sales_order.calculated_total_margin_percentage %>%
+              <%= f.object.sales_order.present? ? f.object.sales_order.calculated_total_margin_percentage : '-'%>%
             </div>
             <div class="col-8 col-md-3">
               <strong>Payment Term</strong><br>
