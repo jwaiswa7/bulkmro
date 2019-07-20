@@ -204,7 +204,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         U_CnfrmAddS: 'A',
         U_BM_BillFromTo: po_request.bill_to.remote_uid,
         CntctCode: company_contact.present? ? company_contact.remote_uid : '',
-        TrnspCode: po_request.transport_mode.present? ? PoRequest.transport_mode(po_request.transport_mode.to_sym) : 1,
+        TrnspCode: po_request.transport_mode.present? ? PoRequest.transport_modes(po_request.transport_mode.to_sym) : 1,
         U_TrmDeli: po_request.delivery_type.present? ? PoRequest.delivery_type : 'Door Delivery'
     }
   end
