@@ -105,14 +105,14 @@ class PurchaseOrder < ApplicationRecord
 
   enum delivery_type: {
       'EXW': 10,
-      'FOB': 20,
+      'CPT': 20,
       'CIF': 30,
       'CFR': 40,
-      'DAP': 50,
-      'Door Delivery': 60,
-      'FCA Mumbai': 70,
-      'CIP': 80,
-      'CIP Mumbai airport': 100
+      'FOB': 50,
+      'DAP': 60,
+      'CIP Mumbai Airport': 60,
+      'CIF Mumbai Airport': 70,
+      'Door Delivery': 80
   }
 
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
