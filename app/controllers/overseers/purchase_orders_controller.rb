@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup]
+  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po]
 
   def index
     authorize_acl :purchase_order
@@ -22,7 +22,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def pending_sap_sync
     @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.where(remote_uid: nil, sap_sync: 'Not Sync').order(id: :desc), params)
-    authorize @purchase_orders
+    authorize_acl @purchase_orders
 
     respond_to do |format|
       format.json {render 'pending_sap_sync'}
@@ -31,7 +31,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def resync_po
-    authorize @purchase_order
+    authorize_acl @purchase_order
     if @purchase_order.save_and_sync(@purchase_order.po_request)
       redirect_to overseers_inquiry_purchase_order_path(@purchase_order.inquiry.to_param, @purchase_order.to_param)
     else
