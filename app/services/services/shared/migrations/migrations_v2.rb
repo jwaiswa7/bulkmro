@@ -132,6 +132,15 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     fetch_csv('company_wise_po_dump1.csv', csv_data)
   end
 
+  def update_inquiry_in_bible_invoice
+    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_invoices.csv', 'seed_files_3')
+    service.loop(nil) do |x|
+      bi = BibleInvoice.where(invoice_number: x.get_column('Invoice Number')).last
+      bi.inquiry_number = x.get_column('Inquiry #').to_i
+      bi.save
+    end
+  end
+
   def fetch_sez_addresses
     address_ids = Inquiry.where(is_sez: true).pluck(:billing_address_id)
     columns = ['Address ID', 'Company Name']
