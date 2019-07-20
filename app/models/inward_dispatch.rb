@@ -179,7 +179,7 @@ class InwardDispatch < ApplicationRecord
   def show_ar_invoice_requests
     if self.sales_order.present?
       product_ids_array = self.rows.pluck(:product_id).uniq
-      ArInvoiceRequest.joins(:rows).where(ar_invoice_request_rows: {sales_order_id: self.sales_order.id, product_id: product_ids_array})
+      ArInvoiceRequest.includes(:rows).where(ar_invoice_request_rows: {sales_order_id: self.sales_order.id, product_id: product_ids_array})
     else
       []
     end
