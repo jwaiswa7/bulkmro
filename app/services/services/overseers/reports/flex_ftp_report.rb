@@ -15,7 +15,7 @@ class Services::Overseers::Reports::FlexFTPReport < Services::Overseers::Reports
 
     Net::SCP.start('192.168.0.165', 'saurabh', { password: 'bulkmro', port: 21 }) do |ftp|
       puts 'SCP', ftp
-      path = flex_dump
+      path = flex_order_report
       ftp.scp.upload!(path, '/home/saurabh/Documents')
     end
   end
@@ -35,7 +35,7 @@ class Services::Overseers::Reports::FlexFTPReport < Services::Overseers::Reports
     end
   end
 
-  def flex_dump
+  def flex_order_report
     column_headers = ['Order Date', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
 
     # total filters
@@ -75,7 +75,7 @@ class Services::Overseers::Reports::FlexFTPReport < Services::Overseers::Reports
           account = customer_order.company_id.to_s
 
           line_item_quantity = record.quantity
-          line_item_net_total = '' # record.total_selling_price.to_s
+          line_item_net_total = record.customer_product.customer_price.to_f * record.quantity
           user_email = Contact.find(customer_order.contact_id).email.to_s
           shipping_address = Address.find(customer_order.shipping_address_id).to_s
           currency = inquiry.present? ? inquiry.inquiry_currency.currency.name : ''
