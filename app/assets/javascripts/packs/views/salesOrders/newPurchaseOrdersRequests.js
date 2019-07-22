@@ -25,7 +25,7 @@ const newPurchaseOrdersRequests = () => {
             }
         })
     })
-    validatePoRequestAddresses();
+    // validatePoRequestAddresses();
     validatePoRequestContacts();
     updateRowTotal();
 
