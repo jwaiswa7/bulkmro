@@ -20,7 +20,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
 
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry #').to_i) || Inquiry.find_by_old_inquiry_number(x.get_column('Inquiry #'))
       begin
-        bible_invoice = BibleInvoice.where(inquiry_number: x.get_column('Inquiry Number').to_i,
+        bible_invoice = BibleInvoice.where(inquiry_number: x.get_column('Inquiry #').to_i,
                                            invoice_number: invoice_number,
                                            mis_date: Date.parse(x.get_column('Invoice Date')).strftime('%Y-%m-%d')).first_or_create! do |bsi|
           # bible_invoice.inquiry = inquiry

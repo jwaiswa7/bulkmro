@@ -149,7 +149,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         'po_overall_margin' => remote_response['U_Ovr_Margin'],
         'PoPackingForwarding' => remote_response['U_PackFwd'],
         'PoCurrencyChangeRate' => remote_response['DocRate'] || "1",
-        'PoModeOfTrasport' => PurchaseOrder.transport_modes.key(remote_response['ShippingMethod'].to_i) || 'Road',
+        'PoModeOfTrasport' => (PurchaseOrder.transport_modes.key(remote_response['DocumentLines'][0]['ShippingMethod'].to_i)) || 'Road',
         'LineTotal' => freight,
         'TaxSum' => freight_tax
     }
@@ -212,8 +212,8 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         U_CnfrmAddS: 'A',
         U_BM_BillFromTo: po_request.bill_to.remote_uid,
         CntctCode: company_contact.present? ? company_contact.remote_uid : '',
-        TrnspCode: po_request.transport_mode.present? ? PoRequest.transport_mode(po_request.transport_mode.to_sym) : 1,
-        U_TrmDeli: po_request.delivery_type.present? ? PoRequest.delivery_type : 'Door Delivery'
+        TrnspCode: po_request.transport_mode.present? ? PoRequest.transport_modes[po_request.transport_mode.to_sym] : 1,
+        U_TrmDeli: po_request.delivery_type.present? ? po_request.delivery_type.to_s : 'Door Delivery'
     }
   end
 end
