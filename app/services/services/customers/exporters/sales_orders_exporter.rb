@@ -25,7 +25,7 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
     Enumerator.new do |yielder|
       yielder << CSV.generate_line(rows)
       if company.id == 1847
-        flex_offline_orders = SalesOrder.joins(:company).where(companies: {id: company.id}).where(created_at: @start_at..@end_at).order(name: :asc)
+        flex_offline_orders = SalesOrder.joins(:inquiry, :company).where(companies: {id: company.id}).where(inquiries: {customer_order_date: @start_at..@end_at}).order(name: :asc)
         offline_orders = @amount_filter.present? && @amount_filter > 0 ? flex_offline_orders.reject { |so| so.calculated_total > @amount_filter.to_i } : flex_offline_orders
         offline_orders.each do |order|
           if !order.inquiry.customer_order.present?
