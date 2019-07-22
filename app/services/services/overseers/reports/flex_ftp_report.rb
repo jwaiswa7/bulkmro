@@ -13,11 +13,11 @@ class Services::Overseers::Reports::FlexFTPReport < Services::Overseers::Reports
     #   ssh.scp.upload!(path, '/in')
     # end
 
-    Net::SCP.start('192.168.0.165', 'saurabh', { password: 'bulkmro', port: 21 }) do |ftp|
-      puts 'SCP', ftp
-      path = flex_order_report
-      ftp.scp.upload!(path, '/home/saurabh/Documents')
-    end
+    # Net::SCP.start('192.168.0.165', 'saurabh', { password: 'bulkmro', port: 21 }) do |ftp|
+    #   puts 'SCP', ftp
+    #   path = flex_order_report
+    #   ftp.scp.upload!(path, '/home/saurabh/Documents')
+    # end
   end
 
   def fetch_csv(filename, csv_data)
@@ -38,7 +38,6 @@ class Services::Overseers::Reports::FlexFTPReport < Services::Overseers::Reports
   def flex_order_report
     column_headers = ['Order Date', 'Order ID', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
 
-    # total filters
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
       flex_offline_orders = SalesOrder.joins(:company).where(companies: {id: company.id}).where(created_at: start_at..end_at).order(name: :asc)
       flex_offline_orders.each do |order|
