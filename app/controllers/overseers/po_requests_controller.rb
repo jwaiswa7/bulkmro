@@ -1,7 +1,7 @@
 class Overseers::PoRequestsController < Overseers::BaseController
-  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_modal_form, :add_comment]
+  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form, :render_comment_form, :render_modal_form, :add_comment, :new_purchase_order, :create_purchase_order, :manager_amended, :reject_purchase_order_modal]
   before_action :set_notification, only: [:update, :cancel_porequest]
-
+  before_action :set_product, only: [:product_resync_inventory]
   def pending_and_rejected
     @po_requests = filter_by_status(:pending_and_rejected)
     authorize_acl @po_requests
@@ -215,6 +215,55 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
+  def new_purchase_order
+    authorize_acl @po_request
+  end
+
+  def create_purchase_order
+    authorize_acl @po_request
+    service = Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer))
+    purchase_order = service.create
+    if purchase_order.present?
+      redirect_to overseers_inquiry_purchase_order_path(purchase_order.inquiry.to_param, purchase_order.to_param)
+    else
+      redirect_to overseers_purchase_orders_path
+    end
+  end
+
+  def reject_purchase_order_modal
+    authorize_acl @po_request
+    respond_to do |format|
+      format.html { render partial: 'reject_purchase_order'}
+    end
+  end
+
+  def rejected_purchase_order
+    @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
+    authorize_acl @po_request
+    status = Services::Overseers::PurchaseOrders::RejectPurchaseOrder.new(params, @po_request).call
+    if status
+      # redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
+      render json: {sucess: 'Successfully updated ', url: pending_and_rejected_overseers_po_requests_path }, status: 200
+    else
+      render json: {error: @po_request.errors }, status: 500
+    end
+  end
+
+  def manager_amended
+    Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer)).update
+    redirect_to overseers_inquiry_purchase_order_path(@po_request.inquiry.to_param, @po_request.purchase_order.to_param)
+    authorize_acl @po_request
+  end
+
+  def product_resync_inventory
+    service = Services::Resources::Products::UpdateInventory.new([@product])
+    service.resync
+    respond_to do |format|
+      format.html {render partial: 'product_resync_inventory', locals: {product: @product}}
+    end
+    authorize_acl :po_request
+  end
+
   private
 
     def po_request_params
@@ -242,6 +291,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
           :requested_by_id,
           :approved_by_id,
           :supplier_id,
+          :transport_mode,
+          :delivery_type,
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion],
           attachments: []
@@ -250,5 +301,9 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
     def set_po_request
       @po_request = PoRequest.find(params[:id])
+    end
+
+    def set_product
+      @product = Product.find(params[:product_id])
     end
 end

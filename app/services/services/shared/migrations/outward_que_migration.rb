@@ -1,4 +1,5 @@
 class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migrations::Migrations
+  # 1. Migration for connect Inward and SalesOrder
   def addAssociationInInwardDisapatch
     InwardDispatch.all.each do |inward_dispatch|
       purchase_order = inward_dispatch.purchase_order
@@ -12,13 +13,17 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
     end
   end
 
+  # 2. Migration for connect product with inward_dispatch and sales_order
   def add_product_row_in_inward_dispatch
-    InwardDispatchRow.all.each do |inward_dispatch_row|
+    InwardDispatchRow.where(product_id: nil).each do |inward_dispatch_row|
       Chewy.strategy(:bypass) do
         inward_dispatch_row.product = inward_dispatch_row.purchase_order_row.product
         inward_dispatch_row.save(validate: false)
       end
     end
+    # purchase_order_row_don't have product
+    # [39440, 40603, 40878, 41116, 41554, 41260, 41259, 42137, 29509, 42454, 42795, 42794, 41355, 43246, 42372, 43797, 42901, 41486, 44741, 44902]
+
 
     SalesOrderRow.where(product_id: nil).each do |sales_order_row|
       Chewy.strategy(:bypass) do
@@ -104,6 +109,8 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
       end
     end
   end
+
+  # 3. Creation for ArInvoiceRequest and its rows
   def createArInvoiceAndRows
     invoice_requests = InvoiceRequest.where(status: 'Completed AR Invoice Request').group_by(&:ar_invoice_number)
     invoice_requests.each do |key, val|
@@ -156,6 +163,7 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
     # InvoiceRequest.where(status: 'Completed AR Invoice Request').update_all(status: 'Inward Completed')
   end
 
+  # 4. Associations added for sales_invoice and invoice request
   def add_association_of_sales_invoice
     invoice_request_ids = []
     invoice_requests =  InvoiceRequest.where.not(ar_invoice_number: nil)

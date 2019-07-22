@@ -288,7 +288,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def duplicate
     @new_inquiry = @inquiry.dup
-    authorize @inquiry
+    authorize_acl @inquiry
     @new_inquiry.inquiry_number = nil
     @new_inquiry.opportunity_uid = nil
     @new_inquiry.project_uid = nil
@@ -406,7 +406,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def export_pipeline_report
-    authorize :inquiry
+    authorize_acl :inquiry
     service = Services::Overseers::Finders::PipelineReports.new(params, current_overseer)
     service.call
 

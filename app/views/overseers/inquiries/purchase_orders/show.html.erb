@@ -205,7 +205,7 @@
                 <span><%= index + 1 %></span>
               </td>
               <td>
-                <span><%= item.sku %></span>
+                <span><%= item.product.sku %></span>
               </td>
               <td>
                 <span></span>
@@ -214,13 +214,13 @@
                 <span><%= item.metadata['PopProductName'] %></span>
               </td>
               <td>
-                <span><%= item.brand %></span>
+                <span><%= item.product.brand %></span>
               </td>
               <td>
                 <span><%= item.metadata['PopHsn'] %></span>
               </td>
               <td>
-                <span><%= item.uom %></span>
+                <span><%= item.product.measurement_unit.to_s %></span>
               </td>
               <td>
                 <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
