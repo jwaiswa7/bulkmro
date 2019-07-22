@@ -106,7 +106,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         PoShipWarehouse: po_request.ship_to.remote_uid,
         PoComments: po_request.sales_order.present? ? "Purchase Order Against Sales Order #{po_request.sales_order.order_number}" : "Purchase Order Against For stock Inquiry Number #{po_request.inquiry.inquiry_number}",
         PoOrderId: (po_request.sales_order.present? ? po_request.sales_order.order_number : ''),
-        PoFreight: '',
+        PoFreight: po_request.rows.pluck(:product_id).include?(38282) ? 'Excluded' : 'Included',
         PoRemarks: '',
         PoTaxRate: '',
         PoUpdatedAt: '',
@@ -141,7 +141,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
 
   def set_product(row, index)
     {
-        PopHsn: row.product.sku,
+        PopHsn: row.taxation.to_remote_s,
         PopQty: row.quantity.to_f,
         Linenum: index,
         UnitMsr: row.measurement_unit.name,
