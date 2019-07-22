@@ -27,7 +27,6 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
       if company.id == 1847
         flex_offline_orders = SalesOrder.joins(:company).where(companies: {id: company.id}).where(created_at: @start_at..@end_at).order(name: :asc)
         offline_orders = @amount_filter.present? && @amount_filter > 0 ? flex_offline_orders.reject{ |so| so.calculated_total > @amount_filter.to_i } : flex_offline_orders
-        binding.pry
         offline_orders.each do |order|
           if !order.inquiry.customer_order.present?
             order.rows.each do |record|
@@ -60,11 +59,11 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
               order_id: customer_order.online_order_number,
               customer_po_number: inquiry.present? ? inquiry.customer_po_number : '',
               part_number: record.product.sku,
-              account: customer_order.company_id.to_s,
+              account: inquiry.present? ? inquiry.company.account.name : Company.find(sales_order.company_id).account.name,
               line_item_quantity: record.quantity,
               line_item_net_total: record.customer_product.customer_price.to_f * record.quantity,
-              user_email: Contact.find(customer_order.contact_id).email.to_s,
-              shipping_address: Address.find(customer_order.shipping_address_id).to_s,
+              user_email: inquiry.present? ? inquiry.contact.email.to_s : Contact.find(sales_order.contact_id).email.to_s,
+              shipping_address: inquiry.present? ? inquiry.shipping_address : Address.find(customer_order.shipping_address_id).to_s,
               currency: inquiry.present? ? inquiry.inquiry_currency.currency.name : '',
               category: record.product.category.name,
               part_number_description: record.product.name
