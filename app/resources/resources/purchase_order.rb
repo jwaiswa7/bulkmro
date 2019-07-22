@@ -171,7 +171,15 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
           WarehouseCode: po_request.bill_to.remote_uid,
           LocationCode: po_request.bill_to.location_uid,
           MeasureUnit: row.measurement_unit.name,
-          U_ProdBrand: row.brand_id.present? ? row.brand.name : row.product.brand.name
+          U_ProdBrand: row.brand_id.present? ? row.brand.name : row.product.brand.name,
+          U_CnfirmQty: 'A',
+          U_CnfrmAddB: 'A',
+          U_CnfrmAddS: 'A',
+          U_CnfrmRate: 'A',
+          U_CnfrmTax: 'A',
+          U_CnfrmGross: 'A',
+          U_Cnfrm_GSTIN: 'A',
+          U_Cnfrm_PayTerm: 'A'
       }
       item_row << json
     end
