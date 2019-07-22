@@ -79,7 +79,7 @@ const edit = () => {
     $('select[name*=status]').trigger('change');
     $('select[name*=stock_status]').trigger('change');
 
-    validatePoRequestAddresses();
+    // validatePoRequestAddresses();
     updateRowTotal();
     updateOnContactSelect();
     validateLeadDate();

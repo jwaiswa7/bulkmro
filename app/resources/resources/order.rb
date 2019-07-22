@@ -72,6 +72,7 @@ class Resources::Order < Resources::ApplicationResource
         U_Tax_Rmks: '', # hardcode
         U_Total_Rmks: '', # hardcode
         U_Ship_Rmks: '', # hardcode
+        U_Ship_GST: record.shipping_address.present? ? record.shipping_address.gst : '',
         U_Bill_Rmks: '', # hardcode
         U_PostBy: 'Magento', # hardcode
         U_PostMagento: 'Y', # hardcode

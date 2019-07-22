@@ -79,7 +79,7 @@
                   <b><span>Mode of Transport</span></b> <span style="float:right">:</span>
                 </td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span><%= locals[:metadata][:PoModeOfTrasport] %></span>
+                  <span><%= locals[:purchase_order].transport_mode.present? ? locals[:purchase_order].transport_mode : locals[:metadata][:PoModeOfTrasport] %></span>
                 </td>
               </tr>
               <tr>
@@ -87,7 +87,7 @@
                   <b><span>Delivery Terms </span></b> <span style="float:right">:</span>
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span><%= locals[:metadata][:PoDeliveryTerms] %></span>
+                  <span><%= locals[:purchase_order].delivery_type.present? ? locals[:purchase_order].delivery_type : locals[:metadata][:PoDeliveryTerms] %></span>
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span>Payment Terms</span></b> <span style="float:right">:</span>
@@ -241,22 +241,22 @@
                     <span><%= index + 1 %></span>
                   </td>
                   <td align="center" valign="top">
-                    <span><%= item.sku %></span>
+                    <span><%= item.product.present? ? item.product.sku : item.sku %></span>
                   </td>
                   <td align="center" valign="top">
-                    <span></span>
+                    <span><%= item.product.present? ? item.product.mpn : '' %></span>
                   </td>
                   <td align="left" valign="top">
                     <span><%= item.metadata['PopProductName'] %></span>
                   </td>
                   <td align="center" valign="top">
-                    <span><%= item.brand %></span>
+                    <span><%= item.product.present? ? item.product.brand.to_s : item.brand %></span>
                   </td>
                   <td align="center" valign="top">
                     <span><%= item.metadata['PopHsn'] %></span>
                   </td>
                   <td align="center" valign="top">
-                    <span><%= item.uom %></span>
+                    <span><%= item.product.present? ? item.product.measurement_unit.name : item.uom %></span>
                   </td>
                   <td align="center" valign="top">
                     <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
