@@ -26,7 +26,7 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
       yielder << CSV.generate_line(rows)
       if company.id == 1847
         flex_offline_orders = SalesOrder.joins(:company).where(companies: {id: company.id}).where(created_at: @start_at..@end_at).order(name: :asc)
-        offline_orders = @amount_filter.present? && @amount_filter > 0 ? flex_offline_orders.reject{ |so| so.calculated_total > @amount_filter.to_i } : flex_offline_orders
+        offline_orders = @amount_filter.present? && @amount_filter > 0 ? flex_offline_orders.reject { |so| so.calculated_total > @amount_filter.to_i } : flex_offline_orders
         offline_orders.each do |order|
           if !order.inquiry.customer_order.present?
             order.rows.each do |record|
@@ -50,7 +50,7 @@ class Services::Customers::Exporters::SalesOrdersExporter < Services::Customers:
         end
 
         flex_online_orders = CustomerOrder.joins(:company).where(companies: {id: company.id}).where(created_at: @start_at..@end_at).order(name: :asc)
-        online_orders = @amount_filter.present? && @amount_filter > 0 ? flex_online_orders.reject{ |so| so.calculated_total > @amount_filter.to_i } : flex_online_orders
+        online_orders = @amount_filter.present? && @amount_filter > 0 ? flex_online_orders.reject { |so| so.calculated_total > @amount_filter.to_i } : flex_online_orders
         online_orders.each do |customer_order|
           customer_order.rows.each do |record|
             inquiry = customer_order.inquiry
