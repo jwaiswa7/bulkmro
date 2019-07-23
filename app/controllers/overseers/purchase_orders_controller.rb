@@ -23,7 +23,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def pending_sap_sync
     @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.where(remote_uid: nil, sap_sync: 'Not Sync').order(id: :desc), params)
     authorize_acl @purchase_orders
-
     respond_to do |format|
       format.json {render 'pending_sap_sync'}
       format.html {render 'pending_sap_sync'}
