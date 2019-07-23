@@ -159,7 +159,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize_acl :sales_order
 
     #sales_orders = SalesOrder.where.not(sent_at: nil).where(draft_uid: nil, status: :'SAP Approval Pending').not_legacy
-    sales_orders = SalesOrder.where.not(sent_at: nil).where(remote_uid: nil, status: :'Approved').where.not(order_number: nil)
+
+    sales_orders = SalesOrder.where.not(sent_at: nil).where(remote_uid: nil, status: :'Approved').where("created_at >= '2019-07-18'")
     respond_to do |format|
       format.html { }
       format.json do
