@@ -216,7 +216,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         TransportationCode: po_request.transport_mode.present? ? PoRequest.transport_modes[po_request.transport_mode.to_sym] : 1,
         U_TrmDeli: po_request.delivery_type.present? ? po_request.delivery_type.to_s : 'Door Delivery',
         U_PO_Pur: po_request_pur,
-        PaymentGroupCode: po_request.remote_uid.present? ? po_request.remote_uid : ''
+        PaymentGroupCode: po_request.payment_option.present? ? po_request.payment_option.remote_uid : ''
     }
   end
 end

@@ -3,7 +3,11 @@ class Overseers::TaxCodesController < Overseers::BaseController
   before_action :set_notification, only: [:update]
 
   def autocomplete
-    @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
+    if params[:is_service].present?
+      @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
+    else
+      @tax_codes = ApplyParams.to(TaxCode.active, params)
+    end
     authorize_acl :tax_code
   end
 
@@ -12,6 +16,7 @@ class Overseers::TaxCodesController < Overseers::BaseController
     @is_service = @product.try(:is_service) || false
     @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', @is_service), params)
     authorize_acl @tax_codes
+
     respond_to do |format|
       format.html { }
       format.json do
