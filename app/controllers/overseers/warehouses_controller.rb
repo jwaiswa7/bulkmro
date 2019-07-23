@@ -13,7 +13,8 @@ class Overseers::WarehousesController < Overseers::BaseController
 
   def autocomplete
     authorize_acl :warehouse
-    if params[:bill_from].present? && params[:bill_from] == true
+
+    if params[:bill_from].present? && params[:bill_from] == true.to_s
       warehouses = Warehouse.where('is_active = ? AND series_code IS NOT ?', true, nil)
     else
       warehouses = Warehouse.all.active
