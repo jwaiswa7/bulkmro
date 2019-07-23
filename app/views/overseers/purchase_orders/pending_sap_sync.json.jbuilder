@@ -4,6 +4,7 @@ json.data (@purchase_orders) do |purchase_order|
                       row_action_button(resync_po_overseers_purchase_order_path(purchase_order.to_param), 'retweet-alt', 'Resync Purchase Order', 'danger')
                   ],
                   purchase_order.inquiry.inquiry_number,
+                  purchase_order.po_request.present? ? purchase_order.po_request.sales_order.present? ? link_to(purchase_order.po_request.sales_order.order_number, overseers_inquiry_sales_order_path(purchase_order.po_request.inquiry.to_param, purchase_order.po_request.sales_order.to_param)) : '-' : '-',
                   purchase_order.po_number,
                   purchase_order.rows.count,
                   purchase_order.inquiry.inside_sales_owner.to_s,
