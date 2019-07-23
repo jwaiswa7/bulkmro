@@ -17,6 +17,13 @@
   <% end %>
 <% end %>
 
+
+<% if Settings.reports.show_summary %>
+  <div class="col-lg-12">
+    <%= render partial: "shared/layouts/summary", locals: {klass: PurchaseOrder, statuses: PurchaseOrder.summary_statuses} %>
+  </div>
+<% end %>
+
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all">

@@ -258,4 +258,11 @@ class PurchaseOrder < ApplicationRecord
   def po_request_present?
     self.po_request.present? ? (self.po_request.status == 'Supplier PO Sent' || self.po_request.status == 'Supplier PO: Created Not Sent') : false
   end
+
+  def summary_statuses
+    field :pending_follow_up, value: ->(record) { record.count if record.followup_date.present? && record.followup_date < Date.today }, type: 'integer'
+    field :follow_up_for_today, value: ->(record) { record.count if record.followup_date.present? && record.followup_date == Date.today }, type: 'integer'
+    field :committed_date_breached, value: ->(record) { record.count if record.po_request.present? && record.po_request.inquiry.customer_committed_date < Date.today }, type: 'integer'
+    field :committed_date_approaching, value: ->(record) { record.count if record.po_request.present? && record.po_request.inquiry.customer_committed_date > Date.today && record.po_request.inquiry.customer_committed_date < (Date.today + 2.day) }, type: 'integer'
+  end
 end
