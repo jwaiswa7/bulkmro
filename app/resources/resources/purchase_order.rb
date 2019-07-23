@@ -157,6 +157,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
 
   def self.to_remote(record, po_request)
     item_row = []
+    po_request_pur = po_request.sales_order.present? ? 1 : 2
     po_request.rows.each do |row|
       json = {
           ItemCode: row.product.sku,
@@ -213,7 +214,8 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         U_BM_BillFromTo: po_request.bill_to.remote_uid,
         CntctCode: company_contact.present? ? company_contact.remote_uid : '',
         ShippingMethod: po_request.transport_mode.present? ? PoRequest.transport_modes[po_request.transport_mode.to_sym] : 1,
-        U_TrmDeli: po_request.delivery_type.present? ? po_request.delivery_type.to_s : 'Door Delivery'
+        U_TrmDeli: po_request.delivery_type.present? ? po_request.delivery_type.to_s : 'Door Delivery',
+        U_PO_Pur: po_request_pur
     }
   end
 end
