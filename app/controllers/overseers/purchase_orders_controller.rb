@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po]
+  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po, :cancelled_purchase_modal, :cancelled_purchase_order]
 
   def index
     authorize_acl :purchase_order
