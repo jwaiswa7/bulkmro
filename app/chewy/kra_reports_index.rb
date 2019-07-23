@@ -15,7 +15,12 @@ class KraReportsIndex < BaseIndex
     field :inside_sales_executive, value: -> (record) {record.bible_inside_sales_owner}
     field :outside_sales_executive, value: -> (record) {record.bible_outside_sales_owner}
     field :procurement_operations, value: -> (record) {record.procurement_operations_id.present? ? record.procurement_operations_id : record.inside_sales_owner_id}
-    field :sales_quote_count, value: -> (record) {record.bible_final_sales_quotes ? record.bible_final_sales_quotes.count : 0}, type: 'integer'
+    field :sales_quote_count, value: -> (record) {
+      if record.bible_final_sales_quotes.present?
+        record.bible_final_sales_quotes.count
+      elsif record.final_sales_quotes.present?
+        record.final_sales_quotes.count
+      end}, type: 'integer'
     field :expected_order, value: -> (record) {record.status == 'Expected Order' ? 1 : 0}, type: 'integer'
     field :order_won, value: -> (record) {record.status == 'Order Won' ? 1 : 0}, type: 'integer'
     field :company_key, value: -> (record) {record.company_id}, type: 'integer'

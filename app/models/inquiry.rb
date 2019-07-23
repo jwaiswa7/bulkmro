@@ -445,6 +445,14 @@ class Inquiry < ApplicationRecord
     end
   end
 
+  def total_sales_orders
+    self.sales_orders.where(status: 'Approved') if self.sales_orders.present?
+  end
+
+  def final_sales_quotes
+    self.total_sales_orders.map { |so| so.sales_quote } unless self.total_sales_orders.blank?
+  end
+
   def bible_final_sales_quotes
     sales_quotes_ids = []
     BibleSalesOrder.where(:inquiry_number => self.inquiry_number).each do |bso|
