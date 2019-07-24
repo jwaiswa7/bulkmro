@@ -26,7 +26,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def new_purchase_order?
-    true
+    record.status == 'Supplier PO: Request Pending' || record.stock_status == 'Stock Requested' || record.status == 'Supplier PO: Amendment Pending'
   end
 
   def new?

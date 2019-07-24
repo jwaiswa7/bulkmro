@@ -4,7 +4,7 @@ class PurchaseOrder < ApplicationRecord
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
   include Mixins::CanBeSynced
-  #update_index('purchase_orders#purchase_order') { self }
+  update_index('purchase_orders#purchase_order') { self }
   update_index('customer_order_status_report#sales_order') { self.po_request.sales_order if self.po_request.present? }
 
   pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
@@ -105,14 +105,14 @@ class PurchaseOrder < ApplicationRecord
 
   enum delivery_type: {
       'EXW': 10,
-      'FOB': 20,
+      'CPT': 20,
       'CIF': 30,
       'CFR': 40,
-      'DAP': 50,
-      'Door delivery': 60,
-      'FCA Mumbai': 70,
-      'CIP': 80,
-      'CIP Mumbai airport': 100
+      'FOB': 50,
+      'DAP': 60,
+      'CIP Mumbai Airport': 60,
+      'CIF Mumbai Airport': 70,
+      'Door Delivery': 80
   }
 
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}

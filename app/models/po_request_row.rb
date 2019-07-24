@@ -117,7 +117,12 @@ class PoRequestRow < ApplicationRecord
   end
 
   def to_s
-    "#{supplier_product_sku} - #{supplier_product_name}"
+    if supplier_product_name.present? && supplier_product_sku.present?
+      "#{supplier_product_sku} - #{supplier_product_name}"
+    elsif self.product.present?
+      product = self.product
+      "#{product.sku} - #{product.name}"
+    end
   end
 
   def taxation
