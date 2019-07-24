@@ -47,6 +47,12 @@ const index = () => {
 
 
     })
+
+    $('.confirm-create').unbind('click').bind('click',function (e) {
+        let inquiry_id = $('#po_request_inquiry_id').val();
+        window.open(Routes.new_overseers_inquiry_po_request_path(inquiry_id));
+
+    })
 };
 
 export default index
