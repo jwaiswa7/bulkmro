@@ -394,7 +394,12 @@
                     <div id="internal-comments" class="collapse" data-parent="#accordion">
                       <div class="card-body">
                         <%= f.simple_fields_for :custom_fields do |c| %>
-                          <%= c.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+                          <div class="form-group">
+                            <%= c.label :reject_reasons, 'Reject Reasons', class: "form-control-label text-capitalize string optional"%>
+                            <%= c.select :reject_reasons, SalesOrder.reject_reasons,
+                                         {selected: SalesOrder.reject_reasons.values}, :multiple => true, :class => 'form-control select2-multiple', required: true %>
+                          </div>
+                          <%= c.input :message, :placeholder => 'Type message', required: false %>
                           <%= c.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@sales_order).reject? %>
                         <% end %>
                       </div>
