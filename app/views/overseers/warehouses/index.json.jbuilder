@@ -9,6 +9,7 @@ json.data (@warehouses) do |warehouse|
                       end,
                   ].join(' '),
                   conditional_link(warehouse.name.to_s, overseers_warehouse_path(warehouse), is_authorized(warehouse, 'edit')),
+                  warehouse.series_code,
                   warehouse.address.state.name.to_s,
                   if warehouse.address.gst.to_s.empty?
                     'N/A'

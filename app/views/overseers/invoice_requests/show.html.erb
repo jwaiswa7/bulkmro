@@ -2,7 +2,7 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        <%= @invoice_request.readable_status %> for Order #<%= @invoice_request.sales_order.order_number %>:&nbsp;<%= status_badge(@invoice_request.status) %>
+        <%= @invoice_request.readable_status %> for Order #<%= @invoice_request.sales_order.order_number if @invoice_request.sales_order.present?%>:&nbsp;<%= status_badge(@invoice_request.status) %>
       </h3>
       <% if is_authorized(@invoice_request, 'edit') %>
         <a href="<%= edit_overseers_invoice_request_path(@invoice_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>

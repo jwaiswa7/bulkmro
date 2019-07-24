@@ -106,7 +106,7 @@
           <div class="form-row">
             <div class="col-12">
               <div class="chats">
-                <% @purchase_order.comments.each do |comment| %>
+                <%@purchase_order.comments.order(created_at: :desc).each do |comment| %>
                   <% if comment.persisted? %>
                     <%= format_comment(comment) %>
                   <% end %>

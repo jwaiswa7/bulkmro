@@ -47,6 +47,15 @@ import invoiceRequests from "./invoiceRequests/init";
 // Po Requests
 import poRequests from "./poRequests/init";
 
+// AR invoices
+import arInvoiceRequests from "./arInvoiceRequests/init";
+
+// Outward dispatch
+import outwardDispatches from './outwardDispatches/init'
+
+// PackingSlip
+import packingSlips from "./packingSlips/init";
+
 // Activities
 import activities from './activities/init'
 
@@ -64,6 +73,7 @@ import documentCreations from "./documentCreations/init";
 import checkout from "./checkout/init";
 
 // Image Reader
+
 import imageReaders from "./imageReaders/init"
 
 import taxCodes from "./taxCodes/init"
@@ -117,6 +127,9 @@ let loader = {
     overseers:overseers,
     aclRoles:aclRoles,
     logisticsScorecards: logisticsScorecards,
+    arInvoiceRequests: arInvoiceRequests,
+    outwardDispatches: outwardDispatches,
+    packingSlips:packingSlips,
     addresses: addresses
 };
 

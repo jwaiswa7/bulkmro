@@ -8,7 +8,7 @@ class CompanyReportsIndex < BaseIndex
 
     field :created_at, value: -> (record) {record.created_at}, type: 'date'
     field :updated_at, value: -> (record) {record.updated_at}, type: 'date'
-    field :live_inquiries, value: -> (record) {record.inquiry_size}, type: 'integer'
+    field :inquiries_size, value: -> (record) {record.inquiry_size}, type: 'integer'
     field :inquiries, value: -> (record) {record.inquiries.count}, type: 'integer'
     field :invoices_count, value: -> (record) {record.invoices.count}, type: 'integer'
     field :sales_quote_count, value: -> (record) {record.final_sales_quotes.count}, type: 'integer'

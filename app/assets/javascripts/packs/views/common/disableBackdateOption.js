@@ -1,7 +1,7 @@
-const disableBackdateOption = (element, autoUpdateInput = true) => {
+const disableBackdateOption = (element, autoUpdateInput = true, minDate = moment()) => {
     var datepickerOptions = {
         singleDatePicker: true,
-        minDate: moment(),
+        minDate: minDate,
         autoUpdateInput: autoUpdateInput,
         locale: {
             format: 'DD-MMM-YYYY'

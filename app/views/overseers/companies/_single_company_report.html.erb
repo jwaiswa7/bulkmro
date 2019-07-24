@@ -1,0 +1,90 @@
+<div class="mt-2 form-row d-flex flex-row align-content-stretch">
+  <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
+    <a class="summary_box card w-100 mb-2 rim rim-bottom" href="#">
+      <div class="text-center d-flex flex-column h-100">
+        <p class="mb-1 text-small text-uppercase">
+          <strong>Total Open Inquiries</strong>
+        </p>
+        <h5 class="mb-0">
+          <%= Inquiry.left_outer_joins(:sales_quotes).where('inquiries.company_id = ? AND inquiries.status NOT IN (?,?)', company.id, 9, 10).where(sales_quotes: {id: nil}).size %>
+        </h5>
+        <hr class="my-2">
+      </div>
+    </a>
+  </div>
+
+  <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
+    <a class="summary_box card w-100 mb-2 rim rim-bottom" href="#">
+      <div class="text-center d-flex flex-column h-100">
+        <p class="mb-1 text-small text-uppercase">
+          <strong>Total Open Quotes</strong>
+        </p>
+        <%
+          open_quotes = 0
+          total_value = 0
+          company.inquiries.each do |inquiry|
+            if inquiry.sales_quotes.present?
+              sq = inquiry.sales_quotes.last
+              if sq.sales_orders.blank?
+                open_quotes += 1
+                total_value += sq.converted_total_with_tax
+              end
+            end
+          end
+        %>
+        <h5 class="mb-0 mt-auto"><%= open_quotes %></h5>
+        <hr class="my-2">
+        <h5 class="my-0 text-small">
+          &#8377;<%= number_to_currency(total_value, precision: 0, unit: '') %>
+          <%# Inquiry.left_outer_joins(:sales_quotes).left_outer_joins(:sales_orders).where('inquiries.company_id = ? AND inquiries.status NOT IN (?,?)', company.id, 9, 10).where(sales_orders: {id: nil}).size %>
+        </h5>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
+    <a class="summary_box card w-100 mb-2 rim rim-bottom" href="#">
+      <div class="text-center d-flex flex-column h-100">
+        <p class="mb-1 text-small text-uppercase">
+          <strong>Total Sales Orders</strong>
+        </p>
+        <%
+          confirmed_orders = 0
+          confirmed_orders_total_value = 0
+          confirmed_invoices = 0
+          confirmed_invoices_total_value = 0
+          company.inquiries.each do |inquiry|
+            inquiry.sales_orders.remote_approved.each do |so|
+                confirmed_orders += 1
+                confirmed_orders_total_value += so.converted_total_with_tax
+                so.invoices.each do | si |
+                  confirmed_invoices += 1
+                  confirmed_invoices_total_value += si.metadata['base_grand_total'].to_f
+                end
+            end
+          end
+        %>
+        <h5 class="mb-0 mt-auto"><%= confirmed_orders %></h5>
+        <hr class="my-2">
+        <h5 class="my-0 text-small">
+          &#8377;<%= number_to_currency(confirmed_orders_total_value, precision: 0, unit: '') %>
+        </h5>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
+    <a class="summary_box card w-100 mb-2 rim rim-bottom" href="#">
+      <div class="text-center d-flex flex-column h-100">
+        <p class="mb-1 text-small text-uppercase">
+          <strong>Total Invoices</strong>
+        </p>
+        <h5 class="mb-0 mt-auto"><%= confirmed_invoices %></h5>
+        <hr class="my-2">
+        <h5 class="my-0 text-small">
+          &#8377;<%= number_to_currency(confirmed_invoices_total_value, precision: 0, unit: '') %>
+        </h5>
+      </div>
+    </a>
+  </div>
+</div>

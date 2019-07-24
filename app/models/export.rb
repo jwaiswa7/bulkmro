@@ -18,14 +18,14 @@ class Export < ApplicationRecord
     sales_order_sap: 50,
     activities: 55,
     company_reviews: 60,
+    kra_report: 90,
     suppliers: 65,
     sales_order_reco: 70,
-    kra_report: 90,
     company_report: 91,
     customer_order_status_report: 92,
     pipeline_report: 93,
     monthly_sales_report: 94,
-    customer_product: 95
-
+    customer_product: 95,
+    material_readiness_queue: 96
   }
 end

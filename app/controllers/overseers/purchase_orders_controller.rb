@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup]
+  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po, :cancelled_purchase_modal, :cancelled_purchase_order]
 
   def index
     authorize_acl :purchase_order
@@ -17,6 +17,24 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
       end
+    end
+  end
+
+  def pending_sap_sync
+    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.where(remote_uid: nil, sap_sync: 'Not Sync').order(id: :desc), params)
+    authorize_acl @purchase_orders
+    respond_to do |format|
+      format.json {render 'pending_sap_sync'}
+      format.html {render 'pending_sap_sync'}
+    end
+  end
+
+  def resync_po
+    authorize_acl @purchase_order
+    if @purchase_order.save_and_sync(@purchase_order.po_request)
+      redirect_to overseers_inquiry_purchase_order_path(@purchase_order.inquiry.to_param, @purchase_order.to_param)
+    else
+      redirect_to pending_sap_sync_overseers_purchase_orders
     end
   end
 
@@ -96,9 +114,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       format.html {}
       format.json do
         service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
-
         service.call
-
         @indexed_inward_dispatches = service.indexed_records
         @inward_dispatches = service.records.try(:reverse)
       end
@@ -106,6 +122,29 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
     authorize_acl :inward_dispatch
     render 'inward_dispatch_pickup_queue'
+  end
+
+  def inward_completed_queue
+    @status = 'Inward Completed Queue'
+
+    base_filter = {
+        base_filter_key: 'is_inward_completed',
+        base_filter_value: true
+    }
+
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
+        service.call
+        @indexed_inward_dispatches = service.indexed_records
+        @inward_dispatches = service.records.try(:reverse)
+      end
+    end
+
+    authorize :inward_dispatch
+    render 'inward_completed_queue'
   end
 
   def edit_material_followup
@@ -186,6 +225,32 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
   end
 
+  def export_material_readiness
+    authorize_acl :purchase_order
+    service = Services::Overseers::Exporters::MaterialReadinessExporter.new([], current_overseer, [])
+    service.call
+
+    redirect_to url_for(Export.material_readiness_queue.not_filtered.last.report)
+  end
+
+  def cancelled_purchase_modal
+    authorize_acl @purchase_order
+    respond_to do |format|
+      format.html { render partial: 'cancel_purchase_order', locals: { created_by_id: current_overseer.id } }
+    end
+  end
+
+  def cancelled_purchase_order
+    authorize_acl @purchase_order
+    if @purchase_order.present?
+      @purchase_order.status = 'cancelled'
+      @purchase_order.po_request.status = 'Cancelled'
+      @purchase_order.save!
+      @purchase_order.po_request.save!
+    end
+    render json: {sucess: 'Successfully updated ', url: overseers_purchase_orders_path }, status: 200
+  end
+
   private
 
     def get_supplier(purchase_order, product_id)
@@ -210,7 +275,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         :followup_date,
         :logistics_owner_id,
         :revised_supplier_delivery_date,
-        comments_attributes: [:id, :message, :created_by_id],
+        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
         attachments: []
       )
     end

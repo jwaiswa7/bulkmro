@@ -16,13 +16,13 @@ class KraReportVarientsIndex < BaseIndex
     field :expected_order, value: -> () {0}, type: 'integer'
     field :sales_order_count, value: -> () {0}, type: 'integer'
 
-    field :invoices_count, value: -> (record) {record.invoices.count}, type: 'integer'
+    field :invoices_count, value: -> (record) {record.inquiry.bible_sales_invoices.count}, type: 'integer'
     field :order_won, value: -> (record) {record.inquiry.status == 'Order Won' ? 1 : 0}, type: 'integer'
     field :company_key, value: -> (record) { record.company_id }, type: 'integer'
-    field :total_quote_value, value: -> (record) {record.inquiry.final_sales_quote.calculated_total if record.inquiry.final_sales_quote.present?}, type: 'double'
-    field :total_order_value, value: -> (record) {record.try(&:calculated_total)}, type: 'double'
-    field :revenue, value: -> (record) {record.try(&:calculated_total_margin)}, type: 'double'
-    field :sku, value: -> (record) {record.products.map(&:sku).count}, type: 'integer'
+    field :total_quote_value, value: -> (record) {record.inquiry.total_quote_value || record.final_sales_quotes.map{|quote| quote.calculated_total.to_i}.sum }, type: 'double'
+    field :total_order_value, value: -> (record) {record.inquiry.bible_sales_order_total || record.total_sales_orders.map{|order| order.calculated_total.to_i }.sum }, type: 'double'
+    field :revenue, value: -> (record) {record.inquiry.bible_revenue}, type: 'double'
+    field :sku, value: -> (record) {record.inquiry.unique_skus_in_order}, type: 'integer'
 
     field :gross_margin_assumed, value: -> (record) { record.inquiry.final_sales_quote.calculated_total_margin if record.inquiry.final_sales_quote.present? }, type: 'double'
     field :gross_margin_percentage, value: -> (record) { record.inquiry.margin_percentage }, type: 'double'

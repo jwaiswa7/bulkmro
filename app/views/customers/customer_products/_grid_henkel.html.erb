@@ -1,0 +1,138 @@
+<% if content_for?(:heading) || (content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new?) || !content_for?(:hide_table_desc) %>
+  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <% if content_for?(:heading) %>
+        <h1 class="display-5 mb-1"><%= yield :heading %></h1>
+      <% else %>
+        <h1 class="display-5 mb-1"><%= current_model.humanize %></h1>
+      <% end unless content_for?(:hide_table_heading) %>
+
+      <div class="d-none">
+        <a href="<%= customers_products_path(view: 'list_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
+        <a href="<%= customers_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
+      </div>
+
+      <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
+        <a href="<%= [request.path, '/', 'new'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
+          <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.upcase %>
+        </a>
+      <% end %>
+
+      <% if content_for?(:can_be_directly_exported) && policy(current_model.singularize.to_sym).export_sheet? %>
+        <a href="<%= [request.path, '/', 'export_sheet.csv'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
+          <i class="fal fa-download mr-1"></i>Export <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
+        </a>
+      <% end %>
+    </div>
+
+    <% unless content_for?(:hide_table_desc) %>
+      <p class="lead mt-1">
+        All <%= current_model.humanize.downcase %> searchable with relevant term/keywords.
+      </p>
+    <% end %>
+  </section>
+<% end %>
+
+<div class="input-group input-group-round">
+  <div class="input-group-prepend">
+    <span class="input-group-text"><i class="material-icons"></i></span>
+  </div>
+  <input type="search" name="q" class="form-control filter-list-input" placeholder="Enter search term/keywords" value="<%= params[:q] %>">
+</div>
+
+<% if @tags.count > 0 %>
+  <div class="accordion mt-2" id="product-filters">
+    <div class="card">
+      <a class="card-header py-2 text-black-50 text-uppercase" href="#" data-toggle="collapse" data-target="#filters">
+        <strong>Filters</strong>
+      </a>
+      <div id="filters" class="collapse show" data-parent="#product-filters">
+        <%= simple_form_for :custom_filters, :method => 'get' do |f| %>
+          <div class='card-body'>
+            <p class="text-uppercase text-black-50 mb-2">Categories</p>
+            <%= f.input :tags, :collection => @tags, :value_method => :first, :label_method => :second, checked: @checked_tags, :as => :check_boxes %>
+            <div class="form-row mt-2">
+              <div class="col-4 col-lg-2 col-md-3">
+                <%= link_to "Clear", customers_products_path, class: "btn btn-outline-danger btn-block" %>
+                <!--              <button type="reset" href="customers_products_path" class="btn btn-outline-danger btn-block">Clear</button>-->
+              </div>
+              <div class="col-8 col-lg-10 col-md-0">
+                <button type="submit" href="#" class="btn btn-success btn-block">Filter products</button>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
+<div class="form-row mt-2" id="product-grid">
+  <% if @customer_products.count > 0 %>
+    <% @customer_products.each do |customer_product| %>
+      <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12 d-flex">
+        <div class="card mb-2">
+          <div class="card-body">
+            <a href="<%= customers_product_path(customer_product) %>">
+              <%# if customer_product.best_image.present? %>
+              <img data-src="<%= url_for(customer_product.medium_best_image) %>" src="<%= image_path('coming_soon.png') %>" class="lazy-load" alt="<%= customer_product.product.sku %>" width="500"/>
+              <%# else %>
+              <!--                <img data-src="<%#= image_path('coming_soon.png') %>" alt="<%#= customer_product.sku %>" width="500" class="lazy-load" src="<%#= image_path('coming_soon.png') %>" />-->
+              <%# end %>
+              <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.name, :length => 100) %></strong>
+              </h5>
+              <h5 class="mb-0 text-small"><strong>(#<%= customer_product.product.sku %>)</strong></h5>
+              <h5 class="mb-0 mt-1 text-small text-black-50">
+                <strong><%= format_currency(customer_product.customer_price) %></strong>
+              </h5>
+              <hr class="my-2">
+              <p class="mb-0 text-small text-black-50">
+                <strong class="d-block"><%= customer_product.best_brand.name if customer_product.best_brand.present? %></strong>
+                <em>MOQ - <%= customer_product.moq %></em><br>
+                <em>Instock Qty
+                  - <%= customer_product.product.stocks.sum(&:instock).to_i if customer_product.product.present? %></em><br>
+
+                  <strong class="d-block mt-2">BP Catalog</strong>
+                  <em>No
+                    - <%= customer_product.sku if customer_product.sku.present? %></em><br>
+                  <em> Name
+                    - <%= customer_product.name if customer_product.name.present? %></em>
+
+              </p>
+            </a>
+          </div>
+          <% if  customer_product.product.present? && (customer_product.product.stocks.sum(&:instock) > 0) %>
+            <div class="card-footer pt-2 pb-0">
+              <%= simple_form_for([:customers, CartItem.new], :url => customers_cart_items_path, :method => :post, :remote => true) do |f| %>
+                <%= f.hidden_field :product_id, value: customer_product.product_id %>
+                <%= f.hidden_field :customer_product_id, value: customer_product.id %>
+                <div class="form-row">
+                  <div class="col-4">
+                    <%= f.input :quantity, label: false, input_html: {placeholder: 'Quantity', step: customer_product.moq, min: customer_product.moq,max: customer_product.product.stocks.sum(&:instock), value: @default_quantity || customer_product.moq} %>
+                  </div>
+                  <div class="col-8">
+                    <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <%end %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="col-12">
+      <div class="card mb-12">
+        <div class="card-body">
+          <p class="text-small text-black-50">
+            <strong class="d-block ">No matching record found</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-12 mt-2">
+    <div class="text-center mb-2 text-uppercase"><%= page_entries_info @customer_products_paginate, entry_name: 'products' %></div>
+    <%= paginate @customer_products_paginate, remote: false, :params => {:view => "grid_view", :q => params[:q]} %>
+  </div>
+</div>

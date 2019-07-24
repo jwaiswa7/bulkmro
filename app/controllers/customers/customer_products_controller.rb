@@ -10,12 +10,17 @@ class Customers::CustomerProductsController < Customers::BaseController
       params[:page] = 1 unless params[:page].present?
       params[:per] = 24
     end
-    @henkel_company = Account.find(7).companies.pluck(:id)
+    account = Account.find(7)
     service = Services::Customers::Finders::CustomerProducts.new(params, current_contact, current_company)
     service.call
     @indexed_customer_products = service.indexed_records
     @customer_products = service.records.try(:reverse)
-
+    # for henkel company specific changes
+    @is_henkel = (current_company.account == account)
+    @default_quantity = nil
+    if @is_henkel
+      @default_quantity = 0
+    end
 
     @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{ |t| [t.id, t.name] }
     @checked_tags = (params['custom_filters']['tags'].nil? ? [] : params['custom_filters']['tags'].map(&:to_i)) if params['custom_filters'].present?
@@ -35,6 +40,14 @@ class Customers::CustomerProductsController < Customers::BaseController
   def show
     authorize @customer_product
     @account = Account.find(7)
+    @default_quantity = @customer_product.moq
+    # for henkel company specific changes
+    @is_henkel = (current_company.account == @account)
+    @display_class = ''
+    if @is_henkel
+      @default_quantity = 0
+      @display_class = (@customer_product.product.stocks.sum(&:instock) > 0) ? '' : 'd-none'
+    end
   end
 
   def most_ordered_products

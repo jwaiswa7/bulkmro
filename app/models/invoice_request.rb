@@ -3,6 +3,7 @@ class InvoiceRequest < ApplicationRecord
 
   include Mixins::CanBeStamped
   include Mixins::HasComments
+  update_index('inward_dispatches#inward_dispatch') { self.inward_dispatches }
 
   pg_search_scope :locate, against: [:id, :grpo_number, :ap_invoice_number, :ar_invoice_number], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
@@ -12,6 +13,7 @@ class InvoiceRequest < ApplicationRecord
   has_many :inward_dispatches
   has_many_attached :attachments
   has_many :company_reviews, as: :rateable
+  belongs_to :sales_invoice, required: false
   ratyrate_rateable 'CompanyReview'
 
   enum status: {
@@ -54,6 +56,7 @@ class InvoiceRequest < ApplicationRecord
   validate :has_attachments?
   validate :grpo_number_valid?, unless: :skip_grpo_number_validation
   validate :presence_of_reason
+  validate :valid_inward_dispatches?
 
   attr_accessor :skip_grpo_number_validation
 
@@ -67,8 +70,22 @@ class InvoiceRequest < ApplicationRecord
 
 
   def has_attachments?
-    if !['Cancelled GRPO', 'Cancelled AP Invoice'].include?(self.status) && !self.attachments.any?
-      errors.add(:attachments, "must be present to create or update a #{self.readable_status}")
+    if !['Cancelled GRPO', 'Cancelled AP Invoice'].include?(self.status)
+      if  !self.attachments.any?
+        errors.add(:attachments, "must be present to create or update a #{self.readable_status}")
+      end
+    end
+  end
+
+  def valid_inward_dispatches?
+    error_array = []
+    self.inward_dispatches.each do |inward_dispatch|
+      if !inward_dispatch.valid?
+        error_array << inward_dispatch.errors.full_messages
+      end
+    end
+    if !error_array.empty?
+      errors.add(:inward_dispatches, error_array.uniq.join(', '))
     end
   end
 
@@ -84,11 +101,6 @@ class InvoiceRequest < ApplicationRecord
     invoice_request.validates_presence_of :grpo_number
   end
 
-  with_options if: :"Completed AR Invoice Request?" do |invoice_request|
-    invoice_request.validates_presence_of :ar_invoice_number
-    invoice_request.validates :ar_invoice_number, length: { is: 8 }, allow_blank: true
-    invoice_request.validates_numericality_of :ar_invoice_number, allow_blank: true
-  end
 
   after_initialize :set_defaults, if: :new_record?
 

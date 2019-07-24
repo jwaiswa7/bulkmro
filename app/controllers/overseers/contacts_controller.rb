@@ -7,19 +7,19 @@ class Overseers::ContactsController < Overseers::BaseController
     # service.call
     # @indexed_contacts = service.indexed_records
     # @contacts = service.records
-    # authorize @contacts
+    # authorize_acl @contacts
 
     @contacts = ApplyDatatableParams.to(Contact.all.includes(:companies), params)
-    authorize @contacts
+    authorize_acl @contacts
   end
 
   def autocomplete
     @contacts = ApplyParams.to(Contact.active, params)
-    authorize @contacts
+    authorize_acl @contacts
   end
 
   def show
-    authorize @contact
+    authorize_acl @contact
   end
 
   def new
@@ -39,14 +39,14 @@ class Overseers::ContactsController < Overseers::BaseController
         @contact = @company.contacts.build(overseer: current_overseer, account: @company.account)
       end
     end
-    authorize @contact
+    authorize_acl @contact
   end
 
   def create
     @company = params[:company_id].present? ? Company.find(params[:company_id]) : Company.find(params[:contact][:company_id])
     password = Devise.friendly_token[0, 20]
     @contact = @company.contacts.build(contact_params.merge(account: @company.account, overseer: current_overseer, password: password, password_confirmation: password))
-    authorize @contact
+    authorize_acl @contact
     if @contact.save!
       if @contact.contact_creation_request.present?
         @contact.contact_creation_request.update_attributes(contact_id: @contact.id)
@@ -72,12 +72,12 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def edit
-    authorize @contact
+    authorize_acl @contact
   end
 
   def update
     @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! { |k, v| (k == 'password' || k == 'password_confirmation') && v.blank? })
-    authorize @contact
+    authorize_acl @contact
 
     if @contact.save_and_sync
       redirect_to overseers_contact_path(@contact), notice: flash_message(@contact, action_name)
@@ -87,13 +87,13 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def become
-    authorize @contact
+    authorize_acl @contact
     sign_in(:contact, @contact)
     redirect_to customers_dashboard_url(became: true)
   end
 
   def fetch_company_account
-    authorize :contact
+    authorize_acl :contact
     @company = Company.find(params[:company_id])
     render json: { account_name: @company.account.name }
   end

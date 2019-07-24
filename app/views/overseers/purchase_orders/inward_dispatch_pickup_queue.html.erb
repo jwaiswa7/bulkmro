@@ -81,3 +81,22 @@
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>
+
+<div id="goodsReceiptPurchaseOrderId" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">GRPO Request</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>You can't create GRPO Request against this PO because this PO is not sync with SAP.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

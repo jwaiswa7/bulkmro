@@ -3,16 +3,18 @@
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
 <% provide :can_be_directly_exported_filtered_records, true %>
+<% content_for :page_title do %>
+  AR Invoice
+<% end %>
 
 <% provide :heading_buttons do %>
   <div class="btn-group">
-    <a href="<%= export_all_overseers_sales_invoices_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales invoices"><i class="fal fa-download mr-1"></i>Sales
-      Invoices</a>
+    <a href="<%= export_all_overseers_sales_invoices_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All AR Invoice"><i class="fal fa-download mr-1"></i>AR Invoice</a>
     <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
     <div class="dropdown-menu dropdown-menu-right">
-      <a class="dropdown-item" href="<%= export_for_logistics_overseers_sales_invoices_path(format: :csv) %>">Sales
-        Invoices (Logistics)</a>
-      <a class="dropdown-item" href="<%= export_rows_overseers_sales_invoices_path(format: :csv) %>">Sales Invoice
+      <a class="dropdown-item" href="<%= export_for_logistics_overseers_sales_invoices_path(format: :csv) %>">AR Invoice (Logistics)</a>
+
+      <a class="dropdown-item" href="<%= export_rows_overseers_sales_invoices_path(format: :csv) %>">AR Invoice
         Rows</a>
     </div>
   </div>

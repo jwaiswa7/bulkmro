@@ -22,6 +22,7 @@ class Account < ApplicationRecord
   has_many :addresses, through: :companies
   has_many :sales_receipts
   has_many :payment_collections
+  has_many :email_messages
   enum account_type: {
       is_supplier: 10,
       is_customer: 20,
