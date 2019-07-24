@@ -37,8 +37,12 @@ class PurchaseOrdersIndex < BaseIndex
     field :payment_request_status_key, value: -> (record) { payment_request_statuses[record.payment_request.status] if record.payment_request.present? }, type: 'integer'
     field :payment_request_status, value: -> (record) { payment_request_statuses[record.payment_request.status] if record.payment_request.present? }
     field :payment_request_status_string, value: -> (record) { record.try(:payment_request).try(:status).to_s }, analyzer: 'substring'
+
     field :followup_date, type: 'date'
     field :committed_date, value: ->(record) { record.po_request.inquiry.customer_committed_date if record.po_request.present? }, type: 'date'
+    field :followup_status, value: ->(record) { record.get_followup_status }, analyzer: 'substring'
+    field :committed_date_status, value: ->(record) { record.get_committed_date_status }, analyzer: 'substring'
+
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
     field :potential_value, value: -> (record) { record.try(:calculated_total) }, type: 'double'

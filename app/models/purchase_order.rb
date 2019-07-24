@@ -92,6 +92,17 @@ class PurchaseOrder < ApplicationRecord
       'Cancelled GRPO': 95
   }
 
+  enum followup_status: {
+      'Pending follow-up': 10,
+      'Follow-up for today': 20,
+      'Follow Date missing': 30
+  }
+  enum committed_date_status: {
+      'Committed Date Breached': 10,
+      'Committed Date Approaching': 20,
+      'Committed Date missing': 30
+  }
+
   enum transport_mode: {
       'Road': 1,
       'Air': 2,
@@ -259,10 +270,23 @@ class PurchaseOrder < ApplicationRecord
     self.po_request.present? ? (self.po_request.status == 'Supplier PO Sent' || self.po_request.status == 'Supplier PO: Created Not Sent') : false
   end
 
-  def summary_statuses
-    field :pending_follow_up, value: ->(record) { record.count if record.followup_date.present? && record.followup_date < Date.today }, type: 'integer'
-    field :follow_up_for_today, value: ->(record) { record.count if record.followup_date.present? && record.followup_date == Date.today }, type: 'integer'
-    field :committed_date_breached, value: ->(record) { record.count if record.po_request.present? && record.po_request.inquiry.customer_committed_date < Date.today }, type: 'integer'
-    field :committed_date_approaching, value: ->(record) { record.count if record.po_request.present? && record.po_request.inquiry.customer_committed_date > Date.today && record.po_request.inquiry.customer_committed_date < (Date.today + 2.day) }, type: 'integer'
+  def get_followup_status
+    if self.followup_date.present? && (self.followup_date < Date.today)
+      'Pending follow-up'
+    elsif self.followup_date.present? && (self.followup_date == Date.today)
+      'Follow-up for today'
+    else
+      'Follow Date missing'
+    end
+  end
+
+  def get_committed_date_status
+    if self.po_request.present? && self.inquiry.customer_committed_date.present? && (self.inquiry.customer_committed_date < Date.today)
+      'Committed Date Breached'
+    elsif self.po_request.present? && self.inquiry.customer_committed_date.present? && (self.inquiry.customer_committed_date > Date.today) && (self.inquiry.customer_committed_date < (Date.today + 2.day))
+      'Committed Date Approaching'
+    else
+      'Committed Date missing'
+    end
   end
 end

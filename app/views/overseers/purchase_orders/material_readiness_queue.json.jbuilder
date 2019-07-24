@@ -1,5 +1,5 @@
 json.data (@purchase_orders) do |purchase_order|
-  json.array! [
+  columns = [
                   [
                       if is_authorized(purchase_order, 'update_logistics_owner') && policy(purchase_order).update_logistics_owner?
                         "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='purchase_orders[]' class='custom-control-input' value='#{purchase_order.id}' id='c-#{purchase_order.id}'><label class='custom-control-label' for='c-#{purchase_order.id}'></label></div>"
@@ -49,6 +49,9 @@ json.data (@purchase_orders) do |purchase_order|
                   (purchase_order.po_request.po_margin_percentage if purchase_order.po_request.present?),
                   (purchase_order.po_request.sales_order.calculated_total_margin_percentage if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?)
               ]
+
+  columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
+  json.merge! columns.merge("DT_RowClass": @indexed_purchase_orders.committed_date_status == 'Committed Date Breached' ? 'bg-highlight-danger' : '')
 end
 
 json.columnFilters [
