@@ -17,7 +17,7 @@
 
 <% content_for(:heading_buttons) do %>
   <% if is_authorized(:sales_order, 'create_stock_po') %>
-    <button type="button" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" data-toggle="modal" data-target="#manualPo">Create Manual PO</button>
+    <button type="button" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1 manualPo" >Create Manual/Stock PO</button>
     <%# if Inquiry.where(opportunity_type: 'stock').present? %>
 <!--      <a href = "<%#= new_overseers_inquiry_po_request_path(Inquiry.where(opportunity_type: 'stock').last) %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >-->
 <!--        <i class="fal fa-plus-circle mr-1"></i>New Stock <%#= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>-->

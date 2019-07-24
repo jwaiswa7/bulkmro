@@ -47,6 +47,17 @@ const index = () => {
 
 
     })
+    $('.manualPo').unbind('click').bind('click',function () {
+        $('#manualPo').modal('show')
+        $('#po_request_inquiry_id').empty()
+        $('.confirm-create').addClass('disabled')
+
+    })
+
+    $('#po_request_inquiry_id').on('change', function () {
+        if($('#po_request_inquiry_id').val())
+            $('.confirm-create').removeClass('disabled')
+    })
 
     $('.confirm-create').unbind('click').bind('click',function (e) {
         let inquiry_id = $('#po_request_inquiry_id').val();
