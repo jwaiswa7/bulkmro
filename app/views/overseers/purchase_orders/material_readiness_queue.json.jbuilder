@@ -51,7 +51,7 @@ json.data (@purchase_orders) do |purchase_order|
               ]
 
   columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
-  json.merge! columns.merge("DT_RowClass": @indexed_purchase_orders.committed_date_status == 'Committed Date Breached' ? 'bg-highlight-danger' : '')
+  json.merge! columns.merge("DT_RowClass": purchase_order.get_committed_date_status == 'Committed Date Breached' ? 'bg-highlight-danger' : '')
 end
 
 json.columnFilters [

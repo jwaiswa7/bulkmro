@@ -1,7 +1,7 @@
 # when :'$0'
 # '$2'
 module StatusesHelper
-  def status_color(status)
+  def  status_color(status)
     case status.to_sym
     when :'Processing'
       'color-light-blue'
@@ -45,6 +45,14 @@ module StatusesHelper
       'success'
     when :'Material Partially Delivered'
       'color-light-green'
+    when :'Pending follow-up'
+      'dark'
+    when :'Follow-up for today'
+      'info'
+    when :'Committed Date Breached'
+      'danger'
+    when :'Committed Date Approaching'
+      'warning'
 
     # defaults
     when :'Lead by O/S'
