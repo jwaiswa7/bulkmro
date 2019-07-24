@@ -92,15 +92,13 @@ class PurchaseOrder < ApplicationRecord
       'Cancelled GRPO': 95
   }
 
-  enum followup_status: {
+  enum material_summary_status: {
       'Pending follow-up': 10,
       'Follow-up for today': 20,
-      'Follow Date missing': 30
-  }
-  enum committed_date_status: {
-      'Committed Date Breached': 10,
-      'Committed Date Approaching': 20,
-      'Committed Date missing': 30
+      'Follow Date missing': 30,
+      'Committed Date Breached': 40,
+      'Committed Date Approaching': 50,
+      'Committed Date missing': 60
   }
 
   enum transport_mode: {

@@ -112,7 +112,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records
 
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, remote_status: true)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: 'remote_status')
         status_service.call
 
         @total_values = status_service.indexed_total_values
@@ -134,7 +134,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records
 
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, remote_status: true)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: 'remote_status')
         status_service.call
 
         @total_values = status_service.indexed_total_values
