@@ -8,7 +8,7 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
   end
 
   def show
-    @targets = @overseer.targets if @overseer.targets.present?
+    @targets = @overseer.annual_targets.last.targets if @overseer.targets.present?
     authorize @annual_target
   end
 
@@ -63,6 +63,8 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
   def annual_target_params
     params.require(:annual_target).permit(
         :overseer_id,
+        :manager_id,
+        :business_head_id,
         :year,
         :inquiry_target,
         :company_target,

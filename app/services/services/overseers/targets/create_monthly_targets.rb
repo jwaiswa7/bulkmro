@@ -11,9 +11,7 @@ class Services::Overseers::Targets::CreateMonthlyTargets < Services::Shared::Bas
       initial_financial_month = ("#{current_date.year}-04-01").to_date
       current_month = ("#{current_date.year}-#{current_date.month}-01").to_date
       month_diff = (current_month.month - initial_financial_month.month) + 1
-      # last_month = initial_financial_month + month_diff.month
       changed_month = initial_financial_month
-
       month_diff.times.each do
         TargetPeriod.where(period_month: changed_month).first_or_create
         changed_month = changed_month + 1.month
@@ -26,7 +24,6 @@ class Services::Overseers::Targets::CreateMonthlyTargets < Services::Shared::Bas
 
           monthly_target = (@annual_target[coneverted_target_type] / 12.0).round(2)
           changed_monthly_target = monthly_target.to_i
-
           target_periods.each do |target_period|
             target = Target.where(overseer_id: overseer.id, target_period_id: target_period.id, target_type: Target.target_types[target_type]).first_or_initialize(target_value: changed_monthly_target, manager_id: @annual_target.manager_id, business_head_id: @annual_target.business_head_id, annual_target_id: @annual_target.id)
             unless target.id.present?

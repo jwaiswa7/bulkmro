@@ -9,12 +9,6 @@ class AnnualTarget < ApplicationRecord
 
   validates_presence_of :inquiry_target
 
-  after_initialize :set_defaults, if: :new_record?
-
-  def set_defaults
-    self.manager_id = self.overseer.parent
-  end
-
   def self.year_range
     initial_year = 2019
     years = {}
