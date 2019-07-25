@@ -17,17 +17,18 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
     else
       @annual_target = AnnualTarget.new(overseer: current_overseer)
     end
-    authorize @annual_target
+    authorize_acl @annual_target
   end
 
   def edit
-    authorize @annual_target
+    authorize_acl @annual_target
   end
 
   def create
     @overseer = Overseer.find(annual_target_params[:overseer_id])
     @annual_target = @overseer.annual_targets.build(annual_target_params.merge(overseer: current_overseer))
-    authorize @annual_target
+    @annual_target.assign_attributes(manager_id: @overseer.parent.id, business_head_id: @overseer.parent.parent.id)
+    authorize_acl @annual_target
 
     if @annual_target.save
       service = Services::Overseers::Targets::CreateMonthlyTargets.new(@overseer, @annual_target)
@@ -39,7 +40,7 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
   end
 
   def update
-    authorize @annual_target
+    authorize_acl @annual_target
     if @annual_target.update(annual_target_params)
       redirect_to overseers_overseer_path(@annual_target.overseer), notice: 'Annual Target was successfully created.'
     else

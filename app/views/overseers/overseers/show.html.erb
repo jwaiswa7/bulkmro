@@ -98,21 +98,24 @@
       </tr>
       </thead>
       <tbody>
-      <% @annual_targets.each do |annual_target| %>
-        <tr>
-          <td>
-            <a href="<%= overseers_annual_target_path(annual_target) %>" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
-            <a href="<%= edit_overseers_annual_target_path(annual_target) %>" class="btn btn-sm btn-warning"><i class="fal fa-pen"></i></a>
-          </td>
-          <td><%= annual_target.year %></td>
-          <td><%= annual_target.inquiry_target %></td>
-          <td><%= annual_target.company_target %></td>
-          <td><%= annual_target.invoice_target %></td>
-          <td><%= annual_target.invoice_margin_target %></td>
-          <td><%= annual_target.order_target %></td>
-          <td><%= annual_target.order_margin_target %></td>
-          <td><%= annual_target.new_client_target %></td>
-        </tr>
+      <% if @annual_targets.present? %>
+        <% @annual_targets.each do |annual_target| %>
+          <tr>
+
+            <td>
+              <a href="<%= overseers_annual_target_path(annual_target) %>" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
+              <a href="<%= edit_overseers_annual_target_path(annual_target) %>" class="btn btn-sm btn-warning"><i class="fal fa-pen"></i></a>
+            </td>
+            <td><%= annual_target.year %></td>
+            <td><%= annual_target.inquiry_target %></td>
+            <td><%= annual_target.company_target %></td>
+            <td><%= annual_target.invoice_target %></td>
+            <td><%= annual_target.invoice_margin_target %></td>
+            <td><%= annual_target.order_target %></td>
+            <td><%= annual_target.order_margin_target %></td>
+            <td><%= annual_target.new_client_target %></td>
+          </tr>
+        <% end %>
       <% end %>
       </tbody>
     </table>

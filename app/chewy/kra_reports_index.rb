@@ -17,29 +17,29 @@ class KraReportsIndex < BaseIndex
     field :inside_sales_executive, value: -> (record) {record.bible_inside_sales_owner}
     field :outside_sales_executive, value: -> (record) {record.bible_outside_sales_owner}
     field :procurement_operations, value: -> (record) {record.procurement_operations_id.present? ? record.procurement_operations_id : record.inside_sales_owner_id}
+    field :company_key, value: -> (record) {record.company_id}, type: 'integer'
+    field :account_key, value: -> (record) {record.company.account_id}, type: 'integer'
+    field :expected_order, value: -> (record) {record.status == 'Expected Order' ? 1 : 0}, type: 'integer'
+    field :order_won, value: -> (record) {record.status == 'Order Won' ? 1 : 0}, type: 'integer'
+
     field :sales_quote_count, value: -> (record) {
       if record.bible_final_sales_quotes.present?
         record.bible_final_sales_quotes.count
       elsif record.final_sales_quotes.present?
         record.final_sales_quotes.count
-      end}, type: 'integer'
-    field :expected_order, value: -> (record) {record.status == 'Expected Order' ? 1 : 0}, type: 'integer'
-    field :order_won, value: -> (record) {record.status == 'Order Won' ? 1 : 0}, type: 'integer'
-    field :company_key, value: -> (record) {record.company_id}, type: 'integer'
-    field :account_key, value: -> (record) {record.company.account_id}, type: 'integer'
+      end
+    }, type: 'integer'
+    field :sales_order_count, value: -> (record) {record.bible_sales_orders.count}, type: 'integer'
     field :total_quote_value, value: -> (record) {record.total_quote_value}, type: 'double'
+    field :total_order_value, value: -> (record) {record.bible_sales_order_total}, type: 'double'
+    field :invoices_count, value: -> (record) {record.bible_sales_invoices.count}, type: 'integer'
 
     field :sku, value: -> (record) {record.unique_skus_in_order}, type: 'integer'
-    field :invoices_count, value: -> (record) {record.bible_sales_invoices.count}, type: 'integer'
-    field :sales_order_count, value: -> (record) {record.bible_sales_orders.count}, type: 'integer'
+
     field :margin_percentage, value: -> (record) {record.bible_margin_percentage}, type: 'float'
-    field :total_order_value, value: -> (record) {record.bible_sales_order_total}, type: 'double'
-    field :revenue, value: -> (record) {record.bible_revenue}, type: 'double'
-    field :sku, value: -> (record) {record.final_sales_orders.without_cancelled.compact.uniq.map {|s| s.products.map(&:sku).count}.last}, type: 'integer'
-    # field :inquiry_target_yearly, value: -> (record) {record.inside_sales_owner.get_annual_target.inquiry_target if record.inside_sales_owner.annual_targets.present?}, type: 'double'
-    # field :inquiry_target_monthly, value: -> (record) {record.inside_sales_owner.get_monthly_target('Inquiry') if record.inside_sales_owner.annual_targets.present?}, type: 'double'
-    field :gross_margin_assumed, value: -> (record) {record.final_sales_quote.calculated_total_margin if record.final_sales_quote.present?}, type: 'double'
-    field :gross_margin_percentage, value: -> (record) {record.margin_percentage}, type: 'double'
-    field :gross_margin_actual, value: -> (record) {record.final_sales_orders.without_cancelled.compact.uniq.map(&:calculated_total_margin).sum if record.final_sales_orders.present?}, type: 'double'
+    field :revenue, value: -> (record) {record.bible_actual_margin}, type: 'double'
+    field :gross_margin_assumed, value: -> (record) {record.bible_assumed_margin}, type: 'double'
+    field :gross_margin_percentage, value: -> (record) {record.bible_margin_percentage}, type: 'double'
+    field :gross_margin_actual, value: -> (record) {record.bible_actual_margin}, type: 'double'
   end
 end

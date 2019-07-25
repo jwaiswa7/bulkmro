@@ -16,12 +16,11 @@
 <%= render layout: 'search_layout' do %>
 <% end %>
 
-
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort all" data-name=<%=@category.present? ? @category : "inside_sales_owner_id" %>>Name</th>
   <% if  @category.present? && @category == 'company_key'  %> <th class="no-sort all" data-name="account_key">Account</th> <% else %> <th></th><% end %>
-  <th class="no-sort all">Inquiry Target#</th>
+  <% if @category.present? && @category =="outside_sales_owner_id" %><th class="no-sort all">Inquiry Target#</th> <% else %> <th></th><% end %>
   <th class="sort all" data-name="inquiry_number">Inquiries#</th>
   <th class="sort all" data-name="sales_quote_count">Sales Quotes#</th>
   <th class="sort all" data-name="total_quote_value">Value of Quotes</th>
@@ -42,7 +41,7 @@
   <td data-filter="false"></td>
   <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'dropdown' %>></td>
   <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'false' %>></td>
-  <td data-filter="false"></td>
+  <td data-filter=<%= (@category.present? && @category == 'outside_sales_owner_id') ? 'ajax' : 'false' %>></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
@@ -63,6 +62,7 @@
   <td class="no-data"></td>
   <td class="total"></td>
   <td class="no-data"></td>
+  <% if @category.present? && @category =="outside_sales_owner_id" %><td></td><% else %><td class="no-data"></td><% end %>
   <td></td>
   <td></td>
   <td></td>
@@ -75,7 +75,6 @@
   <td class="percentage"></td>
   <td></td>
   <td class="percentage"></td>
-  <td></td>
   <td></td>
   <td></td>
 <% end %>

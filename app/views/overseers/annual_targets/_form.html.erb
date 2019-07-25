@@ -7,9 +7,16 @@
         <%= f.hidden_field :overseer_id, value: params[:overseer_id].present? ? params[:overseer_id]: @annual_target.overseer_id  %>
         <%= f.input :overseer, label: 'Name', :required => 'true', :class => 'form-control', disabled: true %>
       </div>
-
       <div class="col-6 col-md-6">
-        <%= f.input :year, as: :select, collection: AnnualTarget.year_range, label: 'Year', :placeholder => 'Year', :required => 'true', :class => 'form-control', include_blank: 'Select Year'  %>
+        <%= f.input :year, as: :select, collection: AnnualTarget.year_range, label: 'Year', :placeholder => 'Year', :required => 'true', :class => 'form-control', include_blank: 'Select Year', selected: AnnualTarget.current_year  %>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-6 col-md-6">
+        <%= f.input :manager_id, required: true, collection: Overseer.managers_and_obj(@overseer.parent).alphabetical, label: 'Manager', selected: @overseer.parent.id, input_html: {class: "select2-single"}, disabled: true %>
+      </div>
+      <div class="col-6 col-md-6">
+        <%= f.input :business_head_id, required: true, collection: Overseer.managers_and_obj(@overseer.parent.parent).alphabetical, label: 'Manager', selected: @overseer.parent.parent.id, input_html: {class: "select2-single"}, disabled: true %>
       </div>
     </div>
 

@@ -515,8 +515,12 @@ class Inquiry < ApplicationRecord
     BibleSalesOrder.where(:inquiry_number => self.inquiry_number).pluck(:order_total).sum
   end
 
-  def bible_revenue
+  def bible_assumed_margin
     BibleSalesOrder.where(:inquiry_number => self.inquiry_number).pluck(:total_margin).sum
+  end
+
+  def bible_actual_margin
+    BibleInvoice.where(:inquiry_number => self.inquiry_number).pluck(:total_margin).sum
   end
 
   def bible_inside_sales_owner
