@@ -6,8 +6,8 @@ json.data (@inquiries) do |inquiry|
                   status_badge(inquiry.status),
                   link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),
                   format_succinct_date(inquiry.created_at),
-                  inquiry.final_sales_quotes.present? ? inquiry.final_sales_quotes.map{ |quote| number_with_delimiter(quote.calculated_total.to_i, delimiter: ',') }.compact.join('<br/>') : '-',
-                  inquiry.final_sales_quotes.present? ? inquiry.final_sales_quotes.map{ |quote| format_succinct_date(quote.created_at) }.compact.join('<br/>') : '-',
+                  inquiry.final_sales_quotes.present? ? inquiry.final_sales_quotes.map { |quote| number_with_delimiter(quote.calculated_total.to_i, delimiter: ',') }.compact.join('<br/>') : '-',
+                  inquiry.final_sales_quotes.present? ? inquiry.final_sales_quotes.map { |quote| format_succinct_date(quote.created_at) }.compact.join('<br/>') : '-',
 
                   if inquiry.bible_sales_orders.present?
                     inquiry.bible_sales_orders.map { |order| number_with_delimiter(order.calculated_total.to_i, delimiter: ',')}.compact.join('<br/>')
