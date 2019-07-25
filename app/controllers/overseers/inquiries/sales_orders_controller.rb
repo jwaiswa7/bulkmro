@@ -223,6 +223,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
           :reject,
           :approve,
           custom_fields: [
+              :reject_reasons,
               :message
           ],
           rows_attributes: [
