@@ -63,4 +63,12 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def create_email_message?
     new_email_message?
   end
+
+  def payment_collection?
+    index?
+  end
+
+  def ageing_report?
+    index?
+  end
 end

@@ -11,7 +11,7 @@ class ArInvoiceRequest < ApplicationRecord
   has_many :outward_dispatches
   belongs_to :sales_invoice, required: false
   validate :presence_of_reason
-  after_save :send_notification_on_status_changed
+  after_save :send_notification_on_status_changed, :update_inward_dispatch_index
 
   has_many :rows, class_name: 'ArInvoiceRequestRow', inverse_of: :ar_invoice_request
 
@@ -48,6 +48,16 @@ class ArInvoiceRequest < ApplicationRecord
     invoice_request.validates_presence_of :sales_invoice_id
     # invoice_request.validates :ar_invoice_number, length: { is: 8 }, allow_blank: true
     # invoice_request.validates_numericality_of :ar_invoice_number, allow_blank: true
+  end
+
+  def update_inward_dispatch_index
+    if sales_order.present?
+      product_ids = self.rows.pluck(:product_id)
+      if product_ids.present?
+        inward_dispatch_ids = InwardDispatch.where(sales_order_id: sales_order.id).includes(:rows).where(inward_dispatch_rows: {product_id: product_ids}).pluck(:id).uniq
+        InwardDispatchesIndex::InwardDispatch.import([inward_dispatch_ids])
+      end
+    end
   end
 
   def update_status(status)

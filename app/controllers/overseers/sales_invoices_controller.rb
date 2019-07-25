@@ -42,10 +42,10 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     end
   end
 
-  def autocomplete
-    @sales_invoices = ApplyParams.to(SalesInvoice.all, params)
-    authorize_acl @sales_invoices
-  end
+  # def autocomplete
+  #   @sales_invoices = ApplyParams.to(SalesInvoice.all, params)
+  #   authorize_acl @sales_invoices
+  # end
 
   def export_all
     authorize_acl :sales_invoice
@@ -94,7 +94,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     @params = {
         record: [:overseers, @invoice, @email_message],
         url: {action: @action, controller: 'overseers/sales_invoices'},
-        attachment: {'Original Invoice' => overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), 'Duplicate Invoice' => duplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), 'Triplicate Invoice' => triplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank)}
+        attachment: {'Original Invoice' => overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank, stamp: true), 'Duplicate Invoice' => duplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), 'Triplicate Invoice' => triplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank)}
     }
 
 
@@ -142,7 +142,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     @params = {
         record: [:overseers, @invoice, @email_message],
         url: {action: @action, controller: 'overseers/sales_invoices'},
-        attachment: {'Original Invoice' => overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), 'Duplicate Invoice' => duplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), 'Triplicate Invoice' => triplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank)}
+        attachment: {'Original Invoice' => overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank, stamp: true), 'Duplicate Invoice' => duplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), 'Triplicate Invoice' => triplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank)}
     }
 
 
