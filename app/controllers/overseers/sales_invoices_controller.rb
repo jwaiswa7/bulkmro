@@ -42,10 +42,10 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     end
   end
 
-  def autocomplete
-    @sales_invoices = ApplyParams.to(SalesInvoice.all, params)
-    authorize_acl @sales_invoices
-  end
+  # def autocomplete
+  #   @sales_invoices = ApplyParams.to(SalesInvoice.all, params)
+  #   authorize_acl @sales_invoices
+  # end
 
   def export_all
     authorize_acl :sales_invoice
