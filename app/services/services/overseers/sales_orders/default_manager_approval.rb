@@ -1,4 +1,4 @@
-class Services::Overseers::SalesOrders::BuildCommentAndApproveOrder < Services::Shared::BaseService
+class Services::Overseers::SalesOrders::DefaultManagerApproval < Services::Shared::BaseService
   def initialize(sales_order, notification)
     @sales_order = sales_order
     @inquiry = @sales_order.inquiry

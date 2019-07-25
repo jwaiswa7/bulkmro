@@ -108,7 +108,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       )
 
       if Settings.sales_order.default_manager_approved
-        Services::Overseers::SalesOrders::BuildCommentAndApproveOrder.new(@sales_order, @notification).call
+        Services::Overseers::SalesOrders::DefaultManagerApproval.new(@sales_order, @notification).call
       end
     else
       @sales_order.update_attributes(sent_at: Time.now) if @sales_order.sent_at.blank?
