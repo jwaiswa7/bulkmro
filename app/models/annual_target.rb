@@ -19,7 +19,7 @@ class AnnualTarget < ApplicationRecord
     initial_year = 2019
     years = {}
     (initial_year..Date.today.year).each do |year|
-      years["#{year}-#{year+1}"] = "#{year}-#{year+1}"
+      years["#{year}-#{year + 1}"] = "#{year}-#{year + 1}"
     end
     years
   end
@@ -30,7 +30,11 @@ class AnnualTarget < ApplicationRecord
 
   def self.current_year
     current = Date.today.year
-    "#{current}-#{current+1}"
+    "#{current}-#{current + 1}"
+  end
+
+  def disabled_status(target_type)
+    (self[target_type] != 0.0)
   end
 
 end

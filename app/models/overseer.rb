@@ -12,7 +12,7 @@ class Overseer < ApplicationRecord
   has_many :targets
   has_one_attached :file
 
-  pg_search_scope :locate, against: [:first_name, :last_name, :email], associated_against: {acl_role: [:role_name]}, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:first_name, :last_name, :email], associated_against: {acl_role: [:role_name]}, using: {tsearch: {prefix: true}}
   has_closure_tree(name_column: :to_s)
 
   # Include default devise modules. Others available are:
@@ -21,11 +21,11 @@ class Overseer < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable, omniauth_providers: %i[google_oauth2]
 
   ratyrate_rater
-  enum status: { active: 10, inactive: 20 }
+  enum status: {active: 10, inactive: 20}
 
-  scope :can_send_email, -> { where.not(smtp_password: nil) }
-  scope :cannot_send_email, -> { where(smtp_password: nil) }
-  scope :with_includes, -> { includes(:activities) }
+  scope :can_send_email, -> {where.not(smtp_password: nil)}
+  scope :cannot_send_email, -> {where(smtp_password: nil)}
+  scope :with_includes, -> {includes(:activities)}
   validates_presence_of :email
   validates_presence_of :password, if: :new_record?
   validates_presence_of :password_confirmation, if: :new_record?
@@ -117,8 +117,8 @@ class Overseer < ApplicationRecord
     end
   end
 
-
   def get_annual_target
     self.annual_targets.where(year: AnnualTarget.current_year).last
   end
+
 end

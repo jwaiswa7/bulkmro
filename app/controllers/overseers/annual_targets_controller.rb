@@ -1,5 +1,6 @@
 class Overseers::AnnualTargetsController < Overseers::BaseController
   before_action :set_target, only: [:show, :edit, :update, :destroy]
+  before_action :set_overseer, only: [:show, :edit, :update, :destroy]
 
   def index
     @annual_targets = ApplyDatatableParams.to(AnnualTarget.all, params)
@@ -7,6 +8,7 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
   end
 
   def show
+    @targets = @overseer.targets if @overseer.targets.present?
     authorize @annual_target
   end
 
@@ -42,7 +44,7 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
   def update
     authorize_acl @annual_target
     if @annual_target.update(annual_target_params)
-      redirect_to overseers_overseer_path(@annual_target.overseer), notice: 'Annual Target was successfully created.'
+      redirect_to overseers_overseer_path(@overseer), notice: 'Annual Target was successfully updated.'
     else
       render :edit
     end
@@ -52,6 +54,10 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
 
   def set_target
     @annual_target = AnnualTarget.find(params[:id])
+  end
+
+  def set_overseer
+    @overseer = @annual_target.overseer
   end
 
   def annual_target_params

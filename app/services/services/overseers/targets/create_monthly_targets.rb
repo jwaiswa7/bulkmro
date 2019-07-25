@@ -6,7 +6,6 @@ class Services::Overseers::Targets::CreateMonthlyTargets < Services::Shared::Bas
 
   def call
     unless @annual_target.targets.present?
-      # overseer = Overseer.find(232)
       current_date = Date.today
       @annual_target = AnnualTarget.where(year: AnnualTarget.year_range.values).last
       initial_financial_month = ("#{current_date.year}-04-01").to_date

@@ -1,4 +1,5 @@
 class Target < ApplicationRecord
+
   belongs_to :target_period, required: true
   belongs_to :annual_target
   belongs_to :overseer, required: true
@@ -18,6 +19,7 @@ class Target < ApplicationRecord
   validates_presence_of :target_value
 
   after_initialize :set_defaults
+
   def set_defaults
     self.target_value ||= 0
   end

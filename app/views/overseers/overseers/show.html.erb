@@ -101,7 +101,6 @@
       <% if @annual_targets.present? %>
         <% @annual_targets.each do |annual_target| %>
           <tr>
-
             <td>
               <a href="<%= overseers_annual_target_path(annual_target) %>" class="btn btn-sm btn-info"><i class="fal fa-eye"></i></a>
               <a href="<%= edit_overseers_annual_target_path(annual_target) %>" class="btn btn-sm btn-warning"><i class="fal fa-pen"></i></a>
