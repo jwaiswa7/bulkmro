@@ -1,6 +1,7 @@
 
 const newAccountsConfirmation = () => {
     $('.account-approval').prop('disabled', true);
+    $('.account-rejection').click();
 
     $('.new_accounts_confirmation input[type=checkbox]').click(function (f) {
         checkCheckboxStatus();
@@ -33,11 +34,23 @@ const newAccountsConfirmation = () => {
 let checkCheckboxStatus = () => {
     if ($('.new_accounts_confirmation input[type="checkbox"]').not(':checked').length == 0) {
         $('.account-approval').prop('disabled', false);
-        $('#sales_order_custom_fields_reject_reasons').removeAttr('required')
+        if (!$('.account-rejection').hasClass('collapsed')){
+            $('.account-rejection').click();
+        }
+        $('.account-rejection').addClass('disabled');
+        $('#sales_order_custom_fields_reject_reasons').removeAttr('required');
+    }else if ($('.new_accounts_confirmation input[type="checkbox"]').not(':checked').length == 1 && $('.account-rejection').hasClass('collapsed')){
+        $('.account-rejection').click();
+        $('.account-rejection').removeClass('disabled');
+        $('.account-approval').prop('disabled', true);
+        $('#sales_order_custom_fields_reject_reasons').attr('required', 'required');
     }else{
         $('.account-approval').prop('disabled', true);
-        $('#sales_order_custom_fields_reject_reasons').attr('required', 'required')
+        $('.account-rejection').removeClass('disabled');
+        $('#sales_order_custom_fields_reject_reasons').attr('required', 'required');
     }
+
+
 };
 
 let rejectReasonMapping = (param) => {
