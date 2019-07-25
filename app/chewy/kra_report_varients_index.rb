@@ -19,8 +19,8 @@ class KraReportVarientsIndex < BaseIndex
 
     field :sales_order_count, value: -> () {0}, type: 'integer'
     field :invoices_count, value: -> (record) {record.inquiry.bible_sales_invoices.count}, type: 'integer'
-    field :total_quote_value, value: -> (record) {record.inquiry.total_quote_value || record.final_sales_quotes.map{|quote| quote.calculated_total.to_i}.sum }, type: 'double'
-    field :total_order_value, value: -> (record) {record.inquiry.bible_sales_order_total || record.total_sales_orders.map{|order| order.calculated_total.to_i }.sum }, type: 'double'
+    field :total_quote_value, value: -> (record) {record.inquiry.total_quote_value || record.final_sales_quotes.map {|quote| quote.calculated_total.to_i}.sum }, type: 'double'
+    field :total_order_value, value: -> (record) {record.inquiry.bible_sales_order_total || record.total_sales_orders.map {|order| order.calculated_total.to_i }.sum }, type: 'double'
 
     field :revenue, value: -> (record) {record.inquiry.bible_actual_margin}, type: 'double'
     field :gross_margin_assumed, value: -> (record) {record.inquiry.bible_assumed_margin}, type: 'double'

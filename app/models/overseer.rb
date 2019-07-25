@@ -120,5 +120,4 @@ class Overseer < ApplicationRecord
   def get_annual_target
     self.annual_targets.where(year: AnnualTarget.current_year).last
   end
-
 end

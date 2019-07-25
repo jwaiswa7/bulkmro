@@ -1,11 +1,10 @@
 class AnnualTarget < ApplicationRecord
-
   belongs_to :overseer, required: true
   belongs_to :manager, class_name: 'Overseer', foreign_key: :manager_id, required: false
   belongs_to :business_head, class_name: 'Overseer', foreign_key: :business_head_id, required: false
   has_many :targets
 
-  validates_uniqueness_of :year, :scope => :overseer_id
+  validates_uniqueness_of :year, scope: :overseer_id
 
   validates_presence_of :inquiry_target
 
@@ -30,5 +29,4 @@ class AnnualTarget < ApplicationRecord
   def disabled_status(target_type)
     (self[target_type] != 0.0)
   end
-
 end
