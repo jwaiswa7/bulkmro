@@ -126,6 +126,20 @@ class SalesOrder < ApplicationRecord
       'Order Deleted': 70
   }, _prefix: true
 
+  enum reject_reason: {
+      "Wrong PO Number": 'Wrong PO Number',
+      "Wrong Payment Terms": 'Wrong Payment Terms',
+      "Wrong Billing Warehouse": 'Wrong Billing Warehouse',
+      "Wrong Shipping Warehouse": 'Wrong Shipping Warehouse',
+      "Wrong Billing Address": 'Wrong Billing Address',
+      "Wrong Shipping Address": 'Wrong Shipping Address',
+      "Wrong Attachments": 'Wrong Attachments',
+      "Wrong HSN Codes": 'Wrong HSN Codes',
+      "Wrong Tax Rates": 'Wrong Tax Rates',
+      "Wrong Tax Types": 'Wrong Tax Types',
+      "Wrong Order Values": 'Wrong Order Values'
+  }
+
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
   scope :remote_approved, -> {where('(((sales_orders.status = ? OR sales_orders.status = ?) AND sales_orders.remote_status != ?) OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'CO'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled'])}
   scope :accounts_approval_pending, -> {where(status: 'Accounts Approval Pending')}

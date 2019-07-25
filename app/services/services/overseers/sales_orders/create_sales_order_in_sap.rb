@@ -25,7 +25,12 @@ class Services::Overseers::SalesOrders::CreateSalesOrderInSap < Services::Shared
       end
     else
       sales_order.update_attributes(status: :'SAP Rejected')
-      comment = InquiryComment.where(message: "Rejected by Accounts. Reason: #{params[:sales_order][:custom_fields][:message]}",
+      reason = if params[:sales_order][:custom_fields][:reject_reasons].present? && params[:sales_order][:custom_fields][:message].present?
+        params[:sales_order][:custom_fields][:reject_reasons].reject(&:empty?).join(', ') + ' - ' + params[:sales_order][:custom_fields][:message]
+      else
+        params[:sales_order][:custom_fields][:reject_reasons].reject(&:empty?).join(', ')
+      end
+      comment = InquiryComment.where(message: "Rejected by Accounts. Reason(s): #{reason}",
                                      inquiry: sales_order.inquiry, created_by: Overseer.default_approver, updated_by: Overseer.default_approver,
                                      sales_order: sales_order).first_or_create! if sales_order.inquiry.present?
       Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :sap_rejected).call
