@@ -21,7 +21,7 @@ json.data (@indexed_kra_reports) do |inquiry|
                   if @category.present? && @category == 'company_key'
                     link_to(Company.find(inquiry['key']).account.to_s, overseers_account_path(Company.find(inquiry['key']).account), target: '_blank')
                   end,
-                  if @category.present? && @category.include?('outside')
+                  if @category.present? && @category == 'outside_sales_owner_id'
                     Overseer.find(inquiry['key']).get_monthly_target('Inquiry', params['kra_report'])
                   else
                     ''
@@ -91,7 +91,7 @@ json.columnFilters [
                        if @category.present? && @category == 'company_key'
                          [{"source": autocomplete_overseers_accounts_path}]
                        end,
-                       if @category.present? && @category.include?('outside')
+                       if @category.present? && @category == 'outside_sales_owner_id'
                          []
                        else
                          []
