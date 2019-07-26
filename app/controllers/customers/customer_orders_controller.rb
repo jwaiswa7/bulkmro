@@ -34,12 +34,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
       @customer_order.save
       @customer_order.update_attributes(online_order_number: Services::Resources::Shared::UidGenerator.online_order_number(@customer_order.id))
 
-      if current_contact.account_manager?
-        @customer_order.create_approval(contact: current_contact)
-      elsif current_cart.grand_total.to_f <= 35000 && current_company.id == 1847
-        @customer_order.create_approval(contact: current_company.account_manager_contact)
-
-      end
+      Services::Customers::CustomerOrders::Approval.new(current_contact, current_cart, current_company, @customer_order).call
 
       current_cart.items.each do |cart_item|
         @customer_order.rows.where(product_id: cart_item.product_id).first_or_create do |row|
