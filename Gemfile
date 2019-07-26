@@ -196,7 +196,7 @@ gem 'ratyrate'
 
 gem 'rubocop-rails_config'
 
-#For working with percentages
+# For working with percentages
 gem 'percentage'
 
 group :development, :test do
