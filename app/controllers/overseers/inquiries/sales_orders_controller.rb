@@ -106,6 +106,10 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
           overseers_inquiry_comments_path(@inquiry, sales_order_id: @sales_order.to_param, show_to_customer: false),
           @sales_order.inquiry.inquiry_number.to_s
       )
+
+      if Settings.sales_order.default_manager_approved
+        Services::Overseers::SalesOrders::DefaultManagerApproval.new(@sales_order, @notification).call
+      end
     else
       @sales_order.update_attributes(sent_at: Time.now) if @sales_order.sent_at.blank?
     end
@@ -219,6 +223,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
           :reject,
           :approve,
           custom_fields: [
+              :reject_reasons,
               :message
           ],
           rows_attributes: [

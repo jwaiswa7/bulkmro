@@ -772,7 +772,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :dashboard, controller: :dashboard
+    resource :dashboard, controller: :dashboard do
+      collection do
+        # get 'export_for_amat_customer'
+      end
+    end
     resources :cart_items, only: %i[new create destroy update]
     resources :customer_orders, only: %i[index create show] do
       member do
