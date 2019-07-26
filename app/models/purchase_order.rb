@@ -240,25 +240,17 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def update_material_status
-    inward_dispatches = self.inward_dispatches.order(created_at: :desc)
-    if inward_dispatches.any?
-      invoice_request = inward_dispatches.first.invoice_request
+    if self.inward_dispatches.any?
       partial = true
       if self.rows.sum(&:get_pickup_quantity) <= 0
         partial = false
       end
-      if invoice_request.present?
-        json = { material_status: invoice_request.status, is_partial: partial }
-        self.update_attributes(json)
-      else
-        if 'Material Pickup'.in? self.inward_dispatches.map(&:status)
-          status = partial ? 'Inward Dispatch: Partial' : 'Inward Dispatch'
-        elsif 'Material Delivered'.in? self.inward_dispatches.map(&:status)
-          status = partial ? 'Material Partially Delivered' : 'Material Delivered'
-        end
-        json = { material_status: status, is_partial: partial }
-        self.update_attributes(json)
+      if 'Material Pickup'.in? self.inward_dispatches.map(&:status)
+        status = partial ? 'Inward Dispatch: Partial' : 'Inward Dispatch'
+      elsif 'Material Delivered'.in? self.inward_dispatches.map(&:status)
+        status = partial ? 'Material Partially Delivered' : 'Material Delivered'
       end
+      self.update_attribute(:material_status, status)
     else
       self.update_attribute(:material_status, 'Material Readiness Follow-Up')
     end
