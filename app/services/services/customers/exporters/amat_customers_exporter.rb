@@ -1,5 +1,5 @@
 class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseers::Exporters::BaseExporter
-  def initialize()
+  def initialize
     @filename = 'export_amat_customer_details'
     super
     @company = Company.find(5)
