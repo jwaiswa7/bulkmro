@@ -1,8 +1,8 @@
 class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseers::Exporters::BaseExporter
-  def initialize(headers, company)
+  def initialize
     @filename = 'export_amat_customer_details'
-    super(headers, @filename)
-    @company = company
+    super
+    @company = Company.find(5)
     @export_name = 'amat_customer_portal'
     @path = Rails.root.join('tmp', filename)
     @columns = ['Inquiry Number', 'Inquiry Date', 'BM Number', 'Descripton', 'Location', 'Transaction Type', 'AMAT Request Date', 'AMAT Request Number', 'Bulk MRO Quotation Date', 'Order Confirmation Date by Email', 'AMAT PO Number', 'Actual PO received from AMAT Date', 'PO from Bulk MRO to Vendor Date', 'PI from Vendor Date', 'Payment made to Vendor date', 'Committed Date by Bulk MRO', 'Revised Committed Date', 'Actual Delivery Date', 'PO Status', 'Tracking Number', 'Invoice Date', 'Invoice No', 'Material Dispatch Date', 'Comments']
