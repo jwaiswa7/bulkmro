@@ -71,7 +71,7 @@
       </div>
     </div>
   </section>
-  <% if policy(@overseer).can_add_edit_target? %>
+  <% if is_authorized('overseer', 'can_add_edit_target') &&  policy(@overseer).can_add_edit_target? %>
     <section class="pt-3 pt-lg-4 pb-2">
       <div class="d-md-flex justify-content-between">
         <h3 class="display-5 d-flex align-items-center">
@@ -89,12 +89,12 @@
         <th class="no-sort"></th>
         <th class="no-sort">Year</th>
         <th class="no-sort">Inquiry Target</th>
-        <th class="no-sort">Company Target</th>
-        <th class="no-sort">Invoice Target</th>
-        <th class="no-sort">Invoice Margin Target</th>
-        <th class="no-sort">Order Target</th>
-        <th class="no-sort">Order Margin Target</th>
-        <th class="no-sort">New Client Target</th>
+<!--        <th class="no-sort">Company Target</th>-->
+<!--        <th class="no-sort">Invoice Target</th>-->
+<!--        <th class="no-sort">Invoice Margin Target</th>-->
+<!--        <th class="no-sort">Order Target</th>-->
+<!--        <th class="no-sort">Order Margin Target</th>-->
+<!--        <th class="no-sort">New Client Target</th>-->
       </tr>
       </thead>
       <tbody>
@@ -107,12 +107,12 @@
             </td>
             <td><%= annual_target.year %></td>
             <td><%= annual_target.inquiry_target %></td>
-            <td><%= annual_target.company_target %></td>
-            <td><%= annual_target.invoice_target %></td>
-            <td><%= annual_target.invoice_margin_target %></td>
-            <td><%= annual_target.order_target %></td>
-            <td><%= annual_target.order_margin_target %></td>
-            <td><%= annual_target.new_client_target %></td>
+<!--            <td><%#= annual_target.company_target %></td>-->
+<!--            <td><%#= annual_target.invoice_target %></td>-->
+<!--            <td><%#= annual_target.invoice_margin_target %></td>-->
+<!--            <td><%#= annual_target.order_target %></td>-->
+<!--            <td><%#= annual_target.order_margin_target %></td>-->
+<!--            <td><%#= annual_target.new_client_target %></td>-->
           </tr>
         <% end %>
       <% end %>

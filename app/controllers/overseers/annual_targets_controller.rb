@@ -29,7 +29,6 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
   def create
     @overseer = Overseer.find(annual_target_params[:overseer_id])
     @annual_target = @overseer.annual_targets.build(annual_target_params.merge(overseer: current_overseer))
-    @annual_target.assign_attributes(manager_id: @overseer.parent.id, business_head_id: @overseer.parent.parent.id)
     authorize_acl @annual_target
 
     if @annual_target.save

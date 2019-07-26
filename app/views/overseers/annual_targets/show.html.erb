@@ -16,7 +16,7 @@
           <div class="form-row">
             <div class="col-6 col-md-3 mb-3">
               <strong class="d-block">Name</strong>
-              <%= @annual_target.overseer.try(:full_name) %>
+              <%= link_to @annual_target.overseer.try(:full_name), overseers_overseer_path(@annual_target.overseer) %>
             </div>
             <div class="col-6 col-md-3 mb-3">
               <strong class="d-block">Manager</strong>
@@ -34,35 +34,35 @@
               <%= @annual_target.inquiry_target %>
             </div>
 
-            <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Company Target</strong>
-              <%= @annual_target.company_target %>
-            </div>
+<!--            <div class="col-6 col-md-3 mb-2">-->
+<!--              <strong class="d-block">Company Target</strong>-->
+              <%#= @annual_target.company_target %>
+<!--            </div>-->
 
-            <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Invoice Target</strong>
-              <%= @annual_target.invoice_target %>
-            </div>
+<!--            <div class="col-6 col-md-3 mb-2">-->
+<!--              <strong class="d-block">Invoice Target</strong>-->
+              <%#= @annual_target.invoice_target %>
+<!--            </div>-->
 
-            <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Invoice Margin Target</strong>
-              <%= @annual_target.invoice_margin_target %>
-            </div>
+<!--            <div class="col-6 col-md-3 mb-2">-->
+<!--              <strong class="d-block">Invoice Margin Target</strong>-->
+              <%#= @annual_target.invoice_margin_target %>
+<!--            </div>-->
 
-            <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Inquiry Target</strong>
-              <%= @annual_target.order_target %>
-            </div>
+<!--            <div class="col-6 col-md-3 mb-2">-->
+<!--              <strong class="d-block">Inquiry Target</strong>-->
+              <%#= @annual_target.order_target %>
+<!--            </div>-->
 
-            <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Order Margin Target</strong>
-              <%= @annual_target.order_margin_target %>
-            </div>
+<!--            <div class="col-6 col-md-3 mb-2">-->
+<!--              <strong class="d-block">Order Margin Target</strong>-->
+              <%#= @annual_target.order_margin_target %>
+<!--            </div>-->
 
-            <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">New Cilent Target</strong>
-              <%= @annual_target.new_client_target %>
-            </div>
+<!--            <div class="col-6 col-md-3 mb-2">-->
+<!--              <strong class="d-block">New Cilent Target</strong>-->
+              <%#= @annual_target.new_client_target %>
+<!--            </div>-->
 
           </div>
         </div>

@@ -23,17 +23,29 @@ class Services::Overseers::Targets::CreateMonthlyTargets < Services::Shared::Bas
         if @annual_target[target_type] != 0.0
 
           monthly_target = (@annual_target[coneverted_target_type] / 12.0).round(2)
-          changed_monthly_target = monthly_target.to_i
+          changed_monthly_target = monthly_target
           target_periods.each do |target_period|
             target = Target.where(overseer_id: overseer.id, target_period_id: target_period.id, target_type: Target.target_types[target_type]).first_or_initialize(target_value: changed_monthly_target, manager_id: @annual_target.manager_id, business_head_id: @annual_target.business_head_id, annual_target_id: @annual_target.id)
             unless target.id.present?
               if target.save
                 target_start_date = target_period.period_month
                 target_end_date = target_period.period_month + 1.month
-                target_achieved = Inquiry.where(outside_sales_owner_id: overseer.id, status: 'Order Won').where(created_at: target_start_date..target_end_date).count
-
-                remaining_target = (changed_monthly_target - target_achieved).to_i
-                changed_monthly_target = (monthly_target.to_i + remaining_target)
+                inquiries = Inquiry.where(outside_sales_owner_id: overseer.id, status: 'Order Won').where(created_at: target_start_date..target_end_date)
+                total_target_achieved = 0
+                inquiries.each do |inquiry|
+                  p 'inquiry---------'+inquiry.inquiry_number.to_s
+                  if inquiry.bible_sales_order_total.present? || inquiry.bible_sales_order_total != 0
+                    sales_order_total = inquiry.bible_sales_order_total
+                  else
+                    sales_order_total = (inquiry.sales_orders.approved.map { |so| so.calculated_total }.sum).to_f.round(2)
+                  end
+                  p '==================sales order total'+sales_order_total.to_s
+                  total_target_achieved += sales_order_total
+                  p "---loop------------#{total_target_achieved}--------------"
+                end
+                p "--------------#{total_target_achieved}--------------"
+                remaining_target = ((changed_monthly_target*100000).to_f - total_target_achieved)
+                changed_monthly_target = ((monthly_target*100000 + remaining_target)/100000).round(2)
               end
             end
           end
