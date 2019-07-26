@@ -774,7 +774,7 @@ Rails.application.routes.draw do
 
     resource :dashboard, controller: :dashboard do
       collection do
-        # get 'export_for_amat_customer'
+        get 'export_for_amat_customer'
       end
     end
     resources :cart_items, only: %i[new create destroy update]
