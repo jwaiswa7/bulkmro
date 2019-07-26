@@ -1,6 +1,6 @@
 class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseController
   before_action :set_packing_slip, only: [:show, :edit, :update, :destroy]
-  before_action :set_outward_dispatch, only: [:new, :create, :update, :show, :edit]
+  before_action :set_outward_dispatch, only: [:new, :create, :update, :show, :edit, :add_packing, :submit_packing]
 
 
   # GET /packing_slips
@@ -31,6 +31,50 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
       end
     end
     authorize_acl @packing_slip
+  end
+
+  def add_packing
+     # @packing_slip = @outward_dispatch.packing_slips
+
+    @packing_rows = @outward_dispatch.ar_invoice_request.rows
+    respond_to do |format|
+        format.html {render 'add_packing'}
+    end
+    authorize_acl :packing_slip
+  end
+
+  def submit_packing
+    authorize_acl :packing_slip
+    @packing_slips = @outward_dispatch.packing_slips
+    packing_slip_object = {}
+    @packing_slips.each do |value|
+      packing_slip_object[value.box_number] = value.id
+    end
+    @packing_arrays = params[:row]
+    @packing_arrays.each do |key, value|
+      @box_numbers = value['box_numbers'].split(",").map { |s| s.to_i }
+       @quantities = value['quantities'].split(",").map { |s| s.to_i }
+       @box_numbers.each_with_index do |box_numbers, index|
+         p @quantities[index]
+         p box_numbers
+         p packing_slip_object[box_numbers]
+         packing_slip_row = PackingSlipRow.new(packing_slip_id: packing_slip_object[box_numbers], ar_invoice_request_row_id: value['ar_invoice_request_row_id'], delivery_quantity: @quantities[index])
+          # packing_slip_row.save
+         if packing_slip_row.save
+           redirect_to overseers_outward_dispatch_path(@outward_dispatch.id), notice: 'Outward dispatch was successfully created.'
+         else
+           # p packing_slip_row.errors.full_messages
+           render json: {error: packing_slip_row.errors.full_messages}, status: 500
+         end
+         # respond_to do |format|
+         #   if packing_slip_row.save
+         #     format.html { redirect_to overseers_outward_dispatch_path(@outward_dispatch), notice: 'Outward dispatch was successfully created.' }
+         #   else
+         #     format.json { render json: packing_slip_row.errors}
+         #   end
+         # end
+       end
+    end
   end
 
   # GET /packing_slips/1/edit

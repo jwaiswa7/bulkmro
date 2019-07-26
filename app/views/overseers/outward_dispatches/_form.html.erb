@@ -31,20 +31,34 @@
               <%= f.input :expected_date_of_delivery, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_date_of_delivery.try(:strftime, "%d-%b-%Y"), class: ''}, required: true %>
             </div>
             <div class="col-4 mt-2 material_delivery_date">
-              <%= f.input :material_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.material_delivery_date.try(:strftime, "%d-%b-%Y"), class: ''}%>
+              <%= f.input :material_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.material_delivery_date.try(:strftime, "%d-%b-%Y"), class: ''} %>
               <i class="fa fa-times clear-date" aria-hidden="true" id="" title="Clear the material delivery date"></i>
             </div>
             <div class="col-4 mt-2">
               <%= f.input :dispatched_by, collection: enum_to_collection(InwardDispatch.dispatched_bies, keep_raw: true), label: "Material Dispatched By", input_html: {class: "select2-single"}, required: true %>
             </div>
             <div class="col-4 mt-2">
-              <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: true%>
+              <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: true %>
             </div>
             <div class="col-4 mt-2">
               <%= f.input :tracking_number, label: 'Tracking Number' %>
             </div>
           </div>
         </div>
+        <%= f.nested_fields_for :packing_slips do |ff| %>
+          <div class="form-row mb-3">
+            <div class="col-6 col-md-4 mb-2">
+              <%= ff.input :box_number %>
+            </div>
+            <div class="col-6 col-md-4 mb-2">
+              <%= ff.input :box_dimension %>
+            </div>
+            <div class="col-6 col-md-4 mt-3">
+              <%= ff.remove_nested_fields_link 'Remove me', class: 'btn btn-danger', role: 'button' %>
+            </div>
+          </div>
+        <% end %>
+        <%= f.add_nested_fields_link :packing_slips, 'Add a box', class: 'btn btn-outline-success btn-block' %>
       </div>
     </div>
     <div class="card">

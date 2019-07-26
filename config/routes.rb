@@ -340,7 +340,12 @@ Rails.application.routes.draw do
         get 'create_with_packing_slip'
       end
       scope module: 'outward_dispatches' do
-        resources :packing_slips
+        resources :packing_slips do
+          collection do
+            get 'add_packing'
+            post 'submit_packing'
+          end
+        end
         resources :email_messages do
           collection do
             get 'dispatch_mail_to_customer'

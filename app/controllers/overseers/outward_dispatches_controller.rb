@@ -53,8 +53,10 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     respond_to do |format|
       if @outward_dispatch.save
         @outward_dispatch.ar_invoice_request.inward_dispatches.map{|inward_dispatch| inward_dispatch.set_outward_status}
-        format.html { redirect_to overseers_outward_dispatch_path (@outward_dispatch), notice: 'Outward dispatch was successfully created.' }
-        format.json { render :show, status: :created, location: @outward_dispatch }
+        # format.html { redirect_to overseers_outward_dispatch_path (@outward_dispatch), notice: 'Outward dispatch was successfully created.' }
+        format.html { redirect_to add_packing_overseers_outward_dispatch_packing_slips_url (@outward_dispatch), notice: 'Outward dispatch was successfully created.' }
+        # format.json { render :show, status: :created, location: @outward_dispatch }
+        format.json { render json: @outward_dispatch.errors, status: :unprocessable_entity }
       else
         format.html { render :new }
         format.json { render json: @outward_dispatch.errors, status: :unprocessable_entity }
@@ -124,7 +126,8 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
         :dispatch_mail_sent_to_the_customer,
         :logistics_partner,
         :tracking_number,
-        :material_delivered_mail_sent_to_customer
+        :material_delivered_mail_sent_to_customer,
+        packing_slips_attributes: [:id, :box_number, :outward_dispatch_id, :box_dimension, :created_by_id, :updated_by_id, :_destroy]
       )
     end
 end
