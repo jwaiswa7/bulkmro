@@ -157,6 +157,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
 
   def self.to_remote(record, po_request)
     item_row = []
+    po_request_pur = po_request.sales_order.present? ? 1 : 2
     po_request.rows.each do |row|
       json = {
           ItemCode: row.product.sku,
@@ -171,11 +172,19 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
           WarehouseCode: po_request.bill_to.remote_uid,
           LocationCode: po_request.bill_to.location_uid,
           MeasureUnit: row.measurement_unit.name,
-          U_ProdBrand: row.brand_id.present? ? row.brand.name : row.product.brand.name
+          U_ProdBrand: row.brand_id.present? ? row.brand.name : row.product.brand.name,
+          U_CnfirmQty: 'A',
+          U_CnfrmAddB: 'A',
+          U_CnfrmAddS: 'A',
+          U_CnfrmRate: 'A',
+          U_CnfrmTax: 'A',
+          U_CnfrmGross: 'A',
+          U_Cnfrm_GSTIN: 'A',
+          U_Cnfrm_PayTerm: 'A'
       }
       item_row << json
     end
-    company_contact = CompanyContact.where(company_id: po_request.supplier_id, contacts_id: po_request.contact_id).last
+    company_contact = CompanyContact.where(company_id: po_request.supplier_id, contact_id: po_request.contact_id).last
     {
         PoDate: Time.now.strftime('%Y-%m-%d'),
         PoStatus: '63',
@@ -204,8 +213,10 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         U_CnfrmAddS: 'A',
         U_BM_BillFromTo: po_request.bill_to.remote_uid,
         CntctCode: company_contact.present? ? company_contact.remote_uid : '',
-        TrnspCode: po_request.transport_mode.present? ? PoRequest.transport_mode(po_request.transport_mode.to_sym) : 1,
-        U_TrmDeli: po_request.delivery_type.present? ? PoRequest.delivery_type : 'Door Delivery'
+        TransportationCode: po_request.transport_mode.present? ? PoRequest.transport_modes[po_request.transport_mode.to_sym] : 1,
+        U_TrmDeli: po_request.delivery_type.present? ? po_request.delivery_type.to_s : 'Door Delivery',
+        U_PO_Pur: po_request_pur,
+        PaymentGroupCode: po_request.payment_option.present? ? po_request.payment_option.remote_uid : ''
     }
   end
 end

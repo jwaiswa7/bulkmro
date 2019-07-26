@@ -26,6 +26,7 @@ class Export < ApplicationRecord
     pipeline_report: 93,
     monthly_sales_report: 94,
     customer_product: 95,
-    material_readiness_queue: 96
+    material_readiness_queue: 96,
+    amat_customer_portal: 97
   }
 end
