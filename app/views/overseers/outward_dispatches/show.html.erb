@@ -9,7 +9,11 @@
         <a href="<%= new_overseers_outward_dispatch_packing_slip_path(@outward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down">
           <i class="fal fa-pen mr-1"></i>Add Packing Slip
         </a>
-      <%end %>
+      <% end %>
+
+        <a href="<%= edit_outward_packing_slips_overseers_outward_dispatch_packing_slips_path(@outward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>
+          Edit All Packing Slip</a>
+
       <% if is_authorized(@outward_dispatch, 'edit') && policy(@outward_dispatch).edit? %>
         <a href="<%= edit_overseers_outward_dispatch_path(@outward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>
           Edit Outward Dispatch</a>
@@ -68,10 +72,10 @@
         </div>
       </div>
     </div>
-    <% @outward_dispatch.packing_slips.each_with_index do |packing_slip,index| %>
-      <%= render 'packing_slip',index: index, packing_slip: packing_slip %>
+    <% @outward_dispatch.packing_slips.each_with_index do |packing_slip, index| %>
+      <%= render 'packing_slip', index: index, packing_slip: packing_slip %>
       <br/>
-    <%end %>
+    <% end %>
   </section>
 </div>
 <%#= @outward_dispatch.to_json %>

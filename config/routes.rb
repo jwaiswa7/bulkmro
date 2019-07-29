@@ -344,6 +344,7 @@ Rails.application.routes.draw do
           collection do
             get 'add_packing'
             post 'submit_packing'
+            get 'edit_outward_packing_slips'
           end
         end
         resources :email_messages do

@@ -19,6 +19,7 @@
     </div>
     <div class="card">
       <div class="card-body">
+        <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
         <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
         <div class="form-row d-none d-md-flex mb-1">
           <div class="col-1">
@@ -60,7 +61,7 @@
                 <%= row.product.to_s %>
               </div>
               <div class="col-2 col-md-1">
-                <%= row.quantity %>
+                <%= row.get_remaining_quantity %>
                 <%#= field_set_tag row.quantity, readonly: true %>
               </div>
               <div class="col-2 col-md-1">

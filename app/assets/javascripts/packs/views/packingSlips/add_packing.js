@@ -12,12 +12,17 @@ const addPacking = () => {
             data: datastring,
             dataType: "json",
             success: function(data) {
-                console.log ('jjjjjjj')
-
+                if (data.hasOwnProperty("url") && data.url != null) {
+                    window.location = data.url
+                } else {
+                    window.location.reload();
+                }
             },
-            error: function(error) {
-                if (error.responseJSON.error)
-                    $(formSelector).find('.error').empty().html("<div class='p-1'>"+ error.responseJSON.error+ "</div>")
+            error: function error(_error) {
+                console.log($(formSelector))
+                if (_error.responseJSON && _error.responseJSON.error && _error.responseJSON.error.base)
+                    $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error.base + "</div>");
+                console.log(_error);
             }
         });
         event.preventDefault();
