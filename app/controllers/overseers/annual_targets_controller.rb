@@ -62,16 +62,16 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
     def annual_target_params
       params.require(:annual_target).permit(
         :overseer_id,
-        :manager_id,
-        :business_head_id,
-        :year,
-        :inquiry_target,
-        :company_target,
-        :invoice_target,
-        :invoice_margin_target,
-        :order_target,
-        :order_margin_target,
-        :new_client_target
+          :manager_id,
+          :business_head_id,
+          :year,
+          :inquiry_target,
+          :company_target,
+          :invoice_target,
+          :invoice_margin_target,
+          :order_target,
+          :order_margin_target,
+          :new_client_target
       )
     end
 end

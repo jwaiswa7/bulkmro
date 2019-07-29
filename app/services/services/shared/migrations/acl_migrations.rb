@@ -577,13 +577,9 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       val.each do |action_name|
         acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
         # update role
-        if role_name != 'all'
-          acl_role = AclRole.find_by_role_name(role_name)
+        acl_roles = AclRole.where(role_name: role_name)
+        acl_roles.each do |acl_role|
           update_role_resource(acl_role, acl_resource.id)
-        else
-          AclRole.all.each do |acl_role|
-            update_role_resource(acl_role, acl_resource.id)
-          end
         end
       end
     end
