@@ -57,7 +57,6 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def new_accounts_confirmation?
     accounts? || admin?
-    binding.pry
   end
 
   def create_account_confirmation?
