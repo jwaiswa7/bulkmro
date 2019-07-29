@@ -5,7 +5,7 @@ class Services::Shared::Migrations::CompanyAddressMigration < Services::Shared::
     csv_data = CSV.generate(write_headers: true, headers: headers) do |writer|
       Address.all.each do |address|
         company_name = address.company.present? ? address.company.to_s : 'Legacy'
-        street1 = address.street1.present? ?  address.street1 : ''
+        street1 = address.street1.present? ? address.street1 : ''
         street2 = address.street2.present? ? address.street2 : ''
         state = address.state.present? ? address.state.to_s : ''
         country_code = address.country_code.present? ? address.country_code : ''
