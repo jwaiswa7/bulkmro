@@ -246,4 +246,8 @@ class Company < ApplicationRecord
   def order_margin
     self.inquiries.map {|i| i.final_sales_orders.map {|s| s.calculated_total_margin_percentage} if i.final_sales_orders.present?}.flatten.compact
   end
+
+  def account_manager_contact
+    self.contacts.where(role: 'account_manager').first
+  end
 end
