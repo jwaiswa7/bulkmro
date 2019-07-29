@@ -262,19 +262,19 @@
                     <span><%= format_currency(item.converted_total_selling_price, precision: 2, symbol: '') %></span>
                   </td>
                   <td align="center" valign="top">
-                    <span><%= (item.sales_quote_row.applicable_tax_percentage * 100).to_f.round(0) %>%</span></td>
+                    <span><%= (item.sales_quote_row.applicable_tax_percentage * 100).to_f %>%</span></td>
                   <% if record.sales_quote.tax_summary.strip == '0' || record.sales_quote.tax_summary.to_s.include?("IGST") %>
                     <td align="center" valign="top">
-                      <span><%= (item.sales_quote_row.applicable_tax_percentage * 100).to_f.round(0) %>%</span></td>
+                      <span><%= (item.sales_quote_row.applicable_tax_percentage * 100).to_f %>%</span></td>
                     <td align="right" style=" text-align:right;" valign="top">
                       <span><%= format_currency(item.total_tax, precision: 2, symbol: '') %></span></td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= (item.sales_quote_row.applicable_tax_percentage * 100 / 2).to_f.round(0) %>%</span></td>
+                      <span><%= (item.sales_quote_row.applicable_tax_percentage * 100 / 2).to_f %>%</span></td>
                     <td align="right" style=" text-align:right;" valign="top">
                       <span><%= format_currency((item.converted_total_tax / 2), precision: 2, symbol: '') %></span></td>
                     <td align="center" valign="top">
-                      <span><%= (item.sales_quote_row.applicable_tax_percentage * 100 / 2).to_f.round(0) %>%</span></td>
+                      <span><%= (item.sales_quote_row.applicable_tax_percentage * 100 / 2).to_f %>%</span></td>
                     <td align="right" style=" text-align:right;" valign="top">
                       <span><%= format_currency((item.converted_total_tax / 2), precision: 2, symbol: '') %></span></td>
                   <% end %>

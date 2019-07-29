@@ -227,7 +227,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def export_material_readiness
     authorize_acl :purchase_order
-    service = Services::Overseers::Exporters::MaterialReadinessExporter.new([], current_overseer, [])
+
+    service = Services::Overseers::Exporters::MaterialReadinessExporter.new([], current_overseer)
     service.call
 
     redirect_to url_for(Export.material_readiness_queue.not_filtered.last.report)

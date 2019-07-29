@@ -21,20 +21,20 @@ class Resources::Order < Resources::ApplicationResource
     company_shipping_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.shipping_contact.email).first
 
     sez = if record.inquiry.is_sez
-            {
-                'ImportOrExport': 'tYES',
-                'ImportOrExportType': 'et_SEZ_Unit',
-            }
-          else
-            nil
-          end
+      {
+          'ImportOrExport': 'tYES',
+          'ImportOrExportType': 'et_SEZ_Unit',
+      }
+    else
+      nil
+    end
 
     {
-        HandWritten: "tYES",
+        HandWritten: 'tYES',
         DocNum: record.order_number,
         AttachmentEntry: record.inquiry.attachment_uid, # 6383, #$quote['attachment_entry'] ------------
-        DocumentStatus: record.status == "Cancelled" ? 'C' : 'O',
-        Canceled: record.status == "Cancelled" ? 'Y' : 'N',
+        DocStatus: record.status == 'Cancelled' ? 'C' : 'O',
+        Canceled: record.status == 'Cancelled' ? 'Y' : 'N',
         BPL_IDAssignedToInvoice: record.inquiry.bill_from.remote_branch_code, # record.inquiry.bill_from.remote_uid, #record.warehouser.remote_branch_code ----------
         CardCode: record.inquiry.company.remote_uid, # record.inquiry.contact.remote_uid, #customer_id ------
         CntctCode: record.inquiry.contact.full_name,
@@ -72,7 +72,7 @@ class Resources::Order < Resources::ApplicationResource
         U_Tax_Rmks: '', # hardcode
         U_Total_Rmks: '', # hardcode
         U_Ship_Rmks: '', # hardcode
-        U_Ship_GST: record.shipping_address.present? ? record.shipping_address.gst : '',
+        U_Ship_GSTIN: record.shipping_address.present? ? record.shipping_address.gst : '',
         U_Bill_Rmks: '', # hardcode
         U_PostBy: 'Magento', # hardcode
         U_PostMagento: 'Y', # hardcode

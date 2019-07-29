@@ -439,7 +439,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
         'invoice_request': %w(render_modal_form cancel_invoice_request render_cancellation_form render_comment_form can_cancel_or_reject),
         'inward_dispatch': %w(can_create_ar_invoice),
         'ar_invoice_request': %w(index show new edit create update destroy can_create_outward_dispatch download_eway_bill_format render_cancellation_form cancel_ar_invoice),
-        'ar_invoice_request_comment':  %w(index show new edit create update destroy),
+        'ar_invoice_request_comment': %w(index show new edit create update destroy),
         'ar_invoice_request_row': %w(index show new edit create update destroy),
         'outward_dispatch': %w(index show new edit create update destroy can_create_packing_slip create_with_packing_slip can_send_dispatch_email),
         'packing_slip': %w(index show new edit create update destroy can_send_dispatch_email),
@@ -466,7 +466,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
         'payment_request': %w(add_comment render_modal_form),
         'invoice_request': %w(render_modal_form cancel_invoice_request render_cancellation_form render_comment_form can_cancel_or_reject),
         'ar_invoice_request': %w(index show new edit create update destroy download_eway_bill_format render_cancellation_form cancel_ar_invoice can_cancel_or_reject),
-        'ar_invoice_request_comment':  %w(index show new edit create update destroy),
+        'ar_invoice_request_comment': %w(index show new edit create update destroy),
         'ar_invoice_request_row': %w(index show new edit create update destroy),
     }
     acl_for_account_in_outward_que.each do |key, val|
@@ -516,7 +516,8 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   end
 
   def create_acl_resources_using_csv
-    service = Services::Shared::Spreadsheets::CsvImporter.new('acl_resources_csv.csv', 'seed_files_3')
+    # service = Services::Shared::Spreadsheets::CsvImporter.new('acl_resources_csv.csv', 'seed_files_3')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('stock_po_acl.csv', 'seed_files_3')
     service.loop(nil) do |x|
       role_name = x.get_column('role_name')
       resource_model_name = x.get_column('model_name')
@@ -562,6 +563,24 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
         overseer.acl_resources = overseer_combined_resources.uniq.to_json
         overseer.acl_role_id = acl_role.id
         overseer.save
+      end
+    end
+  end
+
+  def create_target_resources
+    role_name = ['Admin-Leadership Team', 'admin']
+    acl_resources_for_targets = {
+        'annual_target': %w(index show new edit create update destroy),
+        'overseer': %w(can_add_edit_target)
+    }
+    acl_resources_for_targets.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        # update role
+        acl_roles = AclRole.where(role_name: role_name)
+        acl_roles.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
       end
     end
   end

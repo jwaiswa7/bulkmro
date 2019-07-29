@@ -184,7 +184,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
       }
       item_row << json
     end
-    company_contact = CompanyContact.where(company_id: po_request.supplier_id, contacts_id: po_request.contact_id).last
+    company_contact = CompanyContact.where(company_id: po_request.supplier_id, contact_id: po_request.contact_id).last
     {
         PoDate: Time.now.strftime('%Y-%m-%d'),
         PoStatus: '63',

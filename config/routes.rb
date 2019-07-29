@@ -139,7 +139,7 @@ Rails.application.routes.draw do
     end
 
     resource :profile, controller: :profile, except: [:show, :index]
-    resources :overseers, except: [:show] do
+    resources :overseers do
       member do
         patch 'save_acl_resources'
         get 'get_resources'
@@ -166,6 +166,8 @@ Rails.application.routes.draw do
         get 'get_default_resources'
       end
     end
+
+    resources :annual_targets
 
     resources :suppliers do
       collection do
@@ -772,7 +774,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :dashboard, controller: :dashboard
+    resource :dashboard, controller: :dashboard do
+      collection do
+        get 'export_for_amat_customer'
+      end
+    end
     resources :cart_items, only: %i[new create destroy update]
     resources :customer_orders, only: %i[index create show] do
       member do

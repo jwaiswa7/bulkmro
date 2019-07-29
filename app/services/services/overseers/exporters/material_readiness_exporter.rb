@@ -13,10 +13,10 @@ class Services::Overseers::Exporters::MaterialReadinessExporter < Services::Over
 
 
   def build_csv
-    model = PurchaseOrder
-    records = model.all.where(material_status: ['Material Readiness Follow-Up', 'Inward Dispatch', 'Inward Dispatch: Partial', 'Material Partially Delivered']).joins(:po_request).where.not(po_requests: {id: nil}).where(po_requests: {status: 'Supplier PO Sent'})
+    service = Services::Overseers::Finders::MaterialReadinessQueues.new({}, @overseer, paginate: false)
+    service.call
 
-    records.find_each(batch_size: 500) do |record|
+    service.records.find_each(batch_size: 200) do |record|
       rows.push(
         po_request: record.po_request.present? ? record.po_request.id : '-',
         inquiry_number: record.inquiry.inquiry_number,
