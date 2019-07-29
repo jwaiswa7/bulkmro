@@ -24,7 +24,7 @@
   <% else %>
     <th></th>
   <% end %>
-  <% if @category.present? && @category == "outside_sales_owner_id" %>
+  <% if @category.present? && (@category == "outside_sales_owner_id" || @category == 'outside_by_sales_order') %>
     <th class="no-sort all">Inquiry Target#</th>
   <% else %>
     <th></th>
@@ -49,7 +49,7 @@
   <td data-filter="false"></td>
   <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'dropdown' %>></td>
   <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'false' %>></td>
-  <td data-filter=<%= (@category.present? && @category == 'outside_sales_owner_id') ? 'false' : 'false' %>></td>
+  <td data-filter=<%= (@category.present? && @category == 'outside_sales_owner_id' || @category == 'outside_by_sales_order') ? 'false' : 'false' %>></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
@@ -70,7 +70,7 @@
   <td class="no-data"></td>
   <td class="total"></td>
   <td class="no-data"></td>
-  <% if @category.present? && @category == "outside_sales_owner_id" %>
+  <% if @category.present? && (@category == "outside_sales_owner_id" || @category == 'outside_by_sales_order') %>
     <td></td>
   <% else %>
     <td class="no-data"></td>

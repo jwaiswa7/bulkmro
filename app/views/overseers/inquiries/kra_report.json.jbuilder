@@ -21,7 +21,7 @@ json.data (@indexed_kra_reports) do |inquiry|
                   if @category.present? && @category == 'company_key'
                     link_to(Company.find(inquiry['key']).account.to_s, overseers_account_path(Company.find(inquiry['key']).account), target: '_blank')
                   end,
-                  if @category.present? && @category == 'outside_sales_owner_id'
+                  if @category.present? && (@category == 'outside_sales_owner_id' || @category == 'outside_by_sales_order')
                     number_with_delimiter(Overseer.find(inquiry['key']).get_monthly_target('Inquiry', params['kra_report']), delimiter: ',')
                   else
                     ''

@@ -21,6 +21,7 @@ class KraReportsIndex < BaseIndex
     field :account_key, value: -> (record) {record.company.account_id}, type: 'integer'
     field :expected_order, value: -> (record) {record.status == 'Expected Order' ? 1 : 0}, type: 'integer'
     field :order_won, value: -> (record) {record.status == 'Order Won' ? 1 : 0}, type: 'integer'
+    # field :inquiry_target_monthly, value: -> (record) {record.outside_sales_owner.get_monthly_inquiry_target}, type: 'float'
 
     field :sales_quote_count, value: -> (record) {
       if record.bible_final_sales_quotes.present?
