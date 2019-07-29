@@ -139,7 +139,7 @@ Rails.application.routes.draw do
     end
 
     resource :profile, controller: :profile, except: [:show, :index]
-    resources :overseers, except: [:show] do
+    resources :overseers do
       member do
         patch 'save_acl_resources'
         get 'get_resources'
@@ -166,6 +166,8 @@ Rails.application.routes.draw do
         get 'get_default_resources'
       end
     end
+
+    resources :annual_targets
 
     resources :suppliers do
       collection do

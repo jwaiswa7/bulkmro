@@ -8,9 +8,11 @@ class Overseer < ApplicationRecord
   include Mixins::HasRole
 
   has_many :activities, foreign_key: :created_by_id
+  has_many :annual_targets
+  has_many :targets
   has_one_attached :file
 
-  pg_search_scope :locate, against: [:first_name, :last_name, :email], associated_against: {acl_role: [:role_name]}, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:first_name, :last_name, :email], associated_against: {acl_role: [:role_name]}, using: {tsearch: {prefix: true}}
   has_closure_tree(name_column: :to_s)
 
   # Include default devise modules. Others available are:
@@ -19,11 +21,11 @@ class Overseer < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable, omniauth_providers: %i[google_oauth2]
 
   ratyrate_rater
-  enum status: { active: 10, inactive: 20 }
+  enum status: {active: 10, inactive: 20}
 
-  scope :can_send_email, -> { where.not(smtp_password: nil) }
-  scope :cannot_send_email, -> { where(smtp_password: nil) }
-  scope :with_includes, -> { includes(:activities) }
+  scope :can_send_email, -> {where.not(smtp_password: nil)}
+  scope :cannot_send_email, -> {where(smtp_password: nil)}
+  scope :with_includes, -> {includes(:activities)}
   validates_presence_of :email
   validates_presence_of :password, if: :new_record?
   validates_presence_of :password_confirmation, if: :new_record?
@@ -95,5 +97,27 @@ class Overseer < ApplicationRecord
 
   def self.all_roles
     AclRole.all
+  end
+
+  def get_monthly_target(target_type, date_range = nil)
+    if date_range['date_range'].present?
+      from = date_range['date_range'].split('~').first.to_date.strftime('%Y-%m-01')
+      to = date_range['date_range'].split('~').last.to_date.strftime('%Y-%m-01')
+      target_periods = TargetPeriod.where(period_month: from..to).pluck(:id)
+    else
+      from = "#{Date.today.year}-04-01"
+      to = Date.today.strftime('%Y-%m-%d')
+      target_periods = TargetPeriod.where(period_month: from..to).pluck(:id)
+    end
+    if self.targets.present?
+      monthly_targets = self.targets.where(target_type: target_type, target_period_id: target_periods)
+      monthly_targets.pluck(:target_value).sum.to_i if monthly_targets.present?
+    else
+      0
+    end
+  end
+
+  def get_annual_target
+    self.annual_targets.where(year: AnnualTarget.current_year).last
   end
 end
