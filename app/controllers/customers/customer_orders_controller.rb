@@ -26,14 +26,15 @@ class Customers::CustomerOrdersController < Customers::BaseController
         po_reference: current_cart.po_reference,
         special_instructions: current_cart.special_instructions,
         payment_method: current_cart.payment_method,
-        customer_po_sheet: (current_cart.customer_po_sheet.attached?) ? current_cart.customer_po_sheet.attachment.blob : nil
+        customer_po_sheet: (current_cart.customer_po_sheet.attached?) ? current_cart.customer_po_sheet.attachment.blob : nil,
+        calculated_total: current_cart.calculated_total,
+        calculated_total_tax: current_cart.calculated_total_tax,
+        grand_total: current_cart.grand_total
       )
       @customer_order.save
       @customer_order.update_attributes(online_order_number: Services::Resources::Shared::UidGenerator.online_order_number(@customer_order.id))
 
-      if current_contact.account_manager?
-        @customer_order.create_approval(contact: current_contact)
-      end
+      Services::Customers::CustomerOrders::Approval.new(current_contact, current_cart, current_company, @customer_order).call
 
       current_cart.items.each do |cart_item|
         @customer_order.rows.where(product_id: cart_item.product_id).first_or_create do |row|
