@@ -134,10 +134,14 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
   def update_inquiry_in_bible_invoice
     service = Services::Shared::Spreadsheets::CsvImporter.new('bible_invoices.csv', 'seed_files_3')
+    # to_be_updated = ["004/15.16", "003/15.16", "006/15.16", "007/15.16", "200046", "200046", "200046", "200838", "200811", "GJ/18-19-007", "201199", "005/15.16"]
+    to_be_updated = ["200046", "200838", "200811", "GJ/18-19-007", "201199"]
     service.loop(nil) do |x|
-      bi = BibleInvoice.where(invoice_number: x.get_column('Invoice Number')).last
-      bi.inquiry_number = x.get_column('Inquiry #').to_i
-      bi.save
+      if to_be_updated.include?(x.get_column('Invoice Number'))
+        bi = BibleInvoice.where(invoice_number: x.get_column('Invoice Number'), invoice_type: x.get_column('Invoice/Credit Note')).last
+        bi.inquiry_number = x.get_column('Inquiry #').to_i
+        bi.save
+      end
     end
   end
 

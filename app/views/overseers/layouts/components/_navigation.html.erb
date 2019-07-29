@@ -151,11 +151,11 @@
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">AR Invoice Requests</a>
             <ul class="dropdown-menu">
-              <%= nav_dropdown_item 'All Requests', overseers_ar_invoice_requests_path, policy(:ar_invoice_request).index? %>
-              <%= nav_dropdown_item 'Pending', overseers_ar_invoice_requests_path(:status => "AR Invoice requested"), policy(:ar_invoice_request).index? %>
-              <%= nav_dropdown_item 'Cancelled', overseers_ar_invoice_requests_path(:status => "Cancelled AR Invoice"), policy(:ar_invoice_request).index? %>
-              <%= nav_dropdown_item 'Rejected', overseers_ar_invoice_requests_path(:status => "AR Invoice Request Rejected"), policy(:ar_invoice_request).index? %>
-              <%= nav_dropdown_item 'Completed', overseers_ar_invoice_requests_path(:status => "Completed AR Invoice Request"), policy(:ar_invoice_request).index? %>
+              <%= nav_dropdown_item 'All Requests', overseers_ar_invoice_requests_path, is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_item 'Pending', overseers_ar_invoice_requests_path(:status => "AR Invoice requested"), is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_item 'Cancelled', overseers_ar_invoice_requests_path(:status => "Cancelled AR Invoice"), is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_item 'Rejected', overseers_ar_invoice_requests_path(:status => "AR Invoice Request Rejected"), is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_item 'Completed', overseers_ar_invoice_requests_path(:status => "Completed AR Invoice Request"), is_authorized(:ar_invoice_request, 'index') %>
             </ul>
           </div>
           <%= nav_dropdown_item 'Sales Receipt', overseers_sales_receipts_path, is_authorized(:sales_receipt, 'index') %>

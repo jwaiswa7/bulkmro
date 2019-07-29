@@ -46,7 +46,6 @@ class Overseers::InquiriesController < Overseers::BaseController
             end
           end
         end
-
         indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
         @per = (params['per'] || params['length'] || 20).to_i
         @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
@@ -121,7 +120,6 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def tat_report
     authorize_acl :inquiry
-
     respond_to do |format|
       service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
       service.call
