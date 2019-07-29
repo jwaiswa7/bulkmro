@@ -120,3 +120,42 @@
     </table>
   <% end %>
 </div>
+
+<!--This is sample code return for testing and it will show only for bhargav-->
+<% if Overseer.decode_id([params[:id]])[0] == current_overseer.id %>
+  <button onclick="importer.open()">Import Data</button>
+  <script src="https://unpkg.com/flatfile-csv-importer/build/dist/index.min.js"></script>
+  <script>
+      var LICENSE_KEY = '1deab8a0-b1fc-11e9-a2b4-efeb207514f6'
+      // example config, read the configuration docs to learn more
+      var importer = new FlatfileImporter(LICENSE_KEY, {
+          fields: [{
+              label: 'Product ID',
+              key: 'product-id',
+              isRequired: true
+          }, {
+              label: 'Name',
+              key: 'product-name',
+              isRequired: true
+          }, {
+              label: 'Price',
+              key: 'price',
+              isRequired: true
+          }, {
+              label: 'Category',
+              key: 'category',
+              alternates: ['type', 'type id'],
+              isRequired: false
+          }],
+          type: 'Product',
+          allowCustom: false,
+          maxRecords: 100
+      })
+      importer.requestDataFromUser().then(function(results) {
+          console.log(results.data)
+          // do something with the clean data here like upload it to your server
+      }, function() {
+          // do something if the user closes the importer
+      })
+  </script>
+<% end %>
