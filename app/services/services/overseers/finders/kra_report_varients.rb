@@ -31,7 +31,7 @@ class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Fin
       multi_match: {
           query: query_string,
           operator: 'and',
-          fields: %w[inside_sales_owner]
+          fields: %w[inside_sales_owner outside_sales_owner]
       }
     ).order(sort_definition)
 
@@ -125,6 +125,21 @@ class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Fin
                       company_key: {
                           cardinality: {
                               field: 'company_key'
+                          }
+                      },
+                      gross_margin_assumed: {
+                          sum: {
+                              field: 'gross_margin_assumed'
+                          }
+                      },
+                      gross_margin_percentage: {
+                          sum: {
+                              field: 'gross_margin_percentage'
+                          }
+                      },
+                      gross_margin_actual: {
+                          sum: {
+                              field: 'gross_margin_actual'
                           }
                       }
                   }
