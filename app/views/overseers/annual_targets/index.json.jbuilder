@@ -4,9 +4,9 @@ json.data (@annual_targets) do |annual_target|
                       if policy(annual_target).show?
                         row_action_button(overseers_annual_target_path(annual_target), 'eye', 'View Annual Target', 'info')
                       end,
-                      # if policy(annual_target).edit?
-                      #   row_action_button(edit_overseers_annual_target_path(annual_target), 'pencil', 'Edit Annual Target', 'warning')
-                      # end
+                    # if policy(annual_target).edit?
+                    #   row_action_button(edit_overseers_annual_target_path(annual_target), 'pencil', 'Edit Annual Target', 'warning')
+                    # end
                   ].join(' '),
                   annual_target.overseer.to_s,
                   annual_target.year,
