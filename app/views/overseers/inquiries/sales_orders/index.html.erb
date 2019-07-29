@@ -61,10 +61,9 @@
             <%# if is_authorized(sales_order, 'resync') && policy(sales_order).resync? %>
               <%#= row_action_button(resync_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post) %>
             <%# end %>
-
-            <% if is_authorized(sales_order, 'show_serialized') && policy(sales_order).show_serialized? %>
+            <% if sales_order.status == 'Approved' && is_authorized(sales_order, 'show_serialized') && policy(sales_order).show_serialized? %>
               <%= row_action_button(url_for(sales_order.serialized_pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
-            <% elsif is_authorized(sales_order, 'show_pdf') && policy(sales_order).show_pdf? %>
+            <% elsif sales_order.status == 'Approved' && is_authorized(sales_order, 'show_pdf') && policy(sales_order).show_pdf? %>
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
               <%= row_action_button(proforma_overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download Proforma Invoice', 'warning', :_blank) %>
             <% end %>
