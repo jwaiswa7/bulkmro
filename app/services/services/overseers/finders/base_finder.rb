@@ -269,6 +269,21 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     query_obj
   end
 
+  def aggregate_by_fields(key = 'statuses', aggregation_field = '', size = 10, status_field)
+    {
+        "#{key}": {
+            terms: {
+                script: doc['followup_status'].values + doc['committed_date_status'].values,
+                size: size
+            },
+            aggs: {
+
+            }
+        }
+        #
+    }
+  end
+
   def aggregate_by_status(key = 'statuses', aggregation_field = 'potential_value', size = 50, status_field)
     {
         "#{key}": {

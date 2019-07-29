@@ -1,5 +1,6 @@
 class PurchaseOrdersIndex < BaseIndex
   material_statuses = PurchaseOrder.material_statuses
+  material_summary_statuses = PurchaseOrder.material_summary_statuses
   po_statuses = PoRequest.statuses
   statuses = PurchaseOrder.statuses
   payment_request_statuses = PaymentRequest.statuses
@@ -40,8 +41,8 @@ class PurchaseOrdersIndex < BaseIndex
 
     field :followup_date, type: 'date'
     field :committed_date, value: ->(record) { record.po_request.inquiry.customer_committed_date if record.po_request.present? }, type: 'date'
-    field :followup_status, value: ->(record) { record.get_followup_status }, analyzer: 'substring'
-    field :committed_date_status, value: ->(record) { record.get_committed_date_status }, analyzer: 'substring'
+    field :followup_status, value: ->(record) { material_summary_statuses[record.get_followup_status].to_i }, type: 'integer'
+    field :committed_date_status, value: ->(record) { material_summary_statuses[record.get_committed_date_status].to_i }, type: 'integer'
 
     field :created_at, type: 'date'
     field :updated_at, type: 'date'

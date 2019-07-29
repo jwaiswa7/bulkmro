@@ -56,9 +56,9 @@ class Services::Overseers::Finders::MaterialReadinessQueues  < Services::Oversee
       indexed_records = range_query(indexed_records)
     end
     indexed_records = indexed_records.aggregations(aggregate_by_status('po_status'))
+    # indexed_records = indexed_records.aggregations(aggregate_by_status('followup_status'))
     indexed_records
   end
-
 
   def model_klass
     PurchaseOrder
