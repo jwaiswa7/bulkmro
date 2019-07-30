@@ -28,11 +28,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def show_pdf?
-    record.persisted? && record.sent? && record.order_number.present?
+    record.persisted? && record.status == 'Approved' && record.sent? && record.order_number.present?
   end
 
   def show_serialized?
-    record.serialized_pdf.attached?
+    record.status == 'Approved' && record.order_number.present? && record.serialized_pdf.attached?
   end
 
   def edit?
