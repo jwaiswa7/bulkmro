@@ -34,7 +34,6 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   end
 
   def add_packing
-     # @packing_slip = @outward_dispatch.packing_slips
     @packing_rows = []
         @outward_dispatch.ar_invoice_request.rows.each do |row|
       if row.get_remaining_quantity > 0
@@ -43,23 +42,6 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
     end
     respond_to do |format|
         format.html {render 'add_packing'}
-    end
-    # respond_to do |format|
-    #   format.html { render partial: 'add_packing'}
-    # end
-    authorize_acl :packing_slip
-  end
-
-  def edit_packing
-    # @packing_slip = @outward_dispatch.packing_slips
-    @packing_rows = []
-    @outward_dispatch.ar_invoice_request.rows.each do |row|
-      if row.get_remaining_quantity > 0
-        @packing_rows << row
-      end
-    end
-    respond_to do |format|
-      format.html {render partial: 'add_packing'}
     end
     authorize_acl :packing_slip
   end
@@ -74,9 +56,10 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
     @packing_arrays = params[:row]
     @packing_arrays.each do |key, value|
       @box_numbers = value['box_numbers'].split(",").map { |s| s.to_i }
-      p @quantities = value['quantities'].split(",").map { |s| s.to_i }
+       @quantities = value['quantities'].split(",").map { |s| s.to_i }
        @box_numbers.each_with_index do |box_numbers, index|
-         packing_slip_row = PackingSlipRow.new(packing_slip_id: packing_slip_object[box_numbers], ar_invoice_request_row_id: value['ar_invoice_request_row_id'], delivery_quantity: @quantities[index])
+         packing_slip_row = PackingSlipRow.where(packing_slip_id: packing_slip_object[box_numbers], ar_invoice_request_row_id: value['ar_invoice_request_row_id']).first_or_initialize
+         packing_slip_row.delivery_quantity = @quantities[index]
          packing_slip_row.save(validate: false)
        end
     end
@@ -91,12 +74,16 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
     obj.each do |key, value|
       data_obj = {}
       data_obj[:id] = key
-      data_obj[:product_id] = ArInvoiceRequestRow.where(id: key).last.product.id
-      data_obj[:product_name] = ArInvoiceRequestRow.where(id: key).last.product.to_s
-      data_obj[:get_remaining_quantity] = ArInvoiceRequestRow.where(id: key).last.get_remaining_quantity
-      data_obj[:quantity] = value.pluck(:delivery_quantity).join(", ")
+      ar_invoice_request_row = ArInvoiceRequestRow.where(id: key)
+      data_obj[:product_id] = ar_invoice_request_row.last.product.id
+      data_obj[:product_name] = ar_invoice_request_row.last.product.to_s
+      data_obj[:get_remaining_quantity] = ar_invoice_request_row.last.get_remaining_quantity.to_f + value.pluck(:delivery_quantity).map(&:to_f).inject(0,:+)
+      data_obj[:quantities] = value.pluck(:delivery_quantity).map(&:to_i).join(",")
       data_obj[:box_number] = PackingSlip.where(id: value.pluck(:packing_slip_id)).pluck(:box_number).join(", ")
       @packing_rows << data_obj
+    end
+    respond_to do |format|
+      format.html {render 'add_packing'}
     end
   end
   # GET /packing_slips/1/edit
