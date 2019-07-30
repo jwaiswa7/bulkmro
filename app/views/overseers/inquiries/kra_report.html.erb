@@ -16,7 +16,7 @@
 <%= render layout: 'search_layout' do %>
 <% end %>
 
-Bible data till - <strong><%= Inquiry.bible_data_till_date %></strong>
+Last bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
 
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
@@ -27,7 +27,7 @@ Bible data till - <strong><%= Inquiry.bible_data_till_date %></strong>
     <th></th>
   <% end %>
   <% if @category.present? && (@category == "outside_sales_owner_id" || @category == 'outside_by_sales_order') %>
-    <th class="no-sort all">Inquiry Target#</th>
+    <th class="no-sort all">Target</th>
   <% else %>
     <th></th>
   <% end %>
@@ -43,7 +43,7 @@ Bible data till - <strong><%= Inquiry.bible_data_till_date %></strong>
   <th class="sort all" data-name="sku">Unique Ordered SKU#</th>
   <th class="no-sort all">%Inquiries Won</th>
   <th class="sort all" data-name="invoices_count">Sales Invoices</th>
-  <th class="sort all" data-name="revenue">Revenue</th>
+  <th class="sort all" data-name="revenue">Value of Invoices</th>
   <th class="sort all" data-name="gross_margin_actual">Gross Margin(Actual)</th>
 <% end %>
 
@@ -77,17 +77,17 @@ Bible data till - <strong><%= Inquiry.bible_data_till_date %></strong>
   <% else %>
     <td class="no-data"></td>
   <% end %>
-  <td></td>
+  <td class="total_inquiries_count"></td>
   <td></td>
   <td></td>
   <td class="strong"></td>
   <td></td>
   <td class="strong"></td>
+  <td class="total_sales_order_value"></td>
+  <td class="gross_margin_assumed_value"></td>
+  <td class="gross_margin_percentage_total"></td>
   <td></td>
-  <td></td>
-  <td></td>
-  <td class="percentage"></td>
-  <td></td>
+  <td class="total_inquiries_won_percentage"></td>
   <td class="percentage"></td>
   <td></td>
   <td></td>
