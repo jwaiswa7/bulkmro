@@ -432,7 +432,7 @@ class Inquiry < ApplicationRecord
   end
 
   def margin_percentage
-    self.final_sales_quote.present? ? self.final_sales_quote.calculated_total_margin_percentage.to_f : 0
+    self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total_margin_percentage) : 0
   end
 
   def update_last_synced_quote
@@ -508,7 +508,7 @@ class Inquiry < ApplicationRecord
   end
 
   def bible_margin_percentage
-    BibleSalesOrder.where(inquiry_number: self.inquiry_number).first.try(:overall_margin_percentage)
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).pluck(:overall_margin_percentage).sum
   end
 
   def bible_sales_order_total
@@ -529,5 +529,9 @@ class Inquiry < ApplicationRecord
 
   def bible_outside_sales_owner
     BibleSalesOrder.where(inquiry_number: self.inquiry_number).first.try(:outside_sales_owner_id) || self.outside_sales_owner_id
+  end
+
+  def self.bible_data_till_date
+    BibleSalesOrder.order('mis_date asc').last.mis_date.strftime('%b %Y')
   end
 end

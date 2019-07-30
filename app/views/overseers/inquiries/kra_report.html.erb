@@ -16,6 +16,8 @@
 <%= render layout: 'search_layout' do %>
 <% end %>
 
+Bible data till - <strong><%= Inquiry.bible_data_till_date %></strong>
+
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort all" data-name=<%= @category.present? ? @category : "inside_sales_owner_id" %>>Name</th>

@@ -49,7 +49,7 @@ json.data (@indexed_kra_reports) do |inquiry|
                   if @category.present? && (@category.include? 'by_sales_order')
                     number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['gross_margin_percentage']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
-                    inquiry['gross_margin_percentage']['value'].to_i > 0 ? percentage(inquiry['gross_margin_percentage']['value'] * 100.0 / inquiry['doc_count'], show_symbol: false) : 0 if inquiry['gross_margin_percentage'].present?
+                    inquiry['gross_margin_percentage']['value'].to_i > 0 ? percentage(inquiry['gross_margin_percentage']['value'], show_symbol: false) : 0 if inquiry['gross_margin_percentage'].present?
                   end,
                   if @category.present? && (@category.include? 'by_sales_order')
                     number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['sku']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
