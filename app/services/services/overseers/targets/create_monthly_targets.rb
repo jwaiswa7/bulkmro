@@ -33,19 +33,18 @@ class Services::Overseers::Targets::CreateMonthlyTargets < Services::Shared::Bas
                 inquiries = Inquiry.where(outside_sales_owner_id: overseer.id, status: 'Order Won').where(created_at: target_start_date..target_end_date)
                 total_target_achieved = 0
                 inquiries.each do |inquiry|
-                  p 'inquiry---------' + inquiry.inquiry_number.to_s
                   if inquiry.bible_sales_order_total.present? || inquiry.bible_sales_order_total != 0
                     sales_order_total = inquiry.bible_sales_order_total
                   else
-                    sales_order_total = (inquiry.sales_orders.approved.map { |so| so.calculated_total }.sum).to_f.round(2)
+                    sales_order_total = (inquiry.sales_orders.approved.map { |so| so.calculated_total || 0 }.sum).to_f
                   end
-                  p '==================sales order total' + sales_order_total.to_s
+                  p 'inquiry---------' + inquiry.inquiry_number.to_s
+                  p 'sales order total==================' + sales_order_total.to_s
                   total_target_achieved += sales_order_total
-                  p "---loop------------#{total_target_achieved}--------------"
                 end
-                p "--------------#{total_target_achieved}--------------"
+                p "----total_target_achieved----------#{total_target_achieved}--------------"
                 remaining_target = ((changed_monthly_target * 100000).to_f - total_target_achieved)
-                changed_monthly_target = ((monthly_target * 100000 + remaining_target) / 100000).round(2)
+                changed_monthly_target = (((monthly_target * 100000).to_f + remaining_target) / 100000).round(2)
               end
             end
           end
