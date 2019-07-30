@@ -417,15 +417,15 @@ class Inquiry < ApplicationRecord
     when 'Preparing Quotation'
       self.draft_sales_quotes.map(&:calculated_total).compact.sum || 0.0
     when 'Quotation Sent', 'Follow-Up on Quotation', 'Expected Order', 'SO Not Created-Customer PO Awaited', 'SO Not Created-Pending Customer PO Revision'
-      self.final_sales_quote.try(:calculated_total) || 0.0
+      self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : 0.0
     when 'Order Won'
-      self.final_sales_orders.remote_approved.map(&:calculated_total).sum || 0.0
+      self.sales_orders.present? ? self.sales_orders.approved.map(&:calculated_total).sum : 0.0
     when 'Draft SO For Approval by Sales Manager', 'SO Draft: Pending Accounts Approval', 'SO Rejected by Sales Manager', 'Rejected by Accounts'
       self.sales_orders.map(&:calculated_total).compact.sum || 0.0
     when 'Order Lost'
-      (self.final_sales_quote.try(:calculated_total) || 0.0) + (self.final_sales_orders.last.try(&:calculated_total) || 0.0) + (self.products.map(&:latest_unit_cost_price).compact.sum || 0.0)
+      ((self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : self.products.map(&:latest_unit_cost_price).compact.sum) || 0.0)
     when 'Regret'
-      self.final_sales_quote.try(:calculated_total) || 0.0
+      self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : 0.0
     else
       0
     end
