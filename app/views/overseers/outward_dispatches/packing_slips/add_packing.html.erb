@@ -50,25 +50,25 @@
         </div>
         <% @packing_rows.each_with_index do |row, index| %>
           <%#= hidden_field_tag "product_id[#{index}]", row.product_id %>
-          <%= hidden_field_tag "row[#{index}][product_id]", row.product_id %>
-          <%= hidden_field_tag "row[#{index}][ar_invoice_request_row_id]", row.id %>
+          <%= hidden_field_tag "row[#{index}][product_id]",  row[:product_id] || row.product_id %>
+          <%= hidden_field_tag "row[#{index}][ar_invoice_request_row_id]", row[:id] || row.id %>
           <div class="flex-grow-1">
             <div class="form-row flex-row align-items-start mb-1">
               <div class="col-1">
                 <%= index + 1 %>
               </div>
               <div class="col-5 col-md-7">
-                <%= row.product.to_s %>
+                <%= row[:product_name] ||row.product.to_s %>
               </div>
               <div class="col-2 col-md-1">
-                <%= row.get_remaining_quantity %>
+                <%= row[:get_remaining_quantity] || row.get_remaining_quantity %>
                 <%#= field_set_tag row.quantity, readonly: true %>
               </div>
               <div class="col-2 col-md-1">
-                <%= text_field_tag "row[#{index}][box_numbers]", "", class: 'form-control', multiple: true %>
+                <%= text_field_tag "row[#{index}][box_numbers]", "", class: 'form-control', multiple: true, value: row[:box_number] %>
               </div>
               <div class="col-2 col-md-1">
-                <%= text_field_tag "row[#{index}][quantities]", "", class: 'form-control', multiple: true %>
+                <%= text_field_tag "row[#{index}][quantities]", "", class: 'form-control', multiple: true, value: row[:box_number] %>
               </div>
             </div>
           </div>
