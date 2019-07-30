@@ -9,7 +9,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     authorize_acl @sales_orders
 
     respond_to do |format|
-      format.html { }
+      format.html {}
     end
   end
 
@@ -20,14 +20,10 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def show
     authorize_acl @sales_order
-    if @sales_order.status != 'Approved' && File.extname(request.path).split('.').last == 'pdf'
-      redirect_to overseers_inquiry_sales_order_path(@sales_order.inquiry, @sales_order)
-    else
-      respond_to do |format|
-        format.html {}
-        format.pdf do
-          render_pdf_for @sales_order
-        end
+    respond_to do |format|
+      format.html {}
+      format.pdf do
+        render_pdf_for @sales_order
       end
     end
   end
@@ -186,7 +182,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   def order_cancellation_modal
     authorize @sales_order
     respond_to do |format|
-      format.html {render partial: 'cancellation'}
+      format.html { render partial: 'cancellation' }
     end
   end
 

@@ -22,7 +22,9 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
           status: :"Accounts Approval Pending",
         )
       end
-      @sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(@sales_order)), filename: @sales_order.filename)
+      if @sales_order.status == 'Approved'
+        @sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(@sales_order)), filename: @sales_order.filename)
+      end
 
       @sales_order.billing_address =  make_duplicate_address(@sales_order.inquiry.billing_address)
       @sales_order.shipping_address = make_duplicate_address(@sales_order.inquiry.shipping_address)
