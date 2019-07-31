@@ -9,7 +9,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     authorize_acl @sales_orders
 
     respond_to do |format|
-      format.html { }
+      format.html {}
     end
   end
 
@@ -20,9 +20,8 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def show
     authorize_acl @sales_order
-
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.pdf do
         render_pdf_for @sales_order
       end
@@ -183,7 +182,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   def order_cancellation_modal
     authorize @sales_order
     respond_to do |format|
-      format.html {render partial: 'cancellation'}
+      format.html { render partial: 'cancellation' }
     end
   end
 
