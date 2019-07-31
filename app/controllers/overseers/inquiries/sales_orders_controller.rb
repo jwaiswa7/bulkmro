@@ -20,11 +20,14 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def show
     authorize_acl @sales_order
-
-    respond_to do |format|
-      format.html { }
-      format.pdf do
-        render_pdf_for @sales_order
+    if @sales_order.status != 'Approved' && File.extname(request.path).split('.').last == 'pdf'
+      redirect_to overseers_inquiry_sales_order_path(@sales_order.inquiry, @sales_order)
+    else
+      respond_to do |format|
+        format.html {}
+        format.pdf do
+          render_pdf_for @sales_order
+        end
       end
     end
   end
@@ -125,7 +128,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   def create_account_confirmation
     authorize_acl @sales_order
 
-    Services::Overseers::SalesOrders::CreateSalesOrderInSap.new(@sales_order, params).call
+    Services::Overseers::SalesOrders::CreateSalesOrderInSap.new(@sales_order, params.merge(overseer: current_overseer)).call
 
     redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end

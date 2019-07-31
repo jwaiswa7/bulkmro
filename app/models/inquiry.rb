@@ -417,15 +417,15 @@ class Inquiry < ApplicationRecord
     when 'Preparing Quotation'
       self.draft_sales_quotes.map(&:calculated_total).compact.sum || 0.0
     when 'Quotation Sent', 'Follow-Up on Quotation', 'Expected Order', 'SO Not Created-Customer PO Awaited', 'SO Not Created-Pending Customer PO Revision'
-      self.final_sales_quote.try(:calculated_total) || 0.0
+      self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : 0.0
     when 'Order Won'
-      self.final_sales_orders.remote_approved.map(&:calculated_total).sum || 0.0
+      self.sales_orders.present? ? self.sales_orders.approved.map(&:calculated_total).sum : 0.0
     when 'Draft SO For Approval by Sales Manager', 'SO Draft: Pending Accounts Approval', 'SO Rejected by Sales Manager', 'Rejected by Accounts'
       self.sales_orders.map(&:calculated_total).compact.sum || 0.0
     when 'Order Lost'
-      (self.final_sales_quote.try(:calculated_total) || 0.0) + (self.final_sales_orders.last.try(&:calculated_total) || 0.0) + (self.products.map(&:latest_unit_cost_price).compact.sum || 0.0)
+      ((self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : self.products.map(&:latest_unit_cost_price).compact.sum) || 0.0)
     when 'Regret'
-      self.final_sales_quote.try(:calculated_total) || 0.0
+      self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : 0.0
     else
       0
     end
@@ -445,9 +445,17 @@ class Inquiry < ApplicationRecord
     end
   end
 
+  def total_sales_orders
+    self.sales_orders.where(status: 'Approved') if self.sales_orders.present?
+  end
+
+  def final_sales_quotes
+    self.total_sales_orders.map { |so| so.sales_quote } unless self.total_sales_orders.blank?
+  end
+
   def bible_final_sales_quotes
     sales_quotes_ids = []
-    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).each do |bso|
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).each do |bso|
       sales_order = SalesOrder.find_by_order_number(bso.order_number)
       if sales_order.present?
         if !sales_quotes_ids.include? sales_order.sales_quote.id
@@ -469,7 +477,7 @@ class Inquiry < ApplicationRecord
   def total_quote_value
     total_quote_value = 0
     sales_quotes_ids = []
-    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).each do |bso|
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).each do |bso|
       sales_order = SalesOrder.find_by_order_number(bso.order_number)
       if sales_order.present?
         if !sales_quotes_ids.include? sales_order.sales_quote.id
@@ -487,35 +495,39 @@ class Inquiry < ApplicationRecord
   end
 
   def unique_skus_in_order
-    bible_orders = BibleSalesOrder.where(:inquiry_number => self.inquiry_number)
-    bible_orders.map {|bo| bo.metadata.map{|m| m['sku']} }.flatten.compact.uniq.count
+    bible_orders = BibleSalesOrder.where(inquiry_number: self.inquiry_number)
+    bible_orders.map {|bo| bo.metadata.map {|m| m['sku']} }.flatten.compact.uniq.count
   end
 
   def bible_sales_orders
-    BibleSalesOrder.where(:inquiry_number => self.inquiry_number)
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number)
   end
 
   def bible_sales_invoices
-    BibleInvoice.where(:inquiry_number => self.inquiry_number)
+    BibleInvoice.where(inquiry_number: self.inquiry_number)
   end
 
   def bible_margin_percentage
-    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).first.try(:overall_margin_percentage)
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).first.try(:overall_margin_percentage)
   end
 
   def bible_sales_order_total
-    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).pluck(:order_total).sum
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).pluck(:order_total).sum
   end
 
-  def bible_revenue
-    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).pluck(:total_margin).sum
+  def bible_assumed_margin
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).pluck(:total_margin).sum
+  end
+
+  def bible_actual_margin
+    BibleInvoice.where(inquiry_number: self.inquiry_number).pluck(:total_margin).sum
   end
 
   def bible_inside_sales_owner
-    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).first.try(:inside_sales_owner_id) || self.inside_sales_owner_id
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).first.try(:inside_sales_owner_id) || self.inside_sales_owner_id
   end
 
   def bible_outside_sales_owner
-    BibleSalesOrder.where(:inquiry_number => self.inquiry_number).first.try(:outside_sales_owner_id) || self.outside_sales_owner_id
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).first.try(:outside_sales_owner_id) || self.outside_sales_owner_id
   end
 end

@@ -9,6 +9,10 @@ class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
     (admin? || hr?)
   end
 
+  def show?
+    (admin? || hr?)
+  end
+
   def get_resources?
     true
   end
@@ -32,5 +36,9 @@ class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
 
   def update_password?
     edit?
+  end
+
+  def can_add_edit_target?
+    record.role == 'outside_sales_executive'
   end
 end
