@@ -282,4 +282,63 @@ class SalesOrder < ApplicationRecord
   def set_so_status_value
     self.remote_status.present? ? SalesOrder.remote_statuses[self.remote_status.to_sym] : 32
   end
+
+  # bible data methods
+
+  def bible_total_quote_value
+    total_quote_value = 0
+    sales_quotes_ids = []
+    BibleSalesOrder.where(order_number: self.order_number).each do |bso|
+      sales_order = SalesOrder.find_by_order_number(bso.order_number)
+      if sales_order.present?
+        if !sales_quotes_ids.include? sales_order.sales_quote.id
+          total_quote_value += sales_order.sales_quote.calculated_total
+          sales_quotes_ids << sales_order.sales_quote.id
+        end
+      end
+    end
+
+    if self.inquiry.final_sales_quote.present? && !(sales_quotes_ids.include? self.inquiry.final_sales_quote.id)
+      total_quote_value += self.inquiry.final_sales_quote.calculated_total
+    end
+
+    total_quote_value
+  end
+
+  def unique_skus_in_order
+    bible_orders = BibleSalesOrder.where(order_number: self.order_number)
+    bible_orders.map {|bo| bo.metadata.map {|m| m['sku']} }.flatten.compact.uniq.count
+  end
+
+  def bible_sales_invoices
+    invoice_numbers = self.invoices.pluck(:invoice_number) if self.invoices.present?
+    BibleInvoice.where(invoice_number: invoice_numbers)
+  end
+
+  def bible_margin_percentage
+    BibleSalesOrder.where(order_number: self.order_number).pluck(:overall_margin_percentage).sum
+  end
+
+  def bible_sales_order_total
+    BibleSalesOrder.where(order_number: self.order_number).pluck(:order_total).sum
+  end
+
+  def bible_sales_invoice_total
+    invoice_numbers = self.invoices.pluck(:invoice_number) if self.invoices.present?
+    BibleInvoice.where(invoice_number: invoice_numbers).pluck(:invoice_total).sum
+  end
+
+  def bible_assumed_margin
+    BibleSalesOrder.where(order_number: self.order_number).pluck(:total_margin).sum
+  end
+
+  def bible_actual_margin
+    invoice_numbers = self.invoices.pluck(:invoice_number) if self.invoices.present?
+    BibleInvoice.where(invoice_number: invoice_numbers).pluck(:total_margin).sum
+  end
+
+  def bible_actual_margin_percentage
+    invoice_numbers = self.invoices.pluck(:invoice_number) if self.invoices.present?
+    BibleInvoice.where(invoice_number: invoice_numbers).pluck(:overall_margin_percentage).sum
+  end
 end
