@@ -134,6 +134,7 @@ GEM
       countries (~> 3.0)
       sort_alphabetical (~> 1.0)
     crass (1.0.4)
+    dalli (2.7.10)
     declarative (0.0.10)
     declarative-option (0.1.0)
     deep_cloneable (2.3.2)
@@ -568,6 +569,7 @@ DEPENDENCIES
   cocoon
   config
   country_select
+  dalli
   deep_cloneable (~> 2.3.2)
   devise
   elasticsearch (< 7.0.0)

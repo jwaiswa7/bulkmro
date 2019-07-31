@@ -229,3 +229,6 @@ gem 'razorpay'
 
 # new relic - Performance Analytics
 gem 'newrelic_rpm'
+
+# required for memcache
+gem 'dalli'
