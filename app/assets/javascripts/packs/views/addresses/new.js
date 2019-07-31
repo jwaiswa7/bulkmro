@@ -35,7 +35,7 @@ const newAction = () => {
 
 
 
-let getGSTfromAddress = (event) => {
+let getGSTfromAddress = (isOnChange) => {
     var state_id = $("#address_address_state_id").val();
     $.ajax({
         url: Routes.get_gst_code_overseers_addresses_path(),
@@ -45,7 +45,7 @@ let getGSTfromAddress = (event) => {
 
         success: function (data) {
             $('#gst_code_1').val(data.gst_code)
-            if (event){
+            if (isOnChange){
                 $('#address_gst').val('');
             }
         }
