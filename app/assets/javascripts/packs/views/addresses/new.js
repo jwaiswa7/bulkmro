@@ -1,8 +1,8 @@
 const newAction = () => {
-    getGSTfromAddress();
+    getGSTfromAddress(false);
 
     $("#address_address_state_id").on('change',function(){
-        getGSTfromAddress();
+        getGSTfromAddress(true);
     })
 
     if ($('#address_gst').val() != ''){
@@ -15,7 +15,6 @@ const newAction = () => {
             var gst_cd2 = full_gst_code.substring(2, 12);
             var gst_cd3 = full_gst_code.substring(12, 13);
             var gst_cd4 = full_gst_code.substring(13, 14);
-
             var gst_cd5 = full_gst_code.substring(14, 15);
             $('#gst_code_1').val(gst_cd1)
             $('#gst_code_2').val(gst_cd2)
@@ -36,7 +35,7 @@ const newAction = () => {
 
 
 
-let getGSTfromAddress = () => {
+let getGSTfromAddress = (event) => {
     var state_id = $("#address_address_state_id").val();
     $.ajax({
         url: Routes.get_gst_code_overseers_addresses_path(),
@@ -46,7 +45,9 @@ let getGSTfromAddress = () => {
 
         success: function (data) {
             $('#gst_code_1').val(data.gst_code)
-            $('#address_gst').val('');
+            if (event){
+                $('#address_gst').val('');
+            }
         }
     });
 }
