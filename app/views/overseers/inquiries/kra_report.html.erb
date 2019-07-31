@@ -29,7 +29,7 @@ Last bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
   <% if @category.present? && (@category == "outside_sales_owner_id" || @category == 'outside_by_sales_order') %>
     <th class="no-sort all">Target</th>
   <% else %>
-    <th></th>
+    <th class="no-sort all"></th>
   <% end %>
   <th class="sort all" data-name="inquiry_number">Inquiries#</th>
   <th class="sort all" data-name="sales_quote_count">Sales Quotes#</th>
@@ -45,6 +45,7 @@ Last bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
   <th class="sort all" data-name="invoices_count">Sales Invoices</th>
   <th class="sort all" data-name="revenue">Value of Invoices</th>
   <th class="sort all" data-name="gross_margin_actual">Gross Margin(Actual)</th>
+  <th class="sort all" data-name="gross_margin_actual_percentage">Gross Margin(Actual)%</th>
 <% end %>
 
 <% content_for :filter_row do %>
@@ -52,6 +53,7 @@ Last bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
   <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'dropdown' %>></td>
   <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'false' %>></td>
   <td data-filter=<%= (@category.present? && @category == 'outside_sales_owner_id' || @category == 'outside_by_sales_order') ? 'false' : 'false' %>></td>
+  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
@@ -89,8 +91,9 @@ Last bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
   <td></td>
   <td class="total_inquiries_won_percentage"></td>
   <td class="percentage"></td>
-  <td></td>
-  <td></td>
+  <td class="total_invoice_value"></td>
+  <td class="total_gross_margin_actual"></td>
+  <td class="actual_margin_percentage"></td>
 <% end %>
 
 <div class="col-lg-12">

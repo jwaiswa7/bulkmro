@@ -97,6 +97,12 @@ let setup = () => {
                             let inquiries_won_percentage = (value/total_inquiries_count)*100;
                             td.empty().append(parseInt(inquiries_won_percentage));
                         }
+                        else if(td.hasClass('actual_margin_percentage')){
+                            let total_gross_margin_actual = parseInt($('.total_gross_margin_actual').html().replace(/,/g , ''));
+                            let total_invoice_value = parseInt($('.total_invoice_value').html().replace(/,/g , ''));
+                            let total_actual_margin_percentage = (total_gross_margin_actual/total_invoice_value)*100;
+                            td.empty().append(parseInt(total_actual_margin_percentage));
+                        }
                         else if(td.hasClass('no-data')){
                             td.empty()
                         }

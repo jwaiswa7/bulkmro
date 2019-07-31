@@ -5,10 +5,10 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    else
-      super
-    end
+                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+                      else
+                        super
+                      end
 
     if @status.present?
       indexed_records = indexed_records.filter(filter_by_value(:status, @status))
@@ -28,11 +28,11 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
 
   def perform_query(query_string)
     indexed_records = index_klass.query(
-      multi_match: {
-          query: query_string,
-          operator: 'and',
-          fields: %w[inside_sales_owner]
-      }
+        multi_match: {
+            query: query_string,
+            operator: 'and',
+            fields: %w[inside_sales_owner]
+        }
     ).order(sort_definition)
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
@@ -79,94 +79,94 @@ class Services::Overseers::Finders::KraReports < Services::Overseers::Finders::B
       date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
     end
     indexed_records = indexed_records.aggregations(
-      'kra_over_month': {
-          date_range: {
-              field: 'created_at',
-              format: 'dd-MM-yyy',
-              ranges: [
-                  date_range
-              ],
-              keyed: true
-          },
-          aggs: {
-              'inquiries': {
-                  'terms': {'field': terms_field, size: 10000},
-                  aggs: {
-                      invoices_count: {
-                          sum: {
-                              field: 'invoices_count'
-                          }
-                      },
-                      sales_quote_count: {
-                          sum: {
-                              field: 'sales_quote_count'
-                          }
-                      },
-                      sales_order_count: {
-                          sum: {
-                              field: 'sales_order_count'
-                          }
-                      },
-                      expected_order: {
-                          sum: {
-                              field: 'expected_order'
-                          }
-                      },
-                      order_won: {
-                          sum: {
-                              field: 'order_won'
-                          }
-                      },
-                      total_quote_value: {
-                          sum: {
-                              field: 'total_quote_value'
-                          }
-                      },
-                      total_order_value: {
-                          sum: {
-                              field: 'total_order_value'
-                          }
-                      },
-                      revenue: {
-                          sum: {
-                              field: 'revenue'
-                          }
-                      },
-                      sku: {
-                          sum: {
-                              field: 'sku'
-                          }
-                      },
-                      company_key: {
-                          cardinality: {
-                              field: 'company_key'
-                          }
-                      },
-                      gross_margin_assumed: {
-                          sum: {
-                              field: 'gross_margin_assumed'
-                          }
-                      },
-                      gross_margin_percentage: {
-                          sum: {
-                              field: 'gross_margin_percentage'
-                          }
-                      },
-                      gross_margin_actual: {
-                          sum: {
-                              field: 'gross_margin_actual'
-                          }
-                      }
-                    # inquiry_target_monthly: {
-                    #     sum: {
-                    #         field: 'inquiry_target_monthly'
-                    #     }
-                    # }
-                  }
-              }
-          }
-      }
-      )
+        'kra_over_month': {
+            date_range: {
+                field: 'created_at',
+                format: 'dd-MM-yyy',
+                ranges: [
+                    date_range
+                ],
+                keyed: true
+            },
+            aggs: {
+                'inquiries': {
+                    'terms': {'field': terms_field, size: 10000},
+                    aggs: {
+                        invoices_count: {
+                            sum: {
+                                field: 'invoices_count'
+                            }
+                        },
+                        sales_quote_count: {
+                            sum: {
+                                field: 'sales_quote_count'
+                            }
+                        },
+                        sales_order_count: {
+                            sum: {
+                                field: 'sales_order_count'
+                            }
+                        },
+                        expected_order: {
+                            sum: {
+                                field: 'expected_order'
+                            }
+                        },
+                        order_won: {
+                            sum: {
+                                field: 'order_won'
+                            }
+                        },
+                        total_quote_value: {
+                            sum: {
+                                field: 'total_quote_value'
+                            }
+                        },
+                        total_order_value: {
+                            sum: {
+                                field: 'total_order_value'
+                            }
+                        },
+                        revenue: {
+                            sum: {
+                                field: 'revenue'
+                            }
+                        },
+                        sku: {
+                            sum: {
+                                field: 'sku'
+                            }
+                        },
+                        company_key: {
+                            cardinality: {
+                                field: 'company_key'
+                            }
+                        },
+                        gross_margin_assumed: {
+                            sum: {
+                                field: 'gross_margin_assumed'
+                            }
+                        },
+                        gross_margin_percentage: {
+                            sum: {
+                                field: 'gross_margin_percentage'
+                            }
+                        },
+                        gross_margin_actual: {
+                            sum: {
+                                field: 'gross_margin_actual'
+                            }
+                        },
+                        gross_margin_actual_percentage: {
+                            sum: {
+                                field: 'gross_margin_actual_percentage'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    )
     indexed_records
   end
 
