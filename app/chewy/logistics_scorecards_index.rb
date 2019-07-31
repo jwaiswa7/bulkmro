@@ -33,7 +33,7 @@ class LogisticsScorecardsIndex < BaseIndex
     field :delay, value: -> (record) { record.try(:calculated_delay) }, type: 'date'
     field :sla_bucket, value: -> (record) { record.try(:calculated_sla_bucket) }, analyzer: 'substring', fielddata: true
     field :delay_bucket, value: -> (record) { record.try(:calculated_delay_bucket) }, type: 'integer'
-    field :delay_reason, value: -> (record) { record.delay_reason.present? ? delay_reason[record.delay_reason] : 50 }, type: 'integer'
+    field :delay_reason, value: -> (record) { record.delay_reason.present? ? delay_reason[record.delay_reason] : 40 }, type: 'integer'
     field :created_at, value: -> (record) { record.created_at }, type: 'date'
 
     field :sales_order, type: 'nested' do

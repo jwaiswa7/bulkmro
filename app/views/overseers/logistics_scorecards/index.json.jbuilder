@@ -1,6 +1,9 @@
 json.data (@logistics_scorecard_records) do |record|
   json.array! [
                   [
+                      if record[:delay].present?
+                        modal_button('user-clock', 'Add Delay Reason', 'warning', record[:id])
+                      end,
                       modal_button('user-clock', 'Add Delay Reason', 'warning', record[:id])
                   ],
                   record[:inquiry_number],

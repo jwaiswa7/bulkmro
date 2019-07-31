@@ -57,10 +57,9 @@ class SalesInvoice < ApplicationRecord
 
   enum delay_reason: {
       'Logistics Delivery Delay': 10,
-      'SO Creation Delay': 20,
-      'Supplier PO Creation Delay': 30,
-      'Supplier Delay': 40,
-      'Unassigned': 50
+      'Supplier PO Creation Delay': 20,
+      'Supplier Delay': 30,
+      'Reason Pending': 40
   }
 
   enum sla_bucket: {

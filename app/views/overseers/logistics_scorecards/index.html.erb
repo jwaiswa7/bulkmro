@@ -18,7 +18,7 @@
       </div>
       <%= form_tag add_delay_reason_overseers_logistics_scorecards_path, method: :get do %>
         <div class="modal-body">
-          <p><%= select_tag(:selected, options_for_select(SalesInvoice.delay_reasons, 'name'), class: "form-control") %></p>
+          <p><%= select_tag(:selected, options_for_select({"Select a Reason"=>0}.merge(SalesInvoice.delay_reasons), selected: 0, disabled: 0), class: "form-control") %></p>
         </div>
         <div class="modal-footer">
           <%= hidden_field_tag :invoice_id %>

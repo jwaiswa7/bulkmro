@@ -97,10 +97,10 @@
                   <% end %>
                 </tr>
                 <tr>
-                  <th class="text-uppercase text-left" style="font-size: 12px;"><b>Unassigned</b></th>
+                  <th class="text-uppercase text-left" style="font-size: 12px;"><b>Reason Pending</b></th>
                   <% record["scorecard"]["buckets"].each do |bucket| %>
                     <td class="text-uppercase">
-                      <b><%= bucket["delay_reason"]["buckets"].map {|value| calculate_percentage(value['doc_count'], bucket['sum_delay_reason_buckets']['value'].to_i) if value['key'] == 50}.compact.first || '0%' %></b>
+                      <b><%= bucket["delay_reason"]["buckets"].map {|value| calculate_percentage(value['doc_count'], bucket['sum_delay_reason_buckets']['value'].to_i) if value['key'] == 40}.compact.first || '0%' %></b>
                     </td>
                   <% end %>
                 </tr>
