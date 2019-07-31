@@ -10,7 +10,7 @@ class Services::Overseers::Finders::MaterialReadinessQueues  < Services::Oversee
       super
     end
 
-    #  @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
+    # @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
     statuses = ['Material Readiness Follow-Up', 'Inward Dispatch', 'Inward Dispatch: Partial', 'Material Partially Delivered']
     status_values = PurchaseOrder.material_statuses.map {|key, val| if statuses.include?(key); val; end}.compact
     indexed_records = indexed_records.filter(filter_by_array('material_status', status_values))
@@ -29,7 +29,15 @@ class Services::Overseers::Finders::MaterialReadinessQueues  < Services::Oversee
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
+
     indexed_records
+  end
+
+  def get_summary_records(indexed_records)
+    followup_records = indexed_records.aggregations(aggregate_by_status('followup_status'))
+    committed_date_records = indexed_records.aggregations(aggregate_by_status('committed_date_status'))
+    summary_records = [followup_records, committed_date_records]
+    summary_records
   end
 
   def perform_query(query_string)
@@ -55,8 +63,8 @@ class Services::Overseers::Finders::MaterialReadinessQueues  < Services::Oversee
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
+
     indexed_records = indexed_records.aggregations(aggregate_by_status('po_status'))
-    # indexed_records = indexed_records.aggregations(aggregate_by_status('followup_status'))
     indexed_records
   end
 

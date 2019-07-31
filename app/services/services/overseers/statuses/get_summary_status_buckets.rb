@@ -1,6 +1,14 @@
 class Services::Overseers::Statuses::GetSummaryStatusBuckets < Services::Shared::BaseService
   def initialize(all_indexed_records, model_klass, custom_status: nil)
-    @all_indexed_records = all_indexed_records
+    if all_indexed_records.length > 1
+      @followup_records = all_indexed_records[0]
+      @committed_date_records = all_indexed_records[1]
+      @indexed_buckets = @followup_records.aggregations['statuses']['buckets']
+      @indexed_buckets = @indexed_buckets.push(@committed_date_records.aggregations['statuses']['buckets']).flatten
+    else
+      @all_indexed_records = all_indexed_records
+      @indexed_buckets = all_indexed_records.aggregations['statuses']['buckets']
+    end
     @model_klass = model_klass
     @custom_status = custom_status
   end
@@ -12,13 +20,12 @@ class Services::Overseers::Statuses::GetSummaryStatusBuckets < Services::Shared:
       model_statuses = model_klass.statuses
     end
     default_statuses = model_statuses.values.inject({}){ |hash, key| hash[key] = 0; hash }
-    # binding.pry
-    indexed_buckets = all_indexed_records.aggregations['statuses']['buckets']
     statuses = indexed_buckets.inject({}){ |hash, bucket| hash[bucket['key']] = bucket['doc_count']; hash }
     total_values = indexed_buckets.inject({}){ |hash, bucket| hash[bucket['key']] = bucket['total_value']['value']; hash }
+
     @indexed_statuses = default_statuses.merge(statuses)
     @indexed_total_values = default_statuses.merge(total_values)
   end
 
-  attr_accessor :indexed_statuses, :all_indexed_records, :model_klass, :indexed_total_values, :custom_status
+  attr_accessor :indexed_statuses, :all_indexed_records, :model_klass, :indexed_total_values, :custom_status, :indexed_buckets
 end
