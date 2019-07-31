@@ -1,12 +1,24 @@
-import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from "../common/updateSummaryBox";
 import updateLogisticsOwner from "./updateLogisticsOwner"
 
 const materialReadinessQueue = () => {
-    bindSummaryBox(".summary_box", '.status-filter');
+    bindSummaryBox(".summary_box");
     updateSummaryBox();
-    aggregateSummaryBox();
+    // aggregateSummaryBox();
     updateLogisticsOwner();
+};
+
+let bindSummaryBox = (classname) => {
+    $(classname).on('click', function (e) {
+        // let value = $(this).data('value'); .toLowerCase()
+        var keyup_event = $.Event("keyup");
+        let value = $(this).find('p')[0].innerText;
+        let inputField = $('.filter-list-input');
+
+        inputField.val(value).trigger(keyup_event);
+        e.preventDefault();
+        return false;
+    });
 };
 
 let aggregateSummaryBox = () => {

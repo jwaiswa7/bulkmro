@@ -269,26 +269,6 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     query_obj
   end
 
-  def aggregate_by_fields(key = 'statuses', aggregation_field = 'potential_value', size = 10, status_fields)
-    {
-        "#{key}": {
-            composite: {
-                    sources: [
-                        { "followup_bucket": { "terms": {"field": "followup_status" } } },
-                        { "committed_date_bucket": { "terms": { "field": "committed_date_status" } } },
-                    ]
-            },
-            aggs: {
-                total_value: {
-                    sum: {
-                        field: aggregation_field
-                    }
-                }
-            }
-        }
-    }
-  end
-
   def aggregate_by_status(key = 'statuses', aggregation_field = 'potential_value', size = 50, status_field)
     {
         "#{key}": {

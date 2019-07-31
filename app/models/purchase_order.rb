@@ -95,7 +95,7 @@ class PurchaseOrder < ApplicationRecord
   enum material_summary_status: {
       'Pending follow-up': 10,
       'Follow-up for today': 20,
-      'Follow Date missing': 30,
+      'Follow-up Date missing': 30,
       'Committed Date Breached': 40,
       'Committed Date Approaching': 50,
       'Committed Date missing': 60
