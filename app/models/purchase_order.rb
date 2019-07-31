@@ -89,7 +89,8 @@ class PurchaseOrder < ApplicationRecord
       'GRPO Request Rejected': 80,
       'Inward Completed': 85,
       'Cancelled AP Invoice': 90,
-      'Cancelled GRPO': 95
+      'Cancelled GRPO': 95,
+      'Manually Closed': 100
   }
 
   enum transport_mode: {
