@@ -240,6 +240,7 @@ class SalesInvoice < ApplicationRecord
     self.rows.sum(&:freight_cost_subtotal).round(2)
   end
 
+  # ====================================== Do not Remove =================================================
   # def calculated_committed_delivery_tat
   #   if [143, 725, 1444, 1392].include?(self.inquiry.company.id)
   #     if self.created_at.present? && self.inquiry.customer_order_date.present?
@@ -251,6 +252,7 @@ class SalesInvoice < ApplicationRecord
   #     end
   #   end
   # end
+  # ======================================================================================================
 
   def calculated_committed_delivery_tat
     if self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
@@ -258,6 +260,7 @@ class SalesInvoice < ApplicationRecord
     end
   end
 
+  # ====================================== Do not Remove =================================================
   # def calculated_actual_delivery_tat
   #   if [143, 725, 1444, 1392].include?(self.inquiry.company.id)
   #     if self.created_at.present? && self.inquiry.customer_order_date.present?
@@ -269,6 +272,7 @@ class SalesInvoice < ApplicationRecord
   #     end
   #   end
   # end
+  # ======================================================================================================
 
   def calculated_actual_delivery_tat
     if self.delivery_date.present? && self.inquiry.customer_order_date.present?
