@@ -207,4 +207,3 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
     purchase_orders.update_all(material_status: 'Manually Closed')
   end
 end
-
