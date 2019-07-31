@@ -54,10 +54,10 @@ class Services::Shared::Migrations::AddInquiryMappingTat < Services::Shared::Mig
   def add_parent_id_for_existing_records
     start_date = Date.parse('01-01-2019')
     end_date = Date.today
-    inquiries = Inquiry.where(status: ['Order Won', 'Order Lost']).where(created_at: start_date..end_date)
+    inquiries = Inquiry.where(created_at: start_date..end_date)
 
     inquiries.each do |inquiry|
-      inquiry.inquiry_status_records.where.not(status: ['New Inquiry']).each do |isr|
+      inquiry.inquiry_status_records.where.not(status: ['New Inquiry']).find_each(batch_size: 500) do |isr|
         previous_status_record = isr.fetch_previous_status_record
         isr.update_attributes(previous_status_record_id: previous_status_record.id) if previous_status_record.present?
       end
