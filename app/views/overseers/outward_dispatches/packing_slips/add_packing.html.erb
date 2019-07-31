@@ -65,10 +65,10 @@
                 <%#= field_set_tag row.quantity, readonly: true %>
               </div>
               <div class="col-2 col-md-1">
-                <%= text_field_tag "row[#{index}][box_numbers]", "", class: 'form-control', multiple: true, value: row[:box_number] %>
+                <%= text_field_tag "row[#{index}][box_numbers]", "", class: 'form-control', multiple: true, value: row[:box_number], :pattern => '(\d+)(,\s*\d+)*' %>
               </div>
               <div class="col-2 col-md-1">
-                <%= text_field_tag "row[#{index}][quantities]", "", class: 'form-control', multiple: true, value: row[:quantities] %>
+                <%= text_field_tag "row[#{index}][quantities]", "", class: 'form-control', multiple: true, value: row[:quantities], :pattern => '(\d+)(,\s*\d+)*' %>
               </div>
             </div>
           </div>
