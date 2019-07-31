@@ -32,8 +32,6 @@ class SalesInvoice < ApplicationRecord
     end
   }, allow_destroy: true
 
-
-
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
@@ -76,7 +74,8 @@ class SalesInvoice < ApplicationRecord
       'Delay by 2-7 days': 3,
       'Delay by 7-14 days': 4,
       'Delay by 14-28 days': 5,
-      'Delay by >28 days': 6
+      'Delay by >28 days': 6,
+      'Not Delivered': 7
   }, _prefix: true
 
   scope :with_includes, -> { includes(:sales_order) }
@@ -241,41 +240,41 @@ class SalesInvoice < ApplicationRecord
     self.rows.sum(&:freight_cost_subtotal).round(2)
   end
 
-  def calculated_committed_delivery_tat
-    if [143, 725, 1444, 1392].include?(self.inquiry.company.id)
-      if self.created_at.present? && self.inquiry.customer_order_date.present?
-        (self.created_at.to_date - self.inquiry.customer_order_date).to_i
-      end
-    else
-      if self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
-        (self.inquiry.customer_committed_date - self.inquiry.customer_order_date).to_i
-      end
-    end
-  end
-
   # def calculated_committed_delivery_tat
-  #   if self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
-  #     (self.inquiry.customer_committed_date - self.inquiry.customer_order_date).to_i
+  #   if [143, 725, 1444, 1392].include?(self.inquiry.company.id)
+  #     if self.created_at.present? && self.inquiry.customer_order_date.present?
+  #       (self.created_at.to_date - self.inquiry.customer_order_date).to_i
+  #     end
+  #   else
+  #     if self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
+  #       (self.inquiry.customer_committed_date - self.inquiry.customer_order_date).to_i
+  #     end
   #   end
   # end
 
-  def calculated_actual_delivery_tat
-    if [143, 725, 1444, 1392].include?(self.inquiry.company.id)
-      if self.created_at.present? && self.inquiry.customer_order_date.present?
-        (self.created_at.to_date - self.inquiry.customer_order_date).to_i
-      end
-    else
-      if self.delivery_date.present? && self.inquiry.customer_order_date.present?
-        (self.delivery_date - self.inquiry.customer_order_date).to_i
-      end
+  def calculated_committed_delivery_tat
+    if self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
+      (self.inquiry.customer_committed_date - self.inquiry.customer_order_date).to_i
     end
   end
 
   # def calculated_actual_delivery_tat
-  #   if self.delivery_date.present? && self.inquiry.customer_order_date.present?
-  #     (self.delivery_date - self.inquiry.customer_order_date).to_i
+  #   if [143, 725, 1444, 1392].include?(self.inquiry.company.id)
+  #     if self.created_at.present? && self.inquiry.customer_order_date.present?
+  #       (self.created_at.to_date - self.inquiry.customer_order_date).to_i
+  #     end
+  #   else
+  #     if self.delivery_date.present? && self.inquiry.customer_order_date.present?
+  #       (self.delivery_date - self.inquiry.customer_order_date).to_i
+  #     end
   #   end
   # end
+
+  def calculated_actual_delivery_tat
+    if self.delivery_date.present? && self.inquiry.customer_order_date.present?
+      (self.delivery_date - self.inquiry.customer_order_date).to_i
+    end
+  end
 
   def calculated_delay
     if self.calculated_committed_delivery_tat.present? && self.calculated_actual_delivery_tat.present?
@@ -293,6 +292,10 @@ class SalesInvoice < ApplicationRecord
     end
   end
 
+  def set_delay_for_nil_delivery_date
+    self.delivery_date.nil? && ((Date.today > self.inquiry.customer_committed_date) if self.inquiry.customer_committed_date.present?)
+  end
+
   def calculated_delay_bucket
     if !self.calculated_delay.nil?
       if self.calculated_delay <= 0
@@ -308,6 +311,8 @@ class SalesInvoice < ApplicationRecord
       else
         6
       end
+    elsif self.set_delay_for_nil_delivery_date
+      7
     end
   end
 
