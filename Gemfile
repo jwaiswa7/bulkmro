@@ -232,3 +232,7 @@ gem 'newrelic_rpm'
 
 # required for memcache
 gem 'dalli'
+
+# required for parsing requests
+gem 'parser'
+gem 'unparser'
