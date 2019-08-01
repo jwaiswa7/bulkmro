@@ -13,6 +13,7 @@ class SalesInvoice < ApplicationRecord
   belongs_to :shipping_address, class_name: 'Address', required: false
 
   has_one :inquiry, through: :sales_order
+  has_one :company, through: :inquiry
   has_one :ar_invoice_request
   has_one :invoice_request
 

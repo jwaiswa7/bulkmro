@@ -2,7 +2,7 @@ class LogisticsScorecardsIndex < BaseIndex
   opportunity_type = Inquiry.opportunity_types
   delay_reason = SalesInvoice.delay_reasons
 
-  define_type SalesInvoice.eager_load(:rows).with_inquiry.not_cancelled.with_includes.ignore_freight_bm do
+  define_type SalesInvoice.eager_load(:rows).joins(:company).with_inquiry.not_cancelled.with_includes.ignore_freight_bm.where.not(companies: {logistics_owner_id: [96, 107, 213]}) do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
@@ -11,8 +11,8 @@ class LogisticsScorecardsIndex < BaseIndex
     field :company, value: -> (record) { record.inquiry.company.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :inside_sales_owner_id, value: -> (record) { record.inquiry.inside_sales_owner_id if record.inquiry.present? }, type: 'integer'
     field :inside_sales_owner, value: -> (record) { record.inquiry.inside_sales_owner.name if record.inquiry.present? }, analyzer: 'substring'
-    field :logistics_owner_id, value: -> (record) { record.inquiry.company.logistics_owner_id if record.inquiry.present? && record.inquiry.company.present? && record.inquiry.company.logistics_owner_id != 213 }, type: 'integer'
-    field :logistics_owner, value: -> (record) { record.inquiry.company.logistics_owner&.name if record.inquiry.present? && record.inquiry.company.present? && record.inquiry.company.logistics_owner_id != 213 }, analyzer: 'substring'
+    field :logistics_owner_id, value: -> (record) { record.inquiry.company.logistics_owner_id if record.inquiry.present? && record.inquiry.company.present? }, type: 'integer'
+    field :logistics_owner, value: -> (record) { record.inquiry.company.logistics_owner&.name if record.inquiry.present? && record.inquiry.company.present? }, analyzer: 'substring'
     field :opportunity_type, value: -> (record) { opportunity_type[record.inquiry.opportunity_type] if record.inquiry.present? }, type: 'integer'
 
     field :rows do

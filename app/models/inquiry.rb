@@ -524,7 +524,7 @@ class Inquiry < ApplicationRecord
   end
 
   def bible_sales_invoice_total
-    BibleInvoice.where(inquiry_number: self.inquiry_number).pluck(:invoice_total).sum
+    BibleInvoice.where(inquiry_number: self.inquiry_number).pluck(:invoice_total).compact.sum
   end
 
   def bible_assumed_margin
