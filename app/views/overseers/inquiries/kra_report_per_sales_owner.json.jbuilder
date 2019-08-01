@@ -9,36 +9,42 @@ json.data (@inquiries) do |inquiry|
                   inquiry.final_sales_quotes.present? ? inquiry.final_sales_quotes.map { |quote| number_with_delimiter(quote.calculated_total.to_i, delimiter: ',') }.compact.join('<br/>') : '-',
                   inquiry.final_sales_quotes.present? ? inquiry.final_sales_quotes.map { |quote| format_succinct_date(quote.created_at) }.compact.join('<br/>') : '-',
 
-                  if inquiry.bible_sales_orders.present?
-                    inquiry.bible_sales_orders.map { |order| number_with_delimiter(order.order_total.to_i, delimiter: ',')}.compact.join('<br/>')
-                  elsif inquiry.total_sales_orders.present?
-                    inquiry.total_sales_orders.map { |order| number_with_delimiter(order.calculated_total.to_i, delimiter: ',')}.compact.join('<br/>')
-                  end,
-                  if inquiry.bible_sales_orders.present?
-                    inquiry.bible_sales_orders.map { |order| format_succinct_date(order.mis_date)}.compact.join('<br/>')
-                  elsif inquiry.total_sales_orders.present?
-                    inquiry.total_sales_orders.map { |order| format_succinct_date(order.created_at)}.compact.join('<br/>')
-                  end,
-                  if inquiry.bible_sales_orders.present?
-                    inquiry.bible_sales_orders.map { |order| order.overall_margin_percentage }.compact.join('<br/>')
-                  elsif inquiry.total_sales_orders.present?
-                    inquiry.total_sales_orders.map { |order| order.calculated_total_margin_percentage }.compact.join('<br/>')
-                  end,
-                  if inquiry.bible_sales_orders.present?
-                    inquiry.bible_sales_orders.map { |order| number_with_delimiter(order.total_margin.to_i, delimiter: ',')}.compact.join('<br/>')
-                  elsif inquiry.total_sales_orders.present?
-                    inquiry.total_sales_orders.map { |order| number_with_delimiter(order.calculated_total_margin.to_i, delimiter: ',')}.compact.join('<br/>')
-                  end,
-                  if inquiry.bible_sales_invoices.present?
-                    number_with_delimiter(inquiry.bible_sales_invoices.count, delimiter: ',')
-                  else
-                    number_with_delimiter(inquiry.invoices.count, delimiter: ',')
-                  end,
-                  if inquiry.bible_sales_invoices.present?
-                    inquiry.bible_sales_invoices.map { |invoice| invoice.mis_date}.uniq.compact.join('<br/>')
-                  elsif inquiry.invoices.present?
-                    inquiry.invoices.map { |invoice| invoice.mis_date}.uniq.compact.join('<br/>')
-                  end
+                  # if inquiry.bible_sales_orders.present?
+                  #   inquiry.bible_sales_orders.map { |order| number_with_delimiter(order.order_total.to_i, delimiter: ',')}.compact.join('<br/>')
+                  # elsif inquiry.total_sales_orders.present?
+                  #   inquiry.total_sales_orders.map { |order| number_with_delimiter(order.calculated_total.to_i, delimiter: ',')}.compact.join('<br/>')
+                  # end,
+                  inquiry.bible_sales_orders.present? ? inquiry.bible_sales_orders.map { |order| number_with_delimiter(order.order_total.to_i, delimiter: ',')}.compact.join('<br/>') : '',
+                  # if inquiry.bible_sales_orders.present?
+                  #   inquiry.bible_sales_orders.map { |order| format_succinct_date(order.mis_date)}.compact.join('<br/>')
+                  # elsif inquiry.total_sales_orders.present?
+                  #   inquiry.total_sales_orders.map { |order| format_succinct_date(order.created_at)}.compact.join('<br/>')
+                  # end,
+                  inquiry.bible_sales_orders.present? ? inquiry.bible_sales_orders.map { |order| format_succinct_date(order.mis_date)}.compact.join('<br/>') : '',
+                  # if inquiry.bible_sales_orders.present?
+                  #   inquiry.bible_sales_orders.map { |order| order.overall_margin_percentage.to_i }.compact.join('<br/>')
+                  # elsif inquiry.total_sales_orders.present?
+                  #   inquiry.total_sales_orders.map { |order| order.calculated_total_margin_percentage.to_i }.compact.join('<br/>')
+                  # end,
+                  inquiry.bible_sales_orders.present? ? inquiry.bible_sales_orders.map { |order| order.overall_margin_percentage.to_i }.compact.join('<br/>') : '',
+                  # if inquiry.bible_sales_orders.present?
+                  #   inquiry.bible_sales_orders.map { |order| number_with_delimiter(order.total_margin.to_i, delimiter: ',')}.compact.join('<br/>')
+                  # elsif inquiry.total_sales_orders.present?
+                  #   inquiry.total_sales_orders.map { |order| number_with_delimiter(order.calculated_total_margin.to_i, delimiter: ',')}.compact.join('<br/>')
+                  # end,
+                  inquiry.bible_sales_orders.present? ? inquiry.bible_sales_orders.map { |order| number_with_delimiter(order.total_margin.to_i, delimiter: ',')}.compact.join('<br/>') : '',
+                  # if inquiry.bible_sales_invoices.present?
+                  #   number_with_delimiter(inquiry.bible_sales_invoices.count, delimiter: ',')
+                  # else
+                  #   number_with_delimiter(inquiry.invoices.count, delimiter: ',')
+                  # end,
+                  inquiry.bible_sales_invoices.present? ? number_with_delimiter(inquiry.bible_sales_invoices.count, delimiter: ',') : '',
+                  # if inquiry.bible_sales_invoices.present?
+                  #   inquiry.bible_sales_invoices.map { |invoice| invoice.mis_date}.uniq.compact.join('<br/>')
+                  # elsif inquiry.invoices.present?
+                  #   inquiry.invoices.map { |invoice| invoice.mis_date}.uniq.compact.join('<br/>')
+                  # end
+                  inquiry.bible_sales_invoices.present? ? inquiry.bible_sales_invoices.map { |invoice| invoice.mis_date}.uniq.compact.join('<br/>') : ''
               ]
 end
 
