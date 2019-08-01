@@ -25,15 +25,15 @@ class LogisticsScorecardsIndex < BaseIndex
     field :so_delivery_location, value: -> (record) { record.inquiry.shipping_address.legacy_metadata["state_name"] if record.inquiry.present? && record.inquiry.shipping_address.legacy_metadata.present? }, analyzer: 'substring'
     field :customer_po_date, value: -> (record) { record.inquiry.customer_order_date if record.inquiry.customer_order_date.present? }, type: 'date'
     field :customer_po_received_date, value: -> (record) { record.inquiry.customer_po_received_date.present? ? record.inquiry.customer_po_received_date : record.inquiry.customer_order_date }, type: 'date'
-    field :cp_committed_date, value: -> (record) { [143, 725, 1444, 1392].include?(record.inquiry.company.id) ? record.created_at : (record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present?) }, type: 'date'
+    field :cp_committed_date, value: -> (record) { record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present? }, type: 'date'
     field :so_created_at, value: -> (record) { record.sales_order.created_at }, type: 'date'
-    field :actual_delivery_date, value: -> (record) { [143, 725, 1444, 1392].include?(record.inquiry.company.id) ? record.created_at : record.try(:delivery_date) }, type: 'date'
+    field :actual_delivery_date, value: -> (record) { record.try(:delivery_date) }, type: 'date'
     field :committed_delivery_tat, value: -> (record) { record.try(:calculated_committed_delivery_tat) }, type: 'date'
     field :actual_delivery_tat, value: -> (record) { record.try(:calculated_actual_delivery_tat) }, type: 'date'
     field :delay, value: -> (record) { record.try(:calculated_delay) }, type: 'date'
     field :sla_bucket, value: -> (record) { record.try(:calculated_sla_bucket) }, analyzer: 'substring', fielddata: true
     field :delay_bucket, value: -> (record) { record.try(:calculated_delay_bucket) }, type: 'integer'
-    field :delay_reason, value: -> (record) { record.delay_reason.present? ? delay_reason[record.delay_reason] : 50 }, type: 'integer'
+    field :delay_reason, value: -> (record) { record.delay_reason.present? ? delay_reason[record.delay_reason] : 40 }, type: 'integer'
     field :created_at, value: -> (record) { record.created_at }, type: 'date'
 
     field :sales_order, type: 'nested' do
@@ -46,7 +46,7 @@ class LogisticsScorecardsIndex < BaseIndex
   end
 end
 
-
+# ====================================== Do not Remove ==============================================================================================================================================
 # class LogisticsScorecardsIndex < BaseIndex
 #   opportunity_type = Inquiry.opportunity_types
 #   delay_reason = SalesInvoice.delay_reasons
@@ -74,9 +74,9 @@ end
 #     field :so_delivery_location, value: -> (record) { record.inquiry.shipping_address.legacy_metadata["state_name"] if record.inquiry.present? && record.inquiry.shipping_address.legacy_metadata.present? }, analyzer: 'substring'
 #     field :customer_po_date, value: -> (record) { record.inquiry.customer_order_date if record.inquiry.customer_order_date.present? }, type: 'date'
 #     field :customer_po_received_date, value: -> (record) { record.inquiry.customer_po_received_date.present? ? record.inquiry.customer_po_received_date : record.inquiry.customer_order_date }, type: 'date'
-#     field :cp_committed_date, value: -> (record) { record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present? }, type: 'date'
+#     field :cp_committed_date, value: -> (record) { [143, 725, 1444, 1392].include?(record.inquiry.company.id) ? record.created_at : (record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present?) }, type: 'date'
 #     field :so_created_at, value: -> (record) { record.sales_order.created_at }, type: 'date'
-#     field :actual_delivery_date, value: -> (record) { record.try(:delivery_date) }, type: 'date'
+#     field :actual_delivery_date, value: -> (record) { [143, 725, 1444, 1392].include?(record.inquiry.company.id) ? record.created_at : record.try(:delivery_date) }, type: 'date'
 #     field :committed_delivery_tat, value: -> (record) { record.try(:calculated_committed_delivery_tat) }, type: 'date'
 #     field :actual_delivery_tat, value: -> (record) { record.try(:calculated_actual_delivery_tat) }, type: 'date'
 #     field :delay, value: -> (record) { record.try(:calculated_delay) }, type: 'date'
@@ -94,3 +94,4 @@ end
 #     end
 #   end
 # end
+# ===================================================================================================================================================================================================
