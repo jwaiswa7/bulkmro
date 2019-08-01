@@ -20,6 +20,30 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
   end
 
+  def manually_closed
+    authorize_acl :purchase_order
+    respond_to do |format|
+      format.html {render 'index'}
+      format.json do
+        base_filter = {
+            base_filter_key: 'material_status',
+            base_filter_value: PurchaseOrder.material_statuses['Manually Closed']
+        }
+        service = Services::Overseers::Finders::PurchaseOrders.new(params.merge(base_filter), current_overseer)
+        service.call
+
+        @indexed_purchase_orders = service.indexed_records
+        @purchase_orders = service.records.try(:reverse)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_purchase_orders, PurchaseOrder)
+        status_service.call
+
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
+        render 'index'
+      end
+    end
+  end
+
   def pending_sap_sync
     @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.where(remote_uid: nil, sap_sync: 'Not Sync').order(id: :desc), params)
     authorize_acl @purchase_orders
