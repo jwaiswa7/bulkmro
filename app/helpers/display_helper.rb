@@ -162,6 +162,10 @@ module DisplayHelper
   def format_boolean(true_or_false)
     (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
   end
+  def format_invoiced_qty(get_invoiced_qty, total_qty)
+    "#{get_invoiced_qty}&nbspoff&nbsp#{total_qty}"
+  end
+
 
   def format_boolean_with_badge(status)
     (
