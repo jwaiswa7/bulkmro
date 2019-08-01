@@ -105,6 +105,19 @@
                 <% end %>
               </tr>
               <tr>
+                <th class="text-uppercase logistics-scorecard" style="font-size: 12px;">Not Delivered</th>
+                <% @records.each do |month, record| %>
+                  <td class="text-uppercase">
+                    <a href="<%= filtered_path(overseers_logistics_scorecards_path, [
+                        filter_by_value('Delay Bucket', 'Not Delivered', 7),
+                        filter_by_monthrange('Committed Delivery Date to Customer', month)
+                    ]) %>">
+                      <%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['sum_delay_buckets']['value'].to_i) if bucket['key'] == 7}.compact.first || '0%' %>
+                    </a>
+                  </td>
+                <% end %>
+              </tr>
+              <tr>
                 <th class="text-uppercase text-left" style="font-size: 12px;"><b>Total</b></th>
                 <% @records.each do |month, record| %>
                   <td class="text-uppercase">
@@ -134,10 +147,10 @@
                 <% @delay_bucket_monthwise_records.each do |month, record| %>
                   <td class="text-uppercase">
                     <a href="<%= filtered_path(overseers_logistics_scorecards_path, [
-                        filter_by_value('Delay Reason', 'Unassigned', 50),
+                        filter_by_value('Delay Reason', 'Reason Pending', 40),
                         filter_by_monthrange('Committed Delivery Date to Customer', month)
                     ]) %>">
-                    <b><%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['sum_delay_buckets']['value'].to_i) if bucket['key'] == 50}.compact.first || '0%' %></b>
+                    <b><%= record["scorecard"]["buckets"].map {|bucket| calculate_percentage(bucket['doc_count'], record['sum_delay_buckets']['value'].to_i) if bucket['key'] == 40}.compact.first || '0%' %></b>
                     </a>
                   </td>
                 <% end %>
