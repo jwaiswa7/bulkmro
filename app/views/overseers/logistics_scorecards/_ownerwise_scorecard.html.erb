@@ -108,7 +108,7 @@
                   <th class="text-uppercase text-left" style="font-size: 12px;"><b>Delayed Reason</b></th>
                   <% record["scorecard"]["buckets"].each do |bucket| %>
                     <td class="text-uppercase">
-                      <b><%= calculate_percentage(bucket["delay_reason"]["buckets"].map {|bucket| bucket['doc_count'] if (10..40).to_a.include?(bucket['key'])}.compact.inject(0, :+), bucket['sum_delay_reason_buckets']['value'].to_i) %></b>
+                      <b><%= calculate_percentage(bucket["delay_reason"]["buckets"].map {|bucket| bucket['doc_count'] if (10..30).to_a.include?(bucket['key'])}.compact.inject(0, :+), bucket['sum_delay_reason_buckets']['value'].to_i) %></b>
                     </td>
                   <% end %>
                 </tr>
@@ -121,7 +121,7 @@
                   <% end %>
                 </tr>
                 <tr>
-                  <th class="text-uppercase logistics-scorecard" style="font-size: 12px;">SO Creation Delay</th>
+                  <th class="text-uppercase logistics-scorecard" style="font-size: 12px;">Supplier PO Creation Delay</th>
                   <% record["scorecard"]["buckets"].each do |bucket| %>
                     <td class="text-uppercase">
                       <%= bucket["delay_reason"]["buckets"].map {|value| calculate_percentage(value['doc_count'], bucket['sum_delay_reason_buckets']['value'].to_i) if value['key'] == 20}.compact.first || '0%' %>
@@ -129,18 +129,10 @@
                   <% end %>
                 </tr>
                 <tr>
-                  <th class="text-uppercase logistics-scorecard" style="font-size: 12px;">Supplier PO Creation Delay</th>
-                  <% record["scorecard"]["buckets"].each do |bucket| %>
-                    <td class="text-uppercase">
-                      <%= bucket["delay_reason"]["buckets"].map {|value| calculate_percentage(value['doc_count'], bucket['sum_delay_reason_buckets']['value'].to_i) if value['key'] == 30}.compact.first || '0%' %>
-                    </td>
-                  <% end %>
-                </tr>
-                <tr>
                   <th class="text-uppercase logistics-scorecard" style="font-size: 12px;">Supplier Delay</th>
                   <% record["scorecard"]["buckets"].each do |bucket| %>
                     <td class="text-uppercase">
-                      <%= bucket["delay_reason"]["buckets"].map {|value| calculate_percentage(value['doc_count'], bucket['sum_delay_reason_buckets']['value'].to_i) if value['key'] == 40}.compact.first || '0%' %>
+                      <%= bucket["delay_reason"]["buckets"].map {|value| calculate_percentage(value['doc_count'], bucket['sum_delay_reason_buckets']['value'].to_i) if value['key'] == 30}.compact.first || '0%' %>
                     </td>
                   <% end %>
                 </tr>
