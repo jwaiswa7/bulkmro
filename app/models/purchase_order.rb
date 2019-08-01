@@ -267,7 +267,7 @@ class PurchaseOrder < ApplicationRecord
     elsif self.followup_date.present? && (self.followup_date == Date.today)
       'Follow-up for today'
     else
-      'Follow Date missing'
+      'Follow-up Date missing'
     end
   end
 
