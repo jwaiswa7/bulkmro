@@ -11,7 +11,7 @@
       <div class="col-12 col-lg-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="text-uppercase text-black-50 mb-0">Recently Updated Inquiries <div class="text-left"><%#= @dashboard.inquiry_followup_count %></div></h5>
+            <h5 class="text-uppercase text-black-50 mb-0">Recently Updated Inquiries <%= @dashboard.inquiry_followup_count %></h5>
             <table class="table datatable w-100 wrap-whitespace" data-fixed-header="false">
               <thead>
               <tr>
@@ -27,9 +27,9 @@
               <% @dashboard.recent_inquiries.each do |inquiry| %>
                 <tr>
                   <td><%= row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Go to Inquiry', 'warning', :_blank) %></td>
-                  <td><%= inquiry.inquiry_number %></td>
+                  <td><%= link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank') %></td>
                   <td><%= status_badge(inquiry.status) %></td>
-                  <td><%= inquiry.company.to_s.truncate(10) %></td>
+                  <td><%= inquiry.company.to_s %></td>
                   <td><%= format_currency(inquiry.calculated_total) %></td>
                   <td><%= time_ago_in_words(inquiry.updated_at) %></td>
                 </tr>
