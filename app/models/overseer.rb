@@ -111,7 +111,7 @@ class Overseer < ApplicationRecord
     end
     if self.targets.present?
       monthly_targets = self.targets.where(target_type: target_type, target_period_id: target_periods)
-      monthly_targets.last.target_value.to_f if monthly_targets.present?
+      monthly_targets.last.target_value.to_i if monthly_targets.present?
     else
       0
     end
