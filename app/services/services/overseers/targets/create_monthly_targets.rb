@@ -5,8 +5,6 @@ class Services::Overseers::Targets::CreateMonthlyTargets < Services::Shared::Bas
   end
 
   def call
-    # Target.where('created_at > ?', '2019-01-01').destroy_all
-    # AnnualTarget.destroy_all
     unless @annual_target.targets.present?
       current_date = Date.today
       @annual_target = AnnualTarget.where(year: AnnualTarget.year_range.values).last
