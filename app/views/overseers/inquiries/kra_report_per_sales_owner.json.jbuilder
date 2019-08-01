@@ -10,7 +10,7 @@ json.data (@inquiries) do |inquiry|
                   inquiry.final_sales_quotes.present? ? inquiry.final_sales_quotes.map { |quote| format_succinct_date(quote.created_at) }.compact.join('<br/>') : '-',
 
                   if inquiry.bible_sales_orders.present?
-                    inquiry.bible_sales_orders.map { |order| number_with_delimiter(order.calculated_total.to_i, delimiter: ',')}.compact.join('<br/>')
+                    inquiry.bible_sales_orders.map { |order| number_with_delimiter(order.order_total.to_i, delimiter: ',')}.compact.join('<br/>')
                   elsif inquiry.total_sales_orders.present?
                     inquiry.total_sales_orders.map { |order| number_with_delimiter(order.calculated_total.to_i, delimiter: ',')}.compact.join('<br/>')
                   end,
