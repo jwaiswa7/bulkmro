@@ -45,6 +45,8 @@ json.data (@sales_orders) do |sales_order|
                   format_currency(sales_order.sales_quote.calculated_total),
                   format_currency(sales_order.calculated_total),
                   sales_order.calculated_total_margin,
+                  # "<div>#{sales_order.get_invoiced_qty}off #{sales_order.total_qty}</div>",
+                  "#{sales_order.get_invoiced_qty}&nbspoff&nbsp#{sales_order.total_qty}",
                   format_succinct_date(sales_order.created_at),
                   status_badge(sales_order.remote_uid.present? ? 'Sync' : 'Not Sync')
               ]
@@ -62,6 +64,7 @@ json.columnFilters [
                        [{"source": autocomplete_overseers_accounts_path}],
                        Overseer.inside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+                       [],
                        [],
                        [],
                        [],
