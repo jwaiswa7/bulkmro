@@ -6,7 +6,6 @@ class Services::Overseers::Statuses::GetSummaryStatusBuckets < Services::Shared:
       @indexed_buckets = @followup_records.aggregations['statuses']['buckets']
       @indexed_buckets = @indexed_buckets.push(@committed_date_records.aggregations['statuses']['buckets']).flatten
     else
-      binding.pry
       @all_indexed_records = all_indexed_records
       @indexed_buckets = all_indexed_records.aggregations['statuses']['buckets']
     end
