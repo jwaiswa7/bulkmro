@@ -44,7 +44,7 @@ class Services::Overseers::Finders::LogisticsScorecards < Services::Overseers::F
   end
 
   def aggregation_logistics_scorecard(indexed_records)
-    date_range = {from: Date.new(2019, 01, 01).strftime('%Y-%m-%d'), to: Date.today.strftime('%Y-%m-%d'), key: 'custom-range'}
+    date_range = {from: Date.new(2019, 01, 01).strftime('%Y-%m-%d'), to: Date.today.end_of_month.strftime('%Y-%m-%d'), key: 'custom-range'}
 
     logistics_scorecard_query = {
         'overall_scorecard': {
