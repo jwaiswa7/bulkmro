@@ -1,0 +1,28 @@
+<div class="modal fade" id="cancelSalesOrder">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Cancel #<%= @sales_order.order_number %></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <%= simple_form_for([:overseers, @sales_order], :url => cancellation_overseers_inquiry_sales_order_path(@sales_order.inquiry, @sales_order), :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+          <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
+          <div class="modal-body">
+            <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |sales_order| %>
+              <%= sales_order.hidden_field :created_by_id %>
+              <%= sales_order.hidden_field :inquiry_id, :value => @inquiry.id %>
+              <%= sales_order.hidden_field :sales_order_id, :value => @sales_order.id %>
+              <%= sales_order.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''}, required: true %>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-warning confirm-sales-order-cancel">Cancel Sales Order</button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,7 +11,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
         to: @to,
         subject: "Internal Ref Inq ##{@inquiry.inquiry_number} Purchase Order ##{@po_request.purchase_order.po_number}",
         body: PoRequestMailer.purchase_order_details(@email_message).body.raw_source,
-        auto_attach: false
+        auto_attach: true
       )
     end
     authorize_acl @po_request, 'sending_po_to_supplier_new_email_message'

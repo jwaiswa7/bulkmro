@@ -90,7 +90,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     @company.assign_attributes(company_params.merge(overseer: current_overseer))
     authorize_acl @company
 
-    if @company.logistics_owner_id_changed?
+    if params[:logistics_owner_id].present? && @company.logistics_owner_id_changed?
       Services::Overseers::PurchaseOrders::UpdateLogisticsOwner.new(@company, current_overseer).call
     end
 

@@ -1,5 +1,4 @@
 class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseService
-
   @default_resource_list = []
 
   # 1. Create acl resources for all models with default actions
@@ -7,11 +6,11 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     default_actions = ['index', 'new', 'edit', 'create', 'update', 'destroy', 'show', 'autocomplete']
     overseer = Overseer.find(153)
     Dir.foreach("#{Rails.root}/app/models") do |model_path|
-      model_name = File.basename(model_path, ".rb")
+      model_name = File.basename(model_path, '.rb')
       if model_name.present? && model_name != '.' && model_name != '..'
         default_actions.each do |action|
-          AclResource.where(:resource_model_name => model_name, :resource_action_name => action).first_or_create! do |acl_res|
-            acl_res.assign_attributes(:overseer => overseer)
+          AclResource.where(resource_model_name: model_name, resource_action_name: action).first_or_create! do |acl_res|
+            acl_res.assign_attributes(overseer: overseer)
           end
         end
       end
@@ -25,8 +24,8 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     overseer = Overseer.find(153)
     parsed_json.each do |model|
       model['children'].each do |resource|
-        AclResource.where(:resource_model_name => model['text'], :resource_action_name => resource['text']).first_or_create! do |acl_res|
-          acl_res.assign_attributes(:overseer => overseer)
+        AclResource.where(resource_model_name: model['text'], resource_action_name: resource['text']).first_or_create! do |acl_res|
+          acl_res.assign_attributes(overseer: overseer)
         end
       end
     end
@@ -38,11 +37,11 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   def create_new_roles
     # s = Services::Shared::Migrations::AclMigrations.new
     # s.create_new_roles
-    Overseer.update_all(:acl_role_id => nil)
+    Overseer.update_all(acl_role_id: nil)
     AclRole.all.destroy_all
 
     # Create admin role with all permissions
-    acl_role = AclRole.where(:role_name => 'Admin').first_or_create!
+    acl_role = AclRole.where(role_name: 'Admin').first_or_create!
     role_resources = AclResource.all.order(id: :asc).pluck(:id)
     resources = []
     role_resources.map {|x| resources << x.to_s}
@@ -63,14 +62,14 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
           is_permitted = x.get_column(role_name)
 
           if is_permitted.present? && is_permitted == 'Yes'
-            acl_resource = AclResource.where(:resource_model_name => resource_model, :resource_action_name => resource_action).first_or_create!
+            acl_resource = AclResource.where(resource_model_name: resource_model, resource_action_name: resource_action).first_or_create!
             role_resources << acl_resource.id
-            #if current resource_action is create or update, then assign permission to edit and new
+            # if current resource_action is create or update, then assign permission to edit and new
             if resource_action == 'create'
-              acl_resource = AclResource.where(:resource_model_name => resource_model, :resource_action_name => 'new').first_or_create!
+              acl_resource = AclResource.where(resource_model_name: resource_model, resource_action_name: 'new').first_or_create!
               role_resources << acl_resource.id
             elsif resource_action == 'update'
-              acl_resource = AclResource.where(:resource_model_name => resource_model, :resource_action_name => 'edit').first_or_create!
+              acl_resource = AclResource.where(resource_model_name: resource_model, resource_action_name: 'edit').first_or_create!
               role_resources << acl_resource.id
             end
           end
@@ -79,17 +78,16 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
 
       role_resources = role_resources.sort {|x, y| (x <=> y)}
       role_resources.map {|x| x.to_s}
-      acl_role = AclRole.where(:role_name => role_name).first_or_create!
+      acl_role = AclRole.where(role_name: role_name).first_or_create!
       acl_role.role_resources = role_resources.uniq.to_json
       acl_role.save
-
     end
 
-    #create default role
+    # create default role
     create_default_role
 
-    #Add autocomplete action in all roles
-    autocomplete_resources = AclResource.where(:resource_action_name => 'autocomplete').pluck(:id)
+    # Add autocomplete action in all roles
+    autocomplete_resources = AclResource.where(resource_action_name: 'autocomplete').pluck(:id)
 
     AclRole.all.each do |acl_role|
       role_resources = ActiveSupport::JSON.decode(acl_role.role_resources)
@@ -101,27 +99,27 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       acl_role.save
     end
 
-    #Assign default resources
+    # Assign default resources
     set_default_resources_to_all_roles
 
-    #Assign roles to all overseers
+    # Assign roles to all overseers
     assign_roles_to_overseers
 
-    #Menu resources
+    # Menu resources
     create_acl_menu_resource_json
   end
 
   # Deprecated
   def set_role_permissions
     # Create admin role with all permissions
-    acl_role = AclRole.where(:role_name => 'Admin').first_or_create!
+    acl_role = AclRole.where(role_name: 'Admin').first_or_create!
     role_resources = AclResource.all.pluck(:id)
     resources = []
     role_resources.map {|x| resources << x.to_s}
     acl_role.role_resources = resources.uniq.to_json
     acl_role.save
 
-    #Read sheet and create other roles
+    # Read sheet and create other roles
     service = Services::Shared::Spreadsheets::CsvImporter.new('acl_roles_permissions.csv', 'seed_files_3')
     role_resources = []
     last_role_name = nil
@@ -134,35 +132,35 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       if last_role_name.present? && last_role_name != role_name
         resources = []
         role_resources.map {|x| resources << x.to_s}
-        acl_role = AclRole.where(:role_name => last_role_name).first_or_create!
+        acl_role = AclRole.where(role_name: last_role_name).first_or_create!
         acl_role.role_resources = resources.uniq.to_json
         acl_role.save
         role_resources = []
       end
 
       if is_permitted.present? && is_permitted == 'Yes'
-        role_resources << AclResource.where(:resource_model_name => resource_model, :resource_action_name => resource_action).pluck(:id).first
+        role_resources << AclResource.where(resource_model_name: resource_model, resource_action_name: resource_action).pluck(:id).first
 
-        #if current resource_action is create or update, then assign permission to edit and new
+        # if current resource_action is create or update, then assign permission to edit and new
         if resource_action == 'create'
-          role_resources << AclResource.where(:resource_model_name => resource_model, :resource_action_name => 'new').pluck(:id).first
+          role_resources << AclResource.where(resource_model_name: resource_model, resource_action_name: 'new').pluck(:id).first
         elsif resource_action == 'update'
-          role_resources << AclResource.where(:resource_model_name => resource_model, :resource_action_name => 'edit').pluck(:id).first
+          role_resources << AclResource.where(resource_model_name: resource_model, resource_action_name: 'edit').pluck(:id).first
         end
       end
 
       last_role_name = role_name
     end
 
-    #last role
+    # last role
     resources = []
     role_resources.map {|x| resources << x.to_s}
-    acl_role = AclRole.where(:role_name => last_role_name).first_or_create!
+    acl_role = AclRole.where(role_name: last_role_name).first_or_create!
     acl_role.role_resources = resources.uniq.to_json
     acl_role.save
   end
 
-  #4 Set default resources to all roles
+  # 4 Set default resources to all roles
   def set_default_resources_to_all_roles
     AclRole.all.each do |role|
       resources = []
@@ -185,7 +183,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     end
   end
 
-  #7 - assign roles to overseers
+  # 7 - assign roles to overseers
 
   def assign_roles_to_overseers
     service = Services::Shared::Spreadsheets::CsvImporter.new('overseer_roles.csv', 'seed_files_3')
@@ -196,7 +194,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       overseer = Overseer.where(id: id).first if id.present?
 
       if overseer.present?
-        acl_role = AclRole.where(:role_name => role_name).first
+        acl_role = AclRole.where(role_name: role_name).first
         overseer.acl_role = acl_role
         overseer.acl_resources = ActiveSupport::JSON.decode(acl_role.role_resources).to_json
         overseer.save
@@ -217,17 +215,17 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       AclResource.all.each do |acl_resource_model|
         allowed_resources << acl_resource_model.id.to_s
       end
-      o.update_attributes!(:acl_resources => allowed_resources.to_json, :acl_role => admin_acl_role) if o.present?
+      o.update_attributes!(acl_resources: allowed_resources.to_json, acl_role: admin_acl_role) if o.present?
     end
   end
 
-  #5 Create default role with read-only access
+  # 5 Create default role with read-only access
   def create_default_role
     overseer = Overseer.find(153)
     resource_ids = []
 
     Dir.foreach("#{Rails.root}/app/models") do |model_path|
-      model_name = File.basename(model_path, ".rb")
+      model_name = File.basename(model_path, '.rb')
       if model_name.present? && model_name != '.' && model_name != '..'
         resource_ids << AclResource.where('resource_model_name = ? and resource_action_name in (?, ?, ?)', model_name, 'index', 'show', 'autocomplete').pluck(:id)
       end
@@ -237,12 +235,11 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     resource_ids.map {|x| x.map {|y| read_only_resource_ids << y.to_s}}
     read_only_resource_ids = read_only_resource_ids.uniq
 
-    ar = AclRole.where(:role_name => 'Default - Read Only').first_or_create!
+    ar = AclRole.where(role_name: 'Default - Read Only').first_or_create!
     ar.role_resources = read_only_resource_ids.to_json
     ar.created_by = overseer
     ar.updated_by = overseer
     ar.save
-
   end
 
   def get_default_resource_list
@@ -268,7 +265,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       resource_model_name = x.get_column('Module').downcase.strip
       resource_action_name = x.get_column('Action').downcase.strip
 
-      acl_resource = AclResource.where(:resource_model_name => resource_model_name, :resource_action_name => resource_action_name).first_or_create!
+      acl_resource = AclResource.where(resource_model_name: resource_model_name, resource_action_name: resource_action_name).first_or_create!
 
       if acl_resource.present?
         acl_resource.resource_model_alias = parent_menu
@@ -281,9 +278,8 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     end
   end
 
-  #NOT USED ANYMORE
+  # NOT USED ANYMORE
   def create_acl_roles
-
     roles = [
         'left',
         'admin',
@@ -304,14 +300,14 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     all_resources = all_resources.map {|x| x.to_s}
 
     roles.each do |role|
-      AclRole.where(:role_name => role).first_or_create! do |ar|
-        ar.update_attributes(:role_resources => all_resources.to_json)
+      AclRole.where(role_name: role).first_or_create! do |ar|
+        ar.update_attributes(role_resources: all_resources.to_json)
       end
     end
 
-    #update role
+    # update role
     roles.each do |role|
-      ar = AclRole.where(:role_name => role).first
+      ar = AclRole.where(role_name: role).first
       if ar.present?
         ar.role_resources = all_resources.to_json
         ar.save
@@ -323,7 +319,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     all_policies = {}
     Dir.glob("#{Rails.root}/app/policies/overseers/*") do |policy_file|
       data = File.read(policy_file)
-      model = File.basename(policy_file, ".rb")
+      model = File.basename(policy_file, '.rb')
       policies = []
       policies = data.scan(/(?:def\ )(?:.*)/)
       all_policies[model.gsub('_policy', '')] = policies.map {|x| x.gsub('def ', '').gsub('?', '')}
@@ -332,11 +328,10 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   end
 
   def generate_resource_json
-
     all_policies = {}
     Dir.glob("#{Rails.root}/app/policies/overseers/*") do |policy_file|
       data = File.read(policy_file)
-      model = File.basename(policy_file, ".rb")
+      model = File.basename(policy_file, '.rb')
       policies = []
       policies = data.scan(/(?:def\ )(?:.*)/)
       all_policies[model.gsub('_policy', '')] = policies.map {|x| x.gsub('def ', '').gsub('?', '')}
@@ -394,7 +389,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
 
   def get_view_file_list
     view_files = []
-    Dir.glob("/var/www/html/sprint/app/views/overseers/*") do |view_file|
+    Dir.glob('/var/www/html/sprint/app/views/overseers/*') do |view_file|
       view_files << view_file
     end
   end
@@ -407,24 +402,31 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     model_actions
   end
 
-  #Utility Functions
+  # Utility Functions
 
   def assign_action_to_overseer
-    resource_action_name = 'get_account'
-    resource_model_name = 'company'
-    role_name = 'all'
-    acl_resource = AclResource.where(:resource_model_name => resource_model_name, :resource_action_name => resource_action_name).first_or_create!
+    resource_action_names = %w(index show new edit create update destroy)
+    resource_model_name = 'packing_slip_row'
+    # role_name = 'Accounts'
+    role_name = 'Logistics'
 
-    #update role
-    if role_name != 'all'
-      acl_role = AclRole.find_by_role_name(role_name)
-      update_role_resource(acl_role, acl_resource.id)
-    else
-      AclRole.all.each do |acl_role|
+    resource_action_names.each do |resource_action_name|
+      acl_resource = AclResource.where(resource_model_name: resource_model_name, resource_action_name: resource_action_name).first_or_create!
+      # update role
+      if role_name != 'all'
+        acl_role = AclRole.find_by_role_name(role_name)
         update_role_resource(acl_role, acl_resource.id)
+      else
+        AclRole.all.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
       end
     end
-    # AclResource.update_acl_resource_cache
+
+    acl_resource = AclResource.new
+    acl_resource.update_acl_resource_cache
+    Message Input
+    Direct message with Ruta ashok kambli
   end
 
   # function for applying acl to outward ques
@@ -437,7 +439,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
         'invoice_request': %w(render_modal_form cancel_invoice_request render_cancellation_form render_comment_form can_cancel_or_reject),
         'inward_dispatch': %w(can_create_ar_invoice),
         'ar_invoice_request': %w(index show new edit create update destroy can_create_outward_dispatch download_eway_bill_format render_cancellation_form cancel_ar_invoice),
-        'ar_invoice_request_comment':  %w(index show new edit create update destroy),
+        'ar_invoice_request_comment': %w(index show new edit create update destroy),
         'ar_invoice_request_row': %w(index show new edit create update destroy),
         'outward_dispatch': %w(index show new edit create update destroy can_create_packing_slip create_with_packing_slip can_send_dispatch_email),
         'packing_slip': %w(index show new edit create update destroy can_send_dispatch_email),
@@ -445,8 +447,8 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     }
     acl_for_logistics_in_outward_que.each do |key, val|
       val.each do |action_name|
-        acl_resource = AclResource.where(:resource_model_name => key, :resource_action_name => action_name).first_or_create!
-        #update role
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        # update role
         if role_name != 'all'
           acl_role = AclRole.find_by_role_name(role_name)
           update_role_resource(acl_role, acl_resource.id)
@@ -464,13 +466,13 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
         'payment_request': %w(add_comment render_modal_form),
         'invoice_request': %w(render_modal_form cancel_invoice_request render_cancellation_form render_comment_form can_cancel_or_reject),
         'ar_invoice_request': %w(index show new edit create update destroy download_eway_bill_format render_cancellation_form cancel_ar_invoice can_cancel_or_reject),
-        'ar_invoice_request_comment':  %w(index show new edit create update destroy),
+        'ar_invoice_request_comment': %w(index show new edit create update destroy),
         'ar_invoice_request_row': %w(index show new edit create update destroy),
     }
     acl_for_account_in_outward_que.each do |key, val|
       val.each do |action_name|
-        acl_resource = AclResource.where(:resource_model_name => key, :resource_action_name => action_name).first_or_create!
-        #update role
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        # update role
         if role_name != 'all'
           acl_role = AclRole.find_by_role_name(role_name)
           update_role_resource(acl_role, acl_resource.id)
@@ -494,8 +496,8 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_role.role_resources = role_resources.uniq.to_json
     acl_role.save
 
-    #update overseer resources
-    Overseer.where(acl_role: acl_role).each do |overseer|
+    # update overseer resources
+    Overseer.where(acl_role_id: acl_role.id).each do |overseer|
       overseer_resources = ActiveSupport::JSON.decode(overseer.acl_resources)
       new_resources = overseer_resources + ActiveSupport::JSON.decode(acl_role.role_resources)
       new_resources = new_resources.map {|x| x.to_i}
@@ -513,14 +515,73 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     end
   end
 
+  def create_acl_resources_using_csv
+    # service = Services::Shared::Spreadsheets::CsvImporter.new('acl_resources_csv.csv', 'seed_files_3')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('stock_po_acl.csv', 'seed_files_3')
+    service.loop(nil) do |x|
+      role_name = x.get_column('role_name')
+      resource_model_name = x.get_column('model_name')
+      resource_action_name = x.get_column('action_name')
+      acl_resource = AclResource.where(resource_model_name: resource_model_name, resource_action_name: resource_action_name).first_or_create!
+
+      # update role
+      if role_name != 'N/A'
+        if role_name != 'All'
+          acl_role = AclRole.find_by_role_name(role_name)
+          update_role_resource(acl_role, acl_resource.id)
+        else
+          AclRole.all.each do |acl_role|
+            update_role_resource(acl_role, acl_resource.id)
+          end
+        end
+      end
+    end
+    acl_resource = AclResource.new
+    acl_resource.update_acl_resource_cache
+  end
+
   def duplicate_role
-    acl_role1 = AclRole.find(2)
-    acl_role2 = AclRole.find(10)
+    acl_role_names = ['Inside Sales and Logistic Manager', 'Outside Sales Manager', 'Inside Sales Manager', 'Outside Sales Executive', 'Inside Sales Executive', 'Accounts', 'Logistics', 'Cataloging', 'Outside Sales Team Leader', 'Inside Sales Team Leader']
+    acl_role = AclRole.find_by_role_name('Manager')
+    combined_role = []
 
-    acl_role = AclRole.find(12)
+    acl_role_names.each do |arn|
+      ar = AclRole.find_by_role_name(arn)
+      combined_role += ActiveSupport::JSON.decode(ar.role_resources)
+    end
 
-    combined_role = ActiveSupport::JSON.decode(acl_role1.role_resources) + ActiveSupport::JSON.decode(acl_role2.role_resources)
+    # combined_role = ActiveSupport::JSON.decode(acl_role1.role_resources) + ActiveSupport::JSON.decode(acl_role2.role_resources) + ActiveSupport::JSON.decode(overseer.acl_resources)
     acl_role.role_resources = combined_role.uniq.to_json
     acl_role.save
+
+    overseer_emails = ['ankur.gupta@bulkmro.com', 'vijay.manjrekar@bulkmro.com', 'nilesh.desai@bulkmro.com', 'priyanka.rajpurkar@bulkmro.com', 'lavanya.j@bulkmro.com', 'shailender.agarwal@bulkmro.com', 'ved.prakash@bulkmro.com', 'akshay.jindal@bulkmro.com']
+    overseer_emails.each do |email|
+      overseer = Overseer.find_by_email(email)
+      if overseer.present?
+        overseer_resources = overseer.acl_resources
+        overseer_combined_resources = ActiveSupport::JSON.decode(overseer_resources) + ActiveSupport::JSON.decode(acl_role.role_resources)
+        overseer.acl_resources = overseer_combined_resources.uniq.to_json
+        overseer.acl_role_id = acl_role.id
+        overseer.save
+      end
+    end
+  end
+
+  def create_target_resources
+    role_name = ['Admin-Leadership Team', 'admin']
+    acl_resources_for_targets = {
+        'annual_target': %w(index show new edit create update destroy),
+        'overseer': %w(can_add_edit_target)
+    }
+    acl_resources_for_targets.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        # update role
+        acl_roles = AclRole.where(role_name: role_name)
+        acl_roles.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
+      end
+    end
   end
 end

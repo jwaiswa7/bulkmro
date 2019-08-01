@@ -25,7 +25,7 @@
     </div>
     <% if @ar_invoice_request.rows.present? %>
       <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
-        <div class="form-row flex-row align-items-start inward-dispatch-row">
+        <div class="form-row flex-row align-items-start ar-invoice-req-row">
           <div class="col-6 col-md-6">
             <%= row.hidden_field :sales_order_id, label: false %>
             <%= row.hidden_field :product_id, label: false %>
@@ -43,7 +43,7 @@
           </div>
           <% if f.object.rows.length > 1 %>
             <div class="col-1 col-md-1">
-              <%= row.remove_nested_fields_link '', class: 'btn align-self-center delete_row far fa-times text-danger', wrapper_class: 'simple-row', data: {id: (f.object.rows.index(row.object) || 0)}%>
+              <%= row.remove_nested_fields_link '', class: 'btn align-self-center delete_row far fa-times text-danger delete_row', wrapper_class: 'simple-row', data: {id: (f.object.rows.index(row.object) || 0)}%>
             </div>
           <% end %>
         </div>

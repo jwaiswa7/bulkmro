@@ -31,7 +31,7 @@ Sales,Online Payments List,customer_order,payments
 Sales,Sales Orders List,sales_order,index
 Sales,SO Not Invoiced,sales_order,not_invoiced
 Sales,Pending Approval,sales_order,pending
-Sales,Pending SAP Sync,sales_order,drafts_pending
+Sales,Pending SAP Sync,sales_order,so_sync_pending
 Sales,Cancelled SO,sales_order,cancelled
 Sales,Sales Invoices List,sales_invoice,index
 Sales,All Invoice Requests,invoice_request,index

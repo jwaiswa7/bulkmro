@@ -30,6 +30,8 @@ class Inquiry < ApplicationRecord
   belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: false
   belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: false
   belongs_to :last_synced_quote, class_name: 'SalesQuote', foreign_key: :last_synced_quote_id, required: false
+  # belongs_to :bible_invoice, required: false
+  # belongs_to :bible_sales_order, required: false
 
   has_one :account, through: :company
   has_many :inquiry_products, -> {order(sr_no: :asc)}, inverse_of: :inquiry, dependent: :destroy
@@ -415,22 +417,22 @@ class Inquiry < ApplicationRecord
     when 'Preparing Quotation'
       self.draft_sales_quotes.map(&:calculated_total).compact.sum || 0.0
     when 'Quotation Sent', 'Follow-Up on Quotation', 'Expected Order', 'SO Not Created-Customer PO Awaited', 'SO Not Created-Pending Customer PO Revision'
-      self.final_sales_quote.try(:calculated_total) || 0.0
+      self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : 0.0
     when 'Order Won'
-      self.final_sales_orders.remote_approved.map(&:calculated_total).sum || 0.0
+      self.sales_orders.present? ? self.sales_orders.approved.map(&:calculated_total).sum : 0.0
     when 'Draft SO For Approval by Sales Manager', 'SO Draft: Pending Accounts Approval', 'SO Rejected by Sales Manager', 'Rejected by Accounts'
       self.sales_orders.map(&:calculated_total).compact.sum || 0.0
     when 'Order Lost'
-      (self.final_sales_quote.try(:calculated_total) || 0.0) + (self.final_sales_orders.last.try(&:calculated_total) || 0.0) + (self.products.map(&:latest_unit_cost_price).compact.sum || 0.0)
+      ((self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : self.products.map(&:latest_unit_cost_price).compact.sum) || 0.0)
     when 'Regret'
-      self.final_sales_quote.try(:calculated_total) || 0.0
+      self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : 0.0
     else
       0
     end
   end
 
   def margin_percentage
-    self.final_sales_quote.present? ? self.final_sales_quote.calculated_total_margin_percentage.to_f : 0
+    self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total_margin_percentage) : 0
   end
 
   def update_last_synced_quote
@@ -441,5 +443,103 @@ class Inquiry < ApplicationRecord
     self.inquiry_status_records.each do |inquiry_status_record|
       Services::Overseers::Inquiries::InquiryPreviousStatusRecord.new(inquiry_status_record).call
     end
+  end
+
+  def total_sales_orders
+    self.sales_orders.where(status: 'Approved') if self.sales_orders.present?
+  end
+
+  def final_sales_quotes
+    self.total_sales_orders.map { |so| so.sales_quote } unless self.total_sales_orders.blank?
+  end
+
+  def bible_inside_sales_owner
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).first.try(:inside_sales_owner_id) || self.inside_sales_owner_id
+  end
+
+  def bible_outside_sales_owner
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).first.try(:outside_sales_owner_id) || self.outside_sales_owner_id
+  end
+
+  def bible_final_sales_quotes
+    sales_quotes_ids = []
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).each do |bso|
+      sales_order = SalesOrder.find_by_order_number(bso.order_number)
+      if sales_order.present?
+        if !sales_quotes_ids.include? sales_order.sales_quote.id
+          sales_quotes_ids << sales_order.sales_quote.id
+        end
+      end
+    end
+
+    sales_quotes_ids << self.final_sales_quote.id if self.final_sales_quote.present?
+    sales_quotes_ids.compact
+
+    if sales_quotes_ids.count > 0
+      SalesQuote.where(id: sales_quotes_ids)
+    else
+      nil
+    end
+  end
+
+  def bible_total_quote_value
+    total_quote_value = 0
+    sales_quotes_ids = []
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).each do |bso|
+      sales_order = SalesOrder.find_by_order_number(bso.order_number)
+      if sales_order.present?
+        if !sales_quotes_ids.include? sales_order.sales_quote.id
+          total_quote_value += sales_order.sales_quote.calculated_total
+          sales_quotes_ids << sales_order.sales_quote.id
+        end
+      end
+    end
+
+    if self.final_sales_quote.present? && !(sales_quotes_ids.include? self.final_sales_quote.id)
+      total_quote_value += self.final_sales_quote.calculated_total
+    end
+
+    total_quote_value
+  end
+
+  def unique_skus_in_order
+    bible_orders = BibleSalesOrder.where(inquiry_number: self.inquiry_number)
+    bible_orders.map {|bo| bo.metadata.map {|m| m['sku']} }.flatten.compact.uniq.count
+  end
+
+  def bible_sales_orders
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number)
+  end
+
+  def bible_sales_invoices
+    BibleInvoice.where(inquiry_number: self.inquiry_number)
+  end
+
+  def bible_margin_percentage
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).pluck(:overall_margin_percentage).sum
+  end
+
+  def bible_sales_order_total
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).pluck(:order_total).sum
+  end
+
+  def bible_sales_invoice_total
+    BibleInvoice.where(inquiry_number: self.inquiry_number).pluck(:invoice_total).sum
+  end
+
+  def bible_assumed_margin
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).pluck(:total_margin).sum
+  end
+
+  def bible_actual_margin
+    BibleInvoice.where(inquiry_number: self.inquiry_number).pluck(:total_margin).sum
+  end
+
+  def bible_actual_margin_percentage
+    BibleInvoice.where(inquiry_number: self.inquiry_number).pluck(:overall_margin_percentage).sum
+  end
+
+  def self.bible_data_till_date
+    BibleSalesOrder.order('mis_date asc').last.mis_date.strftime('%b %Y')
   end
 end

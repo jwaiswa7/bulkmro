@@ -19,7 +19,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
       @inward_dispatch.sales_order = @purchase_order.po_request.sales_order
     end
     @inward_dispatch.purchase_order.rows.each do |row|
-      @inward_dispatch.rows.build(purchase_order_row: row, pickup_quantity: row.get_pickup_quantity,product: row.product)
+      @inward_dispatch.rows.build(purchase_order_row: row, pickup_quantity: row.get_pickup_quantity, product: row.product)
     end
     authorize_acl @inward_dispatch
   end

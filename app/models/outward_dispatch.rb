@@ -48,6 +48,9 @@ class OutwardDispatch < ApplicationRecord
     if self.saved_change_to_material_delivery_date? && !material_delivery_date_before_last_save.present?
       self.status = 'Material Delivered'
       self.save
+    elsif self.saved_change_to_material_delivery_date? && material_delivery_date_before_last_save.present? && !self.material_delivery_date.present?
+      self.status = 'Material Ready for Dispatch'
+      self.save
     end
   end
 
@@ -68,6 +71,6 @@ class OutwardDispatch < ApplicationRecord
   end
 
   def logistics_owner
-    self.ar_invoice_request.inquiry.company.logistics_owner.full_name if self.ar_invoice_request.company.present? && self.ar_invoice_request.inquiry.company.present? && self.ar_invoice_request.inquiry.company.logistics_owner.present?
+    self.ar_invoice_request.inquiry.company.logistics_owner.full_name if self.ar_invoice_request.inquiry.present? && self.ar_invoice_request.inquiry.company.present? && self.ar_invoice_request.inquiry.company.logistics_owner.present?
   end
 end

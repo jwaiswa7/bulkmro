@@ -14,6 +14,10 @@ const outwardNew = () => {
 
     });
 
+    $('.material_delivery_date .clear-date').unbind('click').bind('click', function () {
+        $('[name="outward_dispatch[material_delivery_date]').val('')
+    })
+
 }
 
 export default outwardNew

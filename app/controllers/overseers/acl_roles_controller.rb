@@ -35,6 +35,7 @@ class Overseers::AclRolesController < Overseers::BaseController
         checked_ids = checked_ids + menu_checked_ids
         @acl_role.update_attribute(:role_resources, checked_ids.uniq.to_json)
         @acl_role.update_attribute(:is_default, params[:is_default])
+
         @acl_role.update_attribute(:updated_by, current_overseer)
 
         #update overseer resources
@@ -60,7 +61,7 @@ class Overseers::AclRolesController < Overseers::BaseController
 
   def get_acl
     default_resources = get_acl_resource_json
-    current_acl = ActiveSupport::JSON.decode(@acl_role.role_resources)
+    current_acl = ActiveSupport::JSON.decode(@acl_role.role_resources) if @acl_role.role_resources.present?
     parsed_json = ActiveSupport::JSON.decode(default_resources)
     parsed_json.map{|x| x['children'].map{|y|
         if current_acl.present? && (current_acl.include?y['id'].to_s)
@@ -76,7 +77,7 @@ class Overseers::AclRolesController < Overseers::BaseController
 
   def get_acl_menu
     default_resources = get_acl_menu_resource_json
-    current_acl = ActiveSupport::JSON.decode(@acl_role.role_resources)
+    current_acl = ActiveSupport::JSON.decode(@acl_role.role_resources) if @acl_role.role_resources.present?
     parsed_json = ActiveSupport::JSON.decode(default_resources)
 
     parsed_json.map{|x| x['children'].map{|y|

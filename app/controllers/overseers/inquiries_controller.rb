@@ -46,7 +46,6 @@ class Overseers::InquiriesController < Overseers::BaseController
             end
           end
         end
-
         indexed_kra_reports = service.indexed_records.aggregations['kra_over_month']['buckets']['custom-range']['inquiries']['buckets']
         @per = (params['per'] || params['length'] || 20).to_i
         @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
@@ -121,7 +120,6 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def tat_report
     authorize_acl :inquiry
-
     respond_to do |format|
       service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
       service.call
@@ -197,7 +195,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   def autocomplete
     service = Services::Overseers::Finders::Inquiries.new(params.merge(page: 1))
     service.call
-
+    @encoded = params[:encoded]
     @indexed_inquiries = service.indexed_records
     @inquiries = service.records.reverse
 
@@ -288,7 +286,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def duplicate
     @new_inquiry = @inquiry.dup
-    authorize @inquiry
+    authorize_acl @inquiry
     @new_inquiry.inquiry_number = nil
     @new_inquiry.opportunity_uid = nil
     @new_inquiry.project_uid = nil
@@ -406,7 +404,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def export_pipeline_report
-    authorize :inquiry
+    authorize_acl :inquiry
     service = Services::Overseers::Finders::PipelineReports.new(params, current_overseer)
     service.call
 

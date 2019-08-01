@@ -173,7 +173,7 @@ gem 'markdown-rails'
 # Star Rating
 gem 'ratyrate'
 
-#For working with percentages
+# For working with percentages
 gem 'percentage'
 
 group :development, :test do

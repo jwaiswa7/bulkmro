@@ -137,14 +137,17 @@ Rails.application.routes.draw do
         get 'reject'
       end
     end
+
     resource :profile, controller: :profile, except: [:show, :index]
-    resources :overseers, except: [:show] do
+    resources :overseers do
       member do
         patch 'save_acl_resources'
         get 'get_resources'
         get 'get_menu_resources'
         get 'edit_acl'
         patch 'update_acl'
+        get 'change_password'
+        patch 'update_password'
       end
 
       collection do
@@ -163,6 +166,8 @@ Rails.application.routes.draw do
         get 'get_default_resources'
       end
     end
+
+    resources :annual_targets
 
     resources :suppliers do
       collection do
@@ -261,6 +266,14 @@ Rails.application.routes.draw do
     end
 
     resources :po_requests do
+      member do
+        get 'new_purchase_order'
+        post 'create_purchase_order'
+        get 'manager_amended'
+      end
+      collection do
+        get 'product_resync_inventory'
+      end
       scope module: 'po_requests' do
         resources :payment_requests
         resources :email_messages do
@@ -288,7 +301,11 @@ Rails.application.routes.draw do
       end
       member do
         get 'render_modal_form'
+        get 'render_cancellation_form'
+        get 'reject_purchase_order_modal'
+        patch 'rejected_purchase_order'
         patch 'cancel_porequest'
+        get 'render_comment_form'
         patch 'add_comment'
       end
     end
@@ -348,9 +365,10 @@ Rails.application.routes.draw do
 
       collection do
         get 'pending'
+        get 'account_approval_pending'
         get 'cancelled'
         get 'export_all'
-        get 'drafts_pending'
+        get 'so_sync_pending'
         get 'export_rows'
         get 'export_for_logistics'
         get 'export_for_sap'
@@ -380,9 +398,14 @@ Rails.application.routes.draw do
       member do
         get 'edit_material_followup'
         patch 'update_material_followup'
+        get 'cancelled_purchase_modal'
+        patch 'cancelled_purchase_order'
+        get 'resync_po'
       end
 
       collection do
+        get 'export_material_readiness'
+        get 'pending_sap_sync'
         get 'export_all'
         get 'export_filtered_records'
         get 'autocomplete'
@@ -520,12 +543,17 @@ Rails.application.routes.draw do
             get 'debugging'
             get 'new_revision'
             get 'new_confirmation'
+            get 'new_accounts_confirmation'
             get 'proforma'
             post 'create_confirmation'
+            post 'create_account_confirmation'
+            post 'create_account_rejection'
             post 'resync'
             get 'fetch_order_data'
             get 'relationship_map'
             get 'get_relationship_map_json'
+            get 'order_cancellation_modal'
+            patch 'cancellation'
           end
 
           collection do
@@ -563,6 +591,17 @@ Rails.application.routes.draw do
             get 'excel_template'
             post 'create_list_import'
           end
+        end
+      end
+    end
+
+    namespace 'bible_sales_orders' do
+      resources :imports do
+        collection do
+          get 'new_excel_bible_order_import'
+          get 'download_bible_order_template'
+          post 'create_bible_orders'
+          # , to: 'imports#create_bible_orders'
         end
       end
     end
@@ -660,6 +699,7 @@ Rails.application.routes.draw do
     resources :warehouses do
       collection do
         get 'autocomplete'
+        get 'series'
       end
       scope module: 'warehouses' do
         resources :product_stocks, only: %i[index]
@@ -709,6 +749,8 @@ Rails.application.routes.draw do
         get 'add_delay_reason'
       end
     end
+
+    # resources :bible_sales_orders
   end
 
   namespace 'customers' do
@@ -732,7 +774,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :dashboard, controller: :dashboard
+    resource :dashboard, controller: :dashboard do
+      collection do
+        get 'export_for_amat_customer'
+      end
+    end
     resources :cart_items, only: %i[new create destroy update]
     resources :customer_orders, only: %i[index create show] do
       member do
@@ -829,5 +875,6 @@ Rails.application.routes.draw do
         get 'contact_companies'
       end
     end
+
   end
 end

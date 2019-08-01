@@ -3,6 +3,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || logistics?
   end
 
+  def cancellation?
+    order_cancellation_modal?
+  end
+
   def company_converted_orders?
     manager_or_sales? || logistics?
   end
@@ -28,11 +32,19 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def show_serialized?
-    record.serialized_pdf.attached?
+    record.status == 'Approved' && record.order_number.present? && record.serialized_pdf.attached?
   end
 
   def edit?
     record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved? && not_logistics?
+  end
+
+  def account_approval?
+    record.status == 'Accounts Approval Pending'
+  end
+
+  def can_cancel_order?
+    record.status == 'Approved' && record.order_number.present?
   end
 
   def update?
@@ -41,6 +53,14 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def new_confirmation?
     edit?
+  end
+
+  def new_accounts_confirmation?
+    accounts? || admin?
+  end
+
+  def create_account_confirmation?
+    new_accounts_confirmation?
   end
 
   def create_confirmation?
@@ -57,6 +77,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def pending?
     manager_or_sales?
+  end
+
+  def account_approval_pending?
+    accounts? || admin?
   end
 
   def cancelled?
@@ -88,7 +112,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     developer? || %w(nilesh.desai@bulkmro.com bhargav.trivedi@bulkmro.com).include?(overseer.email)
   end
 
-  def drafts_pending?
+  def so_sync_pending?
     admin?
   end
 
@@ -118,6 +142,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def resync?
     record.sent? && record.approved? && record.not_synced? && admin?
+  end
+
+  def sales_order_sync_pending?
+    record.order_number.present? && record.remote_uid?
   end
 
   def new_purchase_orders_requests?
@@ -174,6 +202,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def export_customer_order_status_report?
     developer? || admin? || manager_or_sales?
+  end
+
+  def order_cancellation_modal?
+    accounts? || admin?
   end
 
   class Scope

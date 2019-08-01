@@ -36,7 +36,7 @@
       <% end %>
     </th>
     <th class="sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
-    <th class="no-sort desktop" data-name="company_name">Customer Company Name</th>
+    <th class="no-sort desktop" data-name="customer_id">Customer Company Name</th>
     <th class="sort desktop text-right" data-name="so_number">Sales Order #</th>
     <th class="sort desktop text-right" data-name="so_date">Sales Order Date</th>
     <th class="sort desktop text-right" data-name="customer_committed_date">Committed Date to Customer</th>
@@ -80,4 +80,23 @@
 
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
+</div>
+
+<div id="goodsReceiptPurchaseOrderId" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">GRPO Request</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>You can't create GRPO Request against this PO because this PO is not sync with SAP.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>

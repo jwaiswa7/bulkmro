@@ -52,7 +52,7 @@ class SalesOrder < ApplicationRecord
   belongs_to :shipping_address, class_name: 'Address', dependent: :destroy, required: false
 
   delegate :conversion_rate, to: :inquiry_currency
-  attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
+  attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_purchase_order_number, :confirm_payment_terms, :confirm_tax_types, :confirm_customer_po_no, :confirm_attachments, :confirm_billing_warehouse, :confirm_shipping_warehouse
   delegate :inside_sales_owner, :outside_sales_owner, :inside_sales_owner_id, :outside_sales_owner_id, :opportunity_type, :customer_committed_date, to: :inquiry, allow_nil: true
   delegate :currency_sign, to: :sales_quote
 
@@ -95,7 +95,7 @@ class SalesOrder < ApplicationRecord
 
   enum status: {
       'Requested': 10,
-      'SAP Approval Pending': 20,
+      'Accounts Approval Pending': 20,
       'Rejected': 30,
       'SAP Rejected': 40,
       'Cancelled': 50,
@@ -126,10 +126,24 @@ class SalesOrder < ApplicationRecord
       'Order Deleted': 70
   }, _prefix: true
 
+  enum reject_reason: {
+      "Wrong PO Number": 'Wrong PO Number',
+      "Wrong Payment Terms": 'Wrong Payment Terms',
+      "Wrong Billing Warehouse": 'Wrong Billing Warehouse',
+      "Wrong Shipping Warehouse": 'Wrong Shipping Warehouse',
+      "Wrong Billing Address": 'Wrong Billing Address',
+      "Wrong Shipping Address": 'Wrong Shipping Address',
+      "Wrong Attachments": 'Wrong Attachments',
+      "Wrong HSN Codes": 'Wrong HSN Codes',
+      "Wrong Tax Rates": 'Wrong Tax Rates',
+      "Wrong Tax Types": 'Wrong Tax Types',
+      "Wrong Order Values": 'Wrong Order Values'
+  }
+
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
   scope :remote_approved, -> {where('(((sales_orders.status = ? OR sales_orders.status = ?) AND sales_orders.remote_status != ?) OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'CO'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled'])}
-
-  scope :under_process, -> {where(status: [:'Approved', :'SAP Approval Pending', 'Requested'])}
+  scope :accounts_approval_pending, -> {where(status: 'Accounts Approval Pending')}
+  scope :under_process, -> {where(status: [:'Approved', :'Accounts Approval Pending', 'Requested'])}
   scope :without_cancelled, -> {where.not(status: 'Cancelled')}
 
   def confirmed?
@@ -263,5 +277,68 @@ class SalesOrder < ApplicationRecord
     if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present?
       ((self.invoices.last.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
     end
+  end
+
+  def set_so_status_value
+    self.remote_status.present? ? SalesOrder.remote_statuses[self.remote_status.to_sym] : 32
+  end
+
+  # bible data methods
+
+  def bible_total_quote_value
+    total_quote_value = 0
+    sales_quotes_ids = []
+    BibleSalesOrder.where(order_number: self.order_number).each do |bso|
+      sales_order = SalesOrder.find_by_order_number(bso.order_number)
+      if sales_order.present?
+        if !sales_quotes_ids.include? sales_order.sales_quote.id
+          total_quote_value += sales_order.sales_quote.calculated_total
+          sales_quotes_ids << sales_order.sales_quote.id
+        end
+      end
+    end
+
+    if self.inquiry.final_sales_quote.present? && !(sales_quotes_ids.include? self.inquiry.final_sales_quote.id)
+      total_quote_value += self.inquiry.final_sales_quote.calculated_total
+    end
+
+    total_quote_value
+  end
+
+  def unique_skus_in_order
+    bible_orders = BibleSalesOrder.where(order_number: self.order_number)
+    bible_orders.map {|bo| bo.metadata.map {|m| m['sku']} }.flatten.compact.uniq.count
+  end
+
+  def bible_sales_invoices
+    invoice_numbers = self.invoices.pluck(:invoice_number) if self.invoices.present?
+    BibleInvoice.where(invoice_number: invoice_numbers)
+  end
+
+  def bible_margin_percentage
+    BibleSalesOrder.where(order_number: self.order_number).pluck(:overall_margin_percentage).sum
+  end
+
+  def bible_sales_order_total
+    BibleSalesOrder.where(order_number: self.order_number).pluck(:order_total).sum
+  end
+
+  def bible_sales_invoice_total
+    invoice_numbers = self.invoices.pluck(:invoice_number) if self.invoices.present?
+    BibleInvoice.where(invoice_number: invoice_numbers).pluck(:invoice_total).sum
+  end
+
+  def bible_assumed_margin
+    BibleSalesOrder.where(order_number: self.order_number).pluck(:total_margin).sum
+  end
+
+  def bible_actual_margin
+    invoice_numbers = self.invoices.pluck(:invoice_number) if self.invoices.present?
+    BibleInvoice.where(invoice_number: invoice_numbers).pluck(:total_margin).sum
+  end
+
+  def bible_actual_margin_percentage
+    invoice_numbers = self.invoices.pluck(:invoice_number) if self.invoices.present?
+    BibleInvoice.where(invoice_number: invoice_numbers).pluck(:overall_margin_percentage).sum
   end
 end

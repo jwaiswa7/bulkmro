@@ -9,6 +9,9 @@
       <small class="text-black-50 mb-2 ml-2 float-right"><strong>#<%= @inquiry.inquiry_number %></strong></small>
     </h2>
 
+
+    <a href="https://drive.google.com/file/d/1rA8bcaxQDkAR091cM5o-RRvG-rlK7X62/view" target="_blank"><img src="<%= image_path('doc_icon.png') %>" alt="Italian Trulli" align="right" data-toggle="tooltip" title="SO/PO User Guide"></a>
+
     <% if content_for?(:heading_byline) %>
       <p class="mt-2 mt-md-0"><%= yield :heading_byline %></p>
     <% else %>

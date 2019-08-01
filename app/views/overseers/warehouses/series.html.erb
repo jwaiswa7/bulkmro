@@ -1,0 +1,20 @@
+<%= provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+
+<% content_for :header_row do %>
+  <th class="no-sort">ID</th>
+  <th class="no-sort">Document Type</th>
+  <th class="no-sort">Series</th>
+  <th class="no-sort">Number Length</th>
+  <th class="no-sort">First Number</th>
+  <th class="no-sort">Last Number</th>
+  <th class="no-sort">Period Indicator</th>
+  <th class="no-sort">Series Name</th>
+  <th class="no-sort">Created At</th>
+  <th class="no-sort">Updated At</th>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>
