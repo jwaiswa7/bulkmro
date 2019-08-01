@@ -1,11 +1,12 @@
 class Services::Overseers::Statuses::GetSummaryStatusBuckets < Services::Shared::BaseService
   def initialize(all_indexed_records, model_klass, custom_status: nil)
-    if all_indexed_records.class == 'Array' && all_indexed_records.length > 1
+    if all_indexed_records.class == 'Array'.constantize && all_indexed_records.length > 1
       @followup_records = all_indexed_records[0]
       @committed_date_records = all_indexed_records[1]
       @indexed_buckets = @followup_records.aggregations['statuses']['buckets']
       @indexed_buckets = @indexed_buckets.push(@committed_date_records.aggregations['statuses']['buckets']).flatten
     else
+      binding.pry
       @all_indexed_records = all_indexed_records
       @indexed_buckets = all_indexed_records.aggregations['statuses']['buckets']
     end
