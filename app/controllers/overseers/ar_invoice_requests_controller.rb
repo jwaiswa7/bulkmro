@@ -13,7 +13,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
       service = Services::Overseers::Finders::ArInvoiceRequests.new(params.merge(base_filter), current_overseer)
     else
       @ar_invoice_requests = ArInvoiceRequest.all
-      service = Services::Overseers::Finders::ArInvoiceRequests.new(params)
+      service = Services::Overseers::Finders::ArInvoiceRequests.new(params, current_overseer)
     end
     service.call
     @indexed_ar_invoices = service.indexed_records
