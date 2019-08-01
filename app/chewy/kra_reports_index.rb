@@ -24,8 +24,8 @@ class KraReportsIndex < BaseIndex
     field :sales_quote_count, value: -> (record) {
       if record.bible_final_sales_quotes.present?
         record.bible_final_sales_quotes.count
-      elsif record.final_sales_quotes.present?
-        record.final_sales_quotes.count
+        # elsif record.final_sales_quotes.present?
+        #   record.final_sales_quotes.count
       end
     }, type: 'integer'
     field :sales_order_count, value: -> (record) { record.bible_sales_orders.count }, type: 'integer'
