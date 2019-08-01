@@ -11,8 +11,8 @@ class LogisticsScorecardsIndex < BaseIndex
     field :company, value: -> (record) { record.inquiry.company.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :inside_sales_owner_id, value: -> (record) { record.inquiry.inside_sales_owner_id if record.inquiry.present? }, type: 'integer'
     field :inside_sales_owner, value: -> (record) { record.inquiry.inside_sales_owner.name if record.inquiry.present? }, analyzer: 'substring'
-    field :logistics_owner_id, value: -> (record) { record.inquiry.company.logistics_owner_id if record.inquiry.present? }, type: 'integer'
-    field :logistics_owner, value: -> (record) { record.inquiry.company.logistics_owner&.name if record.inquiry.present? && record.inquiry.company.present? }, analyzer: 'substring'
+    field :logistics_owner_id, value: -> (record) { record.inquiry.company.logistics_owner_id if record.inquiry.present? && record.inquiry.company.present? && record.inquiry.company.logistics_owner_id != 213 }, type: 'integer'
+    field :logistics_owner, value: -> (record) { record.inquiry.company.logistics_owner&.name if record.inquiry.present? && record.inquiry.company.present? && record.inquiry.company.logistics_owner_id != 213 }, analyzer: 'substring'
     field :opportunity_type, value: -> (record) { opportunity_type[record.inquiry.opportunity_type] if record.inquiry.present? }, type: 'integer'
 
     field :rows do
