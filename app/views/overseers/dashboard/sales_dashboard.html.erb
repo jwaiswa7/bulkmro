@@ -26,7 +26,10 @@
               <tbody>
               <% @dashboard.recent_inquiries.each do |inquiry| %>
                 <tr>
-                  <td><%= row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Go to Inquiry', 'warning', :_blank) %></td>
+                  <td>
+                    <%= row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Go to Inquiry', 'warning', :_blank) %>
+                    <%= row_action_button(edit_overseers_inquiry_path(inquiry), 'calendar', 'Update Follow-up Date', 'danger', :_blank) %>
+                  </td>
                   <td><%= link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank') %></td>
                   <td><%= status_badge(inquiry.status) %></td>
                   <td><%= inquiry.company.to_s %></td>
