@@ -22,7 +22,7 @@ json.data (@indexed_kra_reports) do |inquiry|
                     link_to(Company.find(inquiry['key']).account.to_s, overseers_account_path(Company.find(inquiry['key']).account), target: '_blank')
                   end,
                   if @category.present? && (@category == 'outside_sales_owner_id' || @category == 'outside_by_sales_order')
-                    number_with_delimiter(Overseer.find(inquiry['key']).get_monthly_target('Inquiry', params['kra_report']), delimiter: ',')
+                    number_with_delimiter(Overseer.find(inquiry['key']).get_monthly_target('Inquiry', params['kra_report']), delimiter: ',') || 0
                   else
                     ''
                   end,
@@ -46,11 +46,14 @@ json.data (@indexed_kra_reports) do |inquiry|
                   else
                     inquiry['gross_margin_assumed'].present? ? number_with_delimiter(inquiry['gross_margin_assumed']['value'].to_i, delimiter: ',') : 0
                   end,
+
                   if @category.present? && (@category.include? 'by_sales_order')
-                    number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['gross_margin_percentage']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
+                    @indexed_kra_varient_reports[inquiry['key']].present? && @indexed_kra_varient_reports[inquiry['key']]['total_order_value']['value'] != 0 ? ((@indexed_kra_varient_reports[inquiry['key']]['gross_margin_assumed']['value'] / @indexed_kra_varient_reports[inquiry['key']]['total_order_value']['value']) * 100).round : 0
                   else
-                    inquiry['gross_margin_percentage']['value'].to_i > 0 ? percentage(inquiry['gross_margin_percentage']['value'] * 100.0 / inquiry['doc_count'], show_symbol: false) : 0 if inquiry['gross_margin_percentage'].present?
+                    inquiry['total_order_value']['value'] != 0 ? ((inquiry['gross_margin_assumed']['value'] / inquiry['total_order_value']['value']) * 100).round : 0
                   end,
+
+
                   if @category.present? && (@category.include? 'by_sales_order')
                     number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['sku']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
@@ -75,6 +78,11 @@ json.data (@indexed_kra_reports) do |inquiry|
                     number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['gross_margin_actual']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
                     number_with_delimiter(inquiry['gross_margin_actual']['value'].to_i, delimiter: ',') if inquiry['gross_margin_actual'].present?
+                  end,
+                  if @category.present? && (@category.include? 'by_sales_order')
+                    @indexed_kra_varient_reports[inquiry['key']].present? && @indexed_kra_varient_reports[inquiry['key']]['revenue']['value'] != 0 ? ((@indexed_kra_varient_reports[inquiry['key']]['gross_margin_actual']['value'] / @indexed_kra_varient_reports[inquiry['key']]['revenue']['value']) * 100).round : 0
+                  else
+                    inquiry['revenue']['value'] != 0 ? ((inquiry['gross_margin_actual']['value'] / inquiry['revenue']['value']) * 100).round : 0
                   end
               ]
 end
@@ -96,6 +104,7 @@ json.columnFilters [
                        else
                          []
                        end,
+                       [],
                        [],
                        [],
                        [],

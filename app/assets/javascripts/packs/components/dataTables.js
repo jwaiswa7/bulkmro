@@ -83,8 +83,25 @@ let setup = () => {
                             td.empty().append(parseInt(value))
                         }
                         else if(td.hasClass('percentage')){
-                            let percentValue = (value / columnData.length)
+                            let percentValue = (value / columnData.length);
                             td.empty().append(parseInt(percentValue))
+                        }
+                        else if(td.hasClass('gross_margin_percentage_total')){
+                            let assumed_margin = parseInt($('.gross_margin_assumed_value').html().replace(/,/g , ''));
+                            let total_order_value = parseInt($('.total_sales_order_value').html().replace(/,/g , ''));
+                            let total_gross_margin_percentage = (assumed_margin/total_order_value)*100;
+                            td.empty().append(parseInt(total_gross_margin_percentage));
+                        }
+                        else if(td.hasClass('total_inquiries_won_percentage')){
+                            let total_inquiries_count = parseInt($('.total_inquiries_count').html().replace(/,/g , ''));
+                            let inquiries_won_percentage = (value/total_inquiries_count)*100;
+                            td.empty().append(parseInt(inquiries_won_percentage));
+                        }
+                        else if(td.hasClass('actual_margin_percentage')){
+                            let total_gross_margin_actual = parseInt($('.total_gross_margin_actual').html().replace(/,/g , ''));
+                            let total_invoice_value = parseInt($('.total_invoice_value').html().replace(/,/g , ''));
+                            let total_actual_margin_percentage = (total_gross_margin_actual/total_invoice_value)*100;
+                            td.empty().append(parseInt(total_actual_margin_percentage));
                         }
                         else if(td.hasClass('no-data')){
                             td.empty()
