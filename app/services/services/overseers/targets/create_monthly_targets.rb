@@ -22,7 +22,7 @@ class Services::Overseers::Targets::CreateMonthlyTargets < Services::Shared::Bas
         coneverted_target_type = target_type.parameterize(separator: '_') + '_target'
         if @annual_target[target_type] != 0.0
 
-          monthly_target = (@annual_target[coneverted_target_type] / 12.0).round(2)
+          monthly_target = ((@annual_target[coneverted_target_type] * 100000) / 12.0).round(2)
           changed_monthly_target = monthly_target
           target_periods.each do |target_period|
             target = Target.where(overseer_id: overseer.id, target_period_id: target_period.id, target_type: Target.target_types[target_type]).first_or_initialize(target_value: changed_monthly_target, manager_id: @annual_target.manager_id, business_head_id: @annual_target.business_head_id, annual_target_id: @annual_target.id)
@@ -43,8 +43,8 @@ class Services::Overseers::Targets::CreateMonthlyTargets < Services::Shared::Bas
                   total_target_achieved += sales_order_total
                 end
                 p "----total_target_achieved----------#{total_target_achieved}--------------"
-                remaining_target = ((changed_monthly_target * 100000).to_f - total_target_achieved)
-                changed_monthly_target = (((monthly_target * 100000).to_f + remaining_target) / 100000).round(2)
+                remaining_target = ((changed_monthly_target).to_f - total_target_achieved)
+                changed_monthly_target = ((monthly_target).to_f + remaining_target)
               end
             end
           end

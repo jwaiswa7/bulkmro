@@ -411,6 +411,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'export_material_readiness'
+        get 'manually_closed'
         get 'pending_sap_sync'
         get 'export_all'
         get 'export_filtered_records'
