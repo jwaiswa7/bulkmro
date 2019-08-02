@@ -343,10 +343,10 @@ class SalesOrder < ApplicationRecord
   end
 
   def get_invoiced_qty
-    self.invoices.sum(&:total_quantity)
+    self.invoices.sum(&:total_quantity).to_i
   end
 
   def total_qty
-    self.rows.sum(:quantity)
+    self.rows.sum(:quantity).to_i
   end
 end
