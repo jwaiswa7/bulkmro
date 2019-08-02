@@ -277,6 +277,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                 :contact_email,
                 :contact_phone,
                 :blobs,
+                :transport_mode,
+                :delivery_type,
                 attachments: [],
                 rows_attributes: [
                     :id,
