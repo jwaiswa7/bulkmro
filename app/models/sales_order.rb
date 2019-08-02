@@ -341,4 +341,12 @@ class SalesOrder < ApplicationRecord
     invoice_numbers = self.invoices.pluck(:invoice_number) if self.invoices.present?
     BibleInvoice.where(invoice_number: invoice_numbers).pluck(:overall_margin_percentage).sum
   end
+
+  def get_invoiced_qty
+    self.invoices.sum(&:total_quantity).to_i
+  end
+
+  def total_qty
+    self.rows.sum(:quantity).to_i
+  end
 end

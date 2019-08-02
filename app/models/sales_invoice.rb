@@ -323,4 +323,8 @@ class SalesInvoice < ApplicationRecord
   def to_s
     self.invoice_number
   end
+
+  def total_quantity
+    self.rows.sum(:quantity)
+  end
 end

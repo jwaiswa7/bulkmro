@@ -19,5 +19,8 @@ class OutwardDispatchesIndex < BaseIndex
     field :logistics_owner, value: -> (record) { record.ar_invoice_request.inquiry.company.logistics_owner&.name if record.ar_invoice_request.present? && record.ar_invoice_request.inquiry.present? && record.ar_invoice_request.inquiry.company.present? }, analyzer: 'substring'
     field :is_owner_id, value: -> (record) { record.ar_invoice_request.inquiry.inside_sales_owner_id if record.ar_invoice_request.present? && record.ar_invoice_request.inquiry.present? }, type: 'integer'
     field :is_owner, value: -> (record) { record.ar_invoice_request.inquiry.inside_sales_owner&.name if record.ar_invoice_request.present? && record.ar_invoice_request.inquiry.present? }, analyzer: 'substring'
+    field :inside_sales_executive, value: -> (record) { record.ar_invoice_request.inquiry.inside_sales_owner_id if record.ar_invoice_request.present? && record.ar_invoice_request.inquiry.present? }, type: 'integer'
+    field :outside_sales_executive, value: -> (record) { record.ar_invoice_request.inquiry.outside_sales_owner_id if record.ar_invoice_request.present? && record.ar_invoice_request.inquiry.present? }, type: 'integer'
+    field :procurement_operations, value: -> (record) { record.ar_invoice_request.inquiry.procurement_operations_id if record.ar_invoice_request.present? && record.ar_invoice_request.inquiry.present? }, type: 'integer'
   end
 end
