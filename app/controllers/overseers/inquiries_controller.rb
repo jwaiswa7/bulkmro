@@ -24,6 +24,13 @@ class Overseers::InquiriesController < Overseers::BaseController
   def kra_report
     authorize_acl :inquiry
 
+    if current_overseer.role == 'inside_sales_executive'
+      @role_wise_collection = [['Inside Sales Owner by Inquiry', 'inside_sales_owner_id'], ['Inside Sales Owner by Sales Order', 'inside_by_sales_order']]
+    elsif current_overseer.role == 'outside_sales_executive'
+      @role_wise_collection = [['Outside Sales Owner by Inquiry', 'outside_sales_owner_id'], ['Outside Sales Owner by Sales Order', 'outside_by_sales_order']]
+    else
+      @role_wise_collection = [['Inside Sales Owner by Inquiry', 'inside_sales_owner_id'], ['Inside Sales Owner by Sales Order', 'inside_by_sales_order'], ['Outside Sales Owner by Inquiry', 'outside_sales_owner_id'], ['Outside Sales Owner by Sales Order', 'outside_by_sales_order'], ['Company', 'company_key']]
+    end
     respond_to do |format|
       if params['kra_report'].present?
         @date_range = params['kra_report']['date_range']
