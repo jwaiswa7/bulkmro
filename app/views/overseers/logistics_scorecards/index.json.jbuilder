@@ -37,7 +37,7 @@ json.columnFilters [
                        [],
                        Company.all.map {|s| {"label": s.name, "value": s.id.to_s}}.as_json,
                        [],
-                       Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.reject { |h| h[:label] == 'Logistics Team'}.as_json,
+                       Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.reject { |h| ['Logistics Team', 'Ajay Rathod', 'Diksha Tambe'].include? h[:label] }.as_json,
                        [],
                        [],
                        [],
