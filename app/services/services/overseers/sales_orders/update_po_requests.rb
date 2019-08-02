@@ -36,6 +36,8 @@ class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::Bas
       po_request.requested_by_id = po_request_hash[:requested_by_id]
       po_request.approved_by_id = po_request_hash[:approved_by_id]
       po_request.reason_to_stock = po_request_hash[:reason_to_stock]
+      po_request.transport_mode = po_request_hash[:transport_mode]
+      po_request.delivery_type = po_request_hash[:delivery_type]
       po_request.estimated_date_to_unstock = po_request_hash[:estimated_date_to_unstock]
       if po_request_hash[:blobs].present?
         po_request_hash[:blobs].split(' ').each do |blob|
