@@ -34,7 +34,7 @@
                     <th class="text-uppercase text-left"><b>Delayed</b></th>
                     <% record["scorecard"]["buckets"].each do |bucket| %>
                       <td class="text-uppercase">
-                        <b><%= calculate_percentage(bucket["delay_bucket"]["buckets"].map {|bucket| bucket['doc_count'] if (2..6).to_a.include?(bucket['key'])}.compact.inject(0, :+), bucket['sum_delay_buckets']['value'].to_i) %></b>
+                        <b><%= calculate_percentage(bucket["delay_bucket"]["buckets"].map {|bucket| bucket['doc_count'] if (2..7).to_a.include?(bucket['key'])}.compact.inject(0, :+), bucket['sum_delay_buckets']['value'].to_i) %></b>
                       </td>
                     <% end %>
                   </tr>
