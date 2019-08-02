@@ -144,6 +144,9 @@ let setup = () => {
                 "targets": 'numeric',
                 "render": $.fn.dataTable.render.number(',', '.', 0)
             }, {
+                "targets": 'text-right-report',
+                "class": 'text-right'
+            }, {
                 "targets": 'text-right',
                 "class": 'text-right text-nowrap'
             }, {
