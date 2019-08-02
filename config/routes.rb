@@ -476,6 +476,7 @@ Rails.application.routes.draw do
         get 'stages'
         get 'relationship_map'
         get 'get_relationship_map_json'
+        post 'update_followup_date'
         post 'duplicate'
       end
 

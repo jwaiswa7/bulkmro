@@ -28,7 +28,8 @@
                 <tr>
                   <td>
                     <%= row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Go to Inquiry', 'warning', :_blank) %>
-                    <%= row_action_button(edit_overseers_inquiry_path(inquiry), 'calendar', 'Update Follow-up Date', 'danger', :_blank) %>
+                    <a href="#update-followup-date" class="btn btn-sm btn-danger edit-followup" data-toggle="modal" title="Update Follow-up Date"><i class="fal fa-clock"></i></a>
+                    <%#= row_action_button(update_followup_date_overseers_inquiry_path(inquiry), 'calendar', 'Update Follow-up Date', 'danger', :_blank) %>
                   </td>
                   <td><%= link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank') %></td>
                   <td><%= status_badge(inquiry.status) %></td>
@@ -43,6 +44,8 @@
         </div>
       </div>
     <% end %>
+
+    <%= render partial: 'overseers/dashboard/edit_followup' %>
 
     <% if @dashboard.recent_sales_orders.any? %>
       <div class="col-12 col-lg-6 mt-3 mt-lg-0">

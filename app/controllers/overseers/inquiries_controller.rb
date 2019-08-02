@@ -284,6 +284,10 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def update_follow_date
+    puts '****************** PARAMS ****************************', params
+  end
+
   def duplicate
     @new_inquiry = @inquiry.dup
     authorize_acl @inquiry
