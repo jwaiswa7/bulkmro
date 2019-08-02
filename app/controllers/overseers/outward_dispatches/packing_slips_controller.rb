@@ -69,9 +69,9 @@ end
   def edit_outward_packing_slips
     authorize :packing_slip
     packing_slip_ids = @outward_dispatch.packing_slips.pluck(:id)
-    obj = PackingSlipRow.where(packing_slip_id: packing_slip_ids).group_by(&:ar_invoice_request_row_id)
+    packin_slip_rows = PackingSlipRow.where(packing_slip_id: packing_slip_ids).group_by(&:ar_invoice_request_row_id)
     @packing_rows = []
-    obj.each do |key, value|
+    packin_slip_rows.each do |key, value|
       data_obj = {}
       data_obj[:id] = key
       ar_invoice_request_row = ArInvoiceRequestRow.where(id: key)
