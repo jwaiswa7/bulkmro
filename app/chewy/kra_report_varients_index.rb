@@ -8,6 +8,8 @@ class KraReportVarientsIndex < BaseIndex
     field :inside_sales_owner, value: -> (record) { record.inquiry.inside_sales_owner.to_s }, analyzer: 'substring'
     field :outside_sales_owner_id, value: -> (record) { record.outside_sales_owner.id if record.outside_sales_owner.present? }, type: 'integer'
     field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring'
+    field :inside_sales_executive, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? && record.inside_sales_owner.role == 'inside_sales_executive' }
+    field :outside_sales_executive, value: -> (record) { record.outside_sales_owner.id if record.outside_sales_owner.present? && record.outside_sales_owner.role == 'outside_sales_executive' }
     field :company_key, value: -> (record) { record.company_id }, type: 'integer'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
