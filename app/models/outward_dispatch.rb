@@ -4,7 +4,7 @@ class OutwardDispatch < ApplicationRecord
   belongs_to :ar_invoice_request, default: false
   belongs_to :sales_order, default: false
   has_many :packing_slips
-  accepts_nested_attributes_for :packing_slips, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :packing_slips, reject_if: lambda { |attributes| attributes['box_number'].blank? }, allow_destroy: true
   has_many :email_messages
   after_save :status_auto_update
   scope :with_includes, -> { }
@@ -14,6 +14,7 @@ class OutwardDispatch < ApplicationRecord
       'Material Ready for Dispatch': 10,
       # 'Dispatch Approval Pending': 20,
       # 'Dispatch Rejected': 30,
+      #
       # 'Material In Transit': 40,
       # 'Material Delivered Pending GRN': 50,
       'Material Delivered': 60

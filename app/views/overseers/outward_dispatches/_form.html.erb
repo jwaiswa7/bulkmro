@@ -47,6 +47,7 @@
         </div>
         <%= f.nested_fields_for :packing_slips do |ff| %>
           <div class="form-row mb-3">
+            <%= ff.hidden_field :outward_dispatch_id %>
             <div class="col-6 col-md-4 mb-2">
               <%= ff.input :box_number %>
             </div>

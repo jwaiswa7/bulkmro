@@ -3,10 +3,6 @@
   <%#= render 'shared/snippets/page_header', e: @packing_slip %>
 
   <%= simple_form_for(:packing_slip, :url => submit_packing_overseers_outward_dispatch_packing_slips_path(@outward_dispatch), :html => {:class => 'needs-validation', :id => 'packing', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%#= render 'shared/snippets/form_errors', f: f %>
-    <%#= f.hidden_field :id %>
-    <%#= f.hidden_field :outward_dispatch_id %>
-    <%#= f.hidden_field :sales_order_id %>
     <div class="card mb-2">
       <div class="card-body">
         <div class="">
