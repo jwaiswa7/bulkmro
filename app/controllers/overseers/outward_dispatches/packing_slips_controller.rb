@@ -77,7 +77,7 @@ end
       ar_invoice_request_row = ArInvoiceRequestRow.where(id: key)
       data_obj[:product_id] = ar_invoice_request_row.last.product.id
       data_obj[:product_name] = ar_invoice_request_row.last.product.to_s
-      data_obj[:get_remaining_quantity] = ar_invoice_request_row.last.get_remaining_quantity.to_f + value.pluck(:delivery_quantity).map(&:to_f).inject(0, :+)
+      data_obj[:get_remaining_quantity] = ar_invoice_request_row.last.get_remaining_quantity.to_f + value.sum(&:delivery_quantity).to_f
       data_obj[:quantities] = value.pluck(:delivery_quantity).map(&:to_i).join(',')
       data_obj[:box_number] = PackingSlip.where(id: value.pluck(:packing_slip_id)).pluck(:box_number).join(', ')
       @packing_rows << data_obj
