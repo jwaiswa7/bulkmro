@@ -8,7 +8,8 @@ class Services::Overseers::Inquiries::InquiryPreviousStatusRecord < Services::Sh
     # status_records = InquiryStatusRecord.where(inquiry_id: i.id).order('id DESC')
     if status_record.present? && status_record.inquiry.inquiry_status_records.count > 1 && !(status_record.status == 'New Inquiry' && stat[status_record.status].present?)
       keys = stat.select {|key, val| val < stat[status_record.status]}.reverse_each.to_h.keys
-      inner_records = InquiryStatusRecord.valid_status_records.where(status: keys).order('id DESC')
+      inner_records = InquiryStatusRecord.valid_status_records.where(inquiry_id: status_record.inquiry_id, status: keys).order('id DESC')
+
       if inner_records.present?
         inner_records.each do |record|
           if record.subject == status_record.subject

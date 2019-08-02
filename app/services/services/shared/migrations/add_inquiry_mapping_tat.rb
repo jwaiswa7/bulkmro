@@ -4,7 +4,7 @@ class Services::Shared::Migrations::AddInquiryMappingTat < Services::Shared::Mig
     end_date = Date.today
     inquiries = Inquiry.includes(:sales_orders).where(created_at: start_date..end_date).where.not(status: 'Expected Order')
     Chewy.strategy(:bypass) do
-      inquiries.each do |inquiry|
+      inquiries.find_each(batch_size: 100) do |inquiry|
         if inquiry.sales_orders.present?
           inquiry.sales_orders.each do |sales_order|
             InquiryMappingTat.where(inquiry_id: inquiry.id, sales_order_id: sales_order.id, sales_quote_id: sales_order.sales_quote.id, inquiry_created_at: inquiry.created_at).first_or_create
@@ -27,14 +27,16 @@ class Services::Shared::Migrations::AddInquiryMappingTat < Services::Shared::Mig
     start_date = Date.parse('01-01-2019')
     end_date = Date.today
     inquiries = Inquiry.where(created_at: start_date..end_date).where(status: ['New Inquiry', 'Acknowledgement Mail'])
-    inquiries.each do |inquiry|
-      if inquiry.status == 'New Inquiry'
-        InquiryStatusRecord.where(status: inquiry.status, inquiry: inquiry, subject_type: 'Inquiry', subject_id: inquiry.id).first_or_create
-        InquiryMappingTat.where(inquiry_id: inquiry.id, sales_quote_id: nil, sales_order_id: nil, inquiry_created_at: inquiry.created_at).first_or_create
-      elsif inquiry.status == 'Acknowledgement Mail'
-        InquiryStatusRecord.where(status: 'Acknowledgement Mail', inquiry: inquiry, subject_type: 'Inquiry', subject_id: inquiry.id, created_at: inquiry.updated_at).first_or_create
-        InquiryStatusRecord.where(status: 'New Inquiry', inquiry: inquiry, subject_type: 'Inquiry', subject_id: inquiry.id, created_at: inquiry.created_at).first_or_create
-        InquiryMappingTat.where(inquiry_id: inquiry.id, sales_quote_id: nil, sales_order_id: nil, inquiry_created_at: inquiry.created_at).first_or_create
+    Chewy.strategy(:bypass) do
+      inquiries.find_each(batch_size: 100) do |inquiry|
+        if inquiry.status == 'New Inquiry'
+          InquiryStatusRecord.where(status: inquiry.status, inquiry: inquiry, subject_type: 'Inquiry', subject_id: inquiry.id).first_or_create
+          InquiryMappingTat.where(inquiry_id: inquiry.id, sales_quote_id: nil, sales_order_id: nil, inquiry_created_at: inquiry.created_at).first_or_create
+        elsif inquiry.status == 'Acknowledgement Mail'
+          InquiryStatusRecord.where(status: 'Acknowledgement Mail', inquiry: inquiry, subject_type: 'Inquiry', subject_id: inquiry.id, created_at: inquiry.updated_at).first_or_create
+          InquiryStatusRecord.where(status: 'New Inquiry', inquiry: inquiry, subject_type: 'Inquiry', subject_id: inquiry.id, created_at: inquiry.created_at).first_or_create
+          InquiryMappingTat.where(inquiry_id: inquiry.id, sales_quote_id: nil, sales_order_id: nil, inquiry_created_at: inquiry.created_at).first_or_create
+        end
       end
     end
   end
@@ -43,10 +45,12 @@ class Services::Shared::Migrations::AddInquiryMappingTat < Services::Shared::Mig
     start_date = Date.parse('01-01-2019')
     end_date = Date.today
     inquiries = Inquiry.where(created_at: start_date..end_date)
-    inquiries.each do |inquiry|
-      isr = InquiryStatusRecord.where(inquiry_id: inquiry).where(status: 'New Inquiry')
-      unless isr.present?
-        InquiryStatusRecord.create(status: 'New Inquiry', inquiry_id: inquiry.id, subject_type: 'Inquiry', subject_id: inquiry.id, created_at: inquiry.created_at)
+    Chewy.strategy(:bypass) do
+      inquiries.each do |inquiry|
+        isr = InquiryStatusRecord.where(inquiry_id: inquiry).where(status: 'New Inquiry')
+        unless isr.present?
+          InquiryStatusRecord.create(status: 'New Inquiry', inquiry_id: inquiry.id, subject_type: 'Inquiry', subject_id: inquiry.id, created_at: inquiry.created_at)
+        end
       end
     end
   end
@@ -55,11 +59,12 @@ class Services::Shared::Migrations::AddInquiryMappingTat < Services::Shared::Mig
     start_date = Date.parse('01-01-2019')
     end_date = Date.today
     inquiries = Inquiry.where(created_at: start_date..end_date)
-
-    inquiries.each do |inquiry|
-      inquiry.inquiry_status_records.where.not(status: ['New Inquiry']).find_each(batch_size: 500) do |isr|
-        previous_status_record = isr.fetch_previous_status_record
-        isr.update_attributes(previous_status_record_id: previous_status_record.id) if previous_status_record.present?
+    Chewy.strategy(:bypass) do
+      inquiries.find_each(batch_size: 250) do |inquiry|
+        inquiry.inquiry_status_records.where.not(status: ['New Inquiry']).each do |isr|
+          previous_status_record = isr.fetch_previous_status_record
+          isr.update_attributes(previous_status_record_id: previous_status_record.id) if previous_status_record.present?
+        end
       end
     end
   end
