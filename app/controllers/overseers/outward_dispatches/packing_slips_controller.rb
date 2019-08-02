@@ -57,8 +57,8 @@ end
     packing_arrays.each do |key, value|
       box_numbers = value['box_numbers'].split(',').map { |s| s.to_i }
       quantities = value['quantities'].split(',').map { |s| s.to_i }
-      box_numbers.each_with_index do |box_numbers, index|
-        packing_slip_row = PackingSlipRow.where(packing_slip_id: packing_slip_object[box_numbers], ar_invoice_request_row_id: value['ar_invoice_request_row_id']).first_or_initialize
+      box_numbers.each_with_index do |box, index|
+        packing_slip_row = PackingSlipRow.where(packing_slip_id: packing_slip_object[box], ar_invoice_request_row_id: value['ar_invoice_request_row_id']).first_or_initialize
         packing_slip_row.delivery_quantity = quantities[index]
         packing_slip_row.save(validate: false)
       end
