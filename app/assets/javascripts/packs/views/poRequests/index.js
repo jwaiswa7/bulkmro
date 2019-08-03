@@ -44,8 +44,6 @@ const index = () => {
             title: title
         }
         callAjaxFunction(json)
-
-
     })
     $('.manualPo').unbind('click').bind('click',function () {
         $('#manualPo').modal('show')

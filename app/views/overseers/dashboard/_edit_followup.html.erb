@@ -1,26 +1,33 @@
-<%= form_tag update_followup_date_overseers_inquiry_path, method: 'post', class: 'my-2 form-row' do %>
-  <div class="message-in-order">
-    <div id="update-followup-date" class="modal hide fade" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Order filters</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+<div id="update-followup-date" class="modal hide fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update followup</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= simple_form_for([:overseers, obj], :url => url, :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+          <div class="form-group mt-3">
+            <%#= f.input :quotation_followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: @inquiry.sales_quotes.present? ? true : false %>
+            <label>Follow-up Date</label>
+            <input type="text" id="date" name="date" class="form-control" data-toggle="datepicker" data-direction="right" placeholder="Select follow-up date">
+            <small style="font-size: 10px;">Select a new follow-up date</small>
           </div>
-          <div class="modal-body">
-            <div class="form-group mt-3">
-              <label>Follow-up Date</label>
-              <input type="text" id="date" name="date" class="form-control" data-toggle="datepicker" data-direction="right" placeholder="Select follow-up date">
-              <small style="font-size: 10px;">Select a new follow-up date</small>
-            </div>
+          <div class="form-group mt-1">
+            <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |comment| %>
+              <%= comment.hidden_field :created_by_id %>
+              <%= comment.hidden_field :updated_by_id %>
+              <%= comment.input :message, :placeholder => 'Type message', :id => 'commentsId', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+            <% end %>
           </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Apply</button>
-          </div>
-        </div>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <!--          confirm-cancel-->
+        <button type="submit" class="btn btn-success">Apply</button>
       </div>
     </div>
   </div>
-<% end %>
+</div>

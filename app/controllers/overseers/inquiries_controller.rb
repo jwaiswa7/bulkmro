@@ -284,7 +284,16 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def render_followup_edit_form
+    authorize_acl :inquiry
+
+    respond_to do |format|
+      format.html {render partial: 'overseers/dashboard/edit_followup', locals: {obj: @inquiry, url: update_followup_date_overseers_inquiry_path(params[:id])}}
+    end
+  end
+
   def update_follow_date
+    authorize_acl @inquiry
     puts '****************** PARAMS ****************************', params
   end
 

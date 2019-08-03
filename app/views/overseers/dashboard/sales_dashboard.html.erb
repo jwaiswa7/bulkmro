@@ -11,7 +11,8 @@
       <div class="col-12 col-lg-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="text-uppercase text-black-50 mb-0">Recently Updated Inquiries <%= @dashboard.inquiry_followup_count %></h5>
+            <h5 class="text-uppercase text-black-50 mb-0">Recently Updated
+              Inquiries <%= @dashboard.inquiry_followup_count %></h5>
             <table class="table datatable w-100 wrap-whitespace" data-fixed-header="false">
               <thead>
               <tr>
@@ -28,8 +29,11 @@
                 <tr>
                   <td>
                     <%= row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Go to Inquiry', 'warning', :_blank) %>
-                    <a href="#update-followup-date" class="btn btn-sm btn-danger edit-followup" data-toggle="modal" title="Update Follow-up Date"><i class="fal fa-clock"></i></a>
-                    <%#= row_action_button(update_followup_date_overseers_inquiry_path(inquiry), 'calendar', 'Update Follow-up Date', 'danger', :_blank) %>
+                    <!-- <a href="#update-followup-date" class="btn btn-sm btn-danger edit-followup" data-toggle="modal"  title="Update Follow-up Date"><i class="fal fa-clock"></i></a>-->
+                    <%= link_to('', class: ['btn btn-sm btn-success update-followup'], 'data-po-request-id': inquiry.id, title: 'Update Follow-up Date', remote: true) do
+                      concat content_tag(:span, '')
+                      concat content_tag :i, nil, class: ['fal fa-calendar'].join
+                    end %>
                   </td>
                   <td><%= link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank') %></td>
                   <td><%= status_badge(inquiry.status) %></td>
@@ -45,7 +49,6 @@
       </div>
     <% end %>
 
-    <%= render partial: 'overseers/dashboard/edit_followup' %>
 
     <% if @dashboard.recent_sales_orders.any? %>
       <div class="col-12 col-lg-6 mt-3 mt-lg-0">
