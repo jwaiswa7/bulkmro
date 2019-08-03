@@ -51,7 +51,7 @@ Bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
   <td data-filter="<%=@category_filter[:filter_type] %>"></td>
-  <td data-filter="<%=@category_filter[:filter_type] %>"></td>
+  <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'false' %>></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>

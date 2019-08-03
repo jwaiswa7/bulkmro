@@ -68,7 +68,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         if params[:order].present? && params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
           sort_by = params[:columns][params[:order].values.first['column']][:name]
           sort_order = params[:order].values.first['dir']
-          indexed_kra_reports = sort_buckets(sort_by, sort_order, indexed_kra_reports)
+          indexed_kra_reports = sort_buckets(sort_by, sort_order, indexed_kra_reports) if indexed_kra_reports.present?
         end
         @indexed_kra_reports = Kaminari.paginate_array(indexed_kra_reports).page(@page).per(@per)
       end
