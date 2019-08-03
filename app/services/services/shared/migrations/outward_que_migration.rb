@@ -199,14 +199,11 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
       end
     end
   end
+
+
+  def status_changed_to_manually_closed
+    po_numbers = [40210166, 40212000, 40212460, 40212614, 40212666, 40212730, 40212823, 40212939, 40212971, 40212991, 40213018, 40213100, 40213114, 40213173, 40213180, 40213184, 40213186, 40610914, 40610943, 40610946, 40610948, 40610994, 40611004, 40611037, 40611066, 41210155, 41210181, 41410274, 41410298, 402000008, 402000011, 402000019, 402000031, 402000065, 402000073, 402000081, 402000083, 402000088, 402000099, 402000165, 402000178, 402000240, 402000248, 402000256, 402000280, 402000291, 402000295, 402000328, 402000329, 402000339, 402000343, 402000347, 402000364, 402000391, 402000393, 402000425, 402000438, 402000441, 402000580, 402000613, 402000648, 402000655, 402000657, 402000707, 402000733, 402000746, 402000907, 402000913, 402000939, 402000953, 402000972, 402000991, 402001024, 402001032, 402001033, 402001054, 402001059, 402001063, 402001064, 402001073, 402001074, 402001090, 402001137, 402001165, 402001166, 402001200, 402001236, 402001349, 404000015, 404000064, 404000092, 404000097, 404000098, 404000104, 404000119, 404000126, 404000136, 404000195, 404000208, 404000221, 404000236, 405000013, 405000033, 405000041, 405000047, 405000084, 405000096, 405000100, 405000124, 406000023, 407000033, 407000037, 407000062, 408000010, 408000053, 408000068, 402001115, 402001347, 402000013, 405000097]
+    purchase_orders = PurchaseOrder.where(po_number: po_numbers)
+    purchase_orders.update_all(material_status: 'Manually Closed')
+  end
 end
-
-
-#
-# PurchaseOrder.all.map{|x| if x.po_request.present?; po_products = x.rows.pluck(:product_id);so_products = x.po_request.sales_order.rows.pluck(:product_id);if(po_products.count > so_products.count);x.id;end;end}
-#
-#
-# PurchaseOrder.all.map{|x| if x.po_request.present?; po_products = x.rows.pluck(:product_id).to_set;so_products = x.po_request.sales_order.rows.pluck(:product_id).to_set;if(!po_products.subset?(so_products));x.id;end;end}
-#
-# PurchaseOrder.all.map{|x| if x.po_request.present?; po_products = x.rows.pluck(:product_id).to_set;so_products = x.po_request.sales_order.rows.pluck(:product_id).to_set;if(!po_products.subset?(so_products));if (x.inquiry.status == 'Order Won');x.id;end;end;end}.compact
-#
