@@ -239,7 +239,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
   def self.create_approval(remote_uid)
     url = "/#{collection_name}(#{remote_uid})"
     body = {
-        U_CnfirmQty: 'A',
+        U_CnfrmQty: 'A',
         U_CnfrmAddB: 'A',
         U_CnfrmAddS: 'A',
         U_CnfrmRate: 'A',
