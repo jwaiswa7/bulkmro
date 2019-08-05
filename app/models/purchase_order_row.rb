@@ -93,4 +93,8 @@ class PurchaseOrderRow < ApplicationRecord
   def to_s
     "#{sku ? "#{sku} -" : ''} #{metadata['PopProductName']}"
   end
+
+  def get_product_id
+    self.get_product.present? ? self.get_product.id : self.product_id
+  end
 end

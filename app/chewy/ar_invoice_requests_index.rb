@@ -18,5 +18,8 @@ class ArInvoiceRequestsIndex < BaseIndex
     field :is_owner, value: -> (record) { record.inquiry.inside_sales_owner&.name if record.inquiry.present? }, analyzer: 'substring'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
+    field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner.id if record.inquiry.present? && record.inquiry.inside_sales_owner.present? }
+    field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner.id if record.inquiry.present? && record.inquiry.outside_sales_owner.present? }
+    field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations_id if record.inquiry.present? && record.inquiry.procurement_operations.present? }
   end
 end

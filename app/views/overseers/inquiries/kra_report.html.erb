@@ -16,43 +16,43 @@
 <%= render layout: 'search_layout' do %>
 <% end %>
 
-Last bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
+Bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
 
 <% content_for :header_row do %>
-  <th class="no-sort all"></th>
-  <th class="no-sort all" data-name=<%= @category.present? ? @category : "inside_sales_owner_id" %>>Name</th>
+  <th class="no-sort all text-right-report"></th>
+  <th class="no-sort all text-right-report" data-name="<%=@category_filter[:filter_name] %>">Name</th>
   <% if @category.present? && @category == 'company_key' %>
-    <th class="no-sort all" data-name="account_key">Account</th>
+    <th class="no-sort all text-right-report" data-name="account_key">Account</th>
   <% else %>
-    <th></th>
+    <th class="text-right-report"></th>
   <% end %>
-  <% if @category.present? && (@category == "outside_sales_owner_id" || @category == 'outside_by_sales_order') %>
-    <th class="no-sort all">Target</th>
+  <% if @category.present? && @category.include?('outside') %>
+    <th class="no-sort all text-right-report">Target</th>
   <% else %>
-    <th class="no-sort all"></th>
+    <th class="no-sort all text-right-report"></th>
   <% end %>
-  <th class="sort all" data-name="inquiry_number">Inquiries#</th>
-  <th class="sort all" data-name="sales_quote_count">Sales Quotes#</th>
-  <th class="sort all" data-name="total_quote_value">Value of Quotes</th>
-  <th class="sort all" data-name="expected_order">Expected Orders#</th>
-  <th class="sort all" data-name="total_quote_value">Value of <br>Expected Orders</th>
-  <th class="sort all" data-name="sales_order_count">Sales Orders#</th>
-  <th class="sort all" data-name="total_order_value">Value of Orders</th>
-  <th class="sort all" data-name="gross_margin_assumed">Gross Margin(Assumed)</th>
-  <th class="sort all" data-name="gross_margin_percentage">Gross Margin %</th>
-  <th class="sort all" data-name="sku">Unique Ordered SKU#</th>
-  <th class="no-sort all">%Inquiries Won</th>
-  <th class="sort all" data-name="invoices_count">Sales Invoices</th>
-  <th class="sort all" data-name="revenue">Value of Invoices</th>
-  <th class="sort all" data-name="gross_margin_actual">Gross Margin(Actual)</th>
-  <th class="sort all" data-name="gross_margin_actual_percentage">Gross Margin(Actual)%</th>
+  <th class="sort all text-right-report" data-name="inquiry_number">Inquiries#</th>
+  <th class="sort all text-right-report" data-name="sales_quote_count">Sales Quotes#</th>
+  <th class="sort all text-right-report" data-name="total_quote_value">Value of Quotes</th>
+  <th class="sort all text-right-report" data-name="expected_order">Expected Orders#</th>
+  <th class="sort all text-right-report" data-name="total_quote_value">Value of <br>Expected Orders</th>
+  <th class="sort all text-right-report" data-name="sales_order_count">Sales Orders#</th>
+  <th class="sort all text-right-report" data-name="total_order_value">Value of Orders</th>
+  <th class="sort all text-right-report" data-name="gross_margin_assumed">Gross Margin(Assumed)</th>
+  <th class="sort all text-right-report" data-name="gross_margin_percentage">Gross Margin %</th>
+  <th class="sort all text-right-report" data-name="sku">Unique Ordered SKU#</th>
+  <th class="no-sort all text-right-report">%Inquiries Won</th>
+  <th class="sort all text-right-report" data-name="invoices_count">Sales Invoices</th>
+  <th class="sort all text-right-report" data-name="revenue">Value of Invoices</th>
+  <th class="sort all text-right-report" data-name="gross_margin_actual">Gross Margin(Actual)</th>
+  <th class="sort all text-right-report" data-name="gross_margin_actual_percentage">Gross Margin(Actual)%</th>
 <% end %>
 
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
-  <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'dropdown' %>></td>
+  <td data-filter="<%=@category_filter[:filter_type] %>"></td>
   <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'false' %>></td>
-  <td data-filter=<%= (@category.present? && @category == 'outside_sales_owner_id' || @category == 'outside_by_sales_order') ? 'false' : 'false' %>></td>
+  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
@@ -71,29 +71,33 @@ Last bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
 <% end %>
 
 <% content_for :summary_row do %>
-  <td class="no-data"></td>
-  <td class="total"></td>
-  <td class="no-data"></td>
-  <% if @category.present? && (@category == "outside_sales_owner_id" || @category == 'outside_by_sales_order') %>
-    <td></td>
+  <td class="no-data text-right"></td>
+  <td class="total text-right"></td>
+  <% if @category.present? && @category == 'company_key' %>
+    <td class="no-data text-right"></td>
   <% else %>
-    <td class="no-data"></td>
+    <td class="no-data d-sm-none d-md-none d-lg-block"></td>
   <% end %>
-  <td class="total_inquiries_count"></td>
-  <td></td>
-  <td></td>
-  <td class="strong"></td>
-  <td></td>
-  <td class="strong"></td>
-  <td class="total_sales_order_value"></td>
-  <td class="gross_margin_assumed_value"></td>
-  <td class="gross_margin_percentage_total"></td>
-  <td></td>
-  <td class="total_inquiries_won_percentage"></td>
-  <td class="percentage"></td>
-  <td class="total_invoice_value"></td>
-  <td class="total_gross_margin_actual"></td>
-  <td class="actual_margin_percentage"></td>
+  <% if @category.present? && (@category == "outside_sales_owner_id" || @category == 'outside_by_sales_order') %>
+    <td class="text-right"></td>
+  <% else %>
+    <td class="no-data text-right"></td>
+  <% end %>
+  <td class="total_inquiries_count text-right"></td>
+  <td class="text-right"></td>
+  <td class="text-right"></td>
+  <td class="strong text-right"></td>
+  <td class="text-right"></td>
+  <td class="strong text-right"></td>
+  <td class="total_sales_order_value text-right"></td>
+  <td class="gross_margin_assumed_value text-right"></td>
+  <td class="gross_margin_percentage_total text-right"></td>
+  <td class="text-right"></td>
+  <td class="total_inquiries_won_percentage text-right"></td>
+  <td class="percentage text-right"></td>
+  <td class="total_invoice_value text-right"></td>
+  <td class="total_gross_margin_actual text-right"></td>
+  <td class="actual_margin_percentage text-right"></td>
 <% end %>
 
 <div class="col-lg-12">

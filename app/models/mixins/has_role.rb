@@ -2,7 +2,7 @@ module Mixins::HasRole
   extend ActiveSupport::Concern
 
   included do
-    belongs_to :acl_role, required:false
+    belongs_to :acl_role, required: false
 
     enum role: {
         left: 5,
@@ -44,6 +44,10 @@ module Mixins::HasRole
     OTHER_ROLES = %w(procurement accounts logistics sales)
 
     PIPELINE_EXECUTIVES = %w(inside_sales_executive outside_sales_executive)
+    LOGISTICS_ROLES = ['Logistics', 'Admin-Leadership Team', 'Admin', 'Inside Sales and Logistic Manager']
+    CATALOG_ROLES = ['Admin', 'Cataloging']
+    ACCOUNT_ROLES = ['Accounts', 'Admin']
+
 
     def manager?
       role.in? MANAGER_ROLES
@@ -70,15 +74,15 @@ module Mixins::HasRole
     end
 
     def logistics?
-      role == 'logistics'
+      acl_role.role_name.in? LOGISTICS_ROLES
     end
 
     def cataloging?
-      role == 'cataloging'
+      acl_role.role_name.in? CATALOG_ROLES
     end
 
     def allow_inquiries?
-      admin? || cataloging? || logistics?
+      admin? || cataloging? || logistics? || accounts?
     end
 
     def manager_or_cataloging?
@@ -90,7 +94,7 @@ module Mixins::HasRole
     end
 
     def accounts?
-      role == 'accounts'
+      acl_role.role_name.in? ACCOUNT_ROLES
     end
   end
 end
