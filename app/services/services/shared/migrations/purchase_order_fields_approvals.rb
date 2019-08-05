@@ -1,5 +1,4 @@
 class Services::Shared::Migrations::PurchaseOrderFieldsApprovals < Services::Shared::BaseService
-
   def initialize
     @purchase_orders = PurchaseOrder.where("created_at >= '2019-07-18'")
   end
