@@ -172,15 +172,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
           WarehouseCode: po_request.bill_to.remote_uid,
           LocationCode: po_request.bill_to.location_uid,
           MeasureUnit: row.measurement_unit.name,
-          U_ProdBrand: row.brand_id.present? ? row.brand.name : row.product.brand.name,
-          U_CnfirmQty: 'A',
-          U_CnfrmAddB: 'A',
-          U_CnfrmAddS: 'A',
-          U_CnfrmRate: 'A',
-          U_CnfrmTax: 'A',
-          U_CnfrmGross: 'A',
-          U_Cnfrm_GSTIN: 'A',
-          U_Cnfrm_PayTerm: 'A'
+          U_ProdBrand: row.brand_id.present? ? row.brand.name : row.product.brand.name
       }
       item_row << json
     end
@@ -209,14 +201,59 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         U_SalesMgr: po_request.inquiry.sales_manager.to_s,
         U_In_Sales_Own: po_request.inquiry.inside_sales_owner.to_s,
         U_Out_Sales_Own: po_request.inquiry.inside_sales_owner.to_s,
-        U_CnfrmAddB: 'A',
-        U_CnfrmAddS: 'A',
         U_BM_BillFromTo: po_request.bill_to.remote_uid,
         CntctCode: company_contact.present? ? company_contact.remote_uid : '',
         TransportationCode: po_request.transport_mode.present? ? PoRequest.transport_modes[po_request.transport_mode.to_sym] : 1,
         U_TrmDeli: po_request.delivery_type.present? ? po_request.delivery_type.to_s : 'Door Delivery',
         U_PO_Pur: po_request_pur,
-        PaymentGroupCode: po_request.payment_option.present? ? po_request.payment_option.remote_uid : ''
+        PaymentGroupCode: po_request.payment_option.present? ? po_request.payment_option.remote_uid : '',
+        U_CnfirmQty: 'A',
+        U_CnfrmAddB: 'A',
+        U_CnfrmAddS: 'A',
+        U_CnfrmRate: 'A',
+        U_CnfirmTax: 'A',
+        U_CnfrmGross: 'A',
+        U_Cnfrm_GSTIN: 'A',
+        U_Cnfrm_PayTerm: 'A',
+        U_CnfrmDscrMPN: 'A',
+        U_CnfrmTotal: 'A',
+        U_CnfrmHSN: 'A',
+        U_CnfrmTaxTYpe: 'A',
+        U_CnfrmPrice: 'A'
     }
+  end
+
+  def self.update(id, record, quotes: false)
+    url = "/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})"
+    body = to_remote(record, record.po_request).to_json
+    response = perform_remote_sync_action('patch', url, body)
+    log_request(:patch, record, record.po_request)
+    validated_response = get_validated_response(response)
+
+    log_response(validated_response, 'patch', url, body)
+
+    yield validated_response if block_given?
+    id
+  end
+
+  def self.create_approval(remote_uid)
+    url = "/#{collection_name}(#{remote_uid})"
+    body = {
+        U_CnfirmQty: 'A',
+        U_CnfrmAddB: 'A',
+        U_CnfrmAddS: 'A',
+        U_CnfrmRate: 'A',
+        U_CnfirmTax: 'A',
+        U_CnfrmGross: 'A',
+        U_Cnfrm_GSTIN: 'A',
+        U_Cnfrm_PayTerm: 'A',
+        U_CnfrmDscrMPN: 'A',
+        U_CnfrmTotal: 'A',
+        U_CnfrmHSN: 'A',
+        U_CnfrmTaxTYpe: 'A',
+        U_CnfrmPrice: 'A'
+    }
+    response = perform_remote_sync_action('patch', url, body.to_json)
+    puts response
   end
 end
