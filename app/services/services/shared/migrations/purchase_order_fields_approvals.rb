@@ -5,7 +5,7 @@ class Services::Shared::Migrations::PurchaseOrderFieldsApprovals < Services::Sha
 
   def call
     purchase_orders.each do |po|
-      if po.remote_uid.present?
+      if po.remote_uid.present? && po.po_number.present?
         ::Resources::PurchaseOrder.create_approval_purchase_order_fields(po.remote_uid)
       end
     end
