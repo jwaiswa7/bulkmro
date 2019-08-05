@@ -14,7 +14,7 @@ const show = () => {
         };
         callAjaxFunction(json);
         $('.followup').on('shown.bs.modal', function() {
-            disableBackdateOption($('#inquiry_quotation_followup_date'), false);
+            disableBackdateOption($('#inquiry_quotation_followup_date'));
         });
     });
 };
