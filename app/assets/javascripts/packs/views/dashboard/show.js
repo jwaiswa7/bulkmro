@@ -13,7 +13,7 @@ const show = () => {
             title: ''
         };
         callAjaxFunction(json);
-        $(this).focus(function() {
+        $('.followup').on('shown.bs.modal', function() {
             disableBackdateOption($('#inquiry_quotation_followup_date'), false);
         });
     });

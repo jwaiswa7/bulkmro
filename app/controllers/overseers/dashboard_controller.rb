@@ -5,8 +5,8 @@ class Overseers::DashboardController < Overseers::BaseController
     authorize_acl :dashboard
 
     if Rails.env.development?
-    #   render 'default_dashboard'
-    # else
+      render 'default_dashboard'
+    else
       if current_overseer.inside_sales_executive?
         @dashboard = Overseers::Dashboard.new(current_overseer)
         render 'sales_dashboard'
