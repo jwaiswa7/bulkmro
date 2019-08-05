@@ -62,6 +62,8 @@
               <%= po_request.hidden_field :contact_phone %>
               <%= po_request.hidden_field :payment_option_id %>
               <%= po_request.hidden_field :supplier_po_type %>
+              <%= po_request.hidden_field :delivery_type %>
+              <%= po_request.hidden_field :transport_mode %>
 
 
               <strong class="d-block text-uppercase">
@@ -135,6 +137,16 @@
                     <%= po_request.object.supplier_committed_date %>
                   </div>
                 <% end %>
+
+                <div class="col-2 col-md-2 mb-2">
+                  <strong class="d-block">Transport Mode</strong>
+                  <%= po_request.object.transport_mode.present? ? po_request.object.transport_mode : 'Road' %>
+                </div>
+
+                <div class="col-2 col-md-2 mb-2">
+                  <strong class="d-block">Delivery Type</strong>
+                  <%= po_request.object.delivery_type.present? ? po_request.object.delivery_type : 'Door Delivery' %>
+                </div>
 
               </div>
               <div class="form-row mt-2">
