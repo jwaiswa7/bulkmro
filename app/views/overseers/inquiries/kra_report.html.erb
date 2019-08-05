@@ -16,17 +16,17 @@
 <%= render layout: 'search_layout' do %>
 <% end %>
 
-Last bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
+Bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
 
 <% content_for :header_row do %>
   <th class="no-sort all text-right-report"></th>
-  <th class="no-sort all text-right-report" data-name=<%= @category.present? ? @category : "inside_sales_owner_id" %>>Name</th>
+  <th class="no-sort all text-right-report" data-name="<%=@category_filter[:filter_name] %>">Name</th>
   <% if @category.present? && @category == 'company_key' %>
     <th class="no-sort all text-right-report" data-name="account_key">Account</th>
   <% else %>
     <th class="text-right-report"></th>
   <% end %>
-  <% if @category.present? && (@category == "outside_sales_owner_id" || @category == 'outside_by_sales_order') %>
+  <% if @category.present? && @category.include?('outside') %>
     <th class="no-sort all text-right-report">Target</th>
   <% else %>
     <th class="no-sort all text-right-report"></th>
@@ -50,9 +50,9 @@ Last bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
 
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
-  <td data-filter=<%= (@category.present? && @category == 'inside_sales_owner_id') ? 'ajax' : 'dropdown' %>></td>
+  <td data-filter="<%=@category_filter[:filter_type] %>"></td>
   <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'false' %>></td>
-  <td data-filter=<%= (@category.present? && @category == 'outside_sales_owner_id' || @category == 'outside_by_sales_order') ? 'false' : 'false' %>></td>
+  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
