@@ -236,7 +236,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
     id
   end
 
-  def self.create_approval_purchase_order_fields(remote_uid)
+  def self.create_approval(remote_uid)
     url = "/#{collection_name}(#{remote_uid})"
     body = {
         U_CnfirmQty: 'A',
