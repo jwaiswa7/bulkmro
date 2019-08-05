@@ -19,7 +19,7 @@
 
 <% if Settings.reports.show_summary %>
   <div class="col-lg-12">
-    <%= render partial: "shared/layouts/summary", locals: {klass: PurchaseOrder, statuses: PurchaseOrder.material_summary_statuses } %>
+    <%= render partial: "shared/layouts/summary", locals: {klass: PurchaseOrder, statuses: PurchaseOrder.material_summary_statuses, alias_name: 'Followup' } %>
   </div>
 <% end %>
 
