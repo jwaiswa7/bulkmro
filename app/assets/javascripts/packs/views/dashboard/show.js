@@ -1,19 +1,22 @@
 import callAjaxFunction from "../common/callAjaxFunction";
+import disableBackdateOption from "../common/disableBackdateOption";
 
 const show = () => {
-    $('.datatable').on('click', '.comment-po-request', function (e) {
-        var id = $(this).data('po-request-id')
-        console.log('tttt' + title)
-        var title = $(this).attr('title')
+    $('.datatable').on('click', '.update-followup', function (e) {
+        var id = $(this).data('inquiry-id');
         var json = {
-            url: "/overseers/po_requests/" + id + "/render_modal_form?title=" + title,
-            modalId: '#addComment',
-            className: '.open-modal-form',
-            buttonClassName: '.confirm-cancel',
+            url: "/overseers/inquiries/" + id + "/render_followup_edit_form",
+            modalId: '#update-followup-date',
+            className: '.followup',
+            buttonClassName: '.confirm',
             this: $(this),
-            title: title
-        }
-        callAjaxFunction(json)
-    })
+            title: ''
+        };
+        callAjaxFunction(json);
+        $(this).focus(function() {
+            disableBackdateOption($('#inquiry_quotation_followup_date'), false);
+        });
+    });
 };
+
 export default show

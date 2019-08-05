@@ -15,62 +15,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   end
 
   def company_orders_export
-    column_headers = ['Order Date', 'Order Number', 'Invoice Number', 'Invoice Date', 'Invoice Status', 'PO Number', 'Part Number', 'Account Gp', 'Line Item Quantity', 'Line Item Net Total', 'Order Status', 'Account User Email', 'Shipping Address', 'Currency', 'Product Category', 'Part number Description']
-    # abbott 479
-    # flex 1847
-    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
-      SalesInvoice.not_cancelled.joins(:inquiry).where({inquiries: {company_id: 1847}}).each do |sales_invoice|
-        if !sales_invoice.inquiry.customer_order.present?
-          sales_order = sales_invoice.sales_order
-          inquiry = sales_order.inquiry
-          sales_order.rows.each do |record|
-            order_date = sales_order.created_at.strftime('%F')
-            order_id = sales_order.order_number
-            invoice_number = sales_invoice.invoice_number
-            invoice_date = sales_invoice.created_at.strftime('%F')
-            invoice_status = sales_invoice.status
-            customer_po_number = inquiry.customer_po_number
-            part_number = record.product.sku
-            account = sales_order.inquiry.company.account.name
-            line_item_quantity = record.quantity
-            line_item_net_total = record.total_selling_price.to_s
-            sap_status = sales_order.remote_status
-            user_email = sales_order.inquiry.contact.email.to_s
-            shipping_address = sales_order.inquiry.shipping_address
-            currency = sales_order.inquiry.inquiry_currency.currency.name
-            category = record.product.category.name
-            part_number_description = record.product.name
-            writer << [order_date, order_id, invoice_number, invoice_date, invoice_status, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
-          end
-        else
-          sales_order = sales_invoice.inquiry.customer_order
-          inquiry = sales_invoice.inquiry
-          sales_order.rows.each do |record|
-            order_date = sales_order.created_at.strftime('%F')
-            order_id = sales_order.online_order_number
-            invoice_number = sales_invoice.invoice_number
-            invoice_date = sales_invoice.created_at.strftime('%F')
-            invoice_status = sales_invoice.status
-            customer_po_number = inquiry.present? ? inquiry.customer_po_number : ''
-            part_number = record.product.sku
-            account = sales_order.company_id.to_s
-            line_item_quantity = record.quantity
-            line_item_net_total = record.total_selling_price.to_s
-            sap_status = sales_order.status
-            user_email = inquiry.present? ? inquiry.contact.email.to_s : Contact.find(sales_order.contact_id).email.to_s
-            shipping_address = inquiry.present? ? inquiry.shipping_address : Address.find(sales_order.shipping_address_id).to_s
-            currency = inquiry.present? ? inquiry.inquiry_currency.currency.name : ''
-            category = record.product.category.name
-            part_number_description = record.product.name
-            writer << [order_date, order_id, invoice_number, invoice_date, invoice_status, customer_po_number, part_number, account, line_item_quantity, line_item_net_total, sap_status, user_email, shipping_address, currency, category, part_number_description]
-          end
-        end
-      end
-    end
-    fetch_csv('flex_orders(03082019).csv', csv_data)
-  end
-
-  def company_orders_export
     column_headers = ['Inquiry Number', 'Order Number', 'Company Name', 'Company Alias', 'SKU', 'Line Item Net Total', 'SKU Name', 'Customer Material Code', 'Brand', 'HSN', 'Tax percentage', 'UOM']
     model = SalesOrder
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|

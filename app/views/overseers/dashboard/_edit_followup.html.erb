@@ -7,27 +7,24 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <%= simple_form_for([:overseers, obj], :url => url, :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-          <div class="form-group mt-3">
-            <%#= f.input :quotation_followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: @inquiry.sales_quotes.present? ? true : false %>
-            <label>Follow-up Date</label>
-            <input type="text" id="date" name="date" class="form-control" data-toggle="datepicker" data-direction="right" placeholder="Select follow-up date">
-            <small style="font-size: 10px;">Select a new follow-up date</small>
+      <%= simple_form_for([:overseers, obj], :url => url, :html => {:class => 'needs-validation p-2', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+        <div class="modal-body">
+          <div class="error text-red mb-3 px-1 rounded"></div>
+          <div class="form-group mt-1">
+            <%= f.input :quotation_followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: @inquiry.sales_quotes.present? ? true : false %>
           </div>
           <div class="form-group mt-1">
             <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |comment| %>
               <%= comment.hidden_field :created_by_id %>
               <%= comment.hidden_field :updated_by_id %>
-              <%= comment.input :message, :placeholder => 'Type message', :id => 'commentsId', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <%= comment.input :message, :placeholder => 'Comment Message', :id => 'commentsId', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
             <% end %>
           </div>
-        <% end %>
-      </div>
-      <div class="modal-footer">
-        <!--          confirm-cancel-->
-        <button type="submit" class="btn btn-success">Apply</button>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success confirm">Apply</button>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
