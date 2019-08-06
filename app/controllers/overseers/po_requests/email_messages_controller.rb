@@ -2,7 +2,11 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
   before_action :set_purchase_order_details, only: [:sending_po_to_supplier, :sending_po_to_supplier_notification, :dispatch_from_supplier_delayed, :dispatch_from_supplier_delayed_notification, :material_received_in_bm_warehouse, :material_received_in_bm_warehouse_notification]
   ``
   def sending_po_to_supplier
-    @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier).first_or_create]
+    if current_overseer.logistics?
+      @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @po_request.supplier).first_or_create]
+    elsif !current_overseer.accounts?
+      @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier).first_or_create]
+    end
     @to = @po_request.contact_email.present? ? @po_request.try(:contact_email) : @po_request.contact.try(:email)
     cc_addresses = [@po_request.purchase_order.logistics_owner.try(:email), 'sales@bulkmro.com', 'logistics@bulkmro.com'].compact.join(', ')
     if @po_request.purchase_order.present?
