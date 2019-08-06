@@ -26,7 +26,7 @@ class Services::Overseers::Exporters::MaterialReadinessExporter < Services::Over
         supplier_po_date: (record.po_date ? format_succinct_date(record.po_date) : '-'),
         supplier_name: record.supplier.try(:name),
         po_type: record.po_request.present? ? record.po_request.supplier_po_type : '-',
-        comments: record.comments.present? ? record.comments.order(created_at: :desc).pluck(:message).map.with_index { |mrq_comment, index| (index + 1).to_s + '. ' + mrq_comment }.join("\r\n") : '-',
+        comments: record.comments.present? ? record.comments.order(created_at: :desc).map.with_index { |mrq_comment, index| (index + 1).to_s + '. ' + mrq_comment.message + ' (' + mrq_comment.created_at.strftime('%d-%m-%Y %H:%M') + ')' }.join("\r\n") : '-',
         sales_order_date: (record.po_request.present? && record.po_request.sales_order.present?) ? format_succinct_date(record.po_request.sales_order.mis_date) : '-',
         sales_order: (record.po_request.present? && record.po_request.sales_order.present?) ? record.po_request.sales_order.order_number : '-',
         committed_date_to_customer: record.po_request.present? ? format_succinct_date(record.po_request.inquiry.customer_committed_date) : '-',
