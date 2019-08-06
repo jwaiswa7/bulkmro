@@ -72,7 +72,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     if current_overseer.logistics?
       @company_reviews = [@invoice_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @invoice_request.purchase_order.supplier).first_or_create]
-    else
+    elsif !current_overseer.accounts?
       @company_reviews = [@invoice_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @invoice_request.purchase_order.supplier).first_or_create]
     end
     service = Services::Overseers::InvoiceRequests::FormProductsList.new(@invoice_request.inward_dispatches.ids, false)
@@ -132,7 +132,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     if current_overseer.logistics?
       @company_reviews = [@invoice_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @invoice_request.purchase_order.supplier).first_or_create]
-    else #if current_overseer.acl_role.role_name == 'Sales'
+    elsif !current_overseer.accounts?
       @company_reviews = [@invoice_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @invoice_request.purchase_order.supplier).first_or_create]
     end
     @inward_dispatches = @invoice_request.inward_dispatches

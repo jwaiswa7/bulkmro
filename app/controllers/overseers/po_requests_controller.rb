@@ -56,7 +56,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
     if current_overseer.logistics?
       @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @po_request.supplier).first_or_create]
-    else
+    elsif !current_overseer.accounts?
       @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier).first_or_create]
     end
   end
@@ -102,7 +102,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
     if current_overseer.logistics?
       @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @po_request.supplier).first_or_create]
-    else
+    elsif !current_overseer.accounts?
       @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier).first_or_create]
     end
   end
