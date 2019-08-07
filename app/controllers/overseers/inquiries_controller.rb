@@ -35,6 +35,15 @@ class Overseers::InquiriesController < Overseers::BaseController
       if params['kra_report'].present?
         @date_range = params['kra_report']['date_range']
         @category = params['kra_report']['category']
+        if @category == 'company_key'
+          @category_filter = { filter_name: 'company_key', filter_type: 'ajax' }
+        elsif @category == 'inside_sales_owner_id' || @category == 'inside_by_sales_order'
+          @category_filter = { filter_name: 'inside_sales_owner_id', filter_type: 'dropdown' }
+        elsif @category == 'outside_sales_owner_id' || @category == 'outside_by_sales_order'
+          @category_filter = { filter_name: 'outside_sales_owner_id', filter_type: 'dropdown' }
+        end
+      else
+        @category_filter = { filter_name: 'inside_sales_owner_id', filter_type: 'dropdown' }
       end
       format.html {}
       format.json do
@@ -59,7 +68,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         if params[:order].present? && params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
           sort_by = params[:columns][params[:order].values.first['column']][:name]
           sort_order = params[:order].values.first['dir']
-          indexed_kra_reports = sort_buckets(sort_by, sort_order, indexed_kra_reports)
+          indexed_kra_reports = sort_buckets(sort_by, sort_order, indexed_kra_reports) if indexed_kra_reports.present?
         end
         @indexed_kra_reports = Kaminari.paginate_array(indexed_kra_reports).page(@page).per(@per)
       end
