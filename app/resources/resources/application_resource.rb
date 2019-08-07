@@ -194,6 +194,18 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     end
   end
 
+  def self.cancel_document(record)
+    record_remote_uid = record.remote_uid
+    if record_remote_uid.present?
+      url = "/#{collection_name}(#{record.remote_uid})/Cancel"
+      body = to_remote(record).to_json
+      response = perform_remote_sync_action('post', url, body)
+      log_request(:post, record)
+      validated_response = get_validated_response(response)
+      log_response(validated_response, 'patch', url, body)
+    end
+  end
+
   def self.log_request(method, record, dependent_record = nil, is_find: false)
     @resource = if dependent_record.nil?
       if record.is_a?(String)

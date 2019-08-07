@@ -14,8 +14,8 @@ const index = () => {
 
 let salesOrderCancel = () => {
     $('.cancel-sales-order-button').click(function () {
-        var inq_id = $('.sales-order-cancel')[0].dataset.inquiryId
-        var order_id = $('.sales-order-cancel')[0].dataset.orderId
+        var inq_id = $(this).attr('data-inquiry-id')
+        var order_id = $(this).attr('data-order-id')
         $.ajax({
             url: "/overseers/inquiries/"+inq_id+"/sales_orders/"+order_id+"/order_cancellation_modal",
             success: function (data) {

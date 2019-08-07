@@ -9,7 +9,7 @@ class Services::Overseers::SalesOrders::CancelSalesOrder < Services::Shared::Bas
       sales_order.assign_attributes(sales_order_params)
       sales_order.save
       if sales_order.remote_uid.present?
-        ::Resources::Order.update(sales_order.remote_uid, sales_order)
+        ::Resources::Order.cancel_document(sales_order)
       end
       @status = true
     else
