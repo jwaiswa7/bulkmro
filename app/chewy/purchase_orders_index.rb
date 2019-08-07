@@ -1,5 +1,6 @@
 class PurchaseOrdersIndex < BaseIndex
   material_statuses = PurchaseOrder.material_statuses
+  material_summary_statuses = PurchaseOrder.material_summary_statuses
   po_statuses = PoRequest.statuses
   statuses = PurchaseOrder.statuses
   payment_request_statuses = PaymentRequest.statuses
@@ -37,8 +38,14 @@ class PurchaseOrdersIndex < BaseIndex
     field :payment_request_status_key, value: -> (record) { payment_request_statuses[record.payment_request.status] if record.payment_request.present? }, type: 'integer'
     field :payment_request_status, value: -> (record) { payment_request_statuses[record.payment_request.status] if record.payment_request.present? }
     field :payment_request_status_string, value: -> (record) { record.try(:payment_request).try(:status).to_s }, analyzer: 'substring'
+
     field :followup_date, type: 'date'
     field :committed_date, value: ->(record) { record.po_request.inquiry.customer_committed_date if record.po_request.present? }, type: 'date'
+    field :followup_status, value: ->(record) { (material_summary_statuses[record.get_followup_status].to_i if record.get_followup_status.present?) }, type: 'integer'
+    field :followup_status_string, value: ->(record) { (record.get_followup_status.downcase if record.get_followup_status.present?) }, analyzer: 'substring'
+    field :committed_date_status, value: ->(record) { (material_summary_statuses[record.get_committed_date_status].to_i if record.get_committed_date_status.present?) }, type: 'integer'
+    field :committed_date_status_string, value: ->(record) { (record.get_committed_date_status.downcase if record.get_committed_date_status.present?) }, analyzer: 'substring'
+
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
     field :potential_value, value: -> (record) { record.try(:calculated_total) }, type: 'double'
