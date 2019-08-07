@@ -82,5 +82,4 @@ class OutwardDispatch < ApplicationRecord
         ('zip' if include_extension)
     ].compact.join('.')
   end
-
 end

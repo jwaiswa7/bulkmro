@@ -37,5 +37,4 @@ class Overseers::OutwardDispatchPolicy < Overseers::ApplicationPolicy
   def make_packing_zip?
     true
   end
-
 end

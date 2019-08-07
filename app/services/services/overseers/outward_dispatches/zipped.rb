@@ -2,13 +2,12 @@ class Services::Overseers::OutwardDispatches::Zipped < Services::Shared::BaseSer
   def initialize(record, locals)
     @record = record
     @locals = locals
-
   end
 
   def call
     files = []
-    record.each_with_index do |packing_slip,i|
-      files <<  { name: "#{packing_slip.outward_dispatch.ar_invoice_request.ar_invoice_number}-#{i + 1}.pdf", path: RenderPdfToFile.for(packing_slip, locals: {packing_slip: packing_slip, inquiry: packing_slip.outward_dispatch.sales_order.inquiry} ) }
+    record.each_with_index do |packing_slip, i|
+      files << { name: "#{packing_slip.outward_dispatch.ar_invoice_request.ar_invoice_number}-#{i + 1}.pdf", path: RenderPdfToFile.for(packing_slip, locals: {packing_slip: packing_slip, inquiry: packing_slip.outward_dispatch.sales_order.inquiry}) }
     end
 
     packing_zip = Rails.root.join('tmp', 'archive.zip')
@@ -17,7 +16,7 @@ class Services::Overseers::OutwardDispatches::Zipped < Services::Shared::BaseSer
       files.each do |file|
         unless File.exist?(file[:path])
           locals_values = locals
-          file = { name: "#{packing_slip.outward_dispatch.ar_invoice_request.ar_invoice_number}-#{i + 1}.pdf", path: RenderPdfToFile.for(packing_slip, locals_values ) }
+          file = { name: "#{packing_slip.outward_dispatch.ar_invoice_request.ar_invoice_number}-#{i + 1}.pdf", path: RenderPdfToFile.for(packing_slip, locals_values) }
 
         end
         zip_file.add(file[:name], File.join(Rails.root.join('tmp'), File.basename(file[:path])))
