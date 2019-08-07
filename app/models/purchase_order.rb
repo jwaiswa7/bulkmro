@@ -98,8 +98,7 @@ class PurchaseOrder < ApplicationRecord
       'Follow-up for today': 20,
       'Follow-up Date missing': 30,
       'Committed Date Breached': 40,
-      'Committed Date Approaching': 50,
-      'Committed Date missing': 60
+      'Committed Date Approaching': 50
   }
 
   enum transport_mode: {
@@ -262,12 +261,14 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def get_followup_status
-    if self.followup_date.present? && (self.followup_date < Date.today)
+    if self.followup_date.blank?
+      'Follow-up Date missing'
+    elsif self.followup_date.present? && (self.followup_date < Date.today)
       'Pending follow-up'
     elsif self.followup_date.present? && (self.followup_date == Date.today)
       'Follow-up for today'
     else
-      'Follow-up Date missing'
+      nil
     end
   end
 
@@ -277,7 +278,7 @@ class PurchaseOrder < ApplicationRecord
     elsif self.po_request.present? && self.inquiry.customer_committed_date.present? && (self.inquiry.customer_committed_date > Date.today) && (self.inquiry.customer_committed_date < (Date.today + 2.day))
       'Committed Date Approaching'
     else
-      'Committed Date missing'
+      nil
     end
   end
 end

@@ -41,10 +41,10 @@ class PurchaseOrdersIndex < BaseIndex
 
     field :followup_date, type: 'date'
     field :committed_date, value: ->(record) { record.po_request.inquiry.customer_committed_date if record.po_request.present? }, type: 'date'
-    field :followup_status, value: ->(record) { material_summary_statuses[record.get_followup_status].to_i }, type: 'integer'
-    field :followup_status_string, value: ->(record) { record.get_followup_status.downcase }, analyzer: 'substring'
-    field :committed_date_status, value: ->(record) { material_summary_statuses[record.get_committed_date_status].to_i }, type: 'integer'
-    field :committed_date_status_string, value: ->(record) { record.get_committed_date_status.downcase }, analyzer: 'substring'
+    field :followup_status, value: ->(record) { (material_summary_statuses[record.get_followup_status].to_i if record.get_followup_status.present?) }, type: 'integer'
+    field :followup_status_string, value: ->(record) { (record.get_followup_status.downcase if record.get_followup_status.present?) }, analyzer: 'substring'
+    field :committed_date_status, value: ->(record) { (material_summary_statuses[record.get_committed_date_status].to_i if record.get_committed_date_status.present?) }, type: 'integer'
+    field :committed_date_status_string, value: ->(record) { (record.get_committed_date_status.downcase if record.get_committed_date_status.present?) }, analyzer: 'substring'
 
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
