@@ -341,6 +341,9 @@ Rails.application.routes.draw do
       collection do
         get 'create_with_packing_slip'
       end
+      member do
+        get 'make_packing_zip'
+      end
       scope module: 'outward_dispatches' do
         resources :packing_slips do
           collection do

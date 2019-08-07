@@ -75,4 +75,12 @@ class OutwardDispatch < ApplicationRecord
   def logistics_owner
     self.ar_invoice_request.inquiry.company.logistics_owner.full_name if self.ar_invoice_request.inquiry.present? && self.ar_invoice_request.inquiry.company.present? && self.ar_invoice_request.inquiry.company.logistics_owner.present?
   end
+
+  def zipped_filename(include_extension: false)
+    [
+        ['packing_slips', self.ar_invoice_request.ar_invoice_number].join('_'),
+        ('zip' if include_extension)
+    ].compact.join('.')
+  end
+
 end

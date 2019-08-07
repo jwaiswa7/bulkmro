@@ -1,5 +1,5 @@
 class Overseers::OutwardDispatchesController < Overseers::BaseController
-  before_action :set_outward_dispatch, only: [:show, :edit, :update, :destroy]
+  before_action :set_outward_dispatch, only: [:show, :edit, :update, :destroy, :make_packing_zip]
 
   # GET /outward_dispatches
   # GET /outward_dispatches.json
@@ -28,6 +28,14 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   # GET /outward_dispatches/1.json
   def show
     authorize_acl @outward_dispatch
+  end
+
+  def make_packing_zip
+    authorize_acl @outward_dispatch
+    @packing_slips = @outward_dispatch.packing_slips
+    service = Services::Overseers::OutwardDispatches::Zipped.new(@packing_slips, locals)
+    zip = service.call
+    send_data(zip, type: 'application/zip', filename: @outward_dispatch.zipped_filename(include_extension: true))
   end
 
   # GET /outward_dispatches/new
@@ -126,6 +134,8 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
         :tracking_number,
         :material_delivered_mail_sent_to_customer,
         packing_slips_attributes: [:id, :box_number, :outward_dispatch_id, :box_dimension, :created_by_id, :updated_by_id, :_destroy]
-      )
-    end
+    )
+  end
+
+  attr_accessor :locals
 end
