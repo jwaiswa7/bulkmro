@@ -16,8 +16,23 @@ const outwardNew = () => {
 
     $('.material_delivery_date .clear-date').unbind('click').bind('click', function () {
         $('[name="outward_dispatch[material_delivery_date]').val('')
-    })
+    });
 
-}
+    $('select[name*=logistics_partner]').unbind().bind('change', function () {
+        if ($(this).val() == "Others") {
+            $('.other-logistics-partner').removeClass('d-none');
+            $('.other-logistics-partner').find('input').attr("required", true);
+            // required_fields.each(function (i, requiredField) {
+            //     $(requiredField).removeAttr('required');
+            //     let described_by = $(requiredField).data('parsley-id');
+            //     $('div#parsley-id-' + described_by).text('');
+            // });
+        }
+        else {
+            $('.other-logistics-partner').addClass('d-none');
+            $('.other-logistics-partner').find('input').attr("required", false);
+        }
+    });
+};
 
 export default outwardNew
