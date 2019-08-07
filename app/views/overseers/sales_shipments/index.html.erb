@@ -4,7 +4,7 @@
 
 <% if Settings.reports.show_summary %>
   <div class="col-lg-12">
-    <%= render partial: "shared/layouts/summary", locals: {klass: SalesShipment, statuses: SalesShipment.statuses} %>
+    <%= render partial: "shared/layouts/summary", locals: {klass: SalesShipment, statuses: SalesShipment.statuses, alias_name: ''} %>
   </div>
 <% end %>
 <div class="col-lg-12">
