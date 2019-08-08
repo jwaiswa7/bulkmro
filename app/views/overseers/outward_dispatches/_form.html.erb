@@ -41,7 +41,7 @@
               <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: true%>
             </div>
             <div class="col-4 mt-2 d-none other-logistics-partner">
-              <%= f.input :logistics_partner_name, input_html: {placeholder: "If Others, enter name"}, :include_blank => true %>
+              <%= f.input :logistics_partner_name, input_html: {value: f.object.logistics_partner_name, placeholder: "If Others, enter name"}, :include_blank => true %>
             </div>
             <div class="col-4 mt-2">
               <%= f.input :tracking_number, label: 'Tracking Number' %>

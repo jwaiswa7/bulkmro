@@ -18,6 +18,10 @@ const outwardNew = () => {
         $('[name="outward_dispatch[material_delivery_date]').val('')
     });
 
+    if($('#outward_dispatch_logistics_partner').val() == "Others"){
+        $('.other-logistics-partner').removeClass('d-none');
+    }
+
     $('select[name*=logistics_partner]').unbind().bind('change', function () {
         if ($(this).val() == "Others") {
             $('.other-logistics-partner').removeClass('d-none');
