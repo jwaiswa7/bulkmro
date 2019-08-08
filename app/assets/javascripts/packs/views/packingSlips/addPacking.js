@@ -12,10 +12,15 @@ const addPacking = () => {
             data: datastring,
             dataType: "json",
             success: function(data) {
-                if (data.hasOwnProperty("url") && data.url != null) {
-                    window.location = data.url
-                } else {
-                    window.location.reload();
+                if (data.hasOwnProperty("message") && data.message != null) {
+                    alert(data.message);
+                }
+                else {
+                    if (data.hasOwnProperty("url") && data.url != null) {
+                        window.location = data.url
+                    } else {
+                        window.location.reload();
+                    }
                 }
             },
             error: function error(_error) {

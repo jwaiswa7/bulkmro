@@ -50,6 +50,7 @@ end
     authorize_acl :packing_slip
     @packing_slips = @outward_dispatch.packing_slips
     packing_slip_object = {}
+    is_valid = true
     @packing_slips.each do |value|
       packing_slip_object[value.box_number] = value.id
     end
@@ -60,10 +61,19 @@ end
       box_numbers.each_with_index do |box, index|
         packing_slip_row = PackingSlipRow.where(packing_slip_id: packing_slip_object[box], ar_invoice_request_row_id: value['ar_invoice_request_row_id']).first_or_initialize
         packing_slip_row.delivery_quantity = quantities[index]
-        packing_slip_row.save(validate: false)
+        if packing_slip_row.valid?
+          packing_slip_row.save
+        else
+          is_valid = false
+          break
+        end
       end
     end
-    render json: {'url': overseers_outward_dispatch_path(@outward_dispatch)}, status: status
+    if is_valid
+      render json: {'url': overseers_outward_dispatch_path(@outward_dispatch)}, status: status
+    else
+      render json: {'url': overseers_outward_dispatch_path(@outward_dispatch), 'message': 'Please check the quantity.Quantity should not be more then remaining Qty'}, status: status
+    end
   end
 
   def edit_outward_packing_slips
