@@ -53,6 +53,9 @@ class Overseers::OverseersController < Overseers::BaseController
 
         @overseer.update_attribute(:acl_resources, checked_ids.uniq.to_json)
         @overseer.update_attribute(:acl_role_id, acl_role.id)
+        @overseer.update_attribute(:acl_updated_by, current_overseer.id)
+        @overseer.update_attribute(:acl_updated_at, Time.now)
+
         render json: {success: 1, message: 'Updated successfully.'}
       else
         render json: {success: 0, message: 'Role not found.'}
