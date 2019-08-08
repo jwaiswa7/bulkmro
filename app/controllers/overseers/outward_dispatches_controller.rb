@@ -124,7 +124,8 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
         :dispatch_mail_sent_to_the_customer,
         :logistics_partner,
         :tracking_number,
-        :material_delivered_mail_sent_to_customer
+        :material_delivered_mail_sent_to_customer,
+        comments_attributes: [:id, :message, :created_by_id, :updated_by_id]
       )
     end
 end

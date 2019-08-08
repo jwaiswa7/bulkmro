@@ -72,6 +72,18 @@
       <%= render 'packing_slip',index: index, packing_slip: packing_slip %>
       <br/>
     <%end %>
+    <div class="card">
+      <% if @outward_dispatch.comments.persisted.size > 0 %>
+        <div class="card-body">
+          <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
+          <div class="chats">
+            <% @outward_dispatch.comments.persisted.order(created_at: :desc).each do |comment| %>
+              <%= format_comment(comment) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </section>
 </div>
 <%#= @outward_dispatch.to_json %>

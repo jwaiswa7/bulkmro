@@ -1,5 +1,8 @@
 class OutwardDispatch < ApplicationRecord
+  COMMENTS_CLASS = 'OutwardDispatchComment'
+
   include Mixins::CanBeStamped
+  include Mixins::HasComments
 
   belongs_to :ar_invoice_request, default: false
   belongs_to :sales_order, default: false
