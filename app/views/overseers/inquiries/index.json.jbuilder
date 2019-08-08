@@ -19,6 +19,7 @@ json.data (@inquiries) do |inquiry|
       link_to(inquiry.company.to_s, overseers_company_path(inquiry.company), target: '_blank'),
       inquiry.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", inquiry.po_subject].join('').html_safe, inquiry.customer_po_sheet, target: '_blank') : inquiry.po_subject,
       format_succinct_date(inquiry.quotation_followup_date),
+      format_succinct_date(inquiry.customer_committed_date),
       if inquiry.contact.present?
         link_to(inquiry.contact.to_s, overseers_contact_path(inquiry.contact), target: '_blank')
       end,
@@ -41,6 +42,7 @@ json.columnFilters [
                        Inquiry.statuses.except('Lead by O/S').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [{ "source": autocomplete_overseers_accounts_path }],
                        [{ "source": autocomplete_overseers_companies_path }],
+                       [],
                        [],
                        [],
                        [{ "source": autocomplete_overseers_contacts_path }],
