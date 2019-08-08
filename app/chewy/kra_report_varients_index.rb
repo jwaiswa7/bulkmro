@@ -8,6 +8,8 @@ class KraReportVarientsIndex < BaseIndex
     field :inside_sales_owner, value: -> (record) { record.inquiry.inside_sales_owner.to_s }, analyzer: 'substring'
     field :outside_sales_owner_id, value: -> (record) { record.outside_sales_owner.id if record.outside_sales_owner.present? }, type: 'integer'
     field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring'
+    field :inside_sales_executive, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? && record.inside_sales_owner.role == 'inside_sales_executive' }
+    field :outside_sales_executive, value: -> (record) { record.outside_sales_owner.id if record.outside_sales_owner.present? && record.outside_sales_owner.role == 'outside_sales_executive' }
     field :company_key, value: -> (record) { record.company_id }, type: 'integer'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
@@ -19,8 +21,8 @@ class KraReportVarientsIndex < BaseIndex
 
     field :sales_order_count, value: -> () { 0 }, type: 'integer'
     field :invoices_count, value: -> (record) { record.bible_sales_invoices.count }, type: 'integer'
-    field :total_quote_value, value: -> (record) { record.bible_total_quote_value || record.final_sales_quotes.map { |quote| quote.calculated_total.to_i }.sum }, type: 'double'
-    field :total_order_value, value: -> (record) { record.bible_sales_order_total || record.total_sales_orders.map { |order| order.calculated_total.to_i }.sum }, type: 'double'
+    field :total_quote_value, value: -> (record) { record.bible_total_quote_value }, type: 'double'
+    field :total_order_value, value: -> (record) { record.bible_sales_order_total }, type: 'double'
 
     field :revenue, value: -> (record) { record.bible_sales_invoice_total }, type: 'double'
     field :gross_margin_assumed, value: -> (record) { record.bible_assumed_margin }, type: 'double'

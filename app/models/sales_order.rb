@@ -142,7 +142,7 @@ class SalesOrder < ApplicationRecord
 
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
   scope :remote_approved, -> {where('(((sales_orders.status = ? OR sales_orders.status = ?) AND sales_orders.remote_status != ?) OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'CO'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled'])}
-  scope :accounts_approval_pending, -> {where(status: 'Accounts Approval Pending')}
+  scope :accounts_approval_pending, -> {where(status: 'Accounts Approval Pending').where("created_at >= '2019-07-18'")}
   scope :under_process, -> {where(status: [:'Approved', :'Accounts Approval Pending', 'Requested'])}
   scope :without_cancelled, -> {where.not(status: 'Cancelled')}
 
@@ -340,5 +340,13 @@ class SalesOrder < ApplicationRecord
   def bible_actual_margin_percentage
     invoice_numbers = self.invoices.pluck(:invoice_number) if self.invoices.present?
     BibleInvoice.where(invoice_number: invoice_numbers).pluck(:overall_margin_percentage).sum
+  end
+
+  def get_invoiced_qty
+    self.invoices.sum(&:total_quantity).to_i
+  end
+
+  def total_qty
+    self.rows.sum(:quantity).to_i
   end
 end
