@@ -1,5 +1,5 @@
 class CustomerOrderStatusReportIndex < BaseIndex
-  define_type SalesOrder.where.not(order_number: nil, status: 'Cancelled').with_includes do
+  define_type SalesOrder.joins(:sales_quote).where(sales_quotes: { inquiry_id: 30501 }).where.not(order_number: nil, status: 'Cancelled').with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
@@ -25,6 +25,19 @@ class CustomerOrderStatusReportIndex < BaseIndex
     field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id }
     field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations_id }
 
+    field :rows, type: 'nested' do
+      field :product_id, value: -> (record) { record.get_product.try(:id) }, type: 'integer'
+      field :sku, value: -> (record) { record.get_product.try(:sku) }, analyzer: 'sku_substring'
+    end
+
+    field :invoices, type: 'nested' do
+      field :invoice_number, value: -> (record) { record.try(:invoice_number) }, type: 'integer'
+      field :rows do
+        field :product_id, value: -> (record) { record.get_product_details.try(:id) }, type: 'integer'
+        field :sku, value: -> (record) { record.try(:sku) }, analyzer: 'sku_substring'
+      end
+    end
+
     field :po_requests, type: 'nested' do
       field :supplier_po_request_date, value: -> (record) { record.created_at }, type: 'date'
       field :purchase_order do
@@ -39,7 +52,19 @@ class CustomerOrderStatusReportIndex < BaseIndex
         field :actual_material_readiness_date, value: -> (record) { record.supplier_dispatch_date if record.supplier_dispatch_date.present? }, type: 'date'
         field :pickup_date, value: -> (record) { record.inward_dispatches.last.created_at if record.inward_dispatches.present? }, type: 'date'
         field :inward_date, value: -> (record) { record.inward_dispatches.last.actual_delivery_date if record.inward_dispatches.present? }, type: 'date'
+        field :rows do
+          field :product_id, value: -> (record) { record.get_product.try(:id) }, type: 'integer'
+          field :sku, value: -> (record) { record.get_product.try(:sku) }, analyzer: 'sku_substring'
+        end
       end
     end
   end
 end
+
+
+# crutch :po_requests do |collection|
+#   data = PurchaseOrder.joins(:po_request).where(inquiry_id: 30528).where('po_request.id ', collection.map(&:id)).pluck(:id, :po_number)
+#   binding.pry
+#   data.each.with_object({}) { |(id, po_number), result| (result[id] ||= []).push(po_number) }
+# end
+# field :po_number, value: ->(purchase_order, crutches) { crutches.po_requests }

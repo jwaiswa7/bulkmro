@@ -45,9 +45,14 @@ class SalesInvoiceRow < ApplicationRecord
     sales_quote_rows.present? ? sales_quote_rows.first.freight_cost_subtotal : 0
   end
 
+  def get_product_details
+    Product.find_by_sku(self.sku)
+  end
+
   private
 
     def get_product
       sales_invoice.sales_order.sales_quote.rows.joins(:product).where(products: { sku: self.sku }).first || Product.find_by_sku(self.sku)
     end
+
 end
