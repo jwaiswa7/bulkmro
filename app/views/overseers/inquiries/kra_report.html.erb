@@ -16,11 +16,11 @@
 <%= render layout: 'search_layout' do %>
 <% end %>
 
-Bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
+<span class="text-red">Bible data updated at - <strong><%= Inquiry.bible_data_till_date %></strong></span>
 
 <% content_for :header_row do %>
   <th class="no-sort all text-right-report"></th>
-  <th class="no-sort all text-right-report" data-name="<%=@category_filter[:filter_name] %>">Name</th>
+  <th class="no-sort all text-right-report" data-name="<%= @category_filter[:filter_name] %>">Name</th>
   <% if @category.present? && @category == 'company_key' %>
     <th class="no-sort all text-right-report" data-name="account_key">Account</th>
   <% else %>
@@ -50,7 +50,7 @@ Bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
 
 <% content_for :filter_row do %>
   <td data-filter="false"></td>
-  <td data-filter="<%=@category_filter[:filter_type] %>"></td>
+  <td data-filter="<%= @category_filter[:filter_type] %>"></td>
   <td data-filter=<%= (@category.present? && @category == 'company_key') ? 'ajax' : 'false' %>></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
@@ -73,15 +73,15 @@ Bible updated at - <strong><%= Inquiry.bible_data_till_date %></strong>
 <% content_for :summary_row do %>
   <td class="no-data text-right"></td>
   <td class="total text-right"></td>
-  <% if @category.present? && @category == 'company_key' %>
-    <td class="no-data text-right"></td>
-  <% else %>
-    <td class="no-data d-sm-none d-md-none d-lg-block"></td>
-  <% end %>
   <% if @category.present? && (@category == "outside_sales_owner_id" || @category == 'outside_by_sales_order') %>
+    <td class="no-data kra_summary_row"></td>
     <td class="text-right"></td>
+  <% elsif @category.present? && (@category == "inside_sales_owner_id" || @category == 'inside_by_sales_order') %>
+    <td class="no-data"></td>
+    <td class="no-data kra_summary_row"></td>
   <% else %>
-    <td class="no-data text-right"></td>
+    <td class="no-data"></td>
+    <td class="no-data"></td>
   <% end %>
   <td class="total_inquiries_count text-right"></td>
   <td class="text-right"></td>
