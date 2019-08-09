@@ -56,7 +56,9 @@
       <div class="card-body">
         <h5 class="text-uppercase mt-2">
           <strong><%= f.object.supplier.to_s %></strong>
-          <a href="#" class="btn btn-default btn-danger add-review float-right" data-toggle="modal" data-target="#modalRatingForm">Add/Edit Supplier Rating</a>
+          <% if !current_overseer.accounts?  %>
+            <a href="#" class="btn btn-default btn-danger add-review float-right" data-toggle="modal" data-target="#modalRatingForm">Add/Edit Supplier Rating</a>
+          <% end %>
         </h5>
 <!--        <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center " data-toggle="modal" data-target="#cancelpo">Cancel <%#= @po_request.readable_status %></a>-->
 
