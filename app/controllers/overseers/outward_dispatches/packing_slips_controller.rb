@@ -72,7 +72,7 @@ end
     if is_valid
       render json: {'url': overseers_outward_dispatch_path(@outward_dispatch)}, status: status
     else
-      render json: {'url': overseers_outward_dispatch_path(@outward_dispatch), 'message': 'Please check the quantity.Quantity should not be more then remaining Qty'}, status: status
+      render json: {'url': overseers_outward_dispatch_path(@outward_dispatch), 'message': 'Please check, quantity should not be more then remaining quantity'}, status: status
     end
   end
 
