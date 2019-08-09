@@ -57,7 +57,6 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   def create
     @outward_dispatch = OutwardDispatch.new(outward_dispatch_params.merge(overseer: current_overseer))
     authorize_acl @outward_dispatch
-
     respond_to do |format|
       if @outward_dispatch.save
         @outward_dispatch.ar_invoice_request.inward_dispatches.map {|inward_dispatch| inward_dispatch.set_outward_status}

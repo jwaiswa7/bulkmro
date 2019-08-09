@@ -2,6 +2,7 @@ class PackingSlip < ApplicationRecord
   belongs_to :outward_dispatch, required: false
   has_many :rows, class_name: 'PackingSlipRow', inverse_of: :packing_slip, dependent: :destroy
   include Mixins::CanBeStamped
+  # validates_uniqueness_of :box_number
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['ar_invoice_request_row_id'].blank? && attributes['id'].blank? }, allow_destroy: true
 
 

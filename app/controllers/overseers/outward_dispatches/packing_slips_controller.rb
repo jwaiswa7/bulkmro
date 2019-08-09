@@ -34,6 +34,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   end
 
   def add_packing
+    @box_display = @outward_dispatch.packing_slips
     @packing_rows = []
     @outward_dispatch.ar_invoice_request.rows.each do |row|
   if row.get_remaining_quantity > 0
