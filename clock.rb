@@ -112,4 +112,4 @@ end
 every(30.minutes, 'bible_sales_order_upload') do
   service = Services::Overseers::Bible::CreateOrder.new
   service.call
-end if Rails.env.production?
+end
