@@ -94,6 +94,8 @@ import logisticsScorecards from "./logisticsScorecards/init";
 // Addresses
 import addresses from "./addresses/init";
 
+import emailMessages from "./emailMessages/init";
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -130,7 +132,8 @@ let loader = {
     arInvoiceRequests: arInvoiceRequests,
     outwardDispatches: outwardDispatches,
     packingSlips:packingSlips,
-    addresses: addresses
+    addresses: addresses,
+    emailMessages: emailMessages
 };
 
 // Imports

@@ -93,6 +93,14 @@ class PurchaseOrder < ApplicationRecord
       'Manually Closed': 100
   }
 
+  enum material_summary_status: {
+      'Pending follow-up': 10,
+      'Follow-up for today': 20,
+      'Follow-up Date missing': 30,
+      'Committed Date Breached': 40,
+      'Committed Date Approaching': 50
+  }
+
   enum transport_mode: {
       'Road': 1,
       'Air': 2,
@@ -250,5 +258,27 @@ class PurchaseOrder < ApplicationRecord
 
   def po_request_present?
     self.po_request.present? ? (self.po_request.status == 'Supplier PO Sent' || self.po_request.status == 'Supplier PO: Created Not Sent') : false
+  end
+
+  def get_followup_status
+    if self.followup_date.blank?
+      'Follow-up Date missing'
+    elsif self.followup_date.present? && (self.followup_date.to_date < Date.today)
+      'Pending follow-up'
+    elsif self.followup_date.present? && (self.followup_date.to_date == Date.today)
+      'Follow-up for today'
+    else
+      nil
+    end
+  end
+
+  def get_committed_date_status
+    if self.po_request.present? && self.inquiry.customer_committed_date.present? && (self.inquiry.customer_committed_date < Date.today)
+      'Committed Date Breached'
+    elsif self.po_request.present? && self.inquiry.customer_committed_date.present? && (self.inquiry.customer_committed_date > Date.today) && (self.inquiry.customer_committed_date < (Date.today + 2.day))
+      'Committed Date Approaching'
+    else
+      nil
+    end
   end
 end
