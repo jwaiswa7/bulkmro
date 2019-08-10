@@ -108,3 +108,8 @@ every(10.minutes, 'resync_remote_requests') do
     service.call
   end
 end
+
+every(30.minutes, 'bible_sales_order_upload') do
+  service = Services::Overseers::Bible::CreateOrder.new
+  service.call
+end if Rails.env.production?

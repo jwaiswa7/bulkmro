@@ -1,29 +1,85 @@
-<%# content_for :heading_button do %>
-<!--  <a href="<%#= download_customer_product_template_overseers_company_imports_path(@company, format: :xlsx) %>" target="_blank" class="btn-block-sm-down btn btn-dark btn-rounded align-self-center btn-block-sm-down">-->
-<!--    <i class="fal fa-download mr-1"></i>Download Excel Template-->
-<!--  </a>-->
-<%# end %>
-<%# content_for :heading_byline do %>
-<!--  This will <em>'<%#= submit_text(@company).downcase %></em> and log it under-->
-<!--  <strong><%#= current_overseer.full_name %></strong>.-->
-<%# end %>
+<% provide :container_fluid, true %>
 
-<%#= render layout: 'shared/layouts/form' do %>
-  <%#= simple_form_for([:overseers, @company, @product_excel_import], url: customer_products_overseers_company_imports_path(@company), :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%#= f.hidden_field :import_type %>
-    <%#= render 'shared/snippets/form_errors', f: f %>
 
-<!--    <div class="card">-->
-<!--      <div class="card-body">-->
-        <%#= f.input :file, required: true, wrapper: :custom_file, label: 'Products Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
+<div class="col-lg-12 mb-0">
+  <div class="page-header mb-0">
+    <h2>Bible File Upload</h2>
+  </div>
+</div>
 
-<!--        <div class="form-group mb-0">-->
-          <%#= f.submit(class: 'btn btn-success btn-block') %>
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-  <%# end %>
-<%# end %>
+
+<div class="container-fluid">
+  <div class="row justify-content-end">
+    <a href="<%= download_bible_order_template_overseers_bible_sales_orders_imports_path(format: :xlsx) %>" target="_blank" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down mr-md-1">
+      <i class="fal fa-download mr-1"></i>Download Excel Template
+    </a>
+    <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#myModal"><i class="fal fa-upload mr-1"></i> Import (xls, csv) </button>
+  </div>
+</div>
+
+
+
+<div class="col-12 mt-2">
+    <table class="table-bordered table">
+      <thead>
+      <tr>
+        <th>Id</th>
+        <th>File Name</th>
+        <th>Status</th>
+        <th>Updated_by</th>
+        <th>Time</th>
+        <th>Log</th>
+      </tr>
+      </thead>
+      <tbody>
+          <% @bible_file_uploads.each do |file_upload| %>
+        <tr>
+          <td><%= file_upload.id.to_s %></td>
+          <td><%= file_upload.file_name %></td>
+          <td><%= file_upload.status %></td>
+          <td><%= file_upload.updated_by.to_s %></td>
+          <td><%= format_date(file_upload.created_at) %></td>
+          <td>
+            <% if file_upload.status == 'Complete' %>
+              <%=  link_to('View Log', bible_file_upload_log_overseers_bible_sales_orders_import_path(file_upload), target: '_blank') %>
+            <% end %>
+          </td>
+        </tr>
+          <% end %>
+      </tbody>
+    </table>
+</div>
+
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 class="modal-title">Bible Import</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <%= form_tag create_bible_orders_overseers_bible_sales_orders_imports_path , multipart: true do %>
+            <div class="card">
+              <div class="card-body">
+                <%= file_field_tag :file , required: true %>
+                <div class="form-group mb-0">
+
+                  <div class="modal-footer">
+                    <%= submit_tag "Import", class: 'btn btn-success btn-block' %>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 

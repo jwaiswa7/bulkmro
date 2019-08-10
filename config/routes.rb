@@ -595,14 +595,15 @@ Rails.application.routes.draw do
         end
       end
     end
-
     namespace 'bible_sales_orders' do
       resources :imports do
+        member do
+          get 'bible_file_upload_log'
+        end
         collection do
           get 'new_excel_bible_order_import'
-          get 'download_bible_order_template'
           post 'create_bible_orders'
-          # , to: 'imports#create_bible_orders'
+          get 'download_bible_order_template'
         end
       end
     end
