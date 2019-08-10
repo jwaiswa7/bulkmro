@@ -14,7 +14,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
   # GET /packing_slips/1.json
   def show
     respond_to do |format|
-      format.html {render 'show'}
+      format.html { render 'show' }
       format.pdf do
         render_pdf_for(@packing_slip, locals: {inquiry: @packing_slip.outward_dispatch.sales_order.inquiry, sales_order: @packing_slip.outward_dispatch.sales_order, packing_slip: @packing_slip})
       end
@@ -37,12 +37,12 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
     @box_display = @outward_dispatch.packing_slips
     @packing_rows = []
     @outward_dispatch.ar_invoice_request.rows.each do |row|
-  if row.get_remaining_quantity > 0
-    @packing_rows << row
-  end
-end
+      if row.get_remaining_quantity > 0
+        @packing_rows << row
+      end
+    end
     respond_to do |format|
-      format.html {render 'add_packing'}
+      format.html { render 'add_packing' }
     end
     authorize_acl :packing_slip
   end
@@ -94,9 +94,10 @@ end
       @packing_rows << data_obj
     end
     respond_to do |format|
-      format.html {render 'add_packing'}
+      format.html { render 'add_packing' }
     end
   end
+
   # GET /packing_slips/1/edit
   def edit
     authorize_acl @packing_slip
@@ -125,11 +126,11 @@ end
     authorize_acl @packing_slip
     respond_to do |format|
       if @packing_slip.update(packing_slip_params.merge(overseer: current_overseer))
-        format.html {redirect_to overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip), notice: 'Packing Slip was successfully updated.'}
-        format.json {render :show, status: :ok, location: @packing_slip}
+        format.html { redirect_to overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip), notice: 'Packing Slip was successfully updated.' }
+        format.json { render :show, status: :ok, location: @packing_slip }
       else
-        format.html {render :edit}
-        format.json {render json: @packing_slip.errors, status: :unprocessable_entity}
+        format.html { render :edit }
+        format.json { render json: @packing_slip.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -140,8 +141,8 @@ end
     authorize_acl @packing_slip
     @packing_slip.destroy
     respond_to do |format|
-      format.html {redirect_to overseers_outward_dispatch_packing_slips, notice: 'Packing Slip was successfully destroyed.'}
-      format.json {head :no_content}
+      format.html { redirect_to overseers_outward_dispatch_packing_slips, notice: 'Packing Slip was successfully destroyed.' }
+      format.json { head :no_content }
     end
   end
 
@@ -150,23 +151,23 @@ end
 
   private
 
-    def set_outward_dispatch
-      @outward_dispatch = OutwardDispatch.find(params[:outward_dispatch_id])
-    end
+  def set_outward_dispatch
+    @outward_dispatch = OutwardDispatch.find(params[:outward_dispatch_id])
+  end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_packing_slip
-      @packing_slip = PackingSlip.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_packing_slip
+    @packing_slip = PackingSlip.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def packing_slip_params
-      params.require(:packing_slip).except(:action_name).permit(
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def packing_slip_params
+    params.require(:packing_slip).except(:action_name).permit(
         :id,
         :outward_dispatch_id,
         :box_number,
         :box_dimension,
         rows_attributes: [:id, :ar_invoice_request_row_id, :delivery_quantity, :packing_slip_id, :_destroy]
-      )
-    end
+    )
+  end
 end

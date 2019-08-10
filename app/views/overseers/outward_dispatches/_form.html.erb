@@ -8,7 +8,9 @@
     <div class="card mb-2">
       <div class="card-body">
         <div class="">
-          <h6 class="text-uppercase text-black-50 mb-1"> Entity Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-2"> Entity Details</h6>
+          <div class="error list-group disabled align-center text-danger mb-3 px-1"></div>
+          <div class="cc list-group disabled align-center text-danger mb-3 px-1"></div>
           <div class="form-row">
             <div class="col-6 col-md-4 mb-2">
               <strong class="d-block">Inquiry </strong>
@@ -50,10 +52,10 @@
             <div class="form-row mb-3" id="packing_slips">
               <%= ff.hidden_field :outward_dispatch_id %>
               <div class="col-6 col-md-4 mt-1">
-                <%= ff.input :box_number %>
+                <%= ff.input :box_number, required: true %>
               </div>
               <div class="col-6 col-md-4 mt-1">
-                <%= ff.input :box_dimension , input_html: {class: 'box-uniqness'} %>
+                <%= ff.input :box_dimension , required: true %>
               </div>
               <div class="col-6 col-md-4 mt-3">
                 <%= ff.remove_nested_fields_link do %>
@@ -70,7 +72,7 @@
     </div>
     <div class="card">
       <div class="card-footer">
-        <div class="form-row">
+        <div class="form-row disabled">
           <%= button_tag(type: "submit", class: "btn btn-success btn-block submit-form") do %>
             <% if action_name.capitalize == "New" %>
               <i class="fal fa-plus-circle"></i>

@@ -17,25 +17,49 @@ const outwardNew = () => {
     $('.material_delivery_date .clear-date').unbind('click').bind('click', function () {
         $('[name="outward_dispatch[material_delivery_date]').val('')
     })
-    $('.packing_slip_wrapper').on('change',"#packing_slips input[name*='box_number']",function () {
-    // $("#packing_slips input[name*='box_number']").on('change', function() {
-        //Create array of input values
+    $('.packing_slip_wrapper').on('change',"#packing_slips input[name*='box_number'], #packing_slips input[name*='box_dimension'] ",function () {
         console.log($("#packing_slips input[name*='box_number']"))
 
         var ar = $("#packing_slips input[name*='box_number']").map(function() {
             if ($(this).val() != '') return $(this).val()
         }).get();
-        console.log(ar)
+        ar = ar.map(Number)
         //Create array of duplicates if there are any
         var unique = ar.filter(function(item, pos) {
             return ar.indexOf(item) != pos;
         });
 
         //show/hide error msg
-        (unique.length != 0) ? $('.error').text('duplicate'): $('.error').text('');
-    })
+        (unique.length != 0) ? $('.error').text('Please check you have entered duplicate box number.'): $('.error').text('');
+        if( $('.error').is(':empty'))
+        {
+            $(".submit-form").attr("disabled", false);
+        }
+        else {
+            $(".submit-form").attr("disabled", true);
 
+        }
+        $("#packing_slips input[name*='box_dimension'] ").val();
+        var isValid = false;
+        var regex = /^[0-9-+()]*$/;
+        isValid = regex.test($("input[name*='box_dimension']").val());
+        alert(isValid)
+        $(".error").css("display", !isValid ? "block" : "none");
+        return isValid;
+
+    })
+        // var VAL = $("#packing_slips input[name*='box_dimension'] ").val();
+        // alert($("#packing_slips input[name*='box_dimension'] ").val())
+        // var email = new RegExp('^[0-9-!@#$%*?]');
+        // if (email.test(VAL)) {
+        //     // $('.error').text('Please check you have entered duplicate box number.')
+        //     // (email.test(VAL) != undefined) ? $('.cc').text('pppp.'): $('.cc').text('');
+        //     alert('write')
+        // }
+        // else {
+        //     // $('.error').text('');
+        //     alert('wrong')
+        // }
 
 }
-
 export default outwardNew
