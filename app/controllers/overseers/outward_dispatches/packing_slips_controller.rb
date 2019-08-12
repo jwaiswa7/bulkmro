@@ -151,23 +151,23 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
 
   private
 
-  def set_outward_dispatch
-    @outward_dispatch = OutwardDispatch.find(params[:outward_dispatch_id])
-  end
+    def set_outward_dispatch
+      @outward_dispatch = OutwardDispatch.find(params[:outward_dispatch_id])
+    end
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_packing_slip
-    @packing_slip = PackingSlip.find(params[:id])
-  end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_packing_slip
+      @packing_slip = PackingSlip.find(params[:id])
+    end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def packing_slip_params
-    params.require(:packing_slip).except(:action_name).permit(
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def packing_slip_params
+      params.require(:packing_slip).except(:action_name).permit(
         :id,
-        :outward_dispatch_id,
-        :box_number,
-        :box_dimension,
-        rows_attributes: [:id, :ar_invoice_request_row_id, :delivery_quantity, :packing_slip_id, :_destroy]
-    )
-  end
+          :outward_dispatch_id,
+          :box_number,
+          :box_dimension,
+          rows_attributes: [:id, :ar_invoice_request_row_id, :delivery_quantity, :packing_slip_id, :_destroy]
+      )
+    end
 end
