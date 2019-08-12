@@ -5,7 +5,9 @@ import createAndSetCookie from "./createAndSetCookie";
 const openRatingModal = () => {
     bindRatingModalTabClick();
     var isRated = $('.rating-modal a').attr('data-rating')
-    if ((document.cookie.match(/\d+/g) < new Date().getTime()) && (isRated === 'false')){
+    // Below code is for 'Review Later' button, which is not required from now.
+    // if ((document.cookie.match(/\d+/g) < new Date().getTime()) && (isRated === 'false')){
+    if (isRated === 'false'){
         $('.rating-modal a').click();
     }
     updateRatingForm();
