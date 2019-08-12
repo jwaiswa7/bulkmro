@@ -25,11 +25,6 @@ const outwardNew = () => {
         if ($(this).val() == "Others") {
             $('.other-logistics-partner').removeClass('d-none');
             $('.other-logistics-partner').find('input').attr("required", true);
-            // required_fields.each(function (i, requiredField) {
-            //     $(requiredField).removeAttr('required');
-            //     let described_by = $(requiredField).data('parsley-id');
-            //     $('div#parsley-id-' + described_by).text('');
-            // });
         }
         else {
             $('.other-logistics-partner').addClass('d-none');
