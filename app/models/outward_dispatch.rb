@@ -1,5 +1,8 @@
 class OutwardDispatch < ApplicationRecord
+  COMMENTS_CLASS = 'OutwardDispatchComment'
+
   include Mixins::CanBeStamped
+  include Mixins::HasComments
 
   belongs_to :ar_invoice_request, default: false
   belongs_to :sales_order, default: false
@@ -19,29 +22,38 @@ class OutwardDispatch < ApplicationRecord
   }
 
   enum logistics_partners: {
-      'Aramex': 1,
-      'FedEx': 2,
-      'Spoton': 3,
-      'Safe Xpress': 4,
-      'Professional Couriers': 5,
-      'DTDC': 5,
-      'Delhivery': 7,
-      'UPS': 8,
-      'Blue Dart': 9,
-      'Anjani Courier': 10,
-      'Mahavir Courier Services': 11,
-      'Elite Enterprise': 12,
-      'Sri Krishna Logistics': 13,
-      'Maruti Courier': 14,
-      'Vinod': 20,
-      'Ganesh': 21,
-      'Tushar': 22,
-      'Others': 40,
-      'Drop Ship': 60
+      'ACPL': 1,
+      'ARC Transport': 2,
+      'Anjani Courier': 3,
+      'Aramex': 4,
+      'Arunah Transport': 5,
+      'Blue Dart': 6,
+      'DTDC': 7,
+      'Delhivery': 8,
+      'Elite Enterprise': 9,
+      'FedEx': 10,
+      'Gati': 11,
+      'Mahavir Courier Services': 12,
+      'Maruti Courier': 13,
+      'Professional Couriers': 14,
+      'Safe Xpress': 15,
+      'Spoton': 16,
+      'Sri Krishna Logistics': 17,
+      'TCI Freight': 18,
+      'TCI Xpress': 19,
+      'Trackon': 20,
+      'UPS': 21,
+      'V Trans': 22,
+      'VRL Logistics': 23,
+      'Vinod': 100,
+      'Ganesh': 101,
+      'Tushar': 102,
+      'Others': 200,
+      'Drop Ship': 300
   }
 
   def quantity_in_payment_slips
-    self.packing_slips.sum(&:dispatched_quntity)
+    self.packing_slips.sum(&:dispatched_quantity)
   end
 
   def status_auto_update
@@ -56,10 +68,10 @@ class OutwardDispatch < ApplicationRecord
 
   def grouped_status
     grouped_status = {}
-    status_category = { 1 => '3PL', 20 => 'BM Runner', 40 => 'Others', 60 => 'Drop Ship' }
+    status_category = { 1 => '3PL', 100 => 'BM Runner', 200 => 'Others', 300 => 'Drop Ship' }
     status_category.each do |index, category|
-      grouped_status[category] = InwardDispatch.logistics_partners.collect { |status, v|
-        if v.between?(index, index + 13)
+      grouped_status[category] = OutwardDispatch.logistics_partners.collect { |status, v|
+        if v.between?(index, index + 99)
           status
         end}.compact
     end

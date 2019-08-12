@@ -10,6 +10,8 @@ class OutwardDispatchesIndex < BaseIndex
     field :ar_invoice_request_number_string, value: -> (record) { record.ar_invoice_request.ar_invoice_number.to_s if record.ar_invoice_request.present? }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] }
     field :status_string, value: -> (record) { record.status.to_s }
+    field :dispatch_mail_sent_to_the_customer, value: -> (record) { record.dispatch_mail_sent_to_the_customer ? record.dispatch_mail_sent_to_the_customer : false }
+    field :material_delivered_mail_sent_to_customer, value: -> (record) { record.material_delivered_mail_sent_to_customer ? record.material_delivered_mail_sent_to_customer : false }
     field :created_at, type: 'date'
     field :material_dispatch_date, type: 'date'
     field :expected_date_of_delivery, type: 'date'
