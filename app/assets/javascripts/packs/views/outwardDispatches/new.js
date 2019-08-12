@@ -11,7 +11,6 @@ const outwardNew = () => {
     $('[name="outward_dispatch[expected_date_of_delivery]').on("focus", function () {
         var newDate = Date.parse($('[name="outward_dispatch[material_dispatch_date]').val())
         disableBackdateOption($('[name="outward_dispatch[expected_date_of_delivery]'),true,moment(newDate).format('DD-MMM-YYYY'));
-
     });
 
     $('.material_delivery_date .clear-date').unbind('click').bind('click', function () {
@@ -34,7 +33,7 @@ const outwardNew = () => {
         }
         else {
             $('.other-logistics-partner').addClass('d-none');
-            $('.other-logistics-partner').find('input').attr("required", false);
+            $('.other-logistics-partner').find('input').val('').attr("required", false);
         }
     });
 };
