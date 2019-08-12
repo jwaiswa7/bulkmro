@@ -21,7 +21,7 @@ class OutwardDispatch < ApplicationRecord
       'Material Delivered': 60
   }
 
-  enum logistics_partners: {
+  enum logistics_partner: {
       'ACPL': 1,
       'ARC Transport': 2,
       'Anjani Courier': 3,
