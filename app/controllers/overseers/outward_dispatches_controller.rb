@@ -43,6 +43,11 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     @ar_invoice = ArInvoiceRequest.find(params[:ar_invoice_request_id])
     @sales_order = @ar_invoice.sales_order
     @outward_dispatch = OutwardDispatch.new(overseer: current_overseer, sales_order: @sales_order, ar_invoice_request: @ar_invoice)
+    @packing_slips_row = @ar_invoice.rows.sum(&:get_remaining_quantity)
+    @can_show_box = @packing_slips_row == 1
+    if @can_show_box
+      @outward_dispatch.packing_slips.build(overseer: current_overseer)
+    end
 
     authorize_acl @outward_dispatch
   end
