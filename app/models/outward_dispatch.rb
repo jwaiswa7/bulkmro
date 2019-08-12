@@ -18,7 +18,7 @@ class OutwardDispatch < ApplicationRecord
       'Material Delivered': 60
   }
 
-  enum logistics_partners: {
+  enum logistics_partner: {
       'Aramex': 1,
       'FedEx': 2,
       'Spoton': 3,
