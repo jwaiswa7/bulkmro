@@ -14586,4 +14586,11 @@ th.logistics-scorecard {
     bottom: 0;
     cursor: pointer;
 }
+
+@media screen and (max-width: 1550px) {
+    .kra_summary_row {
+        display: none;
+    }
+}
+
 /*# sourceMappingURL=application.css.map */

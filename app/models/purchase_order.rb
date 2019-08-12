@@ -263,9 +263,9 @@ class PurchaseOrder < ApplicationRecord
   def get_followup_status
     if self.followup_date.blank?
       'Follow-up Date missing'
-    elsif self.followup_date.present? && (self.followup_date < Date.today)
+    elsif self.followup_date.present? && (self.followup_date.to_date < Date.today)
       'Pending follow-up'
-    elsif self.followup_date.present? && (self.followup_date == Date.today)
+    elsif self.followup_date.present? && (self.followup_date.to_date == Date.today)
       'Follow-up for today'
     else
       nil
