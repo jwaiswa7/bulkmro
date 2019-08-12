@@ -68,8 +68,9 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
         format.html { redirect_to add_packing_overseers_outward_dispatch_packing_slips_url (@outward_dispatch), notice: 'Outward dispatch was successfully created.' }
         format.json { render :add_packing, status: :created, location: @outward_dispatch }
       else
-        format.html { render :new }
-        format.json { render json: @outward_dispatch.errors, status: :unprocessable_entity }
+        # format.html { render :new }
+        # format.json { render json: @outward_dispatch.errors, status: :unprocessable_entity }
+        redirect_to new_overseers_outward_dispatch_path(@outward_dispatch)
       end
     end
   end

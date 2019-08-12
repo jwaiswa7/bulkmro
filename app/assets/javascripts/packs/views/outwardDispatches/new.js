@@ -40,8 +40,8 @@ const outwardNew = () => {
 
         }
         var VAL = $("#packing_slips input[name*='box_dimension'] ").val();
-        var email = new RegExp('^[\\d ()*]+$');
-        email.test(VAL) ? $('.box_dimension_error').text('') : $('.box_dimension_error').text('Enter box dimension in the format of 20*30*455.') ;
+        var pattern = new RegExp('^[\\d ()*]+$');
+        pattern.test(VAL) ? $('.box_dimension_error').text('') : $('.box_dimension_error').text('Enter box dimension in the format of 20*30*455.') ;
 
     })
 
