@@ -31,6 +31,7 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                   ar_invoice.logistics_owner.present? ? ar_invoice.logistics_owner : 'Unassigned',
                   ar_invoice.sales_order.order_number,
                   ar_invoice.outward_dispatches.map { |outward_dispatch| link_to(outward_dispatch.id, overseers_outward_dispatch_path(outward_dispatch), target: '_blank') }.compact.join(' '),
+                  format_succinct_date(ar_invoice.created_at)
               ]
 end
 
@@ -42,6 +43,7 @@ json.columnFilters [
                        [],
                        Overseer.inside.alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
                        Overseer.where(role: 'logistics').alphabetical.map {|s| {"label": s.full_name, "value": s.id.to_s}}.reject { |h| h[:label] == 'Logistics Team'}.as_json,
+                       [],
                        [],
                        []
                    ]
