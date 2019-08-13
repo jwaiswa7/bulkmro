@@ -1,5 +1,5 @@
 class Overseers::OutwardDispatchesController < Overseers::BaseController
-  before_action :set_outward_dispatch, only: [:show, :edit, :update, :destroy, :make_packing_zip]
+  before_action :set_outward_dispatch, only: [:show, :edit, :update, :destroy]
 
   # GET /outward_dispatches
   # GET /outward_dispatches.json
@@ -54,6 +54,11 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
 
   # GET /outward_dispatches/1/edit
   def edit
+    @packing_slips_row = @outward_dispatch.ar_invoice_request.rows.sum(&:get_remaining_quantity)
+    @can_show_box = @packing_slips_row == 0 || @packing_slips_row == 1
+    # if @can_show_box
+    #   @outward_dispatch.packing_slips.build(overseer: current_overseer)
+    # end
     authorize_acl @outward_dispatch
   end
 
@@ -62,15 +67,15 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   def create
     @outward_dispatch = OutwardDispatch.new(outward_dispatch_params.merge(overseer: current_overseer))
     authorize_acl @outward_dispatch
+
     respond_to do |format|
       if @outward_dispatch.save
         @outward_dispatch.ar_invoice_request.inward_dispatches.map {|inward_dispatch| inward_dispatch.set_outward_status}
         format.html { redirect_to add_packing_overseers_outward_dispatch_packing_slips_url (@outward_dispatch), notice: 'Outward dispatch was successfully created.' }
         format.json { render :add_packing, status: :created, location: @outward_dispatch }
       else
-        # format.html { render :new }
-        # format.json { render json: @outward_dispatch.errors, status: :unprocessable_entity }
-        redirect_to new_overseers_outward_dispatch_path(@outward_dispatch)
+        format.html { render :new }
+        format.json { render json: @outward_dispatch.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -98,7 +103,7 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     authorize_acl @outward_dispatch
     respond_to do |format|
       if @outward_dispatch.update(outward_dispatch_params.merge(overseer: current_overseer))
-        @outward_dispatch.ar_invoice_request.inward_dispatches.map {|inward_dispatch| inward_dispatch.set_outward_status}
+        @outward_dispatch.ar_invoice_request.inward_dispatches.map{|inward_dispatch| inward_dispatch.set_outward_status}
         format.html { redirect_to overseers_outward_dispatch_path (@outward_dispatch), notice: 'Outward dispatch was successfully updated.' }
         format.json { render :show, status: :ok, location: @outward_dispatch }
       else
@@ -136,9 +141,11 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
         :dispatched_by,
         :dispatch_mail_sent_to_the_customer,
         :logistics_partner,
+        :logistics_partner_name,
         :tracking_number,
         :material_delivered_mail_sent_to_customer,
-        packing_slips_attributes: [:id, :box_number, :outward_dispatch_id, :box_dimension, :created_by_id, :updated_by_id, :_destroy]
+        packing_slips_attributes: [:id, :box_number, :outward_dispatch_id, :box_dimension, :created_by_id, :updated_by_id, :_destroy],
+        comments_attributes: [:id, :message, :created_by_id, :updated_by_id]
     )
   end
 

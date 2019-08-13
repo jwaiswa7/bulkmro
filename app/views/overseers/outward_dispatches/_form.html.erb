@@ -33,7 +33,7 @@
               <%= f.input :expected_date_of_delivery, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_date_of_delivery.try(:strftime, "%d-%b-%Y"), class: ''}, required: true %>
             </div>
             <div class="col-4 mt-2 material_delivery_date">
-              <%= f.input :material_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.material_delivery_date.try(:strftime, "%d-%b-%Y"), class: ''} %>
+              <%= f.input :material_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.material_delivery_date.try(:strftime, "%d-%b-%Y"), class: ''}%>
               <i class="fa fa-times clear-date" aria-hidden="true" id="" title="Clear the material delivery date"></i>
             </div>
             <div class="col-4 mt-2">
@@ -42,10 +42,24 @@
             <div class="col-4 mt-2">
               <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: false %>
             </div>
+            <div class="col-4 mt-2 d-none other-logistics-partner">
+              <%= f.input :logistics_partner_name, input_html: {value: f.object.logistics_partner_name, placeholder: "If Others, enter name"}, :include_blank => true %>
+            </div>
             <div class="col-4 mt-2">
               <%= f.input :tracking_number, label: 'Tracking Number' %>
             </div>
           </div>
+          <% if f.object.persisted? %>
+            <div class="form-row">
+              <div class="col-12">
+                <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |outward_dispatch_comment| %>
+                  <%= outward_dispatch_comment.hidden_field :created_by_id %>
+                  <%= outward_dispatch_comment.hidden_field :updated_by_id %>
+                  <%= outward_dispatch_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''}, label: 'Comment Message' %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
         </div>
         <% if @packing_slips_row.present? %>
           <div class="packing_slip_wrapper">
@@ -76,9 +90,10 @@
         <% end %>
       </div>
     </div>
+
     <div class="card">
       <div class="card-footer">
-        <div class="form-row disabled">
+        <div class="form-row">
           <%= button_tag(type: "submit", class: "btn btn-success btn-block submit-form") do %>
             <% if action_name.capitalize == "New" %>
               <i class="fal fa-plus-circle"></i>
@@ -86,6 +101,16 @@
               <i class="fal fa-pen"></i>
             <% end %>
             <%= submit_text(@outward_dispatch) %>
+          <% end %>
+          <% if f.object.comments.persisted.size > 0 %>
+            <div class="card-body">
+              <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
+              <div class="chats">
+                <% f.object.comments.persisted.order(created_at: :desc).each do |comment| %>
+                  <%= format_comment(comment) %>
+                <% end %>
+              </div>
+            </div>
           <% end %>
         </div>
       </div>

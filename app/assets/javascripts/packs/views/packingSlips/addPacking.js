@@ -2,25 +2,6 @@ import hideRemoveBtnInRows from "../common/hideRemoveBtnInRows"
 
 const addPacking = () => {
     hideRemoveBtnInRows();
-    $(".packing-form").attr("disabled", "disabled");
-    $("#packing input[name*='box_number']").on('change',function () {
-        $("input[name*='box_numbers']").val()
-        $("input[name*='box_numbers']").attr("required", true);
-        console.log($("input[name*='box_numbers']").val())
-       let s = $("input[name*='box_numbers']").map(function() {
-           if ($(this).val() != '') return $(this).val()
-       }).get();
-
-       if (s.length ==  $("input[name*='box_numbers']").length){
-
-           $(".packing-form").attr("disabled", false);
-       }
-       else{
-
-           $(".packing-form").attr("disabled", true);
-       }
-    })
-
     $("form").on('click','.packing-form',function(event){
 
         var formSelector = "#"+$(this).closest('form').attr('id')
