@@ -75,3 +75,5 @@ Accounts,sales_order,account_approval_pending
 Admin,purchase_order,pending_sap_sync
 Logistics,purchase_order,pending_sap_sync
 Accounts,purchase_order,pending_sap_sync
+Logistics,purchase_order,change_material_status
+Admin,purchase_order,change_material_status
