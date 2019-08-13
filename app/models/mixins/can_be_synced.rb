@@ -2,7 +2,7 @@ module Mixins::CanBeSynced
   extend ActiveSupport::Concern
 
   included do
-    def save_and_sync(validation = true, options = false)
+    def save_and_sync(options = false)
       if options
         service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self, options)
       else
@@ -10,7 +10,7 @@ module Mixins::CanBeSynced
       end
 
       service.call
-      self.save!(validation: validation)
+      self.save
     end
 
     def syncable_identifiers
