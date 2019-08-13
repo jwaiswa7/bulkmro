@@ -21,9 +21,7 @@ const outwardNew = () => {
         $('.other-logistics-partner').removeClass('d-none');
     }
 
-    $('.packing_slip_wrapper').on('change',"#packing_slips input[name*='box_number'], #packing_slips input[name*='box_dimension'] ",function () {
-        // console.log($("#packing_slips input[name*='box_number']"))
-
+    $('.packing_slip_wrapper').on('change',"#packing_slips input[name*='box_number']",function () {
         var ar = $("#packing_slips input[name*='box_number']").map(function() {
             if ($(this).val() != '') return $(this).val()
         }).get();
@@ -41,13 +39,15 @@ const outwardNew = () => {
         }
         else {
             $(".submit-form").attr("disabled", true);
-
         }
+    });
+
+    $('.packing_slip_wrapper').on('change',"#packing_slips input[name*='box_dimension'] ",function () {
         var VAL = $("#packing_slips input[name*='box_dimension'] ").val();
         var pattern = new RegExp('^[\\d ()*]+$');
         pattern.test(VAL) ? $('.box_dimension_error').text('') : $('.box_dimension_error').text('Enter box dimension in the format of 20*30*455.') ;
+    });
 
-    })
     $('select[name*=logistics_partner]').unbind().bind('change', function () {
         if ($(this).val() == "Others") {
             $('.other-logistics-partner').removeClass('d-none');

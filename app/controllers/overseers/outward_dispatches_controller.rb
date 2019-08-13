@@ -56,9 +56,6 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   def edit
     @packing_slips_row = @outward_dispatch.ar_invoice_request.rows.sum(&:get_remaining_quantity)
     @can_show_box = @packing_slips_row == 0 || @packing_slips_row == 1
-    # if @can_show_box
-    #   @outward_dispatch.packing_slips.build(overseer: current_overseer)
-    # end
     authorize_acl @outward_dispatch
   end
 

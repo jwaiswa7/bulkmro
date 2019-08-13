@@ -33,8 +33,4 @@ class Overseers::OutwardDispatchPolicy < Overseers::ApplicationPolicy
   def dispatch_mail_to_customer_notification?
     dispatch_mail_to_customer?
   end
-
-  def make_packing_zip?
-    true
-  end
 end
