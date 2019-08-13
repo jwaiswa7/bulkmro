@@ -66,16 +66,16 @@ class OutwardDispatch < ApplicationRecord
     end
   end
 
-  def grouped_status
-    grouped_status = {}
+  def grouped_logistics_partners
+    grouped_logistics_partners = {}
     status_category = { 1 => '3PL', 100 => 'BM Runner', 200 => 'Others', 300 => 'Drop Ship' }
     status_category.each do |index, category|
-      grouped_status[category] = OutwardDispatch.logistics_partners.collect { |status, v|
-        if v.between?(index, index + 99)
+      grouped_logistics_partners[category] = OutwardDispatch.logistics_partners.collect { |status, v|
+        if v.between?(index, index + 98)
           status
         end}.compact
     end
-    grouped_status
+    grouped_logistics_partners
   end
 
   def is_owner
