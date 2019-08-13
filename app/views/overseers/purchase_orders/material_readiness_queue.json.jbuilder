@@ -35,7 +35,11 @@ json.data (@purchase_orders) do |purchase_order|
                   purchase_order.po_request.present? ? purchase_order.po_request.supplier_po_type : '',
                   (format_comment(purchase_order.last_comment, trimmed: true) if purchase_order.last_comment.present?),
                   (format_succinct_date(purchase_order.po_request.sales_order.mis_date) if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
-                  (purchase_order.po_request.sales_order.order_number if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
+                  if (purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?)
+                    conditional_link(purchase_order.po_request.sales_order.order_number, overseers_inquiry_sales_order_path(purchase_order.po_request.sales_order.inquiry, purchase_order.po_request.sales_order), is_authorized(purchase_order.po_request.sales_order, 'show'))
+                  else
+                    ''
+                  end,
                   (format_succinct_date(purchase_order.po_request.inquiry.customer_committed_date) if purchase_order.po_request.present?),
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   (purchase_order.logistics_owner.present? ? purchase_order.logistics_owner.full_name : 'Unassigned'),
