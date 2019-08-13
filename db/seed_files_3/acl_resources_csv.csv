@@ -75,3 +75,15 @@ Accounts,sales_order,account_approval_pending
 Admin,purchase_order,pending_sap_sync
 Logistics,purchase_order,pending_sap_sync
 Accounts,purchase_order,pending_sap_sync
+Admin Leadership Team,outward_dispatch,make_packing_zip
+Logistics,outward_dispatch,make_packing_zip
+Admin,outward_dispatch,make_packing_zip
+Admin Leadership Team,packing_slip,add_packing
+Logistics,packing_slip,add_packing
+Admin,packing_slip,add_packing
+Admin Leadership Team,packing_slip,submit_packing
+Logistics,packing_slip,submit_packing
+Admin,packing_slip,submit_packing
+Admin Leadership Team,packing_slip,edit_outward_packing_slips
+Logistics,packing_slip,edit_outward_packing_slips
+Admin,packing_slip,edit_outward_packing_slips
