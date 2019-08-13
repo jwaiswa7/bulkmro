@@ -410,6 +410,7 @@ Rails.application.routes.draw do
         get 'cancelled_purchase_modal'
         patch 'cancelled_purchase_order'
         get 'resync_po'
+        get 'change_material_status'
       end
 
       collection do

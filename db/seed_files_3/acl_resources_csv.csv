@@ -87,3 +87,6 @@ Admin,packing_slip,submit_packing
 Admin Leadership Team,packing_slip,edit_outward_packing_slips
 Logistics,packing_slip,edit_outward_packing_slips
 Admin,packing_slip,edit_outward_packing_slips
+
+Logistics,purchase_order,change_material_status
+Admin,purchase_order,change_material_status
