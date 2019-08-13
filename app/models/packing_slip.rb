@@ -6,7 +6,7 @@ class PackingSlip < ApplicationRecord
 
 
 
-  def dispatched_quntity
+  def dispatched_quantity
     self.rows.sum(:delivery_quantity)
   end
 
