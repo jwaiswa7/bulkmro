@@ -5,10 +5,10 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-                      else
-                        super
-                      end
+      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    else
+      super
+    end
 
     # @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
     if @manually_close
@@ -16,8 +16,8 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
     else
       statuses = ['Material Readiness Follow-Up', 'Inward Dispatch', 'Inward Dispatch: Partial', 'Material Partially Delivered']
       status_values = PurchaseOrder.material_statuses.map { |key, val|
-        if statuses.include?(key);
-          val;
+        if statuses.include?(key)
+          val
         end }.compact
       indexed_records = indexed_records.filter(filter_by_array('material_status', status_values))
       indexed_records = indexed_records.filter(filter_by_value('po_request_present', true))
@@ -60,8 +60,8 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
     else
       statuses = ['Material Readiness Follow-Up', 'Inward Dispatch', 'Inward Dispatch: Partial', 'Material Partially Delivered']
       status_values = PurchaseOrder.material_statuses.map { |key, val|
-        if statuses.include?(key);
-          val;
+        if statuses.include?(key)
+          val
         end }.compact
       indexed_records = indexed_records.filter(filter_by_array('material_status', status_values))
       indexed_records = indexed_records.filter(filter_by_value('po_request_present', true))

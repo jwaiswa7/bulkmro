@@ -26,7 +26,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Overseers::Finders::MaterialReadinessQueues.new(params.merge({is_manually_close: true}), current_overseer)
+        service = Services::Overseers::Finders::MaterialReadinessQueues.new(params.merge(is_manually_close: true), current_overseer)
         service.call
 
         @indexed_purchase_orders = service.indexed_records
@@ -184,7 +184,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def change_material_status
     authorize_acl @purchase_order
-     @purchase_order.update_material_status
+    @purchase_order.update_material_status
     redirect_to material_readiness_queue_overseers_purchase_orders_path, notice: flash_message(@purchase_order, action_name)
   end
 
