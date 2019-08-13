@@ -8,7 +8,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
       service = Services::Shared::Spreadsheets::CsvImporter.new('new_products_creation.csv', 'seed_files')
 
       CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
-        service.loop(10) do |product_row|
+        service.loop do |product_row|
           begin
             product_name = product_row.get_column('Description')
             hsn = product_row.get_column('HSN_code').strip[0..3]
