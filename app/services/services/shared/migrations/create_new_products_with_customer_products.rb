@@ -35,7 +35,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
               if product.save!
                 customer_product = company.customer_products.build({product_id: product.id,
                                                                     category: product.category, name: product.name, brand: product.brand, sku: product.sku, unit_selling_price: customer_product_unit_price, customer_price: customer_product_unit_price,
-                                                                    moq: quantity, tax_code: product.tax_code
+                                                                    moq: quantity, tax_code: product.tax_code, measurement_unit: product.measurement_unit
                                                                    })
                 customer_product.save(validate: false)
               end
