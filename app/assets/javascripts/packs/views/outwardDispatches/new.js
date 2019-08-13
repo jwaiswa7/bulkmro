@@ -21,6 +21,33 @@ const outwardNew = () => {
         $('.other-logistics-partner').removeClass('d-none');
     }
 
+    $('.packing_slip_wrapper').on('change',"#packing_slips input[name*='box_number']",function () {
+        var ar = $("#packing_slips input[name*='box_number']").map(function() {
+            if ($(this).val() != '') return $(this).val()
+        }).get();
+        ar = ar.map(Number)
+        //Create array of duplicates if there are any
+        var unique = ar.filter(function(item, pos) {
+            return ar.indexOf(item) != pos;
+        });
+
+        //show/hide error msg
+        (unique.length != 0) ? $('.error').text('Please check you have entered duplicate box number.'): $('.error').text('');
+        if( $('.error').is(':empty'))
+        {
+            $(".submit-form").attr("disabled", false);
+        }
+        else {
+            $(".submit-form").attr("disabled", true);
+        }
+    });
+
+    $('.packing_slip_wrapper').on('change',"#packing_slips input[name*='box_dimension'] ",function () {
+        var VAL = $("#packing_slips input[name*='box_dimension'] ").val();
+        var pattern = new RegExp('^[\\d ()*]+$');
+        pattern.test(VAL) ? $('.box_dimension_error').text('') : $('.box_dimension_error').text('Enter box dimension in the format of 20*30*455.') ;
+    });
+
     $('select[name*=logistics_partner]').unbind().bind('change', function () {
         if ($(this).val() == "Others") {
             $('.other-logistics-partner').removeClass('d-none');
@@ -32,5 +59,4 @@ const outwardNew = () => {
         }
     });
 };
-
 export default outwardNew
