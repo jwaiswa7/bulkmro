@@ -1,5 +1,5 @@
 class Overseers::OutwardDispatchesController < Overseers::BaseController
-  before_action :set_outward_dispatch, only: [:show, :edit, :update, :destroy]
+  before_action :set_outward_dispatch, only: [:show, :edit, :update, :destroy, :render_modal_form, :add_comment]
 
   # GET /outward_dispatches
   # GET /outward_dispatches.json
@@ -118,6 +118,33 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     respond_to do |format|
       format.html { redirect_to outward_dispatches_url, notice: 'Outward dispatch was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def render_modal_form
+    authorize_acl @outward_dispatch
+    respond_to do |format|
+      if params[:title] == 'Comment'
+        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @outward_dispatch, url: add_comment_overseers_outward_dispatch_path(@outward_dispatch), view_more: overseers_outward_dispatch_path(@outward_dispatch)}}
+      end
+    end
+  end
+
+  def add_comment
+    @outward_dispatch.assign_attributes(outward_dispatch_params.merge(overseer: current_overseer))
+    authorize_acl @outward_dispatch
+    if @outward_dispatch.valid?
+      if params['outward_dispatch']['comments_attributes']['0']['message'].present?
+        ActiveRecord::Base.transaction do
+          @outward_dispatch.save!
+          @outward_dispatch_comment = OutwardDispatchComment.new(message: '', outward_dispatch: @outward_dispatch, overseer: current_overseer)
+        end
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
+      end
+    else
+      render json: {error: @outward_dispatch.errors}, status: 500
     end
   end
 

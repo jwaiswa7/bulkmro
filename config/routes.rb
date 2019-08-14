@@ -334,6 +334,8 @@ Rails.application.routes.draw do
         get 'render_cancellation_form'
         get 'download_eway_bill_format'
         patch 'cancel_ar_invoice'
+        get 'render_modal_form'
+        patch 'add_comment'
       end
     end
 
@@ -343,6 +345,8 @@ Rails.application.routes.draw do
       end
       member do
         get 'make_packing_zip'
+        get 'render_modal_form'
+        patch 'add_comment'
       end
       scope module: 'outward_dispatches' do
         resources :packing_slips do

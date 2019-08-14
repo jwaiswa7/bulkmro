@@ -1,5 +1,5 @@
 import updateSummaryBox from "../common/updateSummaryBox";
-
+import callAjaxFunction from '../common/callAjaxFunction'
 const index = () => {
     updateSummaryBox()
 
@@ -52,6 +52,22 @@ const index = () => {
                 }
             })
         }
+    })
+
+    $('.datatable').on('click', '.comment-ar_invoice-request', function (e) {
+        var id = $(this).data('ar_invoice-request-id')
+        var title = $(this).attr('title')
+        var json = {
+            url: "/overseers/ar_invoice_requests/" + id + "/render_modal_form?title=" + title,
+            modalId: '#addComment',
+            className: '.cancellation-form-modal',
+            buttonClassName: '.confirm-cancel',
+            this: $(this),
+            title: title
+        }
+        callAjaxFunction(json)
+
+
     })
 };
 
