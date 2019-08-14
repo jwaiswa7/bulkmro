@@ -1,6 +1,7 @@
 import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from '../common/updateSummaryBox'
 import exportFilteredRecords from '../common/exportFilteredRecords'
+import callAjaxFunction from "../common/callAjaxFunction";
 
 const index = () => {
 
@@ -10,6 +11,22 @@ const index = () => {
     bulkUpdate()
     let controller = camelize($('body').data().controller);
     exportFilteredRecords(Routes.export_filtered_records_overseers_inquiries_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
+
+    $('.datatable').on('click', '.comment-inquiry', function (e) {
+        var id = $(this).data('inquiry-id')
+        var title = $(this).attr('title')
+        var json = {
+            url: "/overseers/inquiries/" + id + "/render_modal_form?title=" + title,
+            modalId: '#addComment',
+            className: '.open-modal-form',
+            buttonClassName: '.confirm-cancel',
+            this: $(this),
+            title: title
+        }
+        callAjaxFunction(json)
+
+
+    })
 
 };
 

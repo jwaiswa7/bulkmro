@@ -492,6 +492,8 @@ Rails.application.routes.draw do
         get 'relationship_map'
         get 'get_relationship_map_json'
         post 'duplicate'
+        get 'render_modal_form'
+        patch 'add_comment'
       end
 
       collection do

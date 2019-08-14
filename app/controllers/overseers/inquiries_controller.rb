@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment]
 
   def index
     authorize_acl :inquiry
@@ -529,6 +529,34 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
 
     render json: {inquiries: inquiries.uniq}.to_json
+  end
+
+  def render_modal_form
+    authorize_acl @inquiry
+    respond_to do |format|
+      if params[:title] == 'Comment'
+        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @inquiry, url: add_comment_overseers_inquiry_path(@inquiry), view_more: overseers_inquiry_comments_path(@inquiry)}}
+      end
+    end
+  end
+
+  def add_comment
+    @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
+    authorize_acl @inquiry
+    if @inquiry.valid?
+      if params['inquiry']['comments_attributes']['0']['message'].present?
+        ActiveRecord::Base.transaction do
+          binding.pry
+          @inquiry.save!
+          @inquiry_comment = InquiryComment.new(message: '', inquiry: @inquiry, overseer: current_overseer)
+        end
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
+      end
+    else
+      render json: {error: @inquiry.errors}, status: 500
+    end
   end
 
   private
