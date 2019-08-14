@@ -5,7 +5,9 @@ class Overseers::Dashboard
 
   def inquiries
     inquiries_in_range = Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).order(updated_at: :desc)
-    inquiries_in_range.map { |inquiry| inquiry if (inquiry.quotation_followup_date.present? && inquiry.quotation_followup_date == Date.today) || inquiry.updated_at.to_date + 2.day == Date.today }.compact
+    inquiries_in_range.map {
+        |inquiry| inquiry if inquiry_needs_followup?(inquiry)
+    }.compact
   end
 
   def sales_orders
@@ -14,6 +16,14 @@ class Overseers::Dashboard
 
   def recent_inquiries
     inquiries.first(15)
+  end
+
+  def inquiry_needs_followup?(inquiry)
+    inquiry.status != 'Order Won' && inquiry.status != 'Order Lost' && inquiry.status != 'Regret' &&
+        ((inquiry.quotation_followup_date.present? && inquiry.quotation_followup_date == Date.today) ||
+            (inquiry.quotation_followup_date.present? && inquiry.quotation_followup_date < inquiry.updated_at.to_date && inquiry.updated_at.to_date <= Date.today - 2.day) ||
+            (inquiry.quotation_followup_date.present? && inquiry.quotation_followup_date > inquiry.updated_at.to_date && inquiry.quotation_followup_date <= Date.today - 2.day) ||
+            (inquiry.updated_at.to_date <= Date.today - 2.day))
   end
 
   def inquiry_followup_count
