@@ -8,7 +8,9 @@
     <div class="card mb-2">
       <div class="card-body">
         <div class="">
-          <h6 class="text-uppercase text-black-50 mb-1"> Entity Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-2"> Entity Details</h6>
+          <div class="error list-group disabled align-center text-danger mb-0 px-1"></div>
+          <div class="box_dimension_error list-group disabled align-center text-danger mb-3 px-1"></div>
           <div class="form-row">
             <div class="col-6 col-md-4 mb-2">
               <strong class="d-block">Inquiry </strong>
@@ -38,15 +40,57 @@
               <%= f.input :dispatched_by, collection: enum_to_collection(InwardDispatch.dispatched_bies, keep_raw: true), label: "Material Dispatched By", input_html: {class: "select2-single"}, required: true %>
             </div>
             <div class="col-4 mt-2">
-              <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: true%>
+              <%= f.input :logistics_partner, collection: f.object.grouped_logistics_partners, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: false %>
+            </div>
+            <div class="col-4 mt-2 d-none other-logistics-partner">
+              <%= f.input :logistics_partner_name, input_html: {value: f.object.logistics_partner_name, placeholder: "If Others, enter name"}, :include_blank => true %>
             </div>
             <div class="col-4 mt-2">
               <%= f.input :tracking_number, label: 'Tracking Number' %>
             </div>
           </div>
+          <% if f.object.persisted? %>
+            <div class="form-row">
+              <div class="col-12">
+                <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |outward_dispatch_comment| %>
+                  <%= outward_dispatch_comment.hidden_field :created_by_id %>
+                  <%= outward_dispatch_comment.hidden_field :updated_by_id %>
+                  <%= outward_dispatch_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''}, label: 'Comment Message' %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
         </div>
+        <% if @packing_slips_row.present? %>
+          <div class="packing_slip_wrapper">
+            <%= f.nested_fields_for :packing_slips do |ff| %>
+              <div class="form-row mb-3" id="packing_slips">
+                <%= ff.hidden_field :outward_dispatch_id %>
+                <div class="col-6 col-md-4 mt-1">
+                  <%= ff.input :box_number, required: true %>
+                </div>
+                <div class="col-6 col-md-4 mt-1">
+                  <%= ff.input :box_dimension, required: true %>
+                </div>
+                <div class="col-6 col-md-4 mt-3">
+                  <% if @packing_slips_row > 1 %>
+                  <%= ff.remove_nested_fields_link do %>
+                    <div class="form-group align-self-center flex-grow-1 ml-2 mt-2">
+                      <i class="far fa-times text-danger"></i>
+                    </div>
+                  <% end %>
+                    <% end %>
+                </div>
+              </div>
+            <% end %>
+            <% if !@can_show_box %>
+            <%= f.add_nested_fields_link :packing_slips, 'Add Box', class: 'btn btn-outline-success btn-block mt-2' %>
+              <%end %>
+          </div>
+        <% end %>
       </div>
     </div>
+
     <div class="card">
       <div class="card-footer">
         <div class="form-row">
@@ -57,6 +101,16 @@
               <i class="fal fa-pen"></i>
             <% end %>
             <%= submit_text(@outward_dispatch) %>
+          <% end %>
+          <% if f.object.comments.persisted.size > 0 %>
+            <div class="card-body">
+              <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
+              <div class="chats">
+                <% f.object.comments.persisted.order(created_at: :desc).each do |comment| %>
+                  <%= format_comment(comment) %>
+                <% end %>
+              </div>
+            </div>
           <% end %>
         </div>
       </div>

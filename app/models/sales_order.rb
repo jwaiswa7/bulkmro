@@ -274,7 +274,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def calculate_time_delay
-    if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present?
+    if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present? && self.inquiry.customer_committed_date.present?
       ((self.invoices.last.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
     end
   end
