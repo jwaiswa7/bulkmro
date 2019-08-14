@@ -327,4 +327,11 @@ class SalesInvoice < ApplicationRecord
   def total_quantity
     self.rows.sum(:quantity)
   end
+
+  def cosr_calculate_time_delay
+    if self.delivery_date.present? && self.inquiry.customer_committed_date.present?
+      ((self.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
+    end
+  end
+
 end
