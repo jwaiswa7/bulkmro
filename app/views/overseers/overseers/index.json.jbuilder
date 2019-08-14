@@ -18,10 +18,21 @@ json.data (@overseers) do |overseer|
                       end
                   ].join(' '),
                   overseer.hierarchy_to_s,
+                  overseer.email,
                   if overseer.acl_role.present?
                     overseer.acl_role.role_name
                   end,
-                  format_succinct_date(overseer.created_at)
+                  format_succinct_date(overseer.created_at),
+                  if overseer.acl_updated_by.present?
+                    Overseer.find(overseer.acl_updated_by).full_name
+                  else
+                    'System'
+                  end,
+                  if overseer.acl_updated_at.present?
+                    format_succinct_date(overseer.acl_updated_at)
+                  else
+                    '-'
+                  end
               ]
 end
 

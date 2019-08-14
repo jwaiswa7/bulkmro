@@ -31,6 +31,7 @@
       field :contact_s, value: -> (record) { record.contact.to_s }, analyzer: 'substring'
       field :priority, type: 'integer'
       field :quotation_followup_date, type: 'date'
+      field :customer_committed_date, type: 'date'
       field :created_at, type: 'date'
       field :updated_at, type: 'date'
       field :created_by_id

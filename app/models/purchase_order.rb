@@ -254,6 +254,7 @@ class PurchaseOrder < ApplicationRecord
     else
       self.update_attribute(:material_status, 'Material Readiness Follow-Up')
     end
+    PurchaseOrdersIndex::PurchaseOrder.import([self.id])
   end
 
   def po_request_present?
@@ -263,9 +264,9 @@ class PurchaseOrder < ApplicationRecord
   def get_followup_status
     if self.followup_date.blank?
       'Follow-up Date missing'
-    elsif self.followup_date.present? && (self.followup_date < Date.today)
+    elsif self.followup_date.present? && (self.followup_date.to_date < Date.today)
       'Pending follow-up'
-    elsif self.followup_date.present? && (self.followup_date == Date.today)
+    elsif self.followup_date.present? && (self.followup_date.to_date == Date.today)
       'Follow-up for today'
     else
       nil

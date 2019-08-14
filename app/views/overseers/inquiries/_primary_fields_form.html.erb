@@ -53,13 +53,11 @@
     </div>
     <div class="card-footer">
       <div class="form-row">
-        <% if policy(@inquiry).update? %>
-          <div class="mt-1 mt-md-0 <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-               Next  <i class="fa fa-arrow-right"></i>
-            <% end %>
-          </div>
-        <% end %>
+        <div class="mt-1 mt-md-0 <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+             Next  <i class="fa fa-arrow-right"></i>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

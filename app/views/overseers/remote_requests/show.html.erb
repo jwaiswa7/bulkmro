@@ -25,9 +25,14 @@
           <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(@remote_request.request) %></code></pre>
         </div>
 
-        <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1 mt-4" data-toggle="collapse" data-target="#response-summary">Response</h6>
-        <div class="collapse show" id="response-summary">
+        <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1 mt-4" data-toggle="collapse" data-target="#response-summary-raw">Raw Response | @remote_request.response['raw_response'] </h6>
+        <div class="collapse show" id="response-summary-raw">
           <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(@remote_request.response['raw_response']) %></code></pre>
+        </div>
+
+        <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1 mt-4" data-toggle="collapse" data-target="#response-summary">Response | @remote_request.response</h6>
+        <div class="collapse show" id="response-summary">
+          <pre class="m-0 p-0"><code class="json"><%= raw JSON.pretty_generate(@remote_request.response) %></code></pre>
         </div>
       </div>
     </div>
