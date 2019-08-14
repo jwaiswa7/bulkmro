@@ -16,12 +16,13 @@
     </button>
   <% end %>
 <% end %>
-
+<% if !is_authorized(:purchase_order, 'manually_closed') %>
 <% if Settings.reports.show_summary %>
   <div class="col-lg-12">
     <%= render partial: "shared/layouts/summary", locals: {klass: PurchaseOrder, statuses: PurchaseOrder.material_summary_statuses, alias_name: 'Followup' } %>
   </div>
 <% end %>
+  <%end %>
 
 <div class="col-lg-12">
   <% content_for :header_row do %>
