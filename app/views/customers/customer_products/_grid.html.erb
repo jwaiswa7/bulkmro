@@ -82,7 +82,11 @@
               </h5>
               <h5 class="mb-0 text-small"><strong>(#<%= customer_product.sku %>)</strong></h5>
               <h5 class="mb-0 mt-1 text-small text-black-50">
-                <strong><%= format_currency(customer_product.customer_price) %></strong>
+                <% if current_company.name == "FABTECH TECHNOLOGIES INTERNATIONAL LTD" %>
+                  <strong><%= format_currency(customer_product.customer_price) %> / <%= customer_product.measurement_unit.name %></strong>
+                <% else %>
+                  <strong><%= format_currency(customer_product.customer_price) %></strong>
+                <% end %>
               </h5>
               <hr class="my-2">
               <p class="mb-0 text-small text-black-50">
