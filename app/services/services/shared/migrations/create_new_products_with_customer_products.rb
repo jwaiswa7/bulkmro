@@ -52,7 +52,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
     service = Services::Shared::Spreadsheets::CsvImporter.new('updated_fabtech_list.csv', 'seed_files')
     company = Company.find_by_name('FABTECH TECHNOLOGIES INTERNATIONAL LTD')
     if company.present?
-      service.loop(20) do |row|
+      service.loop do |row|
         o = Overseer.find('JkYhxe')
         name = row.get_column('Product_Description')
         puts name
@@ -76,7 +76,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
         puts '******************************'
         puts CustomerProduct.where(company_id: company.id).where('sku = ? ', sku).last
         puts '******************************'
-        if customer_product.present?
+        if customer_product.present? && row.get_column('SKU').blank?
           tax_code_data = TaxCode.where(code: tax_code_file, is_service: false).last
           tax_code = tax_code_data.present? ? tax_code_data : TaxCode.where('code like ? AND is_service = ?', "#{tax_code_file[0..3]}%", false).last
           brand = Brand.where('lower(name) = ? ', brand_name.downcase).last
