@@ -14,7 +14,7 @@
           </div>
           <div class="col-md-9">
             <h4 class="display-5 mb-1 text-black-50 mt-2 mt-md-0"><%= @customer_product.name %></h4>
-            <% if current_company.name == "Fabtech Technologies International Ltd" %>
+            <% if current_company.id == 9504 %>
               <% if @customer_product.customer_price? %>
                 <h4 class="mb-3"><%= format_currency(@customer_product.customer_price) %> / <%= @customer_product.measurement_unit.name %></h4>
               <% end %>
