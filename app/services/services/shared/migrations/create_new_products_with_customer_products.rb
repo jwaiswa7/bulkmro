@@ -73,9 +73,11 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
           puts CustomerProduct.where(company_id: company.id).where('lower(name) = ? ', name.downcase)
           puts '******************************'
 
+=begin
           if customer_product.blank?
             customer_product = CustomerProduct.where(company_id: company.id).where('sku = ? ', sku).last
           end
+=end
           puts '******************************'
           puts CustomerProduct.where(company_id: company.id).where('sku = ? ', sku).last
           puts '******************************'
