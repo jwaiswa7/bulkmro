@@ -1,5 +1,5 @@
 class Overseers::OutwardDispatchesController < Overseers::BaseController
-  before_action :set_outward_dispatch, only: [:show, :edit, :update, :destroy, :render_modal_form, :add_comment]
+  before_action :set_outward_dispatch, only: [:show, :edit, :update, :destroy, :render_modal_form, :add_comment, :make_packing_zip]
 
   # GET /outward_dispatches
   # GET /outward_dispatches.json
