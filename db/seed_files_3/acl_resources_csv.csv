@@ -87,6 +87,46 @@ Admin,packing_slip,submit_packing
 Admin Leadership Team,packing_slip,edit_outward_packing_slips
 Logistics,packing_slip,edit_outward_packing_slips
 Admin,packing_slip,edit_outward_packing_slips
-
+,,
 Logistics,purchase_order,change_material_status
 Admin,purchase_order,change_material_status
+Admin,outward_dispatch,render_modal_form
+Logistics,outward_dispatch,render_modal_form
+Admin Leadership Team,outward_dispatch,render_modal_form
+Accounts,outward_dispatch,render_modal_form
+Inside Sales Team Leader,outward_dispatch,render_modal_form
+Admin,outward_dispatch,add_comment
+Logistics,outward_dispatch,add_comment
+Admin Leadership Team,outward_dispatch,add_comment
+Accounts,outward_dispatch,add_comment
+Inside Sales Team Leader,outward_dispatch,add_comment
+Admin,ar_invoice_request,render_modal_form
+Logistics,ar_invoice_request,render_modal_form
+Admin Leadership Team,ar_invoice_request,render_modal_form
+Accounts,ar_invoice_request,render_modal_form
+Inside Sales Team Leader,ar_invoice_request,render_modal_form
+Admin,ar_invoice_request,add_comment
+Logistics,ar_invoice_request,add_comment
+Admin Leadership Team,ar_invoice_request,add_comment
+Accounts,ar_invoice_request,add_comment
+Inside Sales Team Leader,ar_invoice_request,add_comment
+Admin,inquiry,render_modal_form
+Logistics,inquiry,render_modal_form
+Admin Leadership Team,inquiry,render_modal_form
+Accounts,inquiry,render_modal_form
+Inside Sales Team Leader,inquiry,render_modal_form
+Admin,inquiry,add_comment
+Logistics,inquiry,add_comment
+Admin Leadership Team,inquiry,add_comment
+Accounts,inquiry,add_comment
+Inside Sales Team Leader,inquiry,add_comment
+Admin,sales_order,render_modal_form
+Logistics,sales_order,render_modal_form
+Admin Leadership Team,sales_order,render_modal_form
+Accounts,sales_order,render_modal_form
+Inside Sales Team Leader,sales_order,render_modal_form
+Admin,sales_order,add_comment
+Logistics,sales_order,add_comment
+Admin Leadership Team,sales_order,add_comment
+Accounts,sales_order,add_comment
+Inside Sales Team Leader,sales_order,add_comment
