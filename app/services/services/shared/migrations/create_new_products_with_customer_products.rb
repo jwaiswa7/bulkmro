@@ -151,7 +151,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
     if company.present?
       brand_for_sku.each do |value|
         customer_product = company.customer_products.where(sku: brand_for_sku.keys.first.to_s).first
-        brand = Brand.where('lower(name) = ?', brand_for_sku.values.first.to_s).first
+        brand = Brand.where('lower(name) = ?', brand_for_sku.values.first.to_s.downcase).first
         product = Product.where(sku: brand_for_sku.keys.first.to_s).first
         if (customer_product.present? && brand.present?) || product.present?
           customer_product.brand = brand
