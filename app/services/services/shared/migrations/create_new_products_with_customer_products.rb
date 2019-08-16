@@ -156,8 +156,8 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
         if (customer_product.present? && brand.present?) || product.present?
           customer_product.brand = brand
           product.brand = brand
-          customer_product.save!
-          product.save!
+          customer_product.save
+          product.save
         end
       end
     end
