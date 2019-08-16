@@ -5,7 +5,7 @@ class Overseers::BibleSalesOrders::ImportsController < Overseers::BaseController
     service = Services::Overseers::Bible::CreateOrder.new
     data = service.get_bible_file_upload_log
     @bible_file_uploads = data
-    authorize_acl  :bible_sales_order
+    authorize_acl :bible_sales_order
   end
 
   def download_bible_order_template
@@ -29,20 +29,18 @@ class Overseers::BibleSalesOrders::ImportsController < Overseers::BaseController
 
   private
 
-  def bible_upload_log_params
-    params.require(:bible_upload_log).permit(
+    def bible_upload_log_params
+      params.require(:bible_upload_log).permit(
         :id,
-        :bible_file_upload_id,
-        :sr_no,
-        :status,
-        :bible_row_data,
-        :error
-    )
-  end
+          :bible_file_upload_id,
+          :sr_no,
+          :status,
+          :bible_row_data,
+          :error
+      )
+    end
 
-  def set_bible_upload
-    @bible_file_uploads = BibleUploadLog.where(bible_file_upload_id: BibleFileUpload.decode_id(params[:id]))
-  end
-
+    def set_bible_upload
+      @bible_file_uploads = BibleUploadLog.where(bible_file_upload_id: BibleFileUpload.decode_id(params[:id]))
+    end
 end
-
