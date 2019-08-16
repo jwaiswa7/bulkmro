@@ -153,7 +153,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
         customer_product = company.customer_products.where(sku: brand_for_sku.keys.first.to_s).first
         brand = Brand.where('lower(name) = ?', brand_for_sku.values.first.to_s).first
         product = Product.where(sku: brand_for_sku.keys.first.to_s).first
-        if customer_product.present? && brand.present?
+        if (customer_product.present? && brand.present?) || product.present?
           customer_product.brand = brand
           product.brand = brand
           customer_product.save!
