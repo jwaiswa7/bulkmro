@@ -49,12 +49,10 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
   end
 
   def update_company_customer_product
-    file = "#{Rails.root}/tmp/error_while_updating_customer_products.csv"
-    column_headers = ['sku', 'product_name', 'error_message']
     service = Services::Shared::Spreadsheets::CsvImporter.new('updated_fabtech_list.csv', 'seed_files')
     company = Company.find_by_name('FABTECH TECHNOLOGIES INTERNATIONAL LTD')
     if company.present?
-      CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+        error_message = []
         service.loop do |row|
           o = Overseer.find('JkYhxe')
           name = row.get_column('Product_Description')
@@ -111,11 +109,11 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
               customer_product.product.save_and_sync
             end
           rescue => e
-            writer << [customer_product.product.sku, customer_product.product.name, e.message]
+            error_message << [customer_product.product.sku, customer_product.product.name, e.message]
             next
           end
         end
-      end
+        puts error_message
     end
   end
 
