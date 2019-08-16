@@ -341,8 +341,17 @@ Rails.application.routes.draw do
       collection do
         get 'create_with_packing_slip'
       end
+      member do
+        get 'make_packing_zip'
+      end
       scope module: 'outward_dispatches' do
-        resources :packing_slips
+        resources :packing_slips do
+          collection do
+            get 'add_packing'
+            post 'submit_packing'
+            get 'edit_outward_packing_slips'
+          end
+        end
         resources :email_messages do
           collection do
             get 'dispatch_mail_to_customer'
@@ -401,6 +410,7 @@ Rails.application.routes.draw do
         get 'cancelled_purchase_modal'
         patch 'cancelled_purchase_order'
         get 'resync_po'
+        get 'change_material_status'
       end
 
       collection do
