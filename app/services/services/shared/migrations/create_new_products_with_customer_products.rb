@@ -50,7 +50,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
 
   def update_company_customer_product
     service = Services::Shared::Spreadsheets::CsvImporter.new('updated_fabtech_list.csv', 'seed_files')
-    company = Company.find_by_name('FABTECH TECHNOLOGIES INTERNATIONAL LTD')
+    company = Company.find('p7tpZ6')
     if company.present?
         error_message = []
         service.loop do |row|
