@@ -52,7 +52,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
     service = Services::Shared::Spreadsheets::CsvImporter.new('updated_fabtech_list.csv', 'seed_files')
     company = Company.find('p7tpZ6')
     if company.present?
-        error_message = []
+      error_message = []
         service.loop do |row|
           o = Overseer.find('JkYhxe')
           name = row.get_column('Product_Description')
@@ -100,7 +100,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
 
               comment = ProductComment.new
               comment.product = customer_product.product
-              comment.message = "Approved on behalf of Subrata"
+              comment.message = 'Approved on behalf of Subrata'
               comment.created_by = o
               comment.updated_by = o
               comment.save
@@ -113,7 +113,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
             next
           end
         end
-        puts error_message
+      puts error_message
     end
   end
 
@@ -126,27 +126,27 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
   def update_brand_for_products
     company = Company.find('p7tpZ6')
     brand_for_sku = [
-             {"BM9O0J2": "PENTAGON FASTENERS"},
-             {"BM9Y3C9": "AAF"},
-             {"BM9K1R2": "FORTRAN"},
-             {"BM9P4H0": "FREEMAN"},
-             {"BM9I7O5": "FREEMAN"},
-             {"BM9H7N7": "FREEMAN"},
-             {"BM9H6X3": "JK FILES"},
-             {"BM9W2D0": "JK FILES"},
-             {"BM9K7O4": "JK FILES"},
-             {"BM9I4L3": "ROXELLO"},
-             {"BM9S1J3": "ROXELLO"},
-             {"BM9O3T8": "ROXELLO"},
-             {"BM9V3T6": "ROXELLO"},
-             {"BM9K7A4": "ROXELLO"},
-             {"BM9U2V2": "ROXELLO"},
-             {"BM9U5A0": "ROXELLO"},
-             {"BM9X7Z9": "ROXELLO"},
-             {"BM9Y4O3": "ROXELLO"},
-             {"BM9B0P3": "ROXELLO"},
-             {"BM9S9I1": "ROXELLO"},
-             {"BM9W8Z9": "ROXELLO"}
+             {"BM9O0J2": 'PENTAGON FASTENERS'},
+             {"BM9Y3C9": 'AAF'},
+             {"BM9K1R2": 'FORTRAN'},
+             {"BM9P4H0": 'FREEMAN'},
+             {"BM9I7O5": 'FREEMAN'},
+             {"BM9H7N7": 'FREEMAN'},
+             {"BM9H6X3": 'JK FILES'},
+             {"BM9W2D0": 'JK FILES'},
+             {"BM9K7O4": 'JK FILES'},
+             {"BM9I4L3": 'ROXELLO'},
+             {"BM9S1J3": 'ROXELLO'},
+             {"BM9O3T8": 'ROXELLO'},
+             {"BM9V3T6": 'ROXELLO'},
+             {"BM9K7A4": 'ROXELLO'},
+             {"BM9U2V2": 'ROXELLO'},
+             {"BM9U5A0": 'ROXELLO'},
+             {"BM9X7Z9": 'ROXELLO'},
+             {"BM9Y4O3": 'ROXELLO'},
+             {"BM9B0P3": 'ROXELLO'},
+             {"BM9S9I1": 'ROXELLO'},
+             {"BM9W8Z9": 'ROXELLO'}
     ]
     if company.present?
       brand_for_sku.each do |value|
