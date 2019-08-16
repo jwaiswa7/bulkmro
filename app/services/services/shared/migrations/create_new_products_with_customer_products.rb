@@ -61,7 +61,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
         tax_code_file = row.get_column('Tax_Code')
         sku = row.get_column('BM_Number')
         brand_name = row.get_column('Brand')
-        moq =row.get_column('MOQ')
+        moq = row.get_column('MOQ')
         unit = row.get_column('UOM')
         customer_price = row.get_column('Bundle_Price')
         unit_price = row.get_column('Per_Unit_Price')
@@ -96,7 +96,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
 
           comment = ProductComment.new
           comment.product = customer_product.product
-          comment.message = "Approved on behalf of Subrata"
+          comment.message = 'Approved on behalf of Subrata'
           comment.created_by = o
           comment.updated_by = o
           comment.save
