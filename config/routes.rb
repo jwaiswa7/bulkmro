@@ -374,6 +374,8 @@ Rails.application.routes.draw do
         post 'preview_purchase_orders_requests'
         post 'create_purchase_orders_requests'
         get 'debugging'
+        get 'render_modal_form'
+        patch 'add_comment'
       end
 
       collection do

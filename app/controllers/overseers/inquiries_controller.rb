@@ -544,11 +544,12 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
     authorize_acl @inquiry
     if @inquiry.valid?
-      if params['inquiry']['comments_attributes']['0']['message'].present?
+      message = params['inquiry']['comments_attributes']['0']['message']
+      if message.present?
         ActiveRecord::Base.transaction do
-          binding.pry
           @inquiry.save!
-          @inquiry_comment = InquiryComment.new(message: '', inquiry: @inquiry, overseer: current_overseer)
+          @inquiry_comment = @inquiry.comments.build(message: message, inquiry: @inquiry, overseer: current_overseer)
+          @inquiry_comment.save
         end
         render json: {success: 1, message: 'Successfully updated '}, status: 200
       else

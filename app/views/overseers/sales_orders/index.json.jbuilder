@@ -29,7 +29,13 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if is_authorized(sales_order, 'debugging')
                         row_action_button(debugging_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'cogs', 'Debugging', 'danger', :_blank)
-                      end
+                      end,
+                      if is_authorized(sales_order, 'index')
+                        link_to('', class: ['btn btn-sm btn-success comment-sales_order'], 'data-sales_order-id': sales_order.id, title: 'Comment', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                        end
+                      end,
 
                   ].join(' '),
                   conditional_link(sales_order.order_number.present? ? sales_order.order_number : '-', overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), is_authorized(sales_order, 'show')),

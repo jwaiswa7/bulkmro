@@ -1,6 +1,7 @@
 import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from "../common/updateSummaryBox";
 import exportFilteredRecords from "../common/exportFilteredRecords";
+import callAjaxFunction from "../common/callAjaxFunction";
 
 const index = () => {
     bindSummaryBox(".summary_box", '.status-filter')
@@ -10,6 +11,22 @@ const index = () => {
     let controller = camelize($('body').data().controller);
     exportFilteredRecords(Routes.export_filtered_records_overseers_sales_orders_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
     salesOrderCancel()
+
+    $('.datatable').on('click', '.comment-sales_order', function (e) {
+        var id = $(this).data('sales_order-id')
+        var title = $(this).attr('title')
+        var json = {
+            url: "/overseers/sales_orders/" + id + "/render_modal_form?title=" + title,
+            modalId: '#addComment',
+            className: '.open-modal-form',
+            buttonClassName: '.confirm-cancel',
+            this: $(this),
+            title: title
+        }
+        callAjaxFunction(json)
+
+
+    })
 };
 
 let salesOrderCancel = () => {
