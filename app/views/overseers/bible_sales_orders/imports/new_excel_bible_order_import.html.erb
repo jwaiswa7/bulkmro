@@ -1,12 +1,11 @@
 <% provide :container_fluid, true %>
-
+<% provide :can_be_ajaxed, true %>
 
 <div class="col-lg-12 mb-0">
   <div class="page-header mb-0">
     <h2>Bible File Upload</h2>
   </div>
 </div>
-
 
 <div class="container-fluid">
   <div class="row justify-content-end">
@@ -17,37 +16,29 @@
   </div>
 </div>
 
-
-
 <div class="col-12 mt-2">
-    <table class="table-bordered table">
-      <thead>
-      <tr>
-        <th>Id</th>
-        <th>File Name</th>
-        <th>Status</th>
-        <th>Updated_by</th>
-        <th>Time</th>
-        <th>Log</th>
-      </tr>
-      </thead>
-      <tbody>
-          <% @bible_file_uploads.each do |file_upload| %>
-        <tr>
-          <td><%= file_upload.id.to_s %></td>
-          <td><%= file_upload.file_name %></td>
-          <td><%= file_upload.status %></td>
-          <td><%= file_upload.updated_by.to_s %></td>
-          <td><%= format_date(file_upload.created_at) %></td>
-          <td>
-            <% if file_upload.status == 'Complete' %>
-              <%=  link_to('View Log', bible_file_upload_log_overseers_bible_sales_orders_import_path(file_upload), target: '_blank') %>
-            <% end %>
-          </td>
-        </tr>
-          <% end %>
-      </tbody>
-    </table>
+    <% content_for :header_row do %>
+<!--      <th class="no-sort"></th>-->
+      <th class="no-sort all">Id</th>
+<!--      <th class="no-sort all">Import Type</th>-->
+      <th class="no-sort all text-right">File Name</th>
+      <th class="no-sort desktop text-right">Status</th>
+      <th class="no-sort desktop text-right">Updated By</th>
+      <th class="no-sort desktop">Time</th>
+      <th class="no-sort desktop">Log</th>
+    <% end %>
+    <% content_for :filter_row do %>
+      <td data-filter="false"></td>
+      <td data-filter="false"></td>
+    <!--      <td data-filter="dropdown"></td>-->
+      <td data-filter="false"></td>
+      <td data-filter="false"></td>
+      <td data-filter="false"></td>
+      <td data-filter="false"></td>
+    <% end %>
+
+    <%= render layout: 'shared/layouts/datatable' do %>
+    <% end %>
 </div>
 
   <div class="modal fade" id="myModal">
@@ -74,7 +65,6 @@
                 </div>
               </div>
             </div>
-
           <% end %>
         </div>
       </div>
