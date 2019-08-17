@@ -7,12 +7,8 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
     @bible_upload_queue.each do |upload_sheet|
       error = []
       i = 0
-      temp_path = Tempfile.open { |tempfile| tempfile << upload_sheet.bible_attachment.download }.path
-      destination_path = Rails.root.join('db', 'bible_imports')
-      Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
-      path_to_tempfile = [destination_path, '/', 'bible_file_sheet.rb'].join
-      FileUtils.mv temp_path, path_to_tempfile
 
+      fetch_file_to_be_processed(upload_sheet)
       service = Services::Shared::Spreadsheets::CsvImporter.new('bible_file_sheet.rb', 'bible_imports')
       upload_sheet.update(status: 'Processing')
       service.loop(nil) do |x|
@@ -127,11 +123,17 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
     end
   end
 
-
   def get_bible_file_upload_log
     BibleUpload.all
   end
 
+  def fetch_file_to_be_processed(upload_sheet)
+    temp_path = Tempfile.open { |tempfile| tempfile << upload_sheet.bible_attachment.download }.path
+    destination_path = Rails.root.join('db', 'bible_imports')
+    Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
+    path_to_tempfile = [destination_path, '/', 'bible_file_sheet.rb'].join
+    FileUtils.mv temp_path, path_to_tempfile
+  end
 
   def export_csv_format_for_bible
     file_name = "#{Rails.root}/tmp/bible_sales_order.csv"
