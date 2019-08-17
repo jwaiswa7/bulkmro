@@ -57,6 +57,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
         field :customer_delivery_date, value: -> (record) { record.sales_invoice.try(:delivery_date) }, type: 'date'
         field :product_id, value: -> (record) { record.get_product_details.try(:id) }, type: 'integer'
         field :sku, value: -> (record) { record.try(:sku) }, analyzer: 'sku_substring'
+        field :delivery_status, value: -> (record) { record.sales_invoice.send(:delivery_date).present? ? (record.sales_invoice.send(:delivery_date) < Date.today ? 'Delivered' : 'Not Delivered') : 'Not Delivered'}, analyzer: 'substring'
       end
     end
 

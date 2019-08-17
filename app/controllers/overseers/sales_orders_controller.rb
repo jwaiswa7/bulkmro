@@ -210,20 +210,26 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def customer_order_status_report
     authorize_acl :sales_order
+    @delivery_statuses = ['Delivery Pending', 'All']
     respond_to do |format|
-      format.html {
-        if params['customer_order_status_report'].present?
-          @category = params['customer_order_status_report']['category']
-        end
-      }
+      if params['customer_order_status_report'].present?
+        category = params['customer_order_status_report']['category'] if params['customer_order_status_report']['category'].present?
+        delivery_status = params['customer_order_status_report']['delivery_status'] if params['customer_order_status_report']['delivery_status'].present?
+      else
+        category = @categories[0]
+        delivery_status = @delivery_statuses[0]
+      end
+      format.html {}
       format.json do
-        if params['customer_order_status_report'].present?
-          @category = params['customer_order_status_report']['category']
-        end
         service = Services::Overseers::Finders::CustomerOrderStatusReports.new(params, current_overseer, paginate: false)
         service.call
         indexed_sales_orders = service.indexed_records
-        @sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders).call
+        sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders, delivery_status).call
+        if delivery_status == @delivery_statuses[0]
+          @sales_orders = sales_orders.select { |sales_order| sales_order[:delivery_status] == 'Not Delivered' }
+        else
+          @sales_orders = sales_orders
+        end
         @per = (params['per'] || params['length'] || 20).to_i
         @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
         @customer_order_status_records = Kaminari.paginate_array(@sales_orders).page(@page).per(@per)

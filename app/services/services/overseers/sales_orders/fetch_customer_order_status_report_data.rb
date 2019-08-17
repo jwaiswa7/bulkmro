@@ -1,6 +1,7 @@
 class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Services::Shared::BaseService
-  def initialize(indexed_sales_orders)
+  def initialize(indexed_sales_orders,  delivery_status)
     @indexed_sales_orders = indexed_sales_orders
+    @delivery_status = delivery_status
   end
 
   def call
@@ -27,6 +28,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
 
         so_rows.each do |so_row|
           purchase_order_details = {}
+          # if invoices present of sales order
           if so_invoices.present?
             so_invoices.each do |so_invoice|
               if so_invoice['rows'].present?
@@ -46,7 +48,8 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
                 end
               end
             end
-          elsif so_purchase_orders.present? && (so_invoices.present? && invoice_skus.exclude?(so_row['sku']))
+          #   if invoices present but sku is not present in sales invoice but present in purchase_orders
+          elsif so_purchase_orders.present?  && (so_invoices.present? && invoice_skus.exclude?(so_row['sku']))
             so_purchase_orders.each do |so_purchase_order|
               if so_purchase_order.present? && so_purchase_order['rows'].present?
                 so_purchase_order['rows'].each do |po_row|
@@ -58,6 +61,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
               end
             end
           end
+          #  if invoices not present and po requests and purchase orders present
           if so_purchase_orders.present? && !so_invoices.present?
             so_purchase_orders.each do |so_purchase_order|
               if so_purchase_order.present? && so_purchase_order['rows'].present?
@@ -69,10 +73,12 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
                 end
               end
             end
+          #   if po requests and purchase orders present but sku is not present in purchase order but present in sales order
           elsif po_skus.present? && po_skus.exclude?(so_row['sku'])
             sales_orders << get_sales_order_details(so_primary_details, so_row, nil, nil)
           end
 
+          # if po requests are not present but purchase orders are present of sales orders
           if so_inquiry_purchase_orders.present? && !so_purchase_orders.present? && !so_invoices.present?
             so_inquiry_purchase_orders.each do |so_purchase_order|
               if so_purchase_order.present? && so_purchase_order['rows'].present?
@@ -84,10 +90,11 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
                 end
               end
             end
+          #   purchase orders present but sku is not present in purchase order but present in sales order
           elsif inquiry_po_skus.present? && inquiry_po_skus.exclude?(so_row['sku'])
             sales_orders << get_sales_order_details(so_primary_details, so_row, nil, nil)
           end
-
+          # if invoices or purchase_orders with po request or purchase_orders without po request are not present
           if !so_invoices.present? && !so_purchase_orders.present? && !so_inquiry_purchase_orders
             sales_orders << get_sales_order_details(so_primary_details, so_row, nil, nil)
           end
@@ -136,9 +143,10 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
         inward_date: purchase_order_details.present? && purchase_order_details[:inward_date].present? ? purchase_order_details[:inward_date] : '',
         outward_date: invoice_details.present? && invoice_details['outward_date'].present? ? invoice_details['outward_date'] : '',
         customer_delivery_date: invoice_details.present? && invoice_details['customer_delivery_date'].present? ? invoice_details['customer_delivery_date'] : '',
+        delivery_status: invoice_details.present? && invoice_details['delivery_status'].present? ? invoice_details['delivery_status'] : 'Not Delivered',
         on_time_or_delayed_time: invoice_details.present? && invoice_details['on_time_or_delayed_time'].present? ? invoice_details['on_time_or_delayed_time'] : ''
     }
   end
 
-  attr_accessor :indexed_sales_orders
+  attr_accessor :indexed_sales_orders, :delivery_status
 end
