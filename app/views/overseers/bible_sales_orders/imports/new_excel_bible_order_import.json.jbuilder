@@ -1,7 +1,7 @@
 json.data (@bible_file_uploads) do |bible_upload|
   json.array! [
                   bible_upload.id.to_s,
-                  # bible_upload.import_type,
+                  bible_upload.import_type,
                   bible_upload.file_name,
                   bible_upload.status,
                   bible_upload.updated_by.to_s,
@@ -14,8 +14,8 @@ end
 
 json.columnFilters [
                        [],
+                       BibleFileUpload.import_types.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
                        [],
-                       # [{"label": 'Sales Order', "value": '10'}, {"label": 'Sales Invoice', "value": '20'}].as_json,
                        [],
                        [],
                        [],

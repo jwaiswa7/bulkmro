@@ -4,4 +4,9 @@ class BibleFileUpload < ApplicationRecord
   has_many :bible_upload_logs, class_name: 'BibleUploadLog', dependent: :destroy
 
   has_one_attached :bible_attachment
+
+  enum import_type: {
+      'Sales Order': 10,
+      'SalesInvoice': 20
+  }
 end

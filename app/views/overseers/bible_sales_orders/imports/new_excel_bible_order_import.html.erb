@@ -1,5 +1,5 @@
-<% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
+<% provide :container_fluid, true %>
 
 <div class="col-lg-12 mb-0">
   <div class="page-header mb-0">
@@ -12,64 +12,66 @@
     <a href="<%= download_bible_order_template_overseers_bible_sales_orders_imports_path(format: :xlsx) %>" target="_blank" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down mr-md-1">
       <i class="fal fa-download mr-1"></i>Download Excel Template
     </a>
-    <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#myModal"><i class="fal fa-upload mr-1"></i> Import (xls, csv) </button>
+    <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#myModal">
+      <i class="fal fa-upload mr-1"></i> Import (xls, csv)
+    </button>
   </div>
 </div>
 
 <div class="col-12 mt-2">
-    <% content_for :header_row do %>
-<!--      <th class="no-sort"></th>-->
-      <th class="no-sort all">Id</th>
-<!--      <th class="no-sort all">Import Type</th>-->
-      <th class="no-sort all text-right">File Name</th>
-      <th class="no-sort desktop text-right">Status</th>
-      <th class="no-sort desktop text-right">Updated By</th>
-      <th class="no-sort desktop">Time</th>
-      <th class="no-sort desktop">Log</th>
-    <% end %>
-    <% content_for :filter_row do %>
-      <td data-filter="false"></td>
-      <td data-filter="false"></td>
-    <!--      <td data-filter="dropdown"></td>-->
-      <td data-filter="false"></td>
-      <td data-filter="false"></td>
-      <td data-filter="false"></td>
-      <td data-filter="false"></td>
-    <% end %>
+  <% content_for :header_row do %>
+    <!-- <th class="no-sort"></th>-->
+    <th class="no-sort all">Id</th>
+    <th class="no-sort all">Import Type</th>
+    <th class="no-sort all text-right">File Name</th>
+    <th class="no-sort desktop text-right">Status</th>
+    <th class="no-sort desktop text-right">Updated By</th>
+    <th class="no-sort desktop">Time</th>
+    <th class="no-sort desktop">Log</th>
+  <% end %>
+  <% content_for :filter_row do %>
+    <td data-filter="false"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+  <% end %>
 
-    <%= render layout: 'shared/layouts/datatable' do %>
-    <% end %>
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
 </div>
 
-  <div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
-        <div class="modal-header">
-          <h4 class="modal-title">Bible Import</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
+      <div class="modal-header">
+        <h4 class="modal-title">Bible Import</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
 
-        <!-- Modal body -->
-        <div class="modal-body">
-          <%= form_tag create_bible_orders_overseers_bible_sales_orders_imports_path , multipart: true do %>
-            <div class="card">
-              <div class="card-body">
-                <%= file_field_tag :file , required: true %>
-                <div class="form-group mb-0">
+      <!-- Modal body -->
+      <div class="modal-body">
+        <%= form_tag create_bible_orders_overseers_bible_sales_orders_imports_path, multipart: true do %>
+          <div class="card">
+            <div class="card-body">
+              <%= file_field_tag :file, required: true %>
+              <div class="form-group mb-0">
 
-                  <div class="modal-footer">
-                    <%= submit_tag "Import", class: 'btn btn-success btn-block' %>
-                  </div>
-
+                <div class="modal-footer">
+                  <%= submit_tag "Import", class: 'btn btn-success btn-block' %>
                 </div>
+
               </div>
             </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
+</div>
 
 
 
