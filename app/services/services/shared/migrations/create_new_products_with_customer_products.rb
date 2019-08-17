@@ -163,5 +163,47 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
     end
   end
 
+  def update_customer_product_name
+    service = Services::Shared::Spreadsheets::CsvImporter.new('customer_product_name_update.csv', 'seed_files')
+    company = Company.find('p7tpZ6')
+    customer_product_name = []
+    cutomer_product_sku = []
+    service.loop do |row|
+      customer_product_sku = row.get_column('current_customer_product_sku')
+      product_sku = row.get_column('old_product_sku')
+      product_name = row.get_column('product_name_in_system')
+      customer_product = company.customer_products.where(sku: customer_product_sku).last
+      product = Product.where(sku: product_sku).last
+      if customer_product.present? && product.present?
+        customer_product_name << customer_product.name
+        cutomer_product_sku << customer_product.sku
+        customer_product.name = product_name || product.name
+        customer_product.sku = product_sku || product.sku
+        customer_product.save
+      end
+    end
+    puts "************************************************"
+    puts "Customer Product SKU : #{cutomer_product_sku}"
+    puts "************************************************"
+    puts "Customer Product Names : #{customer_product_name}"
+    puts "************************************************"
+  end
+
+  def tax_code_export
+    file = "#{Rails.root}/tmp/tax_codes_dump.csv"
+    column_headers = ['code', 'chapter', 'tax_percentage', "is_service", "is_active"]
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+      TaxCode.all.each do |tax_code|
+        code = tax_code.code
+        chapter = tax_code.chapter
+        percentage = tax_code.tax_percentage.present? ? tax_code.tax_percentage.to_f : "0"
+        is_service = tax_code.is_service
+        is_active = tax_code.is_active
+        writer << [code, chapter, percentage, is_service, is_active]
+
+      end
+    end
+  end
+
   attr_accessor :product
 end
