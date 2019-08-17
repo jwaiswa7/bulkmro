@@ -54,5 +54,4 @@ class SalesInvoiceRow < ApplicationRecord
     def get_product
       sales_invoice.sales_order.sales_quote.rows.joins(:product).where(products: { sku: self.sku }).first || Product.find_by_sku(self.sku)
     end
-
 end

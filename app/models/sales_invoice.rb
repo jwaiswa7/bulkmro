@@ -333,5 +333,4 @@ class SalesInvoice < ApplicationRecord
       ((self.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
     end
   end
-
 end

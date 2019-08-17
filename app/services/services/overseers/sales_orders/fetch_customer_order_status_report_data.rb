@@ -49,7 +49,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
               end
             end
           #   if invoices present but sku is not present in sales invoice but present in purchase_orders
-          elsif so_purchase_orders.present?  && (so_invoices.present? && invoice_skus.exclude?(so_row['sku']))
+          elsif so_purchase_orders.present? && (so_invoices.present? && invoice_skus.exclude?(so_row['sku']))
             so_purchase_orders.each do |so_purchase_order|
               if so_purchase_order.present? && so_purchase_order['rows'].present?
                 so_purchase_order['rows'].each do |po_row|
