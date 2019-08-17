@@ -5,6 +5,7 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
     service = Services::Overseers::Bible::CreateOrder.new
     data = service.get_bible_file_upload_log
     @bible_file_uploads = data
+    # binding.pry
     authorize_acl :bible_sales_order
   end
 
@@ -23,7 +24,7 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
       @bible_file_upload = BibleUpload.create(file_name: bible_file.original_filename.to_s, status: 'Pending', updated_by_id: current_overseer.id, sheet_type: 'Sales Orders')
       @bible_file_upload.bible_attachment.attach(params[:file])
     elsif bible_sheet_type == 'invoices'
-      @bible_file_upload = BibleUpload.create(file_name: bible_file.original_filename.to_s, status: 'Pending', updated_by_id: current_overseer.id, sheet_type: 'Invoices')
+      @bible_file_upload = BibleUpload.create(file_name: bible_file.original_filename.to_s, status: 'Pending', updated_by_id: current_overseer.id, sheet_type: 'Sales Invoices')
       @bible_file_upload.bible_attachment.attach(params[:file])
     end
     redirect_to new_bible_import_overseers_bible_imports_path
@@ -47,6 +48,6 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
     end
 
     def set_bible_upload
-      @bible_file_uploads = BibleUploadLog.where(bible_file_upload_id: BibleUpload.decode_id(params[:id]))
+      @bible_file_uploads = BibleUploadLog.where(bible_upload_id: BibleUpload.decode_id(params[:id]))
     end
 end
