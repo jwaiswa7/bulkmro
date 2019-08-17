@@ -177,6 +177,7 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
       if customer_product.present? && product.present?
         customer_product_name << customer_product.name
         cutomer_product_sku << customer_product.sku
+        customer_product.product = product
         customer_product.name = product_name || product.name
         customer_product.sku = product_sku || product.sku
         customer_product.save
