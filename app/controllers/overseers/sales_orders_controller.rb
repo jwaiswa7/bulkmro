@@ -216,7 +216,6 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         category = params['customer_order_status_report']['category'] if params['customer_order_status_report']['category'].present?
         delivery_status = params['customer_order_status_report']['delivery_status'] if params['customer_order_status_report']['delivery_status'].present?
       else
-        category = @categories[0]
         delivery_status = @delivery_statuses[0]
       end
       format.html {}
