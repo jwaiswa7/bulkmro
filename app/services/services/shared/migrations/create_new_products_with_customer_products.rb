@@ -33,9 +33,9 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
             end
             if product.save!
               customer_product = company.customer_products.build(product_id: product.id,
-                                                                  category: product.category, name: product.name, brand: product.brand, sku: product.sku, unit_selling_price: customer_product_unit_price, customer_price: customer_product_unit_price,
-                                                                  moq: quantity, tax_code: product.tax_code, measurement_unit: product.measurement_unit
-                                                                 )
+                                                                 category: product.category, name: product.name, brand: product.brand, sku: product.sku, unit_selling_price: customer_product_unit_price, customer_price: customer_product_unit_price,
+                                                                 moq: quantity, tax_code: product.tax_code, measurement_unit: product.measurement_unit
+              )
               customer_product.save(validate: false)
             end
             product_ids << product.id
@@ -50,67 +50,116 @@ class Services::Shared::Migrations::CreateNewProductsWithCustomerProducts < Serv
 
   def update_company_customer_product
     service = Services::Shared::Spreadsheets::CsvImporter.new('updated_fabtech_list.csv', 'seed_files')
-    company = Company.find_by_name('FABTECH TECHNOLOGIES INTERNATIONAL LTD')
+    company = Company.find('p7tpZ6')
     if company.present?
-      service.loop do |row|
-        o = Overseer.find('JkYhxe')
-        name = row.get_column('Product_Description')
-        puts name
-        new_name = row.get_column('New_Description')
-        puts new_name
-        tax_code_file = row.get_column('Tax_Code')
-        sku = row.get_column('BM_Number')
-        brand_name = row.get_column('Brand')
-        moq =row.get_column('MOQ')
-        unit = row.get_column('UOM')
-        customer_price = row.get_column('Bundle_Price')
-        unit_price = row.get_column('Per_Unit_Price')
-        customer_product = CustomerProduct.where(company_id: company.id).where('lower(name) = ? ', name.downcase).last
-        puts '******************************'
-        puts CustomerProduct.where(company_id: company.id).where('lower(name) = ? ', name.downcase)
-        puts '******************************'
+      error_message = []
+        service.loop do |row|
+          o = Overseer.find('JkYhxe')
+          name = row.get_column('Product_Description')
+          puts name
+          new_name = row.get_column('New_Description')
+          puts new_name
+          tax_code_file = row.get_column('Tax_Code')
+          sku = row.get_column('BM_Number')
+          brand_name = row.get_column('Brand')
+          moq = row.get_column('MOQ')
+          unit = row.get_column('UOM')
+          customer_price = row.get_column('Bundle_Price')
+          unit_price = row.get_column('Per_Unit_Price')
+          customer_product = CustomerProduct.where(company_id: company.id).where('lower(name) = ? ', name.downcase).last
+          puts '******************************'
+          puts CustomerProduct.where(company_id: company.id).where('lower(name) = ? ', name.downcase)
+          puts '******************************'
 
-        if customer_product.blank?
-          customer_product = CustomerProduct.where(company_id: company.id).where('sku = ? ', sku).last
+=begin
+          if customer_product.blank?
+            customer_product = CustomerProduct.where(company_id: company.id).where('sku = ? ', sku).last
+          end
+=end
+          puts '******************************'
+          puts CustomerProduct.where(company_id: company.id).where('sku = ? ', sku).last
+          puts '******************************'
+          begin
+            if customer_product.present? && row.get_column('SKU').blank?
+              tax_code_data = TaxCode.where(code: tax_code_file, is_service: false).last
+              tax_code = tax_code_data.present? ? tax_code_data : TaxCode.where('code like ? AND is_service = ?', "#{tax_code_file[0..3]}%", false).last
+              brand = Brand.where('lower(name) = ? ', brand_name.downcase).last
+              measurement_unit = MeasurementUnit.where('lower(name) = ?', unit.downcase).last
+              customer_product.tax_code = tax_code
+              customer_product.name = new_name
+              customer_product.brand = brand
+              customer_product.moq = moq
+              customer_product.customer_price = customer_price
+              customer_product.measurement_unit = measurement_unit
+              customer_product.unit_selling_price = unit_price
+              customer_product.product.tax_code = tax_code
+              customer_product.product.brand = brand
+              customer_product.product.name = new_name
+              customer_product.product.save!
+              customer_product.save!
+
+              comment = ProductComment.new
+              comment.product = customer_product.product
+              comment.message = 'Approved on behalf of Subrata'
+              comment.created_by = o
+              comment.updated_by = o
+              comment.save
+
+              customer_product.product.create_approval(comment: comment, overseer: o)
+              customer_product.product.save_and_sync
+            end
+          rescue => e
+            error_message << [customer_product.product.sku, customer_product.product.name, e.message]
+            next
+          end
         end
-        puts '******************************'
-        puts CustomerProduct.where(company_id: company.id).where('sku = ? ', sku).last
-        puts '******************************'
-        if customer_product.present? && row.get_column('SKU').blank?
-          tax_code_data = TaxCode.where(code: tax_code_file, is_service: false).last
-          tax_code = tax_code_data.present? ? tax_code_data : TaxCode.where('code like ? AND is_service = ?', "#{tax_code_file[0..3]}%", false).last
-          brand = Brand.where('lower(name) = ? ', brand_name.downcase).last
-          measurement_unit = MeasurementUnit.where('lower(name) = ?', unit.downcase).last
-          customer_product.tax_code = tax_code
-          customer_product.name = new_name
-          customer_product.brand = brand
-          customer_product.moq = moq
-          customer_product.customer_price = customer_price
-          customer_product.measurement_unit = measurement_unit
-          customer_product.unit_selling_price = unit_price
-          customer_product.product.tax_code = tax_code
-          customer_product.product.brand = brand
-          customer_product.product.name = new_name
-          customer_product.product.save!
-          customer_product.save!
-
-          comment = ProductComment.new
-          comment.product = customer_product.product
-          comment.message = "Approved on behalf of Subrata"
-          comment.created_by = o
-          comment.updated_by = o
-          comment.save
-
-          customer_product.product.create_approval(comment: comment, overseer: o)
-          customer_product.product.save_and_sync
-        end
-      end
+      puts error_message
     end
   end
 
   def is_nil_error_for_product(condition, file_writer_obj, message)
     if condition.nil?
       file_writer_obj << message
+    end
+  end
+
+  def update_brand_for_products
+    company = Company.find('p7tpZ6')
+    brand_for_sku = [
+             {"BM9O0J2": 'PENTAGON FASTENERS'},
+             {"BM9Y3C9": 'AAF'},
+             {"BM9K1R2": 'FORTRAN'},
+             {"BM9P4H0": 'FREEMAN'},
+             {"BM9I7O5": 'FREEMAN'},
+             {"BM9H7N7": 'FREEMAN'},
+             {"BM9H6X3": 'JK FILES'},
+             {"BM9W2D0": 'JK FILES'},
+             {"BM9K7O4": 'JK FILES'},
+             {"BM9I4L3": 'ROXELLO'},
+             {"BM9S1J3": 'ROXELLO'},
+             {"BM9O3T8": 'ROXELLO'},
+             {"BM9V3T6": 'ROXELLO'},
+             {"BM9K7A4": 'ROXELLO'},
+             {"BM9U2V2": 'ROXELLO'},
+             {"BM9U5A0": 'ROXELLO'},
+             {"BM9X7Z9": 'ROXELLO'},
+             {"BM9Y4O3": 'ROXELLO'},
+             {"BM9B0P3": 'ROXELLO'},
+             {"BM9S9I1": 'ROXELLO'},
+             {"BM9W8Z9": 'ROXELLO'}
+    ]
+    if company.present?
+      brand_for_sku.each do |value|
+        customer_product = company.customer_products.where(sku: brand_for_sku.keys.first.to_s).first
+        brand = Brand.where('lower(name) = ?', brand_for_sku.values.first.to_s.downcase).first
+        product = Product.where(sku: brand_for_sku.keys.first.to_s).first
+        if (customer_product.present? && brand.present?) || product.present?
+          customer_product.brand = brand
+          product.brand = brand
+          customer_product.save
+          product.save
+        end
+      end
     end
   end
 
