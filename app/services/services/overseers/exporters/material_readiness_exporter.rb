@@ -4,7 +4,7 @@ class Services::Overseers::Exporters::MaterialReadinessExporter < Services::Over
     @model = PurchaseOrder
     @export_name = 'material_readiness_queue'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['PO Request', 'Inquiry', 'Customer Company Name', 'Material Status', 'Supplier PO', 'Supplier PO Date', 'Supplier Name', 'PO Type', 'Latest Comment', 'Sales Order Date', 'Sales Order', 'Committed Date to Customer', 'IS&P', 'Logistics Owner', 'Material Follow Up Date', 'Expected Delivery Date', 'Payment Request status', 'Percentage Paid', 'Requested Date', 'Buying Price', 'Selling Price', 'PO Margin %', 'Overall Margin %']
+    @columns = ['PO Request', 'Inquiry', 'Customer Company Name', 'Material Status', 'Supplier PO', 'Supplier PO Date', 'Supplier Name', 'PO Type', 'Comments(Latest First)', 'Sales Order Date', 'Sales Order', 'Committed Date to Customer', 'IS&P', 'Logistics Owner', 'Material Follow Up Date', 'Expected Delivery Date', 'Payment Request status', 'Percentage Paid', 'Requested Date', 'Buying Price', 'Selling Price', 'PO Margin %', 'Overall Margin %']
   end
 
   def call
@@ -16,7 +16,7 @@ class Services::Overseers::Exporters::MaterialReadinessExporter < Services::Over
     service = Services::Overseers::Finders::MaterialReadinessQueues.new({}, @overseer, paginate: false)
     service.call
 
-    service.records.find_each(batch_size: 200) do |record|
+    service.records.find_each(batch_size: 100) do |record|
       rows.push(
         po_request: record.po_request.present? ? record.po_request.id : '-',
         inquiry_number: record.inquiry.inquiry_number,
@@ -26,7 +26,7 @@ class Services::Overseers::Exporters::MaterialReadinessExporter < Services::Over
         supplier_po_date: (record.po_date ? format_succinct_date(record.po_date) : '-'),
         supplier_name: record.supplier.try(:name),
         po_type: record.po_request.present? ? record.po_request.supplier_po_type : '-',
-        latest_comment: record.last_comment.present? ? record.last_comment.message : '-',
+        comments: record.comments.present? ? record.comments.order(created_at: :desc).map.with_index { |mrq_comment, index| (index + 1).to_s + '. ' + mrq_comment.message + ' (' + mrq_comment.created_at.strftime('%d-%m-%Y %H:%M') + ')' }.join("\r\n") : '-',
         sales_order_date: (record.po_request.present? && record.po_request.sales_order.present?) ? format_succinct_date(record.po_request.sales_order.mis_date) : '-',
         sales_order: (record.po_request.present? && record.po_request.sales_order.present?) ? record.po_request.sales_order.order_number : '-',
         committed_date_to_customer: record.po_request.present? ? format_succinct_date(record.po_request.inquiry.customer_committed_date) : '-',

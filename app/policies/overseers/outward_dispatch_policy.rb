@@ -33,5 +33,4 @@ class Overseers::OutwardDispatchPolicy < Overseers::ApplicationPolicy
   def dispatch_mail_to_customer_notification?
     dispatch_mail_to_customer?
   end
-
 end

@@ -32,11 +32,12 @@ class SalesOrdersIndex < BaseIndex
     field :outside_sales_owner_id, value: -> (record) { record.inquiry.outside_sales_owner.id if record.inquiry.present? && record.inquiry.outside_sales_owner.present? }
     field :outside_sales_owner, value: -> (record) { record.inquiry.outside_sales_owner.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id if record.inquiry.present? }
-    field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id if record.inquiry.present? }
+    field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id if record    .inquiry.present? }
     field :mis_date, value: -> (record) { record.mis_date }, type: 'date'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
     field :sent_at, type: 'date'
+    field :customer_committed_date, value: ->(record) { record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present?}, type: 'date'
     field :created_by_id
     field :updated_by_id, value: -> (record) { record.updated_by.to_s }, analyzer: 'substring'
     field :cp_status_s, value: -> (record) { record.effective_customer_status.to_s }, analyzer: 'substring'

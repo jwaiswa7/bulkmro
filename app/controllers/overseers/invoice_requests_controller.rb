@@ -136,7 +136,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @company_reviews = [@invoice_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @invoice_request.purchase_order.supplier).first_or_create]
     end
     @inward_dispatches = @invoice_request.inward_dispatches
-    mpr_ids = @invoice_request.inward_dispatches.map(&:id).join(', ')
+    mpr_ids = @invoice_request.inward_dispatches.map(&:id)
     service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids, false)
 
     @inward_dispatch = @invoice_request.inward_dispatches.last
