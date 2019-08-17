@@ -10,7 +10,7 @@
 
 <div class="container-fluid">
   <div class="row justify-content-end">
-    <a href="<%= download_bible_order_template_overseers_bible_sales_orders_imports_path(format: :xlsx) %>" target="_blank" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down mr-md-1">
+    <a href="<%= download_bible_order_template_overseers_bible_imports_path(format: :xlsx) %>" target="_blank" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down mr-md-1">
       <i class="fal fa-download mr-1"></i>Download Excel Template
     </a>
     <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#myModal"><i class="fal fa-upload mr-1"></i> Import (xls, csv) </button>
@@ -25,6 +25,7 @@
       <tr>
         <th>Id</th>
         <th>File Name</th>
+        <th>Type</th>
         <th>Status</th>
         <th>Updated_by</th>
         <th>Time</th>
@@ -36,12 +37,13 @@
         <tr>
           <td><%= file_upload.id.to_s %></td>
           <td><%= file_upload.file_name %></td>
+          <td><%= file_upload.sheet_type if file_upload.sheet_type != nil %></td>
           <td><%= file_upload.status %></td>
           <td><%= file_upload.updated_by.to_s %></td>
           <td><%= format_date(file_upload.created_at) %></td>
           <td>
             <% if file_upload.status == 'Complete' %>
-              <%=  link_to('View Log', bible_file_upload_log_overseers_bible_sales_orders_import_path(file_upload), target: '_blank') %>
+              <%=  link_to('View Log', bible_file_upload_log_overseers_bible_import_path(file_upload), target: '_blank') %>
             <% end %>
           </td>
         </tr>
@@ -61,19 +63,32 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <%= form_tag create_bible_orders_overseers_bible_sales_orders_imports_path , multipart: true do %>
+          <%= form_tag create_bible_records_overseers_bible_imports_path , multipart: true do %>
             <div class="card">
               <div class="card-body">
                 <%= file_field_tag :file , required: true %>
-                <div class="form-group mb-0">
+                <div class="form-group mt-3">
+                  <!-- Default inline 1-->
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" id="bible-invoices-radio" name="bible-sheet-type" value="invoices">
+                    <label class="custom-control-label" for="bible-invoices-radio">Invoices</label>
+                  </div>
 
+                  <!-- Default inline 2-->
+                  <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" id="bible-salesorder-radio" name="bible-sheet-type" value="salesorder">
+                    <label class="custom-control-label" for="bible-salesorder-radio">Sales Orders</label>
+                  </div>
+                </div>
+
+                <div class="form-group mb-0">
                   <div class="modal-footer">
                     <%= submit_tag "Import", class: 'btn btn-success btn-block' %>
                   </div>
-
                 </div>
               </div>
             </div>
+
 
           <% end %>
         </div>

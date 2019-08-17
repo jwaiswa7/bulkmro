@@ -1,12 +1,12 @@
 import importsCreateFailedSkus from "./createFailedSkus";
 import importsManageFailedSkus from "./manageFailedSkus";
-import bibleFileUploadLogShow from "./bibleFileUploadLog";
+import BibleUploadLogShow from "./bibleFileUploadLog";
 
 
 let imports= {
     createFailedSkus: importsCreateFailedSkus,
     manageFailedSkus: importsManageFailedSkus,
-    bibleFileUploadLog: bibleFileUploadLogShow,
+    bibleFileUploadLog: BibleUploadLogShow
 }
 
 export default imports

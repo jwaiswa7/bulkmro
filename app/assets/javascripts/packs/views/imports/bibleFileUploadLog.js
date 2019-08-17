@@ -1,4 +1,4 @@
-const bibleFileUploadLogShow = () => {
+const BibleUploadLogShow = () => {
     $(function(){
         $('#BibleRowModal').modal({
             keyboard: true,
@@ -16,4 +16,4 @@ const bibleFileUploadLogShow = () => {
     });
 };
 
-export default bibleFileUploadLogShow
+export default BibleUploadLogShow

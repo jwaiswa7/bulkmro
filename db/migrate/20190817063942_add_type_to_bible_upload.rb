@@ -1,0 +1,5 @@
+class AddTypeToBibleUpload < ActiveRecord::Migration[5.2]
+  def change
+    add_column :bible_uploads, :type, :string
+  end
+end

@@ -605,14 +605,14 @@ Rails.application.routes.draw do
         end
       end
     end
-    namespace 'bible_sales_orders' do
+    namespace 'bible' do
       resources :imports do
         member do
           get 'bible_file_upload_log'
         end
         collection do
-          get 'new_excel_bible_order_import'
-          post 'create_bible_orders'
+          get 'new_bible_import'
+          post 'create_bible_records'
           get 'download_bible_order_template'
         end
       end
