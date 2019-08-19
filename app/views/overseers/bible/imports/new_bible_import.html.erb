@@ -11,6 +11,13 @@
 <!--    </button>-->
 <!--  </div>-->
 <!--</div>-->
+<div class="container-fluid">
+  <div class="row justify-content-end">
+    <a target="_blank" data-toggle="modal" data-target="#myModal" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down mr-md-1 mt-3">
+      <i class="fal fa-download mr-1"></i>Download Excel Template
+    </a>
+  </div>
+</div>
 
 
 <%= render layout: 'shared/layouts/form' do %>
@@ -73,10 +80,9 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <%= form_tag create_bible_records_overseers_bible_imports_path , multipart: true do %>
+          <%= form_tag download_bible_order_template_overseers_bible_imports_path(format: :xlsx) , multipart: true do %>
             <div class="card">
               <div class="card-body">
-                <%= file_field_tag :file , required: true %>
                 <div class="form-group mt-3">
                   <!-- Default inline 1-->
                   <div class="custom-control custom-radio custom-control-inline">
@@ -93,13 +99,11 @@
 
                 <div class="form-group mb-0">
                   <div class="modal-footer">
-                    <%= submit_tag "Import", class: 'btn btn-success btn-block' %>
+                    <%= submit_tag "Download", class: 'btn btn-success btn-block' %>
                   </div>
                 </div>
               </div>
             </div>
-
-
           <% end %>
         </div>
       </div>

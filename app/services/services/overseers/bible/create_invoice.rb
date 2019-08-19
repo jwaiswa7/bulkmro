@@ -120,4 +120,19 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
   def get_bible_file_upload_log
     BibleUpload.all
   end
+
+  def export_csv_format_for_bible
+    file_name = "#{Rails.root}/tmp/bible_sales_order.csv"
+    headers = fixed_header
+    csv_data = CSV.generate(write_headers: true, headers: headers) do |writer|
+    end
+    temp_file = File.open(file_name, 'wb')
+    temp_file.write(csv_data)
+    temp_file.close
+  end
+
+  def fixed_header
+    headers = ['Branch', 'Inquiry #', 'Invoice/Credit Note', 'Company Name', 'Invoice Number', 'Invoice Date', 'Month Code', 'New SKU', 'Description', 'Qty', 'Rate', 'Invoice Amount in Local Curr.', 'Invoice Currency', 'Exchange Rate', 'Invoice Amount in INR', 'Supplier Name', 'AP Ref. No.', 'Quantity', 'Purchase Cost', 'Cost Of Good Sold (Viz. Sales Qty)', 'Gross Margin Amount', 'Gross Margin %']
+    headers
+  end
 end

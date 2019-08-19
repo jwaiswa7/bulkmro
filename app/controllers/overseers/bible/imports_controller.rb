@@ -11,21 +11,29 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
 
   def download_bible_order_template
     authorize_acl :bible_upload
-    service = Services::Overseers::Bible::CreateOrder.new
-    service.export_csv_format_for_bible
-    send_file("#{Rails.root}/tmp/bible_sales_order.csv")
+    bible_sheet_type = params['bible-sheet-type']
+    if bible_sheet_type == 'salesorder'
+      service = Services::Overseers::Bible::CreateOrder.new
+      service.export_csv_format_for_bible
+      send_file("#{Rails.root}/tmp/bible_sales_order.csv")
+    elsif bible_sheet_type == 'invoices'
+      service = Services::Overseers::Bible::CreateInvoice.new
+      service.export_csv_format_for_bible
+      send_file("#{Rails.root}/tmp/bible_sales_invoices.csv")
+    end
   end
 
   def create_bible_records
     authorize_acl :bible_upload
     bible_file = params[:bible_upload][:file]
     bible_import_type = params[:bible_upload][:import_type]
+    # binding.pry
     if bible_import_type == 'Sales Order'
-      @bible_file_upload = BibleUpload.create(file: bible_file, status: 'Pending', updated_by_id: current_overseer.id, import_type: bible_import_type)
-      @bible_file_upload.bible_attachment.attach(bible_file)
+      @bible_file_upload = BibleUpload.create(file: bible_file, status: 'Pending', updated_by_id: current_overseer.id, import_type: 'Sales Order')
+      @bible_file_upload.bible_attachment.attach(params[:bible_upload][:file])
     elsif bible_import_type == 'Sales Invoice'
-      @bible_file_upload = BibleUpload.create(file: bible_file, status: 'Pending', updated_by_id: current_overseer.id, import_type: bible_import_type)
-      @bible_file_upload.bible_attachment.attach(bible_file)
+      @bible_file_upload = BibleUpload.create(file: bible_file, status: 'Pending', updated_by_id: current_overseer.id, import_type: 'Sales Invoice')
+      @bible_file_upload.bible_attachment.attach(params[:bible_upload][:file])
     end
     redirect_to new_bible_import_overseers_bible_imports_path
   end
