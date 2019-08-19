@@ -11,7 +11,7 @@
         <div class="modal-body">
           <div class="error text-red mb-3 px-1 rounded"></div>
           <div class="form-group mt-1">
-            <%= f.input :quotation_followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: @inquiry.sales_quotes.present? ? true : false %>
+            <%= f.input :quotation_followup_date, as: :string, :label => 'Next Follow-up Date for Quotation', input_html: {:'data-toggle' => 'datepicker'}, required: @inquiry.sales_quotes.present? ? true : false %>
           </div>
           <div class="form-group mt-1">
             <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |comment| %>
@@ -22,7 +22,19 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success confirm">Apply</button>
+          <button type="submit" class="btn btn-success btn-block confirm">Apply</button>
+        </div>
+        <div class="card">
+          <% if f.object.comments.persisted.size > 0 %>
+            <div class="card-body">
+              <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
+              <div class="chats">
+                <% f.object.comments.persisted.order(created_at: :desc).each do |comment| %>
+                  <%= format_comment(comment) %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>
