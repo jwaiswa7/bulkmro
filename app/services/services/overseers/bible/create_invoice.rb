@@ -1,22 +1,24 @@
-class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
-  def initialize
+class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::BaseService
+  attr_accessor :upload_sheet
+
+  def initialize(upload=nil)
+    @upload_sheet = upload
   end
 
   def call
-    @bible_upload_queue = BibleUpload.where(status: 'Pending')
-    @bible_upload_queue.each do |upload_sheet|
-      i = 0
-      error = []
+    i = 0
+    error = []
+    temp_path = Tempfile.open { |tempfile| tempfile << upload_sheet.bible_attachment.download }.path
+    destination_path = Rails.root.join('db', 'bible_imports')
+    Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
+    path_to_tempfile = [destination_path, '/', 'bible_file_sheet.csv'].join
+    FileUtils.mv temp_path, path_to_tempfile
 
-      temp_path = Tempfile.open { |tempfile| tempfile << upload_sheet.bible_attachment.download }.path
-      destination_path = Rails.root.join('db', 'bible_imports')
-      Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
-      path_to_tempfile = [destination_path, '/', 'bible_file_sheet.rb'].join
-      FileUtils.mv temp_path, path_to_tempfile
-
-
-      service = Services::Shared::Spreadsheets::CsvImporter.new('bible_file_sheet.rb', 'bible_imports')
-      upload_sheet.update(status: 'Processing')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_file_sheet.csv', 'bible_imports')
+    upload_sheet.update(status: 'Processing')
+    sheet_header = service.get_header
+    defined_header = fixed_header
+    if sheet_header.sort == defined_header.sort
       service.loop(nil) do |x|
         begin
           invoice_number = x.get_column('Invoice Number')
@@ -79,6 +81,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
             bible_invoice.assign_attributes(metadata: invoice_metadata)
             bible_invoice.save
           end
+          upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: true, error: '-')
         rescue StandardError => err
           upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: false, error: err.message)
         end
@@ -87,9 +90,11 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
       calculate_totals
       upload_sheet.update(status: 'Complete')
       puts 'BibleSI', BibleInvoice.count
-      puts 'ERROR', error
-      File.delete(path_to_tempfile) if File.exist?(path_to_tempfile)
+    else
+      upload_sheet.update(status: 'Failed')
     end
+    # puts 'ERROR', error
+    File.delete(path_to_tempfile) if File.exist?(path_to_tempfile)
   end
 
   def calculate_totals
@@ -110,5 +115,9 @@ class Services::Overseers::Bible::CreateInvoice < Services::Shared::BaseService
       @overall_margin_percentage = (@margin_sum / @invoice_items).to_f
       bible_invoice.update_attributes(invoice_total: @bible_invoice_total, total_margin: @invoice_margin, overall_margin_percentage: @overall_margin_percentage)
     end
+  end
+
+  def get_bible_file_upload_log
+    BibleUpload.all
   end
 end

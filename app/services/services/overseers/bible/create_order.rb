@@ -1,21 +1,24 @@
-class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
-  def initialize
+class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::BaseService
+  attr_accessor :upload_sheet
+
+  def initialize(upload=nil)
+    @upload_sheet = upload
   end
 
   def call
-    @bible_upload_queue = BibleUpload.where(status: 'Pending')
-    @bible_upload_queue.each do |upload_sheet|
-      error = []
-      i = 0
+    i = 0
+    error = []
+    temp_path = Tempfile.open { |tempfile| tempfile << upload_sheet.bible_attachment.download }.path
+    destination_path = Rails.root.join('db', 'bible_imports')
+    Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
+    path_to_tempfile = [destination_path, '/', 'bible_file_sheet.csv'].join
+    FileUtils.mv temp_path, path_to_tempfile
 
-      temp_path = Tempfile.open { |tempfile| tempfile << upload_sheet.bible_attachment.download }.path
-      destination_path = Rails.root.join('db', 'bible_imports')
-      Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
-      path_to_tempfile = [destination_path, '/', 'bible_file_sheet.rb'].join
-      FileUtils.mv temp_path, path_to_tempfile
-
-      service = Services::Shared::Spreadsheets::CsvImporter.new('bible_file_sheet.rb', 'bible_imports')
-      upload_sheet.update(status: 'Processing')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_file_sheet.csv', 'bible_imports')
+    upload_sheet.update(status: 'Processing')
+    sheet_header = service.get_header
+    defined_header = fixed_header
+    if sheet_header.sort == defined_header.sort
       service.loop(nil) do |x|
         begin
           puts '******************************** ITERATION ***********************************', i
@@ -100,9 +103,11 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
       calculate_totals
       upload_sheet.update(status: 'Complete')
       puts 'BibleSO', BibleSalesOrder.count
-      puts 'ERROR', error
-      File.delete(path_to_tempfile) if File.exist?(path_to_tempfile)
+    else
+      upload_sheet.update(status: 'Failed')
     end
+    # puts 'ERROR', error
+    File.delete(path_to_tempfile) if File.exist?(path_to_tempfile)
   end
 
   def calculate_totals
@@ -132,21 +137,26 @@ class Services::Overseers::Bible::CreateOrder < Services::Shared::BaseService
     BibleUpload.all
   end
 
-  def fetch_file_to_be_processed(upload_sheet)
-    temp_path = Tempfile.open { |tempfile| tempfile << upload_sheet.bible_attachment.download }.path
-    destination_path = Rails.root.join('db', 'bible_imports')
-    Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
-    path_to_tempfile = [destination_path, '/', 'bible_file_sheet.rb'].join
-    FileUtils.mv temp_path, path_to_tempfile
-  end
+  # def fetch_file_to_be_processed(upload_sheet)
+  #   temp_path = Tempfile.open { |tempfile| tempfile << upload_sheet.bible_attachment.download }.path
+  #   destination_path = Rails.root.join('db', 'bible_imports')
+  #   Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
+  #   path_to_tempfile = [destination_path, '/', 'bible_file_sheet.rb'].join
+  #   FileUtils.mv temp_path, path_to_tempfile
+  # end
 
   def export_csv_format_for_bible
     file_name = "#{Rails.root}/tmp/bible_sales_order.csv"
-    headers = ['Inside Sales Name', 'Client Order #', 'Client Order Date', 'Price Currency', 'Document Rate', 'Magento Company Name', 'Company Alias', 'Inquiry Number', 'So #', 'Order Date', 'Bm #', 'Description', 'Order Qty', 'Unit Selling Price', 'Freight', 'Tax Type', 'Tax Rate', 'Tax Amount', 'Total Selling Price', 'Total Landed Cost', 'Unit cost price', 'Margin', 'Margin (In %)', 'So Month Code']
+    headers = fixed_header
     csv_data = CSV.generate(write_headers: true, headers: headers) do |writer|
     end
     temp_file = File.open(file_name, 'wb')
     temp_file.write(csv_data)
     temp_file.close
+  end
+
+  def fixed_header
+    headers = ['Inside Sales Name', 'Client Order #', 'Client Order Date', 'Price Currency', 'Document Rate', 'Magento Company Name', 'Company Alias', 'Inquiry Number', 'So #', 'Order Date', 'Bm #', 'Description', 'Order Qty', 'Unit Selling Price', 'Freight', 'Tax Type', 'Tax Rate', 'Tax Amount', 'Total Selling Price', 'Total Landed Cost', 'Unit cost price', 'Margin', 'Margin (In %)', 'So Month Code']
+    headers
   end
 end

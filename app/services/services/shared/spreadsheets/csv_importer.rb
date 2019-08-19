@@ -29,6 +29,10 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
     file
   end
 
+  def get_header
+    CSV.open(file, &:readline)
+  end
+
   def set_files(name, folder)
     folder = 'seed_files' if !folder.present?
     @file = Rails.root.join('db', folder, name)
