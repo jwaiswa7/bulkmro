@@ -1722,7 +1722,42 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                              remote_branch_code: x.get_column('Business Place ID')
       )
     end
+
+    #Manually add warehouses
+    warehouse_name = 'Pune - Phursungi'
+    account_name = 'Bulk MRO Industrial Supply Pvt. Ltd.'
+    street1 = 'Western Warehousing Complex'
+    street2 = 'Survey Number: 46/47, Urli Dewachi, Pune- Saswad Road'
+    pincode= 412308
+    city_name= 'Pune'
+    state= 'MH'
+    state_name= 'Maharashtra'
+    country_name= 'IN'
+    gst = ''
+    warehouse_code = 5
+    location_uid = 1
+
+    Warehouse.where(name: warehouse_name).first_or_create do |warehouse|
+      warehouse.build_address(
+          name: account_name,
+          street1: street1,
+          street2: street2,
+          pincode: pincode,
+          city_name: city_name,
+          country_code: country_name,
+          gst: gst,
+          state: AddressState.find_by_region_code(state)
+      )
+    end.update_attributes!(remote_uid: warehouse_code,
+                           legacy_id: warehouse_code,
+                           location_uid: location_uid,
+                           remote_branch_name: warehouse_name,
+                           remote_branch_code: warehouse_code
+    )
+
+
   end
+
 
   def target_reports
     target_type = {'1' => 10, '4' => 20, '7' => 30, '2' => 40, '3' => 50, '6' => 60}
