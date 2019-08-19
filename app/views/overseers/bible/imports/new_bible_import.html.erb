@@ -13,7 +13,7 @@
 <!--</div>-->
 <div class="container-fluid">
   <div class="row justify-content-end">
-    <a target="_blank" data-toggle="modal" data-target="#myModal" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down mr-md-1 mt-3">
+    <a data-toggle="modal" data-target="#myModal" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down mr-md-1 mt-3">
       <i class="fal fa-download mr-1"></i>Download Excel Template
     </a>
   </div>
@@ -80,7 +80,7 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <%= form_tag download_bible_order_template_overseers_bible_imports_path(format: :xlsx) , multipart: true do %>
+          <%= form_tag download_bible_order_template_overseers_bible_imports_path(format: :xlsx), method: :get do %>
             <div class="card">
               <div class="card-body">
                 <div class="form-group mt-3">

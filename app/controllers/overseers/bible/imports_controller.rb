@@ -5,7 +5,6 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
     service = Services::Overseers::Bible::CreateOrder.new
     data = service.get_bible_file_upload_log
     @bible_file_uploads = data
-
     authorize_acl :bible_upload
   end
 
@@ -15,12 +14,13 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
     if bible_sheet_type == 'salesorder'
       service = Services::Overseers::Bible::CreateOrder.new
       service.export_csv_format_for_bible
-      send_file("#{Rails.root}/tmp/bible_sales_order.csv")
+      send_file("#{Rails.root}/tmp/bible_sales_order.xlsx")
     elsif bible_sheet_type == 'invoices'
       service = Services::Overseers::Bible::CreateInvoice.new
       service.export_csv_format_for_bible
-      send_file("#{Rails.root}/tmp/bible_sales_invoices.csv")
+      send_file("#{Rails.root}/tmp/bible_sales_invoices.xlsx")
     end
+    # redirect_to new_bible_import_overseers_bible_imports_path
   end
 
   def create_bible_records

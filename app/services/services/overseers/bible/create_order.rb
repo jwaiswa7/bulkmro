@@ -146,7 +146,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
   # end
 
   def export_csv_format_for_bible
-    file_name = "#{Rails.root}/tmp/bible_sales_order.csv"
+    file_name = "#{Rails.root}/tmp/bible_sales_order.xlsx"
     headers = fixed_header
     csv_data = CSV.generate(write_headers: true, headers: headers) do |writer|
     end
