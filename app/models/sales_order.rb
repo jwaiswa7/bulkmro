@@ -273,11 +273,11 @@ class SalesOrder < ApplicationRecord
     end
   end
 
-  # def calculate_time_delay
-  #   if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present? && self.inquiry.customer_committed_date.present?
-  #     ((self.invoices.last.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
-  #   end
-  # end
+  def calculate_time_delay
+    if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present? && self.inquiry.customer_committed_date.present?
+      ((self.invoices.last.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
+    end
+  end
 
   def set_so_status_value
     self.remote_status.present? ? SalesOrder.remote_statuses[self.remote_status.to_sym] : 32

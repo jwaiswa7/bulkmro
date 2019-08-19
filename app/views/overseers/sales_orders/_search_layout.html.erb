@@ -2,24 +2,17 @@
   <div class="card mt-3">
     <div class="card-body">
       <div class="form-row">
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
           <%= f.input :delivery_status, as: :select, collection: @delivery_statuses, input_html: {class: 'select2-single select2-wrap-text'}, :include_blank => false, label: "Delivery Status", required: false, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['delivery_status'].present? ? params['customer_order_status_report']['delivery_status'] : @delivery_statuses[0] %>
-
-          <%#= f.input :category, as: :select, collection: @categories, input_html: {class: 'select2-single select2-wrap-text'}, :include_blank => false, label: "Category" %>
-
-          <%= f.input :procurement_specialist, as: :select, collection: Inquiry.procurement_specialists,
-                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement Specialist'}, required: false, include_blank: true,
-                      selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['procurement_specialist'].present? ? params['customer_order_status_report']['procurement_specialist'].to_i : '' %>
         </div>
-        <div class="col-12 col-md-4">
-          <%= f.input :outside_sales_owner, as: :select, collection: Inquiry.outside_sales_owners,
-                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a Outside Sales Owner'}, required: false, include_blank: true,
-                      selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['outside_sales_owner'].present? ? params['customer_order_status_report']['outside_sales_owner'].to_i : '' %>
+        <div class="col-12 col-md-3">
+          <%= f.input :category, as: :select, collection: @categories, input_html: {class: 'select2-single select2-wrap-text'}, :include_blank => false, label: "Category", required: false, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['category'].present? ? params['customer_order_status_report']['category'] : @categories[0] %>
         </div>
-        <div class="col-12 col-md-4">
-          <%= f.input :procurement_operations, as: :select, collection: Inquiry.procurement_operations,
-                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement_Opreations'}, required: false, include_blank: true,
-                      selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['procurement_operations'].present? ? params['customer_order_status_report']['procurement_operations'].to_i : '' %>
+        <div class="col-12 col-md-3">
+          <%= f.input :procurement_specialist, as: :select, collection: Inquiry.procurement_specialists, input_html: {class: "select2-single", :'data-placeholder' => 'Select Procurement Specialist'}, required: false, include_blank: true, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['procurement_specialist'].present? ? params['customer_order_status_report']['procurement_specialist'].to_i : '' %>
+        </div>
+        <div class="col-12 col-md-3">
+          <%= f.input :outside_sales_owner, as: :select, collection: Inquiry.outside_sales_owners, input_html: {class: "select2-single", :'data-placeholder' => 'Select Outside Sales Owner'}, required: false, include_blank: true, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['outside_sales_owner'].present? ? params['customer_order_status_report']['outside_sales_owner'].to_i : '' %>
         </div>
       </div>
       <div class="form-row">

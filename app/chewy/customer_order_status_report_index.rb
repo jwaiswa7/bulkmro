@@ -9,6 +9,9 @@ class CustomerOrderStatusReportIndex < BaseIndex
     field :outside_sales_owner, value: -> (record) { record.inquiry.outside_sales_owner.to_s }, analyzer: 'substring'
     field :procurement_operations_id, value: -> (record) { record.inquiry.procurement_operations.id if record.inquiry.procurement_operations.present? }
     field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations.to_s }, analyzer: 'substring'
+    field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id }
+    field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id }
+    field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations_id }
     field :company_id, value: -> (record) { record.inquiry.company.id if record.inquiry.present? }, type: 'integer'
     field :company, value: -> (record) { record.inquiry.company.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :account_id, value: -> (record) { record.inquiry.account.id if record.inquiry.present? }, type: 'integer'
@@ -18,10 +21,10 @@ class CustomerOrderStatusReportIndex < BaseIndex
     field :created_at, value: -> (record) { record.created_at }, type: 'date'
     field :mis_date, value: -> (record) { record.mis_date if record.mis_date.present? }, type: 'date'
     field :cp_committed_date, value: -> (record) { record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present? }, type: 'date'
-
-    field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id }
-    field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id }
-    field :procurement_operations, value: -> (record) { record.inquiry.procurement_operations_id }
+    field :outward_date_so_wise, value: -> (record) { record.invoices.last.mis_date if record.invoices.present? && record.invoices.last.status != 'Cancelled' }, type: 'date'
+    field :customer_delivery_date_so_wise, value: -> (record) { record.invoices.last.delivery_date if record.invoices.present? }, type: 'date'
+    field :delivery_status_so_wise, value: -> (record) { (record.invoices.present? && record.invoices.last.delivery_date.present?) ? (record.invoices.last.delivery_date < Date.today ? 'Delivered' : 'Not Delivered') : 'Not Delivered'}, analyzer: 'substring'
+    field :on_time_or_delayed_time_so_wise, value: -> (record) { record.calculate_time_delay }, type: 'integer'
 
     field :rows, type: 'nested' do
       field :product_id, value: -> (record) { record.get_product.try(:id) }, type: 'integer'

@@ -27,8 +27,16 @@
     <th class="no-sort desktop text-left" data-name="company_id">Company.</th>
     <th class="no-sort desktop text-left" data-name="account_id">Account</th>
     <th class="sort desktop text-left" data-name="order_number">Sales Order #</th>
-    <th class="sort desktop text-left" data-name="invoice_number">Invoice #</th>
-    <th class="sort desktop text-left" data-name="sku">BM #</th>
+    <% if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM' %>
+      <th class="sort desktop text-left" data-name="invoice_number">Invoice #</th>
+    <% else %>
+      <th></th>
+    <% end %>
+    <% if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM' %>
+      <th class="sort desktop text-left" data-name="sku">BM #</th>
+    <% else %>
+      <th></th>
+    <% end %>
     <th class="sort desktop text-left" data-name="mis_date">Sales Order </br>Date</th>
     <th class="sort desktop text-left" data-name="cp_committed_date">Committed Customer<br> Delivery Date</th>
     <th class="no-sort desktop text-left" data-name="po_number">Supplier PO No.</th>

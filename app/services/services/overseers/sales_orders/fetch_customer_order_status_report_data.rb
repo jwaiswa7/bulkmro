@@ -1,10 +1,10 @@
 class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Services::Shared::BaseService
-  def initialize(indexed_sales_orders,  delivery_status)
+  def initialize(indexed_sales_orders, delivery_status)
     @indexed_sales_orders = indexed_sales_orders
     @delivery_status = delivery_status
   end
 
-  def call
+  def fetch_data_bm_wise
     sales_orders = []
     indexed_sales_orders.each do |sales_order|
       so_primary_details = {
@@ -48,7 +48,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
                 end
               end
             end
-          #   if invoices present but sku is not present in sales invoice but present in purchase_orders
+            #   if invoices present but sku is not present in sales invoice but present in purchase_orders
           elsif so_purchase_orders.present? && (so_invoices.present? && invoice_skus.exclude?(so_row['sku']))
             so_purchase_orders.each do |so_purchase_order|
               if so_purchase_order.present? && so_purchase_order['rows'].present?
@@ -73,7 +73,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
                 end
               end
             end
-          #   if po requests and purchase orders present but sku is not present in purchase order but present in sales order
+            #   if po requests and purchase orders present but sku is not present in purchase order but present in sales order
           elsif po_skus.present? && po_skus.exclude?(so_row['sku'])
             sales_orders << get_sales_order_details(so_primary_details, so_row, nil, nil)
           end
@@ -90,13 +90,69 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
                 end
               end
             end
-          #   purchase orders present but sku is not present in purchase order but present in sales order
+            #   purchase orders present but sku is not present in purchase order but present in sales order
           elsif inquiry_po_skus.present? && inquiry_po_skus.exclude?(so_row['sku'])
             sales_orders << get_sales_order_details(so_primary_details, so_row, nil, nil)
           end
           # if invoices or purchase_orders with po request or purchase_orders without po request are not present
           if !so_invoices.present? && !so_purchase_orders.present? && !so_inquiry_purchase_orders
             sales_orders << get_sales_order_details(so_primary_details, so_row, nil, nil)
+          end
+        end
+      end
+    end
+    sales_orders
+  end
+
+  def fetch_data_sales_order_wise
+    sales_orders = []
+    indexed_sales_orders.each do |sales_order|
+      so_primary_details = {
+          inquiry_number: sales_order.attributes['inquiry_number'],
+          company: sales_order.attributes['company'],
+          account: sales_order.attributes['account'],
+          order_number: sales_order.attributes['order_number'],
+          mis_date: sales_order.attributes['mis_date'],
+          cp_committed_date: sales_order.attributes['cp_committed_date']
+      }
+      invoice_details = {
+          outward_date: sales_order.attributes['outward_date_so_wise'],
+          customer_delivery_date: sales_order.attributes['customer_delivery_date_so_wise'],
+          on_time_or_delayed_time: sales_order.attributes['on_time_or_delayed_time_so_wise'],
+          delivery_status:  sales_order.attributes['delivery_status_so_wise'],
+      }
+
+      if sales_order.attributes['rows'].present?
+        so_rows = sales_order.attributes['rows']
+        so_inquiry_purchase_orders = sales_order.attributes['inquiry']['purchase_orders'] if sales_order.attributes['inquiry']['purchase_orders'].present?
+        so_po_requests = sales_order.attributes['po_requests'] if sales_order.attributes['po_requests'].present?
+        so_purchase_orders = so_po_requests.map { |po_request| po_request['purchase_order'] } if so_po_requests.present?
+
+
+        so_rows.each do |so_row|
+          purchase_order_details = {}
+          if so_purchase_orders.present?
+            so_purchase_orders.each do |so_purchase_order|
+              if so_purchase_order.present?
+                purchase_order_details = get_purchase_order_details(nil, so_purchase_order)
+                sales_orders << get_sales_order_details(so_primary_details, so_row, invoice_details, purchase_order_details)
+              end
+            end
+            #   if po requests and purchase orders present but sku is not present in purchase order but present in sales order
+          end
+
+          # if po requests are not present but purchase orders are present of sales orders
+          if so_inquiry_purchase_orders.present? && !so_purchase_orders.present?
+            so_inquiry_purchase_orders.each do |so_purchase_order|
+              if so_purchase_order.present?
+                purchase_order_details = get_purchase_order_details(nil, so_purchase_order)
+                sales_orders << get_sales_order_details(so_primary_details, so_row, invoice_details, purchase_order_details)
+              end
+            end
+          end
+          # if invoices or purchase_orders with po request or purchase_orders without po request are not present
+          if !so_purchase_orders.present? && !so_inquiry_purchase_orders
+            sales_orders << get_sales_order_details(so_primary_details, so_row, invoice_details, nil)
           end
         end
       end

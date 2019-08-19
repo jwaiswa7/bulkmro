@@ -210,11 +210,13 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def customer_order_status_report
     authorize_acl :sales_order
+    @categories = ['By BM', 'By Sales Order']
     @delivery_statuses = ['Delivery Pending', 'All']
     respond_to do |format|
       if params['customer_order_status_report'].present?
         delivery_status = params['customer_order_status_report']['delivery_status'] if params['customer_order_status_report']['delivery_status'].present?
       else
+        params['customer_order_status_report'] = { 'category': @categories[0] }
         delivery_status = @delivery_statuses[0]
       end
       format.html {}
@@ -222,8 +224,14 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         service = Services::Overseers::Finders::CustomerOrderStatusReports.new(params, current_overseer, paginate: false)
         service.call
         indexed_sales_orders = service.indexed_records
-        sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders, delivery_status).call
-        if delivery_status == @delivery_statuses[0]
+        if params['customer_order_status_report']['category'] == 'By Sales Order'
+          sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders, delivery_status).fetch_data_sales_order_wise
+        else
+          sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders, delivery_status).fetch_data_bm_wise
+        end
+        if delivery_status == @delivery_statuses[0] && params['customer_order_status_report']['category'] == 'By Sales Order'
+          @sales_orders = sales_orders.select { |sales_order| sales_order[:delivery_status] == 'Not Delivered' }
+        elsif delivery_status == @delivery_statuses[0] && params['customer_order_status_report']['category'] == 'By BM'
           @sales_orders = sales_orders.select { |sales_order| sales_order[:delivery_status] == 'Not Delivered' }
         else
           @sales_orders = sales_orders
@@ -237,13 +245,32 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def export_customer_order_status_report
     authorize_acl :sales_order
+    @categories = ['By BM', 'By Sales Order']
+    @delivery_statuses = ['Delivery Pending', 'All']
+    if params['customer_order_status_report'].present?
+      delivery_status = params['customer_order_status_report']['delivery_status'] if params['customer_order_status_report']['delivery_status'].present?
+      params['customer_order_status_report']['procurement_specialist'] = params['customer_order_status_report']['procurement_specialist'].split('.')[0] if params['customer_order_status_report']['procurement_specialist'].present?
+    else
+      params['customer_order_status_report'] = { 'category': @categories[0] }
+      delivery_status = @delivery_statuses[0]
+    end
 
     service = Services::Overseers::Finders::CustomerOrderStatusReports.new(params, current_overseer, paginate: false)
     service.call
-    indexed_sales_orders = service.indexed_records
-    sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders).call
 
-    export_service = Services::Overseers::Exporters::CustomerOrderStatusReportsExporter.new([], current_overseer, sales_orders, [])
+    indexed_sales_orders = service.indexed_records
+    if params['customer_order_status_report']['category'] == 'By Sales Order'
+      sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders, delivery_status).fetch_data_sales_order_wise
+    else
+      sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders, delivery_status).fetch_data_bm_wise
+    end
+    if delivery_status == @delivery_statuses[0]
+      @sales_orders = sales_orders.select { |sales_order| sales_order[:delivery_status] == 'Not Delivered' }
+    else
+      @sales_orders = sales_orders
+    end
+
+    export_service = Services::Overseers::Exporters::CustomerOrderStatusReportsExporter.new([], current_overseer, @sales_orders, [])
     export_service.call
 
     redirect_to url_for(Export.customer_order_status_report.not_filtered.last.report)

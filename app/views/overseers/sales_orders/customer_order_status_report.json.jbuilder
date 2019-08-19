@@ -5,8 +5,16 @@ json.data (@customer_order_status_records) do |sales_order|
                   sales_order[:company],
                   sales_order[:account],
                   sales_order[:order_number].present? ? sales_order[:order_number] : '-',
-                  sales_order[:invoice_number].present? ? sales_order[:invoice_number] : '-',
-                  sales_order[:sku].present? ? sales_order[:sku] : '-',
+                  if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM'
+                   sales_order[:invoice_number].present? ? sales_order[:invoice_number] : '-'
+                  else
+                    ''
+                  end,
+                  if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM'
+                   sales_order[:sku].present? ? sales_order[:sku] : '-'
+                  else
+                    ''
+                  end,
                   sales_order[:mis_date].present? ? format_date_without_time(Date.parse(sales_order[:mis_date])) : '-',
                   sales_order[:cp_committed_date].present? ? format_date_without_time(Date.parse(sales_order[:cp_committed_date])) : '-',
                   sales_order[:po_number].present? ? sales_order[:po_number] : '-',
@@ -25,6 +33,7 @@ json.data (@customer_order_status_records) do |sales_order|
                   (sales_order[:on_time_or_delayed_time].present? ? sales_order[:on_time_or_delayed_time] == 0 ? 0 : humanize(sales_order[:on_time_or_delayed_time]) : '-')
               ]
   columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
+  json.merge! sales_order.as_json.except("invoice_number", "sku")
   json.merge! columns.merge("DT_RowClass": (sales_order[:customer_delivery_date].present? && sales_order[:customer_delivery_date].to_date <= Date.today && (sales_order[:customer_delivery_date].to_date > (Date.today - 2.day))) ? 'bg-highlight-danger' : '')
 end
 

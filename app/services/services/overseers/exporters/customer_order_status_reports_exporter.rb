@@ -20,6 +20,8 @@ class Services::Overseers::Exporters::CustomerOrderStatusReportsExporter < Servi
         inquiry_number: sales_order[:inquiry_number],
         company: sales_order[:company],
         order_number: sales_order[:order_number].present? ? sales_order[:order_number] : '-',
+        invoice_number: sales_order.present? ? sales_order[:invoice_number] : '',
+        sku: sales_order[:sku].present? ? sales_order[:sku] : '',
         mis_date: sales_order[:mis_date].present? ? format_date_without_time(Date.parse(sales_order[:mis_date])) : '-',
         cp_committed_date: sales_order[:cp_committed_date].present? ? format_date_without_time(Date.parse(sales_order[:cp_committed_date])) : '-',
         po_number: sales_order[:po_number].present? ? sales_order[:po_number] : '-',
