@@ -1,41 +1,41 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 
-<div class="container-fluid">
-  <div class="row justify-content-end">
-    <a href="<%= download_bible_order_template_overseers_bible_imports_path(format: :xlsx) %>" target="_blank" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down mr-md-1">
-      <i class="fal fa-download mr-1"></i>Download Excel Template
-    </a>
-    <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#myModal">
-      <i class="fal fa-upload mr-1"></i> Import (xls, csv)
-    </button>
-  </div>
-</div>
+<!--<div class="container-fluid">-->
+<!--  <div class="row justify-content-end">-->
+<!--    <a href="<%#= download_bible_order_template_overseers_bible_imports_path(format: :xlsx) %>" target="_blank" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down mr-md-1">-->
+<!--      <i class="fal fa-download mr-1"></i>Download Excel Template-->
+<!--    </a>-->
+<!--    <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#myModal">-->
+<!--      <i class="fal fa-upload mr-1"></i> Import (xls, csv)-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</div>-->
 
 
-<%#= render layout: 'shared/layouts/form' do %>
-  <%#= simple_form_for(:bible_upload, url: download_bible_order_template_overseers_bible_imports_path(format: :xlsx), :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+<%= render layout: 'shared/layouts/form' do %>
+  <%= simple_form_for(:bible_upload, url: create_bible_records_overseers_bible_imports_path, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%#= render 'shared/snippets/form_errors', f: f %>
 
-<!--    <div class="card">-->
-<!--      <div class="card-body">-->
-<!--        <div class="form-row">-->
-<!--          <div class="col-md-2">-->
-            <%#= f.input :import_type, as: :select, collection: enum_to_collection(BibleUpload.import_types, keep_raw: true), include_blank: true, required: true, label: 'Import type', input_html: {class: "select2-single"} %>
-<!--          </div>-->
+    <div class="card">
+      <div class="card-body">
+        <div class="form-row">
+          <div class="col-md-2">
+            <%= f.input :import_type, as: :select, collection: enum_to_collection(BibleUpload.import_types, keep_raw: true), include_blank: true, required: true, label: 'Import type', input_html: {class: "select2-single"} %>
+          </div>
 
-<!--          <div class="col-md-10">-->
-            <%#= f.input :file, required: true, wrapper: :custom_file, type: 'file', label: 'Bible Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
-<!--          </div>-->
-<!--        </div>-->
+          <div class="col-md-10">
+            <%= f.input :file, required: true, wrapper: :custom_file, label: 'Bible Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', input_html: {type: "file"} %>
+          </div>
+        </div>
 
-<!--        <div class="form-group mb-0">-->
-          <%#= f.submit(class: 'btn btn-success btn-block', value: 'Upload Bible') %>
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-  <%# end %>
-<%# end %>
+        <div class="form-group mb-0">
+          <%= f.submit(class: 'btn btn-success btn-block', value: 'Upload Bible') %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
 
 <div class="col-12 mt-2">
   <% content_for :header_row do %>
