@@ -1,9 +1,7 @@
 class Services::Overseers::Bible::BaseService < Services::Shared::BaseService
-
   def call
     @bible_upload_queue = BibleUpload.where(status: 'Pending')
     @bible_upload_queue.each do |upload_sheet|
-
       if upload_sheet.import_type == 'Sales Order'
         service = Services::Overseers::Bible::CreateOrder.new(upload_sheet)
         service.call
