@@ -5,6 +5,7 @@
 
     <div class="card">
       <div class="card-body">
+
         <div>
           <%= f.association :inquiry, collection: selected_option_or_nil(f, :inquiry), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_inquiries_path}, include_blank: 'Leave blank if no inquiry connected' %>
         </div>
