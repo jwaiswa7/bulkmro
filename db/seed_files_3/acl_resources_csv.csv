@@ -130,3 +130,13 @@ Logistics,sales_order,add_comment
 Admin Leadership Team,sales_order,add_comment
 Accounts,sales_order,add_comment
 Inside Sales Team Leader,sales_order,add_comment
+Admin,inward_dispatch,render_modal_form
+Logistics,inward_dispatch,render_modal_form
+Admin Leadership Team,inward_dispatch,render_modal_form
+Accounts,inward_dispatch,render_modal_form
+Inside Sales Team Leader,inward_dispatch,render_modal_form
+Admin,inward_dispatch,add_comment
+Logistics,inward_dispatch,add_comment
+Admin Leadership Team,inward_dispatch,add_comment
+Accounts,inward_dispatch,add_comment
+Inside Sales Team Leader,inward_dispatch,add_comment
