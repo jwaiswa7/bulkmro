@@ -10,7 +10,6 @@ const BibleUploadLogShow = () => {
 
     $('.sheet-view-data').on('click', function () {
         var rowData = $(this).siblings('.sheet-row-data').text()
-        console.log('rowData:-'+ rowData)
         $('#bible-row-data').html($('<p>' + rowData  + '</p>'))
         $('#BibleRowModal').modal('show');
     });
