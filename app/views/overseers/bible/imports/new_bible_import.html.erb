@@ -1,16 +1,6 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 
-<!--<div class="container-fluid">-->
-<!--  <div class="row justify-content-end">-->
-<!--    <a href="<%#= download_bible_order_template_overseers_bible_imports_path(format: :xlsx) %>" target="_blank" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down mr-md-1">-->
-<!--      <i class="fal fa-download mr-1"></i>Download Excel Template-->
-<!--    </a>-->
-<!--    <button type="button" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#myModal">-->
-<!--      <i class="fal fa-upload mr-1"></i> Import (xls, csv)-->
-<!--    </button>-->
-<!--  </div>-->
-<!--</div>-->
 <div class="container-fluid">
   <div class="row justify-content-end">
     <a data-toggle="modal" data-target="#myModal" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down mr-md-1 mt-3">
@@ -21,8 +11,7 @@
 
 
 <%= render layout: 'shared/layouts/form' do %>
-  <%= simple_form_for(:bible_upload, url: create_bible_records_overseers_bible_imports_path, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%#= render 'shared/snippets/form_errors', f: f %>
+  <%= simple_form_for(:bible_upload, url: create_bible_records_overseers_bible_imports_path, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => '',:multipart => true}) do |f| %>
 
     <div class="card">
       <div class="card-body">
@@ -33,6 +22,7 @@
 
           <div class="col-md-10">
             <%= f.input :file, required: true, wrapper: :custom_file, label: 'Bible Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', input_html: {type: "file"} %>
+            <%#= file_field_tag :file , required: true %>
           </div>
         </div>
 
@@ -80,7 +70,7 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <%= form_tag download_bible_order_template_overseers_bible_imports_path(format: :xlsx), method: :get do %>
+          <%= form_tag download_bible_order_template_overseers_bible_imports_path, method: :get do %>
             <div class="card">
               <div class="card-body">
                 <div class="form-group mt-3">

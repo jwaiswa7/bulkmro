@@ -88,7 +88,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
       end
 
       calculate_totals
-      upload_sheet.update(status: 'Complete')
+      upload_sheet.update(status: 'Completed')
       puts 'BibleSI', BibleInvoice.count
     else
       upload_sheet.update(status: 'Failed')

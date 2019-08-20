@@ -608,7 +608,7 @@ Rails.application.routes.draw do
     namespace 'bible' do
       resources :imports do
         member do
-          get 'bible_file_upload_log'
+          get 'bible_upload_log'
         end
         collection do
           get 'new_bible_import'

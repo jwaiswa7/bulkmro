@@ -101,7 +101,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
         end
       end
       calculate_totals
-      upload_sheet.update(status: 'Complete')
+      upload_sheet.update(status: 'Completed')
       puts 'BibleSO', BibleSalesOrder.count
     else
       upload_sheet.update(status: 'Failed')

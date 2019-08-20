@@ -27,12 +27,11 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
     authorize_acl :bible_upload
     bible_file = params[:bible_upload][:file]
     bible_import_type = params[:bible_upload][:import_type]
-    # binding.pry
     if bible_import_type == 'Sales Order'
-      @bible_file_upload = BibleUpload.create(file: bible_file, status: 'Pending', updated_by_id: current_overseer.id, import_type: 'Sales Order')
+      @bible_file_upload = BibleUpload.create(file: bible_file.original_filename.to_s, status: 'Pending', updated_by_id: current_overseer.id, import_type: 'Sales Order')
       @bible_file_upload.bible_attachment.attach(params[:bible_upload][:file])
     elsif bible_import_type == 'Sales Invoice'
-      @bible_file_upload = BibleUpload.create(file: bible_file, status: 'Pending', updated_by_id: current_overseer.id, import_type: 'Sales Invoice')
+      @bible_file_upload = BibleUpload.create(file: bible_file.original_filename.to_s, status: 'Pending', updated_by_id: current_overseer.id, import_type: 'Sales Invoice')
       @bible_file_upload.bible_attachment.attach(params[:bible_upload][:file])
     end
     redirect_to new_bible_import_overseers_bible_imports_path

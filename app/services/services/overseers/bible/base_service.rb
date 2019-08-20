@@ -4,10 +4,10 @@ class Services::Overseers::Bible::BaseService < Services::Shared::BaseService
     @bible_upload_queue = BibleUpload.where(status: 'Pending')
     @bible_upload_queue.each do |upload_sheet|
 
-      if upload_sheet.sheet_type == 'Sales Orders'
+      if upload_sheet.import_type == 'Sales Order'
         service = Services::Overseers::Bible::CreateOrder.new(upload_sheet)
         service.call
-      elsif upload_sheet.sheet_type == 'Sales Invoices'
+      elsif upload_sheet.import_type == 'Sales Invoice'
         service = Services::Overseers::Bible::CreateInvoice.new(upload_sheet)
         service.call
       end
