@@ -1,23 +1,20 @@
 class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::BaseService
   attr_accessor :upload_sheet
 
-  def initialize(upload=nil)
+  def initialize(upload = nil)
     @upload_sheet = upload
   end
 
   def call
     i = 0
     error = []
-    temp_path = Tempfile.open { |tempfile| tempfile << upload_sheet.bible_attachment.download }.path
-    destination_path = Rails.root.join('db', 'bible_imports')
-    Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
-    path_to_tempfile = [destination_path, '/', 'bible_file_sheet.csv'].join
-    FileUtils.mv temp_path, path_to_tempfile
 
+    fetch_file_to_be_processed(upload_sheet)
     service = Services::Shared::Spreadsheets::CsvImporter.new('bible_file_sheet.csv', 'bible_imports')
     upload_sheet.update(status: 'Processing')
+
     sheet_header = service.get_header
-    defined_header = fixed_header
+    defined_header = fixed_header('sales_invoices')
     if sheet_header.sort == defined_header.sort
       service.loop(nil) do |x|
         begin
@@ -119,20 +116,5 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
 
   def get_bible_file_upload_log
     BibleUpload.all
-  end
-
-  def export_csv_format_for_bible
-    file_name = "#{Rails.root}/tmp/bible_sales_invoices.xlsx"
-    headers = fixed_header
-    csv_data = CSV.generate(write_headers: true, headers: headers) do |writer|
-    end
-    temp_file = File.open(file_name, 'wb')
-    temp_file.write(csv_data)
-    temp_file.close
-  end
-
-  def fixed_header
-    headers = ['Branch', 'Inquiry #', 'Invoice/Credit Note', 'Company Name', 'Invoice Number', 'Invoice Date', 'Month Code', 'New SKU', 'Description', 'Qty', 'Rate', 'Invoice Amount in Local Curr.', 'Invoice Currency', 'Exchange Rate', 'Invoice Amount in INR', 'Supplier Name', 'AP Ref. No.', 'Quantity', 'Purchase Cost', 'Cost Of Good Sold (Viz. Sales Qty)', 'Gross Margin Amount', 'Gross Margin %']
-    headers
   end
 end

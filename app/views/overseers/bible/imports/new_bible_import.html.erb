@@ -9,10 +9,8 @@
   </div>
 </div>
 
-
 <%= render layout: 'shared/layouts/form' do %>
   <%= simple_form_for(:bible_upload, url: create_bible_records_overseers_bible_imports_path, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => '',:multipart => true}) do |f| %>
-
     <div class="card">
       <div class="card-body">
         <div class="form-row">
@@ -22,7 +20,6 @@
 
           <div class="col-md-10">
             <%= f.input :file, required: true, wrapper: :custom_file, label: 'Bible Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', input_html: {type: "file"} %>
-            <%#= file_field_tag :file , required: true %>
           </div>
         </div>
 
@@ -74,15 +71,15 @@
             <div class="card">
               <div class="card-body">
                 <div class="form-group mt-3">
-                  <!-- Default inline 1-->
+                  <!-- Type 1 -->
                   <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="bible-invoices-radio" name="bible-sheet-type" value="invoices">
+                    <input type="radio" class="custom-control-input" id="bible-invoices-radio" name="bible-sheet-type" value="sales-invoices">
                     <label class="custom-control-label" for="bible-invoices-radio">Invoices</label>
                   </div>
 
-                  <!-- Default inline 2-->
+                  <!-- Type 2-->
                   <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" class="custom-control-input" id="bible-salesorder-radio" name="bible-sheet-type" value="salesorder">
+                    <input type="radio" class="custom-control-input" id="bible-salesorder-radio" name="bible-sheet-type" value="sales-orders">
                     <label class="custom-control-label" for="bible-salesorder-radio">Sales Orders</label>
                   </div>
                 </div>
@@ -99,7 +96,3 @@
       </div>
     </div>
   </div>
-
-
-
-
