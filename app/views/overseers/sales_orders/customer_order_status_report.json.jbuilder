@@ -6,12 +6,12 @@ json.data (@customer_order_status_records) do |sales_order|
                   sales_order[:account],
                   sales_order[:order_number].present? ? sales_order[:order_number] : '-',
                   if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM'
-                   sales_order[:invoice_number].present? ? sales_order[:invoice_number] : '-'
+                    sales_order[:invoice_number].present? ? sales_order[:invoice_number] : '-'
                   else
                     ''
                   end,
                   if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM'
-                   sales_order[:sku].present? ? sales_order[:sku] : '-'
+                    sales_order[:sku].present? ? sales_order[:sku] : '-'
                   else
                     ''
                   end,

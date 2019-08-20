@@ -43,13 +43,13 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
   def filter_by_date_range(indexed_records, date_range)
     range = date_range.split('~')
     indexed_records = indexed_records.query(
-        range: {
-            :'mis_date' => {
-                "time_zone": "+05:30",
-                gte: range[0].strip.to_date,
-                lte: range[1].strip.to_date
-            }
-        }
+      range: {
+          'mis_date': {
+              "time_zone": '+05:30',
+              gte: range[0].strip.to_date,
+              lte: range[1].strip.to_date
+          }
+      }
     )
     indexed_records
   end
