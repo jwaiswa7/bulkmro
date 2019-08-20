@@ -3,12 +3,12 @@ import updateLogisticsOwner from"./inwardDispatchPickupQueue"
 
 const inwardDispatchDeliveredQueue = () => {
     $('#create_invoice').hide();
-    toggleCheckboxes();
+    toggleCheckboxes()
     $('#create_invoice').click((event) => {
         createInvoiceRequest();
     });
+    updateLogisticsOwner();
 };
-updateLogisticsOwner();
 let toggleCheckboxes = () => {
     $('table').on('change', 'input[type=checkbox][name="the_inward_dispatches[]"]', (event) => {
         showOrHideActions();
