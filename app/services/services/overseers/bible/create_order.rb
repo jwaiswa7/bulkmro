@@ -21,7 +21,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
         i = i + 1
         order_number = x.get_column('So #')
         bible_order_row_total = x.get_column('Total Selling Price').to_f
-        bible_total_with_tax = x.get_column('Total Selling Price').to_f + x.get_column('Tax Amount').to_f
+        # bible_total_with_tax = x.get_column('Total Selling Price').to_f + x.get_column('Tax Amount').to_f
 
         if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
           if order_number == 'Not Booked'
@@ -46,7 +46,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
         inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry #').to_i) || Inquiry.find_by_old_inquiry_number(x.get_column('Inquiry #'))
         isp_full_name = x.get_column('Inside Sales Name').to_s.strip.split
         isp_first_name = isp_full_name[0]
-        isp_last_name = isp_full_name[1] if isp_full_name.length > 1
+        # isp_last_name = isp_full_name[1] if isp_full_name.length > 1
 
         begin
           bible_order = BibleSalesOrder.where(inquiry_number: x.get_column('Inquiry Number').to_i,
