@@ -109,7 +109,7 @@ every(10.minutes, 'resync_remote_requests') do
   end
 end
 
-every(30.minutes, 'bible_sales_order_upload') do
-  service = Services::Overseers::Bible::CreateOrder.new
+every(1.hour, 'bible_upload') do
+  service = Services::Overseers::Bible::BaseService.new
   service.call
 end
