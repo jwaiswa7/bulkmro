@@ -440,6 +440,8 @@ Rails.application.routes.draw do
           member do
             get 'confirm_delivery'
             get 'delivered_material'
+            get 'render_modal_form'
+            patch 'add_comment'
           end
         end
       end
@@ -533,6 +535,8 @@ Rails.application.routes.draw do
           member do
             get 'relationship_map'
             get 'get_relationship_map_json'
+            get 'render_modal_form'
+            patch 'add_comment'
           end
         end
 

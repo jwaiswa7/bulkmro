@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseController
-  before_action :set_inward_dispatch, only: [:show, :edit, :update, :confirm_delivery, :delivered_material]
+  before_action :set_inward_dispatch, only: [:show, :edit, :update, :confirm_delivery, :delivered_material, :render_modal_form, :add_comment]
   before_action :set_purchase_order, only: [:new, :create, :update, :show, :edit]
 
   def index
@@ -66,6 +66,35 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
     end
     render 'edit'
   end
+  def render_modal_form
+    authorize_acl @inward_dispatch
+    respond_to do |format|
+      if params[:title] == 'Comment'
+        format.html { render partial: 'shared/layouts/add_comment', locals: {obj: @inward_dispatch, url: add_comment_overseers_purchase_order_inward_dispatch_path(@inward_dispatch.purchase_order_id, @inward_dispatch), view_more: overseers_purchase_order_inward_dispatch_path(@inward_dispatch.purchase_order_id, @inward_dispatch)} }
+      end
+    end
+  end
+
+  def add_comment
+    authorize_acl @inward_dispatch
+    @inward_dispatch.assign_attributes(inward_dispatch_params.merge(purchase_order_id: @inward_dispatch.purchase_order_id, overseer: current_overseer))
+    if @inward_dispatch.present?
+      message = params['inward_dispatch']['comments_attributes']['0']['message']
+      if message.present?
+        ActiveRecord::Base.transaction do
+          @inward_dispatch.save
+          @inward_dispatch_comment = @inward_dispatch.comments.build(message: message, inward_dispatch: @inward_dispatch, overseer: current_overseer)
+          @inward_dispatch_comment.save
+        end
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
+      end
+    else
+      render json: {error: @inward_dispatch.errors}, status: 500
+    end
+  end
+
 
   private
 
@@ -78,7 +107,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
     end
 
     def inward_dispatch_params
-      params.require(:inward_dispatch).require(:inward_dispatch).except(:action_name)
+      params.require(:inward_dispatch).except(:action_name)
         .permit(
           :status,
           :expected_dispatch_date,

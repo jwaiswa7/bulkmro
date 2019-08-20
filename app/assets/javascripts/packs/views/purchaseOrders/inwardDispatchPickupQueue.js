@@ -1,3 +1,6 @@
+
+import callAjaxFunction from "../common/callAjaxFunction";
+
 const updateLogisticsOwner = () => {
     $('.update_logistics_owner_wrapper').hide();
     toggleCheckboxes();
@@ -7,6 +10,20 @@ const updateLogisticsOwner = () => {
     });
 };
 
+$('.datatable').on('click', '.comment-inward-dispatch', function (e) {
+    var id = $(this).data('inward-dispatch-id')
+    var purchase_id = $(this).data('purchase-id')
+    var title = $(this).attr('title')
+    var json = {
+        url: "/overseers/purchase_orders/" + purchase_id + "/inward_dispatches/" + id + "/render_modal_form?title=" + title,
+        modalId: '#addComment',
+        className: '.open-modal-form',
+        buttonClassName: '.confirm-cancel',
+        this: $(this),
+        title: title
+    }
+    callAjaxFunction(json)
+})
 let toggleCheckboxes = () => {
     $('#all_inward_dispatches').prop("checked", false);
 
