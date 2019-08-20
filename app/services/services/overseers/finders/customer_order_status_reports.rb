@@ -55,7 +55,7 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
   end
 
   def sort_definition
-    {mis_date: :desc, order_number: :desc}
+    {mis_date: :asc}
   end
 
   def perform_query(query_string)
@@ -63,7 +63,7 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
       multi_match: {
           query: query_string,
           operator: 'and',
-          fields: ['inquiry_number_string', 'account', 'company', 'order_number_string', 'po_requests.purchase_order.po_number_string'],
+          fields: ['inquiry_number_string', 'account', 'company', 'order_number_string']
       }
     ).order(sort_definition)
 

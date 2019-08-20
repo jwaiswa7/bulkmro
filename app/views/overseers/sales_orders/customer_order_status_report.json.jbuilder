@@ -33,7 +33,7 @@ json.data (@customer_order_status_records) do |sales_order|
                   (sales_order[:on_time_or_delayed_time].present? ? sales_order[:on_time_or_delayed_time] == 0 ? 0 : humanize(sales_order[:on_time_or_delayed_time]) : '-')
               ]
   columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
-  json.merge! columns.merge("DT_RowClass": (sales_order[:customer_delivery_date].present? && sales_order[:customer_delivery_date].to_date >= Date.today && (sales_order[:customer_delivery_date].to_date <= (Date.today + 2.day))) ? 'bg-highlight-danger' : '')
+  json.merge! columns.merge("DT_RowClass": (sales_order[:cp_committed_date].present? && sales_order[:cp_committed_date].to_date >= Date.today && (sales_order[:cp_committed_date].to_date <= (Date.today + 2.day))) ? 'bg-highlight-danger' : '')
 end
 
 json.columnFilters [

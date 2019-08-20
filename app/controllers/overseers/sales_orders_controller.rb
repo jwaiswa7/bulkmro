@@ -238,7 +238,12 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         end
         @per = (params['per'] || params['length'] || 20).to_i
         @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
-        @customer_order_status_records = Kaminari.paginate_array(@sales_orders).page(@page).per(@per)
+        if params[:order].present? && params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
+          sort_by = params[:columns][params[:order].values.first['column']][:name]
+          sort_order = params[:order].values.first['dir']
+          indexed_sales_orders = sort_buckets(sort_by, sort_order, @sales_orders) if @sales_orders.present?
+        end
+        @customer_order_status_records = Kaminari.paginate_array(indexed_sales_orders).page(@page).per(@per)
       end
     end
   end
@@ -330,6 +335,20 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         )
       else
         {}
+      end
+    end
+
+    def sort_buckets(sort_by, sort_order, indexed_sales_reports)
+      value_present = indexed_sales_reports[0][sort_by].present? && indexed_sales_reports[0][sort_by]['value'].present?
+      case
+      when !value_present && sort_order == 'asc'
+        indexed_sales_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }
+      when !value_present && sort_order == 'desc'
+        indexed_sales_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }.reverse!
+      when value_present && sort_order == 'asc'
+        indexed_sales_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }
+      when value_present && sort_order == 'desc'
+        indexed_sales_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
       end
     end
 end

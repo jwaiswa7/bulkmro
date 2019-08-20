@@ -35,6 +35,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
       field :purchase_orders, type: 'nested' do
         field :po_number, value: -> (record) { record.po_number }, type: 'integer'
         field :po_number_string, value: -> (record) { record.po_number.to_s }, analyzer: 'substring'
+        field :supplier_id, value: -> (record) { record.supplier.try(:id) }, type: 'integer'
         field :supplier_name, value: -> (record) { record.supplier.try(:name) }, analyzer: 'substring'
         field :supplier_po_date, value: -> (record) { record.metadata['PoDate'].to_date if record.metadata['PoDate'].present? && record.valid_po_date? }, type: 'date'
         field :po_email_sent, value: -> (record) { record.email_messages.where(email_type: 'Sending PO to Supplier').last.try(:created_at) if record.email_messages.present?  }, type: 'date'
@@ -56,6 +57,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
       field :rows do
         field :on_time_or_delayed_time, value: -> (record) { record.sales_invoice.cosr_calculate_time_delay }, type: 'integer'
         field :invoice_number, value: -> (record) { record.sales_invoice.try(:invoice_number) }, type: 'integer'
+        field :invoice_number_string, value: -> (record) { record.sales_invoice.try(:invoice_number).to_s }, type: 'integer'
         field :outward_date, value: -> (record) { record.sales_invoice.try(:mis_date) }, type: 'date'
         field :customer_delivery_date, value: -> (record) { record.sales_invoice.try(:delivery_date) }, type: 'date'
         field :product_id, value: -> (record) { record.get_product_details.try(:id) }, type: 'integer'
@@ -69,6 +71,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
         field :supplier_po_request_date, value: -> (record) { record.po_request.created_at if record.po_request.present? }, type: 'date'
         field :po_number, value: -> (record) { record.po_number }, type: 'integer'
         field :po_number_string, value: -> (record) { record.po_number.to_s }, analyzer: 'substring'
+        field :supplier_id, value: -> (record) { record.supplier.try(:id) }, type: 'integer'
         field :supplier_name, value: -> (record) { record.supplier.try(:name) }, analyzer: 'substring'
         field :supplier_po_date, value: -> (record) { record.metadata['PoDate'].to_date if record.metadata['PoDate'].present? && record.valid_po_date? }, type: 'date'
         field :po_email_sent, value: -> (record) { record.email_messages.where(email_type: 'Sending PO to Supplier').last.try(:created_at) if record.email_messages.present?  }, type: 'date'
