@@ -31,8 +31,26 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
         executives = @customer_order_status_report_params['procurement_operations'].to_i
         indexed_records = indexed_records.filter(filter_by_value('procurement_operations_id', executives))
       end
+      if @customer_order_status_report_params['date_range'].present?
+        indexed_records = filter_by_date_range(indexed_records, @customer_order_status_report_params['date_range'])
+      else
+        indexed_records = filter_by_date_range(indexed_records, "01-Apr-2018+~+#{Date.today.strftime('%d-%b-%Y')}")
+      end
     end
+    indexed_records
+  end
 
+  def filter_by_date_range(indexed_records, date_range)
+    range = date_range.split('~')
+    indexed_records = indexed_records.query(
+        range: {
+            :'mis_date' => {
+                "time_zone": "+05:30",
+                gte: range[0].strip.to_date,
+                lte: range[1].strip.to_date
+            }
+        }
+    )
     indexed_records
   end
 
