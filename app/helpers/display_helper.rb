@@ -167,17 +167,16 @@ module DisplayHelper
   end
 
   def heatmap_for_pipeline(status, date, record_count)
-    records_month = date.month
-    current_month = Date.today.month
-    binding.pry
+    month_difference = ((Date.today.year * 12 + Date.today.month) - (date.year * 12 + date.month)).abs
+
     if record_count.present?
       if status == 'Order Won' || status == 'Order Lost'
         ''
-      elsif (status != 'Order Won' || status != 'Order Lost') && (((date - Date.today).to_i.abs > Time.days_in_month(records_month)) && (records_month - current_month).abs > 2)
+      elsif (status != 'Order Won' || status != 'Order Lost') && month_difference >= 2
         'bg-highlight-danger'
-      elsif (status != 'Order Won' || status != 'Order Lost') && ((records_month - current_month).abs > 1 && (records_month - current_month).abs <= 2)
+      elsif (status != 'Order Won' || status != 'Order Lost') && month_difference >= 1 && month_difference < 2
         'bg-highlight-warning'
-      elsif (records_month - current_month).abs <= 1
+      elsif month_difference < 1
         'bg-highlight-success'
       end
     end
