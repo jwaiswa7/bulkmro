@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment, :render_followup_edit_form, :update_followup_date]
 
   def index
     authorize_acl :inquiry
@@ -35,6 +35,15 @@ class Overseers::InquiriesController < Overseers::BaseController
       if params['kra_report'].present?
         @date_range = params['kra_report']['date_range']
         @category = params['kra_report']['category']
+        if @category == 'company_key'
+          @category_filter = { filter_name: 'company_key', filter_type: 'ajax' }
+        elsif @category == 'inside_sales_owner_id' || @category == 'inside_by_sales_order'
+          @category_filter = { filter_name: 'inside_sales_owner_id', filter_type: 'dropdown' }
+        elsif @category == 'outside_sales_owner_id' || @category == 'outside_by_sales_order'
+          @category_filter = { filter_name: 'outside_sales_owner_id', filter_type: 'dropdown' }
+        end
+      else
+        @category_filter = { filter_name: 'inside_sales_owner_id', filter_type: 'dropdown' }
       end
       format.html {}
       format.json do
@@ -59,7 +68,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         if params[:order].present? && params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
           sort_by = params[:columns][params[:order].values.first['column']][:name]
           sort_order = params[:order].values.first['dir']
-          indexed_kra_reports = sort_buckets(sort_by, sort_order, indexed_kra_reports)
+          indexed_kra_reports = sort_buckets(sort_by, sort_order, indexed_kra_reports) if indexed_kra_reports.present?
         end
         @indexed_kra_reports = Kaminari.paginate_array(indexed_kra_reports).page(@page).per(@per)
       end
@@ -288,6 +297,30 @@ class Overseers::InquiriesController < Overseers::BaseController
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit'
+    end
+  end
+
+  def render_followup_edit_form
+    authorize_acl :inquiry
+
+    respond_to do |format|
+      format.html {render partial: 'overseers/dashboard/edit_followup', locals: {obj: @inquiry, url: update_followup_date_overseers_inquiry_path(@inquiry)}}
+    end
+  end
+
+  def update_followup_date
+    @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
+    authorize_acl @inquiry
+    if @inquiry.valid?
+      @inquiry.update_attributes(quotation_followup_date: params['inquiry']['quotation_followup_date'].to_date)
+      if params['inquiry']['comments_attributes']['0']['message'].present?
+        @inquiry_comment = @inquiry.comments.create(message: params['inquiry']['comments_attributes']['0']['message'], overseer: current_overseer)
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
+      end
+    else
+      render json: {error: @inquiry.errors}, status: 500
     end
   end
 
@@ -520,6 +553,35 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
 
     render json: {inquiries: inquiries.uniq}.to_json
+  end
+
+  def render_modal_form
+    authorize_acl @inquiry
+    respond_to do |format|
+      if params[:title] == 'Comment'
+        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @inquiry, url: add_comment_overseers_inquiry_path(@inquiry), view_more: overseers_inquiry_comments_path(@inquiry)}}
+      end
+    end
+  end
+
+  def add_comment
+    @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
+    authorize_acl @inquiry
+    if @inquiry.valid?
+      message = params['inquiry']['comments_attributes']['0']['message']
+      if message.present?
+        ActiveRecord::Base.transaction do
+          @inquiry.save!
+          @inquiry_comment = @inquiry.comments.build(message: message, inquiry: @inquiry, overseer: current_overseer)
+          @inquiry_comment.save
+        end
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
+      end
+    else
+      render json: {error: @inquiry.errors}, status: 500
+    end
   end
 
   private

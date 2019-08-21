@@ -25,6 +25,7 @@ class SalesOrder < ApplicationRecord
   has_one :inquiry, through: :sales_quote
   has_one :payment_option, through: :inquiry
   has_one :company, through: :inquiry
+  has_one :account, through: :company
   has_one :inquiry_currency, through: :inquiry
   has_one :currency, through: :inquiry_currency
   has_many :rows, -> {joins(:inquiry_product).order('inquiry_products.sr_no ASC')}, class_name: 'SalesOrderRow', inverse_of: :sales_order, dependent: :destroy
@@ -142,7 +143,7 @@ class SalesOrder < ApplicationRecord
 
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
   scope :remote_approved, -> {where('(((sales_orders.status = ? OR sales_orders.status = ?) AND sales_orders.remote_status != ?) OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'CO'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled'])}
-  scope :accounts_approval_pending, -> {where(status: 'Accounts Approval Pending')}
+  scope :accounts_approval_pending, -> {where(status: 'Accounts Approval Pending').where("created_at >= '2019-07-18'")}
   scope :under_process, -> {where(status: [:'Approved', :'Accounts Approval Pending', 'Requested'])}
   scope :without_cancelled, -> {where.not(status: 'Cancelled')}
 
@@ -274,7 +275,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def calculate_time_delay
-    if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present?
+    if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present? && self.inquiry.customer_committed_date.present?
       ((self.invoices.last.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
     end
   end
@@ -343,10 +344,10 @@ class SalesOrder < ApplicationRecord
   end
 
   def get_invoiced_qty
-    self.invoices.sum(&:total_quantity)
+    self.invoices.sum(&:total_quantity).to_i
   end
 
   def total_qty
-    self.rows.sum(:quantity)
+    self.rows.sum(:quantity).to_i
   end
 end

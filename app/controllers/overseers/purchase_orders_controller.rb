@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po, :cancelled_purchase_modal, :cancelled_purchase_order]
+  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po, :cancelled_purchase_modal, :cancelled_purchase_order, :change_material_status]
 
   def index
     authorize_acl :purchase_order
@@ -22,26 +22,25 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def manually_closed
     authorize_acl :purchase_order
+
     respond_to do |format|
-      format.html {render 'index'}
+      format.html {}
       format.json do
-        base_filter = {
-            base_filter_key: 'material_status',
-            base_filter_value: PurchaseOrder.material_statuses['Manually Closed']
-        }
-        service = Services::Overseers::Finders::PurchaseOrders.new(params.merge(base_filter), current_overseer)
+        service = Services::Overseers::Finders::MaterialReadinessQueues.new(params.merge(is_manually_close: true), current_overseer)
         service.call
 
         @indexed_purchase_orders = service.indexed_records
         @purchase_orders = service.records.try(:reverse)
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_purchase_orders, PurchaseOrder)
+
+        @summary_records = service.get_summary_records(@indexed_purchase_orders)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@summary_records, PurchaseOrder, custom_status: 'material_summary_status')
         status_service.call
 
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
-        render 'index'
       end
     end
+    render 'material_readiness_queue'
   end
 
   def pending_sap_sync
@@ -88,6 +87,13 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
         @indexed_purchase_orders = service.indexed_records
         @purchase_orders = service.records.try(:reverse)
+
+        @summary_records = service.get_summary_records(@indexed_purchase_orders)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@summary_records, PurchaseOrder, custom_status: 'material_summary_status')
+        status_service.call
+
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
       end
     end
 
@@ -174,6 +180,12 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def edit_material_followup
     authorize_acl @purchase_order
     @po_request = @purchase_order.po_request
+  end
+
+  def change_material_status
+    authorize_acl @purchase_order
+    @purchase_order.update_material_status
+    redirect_to material_readiness_queue_overseers_purchase_orders_path, notice: flash_message(@purchase_order, action_name)
   end
 
   def update_material_followup

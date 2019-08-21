@@ -91,7 +91,7 @@ json.columnFilters [
                        [],
                        if @category.present? && @category == 'company_key'
                          [{"source": autocomplete_overseers_companies_path}]
-                       elsif @category.present? && (@category.include? 'outside')
+                       elsif @category.present? && @category.include?('outside')
                          Inquiry.outside_sales_owners.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json
                        else
                          Inquiry.procurement_specialists.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json
@@ -99,11 +99,7 @@ json.columnFilters [
                        if @category.present? && @category == 'company_key'
                          [{"source": autocomplete_overseers_accounts_path}]
                        end,
-                       if @category.present? && @category == 'outside_sales_owner_id'
-                         []
-                       else
-                         []
-                       end,
+                       [],
                        [],
                        [],
                        [],

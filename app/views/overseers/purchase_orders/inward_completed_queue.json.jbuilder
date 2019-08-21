@@ -16,6 +16,12 @@ json.data (@inward_dispatches) do |inward_dispatch|
                         end
                         #row_action_button('#', 'plus', 'View Inward Dispatch', 'success')
                       end,
+                      if is_authorized(inward_dispatch, 'index')
+                        link_to('', class: ['btn btn-sm btn-success comment-inward-dispatch'], 'data-inward-dispatch-id': inward_dispatch.id, 'data-purchase-id': inward_dispatch.purchase_order.id, title: 'Comment', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                        end
+                      end,
                   ].join(' '),
                   inward_dispatch.show_ar_invoice_requests.map.with_index { |ar_invoice_request, index| link_to(ar_invoice_request.ar_invoice_number || "# #{index + 1}", overseers_ar_invoice_request_path(ar_invoice_request), target: '_blank') }.compact.join(' <br>'),
                   link_to(inward_dispatch.purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(inward_dispatch.purchase_order.inquiry), target: '_blank'),
@@ -24,7 +30,8 @@ json.data (@inward_dispatches) do |inward_dispatch|
                   (format_succinct_date(inward_dispatch.purchase_order.po_request.sales_order.mis_date) if inward_dispatch.purchase_order.po_request.present? && inward_dispatch.purchase_order.po_request.sales_order.present?),
                   (format_succinct_date(inward_dispatch.purchase_order.po_request.inquiry.customer_committed_date) if inward_dispatch.purchase_order.po_request.present?),
                   link_to(inward_dispatch.purchase_order.po_number, overseers_inquiry_purchase_orders_path(inward_dispatch.purchase_order.inquiry), target: '_blank'),
-                  format_succinct_date(inward_dispatch.purchase_order.metadata['PoDate'].try(:to_date)),
+                  # format_succinct_date(inward_dispatch.purchase_order.metadata['PoDate'].try(:to_date)),
+                  '-',
                   (inward_dispatch.purchase_order.get_supplier(inward_dispatch.purchase_order.rows.first.metadata['PopProductId'].to_i).present? ? conditional_link(inward_dispatch.purchase_order.get_supplier(inward_dispatch.purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name), overseers_company_path(inward_dispatch.purchase_order.get_supplier(inward_dispatch.purchase_order.rows.first.metadata['PopProductId'])), policy(inward_dispatch.purchase_order.inquiry).show?) : '-' if inward_dispatch.purchase_order.rows.present?),
                   inward_dispatch.purchase_order.inquiry.inside_sales_owner.to_s,
                   (inward_dispatch.logistics_owner.full_name if inward_dispatch.logistics_owner.present?),

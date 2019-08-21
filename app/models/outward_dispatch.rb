@@ -1,9 +1,13 @@
 class OutwardDispatch < ApplicationRecord
+  COMMENTS_CLASS = 'OutwardDispatchComment'
+
   include Mixins::CanBeStamped
+  include Mixins::HasComments
 
   belongs_to :ar_invoice_request, default: false
   belongs_to :sales_order, default: false
   has_many :packing_slips
+  accepts_nested_attributes_for :packing_slips, reject_if: lambda { |attributes| attributes['box_number'].blank? }, allow_destroy: true
   has_many :email_messages
   after_save :status_auto_update
   scope :with_includes, -> { }
@@ -13,35 +17,45 @@ class OutwardDispatch < ApplicationRecord
       'Material Ready for Dispatch': 10,
       # 'Dispatch Approval Pending': 20,
       # 'Dispatch Rejected': 30,
+      #
       # 'Material In Transit': 40,
       # 'Material Delivered Pending GRN': 50,
       'Material Delivered': 60
   }
 
-  enum logistics_partners: {
-      'Aramex': 1,
-      'FedEx': 2,
-      'Spoton': 3,
-      'Safe Xpress': 4,
-      'Professional Couriers': 5,
-      'DTDC': 5,
-      'Delhivery': 7,
-      'UPS': 8,
-      'Blue Dart': 9,
-      'Anjani Courier': 10,
-      'Mahavir Courier Services': 11,
-      'Elite Enterprise': 12,
-      'Sri Krishna Logistics': 13,
-      'Maruti Courier': 14,
-      'Vinod': 20,
-      'Ganesh': 21,
-      'Tushar': 22,
-      'Others': 40,
-      'Drop Ship': 60
+  enum logistics_partner: {
+      'ACPL': 1,
+      'ARC Transport': 2,
+      'Anjani Courier': 3,
+      'Aramex': 4,
+      'Arunah Transport': 5,
+      'Blue Dart': 6,
+      'DTDC': 7,
+      'Delhivery': 8,
+      'Elite Enterprise': 9,
+      'FedEx': 10,
+      'Gati': 11,
+      'Mahavir Courier Services': 12,
+      'Maruti Courier': 13,
+      'Professional Couriers': 14,
+      'Safe Xpress': 15,
+      'Spoton': 16,
+      'Sri Krishna Logistics': 17,
+      'TCI Freight': 18,
+      'TCI Xpress': 19,
+      'Trackon': 20,
+      'UPS': 21,
+      'V Trans': 22,
+      'VRL Logistics': 23,
+      'Vinod': 100,
+      'Ganesh': 101,
+      'Tushar': 102,
+      'Others': 200,
+      'Drop Ship': 300
   }
 
   def quantity_in_payment_slips
-    self.packing_slips.sum(&:dispatched_quntity)
+    self.packing_slips.sum(&:dispatched_quantity)
   end
 
   def status_auto_update
@@ -54,16 +68,16 @@ class OutwardDispatch < ApplicationRecord
     end
   end
 
-  def grouped_status
-    grouped_status = {}
-    status_category = { 1 => '3PL', 20 => 'BM Runner', 40 => 'Others', 60 => 'Drop Ship' }
+  def grouped_logistics_partners
+    grouped_logistics_partners = {}
+    status_category = { 1 => '3PL', 100 => 'BM Runner', 200 => 'Others', 300 => 'Drop Ship' }
     status_category.each do |index, category|
-      grouped_status[category] = InwardDispatch.logistics_partners.collect { |status, v|
-        if v.between?(index, index + 13)
+      grouped_logistics_partners[category] = OutwardDispatch.logistics_partners.collect { |status, v|
+        if v.between?(index, index + 98)
           status
         end}.compact
     end
-    grouped_status
+    grouped_logistics_partners
   end
 
   def is_owner
@@ -72,5 +86,12 @@ class OutwardDispatch < ApplicationRecord
 
   def logistics_owner
     self.ar_invoice_request.inquiry.company.logistics_owner.full_name if self.ar_invoice_request.inquiry.present? && self.ar_invoice_request.inquiry.company.present? && self.ar_invoice_request.inquiry.company.logistics_owner.present?
+  end
+
+  def zipped_filename(include_extension: false)
+    [
+        ['packing_slips', self.ar_invoice_request.ar_invoice_number].join('_'),
+        ('zip' if include_extension)
+    ].compact.join('.')
   end
 end

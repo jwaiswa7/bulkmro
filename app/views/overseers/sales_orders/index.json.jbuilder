@@ -29,11 +29,18 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if is_authorized(sales_order, 'debugging')
                         row_action_button(debugging_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'cogs', 'Debugging', 'danger', :_blank)
-                      end
+                      end,
+                      if is_authorized(sales_order, 'index')
+                        link_to('', class: ['btn btn-sm btn-success comment-sales-order'], 'data-model-id': sales_order.id, title: 'Comment', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                        end
+                      end,
 
                   ].join(' '),
                   conditional_link(sales_order.order_number.present? ? sales_order.order_number : '-', overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), is_authorized(sales_order, 'show')),
                   format_succinct_date(sales_order.mis_date),
+                  format_succinct_date(sales_order.inquiry.customer_committed_date),
                   conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), is_authorized(sales_order.inquiry, 'edit') && policy(sales_order.inquiry).edit?),
                   sales_order.invoices.map {|invoice| link_to(invoice.invoice_number, overseers_inquiry_sales_invoice_path(sales_order.inquiry, invoice), target: '_blank')}.compact.join(' '),
                   sales_order.inquiry.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", sales_order.inquiry.po_subject].join('').html_safe, sales_order.inquiry.customer_po_sheet, target: '_blank') : sales_order.inquiry.po_subject,
@@ -52,6 +59,7 @@ json.data (@sales_orders) do |sales_order|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [],

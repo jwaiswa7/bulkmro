@@ -14,6 +14,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @prefix = params[:prefix]
     @company_report_params = params[:company_report]
     @customer_order_status_report_params = params[:customer_order_status_report]
+    @manually_close = params[:is_manually_close]
 
     if params[:columns].present?
       params[:columns].each do |index, column|

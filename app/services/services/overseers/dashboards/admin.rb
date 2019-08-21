@@ -4,7 +4,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
 
   def call
     start_at = Date.new(2018, 10, 01).beginning_of_day
-    end_at = Date.today.last_month.end_of_month.end_of_day
+    end_at = BibleSalesOrder.order('mis_date asc').last.mis_date.end_of_month.end_of_day
 
     @data = OpenStruct.new(entries: {}, timestamp: nil)
     ActiveRecord::Base.default_timezone = :utc

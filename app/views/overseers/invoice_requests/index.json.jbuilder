@@ -14,7 +14,7 @@ json.data (@invoice_requests) do |invoice_request|
                         end
                       end,
                       if is_authorized(invoice_request, 'index')
-                        link_to('', class: ['btn btn-sm btn-success comment-invoice-request'], 'data-invoice-request-id': invoice_request.id, title: 'Add Comment', remote: true) do
+                        link_to('', class: ['btn btn-sm btn-success comment-invoice-request'], 'data-model-id': invoice_request.id, title: 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
                         end

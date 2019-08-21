@@ -3,7 +3,7 @@ class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Bui
     super
   end
 
-  def call(company)
+  def call(account)
     build_chart do
       @data = {
           labels: [],
@@ -44,10 +44,10 @@ class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Bui
           },
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:company).where(companies: { id: company.id })
+      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:account).where(accounts: { id: account.id })
 
-      sales_orders.group_by_month('sales_orders.created_at', format: '%b-%y', series: true).size.each do |month, order_count|
-        @data[:labels].push(month)
+      sales_orders.group_by_quarter('sales_orders.created_at', format: '%b-%Y', series: true).size.each do |quarter_start, order_count|
+        @data[:labels].push(get_quarter(quarter_start.to_date))
         @data[:datasets][0][:data].push(order_count)
       end
     end
