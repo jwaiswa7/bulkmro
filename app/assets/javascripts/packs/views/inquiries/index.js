@@ -1,7 +1,6 @@
 import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from '../common/updateSummaryBox'
 import exportFilteredRecords from '../common/exportFilteredRecords'
-import callAjaxFunction from "../common/callAjaxFunction";
 import commanComment from "../common/commanComment";
 
 const index = () => {

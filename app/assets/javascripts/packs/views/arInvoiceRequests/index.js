@@ -1,5 +1,4 @@
 import updateSummaryBox from "../common/updateSummaryBox";
-import callAjaxFunction from '../common/callAjaxFunction'
 import commanComment from "../common/commanComment";
 const index = () => {
     updateSummaryBox()
