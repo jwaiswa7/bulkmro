@@ -1,5 +1,5 @@
 class Overseers::ArInvoiceRequestsController < Overseers::BaseController
-  before_action :set_ar_invoice_request, only: [:show, :edit, :update, :destroy, :cancel_ar_invoice, :render_cancellation_form, :download_eway_bill_format]
+  before_action :set_ar_invoice_request, only: [:show, :edit, :update, :destroy, :cancel_ar_invoice, :render_cancellation_form, :download_eway_bill_format, :render_modal_form, :add_comment]
 
   # GET /ar_invoices
   # GET /ar_invoices.json
@@ -121,6 +121,33 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
       format.xlsx do
         response.headers['Content-Disposition'] = 'attachment; filename="' + ['Eway bill Excel Template', 'xlsx'].join('.') + '"'
       end
+    end
+  end
+
+  def render_modal_form
+    authorize_acl @ar_invoice_request
+    respond_to do |format|
+      if params[:title] == 'Comment'
+        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @ar_invoice_request, url: add_comment_overseers_ar_invoice_request_path(@ar_invoice_request), view_more: overseers_ar_invoice_request_path(@ar_invoice_request)}}
+      end
+    end
+  end
+
+  def add_comment
+    @ar_invoice_request.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
+    authorize_acl @ar_invoice_request
+    if @ar_invoice_request.valid?
+      if params['ar_invoice_request']['comments_attributes']['0']['message'].present?
+        ActiveRecord::Base.transaction do
+          @ar_invoice_request.save!
+          @ar_invoice_request_comment = ArInvoiceRequestComment.new(message: '', ar_invoice_request: @ar_invoice_request, overseer: current_overseer)
+        end
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
+      end
+    else
+      render json: {error: @ar_invoice_request.errors}, status: 500
     end
   end
 

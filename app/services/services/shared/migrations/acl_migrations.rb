@@ -516,8 +516,8 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   end
 
   def create_acl_resources_using_csv
-    # service = Services::Shared::Spreadsheets::CsvImporter.new('acl_resources_csv.csv', 'seed_files_3')
-    service = Services::Shared::Spreadsheets::CsvImporter.new('stock_po_acl.csv', 'seed_files_3')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('acl_resources_csv.csv', 'seed_files_3')
+    # service = Services::Shared::Spreadsheets::CsvImporter.new('stock_po_acl.csv', 'seed_files_3')
     service.loop(nil) do |x|
       role_name = x.get_column('role_name')
       resource_model_name = x.get_column('model_name')
