@@ -1,5 +1,5 @@
 class Overseers::SalesOrdersController < Overseers::BaseController
-  before_action :set_sales_order, only: [:resync, :new_purchase_orders_requests, :preview_purchase_orders_requests, :create_purchase_orders_requests]
+  before_action :set_sales_order, only: [:resync, :new_purchase_orders_requests, :preview_purchase_orders_requests, :create_purchase_orders_requests, :render_modal_form, :add_comment]
 
   def pending
     authorize_acl :sales_order
@@ -289,6 +289,34 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     ApplyDatatableParams.to(policy_scope(SalesOrder.all.send(scope).order(id: :desc)), params)
   end
 
+  def render_modal_form
+    authorize_acl @sales_order
+    respond_to do |format|
+      if params[:title] == 'Comment'
+        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @sales_order, url: add_comment_overseers_sales_order_path(@sales_order), view_more: overseers_inquiry_comments_path(@sales_order.inquiry.id)}}
+      end
+    end
+  end
+
+  def add_comment
+    @sales_order.assign_attributes(new_purchase_orders_requests_params.merge(overseer: current_overseer))
+    authorize_acl @sales_order
+    if @sales_order.valid?
+      message = params['sales_order']['comments_attributes']['0']['message']
+      if message.present?
+        ActiveRecord::Base.transaction do
+          @sales_order.save!
+          @sales_order_comment = @sales_order.comments.create(message: message, inquiry: @sales_order.inquiry, overseer: current_overseer)
+        end
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
+      end
+    else
+      render json: {error: @sales_order.errors}, status: 500
+    end
+  end
+
   private
 
     def set_sales_order
@@ -334,8 +362,14 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                     :measurement_unit_id,
                     :discount_percentage,
                     :unit_price
-                ]
-            ]
+                ],
+            comments_attributes: [
+            :created_by_id,
+            :updated_by_id,
+            :message,
+            :inquiry_id,
+        ]
+            ],
         )
       else
         {}
