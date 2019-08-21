@@ -241,9 +241,13 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         if params[:order].present? && params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
           sort_by = params[:columns][params[:order].values.first['column']][:name]
           sort_order = params[:order].values.first['dir']
-          indexed_sales_orders = sort_buckets(sort_by, sort_order, @sales_orders) if @sales_orders.present?
+          sorted_indexed_sales_orders = @sales_orders.present? ? sort_buckets(sort_by, sort_order, @sales_orders) : @sales_orders
         end
-        @customer_order_status_records = Kaminari.paginate_array(indexed_sales_orders).page(@page).per(@per)
+        if sorted_indexed_sales_orders.present?
+          @customer_order_status_records = Kaminari.paginate_array(sorted_indexed_sales_orders).page(@page).per(@per)
+        else
+          @customer_order_status_records = Kaminari.paginate_array(@sales_orders).page(@page).per(@per)
+        end
       end
     end
   end

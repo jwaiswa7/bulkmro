@@ -8,6 +8,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
     sales_orders = []
     indexed_sales_orders.each do |sales_order|
       so_primary_details = {
+          id: sales_order.attributes['id'],
           inquiry_number: sales_order.attributes['inquiry_number'],
           company: sales_order.attributes['company'],
           account: sales_order.attributes['account'],
@@ -178,6 +179,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
 
   def get_sales_order_details(so_details, so_row, invoice_details = nil, purchase_order_details = nil)
     {
+        id: so_details[:id],
         inquiry_number: so_details[:inquiry_number],
         company: so_details[:company],
         account: so_details[:account],

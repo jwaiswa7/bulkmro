@@ -78,6 +78,27 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
+
+    if @customer_order_status_report_params.present?
+      if @customer_order_status_report_params['procurement_specialist'].present?
+        executives = @customer_order_status_report_params['procurement_specialist'].to_i
+        indexed_records = indexed_records.filter(filter_by_value('inside_sales_owner_id', executives))
+      end
+      if @customer_order_status_report_params['outside_sales_owner'].present?
+        executives = @customer_order_status_report_params['outside_sales_owner'].to_i
+        indexed_records = indexed_records.filter(filter_by_value('outside_sales_owner_id', executives))
+      end
+      if @customer_order_status_report_params['procurement_operations'].present?
+        executives = @customer_order_status_report_params['procurement_operations'].to_i
+        indexed_records = indexed_records.filter(filter_by_value('procurement_operations_id', executives))
+      end
+      if @customer_order_status_report_params['date_range'].present?
+        indexed_records = filter_by_date_range(indexed_records, @customer_order_status_report_params['date_range'])
+      else
+        indexed_records = filter_by_date_range(indexed_records, "01-Apr-2018+~+#{Date.today.strftime('%d-%b-%Y')}")
+      end
+    end
+
     indexed_records
   end
 

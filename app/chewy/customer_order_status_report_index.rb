@@ -1,6 +1,6 @@
 class CustomerOrderStatusReportIndex < BaseIndex
   define_type SalesOrder.where.not(order_number: nil, status: 'Cancelled').with_includes do
-    field :id, type: 'integer'
+    field :inquiry_id, value: -> (record) { record.inquiry.id if record.inquiry.present? }, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :inside_sales_owner_id, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? }, type: 'integer'

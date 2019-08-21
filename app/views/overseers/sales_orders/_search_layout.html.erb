@@ -17,7 +17,14 @@
       </div>
       <div class="form-row">
         <div class="col-4">
-          <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range', :value => (params['customer_order_status_report']['date_range'].present? ? params['customer_order_status_report']['date_range'] : "01-Apr-2018+~+#{Date.today.strftime('%d-%b-%Y')}")}, required: false, label: 'Pick a Date Range' %>
+          <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range', :value => (params['customer_order_status_report']['date_range'].present? ? params['customer_order_status_report']['date_range'] : "01-Apr-2018~#{Date.today.strftime('%d-%b-%Y')}")}, required: false, label: 'Pick a Date Range' %>
+        </div>
+        <div class="col-8 text-right">
+          <br>
+          <strong>
+            <span class="text-color-red">Order Delayed</span><br>
+            <span class="text-color-yellow">Delivery withing 2 days</span>
+          </strong>
         </div>
       </div>
       <div class="form-row">
