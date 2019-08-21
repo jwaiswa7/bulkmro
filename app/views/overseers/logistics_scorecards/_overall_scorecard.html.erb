@@ -105,7 +105,7 @@
                 <% end %>
               </tr>
               <tr>
-                <th class="text-uppercase logistics-scorecard" style="font-size: 12px;">Not Delivered</th>
+                <th class="text-uppercase logistics-scorecard" style="font-size: 12px;" data-toggle="tooltip" title="In Transit">Not Delivered</th>
                 <% @records.each do |month, record| %>
                   <td class="text-uppercase">
                     <a href="<%= filtered_path(overseers_logistics_scorecards_path, [
