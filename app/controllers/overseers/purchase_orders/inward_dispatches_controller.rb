@@ -77,7 +77,6 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
 
   def add_comment
     authorize_acl @inward_dispatch
-    @inward_dispatch.assign_attributes(inward_dispatch_params.merge(purchase_order_id: @inward_dispatch.purchase_order_id, overseer: current_overseer))
     if @inward_dispatch.present?
       message = params['inward_dispatch']['comments_attributes']['0']['message']
       if message.present?
