@@ -21,6 +21,6 @@ class InquiryComment < ApplicationRecord
   end
 
   def author_role
-    author.role.titleize
+    author.acl_role.role_name.titleize if author.present? && author.acl_role.present?
   end
 end
