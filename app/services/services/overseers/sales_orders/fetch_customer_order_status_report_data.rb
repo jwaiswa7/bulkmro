@@ -109,6 +109,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
     sales_orders = []
     indexed_sales_orders.each do |sales_order|
       so_primary_details = {
+          id: sales_order.attributes['id'],
           inquiry_number: sales_order.attributes['inquiry_number'],
           company: sales_order.attributes['company'],
           account: sales_order.attributes['account'],
