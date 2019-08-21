@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment, :render_followup_edit_form, :update_followup_date]
 
   def index
     authorize_acl :inquiry
@@ -297,6 +297,30 @@ class Overseers::InquiriesController < Overseers::BaseController
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit'
+    end
+  end
+
+  def render_followup_edit_form
+    authorize_acl :inquiry
+
+    respond_to do |format|
+      format.html {render partial: 'overseers/dashboard/edit_followup', locals: {obj: @inquiry, url: update_followup_date_overseers_inquiry_path(@inquiry)}}
+    end
+  end
+
+  def update_followup_date
+    @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
+    authorize_acl @inquiry
+    if @inquiry.valid?
+      @inquiry.update_attributes(quotation_followup_date: params['inquiry']['quotation_followup_date'].to_date)
+      if params['inquiry']['comments_attributes']['0']['message'].present?
+        @inquiry_comment = @inquiry.comments.create(message: params['inquiry']['comments_attributes']['0']['message'], overseer: current_overseer)
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
+      end
+    else
+      render json: {error: @inquiry.errors}, status: 500
     end
   end
 
