@@ -35,14 +35,14 @@
                       <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
                     </div>
                     <div class="chats">
-                      <% obj.comments.all.limit(5).each do |comment| %>
+                      <% obj.comments.limit(5).order(created_at: :desc).each do |comment| %>
                         <% if comment.persisted? %>
                           <%= format_comment(comment, trimmed: true) %>
                         <% end %>
                       <% end %>
                     </div>
                     <div class="card-footer">
-                      <a href="<%= view_more %>" class="btn btn-success btn-block align-self-center btn-block-sm-down">View
+                      <a href="<%= view_more + '#comments' %>" class="btn btn-success btn-block align-self-center btn-block-sm-down">View
                         More</a>
                     </div>
                   </div>
