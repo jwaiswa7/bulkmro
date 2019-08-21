@@ -16,6 +16,12 @@ json.data (@inward_dispatches) do |inward_dispatch|
                         end
                         #row_action_button('#', 'plus', 'View Inward Dispatch', 'success')
                       end,
+                      if is_authorized(inward_dispatch, 'index')
+                        link_to('', class: ['btn btn-sm btn-success comment-inward-dispatch'], 'data-inward-dispatch-id': inward_dispatch.id, 'data-purchase-id': inward_dispatch.purchase_order.id, title: 'Comment', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                        end
+                      end,
                   ].join(' '),
                   inward_dispatch.show_ar_invoice_requests.map.with_index { |ar_invoice_request, index| link_to(ar_invoice_request.ar_invoice_number || "# #{index + 1}", overseers_ar_invoice_request_path(ar_invoice_request), target: '_blank') }.compact.join(' <br>'),
                   link_to(inward_dispatch.purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(inward_dispatch.purchase_order.inquiry), target: '_blank'),

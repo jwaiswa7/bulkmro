@@ -109,4 +109,8 @@ class SalesOrderRow < ApplicationRecord
   def to_remote_s
     to_param
   end
+
+  def get_product
+    Product.where(id: self.product_id).last
+  end
 end
