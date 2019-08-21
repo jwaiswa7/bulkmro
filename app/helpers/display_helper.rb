@@ -166,6 +166,11 @@ module DisplayHelper
     "#{invoiced_qty}&nbspoff&nbsp#{ordered_qty}"
   end
 
+  def heatmap_for_pipeline(status, month)
+    if (status != 'Order Won' || status != 'Order Lost') && (month.to_date < (Date.today - 2.month))
+
+    end
+  end
 
   def format_boolean_with_badge(status)
     (
