@@ -136,7 +136,7 @@ module DisplayHelper
   end
 
   def get_quarter(date)
-    quarter = ((date.month - 1) / 3) + 1
+    quarter = ((date.month - 1) / 3)
     "Q#{quarter}-#{date.strftime('%Y')}"
   end
 
