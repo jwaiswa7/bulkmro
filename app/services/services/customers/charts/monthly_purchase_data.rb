@@ -3,7 +3,7 @@ class Services::Customers::Charts::MonthlyPurchaseData < Services::Customers::Ch
     super
   end
 
-  def call(company)
+  def call(account)
     build_chart do
       @data = {
           labels: [],
@@ -63,14 +63,17 @@ class Services::Customers::Charts::MonthlyPurchaseData < Services::Customers::Ch
           },
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:company).where(companies: { id: company.id })
-      monthwise_order_totals = sales_orders.group_by_month(&:created_at).map { |k, v| [k.strftime('%b-%y'), v.map(&:calculated_total).sum.to_s] }.to_h
-      monthwise_products_count = sales_orders.joins(:products).group_by_month('sales_orders.created_at', format: '%b-%y', series: true).count.to_h
+      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:account).where(accounts: {id: account.id})
 
-      (start_at..end_at).map { |a| a.strftime('%b-%y') }.uniq.each do |month|
-        @data[:labels].push(month)
-        @data[:datasets][1][:data].push(monthwise_order_totals[month] || 0)
-        @data[:datasets][0][:data].push(monthwise_products_count[month] || 0)
+      # quarterwise_order_totals = sales_orders.group_by_quarter(&:created_at).map { |k, v| ["Q#{((k.month - 1) / 3) + 1}-#{k.strftime('%y')}", v.map(&:calculated_total).sum.to_s] }.to_h
+      quarterwise_order_totals = sales_orders.group_by_quarter(&:created_at).map { |k, v| [k.strftime('%b-%y'), v.map(&:calculated_total).sum.to_s] }.to_h
+      quarterwise_products_count = sales_orders.joins(:products).group_by_quarter('sales_orders.created_at', format: '%b-%y', series: true).count.to_h
+
+      (start_at..end_at).map { |a| a.strftime('%b-%Y') }.uniq.map { |month| month.to_date.beginning_of_quarter }.uniq.each do |quarter_start|
+        formatted_quarter_start = quarter_start.to_date.strftime('%b-%y')
+        @data[:labels].push("#{quarter_start.to_date.strftime('%b/%y')} - #{quarter_start.to_date.end_of_quarter.strftime('%b/%y')}")
+        @data[:datasets][1][:data].push(quarterwise_order_totals[formatted_quarter_start] || 0)
+        @data[:datasets][0][:data].push(quarterwise_products_count[formatted_quarter_start] || 0)
       end
     end
   end

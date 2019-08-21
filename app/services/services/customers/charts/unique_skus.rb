@@ -3,7 +3,7 @@ class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Bui
     super
   end
 
-  def call(company)
+  def call(account)
     build_chart do
       @data = {
           labels: [],
@@ -44,12 +44,12 @@ class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Bui
           },
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:company).where(companies: { id: company.id })
+      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:account).where(accounts: { id: account.id })
       ordered_products = sales_orders.joins(:products)
 
-      (start_at..end_at).map { |a| a.strftime('%b-%Y') }.uniq.each do |month|
-        @data[:labels].push(month.gsub(/-(\d{2})/, '-'))
-        @data[:datasets][0][:data].push(ordered_products.where('sales_orders.created_at' => month.to_date.beginning_of_month..month.to_date.end_of_month.end_of_day).map{ |so| so.products }.flatten.uniq.count)
+      (start_at..end_at).map { |a| a.strftime('%b-%Y') }.uniq.map { |month| month.to_date.beginning_of_quarter }.uniq.each do |quarter|
+        @data[:labels].push("#{quarter.to_date.strftime('%b/%y')} - #{quarter.to_date.end_of_quarter.strftime('%b/%y')}")
+        @data[:datasets][0][:data].push(ordered_products.where('sales_orders.created_at' => quarter.to_date.beginning_of_month..quarter.to_date.end_of_month.end_of_day).map{ |so| so.products }.flatten.uniq.count)
       end
     end
   end
