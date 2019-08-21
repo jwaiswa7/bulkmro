@@ -35,14 +35,14 @@ json.data (@customer_order_status_records) do |sales_order|
   columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
   if (sales_order[:cp_committed_date].present? && sales_order[:delivery_status] == 'Not Delivered') && sales_order[:cp_committed_date].to_date <= (Date.today + 3.day)
     if sales_order[:cp_committed_date].to_date >= Date.today && (sales_order[:cp_committed_date].to_date <= (Date.today + 2.day)) && !sales_order[:customer_delivery_date].present?
-      class_name='bg-highlight-color-yellow'
+      class_name = 'bg-highlight-color-yellow'
     elsif sales_order[:cp_committed_date].to_date >= Date.today && (sales_order[:cp_committed_date].to_date <= (Date.today + 2.day)) && sales_order[:customer_delivery_date].present?
-      class_name=''
+      class_name = ''
     else
-      class_name='bg-highlight-danger'
+      class_name = 'bg-highlight-danger'
     end
   else
-    class_name=''
+    class_name = ''
   end
   json.merge! columns.merge("DT_RowClass": class_name)
 end
