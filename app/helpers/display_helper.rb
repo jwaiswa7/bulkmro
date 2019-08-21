@@ -166,9 +166,20 @@ module DisplayHelper
     "#{invoiced_qty}&nbspoff&nbsp#{ordered_qty}"
   end
 
-  def heatmap_for_pipeline(status, month)
-    if (status != 'Order Won' || status != 'Order Lost') && (month.to_date < (Date.today - 2.month))
-
+  def heatmap_for_pipeline(status, date, record_count)
+    records_month = date.month
+    current_month = Date.today.month
+    binding.pry
+    if record_count.present?
+      if status == 'Order Won' || status == 'Order Lost'
+        ''
+      elsif (status != 'Order Won' || status != 'Order Lost') && (((date - Date.today).to_i.abs > Time.days_in_month(records_month)) && (records_month - current_month).abs > 2)
+        'bg-highlight-danger'
+      elsif (status != 'Order Won' || status != 'Order Lost') && ((records_month - current_month).abs > 1 && (records_month - current_month).abs <= 2)
+        'bg-highlight-warning'
+      elsif (records_month - current_month).abs <= 1
+        'bg-highlight-success'
+      end
     end
   end
 
