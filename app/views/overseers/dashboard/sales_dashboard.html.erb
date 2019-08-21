@@ -11,7 +11,17 @@
       <div class="col-12 col-lg-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="text-uppercase text-black-50 mb-0">Recently Updated Inquiries</h5>
+            <div class="row">
+              <div class="col-10">
+                <h5 class="text-uppercase text-black-50 mb-0">Followup Inquiries for Today</h5>
+              </div>
+              <div class="col-2">
+                <h2 class="text-uppercase text-center text-black-50 badge-color-light-blue rounded mb-0">
+                  <%= @dashboard.inquiry_followup_count %>
+                </h2>
+              </div>
+            </div>
+
             <table class="table datatable w-100 wrap-whitespace" data-fixed-header="false">
               <thead>
               <tr>
@@ -26,10 +36,16 @@
               <tbody>
               <% @dashboard.recent_inquiries.each do |inquiry| %>
                 <tr>
-                  <td><%= row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Go to Inquiry', 'warning', :_blank) %></td>
-                  <td><%= inquiry.inquiry_number %></td>
+                  <td>
+                    <%= row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Go to Inquiry', 'warning', :_blank) %>
+                    <%= link_to('', class: ['btn btn-sm btn-danger update-followup'], 'data-inquiry-id': inquiry.id, title: 'Update Follow-up Date', remote: true) do
+                      concat content_tag(:span, '')
+                      concat content_tag :i, nil, class: ['fal fa-calendar'].join
+                    end %>
+                  </td>
+                  <td><%= link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank') %></td>
                   <td><%= status_badge(inquiry.status) %></td>
-                  <td><%= inquiry.company.to_s.truncate(10) %></td>
+                  <td><%= inquiry.company.to_s %></td>
                   <td><%= format_currency(inquiry.calculated_total) %></td>
                   <td><%= time_ago_in_words(inquiry.updated_at) %></td>
                 </tr>
@@ -40,6 +56,8 @@
         </div>
       </div>
     <% end %>
+
+    <div class="followup"></div>
 
     <% if @dashboard.recent_sales_orders.any? %>
       <div class="col-12 col-lg-6 mt-3 mt-lg-0">
@@ -65,7 +83,7 @@
                   <td>
                     <%= row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'eye', 'View Sales Order', 'info', :_blank) %>
                   </td>
-                  <td><%= sales_order.inquiry.inquiry_number %></td>
+                  <td><%= link_to(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), target: '_blank') %></td>
                   <td><%= sales_order.id %></td>
                   <td><%= sales_order.order_number %></td>
                   <td><%= status_badge(sales_order.status) %></td>

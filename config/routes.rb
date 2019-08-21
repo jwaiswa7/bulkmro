@@ -495,6 +495,8 @@ Rails.application.routes.draw do
         get 'stages'
         get 'relationship_map'
         get 'get_relationship_map_json'
+        get 'render_followup_edit_form'
+        patch 'update_followup_date'
         post 'duplicate'
         get 'render_modal_form'
         patch 'add_comment'
