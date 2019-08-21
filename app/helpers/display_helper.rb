@@ -176,6 +176,21 @@ module DisplayHelper
     "#{invoiced_qty}&nbspoff&nbsp#{ordered_qty}"
   end
 
+  def heatmap_for_pipeline(status, date, record_count)
+    month_difference = ((Date.today.year * 12 + Date.today.month) - (date.year * 12 + date.month)).abs
+
+    if record_count.present?
+      if status == 'Order Won' || status == 'Order Lost'
+        ''
+      elsif (status != 'Order Won' || status != 'Order Lost') && month_difference >= 2
+        'bg-highlight-danger'
+      elsif (status != 'Order Won' || status != 'Order Lost') && month_difference >= 1 && month_difference < 2
+        'bg-highlight-warning'
+      elsif month_difference < 1
+        'bg-highlight-success'
+      end
+    end
+  end
 
   def format_boolean_with_badge(status)
     (
