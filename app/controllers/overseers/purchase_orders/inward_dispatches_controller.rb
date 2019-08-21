@@ -107,7 +107,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
     end
 
     def inward_dispatch_params
-      params.require(:inward_dispatch).except(:action_name)
+      params.require(:inward_dispatch).require(:inward_dispatch).except(:action_name)
         .permit(
           :status,
           :expected_dispatch_date,
