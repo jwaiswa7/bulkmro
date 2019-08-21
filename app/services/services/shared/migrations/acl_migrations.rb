@@ -425,8 +425,6 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
 
     acl_resource = AclResource.new
     acl_resource.update_acl_resource_cache
-    Message Input
-    Direct message with Ruta ashok kambli
   end
 
   # function for applying acl to outward ques
