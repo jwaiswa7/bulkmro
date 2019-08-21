@@ -135,6 +135,11 @@ module DisplayHelper
     end
   end
 
+  def get_quarter(date)
+    quarter = ((date.month - 1) / 3) + 1
+    "Q#{quarter}-#{date.strftime('%Y')}"
+  end
+
   def format_num(num, precision = 0)
     number_with_precision(num, precision: precision)
   end
