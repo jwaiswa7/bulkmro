@@ -6,12 +6,13 @@ class Services::Overseers::Reports::InwardLogisticQueue < Services::Overseers::R
       summary_box_data: { with_material_not_ready: 0, material_pickups_pending: 0, with_inward_pending: 0, with_status_partial_grpo_done: 0 }
     )
     with_material_not_ready = PurchaseOrder.where.not(id: PurchaseOrder.joins(:inward_dispatches)).joins(:po_request).where(po_requests: {status: 'Supplier PO Sent'}).group('logistics_owner_id').count
-    @data.summary_box_data[:with_material_not_ready] = with_material_not_ready.values.sum
     pickups_pending = purchase_orders.where.not(po_requests: {id: nil}).where(material_status: ['Inward Dispatch', 'Inward Dispatch: Partial', 'Material Partially Delivered']).group(:logistics_owner_id).count
-    @data.summary_box_data[:material_pickups_pending] = pickups_pending.values.sum
     inward_pending = purchase_orders.where.not(po_requests: {id: nil}).where(material_status: ['Material Delivered', 'Material Partially Delivered']).group(:logistics_owner_id).count
-    @data.summary_box_data[:with_inward_pending] = inward_pending.values.sum
     partial_purchase_order_with_grpo = PurchaseOrder.where(is_partial: true, status: 40)
+
+    @data.summary_box_data[:with_material_not_ready] = with_material_not_ready.values.sum
+    @data.summary_box_data[:material_pickups_pending] = pickups_pending.values.sum
+    @data.summary_box_data[:with_inward_pending] = inward_pending.values.sum
     if partial_purchase_order_with_grpo.present?
       partial_purchase_order_with_logistics = partial_purchase_order_with_grpo.group(:logistics_owner_id).count
     end

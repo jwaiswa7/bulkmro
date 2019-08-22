@@ -334,6 +334,8 @@ Rails.application.routes.draw do
         get 'render_cancellation_form'
         get 'download_eway_bill_format'
         patch 'cancel_ar_invoice'
+        get 'render_modal_form'
+        patch 'add_comment'
       end
     end
 
@@ -343,6 +345,8 @@ Rails.application.routes.draw do
       end
       member do
         get 'make_packing_zip'
+        get 'render_modal_form'
+        patch 'add_comment'
       end
       scope module: 'outward_dispatches' do
         resources :packing_slips do
@@ -370,6 +374,8 @@ Rails.application.routes.draw do
         post 'preview_purchase_orders_requests'
         post 'create_purchase_orders_requests'
         get 'debugging'
+        get 'render_modal_form'
+        patch 'add_comment'
       end
 
       collection do
@@ -434,6 +440,8 @@ Rails.application.routes.draw do
           member do
             get 'confirm_delivery'
             get 'delivered_material'
+            get 'render_modal_form'
+            patch 'add_comment'
           end
         end
       end
@@ -487,7 +495,11 @@ Rails.application.routes.draw do
         get 'stages'
         get 'relationship_map'
         get 'get_relationship_map_json'
+        get 'render_followup_edit_form'
+        patch 'update_followup_date'
         post 'duplicate'
+        get 'render_modal_form'
+        patch 'add_comment'
       end
 
       collection do
@@ -525,6 +537,8 @@ Rails.application.routes.draw do
           member do
             get 'relationship_map'
             get 'get_relationship_map_json'
+            get 'render_modal_form'
+            patch 'add_comment'
           end
         end
 

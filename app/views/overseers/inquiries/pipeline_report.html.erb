@@ -55,7 +55,7 @@
       <tr>
         <td style="text-align:left;"><%= format_month_without_date(month) %></td>
         <% @pipeline_statuses.each do |index, status| %>
-          <td>
+          <td class="<%= heatmap_for_pipeline(Inquiry.pipeline_statuses.key(status), month.to_date, record_bucket['pipeline']['buckets'].map {|bucket| bucket['doc_count'].to_i if bucket['key'] == status}.compact.first || nil) %>">
             <strong>
               <% if params.present? && params['pipeline_report'].present? %>
                 <%= link_to(record_bucket['pipeline']['buckets'].map {|bucket| bucket['doc_count'].to_i if bucket['key'] == status}.compact.first || 0,
@@ -82,7 +82,8 @@
           <strong>
             <%= record_bucket['doc_count'] %>
           </strong><br>
-          <%= format_currency(record_bucket['sum_monthly_sales']['value'], precision: 0, show_symbol: false) %></td>
+          <%= format_currency(record_bucket['sum_monthly_sales']['value'], precision: 0, show_symbol: false) %>
+        </td>
         <td>
           <!-- <%#= record_bucket['doc_count'] != 0 ? (((record_bucket['pipeline']['buckets'].map{|bucket| bucket['doc_count'] if bucket['key'] == 18 }.compact.first || 0)/record_bucket['doc_count'])*100).round(2) : 0 %> -->
           <%= percentage((((record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == 18}.compact.first || 0) / record_bucket['sum_monthly_sales']['value']) * 100).round(2), show_symbol: false) %>
