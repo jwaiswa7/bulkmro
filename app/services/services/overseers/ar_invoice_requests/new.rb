@@ -12,9 +12,15 @@ class Services::Overseers::ArInvoiceRequests::New < Services::Shared::BaseServic
     @ar_invoice_request = ArInvoiceRequest.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
     @sales_order_rows.each do |sales_order_row|
       product_id = sales_order_row.product_id
-      inward_dispatche_rows = InwardDispatchRow.where(inward_dispatch_id: inward_dispatches.pluck(:id), product_id: product_id)
-      supplier_delivered_quantity = inward_dispatche_rows.sum(&:delivered_quantity)
       ar_invoice_request_rows = ArInvoiceRequestRow.where(sales_order_id: sales_order_id, product_id: product_id).joins(:ar_invoice_request).where.not(ar_invoice_requests: {status: "Cancelled AR Invoice"})
+      if ar_invoice_request_rows.present?
+        inward_dispatch_ids = @sales_order.inward_dispatches.where(status: 'Material Delivered').pluck(:id)
+        inward_dispatche_rows = InwardDispatchRow.where(inward_dispatch_id: inward_dispatch_ids, product_id: product_id)
+      else
+        inward_dispatche_rows = InwardDispatchRow.where(inward_dispatch_id: inward_dispatches.pluck(:id), product_id: product_id)
+      end
+      supplier_delivered_quantity = inward_dispatche_rows.sum(&:delivered_quantity)
+
       customer_invoiced_quantity = ar_invoice_request_rows.sum(&:delivered_quantity)
       remaining_delivered_quantity = supplier_delivered_quantity - customer_invoiced_quantity
       remaining_delivered_quantity = (remaining_delivered_quantity < 0) ? 0 : remaining_delivered_quantity
