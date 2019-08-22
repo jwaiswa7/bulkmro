@@ -14,7 +14,8 @@ class Services::Overseers::ArInvoiceRequests::New < Services::Shared::BaseServic
       product_id = sales_order_row.product_id
       ar_invoice_request_rows = ArInvoiceRequestRow.where(sales_order_id: sales_order_id, product_id: product_id).joins(:ar_invoice_request).where.not(ar_invoice_requests: {status: "Cancelled AR Invoice"})
       if ar_invoice_request_rows.present?
-        inward_dispatche_rows = @sales_order.inward_dispatches.where(status: 'Material Delivered').rows.where(product_id: product_id)
+        inward_dispatch_ids = @sales_order.inward_dispatches.where(status: 'Material Delivered').pluck(:id)
+        inward_dispatche_rows = rows.where(inward_dispatch_id: inward_dispatch_ids, product_id: product_id)
       else
         inward_dispatche_rows = InwardDispatchRow.where(inward_dispatch_id: inward_dispatches.pluck(:id), product_id: product_id)
       end
