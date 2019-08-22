@@ -86,7 +86,6 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
 
   def material_received_in_bm_warehouse
     if @po_request.purchase_order.present?
-      @company_reviews = []
       @action = 'material_received_in_bm_warehouse_notification'
       @email_message = @po_request.purchase_order.email_messages.build(overseer: current_overseer, contact: @contact, inquiry: @inquiry)
       @email_message.assign_attributes(
