@@ -6,15 +6,16 @@ class PackingSlip < ApplicationRecord
   validate :box_number_uniq?
 
 
-
   def dispatched_quantity
     self.rows.sum(:delivery_quantity)
   end
 
   def box_number_uniq?
-    box_uniq = PackingSlip.where(outward_dispatch_id: self.outward_dispatch_id).pluck(:box_number)
-    if box_uniq.include?(box_number)
-      errors.add(:box_number, "#{box_number} already exists in this outward dispatch.")
+    if !id.present?
+      box_uniq = PackingSlip.where(outward_dispatch_id: self.outward_dispatch_id).pluck(:box_number)
+      if box_uniq.include?(box_number)
+        errors.add(:box_number, "#{box_number} already exists in this outward dispatch.")
+      end
     end
   end
 
