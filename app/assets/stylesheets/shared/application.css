@@ -14574,6 +14574,9 @@ section.section-padding-adjustment {
   section.section-padding-adjustment p.lead {
     font-size: 0.8rem; }
 
+.text-black {
+  color: black; }
+
 th.logistics-scorecard {
   padding-left: 35px !important;
   text-align: start;
@@ -14589,7 +14592,5 @@ th.logistics-scorecard {
 @media screen and (max-width: 1550px) {
   .kra_summary_row {
     display: none; } }
-.text-black {
-  color: black; }
 
 /*# sourceMappingURL=application.css.map */

@@ -6,11 +6,15 @@ section.section-padding-adjustment {
     font-size: 0.8rem;
   }
 }
+.text-black {
+  color: black;
+}
 th.logistics-scorecard {
   padding-left: 35px !important;
   text-align: start;
   width: 10rem;
 }
+
 
 .clear-date {
   position: absolute;
@@ -24,7 +28,4 @@ th.logistics-scorecard {
   .kra_summary_row {
     display: none;
   }
-}
-.text-black {
-  color: black;
 }
