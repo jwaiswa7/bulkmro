@@ -41,19 +41,19 @@ class Services::Shared::Migrations::AddInquiryMappingTat < Services::Shared::Mig
     end
   end
 
-  def add_new_inquiry_status
-    start_date = Date.parse('01-01-2019')
-    end_date = Date.today
-    inquiries = Inquiry.where(created_at: start_date..end_date)
-    Chewy.strategy(:bypass) do
-      inquiries.each do |inquiry|
-        isr = InquiryStatusRecord.where(inquiry_id: inquiry).where(status: 'New Inquiry')
-        unless isr.present?
-          InquiryStatusRecord.create(status: 'New Inquiry', inquiry_id: inquiry.id, subject_type: 'Inquiry', subject_id: inquiry.id, created_at: inquiry.created_at)
-        end
-      end
-    end
-  end
+  # def add_new_inquiry_status
+  #   start_date = Date.parse('01-04-2019')
+  #   end_date = Date.today
+  #   inquiries = Inquiry.where(created_at: start_date..end_date)
+  #   Chewy.strategy(:bypass) do
+  #     inquiries.each do |inquiry|
+  #       isr = InquiryStatusRecord.where(inquiry_id: inquiry).where(status: 'New Inquiry')
+  #       unless isr.present?
+  #         InquiryStatusRecord.create(status: 'New Inquiry', inquiry_id: inquiry.id, subject_type: 'Inquiry', subject_id: inquiry.id, created_at: inquiry.created_at)
+  #       end
+  #     end
+  #   end
+  # end
 
   def add_parent_id_for_existing_records
     start_date = Date.parse('01-01-2019')

@@ -93,7 +93,7 @@ class InquiryStatusRecord < ApplicationRecord
     if inquiry_status_records.present?
       inquiry_status_record = inquiry_status_records.last
       created_at = inquiry_status_record.created_at
-      prev_status = inquiry_status_record.fetch_previous_status_record
+      prev_status = inquiry_status_record.previous_status_record
       prev_status_time = prev_status.present? ? prev_status.created_at.to_time.to_i : 0
       current_status_time = inquiry_status_record.created_at
 
