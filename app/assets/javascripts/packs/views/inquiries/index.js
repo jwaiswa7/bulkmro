@@ -1,6 +1,7 @@
 import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from '../common/updateSummaryBox'
 import exportFilteredRecords from '../common/exportFilteredRecords'
+import commanComment from "../common/commanComment";
 
 const index = () => {
 
@@ -9,7 +10,9 @@ const index = () => {
     aggregateSummaryBox()
     bulkUpdate()
     let controller = camelize($('body').data().controller);
-    exportFilteredRecords(Routes.export_filtered_records_overseers_inquiries_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
+     exportFilteredRecords(Routes.export_filtered_records_overseers_inquiries_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
+
+    commanComment('inquiry','inquiries');
 
 };
 

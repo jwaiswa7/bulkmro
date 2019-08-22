@@ -1,3 +1,5 @@
+import updateLogisticsOwner from "./inwardDispatchPickupQueue";
+
 const inwardCompletedQueue = () => {
     $(' #create_ar_invoice').hide();
     toggleCheckboxes();
@@ -9,6 +11,7 @@ const inwardCompletedQueue = () => {
         $('#order_number').html($(this).attr('data-sales-order-number'))
         $('#arInvoiceStatusModal').modal('show')
     })
+    updateLogisticsOwner();
 };
 
 let toggleCheckboxes = () => {

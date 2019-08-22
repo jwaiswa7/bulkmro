@@ -207,7 +207,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         U_TrmDeli: po_request.delivery_type.present? ? po_request.delivery_type.to_s : 'Door Delivery',
         U_PO_Pur: po_request_pur,
         PaymentGroupCode: po_request.payment_option.present? ? po_request.payment_option.remote_uid : '',
-        U_CnfirmQty: 'A',
+        U_CnfrmQty: 'A',
         U_CnfrmAddB: 'A',
         U_CnfrmAddS: 'A',
         U_CnfrmRate: 'A',
