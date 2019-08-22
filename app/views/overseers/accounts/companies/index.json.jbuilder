@@ -23,7 +23,7 @@ json.data (@companies) do |company|
                   link_to(company.to_s, overseers_company_path(company), target: '_blank'),
                   if company.is_supplier? && company.rating.present? && company.rating > 0
                     format_star(company.rating)
-                  else
+                  elsif company.is_supplier?
                     format_star(rand(3.0..4.8).round(1))
                   end,
                   company.addresses.size,
