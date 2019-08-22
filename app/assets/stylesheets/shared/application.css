@@ -14574,6 +14574,21 @@ section.section-padding-adjustment {
   section.section-padding-adjustment p.lead {
     font-size: 0.8rem; }
 
+th.logistics-scorecard {
+  padding-left: 35px !important;
+  text-align: start;
+  width: 10rem; }
+
+.clear-date {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  cursor: pointer; }
+
+@media screen and (max-width: 1550px) {
+  .kra_summary_row {
+    display: none; } }
 .text-black {
   color: black; }
 
