@@ -89,7 +89,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
       upload_sheet.update(status: 'Failed')
     end
     # puts 'ERROR', error
-    File.delete(path_to_tempfile) if File.exist?(path_to_tempfile)
+    File.delete(@path_to_tempfile) if File.exist?(@path_to_tempfile)
   end
 
   def calculate_totals
