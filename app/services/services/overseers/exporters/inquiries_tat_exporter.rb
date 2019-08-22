@@ -19,7 +19,7 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
       rows.push(
         inquiry_id: record.attributes['id'],
         inquiry_number: record.attributes['inquiry_number'],
-        inquiry_created_at: record.attributes['inquiry_created_at'],
+        inquiry_created_at: format_date_with_time(DateTime.parse(record.attributes['inquiry_created_at'])),
         inquiry_products: record.attributes['inquiry_products'],
         inside_sales_owner: record.attributes['inside_sales_owner'],
         sales_quote: record.attributes['sales_quote'].present? ? record.attributes['sales_quote'] : '-',
