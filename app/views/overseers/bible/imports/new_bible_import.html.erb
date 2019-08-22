@@ -33,19 +33,18 @@
 
 <div class="col-12 mt-2">
   <% content_for :header_row do %>
-    <!-- <th class="no-sort"></th>-->
+     <th class="no-sort"></th>
     <th class="no-sort all">Id</th>
-    <th class="no-sort all">Import Type</th>
+    <th class="no-sort all" data-name="import_type">Import Type</th>
     <th class="no-sort all text-right">File Name</th>
-    <th class="no-sort desktop text-right">Status</th>
+    <th class="no-sort desktop text-right" data-name="status">Status</th>
     <th class="no-sort desktop text-right">Updated By</th>
-    <th class="no-sort desktop">Time</th>
-    <th class="no-sort desktop">Log</th>
+    <th class="no-sort desktop text-right">Time</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
-    <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
+    <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>

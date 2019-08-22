@@ -113,8 +113,4 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
       bible_invoice.update_attributes(invoice_total: @bible_invoice_total, total_margin: @invoice_margin, overall_margin_percentage: @overall_margin_percentage)
     end
   end
-
-  def get_bible_file_upload_log
-    BibleUpload.all
-  end
 end

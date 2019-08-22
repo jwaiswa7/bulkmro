@@ -21,7 +21,7 @@
     </thead>
     <tbody>
     <%# if @bible_file_uploads.present? %>
-      <% @bible_file_uploads.each do |file_upload| %>
+      <% @bible_uploads.each do |file_upload| %>
         <tr>
           <td><%= file_upload.id%></td>
           <td><%= file_upload.bible_upload_id %></td>
@@ -29,7 +29,7 @@
           <td data-toggle="modal" data-target="#BibleRowModal" class="sheet-view-data">
             View Data
           </td>
-          <td><%= file_upload.status %></td>
+          <td><%= status_badge(file_upload.status) %></td>
           <td><%= file_upload.error %></td>
           <td class="sheet-row-data" style="display:none;"><%= file_upload.bible_row_data %></td>
         </tr>

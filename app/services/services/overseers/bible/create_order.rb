@@ -129,8 +129,4 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
       bible_order.update_attributes(order_total: @bible_order_total, order_tax: @bible_order_tax, order_total_with_tax: @bible_order_total_with_tax, total_margin: @order_margin, overall_margin_percentage: @overall_margin_percentage)
     end
   end
-
-  def get_bible_file_upload_log
-    BibleUpload.all
-  end
 end
