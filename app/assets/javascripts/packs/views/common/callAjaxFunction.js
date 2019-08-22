@@ -1,5 +1,5 @@
 const callAjaxFunction = function(json){
-    $(json.this).addClass('disabled')
+    $(json.this).addClass('disabled');
     var data;
     if (json.title != '') {
         data = {'title': json.title}
@@ -11,11 +11,11 @@ const callAjaxFunction = function(json){
         url: json.url,
         type: 'GET',
         success: function (data) {
-            $(this).addClass('disabled')
-            $(json.className).empty()
-            $(json.className).append(data)
-            $(json.modalId).modal('show')
-            modalSubmit(json.modalId, json.buttonClassName)
+            $(this).addClass('disabled');
+            $(json.className).empty();
+            $(json.className).append(data);
+            $(json.modalId).modal('show');
+            modalSubmit(json.modalId, json.buttonClassName);
             $(json.modalId).on('hidden.bs.modal', function () {
                 json.this.removeClass('disabled')
             })
@@ -28,9 +28,7 @@ const callAjaxFunction = function(json){
 
 const modalSubmit = (modalId, buttonClassName) => {
     $(modalId).on('click', buttonClassName, function (event) {
-        var formSelector = "#" + $(this).closest('form').attr('id'),
-            datastring = $(formSelector).serialize();
-
+        var formSelector = "#" + $(this).closest('form').attr('id'), datastring = $(formSelector).serialize();
         $.ajax({
             type: "PATCH",
             url: $(formSelector).attr('action'),
@@ -49,15 +47,13 @@ const modalSubmit = (modalId, buttonClassName) => {
                 }
             },
             error: function error(_error) {
-                console.log($(formSelector))
-                if (_error.responseJSON && _error.responseJSON.error && _error.responseJSON.error.base)
+                if (_error.responseJSON && _error.responseJSON.error && _error.responseJSON.error.base) {
                     $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error.base + "</div>");
-                    console.log(_error);
+                }
             }
         });
         event.preventDefault();
     });
-
-}
+};
 
 export default callAjaxFunction

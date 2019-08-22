@@ -26,6 +26,13 @@ json.data (@outward_dispatches) do |outward_dispatch|
                             row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info'),
                         ]
                       end,
+                      if is_authorized(outward_dispatch, 'index')
+                        link_to('', class: ['btn btn-sm btn-success comment-outward-dispatch'], 'data-model-id': outward_dispatch.id, title: 'Comment', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                        end
+                      end,
+
                   ].join(' '),
                   outward_dispatch.packing_slips.map.with_index { |packing_slip,i| link_to("#{packing_slip.outward_dispatch.ar_invoice_request.ar_invoice_number}-#{i + 1}", overseers_outward_dispatch_packing_slip_path(outward_dispatch, packing_slip), target: '_blank') }.compact.join(' '),
                   link_to(ar_invoice_request.inquiry.inquiry_number, edit_overseers_inquiry_path(ar_invoice_request.inquiry), target: '_blank'),

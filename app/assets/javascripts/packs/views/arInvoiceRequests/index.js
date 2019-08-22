@@ -1,5 +1,5 @@
 import updateSummaryBox from "../common/updateSummaryBox";
-
+import commanComment from "../common/commanComment";
 const index = () => {
     updateSummaryBox()
 
@@ -53,6 +53,8 @@ const index = () => {
             })
         }
     })
+
+    commanComment('ar-invoice-request','ar_invoice_requests');
 };
 
 let modalSubmit = () => {
