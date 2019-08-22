@@ -6,7 +6,7 @@
     <%= render 'shared/snippets/form_errors', f: f %>
 
     <div class="form-row">
-      <% if policy(@address).edit_remote_uid? %>
+      <% if is_authorized(@address, 'edit_remote_uid') %>
         <div class="col-3 col-md-1">
           <%= f.input :legacy_id, disabled: true %>
         </div>

@@ -6,11 +6,11 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     service.call
     @indexed_company_reviews = service.indexed_records
     @company_reviews = service.records
-    authorize @company_reviews
+    authorize_acl @company_reviews
   end
 
   def update
-    authorize @company_review
+    authorize_acl @company_review
 
     if @company_review.company_ratings.map(&:rating).include? nil
       redirect_to_path_generation('Please rate all questions before submitting.', 500)
@@ -39,11 +39,11 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
   end
 
   def show
-    authorize @company_review
+    authorize_acl @company_review
   end
 
   def render_form
-    authorize @company_review
+    authorize_acl @company_review
     if @company_review.survey_type == 'Sales'
       @review_type = 'Sales'
       review_questions = ReviewQuestion.sales
@@ -60,14 +60,14 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
   end
 
   def export_all
-    authorize :company_review
+    authorize_acl :company_review
     service = Services::Overseers::Exporters::CompanyReviewExporter.new([], current_overseer, [])
     service.call
     redirect_to url_for(Export.company_reviews.last.report)
   end
 
   def export_filtered_records
-    authorize :company_review
+    authorize_acl :company_review
     service = Services::Overseers::Finders::CompanyReviews.new(params, current_overseer, paginate: false)
     service.call
 

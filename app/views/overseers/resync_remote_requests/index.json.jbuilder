@@ -1,13 +1,13 @@
 json.data (@remote_requests) do |remote_request|
   columns = [
                   [
-                      if policy(remote_request).show?
+                      if is_authorized(remote_request,'show')
                         row_action_button(overseers_resync_remote_request_path(remote_request), 'eye', 'Show Remote Request', 'info')
                       end,
                       row_action_button(resend_failed_request_overseers_resync_remote_request_path(remote_request), 'retweet-alt', 'Resend Remote Request', 'warning')
                   ].join(' '),
                   remote_request.hits,
-                  if remote_request.subject.present? && policy(remote_request.subject).show?
+                  if remote_request.subject.present? && is_authorized(remote_request.subject,'show')
                     [remote_request.subject.class.name, remote_request.subject.to_s].join(' > ')
                   end,
                   status_badge(remote_request.status),

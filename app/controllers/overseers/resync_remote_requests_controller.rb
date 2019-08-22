@@ -3,22 +3,22 @@ class Overseers::ResyncRemoteRequestsController < Overseers::BaseController
 
   def index
     @remote_requests = ApplyDatatableParams.to(ResyncRemoteRequest.where('hits < 5').order(id: :desc), params)
-    authorize @remote_requests
+    authorize_acl @remote_requests
   end
 
   def all_requests
     @remote_requests = ApplyDatatableParams.to(ResyncRemoteRequest.all.order(id: :desc), params)
-    authorize @remote_requests
+    authorize_acl @remote_requests
     render 'index'
   end
 
   def show
-    authorize @remote_request
+    authorize_acl @remote_request
     render :show
   end
 
   def resend_failed_request
-    authorize :resync_remote_request
+    authorize_acl :resync_remote_request
     resync_service = Services::Resources::Shared::ResyncFailedRequests.new(@remote_request)
     resync_service.call
 

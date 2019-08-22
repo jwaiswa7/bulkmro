@@ -3,7 +3,7 @@ class Overseers::CategoriesController < Overseers::BaseController
 
   def autocomplete
     @categories = ApplyParams.to(Category.leaves.active, params)
-    authorize @categories
+    authorize_acl @categories
   end
 
   def autocomplete_closure_tree
@@ -17,26 +17,26 @@ class Overseers::CategoriesController < Overseers::BaseController
         end
       end
     end
-    authorize :category
+    authorize_acl :category
   end
 
   def show
-    authorize @category
+    authorize_acl @category
   end
 
   def index
     @categories = ApplyDatatableParams.to(Category.all, params)
-    authorize @categories
+    authorize_acl @categories
   end
 
   def new
     @category = Category.new(overseer: current_overseer)
-    authorize @category
+    authorize_acl @category
   end
 
   def create
     @category = Category.new(category_params.merge(overseer: current_overseer))
-    authorize @category
+    authorize_acl @category
     if @category.save_and_sync
       redirect_to overseers_categories_path, notice: flash_message(@category, action_name)
     else
@@ -45,12 +45,12 @@ class Overseers::CategoriesController < Overseers::BaseController
   end
 
   def edit
-    authorize @category
+    authorize_acl @category
   end
 
   def update
     @category.assign_attributes(category_params.merge(overseer: current_overseer))
-    authorize @category
+    authorize_acl @category
     if @category.save_and_sync
       redirect_to overseers_categories_path, notice: flash_message(@category, action_name)
     else

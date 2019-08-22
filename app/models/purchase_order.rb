@@ -3,6 +3,7 @@ class PurchaseOrder < ApplicationRecord
 
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
+  include Mixins::CanBeSynced
   update_index('purchase_orders#purchase_order') { self }
   update_index('customer_order_status_report#sales_order') { self.po_request.sales_order if self.po_request.present? }
 
@@ -67,7 +68,8 @@ class PurchaseOrder < ApplicationRecord
       'Payment to Supplier Delayed': 68,
       'payment_done_out_from_bm_warehouse': 69,
       'cancelled': 95,
-      'Closed': 96
+      'Closed': 96,
+      'Delivered': 97
   }
 
   enum material_status: {
@@ -87,13 +89,39 @@ class PurchaseOrder < ApplicationRecord
       'GRPO Request Rejected': 80,
       'Inward Completed': 85,
       'Cancelled AP Invoice': 90,
-      'Cancelled GRPO': 95
+      'Cancelled GRPO': 95,
+      'Manually Closed': 100
+  }
+
+  enum material_summary_status: {
+      'Pending follow-up': 10,
+      'Follow-up for today': 20,
+      'Follow-up Date missing': 30,
+      'Committed Date Breached': 40,
+      'Committed Date Approaching': 50
   }
 
   enum transport_mode: {
       'Road': 1,
       'Air': 2,
       'Sea': 3
+  }
+
+  enum sap_sync: {
+      'Sync': 10,
+      'Not Sync': 20
+  }
+
+  enum delivery_type: {
+      'EXW': 10,
+      'CPT': 20,
+      'CIF': 30,
+      'CFR': 40,
+      'FOB': 50,
+      'DAP': 60,
+      'CIP Mumbai Airport': 60,
+      'CIF Mumbai Airport': 70,
+      'Door Delivery': 80
   }
 
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
@@ -212,29 +240,46 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def update_material_status
-    inward_dispatches = self.inward_dispatches.order(created_at: :desc)
-    if inward_dispatches.any?
-      invoice_request = inward_dispatches.first.invoice_request
-      if invoice_request.present?
-        self.update_attribute(:material_status, invoice_request.status)
-      else
-        partial = true
-        if self.rows.sum(&:get_pickup_quantity) <= 0
-          partial = false
-        end
-        if 'Material Pickup'.in? self.inward_dispatches.map(&:status)
-          status = partial ? 'Inward Dispatch: Partial' : 'Inward Dispatch'
-        elsif 'Material Delivered'.in? self.inward_dispatches.map(&:status)
-          status = partial ? 'Material Partially Delivered' : 'Material Delivered'
-        end
-        self.update_attribute(:material_status, status)
+    if self.inward_dispatches.any?
+      partial = true
+      if self.rows.sum(&:get_pickup_quantity) <= 0
+        partial = false
       end
+      if 'Material Pickup'.in? self.inward_dispatches.map(&:status)
+        status = partial ? 'Inward Dispatch: Partial' : 'Inward Dispatch'
+      elsif 'Material Delivered'.in? self.inward_dispatches.map(&:status)
+        status = partial ? 'Material Partially Delivered' : 'Material Delivered'
+      end
+      self.update_attribute(:material_status, status)
     else
       self.update_attribute(:material_status, 'Material Readiness Follow-Up')
     end
+    PurchaseOrdersIndex::PurchaseOrder.import([self.id])
   end
 
   def po_request_present?
     self.po_request.present? ? (self.po_request.status == 'Supplier PO Sent' || self.po_request.status == 'Supplier PO: Created Not Sent') : false
+  end
+
+  def get_followup_status
+    if self.followup_date.blank?
+      'Follow-up Date missing'
+    elsif self.followup_date.present? && (self.followup_date.to_date < Date.today)
+      'Pending follow-up'
+    elsif self.followup_date.present? && (self.followup_date.to_date == Date.today)
+      'Follow-up for today'
+    else
+      nil
+    end
+  end
+
+  def get_committed_date_status
+    if self.po_request.present? && self.inquiry.customer_committed_date.present? && (self.inquiry.customer_committed_date < Date.today)
+      'Committed Date Breached'
+    elsif self.po_request.present? && self.inquiry.customer_committed_date.present? && (self.inquiry.customer_committed_date > Date.today) && (self.inquiry.customer_committed_date < (Date.today + 2.day))
+      'Committed Date Approaching'
+    else
+      nil
+    end
   end
 end

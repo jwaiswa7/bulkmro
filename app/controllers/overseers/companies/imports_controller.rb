@@ -3,11 +3,11 @@
 class Overseers::Companies::ImportsController < Overseers::Companies::BaseController
   def new_excel_customer_product_import
     @product_excel_import = @company.product_imports.build(overseer: current_overseer)
-    authorize @company
+    authorize_acl @company
   end
 
   def download_customer_product_template
-    authorize @company
+    authorize_acl @company
     respond_to do |format|
       format.xlsx do
         response.headers['Content-Disposition'] = 'attachment; filename="' + ["#{@company.name} Excel Template", 'xlsx'].join('.') + '"'
@@ -24,7 +24,7 @@ class Overseers::Companies::ImportsController < Overseers::Companies::BaseContro
     else
       redirect_to overseers_company_path(@company)
     end
-    authorize @company
+    authorize_acl @company
   end
 
   def create_excel_import_params

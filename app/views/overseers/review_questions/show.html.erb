@@ -5,7 +5,7 @@
       <h3 class="display-5 d-flex align-items-center">
         Review Question Show
       </h3>
-      <% if policy(@review_question).show? %>
+      <% if is_authorized(@review_question, 'show') %>
         <a href="<%= edit_overseers_review_question_path(@review_question) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
       <% end %>
     </div>

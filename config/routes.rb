@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   mount Maily::Engine, at: '/maily' if Rails.env.development?
   mount ActionCable.server, at: '/cable'
 
-  root :to => 'overseers/dashboard#show'
+  root to: 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
   get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
 
@@ -30,7 +30,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-    post '1de9b0a30075ae8c303eb420c103c320', :to => 'image_readers#update'
+    post '1de9b0a30075ae8c303eb420c103c320', to: 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
-    get "/docs/*page" => "docs#index"
+    get '/docs/*page' => 'docs#index'
     resources :payment_collection_emails
     resources :attachments
     resources :review_questions
@@ -49,7 +49,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :dashboard, :controller => :dashboard do
+    resource :dashboard, controller: :dashboard do
       get 'chewy'
       get 'reset_index'
       get 'serializer'
@@ -82,6 +82,13 @@ Rails.application.routes.draw do
     end
 
     resources :document_creations
+
+    resources :acl_resources do
+      collection do
+        get 'resource_json'
+        get 'menu_resource_json'
+      end
+    end
 
     resources :notifications do
       collection do
@@ -130,8 +137,37 @@ Rails.application.routes.draw do
         get 'reject'
       end
     end
-    resource :profile, :controller => :profile, except: [:show, :index]
-    resources :overseers, except: [:show]
+
+    resource :profile, controller: :profile, except: [:show, :index]
+    resources :overseers do
+      member do
+        patch 'save_acl_resources'
+        get 'get_resources'
+        get 'get_menu_resources'
+        get 'edit_acl'
+        patch 'update_acl'
+        get 'change_password'
+        patch 'update_password'
+      end
+
+      collection do
+        get 'get_resources'
+      end
+    end
+
+    resources :acl_roles do
+      member do
+        get 'get_acl'
+        get 'get_acl_menu'
+        get 'get_role_resources'
+        post 'save_role'
+      end
+      collection do
+        get 'get_default_resources'
+      end
+    end
+
+    resources :annual_targets
 
     resources :suppliers do
       collection do
@@ -227,10 +263,17 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
       end
-
     end
 
     resources :po_requests do
+      member do
+        get 'new_purchase_order'
+        post 'create_purchase_order'
+        get 'manager_amended'
+      end
+      collection do
+        get 'product_resync_inventory'
+      end
       scope module: 'po_requests' do
         resources :payment_requests
         resources :email_messages do
@@ -257,12 +300,14 @@ Rails.application.routes.draw do
         get 'add_comment'
       end
       member do
+        get 'render_modal_form'
         get 'render_cancellation_form'
+        get 'reject_purchase_order_modal'
+        patch 'rejected_purchase_order'
         patch 'cancel_porequest'
         get 'render_comment_form'
         patch 'add_comment'
       end
-
     end
 
     resources :invoice_requests do
@@ -273,12 +318,54 @@ Rails.application.routes.draw do
         get 'cancelled'
       end
       member do
-        get 'render_cancellation_form'
+        get 'render_modal_form'
         patch 'cancel_invoice_request'
-        get 'render_comment_form'
         patch 'add_comment'
       end
     end
+
+    resources :ar_invoice_requests do
+      collection do
+        get 'pending'
+        get 'completed'
+        get 'cancelled'
+      end
+      member do
+        get 'render_cancellation_form'
+        get 'download_eway_bill_format'
+        patch 'cancel_ar_invoice'
+        get 'render_modal_form'
+        patch 'add_comment'
+      end
+    end
+
+    resources :outward_dispatches do
+      collection do
+        get 'create_with_packing_slip'
+      end
+      member do
+        get 'make_packing_zip'
+        get 'render_modal_form'
+        patch 'add_comment'
+      end
+      scope module: 'outward_dispatches' do
+        resources :packing_slips do
+          collection do
+            get 'add_packing'
+            post 'submit_packing'
+            get 'edit_outward_packing_slips'
+          end
+        end
+        resources :email_messages do
+          collection do
+            get 'dispatch_mail_to_customer'
+            post 'dispatch_mail_to_customer_notification'
+          end
+        end
+      end
+    end
+
+
 
     resources :sales_orders do
       member do
@@ -287,13 +374,16 @@ Rails.application.routes.draw do
         post 'preview_purchase_orders_requests'
         post 'create_purchase_orders_requests'
         get 'debugging'
+        get 'render_modal_form'
+        patch 'add_comment'
       end
 
       collection do
         get 'pending'
+        get 'account_approval_pending'
         get 'cancelled'
         get 'export_all'
-        get 'drafts_pending'
+        get 'so_sync_pending'
         get 'export_rows'
         get 'export_for_logistics'
         get 'export_for_sap'
@@ -323,9 +413,16 @@ Rails.application.routes.draw do
       member do
         get 'edit_material_followup'
         patch 'update_material_followup'
+        get 'cancelled_purchase_modal'
+        patch 'cancelled_purchase_order'
+        get 'resync_po'
+        get 'change_material_status'
       end
 
       collection do
+        get 'export_material_readiness'
+        get 'manually_closed'
+        get 'pending_sap_sync'
         get 'export_all'
         get 'export_filtered_records'
         get 'autocomplete'
@@ -333,6 +430,7 @@ Rails.application.routes.draw do
         get 'material_readiness_queue'
         get 'inward_dispatch_pickup_queue'
         get 'inward_dispatch_delivered_queue'
+        get 'inward_completed_queue'
         post 'update_logistics_owner'
         post 'update_logistics_owner_for_inward_dispatches'
       end
@@ -342,6 +440,8 @@ Rails.application.routes.draw do
           member do
             get 'confirm_delivery'
             get 'delivered_material'
+            get 'render_modal_form'
+            patch 'add_comment'
           end
         end
       end
@@ -351,8 +451,13 @@ Rails.application.routes.draw do
       member do
         get 'edit_pod'
         patch 'update_pod'
+        get 'delivery_mail_to_customer'
+        post 'delivery_mail_to_customer_notification'
+        get 'dispatch_mail_to_customer'
+        post 'dispatch_mail_to_customer_notification'
       end
       collection do
+        get 'autocomplete'
         get 'export_all'
         get 'export_rows'
         get 'export_for_logistics'
@@ -370,7 +475,6 @@ Rails.application.routes.draw do
       scope module: 'customer_orders' do
         resources :comments
         resources :inquiries do
-
         end
       end
 
@@ -391,7 +495,11 @@ Rails.application.routes.draw do
         get 'stages'
         get 'relationship_map'
         get 'get_relationship_map_json'
+        get 'render_followup_edit_form'
+        patch 'update_followup_date'
         post 'duplicate'
+        get 'render_modal_form'
+        patch 'add_comment'
       end
 
       collection do
@@ -429,6 +537,8 @@ Rails.application.routes.draw do
           member do
             get 'relationship_map'
             get 'get_relationship_map_json'
+            get 'render_modal_form'
+            patch 'add_comment'
           end
         end
 
@@ -458,12 +568,17 @@ Rails.application.routes.draw do
             get 'debugging'
             get 'new_revision'
             get 'new_confirmation'
+            get 'new_accounts_confirmation'
             get 'proforma'
             post 'create_confirmation'
+            post 'create_account_confirmation'
+            post 'create_account_rejection'
             post 'resync'
             get 'fetch_order_data'
             get 'relationship_map'
             get 'get_relationship_map_json'
+            get 'order_cancellation_modal'
+            patch 'cancellation'
           end
 
           collection do
@@ -505,6 +620,17 @@ Rails.application.routes.draw do
       end
     end
 
+    namespace 'bible_sales_orders' do
+      resources :imports do
+        collection do
+          get 'new_excel_bible_order_import'
+          get 'download_bible_order_template'
+          post 'create_bible_orders'
+          # , to: 'imports#create_bible_orders'
+        end
+      end
+    end
+
     resources :companies do
       collection do
         get 'autocomplete'
@@ -525,7 +651,7 @@ Rails.application.routes.draw do
           collection do
             post 'generate_catalog'
             post 'destroy_all'
-
+            get 'export_customer_product'
             get 'autocomplete'
           end
         end
@@ -569,11 +695,9 @@ Rails.application.routes.draw do
         end
 
         resources :purchase_orders do
-
         end
 
         resources :products do
-
         end
       end
     end
@@ -600,6 +724,7 @@ Rails.application.routes.draw do
     resources :warehouses do
       collection do
         get 'autocomplete'
+        get 'series'
       end
       scope module: 'warehouses' do
         resources :product_stocks, only: %i[index]
@@ -616,10 +741,13 @@ Rails.application.routes.draw do
         get 'completed'
         post 'update_payment_status'
       end
+      member do
+        get 'render_modal_form'
+        patch 'add_comment'
+      end
     end
 
     resources :freight_requests do
-
       scope module: 'freight_requests' do
         resources :freight_quotes
       end
@@ -647,6 +775,7 @@ Rails.application.routes.draw do
       end
     end
 
+    # resources :bible_sales_orders
   end
 
   namespace 'customers' do
@@ -655,7 +784,7 @@ Rails.application.routes.draw do
       get 'edit_current_company'
       patch 'update_current_company'
     end
-    resource :profile, :controller => :profile, except: [:show, :index]
+    resource :profile, controller: :profile, except: [:show, :index]
 
     resources :reports, only: %i[index] do
       member do
@@ -670,7 +799,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :dashboard, :controller => :dashboard
+    resource :dashboard, controller: :dashboard do
+      collection do
+        get 'export_for_amat_customer'
+      end
+    end
     resources :cart_items, only: %i[new create destroy update]
     resources :customer_orders, only: %i[index create show] do
       member do
@@ -687,7 +820,7 @@ Rails.application.routes.draw do
         resources :comments
       end
     end
-    resources :products, :controller => :customer_products, only: %i[index create show] do
+    resources :products, controller: :customer_products, only: %i[index create show] do
       collection do
         get 'generate_all'
         get 'most_ordered_products'
@@ -695,7 +828,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :quotes, :controller => :sales_quotes, only: %i[index show] do
+    resources :quotes, controller: :sales_quotes, only: %i[index show] do
       member do
         post 'inquiry_comments'
       end
@@ -709,19 +842,19 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :orders, :controller => :sales_orders, only: %i[index show] do
+    resources :orders, controller: :sales_orders, only: %i[index show] do
       collection do
         get 'export_all'
       end
     end
 
-    resources :invoices, :controller => :sales_invoices, only: %i[index show] do
+    resources :invoices, controller: :sales_invoices, only: %i[index show] do
       collection do
         get 'export_all'
       end
     end
 
-    resource :checkout, :controller => :checkout do
+    resource :checkout, controller: :checkout do
       collection do
         get 'final_checkout'
       end
@@ -737,7 +870,7 @@ Rails.application.routes.draw do
     #   end
     # end
 
-    resource :cart, :controller => :cart, except: [:index] do
+    resource :cart, controller: :cart, except: [:index] do
       collection do
         get 'checkout'
         post 'update_cart_details'

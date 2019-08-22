@@ -5,7 +5,7 @@ class PurchaseOrderRow < ApplicationRecord
 
   after_create :increase_product_count
   before_destroy :decrease_product_count
-
+  belongs_to :po_request_row, required: false
 
   def increase_product_count
     product = self.get_product
@@ -79,10 +79,10 @@ class PurchaseOrderRow < ApplicationRecord
     po_request = self.purchase_order.po_request
     if po_request.present?
       po_request_rows = po_request.rows
-      return false if po_request_rows.blank? || get_product.nil?
+      return nil if po_request_rows.blank? || get_product.nil?
       po_request_rows.select {|por_row| por_row.sales_order_row.product == get_product if por_row.sales_order_row}.first.try(:lead_time)
     else
-      return false
+      return nil
     end
   end
 
@@ -92,5 +92,9 @@ class PurchaseOrderRow < ApplicationRecord
 
   def to_s
     "#{sku ? "#{sku} -" : ''} #{metadata['PopProductName']}"
+  end
+
+  def get_product_id
+    self.get_product.present? ? self.get_product.id : self.product_id
   end
 end

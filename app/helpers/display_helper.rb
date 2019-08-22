@@ -27,15 +27,21 @@ module DisplayHelper
     end
   end
 
-  def percentage(number, precision: 0)
-    if number && !number.nan?
+  def percentage(number, precision: 0, show_symbol: true)
+    if number && !number.nan? && show_symbol
       [number_with_precision(number, precision: precision), '%'].join
+    else
+      number_with_precision(number, precision: precision)
     end
   end
 
-  def calculate_percentage(val1, val2, precision: 2)
-    value = (val1.as_percentage_of(val2).to_f).round(2)
-    percentage(value, precision: precision)
+  def calculate_percentage(val1, val2, precision: 0)
+    if val2 == 0
+      '0%'
+    else
+      value = (val1.as_percentage_of(val2).to_f).round(2)
+      percentage(value, precision: precision)
+    end
   end
 
   def capitalize(text)
@@ -129,6 +135,16 @@ module DisplayHelper
     end
   end
 
+  def get_quarter(date)
+    if ((date.month - 1) / 3) == 0
+      quarter = 4
+      "Q#{quarter}-#{date.year}"
+    else
+      quarter = ((date.month - 1) / 3)
+      "Q#{quarter}-#{date.year + 1}"
+    end
+  end
+
   def format_num(num, precision = 0)
     number_with_precision(num, precision: precision)
   end
@@ -156,15 +172,35 @@ module DisplayHelper
   def format_boolean(true_or_false)
     (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
   end
+  def format_invoiced_qty(invoiced_qty, ordered_qty)
+    "#{invoiced_qty}&nbspoff&nbsp#{ordered_qty}"
+  end
+
+  def heatmap_for_pipeline(status, date, record_count)
+    month_difference = ((Date.today.year * 12 + Date.today.month) - (date.year * 12 + date.month)).abs
+
+    if record_count.present?
+      if status == 'Order Won' || status == 'Order Lost'
+        ''
+      elsif (status != 'Order Won' || status != 'Order Lost') && month_difference >= 2
+        'bg-highlight-danger'
+      elsif (status != 'Order Won' || status != 'Order Lost') && month_difference >= 1 && month_difference < 2
+        'bg-highlight-warning'
+      elsif month_difference < 1
+        'bg-highlight-success'
+      end
+    end
+  end
 
   def format_boolean_with_badge(status)
-    (if status == 'complete'
-       '<i class="far fa-check text-success"></i>'
-     elsif status == 'partial'
-       '<i class="far fa-check text-color-dark-blue"> <span class="badge badge-color-dark-blue">Partial</span></i>'
-     else
-       '<i class="far fa-times text-danger"></i>'
-     end).html_safe
+    (
+    if status == 'complete'
+      '<i class="far fa-check text-success"></i>'
+    elsif status == 'partial'
+      '<i class="far fa-check text-color-dark-blue"> <span class="badge badge-color-dark-blue">Partial</span></i>'
+    else
+      '<i class="far fa-times text-danger"></i>'
+    end).html_safe
   end
 
   def format_boolean_label(true_or_false, verb = '')
@@ -218,15 +254,15 @@ module DisplayHelper
   end
 
   def format_comment(comment, trimmed = false)
-    render partial: 'shared/snippets/comments.html', locals: { comment: comment, trimmed: trimmed }
+    render partial: 'shared/snippets/comments.html', locals: {comment: comment, trimmed: trimmed}
   end
 
   def attribute_boxes(data)
-    render partial: 'shared/snippets/attribute_boxes.html', locals: { data: data }
+    render partial: 'shared/snippets/attribute_boxes.html', locals: {data: data}
   end
 
   def humanize(mins)
-    [[60, :minutes], [24, :hours], [Float::INFINITY, :days]].map { |count, name|
+    [[60, :minutes], [24, :hours], [Float::INFINITY, :days]].map {|count, name|
       if mins > 0
         mins, n = mins.divmod(count)
         unless n.to_i == 0
@@ -247,9 +283,9 @@ module DisplayHelper
     due_in_days = (due_date - current_date).to_i
 
     if due_in_days < 0
-      due_string  = 'Overdue'
+      due_string = 'Overdue'
     elsif due_in_days == 0
-      due_string  = 'Due Today'
+      due_string = 'Due Today'
       return due_badge(due_in_days, due_string)
     else
       due_string = 'Due In'
@@ -284,6 +320,38 @@ module DisplayHelper
       content_tag(:div, content_tag(:strong, "#{self.rows.first.product.kit.kit_product_rows.count}") + ' kit line item(s)')
     else
       content_tag(:div, content_tag(:strong, "#{self.rows.count}") + ' line item(s)')
+    end
+  end
+
+  def is_authorized(model, action)
+    authorised = false
+    if current_overseer.is_super_admin
+      authorised = true
+    else
+      action_name = action if action.present?
+      allowed_resources = ActiveSupport::JSON.decode(current_overseer.acl_resources)
+      resource_ids = get_acl_resource_ids
+
+      if model.is_a?(ActiveRecord::Base)
+        resource_model = model.class.name.underscore.downcase
+      elsif model.is_a?(ActiveRecord::Relation)
+        resource_model = model.klass.name.underscore.downcase
+      else
+        resource_model = model.to_s.gsub(':', '')
+      end
+
+      if resource_ids[resource_model].blank? || resource_ids[resource_model][action_name].blank?
+        authorised = false
+      elsif allowed_resources.include? resource_ids[resource_model][action_name].to_s
+        authorised = true
+      end
+    end
+    authorised
+  end
+
+  def get_acl_resource_ids
+    Rails.cache.fetch('acl_resource_ids', expires_in: 3.hours) do
+      AclResource.acl_resource_ids
     end
   end
 end

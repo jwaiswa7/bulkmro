@@ -4,11 +4,11 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
 
   def index
     redirect_to material_readiness_queue_overseers_purchase_orders_path()
-    authorize :inward_dispatch
+    authorize_acl :inward_dispatch
   end
 
   def show
-    authorize @inward_dispatch
+    authorize_acl @inward_dispatch
     @po_request = @purchase_order.po_request
   end
 
@@ -17,16 +17,19 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
     @inward_dispatch = InwardDispatch.new(purchase_order: @purchase_order, logistics_owner: @logistics_owner)
 
     @inward_dispatch.purchase_order.rows.each do |row|
-      @inward_dispatch.rows.build(purchase_order_row: row, pickup_quantity: row.get_pickup_quantity)
+      pickup_quantity = row.get_pickup_quantity
+      if pickup_quantity > 0
+        @inward_dispatch.rows.build(purchase_order_row: row, pickup_quantity: pickup_quantity)
+      end
     end
-    authorize @inward_dispatch
+    authorize_acl @inward_dispatch
   end
 
   def create
     @inward_dispatch = @purchase_order.inward_dispatches.new()
     @inward_dispatch.assign_attributes(inward_dispatch_params.merge(overseer: current_overseer))
 
-    authorize @inward_dispatch
+    authorize_acl @inward_dispatch
     if @inward_dispatch.save
       @purchase_order.update_material_status
 
@@ -37,11 +40,11 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
   end
 
   def edit
-    authorize @inward_dispatch
+    authorize_acl @inward_dispatch
   end
 
   def update
-    authorize @inward_dispatch
+    authorize_acl @inward_dispatch
 
     @inward_dispatch.assign_attributes(inward_dispatch_params.merge(overseer: current_overseer))
 
@@ -62,7 +65,7 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
   end
 
   def confirm_delivery
-    authorize @inward_dispatch
+    authorize_acl @inward_dispatch
     @inward_dispatch.status = 'Material Delivered'
     @inward_dispatch.rows.each do |row|
       row.delivered_quantity = row.pickup_quantity
@@ -86,23 +89,23 @@ class Overseers::PurchaseOrders::InwardDispatchesController < Overseers::BaseCon
 
     def inward_dispatch_params
       params.require(:inward_dispatch).require(:inward_dispatch).except(:action_name)
-          .permit(
-              :status,
-              :expected_dispatch_date,
-              :expected_delivery_date,
-              :actual_delivery_date,
-              :document_type,
-              :logistics_owner_id,
-              :dispatched_by,
-              :shipped_to,
-              :logistics_partner,
-              :tracking_number,
-              :logistics_aggregator,
-              :other_logistics_partner,
-              :purchase_order_id,
-              comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
-              rows_attributes: [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :supplier_delivery_date, :_destroy],
-              attachments: []
-          )
+        .permit(
+          :status,
+          :expected_dispatch_date,
+          :expected_delivery_date,
+          :actual_delivery_date,
+          :document_type,
+          :logistics_owner_id,
+          :dispatched_by,
+          :shipped_to,
+          :logistics_partner,
+          :tracking_number,
+          :logistics_aggregator,
+          :other_logistics_partner,
+          :purchase_order_id,
+          comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+          rows_attributes: [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :supplier_delivery_date, :_destroy],
+          attachments: []
+        )
     end
 end

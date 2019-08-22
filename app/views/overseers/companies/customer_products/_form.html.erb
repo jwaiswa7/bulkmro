@@ -57,7 +57,7 @@
                 <i class="fal fa-download"></i>
                 <%= link_to overseers_attachment_path(image.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', image.filename, '?'].join('') do %>
                   <i class="fal fa-trash-alt"></i>
-                <% end if image.present? && policy(:attachment).destroy? %>
+                <% end if image.present? && is_authorized(:attachment, 'destroy') %>
               <% end %>
             <% end if f.object.images.attached? %>
           </div>

@@ -10,6 +10,7 @@ class SalesOrderRow < ApplicationRecord
   has_one :tax_code, through: :sales_quote_row
   has_one :inquiry_product_supplier, through: :sales_quote_row
   has_one :inquiry_product, through: :sales_quote_row
+  has_one :ar_invoice_request_row, class_name: 'ArInvoiceRequestRow'
   has_one :product, through: :inquiry_product
   has_many :po_request_rows
 
@@ -107,5 +108,9 @@ class SalesOrderRow < ApplicationRecord
 
   def to_remote_s
     to_param
+  end
+
+  def get_product
+    Product.where(id: self.product_id).last
   end
 end

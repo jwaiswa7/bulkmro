@@ -12,4 +12,8 @@ class Overseers::CustomerProductPolicy < Overseers::ApplicationPolicy
   def destroy?
     record.customer_order_rows.blank?
   end
+
+  def export_customer_product?
+    cataloging?
+  end
 end

@@ -19,11 +19,11 @@ class Overseers::PaymentCollectionEmailsController < Overseers::BaseController
         auto_attach: true
           )
     end
-    authorize :payment_collection_emails
+    authorize_acl :payment_collection_emails
   end
 
   def create
-    authorize :payment_collection_emails
+    authorize_acl :payment_collection_emails
     if params.has_key?('company')
       @company = Company.find(params['company'])
       @company_email_message = @company.email_messages.build(overseer: current_overseer)

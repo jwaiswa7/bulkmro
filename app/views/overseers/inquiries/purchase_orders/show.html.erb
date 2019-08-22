@@ -11,7 +11,7 @@
             <%= @metadata[:PoEnquiryId] %>
           </div>
           <div class="col-6 col-md-3">
-            <strong class="d-block">Date of Quotation</strong>
+            <strong class="d-block">Purchase Order Date</strong>
             <%= Date.parse(@metadata[:PoDate]).strftime("%d-%b-%Y") if @metadata[:PoDate].present? %>
           </div>
           <div class="col-6 col-md-2 mt-2 mt-md-0">
@@ -31,7 +31,7 @@
             <%= Date.parse(@metadata[:PoDate]).strftime("%d-%b-%Y") if @metadata[:PoDate].present? %>
           </div>
           <div class="col-6 col-md-1">
-              <% if policy(@purchase_order).show? %>
+              <% if is_authorized(@purchase_order,'show') %>
               <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, @purchase_order, format: :pdf), 'file-pdf', 'Download Pdf', 'dark', :_blank) %>
               <%end %>
           </div>
@@ -199,13 +199,13 @@
           </tr>
           </thead>
           <tbody>
-          <% @purchase_order.rows.each_with_index do |item, index| %>
+          <% @purchase_order.rows.order(:created_at).each_with_index do |item, index| %>
             <tr>
               <td>
                 <span><%= index + 1 %></span>
               </td>
               <td>
-                <span><%= item.sku %></span>
+                <span><%= item.product.sku %></span>
               </td>
               <td>
                 <span></span>
@@ -214,13 +214,13 @@
                 <span><%= item.metadata['PopProductName'] %></span>
               </td>
               <td>
-                <span><%= item.brand %></span>
+                <span><%= item.product.brand %></span>
               </td>
               <td>
                 <span><%= item.metadata['PopHsn'] %></span>
               </td>
               <td>
-                <span><%= item.uom %></span>
+                <span><%= item.product.measurement_unit.to_s %></span>
               </td>
               <td>
                 <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>

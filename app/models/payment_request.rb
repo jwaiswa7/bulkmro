@@ -64,9 +64,10 @@ class PaymentRequest < ApplicationRecord
 
   validates_presence_of :inquiry
   with_options if: :"Accounts?" do |payment_request|
-    payment_request.validates_presence_of :due_date, :purpose_of_payment # , :supplier_bank_details
+    payment_request.validates_presence_of :due_date, :purpose_of_payment, unless: :skip_validation
   end
-  validate :due_date_cannot_be_in_the_past
+  validate :due_date_cannot_be_in_the_past, unless: :skip_due_date_validation
+  attr_accessor :skip_validation, :skip_due_date_validation
 
   def due_date_cannot_be_in_the_past
     if self.due_date.present? && self.due_date < Date.today

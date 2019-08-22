@@ -47,6 +47,15 @@ import invoiceRequests from "./invoiceRequests/init";
 // Po Requests
 import poRequests from "./poRequests/init";
 
+// AR invoices
+import arInvoiceRequests from "./arInvoiceRequests/init";
+
+// Outward dispatch
+import outwardDispatches from './outwardDispatches/init'
+
+// PackingSlip
+import packingSlips from "./packingSlips/init";
+
 // Activities
 import activities from './activities/init'
 
@@ -64,6 +73,7 @@ import documentCreations from "./documentCreations/init";
 import checkout from "./checkout/init";
 
 // Image Reader
+
 import imageReaders from "./imageReaders/init"
 
 import taxCodes from "./taxCodes/init"
@@ -73,10 +83,18 @@ import companyBanks from "./companyBanks/init"
 // Dashboard
 import dashboard from "./dashboard/init"
 
+//Overseer ACL
+import overseers from "./overseers/init"
+
+//ACL
+import aclRoles from "./aclRoles/init"
+
 import logisticsScorecards from "./logisticsScorecards/init";
 
 // Addresses
 import addresses from "./addresses/init";
+
+import emailMessages from "./emailMessages/init";
 
 let loader = {
     imports: imports,
@@ -108,8 +126,14 @@ let loader = {
     imageReaders: imageReaders,
     companyBanks: companyBanks,
     dashboard: dashboard,
+    overseers:overseers,
+    aclRoles:aclRoles,
     logisticsScorecards: logisticsScorecards,
-    addresses: addresses
+    arInvoiceRequests: arInvoiceRequests,
+    outwardDispatches: outwardDispatches,
+    packingSlips:packingSlips,
+    addresses: addresses,
+    emailMessages: emailMessages
 };
 
 // Imports

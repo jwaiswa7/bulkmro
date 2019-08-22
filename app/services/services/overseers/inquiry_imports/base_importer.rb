@@ -40,7 +40,6 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
           inquiry_product = inquiry.inquiry_products.where(product: product).first_or_create do |inquiry_product|
             inquiry_product.quantity = row.metadata['quantity']
             inquiry_product.import = import
-
             inquiry_product.sr_no = service.call(row.metadata['sr_no'] || row.metadata['id'])
           end
 

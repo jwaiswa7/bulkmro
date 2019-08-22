@@ -3,15 +3,20 @@ class Overseers::TaxCodesController < Overseers::BaseController
   before_action :set_notification, only: [:update]
 
   def autocomplete
-    @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
-    authorize :tax_code
+    if params[:is_service].present?
+      @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
+    else
+      @tax_codes = ApplyParams.to(TaxCode.active, params)
+    end
+    authorize_acl :tax_code
   end
 
   def autocomplete_for_product
     @product = Product.find(params[:product_id])
     @is_service = @product.try(:is_service) || false
     @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', @is_service), params)
-    authorize @tax_codes
+    authorize_acl @tax_codes
+
     respond_to do |format|
       format.html { }
       format.json do
@@ -26,21 +31,21 @@ class Overseers::TaxCodesController < Overseers::BaseController
     # service.call
     # @indexed_taxcodes = service.indexed_records
     # @tax_codes = service.records
-    authorize @tax_codes
+    authorize_acl @tax_codes
   end
 
   def show
     redirect_to edit_overseers_tax_code_path(@tax_code)
-    authorize @tax_code
+    authorize_acl @tax_code
   end
 
   def edit
-    authorize @tax_code
+    authorize_acl @tax_code
   end
 
   def update
     @tax_code.assign_attributes(tax_code_params)
-    authorize @tax_code
+    authorize_acl @tax_code
     @notification.send_tax_code(
       current_overseer,
         action_name.to_sym,
@@ -56,13 +61,13 @@ class Overseers::TaxCodesController < Overseers::BaseController
 
   def new
     @tax_code = TaxCode.new
-    authorize @tax_code
+    authorize_acl @tax_code
   end
 
   def create
     @tax_code = TaxCode.new(tax_code_params)
 
-    authorize @tax_code
+    authorize_acl @tax_code
 
     if @tax_code.save
       redirect_to overseers_tax_codes_path, notice: flash_message(@tax_code, action_name)

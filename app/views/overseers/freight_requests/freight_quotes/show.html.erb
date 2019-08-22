@@ -4,7 +4,7 @@
       <h3 class="display-5 d-flex align-items-center">
         Freiqht Quote for Request <%= format_id(@freight_quote.freight_request.id) %>:&nbsp;<%= status_badge(@freight_quote.status) %>
       </h3>
-      <% if policy(@freight_quote).edit? %>
+      <% if is_authorized(@freight_quote,'edit') %>
         <a href="<%= edit_overseers_freight_request_freight_quote_path(@freight_quote.freight_request, @freight_quote) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
       <% end %>
     </div>
@@ -89,7 +89,7 @@
                     <i class="fal fa-download"></i>
                     <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                       <i class="fal fa-trash-alt"></i>
-                    <% end if attachment.present? && policy(:attachment).destroy? %>
+                    <% end if attachment.present? && is_authorized(:attachment,'destroy') %>
                   <% end %>
                 <% end %>
               </div>

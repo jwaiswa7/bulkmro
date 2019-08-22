@@ -1,0 +1,45 @@
+<div class="col-lg-12">
+  <% content_for :heading_byline do %>
+    This will <em>send an notification to supplier</em> and log it under
+    <strong><%= current_overseer.full_name %></strong>.
+  <% end %>
+  <%= render layout: 'shared/layouts/form' do %>
+    <%= simple_form_for([:overseers, @outward_dispatch, @email_message], url: {action: @action, controller: 'overseers/outward_dispatches/email_messages'}, :method => :post, :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <div class="card-body">
+        <%= hidden_field_tag :type, params[:type] %>
+        <%= f.input :from, disabled: true %>
+        <%= f.input :to %>
+        <%= f.input :cc %>
+        <%= f.input :bcc %>
+        <%= f.input :subject %>
+        <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} %>
+        <% if f.object.auto_attach == true %>
+          <div class="d-flex flex-row align-items-center">
+            <div class="form-group mr-2">
+              <%= link_to overseers_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf), target: :_blank, :class => 'btn btn-success' do %>
+                <i class="fal fa-file-pdf mr-2"></i>original Sales Invoice
+              <% end %>
+            </div>
+            <div class="form-group mr-2">
+              <%= link_to duplicate_overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf), target: :_blank, :class => 'btn btn-success' do %>
+                <i class="fal fa-file-pdf mr-2"></i>Duplicate Sales Invoice
+              <% end %>
+            </div>
+            <div class="form-group mr-2">
+              <%= link_to triplicate_overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf), target: :_blank, :class => 'btn btn-success' do %>
+                <i class="fal fa-file-pdf mr-2"></i>Triplicate Sales Invoice
+              <% end %>
+            </div>
+            <%= f.input :auto_attach, wrapper: :custom_boolean, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+          </div>
+        <% end %>
+        <%= f.input :body, input_html: {rows: 10, class: 'html-editor'} %>
+      </div>
+      <div class="card-footer">
+        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+          <i class="fal fa-paper-plane"></i> Send Email
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

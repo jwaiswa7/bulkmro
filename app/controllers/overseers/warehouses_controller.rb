@@ -3,22 +3,33 @@ class Overseers::WarehousesController < Overseers::BaseController
 
   def index
     @warehouses = ApplyDatatableParams.to(Warehouse.all, params)
-    authorize @warehouses
+    authorize_acl @warehouses
   end
 
   def new
     @warehouse = Warehouse.new
-    authorize @warehouse
+    authorize_acl @warehouse
   end
 
   def autocomplete
-    authorize :warehouse
-    @warehouse = ApplyParams.to(Warehouse.all.active, params)
+    authorize_acl :warehouse
+
+    if params[:bill_from].present? && params[:bill_from] == true.to_s
+      warehouses = Warehouse.where('is_active = ? AND series_code IS NOT ?', true, nil)
+    else
+      warehouses = Warehouse.all.active
+    end
+    @warehouse = ApplyParams.to(warehouses, params)
+  end
+
+  def series
+    @serieses = ApplyDatatableParams.to(Series.all.order(document_type: :asc), params)
+    authorize_acl :warehouse
   end
 
   def create
     @warehouse = Warehouse.new(warehouse_params)
-    authorize @warehouse
+    authorize_acl @warehouse
     if @warehouse.save
       redirect_to overseers_warehouse_path(@warehouse), notice: flash_message(@warehouse, action_name)
     else
@@ -27,12 +38,12 @@ class Overseers::WarehousesController < Overseers::BaseController
   end
 
   def edit
-    authorize @warehouse
+    authorize_acl @warehouse
   end
 
   def update
     @warehouse.assign_attributes(warehouse_params)
-    authorize @warehouse
+    authorize_acl @warehouse
     if @warehouse.save
       redirect_to overseers_warehouse_path(@warehouse), notice: flash_message(@warehouse, action_name)
     else
@@ -41,7 +52,7 @@ class Overseers::WarehousesController < Overseers::BaseController
   end
 
   def show
-    authorize @warehouse
+    authorize_acl @warehouse
   end
 
   private

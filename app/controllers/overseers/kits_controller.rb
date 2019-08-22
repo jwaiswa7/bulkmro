@@ -3,24 +3,24 @@ class Overseers::KitsController < Overseers::BaseController
 
   def index
     @kits = ApplyDatatableParams.to(Kit.all, params)
-    authorize @kits
+    authorize_acl @kits
   end
 
   def show
-    authorize @kit
+    authorize_acl @kit
   end
 
   def new
     @kit = Kit.new(overseer: current_overseer, inquiry_id: inquiry)
     @kit.build_product
 
-    authorize @kit
+    authorize_acl @kit
   end
 
   def create
     @kit = Kit.new(kit_params.merge(overseer: current_overseer))
 
-    authorize @kit
+    authorize_acl @kit
     if @kit.save
 
       if @kit.inquiry.present?
@@ -42,12 +42,12 @@ class Overseers::KitsController < Overseers::BaseController
   end
 
   def edit
-    authorize @kit
+    authorize_acl @kit
   end
 
   def update
     @kit.assign_attributes(kit_params.merge(overseer: current_overseer))
-    authorize @kit
+    authorize_acl @kit
     if @kit.product.approved? ? @kit.save_and_sync : @kit.save
       redirect_to overseers_kit_path(@kit), notice: flash_message(@kit, action_name)
     else

@@ -3,7 +3,7 @@
 <% provide :wrap_whitespace, true %>
 
 <% provide :heading_buttons do %>
-  <% if policy(:remote_request).resend_failed_requests? %>
+  <% if is_authorized(:remote_request,'resend_failed_requests') %>
     <a href="<%= resend_failed_requests_overseers_remote_requests_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
       <i class="fal fa-redo mr-1"></i>Resync failed requests
     </a>

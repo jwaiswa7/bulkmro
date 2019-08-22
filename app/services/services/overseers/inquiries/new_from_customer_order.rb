@@ -33,6 +33,7 @@ class Services::Overseers::Inquiries::NewFromCustomerOrder < Services::Shared::B
           product: row.product
         )
       end
+
     end
 
     inquiry

@@ -1,0 +1,11 @@
+<% content_for :heading do %>
+  View Sales Order <%= @sales_order.to_s %>
+<% end %>
+
+<div class="col-12">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <%= render 'overseers/inquiries/sales_orders/show_summary', sales_order: @sales_order %>
+  <% end %>
+</div>
+
+

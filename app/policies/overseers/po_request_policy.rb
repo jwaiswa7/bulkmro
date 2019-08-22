@@ -26,7 +26,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def new_purchase_order?
-    true
+    record.status == 'Supplier PO: Request Pending' || record.stock_status == 'Stock Requested' || record.status == 'Supplier PO: Amendment Pending'
   end
 
   def new?
@@ -54,11 +54,11 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_cancel?
-    (manager? || logistics? || admin?) && record.status != 'Cancelled'
+    record.status != 'Cancelled'
   end
 
   def can_reject?
-    record.purchase_order.blank? && (logistics? || admin?) && record.status == 'Supplier PO: Request Pending' && record.status != 'Supplier PO Request Rejected'
+    record.purchase_order.blank? && record.status == 'Supplier PO: Request Pending' && record.status != 'Supplier PO Request Rejected'
   end
 
   def can_update_rejected_po_requests?
@@ -105,12 +105,8 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     update?
   end
 
-  def render_cancellation_form?
-    can_cancel? || can_reject?
-  end
-
-  def render_comment_form?
-    index?
+  def render_modal_form?
+    add_comment? || can_cancel? || can_reject?
   end
 
   def add_comment?
@@ -131,6 +127,22 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
 
   def can_reject_stock_po?
     record.purchase_order.blank? && (manager? || admin? || logistics?)
+  end
+
+  def new_purchase_order?
+    logistics? || admin?
+  end
+
+  def reject_purchase_order_modal?
+    logistics? || admin?
+  end
+
+  def rejected_purchase_order?
+    reject_purchase_order_modal?
+  end
+
+  def create_purchase_order?
+    reject_purchase_order_modal?
   end
 
   class Scope

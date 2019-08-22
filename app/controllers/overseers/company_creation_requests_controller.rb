@@ -3,7 +3,7 @@ class Overseers::CompanyCreationRequestsController < Overseers::BaseController
 
   def requested
     @company_creation_requests = ApplyDatatableParams.to(CompanyCreationRequest.all.requested.order(id: :desc), params)
-    authorize @company_creation_requests
+    authorize_acl @company_creation_requests
     respond_to do |format|
       format.json { render 'index' }
       format.html { render 'index' }
@@ -12,7 +12,7 @@ class Overseers::CompanyCreationRequestsController < Overseers::BaseController
 
   def created
     @company_creation_requests = ApplyDatatableParams.to(CompanyCreationRequest.all.created.order(id: :desc), params)
-    authorize @company_creation_requests
+    authorize_acl @company_creation_requests
     respond_to do |format|
       format.json { render 'index' }
       format.html { render 'index' }
@@ -20,7 +20,7 @@ class Overseers::CompanyCreationRequestsController < Overseers::BaseController
   end
 
   def update
-    authorize @company_creation_request
+    authorize_acl @company_creation_request
     company = Company.where(id: params[:company_creation_request][:company_id]).last
     @company_creation_request.activity.update_attributes!(company_id: params[:company_id], account: company.account) if @company_creation_request.activity.present?
     @company_creation_request.update_attributes(account: company.account, company: company)
@@ -29,11 +29,11 @@ class Overseers::CompanyCreationRequestsController < Overseers::BaseController
 
   def index
     @company_creation_requests = ApplyDatatableParams.to(CompanyCreationRequest.all.order(id: :desc), params)
-    authorize @company_creation_requests
+    authorize_acl @company_creation_requests
   end
 
   def show
-    authorize @company_creation_request
+    authorize_acl @company_creation_request
   end
 
   private

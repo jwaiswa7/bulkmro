@@ -6,7 +6,7 @@
         <%= @contact_creation_request.first_name %>:&nbsp;<%= status_badge(@contact_creation_request.status) %>
       </h3>
 
-      <% if !@contact_creation_request.contact.present? && policy(:contact).new? && @contact_creation_request.activity.company_id.present? %>
+      <% if !@contact_creation_request.contact.present? && is_authorized(:contact, 'new') && @contact_creation_request.activity.company_id.present? %>
         <a href="<%= new_overseers_contact_path(:ccr_id => @contact_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
           New
           Contact</a>

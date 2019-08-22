@@ -17,8 +17,7 @@ class Services::Overseers::Exporters::KraReportsExporter < Services::Overseers::
         'Unique ordered #SKU',
         '% Inquiries Won',
         'No. of Sales Invoices',
-        'Revenue',
-        'Client'
+        'Revenue'
     ]
   end
 
@@ -34,17 +33,16 @@ class Services::Overseers::Exporters::KraReportsExporter < Services::Overseers::
       rows.push(
         inside_sales: (@category == 'Company') ? Company.find(inquiry['key']).to_s : Overseer.find(inquiry['key']).to_s,
         inquiries: number_with_delimiter(inquiry['doc_count'], delimiter: ','),
-        sales_quotes: number_with_delimiter(inquiry['sales_quotes']['value'].to_i, delimiter: ','),
-        total_quote_value: format_currency(inquiry['total_sales_value']['value']),
-        expected_orders: number_with_delimiter(inquiry['expected_orders']['value'].to_i, delimiter: ','),
-        total_expected_orders_value: format_currency(inquiry['total_order_value']['value']),
-        sales_orders: number_with_delimiter(inquiry['sales_orders']['value'].to_i, delimiter: ','),
-        total_sales_orders: format_currency(inquiry['total_sales_value']['value']),
-        sku: number_with_delimiter(inquiry['sku']['value'].to_i),
-        inquiries_won: inquiry['orders_won']['value'] > 0 ? percentage(inquiry['orders_won']['value'] * 100.0 / inquiry['doc_count']) : '-',
-        sales_invoices: number_with_delimiter(inquiry['sales_invoices']['value'].to_i, delimiter: ','),
-        revenue: format_currency(inquiry['revenue']['value']),
-        clients: number_with_delimiter(inquiry['clients']['value'].to_i, delimiter: ',')
+        sales_quotes: inquiry['sales_quote_count'].present? ? number_with_delimiter(inquiry['sales_quote_count']['value'].to_i, delimiter: ',') : 0,
+        total_quote_value: inquiry['total_quote_value'].present? ? inquiry['total_quote_value']['value'] : 0,
+        expected_orders: inquiry['expected_order'].present? ? number_with_delimiter(inquiry['expected_order']['value'].to_i, delimiter: ',') : 0,
+        total_expected_orders_value: inquiry['total_order_value'].present? ? inquiry['total_order_value']['value'] : 0,
+        sales_orders: inquiry['sales_order_count'].present? ? number_with_delimiter(inquiry['sales_order_count']['value'].to_i, delimiter: ',') : 0,
+        total_sales_orders: inquiry['total_order_value'].present? ? inquiry['total_order_value']['value'] : 0,
+        sku: inquiry['sku'].present? ? number_with_delimiter(inquiry['sku']['value'].to_i) : 0,
+        inquiries_won: inquiry['order_won']['value'].to_i > 0 ? percentage(inquiry['order_won']['value'] * 100.0 / inquiry['doc_count'], show_symbol: false) : 0,
+        sales_invoices: inquiry['invoices_count'].present? ? number_with_delimiter(inquiry['invoices_count']['value'].to_i, delimiter: ',') : 0,
+        revenue: inquiry['revenue'].present? ? inquiry['revenue']['value'] : 0
           ) if inquiry.present?
     end
     export = Export.create!(export_type: 90, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)

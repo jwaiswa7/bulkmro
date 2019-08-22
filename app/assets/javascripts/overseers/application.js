@@ -6,7 +6,7 @@
 // Components
 //= require jquery/dist/jquery.min.js
 //= require popper.js/dist/umd/popper.min.js
-//= require jquery-ujs/src/rails.js
+//#= require jquery-ujs/src/rails.js
 //= require parsleyjs/dist/parsley.min.js
 //= require bootstrap/dist/js/bootstrap.js
 //= require autosize/dist/autosize.min.js
@@ -29,6 +29,7 @@
 //# require packs/plugins/raty/jquery.raty.js
 //= require raty-fa/lib/jquery.raty-fa.js
 //= require packs/plugins/raty/ratyrate.js.erb
+//= require gijgo/js/gijgo.min.js
 
 // Global
 //= require_tree .

@@ -33,7 +33,7 @@ class Services::Callbacks::SalesShipments::Create < Services::Callbacks::Shared:
         end
         return_response('Sales Shipment created successfully.')
       else
-        return_response('Sales Order not found.', 0)
+        return_response('Sales Shipment not found.', 0)
       end
     rescue => e
       return_response(e.message, 0)

@@ -264,7 +264,7 @@ class Services::Shared::Migrations::PaymentCollectionMigrations < Services::Shar
           outstanding_overdue_no_pay_received = sales_invoice.calculated_total_with_tax
         end
         sales_invoice.sales_receipts.each do |sales_receipt|
-          if sales_receipt.payment_received_date.present? && sales_receipt.payment_received_date > sales_invoice.due_date
+          if sales_receipt.payment_received_date.present? && sales_invoice.due_date.present? && sales_receipt.payment_received_date > sales_invoice.due_date
             if sales_invoice.payment_status == 'Fully Paid'
               overdue_fully_paid += sales_receipt.payment_amount_received
             elsif sales_invoice.payment_status == 'Partially Paid'

@@ -1,10 +1,10 @@
 json.data (@freight_quotes) do |freight_quote|
   json.array! [
                   [
-                      if policy(freight_quote).show?
+                      if is_authorized(freight_quote,'show')
                         row_action_button(overseers_freight_quote_path(freight_quote), 'eye', 'View Freight Quote', 'info')
                       end,
-                      if policy(freight_quote).edit?
+                      if is_authorized(freight_quote,'edit')
                         row_action_button(edit_overseers_freight_request_freight_quote_path(freight_quote.freight_request, freight_quote), 'pencil', 'Edit Freight Quote', 'warning')
                       end
                   ].join(' '),

@@ -1,15 +1,21 @@
 json.data (@inquiries) do |inquiry|
   columns = [
       [
-          if policy(inquiry).relationship_map?
+          if is_authorized(inquiry, 'relationship_map') && policy(inquiry).relationship_map?
             row_action_button(relationship_map_overseers_inquiry_path(inquiry.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
           end,
-          if policy(inquiry).edit?
+          if is_authorized(inquiry, 'edit') && policy(inquiry).edit?
             row_action_button(overseers_inquiry_comments_path(inquiry), 'comment-alt-check', inquiry.comments.last ? inquiry.comments.last.try(:message) : 'No comments', inquiry.comments.last ? 'success' : 'dark', :_blank)
           end,
-          if policy(inquiry).new_freight_request?
+          if is_authorized(inquiry, 'new_freight_request') && policy(inquiry).new_freight_request?
             row_action_button(new_overseers_freight_request_path(inquiry_id: inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
-          end
+          end,
+          if is_authorized(inquiry, 'index')
+            link_to('', class: ['btn btn-sm btn-success comment-inquiry'], 'data-model-id': inquiry.id, title: 'Comment', remote: true) do
+              concat content_tag(:span, '')
+              concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+            end
+          end,
       ].join(' '),
       link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),
       inquiry.sales_orders.where.not(order_number: nil).map { |sales_order| link_to(sales_order.order_number, overseers_inquiry_sales_order_path(inquiry, sales_order), target: '_blank') }.compact.join(' '),
@@ -19,14 +25,15 @@ json.data (@inquiries) do |inquiry|
       link_to(inquiry.company.to_s, overseers_company_path(inquiry.company), target: '_blank'),
       inquiry.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", inquiry.po_subject].join('').html_safe, inquiry.customer_po_sheet, target: '_blank') : inquiry.po_subject,
       format_succinct_date(inquiry.quotation_followup_date),
+      format_succinct_date(inquiry.customer_committed_date),
       if inquiry.contact.present?
         link_to(inquiry.contact.to_s, overseers_contact_path(inquiry.contact), target: '_blank')
       end,
       inquiry.inside_sales_owner.to_s,
       inquiry.outside_sales_owner.to_s,
       inquiry.margin_percentage,
-      format_currency(inquiry.try(:potential_amount)),
-      format_currency(inquiry.final_sales_quote.try(:calculated_total)),
+      format_currency(inquiry.try(:potential_amount), show_symbol: false),
+      format_currency(inquiry.final_sales_quote.try(:calculated_total), show_symbol: false),
       format_succinct_date(inquiry.created_at)
   ]
   columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
@@ -41,6 +48,7 @@ json.columnFilters [
                        Inquiry.statuses.except('Lead by O/S').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [{ "source": autocomplete_overseers_accounts_path }],
                        [{ "source": autocomplete_overseers_companies_path }],
+                       [],
                        [],
                        [],
                        [{ "source": autocomplete_overseers_contacts_path }],

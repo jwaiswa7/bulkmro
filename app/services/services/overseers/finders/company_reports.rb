@@ -4,8 +4,11 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
   end
 
   def all_records
-    indexed_records = index_klass.limit(model_klass.count).order(sort_definition)
-
+    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
+      index_klass.limit(model_klass.count).order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    else
+      index_klass.limit(model_klass.count).order(sort_definition)
+    end
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end

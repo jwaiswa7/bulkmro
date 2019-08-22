@@ -1,10 +1,10 @@
 class Overseers::PoRequestsController < Overseers::BaseController
-  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form, :render_comment_form, :add_comment]
+  before_action :set_po_request, only: [:show, :edit, :update, :cancel_porequest, :render_cancellation_form, :render_comment_form, :render_modal_form, :add_comment, :new_purchase_order, :create_purchase_order, :manager_amended, :reject_purchase_order_modal]
   before_action :set_notification, only: [:update, :cancel_porequest]
-
+  before_action :set_product, only: [:product_resync_inventory]
   def pending_and_rejected
     @po_requests = filter_by_status(:pending_and_rejected)
-    authorize @po_requests
+    authorize_acl @po_requests
 
     respond_to do |format|
       format.json {render 'index'}
@@ -14,7 +14,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def cancelled
     @po_requests = filter_by_status(:cancelled)
-    authorize @po_requests
+    authorize_acl @po_requests
 
     respond_to do |format|
       format.json {render 'index'}
@@ -24,7 +24,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def under_amend
     @po_requests = filter_by_status(:under_amend)
-    authorize @po_requests
+    authorize_acl @po_requests
 
     respond_to do |format|
       format.json {render 'index'}
@@ -34,7 +34,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def amended
     @po_requests = filter_by_status(:amended)
-    authorize @po_requests
+    authorize_acl @po_requests
 
     respond_to do |format|
       format.json {render 'index'}
@@ -44,7 +44,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def index
     @po_requests = filter_by_status(:handled)
-    authorize @po_requests
+    authorize_acl @po_requests
   end
 
   def filter_by_status(scope)
@@ -52,9 +52,13 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def show
-    authorize @po_request
+    authorize_acl @po_request
     # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
-    @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier).first_or_create]
+    if current_overseer.logistics?
+      @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @po_request.supplier).first_or_create]
+    elsif !current_overseer.accounts?
+      @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier).first_or_create]
+    end
   end
 
   def new
@@ -65,12 +69,12 @@ class Overseers::PoRequestsController < Overseers::BaseController
         @po_request.rows.where(sales_order_row: sales_order_row).first_or_initialize
       end
 
-      authorize @po_request
+      authorize_acl @po_request
     elsif params[:stock_inquiry_id].present?
       @inquiry = Inquiry.find(params[:stock_inquiry_id])
       @po_request = PoRequest.new(overseer: current_overseer, inquiry: @inquiry, po_request_type: :'Stock')
 
-      authorize @po_request
+      authorize_acl @po_request
     else
       redirect_to overseers_po_requests_path
     end
@@ -78,7 +82,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def create
     @po_request = PoRequest.new(po_request_params.merge(overseer: current_overseer))
-    authorize @po_request
+    authorize_acl @po_request
 
     if @po_request.valid?
       ActiveRecord::Base.transaction do
@@ -94,14 +98,18 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def edit
-    authorize @po_request
+    authorize_acl @po_request
     # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
-    @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier).first_or_create]
+    if current_overseer.logistics?
+      @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @po_request.supplier).first_or_create]
+    elsif !current_overseer.accounts?
+      @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier).first_or_create]
+    end
   end
 
   def update
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
-    authorize @po_request
+    authorize_acl @po_request
     if @po_request.valid?
       # todo allow only in case of zero form errors
       row_updated_message = ''
@@ -130,7 +138,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def cancel_porequest
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
-    authorize @po_request
+    authorize_acl @po_request
     if @po_request.status == 'Cancelled'
       if @po_request.cancellation_reason.present?
         service = Services::Overseers::PoRequests::Update.new(@po_request, current_overseer, @notification, overseers_po_request_path(@po_request), action_name)
@@ -148,31 +156,32 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
-  def render_cancellation_form
-    authorize @po_request
+  def render_modal_form
+    authorize_acl @po_request
     respond_to do |format|
-      format.html {render partial: 'cancel_porequest', locals: {purpose: params[:purpose]}}
-    end
-  end
-
-  def render_comment_form
-    authorize @po_request
-    respond_to do |format|
-      format.html {render partial: 'add_comment'}
+      if params[:title] == 'Comment'
+        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @po_request, url: add_comment_overseers_po_request_path(@po_request), view_more: overseers_po_request_path(@po_request)}}
+      else
+        format.html {render partial: 'cancel_porequest', locals: {purpose: params[:title]}}
+      end
     end
   end
 
   def add_comment
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
-    authorize @po_request
+    authorize_acl @po_request
     if @po_request.valid?
-      ActiveRecord::Base.transaction do
-        @po_request.save!
-        @po_request_comment = PoRequestComment.new(message: '', po_request: @po_request, overseer: current_overseer)
+      if params['po_request']['comments_attributes']['0']['message'].present?
+        ActiveRecord::Base.transaction do
+          @po_request.save!
+          @po_request_comment = PoRequestComment.new(message: '', po_request: @po_request, overseer: current_overseer)
+        end
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
       end
-      render json: {success: 1, message: 'Successfully updated '}, status: 200
     else
-      render json: {success: 0, message: 'Cannot reject this PO Request.'}, status: 200
+      render json: {error: @po_request.errors}, status: 500
     end
   end
 
@@ -186,7 +195,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def pending_stock_approval
     @po_requests = ApplyDatatableParams.to(PoRequest.all.pending_stock_po.order(id: :desc), params)
-    authorize @po_requests
+    authorize_acl @po_requests
 
     respond_to do |format|
       format.json {render 'index'}
@@ -196,7 +205,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def stock
     @po_requests = ApplyDatatableParams.to(PoRequest.all.stock_po.order(id: :desc), params)
-    authorize @po_requests
+    authorize_acl @po_requests
 
     respond_to do |format|
       format.json {render 'index'}
@@ -206,12 +215,61 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def completed_stock
     @po_requests = ApplyDatatableParams.to(PoRequest.all.completed_stock_po.order(id: :desc), params)
-    authorize @po_requests
+    authorize_acl @po_requests
 
     respond_to do |format|
       format.json {render 'index'}
       format.html {render 'index'}
     end
+  end
+
+  def new_purchase_order
+    authorize_acl @po_request
+  end
+
+  def create_purchase_order
+    authorize_acl @po_request
+    service = Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer))
+    purchase_order = service.create
+    if purchase_order.present?
+      redirect_to overseers_inquiry_purchase_order_path(purchase_order.inquiry.to_param, purchase_order.to_param)
+    else
+      redirect_to overseers_purchase_orders_path
+    end
+  end
+
+  def reject_purchase_order_modal
+    authorize_acl @po_request
+    respond_to do |format|
+      format.html { render partial: 'reject_purchase_order'}
+    end
+  end
+
+  def rejected_purchase_order
+    @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
+    authorize_acl @po_request
+    status = Services::Overseers::PurchaseOrders::RejectPurchaseOrder.new(params, @po_request).call
+    if status
+      # redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
+      render json: {sucess: 'Successfully updated ', url: pending_and_rejected_overseers_po_requests_path }, status: 200
+    else
+      render json: {error: @po_request.errors }, status: 500
+    end
+  end
+
+  def manager_amended
+    Services::Overseers::PurchaseOrders::CreatePurchaseOrder.new(@po_request, params.merge(overseer: current_overseer)).update
+    redirect_to overseers_inquiry_purchase_order_path(@po_request.inquiry.to_param, @po_request.purchase_order.to_param)
+    authorize_acl @po_request
+  end
+
+  def product_resync_inventory
+    service = Services::Resources::Products::UpdateInventory.new([@product])
+    service.resync
+    respond_to do |format|
+      format.html {render partial: 'product_resync_inventory', locals: {product: @product}}
+    end
+    authorize_acl :po_request
   end
 
   private
@@ -241,13 +299,19 @@ class Overseers::PoRequestsController < Overseers::BaseController
           :requested_by_id,
           :approved_by_id,
           :supplier_id,
+          :transport_mode,
+          :delivery_type,
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion],
           attachments: []
-        )
-      end
+      )
+    end
 
     def set_po_request
       @po_request = PoRequest.find(params[:id])
+    end
+
+    def set_product
+      @product = Product.find(params[:product_id])
     end
 end

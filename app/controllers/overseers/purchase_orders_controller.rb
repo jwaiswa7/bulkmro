@@ -1,8 +1,8 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup]
+  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po, :cancelled_purchase_modal, :cancelled_purchase_order, :change_material_status]
 
   def index
-    authorize :purchase_order
+    authorize_acl :purchase_order
     respond_to do |format|
       format.html {}
       format.json do
@@ -20,8 +20,49 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
   end
 
+  def manually_closed
+    authorize_acl :purchase_order
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::MaterialReadinessQueues.new(params.merge(is_manually_close: true), current_overseer)
+        service.call
+
+        @indexed_purchase_orders = service.indexed_records
+        @purchase_orders = service.records.try(:reverse)
+
+        @summary_records = service.get_summary_records(@indexed_purchase_orders)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@summary_records, PurchaseOrder, custom_status: 'material_summary_status')
+        status_service.call
+
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
+      end
+    end
+    render 'material_readiness_queue'
+  end
+
+  def pending_sap_sync
+    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.where(remote_uid: nil, sap_sync: 'Not Sync').order(id: :desc), params)
+    authorize_acl @purchase_orders
+    respond_to do |format|
+      format.json {render 'pending_sap_sync'}
+      format.html {render 'pending_sap_sync'}
+    end
+  end
+
+  def resync_po
+    authorize_acl @purchase_order
+    if @purchase_order.save_and_sync(@purchase_order.po_request)
+      redirect_to overseers_inquiry_purchase_order_path(@purchase_order.inquiry.to_param, @purchase_order.to_param)
+    else
+      redirect_to pending_sap_sync_overseers_purchase_orders
+    end
+  end
+
   def show
-    authorize @purchase_order
+    authorize_acl @purchase_order
     @inquiry = @purchase_order.inquiry
     @metadata = @purchase_order.metadata.deep_symbolize_keys
     @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
@@ -36,7 +77,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def material_readiness_queue
-    authorize :purchase_order
+    authorize_acl :purchase_order
 
     respond_to do |format|
       format.html {}
@@ -46,6 +87,13 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
         @indexed_purchase_orders = service.indexed_records
         @purchase_orders = service.records.try(:reverse)
+
+        @summary_records = service.get_summary_records(@indexed_purchase_orders)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@summary_records, PurchaseOrder, custom_status: 'material_summary_status')
+        status_service.call
+
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
       end
     end
 
@@ -78,7 +126,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       end
     end
 
-    authorize :inward_dispatch
+    authorize_acl :inward_dispatch
     render 'inward_dispatch_pickup_queue'
   end
 
@@ -96,25 +144,52 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       format.html {}
       format.json do
         service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
-
         service.call
+        @indexed_inward_dispatches = service.indexed_records
+        @inward_dispatches = service.records.try(:reverse)
+      end
+    end
 
+    authorize_acl :inward_dispatch
+    render 'inward_dispatch_pickup_queue'
+  end
+
+  def inward_completed_queue
+    @status = 'Inward Completed Queue'
+
+    base_filter = {
+        base_filter_key: 'is_inward_completed',
+        base_filter_value: true
+    }
+
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
+        service.call
         @indexed_inward_dispatches = service.indexed_records
         @inward_dispatches = service.records.try(:reverse)
       end
     end
 
     authorize :inward_dispatch
-    render 'inward_dispatch_pickup_queue'
+    render 'inward_completed_queue'
   end
 
   def edit_material_followup
-    authorize @purchase_order
+    authorize_acl @purchase_order
     @po_request = @purchase_order.po_request
   end
 
+  def change_material_status
+    authorize_acl @purchase_order
+    @purchase_order.update_material_status
+    redirect_to material_readiness_queue_overseers_purchase_orders_path, notice: flash_message(@purchase_order, action_name)
+  end
+
   def update_material_followup
-    authorize @purchase_order
+    authorize_acl @purchase_order
     @purchase_order.assign_attributes(purchase_order_params)
 
     if @purchase_order.valid?
@@ -139,7 +214,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
     @purchase_orders = ApplyParams.to(purchase_orders, params)
 
-    authorize :purchase_order
+    authorize_acl :purchase_order
   end
 
   def autocomplete_without_po_requests
@@ -150,11 +225,11 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
     @purchase_orders = ApplyParams.to(purchase_orders, params)
 
-    authorize :purchase_order
+    authorize_acl :purchase_order
   end
 
   def export_all
-    authorize :purchase_order
+    authorize_acl :purchase_order
     service = Services::Overseers::Exporters::PurchaseOrdersExporter.new([], current_overseer, [])
     service.call
 
@@ -162,7 +237,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def export_filtered_records
-    authorize :purchase_order
+    authorize_acl :purchase_order
     service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer, paginate: false)
     service.call
 
@@ -172,7 +247,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def update_logistics_owner
     @purchase_orders = PurchaseOrder.where(id: params[:purchase_orders])
-    authorize @purchase_orders
+    authorize_acl @purchase_orders
     @purchase_orders.each do |purchase_order|
       purchase_order.update_attributes(logistics_owner_id: params[:logistics_owner_id])
     end
@@ -180,10 +255,37 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def update_logistics_owner_for_inward_dispatches
     @inward_dispatches = InwardDispatch.where(id: params[:inward_dispatches])
-    authorize @inward_dispatches
+    authorize_acl @inward_dispatches
     @inward_dispatches.each do |pickup_request|
       pickup_request.update_attributes(logistics_owner_id: params[:logistics_owner_id])
     end
+  end
+
+  def export_material_readiness
+    authorize_acl :purchase_order
+
+    service = Services::Overseers::Exporters::MaterialReadinessExporter.new([], current_overseer)
+    service.call
+
+    redirect_to url_for(Export.material_readiness_queue.not_filtered.last.report)
+  end
+
+  def cancelled_purchase_modal
+    authorize_acl @purchase_order
+    respond_to do |format|
+      format.html { render partial: 'cancel_purchase_order', locals: { created_by_id: current_overseer.id } }
+    end
+  end
+
+  def cancelled_purchase_order
+    authorize_acl @purchase_order
+    if @purchase_order.present?
+      @purchase_order.status = 'cancelled'
+      @purchase_order.po_request.status = 'Cancelled'
+      @purchase_order.save!
+      @purchase_order.po_request.save!
+    end
+    render json: {sucess: 'Successfully updated ', url: overseers_purchase_orders_path }, status: 200
   end
 
   private
@@ -210,7 +312,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         :followup_date,
         :logistics_owner_id,
         :revised_supplier_delivery_date,
-        comments_attributes: [:id, :message, :created_by_id],
+        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
         attachments: []
       )
     end

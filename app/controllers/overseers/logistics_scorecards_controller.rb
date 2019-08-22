@@ -2,7 +2,7 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
   helper_method :get_logistics_owner
 
   def index
-    authorize :logistics_scorecard
+    authorize_acl :logistics_scorecard
     respond_to do |format|
       format.html {
         service = Services::Overseers::LogisticsScorecards::OverallSummary.new(params, current_overseer)
@@ -10,6 +10,8 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
         @months = service.months
         @records = service.records
         @ownerwise_records = service.ownerwise_records
+        @delay_bucket_monthwise_records = service.delay_bucket_monthwise_records
+        @delay_bucket_ownerwise_records = service.delay_bucket_ownerwise_records
       }
       format.json do
         service = Services::Overseers::Finders::LogisticsScorecards.new(params, current_overseer, paginate: false)
@@ -34,7 +36,7 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
   end
 
   def add_delay_reason
-    authorize :logistics_scorecard
+    authorize_acl :logistics_scorecard
     SalesInvoice.where(id: params[:invoice_id]).update_all(delay_reason: params[:selected].to_i)
     LogisticsScorecardsIndex::SalesInvoice.import SalesInvoice.where(id: params[:invoice_id])
     redirect_to overseers_logistics_scorecards_path, notice: 'Delay Reason Updated'

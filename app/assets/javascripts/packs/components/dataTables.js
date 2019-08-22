@@ -80,11 +80,28 @@ let setup = () => {
                     })
                     if (value && value != "") {
                         if (td.hasClass('currency')){
-                            td.empty().append(currencyFormatter.format(value))
+                            td.empty().append(parseInt(value))
                         }
                         else if(td.hasClass('percentage')){
-                            let percentValue = (value / columnData.length)
-                            td.empty().append(percentValue.toFixed(2)+'%')
+                            let percentValue = (value / columnData.length);
+                            td.empty().append(parseInt(percentValue))
+                        }
+                        else if(td.hasClass('gross_margin_percentage_total')){
+                            let assumed_margin = parseInt($('.gross_margin_assumed_value').html().replace(/,/g , ''));
+                            let total_order_value = parseInt($('.total_sales_order_value').html().replace(/,/g , ''));
+                            let total_gross_margin_percentage = (assumed_margin/total_order_value)*100;
+                            td.empty().append(parseInt(total_gross_margin_percentage));
+                        }
+                        else if(td.hasClass('total_inquiries_won_percentage')){
+                            let total_inquiries_count = parseInt($('.total_inquiries_count').html().replace(/,/g , ''));
+                            let inquiries_won_percentage = (value/total_inquiries_count)*100;
+                            td.empty().append(parseInt(inquiries_won_percentage));
+                        }
+                        else if(td.hasClass('actual_margin_percentage')){
+                            let total_gross_margin_actual = parseInt($('.total_gross_margin_actual').html().replace(/,/g , ''));
+                            let total_invoice_value = parseInt($('.total_invoice_value').html().replace(/,/g , ''));
+                            let total_actual_margin_percentage = (total_gross_margin_actual/total_invoice_value)*100;
+                            td.empty().append(parseInt(total_actual_margin_percentage));
                         }
                         else if(td.hasClass('no-data')){
                             td.empty()
@@ -92,15 +109,17 @@ let setup = () => {
                         else{
                             td.empty()
                             td.append(value.toLocaleString());
-
                         }
                     }
                     else{
-                        if (td.hasClass('currency')){
-                            td.empty().append(currencyFormatter.format(0))
+                        if (td.hasClass('total')){
+                            td.empty().append('<strong>Total</strong>');
+                        }
+                        else if (td.hasClass('currency')){
+                            td.empty().append(parseInt(0))
                         }
                         else if(td.hasClass('percentage')){
-                            td.empty().append('0%')
+                            td.empty().append('0')
                         }else if(td.hasClass('no-data')){
                             td.empty()
                         }
@@ -125,9 +144,15 @@ let setup = () => {
                 "targets": 'numeric',
                 "render": $.fn.dataTable.render.number(',', '.', 0)
             }, {
+                "targets": 'text-right-report',
+                "class": 'text-right'
+            }, {
                 "targets": 'text-right',
                 "class": 'text-right text-nowrap'
-            }],
+            }, {
+                    "targets": 'text-center',
+                    "class": 'text-center text-nowrap'
+                }],
             fnServerParams: function (data) {
                 data['columns'].forEach(function (items, index) {
                     data['columns'][index]['name'] = $(that).find('th:eq(' + index + ')').data('name');

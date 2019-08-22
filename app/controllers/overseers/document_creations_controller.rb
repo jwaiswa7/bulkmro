@@ -1,10 +1,10 @@
 class Overseers::DocumentCreationsController < Overseers::BaseController
   def new
-    authorize :document_creation
+    authorize_acl :document_creation
   end
 
   def create
-    authorize :document_creation
+    authorize_acl :document_creation
     class_name = doc_creation_params['option'].gsub(' ', '')
     @object = class_name.constantize.by_number(doc_creation_params['document_number'])
     session[:number] = doc_creation_params['document_number']

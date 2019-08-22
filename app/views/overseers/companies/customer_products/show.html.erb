@@ -4,7 +4,7 @@
       <h3 class="display-5 d-flex align-items-center">
         <%= @customer_product.name %>
       </h3>
-      <% if policy(@customer_product).edit? %>
+      <% if is_authorized(@customer_product, 'edit') %>
         <a href="<%= edit_overseers_company_customer_product_path(@company) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
           customer_product</a>
       <% end %>

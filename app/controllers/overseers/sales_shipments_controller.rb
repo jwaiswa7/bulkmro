@@ -1,6 +1,6 @@
 class Overseers::SalesShipmentsController < Overseers::BaseController
   def index
-    authorize :sales_shipment
+    authorize_acl :sales_shipment
 
     respond_to do |format|
       format.html { }

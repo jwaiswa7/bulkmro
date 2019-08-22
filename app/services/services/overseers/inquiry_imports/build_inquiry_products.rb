@@ -13,7 +13,6 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
         if Product.find_by_sku(row['sku']).present?
           row.sku = Services::Resources::Shared::UidGenerator.product_sku(excel_import.rows.map { |r| r['sku'] })
         end
-
         row.build_inquiry_product(
           inquiry: inquiry,
           import: excel_import,

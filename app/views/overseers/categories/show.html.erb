@@ -4,7 +4,7 @@
       <h3 class="display-5 d-flex align-items-center">
         <%= @category.name %>
       </h3>
-      <% if policy(@category).edit? %>
+      <% if is_authorized(@category, 'edit') %>
         <a href="<%= edit_overseers_category_path(@category) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
         Category</a>
       <% end %>

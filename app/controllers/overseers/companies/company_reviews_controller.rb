@@ -5,7 +5,7 @@ class Overseers::Companies::CompanyReviewsController < Overseers::Companies::Bas
         base_filter_key: 'company_id',
         base_filter_value: params[:company_id]
     }
-    authorize :company_review
+    authorize_acl :company_review
     respond_to do |format|
       format.html { }
       format.json do

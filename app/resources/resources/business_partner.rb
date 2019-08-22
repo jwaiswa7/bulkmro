@@ -13,6 +13,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         address.save!
       end
 
+      # temp
       update_associated_records(response)
     end
 
@@ -25,6 +26,10 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     super(id, record, quotes: true) do |response|
       update_associated_records(id, force_find: true) if response.present?
     end
+  end
+
+  def self.temp_update(id, record)
+    super(id, record, quotes: true)
   end
 
   def self.custom_find(company_name, company_type)

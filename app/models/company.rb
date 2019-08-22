@@ -65,6 +65,8 @@ class Company < ApplicationRecord
   has_one_attached :logo
   belongs_to :company_creation_request, optional: true
 
+  scope :with_invoices, -> {includes(:invoices).where.not(sales_invoices: { id: nil })}
+
 
   enum company_type: {
       proprietorship: 10,
@@ -243,5 +245,9 @@ class Company < ApplicationRecord
 
   def order_margin
     self.inquiries.map {|i| i.final_sales_orders.map {|s| s.calculated_total_margin_percentage} if i.final_sales_orders.present?}.flatten.compact
+  end
+
+  def account_manager_contact
+    self.contacts.where(role: 'account_manager').first
   end
 end

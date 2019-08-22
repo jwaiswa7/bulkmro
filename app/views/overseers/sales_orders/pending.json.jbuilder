@@ -1,16 +1,16 @@
 json.data (@sales_orders) do |sales_order|
   columns = [
       [
-          if policy(sales_order).show?
+          if is_authorized(sales_order, 'show')
             row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'eye', 'View Sales Order', 'info')
           end,
-          if policy(sales_order).comments?
+          if is_authorized(sales_order, 'comments')
             row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', 'Comments and Approval', 'success')
           end
       ].join(' '),
-      sales_order.order_number.present? ? conditional_link(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order.inquiry).show?) : '',
+      sales_order.order_number.present? ? conditional_link(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), is_authorized(sales_order.inquiry, 'show')) : '',
       sales_order.id,
-      conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
+      conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), is_authorized(sales_order.inquiry, 'edit')),
       status_badge(format_enum(sales_order.order_status || sales_order.legacy_request_status, humanize_text: false)),
       format_succinct_date(sales_order.sent_at),
       sales_order.created_by.to_s,

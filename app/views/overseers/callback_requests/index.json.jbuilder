@@ -1,7 +1,7 @@
 json.data (@callback_requests) do |callback_request|
   columns = [
                   [
-                      if policy(callback_request).show?
+                      if is_authorized(callback_request,'show')
                         row_action_button(overseers_callback_request_path(callback_request), 'eye', 'Show Callback Request', 'info', :_blank)
                       end,
                   ].join(' '),

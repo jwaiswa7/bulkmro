@@ -6,6 +6,7 @@ class PoRequestRow < ApplicationRecord
   has_one :sales_quote_row, through: :sales_order_row
   has_one :inquiry_product_supplier, through: :sales_quote_row
   has_one :inquiry_product, through: :inquiry_product_supplier
+  has_one :purchase_order_row
   # has_one :product, through: :inquiry_product
 
   # has_one :product, :through => :sales_order_row
@@ -116,6 +117,25 @@ class PoRequestRow < ApplicationRecord
   end
 
   def to_s
-    "#{supplier_product_sku} - #{supplier_product_name}"
+    if supplier_product_name.present? && supplier_product_sku.present?
+      "#{supplier_product_sku} - #{supplier_product_name}"
+    elsif self.product.present?
+      product = self.product
+      "#{product.sku} - #{product.name}"
+    end
+  end
+
+  def taxation
+    service = Services::Overseers::PoRequests::Taxation.new(self)
+    service.call
+    service
+  end
+
+  def best_tax_code
+    self.tax_code || self.product.best_tax_code
+  end
+
+  def best_tax_rate
+    self.tax_rate || self.product.best_tax_rate
   end
 end

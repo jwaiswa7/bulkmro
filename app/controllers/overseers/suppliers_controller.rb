@@ -8,18 +8,18 @@ class Overseers::SuppliersController < Overseers::BaseController
     service.call
     @indexed_companies = service.indexed_records
     @companies = service.records
-    authorize @companies
+    authorize_acl @companies
 
     render 'index'
   end
 
   def autocomplete
     @suppliers = ApplyParams.to(Company.acts_as_supplier, params)
-    authorize @suppliers
+    authorize_acl @suppliers
   end
 
   def export_all
-    authorize :supplier
+    authorize_acl :supplier
     service = Services::Overseers::Exporters::SuppliersExporter.new(params[:q], current_overseer, [])
     service.call
 
@@ -27,7 +27,7 @@ class Overseers::SuppliersController < Overseers::BaseController
   end
 
   def export_filtered_records
-    authorize :supplier
+    authorize_acl :supplier
 
     service = Services::Overseers::Finders::Companies.new(params, current_overseer, paginate: false)
     service.call

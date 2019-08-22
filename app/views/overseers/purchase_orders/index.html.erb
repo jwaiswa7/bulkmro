@@ -5,9 +5,11 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_directly_exported_filtered_records, true %>
 
+<% if Settings.reports.show_summary %>
 <div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: PurchaseOrder, statuses: PurchaseOrder.statuses} %>
+  <%= render partial: "shared/layouts/summary", locals: {klass: PurchaseOrder, statuses: PurchaseOrder.statuses, alias_name: ''} %>
 </div>
+<% end %>
 
 <div class="col-lg-12">
   <% content_for :header_row do %>
@@ -26,6 +28,7 @@
     <th class="no-sort desktop" data-name="payment_status">Payment Status</th>
     <th class="no-sort desktop" data-name="percentage">Percentage</th>
     <th class="sort desktop text-right" data-name="created_at">Created</th>
+    <th class="no-sort all">SAP Status</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
@@ -43,8 +46,11 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
+    <td data-filter="false"></td>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>
+
+<div class="cancellation-form-modal"></div>

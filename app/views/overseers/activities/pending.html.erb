@@ -7,12 +7,12 @@
 <% end %>
 
 <% provide :heading_buttons do %>
-  <% if policy(:activity).approve_selected? %>
+  <% if is_authorized(:activity, 'approve_selected') %>
     <button type="button" id="approve_selected" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
       <i class="fal fa-check mr-1"></i>Approve Selected
     </button>
   <% end %>
-  <% if policy(:activity).reject_selected? %>
+  <% if is_authorized(:activity, 'reject_selected') %>
     <button type="button" id="reject_selected" class=" btn btn-danger btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
       <i class="fal fa-times mr-1"></i>Reject Selected
     </button>
@@ -21,7 +21,7 @@
 
 <% content_for :header_row do %>
   <th class="no-sort">
-    <% if policy(:activity).perform_actions? %>
+    <% if is_authorized(:activity, 'perform_actions') %>
       <div class="custom-control custom-checkbox">
         <input type="checkbox" class="custom-control-input" name="all_activities" id="all_activities">
         <label class="custom-control-label" for="all_activities">Select All</label>

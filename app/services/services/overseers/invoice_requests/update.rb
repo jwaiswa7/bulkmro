@@ -7,7 +7,6 @@ class Services::Overseers::InvoiceRequests::Update < Services::Shared::BaseServi
   def call
     @invoice_request.status = 'Pending AP Invoice' if @invoice_request.grpo_number.present? && @invoice_request.grpo_number_valid?
     @invoice_request.update_status(@invoice_request.status)
-
     ActiveRecord::Base.transaction do
       if @invoice_request.status_changed?
         if @invoice_request.grpo_number_changed?
@@ -37,17 +36,17 @@ class Services::Overseers::InvoiceRequests::Update < Services::Shared::BaseServi
   def status_changed(invoice_request)
     case invoice_request.status.to_sym
     when :'GRPO Request Rejected'
-      @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{invoice_request.status}.<br/> GRPO Request Rejection Reason: #{invoice_request.grpo_rejection_reason} ", invoice_request: invoice_request, overseer: current_overseer)
-      inward_dispatches = invoice_request.inward_dispatches
-      inward_dispatches.each do |material_pickup_request|
-        material_pickup_request.update_attributes(status: invoice_request.status)
-      end
+      @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{invoice_request.status}.<br/> GRPO Request Rejection Reason: #{invoice_request.rejection_reason_text} ", invoice_request: invoice_request, overseer: current_overseer)
+      # inward_dispatches = invoice_request.inward_dispatches
+      # inward_dispatches.each do |material_pickup_request|
+      #   material_pickup_request.update_attributes(status: invoice_request.status)
+      # end
     when :'AP Request Rejected'
       @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{invoice_request.status}.<br/> AP Request Rejection Reason: #{invoice_request.ap_rejection_reason} ", invoice_request: invoice_request, overseer: current_overseer)
-      inward_dispatches = invoice_request.inward_dispatches
-      inward_dispatches.each do |material_pickup_request|
-        material_pickup_request.update_attributes(status: invoice_request.status)
-      end
+      # inward_dispatches = invoice_request.inward_dispatches
+      # inward_dispatches.each do |material_pickup_request|
+      #   material_pickup_request.update_attributes(status: invoice_request.status)
+      # end
     when :'Cancelled GRPO'
       @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{invoice_request.status}.<br/> GRPO Request Cancellation Reason: #{invoice_request.grpo_cancellation_reason} ", invoice_request: invoice_request, overseer: current_overseer)
     when :'Cancelled AP Invoice'

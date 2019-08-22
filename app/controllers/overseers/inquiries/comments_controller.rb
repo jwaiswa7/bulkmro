@@ -4,20 +4,21 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
   def index
     @sales_order = @inquiry.sales_orders.find(params[:sales_order_id]) if params[:sales_order_id].present?
     @comments = if @sales_order.present?
-      @inquiry.comments.where(sales_order_id: [nil, @sales_order.id]).latest
+      @inquiry.comments.where(sales_order_id: [@sales_order.id]).latest
+      # @inquiry.comments.where(sales_order_id: [nil, @sales_order.id]).latest
     else
       @inquiry.comments.latest
     end
 
     @internal_comments = @comments.internal_comments.page(params[:internal]).per(10)
     @customer_comments = @comments.customer_comments.page(params[:customer]).per(10)
-    authorize @comments
+    authorize_acl @comments
   end
 
   def create
     @comment = @inquiry.comments.build(inquiry_comment_params.merge(overseer: current_overseer))
 
-    authorize @comment
+    authorize_acl @comment
 
     if @comment.sales_order.present? && @comment.save
       callback_method = %w(approve reject).detect { |action| params[action] }

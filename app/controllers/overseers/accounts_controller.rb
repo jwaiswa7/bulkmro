@@ -4,7 +4,7 @@ class Overseers::AccountsController < Overseers::BaseController
 
   def index
     @accounts = ApplyDatatableParams.to(Account.all, params)
-    authorize @accounts
+    authorize_acl @accounts
   end
 
   def show
@@ -13,27 +13,27 @@ class Overseers::AccountsController < Overseers::BaseController
       @data = service.call
     end
 
-    authorize @account
+    authorize_acl @account
   end
 
   def autocomplete
     @accounts = ApplyParams.to(Account.all, params)
-    authorize @accounts
+    authorize_acl @accounts
   end
 
   def autocomplete_supplier
     @accounts = ApplyParams.to(Account.all.where(account_type: 'is_supplier'), params)
-    authorize @accounts
+    authorize_acl @accounts
   end
 
   def new
     @account = Account.new(overseer: current_overseer)
-    authorize @account
+    authorize_acl @account
   end
 
   def create
     @account = Account.new(account_params.merge(overseer: current_overseer))
-    authorize @account
+    authorize_acl @account
 
     if @account.alias.blank?
       @account.alias = @account.name
@@ -47,12 +47,12 @@ class Overseers::AccountsController < Overseers::BaseController
   end
 
   def edit
-    authorize @account
+    authorize_acl @account
   end
 
   def update
     @account.assign_attributes(account_params.merge(overseer: current_overseer))
-    authorize @account
+    authorize_acl @account
 
     if @account.alias.blank?
       @account.alias = @account.name
@@ -67,7 +67,7 @@ class Overseers::AccountsController < Overseers::BaseController
 
   def payment_collections
     @accounts = ApplyDatatableParams.to(Account.all.order(:name), params)
-    authorize :account
+    authorize_acl :account
     service = Services::Overseers::SalesInvoices::PaymentDashboard.new()
     service.call
     @summery_data = service.summery_data
@@ -75,7 +75,7 @@ class Overseers::AccountsController < Overseers::BaseController
 
   def ageing_report
     @accounts = ApplyDatatableParams.to(Account.all.order(:name), params)
-    authorize :account
+    authorize_acl :account
     service = Services::Overseers::SalesInvoices::AgeingReport.new()
     service.call
     @summery_data = service.summery_data

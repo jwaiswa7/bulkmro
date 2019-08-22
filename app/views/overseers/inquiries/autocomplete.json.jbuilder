@@ -1,5 +1,5 @@
 json.results(@inquiries.reverse) do |inquiry|
-  json.set! :id, inquiry.id
+  json.set! :id, (@encoded == "true") ? Inquiry.encode_id(inquiry.id) : inquiry.id
   json.set! :text, inquiry.to_s
 end
 

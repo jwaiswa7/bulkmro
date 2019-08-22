@@ -6,7 +6,7 @@ class Overseers::ReportPolicy < Overseers::ApplicationPolicy
   end
 
   def show?
-    admin?
+    admin? || manager_or_sales?
   end
   def export_report?
     show?

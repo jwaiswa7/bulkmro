@@ -1,7 +1,7 @@
 # when :'$0'
 # '$2'
 module StatusesHelper
-  def status_color(status)
+  def  status_color(status)
     case status.to_sym
     when :'Processing'
       'color-light-blue'
@@ -41,8 +41,18 @@ module StatusesHelper
       'color-light-yellow'
     when :'Material Delivered'
       'success'
+    when :'Inward Completed'
+      'success'
     when :'Material Partially Delivered'
       'color-light-green'
+    when :'Pending follow-up'
+      'dark'
+    when :'Follow-up for today'
+      'info'
+    when :'Committed Date Breached'
+      'danger'
+    when :'Committed Date Approaching'
+      'warning'
 
     # defaults
     when :'Lead by O/S'
@@ -163,7 +173,7 @@ module StatusesHelper
       'danger'
     when :'Order Deleted'
       'danger'
-    when :'Cancelled AR Invoice'
+    when :'Cancelled AR Invoice' || :'AR Invoice Request Rejected'
       'danger'
     when :'failed'
       'danger'
@@ -181,6 +191,8 @@ module StatusesHelper
       'success'
     when :'Pending AR Invoice'
       'info'
+    when :'AR Invoice requested'
+      'warning'
     when :'authorized'
       'info'
     when :'captured'
@@ -195,6 +207,10 @@ module StatusesHelper
       'warning'
     when :'default'
       'info'
+    when :'Sync'
+      'success'
+    when 'Not Sync'
+      'danger'
     else
       'danger'
     end

@@ -1,3 +1,5 @@
+<% provide :so_po_doc_included, true %>
+<% provide :manual_po_user_guide, true %>
 <% provide :container_fluid, true %>
 <% provide :can_be_directly_created, policy(:inquiry).new? %>
 <% provide :can_be_directly_exported, true %>
@@ -5,13 +7,15 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
-<div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: Inquiry, statuses: Inquiry.statuses} %>
-</div>
 
+<% if Settings.reports.show_summary %>
+<div class="col-lg-12">
+  <%= render partial: "shared/layouts/summary", locals: {klass: Inquiry, statuses: Inquiry.statuses, alias_name: ''} %>
+</div>
+<% end %>
 <% content_for(:heading_buttons) do %>
 
-  <% if policy(:inquiry).index? %>
+  <% if is_authorized(:inquiry,'index') %>
     <a href="#" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" data-toggle="modal" data-target="#bulkUpdate" data-backdrop="static" data-keyboard="false">
       Bulk Update
     </a>
@@ -32,6 +36,7 @@
   <th class="no-sort desktop" data-name="company_id">Company</th>
   <th class="no-sort desktop">PO # - Subject</th>
   <th class="sort desktop text-right" data-name="quotation_followup_date">Follow Up Date</th>
+  <th class="sort desktop text-right" data-name="customer_committed_date">Customer Committed Date</th>
   <th class="no-sort desktop" data-name="contact_id">Contact</th>
   <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
   <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
@@ -51,6 +56,7 @@
   <td data-filter="ajax"></td>
   <td data-filter="false"></td>
   <td data-filter="daterange"></td>
+  <td data-filter="daterange"></td>
   <td data-filter="ajax"></td>
   <td data-filter="dropdown"></td>
   <td data-filter="dropdown"></td>
@@ -64,3 +70,4 @@
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>
+<div class="open-modal-form"></div>

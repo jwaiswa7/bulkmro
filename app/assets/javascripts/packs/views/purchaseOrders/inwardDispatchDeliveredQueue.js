@@ -1,12 +1,14 @@
+
+import updateLogisticsOwner from"./inwardDispatchPickupQueue"
+
 const inwardDispatchDeliveredQueue = () => {
     $('#create_invoice').hide();
-    toggleCheckboxes();
+    toggleCheckboxes()
     $('#create_invoice').click((event) => {
         createInvoiceRequest();
     });
-
+    updateLogisticsOwner();
 };
-
 let toggleCheckboxes = () => {
     $('table').on('change', 'input[type=checkbox][name="the_inward_dispatches[]"]', (event) => {
         showOrHideActions();
@@ -32,13 +34,13 @@ let createInvoiceRequest = () => {
 
 };
 
+
 let checkValues = (obj) => {
     return Object.keys(obj).every((k) => obj[k] == Object.values(obj)[0])
 }
 
 let showOrHideActions = () => {
     var hide = true;
-
     $('input[type=checkbox][name="the_inward_dispatches[]"]').each((index, element) => {
         if ($(element).is(':checked')) {
             hide = false;

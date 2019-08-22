@@ -1,12 +1,16 @@
 import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from "../common/updateSummaryBox";
 import updateStatus from "./updateStatus";
+import callAjaxFunction from "../common/callAjaxFunction";
+import commanComment from "../common/commanComment";
 
 const index = () => {
     bindSummaryBox(".summary_box", '.status-filter')
     updateSummaryBox()
     updateStatus()
     aggregateSummaryBox()
+    commanComment('payment-request','payment_requests');
+
 };
 
 let aggregateSummaryBox = () => {

@@ -1,10 +1,11 @@
 <%= provide :container_fluid, true %>
-<%#- <% provide :can_be_directly_created,policy(:warehouse).new? %>
+<% provide :can_be_directly_created,policy(:warehouse).new? %>
 <% provide :can_be_ajaxed, true %>
 
 <% content_for :header_row do %>
   <th class="no-sort"></th>
   <th class="no-sort" data-name="name">Name</th>
+  <th class="no-sort" data-name="name">Series Code</th>
   <th class="no-sort" data-name="name">State</th>
   <th class="no-sort desktop text-right" data-name="name">GST</th>
   <th class="no-sort desktop text-right" data-name="name">Warehouse Code</th>
