@@ -1,8 +1,8 @@
 <a class="card text-black-50 sales-order" target="_blank" href="/overseers/inquiries/<%= sales_order.inquiry.to_param %>/sales_orders/<%= sales_order.to_param %>">
-  <div class="card-header p-1 text-center">
+  <div class="card-header p-1 text-center text-black">
     <strong>Sales Order</strong>
   </div>
-  <div class="card-body p-1 text-center">
+  <div class="card-body p-1 text-center text-black">
     <div>
       <%= status_badge(sales_order.order_status) || 'N/A'%>
     </div>
