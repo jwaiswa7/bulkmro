@@ -13,7 +13,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-10">
-                <h5 class="text-uppercase text-black-50 mb-0">Followup Inquiries for Today</h5>
+                <h5 class="text-uppercase text-black-50 mb-0">Followup Inquiries</h5>
               </div>
               <div class="col-2">
                 <h2 class="text-uppercase text-center text-black-50 badge-color-light-blue rounded mb-0">
@@ -47,7 +47,7 @@
                   <td><%= status_badge(inquiry.status) %></td>
                   <td><%= inquiry.company.to_s %></td>
                   <td><%= format_currency(inquiry.calculated_total) %></td>
-                  <td><%= time_ago_in_words(inquiry.updated_at) %></td>
+                  <td><%= format_succint_date(inquiry.updated_at) %></td>
                 </tr>
               <% end %>
               </tbody>
@@ -71,8 +71,8 @@
                 <th class="no-sort text-right">Inquiry</th>
                 <th class="no-sort text-right">Doc ID</th>
                 <th class="no-sort text-right">Order</th>
-                <th class="no-sort">Status</th>
-                <th class="no-sort">SAP Status</th>
+                <th class="no-sort text-center">Status</th>
+                <!-- <th class="no-sort">SAP Status</th>-->
                 <th class="no-sort text-right">Total</th>
                 <th class="no-sort text-right">Updated</th>
               </tr>
@@ -87,9 +87,9 @@
                   <td><%= sales_order.id %></td>
                   <td><%= sales_order.order_number %></td>
                   <td><%= status_badge(sales_order.status) %></td>
-                  <td><%= status_badge(sales_order.remote_status) %></td>
+                  <!-- <td><%#= status_badge(sales_order.remote_status) %></td>-->
                   <td><%= format_currency(sales_order.calculated_total) %></td>
-                  <td><%= time_ago_in_words(sales_order.updated_at) %></td>
+                  <td><%= format_succinct_date(sales_order.updated_at) %></td>
                 </tr>
               <% end %>
               </tbody>
