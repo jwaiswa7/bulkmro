@@ -57,7 +57,9 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
         inquiry.update_attributes(status: status)
       end
 
-      InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.class.name, subject_id: subject.try(:id)).first_or_create
+      inquiry_status_record = InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.class.name, subject_id: subject.try(:id)).first_or_create
+      previous_status = inquiry_status_record.fetch_previous_status_record if status != 'New Inquiry'
+      inquiry_status_record.update_attributes(previous_status_record_id: previous_status.id) if previous_status.present?
     end
 
     def get_status_value(status)
