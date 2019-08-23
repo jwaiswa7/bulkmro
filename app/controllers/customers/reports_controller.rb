@@ -1,11 +1,11 @@
 class Customers::ReportsController < Customers::BaseController
-  def monthly_purchase_data
+  def quarterly_purchase_data
     authorize :report, :show_aggregate_reports?
 
-    service = Services::Customers::Charts::MonthlyPurchaseData.send(:new, (params['daterange'].present? ? params['daterange'] : nil))
+    service = Services::Customers::Charts::QuarterlyPurchaseData.send(:new, (params['daterange'].present? ? params['daterange'] : nil))
     @chart = service.call(current_company.account)
 
-    render 'monthly_purchase_data'
+    render 'quarterly_purchase_data'
   end
 
   def revenue_trend
