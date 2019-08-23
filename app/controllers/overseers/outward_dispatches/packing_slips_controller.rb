@@ -63,7 +63,7 @@ class Overseers::OutwardDispatches::PackingSlipsController < Overseers::BaseCont
         packing_slip_row = PackingSlipRow.where(packing_slip_id: packing_slip_object[box], ar_invoice_request_row_id: value['ar_invoice_request_row_id']).first_or_initialize
         packing_slip_row.delivery_quantity = quantities[index]
         if packing_slip_row.valid?
-          packing_slip_row.save(validate: false)
+          packing_slip_row.save
         else
           is_valid = false
           break
