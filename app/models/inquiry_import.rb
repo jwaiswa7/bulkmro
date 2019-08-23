@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class InquiryImport < ApplicationRecord
-  HEADERS = %w[sr_no name brand mpn sku quantity tax_code is_service category_id].freeze
-  TEMPLATE_HEADERS = %w[sr_no name brand mpn sku quantity tax_code is_service category_id].freeze
+  HEADERS = %w[sr_no name brand mpn sku quantity tax_code tax_rate is_service category_id].freeze
+  TEMPLATE_HEADERS = %w[sr_no name brand mpn sku quantity tax_code tax_rate is_service category_id].freeze
 
   include Mixins::CanBeStamped
   include Mixins::IsAnImport
