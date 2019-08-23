@@ -40,7 +40,7 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
     excel_rows.each do |excel_row|
       row = excel_header_row.zip(excel_row).to_h
       if excel_row.compact.length > 1 && (row['sku'].present? || row['mpn'].present?)
-        if (row['tax_code'].present? && row['tax_code'].to_s.gsub('.0','').length == 8) || (row['tax_code'].blank?)
+        if (row['tax_code'].present? && row['tax_code'].to_s.gsub('.0', '').length == 8) || (row['tax_code'].blank?)
           rows.push row
         else
           import.errors.add(:base, ["Tax Code length should be 8 digit for Product Name - ' #{row['name']} '."].join(' '))

@@ -9,7 +9,7 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
 
     excel_import.rows.reverse.each do |row|
       if row.failed?
-        tax_code = row.metadata['tax_code'].present? ? row.metadata['tax_code'].to_s.gsub('.0','') : nil
+        tax_code = row.metadata['tax_code'].present? ? row.metadata['tax_code'].to_s.gsub('.0', '') : nil
         is_service = row.metadata['is_service'].present? && row.metadata['is_service'].downcase == 'yes' ? true : false
         category = row.metadata['category_id'].present? && row.metadata['category_id'].to_i.to_s.match?(/^[1-9]*/) ? row.metadata['category_id'].to_i : nil
         tax_rate = row.metadata['tax_rate'].present? && row.metadata['tax_rate'].to_f.to_s.match?(/^[1-9]*/) ? row.metadata['tax_rate'].to_f : nil
