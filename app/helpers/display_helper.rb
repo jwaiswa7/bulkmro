@@ -135,6 +135,16 @@ module DisplayHelper
     end
   end
 
+  def get_quarter(date)
+    if ((date.month - 1) / 3) == 0
+      quarter = 4
+      "Q#{quarter}-#{date.year}"
+    else
+      quarter = ((date.month - 1) / 3)
+      "Q#{quarter}-#{date.year + 1}"
+    end
+  end
+
   def format_num(num, precision = 0)
     number_with_precision(num, precision: precision)
   end
@@ -166,6 +176,21 @@ module DisplayHelper
     "#{invoiced_qty}&nbspoff&nbsp#{ordered_qty}"
   end
 
+  def heatmap_for_pipeline(status, date, record_count)
+    month_difference = ((Date.today.year * 12 + Date.today.month) - (date.year * 12 + date.month)).abs
+
+    if record_count.present?
+      if status == 'Order Won' || status == 'Order Lost'
+        ''
+      elsif (status != 'Order Won' || status != 'Order Lost') && month_difference >= 2
+        'bg-highlight-danger'
+      elsif (status != 'Order Won' || status != 'Order Lost') && month_difference >= 1 && month_difference < 2
+        'bg-highlight-warning'
+      elsif month_difference < 1
+        'bg-highlight-success'
+      end
+    end
+  end
 
   def format_boolean_with_badge(status)
     (
@@ -238,7 +263,7 @@ module DisplayHelper
 
   def humanize(mins)
     [[60, :minutes], [24, :hours], [Float::INFINITY, :days]].map {|count, name|
-      if mins > 0
+      if mins.present? && mins > 0
         mins, n = mins.divmod(count)
         unless n.to_i == 0
           name = name.to_s.singularize if n == 1

@@ -30,7 +30,7 @@ const index = () => {
             callAjaxFunction(json)
         }
 
-    })
+    });
 
     commanComment('po-request','po_requests');
 

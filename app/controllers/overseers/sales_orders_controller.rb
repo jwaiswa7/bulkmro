@@ -158,7 +158,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def so_sync_pending
     authorize_acl :sales_order
 
-    #sales_orders = SalesOrder.where.not(sent_at: nil).where(draft_uid: nil, status: :'SAP Approval Pending').not_legacy
+    # sales_orders = SalesOrder.where.not(sent_at: nil).where(draft_uid: nil, status: :'SAP Approval Pending').not_legacy
 
     sales_orders = SalesOrder.where.not(sent_at: nil).where(remote_uid: nil, status: :'Approved').where("created_at >= '2019-07-18'")
     respond_to do |format|
@@ -210,36 +210,76 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def customer_order_status_report
     authorize_acl :sales_order
+    @categories = ['By BM', 'By Sales Order']
+    @delivery_statuses = ['Delivery Pending', 'All']
     respond_to do |format|
-      format.html {
-        if params['customer_order_status_report'].present?
-          @category = params['customer_order_status_report']['category']
-        end
-      }
+      if params['customer_order_status_report'].present?
+        delivery_status = params['customer_order_status_report']['delivery_status'] if params['customer_order_status_report']['delivery_status'].present?
+      else
+        params['customer_order_status_report'] = { 'category': @categories[0] }
+        delivery_status = @delivery_statuses[0]
+      end
+      format.html {}
       format.json do
-        if params['customer_order_status_report'].present?
-          @category = params['customer_order_status_report']['category']
-        end
         service = Services::Overseers::Finders::CustomerOrderStatusReports.new(params, current_overseer, paginate: false)
         service.call
         indexed_sales_orders = service.indexed_records
-        @sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders).call
+        if params['customer_order_status_report']['category'] == 'By Sales Order'
+          sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders, delivery_status).fetch_data_sales_order_wise
+        else
+          sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders, delivery_status).fetch_data_bm_wise
+        end
+        if delivery_status == @delivery_statuses[0] && params['customer_order_status_report']['category'] == 'By Sales Order'
+          @sales_orders = sales_orders.select { |sales_order| sales_order[:delivery_status] == 'Not Delivered' }
+        elsif delivery_status == @delivery_statuses[0] && params['customer_order_status_report']['category'] == 'By BM'
+          @sales_orders = sales_orders.select { |sales_order| sales_order[:delivery_status] == 'Not Delivered' }
+        else
+          @sales_orders = sales_orders
+        end
         @per = (params['per'] || params['length'] || 20).to_i
         @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
-        @customer_order_status_records = Kaminari.paginate_array(@sales_orders).page(@page).per(@per)
+        if params[:order].present? && params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
+          sort_by = params[:columns][params[:order].values.first['column']][:name]
+          sort_order = params[:order].values.first['dir']
+          sorted_indexed_sales_orders = @sales_orders.present? ? sort_buckets(sort_by, sort_order, @sales_orders) : @sales_orders
+        end
+        if sorted_indexed_sales_orders.present?
+          @customer_order_status_records = Kaminari.paginate_array(sorted_indexed_sales_orders).page(@page).per(@per)
+        else
+          @customer_order_status_records = Kaminari.paginate_array(@sales_orders).page(@page).per(@per)
+        end
       end
     end
   end
 
   def export_customer_order_status_report
     authorize_acl :sales_order
+    @categories = ['By BM', 'By Sales Order']
+    @delivery_statuses = ['Delivery Pending', 'All']
+    if params['customer_order_status_report'].present?
+      delivery_status = params['customer_order_status_report']['delivery_status'] if params['customer_order_status_report']['delivery_status'].present?
+      params['customer_order_status_report']['procurement_specialist'] = params['customer_order_status_report']['procurement_specialist'].split('.')[0] if params['customer_order_status_report']['procurement_specialist'].present?
+    else
+      params['customer_order_status_report'] = { 'category': @categories[0] }
+      delivery_status = @delivery_statuses[0]
+    end
 
     service = Services::Overseers::Finders::CustomerOrderStatusReports.new(params, current_overseer, paginate: false)
     service.call
-    indexed_sales_orders = service.indexed_records
-    sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders).call
 
-    export_service = Services::Overseers::Exporters::CustomerOrderStatusReportsExporter.new([], current_overseer, sales_orders, [])
+    indexed_sales_orders = service.indexed_records
+    if params['customer_order_status_report']['category'] == 'By Sales Order'
+      sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders, delivery_status).fetch_data_sales_order_wise
+    else
+      sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(indexed_sales_orders, delivery_status).fetch_data_bm_wise
+    end
+    if delivery_status == @delivery_statuses[0]
+      @sales_orders = sales_orders.select { |sales_order| sales_order[:delivery_status] == 'Not Delivered' }
+    else
+      @sales_orders = sales_orders
+    end
+
+    export_service = Services::Overseers::Exporters::CustomerOrderStatusReportsExporter.new([], current_overseer, @sales_orders, [])
     export_service.call
 
     redirect_to url_for(Export.customer_order_status_report.not_filtered.last.report)
@@ -333,6 +373,20 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         )
       else
         {}
+      end
+    end
+
+    def sort_buckets(sort_by, sort_order, indexed_sales_reports)
+      value_present = indexed_sales_reports[0][sort_by].present? && indexed_sales_reports[0][sort_by]['value'].present?
+      case
+      when !value_present && sort_order == 'asc'
+        indexed_sales_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }
+      when !value_present && sort_order == 'desc'
+        indexed_sales_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }.reverse!
+      when value_present && sort_order == 'asc'
+        indexed_sales_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }
+      when value_present && sort_order == 'desc'
+        indexed_sales_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
       end
     end
 end
