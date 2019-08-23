@@ -1,0 +1,42 @@
+<div id="update-followup-date" class="modal hide fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update followup</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <%= simple_form_for([:overseers, obj], :url => url, :html => {:class => 'needs-validation p-2', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+        <div class="modal-body">
+          <div class="error text-red mb-3 px-1 rounded"></div>
+          <div class="form-group mt-1">
+            <%= f.input :quotation_followup_date, as: :string, :label => 'Next Follow-up Date for Quotation', input_html: {:'data-toggle' => 'datepicker'}, required: @inquiry.sales_quotes.present? ? true : false %>
+          </div>
+          <div class="form-group mt-1">
+            <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |comment| %>
+              <%= comment.hidden_field :created_by_id %>
+              <%= comment.hidden_field :updated_by_id %>
+              <%= comment.input :message, :placeholder => 'Comment Message', :id => 'commentsId', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+            <% end %>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success btn-block confirm">Apply</button>
+        </div>
+        <div class="card">
+          <% if f.object.comments.persisted.size > 0 %>
+            <div class="card-body">
+              <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
+              <div class="chats">
+                <% f.object.comments.persisted.order(created_at: :desc).each do |comment| %>
+                  <%= format_comment(comment) %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -14,6 +14,68 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     end
   end
 
+  def updated_logistics_patner_in_outward_dispatches
+    old_enum = {
+        "Aramex": 1,
+        "FedEx": 2,
+        "Spoton": 3,
+        "Safe Xpress": 4,
+        "Professional Couriers": 5,
+        "DTDC": 6,
+        "Delhivery": 7,
+        "UPS": 8,
+        "Blue Dart": 9,
+        "Anjani Courier": 10,
+        "Mahavir Courier Services": 11,
+        "Elite Enterprise": 12,
+        "Sri Krishna Logistics": 13,
+        "Maruti Courier": 14,
+        "Vinod": 20,
+        "Ganesh": 21,
+        "Tushar": 22,
+        "Others": 40,
+        "Drop Ship": 60
+    }
+
+    new_enum = {
+        "ACPL": 1,
+        "ARC Transport": 2,
+        "Anjani Courier": 3,
+        "Aramex": 4,
+        "Arunah Transport": 5,
+        "Blue Dart": 6,
+        "DTDC": 7,
+        "Delhivery": 8,
+        "Elite Enterprise": 9,
+        "FedEx": 10,
+        "Gati": 11,
+        "Mahavir Courier Services": 12,
+        "Maruti Courier": 13,
+        "Professional Couriers": 14,
+        "Safe Xpress": 15,
+        "Spoton": 16,
+        "Sri Krishna Logistics": 17,
+        "TCI Freight": 18,
+        "TCI Xpress": 19,
+        "Trackon": 20,
+        "UPS": 21,
+        "V Trans": 22,
+        "VRL Logistics": 23,
+        "Vinod": 100,
+        "Ganesh": 101,
+        "Tushar": 102,
+        "Others": 200,
+        "Drop Ship": 300
+    }
+
+    OutwardDispatch.all.each do |outward_dispatch|
+      if outward_dispatch.logistics_partner.present?
+        outward_dispatch.logistics_partner = new_enum[outward_dispatch.logistics_partner.to_sym]
+        outward_dispatch.save
+      end
+    end
+  end
+
   def company_orders_export
     column_headers = ['Inquiry Number', 'Order Number', 'Company Name', 'Company Alias', 'SKU', 'Line Item Net Total', 'SKU Name', 'Customer Material Code', 'Brand', 'HSN', 'Tax percentage', 'UOM']
     model = SalesOrder
@@ -554,7 +616,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         if sales_order.present?
           product_sku = x.get_column('Bm #').to_s.upcase
 
-          if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
+          if sales_order.rows.map { |r| r.product.sku }.include?(product_sku)
             order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
             row_total = order_row.total_selling_price.to_f.round(2)
             row_total_with_tax = order_row.total_selling_price_with_tax.to_f.round(2)
@@ -743,7 +805,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           bible_order_tax_total = x.get_column('Tax Amount').to_f
           bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
 
-          if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
+          if sales_order.rows.map { |r| r.product.sku }.include?(product_sku)
             order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
             quote_row = order_row.sales_quote_row
 
@@ -866,8 +928,8 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         bible_order_tax_total = x.get_column('Tax Amount').to_f
         bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
 
-        if !sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
-          product_in_quote = sales_order.sales_quote.rows.map {|r| r.product.sku}.include?(product_sku)
+        if !sales_order.rows.map { |r| r.product.sku }.include?(product_sku)
+          product_in_quote = sales_order.sales_quote.rows.map { |r| r.product.sku }.include?(product_sku)
           if product_in_quote
             product_row = sales_order.sales_quote.joins(:product).where('products.sku = ?', product_sku).first
           else
@@ -1067,7 +1129,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       end
 
       if bible_order.present?
-        skus_in_order = bible_order.metadata.map {|h| h['sku']}
+        skus_in_order = bible_order.metadata.map { |h| h['sku'] }
         puts 'SKU STATUS', skus_in_order.include?(x.get_column('Bm #'))
 
         order_metadata = bible_order.metadata
@@ -1628,7 +1690,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           bible_order_tax_total = x.get_column('Tax Amount').to_f
           bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
 
-          if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
+          if sales_order.rows.map { |r| r.product.sku }.include?(product_sku)
             order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
             quote_row = order_row.sales_quote_row
 
@@ -1777,7 +1839,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         end
 
         if sales_order.present?
-          if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
+          if sales_order.rows.map { |r| r.product.sku }.include?(product_sku)
             order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
             row_total = order_row.total_selling_price.to_f.round(2)
             row_total_with_tax = order_row.total_selling_price_with_tax.to_f.round(2)
@@ -1956,7 +2018,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         bible_order_tax_total = x.get_column('Tax Amount').to_f
         bible_order_row_total_with_tax = (bible_order_row_total + bible_order_tax_total).to_f.round(2)
 
-        if sales_order.rows.map {|r| r.product.sku}.include?(product_sku)
+        if sales_order.rows.map { |r| r.product.sku }.include?(product_sku)
           order_row = sales_order.rows.joins(:product).where('products.sku = ?', product_sku).first
           quote_row = order_row.sales_quote_row
 

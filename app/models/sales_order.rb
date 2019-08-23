@@ -25,6 +25,7 @@ class SalesOrder < ApplicationRecord
   has_one :inquiry, through: :sales_quote
   has_one :payment_option, through: :inquiry
   has_one :company, through: :inquiry
+  has_one :account, through: :company
   has_one :inquiry_currency, through: :inquiry
   has_one :currency, through: :inquiry_currency
   has_many :rows, -> {joins(:inquiry_product).order('inquiry_products.sr_no ASC')}, class_name: 'SalesOrderRow', inverse_of: :sales_order, dependent: :destroy
@@ -274,7 +275,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def calculate_time_delay
-    if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present?
+    if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present? && self.inquiry.customer_committed_date.present?
       ((self.invoices.last.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
     end
   end

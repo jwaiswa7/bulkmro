@@ -96,4 +96,8 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   def resync_po?
     cancelled_purchase_modal?
   end
+
+  def change_material_status?
+    true
+  end
 end

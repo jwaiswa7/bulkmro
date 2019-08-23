@@ -207,7 +207,7 @@
                 <th align="center" valign="center">
                   <b><span>Tax<br>
                     Rate</span></b></th>
-                <% if (locals[:metadata][:PoTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
+                <% if (locals[:metadata][:PopTaxRate].to_s.include? "IG") || (locals[:metadata][:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
                   <th align="center" valign="center">
                     <b><span>IGST<br>
                     Rate</span></b></th>

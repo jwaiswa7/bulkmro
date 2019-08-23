@@ -1,5 +1,6 @@
 import updateSummaryBox from "../common/updateSummaryBox";
 import callAjaxFunction from '../common/callAjaxFunction';
+import commanComment from "../common/commanComment";
 const index = () => {
     updateSummaryBox()
 
@@ -20,21 +21,7 @@ const index = () => {
         }
     })
 
-    $('.datatable').on('click', '.comment-invoice-request', function (e) {
-        var id = $(this).data('invoice-request-id')
-        var title = "Comment"
-        var json = {
-            url: "/overseers/invoice_requests/" + id + "/render_modal_form?title=" +title,
-            modalId: '#addComment',
-            className: '.open-modal-form',
-            buttonClassName: '.confirm-cancel',
-            this: $(this),
-            title: title,
-        }
-        callAjaxFunction(json)
-
-    })
-
+    commanComment('invoice-request','invoice_requests');
 };
 
 export default index

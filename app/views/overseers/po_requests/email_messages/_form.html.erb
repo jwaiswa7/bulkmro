@@ -1,8 +1,13 @@
 <div class="col-lg-12">
   <% content_for :heading_byline do %>
     This will <em>send an notification to supplier</em> and log it under
-    <strong><%= current_overseer.full_name %></strong>.
+    <strong><%= current_overseer.full_name %></strong>. <% if !current_overseer.accounts?  %> <span style="float:right">
+  <% if action_name != 'material_received_in_bm_warehouse' %>
+    <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm" >Edit Supplier Rating</a></span>
   <% end %>
+    <% end %>
+  <% end %>
+
   <%= render layout: 'shared/layouts/form' do %>
     <%= simple_form_for([:overseers, @po_request, @email_message], url: {action: @action, controller: 'overseers/po_requests/email_messages'}, :method => :post, :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <div class="card-body">
@@ -33,3 +38,6 @@
     <% end %>
   <% end %>
 </div>
+<% if action_name != 'material_received_in_bm_warehouse' %>
+  <%= render partial: 'shared/layouts/rating_modal_with_multiple_tab' %>
+<% end %>
