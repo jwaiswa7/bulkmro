@@ -47,7 +47,7 @@
                   <td><%= status_badge(inquiry.status) %></td>
                   <td><%= inquiry.company.to_s %></td>
                   <td><%= format_currency(inquiry.calculated_total) %></td>
-                  <td><%= format_succint_date(inquiry.updated_at) %></td>
+                  <td><%= format_succinct_date(inquiry.updated_at) %></td>
                 </tr>
               <% end %>
               </tbody>
