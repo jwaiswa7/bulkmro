@@ -1,7 +1,7 @@
 import addPacking from "./addPacking";
 
 const editOutwardPackingSlips = () => {
-    addPacking();
+    addPacking("PATCH");
 
 };
 
