@@ -150,8 +150,17 @@ class SalesInvoice < ApplicationRecord
     end
   end
 
+  # def delivery_date
+  #   if self.pod_rows.present?
+  #     self.pod_rows.order(:delivery_date).last.delivery_date
+  #   end
+  # end
+
   def delivery_date
-    if self.pod_rows.present?
+    delivery_date = if self.ar_invoice_request.present? && self.ar_invoice_request.outward_dispatches.present?
+      self.ar_invoice_request.outward_dispatches.order(material_delivery_date: :desc).last.material_delivery_date
+    end
+    if !delivery_date.present? && self.pod_rows.present?
       self.pod_rows.order(:delivery_date).last.delivery_date
     end
   end
