@@ -44,7 +44,7 @@ class SalesInvoice < ApplicationRecord
   scope :with_inquiry, -> { where.not(invoice_number: nil) }
 
   enum status: {
-      'Open': 1,
+      'Invoiced': 1,
       'Paid': 2,
       'Cancelled': 3,
       'Partial: Shipped': 201,
