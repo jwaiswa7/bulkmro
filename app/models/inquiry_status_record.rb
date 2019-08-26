@@ -85,27 +85,23 @@ class InquiryStatusRecord < ApplicationRecord
   end
 
   def self.get_inquiry_tat_info(inquiry_id, type, subject_id, status)
-    # if status == 'Order Won' && type == 'Inquiry'
-    #   subject_id = inquiry_id
-    #   type = 'Inquiry'
-    # end
-    inquiry_status_records = InquiryStatusRecord.valid_status_records.where(inquiry_id: inquiry_id, subject_id: subject_id, subject_type: type, status: status)
+    inquiry_status_records = InquiryStatusRecord.where(inquiry_id: inquiry_id, subject_id: subject_id, subject_type: type, status: status)
     if inquiry_status_records.present?
       inquiry_status_record = inquiry_status_records.last
       created_at = inquiry_status_record.created_at
-      prev_status = inquiry_status_record.previous_status_record
+      prev_status = inquiry_status_record.previous_status_record if inquiry_status_record.present?
       prev_status_time = prev_status.present? ? prev_status.created_at.to_time.to_i : 0
       current_status_time = inquiry_status_record.created_at
 
       minutes = ((current_status_time.to_time.to_i - prev_status_time) / 60.0).ceil.abs
       tat = minutes
     end
-    [{created_at: created_at, tat: tat}]
+    {created_at: created_at, tat: tat}
   end
 
   def self.tat_created_at(inquiry_id, type, subject_id, status)
-    created_at = InquiryStatusRecord.get_inquiry_tat_info(inquiry_id, type, subject_id, status).first
-    created_at
+    record = InquiryStatusRecord.get_inquiry_tat_info(inquiry_id, type, subject_id, status)
+    record[:created_at] if record.present?
   end
 
   def self.turn_around_time(inquiry_id, type, subject_id, status)
@@ -113,8 +109,8 @@ class InquiryStatusRecord < ApplicationRecord
       subject_id = (type == 'Inquiry') ? inquiry_id : subject_id
       type = ['Inquiry', 'SalesOrder']
     end
-    tat = InquiryStatusRecord.get_inquiry_tat_info(inquiry_id, type, subject_id, status).last
-    tat
+    record = InquiryStatusRecord.get_inquiry_tat_info(inquiry_id, type, subject_id, status)
+    record[:tat] if record.present?
   end
 
   belongs_to :inquiry
