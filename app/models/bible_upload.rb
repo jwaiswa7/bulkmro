@@ -7,6 +7,8 @@ class BibleUpload < ApplicationRecord
 
   has_one_attached :bible_attachment
 
+  update_index('bible_uploads#bible_upload') {self}
+
   enum status: {
       'Pending': 10,
       'Processing': 20,

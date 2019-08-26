@@ -55,6 +55,6 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
   end
 
   def set_bible_upload
-    @bible_file_uploads = BibleUploadLog.where(bible_upload_id: BibleUpload.decode_id(params[:id]))
+    @bible_uploads = BibleUploadLog.where(bible_upload_id: BibleUpload.decode_id(params[:id]))
   end
 end
