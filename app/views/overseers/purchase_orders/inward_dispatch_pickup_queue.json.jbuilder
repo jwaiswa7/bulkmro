@@ -27,6 +27,12 @@ json.data (@inward_dispatches) do |inward_dispatch|
                       elsif inward_dispatch.invoice_request.present? && is_authorized(inward_dispatch.invoice_request, 'show') && policy(inward_dispatch.invoice_request).show?
                         row_action_button(overseers_invoice_request_path(inward_dispatch.invoice_request), 'eye', "View #{inward_dispatch.invoice_request.readable_status}", 'success', target: :_blank)
                       end,
+                      if is_authorized(inward_dispatch, 'index')
+                        link_to('', class: ['btn btn-sm btn-success comment-inward-dispatch'], 'data-inward-dispatch-id': inward_dispatch.id, 'data-purchase-id': inward_dispatch.purchase_order.id, title: 'Comment', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                        end
+                      end,
 
                   ].join(' '),
                   link_to(inward_dispatch.purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(inward_dispatch.purchase_order.inquiry), target: '_blank'),

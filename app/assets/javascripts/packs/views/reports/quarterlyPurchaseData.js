@@ -1,9 +1,9 @@
-const monthlyPurchaseData = () => {
+const quarterlyPurchaseData = () => {
     Object.values(Chart.instances).forEach(updateChartOptions)
 };
 
 let updateChartOptions = function (chartObject) {
-    if (chartObject.canvas.id == 'monthly_purchase_data') {
+    if (chartObject.canvas.id == 'quarterly_purchase_data') {
         var barChartOptions = {
             tooltips: {
                 mode: 'label',
@@ -60,4 +60,4 @@ let updateChartOptions = function (chartObject) {
     }
 };
 
-export default monthlyPurchaseData
+export default quarterlyPurchaseData

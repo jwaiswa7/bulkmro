@@ -10,7 +10,7 @@ class Customers::CustomerProductsController < Customers::BaseController
       params[:page] = 1 unless params[:page].present?
       params[:per] = 24
     end
-    account = Account.find(7)
+    account = Account.find(2431)
     service = Services::Customers::Finders::CustomerProducts.new(params, current_contact, current_company)
     service.call
     @indexed_customer_products = service.indexed_records
@@ -39,7 +39,7 @@ class Customers::CustomerProductsController < Customers::BaseController
 
   def show
     authorize @customer_product
-    @account = Account.find(7)
+    @account = Account.find(2431)
     @default_quantity = @customer_product.moq
     # for henkel company specific changes
     @is_henkel = (current_company.account == @account)

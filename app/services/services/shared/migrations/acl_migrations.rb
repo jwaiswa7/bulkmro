@@ -425,8 +425,6 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
 
     acl_resource = AclResource.new
     acl_resource.update_acl_resource_cache
-    Message Input
-    Direct message with Ruta ashok kambli
   end
 
   # function for applying acl to outward ques
@@ -516,8 +514,8 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   end
 
   def create_acl_resources_using_csv
-    # service = Services::Shared::Spreadsheets::CsvImporter.new('acl_resources_csv.csv', 'seed_files_3')
-    service = Services::Shared::Spreadsheets::CsvImporter.new('stock_po_acl.csv', 'seed_files_3')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('acl_resources_csv.csv', 'seed_files_3')
+    # service = Services::Shared::Spreadsheets::CsvImporter.new('stock_po_acl.csv', 'seed_files_3')
     service.loop(nil) do |x|
       role_name = x.get_column('role_name')
       resource_model_name = x.get_column('model_name')

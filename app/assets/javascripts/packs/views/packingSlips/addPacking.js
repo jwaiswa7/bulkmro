@@ -1,6 +1,6 @@
 import hideRemoveBtnInRows from "../common/hideRemoveBtnInRows"
 
-const addPacking = () => {
+const addPacking = (type) => {
     hideRemoveBtnInRows();
     $("form").on('click','.packing-form',function(event){
 
