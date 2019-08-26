@@ -2,18 +2,27 @@ import newAction from "./new";
 
 const edit = () => {
     newAction();
-
+    $("#regretField").hide();
     $('form').on('change', 'select[name*=product_id]', function (e) {
         onProductChange(this);
     }).find('select[name*=product_id]').each(function (e) {
         onProductChange(this);
     });
 
-    $('.duplicate-inquiry').on('click', function(){
-        gtag('event','click-duplicate', { event_category: 'duplicate-inquiry',  event_label: 'Duplicate Inquiry'})
+    $('.duplicate-inquiry').on('click', function () {
+        gtag('event', 'click-duplicate', {event_category: 'duplicate-inquiry', event_label: 'Duplicate Inquiry'})
     })
-};
 
+    $('form').on('change', 'select[id*=inquiry_status]', function (e) {
+        var selectedValue = $("option:selected").val();
+        if (selectedValue == "Order Lost" || selectedValue == "Regret") {
+            $("#regretField").show();
+        } else {
+            $("#regretField").hide();
+        }
+    })
+
+};
 let onProductChange = (container) => {
     let optionSelected = $("option:selected", container);
     let select = $(container).closest('select');
