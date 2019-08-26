@@ -42,12 +42,6 @@ const outwardNew = () => {
         }
     });
 
-    $('.packing_slip_wrapper').on('change',"#packing_slips input[name*='box_dimension'] ",function () {
-        var VAL = $("#packing_slips input[name*='box_dimension'] ").val();
-        var pattern = new RegExp('^[\\d ()*]+$');
-        pattern.test(VAL) ? $('.box_dimension_error').text('') : $('.box_dimension_error').text('Enter box dimension in the format of 20*30*455.') ;
-    });
-
     $('select[name*=logistics_partner]').unbind().bind('change', function () {
         if ($(this).val() == "Others") {
             $('.other-logistics-partner').removeClass('d-none');

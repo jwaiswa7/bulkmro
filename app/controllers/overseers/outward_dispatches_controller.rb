@@ -64,11 +64,15 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   def create
     @outward_dispatch = OutwardDispatch.new(outward_dispatch_params.merge(overseer: current_overseer))
     authorize_acl @outward_dispatch
-
     respond_to do |format|
       if @outward_dispatch.save
+        if @outward_dispatch.packing_slips.present?
+          url = add_packing_overseers_outward_dispatch_packing_slips_url (@outward_dispatch)
+        else
+          url = overseers_outward_dispatch_path(@outward_dispatch)
+        end
         @outward_dispatch.ar_invoice_request.inward_dispatches.map {|inward_dispatch| inward_dispatch.set_outward_status}
-        format.html { redirect_to add_packing_overseers_outward_dispatch_packing_slips_url (@outward_dispatch), notice: 'Outward dispatch was successfully created.' }
+        format.html { redirect_to url, notice: 'Outward dispatch was successfully created.' }
         format.json { render :add_packing, status: :created, location: @outward_dispatch }
       else
         format.html { render :new }
