@@ -141,7 +141,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
 
   def set_product(row, index)
     {
-        PopHsn: row.taxation.to_remote_s,
+        PopHsn: row.tax_code.chapter.present? ? row.tax_code.chapter : row.tax_code.code[0..3],
         PopQty: row.quantity.to_f,
         Linenum: index,
         UnitMsr: row.measurement_unit.name,
