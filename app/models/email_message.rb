@@ -24,6 +24,7 @@ class EmailMessage < ApplicationRecord
 
   after_initialize :set_defaults, if: :new_record?
   after_create :set_flag_in_email_message_sent
+
   def set_defaults
     if inquiry.present?
       self.subject ||= self.inquiry.subject
@@ -49,7 +50,11 @@ class EmailMessage < ApplicationRecord
         OutwardDispatchesIndex::OutwardDispatch.import([outward_dispatches.pluck(:id)])
       elsif self.outward_dispatch
         outward_dispatch = self.outward_dispatch
-        outward_dispatch.update_attributes(dispatch_mail_sent_to_the_customer: true)
+        if !(outward_dispatch.status == 'Material Delivered')
+          outward_dispatch.update_attributes(dispatch_mail_sent_to_the_customer: true, status: 'Material Dispatched')
+        else
+          outward_dispatch.update_attributes(dispatch_mail_sent_to_the_customer: true)
+        end
       end
     when 'Material Delivered to Customer'
       if self.sales_invoice.present? && self.sales_invoice.ar_invoice_request.present?
