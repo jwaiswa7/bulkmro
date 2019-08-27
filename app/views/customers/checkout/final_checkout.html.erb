@@ -163,14 +163,16 @@
 
           <div id="checkout-payment-method" class="collapse" data-parent="#checkout">
             <div class="card-body">
-              <label class="d-flex justify-content-center align-items-center flex-row">
-                    <span class="h-100">
-                      <%= f.radio_button :payment_method, 'Bank Transfer', :checked => true %>
-                    </span>
-                <span class="flex-grow-1 ml-2">
-                      <strong class="d-block">Bank Transfer</strong>
-                    </span>
-              </label>
+              <% if current_company.id != 1847 %>
+                <label class="d-flex justify-content-center align-items-center flex-row">
+                      <span class="h-100">
+                        <%= f.radio_button :payment_method, 'Bank Transfer', :checked => true %>
+                      </span>
+                  <span class="flex-grow-1 ml-2">
+                        <strong class="d-block">Bank Transfer</strong>
+                      </span>
+                </label>
+              <% end %>
 
               <label class="d-flex justify-content-center align-items-center flex-row">
                     <span class="h-100">
