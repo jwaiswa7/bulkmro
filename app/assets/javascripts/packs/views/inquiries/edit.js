@@ -2,7 +2,6 @@ import newAction from "./new";
 
 const edit = () => {
     newAction();
-    $("#regretField").hide();
     $('form').on('change', 'select[name*=product_id]', function (e) {
         onProductChange(this);
     }).find('select[name*=product_id]').each(function (e) {
@@ -16,9 +15,9 @@ const edit = () => {
     $('form').on('change', 'select[id*=inquiry_status]', function (e) {
         var selectedValue = $("option:selected").val();
         if (selectedValue == "Order Lost" || selectedValue == "Regret") {
-            $("#regretField").show();
+            $("#regret-field").removeClass('d-none');
         } else {
-            $("#regretField").hide();
+            $("#regret-field").addClass('d-none');
         }
     })
 
