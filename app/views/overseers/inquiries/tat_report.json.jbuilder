@@ -13,52 +13,52 @@ json.data (@indexed_tat_reports) do |inquiry|
                   inquiry.attributes['sales_order_status'].present? ? inquiry.attributes['sales_order_status'] : '-',
                   '-',
                   inquiry.attributes['time_new_inquiry'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['time_new_inquiry'])) : '-',
-                  inquiry.attributes['acknowledgment_mail_time'].present? ? inquiry.attributes['acknowledgment_mail_time'] : '-',
-                  inquiry.attributes['acknowledgment_mail_time'].present? ? humanize(inquiry.attributes['acknowledgment_mail_time']) : '-',
+                  inquiry.attributes['acknowledgment_mail_mins'].present? ? inquiry.attributes['acknowledgment_mail_mins'] : '-',
+                  inquiry.attributes['acknowledgment_mail_mins'].present? ? humanize(inquiry.attributes['acknowledgment_mail_mins']) : '-',
                   inquiry.attributes['acknowledgment_mail_date'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['acknowledgment_mail_date'])) : '-',
 
-                  inquiry.attributes['order_lost_time'].present? ? inquiry.attributes['order_lost_time'] : '-',
-                  inquiry.attributes['order_lost_time'].present? ? humanize(inquiry.attributes['order_lost_time']) : '-',
+                  inquiry.attributes['cross_reference_mins'].present? ? inquiry.attributes['cross_reference_mins'] : '-',
+                  inquiry.attributes['cross_reference_mins'].present? ? humanize(inquiry.attributes['cross_reference_mins']) : '-',
                   inquiry.attributes['cross_reference_date'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['cross_reference_date'])) : '-',
 
-                  inquiry.attributes['preparing_quotation_time'].present? ? inquiry.attributes['preparing_quotation_time'] : '-',
-                  inquiry.attributes['preparing_quotation_time'].present? ? humanize(inquiry.attributes['preparing_quotation_time']) : '-',
+                  inquiry.attributes['preparing_quotation_mins'].present? ? inquiry.attributes['preparing_quotation_mins'] : '-',
+                  inquiry.attributes['preparing_quotation_mins'].present? ? humanize(inquiry.attributes['preparing_quotation_mins']) : '-',
                   inquiry.attributes['preparing_quotation_date'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['preparing_quotation_date'])) : '-',
 
-                  inquiry.attributes['quotation_sent_time'].present? ? inquiry.attributes['quotation_sent_time'] : '-',
-                  inquiry.attributes['quotation_sent_time'].present? ? humanize(inquiry.attributes['quotation_sent_time']) : '-',
+                  inquiry.attributes['quotation_sent_mins'].present? ? inquiry.attributes['quotation_sent_mins'] : '-',
+                  inquiry.attributes['quotation_sent_mins'].present? ? humanize(inquiry.attributes['quotation_sent_mins']) : '-',
                   inquiry.attributes['quotation_sent_date'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['quotation_sent_date'])) : '-',
 
-                  inquiry.attributes['draft_so_appr_by_sales_manager_time'].present? ? inquiry.attributes['draft_so_appr_by_sales_manager_time'] : '-',
-                  inquiry.attributes['draft_so_appr_by_sales_manager_time'].present? ? humanize(inquiry.attributes['draft_so_appr_by_sales_manager_time']) : '-',
+                  inquiry.attributes['draft_so_appr_by_sales_manager_mins'].present? ? inquiry.attributes['draft_so_appr_by_sales_manager_mins'] : '-',
+                  inquiry.attributes['draft_so_appr_by_sales_manager_mins'].present? ? humanize(inquiry.attributes['draft_so_appr_by_sales_manager_mins']) : '-',
                   inquiry.attributes['draft_so_appr_by_sales_manager_date'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['draft_so_appr_by_sales_manager_date'])) : '-',
 
-                  inquiry.attributes['so_reject_by_sales_manager_time'].present? ? inquiry.attributes['so_reject_by_sales_manager_time'] : '-',
-                  inquiry.attributes['so_reject_by_sales_manager_time'].present? ? humanize(inquiry.attributes['so_reject_by_sales_manager_time']) : '-',
+                  inquiry.attributes['so_reject_by_sales_manager_mins'].present? ? inquiry.attributes['so_reject_by_sales_manager_mins'] : '-',
+                  inquiry.attributes['so_reject_by_sales_manager_mins'].present? ? humanize(inquiry.attributes['so_reject_by_sales_manager_mins']) : '-',
                   inquiry.attributes['so_reject_by_sales_manager_date'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['so_reject_by_sales_manager_date'])) : '-',
 
-                  inquiry.attributes['so_draft_pending_acct_approval_time'].present? ? inquiry.attributes['so_draft_pending_acct_approval_time'] : '-',
-                  inquiry.attributes['so_draft_pending_acct_approval_time'].present? ? humanize(inquiry.attributes['so_draft_pending_acct_approval_time']) : '-',
+                  inquiry.attributes['so_draft_pending_acct_approval_mins'].present? ? inquiry.attributes['so_draft_pending_acct_approval_mins'] : '-',
+                  inquiry.attributes['so_draft_pending_acct_approval_mins'].present? ? humanize(inquiry.attributes['so_draft_pending_acct_approval_mins']) : '-',
                   inquiry.attributes['so_draft_pending_acct_approval_date'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['so_draft_pending_acct_approval_date'])) : '-',
 
-                  inquiry.attributes['rejected_by_accounts_time'].present? ? inquiry.attributes['rejected_by_accounts_time'] : '-',
-                  inquiry.attributes['rejected_by_accounts_time'].present? ? humanize(inquiry.attributes['rejected_by_accounts_time']) : '-',
+                  inquiry.attributes['rejected_by_accounts_mins'].present? ? inquiry.attributes['rejected_by_accounts_mins'] : '-',
+                  inquiry.attributes['rejected_by_accounts_mins'].present? ? humanize(inquiry.attributes['rejected_by_accounts_mins']) : '-',
                   inquiry.attributes['rejected_by_accounts_date'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['rejected_by_accounts_date'])) : '-',
 
-                  inquiry.attributes['hold_by_accounts_time'].present? ? inquiry.attributes['hold_by_accounts_time'] : '-',
-                  inquiry.attributes['hold_by_accounts_time'].present? ? humanize(inquiry.attributes['hold_by_accounts_time']) : '-',
+                  inquiry.attributes['hold_by_accounts_mins'].present? ? inquiry.attributes['hold_by_accounts_mins'] : '-',
+                  inquiry.attributes['hold_by_accounts_mins'].present? ? humanize(inquiry.attributes['hold_by_accounts_mins']) : '-',
                   inquiry.attributes['hold_by_accounts_date'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['hold_by_accounts_date'])) : '-',
 
-                  inquiry.attributes['order_won_time'].present? ? inquiry.attributes['order_won_time'] : '-',
-                  inquiry.attributes['order_won_time'].present? ? humanize(inquiry.attributes['order_won_time']) : '-',
+                  inquiry.attributes['order_won_mins'].present? ? inquiry.attributes['order_won_mins'] : '-',
+                  inquiry.attributes['order_won_mins'].present? ? humanize(inquiry.attributes['order_won_mins']) : '-',
                   inquiry.attributes['order_won_date'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['order_won_date'])) : '-',
 
-                  inquiry.attributes['order_lost_time'].present? ? inquiry.attributes['order_lost_time'] : '-',
-                  inquiry.attributes['order_lost_time'].present? ? humanize(inquiry.attributes['order_lost_time']) : '-',
+                  inquiry.attributes['order_lost_mins'].present? ? inquiry.attributes['order_lost_mins'] : '-',
+                  inquiry.attributes['order_lost_mins'].present? ? humanize(inquiry.attributes['order_lost_mins']) : '-',
                   inquiry.attributes['order_lost_date'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['order_lost_date'])) : '-',
 
-                  inquiry.attributes['regret_time'].present? ? inquiry.attributes['regret_time'] : '-',
-                  inquiry.attributes['regret_time'].present? ? humanize(inquiry.attributes['regret_time']) : '-',
+                  inquiry.attributes['regret_mins'].present? ? inquiry.attributes['regret_mins'] : '-',
+                  inquiry.attributes['regret_mins'].present? ? humanize(inquiry.attributes['regret_mins']) : '-',
                   inquiry.attributes['regret_date'].present? ? format_date_with_time(DateTime.parse(inquiry.attributes['regret_date'])) : '-'
               ]
 end

@@ -100,8 +100,8 @@ class InquiryStatusRecord < ApplicationRecord
   end
 
   def self.tat_created_at(inquiry_id, type, subject_id, status)
-    record = InquiryStatusRecord.get_inquiry_tat_info(inquiry_id, type, subject_id, status)
-    record[:created_at] if record.present?
+    record = InquiryStatusRecord.where(inquiry_id: inquiry_id, subject_id: subject_id, subject_type: type, status: status).last
+    record.created_at if record.present?
   end
 
   def self.turn_around_time(inquiry_id, type, subject_id, status)
@@ -109,8 +109,8 @@ class InquiryStatusRecord < ApplicationRecord
       subject_id = (type == 'Inquiry') ? inquiry_id : subject_id
       type = ['Inquiry', 'SalesOrder']
     end
-    record = InquiryStatusRecord.get_inquiry_tat_info(inquiry_id, type, subject_id, status)
-    record[:tat] if record.present?
+    record = InquiryStatusRecord.where(inquiry_id: inquiry_id, subject_id: subject_id, subject_type: type, status: status).last
+    record.tat_minutes if record.present?
   end
 
   belongs_to :inquiry
