@@ -73,7 +73,7 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
           return_response('Sales Invoice already created.')
         end
       else
-        return_response('Sales Invoice not found.', 0)
+        return_response('Sales Order not found.', 0)
       end
     rescue => e
       return_response(e.message, 0)

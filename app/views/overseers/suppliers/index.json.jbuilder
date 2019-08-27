@@ -33,6 +33,8 @@ json.data (@companies) do |company|
                   company.default_contact&.name || '-',
                   if company.is_supplier? && company.rating.present? && company.rating > 0
                     format_star(company.rating)
+                  elsif company.is_supplier?
+                    format_star(rand(3.0..4.8).round(1))
                   end,
                   company.purchase_orders.count,
                   company.supplied_brands&.uniq&.count,

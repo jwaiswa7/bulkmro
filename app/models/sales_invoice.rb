@@ -44,7 +44,7 @@ class SalesInvoice < ApplicationRecord
   scope :with_inquiry, -> { where.not(invoice_number: nil) }
 
   enum status: {
-      'Open': 1,
+      'Invoiced': 1,
       'Paid': 2,
       'Cancelled': 3,
       'Partial: Shipped': 201,
@@ -155,6 +155,15 @@ class SalesInvoice < ApplicationRecord
       self.pod_rows.order(:delivery_date).last.delivery_date
     end
   end
+
+  # def delivery_date
+  #   delivery_date = if self.ar_invoice_request.present? && self.ar_invoice_request.outward_dispatches.present?
+  #     self.ar_invoice_request.outward_dispatches.order(material_delivery_date: :desc).last.material_delivery_date
+  #   end
+  #   if !delivery_date.present? && self.pod_rows.present?
+  #     self.pod_rows.order(:delivery_date).last.delivery_date
+  #   end
+  # end
 
   def amount_received
     # SalesReceipt.where(:sales_invoice_id => self.id).pluck(:payment_amount_received).compact.sum
