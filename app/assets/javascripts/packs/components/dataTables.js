@@ -94,7 +94,7 @@ let setup = () => {
                         }
                         else if(td.hasClass('total_inquiries_won_percentage')){
                             let total_inquiries_count = parseInt($('.total_inquiries_count').html().replace(/,/g , ''));
-                            let inquiries_won_percentage = (value/total_inquiries_count)*100;
+                            let inquiries_won_percentage = (total_inquiries_count/value)*100;
                             td.empty().append(parseInt(inquiries_won_percentage));
                         }
                         else if(td.hasClass('actual_margin_percentage')){

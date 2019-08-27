@@ -15,6 +15,7 @@ class OutwardDispatch < ApplicationRecord
 
   enum status: {
       'Material Ready for Dispatch': 10,
+      'Material Dispatched': 20,
       # 'Dispatch Approval Pending': 20,
       # 'Dispatch Rejected': 30,
       #
