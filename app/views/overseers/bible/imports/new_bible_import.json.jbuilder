@@ -5,7 +5,7 @@ json.data (@bible_uploads) do |bible_upload|
                   end,
                   bible_upload.id.to_s,
                   bible_upload.import_type,
-                  bible_upload.file,
+                  bible_upload.file.attachment.blob.filename,
                   status_badge(bible_upload.status),
                   bible_upload.updated_by.to_s,
                   format_date(bible_upload.created_at)

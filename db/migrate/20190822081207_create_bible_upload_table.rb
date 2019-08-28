@@ -5,7 +5,6 @@ class CreateBibleUploadTable < ActiveRecord::Migration[5.2]
       t.integer :import_type
       t.userstamps
       t.integer :status
-      t.string :bible_attachment
       t.timestamps
     end
   end

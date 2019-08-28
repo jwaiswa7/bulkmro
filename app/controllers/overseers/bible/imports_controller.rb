@@ -21,19 +21,15 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
     bible_sheet_type = params['bible-sheet-type']
     service = Services::Overseers::Bible::BaseService.new
     service.export_csv_format_for_bible(bible_sheet_type)
-    send_file("#{Rails.root}/tmp/bible_#{bible_sheet_type.underscore}.xlsx")
+    send_file("#{Rails.root}/tmp/bible_#{bible_sheet_type.underscore}.csv")
 
     # redirect_to new_bible_import_overseers_bible_imports_path
   end
 
   def create_bible_records
     authorize_acl :bible_upload
-
-    bible_file = params[:bible_upload][:file]
-    bible_import_type = params[:bible_upload][:import_type]
-    @bible_file_upload = BibleUpload.create(file: bible_file.original_filename.to_s, status: 'Pending', updated_by_id: current_overseer.id, import_type: bible_import_type)
-    @bible_file_upload.bible_attachment.attach(bible_file)
-
+    @bible_file_upload = BibleUpload.new(bible_upload_params.merge(status:'Pending',overseer: current_overseer))
+    @bible_file_upload.save
     redirect_to new_bible_import_overseers_bible_imports_path
   end
 
@@ -52,6 +48,14 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
         :bible_row_data,
         :error
     )
+  end
+
+  def bible_upload_params
+    params.require(:bible_upload).permit(
+        :file,
+        :status,
+        :import_type
+        )
   end
 
   def set_bible_upload

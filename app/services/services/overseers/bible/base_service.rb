@@ -13,7 +13,7 @@ class Services::Overseers::Bible::BaseService < Services::Shared::BaseService
   end
 
   def fetch_file_to_be_processed(upload_sheet)
-    temp_path = Tempfile.open { |tempfile| tempfile << upload_sheet.bible_attachment.download }.path
+    temp_path = Tempfile.open { |tempfile| tempfile << upload_sheet.file.download }.path
     destination_path = Rails.root.join('db', 'bible_imports')
     Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
     @path_to_tempfile = [destination_path, '/', 'bible_file_sheet.csv'].join
@@ -21,7 +21,7 @@ class Services::Overseers::Bible::BaseService < Services::Shared::BaseService
   end
 
   def export_csv_format_for_bible(bible_sheet_type)
-    file_name = "#{Rails.root}/tmp/bible_#{bible_sheet_type.underscore}.xlsx"
+    file_name = "#{Rails.root}/tmp/bible_#{bible_sheet_type.underscore}.csv"
     headers = fixed_header(bible_sheet_type)
     csv_data = CSV.generate(write_headers: true, headers: headers) do |writer|
     end

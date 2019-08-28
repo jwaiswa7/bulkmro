@@ -2,10 +2,10 @@ class BibleUpload < ApplicationRecord
   include Mixins::CanBeStamped
 
   belongs_to :overseer, required: false
-  has_many :bible_upload_logs, class_name: 'BibleUploadLog', dependent: :destroy
+  has_many :bible_upload_logs, dependent: :destroy
   scope :with_includes, -> {}
 
-  has_one_attached :bible_attachment
+  has_one_attached :file
 
   update_index('bible_uploads#bible_upload') {self}
 

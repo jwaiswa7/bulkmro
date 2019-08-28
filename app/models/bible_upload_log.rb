@@ -1,3 +1,9 @@
 class BibleUploadLog < ApplicationRecord
-  belongs_to :bible_upload,  class_name: 'BibleUpload', required: false
+  belongs_to :bible_upload
+
+  enum status: {
+      'Success': 10,
+      'Failed': 20
+  }
+
 end
