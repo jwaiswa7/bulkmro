@@ -1,4 +1,4 @@
-class CreateBibleUploadTable < ActiveRecord::Migration[5.2]
+class CreateBibleUpload < ActiveRecord::Migration[5.2]
   def change
     create_table :bible_uploads do |t|
       t.string :file

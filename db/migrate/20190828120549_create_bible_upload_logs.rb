@@ -1,4 +1,4 @@
-class CreateBibleUploadLogsTable < ActiveRecord::Migration[5.2]
+class CreateBibleUploadLogs < ActiveRecord::Migration[5.2]
   def change
     create_table :bible_upload_logs do |t|
       t.references :bible_upload, foreign_key: true
