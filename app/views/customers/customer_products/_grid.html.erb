@@ -83,7 +83,7 @@
               <h5 class="mb-0 text-small"><strong>(#<%= customer_product.sku %>)</strong></h5>
               <h5 class="mb-0 mt-1 text-small text-black-50">
                 <% if current_company.id == 9504 %>
-                  <strong><%= format_currency(customer_product.customer_price) %> / <%= customer_product.measurement_unit.name %></strong>
+                  <strong><%= format_currency(customer_product.try(&:customer_price)) %> / <%= customer_product.measurement_unit.try(&:name) %></strong>
                 <% else %>
                   <strong><%= format_currency(customer_product.customer_price) %></strong>
                 <% end %>

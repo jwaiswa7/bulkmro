@@ -14574,23 +14574,23 @@ section.section-padding-adjustment {
   section.section-padding-adjustment p.lead {
     font-size: 0.8rem; }
 
+.text-black {
+  color: black; }
+
 th.logistics-scorecard {
-    padding-left: 35px !important;
-    text-align: start;
-    width: 10rem;
-}
+  padding-left: 35px !important;
+  text-align: start;
+  width: 10rem; }
+
 .clear-date {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    cursor: pointer;
-}
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  cursor: pointer; }
 
 @media screen and (max-width: 1550px) {
-    .kra_summary_row {
-        display: none;
-    }
-}
+  .kra_summary_row {
+    display: none; } }
 
 /*# sourceMappingURL=application.css.map */

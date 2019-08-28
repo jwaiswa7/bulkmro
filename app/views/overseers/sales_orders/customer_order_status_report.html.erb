@@ -24,29 +24,41 @@
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
     <th class="sort desktop text-left" data-name="inquiry_number">Inquiry #</th>
-    <th class="no-sort desktop text-left" data-name="company">Company.</th>
-    <th class="no-sort desktop text-left" data-name="account">Account</th>
+    <th class="no-sort desktop text-left" data-name="company_id">Company.</th>
+    <th class="no-sort desktop text-left" data-name="account_id">Account</th>
     <th class="sort desktop text-left" data-name="order_number">Sales Order #</th>
-    <th class="sort desktop text-left" data-name="mis_date">Sales Order Date</th>
+    <% if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM' %>
+      <th class="sort desktop text-left" data-name="invoice_number">Invoice #</th>
+    <% else %>
+      <th></th>
+    <% end %>
+    <% if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM' %>
+      <th class="no-sort desktop text-left" data-name="sku">BM #</th>
+    <% else %>
+      <th></th>
+    <% end %>
+    <th class="sort desktop text-left" data-name="mis_date">Sales Order </br>Date</th>
     <th class="sort desktop text-left" data-name="cp_committed_date">Committed Customer<br> Delivery Date</th>
     <th class="no-sort desktop text-left" data-name="po_number">Supplier PO No.</th>
-    <th class="no-sort desktop">Supplier Name</th>
-    <th class="no-sort desktop text-left" data-name="supplier_po_request_date">PO Request <br>Date</th>
-    <th class="no-sort desktop text-left" data-name="supplier_po_date">PO Date</th>
-    <th class="no-sort desktop text-left" data-name="po_email_sent">PO Sent to <br>Supplier Date</th>
-    <th class="no-sort desktop text-left" data-name="payment_request_date">Payment Request<br> Date</th>
-    <th class="no-sort desktop text-left" data-name="payment_date">Payment Date</th>
+    <th class="no-sort desktop" data-name="supplier_id">Supplier Name</th>
+    <th class="sort desktop text-left" data-name="supplier_po_request_date">PO Request <br>Date</th>
+    <th class="sort desktop text-left" data-name="supplier_po_date">PO Date</th>
+    <th class="sort desktop text-left" data-name="po_email_sent">PO Sent to <br>Supplier Date</th>
+<!--    <th class="sort desktop text-left" data-name="payment_request_date">Payment Request<br> Date</th>-->
+<!--    <th class="sort desktop text-left" data-name="payment_date">Payment Date</th>-->
     <th class="sort desktop text-left" data-name="cp_committed_date">Committed Date of <br>Material Readiness</th>
-    <th class="no-sort desktop text-left" data-name="actual_material_readiness_date">Actual Date of <br>Material Readiness</th>
-    <th class="no-sort desktop text-left" data-name="pickup_date">Date of Pickup</th>
-    <th class="no-sort desktop text-left" data-name="inward_date">Date of Inward</th>
-    <th class="no-sort desktop text-left" data-name="outward_date">Date of Outward</th>
-    <th class="no-sort desktop text-left" data-name="customer_delivery_date">Date of Customer Delivery</th>
+    <th class="sort desktop text-left" data-name="actual_material_readiness_date">Actual Date of <br>Material Readiness</th>
+    <th class="sort desktop text-left" data-name="pickup_date">Date of Pickup</th>
+    <th class="sort desktop text-left" data-name="inward_date">Date of Inward</th>
+    <th class="sort desktop text-left" data-name="outward_date">Date of Outward</th>
+    <th class="sort desktop text-left" data-name="customer_delivery_date">Date of Customer Delivery</th>
     <th class="sort desktop text-left" data-name="on_time_or_delayed_time">On Time / Delayed <br>(viz. customer committed date)</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
+    <td data-filter="ajax"></td>
+    <td data-filter="ajax"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
@@ -57,8 +69,8 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="false"></td>
-    <td data-filter="false"></td>
+<!--    <td data-filter="false"></td>-->
+<!--    <td data-filter="false"></td>-->
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>

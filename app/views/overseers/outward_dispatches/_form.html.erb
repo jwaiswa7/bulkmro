@@ -73,7 +73,7 @@
                   <%= ff.input :box_dimension, required: true %>
                 </div>
                 <div class="col-6 col-md-4 mt-3">
-                  <% if @packing_slips_row > 1 %>
+                  <% if !ff.object.rows.present? %>
                   <%= ff.remove_nested_fields_link do %>
                     <div class="form-group align-self-center flex-grow-1 ml-2 mt-2">
                       <i class="far fa-times text-danger"></i>
