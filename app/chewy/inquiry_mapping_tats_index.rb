@@ -1,6 +1,6 @@
 class InquiryMappingTatsIndex < BaseIndex
   start_date = Date.parse('01-01-2019')
-  end_date = Date.today
+  end_date = Date.today + 1.day
   define_type InquiryMappingTat.joins(:inquiry).where(inquiries: {created_at: start_date..end_date}).with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) {record.inquiry.inquiry_number.to_i}, type: 'integer'
@@ -22,29 +22,41 @@ class InquiryMappingTatsIndex < BaseIndex
 
     field :time_new_inquiry, value: -> (record) { record.inquiry.inquiry_status_records.find_by(status: 'New Inquiry').created_at if record.inquiry.inquiry_status_records.present? && record.inquiry.inquiry_status_records.find_by(status: 'New Inquiry').present?}, type: 'date'
 
-    field :status_acknowledgment_mail, value: -> (record) {InquiryStatusRecord.get_inquiry_tat_info(record.inquiry_id, 'Inquiry', record.inquiry_id, 'Acknowledgement Mail')}, type: 'nested'
+    field :acknowledgment_mail_date, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'Inquiry', record.inquiry_id, 'Acknowledgement Mail')}, type: 'date'
+    field :acknowledgment_mail_mins, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'Inquiry', record.inquiry_id, 'Acknowledgement Mail')}, type: 'integer'
 
-    field :status_cross_reference, value: -> (record) {InquiryStatusRecord.get_inquiry_tat_info(record.inquiry_id, 'Inquiry', record.inquiry_id, 'Cross Reference')}, type: 'nested'
+    field :cross_reference_date, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'Inquiry', record.inquiry_id, 'Cross Reference')}, type: 'date'
+    field :cross_reference_mins, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'Inquiry', record.inquiry_id, 'Cross Reference')}, type: 'integer'
 
-    field :status_preparing_quotation, value: -> (record) {InquiryStatusRecord.get_inquiry_tat_info(record.inquiry_id, 'SalesQuote', record.sales_quote_id, 'Preparing Quotation')}, type: 'nested'
+    field :preparing_quotation_date, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesQuote', record.sales_quote_id, 'Preparing Quotation')}, type: 'date'
+    field :preparing_quotation_mins, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesQuote', record.sales_quote_id, 'Preparing Quotation')}, type: 'integer'
 
-    field :status_quotation_sent, value: -> (record) {InquiryStatusRecord.get_inquiry_tat_info(record.inquiry_id, 'SalesQuote', record.sales_quote_id, 'Quotation Sent')}, type: 'nested'
+    field :quotation_sent_date, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesQuote', record.sales_quote_id, 'Quotation Sent')}, type: 'date'
+    field :quotation_sent_mins, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesQuote', record.sales_quote_id, 'Quotation Sent')}, type: 'integer'
 
-    field :status_draft_so_appr_by_sales_manager, value: -> (record) {InquiryStatusRecord.get_inquiry_tat_info(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Draft SO for Approval by Sales Manager')}, type: 'nested'
+    field :draft_so_appr_by_sales_manager_date, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Draft SO for Approval by Sales Manager')}, type: 'date'
+    field :draft_so_appr_by_sales_manager_mins, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Draft SO for Approval by Sales Manager')}, type: 'integer'
 
-    field :status_so_reject_by_sales_manager, value: -> (record) {InquiryStatusRecord.get_inquiry_tat_info(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'SO Rejected by Sales Manager')}, type: 'nested'
+    field :so_reject_by_sales_manager_date, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'SO Rejected by Sales Manager')}, type: 'date'
+    field :so_reject_by_sales_manager_mins, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'SO Rejected by Sales Manager')}, type: 'integer'
 
-    field :status_so_draft_pending_acct_approval, value: -> (record) {InquiryStatusRecord.get_inquiry_tat_info(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'SO Draft: Pending Accounts Approval')}, type: 'nested'
+    field :so_draft_pending_acct_approval_date, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'SO Draft: Pending Accounts Approval')}, type: 'date'
+    field :so_draft_pending_acct_approval_mins, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'SO Draft: Pending Accounts Approval')}, type: 'integer'
 
-    field :status_rejected_by_accounts, value: -> (record) {InquiryStatusRecord.get_inquiry_tat_info(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Rejected by Accounts')}, type: 'nested'
+    field :rejected_by_accounts_date, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Rejected by Accounts')}, type: 'date'
+    field :rejected_by_accounts_mins, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Rejected by Accounts')}, type: 'integer'
 
-    field :status_hold_by_accounts, value: -> (record) {InquiryStatusRecord.get_inquiry_tat_info(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Hold by Accounts')}, type: 'nested'
+    field :hold_by_accounts_date, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Hold by Accounts')}, type: 'date'
+    field :hold_by_accounts_mins, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Hold by Accounts')}, type: 'integer'
 
-    field :status_order_won, value: -> (record) {InquiryStatusRecord.get_inquiry_tat_info(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Order Won')}, type: 'nested'
+    field :order_won_date, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Order Won')}, type: 'date'
+    field :order_won_mins, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'SalesOrder', record.sales_order_id, 'Order Won')}, type: 'integer'
 
-    field :status_order_lost, value: -> (record) {InquiryStatusRecord.get_inquiry_tat_info(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Order Lost')}, type: 'nested'
+    field :order_lost_date, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Order Lost')}, type: 'date'
+    field :order_lost_mins, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Order Lost')}, type: 'integer'
 
-    field :status_regret, value: -> (record) {InquiryStatusRecord.get_inquiry_tat_info(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Regret')}, type: 'nested'
+    field :regret_date, value: -> (record) {InquiryStatusRecord.tat_created_at(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Regret')}, type: 'date'
+    field :regret_mins, value: -> (record) {InquiryStatusRecord.turn_around_time(record.inquiry_id, 'Inquiry', record.sales_order_id, 'Regret')}, type: 'integer'
 
     field :created_at, value: -> (record) {record.inquiry.created_at}, type: 'date'
   end

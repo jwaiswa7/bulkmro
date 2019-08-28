@@ -293,6 +293,10 @@ class Overseers::InquiriesController < Overseers::BaseController
       else
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :default).call
       end
+      message = params['inquiry']['comments_attributes']['0']['message']
+      if message.present?
+        @inquiry.comments.create(message: "Status changed to: #{@inquiry.status}. \r\n Lost or Regret Reason: #{@inquiry.lost_regret_reason}. \r\n Comment: #{message}." , overseer: current_overseer)
+      end
 
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
@@ -638,6 +642,7 @@ class Overseers::InquiriesController < Overseers::BaseController
           :commercial_terms_and_conditions,
           :comments,
           :product_type,
+          :lost_regret_reason,
           supplier_quotes: [],
           inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
       )

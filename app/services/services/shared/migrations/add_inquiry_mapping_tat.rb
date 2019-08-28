@@ -41,19 +41,19 @@ class Services::Shared::Migrations::AddInquiryMappingTat < Services::Shared::Mig
     end
   end
 
-  # def add_new_inquiry_status
-  #   start_date = Date.parse('01-04-2019')
-  #   end_date = Date.today
-  #   inquiries = Inquiry.where(created_at: start_date..end_date)
-  #   Chewy.strategy(:bypass) do
-  #     inquiries.each do |inquiry|
-  #       isr = InquiryStatusRecord.where(inquiry_id: inquiry).where(status: 'New Inquiry')
-  #       unless isr.present?
-  #         InquiryStatusRecord.create(status: 'New Inquiry', inquiry_id: inquiry.id, subject_type: 'Inquiry', subject_id: inquiry.id, created_at: inquiry.created_at)
-  #       end
-  #     end
-  #   end
-  # end
+  def add_new_inquiry_status
+    start_date = Date.parse('01-04-2019')
+    end_date = Date.today
+    inquiries = Inquiry.where(created_at: start_date..end_date)
+    Chewy.strategy(:bypass) do
+      inquiries.each do |inquiry|
+        isr = InquiryStatusRecord.where(inquiry_id: inquiry).where(status: 'New Inquiry')
+        unless isr.present?
+          InquiryStatusRecord.create(status: 'New Inquiry', inquiry_id: inquiry.id, subject_type: 'Inquiry', subject_id: inquiry.id, created_at: inquiry.created_at)
+        end
+      end
+    end
+  end
 
   def add_parent_id_for_existing_records
     start_date = Date.parse('01-01-2019')
@@ -65,6 +65,21 @@ class Services::Shared::Migrations::AddInquiryMappingTat < Services::Shared::Mig
           previous_status_record = isr.fetch_previous_status_record
           isr.update_attributes(previous_status_record_id: previous_status_record.id) if previous_status_record.present?
         end
+      end
+    end
+  end
+
+  def add_tat_for_existing_records
+    start_date = Date.parse('01-01-2019')
+    end_date = Date.today
+    inquiry_status_records = InquiryStatusRecord.where(created_at: start_date..end_date).where.not(previous_status_record_id: nil)
+    inquiry_status_records.each do |inquiry_status_record|
+      if inquiry_status_record.present?
+        prev_status = inquiry_status_record.previous_status_record
+        prev_status_time = prev_status.present? ? prev_status.created_at.to_time.to_i : 0
+        current_status_time = inquiry_status_record.created_at
+        minutes = ((current_status_time.to_time.to_i - prev_status_time) / 60.0).ceil.abs
+        inquiry_status_record.update_attributes(tat_minutes: minutes)
       end
     end
   end
