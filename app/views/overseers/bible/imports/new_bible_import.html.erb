@@ -19,7 +19,7 @@
           </div>
 
           <div class="col-md-10">
-            <%= f.input :file, required: true, wrapper: :custom_file, label: 'Bible Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', input_html: {type: "file"} %>
+            <%= f.input :file, required: true, wrapper: :custom_file, label: 'Bible Excel File', accept: '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel', input_html: {type: "file", accept: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"} %>
           </div>
         </div>
 
