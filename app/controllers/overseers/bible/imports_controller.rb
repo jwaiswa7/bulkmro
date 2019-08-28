@@ -28,7 +28,7 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
 
   def create_bible_records
     authorize_acl :bible_upload
-    @bible_file_upload = BibleUpload.new(bible_upload_params.merge(status:'Pending',overseer: current_overseer))
+    @bible_file_upload = BibleUpload.new(bible_upload_params.merge(status: 'Pending', overseer: current_overseer))
     @bible_file_upload.save
     redirect_to new_bible_import_overseers_bible_imports_path
   end
@@ -39,26 +39,26 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
 
   private
 
-  def bible_upload_log_params
-    params.require(:bible_upload_log).permit(
+    def bible_upload_log_params
+      params.require(:bible_upload_log).permit(
         :id,
-        :bible_upload_id,
-        :sr_no,
-        :status,
-        :bible_row_data,
-        :error
-    )
-  end
+          :bible_upload_id,
+          :sr_no,
+          :status,
+          :bible_row_data,
+          :error
+      )
+    end
 
-  def bible_upload_params
-    params.require(:bible_upload).permit(
+    def bible_upload_params
+      params.require(:bible_upload).permit(
         :file,
-        :status,
-        :import_type
-        )
-  end
+          :status,
+          :import_type
+          )
+    end
 
-  def set_bible_upload
-    @bible_uploads = BibleUploadLog.where(bible_upload_id: BibleUpload.decode_id(params[:id]))
-  end
+    def set_bible_upload
+      @bible_uploads = BibleUploadLog.where(bible_upload_id: BibleUpload.decode_id(params[:id]))
+    end
 end
