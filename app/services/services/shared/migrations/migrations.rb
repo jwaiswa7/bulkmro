@@ -4949,4 +4949,19 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       Services::Overseers::PurchaseOrders::UpdateLogisticsOwner.new(company, overseer).call
     end
   end
+
+  def revert_delivery_dates_for_pod_rows
+    service = Services::Shared::Spreadsheets::CsvImporter.new('revert_delivery_date.csv', 'seed_files')
+    service.loop(nil) do |x|
+      sales_invoice = SalesInvoice.where(invoice_number: x.get_column('invoice_number')).last
+      if sales_invoice.present?
+        pod_rows = sales_invoice.pod_rows.where(attachments: nil)
+        if x.get_column('delivery_date').present? && pod_rows.present?
+          pod_rows.last.update_attributes(delivery_date: x.get_column('delivery_date'))
+        elsif pod_rows.present?
+          pod_rows.destroy_all
+        end
+      end
+    end
+  end
 end
