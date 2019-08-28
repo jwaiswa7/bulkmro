@@ -1,7 +1,7 @@
 class InquiryMappingTatsIndex < BaseIndex
   start_date = Date.parse('01-01-2019')
-  end_date = Date.today + 1.day
-  define_type InquiryMappingTat.joins(:inquiry).where(inquiries: {created_at: start_date..end_date}).with_includes do
+  end_date = Date.today.end_of_day
+  define_type InquiryMappingTat.where(inquiry_created_at: start_date..end_date).with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) {record.inquiry.inquiry_number.to_i}, type: 'integer'
     field :inquiry_number_string, value: -> (record) {record.inquiry.inquiry_number.to_s}, analyzer: 'substring'
