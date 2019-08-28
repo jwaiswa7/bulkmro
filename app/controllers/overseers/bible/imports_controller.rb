@@ -29,8 +29,11 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
   def create_bible_records
     authorize_acl :bible_upload
     @bible_file_upload = BibleUpload.new(bible_upload_params.merge(status: 'Pending', overseer: current_overseer))
-    @bible_file_upload.save
-    redirect_to new_bible_import_overseers_bible_imports_path
+    if @bible_file_upload.save
+      redirect_to new_bible_import_overseers_bible_imports_path, notice: set_flash_message('Bible File Uploaded successfully', 'success')
+    else
+      redirect_to new_bible_import_overseers_bible_imports_path, notice: set_flash_message('Bible File Upload Failed', 'danger')
+    end
   end
 
   def bible_upload_log
