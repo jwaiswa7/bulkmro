@@ -11,7 +11,7 @@ class Services::Shared::Migrations::NewSalesQuoteDate < Services::Shared::Migrat
             sales_quote = sales_quotes.first
             inquiry.update_attributes(quotation_date: sales_quote.created_at)
           else
-            inquiry.update_attributes(quotation_date: "")
+            inquiry.update_attributes(quotation_date: '')
           end
         end
       end
