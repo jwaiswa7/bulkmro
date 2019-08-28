@@ -185,6 +185,15 @@ class Inquiry < ApplicationRecord
       'Raw Materials': 30
   }
 
+  enum lost_regret_reason: {
+      'Product not clear': 10,
+      'Supplier not found': 20,
+      'Rate mismatch': 30,
+      'Product lead-time high': 40,
+      'Quote delayed': 50,
+      'Others': 60
+  }
+
   def commercial_status
     :open
   end
