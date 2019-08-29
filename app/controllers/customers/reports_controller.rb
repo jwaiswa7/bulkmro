@@ -45,6 +45,10 @@ class Customers::ReportsController < Customers::BaseController
   end
   def stock_reports
     authorize :report, :show_aggregate_reports?
-    @warehouse_products = ApplyDatatableParams.to(WarehouseProductStock.where(warehouse_id: 32), params)
+    account = Account.find(2431)
+    # for henkel company specific changes
+    if account.present?
+      @warehouse_products = ApplyDatatableParams.to(WarehouseProductStock.where(warehouse_id: 32), params)
+    end
   end
 end
