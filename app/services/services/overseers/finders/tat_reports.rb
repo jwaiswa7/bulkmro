@@ -81,69 +81,64 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
               'inquiry_mapping_tats': {
                   'terms': {'field': 'inside_sales_owner_id', size: 500},
                   aggs: {
-                      new_inquiry: {
-                          sum: {
-                              field: 'status_new_inquiry'
-                          }
-                      },
                       acknowledgment_mail: {
                           sum: {
-                              field: 'status_acknowledgment_mail'
+                              field: 'acknowledgment_mail_mins'
                           }
                       },
                       cross_reference: {
                           sum: {
-                              field: 'status_cross_reference'
+                              field: 'cross_reference_mins'
                           }
                       },
                       preparing_quotation: {
                           sum: {
-                              field: 'status_preparing_quotation'
+                              field: 'preparing_quotation_mins'
                           }
                       },
                       quotation_sent: {
                           sum: {
-                              field: 'status_quotation_sent'
+                              field: 'quotation_sent_mins'
                           }
                       },
                       draft_so_appr_by_sales_manager: {
                           sum: {
-                              field: 'status_draft_so_appr_by_sales_manager'
+                              field: 'draft_so_appr_by_sales_manager_mins'
                           }
                       },
                       so_reject_by_sales_manager: {
                           sum: {
-                              field: 'status_so_reject_by_sales_manager'
+                              field: 'so_reject_by_sales_manager_mins'
                           }
                       },
                       so_draft_pending_acct_approval: {
                           sum: {
-                              field: 'status_so_draft_pending_acct_approval'
+                              field: 'so_draft_pending_acct_approval_mins'
                           }
                       },
                       rejected_by_accounts: {
                           sum: {
-                              field: 'status_rejected_by_accounts'
+                              field: 'rejected_by_accounts_mins'
                           }
                       },
                       hold_by_accounts: {
                           sum: {
-                              field: 'status_hold_by_accounts'
+                              field: 'hold_by_accounts_mins'
                           }
                       },
                       order_won: {
                           sum: {
-                              field: 'status_order_won'
+                              field: 'order_won_mins'
                           }
                       },
                       order_lost: {
                           sum: {
-                              field: 'status_order_lost'
+                              field: 'order_lost_mins'
                           }
                       },
                       regret: {
                           sum: {
-                              field: 'status_regret'
+                              field: 'regret_mins'
                           }
                       }
                   }
