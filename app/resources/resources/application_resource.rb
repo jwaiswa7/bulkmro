@@ -101,7 +101,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.all
-    get("/#{collection_name}").parsed_response['value'].map {|pr| OpenStruct.new(pr)}
+    get("/#{collection_name}").parsed_response['value'].map { |pr| OpenStruct.new(pr) }
   end
 
   def self.find(id, quotes: false)
@@ -198,24 +198,27 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     record_remote_uid = record.remote_uid
     if record_remote_uid.present?
       url = "/#{collection_name}(#{record.remote_uid})/Cancel"
-      body = to_remote(record).to_json
-      response = perform_remote_sync_action('post', url, body)
-      log_request(:post, record)
+      response = perform_remote_sync_action('post', url)
+      log_request(:post, record, is_payload_send: false)
       validated_response = get_validated_response(response)
-      log_response(validated_response, 'patch', url, body)
+      log_response(validated_response, 'patch', url)
     end
   end
 
-  def self.log_request(method, record, dependent_record = nil, is_find: false)
+  def self.log_request(method, record, dependent_record = nil, is_find: false, is_payload_send: true)
     @resource = if dependent_record.nil?
-      if record.is_a?(String)
-        record
-      else
-        to_remote(record)
-      end
-    else
-      to_remote(record, dependent_record)
-    end
+                  if is_payload_send
+                    if record.is_a?(String)
+                      record
+                    else
+                      to_remote(record)
+                    end
+                  else
+                    ""
+                  end
+                else
+                  to_remote(record, dependent_record)
+                end
     @remote_request = RemoteRequest.create!(
         subject: record.is_a?(String) ? nil : record,
         method: method,
