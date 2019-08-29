@@ -56,8 +56,8 @@ class Services::Shared::Migrations::AddInquiryMappingTat < Services::Shared::Mig
   end
 
   def add_parent_id_for_existing_records
-    start_date = Date.parse('01-01-2019')
-    end_date = Date.today
+    start_date = Date.parse('01-08-2019')
+    end_date = Date.today.end_of_day
     inquiries = Inquiry.where(created_at: start_date..end_date)
     Chewy.strategy(:bypass) do
       inquiries.find_each(batch_size: 250) do |inquiry|
@@ -70,16 +70,14 @@ class Services::Shared::Migrations::AddInquiryMappingTat < Services::Shared::Mig
   end
 
   def add_tat_for_existing_records
-    start_date = Date.parse('01-01-2019')
-    end_date = Date.today
-    inquiry_status_records = InquiryStatusRecord.where(created_at: start_date..end_date).where.not(previous_status_record_id: nil)
+    start_date = Date.parse('01-08-2019')
+    end_date = Date.today.end_of_day
+    inquiry_status_records = InquiryStatusRecord.where(created_at: start_date..end_date).where.not(previous_status_record_id: nil).where(tat_minutes: nil)
     inquiry_status_records.each do |inquiry_status_record|
       if inquiry_status_record.present?
-        prev_status = inquiry_status_record.previous_status_record
-        prev_status_time = prev_status.present? ? prev_status.created_at.to_time.to_i : 0
-        current_status_time = inquiry_status_record.created_at
-        minutes = ((current_status_time.to_time.to_i - prev_status_time) / 60.0).ceil.abs
-        inquiry_status_record.update_attributes(tat_minutes: minutes)
+        previous_status = inquiry_status_record.previous_status_record
+        minutes = previous_status.present? ? inquiry_status_record.calculate_turn_around_time(previous_status) : ''
+        inquiry_status_record.update_attributes(tat_minutes: minutes) if minutes.present?
       end
     end
   end
