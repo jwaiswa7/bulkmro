@@ -59,7 +59,8 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
 
       inquiry_status_record = InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.class.name, subject_id: subject.try(:id)).first_or_create
       previous_status = inquiry_status_record.fetch_previous_status_record if status != 'New Inquiry'
-      inquiry_status_record.update_attributes(previous_status_record_id: previous_status.id) if previous_status.present?
+      minutes = previous_status.present? ? inquiry_status_record.calculate_turn_around_time(previous_status) : ''
+      inquiry_status_record.update_attributes(previous_status_record_id: previous_status.id, tat_minutes: minutes) if previous_status.present?
     end
 
     def get_status_value(status)
