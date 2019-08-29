@@ -38,7 +38,7 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
           operator: 'and',
           fields: %w[inquiry_number_string inside_sales_owner],
           minimum_should_match: '100%'
-      }
+        }
     ).order(sort_definition)
 
     if @base_filter.present?
@@ -144,7 +144,7 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
                   }
               }
           }
-      }
+        }
     )
     indexed_records
   end
