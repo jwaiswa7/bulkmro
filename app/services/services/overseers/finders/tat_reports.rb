@@ -9,10 +9,10 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        index_klass.limit(model_klass.count).order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-                      else
-                        index_klass.limit(model_klass.count).order(sort_definition)
-                      end
+      index_klass.limit(model_klass.count).order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    else
+      index_klass.limit(model_klass.count).order(sort_definition)
+    end
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -76,7 +76,6 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
                                 ],
                                 keyed: true
                             },
-
                             aggs: {
                                 'inquiry_mapping_tats': {
                                     'terms': {'field': 'inside_sales_owner_id', size: 500},
