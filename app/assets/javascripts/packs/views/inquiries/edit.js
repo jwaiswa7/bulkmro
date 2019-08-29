@@ -16,8 +16,10 @@ const edit = () => {
         var selectedValue = $("option:selected").val();
         if (selectedValue == "Order Lost" || selectedValue == "Regret") {
             $("#regret-field").removeClass('d-none');
+            $( "select[name*='lost_regret_reason'] option" ).removeClass('disabled')
         } else {
-            $("#regret-field").addClass('d-none');
+            $("#regret-field").addClass('d-none')
+            $( "select[name*='lost_regret_reason'] option" ).addClass('disabled')
         }
     })
 
