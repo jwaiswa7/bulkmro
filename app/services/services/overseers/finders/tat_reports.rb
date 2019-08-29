@@ -33,12 +33,12 @@ class Services::Overseers::Finders::TatReports < Services::Overseers::Finders::B
     query = query[0, 35]
 
     indexed_records = index_klass.query(
-        multi_match: {
+      multi_match: {
           query: query,
           operator: 'and',
           fields: %w[inquiry_number_string inside_sales_owner],
           minimum_should_match: '100%'
-        }
+      }
     ).order(sort_definition)
 
     if @base_filter.present?
