@@ -53,6 +53,8 @@ module StatusesHelper
       'danger'
     when :'Committed Date Approaching'
       'warning'
+    when :'Success'
+      'success'
 
     # defaults
     when :'Lead by O/S'
