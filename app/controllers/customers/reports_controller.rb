@@ -43,4 +43,8 @@ class Customers::ReportsController < Customers::BaseController
 
     render 'categorywise_revenue'
   end
+  def stock_reports
+    authorize :report, :show_aggregate_reports?
+    @warehouse_products = ApplyDatatableParams.to(WarehouseProductStock.where(warehouse_id: 32), params)
+  end
 end

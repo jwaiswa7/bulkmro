@@ -1,0 +1,38 @@
+<div class="col-lg-12">
+  <%# if @warehouse.product_stocks.any? && is_authorized(@warehouse, 'show_product_stocks') %>
+    <div class="d-md-flex justify-content-between mt-5">
+      <h3 class="display-5 mb-1">Product Stock</h3>
+    </div>
+
+    <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords">
+      <thead>
+      <tr>
+        <th class="no-sort">Product Name</th>
+        <th class="no-sort">SKU</th>
+        <th class="no-sort">In stock</th>
+        <th class="no-sort">Committed</th>
+        <th class="no-sort">Ordered</th>
+        <th class="no-sort">Available</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render layout: 'shared/layouts/datatable' do %>
+      <% end %>
+      </tbody>
+    </table>
+  <%# end %>
+</div>
+
+<%#= provide :container_fluid, true %>
+<%# provide :can_be_ajaxed, true %>
+
+<%# content_for :header_row do %>
+<!--  <th class="no-sort">Product Name</th>-->-->
+<!--          <th class="no-sort">SKU</th>-->
+<!--          <th class="no-sort">In stock</th>-->
+<!--          <th class="no-sort">Committed</th>-->
+<!--          <th class="no-sort">Ordered</th>-->
+<!--          <th class="no-sort">Available</th>-->
+<%# end %>
+
+
