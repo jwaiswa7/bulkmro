@@ -103,8 +103,13 @@ every(1.day, 'resync_requests_status', at: '06:00') do
 end if Rails.env.production?
 
 every(10.minutes, 'resync_remote_requests') do
-  ResyncRemoteRequest.where("hits < 5").each do | resync_request |
-    service = Services::Resources::Shared::ResyncFailedRequests.new(resync_request )
+  ResyncRemoteRequest.where('hits < 5').each do | resync_request |
+    service = Services::Resources::Shared::ResyncFailedRequests.new(resync_request)
     service.call
   end
+end
+
+every(1.hour, 'bible_upload') do
+  service = Services::Overseers::Bible::BaseService.new
+  service.call
 end

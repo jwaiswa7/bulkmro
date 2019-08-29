@@ -8,7 +8,6 @@ class Overseers::BibleSalesOrdersController < Overseers::BaseController
 
   def show
     authorize_acl :bible_sales_order, 'show'
-
     respond_to do |format|
       format.html {}
       format.pdf do
