@@ -198,7 +198,8 @@ class Resources::SalesInvoice < Resources::ApplicationResource
         'base_subtotal_incl_tax' => remote_response['DocTotal'],
         'base_shipping_tax_amount' => nil,
         'shipping_hidden_tax_amount' => nil,
-        'base_shipping_hidden_tax_amnt' => nil
+        'base_shipping_hidden_tax_amnt' => nil,
+        'bill_from' => remote_response['BMBill_From']
     }
   end
 end
