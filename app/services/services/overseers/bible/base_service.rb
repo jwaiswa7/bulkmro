@@ -1,7 +1,7 @@
 class Services::Overseers::Bible::BaseService < Services::Shared::BaseService
-  def call
-    @bible_upload_queue = BibleUpload.where(status: 'Pending')
-    @bible_upload_queue.each do |upload_sheet|
+  def call(upload_sheet)
+    # @bible_upload_queue = BibleUpload.where(status: 'Pending')
+    # @bible_upload_queue.each do |upload_sheet|
       if upload_sheet.import_type == 'Sales Order'
         service = Services::Overseers::Bible::CreateOrder.new(upload_sheet)
         service.call
@@ -9,7 +9,7 @@ class Services::Overseers::Bible::BaseService < Services::Shared::BaseService
         service = Services::Overseers::Bible::CreateInvoice.new(upload_sheet)
         service.call
       end
-    end
+    # end
   end
 
   def fetch_file_to_be_processed(upload_sheet)
