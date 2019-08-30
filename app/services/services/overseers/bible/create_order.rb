@@ -19,7 +19,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
       if sheet_header.sort == defined_header.sort
         service.loop(nil) do |x|
           begin
-            puts '******************************** ITERATION Start*********************************** #{i}'
+            puts '******************************** ITERATION ***********************************', i
             i = i + 1
             order_number = x.get_column('So #')
             inquiry_number = x.get_column('Inquiry Number')
@@ -99,8 +99,9 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
               bible_order.save
             end
             upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 10, error: '-')
-        rescue StandardError => err
-          upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 20, error: err.message)
+          rescue StandardError => err
+            upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 20, error: err.message)
+          end
         end
         calculate_totals
         upload_sheet.update(status: 'Completed')
@@ -113,7 +114,6 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
     end
     # puts 'ERROR', error
     File.delete(@path_to_tempfile) if File.exist?(@path_to_tempfile)
-    end
   end
 
   def calculate_totals
