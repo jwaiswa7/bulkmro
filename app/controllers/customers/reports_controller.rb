@@ -44,9 +44,8 @@ class Customers::ReportsController < Customers::BaseController
     render 'categorywise_revenue'
   end
   def stock_reports
-    authorize :report, :show_aggregate_reports?
+    authorize :report, :stock_reports?
     account = Account.find(2431)
-    # for henkel company specific changes
     if account.present?
       @warehouse_products = ApplyDatatableParams.to(WarehouseProductStock.where(warehouse_id: 32), params)
     end
