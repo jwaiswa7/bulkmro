@@ -35,7 +35,7 @@ class Resources::Order < Resources::ApplicationResource
         AttachmentEntry: record.inquiry.attachment_uid, # 6383, #$quote['attachment_entry'] ------------
         DocStatus: record.status == 'Cancelled' ? 'C' : 'O',
         Canceled: record.status == 'Cancelled' ? 'Y' : 'N',
-        BPL_IDAssignedToInvoice: record.inquiry.bill_from.remote_branch_code, # record.inquiry.bill_from.remote_uid, #record.warehouser.remote_branch_code ----------
+        BPL_IDAssignedToInvoice: record.inquiry.ship_from.remote_branch_code, # record.inquiry.bill_from.remote_uid, #record.warehouser.remote_branch_code ----------
         CardCode: record.inquiry.company.remote_uid, # record.inquiry.contact.remote_uid, #customer_id ------
         CntctCode: record.inquiry.contact.full_name,
         ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil,

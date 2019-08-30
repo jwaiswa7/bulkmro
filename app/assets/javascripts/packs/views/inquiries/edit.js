@@ -16,8 +16,12 @@ const edit = () => {
         var selectedValue = $("option:selected").val();
         if (selectedValue == "Order Lost" || selectedValue == "Regret") {
             $("#regret-field").removeClass('d-none');
+            $( "select[name*='lost_regret_reason'] option" ).removeClass('disabled')
+            $("#inquiry_lost_regret_reason").attr("required", true);
+            $("#inquiry_comments_attributes_0_message").attr("required", true);
         } else {
-            $("#regret-field").addClass('d-none');
+            $("#regret-field").addClass('d-none')
+            $( "select[name*='lost_regret_reason'] option" ).addClass('disabled')
         }
     })
 

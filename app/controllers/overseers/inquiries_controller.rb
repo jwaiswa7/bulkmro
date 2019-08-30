@@ -291,6 +291,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       elsif @inquiry.status == 'Regret'
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :regret).call
       else
+        @inquiry.lost_regret_reason = nil
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :default).call
       end
       message = params['inquiry']['comments_attributes']['0']['message']
