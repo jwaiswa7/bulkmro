@@ -113,6 +113,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
     end
     # puts 'ERROR', error
     File.delete(@path_to_tempfile) if File.exist?(@path_to_tempfile)
+    end
   end
 
   def calculate_totals
