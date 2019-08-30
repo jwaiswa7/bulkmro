@@ -196,12 +196,21 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
 
   def self.cancel_document(record)
     record_remote_uid = record.remote_uid
+    remote_json = {}
     if record_remote_uid.present?
       url = "/#{collection_name}(#{record.remote_uid})/Cancel"
       response = perform_remote_sync_action('post', url)
       log_request(:post, record, is_payload_send: false)
       validated_response = get_validated_response(response)
-      log_response(validated_response, 'patch', url)
+      remote_request = log_response(validated_response, 'patch', url)
+      if remote_request.status == 'success'
+        remote_json['status'] = 'success'
+        remote_json['message'] = 'SO Cancel Successfully'
+      elsif remote_request.status == 'failed'
+        remote_json['status'] = 'failed'
+        remote_json['message'] = remote_request.response['raw_response']['error']['message']['value']
+      end
+      remote_json
     end
   end
 
