@@ -146,7 +146,7 @@ class Resources::Quotation < Resources::ApplicationResource
         U_PackFwd: record.inquiry.packing_and_forwarding_option,
         U_BM_BillFromTo: record.inquiry.bill_from.remote_uid, # Bill FROM Address
         U_SQ_Status: Inquiry.statuses[record.inquiry.status], # Commercial Status (Preparing Quotation, Quotation Sent, Follow-up etc)
-        BPL_IDAssignedToInvoice: record.inquiry.ship_from.remote_branch_code,
+        BPL_IDAssignedToInvoice: record.inquiry.bill_from.remote_branch_code,
         ShipToCode: record.inquiry.remote_shipping_address_uid, # record.inquiry.shipping_address.remote_uid,
         PayToCode: record.inquiry.billing_address.remote_uid,
         U_PmntMthd: 'Bank Transfer',
