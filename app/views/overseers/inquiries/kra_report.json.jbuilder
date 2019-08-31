@@ -1,6 +1,9 @@
 json.data (@indexed_kra_reports) do |inquiry|
   company = Company.where(id: inquiry['key']).last
   overseer = Overseer.where(id: inquiry['key']).last.try(:to_s)
+  if @category.present? && (@category.include? 'by_sales_order')
+    invoices = SalesInvoice.get_invoice_count(Overseer.find(inquiry['key']), params['kra_report']['date_range'])
+  end
   json.array! [
                   [],
                   if @date_range.present?
@@ -67,12 +70,14 @@ json.data (@indexed_kra_reports) do |inquiry|
                     inquiry['order_won']['value'].to_i > 0 ? percentage(inquiry['order_won']['value'] * 100.0 / inquiry['doc_count'], show_symbol: false) : 0
                   end,
                   if @category.present? && (@category.include? 'by_sales_order')
-                    number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['invoices_count']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
+                    params['kra_report']['date_range'].present? ? number_with_delimiter(invoices[0].to_i, delimiter: ',') : @indexed_kra_varient_reports[inquiry['key']].present? ? number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['invoices_count']['value'].to_i, delimiter: ',') : ''
+                    # number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['invoices_count']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
                   else
                     number_with_delimiter(inquiry['invoices_count']['value'].to_i, delimiter: ',')
                   end,
                   if @category.present? && (@category.include? 'by_sales_order')
-                    number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['revenue']['value'].to_i, delimiter: ',') if @indexed_kra_varient_reports[inquiry['key']].present?
+                    params['kra_report']['date_range'].present? ? number_with_delimiter(invoices[1].to_i, delimiter: ',') : @indexed_kra_varient_reports[inquiry['key']].present? ? number_with_delimiter(@indexed_kra_varient_reports[inquiry['key']]['revenue']['value'].to_i, delimiter: ',') : ''
+                    # params['kra_report']['date_range'].present? ? number_with_delimiter(invoices[1].to_i, delimiter: ',') : number_with_delimiter(inquiry['revenue']['value'].to_i, delimiter: ',')
                   else
                     number_with_delimiter(inquiry['revenue']['value'].to_i, delimiter: ',')
                   end,

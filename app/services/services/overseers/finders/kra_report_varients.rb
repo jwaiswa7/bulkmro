@@ -57,11 +57,11 @@ class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Fin
   def aggregation_kra_report(indexed_records)
     if @kra_report_params.present?
       if @kra_report_params['date_range'].present?
-        from = @kra_report_params['date_range'].split('~').first.to_date.strftime('%d-%m-%Y')
-        to = @kra_report_params['date_range'].split('~').last.to_date.strftime('%d-%m-%Y')
+        from = @kra_report_params['date_range'].split('~').first.to_date.beginning_of_day.strftime('%d-%m-%Y %H:%M:%S')
+        to = @kra_report_params['date_range'].split('~').last.to_date.end_of_day.strftime('%d-%m-%Y %H:%M:%S')
         date_range = {from: from, to: to, key: 'custom-range'}
       else
-        date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
+        date_range = {to: Date.today.end_of_day.strftime('%d-%m-%Y %H:%M:%S'), key: 'custom-range'}
       end
       if @kra_report_params['category'].present?
         if @kra_report_params['category'].include? 'inside'
@@ -76,13 +76,13 @@ class Services::Overseers::Finders::KraReportVarients < Services::Overseers::Fin
       end
     else
       terms_field = 'inside_sales_owner_id'
-      date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
+      date_range = {to: Date.today.end_of_day.strftime('%d-%m-%Y %H:%M:%S'), key: 'custom-range'}
     end
     indexed_records = indexed_records.aggregations(
       'kra_varient_over_month': {
           date_range: {
               field: 'created_at',
-              format: 'dd-MM-yyy',
+              format: 'dd-MM-yyy H:m:s',
               ranges: [
                   date_range
               ],
