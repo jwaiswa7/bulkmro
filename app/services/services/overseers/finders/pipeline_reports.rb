@@ -67,7 +67,7 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
                 'pipeline': {
                     'terms': {
                         'size': 20,
-                        'field': 'status_key'
+                        'field': 'pipeline_status_key'
                     },
                     aggs: {
                         inquiry_value: {
@@ -87,7 +87,7 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
         'summary_row': {
             'terms': {
                 'size': 20,
-                'field': 'status_key',
+                'field': 'pipeline_status_key',
             },
             aggs: {
                 statuswise_inquiry_summary: {
