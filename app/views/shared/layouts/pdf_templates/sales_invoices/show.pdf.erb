@@ -150,9 +150,7 @@
                   <% if @bill_from_warehouse.present? %>
                     <%= @bill_from_warehouse.address.name.to_s %><br>
                     <%= @bill_from_warehouse.address.to_multiline_s %><br>
-                  <% end %>
-                  <% if inquiry.bill_from.present? %>
-                    GST No.: <%= inquiry.bill_from.address.gst %><br>
+                    GST No.: <%= @bill_from_warehouse.address.gst %><br>
                   <% end %>
                   PAN No.: AAGCB7343G
                   <% if record.inquiry.is_sez? || record.serialized_billing_address.country_code != 'IN' %>
