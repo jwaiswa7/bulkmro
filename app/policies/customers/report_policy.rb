@@ -10,6 +10,7 @@ class Customers::ReportPolicy < Customers::ApplicationPolicy
   end
 
   def stock_reports?
+    # Show stock report only for Henkel Account
     contact.account_id == 2431
   end
 end
