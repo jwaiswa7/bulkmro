@@ -179,10 +179,15 @@ class InwardDispatch < ApplicationRecord
   def show_ar_invoice_requests
     if self.sales_order.present?
       product_ids_array = self.rows.pluck(:product_id).uniq
-      ArInvoiceRequest.includes(:rows).where(ar_invoice_request_rows: {sales_order_id: self.sales_order.id, product_id: product_ids_array})
+      ArInvoiceRequest.joins(:rows).where(ar_invoice_request_rows: {sales_order_id: self.sales_order.id, product_id: product_ids_array}).where.not(status: 'Cancelled AR Invoice').uniq
+      # ArInvoiceRequest.where(inward_dispatch_ids: [self.id])
     else
       []
     end
+  end
+
+  def ar_invoice_list
+    ArInvoiceRequest.where(inward_dispatch_ids: [self.id])
   end
 
   def set_outward_status
