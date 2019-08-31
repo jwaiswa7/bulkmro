@@ -16,14 +16,14 @@ class InquiryMappingTat < ApplicationRecord
       if record.present?
         record.update_attributes(sales_order_id: subject.id)
       else
-        InquiryMappingTat.where(inquiry_id: inquiry.id, sales_order_id: subject.id, sales_quote_id: subject.sales_quote.id, inquiry_created_at: inquiry.created_at).create
+        InquiryMappingTat.where(inquiry_id: inquiry.id, sales_order_id: subject.id, sales_quote_id: subject.sales_quote.id, inquiry_created_at: inquiry.created_at).first_or_create
       end
     elsif subject.class.name == 'SalesQuote'
       record = InquiryMappingTat.where(inquiry_id: inquiry.id, sales_quote_id: nil).first
       if record.present?
         record.update_attributes(sales_quote_id: subject.id)
       else
-        InquiryMappingTat.where(inquiry_id: inquiry.id, sales_quote_id: subject.id, inquiry_created_at: inquiry.created_at).create
+        InquiryMappingTat.where(inquiry_id: inquiry.id, sales_quote_id: subject.id, inquiry_created_at: inquiry.created_at).first_or_create
       end
     else
       InquiryMappingTat.where(inquiry_id: inquiry.id, inquiry_created_at: inquiry.created_at).first_or_create
