@@ -147,11 +147,11 @@
               <tbody>
               <tr>
                 <td class="address-wrapper" style="height: auto;width: 49%;">
-                  <% if inquiry.bill_from.address.present? %>
-                    <%= inquiry.bill_from.address.name.to_s %><br>
+                  <% if @bill_from_warehouse.present? %>
+                    <%= @bill_from_warehouse.address.name.to_s %><br>
+                    <%= @bill_from_warehouse.address.to_multiline_s %><br>
                   <% end %>
                   <% if inquiry.bill_from.present? %>
-                    <%= inquiry.bill_from.address.to_multiline_s %><br>
                     GST No.: <%= inquiry.bill_from.address.gst %><br>
                   <% end %>
                   PAN No.: AAGCB7343G

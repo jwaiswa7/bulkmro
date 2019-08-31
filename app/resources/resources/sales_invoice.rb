@@ -168,6 +168,7 @@ class Resources::SalesInvoice < Resources::ApplicationResource
         'controller' => 'callbacks/sales_invoices',
         'created_at' => remote_response['DocDate'],
         'grand_total' => remote_response['DocTotal'],
+        'bill_from' => remote_response['U_BM_BillFromTo'],
         'base_tax_code' => remote_response['DocumentLines'].present? ? remote_response['DocumentLines'][0]['TaxCode'] : '',
         'increment_id' => remote_response['DocNum'],
         'sales_invoice' => {
@@ -199,7 +200,6 @@ class Resources::SalesInvoice < Resources::ApplicationResource
         'base_shipping_tax_amount' => nil,
         'shipping_hidden_tax_amount' => nil,
         'base_shipping_hidden_tax_amnt' => nil,
-        'bill_from' => remote_response['BMBill_From']
     }
   end
 end
