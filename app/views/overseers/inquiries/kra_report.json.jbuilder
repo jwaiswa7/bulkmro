@@ -2,7 +2,7 @@ json.data (@indexed_kra_reports) do |inquiry|
   company = Company.where(id: inquiry['key']).last
   overseer = Overseer.where(id: inquiry['key']).last.try(:to_s)
   if @category.present? && (@category.include? 'by_sales_order')
-    invoices = SalesInvoice.get_invoice_count(Overseer.find(inquiry['key']), params['kra_report']['date_range'], @category)
+    invoices = SalesInvoice.get_invoice_count(Overseer.find(inquiry['key']), params['kra_report']['date_range'])
   end
   json.array! [
                   [],

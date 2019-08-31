@@ -343,10 +343,10 @@ class SalesInvoice < ApplicationRecord
     end
   end
 
-  def self.get_invoice_count(overseer, date_range, category)
+  def self.get_invoice_count(overseer, date_range)
     if date_range.present?
-      from = date_range.split('~').first.to_date.strftime('%d-%m-%Y')
-      to = date_range.split('~').last.to_date.strftime('%d-%m-%Y')
+      from = date_range.split('~').first.to_date.beginning_of_day.strftime('%d-%m-%Y')
+      to = date_range.split('~').last.to_date.end_of_day.strftime('%d-%m-%Y')
       overseer_role = overseer.role == 'inside_sales_executive' ? 'inside_sales_owner_id' : 'outside_sales_owner_id'
       invoices = SalesInvoice.joins(:inquiry).where(mis_date: from..to).where(inquiries: {"#{overseer_role}": overseer.id})
       invoice_count = invoices.count
