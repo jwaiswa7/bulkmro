@@ -1,5 +1,4 @@
 class Services::Shared::Migrations::ReportsMigrations < Services::Shared::Migrations::Migrations
-
   # To fix pipeline report
   def change_lead_by_os_status_to_regret
     inquiries = Inquiry.where(status: 'Lead by O/S')
