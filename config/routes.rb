@@ -797,6 +797,7 @@ Rails.application.routes.draw do
         get 'unique_skus'
         get 'order_count'
         get 'categorywise_revenue'
+        get 'stock_reports'
       end
     end
 
