@@ -10,7 +10,11 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def show
     authorize_acl @sales_invoice
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-
+    if @metadata[:bill_from].present?
+      @bill_from_warehouse = Warehouse.find_by_remote_uid(@metadata[:bill_from])
+    else
+      @bill_from_warehouse = @inquiry.bill_from
+    end
 
     respond_to do |format|
       format.html { render 'show' }
