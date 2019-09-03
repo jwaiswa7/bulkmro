@@ -9,13 +9,8 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
   def show
     authorize_acl @sales_invoice
-    @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    if @metadata[:bill_from].present?
-      @bill_from_warehouse = Warehouse.find_by_remote_uid(@metadata[:bill_from])
-    else
-      @bill_from_warehouse = @inquiry.bill_from
-    end
 
+    @bill_from_warehouse = get_bill_from_warehouse(@sales_invoice)
     respond_to do |format|
       format.html { render 'show' }
       format.pdf do
@@ -51,7 +46,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def make_zip
     authorize_acl @sales_invoice
 
-    service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice, locals)
+    service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice, locals.merge(bill_from_warehouse: get_bill_from_warehouse(@sales_invoice)))
     zip = service.call
 
     send_data(zip, type: 'application/zip', filename: @sales_invoice.zipped_filename(include_extension: true))
@@ -98,6 +93,18 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
       if params[:stamp].present?
         @locals = { stamp: true }
       end
+    end
+
+    def get_bill_from_warehouse(sales_invoice)
+      inquiry = sales_invoice.inquiry
+      metadata = sales_invoice.metadata.deep_symbolize_keys
+      if metadata[:bill_from].present?
+        bill_from_warehouse = Warehouse.find_by_remote_uid(metadata[:bill_from])
+      else
+        bill_from_warehouse = inquiry.bill_from
+      end
+
+      bill_from_warehouse
     end
 
     def set_invoice_items
