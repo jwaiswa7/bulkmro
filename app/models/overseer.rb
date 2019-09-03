@@ -109,7 +109,7 @@ class Overseer < ApplicationRecord
 
       remaining_target_periods.each do |remaining_target_period|
         target_start_date = remaining_target_period.period_month - 1.month
-        target_end_date = (remaining_target_period.period_month-1.day).end_of_day
+        target_end_date = (remaining_target_period.period_month - 1.day).end_of_day
         inquiries = Inquiry.where(outside_sales_owner_id: self.id, status: 'Order Won').where(created_at: target_start_date..target_end_date)
         total_target_achieved = 0
         inquiries.each do |inquiry|

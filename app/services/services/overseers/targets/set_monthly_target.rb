@@ -1,5 +1,4 @@
 class Services::Overseers::Targets::SetMonthlyTarget < Services::Shared::BaseService
-
   # service -> when annual targets present
   def set_overseer_monthly_target
     overseer_ids = AnnualTarget.pluck(:overseer_id).uniq
@@ -15,5 +14,4 @@ class Services::Overseers::Targets::SetMonthlyTarget < Services::Shared::BaseSer
       overseer.set_monthly_target
     end
   end
-
 end
