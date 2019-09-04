@@ -46,7 +46,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   def create
     @ar_invoice_request = ArInvoiceRequest.new()
     @ar_invoice_request.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
-    params['inward_dispatch_ids'].split(",").map{|x| @ar_invoice_request.inward_dispatch_ids << x.to_i }
+    @ar_invoice_request.inward_dispatch_ids = params['inward_dispatch_ids'].split(',').map{|x| x.to_i}
     @ar_invoice_request.update_status(@ar_invoice_request.status)
     authorize_acl @ar_invoice_request
     respond_to do |format|

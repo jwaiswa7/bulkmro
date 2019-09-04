@@ -154,11 +154,11 @@ class InwardDispatch < ApplicationRecord
   def calculative_ar_invoice_req_status
     if self.sales_order.present?
       product_ids_array = self.rows.pluck(:product_id).uniq
-      ar_invoce_rows = ArInvoiceRequestRow.where(sales_order_id: self.sales_order.id, product_id: product_ids_array)
+      ar_invoice_request_id = ArInvoiceRequest.where('inward_dispatch_ids @> ?', [self.id].to_json).pluck(:id)
+      ar_invoce_rows = ArInvoiceRequestRow.where( product_id: product_ids_array,ar_invoice_request_id:ar_invoice_request_id)
       if ar_invoce_rows.pluck(:ar_invoice_request_id).length > 0
-        sales_order_rows = SalesOrderRow.where(sales_order_id: self.sales_order_id, product_id: product_ids_array)
-        total_quantity = sales_order_rows.sum(&:quantity)
-        ar_invoce_rows = ArInvoiceRequestRow.where(sales_order_id: self.sales_order.id, product_id: product_ids_array)
+        inward_dispatch_rows = InwardDispatchRow.where(inward_dispatch_id: self.id, product_id: product_ids_array)
+        total_quantity = inward_dispatch_rows.sum(&:delivered_quantity)
         ar_invoce_rows_without_cancelled = ar_invoce_rows.joins(:ar_invoice_request).where.not(ar_invoice_requests: {status: 'Cancelled AR Invoice'})
         delivered_quantity = ar_invoce_rows_without_cancelled.sum(&:delivered_quantity)
         if total_quantity != delivered_quantity
@@ -187,7 +187,7 @@ class InwardDispatch < ApplicationRecord
   end
 
   def ar_invoice_list
-    ArInvoiceRequest.where(inward_dispatch_ids: [self.id])
+    ArInvoiceRequest.where('inward_dispatch_ids @> ?', [self.id].to_json)
   end
 
   def set_outward_status
