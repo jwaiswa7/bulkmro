@@ -26,6 +26,7 @@
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, policy(:customer_product).most_ordered_products? %>
           <%= nav_dropdown_item 'Aggregate Reports', quarterly_purchase_data_customers_reports_path, policy(:report).show_aggregate_reports? %>
+          <%= nav_dropdown_item 'Stock Reports', stock_reports_customers_reports_path, policy(:report).stock_reports? %>
         </div>
       </li>
       <li class="nav-item dropdown">

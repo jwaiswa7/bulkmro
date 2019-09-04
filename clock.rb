@@ -118,3 +118,9 @@ every(50.minutes, 'bible_upload') do
     end
   end
 end
+
+every(1.day, 'set_overseer_monthly_target', if: lambda { |t| t.day == 1 }) do
+  puts 'For setting Monthly Targets'
+  service = Services::Overseers::Targets::SetMonthlyTarget.new
+  service.set_overseer_monthly_target
+end
