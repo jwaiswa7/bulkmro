@@ -1,5 +1,5 @@
 class NewCompanyReportsIndex < BaseIndex
-  statuses =  Inquiry.statuses.except('Order Lost', 'Regret').keys
+  statuses =  Inquiry.statuses.except('Lead by O/S', 'Order Lost', 'Regret').keys
   define_type Inquiry.where.not(company_id: 1).with_includes do
     # default_import_options batch_size: 10000, bulk_size: 10.megabytes, refresh: false
     field :id, type: 'integer'
@@ -14,19 +14,27 @@ class NewCompanyReportsIndex < BaseIndex
     field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }
     field :procurement_operations, value: -> (record) { record.procurement_operations_id }
 
-    field :final_sales_quote, value: -> (record) {(statuses.include?(record.status) && record.final_sales_quote.present?) ? 1 : 0}, type: 'integer'
-    field :final_sales_quote_total, value: -> (record) {(statuses.include?(record.status) && record.final_sales_quote.present?) ? record.final_sales_quote.try(:calculated_total) : 0}, type: 'double'
-    field :final_sales_quote_margin_percentage, value: -> (record) {(statuses.include?(record.status) && record.final_sales_quote.present?) ? record.final_sales_quote.try(:calculated_total_margin_percentage) : 0}, type: 'double'
+    field :sales_quotes_count, value: -> (record) {(statuses.include?(record.status) && record.bible_final_sales_quotes.present?) ? record.bible_final_sales_quotes.count : 0}, type: 'integer'
+    field :sales_quotes_total, value: -> (record) {(statuses.include?(record.status) && record.bible_final_sales_quotes.present?) ? record.bible_total_quote_value : 0}, type: 'double'
+    field :sales_quotes_margin_percentage, value: -> (record) {(statuses.include?(record.status) && record.bible_final_sales_quotes.present?) ? record.bible_total_quote_margin_percentage : 0}, type: 'double'
 
-    field :final_sales_orders, value: -> (record) { BibleSalesOrder.where(inquiry_number: record.inquiry_number)} do
-      field :order_total, type: 'double'
-      field :total_margin, type: 'double'
-      field :overall_margin_percentage, type: 'double'
-    end
+    field :sales_orders_count, value: -> (record) {(statuses.include?(record.status) && record.bible_sales_orders.present?) ? record.bible_sales_orders.count : 0}, type: 'integer'
+    field :sales_orders_total, value: -> (record) {(statuses.include?(record.status) && record.bible_sales_orders.present?) ? record.bible_sales_order_total : 0}, type: 'double'
+    field :sales_orders_total_margin, value: -> (record) {(statuses.include?(record.status) && record.bible_sales_orders.present?) ? record.bible_assumed_margin : 0}, type: 'double'
+    field :sales_orders_overall_margin_percentage, value: -> (record) {(statuses.include?(record.status) && record.bible_sales_orders.present?) ? record.bible_margin_percentage : 0}, type: 'double'
 
-    field :invoices, value: -> (record) { BibleInvoice.where(inquiry_number: record.inquiry_number)} do
-      field :invoice_total, type: 'double'
-    end
+    # field :final_sales_orders, value: -> (record) { BibleSalesOrder.where(inquiry_number: record.inquiry_number)} do
+    #   field :order_total, type: 'double'
+    #   field :total_margin, type: 'double'
+    #   field :overall_margin_percentage, type: 'double'
+    # end
+    #
+    field :invoices_count, value: -> (record) {(statuses.include?(record.status) && record.bible_sales_invoices.present?) ? record.bible_sales_invoices.count : 0}, type: 'integer'
+    field :invoice_total, value: -> (record) {(statuses.include?(record.status) && record.bible_sales_invoices.present?) ? record.bible_sales_invoice_total : 0}, type: 'double'
+    field :invoices_total_margin, value: -> (record) {(statuses.include?(record.status) && record.bible_sales_invoices.present?) ? record.bible_actual_margin : 0}, type: 'integer'
+    # field :invoices, value: -> (record) { BibleInvoice.where(inquiry_number: record.inquiry_number)} do
+    #   field :invoice_total, type: 'double'
+    # end
 
     field :cancelled_invoiced, value: -> (record) { record.invoices.where(status: 'Cancelled').count}, type: 'integer'
     field :cancelled_invoiced_total, value: -> (record) { record.invoices.where(status: 'Cancelled').map(&:calculated_total).compact.sum}, type: 'double'

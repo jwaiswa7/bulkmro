@@ -491,6 +491,26 @@ class Inquiry < ApplicationRecord
     end
   end
 
+  def bible_total_quote_margin_percentage
+    total_margin_percentage_value = 0
+    sales_quotes_ids = []
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).each do |bso|
+      sales_order = SalesOrder.find_by_order_number(bso.order_number)
+      if sales_order.present?
+        if !sales_quotes_ids.include? sales_order.sales_quote.id
+          total_margin_percentage_value += sales_order.sales_quote.calculated_total_margin_percentage
+          sales_quotes_ids << sales_order.sales_quote.id
+        end
+      end
+    end
+
+    if self.final_sales_quote.present? && !(sales_quotes_ids.include? self.final_sales_quote.id)
+      total_margin_percentage_value += self.final_sales_quote.calculated_total_margin_percentage
+    end
+    # c.inquiries.where(status: statuses).map { |x| x.bible_total_quote_margin_percentage if x.bible_final_sales_quotes.present? }.compact.sum
+    total_margin_percentage_value
+  end
+
   def bible_total_quote_value
     total_quote_value = 0
     sales_quotes_ids = []

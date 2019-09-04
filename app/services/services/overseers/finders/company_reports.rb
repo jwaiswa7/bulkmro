@@ -52,20 +52,20 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
   def aggregation_kra_report(indexed_records)
     if @company_report_params.present?
       if @company_report_params['date_range'].present?
-        from = @company_report_params['date_range'].split('~').first.to_date.strftime('%d-%m-%Y')
-        to = @company_report_params['date_range'].split('~').last.to_date.strftime('%d-%m-%Y')
+        from = @company_report_params['date_range'].split('~').first.to_date.beginning_of_day.strftime('%d-%m-%Y %H:%M:%S')
+        to = @company_report_params['date_range'].split('~').last.to_date.end_of_day.strftime('%d-%m-%Y %H:%M:%S')
         date_range = {from: from, to: to, key: 'custom-range'}
       else
-        date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
+        date_range = {to: Date.today.end_of_day.strftime('%d-%m-%Y %H:%M:%S'), key: 'custom-range'}
       end
     else
-      date_range = {to: Date.today.strftime('%d-%m-%Y'), key: 'custom-range'}
+      date_range = {to: Date.today.end_of_day.strftime('%d-%m-%Y %H:%M:%S'), key: 'custom-range'}
     end
     indexed_records = indexed_records.aggregations(
       'company_report_over_month': {
           date_range: {
               field: 'created_at',
-              format: 'dd-MM-yyy',
+              format: 'dd-MM-yyy H:m:s',
               ranges: [
                   date_range
               ],
@@ -81,48 +81,53 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
                         }
                       },
                       sales_invoices: {
-                          value_count: {
-                              field: 'invoices.calculated_total'
+                          sum: {
+                              field: 'invoices_count'
+                          }
+                      },
+                      sales_invoices_margin: {
+                          sum: {
+                              field: 'invoices_total_margin'
                           }
                       },
                       sales_invoices_total: {
                           sum: {
-                              field: 'invoices.calculated_total'
+                              field: 'invoice_total'
                           }
                       },
                       sales_quotes: {
                           sum: {
-                              field: 'final_sales_quote'
+                              field: 'sales_quotes_count'
                           }
                       },
                       sales_quotes_total: {
                           sum: {
-                              field: 'final_sales_quote_total'
+                              field: 'sales_quotes_total'
                           }
                       },
                       sales_quotes_margin_percentage: {
                           sum: {
-                              field: 'final_sales_quote_margin_percentage'
+                              field: 'sales_quotes_margin_percentage'
                           }
                       },
                       sales_orders: {
-                          value_count: {
-                              field: 'final_sales_orders.calculated_total'
+                          sum: {
+                              field: 'sales_orders_count'
                           }
                       },
                       sales_orders_total: {
                           sum: {
-                              field: 'final_sales_orders.calculated_total'
+                              field: 'sales_orders_total'
                           }
                       },
                       sales_orders_margin: {
                           sum: {
-                              field: 'final_sales_orders.calculated_total_margin'
+                              field: 'sales_orders_total_margin'
                           }
                       },
                       sales_orders_margin_percentage: {
                           sum: {
-                              field: 'final_sales_orders.calculated_total_margin_percentage'
+                              field: 'sales_orders_overall_margin_percentage'
                           }
                       },
                       expected_orders: {

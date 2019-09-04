@@ -106,6 +106,9 @@ let setup = () => {
                         else if(td.hasClass('no-data')){
                             td.empty()
                         }
+                        else if (td.hasClass('total')){
+                            td.empty().append('<strong>Total</strong>');
+                        }
                         else{
                             td.empty()
                             td.append(value.toLocaleString());
