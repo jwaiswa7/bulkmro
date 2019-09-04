@@ -109,7 +109,18 @@ every(10.minutes, 'resync_remote_requests') do
   end
 end
 
-every(1.hour, 'bible_upload') do
-  service = Services::Overseers::Bible::BaseService.new
-  service.call
+every(50.minutes, 'bible_upload') do
+  Chewy.strategy(:atomic) do
+    @bible_upload_queue = BibleUpload.where(status: 'Pending').first
+    if @bible_upload_queue.present?
+      service = Services::Overseers::Bible::BaseService.new
+      service.call(@bible_upload_queue)
+    end
+  end
+end
+
+every(1.day, 'set_overseer_monthly_target', if: lambda { |t| t.day == 1 }) do
+  puts 'For setting Monthly Targets'
+  service = Services::Overseers::Targets::SetMonthlyTarget.new
+  service.set_overseer_monthly_target
 end

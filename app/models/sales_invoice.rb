@@ -342,4 +342,16 @@ class SalesInvoice < ApplicationRecord
       ((self.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
     end
   end
+
+  def self.get_invoice_count(overseer, date_range)
+    if date_range.present?
+      from = date_range.split('~').first.to_date.beginning_of_day.strftime('%d-%m-%Y')
+      to = date_range.split('~').last.to_date.end_of_day.strftime('%d-%m-%Y')
+      overseer_role = overseer.role == 'inside_sales_executive' ? 'inside_sales_owner_id' : 'outside_sales_owner_id'
+      invoices = SalesInvoice.joins(:inquiry).where(mis_date: from..to).where(inquiries: {"#{overseer_role}": overseer.id})
+      invoice_count = invoices.count
+      revenue = invoices.map { |invoice| invoice.calculated_total }.compact.sum
+      [invoice_count, revenue]
+    end
+  end
 end

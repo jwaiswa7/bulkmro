@@ -127,8 +127,8 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         range: {
             :"#{range_filter[:name]}" => {
                 "time_zone": "+05:30",
-                gte: range[0].strip.to_date,
-                lte: range[1].strip.to_date
+                gte: range[0].strip.to_date.beginning_of_day,
+                lte: range[1].strip.to_date.end_of_day
             }
         }
       )
