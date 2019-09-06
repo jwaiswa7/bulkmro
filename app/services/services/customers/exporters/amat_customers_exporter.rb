@@ -5,7 +5,7 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
     @company = Company.find(5)
     @export_name = 'amat_customer_portal'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['Inquiry Number', 'Inquiry Date', 'BM Number', 'Descripton', 'Location', 'Transaction Type', 'AMAT Request Date', 'AMAT Request Number', 'Bulk MRO Quotation Date', 'Order Confirmation Date by Email', 'AMAT PO Number', 'Actual PO received from AMAT Date', 'PO from Bulk MRO to Vendor Date', 'PI from Vendor Date', 'Payment made to Vendor date', 'Committed Date by Bulk MRO', 'Revised Committed Date', 'Actual Delivery Date', 'PO Status', 'Tracking Number', 'Invoice Date', 'Invoice No', 'Material Dispatch Date', 'Comments']
+    @columns = ['Inquiry Number', 'Inquiry Date', 'BM Number', 'Descripton', 'Unit Price', 'Quantity', 'Quote type - Route through/Regular', 'Location', 'Transaction Type', 'Delivery City', 'AMAT Request Date', 'AMAT Request Number', 'Bulk MRO Quotation Date', 'Order Confirmation Date by Email', 'AMAT PO Number', 'Actual PO received from AMAT Date', 'PO from Bulk MRO to Vendor Date', 'PI from Vendor Date', 'Payment made to Vendor date', 'Committed Date by Bulk MRO', 'Revised Committed Date', 'Actual Delivery Date', 'PO Status', 'Tracking Number', 'Invoice Date', 'Invoice No', 'Material Dispatch Date', 'Comments']
   end
 
 
@@ -16,7 +16,7 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
   def build_csv
     company = @company
 
-    records = company.inquiries.where(created_at: Date.parse('2018-09-01 00:00:00')..(Date.today))
+    records = company.inquiries.where(created_at: Date.parse('2018-09-01 00:00:00')..(Date.today.end_of_day))
 
     records.each do |inquiry|
         if inquiry.sales_orders.present?
@@ -35,8 +35,12 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
                       inquiry_date: inquiry.created_at.present? ? format_date(inquiry.created_at) : '-',
                       bm_number:  row.sku.present? ? row.sku : '-',
                       description: row.name.present? ? row.name : '-',
+                      unit_price: row.metadata['price'].present? ? row.metadata['price'] : '-',
+                      quantity: row.metadata['qty'].present? ? row.metadata['qty'] : '-',
+                      quote_type: inquiry.try(:quote_category) || '',
                       location: inquiry.billing_address.city_name.present? ? inquiry.billing_address.city_name : '-',
                       transaction_type: (inquiry.billing_address.country_code.present? && (inquiry.billing_address.country_code == 'IN')) ? 'Domestic' : 'International',
+                      delivery_city: inquiry.shipping_address.city_name.present? ? inquiry.shipping_address.city_name : '-',
                       amat_request_date: '-',
                       amt_request_no: '-',
                       quotation_date: inquiry.quotation_date.present? ? format_date(inquiry.quotation_date) : '-',
@@ -59,14 +63,18 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
                   end
                 end
               else
-                sale_order.products.each do |so_product|
+                sale_order.rows.each do |sales_row|
                   rows.push(
                     inquiries: inquiry.inquiry_number.present? ? inquiry.inquiry_number : '-',
                     inquiry_date: inquiry.created_at.present? ? format_date(inquiry.created_at) : '-',
-                    bm_number: so_product.present? ? so_product.sku : '-',
-                    description: so_product.present? ? so_product.name : '-',
+                    bm_number: sales_row.product.present? ? sales_row.product.sku : '-',
+                    description: sales_row.product.present? ? sales_row.product.name : '-',
+                    unit_price: sales_row.unit_selling_price.present? ? number_with_precision(sales_row.unit_selling_price, precision: 3) : '-',
+                    quantity: sales_row.quantity.present? ? sales_row.quantity : '-',
+                    quote_type: inquiry.try(:quote_category) || '',
                     location: inquiry.billing_address.city_name.present? ? inquiry.billing_address.city_name : '-',
                     transaction_type: (inquiry.billing_address.country_code.present? && (inquiry.billing_address.country_code == 'IN')) ? 'Domestic' : 'International',
+                    delivery_city: inquiry.shipping_address.city_name.present? ? inquiry.shipping_address.city_name : '-',
                     amat_request_date: '-',
                     amt_request_no: '-',
                     quotation_date: inquiry.quotation_date.present? ? format_date(inquiry.quotation_date) : '-',
