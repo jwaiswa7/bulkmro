@@ -176,8 +176,8 @@ gem 'ratyrate'
 # For working with percentages
 gem 'percentage'
 
-# rails console on browser
-gem 'web-console'
+# # rails console on browser
+# gem 'web-console'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
