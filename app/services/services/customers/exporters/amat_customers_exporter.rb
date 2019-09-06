@@ -26,10 +26,11 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
           if si_wo_cancelled.present?
             si_wo_cancelled.each do |invoice|
               invoice.rows.each do |row|
+                po = nil
                 if inquiry.purchase_orders.present?
                   po_ids = inquiry.purchase_orders.pluck(:id)
                   po_products = PurchaseOrderRow.where(purchase_order_id: po_ids)
-                  po = po_products.where("metadata->>'PopProductId' = ?", row.metadata['product_id'].to_s)
+                  po = po_products.where(product_id: row.metadata['product_id'].to_i)
                 end
 
                 rows.push(
@@ -39,7 +40,7 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
                   description: row.name.present? ? row.name : '-',
                   unit_price: row.metadata['price'].present? ? row.metadata['price'] : '-',
                   quantity: row.metadata['qty'].present? ? row.metadata['qty'] : '-',
-                  quote_type: inquiry.try(:quote_category) || '',
+                  quote_type: inquiry.try(:opportunity_type) || '',
                   location: inquiry.billing_address.city_name.present? ? inquiry.billing_address.city_name : '-',
                   transaction_type: (inquiry.billing_address.country_code.present? && (inquiry.billing_address.country_code == 'IN')) ? 'Domestic' : 'International',
                   delivery_city: inquiry.shipping_address.city_name.present? ? inquiry.shipping_address.city_name : '-',
@@ -58,7 +59,7 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
                   po_status: '-',
                   tracking_number: '-',
                   invoice_date: format_date(invoice.created_at),
-                  invoice_number: invoice.invoice_number,
+                  invoice_number: invoice.invoice_number.to_s,
                   material_dispatch_date: '-',
                   comments: '-'
                 )
@@ -66,6 +67,12 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
             end
           else
             sale_order.rows.each do |sales_row|
+              if inquiry.purchase_orders.present?
+                po_ids = inquiry.purchase_orders.pluck(:id)
+                po_products = PurchaseOrderRow.where(purchase_order_id: po_ids)
+                po = po_products.where(product_id: sales_row.product_id.to_i)
+              end
+
               rows.push(
                 inquiries: inquiry.inquiry_number.present? ? inquiry.inquiry_number : '-',
                 inquiry_date: inquiry.created_at.present? ? format_date(inquiry.created_at) : '-',
@@ -73,7 +80,7 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
                 description: sales_row.product.present? ? sales_row.product.name : '-',
                 unit_price: sales_row.unit_selling_price.present? ? number_with_precision(sales_row.unit_selling_price, precision: 3) : '-',
                 quantity: sales_row.quantity.present? ? sales_row.quantity : '-',
-                quote_type: inquiry.try(:quote_category) || '',
+                quote_type: inquiry.try(:opportunity_type) || '',
                 location: inquiry.billing_address.city_name.present? ? inquiry.billing_address.city_name : '-',
                 transaction_type: (inquiry.billing_address.country_code.present? && (inquiry.billing_address.country_code == 'IN')) ? 'Domestic' : 'International',
                 delivery_city: inquiry.shipping_address.city_name.present? ? inquiry.shipping_address.city_name : '-',
@@ -83,7 +90,7 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
                 order_confirmation_date_by_email: inquiry.customer_order_date.present? ? format_date(inquiry.customer_order_date) : '-',
                 amat_po_number: inquiry.customer_po_number.present? ? inquiry.customer_po_number : '-',
                 actual_po_recieved_from_amat_date: inquiry.customer_po_received_date.present? ? format_date(inquiry.customer_po_received_date) : '-',
-                po_from_bulkmro_to_vendor_date: '-',
+                po_from_bulkmro_to_vendor_date: (inquiry.purchase_orders.present? && po.present?) ? format_date(po.first.purchase_order.created_at) : '-',
                 pi_from_vendor_date: '-',
                 payment_made_to_vendor: '-',
                 commited_date_by_bulkmro: inquiry.customer_committed_date.present? ? format_date(inquiry.customer_committed_date) : '-',
