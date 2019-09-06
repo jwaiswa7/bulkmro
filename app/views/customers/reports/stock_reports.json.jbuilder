@@ -1,5 +1,4 @@
-
-json.data (@warehouse_products.order(instock: :desc)) do |warehouse_product|
+json.data (@warehouse_products) do |warehouse_product|
   json.array! [
                   (warehouse_product.product.name.truncate(50, separator: ' ')),
                   warehouse_product.product.sku,
@@ -8,5 +7,5 @@ json.data (@warehouse_products.order(instock: :desc)) do |warehouse_product|
 end
 
 json.recordsTotal @warehouse_products.count
-json.recordsFiltered @warehouse_products.count
+json.recordsFiltered @warehouse_products.total_count
 json.draw params[:draw]
