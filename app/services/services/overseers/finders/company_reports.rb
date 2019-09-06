@@ -16,7 +16,24 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-    indexed_records = aggregation_kra_report(indexed_records)
+    indexed_records = aggregation_company_report(indexed_records)
+
+    sales_executives = Overseer.pipeline_executives
+
+
+    if @company_report_params.present? && @company_report_params['procurement_specialist'].present?
+      executives = @company_report_params['procurement_specialist'].to_i
+      indexed_records = indexed_records.filter(filter_by_value('inside_sales_executive', executives))
+    end
+    if @company_report_params.present? && @company_report_params['outside_sales_owner'].present?
+      executives = @company_report_params['outside_sales_owner'].to_i
+      indexed_records = indexed_records.filter(filter_by_value('outside_sales_executive', executives))
+    end
+    if @company_report_params.present? && @company_report_params['sales_manager'].present?
+      sales_executives = sales_executives.map {|o| o if (o.parent_id == @company_report_params['sales_manager'].to_i)}.compact
+      indexed_records = indexed_records.filter(filter_for_self_and_descendants(['inside_sales_executive', 'outside_sales_executive', 'sales_manager_id'], sales_executives.pluck(:id)))
+    end
+
     indexed_records
   end
 
@@ -25,7 +42,7 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
       multi_match: {
           query: query_string,
           operator: 'and',
-          fields: %w[name account]
+          fields: %w[name account_name company_name]
       }
     ).order(sort_definition)
 
@@ -37,7 +54,7 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-    indexed_records = aggregation_kra_report(indexed_records)
+    indexed_records = aggregation_company_report(indexed_records)
     indexed_records
   end
 
@@ -49,7 +66,7 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
     'NewCompanyReportsIndex'.constantize
   end
 
-  def aggregation_kra_report(indexed_records)
+  def aggregation_company_report(indexed_records)
     if @company_report_params.present?
       if @company_report_params['date_range'].present?
         from = @company_report_params['date_range'].split('~').first.to_date.beginning_of_day.strftime('%d-%m-%Y %H:%M:%S')

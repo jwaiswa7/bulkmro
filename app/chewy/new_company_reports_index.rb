@@ -7,12 +7,15 @@ class NewCompanyReportsIndex < BaseIndex
     field :created_at, value: -> (record) {record.created_at}, type: 'date'
     field :updated_at, value: -> (record) {record.updated_at}, type: 'date'
     field :company_key, value: -> (record) { record.company.id }, type: 'integer'
+    field :company_name, value: -> (record) { record.company.to_s }, analyzer: 'substring'
     field :account_id, value: -> (record) { record.account.id }, type: 'integer'
+    field :account_name, value: -> (record) { record.account.to_s }, analyzer: 'substring'
     field :expected_order, value: -> (record) {record.status == 'Expected Order' ? 1 : 0}, type: 'integer'
     field :expected_order_total, value: -> (record) {record.status == 'Expected Order' ? record.try(:calculated_total) : 0}, type: 'double'
-    field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }
-    field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }
-    field :procurement_operations, value: -> (record) { record.procurement_operations_id }
+    field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }, type: 'integer'
+    field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }, type: 'integer'
+    field :sales_manager, value: -> (record) { record.sales_manager_id }, type: 'integer'
+    field :procurement_operations, value: -> (record) { record.procurement_operations_id }, type: 'integer'
 
     field :sales_quotes_count, value: -> (record) {(statuses.include?(record.status) && record.bible_final_sales_quotes.present?) ? record.bible_final_sales_quotes.count : 0}, type: 'integer'
     field :sales_quotes_total, value: -> (record) {(statuses.include?(record.status) && record.bible_final_sales_quotes.present?) ? record.bible_total_quote_value : 0}, type: 'double'

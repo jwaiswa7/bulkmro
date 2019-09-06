@@ -17,29 +17,29 @@
 
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
-  <th class="no-sort all"> Company Alias</th>
-  <th class="no-sort all"> Company Name</th>
+  <th class="sort all" data-name="account_id"> Company Alias</th>
+  <th class="sort all" data-name="company_key"> Company Name</th>
   <th class="no-sort all text-right" data-name="live_inquiries">Inquiries #</th>
-  <th class="no-sort all text-right" data-name="sales_quotes_count">Quotation #</th>
-  <th class="no-sort all text-right" data-name="sales_quotes_total">Value of Quotations</th>
+  <th class="sort all text-right" data-name="sales_quotes_count">Quotation #</th>
+  <th class="sort all text-right" data-name="sales_quotes_total">Value of Quotations</th>
   <th class="no-sort all text-right" data-name="expected_orders">Expected <br>Orders #</th>
-  <th class="no-sort all text-right" data-name="expected_orders_total">Value of<br> Expected Orders</th>
+  <th class="sort all text-right" data-name="expected_orders_total">Value of<br> Expected Orders</th>
   <th class="no-sort all text-right" data-name="sales_orders_count">Orders #</th>
-  <th class="no-sort all text-right" data-name="sku">Uniq SKUs #</th>
-  <th class="no-sort all text-right" data-name="sales_orders_total">Value of Orders</th>
-  <th class="no-sort all text-right" data-name="sales_orders_total_margin">Gross Margin (Assumed)</th>
-  <th class="no-sort all text-right" data-name="sales_orders_overall_margin_percentage">Gross Margin%</th>
+  <th class="sort all text-right" data-name="sku">Uniq SKUs #</th>
+  <th class="sort all text-right" data-name="sales_orders_total">Value of Orders</th>
+  <th class="sort all text-right" data-name="sales_orders_total_margin">Gross Margin (Assumed)</th>
+  <th class="sort all text-right" data-name="sales_orders_overall_margin_percentage">Gross Margin%</th>
   <th class="no-sort all text-right" data-name="invoices_count">Invoices #</th>
-  <th class="no-sort all text-right" data-name="invoice_total">Value of Invoices</th>
-  <th class="no-sort all text-right" data-name="invoices_total_margin">Gross Margin (Actual)</th>
+  <th class="sort all text-right" data-name="invoice_total">Value of Invoices</th>
+  <th class="sort all text-right" data-name="invoices_total_margin">Gross Margin (Actual)</th>
 <!--  <th class="no-sort all text-right" data-name="cancelled_invoiced">Cancelled Invoices #</th>-->
 <!--  <th class="no-sort all text-right" data-name="cancelled_invoiced_total">Value of<br> Cancelled Invoices</th>-->
 
 <% end %>
 
 <% content_for :filter_row do %>
-  <td data-filter="ajax"></td>
   <td data-filter="false"></td>
+  <td data-filter="ajax"></td>
   <td data-filter="ajax"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
@@ -72,11 +72,11 @@
   <td class="text-right"></td>
   <td class="text-right"></td>
   <td class="text-right"></td>
-  <td class="text-right no-data"></td>
-  <td class="text-right no-data"></td>
   <td class="text-right"></td>
   <td class="text-right no-data"></td>
-<!--  <td class="text-right no-data"></td>-->
+  <td class="text-right"></td>
+  <td class="text-right"></td>
+<!--  <td class="text-right"></td>-->
 <!--  <td class="text-right"></td>-->
 <!--  <td class="text-right"></td>-->
 <% end %>

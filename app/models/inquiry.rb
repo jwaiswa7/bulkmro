@@ -505,7 +505,7 @@ class Inquiry < ApplicationRecord
     end
 
     if self.final_sales_quote.present? && !(sales_quotes_ids.include? self.final_sales_quote.id)
-      total_margin_percentage_value += self.final_sales_quote.calculated_total_margin_percentage
+      total_margin_percentage_value += self.final_sales_quote.calculated_total_margin_percentage || 0
     end
     # c.inquiries.where(status: statuses).map { |x| x.bible_total_quote_margin_percentage if x.bible_final_sales_quotes.present? }.compact.sum
     total_margin_percentage_value

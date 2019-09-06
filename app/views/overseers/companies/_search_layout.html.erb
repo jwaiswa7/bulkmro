@@ -2,8 +2,24 @@
   <div class="card mt-3">
     <div class="card-body">
       <div class="form-row">
-        <div class="col-6">
+        <div class="col-12 col-md-3">
           <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range', :value => (@date_range.present? ? @date_range : '')}, required: false, label: 'Pick a Date Range' %>
+        </div>
+        <div class="col-12 col-md-3">
+          <%= f.input :procurement_specialist, as: :select, collection: Inquiry.procurement_specialists,
+                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a  Procurement Specialist'}, required: false, include_blank: true,
+                      selected: params['company_report'].present? && params['company_report']['procurement_specialist'].present? ? params['company_report']['procurement_specialist'].to_i : '' %>
+        </div>
+        <div class="col-12 col-md-3">
+          <%= f.input :outside_sales_owner, as: :select, collection: Inquiry.outside_sales_owners,
+                      input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner'}, required: false, include_blank: true,
+                      selected: params['company_report'].present? && params['company_report']['outside_sales_owner'].present? ? params['company_report']['outside_sales_owner'].to_i : '' %>
+        </div>
+
+        <div class="col-12 col-md-3">
+          <%= f.input :sales_manager, as: :select, collection: Overseer.all.map {|o| [o.parent.full_name, o.parent.id] if o.parent.present?}.compact.uniq.sort,
+                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Manager' }, required: false, include_blank: true,
+                      selected: params['company_report'].present? && params['company_report']['sales_manager'].present? ? params['company_report']['sales_manager'].to_i : '' %>
         </div>
         <div class="col-3 text-center">
           <%= button_tag(type: "submit", class: "btn btn-success btn-block mt-3") do %>
