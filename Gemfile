@@ -176,7 +176,7 @@ gem 'ratyrate'
 # For working with percentages
 gem 'percentage'
 
-#rails console on browser
+# rails console on browser
 gem 'web-console'
 
 group :development, :test do
