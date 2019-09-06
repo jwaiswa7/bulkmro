@@ -25,9 +25,8 @@ json.data (@indexed_company_reports) do |company|
                   end,
                   link_to_if(company['sales_invoices']['value'].to_i != 0, (number_with_delimiter(company['sales_invoices']['value'].to_i, delimiter: ',')), filtered_path(overseers_sales_invoices_path, [filter_by_value('Company', Company.find(company['key']).name, Company.find(company['key']).id), filter_by_value('	IS%26P', procurement_specialist, procurement_specialist), filter_by_value('OS+Owner', outside_sales_owner, outside_sales_owner)]), target: '_blank'),
                   format_currency(company['sales_invoices_total']['value'].to_i, precision: 0, show_symbol: false),
-                  if company['sales_invoices_margin']['value'].to_i != 0
-                    number_with_delimiter(company['sales_invoices_margin']['value'].to_i, delimiter: ',')
-                  end
+                  company['sales_invoices_margin']['value'].to_i != 0 ? number_with_delimiter(company['sales_invoices_margin']['value'].to_i, delimiter: ',') : 0
+
               ]
 end
 
