@@ -1,7 +1,7 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
-<% if is_authorized(:purchase_order, 'resync_all_sales_orders') %>
+<% if is_authorized(:sales_order, 'resync_all_sales_orders') %>
   <% provide :heading_buttons do %>
     <a href="<%= resync_all_sales_orders_overseers_sales_orders_path %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mt-2"><i class="fal fa-retweet mr-1"></i>Resync
     All Sales Orders</a>
