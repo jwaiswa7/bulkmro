@@ -155,7 +155,7 @@ class InwardDispatch < ApplicationRecord
     if self.sales_order.present?
       product_ids_array = self.rows.pluck(:product_id).uniq
       ar_invoice_request_id = ArInvoiceRequest.where('inward_dispatch_ids @> ?', [self.id].to_json).pluck(:id)
-      ar_invoce_rows = ArInvoiceRequestRow.where( product_id: product_ids_array,ar_invoice_request_id:ar_invoice_request_id)
+      ar_invoce_rows = ArInvoiceRequestRow.where(product_id: product_ids_array, ar_invoice_request_id: ar_invoice_request_id)
       if ar_invoce_rows.pluck(:ar_invoice_request_id).length > 0
         inward_dispatch_rows = InwardDispatchRow.where(inward_dispatch_id: self.id, product_id: product_ids_array)
         total_quantity = inward_dispatch_rows.sum(&:delivered_quantity)

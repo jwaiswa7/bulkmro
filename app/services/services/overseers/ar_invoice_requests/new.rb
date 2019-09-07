@@ -15,8 +15,8 @@ class Services::Overseers::ArInvoiceRequests::New < Services::Shared::BaseServic
       sales_order_row = @sales_order.rows.where(product_id: product_id).last
       if sales_order_row.present?
         ar_invoice_request_rows_with_product_id = ar_invoice_request_rows.where(product_id: product_id)
-        inward_dispatche_rows = InwardDispatchRow.where(inward_dispatch_id: inward_dispatches.pluck(:id), product_id: product_id)
-        supplier_delivered_quantity = inward_dispatche_rows.sum(&:delivered_quantity)
+        inward_dispatch_rows = InwardDispatchRow.where(inward_dispatch_id: inward_dispatches.pluck(:id), product_id: product_id)
+        supplier_delivered_quantity = inward_dispatch_rows.sum(&:delivered_quantity)
         customer_invoiced_quantity = ar_invoice_request_rows_with_product_id.sum(&:delivered_quantity)
         remaining_delivered_quantity = supplier_delivered_quantity - customer_invoiced_quantity
         remaining_delivered_quantity = (remaining_delivered_quantity < 0) ? 0 : remaining_delivered_quantity
