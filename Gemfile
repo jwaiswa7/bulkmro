@@ -176,9 +176,6 @@ gem 'ratyrate'
 # For working with percentages
 gem 'percentage'
 
-# rails console on browser
-gem 'web-console'
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -192,6 +189,9 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Preview emails instead of sending them
   gem 'letter_opener'
+
+  # rails console on browser
+  gem 'web-console'
 
   # RuboCop is a Ruby static code analyzer and code formatter
   gem 'rubocop', '~> 0.63.0', require: false
