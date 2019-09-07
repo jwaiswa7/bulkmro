@@ -57,8 +57,15 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     if @purchase_order.save_and_sync(@purchase_order.po_request)
       redirect_to overseers_inquiry_purchase_order_path(@purchase_order.inquiry.to_param, @purchase_order.to_param)
     else
-      redirect_to pending_sap_sync_overseers_purchase_orders
+      redirect_to pending_sap_sync_overseers_purchase_orders_path
     end
+  end
+
+  def resync_all_purchase_orders
+    authorize_acl :purchase_order
+    service = Services::Overseers::PurchaseOrders::ResyncAllPurchaseOrders.new
+    service.call
+    redirect_to pending_sap_sync_overseers_purchase_orders_path
   end
 
   def show
