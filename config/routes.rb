@@ -379,6 +379,7 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get 'resync_all_sales_orders'
         get 'pending'
         get 'account_approval_pending'
         get 'cancelled'
@@ -420,6 +421,7 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get 'resync_all_purchase_orders'
         get 'export_material_readiness'
         get 'manually_closed'
         get 'pending_sap_sync'
