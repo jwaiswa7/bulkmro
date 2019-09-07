@@ -232,5 +232,21 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
       # delivered_inward_dispatches.map{|x| if x.is_inward_completed? && x.show_ar_invoice_requests.count > 1;[x.rows.count,x.show_ar_invoice_requests.map{|y| y.rows.count}];end;}.compact
     end
   end
+
+  def multiple_inward_ids
+    invoice_ids = []
+    none_ids = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inward_dispatch_ids.csv', 'seed_files_3')
+    service.loop(nil) do |x|
+      invoice = ArInvoiceRequest.where(id: x.get_column('ar_invoice_id')).last
+      if invoice.present?
+        invoice.inward_dispatch_ids =  x.get_column('inward_ids').split(',').map{|x| x.to_i}
+        invoice.save!
+        invoice_ids << invoice.id
+      else
+        none_ids << x.get_column('ar_invoice_id')
+      end
+    end
+  end
 end
 
