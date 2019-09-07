@@ -21,7 +21,11 @@ class Services::Overseers::ArInvoiceRequests::New < Services::Shared::BaseServic
         remaining_delivered_quantity = supplier_delivered_quantity - customer_invoiced_quantity
         remaining_delivered_quantity = (remaining_delivered_quantity < 0) ? 0 : remaining_delivered_quantity
         if remaining_delivered_quantity > 0
-          @ar_invoice_request.rows.build(delivered_quantity: remaining_delivered_quantity, quantity: remaining_delivered_quantity, sales_order_id: @sales_order.id, product_id: product_id, sales_order_row_id: (sales_order_row.id if sales_order_row.present?))
+          @ar_invoice_request.rows.build(delivered_quantity: remaining_delivered_quantity,
+              quantity: remaining_delivered_quantity,
+              sales_order_id: @sales_order.id,
+              product_id: product_id, sales_order_row_id: (sales_order_row.id if sales_order_row.present?)
+          )
         end
       end
     end
