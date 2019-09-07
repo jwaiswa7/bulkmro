@@ -49,10 +49,10 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
 
   def create_ar_invoice?
     if record.sales_order.present?
-      product_ids = SalesOrderRow.where(sales_order_id:record.sales_order_id).pluck(:product_id)
-      total_quantity =  record.rows.where(product_id: product_ids).sum(&:delivered_quantity)
-      ar_invoices = ArInvoiceRequest.where('inward_dispatch_ids @> ?', [record.id].to_json).where.not(ar_invoice_requests: {status: "Cancelled AR Invoice"})
-      delivered_quantity = ArInvoiceRequestRow.where(product_id: record.rows.pluck(:product_id),ar_invoice_request_id:ar_invoices.pluck(:id)).sum(&:delivered_quantity)
+      product_ids = SalesOrderRow.where(sales_order_id: record.sales_order_id).pluck(:product_id)
+      total_quantity = record.rows.where(product_id: product_ids).sum(&:delivered_quantity)
+      ar_invoices = ArInvoiceRequest.where('inward_dispatch_ids @> ?', [record.id].to_json).where.not(ar_invoice_requests: {status: 'Cancelled AR Invoice'})
+      delivered_quantity = ArInvoiceRequestRow.where(product_id: record.rows.pluck(:product_id),ar_invoice_request_id: ar_invoices.pluck(:id)).sum(&:delivered_quantity)
       total_quantity != delivered_quantity
     end
   end

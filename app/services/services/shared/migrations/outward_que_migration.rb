@@ -219,8 +219,8 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
             ar_invoice_id = ar_invoice.id
             ar_invoice_ids = []
             if sales_order.present?
-              inward_dispatches = InwardDispatch.where(:sales_order_id => sales_order.id).where.not(id: inward_dispatch.id)
-              ar_invoice_ids = inward_dispatches.map{|x| if (x.show_ar_invoice_requests.pluck(:id).include? ar_invoice_id);x.id;end}.compact
+              inward_dispatches = InwardDispatch.where(sales_order_id: sales_order.id).where.not(id: inward_dispatch.id)
+              ar_invoice_ids = inward_dispatches.map {|x| if x.show_ar_invoice_requests.pluck(:id).include? ar_invoice_id; x.id; end}.compact
             end
             ar_invoice_ids << inward_dispatch.id
             ar_invoice.inward_dispatch_ids = ar_invoice_ids
@@ -240,7 +240,7 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
     service.loop(nil) do |x|
       invoice = ArInvoiceRequest.where(id: x.get_column('ar_invoice_id')).last
       if invoice.present?
-        invoice.inward_dispatch_ids =  x.get_column('inward_ids').split(',').map{|x| x.to_i}
+        invoice.inward_dispatch_ids = x.get_column('inward_ids').split(',').map {|x| x.to_i}
         invoice.save!
         invoice_ids << invoice.id
       else
@@ -249,4 +249,3 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
     end
   end
 end
-
