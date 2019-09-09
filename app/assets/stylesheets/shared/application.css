@@ -7515,8 +7515,10 @@ div.dataTables_wrapper div.dataTables_processing {
       background-color: #EEF2F5;
       color: #f57102; }
     .select2-container--bootstrap .select2-results__option--highlighted[aria-selected] {
-      background-color: #fd7e14;
-      color: #fff; }
+      /*background-color: #fd7e14;*/
+      background-color: #E7E9ED;
+      color: #2C4159;
+      /*color: #fff; */}
     .select2-container--bootstrap .select2-results__option .select2-results__option {
       padding: 0.4375rem 1rem; }
       .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__group {
