@@ -38,8 +38,8 @@
     <%= nav_item('Stages', stages_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
     <%= nav_item('Comments', overseers_inquiry_comments_path(@inquiry), is_authorized(@inquiry,'comments') && policy(@inquiry).comments?) %>
   </ul>
-  <div class="tab-content">
-    <div class="tab-pane fade active show" role="tabpanel">
+  <div class="tab-content bmro-mp-0">
+    <div class="tab-pane fade active show bmro-mp-0" role="tabpanel">
       <%= yield %>
     </div>
   </div>

@@ -26,10 +26,13 @@
 }
 .bmro-nav-ul .nav-link{
 	padding: 11px 0px;
-	color: #8C97A3;
+	color: #8C97A3 !important;
 }
-.bmro-nav-ul .nav-link:hover{
-	color: unset;
+.bmro-mp-0{
+	margin-top: 0px; 
+}
+.bmro-mp-0 .mt-3{
+	margin-top: 0px;
 }
 /*.bmro-navbar-active{
 	background-color: #FFFFFF;
