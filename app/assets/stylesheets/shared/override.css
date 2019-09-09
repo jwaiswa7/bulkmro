@@ -19,6 +19,10 @@
 	line-height: 16px;
 	display: inline-block;
 }
+.bmro-nav-ul .nav-link.active, .nav-tabs .nav-item.show .nav-link{
+	background-color: #FFFFFF!important;
+	color: #2C4159!important; 
+}
 /*.bmro-navbar-active{
 	background-color: #FFFFFF;
 	color: #2C4159; 
