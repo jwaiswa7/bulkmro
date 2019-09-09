@@ -2,5 +2,31 @@
 	color: #FF8800 !important;
 }
 .form-control-label abbr{
-	color: blue !important;
+	color: #FF8800 !important;
 }
+.bmro-nav-ul li a{
+	text-align: center;
+	padding:15px 0px; 
+	border: 1px solid transparent;
+	border-radius: 5px 5px 0 0;
+	background-color: transparent;
+	margin: 0px;
+	color: #8C97A3;
+	font-family: "Inter UI";
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: -0.55px;
+	line-height: 16px;
+	display: inline-block;
+}
+/*.bmro-navbar-active{
+	background-color: #FFFFFF;
+	color: #2C4159; 
+}
+.bmro-navbar-active:hover{
+	color: #2C4159 !important; 
+}
+.bmro-navbar:hover{
+	color: #8C97A3;
+	text-decoration: none;
+}*/
