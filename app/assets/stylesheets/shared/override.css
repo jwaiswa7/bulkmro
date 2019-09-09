@@ -28,6 +28,9 @@
 	padding: 11px 0px;
 	color: #8C97A3;
 }
+.bmro-nav-ul .nav-link:hover{
+	color: unset;
+}
 /*.bmro-navbar-active{
 	background-color: #FFFFFF;
 	color: #2C4159; 
