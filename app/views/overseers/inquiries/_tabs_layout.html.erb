@@ -26,7 +26,7 @@
 </div>
 
 <section class="pb-4 pb-lg-5">
-  <ul class="nav nav-tabs nav-fill" data-toggle="sticky">
+  <ul class="nav nav-tabs nav-fill testclass" data-toggle="sticky">
     <%= nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
     <%= nav_item('Imports', overseers_inquiry_imports_path(@inquiry), is_authorized(@inquiry,'imports') && policy(@inquiry).imports?) %>
     <%= nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit_suppliers') && policy(@inquiry).edit_suppliers?) %>
