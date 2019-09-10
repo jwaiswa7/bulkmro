@@ -229,3 +229,4 @@ appearance: none !important;
 .bmro-form-input:focus{
 	border-color: #687686;
 }
+/*input_html: { class: 'bmro-form-input bmro-dropdown-icon' } */
