@@ -282,7 +282,7 @@
             <%= f.input :freight_option, label: 'Freight', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.freight_options) %>
           </div>
         </div>
-        <%= f.input :commercial_terms_and_conditions %>
+        <%= f.input :commercial_terms_and_conditions, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
       </div>
       <div class="bmro-dotted-line"></div>
       <div class="form-row mt-3">
