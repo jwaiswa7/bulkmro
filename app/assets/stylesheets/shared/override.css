@@ -64,6 +64,9 @@
 .bmro-card-body{
 	width: 850px;
 	float: left;
+	padding-top: 55px;
+	padding-left: 100px;
+	box-sizing: border-box;
 }
 .bmro-card-header{
     width: 250px;
@@ -157,4 +160,11 @@
 }
 .breadcrumb-item+.breadcrumb-item:last-child {
     font-weight: 500!important;
+}
+.bmro-dotted-line{
+	box-sizing: border-box;
+	width: 100%;
+	border: 2px dashed #C3CAD2;
+	float: left;
+	padding: 30px 0px; 
 }
