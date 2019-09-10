@@ -79,7 +79,7 @@
                 <% if  is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
                   <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), disabled:true, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
                 <% else %>
-                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
+                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez) %>
                 <% end %>
               </div>
             </div>
@@ -90,7 +90,7 @@
                 <%= f.input :potential_amount, required: true, input_html: {min: 0.01}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders?, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
               </div>
               <div class="col-6 col-md-4">
-                <%= f.input :gross_profit_percentage, label: 'Gross profit %'} disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+                <%= f.input :gross_profit_percentage, label: 'Gross profit %', disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
               </div>
             </div>
           </div>
@@ -99,15 +99,15 @@
 
       <div class="form-row">
         <div class="col-6 col-md-4">
-          <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, required: true, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+          <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), required: true, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
 
         <div class="col-6 col-md-4">
-          <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, required: true, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+          <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), required: true, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
 
         <div class="col-6 col-md-4">
-          <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, required: true, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+          <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), required: true, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
       </div>
       <div class="bmro-dotted-line"></div>
