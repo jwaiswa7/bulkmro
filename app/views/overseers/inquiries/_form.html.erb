@@ -219,25 +219,25 @@
           <h6 class="text-uppercase text-black-50 mb-1">Order Details</h6>
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= f.input :customer_po_number, label: 'Customer purchase order number', disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+              <%= f.input :customer_po_number, label: 'Customer purchase order number', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
             </div>
             <div class="col-12 col-md-6">
-              <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer purchase order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_sheet.filename}".html_safe) : false %>
+              <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer purchase order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_sheet.filename}".html_safe) : false %>
             </div>
             <div class="col-12 col-md-6">
-              <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.copy_of_email.filename}".html_safe) : false %>
+              <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.copy_of_email.filename}".html_safe) : false %>
             </div>
 
             <div class="col-12 col-md-6">
               <div class="d-block d-md-flex align-items-end">
                 <div class="flex-grow-1">
-                  <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: {multiple: true}, label: 'Supplier quotes' %>
+                  <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: {multiple: true}, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, label: 'Supplier quotes' %>
                 </div>
                 <div class="form-group">
                   <% f.object.supplier_quotes.attachments.each do |attachment| %>
-                    <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                       <i class="fal fa-download"></i>
-                      <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                      <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0 bmro-button', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                         <i class="fal fa-trash-alt"></i>
                       <% end if attachment.present? && is_authorized(:attachment, 'destroy') && policy(:attachment).destroy? %>
                     <% end %>
@@ -246,19 +246,19 @@
               </div>
             </div>
             <div class="col-12 col-md-3">
-              <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
+              <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, input_html: { class: 'bmro-form-input' }, disabled: f.object.sales_quotes.blank? %>
             </div>
             <div class="col-12 col-md-3">
-              <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
+              <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input' }, disabled: f.object.sales_quotes.blank? %>
             </div>
             <div class="col-12 col-md-3">
-              <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
+              <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, input_html: { class: 'bmro-form-input' }, disabled: f.object.sales_quotes.blank? %>
             </div>
             <div class="col-12 col-md-4">
-              <%= f.input :customer_po_received_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: 'Customer PO Received Date' %>
+              <%= f.input :customer_po_received_date, as: :string, input_html: {:'data-toggle' => 'datepicker' class: 'bmro-form-input' }, label: 'Customer PO Received Date' %>
             </div>
             <div class="col-12 col-md-3">
-              <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: {:'data-toggle' => 'datepicker'} %>
+              <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: {:'data-toggle' => 'datepicker' class: 'bmro-form-input' } %>
             </div>
           </div>
         </div>
