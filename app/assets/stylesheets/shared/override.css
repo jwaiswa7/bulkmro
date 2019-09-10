@@ -155,3 +155,6 @@
 	font-size: 23px;
 	bottom: 8px;
 }
+.breadcrumb-item+.breadcrumb-item:last-child {
+    font-weight: 400!important;
+}
