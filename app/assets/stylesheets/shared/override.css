@@ -62,12 +62,15 @@
 	margin-left: 0px!important;
 }
 .bmro-card-body{
-	width: 900px;
+	width: 850px;
 	float: left;
 }
 .bmro-card-header{
-	width: 250px;
-	float: left;
+    width: 250px;
+    float: left;
+    background: #fff;
+    border: none;
+    padding: 51px 0px 0px 0px;
 }
 .bmro-card{
 	width: 100%;
@@ -75,4 +78,8 @@
 	background-color: #fff;
 	display: unset!important;
 	flex-direction: unset!important;
+}
+.bmro-card-footer{
+	width: 100%;
+	float: left; 
 }
