@@ -52,6 +52,7 @@
     letter-spacing: -0.82px;
     line-height: 25px!important;
     width: 100%;
+    margin-bottom: 22px!important;
 }
 .bmro-bradecrumb-edit span{
 	margin-left: 5px;
@@ -59,4 +60,19 @@
 .bmro-edit-dash{
 	margin-right: 8px;
 	margin-left: 0px!important;
+}
+.bmro-card-body{
+	width: 900px;
+	float: left;
+}
+.bmro-card-header{
+	width: 250px;
+	float: left;
+}
+.bmro-card{
+	width: 100%;
+	float: left;
+	background-color: #fff;
+	display: unset!important;
+	flex-direction: unset!important;
 }
