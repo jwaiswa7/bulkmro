@@ -46,9 +46,9 @@
 .bmro-bradecrumb-edit{
     float: left!important;
     color: #2C4159!important;
-    font-family: "Inter UI";
+    /*font-family: "Inter UI";*/
     font-size: 21px!important;
-    font-weight: 600!important;
+    font-weight: bold!important;
     letter-spacing: -0.82px;
     line-height: 25px!important;
     width: 100%;
@@ -58,4 +58,5 @@
 }
 .bmro-edit-dash{
 	margin-right: 8px;
+	margin-left: 0px!important;
 }
