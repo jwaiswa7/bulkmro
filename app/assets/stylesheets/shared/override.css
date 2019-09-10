@@ -18,6 +18,8 @@
 	letter-spacing: -0.55px;
 	line-height: 16px;
 	display: inline-block;
+	width: 100%;
+	float: left;
 }
 .bmro-nav-ul .nav-link.active, .nav-tabs .nav-item.show .nav-link{
 	background-color: #FFFFFF!important;
@@ -47,4 +49,5 @@
     font-weight: 600!important;
     letter-spacing: -0.82px;
     line-height: 25px!important;
+    width: 100%;
 }

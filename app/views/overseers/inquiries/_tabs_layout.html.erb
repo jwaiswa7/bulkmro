@@ -6,11 +6,12 @@
       <% else %>
         <%= request.path.split('/').last.titleize %>
       <% end %>
-      <small class="mb-2 ml-2"><strong>#<%= @inquiry.inquiry_number %></strong></small>
+      <!-- <small class="mb-2 ml-2"><strong>#<%= @inquiry.inquiry_number %></strong></small> -->
+      <span><span>-</span>#<%= @inquiry.inquiry_number %></span>
     </h2>
 
 
-    <a href="https://drive.google.com/file/d/1rA8bcaxQDkAR091cM5o-RRvG-rlK7X62/view" target="_blank"><img src="<%= image_path('doc_icon.png') %>" alt="Italian Trulli" align="right" data-toggle="tooltip" title="SO/PO User Guide"></a>
+<!--     <a href="https://drive.google.com/file/d/1rA8bcaxQDkAR091cM5o-RRvG-rlK7X62/view" target="_blank"><img src="<%= image_path('doc_icon.png') %>" alt="Italian Trulli" align="right" data-toggle="tooltip" title="SO/PO User Guide"></a> -->
 
 <!--     <% if content_for?(:heading_byline) %>
       <p class="mt-2 mt-md-0"><%= yield :heading_byline %></p>
