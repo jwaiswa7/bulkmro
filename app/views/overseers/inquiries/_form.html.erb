@@ -151,10 +151,10 @@
         </div>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :billing_address, collection: selected_option_or_nil(f, :billing_address), required: true, label_method: :to_s, include_blank: "Select a billing address", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.company)} %>
+            <%= f.association :billing_address, collection: selected_option_or_nil(f, :billing_address), required: true, label_method: :to_s, include_blank: "Select a billing address", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon bmro-form-input-height', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.company)} %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :shipping_address, collection: selected_option_or_nil(f, :shipping_address), required: true, label_method: :to_s, include_blank: "Select a shipping address", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_addresses_path(company_id: f.object.shipping_company_id)} %>
+            <%= f.association :shipping_address, collection: selected_option_or_nil(f, :shipping_address), required: true, label_method: :to_s, include_blank: "Select a shipping address", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon bmro-form-input-height', :'data-source' => autocomplete_overseers_addresses_path(company_id: f.object.shipping_company_id)} %>
           </div>
         </div>
       </div>
