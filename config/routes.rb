@@ -6,9 +6,10 @@ Rails.application.routes.draw do
   root to: 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
   get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
+  get '/suppliers', to: redirect('/suppliers/dashboard'), as: 'supplier_root'
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
-  devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: 'customers'
+  devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}
 
   namespace 'callbacks' do
     resources :sales_orders do
@@ -905,5 +906,9 @@ Rails.application.routes.draw do
       end
     end
 
+  end
+
+  namespace 'suppliers' do
+    resource :dashboard, controller: :dashboard
   end
 end
