@@ -95,14 +95,15 @@
     padding: 8px 10px!important;
     border: 2px solid #2C4159!important;
     border-radius: 2px!important;
-    background-color: #2C4159!important;
-    color: #FFFFFF!important;
+    background-color: #2C4159;
+    color: #FFFFFF;
     /*font-family: "Inter UI";*/
     font-size: 13px!important;
     font-weight: bold!important;
     letter-spacing: -0.51px;
     line-height: 16px!important;
     outline: none!important;
+    text-transform: capitalize!important;
 }
 .bmro-button-mr{
 	margin-right: 10px;
