@@ -229,4 +229,10 @@ appearance: none !important;
 .bmro-form-input:focus{
 	border-color: #687686;
 }
+.select2-selection__clear{
+	display: none!important;
+}
+.select2-selection__arrow{
+	display: none!important;
+}
 /*input_html: { class: 'bmro-form-input bmro-dropdown-icon' } */
