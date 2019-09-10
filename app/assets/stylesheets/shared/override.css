@@ -83,3 +83,27 @@
 	width: 100%;
 	float: left; 
 }
+.bmro-form-row{
+	width: 100%;
+	float: left;
+}
+.bmro-button-tras{
+	background-color: #fff!important;
+	color: #495057!important;
+}
+.bmro-button{
+    padding: 8px 10px!important;
+    border: 2px solid #2C4159!important;
+    border-radius: 2px!important;
+    background-color: #2C4159!important;
+    color: #FFFFFF!important;
+    /*font-family: "Inter UI";*/
+    font-size: 13px!important;
+    font-weight: bold!important;
+    letter-spacing: -0.51px;
+    line-height: 16px!important;
+    outline: none!important;
+}
+.bmro-button-mr{
+	margin-right: 10px;
+}
