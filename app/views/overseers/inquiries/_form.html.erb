@@ -448,13 +448,13 @@
       <div class="form-row bmro-form-row">
         <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? && action_name != "new" %>
           <div class="">
-            <a href="<%= @inquiry.id.present? ? new_overseers_inquiry_email_message_path(@inquiry) : "#" %>" class='<%= policy(@inquiry).is_acknowledgement_enable? ? "bmro-button bmro-button-mr btn-block btn btn-dark" : "btn-block btn btn-dark disabled" %>'><i class="fal fa-envelope mr-1"></i>Send
+            <a href="<%= @inquiry.id.present? ? new_overseers_inquiry_email_message_path(@inquiry) : "#" %>" class='<%= policy(@inquiry).is_acknowledgement_enable? ? "btn-block btn btn-dark" : "btn-block btn btn-dark disabled" %>'><i class="fal fa-envelope mr-1"></i>Send
               Acknowledgement</a>
           </div>
         <% end %>
         <% if is_authorized(@inquiry, 'update') %>
-          <div class="mt-1 mt-md-0
-            <%= action_name != "new" ? "col-md-4" : "col-md-12" %>">
+          <div class="mt-1 mt-md-0 bmro-button bmro-button-mr
+            <%= action_name != "new" ? "" : "col-md-12" %>">
             <%= action_button(action_name, @inquiry) %>
           </div>
         <% end %>
