@@ -263,7 +263,7 @@
           </div>
         </div>
       <% end %>
-      
+
 
       <div class="mt-2 <%= f.object.sales_quote.present? ? 'card-alternative' : '' %>">
       <div class="bmro-dotted-line"></div>
@@ -472,6 +472,27 @@
             <%= link_to "Duplicate", duplicate_overseers_inquiry_path(@inquiry), method: :post, class: "bmro-button bmro-button-tras btn-block btn btn-success duplicate-inquiry", target: '_blank', 'data-confirm': 'Are you sure want to duplicate this inquiry? It will generate New Inquiry.' %>
           </div>
         <% end %>
+      </div>
+      <div class="bmro-right-ul">
+        <nav class="bmro-nav">
+          <ul class="bmro-label-ul">
+            <li class="bmro-li-right"><button id="button" onclick="slideTo('page-1');">Opportuinity Details</button></li>
+            <li class="bmro-li-right bmro-active-li"><button id="button" onclick="slideTo('page-2');">Billing/Shippling Details</button></li>
+            <li class="bmro-li-right bmro-active-li"><button id="button" onclick="slideTo('page-3');">Owner Details</button></li>
+            <li class="bmro-li-right bmro-active-li"><button id="button" onclick="slideTo('page-3');">Important Dates</button></li>
+            <li class="bmro-li-right bmro-active-li"><button id="button" onclick="slideTo('page-3');">Order Deatils</button></li>
+          </ul>
+        </nav>   
+        <script type="text/javascript">
+          function slideTo(page) {
+            let element = document.getElementById(page);
+            element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+          }
+            $(".bmro-li-right").click(function(){
+            $('.bmro-li-right').addClass('bmro-active-li',1000);
+            $(this).removeClass('bmro-active-li');
+          });
+        </script>     
       </div>
     </div>      
     <div class="card-footer bmro-card-footer">

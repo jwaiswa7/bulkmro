@@ -169,3 +169,18 @@
     margin-bottom: 30px;
     margin-top: 30px;
 }
+ul.bmro-label-ul{
+  border:none;
+  list-style: none;
+  color: #000;
+  background: none;
+  float: left;
+}
+li.bmro-li-right{
+  border-left:4px solid #ff8800; 
+  padding:5px 10px;  
+}
+.bmro-active-li{
+  border-left:4px solid transparent !important;
+  padding:5px 10px;
+}
