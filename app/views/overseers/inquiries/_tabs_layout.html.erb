@@ -1,12 +1,12 @@
   <div class="page-header">
   <div class="">
-    <h2>
+    <h2 class="bmro-bradecrumb-edit">
       <% if content_for?(:heading) %>
         <%= yield :heading %>
       <% else %>
         <%= request.path.split('/').last.titleize %>
       <% end %>
-      <small class="text-black-50 mb-2 ml-2 float-right"><strong>#<%= @inquiry.inquiry_number %></strong></small>
+      <small class="mb-2 ml-2"><strong>#<%= @inquiry.inquiry_number %></strong></small>
     </h2>
 
 
