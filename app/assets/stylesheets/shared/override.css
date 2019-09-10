@@ -207,17 +207,17 @@ li.bmro-li-right{
 	opacity: 0.56!important;
 }
 .bmro-form-input {
-    float: left;
-    line-height: 1.5;
-    color: rgb(73, 80, 87);
-    padding: 7px 23px 6px 8px;
-    border-width: 2px;
-    border-style: solid;
+    float: left!important;
+    line-height: 1.5!important;
+    color: rgb(73, 80, 87)!important;
+    padding: 7px 23px 6px 8px!important;
+    border-width: 2px!important;
+    border-style: solid!important;
     border-color: rgb(236, 238, 242)!important;
     /* border-image: initial; */
-    border-radius: 2px;
-    outline: none;
-    height: auto;
+    border-radius: 2px!important;
+    outline: none!important;
+    height: auto!important;
     box-shadow: unset!important;
 }
 .bmro-dropdown-icon {
