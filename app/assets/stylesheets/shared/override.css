@@ -53,3 +53,9 @@
     line-height: 25px!important;
     width: 100%;
 }
+.bmro-bradecrumb-edit span{
+	margin-left: 5px;
+}
+.bmro-edit-dash{
+	margin-right: 8px;
+}
