@@ -26,7 +26,7 @@ class Services::Overseers::SalesOrders::CancelSalesOrder < Services::Shared::Bas
   def sales_order_cancel(sales_order, sales_order_params)
     sales_order.assign_attributes(sales_order_params)
     sales_order.save
-    return { status: 'success', message: 'Sales Order Cancelled Successfully' }
+    { status: 'success', message: 'Sales Order Cancelled Successfully' }
   end
 
   attr_accessor :sales_order, :sales_order_params
