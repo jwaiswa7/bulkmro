@@ -10,13 +10,13 @@
         <%= f.input :company, as: :string, disabled: true, input_html: { class: 'bmro-form-input' } %>
         <div class="form-row">
           <div class="col-3 col-md-6">
-            <%= f.input :inquiry_number, label: 'Inquiry #', disabled: true %>
+            <%= f.input :inquiry_number, label: 'Inquiry #', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, disabled: true %>
           </div>
           <!--          <div class="col-8">-->
           <%#= f.input :legacy_contact_name, disabled: true %>
           <!--          </div>-->
           <div class="col-6 col-md-3">
-            <%= f.input :status, as: :string, disabled: true %>
+            <%= f.input :status, as: :string, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, disabled: true %>
             <%# #, :disabled => ['Lead by O/S','New Inquiry','Acknowledgement Mail','Cross Reference','Supplier RFQ Sent','Preparing Quotation','Draft SO for Approval by Sales Manager','SO Rejected by Sales Manager','SO Draft: Pending Accounts Approval','Rejected by Accounts','Hold by Accounts','Order Won','Quotation Sent'] %>
             <!-- TODO commercial_status need to be added -->
           </div>
@@ -282,7 +282,7 @@
             <%= f.input :freight_option, label: 'Freight', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.freight_options) %>
           </div>
         </div>
-        <%= f.input :commercial_terms_and_conditions, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
+        <%= f.input :commercial_terms_and_conditions, input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-form-input-text' } %>
       </div>
       <div class="bmro-dotted-line"></div>
       <div class="form-row mt-3">

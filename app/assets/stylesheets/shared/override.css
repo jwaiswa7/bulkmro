@@ -232,6 +232,9 @@ appearance: none !important;
 .bmro-form-input-height{
 	min-height: 90px;
 }
+.bmro-form-input-text{
+	min-height: 176px;
+}
 .select2-selection__clear{
 	display: none!important;
 }
