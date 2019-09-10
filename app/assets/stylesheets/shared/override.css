@@ -164,7 +164,8 @@
 .bmro-dotted-line{
 	box-sizing: border-box;
 	width: 100%;
-	border: 2px dashed #C3CAD2;
-	float: left;
-	padding: 30px 0px; 
+    border-bottom: 2px dashed #C3CAD2;
+    float: left;
+    margin-bottom: 30px;
+    margin-top: 30px;
 }

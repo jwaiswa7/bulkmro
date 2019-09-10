@@ -212,9 +212,9 @@
         </div>
       </div>
 
-      <div class="bmro-dotted-line"></div>
 
       <% if f.object.sales_quote.present? %>
+      <div class="bmro-dotted-line"></div>
         <div class="mt-3">
           <h6 class="text-uppercase text-black-50 mb-1">Order Details</h6>
           <div class="form-row">
@@ -264,9 +264,9 @@
         </div>
       <% end %>
       
-      <div class="bmro-dotted-line"></div>
 
       <div class="mt-2 <%= f.object.sales_quote.present? ? 'card-alternative' : '' %>">
+      <div class="bmro-dotted-line"></div>
         <h6 class="mb-1 bmro-form-heading">Terms and Conditions</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
@@ -284,7 +284,7 @@
         </div>
         <%= f.input :commercial_terms_and_conditions %>
       </div>
-
+      <div class="bmro-dotted-line"></div>
       <div class="form-row mt-3">
         <div class="col-md-6">
           <% if is_authorized(@inquiry, 'resync_inquiry_products') && policy(@inquiry).resync_inquiry_products? %>
