@@ -206,3 +206,24 @@ li.bmro-li-right{
 .bmro-li-right.bmro-active-li{
 	opacity: 0.56!important;
 }
+.bmro-form-input {
+    float: left;
+    line-height: 1.5;
+    color: rgb(73, 80, 87);
+    padding: 5px 23px 5px 8px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(236, 238, 242);
+    border-image: initial;
+    border-radius: 2px;
+    outline: none;
+}
+.bmro-dropdown-icon {
+    background: url(../image/bmro-drop-icon.png) no-repeat right 0.60rem center;
+    background-size: 10px 16px;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+}
+.bmro-form-input:focus{
+	border-color: #687686;
+}
