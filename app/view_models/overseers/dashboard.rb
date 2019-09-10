@@ -11,11 +11,11 @@ class Overseers::Dashboard
   end
 
   def sales_orders
-    SalesOrder.with_includes.joins(:inquiry).where('inquiries.inside_sales_owner_id = ?', overseer.id).where('sales_orders.updated_at > ?', Date.new(2018, 04, 01)).where.not(sales_orders: {status: nil, order_number: nil}).latest
+    SalesOrder.with_includes.joins(:inquiry).where('inquiries.inside_sales_owner_id = ?', overseer.id).where('sales_orders.updated_at > ?', Date.new(2018, 04, 01)).latest
   end
 
   def recent_inquiries
-    inquiries.first(15)
+    inquiries
   end
 
   def inquiry_needs_followup?(inquiry)
@@ -31,7 +31,7 @@ class Overseers::Dashboard
   end
 
   def recent_sales_orders
-    sales_orders.first(15)
+    sales_orders
   end
 
   attr_accessor :overseer

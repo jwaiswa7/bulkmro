@@ -103,8 +103,24 @@ every(1.day, 'resync_requests_status', at: '06:00') do
 end if Rails.env.production?
 
 every(10.minutes, 'resync_remote_requests') do
-  ResyncRemoteRequest.where("hits < 5").each do | resync_request |
-    service = Services::Resources::Shared::ResyncFailedRequests.new(resync_request )
+  ResyncRemoteRequest.where('hits < 5').each do | resync_request |
+    service = Services::Resources::Shared::ResyncFailedRequests.new(resync_request)
     service.call
   end
+end
+
+every(50.minutes, 'bible_upload') do
+  Chewy.strategy(:atomic) do
+    @bible_upload_queue = BibleUpload.where(status: 'Pending').first
+    if @bible_upload_queue.present?
+      service = Services::Overseers::Bible::BaseService.new
+      service.call(@bible_upload_queue)
+    end
+  end
+end
+
+every(1.day, 'set_overseer_monthly_target', if: lambda { |t| t.day == 1 }) do
+  puts 'For setting Monthly Targets'
+  service = Services::Overseers::Targets::SetMonthlyTarget.new
+  service.set_overseer_monthly_target
 end

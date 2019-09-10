@@ -190,6 +190,9 @@ group :development do
   # Preview emails instead of sending them
   gem 'letter_opener'
 
+  # rails console on browser
+  gem 'web-console'
+
   # RuboCop is a Ruby static code analyzer and code formatter
   gem 'rubocop', '~> 0.63.0', require: false
 end
