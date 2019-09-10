@@ -136,7 +136,7 @@
 	margin-bottom: 0px;
 }
 .bmro-nav-main{
-    padding: 0px;
+    padding: 0px!important;
     background: transparent;
     min-height: 29px;
     float: left;
@@ -146,4 +146,12 @@
 .bmro-width-fl{
 	width: 100%;
 	float: left;
+}
+.bmro-breadcrumb-item .breadcrumb-item{
+	color: #f78200!important;
+}
+.bmro-breadcrumb-item .breadcrumb-item+.breadcrumb-item:before{
+	color: #f78200;
+	font-size: 23px;
+	bottom: 8px;
 }
