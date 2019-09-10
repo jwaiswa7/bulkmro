@@ -199,7 +199,7 @@ li.bmro-li-right{
 	background-color: transparent;
 	border: 1px solid transparent;
 }
-.bmro-li-right{
+.bmro-li-right .bmro-list-button{
 	opacity: unset;
 	font-weight: bold;	
 } 
