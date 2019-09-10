@@ -6,7 +6,7 @@
 
     <div class="card-body bmro-card-body">
       <div>
-        <h6 class="text-uppercase text-black-50 mb-1">Opportunity Details</h6>
+        <h6 class="text-uppercase mb-1 bmro-form-heading">Opportunity Details</h6>
         <%= f.input :company, as: :string, disabled: true %>
         <div class="form-row">
           <div class="col-12 col-md-6">
@@ -453,7 +453,7 @@
           </div>
         <% end %>
         <% if is_authorized(@inquiry, 'update') %>
-          <div class="mt-1 mt-md-0 bmro-button bmro-button-mr
+          <div class="mt-1 mt-md-0
             <%= action_name != "new" ? "" : "col-md-12" %>">
             <%= action_button(action_name, @inquiry) %>
           </div>
