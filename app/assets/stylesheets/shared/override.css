@@ -129,3 +129,21 @@
 	float: left;
 	width: 100%;
 }
+.bmro-page-header{
+	width: 100%;
+	float: left;
+	padding: 0px;
+	margin-bottom: 0px;
+}
+.bmro-nav-main{
+    padding: 0px;
+    background: transparent;
+    min-height: 29px;
+    float: left;
+    width: 100%;
+    margin-top: 46px;
+}
+.bmro-width-fl{
+	width: 100%;
+	float: left;
+}
