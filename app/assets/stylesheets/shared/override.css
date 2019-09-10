@@ -111,10 +111,10 @@
 .bmro-form-heading {	
 	color: #2C4159;
 	/*font-family: "Inter UI";*/
-	font-size: 32px;
-	font-weight: 600;
+	font-size: 18px!important;
+	font-weight: bold;
 	letter-spacing: -0.49px;
 	line-height: 39px;
 	float: left;
-	margin-bottom: 19px;
+	margin-bottom: 19px!important;
 }
