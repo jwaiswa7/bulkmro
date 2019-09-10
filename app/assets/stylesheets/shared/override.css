@@ -192,10 +192,17 @@ li.bmro-li-right{
 	color: #2C4159;
 	/*font-family: "Inter UI";*/
 	font-size: 12px;
-	font-weight: 500;
+	font-weight: 600;
 	letter-spacing: -0.47px;
 	line-height: 15px;
 	outline: none;
 	background-color: transparent;
 	border: 1px solid transparent;
+}
+.bmro-li-right{
+	opacity: unset;
+	font-weight: bold;	
+} 
+.bmro-li-right.bmro-active-li{
+	opacity: 0.56!important;
 }
