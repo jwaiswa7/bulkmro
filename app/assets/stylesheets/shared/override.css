@@ -170,17 +170,31 @@
     margin-top: 30px;
 }
 ul.bmro-label-ul{
-  border:none;
-  list-style: none;
-  color: #000;
-  background: none;
-  float: left;
+    border: none;
+    list-style: none;
+    color: #000;
+    background: none;
+    float: left;
+    padding-left: 0px;
+    padding-top: 40px;
 }
 li.bmro-li-right{
-  border-left:4px solid #ff8800; 
-  padding:5px 10px;  
+    margin-bottom: 15px;
+    border-left: 4px solid #ff8800;
+    padding: 0px 7px; 
 }
 .bmro-active-li{
   border-left:4px solid transparent !important;
   padding:5px 10px;
+}
+.bmro-list-button{
+	opacity: 0.56;
+	color: #2C4159;
+	/*font-family: "Inter UI";*/
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: -0.47px;
+	line-height: 15px;
+	outline: none;
+	background-color: transparent;
 }
