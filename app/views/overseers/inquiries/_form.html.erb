@@ -9,7 +9,7 @@
         <h6 class="mb-1 bmro-form-heading">Opportunity Details</h6>
         <%= f.input :company, as: :string, disabled: true %>
         <div class="form-row">
-          <div class="col-12 col-md-6">
+          <div class="col-3 col-md-6">
             <%= f.input :inquiry_number, label: 'Inquiry #', disabled: true %>
           </div>
           <!--          <div class="col-8">-->
@@ -111,8 +111,8 @@
         </div>
       </div>
 
-      <div class="mt-3 card-alternative ">
-        <h6 class="text-uppercase text-black-50 mb-1">Billing / Shipping Details</h6>
+      <div class="mt-3">
+        <h6 class="mb-1 bmro-form-heading">Billing / Shipping Details</h6>
 
         <% if is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
           <div class="form-row">
@@ -160,7 +160,7 @@
       </div>
 
       <div class="mt-3">
-        <h6 class="text-uppercase text-black-50 mb-1">Owner Details</h6>
+        <h6 class="mb-1 bmro-form-heading">Owner Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
             <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', input_html: {class: "select2-single", :'data-placeholder' => 'Select a Procurement Specialist'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
@@ -177,8 +177,8 @@
         </div>
       </div>
 
-      <div class="card-alternative mt-3">
-        <h6 class="text-uppercase text-black-50 mb-1">Important Dates</h6>
+      <div class="mt-3">
+        <h6 class="mb-1 bmro-form-heading">Important Dates</h6>
         <div class="form-row">
           <div class="col-12 col-md-6">
             <% if f.object.created_at %>
@@ -258,7 +258,7 @@
       <% end %>
 
       <div class="mt-2 <%= f.object.sales_quote.present? ? 'card-alternative' : '' %>">
-        <h6 class="text-uppercase text-black-50 mb-1">Terms and Conditions</h6>
+        <h6 class="mb-1 bmro-form-heading">Terms and Conditions</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
             <%= f.input :price_type, label: 'Delivery', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
@@ -293,7 +293,7 @@
 
       <% if f.object.persisted? %>
         <div class="mt-3">
-          <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
+          <h6 class="mb-1 bmro-form-heading">Products</h6>
           <div class="form-row d-none d-md-flex">
             <div class="col-1 text-center">
               <div class="form-group mb-0">
