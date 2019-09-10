@@ -238,7 +238,7 @@ appearance: none !important;
 .select2-selection__arrow{
 	display: none!important;
 }
-.select2-container .select2-selection--single .select2-selection__rendered{
+.select2-container.bmro-form-input-height .select2-selection--single .select2-selection__rendered{
 	white-space:unset;
 }
 /*input_html: { class: 'bmro-form-input bmro-dropdown-icon' } */
