@@ -4,6 +4,10 @@
 .form-control-label abbr{
 	color: #FF8800 !important;
 }
+.bmro-nav-ul{
+	width: 100%;
+	float: left;
+}
 .bmro-nav-ul li{
 	text-align: center;
 	padding: 0px 0px !important; 
@@ -18,8 +22,6 @@
 	letter-spacing: -0.55px;
 	line-height: 16px;
 	display: inline-block;
-	width: 100%;
-	float: left;
 }
 .bmro-nav-ul .nav-link.active, .nav-tabs .nav-item.show .nav-link{
 	background-color: #FFFFFF!important;
