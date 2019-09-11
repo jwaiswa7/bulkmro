@@ -249,30 +249,58 @@ li.bmro-li-right{
     min-height: 176px;
     padding: 28px 27px 23px!important;
 }
-.select2-selection__clear{
-    display: none!important;
-}
-.select2-selection__arrow{
-    display: none!important;
-}
-.select2-container.bmro-form-input-height .select2-selection--single .select2-selection__rendered{
-    white-space:unset;
-}
-.justify-content-center{
-    width: 100%;
-    float: left;
-}
-.custom-file label.custom-file-label {
-    line-height: 1.65;
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden; 
-    float: left;
-    padding: 6px 8px 4px;
-    color: #2C4159;
+
+.custom-file-label::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: block;
     height: auto;
-    /*border: 2px solid rgb(236, 238, 242)!important!important;*/
-    border-color: rgb(236, 238, 242)!important;
-    border-width: 2px;
-    opacity: unset;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 5px 17px;
+    line-height: 1.5;
+    color: #fff;
+    content: "Browse";
+    background-color: #2C4159;
+    border: 1px solid #2C4159!important;
+    border-radius: 2px;
+}
+.bmro-product-btn-parent{
+    position: absolute;
+    bottom: 24px;
+    background-color: #fff!important;
+    border: 2px solid #ECEEF2;
+    width: fit-content;
+    right: 0px;
+    float: left;
+    margin: 0 auto;
+    left: 0;
+}
+.bmro-product-btn {
+    color: #2C4159;
+    /* font-family: "Inter UI"; */
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: -0.47px;
+    line-height: 15px;
+    text-transform: capitalize;
+    float: left;
+    border: none;
+    outline: none!important;
+    box-shadow: none;
+    background-color: #Fff;
+    padding: 17px 21px;
+}
+.bmro-product-btn:focus{
+    box-shadow: unset!important;
+}
+.bmro-product-btn:hover{
+    background-color: #F0F2F6;
+    color: #2C4159;
+}
+.bmro-fl{
+    float: left;
 }
