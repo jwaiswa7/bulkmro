@@ -73,11 +73,11 @@
     overflow-x: hidden;   
 }
 .bmro-card-body::-webkit-scrollbar {
-  width: 5px;
+  width: 0px;
 }
  
 .bmro-card-body::-webkit-scrollbar-thumb {
-  background: #666; 
+  background: #fff; 
 }
 .bmro-card-header{
     width: 250px;
