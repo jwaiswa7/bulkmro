@@ -69,8 +69,8 @@
           <% end %>
         </div>
 
-        <div class="form-row">
-          <div class="col-md-8">
+        <div class="form-row bmro-custom-width">
+          <div class="col-md-7">
             <div class="form-row">
               <div class="col-6 col-md-6">
                 <%= f.input :opportunity_source, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources), disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders?, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
@@ -84,7 +84,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-5">
             <div class="form-row">
               <div class="col-6 col-md-8">
                 <%= f.input :potential_amount, required: true, input_html: {min: 0.01},input_html: { class: 'bmro-form-input' }, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
