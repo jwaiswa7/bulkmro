@@ -53,17 +53,17 @@
         </div>
         <div class="form-row">
           <div class="col-6">
-            <%= f.input :subject, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, required: true %>
+            <%= f.input :subject, required: true %>
           </div>
           <div class="col-6">
-            <% if f.object.calculation_sheet.attached? %>
+            <% if f.object.calculation_sheet.attached?, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
               <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: "#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe %>
             <% else %>
-              <%= f.input :calculation_sheet, wrapper: :custom_file, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, label: 'Calculation sheet', hint: false %>
+              <%= f.input :calculation_sheet, wrapper: :custom_file, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, label: 'Calculation sheet', input_html: { class: 'bmro-form-input-img' }, hint: false %>
             <% end %>
           </div>
           <% if f.object.persisted? %>
-            <a class="btn btn-sm text-success ml-1 mt-2 align-self-center text-small mt-0 bmro-button" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path(id: f.object.to_param) %>" target="_blank">
+            <a class="btn btn-sm text-success ml-1 mt-2 align-self-center text-small mt-0 bmro-button bmro-button-imp" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path(id: f.object.to_param) %>" target="_blank">
               <i class="fal fa-download"></i>
             </a>
           <% end %>
@@ -454,7 +454,7 @@
       <% end %>
     </div>
 
-    
+
     <div class="card-header bmro-card-header">
       <div class="form-row bmro-form-row">
         <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? && action_name != "new" %>

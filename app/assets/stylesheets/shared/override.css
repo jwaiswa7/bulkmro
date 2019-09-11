@@ -113,6 +113,10 @@
 	background-color: #385372!important;
    	color: #FFFFFF!important;
 }
+.bmro-button-imp{
+    background-color: #2C4159!important;
+    color: #FFFFFF!important;	
+}
 .bmro-button-mr{
 	margin-right: 10px;
 }
@@ -231,6 +235,9 @@ li.bmro-li-right{
 	background-size: 10px 16px;
 	-webkit-appearance: none !important;
 	appearance: none !important;
+}
+.bmro-form-input-img{
+	
 }
 .bmro-form-input:focus{
 	border-color: #687686;
