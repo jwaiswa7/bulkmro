@@ -573,6 +573,13 @@
 
                   <div class="flex-grow-1">
                     <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                    <% if inquiry_product.object.persisted? %>
+                      <%= format_boolean_label(inquiry_product.object.product.synced?, 'synced') %>
+                    <% else %>
+                      <span class="text-warning" data-toggle="tooltip" title="Save to see sync status">
+                        <i class="far fa-ban"></i>
+                      </span>
+                    <% end %>                    
                   </div>
 
                 </div>
@@ -618,8 +625,8 @@
               <div class="col-2 col-md-1 text-center">
                 <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? %>
                   <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"
-                     <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success"
-                     <% else %>  class="text-warning"
+                     <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success bmro-inventory-color"
+                     <% else %>  class="text-warning bmro-inventory-color"
                      <% end %>title="Resync Inventory"><%= inquiry_product.object.product.stocks.total_qty %></a>
                 <% end %>
               </div>
