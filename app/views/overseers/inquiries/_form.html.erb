@@ -454,8 +454,7 @@
       <% end %>
     </div>
 
-
-
+    
     <div class="card-header bmro-card-header">
       <div class="form-row bmro-form-row">
         <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? && action_name != "new" %>
@@ -466,7 +465,7 @@
         <% end %>
         <% if is_authorized(@inquiry, 'update') %>
           <div class="mt-1 mt-md-0
-            <%= action_name != "new" ? "" : "col-md-12 bmro-form-input bmro-dropdown-icon" %>">
+            <%= action_name != "new" ? "" : "col-md-12" %>">
             <%= action_button(action_name, @inquiry) %>
           </div>
         <% end %>

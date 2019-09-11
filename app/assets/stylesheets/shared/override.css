@@ -109,6 +109,10 @@
     outline: none!important;
     text-transform: capitalize!important;
 }
+.bmro-button:hover{
+	background-color: #385372!important;
+    color: #FFFFFF;
+}
 .bmro-button-mr{
 	margin-right: 10px;
 }
