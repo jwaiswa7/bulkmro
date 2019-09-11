@@ -75,7 +75,10 @@
               <%= row_action_button(new_overseers_inquiry_sales_quote_email_message_path(@inquiry, sales_quote), 'envelope', 'Send Email', 'dark') %>
             <% end %>
             <% if is_authorized(sales_quote, 'show') && policy(sales_quote).show? %>
-              <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+              <% if sales_quote.ancestors.count > 0 %>
+                <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf, is_revision_visible: true), 'file-pdf', 'Sales Quote with Revision', 'success', :_blank) %>
+              <% end %>
+              <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf, is_revision_visible: false), 'file-pdf', 'Download', 'dark', :_blank) %>
             <% end %>
             <% if is_authorized(sales_quote, 'new_freight_request') && policy(sales_quote).new_freight_request? %>
               <%= row_action_button(new_overseers_freight_request_path(:sales_quote_id => sales_quote.to_param), 'external-link', 'New Freight Request', 'warning') %>
