@@ -41,7 +41,7 @@ class Overseers::CompaniesController < Overseers::BaseController
           @company.company_creation_request.update_attributes(company_id: @company.id)
           @company.company_creation_request.activity.update_attributes(company: @company)
           @notification.send_company_creation_confirmation(
-            @company.company_creation_request,
+              @company.company_creation_request,
               action_name.to_sym,
               @company,
               overseers_company_path(@company),
@@ -107,7 +107,9 @@ class Overseers::CompaniesController < Overseers::BaseController
           @date_range = params['company_report']['date_range']
         end
 
-        indexed_company_reports = service.indexed_records.aggregations['company_report_over_month']['buckets']['custom-range']['company_report']['buckets']
+        service_buckets = service.indexed_records.aggregations['company_report_over_month']['buckets']['custom-range']['accounts']['buckets']
+        indexed_company_reports = []
+        service_buckets.map { |x| x['companies']['buckets'].map { |y| indexed_company_reports << y } }
         @per = (params['per'] || params['length'] || 20).to_i
         @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
         @indexed_company_reports = Kaminari.paginate_array(indexed_company_reports).page(@page).per(@per)
@@ -140,12 +142,12 @@ class Overseers::CompaniesController < Overseers::BaseController
 
   private
 
-    def set_company
-      @company ||= Company.find(params[:id])
-    end
+  def set_company
+    @company ||= Company.find(params[:id])
+  end
 
-    def company_params
-      params.require(:company).permit(
+  def company_params
+    params.require(:company).permit(
         :account_id,
         :name,
         :industry_id,
@@ -174,6 +176,6 @@ class Overseers::CompaniesController < Overseers::BaseController
         contact_ids: [],
         brand_ids: [],
         product_ids: []
-      )
-    end
+    )
+  end
 end

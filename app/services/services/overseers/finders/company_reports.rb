@@ -78,6 +78,7 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
     else
       date_range = {to: Date.today.end_of_day.strftime('%d-%m-%Y %H:%M:%S'), key: 'custom-range'}
     end
+    # Sub-bucket aggregations
     indexed_records = indexed_records.aggregations(
       'company_report_over_month': {
           date_range: {
@@ -88,91 +89,103 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
               ],
               keyed: true
           },
-          aggs: {
-              'company_report': {
-                  'terms': {'field': 'company_key', size: 10000},
-                  aggs: {
-                      live_inquiries: {
-                        sum: {
-                            field: 'live_inquiry'
-                        }
-                      },
-                      sales_invoices: {
-                          sum: {
-                              field: 'invoices_count'
-                          }
-                      },
-                      sales_invoices_margin: {
-                          sum: {
-                              field: 'invoices_total_margin'
-                          }
-                      },
-                      sales_invoices_total: {
-                          sum: {
-                              field: 'invoice_total'
-                          }
-                      },
-                      sales_quotes: {
-                          sum: {
-                              field: 'sales_quotes_count'
-                          }
-                      },
-                      sales_quotes_total: {
-                          sum: {
-                              field: 'sales_quotes_total'
-                          }
-                      },
-                      sales_quotes_margin_percentage: {
-                          sum: {
-                              field: 'sales_quotes_margin_percentage'
-                          }
-                      },
-                      sales_orders: {
-                          sum: {
-                              field: 'sales_orders_count'
-                          }
-                      },
-                      sales_orders_total: {
-                          sum: {
-                              field: 'sales_orders_total'
-                          }
-                      },
-                      sales_orders_margin: {
-                          sum: {
-                              field: 'sales_orders_total_margin'
-                          }
-                      },
-                      sales_orders_margin_percentage: {
-                          sum: {
-                              field: 'sales_orders_overall_margin_percentage'
-                          }
-                      },
-                      expected_orders: {
-                          sum: {
-                              field: 'expected_order'
-                          }
-                      },
-                      expected_orders_total: {
-                          sum: {
-                              field: 'expected_order_total'
-                          }
-                      },
-                      sku: {
-                          sum: {
-                              field: 'sku'
-                          }
-                      },
-                      cancelled_invoiced: {
-                          sum: {
-                              field: 'cancelled_invoiced'
-                          }
-                      },
-                      cancelled_invoiced_total: {
-                          sum: {
-                              field: 'cancelled_invoiced_total'
-                          }
-                      }
+          "aggs": {
+              "accounts": {
+                  "terms": {
+                      "field": "account_id",
+                      "size": 10000
+                  },
+                  "aggs": {
+                      "companies": {
+                          "terms": {
+                              "field": "company_key",
+                              "size": 10000
+                          },
+                          aggs: {
+                              live_inquiries: {
+                                  sum: {
+                                      field: 'live_inquiry'
+                                  }
+                              },
+                              sales_invoices: {
+                                  sum: {
+                                      field: 'invoices_count'
+                                  }
+                              },
+                              sales_invoices_margin: {
+                                  sum: {
+                                      field: 'invoices_total_margin'
+                                  }
+                              },
+                              sales_invoices_total: {
+                                  sum: {
+                                      field: 'invoice_total'
+                                  }
+                              },
+                              sales_quotes: {
+                                  sum: {
+                                      field: 'sales_quotes_count'
+                                  }
+                              },
+                              sales_quotes_total: {
+                                  sum: {
+                                      field: 'sales_quotes_total'
+                                  }
+                              },
+                              sales_quotes_margin_percentage: {
+                                  sum: {
+                                      field: 'sales_quotes_margin_percentage'
+                                  }
+                              },
+                              sales_orders: {
+                                  sum: {
+                                      field: 'sales_orders_count'
+                                  }
+                              },
+                              sales_orders_total: {
+                                  sum: {
+                                      field: 'sales_orders_total'
+                                  }
+                              },
+                              sales_orders_margin: {
+                                  sum: {
+                                      field: 'sales_orders_total_margin'
+                                  }
+                              },
+                              sales_orders_margin_percentage: {
+                                  sum: {
+                                      field: 'sales_orders_overall_margin_percentage'
+                                  }
+                              },
+                              expected_orders: {
+                                  sum: {
+                                      field: 'expected_order'
+                                  }
+                              },
+                              expected_orders_total: {
+                                  sum: {
+                                      field: 'expected_order_total'
+                                  }
+                              },
+                              sku: {
+                                  sum: {
+                                      field: 'sku'
+                                  }
+                              },
+                              cancelled_invoiced: {
+                                  sum: {
+                                      field: 'cancelled_invoiced'
+                                  }
+                              },
+                              cancelled_invoiced_total: {
+                                  sum: {
+                                      field: 'cancelled_invoiced_total'
+                                  }
+                              }
 
+                          }
+
+                      }
                   }
               }
           }
