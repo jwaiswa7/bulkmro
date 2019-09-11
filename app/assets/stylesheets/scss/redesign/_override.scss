@@ -366,5 +366,15 @@ li.bmro-li-right{
     height: 59px!important;
 }
 .bmro-product-icon-right{
-    color: red;
+    border-left: 2px solid #ECEEF2;
+    position: relative;
+    left: 56px;
+    float: left;
+    padding-left: 24px;
+}
+.bmro-product-icon-right .form-group a{
+    color: #2C4159 !important;
+}
+.bmro-inventory-color{
+   float: left; 
 }
