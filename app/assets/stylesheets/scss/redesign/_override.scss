@@ -68,6 +68,16 @@
     padding-top: 55px;
     padding-left: 100px;
     box-sizing: border-box;
+    max-height: 500px;
+    overflow: auto;
+    overflow-x: hidden;   
+}
+.bmro-card-body::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+.bmro-card-body::-webkit-scrollbar-thumb {
+  background: #666; 
 }
 .bmro-card-header{
     width: 250px;
