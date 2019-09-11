@@ -211,8 +211,13 @@ li.bmro-li-right{
 }
 .bmro-li-right .bmro-list-button{
     opacity: unset;
-    font-weight: bold;  
+    font-weight: bold; 
+    cursor: pointer;     
 } 
+.bmro-li-right .bmro-list-button:hover{
+    color: #2C4159!important;
+    font-weight: bold!important;
+}
 .bmro-li-right.bmro-active-li{
     opacity: 0.56!important;
 }
