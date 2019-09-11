@@ -224,11 +224,11 @@ class SalesOrder < ApplicationRecord
 
 
   def serialized_billing_address
-    self.billing_address || self.inquiry.billing_address
+    self.billing_address.present? ? self.billing_address : self.inquiry.billing_address
   end
 
   def serialized_shipping_address
-    self.shipping_address || self.inquiry.shipping_address
+    self.shipping_address.present? ? self.shipping_address : self.inquiry.shipping_address
   end
 
   def filename(include_extension: false)
