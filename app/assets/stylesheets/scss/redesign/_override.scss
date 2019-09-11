@@ -4,33 +4,7 @@
 .form-control-label abbr{
     color: #FF8800 !important;
 }
-.bmro-nav-ul{
-    width: 100%;
-    float: left;
-    top: 0px!important;
-}
-.bmro-nav-ul li{
-    text-align: center;
-    padding: 0px 0px !important; 
-    border: 1px solid transparent !important;
-    border-radius: 5px 5px 0 0 !important;
-    background-color: transparent !important;
-    margin: 0px !important;
-    color: #8C97A3 !important;
-    /*font-family: "Inter UI" !important;*/
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    letter-spacing: -0.55px;
-    line-height: 16px;
-    display: inline-block;
-}
-.bmro-nav-ul .nav-link.active, .nav-tabs .nav-item.show .nav-link{
-    background-color: #FFFFFF!important;
-    color: #2C4159!important; 
-    padding: 11px 0px;
-    font-size: 14px !important;
-    font-weight: bold !important;
-}
+
 .bmro-nav-ul .nav-link{
     padding: 11px 0px;
     color: #8C97A3 !important;
@@ -44,17 +18,7 @@
 .bmro-container{
     max-width: 1160px!important;
 }
-.bmro-bradecrumb-edit{
-    float: left!important;
-    color: #2C4159!important;
-    /*font-family: "Inter UI";*/
-    font-size: 21px!important;
-    font-weight: bold!important;
-    letter-spacing: -0.82px;
-    line-height: 25px!important;
-    width: 100%;
-    margin-bottom: 22px!important;
-}
+
 .bmro-bradecrumb-edit span{
     margin-left: 5px;
 }
@@ -147,14 +111,7 @@
     padding: 0px;
     margin-bottom: 0px;
 }
-.bmro-nav-main{
-    padding: 0px!important;
-    background: transparent;
-    min-height: 29px;
-    float: left;
-    width: 100%;
-    margin-top: 46px;
-}
+
 .bmro-width-fl{
     width: 100%;
     float: left;
@@ -178,24 +135,7 @@
     margin-bottom: 30px;
     margin-top: 30px;
 }
-ul.bmro-label-ul{
-    border: none;
-    list-style: none;
-    color: #000;
-    background: none;
-    float: left;
-    padding-left: 0px;
-    padding-top: 40px;
-}
-li.bmro-li-right{
-    margin-bottom: 15px;
-    border-left: 4px solid #ff8800;
-    padding: 0px 7px; 
-}
-.bmro-active-li{
-  border-left:4px solid transparent !important;
-  padding:5px 10px;
-}
+
 .bmro-list-button{
     opacity: 0.56;
     color: #2C4159;
@@ -235,9 +175,6 @@ li.bmro-li-right{
     background-size: 10px 16px;
     -webkit-appearance: none !important;
     appearance: none !important;
-}
-.bmro-form-input-img{
-
 }
 .bmro-form-input:focus{
     border-color: #687686;
