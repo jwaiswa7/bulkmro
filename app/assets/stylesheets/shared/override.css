@@ -295,10 +295,15 @@ li.bmro-li-right{
     border-radius: 2px;
 }
 .bmro-product-btn-parent{
-	position: relative;
-	bottom: -46px;
-	background-color: #fff!important;
-	border: 2px solid #ECEEF2; 
+    position: absolute;
+    bottom: 24px;
+    background-color: #fff!important;
+    border: 2px solid #ECEEF2;
+    width: fit-content;
+    right: 0px;
+    float: left;
+    margin: 0 auto;
+    left: 0;
 }
 .bmro-product-btn {
     color: #2C4159;
