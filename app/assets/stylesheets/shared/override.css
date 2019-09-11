@@ -294,4 +294,16 @@ li.bmro-li-right{
     border: 1px solid #2C4159!important;
     border-radius: 2px;
 }
+.bmro-product-btn-parent{
+
+}
+.bmro-product-btn{
+    color: #2C4159;
+    font-family: "Inter UI";
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.47px;
+    line-height: 15px;
+    float: left;
+}
 /*input_html: { class: 'bmro-form-input bmro-dropdown-icon' } */
