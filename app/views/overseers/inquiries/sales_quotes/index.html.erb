@@ -34,7 +34,6 @@
     <% content_for :header_row do %>
       <th class="no-sort"></th>
       <th class="no-sort desktop text-right">Doc ID</th>
-      <th class="no-sort desktop text-right">Revision</th>
       <th class="no-sort desktop text-right">Sent At</th>
       <th>Created By</th>
       <th class="no-sort desktop text-right">Line Items</th>
@@ -82,8 +81,7 @@
               <%= row_action_button(new_overseers_freight_request_path(:sales_quote_id => sales_quote.to_param), 'external-link', 'New Freight Request', 'warning') %>
             <% end %>
           </td>
-          <td class="text-right"><%= sales_quote.id %></td>
-          <td class="text-right"><%= sales_quote.ancestors.count > 0 ? "R#{sales_quote.ancestors.count}" : "-" %></td>
+          <td class="text-right"><%= sales_quote.ancestors.count > 0 ? "R#{sales_quote.ancestors.count} - #{sales_quote.id}" : ""  %></td>
           <td class="text-right"><%= format_date(sales_quote.sent_at) %></td>
           <td class="text-right"><%= sales_quote.created_by.to_s %></td>
           <td class="text-right"><%= sales_quote.rows.size %></td>
