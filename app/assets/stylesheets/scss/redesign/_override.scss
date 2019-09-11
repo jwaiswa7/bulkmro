@@ -214,9 +214,8 @@ li.bmro-li-right{
     font-weight: bold; 
     cursor: pointer;     
 } 
-li.bmro-li-right:hover{
-    color: #2C4159!important;
-    font-weight: bold!important;
+.bmro-li-right.bmro-active-li:hover {
+    opacity: unset!important;
 }
 .bmro-li-right.bmro-active-li{
     opacity: 0.56!important;
