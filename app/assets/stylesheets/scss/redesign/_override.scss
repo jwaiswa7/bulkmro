@@ -378,7 +378,9 @@ li.bmro-li-right{
     color: #2C4159 !important;
 }
 .bmro-inventory-color{
-   float: left; 
+    float: left;
+    display: flex;
+    align-items: center;
 }
 .bmro-card-body .custom-file-label { margin-top:0!important; }
 .bmro-button-parent{
