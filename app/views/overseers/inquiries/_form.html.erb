@@ -466,8 +466,8 @@
         <% end %>
         <% if is_authorized(@inquiry, 'update') %>
           <div class="mt-1 mt-md-0
-            <%= action_name != "new" ? "" : "col-md-12" %>">
-            <%= action_button(action_name, @inquiry), input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
+            <%= action_name != "new", input_html: { class: 'bmro-form-input bmro-dropdown-icon' } ? "" : "col-md-12" %>">
+            <%= action_button(action_name, @inquiry) %>
           </div>
         <% end %>
         <% if (is_authorized(@inquiry, 'duplicate') && policy(@inquiry).duplicate?) %>
