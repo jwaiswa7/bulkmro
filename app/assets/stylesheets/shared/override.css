@@ -295,15 +295,25 @@ li.bmro-li-right{
     border-radius: 2px;
 }
 .bmro-product-btn-parent{
-
+	position: relative;
+	bottom: -46px;
+	background-color: #fff!important;
 }
-.bmro-product-btn{
+.bmro-product-btn {
     color: #2C4159;
-    font-family: "Inter UI";
+    /* font-family: "Inter UI"; */
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 800;
     letter-spacing: -0.47px;
     line-height: 15px;
+    text-transform: capitalize;
     float: left;
+    border: none;
+    box-shadow: none;
+    background-color: #Fff;
+    padding: 17px 21px;
+}
+.bmro-product-btn:hover{
+    background-color: #F0F2F6;
 }
 /*input_html: { class: 'bmro-form-input bmro-dropdown-icon' } */
