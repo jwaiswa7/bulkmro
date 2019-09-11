@@ -34,6 +34,7 @@
     <% content_for :header_row do %>
       <th class="no-sort"></th>
       <th class="no-sort desktop text-right">Doc ID</th>
+      <th class="no-sort desktop text-right">Revision</th>
       <th class="no-sort desktop text-right">Sent At</th>
       <th>Created By</th>
       <th class="no-sort desktop text-right">Line Items</th>
@@ -81,14 +82,15 @@
               <%= row_action_button(new_overseers_freight_request_path(:sales_quote_id => sales_quote.to_param), 'external-link', 'New Freight Request', 'warning') %>
             <% end %>
           </td>
-          <td><%= sales_quote.id %></td>
-          <td><%= format_date(sales_quote.sent_at) %></td>
-          <td><%= sales_quote.created_by.to_s %></td>
-          <td><%= sales_quote.rows.size %></td>
-          <td><%= format_currency(sales_quote.calculated_total) %></td>
-          <td><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
-          <td><%= format_date(sales_quote.created_at) %></td>
-          <td>
+          <td class="text-right"><%= sales_quote.id %></td>
+          <td class="text-right"><%= sales_quote.ancestors.count > 0 ? "R#{sales_quote.ancestors.count}" : "-" %></td>
+          <td class="text-right"><%= format_date(sales_quote.sent_at) %></td>
+          <td class="text-right"><%= sales_quote.created_by.to_s %></td>
+          <td class="text-right"><%= sales_quote.rows.size %></td>
+          <td class="text-right"><%= format_currency(sales_quote.calculated_total) %></td>
+          <td class="text-right"><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
+          <td class="text-right"><%= format_date(sales_quote.created_at) %></td>
+          <td class="text-right">
             <% if policy(sales_quote).reset_quote_form? %>
               <% if sales_quote.sales_orders.present? %>
                 <%= status_badge(sales_quote.sales_orders.last.status) %>
