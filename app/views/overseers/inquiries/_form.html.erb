@@ -630,6 +630,28 @@
                      <% end %>title="Resync Inventory"><%= inquiry_product.object.product.stocks.total_qty %></a>
                 <% end %>
               </div>
+              
+              <div class="bmro-product-icon-right">  
+                  <div class="form-group align-self-center mr-1">
+                    <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.approved? %>
+                      <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-success" data-toggle="tooltip" title="Approved product
+                      <% if inquiry_product.object.product.last_comment %>;  <%= inquiry_product.object.product.last_comment.message %>
+                      <% end %>"><i class="far fa-comment-lines"></i></a>
+                    <% elsif inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.rejected? %>
+                      <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-danger" data-toggle="tooltip" title="Rejected product
+                      <% if inquiry_product.object.product.last_comment %>; <%= inquiry_product.object.product.last_comment.message %>
+                      <% end %>"><i class="far fa-comment-lines"></i></a>
+                    <% elsif inquiry_product.object.persisted? %>
+                      <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-warning" data-toggle="tooltip" title="Discuss product
+                      <% if inquiry_product.object.product.last_comment %>;  <%= inquiry_product.object.product.last_comment.message %>
+                      <% end %>"><i class="far fa-comment-lines"></i></a>
+                    <% else %>
+                      <span class="text-success" data-toggle="tooltip" title="Approved product">
+                        <i class="far fa-check"></i>
+                      </span>
+                    <% end %>
+                  </div> 
+              </div>
 
             </div>
           <% end %>
