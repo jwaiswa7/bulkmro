@@ -625,8 +625,8 @@
               <div class="col-2 col-md-1 text-center">
                 <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? %>
                   <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"
-                     <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success bmro-inventory-color"
-                     <% else %>  class="text-warning bmro-inventory-color"
+                     <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success bmro-inventory-color .bmro-product-height-input"
+                     <% else %>  class="text-warning bmro-inventory-color .bmro-product-height-input"
                      <% end %>title="Resync Inventory"><%= inquiry_product.object.product.stocks.total_qty %></a>
                 <% end %>
                 <div class="bmro-product-icon-right">  

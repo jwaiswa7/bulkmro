@@ -108,6 +108,7 @@
     line-height: 16px!important;
     outline: none!important;
     text-transform: capitalize!important;
+    box-shadow: none!important;
 }
 .bmro-button:hover{
     background-color: #385372!important;
@@ -189,7 +190,8 @@ ul.bmro-label-ul{
 li.bmro-li-right{
     margin-bottom: 15px;
     border-left: 4px solid #ff8800;
-    padding: 0px 7px; 
+    padding: 0px 7px;
+    cursor: pointer;
 }
 .bmro-active-li{
   border-left:4px solid transparent !important;
