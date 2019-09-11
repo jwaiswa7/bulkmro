@@ -315,9 +315,13 @@ li.bmro-li-right{
     text-transform: capitalize;
     float: left;
     border: none;
+    outline: none!important;
     box-shadow: none;
     background-color: #Fff;
     padding: 17px 21px;
+}
+.bmro-product-btn:focus{
+	box-shadow: unset!important;
 }
 .bmro-product-btn:hover{
     background-color: #F0F2F6;
