@@ -298,6 +298,7 @@ li.bmro-li-right{
 	position: relative;
 	bottom: -46px;
 	background-color: #fff!important;
+	border: 2px solid #ECEEF2; 
 }
 .bmro-product-btn {
     color: #2C4159;
@@ -315,5 +316,9 @@ li.bmro-li-right{
 }
 .bmro-product-btn:hover{
     background-color: #F0F2F6;
+    color: #2C4159;
+}
+.bmro-fl{
+	float: left;
 }
 /*input_html: { class: 'bmro-form-input bmro-dropdown-icon' } */

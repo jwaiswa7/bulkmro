@@ -431,18 +431,18 @@
             <%#= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
           <% else %>
             <div class="form-row bmro-product-btn-parent">
-              <div class="col-md-3">
+              <div class="bmro-fl">
                 <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-success btn-outline-success btn-block mb-2 mb-md-0 bmro-product-btn"><i class="fa fa-plus-circle mr-1"></i>Add New</a>
               </div>
-              <div class="col-md-3">
+              <div class="bmro-fl">
                 <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 bmro-product-btn"><i class="fal fa-clipboard-list mr-1"></i>Add From Excel</a>
               </div>
-              <div class="col-md-3">
+              <div class="bmro-fl">
                 <%= f.add_nested_fields_link :inquiry_products, class: 'btn btn-outline-success btn-block mb-2 mb-md-0 bmro-product-btn' do %>
                   <i class="fa fa-list-ul mr-1"></i>Add From List
                 <% end %>
               </div>
-              <div class="col-md-3">
+              <div class="bmro-fl">
                 <a href="<%= new_overseers_kit_path(@inquiry) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 bmro-product-btn"><i class="fal fa-clipboard-list mr-1"></i>Create a Kit</a>
               </div>
             </div>
