@@ -7,7 +7,7 @@
 .bmro-nav-ul{
     width: 100%;
     float: left;
-    top: 0px!important;
+    top: 48px!important;
 }
 .bmro-nav-ul li{
     text-align: center;
@@ -329,4 +329,9 @@ li.bmro-li-right{
 }
 .bmro-fl{
     float: left;
+}
+.bmro-nav-sticky{
+    position: fixed;
+    right: 0;
+    left: 0;   
 }
