@@ -245,8 +245,8 @@ appearance: none !important;
 .select2-container.bmro-form-input-height .select2-selection--single .select2-selection__rendered{
 	white-space:unset;
 }
-.justify-content-center{
+/*.justify-content-center{
 	width: 100%;
 	float: left;
-}
+}*/
 /*input_html: { class: 'bmro-form-input bmro-dropdown-icon' } */
