@@ -237,7 +237,7 @@ li.bmro-li-right{
 	appearance: none !important;
 }
 .bmro-form-input-img{
-	
+
 }
 .bmro-form-input:focus{
 	border-color: #687686;
@@ -261,5 +261,37 @@ li.bmro-li-right{
 .justify-content-center{
 	width: 100%;
 	float: left;
+}
+.custom-file label.custom-file-label {
+    line-height: 1.65;
+    font-weight: bold;
+    white-space: nowrap;
+   	overflow: hidden; 
+    float: left;
+    padding: 6px 8px 4px;
+    color: #2C4159;
+    height: auto;
+    /*border: 2px solid rgb(236, 238, 242)!important!important;*/
+    border-color: rgb(236, 238, 242)!important;
+    border-width: 2px;
+    opacity: unset;
+}
+.custom-file-label::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: block;
+    height: auto;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 5px 17px;
+    line-height: 1.5;
+    color: #fff;
+    content: "Browse";
+    background-color: #2C4159;
+    border: 1px solid #2C4159!important;
+    border-radius: 2px;
 }
 /*input_html: { class: 'bmro-form-input bmro-dropdown-icon' } */
