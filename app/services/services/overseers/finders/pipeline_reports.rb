@@ -48,18 +48,18 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
 
   def aggregation_pipeline_report(indexed_records)
     if @pipeline_report_params.present? && @pipeline_report_params['date_range'].present?
-      from = @pipeline_report_params['date_range'].split('~').first.to_date.strftime('%Y-%m-%d') || Date.new(2019, 01, 01).strftime('%Y-%m-%d')
-      to = @pipeline_report_params['date_range'].split('~').last.to_date.strftime('%Y-%m-%d') || Date.new(2019, 01, 31).strftime('%Y-%m-%d')
+      from = @pipeline_report_params['date_range'].split('~').first.to_date.beginning_of_day.strftime('%d-%m-%Y %H:%M:%S') || Date.new(2019, 01, 01).to_date.beginning_of_day.strftime('%d-%m-%Y %H:%M:%S')
+      to = @pipeline_report_params['date_range'].split('~').last.to_date.end_of_day.strftime('%d-%m-%Y %H:%M:%S') || Date.new(2019, 01, 31).to_date.end_of_day.strftime('%d-%m-%Y %H:%M:%S')
       date_range = {from: from, to: to, key: 'custom-range'}
     else
-      date_range = {from: Date.new(2018, 04, 01).strftime('%Y-%m-%d'), to: Date.today.strftime('%Y-%m-%d'), key: 'custom-range'}
+      date_range = {from: Date.new(2018, 04, 01).to_date.beginning_of_day.strftime('%d-%m-%Y %H:%M:%S'), to: Date.today.end_of_day.strftime('%d-%m-%Y %H:%M:%S'), key: 'custom-range'}
     end
-
     pipeline_query = {
         'inquiries_over_time': {
             'date_histogram': {
                 'field': 'created_at',
                 'interval': 'month',
+                format: 'dd-MM-yyy H:m:s',
                 keyed: true,
                 order: {_key: 'desc'}
             },
@@ -67,7 +67,7 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
                 'pipeline': {
                     'terms': {
                         'size': 20,
-                        'field': 'status_key'
+                        'field': 'pipeline_status_key'
                     },
                     aggs: {
                         inquiry_value: {
@@ -87,7 +87,7 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
         'summary_row': {
             'terms': {
                 'size': 20,
-                'field': 'status_key',
+                'field': 'pipeline_status_key',
             },
             aggs: {
                 statuswise_inquiry_summary: {
@@ -108,7 +108,7 @@ class Services::Overseers::Finders::PipelineReports < Services::Overseers::Finde
       'pipeline_filter': {
           'date_range': {
               'field': 'created_at',
-              'format': 'yyyy-MM-dd',
+              'format': 'dd-MM-yyy H:m:s',
               'ranges': [
                   date_range
               ],

@@ -379,6 +379,7 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get 'resync_all_sales_orders'
         get 'pending'
         get 'account_approval_pending'
         get 'cancelled'
@@ -420,6 +421,7 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get 'resync_all_purchase_orders'
         get 'export_material_readiness'
         get 'manually_closed'
         get 'pending_sap_sync'
@@ -619,14 +621,15 @@ Rails.application.routes.draw do
         end
       end
     end
-
-    namespace 'bible_sales_orders' do
+    namespace 'bible' do
       resources :imports do
+        member do
+          get 'bible_upload_log'
+        end
         collection do
-          get 'new_excel_bible_order_import'
+          get 'new_bible_import'
+          post 'create_bible_records'
           get 'download_bible_order_template'
-          post 'create_bible_orders'
-          # , to: 'imports#create_bible_orders'
         end
       end
     end
@@ -796,6 +799,7 @@ Rails.application.routes.draw do
         get 'unique_skus'
         get 'order_count'
         get 'categorywise_revenue'
+        get 'stock_reports'
       end
     end
 
