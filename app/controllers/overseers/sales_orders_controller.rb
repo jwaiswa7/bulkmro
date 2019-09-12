@@ -178,6 +178,13 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
+  def resync_all_sales_orders
+    authorize_acl :sales_order
+    service = Services::Overseers::SalesOrders::ResyncAllSalesOrders.new
+    service.call
+    redirect_to so_sync_pending_overseers_sales_orders_path
+  end
+
   def new_purchase_orders_requests
     authorize_acl :sales_order
 
