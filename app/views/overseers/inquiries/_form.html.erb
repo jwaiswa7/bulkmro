@@ -185,9 +185,9 @@
         <h6 class="bmro-form-heading bmro-fl">Important Dates
         <div class="bmro-date-important">
             <% if f.object.created_at %>
-              <div class="form-group bmro-fl">
-                <label class="form-control-label d-block">Created at</label>
-                <div class="bmro-f2">
+              <div class="form-group bmro-fl ">
+                <label class="form-control-label d-block bmro-date-label">Created at</label>
+                <div class="bmro-date-line">
                   <%= format_date(f.object.created_at) %>
                 </div>
               </div>
@@ -195,8 +195,8 @@
 
             <% if f.object.updated_at %>
               <div class="form-group bmro-f1 mar-left">
-                <label class="form-control-label d-block">Updated at</label>
-                <div class="bmro-f2">
+                <label class="form-control-label d-block bmro-date-label">Updated at</label>
+                <div class="bmro-date-line">
                   <%= format_date(f.object.created_at) %>
                 </div>
               </div>

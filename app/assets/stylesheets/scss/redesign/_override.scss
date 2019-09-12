@@ -332,19 +332,24 @@ li.bmro-li-right{
 }
 .bmro-fl{
     float: left;
+}
+.bmro-date-label{
+    float: left;
     color: #687686 !important;
     font-size: 10px;
     font-weight: bold !important;
     letter-spacing: -0.47px;
     line-height: 15px;
+    margin: 0px !important;
 }
-.bmro-f2{
+.bmro-date-line{
     float: left;
     color: #2C4159;
     font-size: 12px !important;
-    font-weight: bold;
+    font-weight: bold !important;
     letter-spacing: -0.71px;
     line-height: 21px;
+    margin: 0px !important;
     width: 100%;
 }
 .bmro-card-body label{
@@ -423,7 +428,7 @@ li.bmro-li-right{
     color: #FFFFFF !important;
 }
 .bmro-date-important .mar-left{
-    margin-left: 20px;
+    margin-left: 90px !important;
 }
 .bmro-date-important{
     float: right;
