@@ -30,18 +30,19 @@ class Suppliers::BaseController < ApplicationController
     end
 
     def redirect_if_required
-      # redirect_to_path = if session[:current_company_id].blank? || current_company.blank?
-      #   edit_current_company_customers_sign_in_steps_path
-      # elsif session[:current_company_id].present? && current_company.present?
-      #   if params[:became].present? && current_contact.companies.pluck(:id).exclude?(current_company.id)
-      #     session[:current_company_id] = nil
-      #     edit_current_company_customers_sign_in_steps_path
-      #   elsif controller_name == 'sign_in_steps'
-      #     customers_dashboard_path
-      #   end
-      # end
+      debugger
+      redirect_to_path = if session[:current_company_id].blank? || current_company.blank?
+        edit_current_company_customers_sign_in_steps_path
+      elsif session[:current_company_id].present? && current_company.present?
+        if params[:became].present? && current_contact.companies.pluck(:id).exclude?(current_company.id)
+          session[:current_company_id] = nil
+          edit_current_company_customers_sign_in_steps_path
+        elsif controller_name == 'sign_in_steps'
+          customers_dashboard_path
+        end
+      end
 
-      # redirect_to(redirect_to_path) if redirect_to_path.present? && request.path != redirect_to_path && request.method == 'GET'
+      redirect_to(redirect_to_path) if redirect_to_path.present? && request.path != redirect_to_path && request.method == 'GET'
     end
 
     def user_not_authorized

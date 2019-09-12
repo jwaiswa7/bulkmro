@@ -909,7 +909,20 @@ Rails.application.routes.draw do
   end
 
   namespace 'suppliers' do
-    resource :dashboard, controller: :dashboard
+    resource :dashboard, controller: :dashboard, only: :show
     resources :purchase_orders, controller: :purchase_orders, only: %i[index show]
+
+    resources :companies do
+      collection do
+        get 'choose_company'
+        get 'contact_companies'
+      end
+    end
+
+    resource 'sign_in_steps', controller: 'sign_in_steps' do
+      post 'reset_current_company'
+      get 'edit_current_company'
+      patch 'update_current_company'
+    end
   end
 end
