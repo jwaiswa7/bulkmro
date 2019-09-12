@@ -108,6 +108,17 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def update
+    po_request_row_ids = []
+    params[:po_request][:rows_attributes].each do |key, value|
+      if value.key?('_destroy')
+        po_request_row_ids << value['id']
+      end
+    end
+
+    if po_request_row_ids.present?
+      @po_request.purchase_order.rows.where(po_request_row_id: po_request_row_ids).update_all(po_request_row_id: nil)
+    end
+
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize_acl @po_request
     if @po_request.valid?
