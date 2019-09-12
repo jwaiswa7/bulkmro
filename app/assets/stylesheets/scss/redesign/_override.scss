@@ -423,7 +423,8 @@ li.bmro-li-right{
     letter-spacing: -0.51px;
     line-height: 16px !important;
     outline: none !important;
-    text-transform: capitalize !important;    
+    text-transform: capitalize !important; 
+    box-shadow: none !important;   
 }
 .bmro-button-parent button:hover{
     background-color: #385372 !important;
