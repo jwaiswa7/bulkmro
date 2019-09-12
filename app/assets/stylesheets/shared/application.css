@@ -6922,6 +6922,11 @@ table.table.dataTable {
       table.table.dataTable.table-unstyled tr th, table.table.dataTable.table-unstyled tr td {
         padding: 0; }
 
+.modal .dataTables_wrapper {
+  width: 90%;
+  overflow: auto;
+  margin: auto; }
+
 .dataTables_wrapper.dt-bootstrap4 .dataTables_info {
   white-space: normal; }
 .dataTables_wrapper.dt-bootstrap4 .dataTables_paginate {
@@ -13314,6 +13319,9 @@ ul.gj-list li.list-group-item {
 ul.gj-list li.list-group-item ul li div {
   padding-left: 15px; }
 
+@media (min-width: 992px) {
+  .modal-large {
+    max-width: 1500px; } }
 .no-scroll-bars {
   -ms-overflow-style: none; }
   .no-scroll-bars::-webkit-scrollbar {
