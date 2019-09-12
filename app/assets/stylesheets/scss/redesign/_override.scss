@@ -23,6 +23,7 @@
     letter-spacing: -0.55px;
     line-height: 16px;
     display: inline-block;
+    border-bottom: 0px!important;
 }
 .bmro-nav-ul .nav-link.active, .nav-tabs .nav-item.show .nav-link{
     background-color: #FFFFFF!important;
@@ -34,6 +35,8 @@
 .bmro-nav-ul .nav-link{
     padding: 11px 0px;
     color: #8C97A3 !important;
+    border-bottom-right-radius: unset;
+    border-bottom-left-radius: unset;    
 }
 .bmro-mp-0{
     margin-top: 0px!important; 
