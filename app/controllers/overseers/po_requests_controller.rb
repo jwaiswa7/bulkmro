@@ -108,20 +108,20 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def update
-    po_request_row_ids = []
-    params[:po_request][:rows_attributes].each do |key, value|
-      if value.key?('_destroy')
-        po_request_row_ids << value['id']
-      end
-    end
-
-    if po_request_row_ids.present?
-      @po_request.purchase_order.rows.where(po_request_row_id: po_request_row_ids).update_all(po_request_row_id: nil)
-    end
-
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize_acl @po_request
     if @po_request.valid?
+      po_request_row_ids = []
+      params[:po_request][:rows_attributes].each do |key, value|
+        if value.key?('_destroy')
+          po_request_row_ids << value['id']
+        end
+      end
+
+      if po_request_row_ids.present?
+        @po_request.purchase_order.rows.where(po_request_row_id: po_request_row_ids).update_all(po_request_row_id: nil)
+      end
+
       # todo allow only in case of zero form errors
       row_updated_message = ''
       messages = FieldModifiedMessage.for(@po_request, ['contact_email', 'contact_phone', 'contact_id', 'payment_option_id', 'bill_from_id', 'ship_from_id', 'bill_to_id', 'ship_to_id', 'status', 'supplier_po_type', 'late_lead_date_reason', 'other_rejection_reason'])
