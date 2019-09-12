@@ -108,7 +108,9 @@
     line-height: 16px!important;
     outline: none!important;
     text-transform: capitalize!important;
-} .bmro-button:hover{
+    box-shadow: none!important;
+}
+.bmro-button:hover{
     background-color: #385372!important;
     color: #FFFFFF!important;
 }
@@ -188,7 +190,8 @@ ul.bmro-label-ul{
 li.bmro-li-right{
     margin-bottom: 15px;
     border-left: 4px solid #ff8800;
-    padding: 0px 7px; 
+    padding: 0px 7px;
+    cursor: pointer;
 }
 .bmro-active-li{
   border-left:4px solid transparent !important;
@@ -208,8 +211,12 @@ li.bmro-li-right{
 }
 .bmro-li-right .bmro-list-button{
     opacity: unset;
-    font-weight: bold;  
+    font-weight: bold; 
+    cursor: pointer;     
 } 
+.bmro-li-right.bmro-active-li:hover {
+    opacity: unset!important;
+}
 .bmro-li-right.bmro-active-li{
     opacity: 0.56!important;
 }
@@ -343,4 +350,71 @@ li.bmro-li-right{
 .bmro-product-bottom{
     width:100%;
     float:left;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+.bmro-inventory-color{
+   color: #687686!important;  
+}
+.inquiry_inquiry_products_sr_no{
+    margin-bottom: 0;
+}
+.inquiry_inquiry_products_sr_no input{
+    border: none;
+    box-shadow: none;
+    color: #2C4159;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: -0.55px;
+}
+.bmro-product-height-input{
+    height: 59px!important;
+}
+.bmro-product-icon-right{
+    border-left: 2px solid #ECEEF2;
+    position: relative;
+    left: 56px;
+    float: left;
+    padding-left: 24px;
+}
+.bmro-product-icon-right .form-group a{
+    color: #2C4159 !important;
+}
+.bmro-inventory-color{
+    float: left;
+    display: flex;
+    align-items: center;
+}
+.bmro-card-body .custom-file-label { margin-top:0!important; }
+.bmro-button-parent{
+    margin-right: 10px;
+}
+.bmro-button-parent button{
+    padding: 8px 10px !important;
+    border: 2px solid #2C4159 !important;
+    border-radius: 2px !important;
+    background-color: #2C4159;
+    color: #FFFFFF;
+    /* font-family: "Inter UI"; */
+    font-size: 13px !important;
+    font-weight: bold !important;
+    letter-spacing: -0.51px;
+    line-height: 16px !important;
+    outline: none !important;
+    text-transform: capitalize !important;    
+}
+.bmro-button-parent button:hover{
+    background-color: #385372 !important;
+    color: #FFFFFF !important;
+}
+.bmro-date-important .mar-left{
+    margin-left: 20px;
+}
+.bmro-date-important{
+    float: right;
+}
+.bmro-date-important .form-group{
+    font-size: 10px;
+    color: #667668;
 }
