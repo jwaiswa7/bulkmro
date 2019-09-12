@@ -306,7 +306,7 @@ li.bmro-li-right{
     bottom: 0;
     z-index: 3;
     display: block;
-    height: 38px;
+    height: calc(2.25rem - -1px)!important;
     font-size: 13px;
     font-weight: 500;
     padding: 9px 17px;
