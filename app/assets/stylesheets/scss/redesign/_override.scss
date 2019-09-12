@@ -332,6 +332,20 @@ li.bmro-li-right{
 }
 .bmro-fl{
     float: left;
+    color: #687686 !important;
+    font-size: 10px;
+    font-weight: bold !important;
+    letter-spacing: -0.47px;
+    line-height: 15px;
+}
+.bmro-f2{
+    float: left;
+    color: #2C4159;
+    font-size: 12px !important;
+    font-weight: bold;
+    letter-spacing: -0.71px;
+    line-height: 21px;
+    width: 100%;
 }
 .bmro-card-body label{
     margin-bottom: 8px;
@@ -412,6 +426,7 @@ li.bmro-li-right{
     margin-left: 20px;
 }
 .bmro-date-important{
+
     float: right;
 }
 .bmro-date-important .form-group{
