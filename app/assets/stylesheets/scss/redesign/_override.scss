@@ -291,13 +291,13 @@ li.bmro-li-right{
     overflow: hidden;
     float: left;
     padding: 9px 8px 4px;
-    color: #2C4159;
+    color: rgba(33, 37, 41, 0.5);
     height: 38px;
     opacity: unset;
     position: absolute;
     top: -5px;  
     border-color: #687686;
-    border-width: 0px;
+    border-width: 1px;
 }
 .custom-file-label::after {
     position: absolute;
