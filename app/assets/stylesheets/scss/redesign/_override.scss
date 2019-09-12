@@ -325,6 +325,7 @@ li.bmro-li-right{
     letter-spacing: -0.47px;
     line-height: 15px;
     text-transform: capitalize;
+    border-radius: unset;
     float: left;
     border: none;
     outline: none!important;
@@ -334,9 +335,11 @@ li.bmro-li-right{
 }
 .bmro-product-btn:focus{
     box-shadow: unset!important;
+    border-radius: unset;
 }
 .bmro-product-btn:hover{
     background-color: #F0F2F6;
+    border-radius: unset;
     color: #2C4159;
 }
 .bmro-fl{
