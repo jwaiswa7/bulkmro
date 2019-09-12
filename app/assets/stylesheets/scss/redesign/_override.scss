@@ -23,6 +23,7 @@
     letter-spacing: -0.55px;
     line-height: 16px;
     display: inline-block;
+    border-bottom: 0px !important;
 }
 .bmro-nav-ul .nav-link.active, .nav-tabs .nav-item.show .nav-link{
     background-color: #FFFFFF!important;
@@ -34,6 +35,8 @@
 .bmro-nav-ul .nav-link{
     padding: 11px 0px;
     color: #8C97A3 !important;
+    border-bottom-right-radius: unset;
+    border-bottom-left-radius: unset; 
 }
 .bmro-mp-0{
     margin-top: 0px!important; 
@@ -75,6 +78,9 @@
     background: #fff;
     border: none;
     padding: 51px 0px 0px 0px;
+    position: sticky;
+    top: 117px;
+    z-index: 99;
 }
 .bmro-card{
     width: 100%;
@@ -82,11 +88,13 @@
     background-color: #fff;
     display: unset!important;
     flex-direction: unset!important;
+    border-radius: 0px !important;
 }
 .bmro-card-footer{
     width: 100%;
     float: left; 
     background-color: #fff!important;
+    border-radius: 0px !important;
 }
 .bmro-form-row{
     width: 100%;
