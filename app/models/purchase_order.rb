@@ -282,4 +282,12 @@ class PurchaseOrder < ApplicationRecord
       nil
     end
   end
+
+  def warehouse_ship_from
+    if metadata['PoShipWarehouse'].present?
+      Warehouse.find_by(remote_uid: metadata['PoShipWarehouse'])
+    else
+      inquiry.bill_from
+    end
+  end
 end
