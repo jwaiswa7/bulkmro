@@ -910,5 +910,6 @@ Rails.application.routes.draw do
 
   namespace 'suppliers' do
     resource :dashboard, controller: :dashboard
+    resources :purchase_orders, controller: :purchase_orders, only: %i[index show]
   end
 end

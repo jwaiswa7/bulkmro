@@ -1,16 +1,21 @@
-json.data (@sales_quotes) do |sales_quote|
+json.data(@purchase_orders) do |purchase_order|
   json.array! [
                   [
-                      row_action_button(customers_quote_path(sales_quote), 'eye', 'View Quote', 'info', :_blank),
-                      row_action_button(customers_quote_path(sales_quote, format: :pdf), 'file-pdf', 'Download Quote', 'dark', :_blank)
+                      row_action_button(suppliers_purchase_order_path(purchase_order), 'eye', 'View Purchase Order', 'info', :_blank),
+                      row_action_button(suppliers_purchase_order_path(purchase_order, format: :pdf), 'file-pdf', 'Download Purchase Order', 'dark', :_blank)
                   ].join(' '),
-                  sales_quote.inquiry.inquiry_number,
-                  format_date(sales_quote.created_at),
-                  sales_quote.rows.size,
-                  format_currency(sales_quote.calculated_total),
-                  sales_quote.inquiry.inside_sales_owner.to_s,
-                  format_date(sales_quote.inquiry.valid_end_time),
-                  status_badge(sales_quote.changed_status(sales_quote.inquiry.status)),
+                  purchase_order.po_number,
+                  purchase_order.inquiry.inquiry_number,
+                  (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present?),
+                  (purchase_order.inquiry.company.try(:name) if purchase_order.inquiry.company.present?),
+                  purchase_order.status || purchase_order.metadata_status,
+                  purchase_order.warehouse&.name,
+                  purchase_order.rows.count,
+                  format_currency(purchase_order.calculated_total),
+                  format_succinct_date(purchase_order.po_date),
+                  purchase_order.inquiry.inside_sales_owner.to_s,
+                  purchase_order.inquiry.outside_sales_owner.to_s,
+                  format_succinct_date(purchase_order.created_at),
               ]
 end
 
@@ -22,9 +27,14 @@ json.columnFilters [
                        [],
                        [],
                        [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
                        []
                    ]
 
-json.recordsTotal @sales_quotes.count
-json.recordsFiltered @indexed_sales_quotes.total_count
+json.recordsTotal @purchase_orders.count
+json.recordsFiltered @indexed_purchase_orders.total_count
 json.draw params[:draw]
