@@ -634,7 +634,7 @@
               <div class="col-4 col-md-1">
                 <div class="d-flex flex-row align-items-center">
                   <div>
-                    <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity), input_html: { class: 'bmro-form-input bmro-product-height-input', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                    <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity), input_html: { class: 'bmro-form-input bmro-product-height-input bmro-input-padding', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
                   </div>
                   <%= inquiry_product.remove_nested_fields_link do %>
                     <div class="form-group align-self-center flex-grow-1 ml-2">
