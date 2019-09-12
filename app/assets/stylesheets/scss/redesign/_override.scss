@@ -275,7 +275,7 @@ li.bmro-li-right{
     width: 100%;
 }
 .custom-file label.custom-file-label {
-    line-height: 1.65;
+/*    line-height: 1.65;
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden; 
@@ -283,8 +283,24 @@ li.bmro-li-right{
     padding: 6px 8px 4px;
     color: #2C4159;
     height: 58px;
-    /*border: 2px solid rgb(236, 238, 242)!important!important;*/
+    opacity: unset;*/
+
+    line-height: 1.65;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    float: left;
+    padding: 9px 8px 4px;
+    color: #2C4159;
+    height: 38px;
     opacity: unset;
+    position: absolute;
+    top: -5px;    
+}
+.bmro-download-icon{
+    float: left;
+    position: relative;
+    top: -11px
 }
 .custom-file-label::after {
     position: absolute;
