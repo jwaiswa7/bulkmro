@@ -1,4 +1,4 @@
-class Suppliers::SupplierProductsController < Suppilers::BaseController
+class Suppliers::ProductsController < Suppliers::BaseController
   before_action :set_supplier_product, only: [:show]
 
   def index
