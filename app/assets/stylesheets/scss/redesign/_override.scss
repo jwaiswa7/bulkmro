@@ -23,7 +23,11 @@
     letter-spacing: -0.55px;
     line-height: 16px;
     display: inline-block;
+<<<<<<< HEAD
     border-bottom: 0px !important;
+=======
+    border-bottom: 0px!important;
+>>>>>>> 92023511972900d5e7c58317d66c1f29a965d634
 }
 .bmro-nav-ul .nav-link.active, .nav-tabs .nav-item.show .nav-link{
     background-color: #FFFFFF!important;
@@ -36,7 +40,11 @@
     padding: 11px 0px;
     color: #8C97A3 !important;
     border-bottom-right-radius: unset;
+<<<<<<< HEAD
     border-bottom-left-radius: unset; 
+=======
+    border-bottom-left-radius: unset;    
+>>>>>>> 92023511972900d5e7c58317d66c1f29a965d634
 }
 .bmro-mp-0{
     margin-top: 0px!important; 
@@ -452,10 +460,16 @@ table.dataTable th{
     color: #687686!important;
     /*font-family: "Inter UI";*/
     font-size: 12px!important;
-    font-weight: 500!important;
+    font-weight: 700!important;
     letter-spacing: -0.18px!important;
     line-height: 15px!important;
 }
-.btn i{
-    
+table.dataTable td{
+    color: #2C4159!important;
+    /*font-family: "Inter UI";*/
+    font-size: 12px!important;
+    font-weight: 700!important;
+    letter-spacing: -0.47px!important;
+    line-height: 15px!important;
+    text-align: right!important;    
 }
