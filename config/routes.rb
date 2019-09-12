@@ -490,6 +490,8 @@ Rails.application.routes.draw do
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
+        get 'supplier_mass_link'
+        post 'search_suppliers'
         get 'resync_inquiry_products'
         get 'resync_unsync_inquiry_products'
         get 'calculation_sheet'

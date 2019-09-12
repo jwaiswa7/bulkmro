@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment, :render_followup_edit_form, :update_followup_date]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment, :render_followup_edit_form, :update_followup_date, :request_for_quote]
 
   def index
     authorize_acl :inquiry
@@ -395,6 +395,18 @@ class Overseers::InquiriesController < Overseers::BaseController
         redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
       end
     end
+  end
+
+  def supplier_mass_link
+    authorize_acl @inquiry
+
+    respond_to do |format|
+      format.html { render 'search_supplier' }
+    end
+  end
+
+  def search_suppliers
+    authorize_acl @inquiry
   end
 
   def stages

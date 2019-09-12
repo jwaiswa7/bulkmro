@@ -19,6 +19,7 @@ const editSuppliers = () => {
             $(this).prop('checked', $('#select_all_suppliers').prop("checked")).trigger('change');
         });
     });
+    massLinkSupplier();
 };
 
 let onSupplierChange = (container) => {
@@ -44,5 +45,19 @@ let onSupplierChange = (container) => {
         });
     }
 };
+
+let massLinkSupplier = () => {
+    $('.mass-link-supplier').click(function () {
+        $('#masslinksupplier').modal('show');
+        let products = [];
+        $.each($("input[name='inquiry_product_ids[]']:checked"), function(){
+            products.push($(this).val());
+        });
+        $('#product_ids').val(products);
+        // $('input[name="inquiry_product_ids[]"]').each(function () {
+        //     $(this).prop('checked', $('#select_all_suppliers').prop("checked")).trigger('change');
+        // });
+    });
+}
 
 export default editSuppliers

@@ -2,6 +2,9 @@ json.data (@companies) do |company|
   json.array! [
                   [
                       if is_authorized(company, 'show')
+                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='suppliers[]' class='custom-control-input'><label class='custom-control-label'></label></div>"
+                      end,
+                      if is_authorized(company, 'show')
                         row_action_button(overseers_company_path(company), 'eye', 'View Company', 'info', :_blank)
                       end,
                       if is_authorized(company, 'edit')
@@ -56,7 +59,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [],
+                       [{ "source": autocomplete_overseers_brands_path }],
                        [],
                        []
                    ]

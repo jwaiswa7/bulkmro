@@ -1,23 +1,22 @@
 <div class="col-lg-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <%= simple_form_for(@inquiry, url: '#', method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= simple_form_for(@inquiry, url: update_suppliers_overseers_inquiry_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= render 'shared/snippets/form_errors', f: f %>
       <div class="card">
         <div class="card-body">
           <div class="form-row">
             <div class="col-12 col-md-2">
               <div class="custom-control custom-checkbox">
-                <%= f.hidden_field :inquiry_id, value: @inquiry.id  %>
                 <%= check_box_tag "select_all_suppliers", true, false, class: 'custom-control-input' %>
                 <label class="custom-control-label" for="select_all_suppliers">Select All</label>
               </div>
             </div>
-<!--            <div class="col-md-6">-->
-              <%#= f.input :common_supplier_id, label: false, :as => :select, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, 'data-placeholder': 'Select Common Supplier'} %>
-<!--            </div>-->
+            <div class="col-md-6">
+              <%= f.input :common_supplier_id, label: false, :as => :select, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, 'data-placeholder': 'Select Common Supplier'} %>
+            </div>
             <div class="col-md-4">
-              <%= button_tag(type: "button", name: 'mass_link_supplier', class: "btn btn-success btn-block mass-link-supplier") do %>
-                Mass Link Suppliers
+              <%= button_tag(type: "submit", name: 'common_supplier_selected', class: "btn btn-success btn-block") do %>
+                Add Common Supplier and Update
               <% end %>
             </div>
             <hr>
@@ -100,17 +99,14 @@
             <hr class="<%= f.object.inquiry_products.last == inquiry_product.object ? 'd-none' : '' %>"/>
           <% end %>
         </div>
-<!--        <div class="card-footer">-->
-          <%# if is_authorized(@inquiry,'update_suppliers') %>
-            <%#= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-<!--              <i class="fal fa-pen"></i> Update Suppliers-->
-            <%# end %>
-          <%# end %>
-<!--        </div>-->
+        <div class="card-footer">
+          <% if is_authorized(@inquiry,'update_suppliers') %>
+            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+              <i class="fal fa-pen"></i> Update Suppliers
+            <% end %>
+          <% end %>
+        </div>
       </div>
     <% end %>
   <% end %>
-</div>
-<div class="modal fade" id="masslinksupplier" role="dialog">
-  <%= render partial: 'search_suppliers', locals: { inquiry: @inquiry, suppliers: @suppliers, indexed_suppliers: @indexed_suppliers } %>
 </div>
