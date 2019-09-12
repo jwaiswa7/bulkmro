@@ -11,7 +11,7 @@ class Suppliers::ProductsController < Suppliers::BaseController
       params[:per] = 24
     end
 
-    @supplier_products = ApplyDatatableParams.to(InquiryProductSupplier.where(supplier_id: current_company.id).uniq.order(id: :desc), params)
+    @supplier_products = ApplyDatatableParams.to(InquiryProductSupplier.where(supplier_id: current_company.id).last.products.uniq.order(id: :desc), params)
     # service = Services::Suppliers::Finders::SupplierProducts.new(params, current_contact, current_company)
     # service.call
     # @indexed_supplier_products = service.indexed_records
@@ -19,15 +19,6 @@ class Suppliers::ProductsController < Suppliers::BaseController
     # @default_quantity = nil
     # @supplier_products_paginate = @indexed_supplier_products.page(params[:page]) if params[:page].present?
   end
-
-  # def autocomplete
-  #   service = Services::Suppliers::Finders::SupplierProducts.new(params.merge(page: 1))
-  #   service.call
-  #
-  #   @indexed_supplier_products = service.indexed_records
-  #   @supplier_products = service.records
-  #   authorize @supplier_products
-  # end
 
   def show
     authorize @supplier_product
