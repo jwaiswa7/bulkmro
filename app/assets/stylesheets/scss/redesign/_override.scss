@@ -295,7 +295,9 @@ li.bmro-li-right{
     height: 38px;
     opacity: unset;
     position: absolute;
-    top: -5px;    
+    top: -5px;  
+    border-color: #687686;
+    border-width: 0px;
 }
 .bmro-download-icon{
     float: left;
@@ -309,10 +311,10 @@ li.bmro-li-right{
     bottom: 0;
     z-index: 3;
     display: block;
-    height: auto;
+    height: 38px;
     font-size: 13px;
     font-weight: 500;
-    padding: 5px 17px;
+    padding: 9px 17px;
     line-height: 1.5;
     color: #fff;
     content: "Browse";
