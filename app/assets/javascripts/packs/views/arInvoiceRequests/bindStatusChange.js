@@ -54,9 +54,3 @@ let onStatusChange = (selector) => {
     $("."+selector).find('select').prop('required',true);
     $("."+selector).find('input').prop('required',true);
 }
-
-$(document).ready(function(){
-  // $(".bmro-icon-table").parent().css({"color": "red", "border": "2px solid red"});
-  $(".bmro-icon-table").addClass('sasasas');
-  console.log('testing');
-});

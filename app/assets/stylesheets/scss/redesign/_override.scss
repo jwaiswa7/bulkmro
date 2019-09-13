@@ -517,3 +517,7 @@ table.dataTable td{
     border-color: unset;
     box-shadow: unset;  
 }
+.select2-container--bootstrap .select2-results__option--highlighted[aria-selected] {
+    background-color: #E7E9ED;
+    color: #2C4159;
+}
