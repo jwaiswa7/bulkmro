@@ -78,7 +78,7 @@ $(function() {
               $('.bmro-card-header').removeClass('fixed').css({
                   position: 'relative',
                   // top: (maxY - top) + 'px'
-                  top:'2100.39px'
+                  top:'1700px'
               });
           }
       } else {
