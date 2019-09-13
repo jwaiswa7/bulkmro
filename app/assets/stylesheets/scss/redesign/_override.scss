@@ -621,12 +621,12 @@ table.bmro-datatable-style{
     border: 7px solid transparent;
     border-color: #2C4159 transparent transparent transparent;
     position: relative;
-    top: 16px;
-    right: 10px;    
+    top: 9px;
+    right: -6px;   
 }
-.bmro-summary.show a:after{
+/*.bmro-summary a:after{
    border-color: transparent transparent #2C4159 transparent; 
-}
+}*/
 .bmro-summary .collapse{
     background-color: #DFE5F0;
     float: left;
@@ -670,4 +670,33 @@ table.bmro-datatable-style{
 }
 .bmro-invoice-data{
     
+}
+.bmro-invoice-edit span{
+    color: #2C4159;
+    font-family: "Inter UI";
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: -1.01px;
+    line-height: 21px;
+    width: 100%;
+    float: left;    
+}
+.bmro-invoice-edit label{
+    color: #687686;
+    font-family: "Inter UI";
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: -0.56px;
+    line-height: 12px;
+    width: 100%;
+    float: left;    
+}
+.bmro-invoice-edit{
+    box-sizing: border-box;
+    border-right: 1px solid #B3BCC6;
+    float: left;
+    padding-left: 17px;    
+}
+.bmro-invoice-edit:first-child{
+    padding-left: 0px;
 }
