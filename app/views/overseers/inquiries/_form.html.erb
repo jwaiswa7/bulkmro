@@ -30,21 +30,22 @@
                   <!-- Modal content-->
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h4 class="modal-title">Select Status</h4>
+                      <h4 class="modal-title">Select Status <abbr>*</abbr></h4>
+                         <div class="modal-footer">
+                            <%= action_button(action_name, @inquiry) %>
+                            <button type="button" class="btn btn-default bmro-button" data-dismiss="modal">X</button>
+                         </div>
                     </div>
                     <div class="modal-body">
                       <% if current_overseer.admin? %>
-                        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
+                        <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
                       <% elsif ["Order Lost", "Regret"].include?(@inquiry.status) %>
-                        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
+                        <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
                       <% else %>
-                        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
+                        <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
                       <% end %>
                     </div>
-                    <div class="modal-footer">
-                      <%= action_button(action_name, @inquiry) %>
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+                 
                   </div>
                 </div>
               </div>
