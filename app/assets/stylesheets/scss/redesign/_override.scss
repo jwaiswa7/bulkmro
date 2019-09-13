@@ -599,6 +599,7 @@ table.bmro-datatable-style{
 }
 .bmro-summary{
     width: 100%;  
+    min-height: 95px;
     float: left;
 }
 .bmro-summary a{
@@ -610,9 +611,26 @@ table.bmro-datatable-style{
     line-height: 12px;
     display: inline-block;
     text-transform: uppercase;
+    background-color: #DFE5F0;
+    padding: 6px 15px;    
+}
+.bmro-summary a:after{
+    content: "";
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+    border-color: #2C4159 transparent transparent transparent;
+    position: relative;
+    top: 16px;
+    right: 10px;    
+}
+.bmro-summary.show a:after{
+   border-color: transparent transparent #2C4159 transparent; 
 }
 .bmro-summary .collapse{
-
+    background-color: #DFE5F0;
+    float: left;
+    padding: 15px 11px;
 }
 .bmro-addnew-icon{
    padding: 2px 10px;
@@ -638,6 +656,7 @@ table.bmro-datatable-style{
     width: 401px;
     border-radius: 2px 2px 0 0;
     float: left;  
+    margin-right: 10px;
 }
 .bmro-invoice-data{
     
