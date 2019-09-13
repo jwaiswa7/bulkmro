@@ -19,7 +19,7 @@
         <p class="mb-1 text-small text-uppercase">
           <strong>Total Open Quotes</strong>
         </p>
-        <h5 class="mb-0 mt-auto"><%= company.total_open_inquiries[:open_quotes] %></h5>
+        <h5 class="mb-0 mt-auto"><%= company.total_open_quotes[:open_quotes] %></h5>
         <hr class="my-2">
         <h5 class="my-0 text-small">
           &#8377;<%= number_to_currency(company.total_open_inquiries[:total_value], precision: 0, unit: '') %>
