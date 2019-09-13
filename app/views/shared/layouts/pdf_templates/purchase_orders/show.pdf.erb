@@ -258,8 +258,8 @@
                   <td align="center" valign="top">
                     <% if item.po_request_row.present? %>
                       <span><%= item.uom  %></span>
-                    <% else %>
-                      <span><%= item.product.measurement_unit.to_s %></span>
+                    <% elsif item.product.present? %>
+                      <span><%= item.product.measurement_unit.name %></span>
                     <% end %>
                   </td>
                   <td align="center" valign="top">
