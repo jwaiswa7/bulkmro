@@ -50,6 +50,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def update
     @purchase_order = po_request.purchase_order
     if @purchase_order.present?
+      purchase_order.rows.where(po_request_row_id: nil).delete_all
       purchase_order_params = assign_purchase_order_attributes(@purchase_order.po_number)
       purchase_order.update_attributes(purchase_order_params)
       purchase_order_row = purchase_order.rows
