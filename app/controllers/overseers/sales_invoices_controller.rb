@@ -201,6 +201,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
             :delivery_date,
             :sales_invoice_id,
             :_destroy,
+            :grn_no,
             attachments: []
         ]
       )
