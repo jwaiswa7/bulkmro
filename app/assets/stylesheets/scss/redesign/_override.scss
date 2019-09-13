@@ -588,3 +588,13 @@ table.bmro-datatable-style{
     padding: 0px 0px;
     background-position-y: center;
 }
+.bmro-invoice-heading h4:after{
+    content: "";
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+    border-color: #fff transparent transparent transparent;
+    position: absolute;
+    top: 16px;
+    right: 10px;
+}
