@@ -20,3 +20,7 @@ const edit = () => {
 }
 
 export default edit
+
+$(document).ready(function(){
+  $(".bmro-icon-table").parent().addClass('bmro-icon-parent');
+});
