@@ -532,8 +532,9 @@
                           
           //Quand la sidebar arrive au footer, supprime la classe "fixed" précèdement ajouté
                           $('.bmro-card-header').removeClass('fixed').css({
-                              position: 'fixed',
-                              top: (maxY - top) + 'px'
+                              position: 'relative',
+                              top:'1650px',
+                              transition:'all 0.9 ease'
                           });
                       }
                   } else {
