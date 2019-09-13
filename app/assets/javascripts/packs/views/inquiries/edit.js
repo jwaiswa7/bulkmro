@@ -46,3 +46,50 @@ let onProductChange = (container) => {
 };
 
 export default edit
+
+
+// crezenta js
+
+function slideTo(page) {
+    let element = document.getElementById(page);
+    element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+}
+    $(".bmro-li-right").click(function(){
+    $('.bmro-li-right').addClass('bmro-active-li',1000);
+    $(this).removeClass('bmro-active-li');
+});
+
+$(function() {
+  var top = $('.bmro-card-header').offset().top - parseFloat($('.bmro-card-header').css('marginTop').replace(/auto/, 0));
+  var footTop = $('.bmro-product-bottom').offset().top - parseFloat($('.bmro-product-bottom').css('marginTop').replace(/auto/, 0));
+
+  var maxY = footTop - $('.bmro-card-header').outerHeight();
+
+  $(window).scroll(function(evt) {
+      var y = $(this).scrollTop();
+      if (y > top) {
+          
+//Quand scroll, ajoute une classe ".fixed" et supprime le Css existant 
+          if (y < maxY) {
+              $('.bmro-card-header').addClass('fixed').removeAttr('style');
+          } else {
+              
+//Quand la sidebar arrive au footer, supprime la classe "fixed" précèdement ajouté
+              $('.bmro-card-header').removeClass('fixed').css({
+                  position: 'relative',
+                  // top: (maxY - top) + 'px'
+                  top:'2100.39px'
+              });
+          }
+      } else {
+          $('.bmro-card-header').removeClass('fixed');
+      }
+  });
+});      
+
+$( document ).ready(function() {
+    console.log( "ready 12  !" );
+});
+$(function() {
+    console.log( "ready!" );
+});
