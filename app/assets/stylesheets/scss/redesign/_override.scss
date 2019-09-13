@@ -612,10 +612,12 @@ table.bmro-datatable-style{
     display: inline-block;
     text-transform: uppercase;
     background-color: #DFE5F0;
+    padding: 6px 15px;    
 }
 .bmro-summary .collapse{
     background-color: #DFE5F0;
     float: left;
+    padding: 15px 11px;
 }
 .bmro-addnew-icon{
     width: 18px;
@@ -626,6 +628,7 @@ table.bmro-datatable-style{
     width: 401px;
     border-radius: 2px 2px 0 0;
     float: left;  
+    margin-right: 10px;
 }
 .bmro-invoice-data{
     
