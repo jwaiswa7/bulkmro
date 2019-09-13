@@ -32,7 +32,6 @@
                     <div class="modal-header">
                       <h4 class="modal-title">Select Status <abbr>*</abbr></h4>
                          <div class="modal-footer">
-                            <%= action_button(action_name, @inquiry) %>
                             <button type="button" class="btn btn-default bmro-button" data-dismiss="modal">X</button>
                          </div>
                     </div>
@@ -45,7 +44,9 @@
                         <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
                       <% end %>
                     </div>
-                 
+                 <div class="bmro-button-parent">
+                   <%= action_button(action_name, @inquiry) %>
+                 </div>
                   </div>
                 </div>
               </div>
