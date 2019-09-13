@@ -21,7 +21,7 @@
     color: #8C97A3 !important;
     font-family: 'Inter', sans-serif;
     font-size: 14px !important;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     letter-spacing: -0.55px;
     line-height: 16px;
     display: inline-block;
@@ -32,7 +32,7 @@
     color: #2C4159!important; 
     padding: 11px 0px;
     font-size: 14px !important;
-    font-weight: bold !important;
+    font-weight: 600 !important;
 }
 .bmro-nav-ul .nav-link{
     padding: 11px 0px;
@@ -54,7 +54,7 @@
     color: #2C4159!important;
     font-family: 'Inter', sans-serif;
     font-size: 21px!important;
-    font-weight: bold!important;
+    font-weight: 600!important;
     letter-spacing: -0.82px;
     line-height: 25px!important;
     width: 100%;
@@ -114,7 +114,7 @@
     color: #FFFFFF;
     font-family: 'Inter', sans-serif;
     font-size: 13px!important;
-    font-weight: bold!important;
+    font-weight: 600!important;
     letter-spacing: -0.51px;
     line-height: 16px!important;
     outline: none!important;
@@ -136,7 +136,7 @@
     color: #2C4159;
     font-family: 'Inter', sans-serif;
     font-size: 19px!important;
-    font-weight: bold;
+    font-weight: 600;
     letter-spacing: -0.71px;
     line-height: 21px;
     margin-bottom: 19px!important;
@@ -146,7 +146,7 @@
     color: #687686;
     font-family: 'Inter', sans-serif;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 400;
     letter-spacing: -0.47px;
     line-height: 15px;
     float: left;
@@ -179,7 +179,7 @@
     bottom: 8px;
 }
 .breadcrumb-item+.breadcrumb-item:last-child {
-    font-weight: 500!important;
+    font-weight: 400!important;
 }
 .bmro-dotted-line{
     box-sizing: border-box;
@@ -213,7 +213,7 @@ li.bmro-li-right{
     color: #2C4159;
     font-family: 'Inter', sans-serif;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: -0.47px;
     line-height: 15px;
     outline: none;
@@ -244,7 +244,7 @@ li.bmro-li-right{
     outline: none!important;
     height: auto!important;
     box-shadow: unset!important;
-    font-weight: bold;
+    font-weight: 600;
 }
 .bmro-dropdown-icon {
     background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAOCAYAAAD9lDaoAAAAAXNSR0IArs4c6QAAAQBJREFUKBVjYEADuo5RxmhCDMzIAjrO0cUM//+vEVPW//Lq/uXjMDm4IrCCf/96wBL//7shKwQrQlLwn5GBYRFQoT7QRHeYQmYdp+gMhv//JgEl/jMwMKVc2b+sXkxR/zGQ6wdWqKT/komNlXEPUAFQEKRg6TyQdRCaKQUkDpVnYDD2TeMCSaIDmDgTugQ2PrORe4zKr+8/TgPd8fHVg8vnYYp0HKOT/v76uUZG3WAz06/f/12AErIMDP/mgCRAiiD0vzkgcZA80MdAQVAgQsIIHARAb8YBhRkZmJhKruxd2gsOJ1DogsIE5GWgpAGyAiAbES1ICt1gJoAUYAXYIhgA2hV2DdpvkwcAAAAASUVORK5CYII=')no-repeat right 0.60rem top 9px;
@@ -289,7 +289,7 @@ li.bmro-li-right{
     opacity: unset;*/
 
     line-height: 1.65;
-    font-weight: bold;
+    font-weight: 600;
     font-family: 'Inter', sans-serif;
     white-space: nowrap;
     overflow: hidden;
@@ -313,7 +313,7 @@ li.bmro-li-right{
     height: calc(2.25rem - -1px)!important;
     font-family: 'Inter', sans-serif;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 400;
     padding: 9px 17px;
     line-height: 1.5;
     color: #fff;
@@ -337,7 +337,7 @@ li.bmro-li-right{
     color: #2C4159;
     font-family: 'Inter', sans-serif; 
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: -0.47px;
     line-height: 15px;
     text-transform: capitalize;
@@ -367,7 +367,7 @@ li.bmro-li-right{
     color: #687686 !important;
     font-family: 'Inter', sans-serif;
     font-size: 10px;
-    font-weight: bold !important;
+    font-weight: 600 !important;
     letter-spacing: -0.47px;
     line-height: 15px;
     margin: 0px !important;
@@ -377,7 +377,7 @@ li.bmro-li-right{
     color: #2C4159;
     font-size: 12px !important;
     font-family: 'Inter', sans-serif;
-    font-weight: bold !important;
+    font-weight: 600 !important;
     letter-spacing: -0.71px;
     line-height: 21px;
     margin: 0px !important;
@@ -388,7 +388,7 @@ li.bmro-li-right{
     color: #687686!important;
     font-family: 'Inter', sans-serif;
     font-size: 12px;
-    font-weight: bold!important;
+    font-weight: 600!important;
     letter-spacing: -0.47px;
     line-height: 15px;
     margin-bottom: 8px;
@@ -416,7 +416,7 @@ li.bmro-li-right{
     font-family: 'Inter', sans-serif;
     color: #2C4159;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 16px;
     letter-spacing: -0.55px;
 }
@@ -450,7 +450,7 @@ li.bmro-li-right{
     color: #FFFFFF;
     font-family: 'Inter', sans-serif; 
     font-size: 13px !important;
-    font-weight: bold !important;
+    font-weight: 600 !important;
     letter-spacing: -0.51px;
     line-height: 16px !important;
     outline: none !important;
@@ -475,7 +475,7 @@ table.dataTable th{
     color: #687686;
     font-family: 'Inter', sans-serif;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: -0.18px;
     line-height: 15px;
 }
@@ -483,7 +483,7 @@ table.dataTable td{
     color: #2C4159;
     font-family: 'Inter', sans-serif;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: -0.47px;
     line-height: 15px;
     text-align: right;    
@@ -492,7 +492,7 @@ table.dataTable td{
     color: #687686!important;
     font-family: 'Inter', sans-serif;
     font-size: 12px;
-    font-weight: 700!important;
+    font-weight: 600!important;
     letter-spacing: -.47px;
     line-height: 15px;
     margin-bottom: 8px;
