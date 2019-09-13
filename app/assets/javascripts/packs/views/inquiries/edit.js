@@ -89,4 +89,5 @@ $(function() {
 
 $(function() {
     $('.bmro-icon-table').parent().addClass('bmro-icon-parent');
+    console.log('check')
 });
