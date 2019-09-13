@@ -533,10 +533,20 @@ li.select2-results__option{
 .bmro-datatable-style tbody tr td a{
     background-color: unset;
     border-color: unset;
+    padding: 5px 2px;
     box-shadow: unset;   
 }
-.bmro-datatable-style tbody tr td a{
+.bmro-datatable-style tbody tr td a:hover{
     outline: unset;
     background-color: unset!important;
     border: none; 
+}
+.bmro-datatable-style tbody tr{
+    border-color: #E0E2E7;
+}
+.bmro-datatable-style tbody tr:nth-child(even){
+    background-color: #fff;   
+}
+.bmro-datatable-style tbody tr:nth-child(odd){
+    background-color: #F1F3F6;   
 }
