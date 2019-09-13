@@ -355,12 +355,12 @@ class SalesInvoice < ApplicationRecord
     end
   end
 
-  def self.get_bill_from_warehouse(sales_invoice)
-    metadata = sales_invoice.metadata.deep_symbolize_keys
+  def get_bill_from_warehouse
+    metadata = self.metadata.deep_symbolize_keys
     if metadata[:bill_from].present?
       bill_from_warehouse = Warehouse.find_by_remote_uid(metadata[:bill_from])
     else
-      inquiry = sales_invoice.inquiry
+      inquiry = self.inquiry
       bill_from_warehouse = inquiry.bill_from
     end
 

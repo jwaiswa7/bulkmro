@@ -10,7 +10,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def show
     authorize_acl @sales_invoice
 
-    @bill_from_warehouse = SalesInvoice.get_bill_from_warehouse(@sales_invoice)
+    @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
     respond_to do |format|
       format.html { render 'show' }
       format.pdf do
@@ -22,7 +22,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def duplicate
     authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    @bill_from_warehouse = SalesInvoice.get_bill_from_warehouse(@sales_invoice)
+    @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
     locals.merge!(duplicate: true)
     respond_to do |format|
       format.html { }
@@ -36,7 +36,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
     # @bill_from_warehouse = get_bill_from_warehouse(@sales_invoice)
-     @bill_from_warehouse = SalesInvoice.get_bill_from_warehouse(@sales_invoice)
+     @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
     locals.merge!(triplicate: true)
     respond_to do |format|
       format.html { }
@@ -49,7 +49,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def make_zip
     authorize_acl @sales_invoice
 
-    service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice, locals.merge(bill_from_warehouse: @bill_from_warehouse = SalesInvoice.get_bill_from_warehouse(@sales_invoice)))
+    service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice, locals.merge(bill_from_warehouse: @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse))
     zip = service.call
 
     send_data(zip, type: 'application/zip', filename: @sales_invoice.zipped_filename(include_extension: true))
