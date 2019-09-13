@@ -912,6 +912,7 @@ Rails.application.routes.draw do
     resource :dashboard, controller: :dashboard, only: :show
     resources :purchase_orders, controller: :purchase_orders, only: %i[index show]
     resource :profile, controller: :profile, except: [:show, :index]
+
     resources :products, controller: :products do
       collection do
         get 'index'
@@ -933,6 +934,11 @@ Rails.application.routes.draw do
       post 'reset_current_company'
       get 'edit_current_company'
       patch 'update_current_company'
+    end
+
+    resource :session, controller: :sessions do
+      get 'edit_current_company'
+      get 'set_current_company'
     end
   end
 end
