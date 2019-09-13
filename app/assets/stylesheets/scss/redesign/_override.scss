@@ -612,7 +612,9 @@ table.bmro-datatable-style{
     display: inline-block;
     text-transform: uppercase;
     background-color: #DFE5F0;
-    padding: 6px 15px;    
+    padding: 6px 44px 6px 14px;
+    border-radius-top-right: 80px;
+    border-top-right-radius: 58px;   
 }
 .bmro-summary a:after{
     content: "";
@@ -630,7 +632,7 @@ table.bmro-datatable-style{
 .bmro-summary .collapse{
     background-color: #DFE5F0;
     float: left;
-    padding: 15px 11px;
+    padding: 1px 15px 4px;
 }
 .bmro-addnew-icon{
    padding: 2px 10px;
@@ -658,9 +660,6 @@ table.bmro-datatable-style{
     float: left;  
     margin-right: 10px;
 }
-.bmro-invoice-data{
-    
-}
 .bmro-invoice-edit span{
     color: #2C4159;
     font-family: "Inter UI";
@@ -679,7 +678,9 @@ table.bmro-datatable-style{
     letter-spacing: -0.56px;
     line-height: 12px;
     width: 100%;
-    float: left;    
+    float: left;  
+    padding-bottom: 3px;
+    margin: 0;      
 }
 .bmro-invoice-edit{
     box-sizing: border-box;
@@ -689,4 +690,7 @@ table.bmro-datatable-style{
 }
 .bmro-invoice-edit:first-child{
     padding-left: 0px;
+}
+.bmro-invoice-edit:last-child{
+    border:none;
 }
