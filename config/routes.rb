@@ -911,6 +911,7 @@ Rails.application.routes.draw do
   namespace 'suppliers' do
     resource :dashboard, controller: :dashboard, only: :show
     resources :purchase_orders, controller: :purchase_orders, only: %i[index show]
+    resource :profile, controller: :profile, except: [:show, :index]
 
     resources :companies do
       collection do

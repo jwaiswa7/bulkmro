@@ -30,15 +30,14 @@ class Suppliers::BaseController < ApplicationController
     end
 
     def redirect_if_required
-      debugger
       redirect_to_path = if session[:current_company_id].blank? || current_company.blank?
-        edit_current_company_customers_sign_in_steps_path
+        edit_current_company_suppliers_sign_in_steps_path
       elsif session[:current_company_id].present? && current_company.present?
         if params[:became].present? && current_contact.companies.pluck(:id).exclude?(current_company.id)
           session[:current_company_id] = nil
-          edit_current_company_customers_sign_in_steps_path
+          edit_current_company_suppliers_sign_in_steps_path
         elsif controller_name == 'sign_in_steps'
-          customers_dashboard_path
+          suppliers_dashboard_path
         end
       end
 
