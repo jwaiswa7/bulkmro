@@ -614,6 +614,19 @@ table.bmro-datatable-style{
     background-color: #DFE5F0;
     padding: 6px 15px;    
 }
+.bmro-summary a:after{
+    content: "";
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+    border-color: #fff transparent transparent transparent;
+    position: relative;
+    top: 16px;
+    right: 10px;    
+}
+.bmro-summary.show a:after{
+   border-color: transparent transparent #fff transparent; 
+}
 .bmro-summary .collapse{
     background-color: #DFE5F0;
     float: left;
