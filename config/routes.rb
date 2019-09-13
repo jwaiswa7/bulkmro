@@ -912,7 +912,15 @@ Rails.application.routes.draw do
     resource :dashboard, controller: :dashboard, only: :show
     resources :purchase_orders, controller: :purchase_orders, only: %i[index show]
     resource :profile, controller: :profile, except: [:show, :index]
-    resources :products, controller: :products, only: :index
+    resources :products, controller: :products do
+      collection do
+        get 'index'
+      end
+      member do
+        get 'show'
+        post 'update_price'
+      end
+    end
 
     resources :companies do
       collection do

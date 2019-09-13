@@ -8,7 +8,6 @@
       <% end unless content_for?(:hide_table_heading) %>
 
       <div class="d-none">
-        <a href="<%= suppliers_products_path(view: 'list_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
         <a href="<%= suppliers_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
       </div>
     </div>
@@ -38,17 +37,31 @@
               <%# if supplier_product.best_image.present? %>
               <img data-src="<%= url_for(supplier_product.medium_best_image) %>" src="<%= image_path('coming_soon.png') %>" class="lazy-load" alt="<%= supplier_product.sku %>" width="500"/>
               <%# else %>
-<!--                              <img data-src="<%#= image_path('coming_soon.png') %>" alt="<%#= supplier_product.sku %>" width="500" class="lazy-load" src="<%#= image_path('coming_soon.png') %>" />-->
+                <!--  <img data-src="<%#= image_path('coming_soon.png') %>" alt="<%#= supplier_product.sku %>" width="500" class="lazy-load" src="<%#= image_path('coming_soon.png') %>" />-->
               <%# end %>
               <h5 class="mb-0 text-small mt-2"><strong><%= truncate(supplier_product.name, :length => 100) %></strong>
               </h5>
               <h5 class="mb-0 text-small"><strong>(#<%= supplier_product.sku %>)</strong></h5>
-              <h5 class="mb-0 mt-1 text-small text-black-50">
-                <strong><%= format_currency(supplier_product.supplier_unit_cost_price.present? ? supplier_product.supplier_unit_cost_price : supplier_product.latest_unit_cost_price_for(current_company)) %></strong>
-              </h5>
+              <div class="mb-0 mt-1 text-small text-black-50">
+                <%#= button_tag(type: "submit", class: "btn btn-warning btn-sm col-md-1") do %>
+<!--                  <i class="fal fa-pen"></i>-->
+                <%# end %>
+                <strong class="col-md-11"><%= format_currency(supplier_product.supplier_unit_cost_price.present? ? supplier_product.supplier_unit_cost_price : supplier_product.latest_unit_cost_price_for(current_company)) %></strong>
+              </div>
               <hr class="my-2">
             </a>
           </div>
+          <%= simple_form_for(supplier_product, :url => update_price_suppliers_product_path(supplier_product), :method => :post) do |f| %>
+            <%= f.hidden_field :product_id, value: supplier_product.id %>
+            <div class="form-row <%= @display_class %>">
+              <div class="col-2 col-md-4">
+                <%= f.input :supplier_unit_cost_price, label: false, :class => 'form-control', input_html: {value: supplier_product.supplier_unit_cost_price.present? ? supplier_product.supplier_unit_cost_price : supplier_product.latest_unit_cost_price_for(current_company)} %>
+              </div>
+              <div class="col-10 col-md-8">
+                <%= f.submit 'Update Price', class: "btn btn-block btn-success" %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
     <% end %>
@@ -63,9 +76,4 @@
       </div>
     </div>
   <% end %>
-
-  <!--  <div class="col-12 mt-2">-->
-  <!--    <div class="text-center mb-2 text-uppercase"><%#= page_entries_info @supplier_products_paginate, entry_name: 'products' %></div>-->
-  <%#= paginate @supplier_products_paginate, remote: false, :params => {:view => "grid_view", :q => params[:q]} %>
-  <!--  </div>-->
 </div>
