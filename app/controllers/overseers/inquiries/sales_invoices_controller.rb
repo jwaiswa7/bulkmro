@@ -10,7 +10,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def show
     authorize_acl @sales_invoice
 
-    @bill_from_warehouse = get_bill_from_warehouse(@sales_invoice)
+    @bill_from_warehouse = SalesInvoice.get_bill_from_warehouse(@sales_invoice)
     respond_to do |format|
       format.html { render 'show' }
       format.pdf do
@@ -22,7 +22,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def duplicate
     authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    @bill_from_warehouse = get_bill_from_warehouse(@sales_invoice)
+    @bill_from_warehouse = SalesInvoice.get_bill_from_warehouse(@sales_invoice)
     locals.merge!(duplicate: true)
     respond_to do |format|
       format.html { }
@@ -35,7 +35,8 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def triplicate
     authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    @bill_from_warehouse = get_bill_from_warehouse(@sales_invoice)
+    # @bill_from_warehouse = get_bill_from_warehouse(@sales_invoice)
+     @bill_from_warehouse = SalesInvoice.get_bill_from_warehouse(@sales_invoice)
     locals.merge!(triplicate: true)
     respond_to do |format|
       format.html { }
@@ -48,7 +49,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def make_zip
     authorize_acl @sales_invoice
 
-    service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice, locals.merge(bill_from_warehouse: get_bill_from_warehouse(@sales_invoice)))
+    service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice, locals.merge(bill_from_warehouse: @bill_from_warehouse = SalesInvoice.get_bill_from_warehouse(@sales_invoice)))
     zip = service.call
 
     send_data(zip, type: 'application/zip', filename: @sales_invoice.zipped_filename(include_extension: true))
@@ -97,17 +98,17 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
       end
     end
 
-    def get_bill_from_warehouse(sales_invoice)
-      metadata = sales_invoice.metadata.deep_symbolize_keys
-      if metadata[:bill_from].present?
-        bill_from_warehouse = Warehouse.find_by_remote_uid(metadata[:bill_from])
-      else
-        inquiry = sales_invoice.inquiry
-        bill_from_warehouse = inquiry.bill_from
-      end
-
-      bill_from_warehouse
-    end
+    # def get_bill_from_warehouse(sales_invoice)
+    #   metadata = sales_invoice.metadata.deep_symbolize_keys
+    #   if metadata[:bill_from].present?
+    #     bill_from_warehouse = Warehouse.find_by_remote_uid(metadata[:bill_from])
+    #   else
+    #     inquiry = sales_invoice.inquiry
+    #     bill_from_warehouse = inquiry.bill_from
+    #   end
+    #
+    #   bill_from_warehouse
+    # end
 
     def set_invoice_items
       Resources::SalesInvoice.set_multiple_items([@sales_invoice.invoice_number])
