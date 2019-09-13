@@ -5,7 +5,7 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                         row_action_button_without_fa(overseers_ar_invoice_request_path(ar_invoice), 'bmro-icon-table bmro-icon-used-view', 'View AR Invoice', 'info', :_blank)
                       end,
                       if is_authorized(ar_invoice, 'edit')
-                        row_action_button_without_fa(edit_overseers_ar_invoice_request_path(ar_invoice), 'bmro-icon-table bmro-icon-pencil', 'Edit AR Invoice', 'warning', :_blank)
+                        row_action_button_without_fa(edit_overseers_ar_invoice_request_path(ar_invoice), 'bmro-icon-table bmro-icon-sighnature', 'Edit AR Invoice', 'warning', :_blank)
                       end,
                       if !ar_invoice.status.downcase.include?('cancel') && is_authorized(ar_invoice, 'can_cancel_or_reject')
                         link_to('', class: ['btn btn-sm btn-danger cancel-ar-invoice'], 'data-invoice-request-id': ar_invoice.id, title: 'Cancel', remote: true) do
