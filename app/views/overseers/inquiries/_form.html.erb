@@ -253,7 +253,7 @@
                 <div class="flex-grow-1">
                   <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: {multiple: true}, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, label: 'Supplier quotes' %>
                 </div>
-                <div class="form-group bmro-download-icon">
+                <div class="form-group bmro-download-icon width-30">
                   <% f.object.supplier_quotes.attachments.each do |attachment| %>
                     <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                       <i class="fal fa-download"></i>
