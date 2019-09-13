@@ -668,6 +668,8 @@ table.bmro-datatable-style{
     font-weight: bold;
     letter-spacing: -1.01px;
     line-height: 21px;
+    width: 100%;
+    float: left;    
 }
 .bmro-invoice-edit label{
     color: #687686;
@@ -676,9 +678,15 @@ table.bmro-datatable-style{
     font-weight: 600;
     letter-spacing: -0.56px;
     line-height: 12px;
+    width: 100%;
+    float: left;    
 }
 .bmro-invoice-edit{
     box-sizing: border-box;
     border-right: 1px solid #B3BCC6;
     float: left;
+    padding-left: 17px;    
+}
+.bmro-invoice-edit:first-child{
+    padding-left: 0px;
 }
