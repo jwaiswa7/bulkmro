@@ -719,17 +719,22 @@ table.bmro-datatable-style{
 .bmro-model-body-padding{
     padding: 2px 50px;
 }
-.bmro-model-button button{
-    width: 100%;
+.bmro-model-button{
+    width: 322px;
+    margin-left: 50px;
 }
 .bmro-model-content{
     padding: 40px;
     background-color: #fff;
 }
 .bmro-model-header{
-    padding: 0px;
+    width: 100%;
+    padding: 0px!important;
+  
 }
 .bmro-model-close{
     background-color: transparent;
+     border:none; 
     color: #000;
+      float: right;
 }
