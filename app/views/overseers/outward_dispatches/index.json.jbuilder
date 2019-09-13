@@ -12,8 +12,8 @@ json.data (@outward_dispatches) do |outward_dispatch|
                       if is_authorized(:outward_dispatch, 'can_create_packing_slip') && policy(outward_dispatch).can_create_packing_slip?
                         row_action_button(new_overseers_outward_dispatch_packing_slip_path(outward_dispatch), 'plus', 'Create Packing Slip', 'success', :_blank)
                       end,
-                      if is_authorized(:outward_dispatch, 'can_send_dispatch_email') && current_overseer.can_send_emails? && (outward_dispatch.status == 'Material Ready for Dispatch')
-                        row_action_button(dispatch_mail_to_customer_overseers_outward_dispatch_email_messages_path(outward_dispatch), 'envelope', 'Send Dispatch Mail', 'dark', :_blank)
+                      if sales_invoice.present? && is_authorized(sales_invoice, 'can_send_pod_email') && policy(sales_invoice).create_email_message? && (outward_dispatch.status == 'Material Ready for Dispatch')
+                        row_action_button(dispatch_mail_to_customer_overseers_sales_invoice_path(sales_invoice), 'envelope', 'Send Dispatch Mail', 'dark', :_blank)
                       end,
                       if sales_invoice.present? && is_authorized(sales_invoice, 'can_send_pod_email') && policy(sales_invoice).create_email_message? && (outward_dispatch.status == 'Material Delivered')
                         row_action_button(delivery_mail_to_customer_overseers_sales_invoice_path(sales_invoice), 'envelope', 'Delivery Email', 'success')

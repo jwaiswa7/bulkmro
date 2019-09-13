@@ -112,9 +112,9 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     authorize_acl @invoice
 
     if params['email_message']['auto_attach']
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Original_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: SalesInvoice.get_bill_from_warehouse(@invoice))), filename: 'Original_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: SalesInvoice.get_bill_from_warehouse(@invoice))), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: SalesInvoice.get_bill_from_warehouse(@invoice))), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
     end
 
 
@@ -130,8 +130,6 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
   def dispatch_mail_to_customer
     @outward_dispatch = @invoice.ar_invoice_request.outward_dispatches.last if @invoice.ar_invoice_request.present?
-    @bill_from_warehouse = SalesInvoice.get_bill_from_warehouse(@invoice)
-    # @invoice.metadata['bill_from'] = @bill_from_warehouse
     @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice, outward_dispatch: @outward_dispatch)
     subject = "Ref# #{@invoice.inquiry.inquiry_number}- Your Order #{@invoice.inquiry.customer_po_number} - Dispatch Notification"
     @action = 'dispatch_mail_to_customer_notification'
@@ -146,7 +144,6 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
         url: {action: @action, controller: 'overseers/sales_invoices'},
         attachment: {'Original Invoice' => overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank, stamp: true), 'Duplicate Invoice' => duplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), 'Triplicate Invoice' => triplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank)}
     }
-
 
     authorize_acl @invoice
     render 'shared/layouts/email_messages/new'
@@ -163,11 +160,10 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     authorize_acl @invoice
 
     if params['email_message']['auto_attach']
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Original_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: SalesInvoice.get_bill_from_warehouse(@invoice))), filename: 'Original_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: SalesInvoice.get_bill_from_warehouse(@invoice))), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: SalesInvoice.get_bill_from_warehouse(@invoice))), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
     end
-
 
     if @email_message.save!
       SalesInvoiceMailer.send_delivery_mail(@email_message).deliver_now

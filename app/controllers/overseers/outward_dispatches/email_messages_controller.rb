@@ -32,9 +32,9 @@ class Overseers::OutwardDispatches::EmailMessagesController < Overseers::Outward
     authorize @outward_dispatch, :dispatch_mail_to_customer_notification?
 
     if @email_message.auto_attach?
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, {stamp:true})), filename: 'original_' + @sales_invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, {duplicate: true, stamp:true})), filename:'duplicate_' + @sales_invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, {triplicate:true, stamp:true})), filename: 'triplicate_' + @sales_invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, {stamp:true, bill_from_warehouse: SalesInvoice.get_bill_from_warehouse(@sales_invoice)})), filename: 'original_' + @sales_invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, {duplicate: true, stamp:true, bill_from_warehouse: SalesInvoice.get_bill_from_warehouse(@sales_invoice)})), filename:'duplicate_' + @sales_invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, {triplicate:true, stamp:true, bill_from_warehouse: SalesInvoice.get_bill_from_warehouse(@sales_invoice)})), filename: 'triplicate_' + @sales_invoice.filename(include_extension: true))
     end
 
     if @email_message.save
