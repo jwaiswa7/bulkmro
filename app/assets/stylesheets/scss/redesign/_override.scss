@@ -561,3 +561,24 @@ li.select2-results__option{
 table.bmro-datatable-style{
     border-spacing:0px!important;
 }
+.bmro-ar-invoice{
+    width: 100%;
+    float: left;
+}
+.bmro-invoice-heading{
+    width: 100%;
+    float: left;
+}
+.bmro-invoice-heading h4{
+    color: #2C4159;
+    font-family: 'Inter', sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.82px;
+    line-height: 25px;    
+    margin: 0px;    
+}
+.bmro-invoice-heading span{
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAAXNSR0IArs4c6QAAAWFJREFUOBHdUj1LA0EQnbkLAcHC1sqrQkCFA1uJCn6hhRHTBFLkH2hjH+I1thaCVhaCnaRULII/QAjof7AxoCGCd7ndcSZmL2cgi6R0YNiZN++9HW4PwRJ+sToD3diH6Uyr1bh6H0d1xg0Ejzu9eqxUU3W+Tmw8qwkCfP6I3e7EJjZhembdJE201f/MhB/gdyxtVWbDSDUInDvXgSmt9TEinmqEyNG0mc26+0/3169pVf+b+OuVVX+76skgVLoIiHOIdKSI8oIRwjxqOiREL+zFe4IJX3RSO4sb5ZX+DxVFtwKUlnMXvF7AGXLuCgYEO4M+KBXylwIp5otOjJLXIaIPGdZqNX1QyJ1zWWdhWzAkavN2dcFlLpjhS52YSGPCGBFBwBZvBBikDQzPnBlTjJ6DG88Yl4SX5ihj2CcmvLq3sFa2UIciqYRPAygxYcBjTPJPYQyEzIYA8kJyThLPDzeP374TgKovP6tiAAAAAElFTkSuQmCC')
+
+}
