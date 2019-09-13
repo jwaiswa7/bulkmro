@@ -300,9 +300,9 @@ li.bmro-li-right{
     opacity: unset;
     position: absolute;
     top: -5px;  
-    border-color: #ECEEF2!important;
-    border-width: 0px;
+    border:2px solid #ECEEF2!important;   
 }
+
 .custom-file-label::after {
     position: absolute;
     top: 0;
