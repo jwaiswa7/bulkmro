@@ -603,8 +603,23 @@ table.bmro-datatable-style{
     float: left;
 }
 .bmro-summary a{
-
+    color: #2C4159;
+    font-family: "Inter UI";
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: -0.56px;
+    line-height: 12px;
+    display: inline-block;
+    text-transform: uppercase;
 }
 .bmro-summary .collapse{
 
+}
+.bmro-summary-box1{
+    width: 401px;
+    border-radius: 2px 2px 0 0;
+    float: left;  
+}
+.bmro-invoice-data{
+    
 }
