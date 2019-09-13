@@ -8,10 +8,10 @@ class Overseers::OutwardDispatches::EmailMessagesController < Overseers::Outward
     @email_message = @outward_dispatch.email_messages.build(overseer: current_overseer, contact: @contact, inquiry: @inquiry, sales_order: @sales_order, outward_dispatch: @outward_dispatch, cc: cc_addresses)
     @action = 'dispatch_mail_to_customer_notification'
     @email_message.assign_attributes(
-        to: @to,
-        subject: "Ref# #{@inquiry.inquiry_number} - Your Order # #{@inquiry.customer_po_number} - Dispatch Notification",
-        body: OutwardDispatchMailer.dispatch_mail_to_customer(@email_message).body.raw_source,
-        auto_attach: true
+      to: @to,
+      subject: "Ref# #{@inquiry.inquiry_number} - Your Order # #{@inquiry.customer_po_number} - Dispatch Notification",
+      body: OutwardDispatchMailer.dispatch_mail_to_customer(@email_message).body.raw_source,
+      auto_attach: true
     )
     authorize @outward_dispatch, :dispatch_mail_to_customer?
     render 'new'
@@ -19,11 +19,11 @@ class Overseers::OutwardDispatches::EmailMessagesController < Overseers::Outward
 
   def dispatch_mail_to_customer_notification
     @email_message = @outward_dispatch.email_messages.build(
-        overseer: current_overseer,
-        contact: @contact,
-        inquiry: @inquiry,
-        sales_order: @sales_order,
-        email_type: 'Material Dispatched to Customer'
+      overseer: current_overseer,
+      contact: @contact,
+      inquiry: @inquiry,
+      sales_order: @sales_order,
+      email_type: 'Material Dispatched to Customer'
     )
     @email_message.assign_attributes(email_message_params)
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:cc].present?
@@ -32,9 +32,9 @@ class Overseers::OutwardDispatches::EmailMessagesController < Overseers::Outward
     authorize @outward_dispatch, :dispatch_mail_to_customer_notification?
 
     if @email_message.auto_attach?
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, {stamp:true})), filename: 'original_' + @sales_invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, {duplicate: true, stamp:true})), filename:'duplicate_' + @sales_invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, {triplicate:true, stamp:true})), filename: 'triplicate_' + @sales_invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, stamp: true, bill_from_warehouse: SalesInvoice.get_bill_from_warehouse(@sales_invoice))), filename: 'original_' + @sales_invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, duplicate: true, stamp: true, bill_from_warehouse: SalesInvoice.get_bill_from_warehouse(@sales_invoice))), filename: 'duplicate_' + @sales_invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_invoice, triplicate: true, stamp: true, bill_from_warehouse: SalesInvoice.get_bill_from_warehouse(@sales_invoice))), filename: 'triplicate_' + @sales_invoice.filename(include_extension: true))
     end
 
     if @email_message.save
@@ -66,5 +66,4 @@ class Overseers::OutwardDispatches::EmailMessagesController < Overseers::Outward
       @sales_invoice = @ar_invoice_request.sales_invoice
       @contact = @inquiry.contact
     end
-
 end
