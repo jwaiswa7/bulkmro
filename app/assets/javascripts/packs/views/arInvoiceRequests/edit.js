@@ -22,5 +22,6 @@ const edit = () => {
 export default edit
 
 $(document).ready(function(){
-  $(".bmro-icon-table").parent().addClass('bmro-icon-parent');
+  $(".bmro-icon-table").parent().css({"color": "red", "border": "2px solid red"});
+  console.log('testing');
 });
