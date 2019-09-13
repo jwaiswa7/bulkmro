@@ -35,8 +35,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def triplicate
     authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    # @bill_from_warehouse = get_bill_from_warehouse(@sales_invoice)
-     @bill_from_warehouse = SalesInvoice.get_bill_from_warehouse(@sales_invoice)
+    @bill_from_warehouse = SalesInvoice.get_bill_from_warehouse(@sales_invoice)
     locals.merge!(triplicate: true)
     respond_to do |format|
       format.html { }

@@ -366,5 +366,4 @@ class SalesInvoice < ApplicationRecord
 
     bill_from_warehouse
   end
-
 end
