@@ -57,7 +57,7 @@
           </div>
           <div class="col-6">
             <% if f.object.calculation_sheet.attached? %>
-              <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: "#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe %>
+              <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: "#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe %>
             <% else %>
               <%= f.input :calculation_sheet, wrapper: :custom_file, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, label: 'Calculation sheet', hint: false %>
             <% end %>
