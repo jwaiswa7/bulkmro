@@ -2,7 +2,7 @@ json.data (@ar_invoice_requests) do |ar_invoice|
   json.array! [
                   [
                       if is_authorized(ar_invoice, 'show')
-                        row_action_button(overseers_ar_invoice_request_path(ar_invoice), 'fal fa-fal fa-eye', 'View AR Invoice', 'info', :_blank)
+                        row_action_button_without_fa(overseers_ar_invoice_request_path(ar_invoice), 'bmro-icon-used-view', 'View AR Invoice', 'info', :_blank)
                       end,
                       if is_authorized(ar_invoice, 'edit')
                         row_action_button(edit_overseers_ar_invoice_request_path(ar_invoice), 'pencil', 'Edit AR Invoice', 'warning', :_blank)

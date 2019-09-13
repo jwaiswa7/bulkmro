@@ -491,85 +491,10 @@ table.dataTable td{
 .bmro-input-padding{
     padding:4px 4px 30px 4px!important;
 }
-/*.sprite{
-    background-image: url("../../../images/icon-sprite.png");
+.bmro-icon-used-view{
+    height: 26px;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAnJJREFUSA1jXLJ6m+c/BsZ5////k2CgAWBkZHrBxPA/iQVkiZK8lISMhBgNrGFgePLilcS9h8/msYB8ArKEn4+HJhaBDL374IkEE81MRzN41CK0ACGeS7egYyHWTUdOXWTYuPMgw827Dxl+/PzFIC8tweBqZ84Q6OnAwMpK2BiCKr5++87QN3MZw65DJxk0lOUZ/N3tGdjYWBmu3brHMGXBaobt+48y1BelMijISuF1M96ge/fhE0NycSvDyfPXGGoLkxnSYgIZrgItOAr0nYG2GsOMjnKGf//+M6SUtDKcvnCNPIu+ff/BUNw0geHX718M09pLGSTFhIH8iQzfvv1gEBURZJi6YA3DibNXGaZ3VDBoqSoxVHdOBwcrLttw+qhv1jKGp89fM/TVFzDIAeNj695jDDKSYkBLyxmaS9MZgoBxs3nPIQYuTg6GzpocBhkpMYba7pkMIAdiAzgt+g6McBD48+cfNn0oYkxMTAxMjDiNAqvFKVuZHQcNrn6GOw+eMng7WzE8ef6KIauyE+zyddsPMPi62DF8//GToaJtCsOjpy/APgX5EBvAaREPNxdDb30hAwcHB0NuTTfDoycvGXrr8hm4uDgYXr95z5CdEMJgaarLkFXVyXD5+h2G1vJMBnVgqsQF8CZvESF+hnm9NQy9M5cydExdyKCqJMtgZazHwM7OxnDh6i1wglCWl2KY01NNMHnjtQjkOm4uToa6whQGJ2tTcIbdtOsQPMPmJIRSL8PCgsLGTJ8BhMkFOOOIXANx6Ru1CFfIEBSnW9CxgNpdoCYRQSeRqQBoNgPIDhZQ4w7U7gI1icg0C682WAMSAKz4083vKtFoAAAAAElFTkSuQmCC')
+    width: 26px;
+    border: none;
+    margin-right: 4px;   
 }
-.sprite { background: url('sprite.png') no-repeat top left; width: 26px; height: 26px;  } 
-.sprite.bmro-drop-icon { background-position: 0 0; width: 9px; height: 14px; } 
-.sprite.CommentCopy2 { background-position: 0 -24px; } 
-.sprite.CommentCopy3 { background-position: 0 -60px; } 
-.sprite.CommentCopy4 { background-position: 0 -96px; } 
-.sprite.Comment { background-position: 0 -132px; } 
-.sprite.Comment-2 { background-position: 0 -168px; } 
-.sprite.Comment-2-bg { background-position: 0 -204px; } 
-.sprite.DebuggingCopy2 { background-position: 0 -240px; } 
-.sprite.Debugging { background-position: 0 -276px; } 
-.sprite.duplicate { background-position: 0 -312px; width: 17px; height: 17px; } 
-.sprite.Group2Copy { background-position: 0 -339px; } 
-.sprite.Group2 { background-position: 0 -375px; } 
-.sprite.Group3Copy { background-position: 0 -411px; } 
-.sprite.Group3 { background-position: 0 -447px; } 
-.sprite.Group5Copy { background-position: 0 -483px; width: 9px; height: 14px; } 
-.sprite.Group5 { background-position: 0 -507px; width: 9px; height: 14px; } 
-.sprite.Icons_Used-Original_With_SignatureCopy { background-position: 0 -531px; } 
-.sprite.Icons_Used-Original_With_Signature { background-position: 0 -567px; } 
-.sprite.Icons_Used-Proof_of_Delivery { background-position: 0 -603px; } 
-.sprite.Icons_Used-Relationship_MapCopy { background-position: 0 -639px; } 
-.sprite.Icons_Used-ViewCopy { background-position: 0 -675px; } 
-.sprite.Icons_Used-View { background-position: 0 -711px; } 
-.sprite.Icons_Used-Zip_With_Signature { background-position: 0 -747px; } 
-.sprite.Icons_Used-Zip_Without_SignatureCopy { background-position: 0 -783px; } 
-.sprite.Icons_Used-Zip_Without_Signature { background-position: 0 -819px; } 
-.sprite.MaterialDeliveredMessageCopy { background-position: 0 -855px; } 
-.sprite.MaterialDeliveredMessage { background-position: 0 -891px; } 
-.sprite.MaterialDispatchMessageCopy2 { background-position: 0 -927px; } 
-.sprite.MaterialDispatchMessageCopy { background-position: 0 -963px; } 
-.sprite.MaterialDispatchMessage { background-position: 0 -999px; } 
-.sprite.noun_add_793037copy2 { background-position: 0 -1035px; width: 18px; height: 18px; } 
-.sprite.noun_add_793037copy { background-position: 0 -1063px; width: 18px; height: 19px; } 
-.sprite.noun_add_793037 { background-position: 0 -1092px; width: 18px; height: 18px; } 
-.sprite.noun_Box_792100Copy2 { background-position: 0 -1120px; width: 17px; height: 17px; } 
-.sprite.noun_Box_792100Copy { background-position: 0 -1147px; width: 17px; height: 18px; } 
-.sprite.noun_Box_792100 { background-position: 0 -1175px; width: 17px; height: 17px; } 
-.sprite.noun_copyfiles_794434copy2 { background-position: 0 -1202px; width: 17px; height: 17px; } 
-.sprite.noun_copyfiles_794434copy { background-position: 0 -1229px; width: 17px; height: 17px; } 
-.sprite.noun_copyfiles_794434 { background-position: 0 -1256px; width: 17px; height: 17px; } 
-.sprite.noun_Download_792802Copy2 { background-position: 0 -1283px; width: 18px; height: 18px; } 
-.sprite.noun_Download_792802Copy { background-position: 0 -1311px; width: 18px; height: 18px; } 
-.sprite.noun_Download_792802 { background-position: 0 -1339px; width: 18px; height: 18px; } 
-.sprite.noun_options_791911copy2 { background-position: 0 -1367px; width: 16px; height: 16px; } 
-.sprite.noun_options_791911copy { background-position: 0 -1393px; width: 16px; height: 17px; } 
-.sprite.noun_options_791911 { background-position: 0 -1420px; width: 16px; height: 16px; } 
-.sprite.noun_TrashCan_794530Copy2 { background-position: 0 -1446px; width: 16px; height: 20px; } 
-.sprite.noun_TrashCan_794530Copy3 { background-position: 0 -1476px; width: 16px; height: 20px; } 
-.sprite.noun_TrashCan_794530Copy4 { background-position: 0 -1506px; width: 16px; height: 20px; } 
-.sprite.noun_TrashCan_794530Copy { background-position: 0 -1536px; width: 18px; height: 22px; } 
-.sprite.noun_Uploadfile_794817Copy2 { background-position: 0 -1568px; width: 17px; height: 18px; } 
-.sprite.noun_Uploadfile_794817Copy { background-position: 0 -1596px; width: 17px; height: 19px; } 
-.sprite.noun_Uploadfile_794817 { background-position: 0 -1625px; width: 17px; height: 18px; } 
-.sprite.pencil { background-position: 0 -1653px; width: 14px; height: 14px; } 
-.sprite.PORequestCopy2 { background-position: 0 -1677px; } 
-.sprite.PORequestCopy3 { background-position: 0 -1713px; } 
-.sprite.PORequest { background-position: 0 -1749px; } 
-.sprite.RelationshipMapCopy3 { background-position: 0 -1785px; } 
-.sprite.RelationshipMap { background-position: 0 -1821px; } 
-.sprite.ShapeCopy2 { background-position: 0 -1857px; width: 17px; height: 17px; } 
-.sprite.ShapeCopy3 { background-position: 0 -1884px; width: 14px; height: 14px; } 
-.sprite.ShapeCopy4 { background-position: 0 -1908px; width: 17px; height: 17px; } 
-.sprite.ShapeCopy7 { background-position: 0 -1935px; width: 17px; height: 17px; } 
-.sprite.ShapeCopy8 { background-position: 0 -1962px; width: 17px; height: 17px; } 
-.sprite.ShapeCopy { background-position: 0 -1989px; width: 17px; height: 17px; } 
-.sprite.Shape { background-position: 0 -2016px; width: 17px; height: 17px; } 
-.sprite.ToggleIconCopy2 { background-position: 0 -2043px; width: 9px; height: 14px; } 
-.sprite.ToggleIconCopy3 { background-position: 0 -2067px; width: 9px; height: 14px; } 
-.sprite.ToggleIconCopy4 { background-position: 0 -2091px; width: 9px; height: 14px; } 
-.sprite.ToggleIconCopy { background-position: 0 -2115px; width: 9px; height: 14px; } 
-.sprite.ToggleIcon { background-position: 0 -2139px; width: 9px; height: 14px; } 
-.sprite.UpdatedDateCopy { background-position: 0 -2163px; } 
-.sprite.UpdatedDate { background-position: 0 -2199px; } */
-
-.bmro-icon .sprite {
-    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA1BMVEX///+nxBvIAAAAAXRSTlMAQObYZgAAAAxJREFUeNpjYCANAAAAMAABKHRJfQAAAABJRU5ErkJggg==') no-repeat ;
-    width: 15px;
-    height: 15px;
-     }
