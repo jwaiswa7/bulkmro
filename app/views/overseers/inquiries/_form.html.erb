@@ -497,52 +497,15 @@
       <div class="bmro-right-ul">
         <nav class="bmro-nav">
           <ul class="bmro-label-ul">
-            <li class="bmro-li-right"><button id="button" onclick="slideTo('Opportuinity');" class="bmro-list-button">Opportunity Details
-</button></li>
+            <li class="bmro-li-right">
+              <button id="button" onclick="slideTo('Opportuinity');" class="bmro-list-button">Opportunity Details</button>
+            </li>
             <li class="bmro-li-right bmro-active-li"><button id="button" onclick="slideTo('Billing');" class="bmro-list-button">Billing/Shipping Details</button></li>
             <li class="bmro-li-right bmro-active-li"><button id="button" onclick="slideTo('Owner');" class="bmro-list-button">Owner Details</button></li>
             <li class="bmro-li-right bmro-active-li"><button id="button" onclick="slideTo('Important');" class="bmro-list-button">Important Dates</button></li>
             <li class="bmro-li-right bmro-active-li"><button id="button" onclick="slideTo('Order');" class="bmro-list-button">Order Details</button></li>
           </ul>
-        </nav>   
-        <script type="text/javascript">
-          function slideTo(page) {
-            let element = document.getElementById(page);
-            element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-          }
-            $(".bmro-li-right").click(function(){
-            $('.bmro-li-right').addClass('bmro-active-li',1000);
-            $(this).removeClass('bmro-active-li');
-          });
-
-          $(function() {
-              var top = $('.bmro-card-header').offset().top - parseFloat($('.bmro-card-header').css('marginTop').replace(/auto/, 0));
-              var footTop = $('.bmro-product-bottom').offset().top - parseFloat($('.bmro-product-bottom').css('marginTop').replace(/auto/, 0));
-
-              var maxY = footTop - $('.bmro-card-header').outerHeight();
-
-              $(window).scroll(function(evt) {
-                  var y = $(this).scrollTop();
-                  if (y > top) {
-                      
-          //Quand scroll, ajoute une classe ".fixed" et supprime le Css existant 
-                      if (y < maxY) {
-                          $('.bmro-card-header').addClass('fixed').removeAttr('style');
-                      } else {
-                          
-          //Quand la sidebar arrive au footer, supprime la classe "fixed" précèdement ajouté
-                          $('.bmro-card-header').removeClass('fixed').css({
-                              position: 'relative',
-                              // top: (maxY - top) + 'px'
-                              top:'2100.39px'
-                          });
-                      }
-                  } else {
-                      $('.bmro-card-header').removeClass('fixed');
-                  }
-              });
-          });            
-        </script>     
+        </nav>       
       </div>
     </div> 
 
