@@ -500,11 +500,11 @@ table.dataTable td{
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAZVJREFUSA1jXLJ6m+c/BsZ5////k2CgAWBkZHrBxPA/iQVkiZK8lISMhBgNrGFgePLilcS9h8/msYB8ArKEn4+HJhaBDL374IkEE81MRzN41CK0ACGey4JL6aHj5xh6Zy1jePfhEy4lcHEhAT6G4rQoBjtLI7gYOgOnRSBLzA21GRysjNH1YPAPHDsLdhRZFoF8ArLEykQPw2BsAtv3H8cmDBcbTXXwoCCVQbegw5nqeHm4GY6cvsjAzsaG1fHiooIMMpLiYLn///9jVYMsiNOizNgghr7Zyxg27zqMrB7OZmVlAecdbxcbBkZGRrg4LgZOi3zdbBk8HC0ZPn35iqEX5IFVW/YwdExdxHDl1n0GcwMtDDXoAjgtAikEuVpYkB9dD5ifFRfMoKuhzNA2aT7DQWApQghQlBhszQwY5vbUMIiLChGyh4Eii0CmS0mIMszsrGDwdrHGaxnFFoFMZ2NlZajIjqe9RXhtgEpSxUeDyiIWULsL1CQixlXkqAGaDczQTC9YQI07ULsL1CQixyBCemANSABWIGeCfaGwnAAAAABJRU5ErkJggg==')
 }
 .bmro-icon-table{
-     border: none;
+    border: none;
     padding: 6px 13px;
     background-repeat: no-repeat;     
 } 
-.bmro-icon-table:parent{
+.bmro-icon-parent{
     background-color: unset;
     border-color: unset;
     box-shadow: unset;  

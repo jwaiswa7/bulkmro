@@ -87,9 +87,6 @@ $(function() {
   });
 });      
 
-$( document ).ready(function() {
-    console.log( "ready 12  !" );
-});
 $(function() {
-    console.log( "ready!" );
+    $('.bmro-icon-table').parent().addClass('bmro-icon-parent');
 });
