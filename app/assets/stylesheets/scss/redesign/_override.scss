@@ -599,8 +599,12 @@ table.bmro-datatable-style{
     right: -8px;
 }
 .bmro-summary{
-    width: 401px;
-    border-radius: 2px 2px 0 0;
-    background-color: #DFE5F0;    
+    width: 100%;  
     float: left;
+}
+.bmro-summary a{
+
+}
+.bmro-summary .collapse{
+
 }
