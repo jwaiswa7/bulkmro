@@ -1,5 +1,8 @@
 import productsSupplierRating from "../products/productSupplierRating"
+import addSuppliers from "./addSuppliers";
+
 const editSuppliers = () => {
+
     $('form[action$=update_suppliers]')
         .on('change', 'select[name*=supplier_id]', function (e) {
             onSupplierChange(this);
@@ -11,7 +14,7 @@ const editSuppliers = () => {
         })
         .find('select[name*=supplier_id]')
         .each(function (e) {
-            onSupplierChange(this);
+            // onSupplierChange(this);
         });
 
     $('#select_all_suppliers').change(function () {
@@ -20,6 +23,8 @@ const editSuppliers = () => {
         });
     });
     massLinkSupplier();
+    addSuppliers();
+    draftRfq();
 };
 
 let onSupplierChange = (container) => {
@@ -50,14 +55,31 @@ let massLinkSupplier = () => {
     $('.mass-link-supplier').click(function () {
         $('#masslinksupplier').modal('show');
         let products = [];
-        $.each($("input[name='inquiry_product_ids[]']:checked"), function(){
+        $.each($("input[name='inquiry_product_ids[]']:checked"), function () {
             products.push($(this).val());
         });
         $('#product_ids').val(products);
-        // $('input[name="inquiry_product_ids[]"]').each(function () {
-        //     $(this).prop('checked', $('#select_all_suppliers').prop("checked")).trigger('change');
-        // });
+    });
+};
+
+let draftRfq = () => {
+    let product_ids = [];
+    let inquiry_id = $('input[name=inquiry_id]').val();
+    product_ids.push($('input[name="product_ids"]').val());
+
+
+    $('.draft-rfq').click(function () {
+        let inquiry_product_supplier_ids = [];
+        let inquiry_id = $('input[name=inquiry_id]').val();
+        let obj = {};
+        $.each($("input[name='inquiry_product_supplier_ids[]']:checked"), function () {
+            let $this = $(this);
+            inquiry_product_supplier_ids.push($this.attr('id').split('inquiry_product_supplier_id_')[1]);
+        });
+        let data = {inquiry_id: inquiry_id, supplier_ids: inquiry_product_supplier_ids};
+        window.open(Routes.draft_rfq_overseers_inquiry_path(inquiry_id, data), '_self');
     });
 }
+
 
 export default editSuppliers

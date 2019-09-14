@@ -1,17 +1,23 @@
 const addSuppliers = () => {
     $('.add_supplier_wrapper').hide();
+    $('.mass-link-supplier').hide();
+    $('.draft-rfq').hide();
+
     toggleCheckboxes();
 
     $('#add_supplier').click((event) => {
         addProductSuppliers();
     });
+
+    checkProductSuppliers();
+    showOrHideDraftRfq();
 };
 
 let toggleCheckboxes = () => {
-    $('#add_suppliers').prop("checked", false);
+    $('#all_suppliers').prop("checked", false);
 
-    $('#add_suppliers').change((event) => {
-        var $element = $(event.target)
+    $('#all_suppliers').change((event) => {
+        let $element = $(event.target);
         if ($element.is(':checked')) {
             $('input[type=checkbox][name="suppliers[]"]').each((index, element) => {
                 $(element).prop("checked", true);
@@ -32,30 +38,23 @@ let toggleCheckboxes = () => {
 
 let addProductSuppliers = () => {
     let suppliers = [];
+    let product_ids = [];
+    let inquiry_id = $('input[name=inquiry_id]').val();
+    product_ids.push($('input[name="product_ids"]').val());
     $('input[type=checkbox][name="suppliers[]"]:checked').each((index, element) => {
         suppliers.push($(element).val());
     });
-
-
     if (suppliers.length > 0 ) {
 
-        var data = JSON.stringify({suppliers: suppliers});
+        let data = JSON.stringify({supplier_ids: suppliers, inquiry_product_ids: product_ids});
         $.ajax({
-            url: Routes.add_suppliers_overseers_inquiries_path(),
+            url: Routes.link_product_suppliers_overseers_inquiry_path(inquiry_id),
             type: "POST",
             data: data,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function () {
-                var dataTable = $('.datatable').dataTable();
-                dataTable.api().ajax.reload(null, false);
-                $('#add_suppliers').removeAttr('checked');
-                $('#add_suppliers').prop("checked", false);
-                $.notify({
-                    message: 'Suppliers added successfully'
-                }, {
-                    type: 'success'
-                });
+                window.location.reload();
             }
         });
     }
@@ -70,6 +69,44 @@ let showOrHideActions = () => {
         $('.add_supplier_wrapper').hide();
     }
 
-}
+};
+
+let checkProductSuppliers = () => {
+    $('input[name="inquiry_product_ids[]"]').change(function () {
+        let $this = $(this);
+        let value = $this.is(':checked');
+        let selector = $this.closest('.product_wrapper').find($('input[name="inquiry_product_supplier_ids[]"]'));
+        selector.each(function () {
+            if (value == true){
+                $(this).prop("checked", value);
+                $('.mass-link-supplier').show();
+            } else {
+                $(this).prop("checked", value);
+                $('.mass-link-supplier').hide();
+            }
+
+        });
+    });
+};
+
+let showOrHideDraftRfq = () => {
+
+    let count = 0;
+    $('input[name="inquiry_product_supplier_ids[]"]').change(function () {
+        let $this = $(this);
+        let value = $this.is(':checked');
+        if (value == true){
+            count +=1
+        } else{
+            count -=1
+        }
+        if (count > 0) {
+            $('.draft-rfq').show();
+        } else {
+            $('.draft-rfq').hide();
+        }
+    });
+
+};
 
 export default addSuppliers

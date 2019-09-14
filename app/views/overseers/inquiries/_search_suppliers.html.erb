@@ -7,21 +7,13 @@
       </button>
     </div>
 
-    <%= hidden_field_tag :product_ids %>
-    <%= simple_form_for([:overseers, @inquiry], :url => search_suppliers_overseers_inquiry_path, :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-<!--      <div class="form-row">-->
-<!--        <div class="col-12 col-md-3">-->
-          <%#= f.association :brands, collection: nil, input_html: {class: 'select2-ajax inquiry_id', :'data-source' => autocomplete_overseers_brands_path}, include_blank: 'Type to Search' %>
-<!--        </div>-->
-<!--      </div>-->
-    <% end %>
-    <div class="form-row">
-      <div class="col-12 col-md-3">
-        <div class="d-flex">
-            <span class="flex-fill">
-              <%=  %>
-            </span>
-        </div>
+    <div class="row">
+      <div class="col-md-11">
+        <%= hidden_field_tag :product_ids %>
+        <%= hidden_field_tag :inquiry_id, @inquiry.to_param %>
+        <button type="button" id="add_supplier" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 float-right add_supplier_wrapper">
+          <i class="fal fa-plus mr-1"></i>Add Supplier
+        </button>
       </div>
     </div>
 
@@ -30,7 +22,12 @@
       <% end %>
       <div class="col-12">
         <% content_for :header_row do %>
-          <th class="no-sort all"></th>
+          <th class="no-sort all">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" name="all_suppliers" id="all_suppliers">
+              <label class="custom-control-label" for="all_suppliers">Select All</label>
+            </div>
+          </th>
           <th class="no-sort all" data-name="name">Name</th>
           <th class="no-sort all" data-name="account_id">Account</th>
           <th class="no-sort all" data-name="nature_of_business">Supplier Type</th>

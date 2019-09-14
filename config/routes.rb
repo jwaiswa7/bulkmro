@@ -171,6 +171,7 @@ Rails.application.routes.draw do
 
     resources :suppliers do
       collection do
+        get 'customized_index'
         get 'autocomplete'
         get 'export_all'
         get 'export_filtered_records'
@@ -490,8 +491,11 @@ Rails.application.routes.draw do
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
-        get 'supplier_mass_link'
+        post 'link_product_suppliers'
         post 'search_suppliers'
+        get 'draft_rfq'
+        post 'request_for_quote'
+        post 'send_email_request_for_quote'
         get 'resync_inquiry_products'
         get 'resync_unsync_inquiry_products'
         get 'calculation_sheet'

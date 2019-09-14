@@ -59,7 +59,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [],
+                       [{ "source": autocomplete_overseers_brands_path }],
                        [],
                        []
                    ]

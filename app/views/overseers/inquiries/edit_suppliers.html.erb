@@ -1,6 +1,6 @@
 <div class="col-lg-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <%= simple_form_for(@inquiry, url: '#', method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= simple_form_for(@inquiry, url: update_suppliers_overseers_inquiry_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= render 'shared/snippets/form_errors', f: f %>
       <div class="card">
         <div class="card-body">
@@ -15,35 +15,47 @@
 <!--            <div class="col-md-6">-->
               <%#= f.input :common_supplier_id, label: false, :as => :select, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, 'data-placeholder': 'Select Common Supplier'} %>
 <!--            </div>-->
-            <div class="col-md-4">
-              <%= button_tag(type: "button", name: 'mass_link_supplier', class: "btn btn-success btn-block mass-link-supplier") do %>
-                Mass Link Suppliers
-              <% end %>
-            </div>
+            <% if is_authorized(@inquiry, 'link_product_suppliers') %>
+              <div class="col-md-4">
+                <%= button_tag(type: "button", name: 'mass_link_supplier', class: "btn btn-success btn-block mass-link-supplier") do %>
+                  Mass Link Suppliers
+                <% end %>
+              </div>
+              <div class="col-md-4">
+                <%#= link_to 'Draft RFQ', draft_rfq_overseers_inquiry_path(@inquiry), class: "btn-block btn btn-success draft-rfq" %>
+                <%= button_tag(type: "button", name: 'mass_link_supplier', class: "btn btn-success btn-block draft-rfq") do %>
+                  Draft RFQ
+                <% end %>
+              </div>
+            <% end %>
             <hr>
           </div>
           <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select {|ip| ip.approved?;} do |inquiry_product, i| %>
-            <%= inquiry_product.hidden_field :id %>
-            <h6 class="text-uppercase pl-3">
-                <span class="custom-control custom-checkbox d-inline pl-0">
-                  <%= check_box_tag 'inquiry_product_ids[]', inquiry_product.object.id, false, id: "inquiry_product_id_#{inquiry_product.object.id}", class: 'custom-control-input' %>
-                  <label class="custom-control-label" for="<%= "inquiry_product_id_#{inquiry_product.object.id}" %>"></label>
-                </span>
-              <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.object.sr_no %></span>
-              <strong><%= inquiry_product.object.product.sku %> - <%= inquiry_product.object.product.name %>
-                <% if is_authorized(inquiry_product.object.product,'sku_purchase_history') && policy(inquiry_product.object.product).sku_purchase_history? %>
-                  <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a>
-                  <a class="ml-2 text-small" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-inventory mr-1 text-small"></i>Resync Inventory</a>
-                <% end %></strong>
-            </h6>
-            <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
+            <div class="product_wrapper">
+              <h6 class="text-uppercase pl-3">
+                <%= inquiry_product.hidden_field :id %>
+                  <span class="custom-control custom-checkbox d-inline pl-0">
+                    <%= check_box_tag 'inquiry_product_ids[]', inquiry_product.object.id, false, id: "inquiry_product_id_#{inquiry_product.object.id}", class: 'custom-control-input' %>
+                    <label class="custom-control-label" for="<%= "inquiry_product_id_#{inquiry_product.object.id}" %>"></label>
+                  </span>
+                <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.object.sr_no %></span>
+                <strong><%= inquiry_product.object.product.sku %> - <%= inquiry_product.object.product.name %>
+                  <% if is_authorized(inquiry_product.object.product,'sku_purchase_history') && policy(inquiry_product.object.product).sku_purchase_history? %>
+                    <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a>
+                    <a class="ml-2 text-small" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-inventory mr-1 text-small"></i>Resync Inventory</a>
+                  <% end %>
+                </strong>
+              </h6>
+              <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
               <%= inquiry_product.nested_fields_for :inquiry_product_suppliers do |inquiry_product_supplier| %>
                 <%= inquiry_product_supplier.hidden_field :id %>
                 <div class="form-row">
                   <div class="col-12 col-md-3">
                     <div class="d-flex">
-                      <span class="flex-fill">
-                        <%= inquiry_product_supplier.association :supplier, collection: selected_option_or_nil(inquiry_product_supplier, :supplier), label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, :'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id, 'data-placeholder': 'Type to Search'} %>
+                      <span class="flex-fill ml-1">
+                        <%= check_box_tag 'inquiry_product_supplier_ids[]', inquiry_product.object.id, false, id: "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}", class: 'custom-control-input' %>
+                        <label class="custom-control-label" for="<%= "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}" %>"></label>
+                        <%= inquiry_product_supplier.association :supplier, collection: selected_option_or_nil(inquiry_product_supplier, :supplier), label: false, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, :'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id, 'data-placeholder': 'Type to Search'} %>
                       </span>
                       <span class="<%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "align-self-center" : "align-self-top" %> ml-1">
                         <% if inquiry_product.object.inquiry_product_suppliers.present? && !inquiry_product.object.inquiry_product_suppliers.first.supplier.rating.nil? %>
@@ -93,20 +105,18 @@
                 </div>
               <% end %>
             <% end %>
-
-            <div class="form-group">
-              <%= inquiry_product.add_nested_fields_link :inquiry_product_suppliers, 'Add Supplier', class: 'btn btn-outline-success btn-sm-down-block' %>
             </div>
+
             <hr class="<%= f.object.inquiry_products.last == inquiry_product.object ? 'd-none' : '' %>"/>
           <% end %>
         </div>
-<!--        <div class="card-footer">-->
-          <%# if is_authorized(@inquiry,'update_suppliers') %>
-            <%#= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-<!--              <i class="fal fa-pen"></i> Update Suppliers-->
-            <%# end %>
-          <%# end %>
-<!--        </div>-->
+        <div class="card-footer">
+          <% if is_authorized(@inquiry,'update_suppliers') %>
+            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+              <i class="fal fa-pen"></i> Update Suppliers
+            <% end %>
+          <% end %>
+        </div>
       </div>
     <% end %>
   <% end %>
