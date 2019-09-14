@@ -46,8 +46,8 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
   def create
     @ar_invoice_request = ArInvoiceRequest.new()
     @ar_invoice_request.assign_attributes(ar_invoice_request_params.merge(overseer: current_overseer))
+    @ar_invoice_request.inward_dispatch_ids = params['inward_dispatch_ids'].split(',').map {|x| x.to_i}
     @ar_invoice_request.update_status(@ar_invoice_request.status)
-    inward_dispatch_ids = params[:inward_dispatch_ids].first.split(',').map(&:to_i)
     authorize_acl @ar_invoice_request
     respond_to do |format|
       if @ar_invoice_request.save
@@ -163,7 +163,6 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
         .permit(
           :sales_order_id,
           :inquiry_id,
-          :inward_dispatch_ids,
           :status,
           :cancellation_reason,
           :rejection_reason,
@@ -171,6 +170,7 @@ class Overseers::ArInvoiceRequestsController < Overseers::BaseController
           :other_cancellation_reason,
           :sales_invoice_id,
           :e_way,
+          :inward_dispatch_ids,
           rows_attributes: [ :id, :inward_dispatch_row_id, :sales_order_id, :quantity, :delivered_quantity, :_destroy, :product_id, :sales_order_row_id ],
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           )

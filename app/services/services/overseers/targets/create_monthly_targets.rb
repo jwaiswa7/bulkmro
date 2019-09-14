@@ -4,6 +4,7 @@ class Services::Overseers::Targets::CreateMonthlyTargets < Services::Shared::Bas
     @annual_target = annual_target
   end
 
+  # service -> when annual targets not present
   def call
     unless @annual_target.targets.present?
       current_date = Date.today
@@ -33,7 +34,7 @@ class Services::Overseers::Targets::CreateMonthlyTargets < Services::Shared::Bas
                 inquiries = Inquiry.where(outside_sales_owner_id: overseer.id, status: 'Order Won').where(created_at: target_start_date..target_end_date)
                 total_target_achieved = 0
                 inquiries.each do |inquiry|
-                  if inquiry.bible_sales_order_total.present? || inquiry.bible_sales_order_total != 0
+                  if inquiry.bible_sales_order_total.present? && inquiry.bible_sales_order_total != 0
                     sales_order_total = inquiry.bible_sales_order_total
                   else
                     sales_order_total = (inquiry.sales_orders.approved.map { |so| so.calculated_total || 0 }.sum).to_f

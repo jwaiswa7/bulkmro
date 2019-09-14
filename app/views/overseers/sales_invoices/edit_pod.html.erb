@@ -39,6 +39,9 @@
             </div>
           <% end if is_authorized(pod.object, 'destroy') && policy(pod.object).destroy? %>
         </div>
+        <div class="col-12 col-md-3">
+          <%= pod.input :grn_no, label: "Grn No",required: true %>
+        </div>
       </div>
     <% end %>
     <%= f.input :delivery_completed %>
