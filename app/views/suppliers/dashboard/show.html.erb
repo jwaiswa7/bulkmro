@@ -18,15 +18,10 @@
           <th class="no-sort">Purchase #</th>
           <th class="no-sort">Inquiry #</th>
           <th class="no-sort">Supplier</th>
-          <th class="no-sort">Customer</th>
           <th class="no-sort">Status</th>
           <th class="no-sort">Warehouse</th>
           <th class="no-sort">Line Items</th>
-          <th class="no-sort">Total Amount</th>
           <th class="no-sort">PO Date</th>
-          <th class="no-sort">Inside Sales</th>
-          <th class="no-sort">Outside Sales</th>
-          <th class="no-sort">Created</th>
         </tr>
         </thead>
         <tbody>
@@ -36,15 +31,10 @@
             <td><%= purchase_order.po_number %></td>
             <td><%= purchase_order.inquiry.inquiry_number %></td>
             <td><%= purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present? %></td>
-            <td><%= purchase_order.inquiry.company.try(:name) if purchase_order.inquiry.company.present? %></td>
             <td><%= purchase_order.status || purchase_order.metadata_status %></td>
             <td><%= purchase_order.warehouse&.name %></td>
             <td><%= purchase_order.rows.count %></td>
-            <td><%= format_currency(purchase_order.calculated_total) %></td>
             <td><%= format_succinct_date(purchase_order.po_date) %></td>
-            <td><%= purchase_order.inquiry.inside_sales_owner.to_s %></td>
-            <td><%= purchase_order.inquiry.outside_sales_owner.to_s %></td>
-            <td><%= format_succinct_date(purchase_order.created_at) %></td>
           </tr>
         <% end %>
         </tbody>

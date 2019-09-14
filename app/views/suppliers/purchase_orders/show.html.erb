@@ -116,32 +116,6 @@
         </div>
       </div>
 
-      <% if @inquiry.attachments.present? %>
-        <div class="form-row mt-3">
-          <div class="col-6">
-            <strong class="d-block">Customer Purchase Order</strong>
-            <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
-              <%= @inquiry.customer_po_sheet.filename %>
-            <% end if @inquiry.customer_po_sheet.attached? %>
-          </div>
-          <div class="col-6">
-            <% if @inquiry.copy_of_email.attached? %>
-              <strong class="d-block">Email attachment</strong>
-              <%= link_to @inquiry.copy_of_email, target: '_blank' do %>
-                <%= @inquiry.copy_of_email.filename %>
-              <% end %>
-            <% end %>
-          </div>
-          <div class="col-6 mt-2">
-            <strong class="d-block">Supplier Quotes Attachment</strong>
-            <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
-              <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
-                <span class="d-block"><%= attachment.filename %></span>
-              <% end %>
-            <% end if @inquiry.supplier_quotes.attached? %>
-          </div>
-        </div>
-      <% end %>
       <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
         <thead>
         <tr>
