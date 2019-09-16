@@ -8,18 +8,28 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
   def call
     i = 0
     error = []
-
+    invoices_in_sheet = []
     fetch_file_to_be_processed(upload_sheet)
     service = Services::Shared::Spreadsheets::CsvImporter.new('bible_file_sheet.csv', 'bible_imports')
     upload_sheet.update(status: 'Processing')
-
     sheet_header = service.get_header
     defined_header = fixed_header('sales_invoices')
     begin
       if sheet_header.sort == defined_header.sort
         service.loop(nil) do |x|
+          invoice_number = x.get_column('Invoice Number')
+          # BibleInvoice.where(invoice_number: get_sales_invoice(invoice_number).invoice_number).last
+          bible_invoice = BibleInvoice.where(invoice_number: invoice_number, mis_date: Date.parse(x.get_column('Invoice Date')).strftime('%Y-%m-%d'), invoice_type: x.get_column('Invoice/Credit Note')).last
+          if bible_invoice.present?
+            bible_invoice.metadata = []
+            bible_invoice.save
+            invoices_in_sheet.push(bible_invoice.id)
+          end
+        end
+        service.loop(nil) do |x|
           begin
             invoice_number = x.get_column('Invoice Number')
+            inquiry_number = x.get_column('Inquiry #')
             bible_invoice_row_total = x.get_column('Invoice Amount in INR').to_f
             puts '************************************ ITERATION *******************************', i
             i = i + 1
@@ -30,7 +40,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
               sales_invoice = SalesInvoice.find_by_invoice_number(invoice_number.to_i)
             end
 
-            inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry #').to_i) || Inquiry.find_by_old_inquiry_number(x.get_column('Inquiry #'))
+            inquiry = get_inquiry(inquiry_number)
             begin
               bible_invoice = BibleInvoice.where(inquiry_number: x.get_column('Inquiry #').to_i,
                                                  invoice_number: invoice_number,
@@ -85,27 +95,49 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
           end
         end
 
-        calculate_totals
+        calculate_totals(invoices_in_sheet)
         upload_sheet.update(status: 'Completed')
         puts 'BibleSI', BibleInvoice.count
       else
         upload_sheet.update(status: 'Failed')
       end
     rescue StandardError => err
-      upload_sheet.bible_upload_logs.create(status: false, error: err.message)
+      upload_sheet.bible_upload_logs.create(status: 'Failed', error: err.message)
+      upload_sheet.update(status: 'Completed with Errors')
     end
     # puts 'ERROR', error
     File.delete(@path_to_tempfile) if File.exist?(@path_to_tempfile)
   end
 
-  def calculate_totals
-    BibleInvoice.all.each do |bible_invoice|
+  def get_inquiry(inquiry_number)
+    if inquiry_number.include?('.') || inquiry_number.include?('/') || inquiry_number.include?('-') || inquiry_number.match?(/[a-zA-Z]/)
+      inquiry = Inquiry.find_by_old_inquiry_number(inquiry_number)
+    else
+      inquiry = Inquiry.find_by_inquiry_number(inquiry_number.to_i)
+    end
+
+    inquiry
+  end
+
+  def get_sales_invoice(invoice_number)
+    if invoice_number.include?('.') || invoice_number.include?('/') || invoice_number.include?('-') || invoice_number.match?(/[a-zA-Z]/)
+      sales_invoice = SalesInvoice.find_by_old_invoice_number(invoice_number)
+    else
+      sales_invoice = SalesInvoice.find_by_invoice_number(invoice_number.to_i)
+    end
+
+    sales_invoice
+  end
+
+  def calculate_totals(invoices_in_sheet)
+    invoices_in_sheet.uniq.each do |invoice_id|
       @bible_invoice_total = 0
       @margin_sum = 0
       @invoice_items = 0
       @invoice_margin = 0
       @overall_margin_percentage = 0
 
+      bible_invoice = BibleInvoice.where(id: invoice_id)
       bible_invoice.metadata.each do |line_item|
         @bible_invoice_total = @bible_invoice_total + line_item['total_selling_price'].to_f
         @margin_sum = @margin_sum + line_item['margin_percentage'].split('%')[0].to_f

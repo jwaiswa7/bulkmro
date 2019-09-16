@@ -18,8 +18,9 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
       if sheet_header.sort == defined_header.sort
         service.loop(nil) do |x|
           order_number = x.get_column('So #')
-          inquiry_number = x.get_column('Inquiry Number')
-          bible_order = BibleSalesOrder.where(order_number: get_sales_order(order_number, inquiry_number).order_number).last
+          # inquiry_number = x.get_column('Inquiry Number')
+          # BibleSalesOrder.where(order_number: get_sales_order(order_number, inquiry_number).order_number).last
+          bible_order = BibleSalesOrder.where(order_number: order_number).last
           if bible_order.present?
             bible_order.metadata = []
             bible_order.save
@@ -97,8 +98,8 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
         upload_sheet.update(status: 'Failed')
       end
     rescue StandardError => err
-      binding.pry
-      upload_sheet.bible_upload_logs.create(status: false, error: err.message)
+      upload_sheet.bible_upload_logs.create(status: 'Failed', error: err.message)
+      upload_sheet.update(status: 'Completed with Errors')
     end
     # puts 'ERROR', error
     File.delete(@path_to_tempfile) if File.exist?(@path_to_tempfile)
