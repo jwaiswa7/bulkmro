@@ -28,24 +28,24 @@
               <div class="modal fade" id="statusModal" role="dialog">
                 <div class="modal-dialog">
                   <!-- Modal content-->
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h4 class="modal-title">Select Status <abbr>*</abbr></h4>
+                  <div class="modal-content bmro-model-content">
+                    <div class="modal-header bmro-model-header">
+                      <!-- <h4 class="modal-title">Select Status <abbr>*</abbr></h4> -->
                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default bmro-button" data-dismiss="modal">X</button>
+                            <button type="button" class="btn btn-default bmro-button bmro-model-close" data-dismiss="modal">X</button>
                          </div>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body bmro-model-body-padding">
                       <% if current_overseer.admin? %>
-                        <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
+                        <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
                       <% elsif ["Order Lost", "Regret"].include?(@inquiry.status) %>
-                        <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
+                        <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
                       <% else %>
-                        <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
+                        <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
                       <% end %>
                     </div>
-                 <div class="bmro-button-parent">
-                   <%= action_button(action_name, @inquiry) %>
+                 <div class="bmro-button-parent bmro-model-button">
+                    <%= action_button(action_name, @inquiry) %>
                  </div>
                   </div>
                 </div>
