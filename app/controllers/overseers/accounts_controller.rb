@@ -87,6 +87,7 @@ class Overseers::AccountsController < Overseers::BaseController
       params.require(:account).permit(
         :name,
           :alias,
+          :logo,
           :account_type
       )
     end
