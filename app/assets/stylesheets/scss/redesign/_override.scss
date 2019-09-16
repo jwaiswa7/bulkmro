@@ -760,3 +760,54 @@ a.bmro-click-toggle.collapsed:after{
     font-size: 20px!important;
     color: #2C4159;
 }
+.bmro-ar-reports-paid {
+    border-color: #ABD66E;
+}
+.bmro-ar-reports-cancelled {
+    border-color: #E66759;
+}
+.bmro-ar-reports-delivered-pen {
+    border-color: #BF99D5;
+}
+.bmro-ar-reports-material-ready {
+    border-color: #9CCCF6;
+}
+.bmro-ar-reports {
+    border: 1px solid #FFE055;
+    border-radius: 2px;
+    border-bottom: 5px solid #FFE055;
+    float: left;
+    padding: 6px 6px 0px;
+}
+.bmro-ar-report-head {
+    color: #546272;
+    font-family: "Inter UI";
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: -0.39px;
+    line-height: 12px;
+    width: 100%;
+    float: left;
+    text-transform: uppercase;
+    margin: 0px;
+}
+.bmro-ar-report-data {
+    color: #2C4159;
+    font-family: "Inter UI";
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: -1.35px;
+    line-height: 29px;
+    float: left;
+    margin: 0px;
+}
+.bmro-ar-report-subdata {
+    margin: 0px 5px;
+    color: #546272;
+    font-family: "Inter UI";
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.67px;
+    line-height: 29px;
+    float: left;
+}
