@@ -82,15 +82,15 @@ let onProductChange = (container) => {
 //   });
 // });      
 
-function truncateText(selector, maxLength) {
-    var element = document.querySelector(selector),
-        truncated = element.innerText;
+// function truncateText(selector, maxLength) {
+//     var element = document.querySelector(selector),
+//         truncated = element.innerText;
 
-    if (truncated.length > maxLength) {
-        truncated = truncated.substr(0,maxLength) + '...';
-    }
-    return truncated;
-}
-document.querySelector('bmro-product-input').innerText = truncateText('bmro-product-input', 107);
+//     if (truncated.length > maxLength) {
+//         truncated = truncated.substr(0,maxLength) + '...';
+//     }
+//     return truncated;
+// }
+// document.querySelector('bmro-product-input').innerText = truncateText('bmro-product-input', 107);
 
 export default edit
