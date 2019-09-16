@@ -11,6 +11,7 @@
     float: left;
     top: 48px!important; 
     z-index: 100!important;
+    margin-bottom: 2px;
     background-color: #E0E2E7!important;
 }
 .bmro-nav-ul li{
@@ -845,21 +846,7 @@ a.bmro-click-toggle.collapsed:after{
 }
 /*
 /////media query for top header sticky*/
-@media only screen and (max-width: 1280px) {
-  .bmro-nav-ul {
-    top: 89px!important;
-  }
-}
-@media only screen and (max-width: 1440px) {
-  .bmro-nav-ul {
-    top: 69px!important;
-  }
-}
-@media only screen and (max-width: 1600px) {
-  .bmro-nav-ul {
-    top: 49px!important;
-  }
-}
+
 .bmro-invoice-boxes-active{
     display: none;
 }
