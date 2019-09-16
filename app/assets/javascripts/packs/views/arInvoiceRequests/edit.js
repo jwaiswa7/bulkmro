@@ -18,9 +18,5 @@ const edit = () => {
             $('.download-eway').addClass('d-none')
     })
 }
-$('bmro-click-toggle').click(function(){
-   $('bmro-invoice-boxes').toggleClass('bmro-invoice-boxes-active');
-   console.log('check');
-});
 
 export default edit
