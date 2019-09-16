@@ -606,7 +606,7 @@
               </div>
               <div class="col-9 col-md-3">
                 <div class="select2-wrap">
-                  <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
+                  <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon bmro-input-textarea bmro-product-input', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
                 </div>
               </div>
               <div class="col-12 col-md-4">
@@ -645,7 +645,7 @@
               <div class="col-2 col-md-1 text-center">
                 <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? %>
                   <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"
-                     <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success bmro-inventory-color bmro-product-height-input"
+                     <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success bmro-inventory-color bmro-product-height-input bmro-border"
                      <% else %>  class="text-warning bmro-inventory-color bmro-product-height-input"
                      <% end %>title="Resync Inventory"><%= inquiry_product.object.product.stocks.total_qty %></a>
                 <% end %>
