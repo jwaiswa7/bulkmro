@@ -623,11 +623,12 @@ table.bmro-datatable-style{
     line-height: 12px;
     display: inline-block;
     text-transform: uppercase;
-    background-color: #DFE5F0;
+    background-color: #fff;
     padding: 6px 44px 6px 14px;
-    border-radius-top-right: 80px;
     border-top-right-radius: 58px;   
-    float: left;
+}
+a.bmro-click-toggle.collapsed{
+    background-color: #DFE5F0; 
 }
 a.bmro-click-toggle:after{
     content: "";
@@ -643,8 +644,8 @@ a.bmro-click-toggle.collapsed:after{
    border-color: transparent transparent #2C4159 transparent; 
    top: -7px;
 }
-.bmro-summary .collapse{
-    background-color: #DFE5F0;
+.bmro-collaps{
+    background-color: #fff;
     float: left;
     padding: 6px 15px 4px;
     width: 100%;
