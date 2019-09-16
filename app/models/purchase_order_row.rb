@@ -24,7 +24,7 @@ class PurchaseOrderRow < ApplicationRecord
   def uom
     if self.po_request_row.present? && get_product.present? && get_product.measurement_unit.present?
       get_product.measurement_unit.name
-    else
+    elsif self.product.present?
       self.product.measurement_unit.name
     end
   end
