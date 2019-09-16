@@ -28,12 +28,12 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button_without_fa(material_delivered_to_customer_overseers_sales_order_email_messages_path(sales_order), 'bmro-icon-table bmro-icon-deliverd', 'Material Delivered to Customer Notification', 'dark', :_blank)
                       end,
                       if is_authorized(sales_order, 'debugging')
-                        row_action_button(debugging_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'cogs', 'Debugging', 'danger', :_blank)
+                        row_action_button_without_fa(debugging_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'bmro-icon-table bmro-icon-debugging', 'Debugging', 'danger', :_blank)
                       end,
                       if is_authorized(sales_order, 'index')
                         link_to('', class: ['btn btn-sm btn-success comment-sales-order'], 'data-model-id': sales_order.id, title: 'Comment', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-pencil'].join
                         end
                       end,
 
