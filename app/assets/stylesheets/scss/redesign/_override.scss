@@ -641,6 +641,7 @@ a.bmro-click-toggle:after{
 }
 a.bmro-click-toggle.collapsed:after{
    border-color: transparent transparent #2C4159 transparent; 
+   top: -7px;
 }
 .bmro-summary .collapse{
     background-color: #DFE5F0;
