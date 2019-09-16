@@ -115,7 +115,7 @@
     color: #FFFFFF;
     font-family: 'Inter UI', sans-serif;
     font-size: 13px!important;
-    font-weight: 500!important;
+    font-weight: 600!important;
     letter-spacing: -0.51px;
     line-height: 16px!important;
     outline: none!important;
@@ -193,14 +193,16 @@
 ul.bmro-label-ul{
     border: none;
     list-style: none;
-    color: #000;
+    color: #2C4159;
+    font-family: 'Inter UI',sans-serif;
+    font-weight: 500!important;
     background: none;
     float: left;
     padding-left: 0px;
     padding-top: 40px;
 }
 li.bmro-li-right{
-    margin-bottom: 15px;
+    margin-bottom: 14px;
     border-left: 4px solid #ff8800;
     padding: 0px 7px;
     cursor: pointer;
