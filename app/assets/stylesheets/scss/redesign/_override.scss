@@ -204,7 +204,7 @@ ul.bmro-label-ul{
     padding-top: 40px;
 }
 li.bmro-li-right{
-    margin-bottom: 14px;
+    margin-bottom: 10px;
     border-left: 4px solid #ff8800;
     padding: 0px 7px;
     cursor: pointer;
@@ -361,6 +361,12 @@ li.bmro-li-right{
     background-color: #F0F2F6;
     border-radius: unset;
     color: #2C4159;
+}
+
+.bmro-product-input{
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
 }
 .bmro-fl{
     float: left;
@@ -849,6 +855,14 @@ a.bmro-click-toggle.collapsed:after{
 
 .bmro-invoice-boxes-active{
     display: none;
+}
+
+.text-uppercase{
+    text-transform: capitalize!important;
+}
+
+.bmro-dotted-mt{
+    margin-top: 20px;
 }
 .bmro-icon-comment{
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAZBJREFUSA1jXLJ6m+c/BoZZ////l2GgAWBkZHzCxMCQxgKyREleWkZGQowG1jAwPHnxSubew6ezWEA+AVnCz8dDE4tAht598EQG6Cv6gFGLyA5nFlw6Dx0/x9A7axnDuw+fcCmBiwsJ8DEUp0Ux2FkawcXQGTgtAllibqjN4GBljK4Hg3/g2Fmwo8iyCOQTkCVWJnoYBmMT2L7/ODZhuNhoqoMHBakMugUdzlTHy8PNcOT0RQZ2NjasjhcXFWSQkRQHywHLS6xqkAVxWpQZG8TQN3sZw+Zdh5HVw9msrCzgvOPtYsMArArg4rgYOC3ydbNl8HC0ZPj05SuGXpAHVm3Zw9AxdRHDlVv3GcwNtDDUoAvgtAikEORqYUF+dD1gflZcMIOuhjJD26T5DAeBpQghQFFisDUzYJjbU8MgLipEyB4GiiwCmS4lIcows7OCwdvFGq9lFFsEMp2NlZWhIjue9hbhtQEqSRUfDSqLWEDtLlCTiBhXkaMGaDYoQz9hAYZdGqjdBWoSkWMQIT2wBiQA9dxkiLtCY6AAAAAASUVORK5CYII=');
