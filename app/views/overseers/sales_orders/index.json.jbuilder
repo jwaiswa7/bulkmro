@@ -2,7 +2,7 @@ json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
                       if is_authorized(sales_order, 'relationship_map')
-                        row_action_button(relationship_map_overseers_inquiry_sales_order_path(sales_order.inquiry.to_param, sales_order.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
+                        row_action_button_without_fa(relationship_map_overseers_inquiry_sales_order_path(sales_order.inquiry.to_param, sales_order.to_param), 'bmro-icon-table bmro-icon-comment', 'Relationship Map', 'info', :_blank)
                       end,
                       if is_authorized(sales_order, 'comments')
                         row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', sales_order.comments.last ? sales_order.comments.last.try(:message) : 'Comments and Approval', sales_order.comments.last ? 'success' : 'dark', :_blank)
