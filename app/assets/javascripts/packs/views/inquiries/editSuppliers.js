@@ -77,7 +77,8 @@ let draftRfq = () => {
             inquiry_product_supplier_ids.push($this.attr('id').split('inquiry_product_supplier_id_')[1]);
         });
         let data = {inquiry_id: inquiry_id, supplier_ids: inquiry_product_supplier_ids};
-        window.open(Routes.draft_rfq_overseers_inquiry_path(inquiry_id, data), '_self');
+
+        window.open(Routes.new_overseers_inquiry_supplier_rfq_path(data), '_self');
     });
 }
 

@@ -12,6 +12,7 @@ class InquiryProduct < ApplicationRecord
   has_many :suppliers, through: :inquiry_product_suppliers, dependent: :destroy
   accepts_nested_attributes_for :inquiry_product_suppliers, allow_destroy: true
   has_one :inquiry_import_row, dependent: :nullify, inverse_of: :inquiry_product
+  has_many :supplier_rfqs
 
   scope :with_suppliers, -> { left_outer_joins(:inquiry_product_suppliers).where.not(inquiry_product_suppliers: { id: nil }) }
 
@@ -27,6 +28,12 @@ class InquiryProduct < ApplicationRecord
 
   after_create :increase_product_count
   before_destroy :decrease_product_count
+
+  enum lead_time: {
+      '2-3 Days': 1,
+      '3-4 Days': 2,
+      '4-5 Days': 3,
+  }
 
   def increase_product_count
     self.product.update_attribute('total_quotes', self.product.total_quotes + 1) if self.product.present?

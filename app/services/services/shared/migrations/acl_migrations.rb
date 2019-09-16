@@ -582,4 +582,21 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       end
     end
   end
+
+  def create_supplier_rfq_resources
+    role_name = ['admin']
+    acl_resources_for_targets = {
+        'supplier_rfq': %w(index show new edit create update destroy),
+    }
+    acl_resources_for_targets.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        # update role
+        acl_roles = AclRole.where(role_name: role_name)
+        acl_roles.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
+      end
+    end
+  end
 end

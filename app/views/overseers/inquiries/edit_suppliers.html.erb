@@ -22,7 +22,7 @@
                 <% end %>
               </div>
               <div class="col-md-4">
-                <%#= link_to 'Draft RFQ', draft_rfq_overseers_inquiry_path(@inquiry), class: "btn-block btn btn-success draft-rfq" %>
+                <%#= link_to 'Draft RFQ', new_overseers_inquiry_supplier_rfq_path(@inquiry), class: "btn-block btn btn-success draft-rfq" %>
                 <%= button_tag(type: "button", name: 'mass_link_supplier', class: "btn btn-success btn-block draft-rfq") do %>
                   Draft RFQ
                 <% end %>
@@ -110,13 +110,13 @@
             <hr class="<%= f.object.inquiry_products.last == inquiry_product.object ? 'd-none' : '' %>"/>
           <% end %>
         </div>
-        <div class="card-footer">
-          <% if is_authorized(@inquiry,'update_suppliers') %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-              <i class="fal fa-pen"></i> Update Suppliers
-            <% end %>
-          <% end %>
-        </div>
+<!--        <div class="card-footer">-->
+          <%# if is_authorized(@inquiry,'update_suppliers') %>
+            <%#= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+<!--              <i class="fal fa-pen"></i> Update Suppliers-->
+            <%# end %>
+          <%# end %>
+<!--        </div>-->
       </div>
     <% end %>
   <% end %>
