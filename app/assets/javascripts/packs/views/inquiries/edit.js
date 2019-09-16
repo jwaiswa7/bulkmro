@@ -47,14 +47,14 @@ let onProductChange = (container) => {
 
 // crezenta js
 
-function slideTo(page) {
-    let element = document.getElementById(page);
-    element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-}
-    $(".bmro-li-right").click(function(){
-    $('.bmro-li-right').addClass('bmro-active-li',1000);
-    $(this).removeClass('bmro-active-li');
-});
+// function slideTo(page) {
+//     let element = document.getElementById(page);
+//     element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+// }
+//     $(".bmro-li-right").click(function(){
+//     $('.bmro-li-right').addClass('bmro-active-li',1000);
+//     $(this).removeClass('bmro-active-li');
+// });
 
 // $(function() {
 //   var top = $('.bmro-card-header').offset().top - parseFloat($('.bmro-card-header').css('marginTop').replace(/auto/, 0));
@@ -91,7 +91,6 @@ function truncateText(selector, maxLength) {
     }
     return truncated;
 }
-//You can then call the function with something like what i have below.
 document.querySelector('bmro-product-input').innerText = truncateText('bmro-product-input', 107);
 
 export default edit
