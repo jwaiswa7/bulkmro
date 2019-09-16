@@ -764,16 +764,16 @@ a.bmro-click-toggle.collapsed:after{
     color: #2C4159;
 }
 .bmro-ar-reports-paid {
-    border-color: #ABD66E;
+    border-color: #ABD66E!important;
 }
 .bmro-ar-reports-cancelled {
-    border-color: #E66759;
+    border-color: #E66759!important;
 }
 .bmro-ar-reports-delivered-pen {
-    border-color: #BF99D5;
+    border-color: #BF99D5!important;
 }
 .bmro-ar-reports-material-ready {
-    border-color: #9CCCF6;
+    border-color: #9CCCF6!important;
 }
 .bmro-ar-reports {
     border: 1px solid #FFE055;
@@ -820,7 +820,7 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-invoice-boxes{
     width: 100%;
     float: left;
-    padding: 12px 15px;
+    padding: 12px 0px 3px 13px;
     background: #fff;
-    margin-top: 3px;    
+    margin-top: 3px;
 }
