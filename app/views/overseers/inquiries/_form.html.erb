@@ -292,7 +292,7 @@
         <h6 class="mb-1 bmro-form-heading">Terms and Conditions</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
-            <%= f.input :price_type, label: 'Delivery', as: :select, :wrapper => :custom_multi_select, input_html: { class: 'bmro-form-input ' }, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
+            <%= f.input :price_type, label: 'Delivery', as: :select, :wrapper => :custom_multi_select, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.association :payment_option, label: 'Payment terms', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', collection: PaymentOption.active.pluck(:name, :id) %>
@@ -304,7 +304,7 @@
             <%= f.input :freight_option, label: 'Freight', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.freight_options) %>
           </div>
         </div>
-        <%= f.input :commercial_terms_and_conditions, input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-form-input-text' } %>
+        <%= f.input :commercial_terms_and_conditions, input_html: { class: 'bmro-form-input bmro-form-input-text' } %>
       </div>
       <div class="bmro-dotted-line bmro-dotted-mt"></div>
       <div class="form-row mt-3">
