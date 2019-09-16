@@ -726,7 +726,7 @@ table.bmro-datatable-style{
     margin-left: 50px;
 }
 .bmro-model-content{
-    padding: 40px;
+    padding:0px 40px 40px 40px;
     background-color: #fff;
 }
 .bmro-model-header{
@@ -739,4 +739,10 @@ table.bmro-datatable-style{
     border:none; 
     color: #000;
     float: right;
+    margin-left: 310px;
+}
+.bmro-btn-cancel{
+    background-color: transparent;
+    border:none!important;
+    font-size: 25px!important;\
 }
