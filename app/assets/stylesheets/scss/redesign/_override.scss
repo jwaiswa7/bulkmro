@@ -216,7 +216,7 @@ li.bmro-li-right{
     color: #2C4159;
     font-family: 'Inter UI', sans-serif;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 500!important;
     letter-spacing: -0.47px;
     line-height: 15px;
     outline: none;
@@ -816,6 +816,9 @@ a.bmro-click-toggle.collapsed:after{
     letter-spacing: -0.67px;
     line-height: 29px;
     float: left;
+}
+.custom-file{
+    top: 2px;
 }
 .bmro-invoice-boxes{
     width: 100%;
