@@ -617,7 +617,7 @@ table.bmro-datatable-style{
 }
 .bmro-summary a{
     color: #2C4159;
-    font-family: "Inter UI";
+    font-family: 'Inter UI', sans-serif;
     font-size: 10px;
     font-weight: bold;
     letter-spacing: -0.56px;
@@ -703,7 +703,7 @@ a.bmro-click-toggle.collapsed:after{
 }
 .bmro-invoice-edit span{
     color: #2C4159;
-    font-family: "Inter UI";
+    font-family: 'Inter UI', sans-serif;
     font-size: 18px;
     font-weight: bold;
     letter-spacing: -1.01px;
@@ -713,7 +713,7 @@ a.bmro-click-toggle.collapsed:after{
 }
 .bmro-invoice-edit label{
     color: #687686;
-    font-family: "Inter UI";
+    font-family: 'Inter UI', sans-serif;
     font-size: 10px;
     font-weight: 600;
     letter-spacing: -0.56px;
@@ -764,16 +764,16 @@ a.bmro-click-toggle.collapsed:after{
     color: #2C4159;
 }
 .bmro-ar-reports-paid {
-    border-color: #ABD66E;
+    border-color: #ABD66E!important;
 }
 .bmro-ar-reports-cancelled {
-    border-color: #E66759;
+    border-color: #E66759!important;
 }
 .bmro-ar-reports-delivered-pen {
-    border-color: #BF99D5;
+    border-color: #BF99D5!important;
 }
 .bmro-ar-reports-material-ready {
-    border-color: #9CCCF6;
+    border-color: #9CCCF6!important;
 }
 .bmro-ar-reports {
     border: 1px solid #FFE055;
@@ -781,10 +781,13 @@ a.bmro-click-toggle.collapsed:after{
     border-bottom: 5px solid #FFE055;
     float: left;
     padding: 6px 6px 0px;
+    width: 203px;
+    margin-right: 12px;
+    margin-bottom: 10px;
 }
 .bmro-ar-report-head {
     color: #546272;
-    font-family: "Inter UI";
+    font-family: 'Inter UI', sans-serif;
     font-size: 10px;
     font-weight: bold;
     letter-spacing: -0.39px;
@@ -796,7 +799,7 @@ a.bmro-click-toggle.collapsed:after{
 }
 .bmro-ar-report-data {
     color: #2C4159;
-    font-family: "Inter UI";
+    font-family: 'Inter UI', sans-serif;
     font-size: 24px;
     font-weight: bold;
     letter-spacing: -1.35px;
@@ -807,7 +810,7 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-ar-report-subdata {
     margin: 0px 5px;
     color: #546272;
-    font-family: "Inter UI";
+    font-family: 'Inter UI', sans-serif;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: -0.67px;
@@ -816,4 +819,11 @@ a.bmro-click-toggle.collapsed:after{
 }
 .custom-file{
     top: 2px;
+}
+.bmro-invoice-boxes{
+    width: 100%;
+    float: left;
+    padding: 12px 0px 3px 13px;
+    background: #fff;
+    margin-top: 3px;
 }
