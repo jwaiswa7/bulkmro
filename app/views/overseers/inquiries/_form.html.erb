@@ -492,7 +492,7 @@
         <% end %>
         <% if (is_authorized(@inquiry, 'duplicate') && policy(@inquiry).duplicate?) %>
           <div class="">
-            <%= link_to "Duplicate", duplicate_overseers_inquiry_path(@inquiry), method: :post, class: "bmro-button bmro-button-tras btn-block btn btn-success duplicate-inquiry", target: '_blank', 'data-confirm': 'Are you sure want to duplicate this inquiry? It will generate New Inquiry.' %>
+            <%= link_to "Duplicate", duplicate_overseers_inquiry_path(@inquiry), method: :post, class: "bmro-button bmro-button-tras btn-block btn btn-success duplicate-inquiry bmro-duplicate-icon", target: '_blank', 'data-confirm': 'Are you sure want to duplicate this inquiry? It will generate New Inquiry.' %>
           </div>
         <% end %>
       </div>
