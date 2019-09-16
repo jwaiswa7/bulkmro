@@ -97,12 +97,12 @@ every(1.day, 'set_slack_ids', at: '10:00') do
   end
 end
 
-every(1.day, 'gcloud_run_backups', at: '22:00') do
+every(1.day, 'gcloud_run_backups', at: '21:00') do
   service = Services::Shared::Gcloud::RunBackups.new
   service.call
 end if Rails.env.production?
 
-every(1.day, 'gcloud_run_backups_alt', at: '22:00') do
+every(1.day, 'gcloud_run_backups_alt', at: '22:30') do
   service = Services::Shared::Gcloud::RunBackups.new(send_chat_message: false)
   service.call
 end if Rails.env.production?
