@@ -846,11 +846,7 @@ a.bmro-click-toggle.collapsed:after{
 }
 /*
 /////media query for top header sticky*/
-@media only screen and (max-width: 1900px) {
-  .bmro-nav-ul {
-    top: 48px!important;
-  }
-}
+
 .bmro-invoice-boxes-active{
     display: none;
 }
