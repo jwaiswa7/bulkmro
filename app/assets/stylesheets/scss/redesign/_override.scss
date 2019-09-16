@@ -639,7 +639,7 @@ a.bmro-click-toggle:after{
     top: 9px;
     right: -6px;   
 }
-a.bmro-click-toggle.bmro-summary-down:after{
+a.bmro-click-toggle.collapsed:after{
    border-color: transparent transparent #2C4159 transparent; 
 }
 .bmro-summary .collapse{

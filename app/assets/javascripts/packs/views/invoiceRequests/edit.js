@@ -89,13 +89,13 @@ let onStatusChange = (selector) => {
     $("."+selector).find('input').prop('required',true);
 }
 
-$(document).click(function() {
-    $('bmro-click-toggle').removeClass('bmro-summary-down');
-});
-{
-$('bmro-click-toggle').click(function(){
-    $(this).toggleClass('bmro-summary-down');
-    console.log('check')
-});
+// $(document).click(function() {
+//     $('bmro-click-toggle').removeClass('bmro-summary-down');
+// });
+// {
+// $('bmro-click-toggle').click(function(){
+//     $(this).toggleClass('bmro-summary-down');
+//     console.log('check')
+// });
 
 export default edit
