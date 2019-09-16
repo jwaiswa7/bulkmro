@@ -204,7 +204,7 @@ ul.bmro-label-ul{
     padding-top: 40px;
 }
 li.bmro-li-right{
-    margin-bottom: 14px;
+    margin-bottom: 10px;
     border-left: 4px solid #ff8800;
     padding: 0px 7px;
     cursor: pointer;
@@ -361,6 +361,12 @@ li.bmro-li-right{
     background-color: #F0F2F6;
     border-radius: unset;
     color: #2C4159;
+}
+
+.bmro-product-input{
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
 }
 .bmro-fl{
     float: left;
@@ -849,4 +855,12 @@ a.bmro-click-toggle.collapsed:after{
 
 .bmro-invoice-boxes-active{
     display: none;
+}
+
+.text-uppercase{
+    text-transform: capitalize!important;
+}
+
+.bmro-dotted-mt{
+    margin-top: 20px;
 }
