@@ -72,15 +72,6 @@
                 Tel: <%= @purchase_order.billing_address.try(:mobile) || @purchase_order.billing_address.try(:telephone) if @purchase_order.billing_address.present? %>
                 <br>
                 GST No. : <%= @purchase_order.billing_address.try(:gst) %><br>
-                <% else %>
-              <% if @supplier.present? %>
-                <%= @supplier.name if @supplier.name.present? %><br>
-                <%= @supplier.billing_address.to_multiline_s if @supplier.billing_address.present? %>
-                <br>
-                Tel: <%= @supplier.billing_address.try(:mobile) || @supplier.billing_address.try(:telephone) if @supplier.billing_address.present? %>
-                <br>
-                GST No. : <%= @supplier.billing_address.try(:gst) if @supplier.billing_address.present? %><br>
-              <% end %>
                 <%end %>
             </div>
             <div class="col-md-6 mt-2 mt-md-0">
@@ -92,15 +83,6 @@
                 Tel: <%=  @purchase_order.shipping_address.try(:mobile) || @purchase_order.shipping_address.try(:telephone) if @purchase_order.shipping_address.present? %>
                 <br>
                 GST No. : <%= @purchase_order.shipping_address.try(:gst) %><br>
-              <% else %>
-                <% if @supplier.present? %>
-                  <%= @supplier.name if @supplier.name.present? %><br>
-                  <%= @supplier.shipping_address.to_multiline_s if @supplier.shipping_address.present? %>
-                  <br>
-                  Tel: <%=  @supplier.shipping_address.try(:mobile) || @supplier.shipping_address.try(:telephone) if @supplier.shipping_address.present? %>
-                  <br>
-                  GST No. : <%= @supplier.shipping_address.try(:gst) if @supplier.shipping_address.present? %><br>
-                <% end %>
               <% end %>
             </div>
           </div>
@@ -112,12 +94,6 @@
                   <%= (@purchase_order.warehouse.address.name.to_s + '<br>').html_safe if @purchase_order.warehouse.address.name.present? %>
                   <%= @purchase_order.warehouse.address.to_multiline_s %><br>
                         GST No. : <%= @purchase_order.warehouse.address.gst %><br>
-              <% else %>
-                <% if @inquiry.bill_from.present? %>
-                  <%= (@inquiry.bill_from.address.name.to_s + '<br>').html_safe if @inquiry.bill_from.address.name.present? %>
-                    <%= @inquiry.bill_from.address.to_multiline_s %><br>
-                        GST No. : <%= @inquiry.bill_from.address.gst %><br>
-                      <% end %>
                   <% end %>
                 PAN No. : AAGCB7343G</span>
             </div>
@@ -127,12 +103,6 @@
                   <%= (@purchase_order.warehouse_ship_from.address.name.to_s + '<br>').html_safe if @purchase_order.warehouse_ship_from.address.name.present? %>
                   <%= @purchase_order.warehouse_ship_from.address.to_multiline_s %><br>
                         GST No. : <%= @purchase_order.warehouse_ship_from.address.gst %><br>
-              <% else %>
-                      <%= (@inquiry.ship_from.address.name.to_s + '<br>').html_safe if @inquiry.ship_from.address.name.present? %>
-                  <% if @inquiry.ship_from.present? %>
-                        <%= @inquiry.ship_from.address.to_multiline_s %><br>
-                        GST No. : <%= @inquiry.ship_from.address.gst %><br>
-                      <% end %>
                   <% end %>
                 PAN No. : AAGCB7343G</span>
             </div>
