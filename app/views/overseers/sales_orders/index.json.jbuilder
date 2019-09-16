@@ -8,10 +8,10 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button_without_fa(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'bmro-icon-table bmro-icon-truck', sales_order.comments.last ? sales_order.comments.last.try(:message) : 'Comments and Approval', sales_order.comments.last ? 'success' : 'dark', :_blank)
                       end,
                       if is_authorized(sales_order, 'edit_mis_date')
-                        row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar-alt', 'Update MIS Date', 'success', :_blank)
+                        row_action_button_without_fa(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'bmro-icon-table bmro-icon-update', 'Update MIS Date', 'success', :_blank)
                       end,
                       if is_authorized(sales_order, 'can_request_po')
-                        row_action_button(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'file', 'PO Request', 'success', :_blank)
+                        row_action_button_without_fa(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'bmro-icon-table bmro-relationship', 'PO Request', 'success', :_blank)
                       end,
 =begin
                       if is_authorized(sales_order, 'can_request_invoice')
