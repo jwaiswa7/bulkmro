@@ -912,6 +912,11 @@ Rails.application.routes.draw do
     resource :dashboard, controller: :dashboard, only: :show
     resources :purchase_orders, controller: :purchase_orders, only: %i[index show]
     resource :profile, controller: :profile, except: [:show, :index]
+    resources :rfq, controller: :rfq do
+      collection do
+        get 'edit_rfq_redirection'
+      end
+    end
 
     resources :products, controller: :products do
       collection do
