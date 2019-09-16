@@ -2,9 +2,6 @@ json.data (@companies) do |company|
   json.array! [
                   [
                       if is_authorized(company, 'show')
-                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='suppliers[]' class='custom-control-input' value='#{company.id}' id='c-#{company.id}'><label class='custom-control-label' for='c-#{company.id}'></label></div>"
-                      end,
-                      if is_authorized(company, 'show')
                         row_action_button(overseers_company_path(company), 'eye', 'View Company', 'info', :_blank)
                       end,
                       if is_authorized(company, 'edit')

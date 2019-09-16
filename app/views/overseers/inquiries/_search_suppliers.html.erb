@@ -18,7 +18,10 @@
     </div>
 
     <div class="row">
-      <% content_for :ajax_url, flush: true do %><%= overseers_suppliers_path %>
+      <% if is_authorized(:company, 'customized_index') %>
+        <% content_for :ajax_url, flush: true do %>
+          <%= customized_index_overseers_suppliers_path %>
+        <% end %>
       <% end %>
       <div class="col-12">
         <% content_for :header_row do %>

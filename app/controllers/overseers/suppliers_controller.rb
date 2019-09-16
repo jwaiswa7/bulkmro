@@ -25,7 +25,6 @@ class Overseers::SuppliersController < Overseers::BaseController
     authorize_acl @companies
 
     render 'customized_index'
-
   end
 
   def autocomplete
