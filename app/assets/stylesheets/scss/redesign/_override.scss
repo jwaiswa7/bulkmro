@@ -24,6 +24,7 @@
     margin: 0px !important;
     color: #8C97A3 !important;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 14px !important;
     font-weight: 400 !important;
     letter-spacing: -0.55px;
@@ -57,6 +58,7 @@
     float: left!important;
     color: #2C4159!important;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 21px!important;
     font-weight: 500!important;
     letter-spacing: -0.82px;
@@ -117,6 +119,7 @@
     background-color: #2C4159;
     color: #FFFFFF;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 13px!important;
     font-weight: 600!important;
     letter-spacing: -0.51px;
@@ -139,6 +142,7 @@
 .bmro-form-heading {    
     color: #2C4159;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 19px!important;
     font-weight: 500;
     letter-spacing: -0.71px;
@@ -149,6 +153,7 @@
 .bmro-input-label{
     color: #687686;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 12px;
     font-weight: 400;
     letter-spacing: -0.47px;
@@ -198,6 +203,7 @@ ul.bmro-label-ul{
     list-style: none;
     color: #2C4159;
     font-family: 'Inter UI',sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-weight: 500!important;
     background: none;
     float: left;
@@ -218,6 +224,7 @@ li.bmro-li-right{
     opacity: 0.56;
     color: #2C4159;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 12px;
     font-weight: 500!important;
     letter-spacing: -0.47px;
@@ -242,6 +249,7 @@ li.bmro-li-right{
     color:#2C4159 !important;
     padding: 7px 23px 6px 8px!important;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     border-width: 2px!important;
     border-style: solid!important;
     border-color: rgb(236, 238, 242)!important;
@@ -297,6 +305,7 @@ li.bmro-li-right{
     line-height: 1.65;
     font-weight: 500;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     white-space: nowrap;
     overflow: hidden;
     float: left;
@@ -319,6 +328,7 @@ li.bmro-li-right{
     display: block;
     height: calc(2.25rem - -1px)!important;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 13px;
     font-weight: 400;
     padding: 9px 17px;
@@ -341,7 +351,8 @@ li.bmro-li-right{
 }
 .bmro-product-btn {
     color: #2C4159;
-    font-family: 'Inter UI', sans-serif; 
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased; 
     font-size: 12px;
     font-weight: 500;
     letter-spacing: -0.47px;
@@ -378,6 +389,7 @@ li.bmro-li-right{
     float: left;
     color: #687686 !important;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 10px;
     font-weight: 500 !important;
     letter-spacing: -0.47px;
@@ -389,6 +401,7 @@ li.bmro-li-right{
     color: #2C4159;
     font-size: 12px !important;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-weight: 500 !important;
     letter-spacing: -0.71px;
     line-height: 21px;
@@ -399,6 +412,7 @@ li.bmro-li-right{
     margin-bottom: 8px;
     color: #687686!important;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 12px;
     font-weight: 500!important;
     letter-spacing: -0.47px;
@@ -429,6 +443,7 @@ li.bmro-li-right{
     border: none;
     box-shadow: none;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     color: #2C4159;
     font-size: 14px;
     font-weight: 400;
@@ -456,7 +471,8 @@ li.bmro-li-right{
     border-radius: 2px !important;
     background-color: #2C4159;
     color: #FFFFFF;
-    font-family: 'Inter UI', sans-serif; 
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased; 
     font-size: 13px !important;
     font-weight: 600 !important;
     letter-spacing: -0.51px;
@@ -482,6 +498,7 @@ li.bmro-li-right{
 table.dataTable th{
     color: #687686;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 12px;
     font-weight: 500;
     letter-spacing: -0.18px;
@@ -490,6 +507,7 @@ table.dataTable th{
 table.dataTable td{
     color: #2C4159;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 12px;
     font-weight: 500;
     letter-spacing: -0.47px;
@@ -499,6 +517,7 @@ table.dataTable td{
 .bmro-product-bottom label{
     color: #687686!important;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 12px;
     font-weight: 650!important;
     letter-spacing: -.47px;
@@ -541,6 +560,7 @@ table.dataTable td{
 li.select2-results__option{
     color: #2C4159;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 12px;
     font-weight: 400;
     line-height: 15px;
@@ -594,6 +614,7 @@ table.bmro-datatable-style{
 .bmro-invoice-heading h4{
     color: #2C4159;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 21px;
     font-weight: 500;
     letter-spacing: -0.82px;
@@ -627,6 +648,7 @@ table.bmro-datatable-style{
 .bmro-summary a{
     color: #2C4159;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 10px;
     font-weight: bold;
     letter-spacing: -0.56px;
@@ -728,6 +750,7 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-invoice-edit span{
     color: #2C4159;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 18px;
     font-weight: bold;
     letter-spacing: -1.01px;
@@ -738,6 +761,7 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-invoice-edit label{
     color: #687686;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 10px;
     font-weight: 600;
     letter-spacing: -0.56px;
@@ -812,6 +836,7 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-ar-report-head {
     color: #546272;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 10px;
     font-weight: bold;
     letter-spacing: -0.39px;
@@ -824,6 +849,7 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-ar-report-data {
     color: #2C4159;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 24px;
     font-weight: bold;
     letter-spacing: -1.35px;
@@ -835,6 +861,7 @@ a.bmro-click-toggle.collapsed:after{
     margin: 0px 5px;
     color: #546272;
     font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: -0.67px;
@@ -931,7 +958,7 @@ a.bmro-click-toggle.collapsed:after{
     margin-bottom: 0px;
 }
 .bmro-product-trash{
-      width: 100%;
+    width: 100%;
     float: left;
     padding: 14px 12px;
     background-repeat: no-repeat;
