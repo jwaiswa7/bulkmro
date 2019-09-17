@@ -82,11 +82,16 @@ $(function() {
   });
 });      
 
-$(".bmro-form-input-text-wrap").load(function(index, currentText) {
-    if(currentText.length > 30)
-      return currentText.substr(0, 30)+"...";
-    else
-      return currentText;
+$(document).ready(function() {
+    var inputs = $(".bmro-form-input-text-wrap");
+    $.each(inputs)(function(index,value){
+     /* if(currentText.length > 30)
+        return currentText.substr(0, 30)+"...";
+      else
+        return currentText;*/
+
+      console.log(inputs[index]);
+    });
 });
 
 export default edit
