@@ -82,7 +82,7 @@ $(function() {
   });
 });      
 
-$(".bmro-form-input-text-wrap").innerText(function(index, currentText) {
+$(".bmro-form-input-text-wrap").load(function(index, currentText) {
     if(currentText.length > 30)
       return currentText.substr(0, 30)+"...";
     else
