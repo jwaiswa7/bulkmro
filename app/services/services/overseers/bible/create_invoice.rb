@@ -6,7 +6,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
   end
 
   def call
-    i = 0
+    i = 1
     error = []
     invoices_in_sheet = []
     fetch_file_to_be_processed(upload_sheet)
@@ -89,6 +89,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
               bible_invoice.assign_attributes(metadata: invoice_metadata)
               bible_invoice.save
             end
+            #i+1 is for serial number which starts from 2 in csv or excel sheet, because 1 is for heading always
             upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 10, error: '-')
           rescue StandardError => err
             upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 20, error: err.message)
@@ -137,7 +138,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
       @invoice_margin = 0
       @overall_margin_percentage = 0
 
-      bible_invoice = BibleInvoice.where(id: invoice_id)
+      bible_invoice = BibleInvoice.find(invoice_id)
       bible_invoice.metadata.each do |line_item|
         @bible_invoice_total = @bible_invoice_total + line_item['total_selling_price'].to_f
         @margin_sum = @margin_sum + line_item['margin_percentage'].split('%')[0].to_f

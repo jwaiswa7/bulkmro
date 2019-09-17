@@ -6,7 +6,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
   end
 
   def call
-    i = 0
+    i = 1
     error = []
     orders_in_sheet = []
     fetch_file_to_be_processed(upload_sheet)
@@ -98,7 +98,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
         upload_sheet.update(status: 'Failed')
       end
     rescue StandardError => err
-      upload_sheet.bible_upload_logs.create(status: 'Failed', error: err.message)
+      upload_sheet.bible_upload_logs.create(status: 'Failed', bible_row_data: 'Something went wrong while calculating totals or updating uploads status', error: err.message)
       upload_sheet.update(status: 'Completed with Errors')
     end
     # puts 'ERROR', error
@@ -142,7 +142,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
       @margin_sum = 0
       @order_line_items = 0
       @overall_margin_percentage = 0
-      bible_order = BibleSalesOrder.where(id: order_id)
+      bible_order = BibleSalesOrder.find(order_id)
       bible_order.metadata.each do |line_item|
         @bible_order_total = @bible_order_total + line_item['total_selling_price'].to_f
         @bible_order_tax = @bible_order_tax + line_item['tax_amount'].to_f

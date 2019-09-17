@@ -10,7 +10,7 @@
   <table class="table-bordered table">
     <thead>
     <tr>
-      <th>Id</th>
+<!--      <th>Id</th>-->
       <th>Bible File Upload ID</th>
       <th>Sr. No</th>
       <th>Bible Row Data</th>
@@ -23,7 +23,7 @@
     <%# if @bible_file_uploads.present? %>
       <% @bible_uploads.each do |file_upload| %>
         <tr>
-          <td><%= file_upload.id%></td>
+<!--          <td><%#= file_upload.id%></td>-->
           <td><%= file_upload.bible_upload_id %></td>
           <td><%= file_upload.sr_no %></td>
           <td data-toggle="modal" data-target="#BibleRowModal" class="sheet-view-data">
