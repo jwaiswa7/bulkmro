@@ -70,7 +70,6 @@ body{
     letter-spacing: -0.5px;
     line-height: 25px!important;
     width: 100%;
-    margin-bottom: 22px!important;
 }
 .bmro-bradecrumb-edit span{
     margin-left: 5px;
@@ -192,9 +191,9 @@ body{
 }
 .bmro-breadcrumb-item .breadcrumb-item+.breadcrumb-item:before{
     color: #f78200;
-    font-size: 23px;
-    font-weight: bold!important;
-    bottom: 8px;
+    font-size: 18px;
+    font-weight: 600!important;
+    bottom: 5px;
 }
 .breadcrumb-item+.breadcrumb-item:last-child {
     font-weight: 400!important;
@@ -257,6 +256,7 @@ li.bmro-li-right{
     line-height: 1.5!important;
     color:#2C4159 !important;
     padding: 7px 23px 6px 8px!important;
+    letter-spacing: -0.5px;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     border-width: 2px!important;
@@ -1017,4 +1017,7 @@ a.bmro-click-toggle.collapsed:after{
 .parsley-required{  
     font-family: 'Inter UI',sans-serif;  
     -webkit-font-smoothing: antialiased; 
+}
+.custom-select:disabled{
+    background-color: #f7f7f7;
 }
