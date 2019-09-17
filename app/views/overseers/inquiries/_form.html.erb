@@ -12,13 +12,13 @@
           <div class="col-3 col-md-5">
             <%= f.input :company, as: :string, disabled: true, input_html: { class: 'select2-single bmro-form-input' } %>
           </div>
-          <div class="col-3 col-md-1">
+          <div class="col-3 col-md-2">
             <%= f.input :inquiry_number, label: 'Inquiry #', input_html: { class: 'bmro-form-input' }, disabled: true %>
           </div>
           <!--          <div class="col-8">-->
           <%#= f.input :legacy_contact_name, disabled: true %>
           <!--          </div>-->
-          <div class="col-6 col-md-4">
+          <div class="col-6 col-md-3">
             <%= f.input :status, as: :string, input_html: { class: 'bmro-form-input' }, disabled: true %>
             <%# #, :disabled => ['Lead by O/S','New Inquiry','Acknowledgement Mail','Cross Reference','Supplier RFQ Sent','Preparing Quotation','Draft SO for Approval by Sales Manager','SO Rejected by Sales Manager','SO Draft: Pending Accounts Approval','Rejected by Accounts','Hold by Accounts','Order Won','Quotation Sent'] %>
             <!-- TODO commercial_status need to be added -->
