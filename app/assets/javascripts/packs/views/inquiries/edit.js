@@ -105,7 +105,7 @@ $(function() {
 
   // })
 
-var inputEmail = document.querySelector('.bmro-form-input-text-wrap');
+var inputEmail = document.querySelector('#bmro-text-wrap');
 // substring
 inputEmail.onkeyup = function(e) {
     var max = 5;
