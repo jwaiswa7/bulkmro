@@ -257,6 +257,7 @@ li.bmro-li-right{
     line-height: 1.5!important;
     color:#2C4159 !important;
     padding: 7px 23px 6px 8px!important;
+    letter-spacing: -0.5px;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     border-width: 2px!important;
@@ -1005,4 +1006,16 @@ a.bmro-click-toggle.collapsed:after{
     padding: 14px 12px;
     background-repeat: no-repeat;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAYAAACEYr13AAAAAXNSR0IArs4c6QAAAJxJREFUOBFjZMABdBwj/yNLXdm/nBGZD2MzoiuESRBLMxGrEK86kCtIcQmyeopdQBsDkJ0I8js6Hzk8aOMCZBsIsUddwMAw8GHAgi2a0LMuOh9ZD9W88AJkqr5TtBuy6djYSGrAesBeYGRgXPaf4X/R3///dgLTPTZ9cDGgGjAbpAfEAHtBWJ6tGijQB+SDTQWrwE28AKkF6QEpAQBJQywJBr1YtwAAAABJRU5ErkJggg==');
+}
+.valid-feedback{
+    font-family: 'Inter UI',sans-serif;  
+    -webkit-font-smoothing: antialiased; 
+}
+.invalid-feedback{  
+    font-family: 'Inter UI',sans-serif;  
+    -webkit-font-smoothing: antialiased; 
+}
+.parsley-required{  
+    font-family: 'Inter UI',sans-serif;  
+    -webkit-font-smoothing: antialiased; 
 }
