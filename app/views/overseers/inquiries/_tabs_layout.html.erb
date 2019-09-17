@@ -26,7 +26,7 @@
   <% end %>
 </div>
 
-<section class="bmro-width-fl">
+<section class="bmro-width-fl bmro-zindex">
   <ul class="nav nav-tabs nav-fill bmro-nav-ul">
     <%= nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
     <%= nav_item('Imports', overseers_inquiry_imports_path(@inquiry), is_authorized(@inquiry,'imports') && policy(@inquiry).imports?) %>
