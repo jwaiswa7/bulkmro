@@ -89,7 +89,6 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
               bible_invoice.assign_attributes(metadata: invoice_metadata)
               bible_invoice.save
             end
-            #i+1 is for serial number which starts from 2 in csv or excel sheet, because 1 is for heading always
             upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 10, error: '-')
           rescue StandardError => err
             upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 20, error: err.message)
