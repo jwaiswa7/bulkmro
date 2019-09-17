@@ -96,8 +96,8 @@ $(function() {
 
 $(document).ready(function() {
   // var arrNumber = new Array();
-  $(".bmro-form-input-text-wrap").each(function(){
-     console.log($(this).val());
+  $(".bmro-form-input-text-wrap option").each(function(){
+     console.log($(this).text());
   })
 
     // if (inputs > 25) {
