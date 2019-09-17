@@ -1048,3 +1048,17 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-input-search{
     float: left;
 }
+.bmro-arrow-parent .select2 {
+    content: "";
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    border-color: #2C4159 transparent transparent transparent;
+    position: relative;
+    top: 9px;
+    right: -6px;   
+}
+.bmro-arrow-parent .select2.select2-container--open{
+    border-color: transparent transparent #2C4159 transparent;
+    top: -7px;    
+}
