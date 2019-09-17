@@ -26,21 +26,20 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
     if @supplier_rfq.save
       inquiry_product_supplier.assign_attributes(inquiry_product_supplier_params.merge(overseer: current_overseer))
       inquiry_product_supplier.save
-      # @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: inquiry_product_supplier.supplier.default_contact, inquiry: @inquiry, company: inquiry_product_supplier.supplier)
-      # subject = "Bulk MRO RFQ Ref # #{@inquiry_product.id}"
-      # @action = 'send_email_request_for_quote'
-      # @email_message.assign_attributes(
-      #     subject: subject,
-      #     body: SupplierRfqMailer.request_for_quote_email(@email_message, @inquiry_product, @quantity).body.raw_source
-      # )
-      #
-      # @params = {
-      #     record: [:overseers, @supplier_rfq, @email_message],
-      #     url: {action: @action, controller: "overseers/inquiries/supplier_rfqs"}
-      # }
-      #
-      # render 'shared/layouts/email_messages/new'
-      redirect_to overseers_inquiry_sales_quotes_path(@inquiry)
+      @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: inquiry_product_supplier.supplier.default_contact, inquiry: @inquiry, company: inquiry_product_supplier.supplier)
+      subject = "Bulk MRO RFQ Ref # #{@inquiry_product.id}"
+      @action = 'send_email_request_for_quote'
+      @email_message.assign_attributes(
+          subject: subject,
+          body: SupplierRfqMailer.request_for_quote_email(@email_message, @inquiry_product, @quantity).body.raw_source
+      )
+
+      @params = {
+          record: [:overseers, @supplier_rfq, @email_message],
+          url: "supplier_rfqs/#{@supplier_rfq.to_param}/send_email_request_for_quote"
+      }
+
+      render 'shared/layouts/email_messages/new'
     end
   end
 
@@ -76,10 +75,8 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
 
-    authorize_acl @inquiry
-
     if @email_message.save!
-      InquiryMailer.send_request_for_quote_email(@email_message).deliver_now
+      SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry)
     else
       render 'shared/layouts/email_messages/new'
@@ -105,7 +102,7 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
   end
 
   def set_supplier_rfq
-    @supllier_rfq = SupllierRfq.find(params[:id])
+    @supplier_rfq = SupplierRfq.find(params[:id])
   end
 
   def supplier_rfq_params
@@ -137,6 +134,16 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
            :total_price,
            :remarks
     )
+  end
 
+  def email_message_params
+    params.require(:email_message).permit(
+        :subject,
+        :body,
+        :to,
+        :cc,
+        :bcc,
+        files: []
+    )
   end
 end
