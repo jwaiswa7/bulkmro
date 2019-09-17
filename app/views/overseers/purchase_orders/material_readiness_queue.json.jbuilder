@@ -5,7 +5,7 @@ json.data (@purchase_orders) do |purchase_order|
                         "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='purchase_orders[]' class='custom-control-input' value='#{purchase_order.id}' id='c-#{purchase_order.id}'><label class='custom-control-label' for='c-#{purchase_order.id}'></label></div>"
                       end,
                       if is_authorized(purchase_order, 'show') && policy(purchase_order).show?
-                        row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
+                        row_action_button_without_fa(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'bmro-icon-table bmro-icon-editmaterial', 'Download', 'dark', :_blank)
                       end,
                       if is_authorized(purchase_order, 'show_document') && policy(purchase_order).show_document?
                         row_action_button(url_for(purchase_order.document), 'file-pdf', purchase_order.document.filename, 'dark', :_blank)
