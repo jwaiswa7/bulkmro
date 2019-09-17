@@ -49,7 +49,9 @@ every(4.hour, 'generate_exports_hourly') do
 end
 
 every(1.day, 'refresh_indices', at: '00:00') do
-  Services::Shared::Chewy::RefreshIndices.new
+  Chewy.strategy(:sidekiq) do
+    Services::Shared::Chewy::RefreshIndices.new
+  end
 end
 
 every(1.day, 'generate_exports_daily', at: '04:00') do
