@@ -418,7 +418,6 @@ li.bmro-li-right{
 .bmro-inventory-color{
     color: #687686!important; 
     float: left;
-    align-items: center;
     border: 2px solid #eceef2;
     width: 100%;
     padding: 5px 0px 0px 0px; 
@@ -446,11 +445,6 @@ li.bmro-li-right{
 }
 .bmro-product-icon-right .form-group a{
     color: #2C4159 !important;
-}
-.bmro-inventory-color{
-    float: left;
-    display: flex;
-    align-items: center;
 }
 .bmro-card-body .custom-file-label { margin-top:0!important; }
 .bmro-button-parent{
@@ -935,4 +929,11 @@ a.bmro-click-toggle.collapsed:after{
 }
 .bmro-dotted-mb0{
     margin-bottom: 0px;
+}
+.bmro-product-trash{
+      width: 100%;
+    float: left;
+    padding: 14px 12px;
+    background-repeat: no-repeat;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAYAAACEYr13AAAAAXNSR0IArs4c6QAAAJxJREFUOBFjZMABdBwj/yNLXdm/nBGZD2MzoiuESRBLMxGrEK86kCtIcQmyeopdQBsDkJ0I8js6Hzk8aOMCZBsIsUddwMAw8GHAgi2a0LMuOh9ZD9W88AJkqr5TtBuy6djYSGrAesBeYGRgXPaf4X/R3///dgLTPTZ9cDGgGjAbpAfEAHtBWJ6tGijQB+SDTQWrwE28AKkF6QEpAQBJQywJBr1YtwAAAABJRU5ErkJggg==');
 }
