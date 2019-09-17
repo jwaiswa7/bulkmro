@@ -15,7 +15,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
     sheet_header = service.get_header
     defined_header = fixed_header('sales_invoices')
     begin
-      if sheet_header.sort == defined_header.sort
+      if sheet_header.compact.sort == defined_header.sort
         service.loop(nil) do |x|
           invoice_number = x.get_column('Invoice Number')
           # BibleInvoice.where(invoice_number: get_sales_invoice(invoice_number).invoice_number).last
