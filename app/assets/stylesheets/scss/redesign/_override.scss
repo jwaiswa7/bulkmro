@@ -8,7 +8,9 @@
 }
 .bmro-nav-ul{
     width: 100%;
-    float: left; 
+    float: left;
+    position: sticky;
+    top: 48px; 
     z-index: 100!important;
     margin-bottom: 1px;
     background-color: #E0E2E7!important;
@@ -902,4 +904,9 @@ a.bmro-click-toggle.collapsed:after{
     color: #2C4159;
     line-height: 16px;
     font-size: 14px;
+}
+@media only screen and (max-width: 1280px) {
+  .bmro-nav-ul {
+    top: 60px;
+  }
 }
