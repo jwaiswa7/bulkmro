@@ -1019,3 +1019,6 @@ a.bmro-click-toggle.collapsed:after{
     font-family: 'Inter UI',sans-serif;  
     -webkit-font-smoothing: antialiased; 
 }
+.custom-select:disabled{
+    background-color: #f7f7f7;
+}
