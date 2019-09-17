@@ -90,7 +90,7 @@ $(document).ready(function() {
       else
         return currentText;*/
 
-      console.log(inputs[index]);
+      console.log(inputs[index].val);
     });
 });
 
