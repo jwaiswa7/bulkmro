@@ -23,7 +23,6 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
           if bible_invoice.present?
             bible_invoice.metadata = []
             bible_invoice.save
-            invoices_in_sheet.push(bible_invoice.id)
           end
         end
         service.loop(nil) do |x|
@@ -88,13 +87,13 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
               invoice_metadata.push(sku_data)
               bible_invoice.assign_attributes(metadata: invoice_metadata)
               bible_invoice.save
+              invoices_in_sheet.push(bible_invoice.id)
             end
             upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 10, error: '-')
           rescue StandardError => err
             upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 20, error: err.message)
           end
         end
-
         calculate_totals(invoices_in_sheet)
         upload_sheet.update(status: 'Completed')
         puts 'BibleSI', BibleInvoice.count
@@ -102,7 +101,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
         upload_sheet.update(status: 'Failed')
       end
     rescue StandardError => err
-      upload_sheet.bible_upload_logs.create(status: 'Failed', error: err.message)
+      upload_sheet.bible_upload_logs.create(status: 'Failed', bible_row_data: 'Something went wrong while calculating totals or updating uploads status', error: err.message)
       upload_sheet.update(status: 'Completed with Errors')
     end
     # puts 'ERROR', error

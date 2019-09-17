@@ -15,16 +15,13 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
     sheet_header = service.get_header
     defined_header = fixed_header('sales_orders')
     begin
-      if sheet_header.sort == defined_header.sort
+      if sheet_header.compact.sort == defined_header.sort
         service.loop(nil) do |x|
           order_number = x.get_column('So #')
-          # inquiry_number = x.get_column('Inquiry Number')
-          # BibleSalesOrder.where(order_number: get_sales_order(order_number, inquiry_number).order_number).last
           bible_order = BibleSalesOrder.where(order_number: order_number).last
           if bible_order.present?
             bible_order.metadata = []
             bible_order.save
-            orders_in_sheet.push(bible_order.id)
           end
         end
         service.loop(nil) do |x|
@@ -85,6 +82,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
               order_metadata.push(sku_data)
               bible_order.assign_attributes(metadata: order_metadata)
               bible_order.save
+              orders_in_sheet.push(bible_order.id)
             end
             upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 10, error: '-')
           rescue StandardError => err
@@ -134,7 +132,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
   end
 
   def calculate_totals(orders_in_sheet)
-    orders_in_sheet.each do |order_id|
+    orders_in_sheet.uniq.each do |order_id|
       @bible_order_total = 0
       @bible_order_tax = 0
       @bible_order_total_with_tax = 0
