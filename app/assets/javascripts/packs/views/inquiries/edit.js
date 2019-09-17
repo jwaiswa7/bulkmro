@@ -94,20 +94,26 @@ $(function() {
 //     });
 // });
 
-$(document).ready(function() {
+
   // var arrNumber = new Array();
-  $(".bmro-form-input-text-wrap option:selected").each(function(){
-     if($(this).text().length>15){
-      var t = $(this).text().substr(0,15)+"...";
-      $(this).text(t);
-     }
+  // $(".bmro-form-input-text-wrap option:selected").each(function(){
+  //    if($(this).text().length>15){
+  //     var t = $(this).text().substr(0,15)+"...";
+  //     $(this).text(t);
+  //    }
 
 
-  })
+  // })
 
-    // if (inputs > 25) {
-    //   var inputs_text = inputs.slice(0,25)+"...";
-    // } 
-});
+var inputEmail = document.querySelector('.bmro-form-input-text-wrap');
+// substring
+inputEmail.onkeyup = function(e) {
+    var max = 5;
+  
+    if(inputEmail.value.length > max) {
+      inputEmail.value = inputEmail.value.substr(0, max)+"...";
+    }
+  
+};
 
 export default edit
