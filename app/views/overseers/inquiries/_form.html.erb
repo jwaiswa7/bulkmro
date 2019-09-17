@@ -41,7 +41,7 @@
                       <% elsif ["Order Lost", "Regret"].include?(@inquiry.status) %>
                         <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
                       <% else %>
-                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
+                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
                       <% end %>
                     </div>
                     <div class="bmro-button-parent bmro-model-button">
@@ -79,7 +79,7 @@
               </div>
               <div class="col-6 col-md-6">
                 <% if  is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
-                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), disabled:true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' } %>
+                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), disabled:true, input_html: { class: 'select2-single bmro-form-input' } %>
                 <% else %>
                   <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez) %>
                 <% end %>
@@ -101,15 +101,15 @@
 
       <div class="form-row">
         <div class="col-6 col-md-4">
-          <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+          <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), required: true, input_html: { class: 'select2-single bmro-form-input' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
 
         <div class="col-6 col-md-4">
-          <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+          <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), required: true, input_html: { class: 'select2-single bmro-form-input' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
 
         <div class="col-6 col-md-4">
-          <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+          <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), required: true, input_html: { class: 'select2-single bmro-form-input' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
       </div>
       <div class="bmro-dotted-line bmro-dotted-mt"></div>
@@ -119,25 +119,25 @@
         <% if is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= f.input :bill_from, as: :string, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' },  disabled: true %>
+              <%= f.input :bill_from, as: :string, input_html: { class: 'select2-single bmro-form-input' },  disabled: true %>
             </div>
             <div class="col-12 col-md-6">
-              <%= f.input :ship_from, as: :string, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: true %>
+              <%= f.input :ship_from, as: :string, input_html: { class: 'select2-single bmro-form-input' }, disabled: true %>
             </div>
           </div>
         <% else %>
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= f.association :bill_from, label_method: :to_s, include_blank: "Select a bill from", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_warehouses_path(bill_from: true)}, disabled: is_authorized(@inquiry,'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
+              <%= f.association :bill_from, label_method: :to_s, include_blank: "Select a bill from", input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_warehouses_path(bill_from: true)}, disabled: is_authorized(@inquiry,'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
             </div>
             <div class="col-12 col-md-6">
-              <%= f.association :ship_from, label_method: :to_s, include_blank: "Select a ship from", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
+              <%= f.association :ship_from, label_method: :to_s, include_blank: "Select a ship from", input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
             </div>
           </div>
         <% end %>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :billing_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: true %>
+            <%= f.association :billing_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'select2-single bmro-form-input' }, disabled: true %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.association :shipping_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, include_blank: "Select a shipping company" %>
@@ -167,16 +167,16 @@
         <h6 class="mb-1 bmro-form-heading">Owner Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
-            <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select a Procurement Specialist'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select a Procurement Specialist'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select an Outside Sales Owner'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select an Outside Sales Owner'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select a Account Owner'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select a Account Owner'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :procurement_operations, required: false, collection: Overseer.inside_and_obj(f.object.procurement_operations).alphabetical, label: 'Procurement Operations', input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select a Procurement Operations'}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            <%= f.association :procurement_operations, required: false, collection: Overseer.inside_and_obj(f.object.procurement_operations).alphabetical, label: 'Procurement Operations', input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select a Procurement Operations'}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
         </div>
       </div>
@@ -618,7 +618,7 @@
               </div>
               <div class="col-9 col-md-3">
                 <div class="select2-wrap">
-                  <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon bmro-input-textarea bmro-product-input', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
+                  <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-input-textarea bmro-product-input', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
                 </div>
               </div>
               <div class="col-12 col-md-4">
