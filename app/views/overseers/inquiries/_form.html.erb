@@ -9,10 +9,10 @@
         <h6 class="mb-1 bmro-form-heading">Opportunity Details</h6>
         
         <div class="form-row">
-          <div class="col-3 col-md-4">
+          <div class="col-3 col-md-5">
             <%= f.input :company, as: :string, disabled: true, input_html: { class: 'select2-single bmro-form-input' } %>
           </div>
-          <div class="col-3 col-md-2">
+          <div class="col-3 col-md-1">
             <%= f.input :inquiry_number, label: 'Inquiry #', input_html: { class: 'bmro-form-input' }, disabled: true %>
           </div>
           <!--          <div class="col-8">-->
@@ -25,7 +25,7 @@
           </div>
           <% if is_authorized(@inquiry, 'update') %>
             <div class="col-6 col-md-2">
-              <button type="button" class="btn btn-m btn-block btn-warning bmro-button" data-toggle="modal" data-target="#statusModal" style="margin-top: 27px;">Update
+              <button type="button" class="btn btn-m btn-block btn-warning bmro-button" data-toggle="modal" data-target="#statusModal" style="margin-top: 27px;padding: 2px 0px">Update
 
               </button>
               <div class="modal fade" id="statusModal" role="dialog">
@@ -270,19 +270,19 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, input_html: { class: 'bmro-form-input' }, disabled: f.object.sales_quotes.blank? %>
             </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input' }, disabled: f.object.sales_quotes.blank? %>
             </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, input_html: { class: 'bmro-form-input' }, disabled: f.object.sales_quotes.blank? %>
             </div>
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-6">
               <%= f.input :customer_po_received_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input' }, label: 'Customer PO Received Date' %>
             </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-6">
               <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input' } %>
             </div>
           </div>
