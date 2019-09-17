@@ -90,8 +90,16 @@ $(document).ready(function() {
       else
         return currentText;*/
 
-      console.log(inputs[index].val);
+      console.log(inputs[index].val());
     });
+});
+
+$(document).ready(function() {
+    var inputs = $(".bmro-form-input-text-wrap");
+
+    if (inputs > 25) {
+      var inputs_text = inputs.slice(0,25)+"...";
+    } 
 });
 
 export default edit
