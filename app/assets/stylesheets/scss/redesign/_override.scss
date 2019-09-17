@@ -966,6 +966,11 @@ a.bmro-click-toggle.collapsed:after{
     right: 9px;
     top: 4px;
 }
+@media only screen and (max-width: 1440px) {
+  .bmro-nav-ul {
+    top: 68px;
+  }
+}
 @media only screen and (max-width: 1360px) {
   .bmro-nav-ul {
     top: 88px;
