@@ -97,7 +97,12 @@ $(function() {
 $(document).ready(function() {
   // var arrNumber = new Array();
   $(".bmro-form-input-text-wrap option").each(function(){
-     console.log($(this).text());
+     if($(this).text().length>25){
+      var t = $(this).text().substr(0,25)+"...";
+      $(this).text(t);
+     }
+
+
   })
 
     // if (inputs > 25) {
