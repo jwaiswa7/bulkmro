@@ -731,6 +731,10 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-trash-parent{
     padding: 5px 10px !important;
 }
+.bmro-trash-parent:hover .bmro-trash-icon{
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAYAAACEYr13AAAAAXNSR0IArs4c6QAAAJxJREFUOBFjZMABdBwj/yNLXdm/nBGZD2MzoiuESRBLMxGrEK86kCtIcQmyeopdQBsDkJ0I8js6Hzk8aOMCZBsIsUddwMAw8GHAgi2a0LMuOh9ZD9W88AJkqr5TtBuy6djYSGrAesBeYGRgXPaf4X/R3///dgLTPTZ9cDGgGjAbpAfEAHtBWJ6tGijQB+SDTQWrwE28AKkF6QEpAQBJQywJBr1YtwAAAABJRU5ErkJggg==');
+}
+
 .bmro-trash-icon{
     width: 100%;
     float: left;
