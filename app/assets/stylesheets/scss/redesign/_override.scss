@@ -181,10 +181,12 @@
 }
 .bmro-breadcrumb-item .breadcrumb-item{
     color: #f78200!important;
+    font-weight: bold;
 }
 .bmro-breadcrumb-item .breadcrumb-item+.breadcrumb-item:before{
     color: #f78200;
     font-size: 23px;
+    font-weight: bold;
     bottom: 8px;
 }
 .breadcrumb-item+.breadcrumb-item:last-child {
@@ -266,11 +268,8 @@ li.bmro-li-right{
     -webkit-appearance: none !important;
     appearance: none !important;
 }
-.bmro-form-input-img{
-
-}
 .bmro-form-input:focus{
-    border-color: #687686;
+    border-color: #2C4159;
 }
 .bmro-form-input-height{
     min-height: 90px;
