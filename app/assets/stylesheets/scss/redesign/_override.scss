@@ -418,7 +418,6 @@ li.bmro-li-right{
 .bmro-inventory-color{
     color: #687686!important; 
     float: left;
-    align-items: center;
     border: 2px solid #eceef2;
     width: 100%;
     padding: 5px 0px 0px 0px; 
@@ -446,11 +445,6 @@ li.bmro-li-right{
 }
 .bmro-product-icon-right .form-group a{
     color: #2C4159 !important;
-}
-.bmro-inventory-color{
-    float: left;
-    display: flex;
-    align-items: center;
 }
 .bmro-card-body .custom-file-label { margin-top:0!important; }
 .bmro-button-parent{
