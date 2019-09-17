@@ -83,8 +83,8 @@ $(function() {
 });      
 
 function truncateText(selector_text, maxLength) {
-    var element = $('input[attr=materialname]')
-        truncated = element.innerText;
+    var truncated = $('input[attr=materialname]').html();
+        //truncated = element.innerText;
 
     if (truncated.length > maxLength) {
         truncated = truncated.substr(0,maxLength) + '...';
