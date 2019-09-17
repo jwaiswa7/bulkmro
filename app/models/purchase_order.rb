@@ -290,7 +290,8 @@ class PurchaseOrder < ApplicationRecord
       inquiry.bill_from
     end
   end
+
+  def max_lead_date
+    self.po_request.present? ? self.po_request.rows.maximum(:lead_time).strftime('%d-%b-%Y') : Date.parse(self.metadata['PoDate']).strftime('%d-%b-%Y')
+  end
 end
-
-
-
