@@ -1050,6 +1050,9 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-input-search{
     float: left;
 }
+.bmro-input-search .bmro-form-input{
+    width: 290px;
+}
 .bmro-form-input::placeholder{
     color: #9AA1AA;
     font-size: 12px;
@@ -1057,10 +1060,15 @@ a.bmro-click-toggle.collapsed:after{
     line-height: 15px;
 }
 .bmro-arrow-parent .select2:before{
-    font-family: 'Glyphicons Halflings';
-    content: "\e114";
+    font-size: 23px;
+    content: "\25be";
     float: right;
     transition: all 0.5s;
+    position: absolute;
+    right: 5px;
+    top: 3px;
+    color: #2C4159;
+}
 }
 .bmro-arrow-parent .select2.select2-container--open:before{
     -webkit-transform: rotate(180deg);
