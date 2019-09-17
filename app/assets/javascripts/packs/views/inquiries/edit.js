@@ -82,27 +82,27 @@ $(function() {
   });
 });      
 
-$(document).ready(function() {
-    var inputs = $(".bmro-form-input-text-wrap");
-    $.each(inputs)(function(index,value){
-     /* if(currentText.length > 30)
-        return currentText.substr(0, 30)+"...";
-      else
-        return currentText;*/
+// $(document).ready(function() {
+//     var inputs = $(".bmro-form-input-text-wrap");
+//     $.each(inputs)(function(index,value){
+//       if(currentText.length > 30)
+//         return currentText.substr(0, 30)+"...";
+//       else
+//         return currentText;
 
-      console.log(inputs[index].val());
-    });
-});
+//       console.log(inputs[index].val());
+//     });
+// });
 
 $(document).ready(function() {
-  var arrNumber = new Array();
+  // var arrNumber = new Array();
   $(".bmro-form-input-text-wrap").each(function(){
      console.log($(this).val());
   })
 
-    if (inputs > 25) {
-      var inputs_text = inputs.slice(0,25)+"...";
-    } 
+    // if (inputs > 25) {
+    //   var inputs_text = inputs.slice(0,25)+"...";
+    // } 
 });
 
 export default edit
