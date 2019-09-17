@@ -4,12 +4,20 @@ class Suppliers::BaseController < ApplicationController
 
   layout 'suppliers/layouts/application'
 
-  before_action :authenticate_contact!
+  before_action :authenticate_contact
   before_action :set_paper_trail_whodunnit
   after_action :verify_authorized
   before_action :redirect_if_required
 
   helper_method :current_company
+
+  def authenticate_contact
+    if params[:controller].split("/").last == "rfq"
+      true
+    else
+      authenticate_contact!
+    end
+  end
 
   private
 
