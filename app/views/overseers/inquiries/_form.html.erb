@@ -488,9 +488,14 @@
         <% if is_authorized(@inquiry, 'update') %>
           <div class="mt-1 mt-md-0 bmro-button-parent
             <%= action_name != "new" ? "" : "col-md-12 bmro-update-icon" %>">
-            <%= action_button(action_name, @inquiry) do %>
-              <i class="bmro-duplicate-icon"></i>
-              Inquiry
+            <% if action_name.capitalize == "New" %>
+              <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-update-icon") do %>
+                <i class="bmro-duplicate-icon"></i> <%= submit_text(@inquiry) %>
+              <% end %>
+            <% else %>
+              <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-update-icon") do %>
+                <i class="bmro-duplicate-icon"></i> <%= submit_text(@inquiry) %>
+              <% end %>
             <% end %>
           </div>
         <% end %>
