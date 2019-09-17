@@ -96,8 +96,13 @@ $(function() {
 
 $(document).ready(function() {
   // var arrNumber = new Array();
-  $(".bmro-form-input-text-wrap option").each(function(){
-     console.log($(this).text());
+  $(".bmro-form-input-text-wrap option:selected").each(function(){
+     if($(this).text().length>15){
+      var t = $(this).text().substr(0,15)+"...";
+      $(this).text(t);
+     }
+
+
   })
 
     // if (inputs > 25) {
