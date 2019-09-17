@@ -95,7 +95,10 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    var inputs = $(".bmro-form-input-text-wrap");
+  var arrNumber = new Array();
+  $(".bmro-form-input-text-wrap").each(function(){
+     console.log($(this).val());
+  })
 
     if (inputs > 25) {
       var inputs_text = inputs.slice(0,25)+"...";
