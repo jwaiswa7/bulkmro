@@ -100,7 +100,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def draft_rfq?
-    record.inquiry_product_suppliers.present? && edit_suppliers?
+    edit_suppliers?
   end
 
   def sales_quotes?
