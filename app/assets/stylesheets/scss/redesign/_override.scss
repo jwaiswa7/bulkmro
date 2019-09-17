@@ -1050,12 +1050,15 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-input-search{
     float: left;
 }
-.bmro-arrow-parent .select2{
+.bmro-form-input::placeholder{
+    color: red;
+}
+/*.bmro-arrow-parent .select2{
     background-image: linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc);
     background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
     background-size: 5px 5px, 5px 5px, 1px 1.5em;
     background-repeat: no-repeat;
-}
+}*/
 /*.bmro-arrow-parent .select2.select2-container--open{
     border-color: transparent transparent #2C4159 transparent;
     top: -7px;    
