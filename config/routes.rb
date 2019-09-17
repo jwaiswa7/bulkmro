@@ -539,6 +539,9 @@ Rails.application.routes.draw do
           collection do
             post 'create_and_send_link'
           end
+          member do
+            post 'send_email_request_for_quote'
+          end
         end
         resources :sales_shipments do
           member do
