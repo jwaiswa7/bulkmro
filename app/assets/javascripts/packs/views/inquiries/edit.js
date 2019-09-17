@@ -57,7 +57,7 @@ function slideTo(page) {
 });
 
 $(function() {
-  var top = $('.bmro-card-header');
+  var top = $('.bmro-card-header').offset().top - parseFloat($('.bmro-card-header').css('marginTop').replace(/auto/, 0));
   var footTop = $('.bmro-product-bottom').offset().top - parseFloat($('.bmro-product-bottom').css('marginTop').replace(/auto/, 0));
 
   var maxY = footTop - $('.bmro-card-header').outerHeight();
