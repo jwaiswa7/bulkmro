@@ -89,7 +89,12 @@ class Overseers::ContactsController < Overseers::BaseController
   def become
     authorize_acl @contact
     sign_in(:contact, @contact)
-    redirect_to customers_dashboard_url(became: true)
+
+    if @contact.role == "supplier"
+      redirect_to suppliers_dashboard_url(became: true)
+    else
+      redirect_to customers_dashboard_url(became: true)
+    end
   end
 
   def fetch_company_account
