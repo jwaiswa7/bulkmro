@@ -905,11 +905,6 @@ a.bmro-click-toggle.collapsed:after{
     line-height: 16px;
     font-size: 14px;
 }
-@media only screen and (max-width: 1280px) {
-  .bmro-nav-ul {
-    top: 60px;
-  }
-}
 .bmro-custom-height{
     height: 32px;
 }
@@ -917,4 +912,12 @@ a.bmro-click-toggle.collapsed:after{
     position: relative;
     right: 9px;
     top: 4px;
+}
+@media only screen and (max-width: 1280px) {
+  .bmro-nav-ul {
+    top: 88px;
+  }
+}
+.bmro-form-input-height .select2-selection__rendered{
+    white-space: normal;
 }
