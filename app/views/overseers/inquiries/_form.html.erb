@@ -7,7 +7,7 @@
     <div class="card-body bmro-card-body">
       <div id="Opportuinity">
         <h6 class="mb-1 bmro-form-heading">Opportunity Details</h6>
-        <%= f.input :company, as: :string, disabled: true, input_html: { class: 'bmro-form-input' } %>
+        <%= f.input :company, as: :string, disabled: true, input_html: { class: 'select2-single bmro-form-input' } %>
         <div class="form-row">
           <div class="col-3 col-md-6">
             <%= f.input :inquiry_number, label: 'Inquiry #', input_html: { class: 'bmro-form-input' }, disabled: true %>
@@ -37,11 +37,11 @@
                     </div>
                     <div class="modal-body bmro-model-body-padding">
                       <% if current_overseer.admin? %>
-                        <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
+                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
                       <% elsif ["Order Lost", "Regret"].include?(@inquiry.status) %>
-                        <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
+                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
                       <% else %>
-                        <%= f.input :status,input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
+                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
                       <% end %>
                     </div>
                     <div class="bmro-button-parent bmro-model-button">
@@ -75,13 +75,13 @@
           <div class="col-md-7">
             <div class="form-row">
               <div class="col-6 col-md-6">
-                <%= f.input :opportunity_source, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources), disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders?, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
+                <%= f.input :opportunity_source, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources), disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders?, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' } %>
               </div>
               <div class="col-6 col-md-6">
                 <% if  is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
-                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), disabled:true, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
+                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), disabled:true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' } %>
                 <% else %>
-                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez) %>
+                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez) %>
                 <% end %>
               </div>
             </div>
@@ -101,15 +101,15 @@
 
       <div class="form-row">
         <div class="col-6 col-md-4">
-          <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), required: true, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+          <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
 
         <div class="col-6 col-md-4">
-          <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), required: true, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+          <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
 
         <div class="col-6 col-md-4">
-          <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), required: true, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+          <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
       </div>
       <div class="bmro-dotted-line bmro-dotted-mt"></div>
@@ -119,10 +119,10 @@
         <% if is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= f.input :bill_from, as: :string, input_html: { class: 'bmro-form-input bmro-dropdown-icon' },  disabled: true %>
+              <%= f.input :bill_from, as: :string, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' },  disabled: true %>
             </div>
             <div class="col-12 col-md-6">
-              <%= f.input :ship_from, as: :string, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, disabled: true %>
+              <%= f.input :ship_from, as: :string, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: true %>
             </div>
           </div>
         <% else %>
@@ -137,10 +137,10 @@
         <% end %>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :billing_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, disabled: true %>
+            <%= f.association :billing_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: true %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :shipping_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, include_blank: "Select a shipping company" %>
+            <%= f.association :shipping_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, include_blank: "Select a shipping company" %>
           </div>
         </div>
         <div class="form-row">
@@ -292,16 +292,16 @@
         <h6 class="mb-1 bmro-form-heading">Terms and Conditions</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
-            <%= f.input :price_type, label: 'Delivery', as: :select, :wrapper => :custom_multi_select, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
+            <%= f.input :price_type, label: 'Delivery', as: :select, :wrapper => :custom_multi_select, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :payment_option, label: 'Payment terms', input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-form-input-text-wrap chosen-select' }, required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', collection: PaymentOption.active.pluck(:name, :id) %>
+            <%= f.association :payment_option, label: 'Payment terms', input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-form-input-text-wrap chosen-select' }, required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', collection: PaymentOption.active.pluck(:name, :id) %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.input :packing_and_forwarding_option, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, label: 'Packing and forwarding', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
+            <%= f.input :packing_and_forwarding_option, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, label: 'Packing and forwarding', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.input :freight_option, label: 'Freight', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.freight_options) %>
+            <%= f.input :freight_option, label: 'Freight', input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.freight_options) %>
           </div>
         </div>
         <%= f.input :commercial_terms_and_conditions, input_html: { class: 'bmro-form-input  bmro-form-input-text' } %>
@@ -488,7 +488,10 @@
         <% if is_authorized(@inquiry, 'update') %>
           <div class="mt-1 mt-md-0 bmro-button-parent
             <%= action_name != "new" ? "" : "col-md-12 bmro-update-icon" %>">
-            <%= action_button(action_name, @inquiry) %>
+            <%= action_button(action_name, @inquiry) do %>
+              <i class="bmro-duplicate-icon"></i>
+              Inquiry
+            <% end %>
           </div>
         <% end %>
         <% if (is_authorized(@inquiry, 'duplicate') && policy(@inquiry).duplicate?) %>
