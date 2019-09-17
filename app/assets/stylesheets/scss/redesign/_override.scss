@@ -181,12 +181,12 @@
 }
 .bmro-breadcrumb-item .breadcrumb-item{
     color: #f78200!important;
-    font-weight: bold;
+    font-weight: bold!important;
 }
 .bmro-breadcrumb-item .breadcrumb-item+.breadcrumb-item:before{
     color: #f78200;
     font-size: 23px;
-    font-weight: bold;
+    font-weight: bold!important;
     bottom: 8px;
 }
 .breadcrumb-item+.breadcrumb-item:last-child {
