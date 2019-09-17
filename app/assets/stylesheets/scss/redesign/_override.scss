@@ -415,7 +415,12 @@ li.bmro-li-right{
     padding-right: 100px;
 }
 .bmro-inventory-color{
-   color: #687686!important;  
+    color: #687686!important; 
+    float: left;
+    align-items: center;
+    border: 2px solid #eceef2;
+    width: 100%;
+    padding: 5px 0px 0px 0px; 
 }
 .inquiry_inquiry_products_sr_no{
     margin-bottom: 0;
