@@ -11,13 +11,13 @@ json.data (@purchase_orders) do |purchase_order|
                         row_action_button(url_for(purchase_order.document), 'file-pdf', purchase_order.document.filename, 'dark', :_blank)
                       end,
                       if is_authorized(purchase_order, 'edit_material_followup') && policy(purchase_order).edit_material_followup?
-                        row_action_button(edit_material_followup_overseers_purchase_order_path(purchase_order), 'list-alt', 'Edit Material Followup', 'success', :_blank)
+                        row_action_button_without_fa(edit_material_followup_overseers_purchase_order_path(purchase_order), 'bmro-icon-table bmro-icon-downmaterial', 'Edit Material Followup', 'success', :_blank)
                       end,
                       if is_authorized(purchase_order, 'new_inward_dispatch') && policy(purchase_order).new_inward_dispatch? && is_authorized(purchase_order, 'edit_material_followup') && policy(purchase_order).edit_material_followup?
-                        row_action_button(new_overseers_purchase_order_inward_dispatch_path(purchase_order), 'people-carry', 'Create Inward Dispatch', 'success', target: :_blank)
+                        row_action_button_without_fa(new_overseers_purchase_order_inward_dispatch_path(purchase_order), 'bmro-icon-table bmro-icon-peoplemate', 'Create Inward Dispatch', 'success', target: :_blank)
                       end,
                       if purchase_order.po_request.present? && is_authorized(purchase_order.po_request, 'new_payment_request') && policy(purchase_order.po_request).new_payment_request?
-                        row_action_button(new_overseers_po_request_payment_request_path(purchase_order.po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
+                        row_action_button_without_fa(new_overseers_po_request_payment_request_path(purchase_order.po_request), 'bmro-icon-table bmro-icon-dollarmaterial', 'Payment Request', 'success', :_blank)
                       elsif purchase_order.po_request.present? && is_authorized(purchase_order.po_request, 'show_payment_request') && policy(purchase_order.po_request).show_payment_request?
                         row_action_button(overseers_payment_request_path(purchase_order.po_request.payment_request), 'eye', 'View Payment Request', 'success', :_blank)
                       end,
@@ -25,7 +25,7 @@ json.data (@purchase_orders) do |purchase_order|
                         row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(purchase_order.po_request), 'envelope', 'Dispatch from Supplier Delayed', 'success', :_blank)
                       end,
                       if is_authorized(purchase_order, 'change_material_status') && policy(purchase_order).change_material_status?
-                        row_action_button(change_material_status_overseers_purchase_order_path(purchase_order), 'wrench', 'Change Material Status', 'primary', :_blank)
+                        row_action_button_without_fa(change_material_status_overseers_purchase_order_path(purchase_order), 'bmro-icon-table bmro-icon-payemntmate', 'Change Material Status', 'primary', :_blank)
                       end
                   ].join(' '),
                   purchase_order.po_request.present? ? (conditional_link(purchase_order.po_request.id, overseers_po_request_path(purchase_order.po_request), is_authorized(purchase_order.po_request, 'show') && policy(purchase_order.po_request).show?)) : '-',
