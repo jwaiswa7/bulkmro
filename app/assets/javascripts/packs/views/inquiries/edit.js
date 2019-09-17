@@ -105,15 +105,15 @@ $(function() {
 
   // })
 
-var inputEmail = document.querySelector('#bmro-text-wrap');
-// substring
-inputEmail.onChange = function(e) {
-    var max = 5;
+// var inputEmail = document.querySelector('#bmro-text-wrap');
+// // substring
+// inputEmail.onChange = function(e) {
+//     var max = 5;
   
-    if(inputEmail.value.length > max) {
-      inputEmail.value = inputEmail.value.substr(0, max)+"...";
-    }
+//     if(inputEmail.value.length > max) {
+//       inputEmail.value = inputEmail.value.substr(0, max)+"...";
+//     }
   
-};
+// };
 
 export default edit
