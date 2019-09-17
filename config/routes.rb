@@ -535,7 +535,11 @@ Rails.application.routes.draw do
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
-        resources :supplier_rfqs
+        resources :supplier_rfqs do
+          collection do
+            post 'create_and_send_link'
+          end
+        end
         resources :sales_shipments do
           member do
             get 'relationship_map'

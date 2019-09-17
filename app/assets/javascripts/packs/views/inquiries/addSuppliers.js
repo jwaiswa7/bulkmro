@@ -1,7 +1,7 @@
 const addSuppliers = () => {
     $('.add_supplier_wrapper').hide();
-    $('.mass-link-supplier').hide();
-    $('.draft-rfq').hide();
+    // $('.mass-link-supplier').hide();
+    // $('.draft-rfq').hide();
 
     toggleCheckboxes();
 
@@ -77,13 +77,14 @@ let checkProductSuppliers = () => {
         let value = $this.is(':checked');
         let selector = $this.closest('.product_wrapper').find($('input[name="inquiry_product_supplier_ids[]"]'));
         selector.each(function () {
-            if (value == true){
-                $(this).prop("checked", value);
-                $('.mass-link-supplier').show();
-            } else {
-                $(this).prop("checked", value);
-                $('.mass-link-supplier').hide();
-            }
+            $(this).prop("checked", value);
+            // if (value == true){
+            //     $(this).prop("checked", value);
+            //     $('.mass-link-supplier').show();
+            // } else {
+            //     $(this).prop("checked", value);
+            //     $('.mass-link-supplier').hide();
+            // }
 
         });
     });
@@ -100,11 +101,11 @@ let showOrHideDraftRfq = () => {
         } else{
             count -=1
         }
-        if (count > 0) {
-            $('.draft-rfq').show();
-        } else {
-            $('.draft-rfq').hide();
-        }
+        // if (count > 0) {
+        //     $('.draft-rfq').show();
+        // } else {
+        //     $('.draft-rfq').hide();
+        // }
     });
 
 };

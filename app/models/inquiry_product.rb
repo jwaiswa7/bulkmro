@@ -29,12 +29,6 @@ class InquiryProduct < ApplicationRecord
   after_create :increase_product_count
   before_destroy :decrease_product_count
 
-  enum lead_time: {
-      '2-3 Days': 1,
-      '3-4 Days': 2,
-      '4-5 Days': 3,
-  }
-
   def increase_product_count
     self.product.update_attribute('total_quotes', self.product.total_quotes + 1) if self.product.present?
   end
