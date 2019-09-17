@@ -38,16 +38,6 @@ class Suppliers::PurchaseOrdersController < Suppliers::BaseController
     end
   end
 
-  # def export_all
-  #   authorize :purchase_order
-  #
-  #   service = Services::Customers::Exporters::SalesQuotesExporter.new(headers, current_company)
-  #   self.response_body = service.call
-  #
-  #   # Set the status to success
-  #   response.status = 200
-  # end
-
   private
     def set_purchase_order
       @purchase_order = PurchaseOrder.find(params[:id])
