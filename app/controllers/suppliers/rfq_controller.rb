@@ -1,8 +1,8 @@
-class Suppliers::RFQController < Suppliers::BaseController
+class Suppliers::RfqController < Suppliers::BaseController
   # before_action :set_purchase_order, only: [:show]
 
   def index
-
+    authorize :rfq
   end
 
   def show
