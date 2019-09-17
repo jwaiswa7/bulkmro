@@ -14,17 +14,20 @@ body{
     width: 100%;
     float: left;
     position: sticky;
-    top: 48px; 
+    top: 48px;
+    padding-top: 22px;
     z-index: 100;
     margin-bottom: 1px;
-    background-color: #E0E2E7!important;
+    background-color: #f0f2f6 !important;
+    border-bottom: 2px solid #E0E2E7;
+    border-radius: unset;
 }
 .bmro-nav-ul li{
     text-align: center;
-    padding: 0px 0px !important; 
-    border: 1px solid transparent !important;
-    border-radius: 5px 5px 0 0 !important;
-    background-color: transparent !important;
+    padding: 0px 0px!important; 
+    border: 1px solid transparent!important;
+    border-radius: 0px!important;
+    background-color: #E0E2E7!important;
     margin: 0px !important;
     color: #8C97A3 !important;
     font-family: 'Inter UI', sans-serif;
