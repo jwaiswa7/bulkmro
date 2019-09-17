@@ -82,19 +82,8 @@ $(function() {
   });
 });      
 
-// function truncateText(selector_text, maxLength) {
-//     var truncated = $('input[attr=materialname]').html();
-//         //truncated = element.innerText;
-
-//     if (truncated.length > maxLength) {
-//         truncated = truncated.substr(0,maxLength) + '...';
-//     }
-//     return truncated;
-// }
-// document.querySelector('bmro-product-input-text-wrap').innerText = truncateText('bmro-product-input-text-wrap', 107);
-
-$(".bmro-form-input").text(function(index, currentText) {
-    if(currentText.length>25)
+$(".bmro-form-input-text-wrap").text(function(index, currentText) {
+    if(currentText.length > 25)
       return currentText.substr(0, 25)+"...";
     else
       return currentText;
