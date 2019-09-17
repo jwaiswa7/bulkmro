@@ -106,6 +106,14 @@ table {
     }
   }
 }
+.modal{
+  .dataTables_wrapper{
+    width: 90%;
+    overflow: auto;
+    margin: auto;
+
+  }
+}
 
 .dataTables_wrapper.dt-bootstrap4 {
   .dataTables_info {
