@@ -82,20 +82,21 @@ $(function() {
   });
 });      
 
-function truncateText(selector_text, maxLength) {
-    var element = document.querySelector(selector_text),
-        truncated = element.innerText;
+// function truncateText(selector_text, maxLength) {
+//     var element = document.querySelector(selector_text),
+//         truncated = element.innerText;
 
-    if (truncated.length > maxLength) {
-        truncated = truncated.substr(0,maxLength) + '...';
-    }
-    return truncated;
-}
-document.querySelector('bmro-product-input-text-wrap').innerText = truncateText('bmro-product-input-text-wrap', 107);
+//     if (truncated.length > maxLength) {
+//         truncated = truncated.substr(0,maxLength) + '...';
+//     }
+//     return truncated;
+// }
+// document.querySelector('bmro-product-input-text-wrap').innerText = truncateText('bmro-product-input-text-wrap', 107);
 
 // $(".btn-custom").text(function(index, currentText) {
 //     return currentText.substr(0, 25);
 // });
+
 
 
 
