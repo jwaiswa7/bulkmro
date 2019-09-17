@@ -28,7 +28,7 @@
           </div>
           <div class="col-6 col-md-2">
             <strong class="d-block">Committed Delivery Date</strong>
-            <%= @purchase_order.po_request.rows.maximum(:lead_time).strftime("%d-%b-%Y") if @purchase_order.po_request.rows.present? %>
+            <%= @purchase_order.max_lead_date %>
           </div>
           <div class="col-6 col-md-1">
             <% if is_authorized(@purchase_order, 'show') %>

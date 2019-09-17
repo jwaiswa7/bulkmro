@@ -58,7 +58,7 @@
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <span>
-                    <%= Date.parse(locals[:metadata][:PoSupplyDate]).strftime("%d-%b-%Y") if locals[:metadata][:PoSupplyDate].present? %>
+                    <%= locals[:metadata][:PoSupplyDate].present? ? Date.parse(locals[:metadata][:PoSupplyDate]).strftime("%d-%b-%Y") : Date.parse(locals[:metadata][:PoDate]).strftime("%d-%b-%Y") %>
                   </span>
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
