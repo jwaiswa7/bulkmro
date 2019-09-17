@@ -295,7 +295,7 @@
             <%= f.input :price_type, label: 'Delivery', as: :select, :wrapper => :custom_multi_select, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :payment_option, label: 'Payment terms', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', collection: PaymentOption.active.pluck(:name, :id) %>
+            <%= f.association :payment_option, label: 'Payment terms', input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-form-input-text-wrap', attr:'materialname' }, required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', collection: PaymentOption.active.pluck(:name, :id) %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.input :packing_and_forwarding_option, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, label: 'Packing and forwarding', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>

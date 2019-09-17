@@ -82,7 +82,14 @@ $(function() {
   });
 });      
 
-// 
+$(".bmro-form-input-text-wrap").text(function(index, currentText) {
+    if(currentText.length > 25)
+      return currentText.substr(0, 25)+"...";
+    else
+      return currentText;
+});
+if (true) {}
+
 
 
 export default edit
