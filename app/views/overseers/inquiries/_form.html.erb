@@ -306,7 +306,7 @@
         </div>
         <%= f.input :commercial_terms_and_conditions, input_html: { class: 'bmro-form-input  bmro-form-input-text' } %>
       </div>
-      <div class="bmro-dotted-line bmro-dotted-mb0"></div>
+      <div class="bmro-dotted-line bmro-dotted-mt bmro-dotted-mb0"></div>
       <div class="form-row mt-3">
         <div class="col-md-6">
           <% if is_authorized(@inquiry, 'resync_inquiry_products') && policy(@inquiry).resync_inquiry_products? %>
