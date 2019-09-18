@@ -56,26 +56,26 @@ function slideTo(page) {
     $(this).removeClass('bmro-active-li');
 });
 
-$(function() {
-  // var top = $('.bmro-card-header').offset().top - parseFloat($('.bmro-card-header').css('marginTop').replace(/auto/, 0));
-  var footTop = $('.bmro-product-bottom').offset().top - parseFloat($('.bmro-product-bottom').css('marginTop').replace(/auto/, 0));
+// $(function() {
+//   // var top = $('.bmro-card-header').offset().top - parseFloat($('.bmro-card-header').css('marginTop').replace(/auto/, 0));
+//   var footTop = $('.bmro-product-bottom').offset().top - parseFloat($('.bmro-product-bottom').css('marginTop').replace(/auto/, 0));
 
-  var maxY = footTop - $('.bmro-card-header').outerHeight();
+//   var maxY = footTop - $('.bmro-card-header').outerHeight();
 
-  $(window).scroll(function(evt) {
-      var y = $(this).scrollTop();
+//   $(window).scroll(function(evt) {
+//       var y = $(this).scrollTop();
   
-          if (y < maxY) {
-              $('.bmro-card-header').removeAttr('style');
-          } else {
+//           if (y < maxY) {
+//               $('.bmro-card-header').removeAttr('style');
+//           } else {
               
-              $('.bmro-card-header').css({
-                  position: 'relative',
-                  // top: (maxY - top) + 'px'
-                  top:'1760px'
-              });
-          }
-  });
-});      
+//               $('.bmro-card-header').css({
+//                   position: 'relative',
+//                   // top: (maxY - top) + 'px'
+//                   top:'1760px'
+//               });
+//           }
+//   });
+// });      
 
 export default edit
