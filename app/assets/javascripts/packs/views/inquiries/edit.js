@@ -51,7 +51,7 @@ console.log("Hellooooooooooo");
 function abcd(){return "500"}
 
 
-$(document).ready(function(){
+$(document).on("ready",function(){
     function slideTo(page)
     {
         console.log("Hello");
