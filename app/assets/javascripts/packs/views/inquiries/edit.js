@@ -57,28 +57,26 @@ function slideTo(page) {
 });
 
 $(function() {
-  var top = $('.bmro-card-header').offset().top - parseFloat($('.bmro-card-header').css('marginTop').replace(/auto/, 0));
+  // var top = $('.bmro-card-header').offset().top - parseFloat($('.bmro-card-header').css('marginTop').replace(/auto/, 0));
   var footTop = $('.bmro-product-bottom').offset().top - parseFloat($('.bmro-product-bottom').css('marginTop').replace(/auto/, 0));
 
   var maxY = footTop - $('.bmro-card-header').outerHeight();
 
   $(window).scroll(function(evt) {
       var y = $(this).scrollTop();
-      if (y > top) {
+      // if (y > top) {
   
           if (y < maxY) {
-              $('.bmro-card-header').addClass('fixed').removeAttr('style');
+              $('.bmro-card-header').removeAttr('style');
           } else {
               
-              $('.bmro-card-header').removeClass('fixed').css({
+              $('.bmro-card-header').css({
                   position: 'relative',
                   // top: (maxY - top) + 'px'
                   top:'1940px'
               });
           }
-      } else {
-          $('.bmro-card-header').removeClass('fixed');
-      }
+      // }
   });
 });      
 
