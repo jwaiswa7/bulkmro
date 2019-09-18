@@ -46,17 +46,26 @@ let onProductChange = (container) => {
 };
 
 // crezenta js
+console.log("Hellooooooooooo");
 
-function slideTo(page) {
-    console.log("Hello");
-    var element = document.getElementById(page);
-    if(element)
-        console.log("A");
-    else
-        console.log("B");
-    element.scrollIntoView();
-    console.log("W");
-}
+function abcd(){return "500"}
+
+
+$(document).ready(function(){
+    function slideTo(page)
+    {
+        console.log("Hello");
+        var element = document.getElementById(page);
+        if(element)
+            console.log("A");
+        else
+            console.log("B");
+        element.scrollIntoView();
+        console.log("W");
+    }
+    console.log(abcd());
+});
+
 
 $(".bmro-li-right").click(function(){
     $('.bmro-li-right').addClass('bmro-active-li',1000);
