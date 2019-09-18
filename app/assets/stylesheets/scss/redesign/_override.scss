@@ -1110,6 +1110,6 @@ a.bmro-click-toggle.collapsed:after{
     font-size: 12px;
 }
 .bmro-datatable-style tr.filters{
-    display: none;
+    display: none!important;
 }
 /*table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td{}*/
