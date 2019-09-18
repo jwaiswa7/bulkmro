@@ -31,7 +31,7 @@
   </div>
   <div class="bmro-summary" id="accordionExample">
     <div class="bmro-summary-box1">
-      <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="bmro-click-toggle">
+      <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="bmro-click-toggle bmro-click-toggle-one">
       Sales Invoice Summary</a>          
       <div id="collapseOne" class="bmro-collaps collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
         <div class="bmro-invoice-data">
@@ -56,7 +56,7 @@
     </div>  
 
     <div class="bmro-summary-box1"> 
-      <a href="#" data-toggle="collapse" data-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo" class="bmro-click-toggle collapsed">
+      <a href="#" data-toggle="collapse" data-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo" class="bmro-click-toggle bmro-click-toggle-two collapsed">
       Proof of delivery summary(aug,19)</a>
       <div id="collapsetwo" class="bmro-collaps collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
         <div class="bmro-invoice-data">
@@ -80,7 +80,7 @@
      </div>     
   </div>
 </div>
-<div class="bmro-invoice-boxes">
+<div class="bmro-invoice-boxes bmro-invoice-box-one">
   <div class="bmro-ar-reports">
     <label class="bmro-ar-report-head">Invoiced</label>
     <h5 class="bmro-ar-report-data">13,396</h5>
@@ -132,7 +132,7 @@
     <span class="bmro-ar-report-subdata">₹0</span>
   </div>                
 </div>
-<div class="bmro-invoice-boxes bmro-invoice-boxes-hide">
+<div class="bmro-invoice-boxes bmro-invoice-box-two bmro-invoice-boxes-hide">
   <div class="bmro-ar-reports">
     <label class="bmro-ar-report-head">Invoiced</label>
     <h5 class="bmro-ar-report-data">0</h5>
@@ -185,10 +185,14 @@
   </div>                
 </div>
 <script type="text/javascript">
-  $('.bmro-click-toggle').click(function() {
-    $('.bmro-invoice-boxes').toggleClass('bmro-invoice-boxes-hide');
-    console.log('test')
+  $('.bmro-click-toggle-one').click(function() {
+    $('.bmro-invoice-box-two').addClass('bmro-invoice-boxes-hide');
+    $(this).removeClass('bmro-invoice-boxes-hide');
   });
+  $('.bmro-click-toggle-two').click(function() {
+    $('.bmro-invoice-box-one').addClass('bmro-invoice-boxes-hide');
+    $(this).removeClass('bmro-invoice-boxes-hide');
+  });  
 </script>
 
 <div class="bmro-search-table">
