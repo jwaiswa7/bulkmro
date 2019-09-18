@@ -1051,9 +1051,15 @@ a.bmro-click-toggle.collapsed:after{
 }
 .bmro-input-search{
     float: left;
+    margin-right: 10px;
 }
 .bmro-input-search .bmro-search-width{
     width: 290px;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAOCAYAAAAbvf3sAAAAAXNSR0IArs4c6QAAAU9JREFUKBWFkr0vBFEUxe+942MVGhXiP1AQS6ETJLKr0WhEYmXZXqOeWiPRWTYiEZHoFGRFREdhC4VaIzYajWaQfdc9jycy2eUlk5mc+7tf5w3T91FVzuaXV9i5ohINQmaiexWp1E73dpnZZK8RZWdKfcTJgSpNQkwfZrokzSzWquW6oHKALfAozAtMmX48/ts0X8gXVOaRXGGVnCsD7uhuH7o+rrz87jA+X+x5f/24s6QBEikJZgZgbdbTMHRoiHnGWAkLqnZeQWx2QgysNAP+0gTWAWB+m2gFhhhYgc8AlXQDC6aToCHmGWMZto7mli5gHZzCgmFmipJZdbRl1bpwF7dn+9Nmtd2gXQoEWOdUD5WSJ/80aAcwBlBt2wZrY32dVr+GbVe3inPW+VkiHv5JCInpdxzHcnLzcG49psyZo38TUGAsX+htON2MhNc+AedxnRztIqLbAAAAAElFTkSuQmCC');
+    padding-left: 24px !important;
+    padding-right: 9px !important;
+    background-repeat: no-repeat;
+    background-position: top 10px left 6px;
 }
 .bmro-form-input::placeholder{
     color: #9AA1AA;
