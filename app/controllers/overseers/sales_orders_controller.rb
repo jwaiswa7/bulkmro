@@ -77,7 +77,11 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     service = Services::Overseers::Exporters::SalesOrdersBibleFormatExporter.new
     service.call
 
-    redirect_to url_for(Export.sales_orders_bible_format.last.report)
+    if Export.sales_orders_bible_format.last.present?
+      redirect_to url_for(Export.sales_orders_bible_format.last.report)
+    else
+      redirect_to overseers_sales_orders_path
+    end
   end
 
   def export_for_logistics
