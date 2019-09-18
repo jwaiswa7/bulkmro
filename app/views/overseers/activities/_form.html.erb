@@ -12,16 +12,16 @@
         <%= render partial: 'overseers/activities/company_creation_partials/company_creation_request', locals: {f: f} %>
 
         <div class="mt-3">
-          <%= f.association :contact, collection: selected_option_or_nil(f, :contact), input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_contacts_path}, include_blank: 'Leave blank if no contact connected', label: "Existing Contact" %>
+          <%= f.association :contact, collection: selected_option_or_nil(f, :contact), input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon' }, :'data-source' => autocomplete_overseers_contacts_path}, include_blank: 'Leave blank if no contact connected', label: "Existing Contact" %>
           <%= f.input :subject %>
           <div class="form-row">
             <div class="col-4 col-md-4">
-              <%= f.input :expenses, label: "Misc Expenses" %>
+              <%= f.input :expenses, input_html: {class: 'bmro-form-input bmro-dropdown-icon' }, label: "Misc Expenses" %>
             </div>
             <div class="col-8">
               <div class="d-block d-md-flex align-items-end">
                 <div class="flex-grow-1">
-                  <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
+                  <%= f.input :attachments, wrapper: :custom_file, input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon'}, input_html: {multiple: true}, label: 'Attachments' %>
                 </div>
 
                 <div class="form-group">
@@ -40,15 +40,15 @@
 
           <div class="form-row">
             <div class="col-6 col-md-6">
-              <%= f.input :company_type, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.company_types) %>
+              <%= f.input :company_type, as: :select, include_blank: false, input_html: {class: 'bmro-form-input bmro-dropdown-icon', :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.company_types) %>
             </div>
             <div class="col-6 col-md-6">
-              <%= f.input :activity_type, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.activity_types) %>
+              <%= f.input :activity_type, as: :select, include_blank: false, input_html: {class: 'bmro-form-input bmro-dropdown-icon', :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.activity_types) %>
             </div>
           </div>
           <div class="form-row">
             <div class="col-6 col-md-6">
-              <%= f.input :purpose, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.purposes) %>
+              <%= f.input :purpose, as: :select, include_blank: false, input_html: {class: 'bmro-form-input bmro-dropdown-icon', :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.purposes) %>
             </div>
             <div class="col-6 col-md-6">
               <%= f.input :activity_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
