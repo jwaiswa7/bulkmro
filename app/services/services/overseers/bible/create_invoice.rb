@@ -99,6 +99,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
         puts 'BibleSI', BibleInvoice.count
       else
         upload_sheet.update(status: 'Failed')
+        upload_sheet.bible_upload_logs.create(status: 'Failed', bible_row_data: "The sheet headers didn't match", error: "#{sheet_header.compact.sort - defined_header.sort} column name has a mismatch issue")
       end
     rescue StandardError => err
       upload_sheet.bible_upload_logs.create(status: 'Failed', bible_row_data: 'Something went wrong while calculating totals or updating uploads status', error: err.message)
