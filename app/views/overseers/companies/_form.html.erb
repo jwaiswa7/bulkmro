@@ -11,30 +11,30 @@
         <div class="card-body">
           <div class="form-row ">
             <div class="col-md-6">
-              <label class="d-flex justify-content-center align-items-center flex-row btn btn-success">
-                <%= radio_button_tag :account, 'existing', class: 'custom-control-input' %> &nbsp; Add Existing Account
+              <label class="d-flex justify-content-center align-items-center flex-row btn btn-success bmro-button">
+                <%= radio_button_tag :account, 'existing', class: 'custom-control-input bmro-button' %> &nbsp; Add Existing Account
               </label>
             </div>
             <div class="col-md-6">
-              <label class="d-flex justify-content-center align-items-center flex-row btn btn-success">
+              <label class="d-flex justify-content-center align-items-center flex-row bmro-button btn btn-success">
                 <%= radio_button_tag :account, 'new', class: 'custom-control-input' %> &nbsp; Add New Account
               </label>
             </div>
           </div>
           <br>
           <div class="new box">
-            <h6 class="text-uppercase text-black-50 mb-1">Add Account details</h6>
+            <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Add Account details</h6>
             <div class="form-row">
               <div class="col-12">
-                <%= f.input 'account_name' %>
+                <%= f.input 'account_name', input_html: { class: 'bmro-form-input bmro-form-label' } %>
               </div>
               <div class="col-12">
-                <%= f.input 'acc_type', as: :select, include_blank: false, label: 'Account type', collection: enum_to_collection(Account.account_types) %>
+                <%= f.input 'acc_type', as: :select, include_blank: false, label: 'Account type', collection: enum_to_collection(Account.account_types), input_html: { class: 'bmro-form-input bmro-form-label' } %>
               </div>
             </div>
           </div>
           <div class="existing box" id="existing">
-            <%= f.association :account, collection: selected_option_or_nil(f, :account), input_html: {class: 'select2-ajax ', :'data-source' => autocomplete_overseers_accounts_path}, include_blank: 'Link company with account' %>
+            <%= f.association :account, collection: selected_option_or_nil(f, :account), input_html: {class: 'select2-ajax ', :'data-source' => autocomplete_overseers_accounts_path}, include_blank: 'Link company with account', input_html: { class: 'bmro-form-input' } %>
           </div>
         </div>
       </div>
