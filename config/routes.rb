@@ -931,6 +931,7 @@ Rails.application.routes.draw do
     resources :rfq, controller: :rfq do
       collection do
         get 'edit_rfq_redirection'
+        get 'edit_rfq'
       end
     end
 
