@@ -200,6 +200,9 @@ body{
 .breadcrumb-item+.breadcrumb-item:last-child {
     font-weight: 600!important;
 }
+.breadcrumb-item a{
+    font-weight: 600;
+}
 .bmro-dotted-line{
     box-sizing: border-box;
     width: 100%;
