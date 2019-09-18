@@ -37,7 +37,7 @@
 
     <div class="form-row">
       <div class="col-12">
-        <%= f.input :role, as: :select, wrapper: :custom_multi_select, collection: enum_to_collection(Contact.roles), include_blank: false, input_html: {class: 'bmro-form-input bmro-bg'} %>
+        <%= f.input :role, as: :select, wrapper: :custom_multi_select, collection: enum_to_collection(Contact.roles), include_blank: false, input_html: {class: 'bmro-form-input bmro-bg bmro-dropdown-icon'} %>
       </div>
     </div>
 
@@ -59,7 +59,7 @@
     <%= f.input :password, required: false, input_html: {class: 'bmro-form-input'} %>
     <%= f.input :password_confirmation, required: false %>
 
-    <%= f.input :status, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Contact.statuses), input_html: {class: 'bmro-form-input bmro-bg'} %>
+    <%= f.input :status, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Contact.statuses), input_html: {class: 'bmro-form-input bmro-dropdown-icon bmro-bg'} %>
 
     <div class="form-row">
       <div class="col-4">
