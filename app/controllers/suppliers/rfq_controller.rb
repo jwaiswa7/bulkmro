@@ -33,6 +33,15 @@ class Suppliers::RfqController < Suppliers::BaseController
   end
 
   def edit_rfq_redirection
+    authorize :rfq
+    supplier = Company.find(params[:supplier_id])
+    if supplier.default_contact.present?
+      contact = supplier.default_contact
+      sign_in(:contact, contact)
+      if contact.role == 'supplier'
+
+      end
+    end
   end
 
   private
