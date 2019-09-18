@@ -7,7 +7,6 @@ class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::Ba
     inquiry.inquiry_products.each do |inquiry_product|
       if inquiry_product.product.approved? && inquiry_product.inquiry_product_suppliers.blank?
         if inquiry_product.product.inquiry_product_suppliers.present?
-
           inquiry_product.product.lowest_inquiry_product_suppliers(number: 5).each do |product_supplier|
             inquiry_product.inquiry_product_suppliers.build(
               supplier: product_supplier.supplier,
@@ -15,9 +14,7 @@ class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::Ba
               bp_catalog_name: inquiry_product.product.bp_catalog_for_supplier(product_supplier.supplier)
             )
           end
-
         end
-
       end
     end
   end

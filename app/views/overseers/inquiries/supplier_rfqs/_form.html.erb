@@ -91,7 +91,6 @@
           </div>
           <div class="card-footer">
             <% if is_authorized(inquiry_product_supplier, 'request_for_quote') %>
-              <%#= link_to 'Update and Send Link', create_and_send_link_overseers_inquiry_supplier_rfqs_path %>
               <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
                 <i class="fal fa-pen"></i> Update and Send Link
               <% end %>

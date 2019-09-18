@@ -3,13 +3,15 @@ class SupplierRfq < ApplicationRecord
 
   belongs_to :inquiry
   belongs_to :inquiry_product
-  belongs_to :inquiry_product_supplier
   belongs_to :product
+  has_many :inquiry_product_suppliers
   has_many :email_messages, dependent: :destroy
 
+  accepts_nested_attributes_for :inquiry_product_suppliers
+
   enum status: {
-      'RFQ created: Not Sent': 1,
-      'Supplier Response Pending': 2,
+      'Draft RFQ: Not Sent': 1,
+      'Email Sent: Response Pending': 2,
       'Supplier Responded': 3
   }
 end

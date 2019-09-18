@@ -49,6 +49,7 @@
               <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
               <%= inquiry_product.nested_fields_for :inquiry_product_suppliers do |inquiry_product_supplier| %>
                 <%= inquiry_product_supplier.hidden_field :id %>
+                <%= inquiry_product_supplier.hidden_field :supplier_rfq_id %>
                 <div class="form-row">
                   <div class="col-12 col-md-3">
                     <div class="d-flex">
