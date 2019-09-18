@@ -35,50 +35,50 @@
     </div>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :industry, wrapper: :custom_multi_select, include_blank: 'Select an Industry' %>
+        <%= f.association :industry, wrapper: :custom_multi_select, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon' } , include_blank: 'Select an Industry' %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.input :company_type, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.company_types), include_blank: 'Select a company type' %>
+        <%= f.input :company_type, wrapper: :custom_multi_select, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon' } , as: :select, collection: enum_to_collection(Company.company_types), include_blank: 'Select a company type' %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.input :nature_of_business, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.nature_of_businesses), include_blank: 'Select a nature of business' %>
+        <%= f.input :nature_of_business, wrapper: :custom_multi_select, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon' } , as: :select, collection: enum_to_collection(Company.nature_of_businesses), include_blank: 'Select a nature of business' %>
       </div>
 
       <div class="col-6 col-md-4">
-        <%= f.input :priority, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.priorities), include_blank: false %>
+        <%= f.input :priority, wrapper: :custom_multi_select, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon' } , as: :select, collection: enum_to_collection(Company.priorities), include_blank: false %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :default_payment_option, wrapper: :custom_multi_select, include_blank: 'Select a default' %>
+        <%= f.association :default_payment_option, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon' } , wrapper: :custom_multi_select, include_blank: 'Select a default' %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.input :credit_limit %>
+        <%= f.input :credit_limit ,input_html: { class: 'bmro-form-input bmro-bg' } %>
       </div>
     </div>
 
     <h6 class="text-uppercase text-black-50 mb-1 d-block mt-3">Default owners and managers</h6>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', include_blank: 'Select a Procurement Specialist', input_html: {class: "select2-single"} %>
+        <%= f.association :inside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', include_blank: 'Select a Procurement Specialist', input_html: {class: "select2-single bmro-form-input bmro-bg"} %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :outside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :outside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single bmro-form-input bmro-bg"} %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', include_blank: 'Select a Account Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :sales_manager, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', include_blank: 'Select a Account Owner', input_html: {class: "select2-single bmro-form-input bmro-bg"} %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :logistics_owner, collection: Overseer.logistics.alphabetical, include_blank: 'Select a Logistics Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :logistics_owner, collection: Overseer.logistics.alphabetical, include_blank: 'Select a Logistics Owner', input_html: {class: "select2-single bmro-form-input bmro-bg"} %>
       </div>
     </div>
 
     <% if @account.present? %>
       <div class="form-group">
-        <%= f.label :contact_ids, 'Contacts' %>
+        <%= f.label :contact_ids, 'Contacts', input_html: {class: "bmro-form-input bmro-bg"}  %>
         <div class="select2-wrapper">
-          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts' %>
+          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts', input_html: {class: "bmro-form-input bmro-bg"}  %>
         </div>
       </div>
     <% end %>
