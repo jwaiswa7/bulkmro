@@ -3,8 +3,8 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
   before_action :set_supplier_rfq, only: [:edit, :update, :show, :draft_rfq, :send_email_request_for_quote]
 
   def index
-    @supplier_rfqs = @inquiry.supplier_rfqs
-    authorize_acl @supplier_rfqs
+    @inquiry_product_suppliers = @inquiry.inquiry_product_suppliers
+    authorize_acl @inquiry_product_suppliers
     respond_to do |format|
       format.json { render 'index' }
       format.html { render 'index' }
