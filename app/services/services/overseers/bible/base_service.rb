@@ -36,7 +36,14 @@ class Services::Overseers::Bible::BaseService < Services::Shared::BaseService
     elsif bible_sheet_type.underscore == 'sales_invoices'
       headers = ['Branch', 'Inquiry #', 'Invoice/Credit Note', 'Company Name', 'Invoice Number', 'Invoice Date', 'Month Code', 'New SKU', 'Description', 'Qty', 'Rate', 'Invoice Amount in Local Curr.', 'Invoice Currency', 'Exchange Rate', 'Invoice Amount in INR', 'Supplier Name', 'AP Ref. No.', 'Quantity', 'Purchase Cost', 'Cost Of Good Sold (Viz. Sales Qty)', 'Gross Margin Amount', 'Gross Margin %']
     end
-
     headers
+  end
+
+  def self.get_inquiry(inquiry_number)
+    if inquiry_number.include?('.') || inquiry_number.include?('/') || inquiry_number.include?('-') || inquiry_number.match?(/[a-zA-Z]/)
+      Inquiry.find_by_old_inquiry_number(inquiry_number)
+    else
+      Inquiry.find_by_inquiry_number(inquiry_number.to_i)
+    end
   end
 end

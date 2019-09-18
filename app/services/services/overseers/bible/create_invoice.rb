@@ -39,7 +39,7 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
               sales_invoice = SalesInvoice.find_by_invoice_number(invoice_number.to_i)
             end
 
-            inquiry = get_inquiry(inquiry_number)
+            inquiry = self.get_inquiry(inquiry_number)
             begin
               bible_invoice = BibleInvoice.where(inquiry_number: x.get_column('Inquiry #').to_i,
                                                  invoice_number: invoice_number,
@@ -107,16 +107,6 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
     end
     # puts 'ERROR', error
     File.delete(@path_to_tempfile) if File.exist?(@path_to_tempfile)
-  end
-
-  def get_inquiry(inquiry_number)
-    if inquiry_number.include?('.') || inquiry_number.include?('/') || inquiry_number.include?('-') || inquiry_number.match?(/[a-zA-Z]/)
-      inquiry = Inquiry.find_by_old_inquiry_number(inquiry_number)
-    else
-      inquiry = Inquiry.find_by_inquiry_number(inquiry_number.to_i)
-    end
-
-    inquiry
   end
 
   def get_sales_invoice(invoice_number)

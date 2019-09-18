@@ -37,7 +37,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
               ae_sales_order = SalesOrder.where(parent_id: sales_order.id, is_credit_note_entry: true).first
               sales_order = ae_sales_order
             end
-            inquiry = get_inquiry(inquiry_number)
+            inquiry = self.get_inquiry(inquiry_number)
             isp_full_name = x.get_column('Inside Sales Name').to_s.strip.split
             isp_first_name = isp_full_name[0]
             # isp_last_name = isp_full_name[1] if isp_full_name.length > 1
@@ -104,17 +104,8 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
     File.delete(@path_to_tempfile) if File.exist?(@path_to_tempfile)
   end
 
-  def get_inquiry(inquiry_number)
-    if inquiry_number.include?('.') || inquiry_number.include?('/') || inquiry_number.include?('-') || inquiry_number.match?(/[a-zA-Z]/)
-      inquiry = Inquiry.find_by_old_inquiry_number(inquiry_number)
-    else
-      inquiry = Inquiry.find_by_inquiry_number(inquiry_number.to_i)
-    end
-    inquiry
-  end
-
   def get_sales_order(order_number, inquiry_number)
-    inquiry = get_inquiry(inquiry_number)
+    inquiry = self.get_inquiry(inquiry_number)
     if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
       if order_number == 'Not Booked'
         inquiry_orders = Inquiry.find_by_inquiry_number(inquiry.inquiry_number).sales_orders
