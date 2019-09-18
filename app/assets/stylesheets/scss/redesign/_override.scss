@@ -523,7 +523,7 @@ table.dataTable th{
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 400!important;
     letter-spacing: -0.5px;
     line-height: 15px;
 }
@@ -535,7 +535,7 @@ table.dataTable td{
     font-weight: 500;
     letter-spacing: -0.5px;
     line-height: 15px;
-    text-align: right;    
+    text-align: center;    
 }
 .bmro-product-bottom label{
     color: #687686!important;
@@ -795,13 +795,14 @@ a.bmro-click-toggle.collapsed:after{
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: -0.5px;
     line-height: 12px;
     width: 100%;
     float: left;  
     padding-bottom: 3px;
     margin: 0;      
+    text-transform: uppercase;
 }
 .bmro-invoice-edit{
     box-sizing: border-box;
@@ -907,7 +908,7 @@ a.bmro-click-toggle.collapsed:after{
     letter-spacing: -0.5px;
     line-height: 29px;
     float: left;
-    padding-top: 7px;
+    padding-top: 1px;
 }
 .custom-file{
     top: 2px;
@@ -1103,4 +1104,12 @@ a.bmro-click-toggle.collapsed:after{
 }
 .bmro-update-pt{
     padding-top: 24px;
+    margin-right: 0px;
 }
+.bmro-input-search .select2-selection__placeholder{
+    font-size: 12px;
+}
+.bmro-datatable-style tr.filters{
+    display: none;
+}
+/*table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td{}*/
