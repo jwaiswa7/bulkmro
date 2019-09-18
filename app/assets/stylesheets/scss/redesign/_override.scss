@@ -1120,7 +1120,7 @@ table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td
 table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td:first-child{
     border-left: 1px solid #E0E2E7;
 }
-table.table.dataTable.table-bordered td:last-child{
+table.table.dataTable.table-bordered tr:last-child td{
     border-bottom: 1px solid #E0E2E7;
 }
 li.paginate_button{
