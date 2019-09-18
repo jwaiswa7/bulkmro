@@ -13,7 +13,7 @@
 
         <div class="mt-3">
           <%= f.association :contact, collection: selected_option_or_nil(f, :contact), input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_contacts_path}, include_blank: 'Leave blank if no contact connected', label: "Existing Contact" %>
-          <%= f.input :subject %>
+          <%= f.input :subject, input_html: {class: 'bmro-button'}, %>
           <div class="form-row">
             <div class="col-4 col-md-4">
               <%= f.input :expenses, input_html: {class: 'bmro-form-input bmro-dropdown-icon' }, label: "Misc Expenses" %>
