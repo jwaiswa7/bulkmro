@@ -72,7 +72,7 @@ $(function() {
               $('.bmro-card-header').css({
                   position: 'relative',
                   // top: (maxY - top) + 'px'
-                  top:'1940px'
+                  top:'1760px'
               });
           }
   });
