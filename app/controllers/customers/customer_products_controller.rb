@@ -22,8 +22,9 @@ class Customers::CustomerProductsController < Customers::BaseController
       @default_quantity = 0
     end
 
-    @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{ |t| [t.id, t.name] }
-    @checked_tags = (params['custom_filters']['tags'].nil? ? [] : params['custom_filters']['tags'].map(&:to_i)) if params['custom_filters'].present?
+    # Incomplete feature
+    # @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{ |t| [t.id, t.name] }
+    # @checked_tags = (params['custom_filters']['tags'].nil? ? [] : params['custom_filters']['tags'].map(&:to_i)) if params['custom_filters'].present?
 
     @customer_products_paginate = @indexed_customer_products.page(params[:page]) if params[:page].present?
   end
