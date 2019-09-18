@@ -1118,10 +1118,10 @@ table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td
     border-left: none;    
 }
 table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td:first-child{
-    border: 1px solid #E0E2E7;
+    border-left: 1px solid #E0E2E7;
 }
 table.table.dataTable.table-bordered td:last-child{
-    border: 1px solid #E0E2E7;
+    border-bottom: 1px solid #E0E2E7;
 }
 li.paginate_button{
     padding: 7px 5px;
