@@ -75,7 +75,7 @@
     </div>
 
     <% if @account.present? %>
-      <div class="form-group bmro-form-input bmro-bg">
+      <div class="form-group">
         <%= f.label :contact_ids, 'Contacts', input_html: {class: "bmro-form-input bmro-bg"}  %>
         <div class="select2-wrapper bmro-form-input bmro-bg">
           <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts', input_html: {class: "bmro-form-input bmro-bg"}  %>
