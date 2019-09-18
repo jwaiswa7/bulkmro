@@ -115,8 +115,8 @@
           <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
       </div>
-      <div class="bmro-dotted-line bmro-dotted-mt"></div>
-      <div class="mt-3" id="Billing">
+      <div class="bmro-dotted-line bmro-dotted-mt" id="Billing"></div>
+      <div class="mt-3">
         <h6 class="mb-1 bmro-form-heading">Billing / Shipping Details</h6>
 
         <% if is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
