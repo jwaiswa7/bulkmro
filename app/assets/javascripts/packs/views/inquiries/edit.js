@@ -1,8 +1,5 @@
 import newAction from "./new";
 
-
-console.log("Hellooooooooooo");
-
 const edit = () => {
     newAction();
     $('form').on('change', 'select[name*=product_id]', function (e) {
@@ -49,8 +46,14 @@ let onProductChange = (container) => {
 };
 
 // crezenta js
+console.log("Hellooooooooooo");
 
-let slideTo = (page) {
+function abcd(){return "500"}
+
+console.log(abcd());
+
+function slideTo(page)
+{
     console.log("Hello");
     var element = document.getElementById(page);
     if(element)
