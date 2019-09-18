@@ -71,14 +71,13 @@ let draftRfq = () => {
     $('.draft-rfq').click(function () {
         let inquiry_product_supplier_ids = [];
         let inquiry_id = $('input[name=inquiry_id]').val();
-        let obj = {};
         $.each($("input[name='inquiry_product_supplier_ids[]']:checked"), function () {
             let $this = $(this);
             inquiry_product_supplier_ids.push($this.attr('id').split('inquiry_product_supplier_id_')[1]);
         });
         let data = {inquiry_id: inquiry_id, supplier_ids: inquiry_product_supplier_ids};
 
-        window.open(Routes.new_overseers_inquiry_supplier_rfq_path(data), '_self');
+        window.open(Routes.edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(data), '_self');
     });
 }
 

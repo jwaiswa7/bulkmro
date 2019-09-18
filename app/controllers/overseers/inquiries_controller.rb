@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment, :render_followup_edit_form, :update_followup_date, :link_product_suppliers, :draft_rfq, :request_for_quote, :send_email_request_for_quote]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment, :render_followup_edit_form, :update_followup_date, :link_product_suppliers, :draft_rfq]
 
   def index
     authorize_acl :inquiry
@@ -404,55 +404,6 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def search_suppliers
     authorize_acl @inquiry
-  end
-
-  def draft_rfq
-    authorize_acl @inquiry
-    if params['supplier_ids'].present?
-      @inquiry_product_suppliers = InquiryProductSupplier.where(id: params['supplier_ids'])
-    end
-  end
-
-  def request_for_quote
-    authorize_acl @inquiry
-    if params['inquiry_product_supplier'].present?
-      inquiry_product_supplier = InquiryProductSupplier.find(params['inquiry_product_supplier']['id'])
-      @quantity = params['inquiry_product_supplier']['inquiry_product']['quantity']
-      @inquiry_product = inquiry_product_supplier.inquiry_product
-      unit_cost_price = params['inquiry_product_supplier']['unit_cost_price']
-      inquiry_product_supplier.update_attribute(:unit_cost_price, unit_cost_price)
-      @email_message = @inquiry.email_messages.build(overseer: current_overseer, contact: inquiry_product_supplier.supplier.default_contact, inquiry: @inquiry, company: inquiry_product_supplier.supplier)
-      subject = "Bulk MRO RFQ Ref # #{@inquiry_product.id}"
-      @action = 'send_email_request_for_quote'
-      @email_message.assign_attributes(
-          subject: subject,
-          body: InquiryMailer.request_for_quote_email(@email_message, @inquiry_product, @quantity).body.raw_source
-      )
-      @params = {
-          record: [:overseers, @inquiry, @email_message],
-          url: {action: @action, controller: 'overseers/inquiries'}
-      }
-
-      render 'shared/layouts/email_messages/new'
-    end
-  end
-
-  def send_email_request_for_quote
-    authorize_acl @inquiry
-    @email_message = @inquiry.email_messages.build(overseer: current_overseer, contact: @contact, inquiry: @inquiry, email_type: 'Request for Quote')
-    @email_message.assign_attributes(email_message_params)
-
-    @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
-    @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
-
-    authorize_acl @inquiry
-
-    if @email_message.save!
-      InquiryMailer.send_request_for_quote_email(@email_message).deliver_now
-      redirect_to overseers_inquiry_sales_quotes_path(@inquiry)
-    else
-      render 'shared/layouts/email_messages/new'
-    end
   end
 
   def stages
