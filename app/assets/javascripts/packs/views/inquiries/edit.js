@@ -26,45 +26,45 @@ const edit = () => {
     })
 
 };
-let onProductChange = (container) => {
-    let optionSelected = $("option:selected", container);
-    let select = $(container).closest('select');
+// let onProductChange = (container) => {
+//     let optionSelected = $("option:selected", container);
+//     let select = $(container).closest('select');
 
-    if (optionSelected.exists() && optionSelected.val() !== '') {
-        $.getJSON({
-            url: Routes.customer_bp_catalog_overseers_product_path(optionSelected.val()),
-            data: {
-                company_id: $('#inquiry_company_id').val()
-            },
+//     if (optionSelected.exists() && optionSelected.val() !== '') {
+//         $.getJSON({
+//             url: Routes.customer_bp_catalog_overseers_product_path(optionSelected.val()),
+//             data: {
+//                 company_id: $('#inquiry_company_id').val()
+//             },
 
-            success: function (response) {
-                select.closest('div.form-row').find('[name*=bp_catalog_name]').val(response.bp_catalog_name);
-                select.closest('div.form-row').find('[name*=bp_catalog_sku]').val(response.bp_catalog_sku);
-            }
-        });
-    }
-};
+//             success: function (response) {
+//                 select.closest('div.form-row').find('[name*=bp_catalog_name]').val(response.bp_catalog_name);
+//                 select.closest('div.form-row').find('[name*=bp_catalog_sku]').val(response.bp_catalog_sku);
+//             }
+//         });
+//     }
+// };
 
-// crezenta js
-console.log("Hellooooooooooo");
+// // crezenta js
+// console.log("Hellooooooooooo");
 
-function abcd(){return "500"}
+// function abcd(){return "500"}
 
 
-$(document).on("ready",function(){
-    function slideTo(page)
-    {
-        console.log("Hello");
-        var element = document.getElementById(page);
-        if(element)
-            console.log("A");
-        else
-            console.log("B");
-        element.scrollIntoView();
-        console.log("W");
-    }
-    console.log(abcd());
-});
+// $(document).on("ready",function(){
+//     function slideTo(page)
+//     {
+    //     console.log("Hello");
+    //     var element = document.getElementById(page);
+    //     if(element)
+    //         console.log("A");
+    //     else
+    //         console.log("B");
+    //     element.scrollIntoView();
+    //     console.log("W");
+    // }
+    // console.log(abcd());
+// });
 
 
 $(".bmro-li-right").click(function(){
