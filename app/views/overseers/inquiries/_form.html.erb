@@ -170,16 +170,16 @@
         <h6 class="mb-1 bmro-form-heading">Owner Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
-            <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select a Procurement Specialist'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select a Procurement Specialist'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select an Outside Sales Owner'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select an Outside Sales Owner'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select a Account Owner'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select a Account Owner'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :procurement_operations, required: false, collection: Overseer.inside_and_obj(f.object.procurement_operations).alphabetical, label: 'Procurement Operations', input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select a Procurement Operations'}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            <%= f.association :procurement_operations, required: false, collection: Overseer.inside_and_obj(f.object.procurement_operations).alphabetical, label: 'Procurement Operations', input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select a Procurement Operations'}, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
         </div>
       </div>
