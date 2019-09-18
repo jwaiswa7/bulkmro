@@ -51,7 +51,7 @@
                   <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>
                 <% end %>
                <% else %>
-                <%= link_to('', class: ['btn btn-sm btn-danger disabled'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Document Against This SO Is Not Cancelled', remote: true) do %>
+                <%= link_to('', class: ['btn btn-sm btn-danger disabled'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Invoices against this SO is not cancelled', remote: true) do %>
                   <% concat content_tag(:span, '') %>
                   <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>
                 <% end %>

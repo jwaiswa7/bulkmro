@@ -200,7 +200,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     if record_remote_uid.present?
       url = "/#{collection_name}(#{record.remote_uid})/Cancel"
       response = perform_remote_sync_action('post', url)
-      log_request(:post, record, is_payload_send: false)
+      log_request(:post, record, stored_body: false)
       validated_response = get_validated_response(response)
       remote_request = log_response(validated_response, 'patch', url)
       if remote_request.status == 'success'
@@ -214,9 +214,9 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     end
   end
 
-  def self.log_request(method, record, dependent_record = nil, is_find: false, is_payload_send: true)
+  def self.log_request(method, record, dependent_record = nil, is_find: false, stored_body: true)
     @resource = if dependent_record.nil?
-      if is_payload_send
+      if stored_body
         if record.is_a?(String)
           record
         else
