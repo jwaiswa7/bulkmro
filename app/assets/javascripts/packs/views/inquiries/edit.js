@@ -48,7 +48,14 @@ let onProductChange = (container) => {
 // crezenta js
 
 function slideTo(page) {
-    document.getElementById(page).scrollIntoView();
+    console.log("Hello");
+    var element = document.getElementById(page);
+    if(element)
+        console.log("A");
+    else
+        console.log("B");
+    element.scrollIntoView();
+    console.log("W");
 }
 
 $(".bmro-li-right").click(function(){
