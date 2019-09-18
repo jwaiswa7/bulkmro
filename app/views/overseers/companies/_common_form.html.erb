@@ -58,27 +58,27 @@
     <h6 class="text-uppercase text-black-50 mb-1 d-block mt-3">Default owners and managers</h6>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', include_blank: 'Select a Procurement Specialist', input_html: {class: "select2-single"} %>
+        <%= f.association :inside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', include_blank: 'Select a Procurement Specialist', input_html: {class: "select2-single bmro-form-input bmro-bg"} %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :outside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :outside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single bmro-form-input bmro-bg"} %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', include_blank: 'Select a Account Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :sales_manager, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', include_blank: 'Select a Account Owner', input_html: {class: "select2-single bmro-form-input bmro-bg"} %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :logistics_owner, collection: Overseer.logistics.alphabetical, include_blank: 'Select a Logistics Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :logistics_owner, collection: Overseer.logistics.alphabetical, include_blank: 'Select a Logistics Owner', input_html: {class: "select2-single bmro-form-input bmro-bg"} %>
       </div>
     </div>
 
     <% if @account.present? %>
       <div class="form-group">
-        <%= f.label :contact_ids, 'Contacts' %>
+        <%= f.label :contact_ids, 'Contacts', input_html: {class: "bmro-form-input bmro-bg"}  %>
         <div class="select2-wrapper">
-          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts' %>
+          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts', input_html: {class: "bmro-form-input bmro-bg"}  %>
         </div>
       </div>
     <% end %>
