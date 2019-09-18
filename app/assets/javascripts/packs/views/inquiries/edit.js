@@ -64,7 +64,6 @@ $(function() {
 
   $(window).scroll(function(evt) {
       var y = $(this).scrollTop();
-      // if (y > top) {
   
           if (y < maxY) {
               $('.bmro-card-header').removeAttr('style');
@@ -76,42 +75,7 @@ $(function() {
                   top:'1940px'
               });
           }
-      // }
   });
 });      
-
-// $(document).ready(function() {
-//     var inputs = $(".bmro-form-input-text-wrap");
-//     $.each(inputs)(function(index,value){
-//       if(currentText.length > 30)
-//         return currentText.substr(0, 30)+"...";
-//       else
-//         return currentText;
-
-//       console.log(inputs[index].val());
-//     });
-// });
-
-
-  // var arrNumber = new Array();
-  // $(".bmro-form-input-text-wrap option:selected").each(function(){
-  //    if($(this).text().length>15){
-  //     var t = $(this).text().substr(0,15)+"...";
-  //     $(this).text(t);
-  //    }
-
-
-  // })
-
-// var inputEmail = document.querySelector('#bmro-text-wrap');
-// // substring
-// inputEmail.onChange = function(e) {
-//     var max = 5;
-  
-//     if(inputEmail.value.length > max) {
-//       inputEmail.value = inputEmail.value.substr(0, max)+"...";
-//     }
-  
-// };
 
 export default edit
