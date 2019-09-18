@@ -6,16 +6,16 @@
     <% if is_authorized(@company, 'edit_remote_uid') %>
       <div class="form-row">
         <div class="col-12 col-md-8">
-          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences',input_html: { class: 'bmro-form-input bmro-bg' } %>
+          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences', input_html: { class: 'bmro-form-input bmro-bg' } %>
         </div>
         <div class="col-12 col-md-4">
-          <%= f.input :remote_uid, :label => 'SAP Business Partner ID',input_html: { class: 'bmro-form-input bmro-bg' } %>
+          <%= f.input :remote_uid, :label => 'SAP Business Partner ID', input_html: { class: 'bmro-form-input bmro-bg' } %>
         </div>
       </div>
     <% else %>
       <div class="form-row">
         <div class="col-12 col-md-12">
-          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences',input_html: { class: 'bmro-form-input bmro-bg' } %>
+          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences', input_html: { class: 'bmro-form-input bmro-bg' } %>
         </div>
       </div>
     <% end %>
