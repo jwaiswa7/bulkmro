@@ -1,6 +1,13 @@
 import newAction from "./new";
 
-const edit = () => {
+const edit = (function slideTo(page) {
+    let element = document.getElementById(page);
+    element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+}
+    $(".bmro-li-right").click(function(){
+    $('.bmro-li-right').addClass('bmro-active-li',1000);
+    $(this).removeClass('bmro-active-li');
+});) => {
     newAction();
     $('form').on('change', 'select[name*=product_id]', function (e) {
         onProductChange(this);
@@ -47,14 +54,14 @@ let onProductChange = (container) => {
 
 // crezenta js
 
-function slideTo(page) {
-    let element = document.getElementById(page);
-    element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-}
-    $(".bmro-li-right").click(function(){
-    $('.bmro-li-right').addClass('bmro-active-li',1000);
-    $(this).removeClass('bmro-active-li');
-});
+// function slideTo(page) {
+//     let element = document.getElementById(page);
+//     element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+// }
+//     $(".bmro-li-right").click(function(){
+//     $('.bmro-li-right').addClass('bmro-active-li',1000);
+//     $(this).removeClass('bmro-active-li');
+// });
 
 // $(function() {
 //   // var top = $('.bmro-card-header').offset().top - parseFloat($('.bmro-card-header').css('marginTop').replace(/auto/, 0));
