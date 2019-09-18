@@ -2,7 +2,7 @@
   <%= render 'shared/snippets/page_header', e: @account %>
   <%= simple_form_for([:overseers, @account], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
-    <div class="bmro-card">
+    <div class="bmro-card bmro-card-padding">
       <div class="form-group">
         <%= f.input :name, label: 'Alias', :placeholder => 'e.g. Reliance Industries', :required => 'true',input_html: { class: 'bmro-form-input' }, :class => 'form-control' %>
       </div>
