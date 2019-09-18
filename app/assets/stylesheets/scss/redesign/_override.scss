@@ -1114,6 +1114,14 @@ a.bmro-click-toggle.collapsed:after{
 }
 table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td{
     border: 1px solid #E0E2E7;
+    border-bottom: none;
+    border-left: none;    
+}
+table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td:first-child{
+    border-left: 1px solid #E0E2E7;
+}
+table.table.dataTable.table-bordered td:last-child{
+    border-bottom: 1px solid #E0E2E7;
 }
 li.paginate_button{
     padding: 7px 5px;
