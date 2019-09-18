@@ -18,6 +18,13 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   def new
+    inquiry_product_suppliers = params['inquiry_product_supplier_ids']
+    @sales_quote = @inquiry.sales_quotes.build(overseer: current_overseer)
+    @sales_quote = Services::Overseers::SalesQuotes::BuildRows.new(@sales_quote, inquiry_product_suppliers).call
+    authorize_acl :sales_quote, 'new'
+  end
+
+  def rfq_review
     @sales_quote = @inquiry.sales_quotes.build(overseer: current_overseer)
     @sales_quote = Services::Overseers::SalesQuotes::BuildRows.new(@sales_quote).call
     authorize_acl :sales_quote, 'new'

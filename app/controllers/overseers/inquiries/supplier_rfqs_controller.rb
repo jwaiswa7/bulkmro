@@ -6,20 +6,6 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
     inquiry_products = @inquiry.inquiry_products
   end
 
-  def draft_rfq
-
-  end
-
-  # def new
-  #   @supplier_rfq = @inquiry.supplier_rfqs.build
-  #   if params['supplier_ids'].present?
-  #     @inquiry_product_suppliers = InquiryProductSupplier.where(id: params['supplier_ids'])
-  #   else
-  #     @inquiry_product_suppliers = @inquiry.inquiry_product_suppliers
-  #   end
-  #   authorize_acl @supplier_rfq
-  # end
-
   def edit_supplier_rfqs
     if params['supplier_ids'].present?
       @inquiry_product_suppliers = InquiryProductSupplier.where(id: params['supplier_ids'])
@@ -35,8 +21,6 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
   def update
     authorize_acl @supplier_rfq
 
-    @supplier_rfq.email_sent_at = Time.now
-    @supplier_rfq.status = 'Email Sent: Response Pending'
     @supplier_rfq.assign_attributes(supplier_rfq_params.merge(overseer: current_overseer))
     if @supplier_rfq.save
       supplier = Company.find(@supplier_rfq.supplier_id)
@@ -60,59 +44,11 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
   end
 
   def rfq_review
-
+    @inquiry_products = @inquiry.inquiry_products
+    if params['inquiry_product_supplier_ids'].present?
+      @inquiry_product_suppliers = InquiryProductSupplier.where(id: params['inquiry_product_supplier_ids'])
+    end
   end
-
-  # def create
-  #   # inquiry_product_supplier_params = params['inquiry_product_supplier']
-  #   inquiry_product_supplier = InquiryProductSupplier.find(params['inquiry_product_supplier']['id'])
-  #   @inquiry_product = InquiryProduct.find(inquiry_product_supplier.inquiry_product.id) if inquiry_product_supplier.present?
-  #   supplier_rfq_params = {inquiry_product_supplier_id: inquiry_product_supplier.id, inquiry_product_id: @inquiry_product.id, product_id: @inquiry_product.product.id, status: 'RFQ created: Not Sent' }
-  #   @supplier_rfq = @inquiry.supplier_rfqs.build(supplier_rfq_params.merge(overseer: current_overseer))
-  #
-  #   if @supplier_rfq.save
-  #     inquiry_product_supplier.assign_attributes(inquiry_product_supplier_params.merge(overseer: current_overseer))
-  #     inquiry_product_supplier.save
-  #     @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: inquiry_product_supplier.supplier.default_contact, inquiry: @inquiry, company: inquiry_product_supplier.supplier)
-  #     subject = "Bulk MRO RFQ Ref # #{@inquiry_product.id}"
-  #     @action = 'send_email_request_for_quote'
-  #     @email_message.assign_attributes(
-  #         subject: subject,
-  #         body: SupplierRfqMailer.request_for_quote_email(@email_message, @inquiry_product, @quantity).body.raw_source
-  #     )
-  #
-  #     @params = {
-  #         record: [:overseers, @supplier_rfq, @email_message],
-  #         url: "supplier_rfqs/#{@supplier_rfq.to_param}/send_email_request_for_quote"
-  #     }
-  #
-  #     render 'shared/layouts/email_messages/new'
-  #   end
-  # end
-
-  # def create_and_send_link
-  #   @supplier_rfq = SupplierRfq.new(supplier_rfq_params.merge(overseer: current_overseer))
-  #   if params['inquiry_product_supplier'].present?
-  #     inquiry_product_supplier = InquiryProductSupplier.find(params['inquiry_product_supplier']['id'])
-  #     @quantity = params['inquiry_product_supplier']['inquiry_product']['quantity']
-  #     @inquiry_product = inquiry_product_supplier.inquiry_product
-  #     unit_cost_price = params['inquiry_product_supplier']['unit_cost_price']
-  #     inquiry_product_supplier.update_attribute(:unit_cost_price, unit_cost_price)
-  #     @email_message = @inquiry.email_messages.build(overseer: current_overseer, contact: inquiry_product_supplier.supplier.default_contact, inquiry: @inquiry, company: inquiry_product_supplier.supplier)
-  #     subject = "Bulk MRO RFQ Ref # #{@inquiry_product.id}"
-  #     @action = 'send_email_request_for_quote'
-  #     @email_message.assign_attributes(
-  #         subject: subject,
-  #         body: InquiryMailer.request_for_quote_email(@email_message, @inquiry_product, @quantity).body.raw_source
-  #     )
-  #     @params = {
-  #         record: [:overseers, @inquiry, @email_message],
-  #         url: {action: @action, controller: 'overseers/inquiries'}
-  #     }
-  #
-  #     render 'shared/layouts/email_messages/new'
-  #   end
-  # end
 
   def send_email_request_for_quote
     authorize_acl @supplier_rfq
@@ -124,23 +60,12 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
 
     if @email_message.save
       SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
+      @supplier_rfq.update_attributes(email_sent_at: Time.now, status: 'Email Sent: Response Pending')
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry)
     else
       render 'shared/layouts/email_messages/new'
     end
   end
-  #
-  # def show
-  #
-  # end
-  #
-  # def edit
-  #
-  # end
-  #
-  # def update
-  #
-  # end
 
   private
 
@@ -174,24 +99,6 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
              :remarks, :_destroy]
     )
   end
-
-  # def inquiry_product_supplier_params
-  #   params.require(:inquiry_product_supplier).permit(:inquiry_id,
-  #          :supplier_rfq_id,
-  #          :inquiry_product_id,
-  #          :legacy_id,
-  #          :supplier_id,
-  #          :unit_cost_price,
-  #          :bp_catalog_name,
-  #          :bp_catalog_sku,
-  #          :lead_time,
-  #          :last_unit_price,
-  #          :gst, :unit_freight,
-  #          :final_unit_price,
-  #          :total_price,
-  #          :remarks
-  #   )
-  # end
 
   def email_message_params
     params.require(:email_message).permit(

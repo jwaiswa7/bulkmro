@@ -541,6 +541,7 @@ Rails.application.routes.draw do
             post 'create_and_send_link'
             get 'edit_supplier_rfqs'
             get 'rfq_review'
+            post 'rfq_review_submit'
           end
           member do
             post 'send_email_request_for_quote'
@@ -614,6 +615,10 @@ Rails.application.routes.draw do
             get 'get_relationship_map_json'
             get 'reset_quote_form'
             patch 'sales_quote_reset_by_manager'
+          end
+
+          collection do
+            get 'rfq_review'
           end
 
           scope module: 'sales_quotes' do

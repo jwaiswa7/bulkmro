@@ -4,6 +4,7 @@ import salesQuotesNew from "./new";
 import salesQuotesNewRevision from "./newRevision";
 import salesQuotesUpdate from "./update";
 import salesQuotesIndex from "./index"
+import salesQuotesRfqReview from "./rfqReview"
 
 let salesQuotes = {
     create: salesQuotesCreate,
@@ -11,7 +12,8 @@ let salesQuotes = {
     new: salesQuotesNew,
     newRevision: salesQuotesNewRevision,
     update: salesQuotesUpdate,
-    index: salesQuotesIndex
+    index: salesQuotesIndex,
+    rfqReview: salesQuotesRfqReview
 }
 
 export default salesQuotes
