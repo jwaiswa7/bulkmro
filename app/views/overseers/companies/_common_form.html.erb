@@ -98,7 +98,7 @@
 
     <div class="form-row">
       <div class="col-12 col-md-6">
-        <%= f.input :pan, label: 'PAN', input_html: {minlength: 10, maxlength: 10} %>
+        <%= f.input :pan, label: 'PAN', input_html: {minlength: 10, maxlength: 10 class: "bmro-form-input bmro-bg"} %>
       </div>
       <div class="col-12 col-md-6">
         <%= f.input :pan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'PAN Proof' %>
@@ -120,7 +120,7 @@
       </div>
     </div>
   </div>
-  <div class="card-footer">
+  <div class="card-footer bmro-button-parent">
     <%= action_button(action_name, @company) %>
   </div>
 </div>
