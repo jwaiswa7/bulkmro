@@ -1146,6 +1146,12 @@ li.paginate_button{
 .custom-select{
     background-size: 0px;
 }
+.paginate_button.previous a{
+    font-size: 21px;
+}
+.paginate_button.next a{
+    font-size: 21px;
+}
 .select2-container--bootstrap.select2-container--disabled .select2-selection{
     background-color: #f7f7f7!important;
 }
