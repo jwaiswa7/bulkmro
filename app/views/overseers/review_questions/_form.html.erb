@@ -7,11 +7,11 @@
   <%= simple_form_for([:overseers, @review_question], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
     <div class="form-group">
-      <%= f.input :question, :placeholder => 'e.g. Product Technical Expertise', :required => 'true',  input_html: { class: 'bmro-form-input bmro-dropdown-icon' },:class => 'form-control' %>
+      <%= f.input :question, :placeholder => 'e.g. Product Technical Expertise', :required => 'true',  input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-bg' },:class => 'form-control' %>
     </div>
 
     <div class="form-group">
-      <%= f.input :weightage, :placeholder => 'e.g. 30', :required => 'true', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, :class => 'form-control' %>
+      <%= f.input :weightage, :placeholder => 'e.g. 30', :required => 'true', input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-bg' }, :class => 'form-control' %>
     </div>
 
 <!--    <div class="form-group">-->
@@ -19,7 +19,7 @@
 <!--    </div>-->
 
     <div class="form-group">
-      <%= f.input :question_type, :wrapper => :custom_multi_select, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, include_blank: "Select Review Question Type",collection: enum_to_collection(ReviewQuestion.question_types) %>
+      <%= f.input :question_type, :wrapper => :custom_multi_select, input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-bg' }, as: :select, include_blank: "Select Review Question Type",collection: enum_to_collection(ReviewQuestion.question_types) %>
     </div>
 
     <div class="mt-3">
