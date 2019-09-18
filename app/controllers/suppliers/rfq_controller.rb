@@ -9,7 +9,6 @@ class Suppliers::RfqController < Suppliers::BaseController
 
   def edit
     authorize :rfq
-    @inquiry_product_supplier = @rfq.inquiry_product_supplier
   end
 
   def update
@@ -27,19 +26,23 @@ class Suppliers::RfqController < Suppliers::BaseController
     end
   end
 
-  def show
+  def update_supplier_rfq
     authorize :rfq
-    @inquiry_product_supplier = @rfq.inquiry_product_supplier
+
   end
 
-  def edit_rfq_redirection
+  def show
+    authorize :rfq
+  end
+
+  def edit_supplier_rfq
     authorize :rfq
     supplier = Company.find(params[:supplier_id])
     if supplier.default_contact.present?
       contact = supplier.default_contact
-      sign_in(:contact, contact)
       if contact.role == 'supplier'
-
+        @inquiry = Inquiry.find(params[:inquiry_id])
+        @supplier_rfqs = SupplierRfq.where(inquiry_id: @inquiry.id, supplier_id: supplier.id)
       end
     end
   end
@@ -47,11 +50,12 @@ class Suppliers::RfqController < Suppliers::BaseController
   private
 
   def get_rfqs
-    @rfqs = SupplierRfq.joins(:inquiry_product_supplier).where(inquiry_product_suppliers: {supplier_id: current_company.id})
+    rfq_ids = SupplierRfq.where(supplier_id: current_company.id).pluck :id
+    @product_suppliers = InquiryProductSupplier.where(supplier_rfq_id: rfq_ids, supplier_id: current_company.id)
   end
 
   def set_rfq
-    @rfq = SupplierRfq.find(params[:id])
+    @inquiry_product_supplier = InquiryProductSupplier.find(params[:id])
   end
 
   def product_supplier_params
