@@ -1149,3 +1149,7 @@ li.paginate_button{
 .select2-container--bootstrap.select2-container--disabled .select2-selection{
     background-color: #f7f7f7!important;
 }
+.custom-file-label::after:hover{  
+    background-color: #385372!important;
+    color: #FFFFFF!important;
+}
