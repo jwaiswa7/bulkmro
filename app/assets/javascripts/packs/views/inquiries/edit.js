@@ -50,7 +50,7 @@ let onProductChange = (container) => {
 
 // crezenta js
 
-function slideTo(page) {
+let slideTo = (page) {
     console.log("Hello");
     var element = document.getElementById(page);
     if(element)
