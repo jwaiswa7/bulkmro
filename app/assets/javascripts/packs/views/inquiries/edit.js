@@ -1,5 +1,8 @@
 import newAction from "./new";
 
+
+console.log("Hellooooooooooo");
+
 const edit = () => {
     newAction();
     $('form').on('change', 'select[name*=product_id]', function (e) {
