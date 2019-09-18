@@ -1116,5 +1116,16 @@ table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td
     border: 1px solid #E0E2E7;
 }
 li.paginate_button{
-    text-align: unset;
+    padding: 7px 5px;
+    background-color: #fff;
+}
+.paginate_button.frist{
+    display: none;
+}
+.paginate_button.last{
+    display: none;
+}
+.page-item.disabled .page-link{
+    border-color: #fff;
+    color: #2C4159;
 }
