@@ -40,7 +40,7 @@
           <%= company_creation_request_field.input :mobile_number, input_html: { class: 'bmro-form-input' }, label: "Mobile Number" %>
         </div>
         <div class="col-12 col-md-6">
-          <%= company_creation_request_field.input :account_type, as: :select, include_blank: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } collection: enum_to_collection(CompanyCreationRequest.account_types) %>
+          <%= company_creation_request_field.input :account_type, as: :select, include_blank: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, collection: enum_to_collection(CompanyCreationRequest.account_types) %>
         </div>
       </div>
       <%= company_creation_request_field.input :address %>
