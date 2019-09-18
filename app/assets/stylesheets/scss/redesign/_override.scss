@@ -918,7 +918,7 @@ a.bmro-click-toggle.collapsed:after{
     float: left;
     padding: 12px 0px 3px 13px;
     background: #fff;
-    margin-top: 3px;
+    margin-top: 2px;
 }
 .bmro-collaps.show{
     background-color: #fff;
@@ -1112,4 +1112,6 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-datatable-style tr.filters{
     display: none!important;
 }
-/*table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td{}*/
+table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td{
+    border: 1px solid #E0E2E7;
+}
