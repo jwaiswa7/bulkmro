@@ -82,7 +82,7 @@
               </div>
               <div class="col-6 col-md-6">
                 <% if  is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
-                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), disabled:true, input_html: { class: 'select2-single bmro-form-input' } %>
+                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), disabled:true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' } %>
                 <% else %>
                   <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez) %>
                 <% end %>
