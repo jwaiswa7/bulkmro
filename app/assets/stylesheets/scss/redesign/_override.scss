@@ -542,7 +542,7 @@ table.dataTable td{
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 12px;
-    font-weight: 650!important;
+    font-weight: 400!important;
     letter-spacing: -0.5px;
     line-height: 15px;
     margin-bottom: 8px;
@@ -1140,7 +1140,7 @@ li.paginate_button{
 #DataTables_Table_0_first{
     display: none;
 }
-.select2-ajax.bmro-form-input.bmro-dropdown-icon:focus {
+ .bmro-dropdown-icon:focus span{
     border-color:#2c4159!important;
 }
 .custom-select{
