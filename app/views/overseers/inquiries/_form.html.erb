@@ -244,7 +244,7 @@
           <h6 class="mb-1 bmro-form-heading">Order Details</h6>
           <div class="form-row">
             <div class="col-12 col-md-5">
-              <%= f.input :customer_po_number, label: 'Customer purchase order number', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+              <%= f.input :customer_po_number, label: 'Customer purchase order number', input_html: { class: 'bmro-form-input' }, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
             </div>
             <div class="col-12 col-md-7">
               <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer purchase order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_sheet.filename}".html_safe) : false %>
