@@ -7,7 +7,7 @@
       <div class="card-body">
 
         <div>
-          <%= f.association :inquiry, collection: selected_option_or_nil(f, :inquiry), input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon' }, :'data-source' => autocomplete_overseers_inquiries_path}, include_blank: 'Leave blank if no inquiry connected' %>
+          <%= f.association :inquiry, collection: selected_option_or_nil(f, :inquiry), input_html: {class: 'select2-ajax' }, :'data-source' => autocomplete_overseers_inquiries_path}, include_blank: 'Leave blank if no inquiry connected' %>
         </div>
         <%= render partial: 'overseers/activities/company_creation_partials/company_creation_request', locals: {f: f} %>
 
