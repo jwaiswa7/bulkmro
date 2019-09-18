@@ -9,8 +9,8 @@
     <div class="form-group">
       <%= f.input :account_type, :wrapper => :custom_multi_select, :class => 'form-control bmro-form-input  bmro-dropdown-icon', as: :select, collection: enum_to_collection(Account.account_types) %>
     </div>
-    <div class="bmro-button">
-       <%= action_button(action_name, @account, :class=> 'bmro-button') %>
+    <div class="bmro-button-parent">
+       <%= action_button(action_name, @account) %>
     </div>
   <% end %>
 </div>
