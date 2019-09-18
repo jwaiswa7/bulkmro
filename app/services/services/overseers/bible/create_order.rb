@@ -37,7 +37,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
               ae_sales_order = SalesOrder.where(parent_id: sales_order.id, is_credit_note_entry: true).first
               sales_order = ae_sales_order
             end
-            inquiry = self.get_inquiry(inquiry_number)
+            inquiry = get_inquiry(inquiry_number)
             isp_full_name = x.get_column('Inside Sales Name').to_s.strip.split
             isp_first_name = isp_full_name[0]
             # isp_last_name = isp_full_name[1] if isp_full_name.length > 1
@@ -45,9 +45,10 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
               bible_order = BibleSalesOrder.where(inquiry_number: inquiry.inquiry_number,
                                                   order_number: order_number,
                                                   mis_date: Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')).first_or_create! do |bo|
-                # bible_order.inquiry = inquiry
-                bo.inside_sales_owner = Overseer.where(first_name: isp_first_name).last
-                bo.outside_sales_owner = inquiry.outside_sales_owner
+                # bo.inquiry_number = inquiry.present? ? inquiry.inquiry_number : nil
+                bo.inquiry = inquiry_number
+                bo.inside_sales_owner = inquiry.present? ? inquiry.inside_sales_owner : nil # Overseer.where(first_name: isp_first_name).last
+                bo.outside_sales_owner = inquiry.present? ? inquiry.outside_sales_owner : nil
                 bo.sales_order = sales_order.present? ? sales_order : nil
                 bo.company_name = x.get_column('Magento Company Name')
                 bo.company = inquiry.company
@@ -84,9 +85,9 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
               bible_order.save
               orders_in_sheet.push(bible_order.id)
             end
-            upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 10, error: '-')
+            create_upload_log('Success', upload_sheet.id, x.get_row.to_json, '-', i)
           rescue StandardError => err
-            upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 20, error: err.message)
+            create_upload_log('Failed', upload_sheet.id, x.get_row.to_json, err.message, i)
           end
         end
         calculate_totals(orders_in_sheet)
@@ -94,33 +95,31 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
         puts 'BibleSO', BibleSalesOrder.count
       else
         upload_sheet.update(status: 'Failed')
-        upload_sheet.bible_upload_logs.create(status: 'Failed', bible_row_data: "The sheet headers didn't match", error: "#{sheet_header.compact.sort - defined_header.sort} column name has a mismatch issue")
+        create_upload_log('Failed', upload_sheet.id, "The sheet headers didn't match", "#{sheet_header.compact.sort - defined_header.sort} column name has a mismatch issue")
       end
     rescue StandardError => err
-      upload_sheet.bible_upload_logs.create(status: 'Failed', bible_row_data: 'Something went wrong while calculating totals or updating uploads status', error: err.message)
       upload_sheet.update(status: 'Completed with Errors')
+      create_upload_log('Failed', upload_sheet.id, "Something went wrong while calculating totals or updating uploads status", err.message)
     end
-    # puts 'ERROR', error
     File.delete(@path_to_tempfile) if File.exist?(@path_to_tempfile)
   end
 
   def get_sales_order(order_number, inquiry_number)
-    inquiry = self.get_inquiry(inquiry_number)
+    inquiry = get_inquiry(inquiry_number)
     if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
       if order_number == 'Not Booked'
         inquiry_orders = Inquiry.find_by_inquiry_number(inquiry.inquiry_number).sales_orders
         if inquiry_orders.count > 1
-          sales_order = inquiry_orders.where(old_order_number: 'Not Booked').first
+          inquiry_orders.where(old_order_number: 'Not Booked').first
         else
-          sales_order = inquiry_orders.first if inquiry_orders.first.old_order_number == 'Not Booked'
+          inquiry_orders.first if inquiry_orders.first.old_order_number == 'Not Booked'
         end
       else
-        sales_order = SalesOrder.find_by_old_order_number(order_number)
+        SalesOrder.find_by_old_order_number(order_number)
       end
     else
-      sales_order = SalesOrder.find_by_order_number(order_number.to_i)
+      SalesOrder.find_by_order_number(order_number.to_i)
     end
-    sales_order
   end
 
   def calculate_totals(orders_in_sheet)

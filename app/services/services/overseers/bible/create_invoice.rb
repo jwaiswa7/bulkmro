@@ -39,12 +39,13 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
               sales_invoice = SalesInvoice.find_by_invoice_number(invoice_number.to_i)
             end
 
-            inquiry = self.get_inquiry(inquiry_number)
+            inquiry = get_inquiry(inquiry_number)
             begin
-              bible_invoice = BibleInvoice.where(inquiry_number: x.get_column('Inquiry #').to_i,
+              bible_invoice = BibleInvoice.where(inquiry_number: inquiry.inquiry_number,
                                                  invoice_number: invoice_number,
                                                  mis_date: Date.parse(x.get_column('Invoice Date')).strftime('%Y-%m-%d')).first_or_create! do |bsi|
-                # bible_invoice.inquiry = inquiry
+                # bsi.inquiry_number = inquiry.present? ? inquiry.inquiry_number : nil
+                bsi.inquiry = inquiry_number
                 bsi.inside_sales_owner = inquiry.present? ? inquiry.inside_sales_owner : nil
                 bsi.outside_sales_owner = inquiry.present? ? inquiry.outside_sales_owner : nil
                 bsi.invoice_type = x.get_column('Invoice/Credit Note')
@@ -89,9 +90,9 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
               bible_invoice.save
               invoices_in_sheet.push(bible_invoice.id)
             end
-            upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 10, error: '-')
+            create_upload_log('Success', upload_sheet.id, x.get_row.to_json, '-', i)
           rescue StandardError => err
-            upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 20, error: err.message)
+            create_upload_log('Failed', upload_sheet.id, x.get_row.to_json, err.message, i)
           end
         end
         calculate_totals(invoices_in_sheet)
@@ -99,24 +100,21 @@ class Services::Overseers::Bible::CreateInvoice < Services::Overseers::Bible::Ba
         puts 'BibleSI', BibleInvoice.count
       else
         upload_sheet.update(status: 'Failed')
-        upload_sheet.bible_upload_logs.create(status: 'Failed', bible_row_data: "The sheet headers didn't match", error: "#{sheet_header.compact.sort - defined_header.sort} column name has a mismatch issue")
+        create_upload_log('Failed', upload_sheet.id, "The sheet headers didn't match", "#{sheet_header.compact.sort - defined_header.sort} column name has a mismatch issue")
       end
     rescue StandardError => err
-      upload_sheet.bible_upload_logs.create(status: 'Failed', bible_row_data: 'Something went wrong while calculating totals or updating uploads status', error: err.message)
       upload_sheet.update(status: 'Completed with Errors')
+      create_upload_log('Failed', upload_sheet.id, "Something went wrong while calculating totals or updating uploads status", err.message)
     end
-    # puts 'ERROR', error
     File.delete(@path_to_tempfile) if File.exist?(@path_to_tempfile)
   end
 
   def get_sales_invoice(invoice_number)
     if invoice_number.include?('.') || invoice_number.include?('/') || invoice_number.include?('-') || invoice_number.match?(/[a-zA-Z]/)
-      sales_invoice = SalesInvoice.find_by_old_invoice_number(invoice_number)
+      SalesInvoice.find_by_old_invoice_number(invoice_number)
     else
-      sales_invoice = SalesInvoice.find_by_invoice_number(invoice_number.to_i)
+      SalesInvoice.find_by_invoice_number(invoice_number.to_i)
     end
-
-    sales_invoice
   end
 
   def calculate_totals(invoices_in_sheet)
