@@ -11,6 +11,7 @@
           <%= f.input :account_type, :wrapper => :custom_multi_select,input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-bg'}, :class => 'form-control', as: :select, collection: enum_to_collection(Account.account_types) %>
         </div>
         <div class="bmro-button-parent col-md-3">
+          <br/>
            <%= action_button(action_name, @account) %>
         </div>
        </div> 
