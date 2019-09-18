@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseController
-  before_action :set_inquiry, only: [:index, :new, :create, :create_and_send_link, :send_email_request_for_quote, :edit_supplier_rfqs]
+  before_action :set_inquiry
   before_action :set_supplier_rfq, only: [:edit, :update, :show, :draft_rfq, :send_email_request_for_quote]
 
   def index
@@ -21,7 +21,11 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
   # end
 
   def edit_supplier_rfqs
-    @inquiry_product_suppliers = @inquiry.inquiry_product_suppliers
+    if params['supplier_ids'].present?
+      @inquiry_product_suppliers = InquiryProductSupplier.where(id: params['supplier_ids'])
+    else
+      @inquiry_product_suppliers = @inquiry.inquiry_product_suppliers
+    end
     @supplier_rfq_ids = @inquiry_product_suppliers.pluck(:supplier_rfq_id)
     @supplier_rfqs = SupplierRfq.where(id: @supplier_rfq_ids)
     authorize_acl :supplier_rfq

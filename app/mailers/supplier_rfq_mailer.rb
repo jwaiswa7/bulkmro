@@ -4,13 +4,12 @@ class SupplierRfqMailer < ApplicationMailer
   def request_for_quote_email(email_message, inquiry_product, quantity)
     @overseer = email_message.overseer
     @contact = email_message.contact
-    @supplier = @contact.company
     @inquiry = email_message.inquiry
     @supplier_rfq = email_message.supplier_rfq
     @inquiry_product = inquiry_product
+    @supplier = Company.find(@supplier_rfq.supplier_id)
     @quantity = quantity
-    # @params = { supplier_id: @contact.id }
-    # @url = edit_rfq_redirection_suppliers_rfq_index_url(params)
+    @inquiry_product_supplier_ids = @supplier_rfq.inquiry_product.inquiry_product_suppliers.pluck(:id)
     standard_email(email_message)
   end
 
