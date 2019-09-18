@@ -1050,9 +1050,14 @@ a.bmro-click-toggle.collapsed:after{
 }
 .bmro-input-search{
     float: left;
+    margin-right: 10px;
 }
 .bmro-input-search .bmro-search-width{
     width: 290px;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAOCAYAAAAbvf3sAAAAAXNSR…kiHv5JCInpdxzHcnLzcG49psyZo38TUGAsX+htON2MhNc+AedxnRztIqLbAAAAAElFTkSuQmCC)no-repeat right 2px top 9px;
+    background-position-y: center;
+    padding-left: 24px!important;
+    padding-right: 9px!important;
 }
 .bmro-form-input::placeholder{
     color: #9AA1AA;
