@@ -1267,6 +1267,10 @@ table.bmro-new-table th:last-child{
 table.bmro-new-table tr th:first-child{
   border-left: 1px solid #E0E2E7; 
   text-align: left; 
+  width: 164px;
+}
+table.bmro-new-table tr:first-child{
+    background-color: transparent;
 }
 .bmro-invoice-padding{
     padding: 20px; 
