@@ -1249,6 +1249,7 @@ table.bmro-new-table th, table.bmro-new-table td{
     border-bottom: none;
     border-left: none; 
     padding: 7px 14px;   
+    text-align: right;
 }
 table.bmro-new-table td:first-child{
     border-left: 1px solid #E0E2E7;
@@ -1264,7 +1265,8 @@ table.bmro-new-table tr:last-child td{
 table.bmro-new-table th:last-child{
 }
 table.bmro-new-table tr th:first-child{
-  border-bottom: 1px solid #E0E2E7;  
+  border-left: 1px solid #E0E2E7; 
+  text-align: left; 
 }
 .bmro-invoice-padding{
     padding: 20px; 
