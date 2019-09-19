@@ -1136,9 +1136,12 @@ table.table.dataTable.table-bordered th{
 table.table.dataTable.table-bordered td:first-child{
     border-left: 1px solid #E0E2E7;
     text-align: left;
+    width: 88px;
 }
 .bmro-datatable-style tbody tr td a.btn{
     float: left;
+    margin-left: 2px;
+    margin-bottom: 3px;
 }
 table.table.dataTable.table-bordered tr:last-child td{
     border-bottom: 1px solid #E0E2E7;
@@ -1190,6 +1193,8 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, tab
     font-size: 12px;
     color: #687686;   
     opacity: unset!important;
-    top: 14px;
     font-weight: 500;
+}
+table.table.dataTable.table-bordered th:first-child{
+    width: 102.406px;
 }
