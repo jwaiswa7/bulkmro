@@ -67,19 +67,18 @@ let onProductChange = (container) => {
                 select.closest('div.form-row').find('[name*=bp_catalog_sku]').val(response.bp_catalog_sku);
             }
         });
-    }
-    $(".bmro-li-right").click(function(){
-        $('.bmro-li-right').addClass('bmro-active-li',1000);
-        $(this).removeClass('bmro-active-li');
-    });      
+    }   
 };
 
 // crezenta js
 
-// function slideTo(page) {
-//     let element = document.getElementById(page);
-//     element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-// }
-
+function slideTo(page) {
+    let element = document.getElementById(page);
+    element.scrollIntoView({behavior: "smooth",offsetTop: -1000 });
+}
+$(".bmro-li-right").click(function(){
+    $('.bmro-li-right').addClass('bmro-active-li',1000);
+    $(this).removeClass('bmro-active-li');
+});   
 
 export default edit
