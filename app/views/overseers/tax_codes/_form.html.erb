@@ -6,34 +6,34 @@
 
     <div class="form-row">
       <div class="col-4 col-md-2">
-        <%= f.input :remote_uid %>
+        <%= f.input :remote_uid, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
       </div>
       <div class="col-8 col-md-10">
-        <%= f.input :description %>
+        <%= f.input :description, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="col-4">
-        <%= f.input :code %>
+        <%= f.input :code, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
       </div>
       <div class="col-4">
-        <%= f.input :chapter, readonly: true, input_html: { value: @tax_code.chapter.nil? ? "0000" : @tax_code.chapter}  %>
+        <%= f.input :chapter, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, readonly: true, input_html: { value: @tax_code.chapter.nil? ? "0000" : @tax_code.chapter}  %>
       </div>
       <div class="col-4">
-        <%= f.input :tax_percentage, label: 'Tax %' %>
+        <%= f.input :tax_percentage, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, label: 'Tax %' %>
       </div>
     </div>
     <div class="form-row">
       <div class="col-12 col-md-4">
-        <%= f.input :is_service %>
+        <%= f.input :is_service, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.input :is_active %>
+        <%= f.input :is_active, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
       </div>
     </div>
     <%= f.input :is_pre_gst %>
-    <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+    <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
       <i class="fal fa-pen"></i> <%= submit_text(@tax_code) %>
     <% end %>
   <% end %>
