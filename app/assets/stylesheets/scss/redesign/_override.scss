@@ -1235,5 +1235,24 @@ table.table.dataTable.table-bordered th:first-child{
     padding: 0px 8px!important;
 }
 table.bmro-new-table{
-    color: #1215;
+    color: #354960;
+    font-family: 'Inter UI',sans-serif;  
+    -webkit-font-smoothing: antialiased;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    line-height: 16px;    
+}
+table.bmro-new-table th, table.bmro-new-table td{
+    border: 1px solid #E0E2E7;
+    border-bottom: none;
+    border-left: none;    
+}
+table.bmro-new-table td:first-child{
+    border-left: 1px solid #E0E2E7;
+    text-align: left;
+    width: 98px;
+}
+table.bmro-new-table tr:last-child td{
+    border-bottom: 1px solid #E0E2E7;
 }
