@@ -40,7 +40,7 @@
             <%= product.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single bmro-form-label bmro-form-input'} %>
           </div>
           <div class="col-6 col-md-4">
-            <%= product.association :brand, collection: selected_option_or_nil(product, :brand), input_html: {class: 'select2-ajax bmro-form-input bmro-form-label'}, :'data-source' => autocomplete_overseers_brands_path}, :required => true %>
+            <%= product.association :brand, collection: selected_option_or_nil(product, :brand), input_html: {class: 'select2-ajax bmro-form-input bmro-form-label', :'data-source' => autocomplete_overseers_brands_path}, :required => true %>
           </div>
           <div class="col-6 col-md-4">
             <%= product.association :category, collection: selected_option_or_nil(product, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax bmro-form-label bmro-form-input', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service => false)} %>
