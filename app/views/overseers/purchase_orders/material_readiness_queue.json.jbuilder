@@ -31,7 +31,7 @@ json.data (@purchase_orders) do |purchase_order|
                   purchase_order.po_request.present? ? (conditional_link(purchase_order.po_request.id, overseers_po_request_path(purchase_order.po_request), is_authorized(purchase_order.po_request, 'show') && policy(purchase_order.po_request).show?)) : '-',
                   link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: '_blank'),
                   purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), is_authorized(purchase_order.inquiry, 'show') && policy(purchase_order.inquiry).show?) : '-',
-                  purchase_order.material_status. present? ? status_badge(purchase_order.material_status) : 'Material Readiness Follow-Up',
+                  status_badge(purchase_order.po_material_status),
                   link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: '_blank'),
                   (purchase_order.po_date ? format_succinct_date(purchase_order.po_date) : '-'),
                   (purchase_order.supplier.present? ? conditional_link(purchase_order.supplier.try(:name), overseers_company_path(purchase_order.supplier), is_authorized(purchase_order.inquiry, 'show') && policy(purchase_order.inquiry).show?) : '-'),

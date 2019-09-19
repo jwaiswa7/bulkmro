@@ -32,7 +32,7 @@ json.data (@purchase_orders) do |purchase_order|
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   purchase_order.inquiry.outside_sales_owner.to_s,
                   (format_succinct_date(purchase_order.metadata['PoDate'].to_date) if purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date?),
-                  purchase_order.material_status,
+                  purchase_order.po_material_status,
                   if purchase_order.payment_request.present?
                     status_badge(purchase_order.payment_request.status)
                   end,
