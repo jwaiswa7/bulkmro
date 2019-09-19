@@ -250,4 +250,56 @@ class Company < ApplicationRecord
   def account_manager_contact
     self.contacts.where(role: 'account_manager').first
   end
+
+  def total_open_inquiries
+    Rails.cache.fetch([self, 'total_open_inquiries']) do
+      Inquiry.left_outer_joins(:sales_quotes).where('inquiries.company_id = ? AND inquiries.status NOT IN (?,?)', self.id, 9, 10).where(sales_quotes: {id: nil}).size
+    end
+  end
+
+  def total_open_quotes
+    Rails.cache.fetch([self, 'total_open_quotes']) do
+      open_quotes = 0
+      total_value = 0
+      self.inquiries.each do |inquiry|
+        if inquiry.sales_quotes.present?
+          sq = inquiry.sales_quotes.last
+          if sq.sales_orders.blank?
+            open_quotes += 1
+            total_value += sq.converted_total_with_tax
+          end
+        end
+      end
+      {
+          open_quotes: open_quotes,
+          total_value: total_value
+      }
+    end
+  end
+
+  def total_sales_order
+    Rails.cache.fetch([self, 'total_sales_order']) do
+      confirmed_orders = 0
+      confirmed_orders_total_value = 0
+      confirmed_invoices = 0
+      confirmed_invoices_total_value = 0
+      self.inquiries.each do |inquiry|
+        inquiry.sales_orders.remote_approved.each do |so|
+          confirmed_orders += 1
+          confirmed_orders_total_value += so.converted_total_with_tax
+          so.invoices.each do | si |
+            confirmed_invoices += 1
+            confirmed_invoices_total_value += si.metadata['base_grand_total'].to_f
+          end
+        end
+      end
+
+      {
+          confirmed_orders: confirmed_orders,
+          confirmed_orders_total_value: confirmed_orders_total_value,
+          confirmed_invoices: confirmed_invoices,
+          confirmed_invoices_total_value: confirmed_invoices_total_value
+      }
+    end
+  end
 end

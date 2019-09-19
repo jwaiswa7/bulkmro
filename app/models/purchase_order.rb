@@ -282,4 +282,16 @@ class PurchaseOrder < ApplicationRecord
       nil
     end
   end
+
+  def warehouse_ship_from
+    if metadata['PoShipWarehouse'].present?
+      Warehouse.find_by(remote_uid: metadata['PoShipWarehouse'])
+    else
+      inquiry.bill_from
+    end
+  end
+
+  def max_lead_date
+    self.po_request.present? ? self.po_request.rows.maximum(:lead_time).strftime('%d-%b-%Y') : Date.parse(self.metadata['PoDate']).strftime('%d-%b-%Y')
+  end
 end

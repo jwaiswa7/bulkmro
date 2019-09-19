@@ -95,7 +95,7 @@
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
           <% end %>
           <strong><em>Email</em></strong>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-          <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
+          <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_billing_address.gst || '-' %></span>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Customer - Shipping Address</strong>
@@ -106,7 +106,7 @@
               - <%= @inquiry.shipping_contact.phone %></span>
           <% end %>
           <strong><em>Email</em></strong>: <%= @inquiry.shipping_contact.email if @inquiry.shipping_contact.email.present? %>
-          <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
+          <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_shipping_address.gst || '-' %></span>
         </div>
       </div>
     </div>

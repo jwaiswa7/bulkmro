@@ -350,4 +350,8 @@ class SalesOrder < ApplicationRecord
   def total_qty
     self.rows.sum(:quantity).to_i
   end
+
+  def is_invoices_cancelled
+    self.invoices.pluck(:status).all?('Cancelled')
+  end
 end

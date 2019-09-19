@@ -50,6 +50,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def update
     @purchase_order = po_request.purchase_order
     if @purchase_order.present?
+      purchase_order.rows.where(po_request_row_id: nil).delete_all
       purchase_order_params = assign_purchase_order_attributes(@purchase_order.po_number)
       purchase_order.update_attributes(purchase_order_params)
       purchase_order_row = purchase_order.rows
@@ -91,8 +92,8 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         PoStatus: '63',
         ItemLine: item_line_json,
         PoSupNum: po_request.supplier.remote_uid,
-        PoSupBillFrom: po_request.supplier.billing_address.remote_uid,
-        PoSupShipFrom: po_request.supplier.shipping_address.remote_uid,
+        PoSupBillFrom: po_request.bill_from.remote_uid,
+        PoSupShipFrom: po_request.ship_from.remote_uid,
         #PoShippingCost: '0',
         PoPaymentTerms: po_request.payment_option.remote_uid,
         PoEnquiryId: po_request.inquiry.inquiry_number,
@@ -102,7 +103,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         po_overall_margin: po_request.po_margin_percentage,
         PoCurrencyChangeRate: po_request.inquiry.inquiry_currency.conversion_rate,
         PoCurrency: po_request.inquiry.currency.name,
-        PoCommittedDate: Time.now.strftime('%Y-%m-%d'),
+        PoCommittedDate: po_request.rows.present? ? po_request.rows.maximum(:lead_time).strftime('%Y-%m-%d') : Time.now.strftime('%Y-%m-%d'),
         PoShipWarehouse: po_request.ship_to.remote_uid,
         PoComments: po_request.sales_order.present? ? "Purchase Order Against Sales Order #{po_request.sales_order.order_number}" : "Purchase Order Against For stock Inquiry Number #{po_request.inquiry.inquiry_number}",
         PoOrderId: (po_request.sales_order.present? ? po_request.sales_order.order_number : ''),
@@ -110,7 +111,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         PoRemarks: '',
         PoTaxRate: '',
         PoUpdatedAt: '',
-        PoSupplyDate: '',
+        PoSupplyDate: po_request.rows.present? ? po_request.rows.maximum(:lead_time).strftime('%Y-%m-%d') : Time.now.strftime('%Y-%m-%d'),
         PoInvoiceDate: '',
         PoPaymentDate: '',
         PoPaymentType: '',
