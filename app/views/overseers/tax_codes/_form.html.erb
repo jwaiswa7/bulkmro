@@ -4,7 +4,7 @@
   <%= simple_form_for([:overseers, @tax_code], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
 
-    <div class="bmro-card bmro-card-peding">
+    <div class="bmro-card bmro-card-padding">
       <div class="form-row">
         <div class="col-4 col-md-2">
           <%= f.input :remote_uid, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
