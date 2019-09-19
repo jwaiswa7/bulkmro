@@ -33,10 +33,10 @@
     <div class="card-body">
       <div class="form-row">
         <div class="col-12 col-md-4">
-          <%= f.input :is_service, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
+          <%= f.input :is_service %>
         </div>
         <div class="col-12 col-md-4">
-          <%= f.input :is_active, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
+          <%= f.input :is_active %>
         </div>
       </div>
       <div class="form-row">
@@ -58,14 +58,16 @@
       <div class="col-12 col-md-12">
         <div class="d-block d-md-flex align-items-end">
           <div class="flex-grow-1">
-            <%= f.input :images, wrapper: :custom_file, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, input_html: {multiple: true}, label: 'Product Images' %>
+            <%= f.input :images, wrapper: :custom_file, input_html: {multiple: true}, label: 'Product Images' %>
           </div>
         </div>
       </div>
     </div>
     <div class="card-footer">
       <div class="form-row">
-        <%= action_button(action_name, @product) %>
+          <div class="bmro-button-parent">
+            <%= action_button(action_name, @product) %>
+          </div>
       </div>
     </div>
   </div>
