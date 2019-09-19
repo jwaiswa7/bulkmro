@@ -31,7 +31,7 @@
   </div>
   <div class="bmro-summary" id="accordionExample">
     <div class="bmro-summary-box1">
-      <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="bmro-click-toggle collapsed">
+      <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="bmro-click-toggle bmro-invoice-one collapsed">
       Sales Invoice Summary</a>          
       <div id="collapseOne" class="bmro-collaps collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
         <div class="bmro-invoice-data">
@@ -80,7 +80,7 @@
      </div>     
   </div>
 </div>
-<div class="bmro-invoice-boxes">
+<div class="bmro-invoice-boxes bmro-invoice-boxes-hide">
   <div class="bmro-ar-reports">
     <label class="bmro-ar-report-head">Invoiced</label>
     <h5 class="bmro-ar-report-data">13,396</h5>
@@ -130,8 +130,14 @@
     <label class="bmro-ar-report-head">material rejected</label>
     <h5 class="bmro-ar-report-data">00</h5>
     <span class="bmro-ar-report-subdata">₹0</span>
-  </div>                
+  </div> 
+<script type="text/javascript">
+  $('.bmro-invoice-one').click(function () {
+      $('.bmro-invoice-boxes').toggleClass('bmro-invoice-boxes-hide');
+  });
+</script>
 </div>
+
 <div class="bmro-search-table">
   <div class="bmro-input-search">
     <input type="text" name="" class="bmro-form-input bmro-search-width filter-list-input" placeholder="Search by Account, Company, Owner ect...">
