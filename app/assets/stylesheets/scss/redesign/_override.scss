@@ -537,7 +537,7 @@ table.dataTable td{
     font-weight: 500;
     letter-spacing: -0.5px;
     line-height: 15px;
-    text-align: right;
+    text-align: right!important;
     padding-right: 10px;    
 }
 .bmro-product-bottom label{
@@ -1137,7 +1137,7 @@ table.table.dataTable.table-bordered th{
 table.table.dataTable.table-bordered td:first-child{
     border-left: 1px solid #E0E2E7;
     text-align: left;
-    width: 88px;
+    width: 98px;
 }
 .bmro-datatable-style tbody tr td a.btn{
     float: left;
