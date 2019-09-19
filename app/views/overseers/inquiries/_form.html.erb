@@ -102,7 +102,7 @@
         </div>
       </div>
 
-      <div class="form-row">
+      <div class="form-row" id="Billing">
         <div class="col-6 col-md-4">
           <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
@@ -115,7 +115,7 @@
           <%= f.input :product_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.product_types, keep_raw: true), required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
       </div>
-      <div class="bmro-dotted-line bmro-dotted-mt" id="Billing"></div>
+      <div class="bmro-dotted-line bmro-dotted-mt"></div>
       <div class="mt-3">
         <h6 class="mb-1 bmro-form-heading">Billing / Shipping Details</h6>
 
@@ -146,7 +146,7 @@
             <%= f.association :shipping_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, include_blank: "Select a shipping company" %>
           </div>
         </div>
-        <div class="form-row">
+        <div class="form-row" id="Owner">
           <div class="col-12 col-md-6">
             <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company), :'data-placeholder' => "Select a billing contact"}, required: true %>
           </div>
@@ -164,11 +164,11 @@
         </div>
       </div>
 
-      <div class="bmro-dotted-line bmro-dotted-mt" id="Owner"></div>
+      <div class="bmro-dotted-line bmro-dotted-mt"></div>
 
       <div class="mt-3">
         <h6 class="mb-1 bmro-form-heading">Owner Details</h6>
-        <div class="form-row">
+        <div class="form-row" id="Important">
           <div class="col-12 col-md-3">
             <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select a Procurement Specialist'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
@@ -184,7 +184,7 @@
         </div>
       </div>
 
-      <div class="bmro-dotted-line bmro-dotted-mt" id="Important"></div>
+      <div class="bmro-dotted-line bmro-dotted-mt"></div>
 
       <div class="mt-3">
         <h6 class="bmro-form-heading bmro-fl">Important Dates
@@ -208,7 +208,7 @@
             <% end %>
           </div>
         </h6>
-        <div class="form-row">
+        <div class="form-row" id="Order">
           <!--           <div class="col-12 col-md-6">
             <% if f.object.created_at %>
               <div class="form-group">
@@ -239,7 +239,7 @@
 
 
       <% if f.object.sales_quote.present? %>
-        <div class="bmro-dotted-line bmro-dotted-mt" id="Order"></div>
+        <div class="bmro-dotted-line bmro-dotted-mt"></div>
         <div class="mt-3">
           <h6 class="mb-1 bmro-form-heading">Order Details</h6>
           <div class="form-row">
