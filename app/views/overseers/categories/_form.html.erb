@@ -1,4 +1,4 @@
-<% content_for :heading_byline, input_html: {class: 'bmro-form-heading'} do %>
+<% content_for :heading_byline, :html=> {class: 'bmro-form-heading'} do %>
  <!--  This will <em>'<%= submit_text(@category).downcase %>'</em> and log it under
   <strong><%= current_overseer.full_name %></strong>. -->
 <% end %>
