@@ -72,10 +72,10 @@ let onProductChange = (container) => {
 
 // crezenta js
 
-function slideTo(page) {
-    let element = document.getElementById(page);
-    element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-}
+// function slideTo(page) {
+//     let element = document.getElementById(page);
+//     element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+// }
     $(".bmro-li-right").click(function(){
     $('.bmro-li-right').addClass('bmro-active-li',1000);
     $(this).removeClass('bmro-active-li');
