@@ -1093,8 +1093,8 @@ a.bmro-click-toggle.collapsed:after{
     float: right;
     transition: all 0.5s;
     position: relative;
-    right: 5px;
-    top: 7px;
+    right: 14px;
+    top: 8px;
     color: #2C4159;
 }
 .bmro-arrow-parent .select2.select2-container--open:before{
@@ -1229,4 +1229,7 @@ table.table.dataTable.table-bordered th:first-child{
 .badge{
     padding: 4px 6px;
     text-align: right;
+}
+.select2-container .select2-selection--single .select2-selection__rendered{
+    padding: 0px 8px!important;
 }
