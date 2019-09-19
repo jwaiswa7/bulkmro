@@ -1241,12 +1241,14 @@ table.bmro-new-table{
     font-size: 13px;
     font-weight: 600;
     letter-spacing: -0.5px;
-    line-height: 16px;    
+    line-height: 16px;
+    width: 100%;    
 }
 table.bmro-new-table th, table.bmro-new-table td{
     border: 1px solid #E0E2E7;
     border-bottom: none;
-    border-left: none;    
+    border-left: none; 
+    padding: 7px 14px;   
 }
 table.bmro-new-table td:first-child{
     border-left: 1px solid #E0E2E7;
@@ -1258,4 +1260,10 @@ table.bmro-new-table tr:last-child td{
 }
 .custom-select .bmro-form-input{
     font-size: 13px!important;
+}
+table.bmro-new-table th:last-child{
+  border-bottom: 1px solid #E0E2E7;  
+}
+.bmro-invoice-padding{
+    padding: 20px; 
 }
