@@ -6,30 +6,31 @@
 
     <div class="form-row">
       <div class="col-12">
-        <%= f.input :country_code, as: :country, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
+        <%= f.input :country_code, as: :country, :required => true , input_html: { class: 'bmro-input-label bmro-form-input bmro-dropdown-icon' },:wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="col-6">
-        <%= f.input :name, required: true %>
+        <%= f.input :name, required: true, input_html: { class: 'bmro-input-label bmro-form-input' } %>
       </div>
 
       <div class="col-6">
-        <%= f.input :code, required: true %>
+        <%= f.input :code, required: true, input_html: { class: 'bmro-input-label bmro-form-input' } %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="col-6">
-        <%= f.input :swift_number, required: true, label: "Swift Number" %>
+        <%= f.input :swift_number, required: true, input_html: { class: 'bmro-input-label bmro-form-input' }, label: "Swift Number" %>
       </div>
 
       <div class="col-6">
-        <%= f.input :iban, label: "IBAN" %>
+        <%= f.input :iban, label: "IBAN", input_html: { class: 'bmro-input-label bmro-form-input' } %>
       </div>
     </div>
-
-    <%= action_button(action_name, @bank) %>
+    <div class="bmro-button-parent">
+      <%= action_button(action_name, @bank) %>
+    </div>
   <% end %>
 </div>
