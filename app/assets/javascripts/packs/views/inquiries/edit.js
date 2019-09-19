@@ -76,10 +76,10 @@ let onProductChange = (container) => {
 
 // crezenta js
 
-// function slideTo(page) {
-//     let element = document.getElementById(page);
-//     element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-// }
+function slideTo(page) {
+    let element = document.getElementById(page);
+    element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+}
 
 
 export default edit
