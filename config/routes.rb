@@ -539,6 +539,7 @@ Rails.application.routes.draw do
         resources :supplier_rfqs do
           collection do
             post 'create_and_send_link'
+            post 'add_supplier_rfqs'
             get 'edit_supplier_rfqs'
             get 'rfq_review'
             post 'rfq_review_submit'

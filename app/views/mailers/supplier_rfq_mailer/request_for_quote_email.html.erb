@@ -11,13 +11,15 @@
       <th style="padding: 5px; text-align: center;">Brand</th>
       <th style="padding: 5px; text-align: center;">Qty</th>
     </tr>
+    <% @inquiry_products.each_with_index do |inquiry_product, index| %>
       <tr>
-        <td style="padding: 5px; text-align: center;">1</td>
-        <td style="padding: 5px; text-align: center;"><%= @inquiry_product.product.to_s %></td>
-        <td style="padding: 5px; text-align: center;"><%= @inquiry_product.product.mpn %></td>
-        <td style="padding: 5px; text-align: center;"><%= @inquiry_product.product.brand.to_s %></td>
+        <td style="padding: 5px; text-align: center;"><%= index + 1 %></td>
+        <td style="padding: 5px; text-align: left;"><%= inquiry_product.product.to_s %></td>
+        <td style="padding: 5px; text-align: center;"><%= inquiry_product.product.mpn %></td>
+        <td style="padding: 5px; text-align: left;"><%= inquiry_product.product.brand.to_s %></td>
         <td style="padding: 5px; text-align: center;"><%= @quantity  %></td>
       </tr>
+    <% end %>
     </tbody>
   </table>
 

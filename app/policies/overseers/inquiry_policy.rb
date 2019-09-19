@@ -103,6 +103,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit_suppliers?
   end
 
+  def rfq_review?
+    record.supplier_rfqs.present?
+  end
+
   def sales_quotes?
     edit? && (new_sales_quote? || record.sales_quotes.present?)
   end

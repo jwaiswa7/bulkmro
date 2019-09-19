@@ -4,7 +4,6 @@ const editSupplierRfqs = () => {
     $('.rfq-review').click(function () {
         let inquiry_product_supplier_ids = [];
         let inquiry_id = $('input[name="supplier_rfq[inquiry_id]"]').val();
-        console.log(inquiry_id);
         $.each($("input[name='inquiry_product_supplier_ids[]']:checked"), function () {
             let $this = $(this);
             inquiry_product_supplier_ids.push($this.attr('id').split('inquiry_product_supplier_id_')[1]);

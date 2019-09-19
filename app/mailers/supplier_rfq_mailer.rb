@@ -6,10 +6,11 @@ class SupplierRfqMailer < ApplicationMailer
     @contact = email_message.contact
     @inquiry = email_message.inquiry
     @supplier_rfq = email_message.supplier_rfq
-    @inquiry_product = inquiry_product
     @supplier = Company.find(@supplier_rfq.supplier_id)
     @quantity = quantity
-    @inquiry_product_supplier_ids = @supplier_rfq.inquiry_product.inquiry_product_suppliers.pluck(:id)
+    inquiry_product_supplier_ids = @supplier_rfq.inquiry_product_suppliers.pluck(:id)
+    inquiry_product_ids = InquiryProductSupplier.where(id: inquiry_product_supplier_ids).pluck(:inquiry_product_id).uniq
+    @inquiry_products = InquiryProduct.where(id: inquiry_product_ids)
     standard_email(email_message)
   end
 

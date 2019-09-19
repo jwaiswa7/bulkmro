@@ -64,22 +64,40 @@ let massLinkSupplier = () => {
 
 let draftRfq = () => {
     let product_ids = [];
+    let inquiry_product_ids = [];
     let inquiry_id = $('input[name=inquiry_id]').val();
-    product_ids.push($('input[name="product_ids"]').val());
-
 
     $('.draft-rfq').click(function () {
         let inquiry_product_supplier_ids = [];
         let inquiry_id = $('input[name=inquiry_id]').val();
         $.each($("input[name='inquiry_product_supplier_ids[]']:checked"), function () {
             let $this = $(this);
+            let selector = $this.closest('.product_wrapper').find($('input[name="inquiry_product_ids[]"]'));
+            let product_id = selector.attr('id').split('inquiry_product_id_')[1];
+            product_ids.push(product_id);
             inquiry_product_supplier_ids.push($this.attr('id').split('inquiry_product_supplier_id_')[1]);
         });
-        let data = {inquiry_id: inquiry_id, supplier_ids: inquiry_product_supplier_ids};
 
-        window.open(Routes.edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(data), '_self');
+        $.each(product_ids, function (i, j) {
+            if ($.inArray(j, inquiry_product_ids) == -1) {
+                inquiry_product_ids.push(j);
+            }
+        });
+        let data = JSON.stringify({
+            inquiry_product_ids: inquiry_product_ids,
+            inquiry_product_supplier_ids: inquiry_product_supplier_ids
+        });
+
+        $.ajax({
+            url: Routes.add_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id),
+            type: "POST",
+            data: data,
+            success: function () {
+
+            }
+        });
     });
-}
+};
 
 
 export default editSuppliers

@@ -36,14 +36,14 @@ class Overseers::InquiriesController < Overseers::BaseController
         @date_range = params['kra_report']['date_range']
         @category = params['kra_report']['category']
         if @category == 'company_key'
-          @category_filter = { filter_name: 'company_key', filter_type: 'ajax' }
+          @category_filter = {filter_name: 'company_key', filter_type: 'ajax'}
         elsif @category == 'inside_sales_owner_id' || @category == 'inside_by_sales_order'
-          @category_filter = { filter_name: 'inside_sales_owner_id', filter_type: 'dropdown' }
+          @category_filter = {filter_name: 'inside_sales_owner_id', filter_type: 'dropdown'}
         elsif @category == 'outside_sales_owner_id' || @category == 'outside_by_sales_order'
-          @category_filter = { filter_name: 'outside_sales_owner_id', filter_type: 'dropdown' }
+          @category_filter = {filter_name: 'outside_sales_owner_id', filter_type: 'dropdown'}
         end
       else
-        @category_filter = { filter_name: 'inside_sales_owner_id', filter_type: 'dropdown' }
+        @category_filter = {filter_name: 'inside_sales_owner_id', filter_type: 'dropdown'}
       end
       format.html {}
       format.json do
@@ -160,12 +160,12 @@ class Overseers::InquiriesController < Overseers::BaseController
       service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
       service.call
       @indexed_tat_reports = service.indexed_records
-      status_avgs = @indexed_tat_reports.aggregations['tat_by_sales_owner']['buckets']['custom-range']['inquiry_mapping_tats']['buckets'].select {|avg| avg['key'] == @inside_sales_owner.to_i}
+      status_avgs = @indexed_tat_reports.aggregations['tat_by_sales_owner']['buckets']['custom-range']['inquiry_mapping_tats']['buckets'].select { |avg| avg['key'] == @inside_sales_owner.to_i }
       unless status_avgs.blank?
         @sales_owner_average_values = status_avgs[0].except('key', 'doc_count')
         statuses = {'new_inquiry': 0, 'acknowledgment_mail': 0, 'cross_reference': 0, 'preparing_quotation': 0, 'quotation_sent': 0, 'draft_so_appr_by_sales_manager': 0, 'so_reject_by_sales_manager': 0, 'so_draft_pending_acct_approval': 0, 'rejected_by_accounts': 0, 'hold_by_accounts': 0, 'order_won': 0, 'order_lost': 0, 'regret': 0}
-        @status_average = statuses.map {|status, value| {status: status.to_s, value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / status_avgs.first['doc_count']).round(2) : 0}}
-        format.html {render partial: 'sales_owner_status_average'}
+        @status_average = statuses.map { |status, value| {status: status.to_s, value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / status_avgs.first['doc_count']).round(2) : 0} }
+        format.html { render partial: 'sales_owner_status_average' }
       else
         format.html
       end
@@ -232,7 +232,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl @inquiry
 
     send_file(
-      "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
         filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
     )
   end
@@ -296,7 +296,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       end
       message = params['inquiry']['comments_attributes']['0']['message']
       if message.present?
-        @inquiry.comments.create(message: "Status changed to: #{@inquiry.status}. \r\n Lost or Regret Reason: #{@inquiry.lost_regret_reason}. \r\n Comment: #{message}." , overseer: current_overseer)
+        @inquiry.comments.create(message: "Status changed to: #{@inquiry.status}. \r\n Lost or Regret Reason: #{@inquiry.lost_regret_reason}. \r\n Comment: #{message}.", overseer: current_overseer)
       end
 
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -309,7 +309,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl :inquiry
 
     respond_to do |format|
-      format.html {render partial: 'overseers/dashboard/edit_followup', locals: {obj: @inquiry, url: update_followup_date_overseers_inquiry_path(@inquiry)}}
+      format.html { render partial: 'overseers/dashboard/edit_followup', locals: {obj: @inquiry, url: update_followup_date_overseers_inquiry_path(@inquiry)} }
     end
   end
 
@@ -375,7 +375,11 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def link_product_suppliers
     authorize_acl @inquiry
-    Services::Overseers::Inquiries::LinkSuppliersToProducts.new(@inquiry, params[:supplier_ids], params[:inquiry_product_ids]).call
+
+    if params[:supplier_ids].present?
+      service = Services::Overseers::Inquiries::LinkSuppliersToProducts.new(@inquiry, params[:supplier_ids], params[:inquiry_product_ids])
+      service.call
+    end
     render json: {success: true, message: 'Supplier linked successfully'}, status: 200
   end
 
@@ -483,7 +487,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     if inquiries.present?
       query_params = params['bulk_update_inquiries'].to_enum.to_h
-      update_query = query_params.except('inquiries').reject {|_, v| v.blank?}
+      update_query = query_params.except('inquiries').reject { |_, v| v.blank? }
       if update_query.present?
         inquiries.update_all(update_query)
         redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
@@ -573,7 +577,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl @inquiry
     respond_to do |format|
       if params[:title] == 'Comment'
-        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @inquiry, url: add_comment_overseers_inquiry_path(@inquiry), view_more: overseers_inquiry_comments_path(@inquiry)}}
+        format.html { render partial: 'shared/layouts/add_comment', locals: {obj: @inquiry, url: add_comment_overseers_inquiry_path(@inquiry), view_more: overseers_inquiry_comments_path(@inquiry)} }
       end
     end
   end

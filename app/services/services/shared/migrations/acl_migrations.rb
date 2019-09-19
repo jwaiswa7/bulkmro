@@ -586,7 +586,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   def create_supplier_rfq_resources
     role_name = ['admin']
     acl_resources_for_targets = {
-        'supplier_rfq': %w(index show new edit create update destroy send_email_request_for_quote edit_supplier_rfqs update_supplier_rfqs rfq_review),
+        'supplier_rfq': %w(index show new edit create update destroy send_email_request_for_quote add_supplier_rfqs edit_supplier_rfqs update_supplier_rfqs rfq_review),
         'inquiry_product_supplier': %w(request_for_quote),
         'company': %w(customized_index),
         'inquiry': %w(link_product_suppliers draft_rfq request_for_quote),

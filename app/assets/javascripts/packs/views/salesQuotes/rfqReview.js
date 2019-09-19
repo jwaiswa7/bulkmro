@@ -1,7 +1,6 @@
 // Imports
 
 const rfqReview = () => {
-    console.log('fyyu')
     $('.generate_sales_quote').on('click',function(){
         let inquiry_product_supplier_ids = [];
         let inquiry_id = $('input[name="sales_quote[inquiry_id]"]').val();

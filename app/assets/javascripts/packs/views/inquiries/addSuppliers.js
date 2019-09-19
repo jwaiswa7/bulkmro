@@ -1,7 +1,5 @@
 const addSuppliers = () => {
     $('.add_supplier_wrapper').hide();
-    // $('.mass-link-supplier').hide();
-    // $('.draft-rfq').hide();
 
     toggleCheckboxes();
 
@@ -44,8 +42,7 @@ let addProductSuppliers = () => {
     $('input[type=checkbox][name="suppliers[]"]:checked').each((index, element) => {
         suppliers.push($(element).val());
     });
-    if (suppliers.length > 0 ) {
-
+    if (suppliers.length > 0) {
         let data = JSON.stringify({supplier_ids: suppliers, inquiry_product_ids: product_ids});
         $.ajax({
             url: Routes.link_product_suppliers_overseers_inquiry_path(inquiry_id),
@@ -78,14 +75,6 @@ let checkProductSuppliers = () => {
         let selector = $this.closest('.product_wrapper').find($('input[name="inquiry_product_supplier_ids[]"]'));
         selector.each(function () {
             $(this).prop("checked", value);
-            // if (value == true){
-            //     $(this).prop("checked", value);
-            //     $('.mass-link-supplier').show();
-            // } else {
-            //     $(this).prop("checked", value);
-            //     $('.mass-link-supplier').hide();
-            // }
-
         });
     });
 };
@@ -96,16 +85,11 @@ let showOrHideDraftRfq = () => {
     $('input[name="inquiry_product_supplier_ids[]"]').change(function () {
         let $this = $(this);
         let value = $this.is(':checked');
-        if (value == true){
-            count +=1
-        } else{
-            count -=1
+        if (value == true) {
+            count += 1
+        } else {
+            count -= 1
         }
-        // if (count > 0) {
-        //     $('.draft-rfq').show();
-        // } else {
-        //     $('.draft-rfq').hide();
-        // }
     });
 
 };
