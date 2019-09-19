@@ -58,7 +58,7 @@
     <div class="bmro-summary-box1"> 
       <a href="#" data-toggle="collapse" data-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo" class="bmro-click-toggle bmro-invoice-two collapsed">
       Proof of delivery summary(aug,19)</a>
-      <div id="collapsetwo" class="bmro-collaps collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div id="collapsetwo" class="bmro-collaps bmro-collaps2 collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
         <div class="bmro-invoice-data">
           <div class="bmro-invoice-edit">
             <label>Invoiced created</label>
@@ -200,16 +200,21 @@
       // }  
 
       if ($('.bmro-collaps1').hasClass("show")) {
-        $('.bmro-invoice-box-one').show();
-      } else {
         $('.bmro-invoice-box-one').hide();
+      } else {
+        $('.bmro-invoice-box-one').show();
       }          
   });
-  
-  // $('.bmro-invoice-two').click(function () {
-  //     $('.bmro-invoice-box-one').addClass('bmro-invoice-boxes-hide');
-  //     $('.bmro-invoice-box-two').removeClass('bmro-invoice-boxes-hide');
-  // });  
+
+  $('.bmro-invoice-two').click(function () {
+      // $('.bmro-invoice-box-one').addClass('bmro-invoice-boxes-hide');
+      // $('.bmro-invoice-box-two').removeClass('bmro-invoice-boxes-hide');
+      if ($('.bmro-collaps2').hasClass("show")) {
+        $('.bmro-invoice-box-two').hide();
+      } else {
+        $('.bmro-invoice-box-hide').show();
+      }      
+  });  
 </script>
 </div>
 
