@@ -19,17 +19,17 @@
     </div>
 
     <% if @category.persisted? %>
-      <%= f.association :parent, :label_method => :to_s, collection: selected_option_or_nil(f, :parent), input_html: {class: 'select2-ajax bmro-form-input bmro-form-label', :'data-source' => autocomplete_closure_tree_overseers_categories_path(calling_category_id: @category.to_param)} %>
+      <%= f.association :parent, :label_method => :to_s, collection: selected_option_or_nil(f, :parent), input_html: {class: 'select2-ajax bmro-form-input bmro-form-label bmro-dropdown-icon', :'data-source' => autocomplete_closure_tree_overseers_categories_path(calling_category_id: @category.to_param)} %>
     <% else %>
-      <%= f.association :parent, :label_method => :to_s, input_html: {class: 'select2-ajax bmro-form-label bmro-form-input', :'data-source' => autocomplete_overseers_categories_path} %>
+      <%= f.association :parent, :label_method => :to_s, input_html: {class: 'select2-ajax bmro-form-label bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_categories_path} %>
     <% end %>
 
     <div class="form-row">
       <div class="col-12 col-md-4">
-        <%= f.input :is_service, input_html: {class: 'bmro-form-input bmro-form-label'} %>
+        <%= f.input :is_service %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.input :is_active, input_html: {class: 'bmro-form-input bmro-form-label'} %>
+        <%= f.input :is_active%>
       </div>
     </div>
 
