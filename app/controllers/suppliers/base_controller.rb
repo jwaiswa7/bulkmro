@@ -3,23 +3,29 @@ class Suppliers::BaseController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   layout 'suppliers/layouts/application'
-
-  before_action :authenticate_contact
+  before_action :store_contact_location!, if: :storable_location?
+  before_action :authenticate_contact!
   before_action :set_paper_trail_whodunnit
   after_action :verify_authorized
   before_action :redirect_if_required
 
   helper_method :current_company
 
-  def authenticate_contact
-    if params[:controller].split("/").last == "rfq"
-      true
-    else
-      authenticate_contact!
-    end
-  end
-
   private
+    def storable_location?
+      request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
+    end
+
+    def store_contact_location!
+      # :contact is the scope we are authenticating
+      store_location_for(:contact, request.fullpath)
+      if request.fullpath.include? "edit_supplier_rfq"
+        contact = Contact.find(params[:supplier_contact_id])
+        session[:current_company_id] = params[:supplier_id]
+        current_company
+        bypass_sign_in(contact)
+      end
+    end
 
     def render_pdf_for(record, locals={})
       render(
@@ -46,6 +52,8 @@ class Suppliers::BaseController < ApplicationController
           edit_current_company_suppliers_sign_in_steps_path
         elsif controller_name == 'sign_in_steps'
           suppliers_dashboard_path
+        elsif request.fullpath.include? "edit_supplier_rfq"
+          edit_supplier_rfq_suppliers_rfq_index_path
         end
       end
 

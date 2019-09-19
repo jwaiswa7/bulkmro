@@ -34,6 +34,7 @@ json.data (@inquiry_product_suppliers) do |inquiry_product_supplier|
                   ].join(' '),
                   link_to(@inquiry.inquiry_number, edit_overseers_inquiry_path(@inquiry), target: '_blank'),
                   inquiry_product_supplier.inquiry_product.to_s,
+                  inquiry_product_supplier.supplier.to_s,
                   inquiry_product_supplier.inquiry_product.quantity,
                   inquiry_product_supplier.lead_time,
                   inquiry_product_supplier.unit_cost_price,
