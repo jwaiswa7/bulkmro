@@ -9,7 +9,7 @@
     <div class="bmro-card bmro-card-padding">
       <div class="form-row">
         <div class="col-4">
-          <%= f.association :bank, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, collection: Bank.all, required: true, prompt: "Choose a bank" %>
+          <%= f.association :bank, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, collection: Bank.all, required: true, prompt: "Choose a bank" %>
         </div>
 
         <div class="col-4">
