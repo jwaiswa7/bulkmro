@@ -702,7 +702,7 @@ a.bmro-click-toggle.collapsed:after{
    top: -7px;
 }
 .bmro-collaps{
-    background-color: #DFE5F0;
+    background-color: #fff;
     float: left;
     padding: 6px 15px 4px;
     width: 100%;
@@ -1203,4 +1203,12 @@ table.table.dataTable.table-bordered th:first-child{
     font-size: 12px;
     font-weight: 500;
     opacity: none;
+}
+.bmro-card-body-pt{
+    padding-top: 0px;
+}
+.bmro-Opportunity-slide{
+    height: 55px;
+    float: left;
+    width: 100%;
 }
