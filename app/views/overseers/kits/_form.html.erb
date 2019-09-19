@@ -133,17 +133,15 @@
               </div>
             </div>
           <% end %>
-          <div class="bmro-button-parent">
-            <% if !f.object.persisted? %>
-              <%= f.add_nested_fields_link :kit_product_rows, 'Add a product', class: 'btn btn-outline-success btn-block bmro-button' %>
-            <% else %>
-              <%= f.add_nested_fields_link :kit_product_rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
-                <i class="fal fa-plus-circle mr-1"></i>Add a product
-              <% end %>
-          </div>
+          <% if !f.object.persisted? %>
+            <%= f.add_nested_fields_link :kit_product_rows, 'Add a product', class: 'btn btn-outline-success btn-block bmro-button-parent' %>
+          <% else %>
+            <%= f.add_nested_fields_link :kit_product_rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
+              <i class="fal fa-plus-circle mr-1"></i>Add a product
+            <% end %>
           <% end %>
-        <% end %>
-       </div> 
+        </div>
+      <% end %>
     </div>
     <div class="card-footer bmro-button-parent">
       <% if action_name.capitalize =="New" %>
