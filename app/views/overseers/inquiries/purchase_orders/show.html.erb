@@ -28,7 +28,7 @@
           </div>
           <div class="col-6 col-md-2">
             <strong class="d-block">Committed Delivery Date</strong>
-            <%= Date.parse(@metadata[:PoDate]).strftime("%d-%b-%Y") if @metadata[:PoDate].present? %>
+            <%= @purchase_order.max_lead_date %>
           </div>
           <div class="col-6 col-md-1">
             <% if is_authorized(@purchase_order, 'show') %>

@@ -23,12 +23,15 @@ class Account < ApplicationRecord
   has_many :sales_receipts
   has_many :payment_collections
   has_many :email_messages
+  has_one_attached :logo
+
   enum account_type: {
       is_supplier: 10,
       is_customer: 20,
   }
 
   validates_presence_of :account_type
+  validates_with ImageFileValidator, attachment: :logo
 
   after_initialize :set_defaults, if: :new_record?
   def set_defaults

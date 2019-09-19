@@ -5,7 +5,7 @@ require './config/environment'
 require 'active_support/time'
 
 handler do |job, time|
-  Chewy.strategy(:atomic)
+  Chewy.strategy(:sidekiq)
   puts "Running #{job}, at #{time}"
 end
 
@@ -21,14 +21,14 @@ every(30.minutes, 'update_admin_dashboard_cache') do
   service.call
 end
 
-every(35.minutes, 'refresh_smart_queue') do
+every(60.minutes, 'refresh_smart_queue') do
   Chewy.strategy(:atomic) do
     service = Services::Overseers::Inquiries::RefreshSmartQueue.new
     service.call
   end
 end
 
-every(50.minutes, 'bible_upload') do
+every(90.minutes, 'bible_upload') do
   Chewy.strategy(:atomic) do
     @bible_upload_queue = BibleUpload.where(status: 'Pending').first
     if @bible_upload_queue.present?
@@ -49,21 +49,23 @@ every(4.hour, 'generate_exports_hourly') do
 end
 
 every(1.day, 'refresh_indices', at: '00:00') do
-  Services::Shared::Chewy::RefreshIndices.new
+  Chewy.strategy(:sidekiq) do
+    Services::Shared::Chewy::RefreshIndices.new
+  end
 end
 
-every(1.day, 'generate_exports_daily', at: '03:00') do
-  Chewy.strategy(:atomic) do
+every(1.day, 'generate_exports_daily', at: '04:00') do
+  Chewy.strategy(:sidekiq) do
     Services::Overseers::Exporters::GenerateExportsDaily.new
   end
 end
 
-every(1.day, 'refresh_calculated_totals', at: '06:00') do
+every(1.day, 'refresh_calculated_totals', at: '21:00') do
   service = Services::Overseers::Inquiries::RefreshCalculatedTotals.new
   service.call
 end
 
-every(1.day, 'flush_unavailable_images', at: '06:30') do
+every(1.day, 'flush_unavailable_images', at: '20:30') do
   Chewy.strategy(:atomic) do
     service = Services::Customers::CustomerProducts::FlushUnavailableImages.new
     service.call
@@ -85,27 +87,27 @@ every(1.day, 'resync_requests_status', at: '08:30') do
   service.verify
 end if Rails.env.production?
 
-every(1.day, 'log_currency_rates', at: '09:00') do
+every(1.day, 'log_currency_rates', at: '20:00') do
   service = Services::Overseers::Currencies::LogCurrencyRates.new
   service.call
 end
 
-every(1.day, 'set_slack_ids', at: '10:00') do
+every(1.day, 'gcloud_run_backups', at: '21:30') do
+  service = Services::Shared::Gcloud::RunBackups.new
+  service.call
+end if Rails.env.production?
+
+every(2.day, 'gcloud_run_backups_alt', at: '22:30') do
+  service = Services::Shared::Gcloud::RunBackups.new(send_chat_message: false)
+  service.call
+end if Rails.env.production?
+
+every(4.day, 'set_slack_ids', at: '10:00') do
   Chewy.strategy(:atomic) do
     service = Services::Overseers::Slack::SetSlackIds.new
     service.call
   end
 end
-
-every(1.day, 'gcloud_run_backups', at: '21:00') do
-  service = Services::Shared::Gcloud::RunBackups.new
-  service.call
-end if Rails.env.production?
-
-every(1.day, 'gcloud_run_backups_alt', at: '22:30') do
-  service = Services::Shared::Gcloud::RunBackups.new(send_chat_message: false)
-  service.call
-end if Rails.env.production?
 
 every(1.day, 'set_overseer_monthly_target', if: lambda { |t| t.day == 1 }) do
   puts 'For setting Monthly Targets'
