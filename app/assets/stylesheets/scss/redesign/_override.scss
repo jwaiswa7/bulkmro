@@ -538,7 +538,8 @@ table.dataTable td{
     letter-spacing: -0.5px;
     line-height: 15px;
     text-align: right!important;
-    padding-right: 10px;    
+    padding-right: 10px;
+    padding-left: 10px;    
 }
 .bmro-product-bottom label{
     color: #687686!important;
@@ -1218,4 +1219,7 @@ table.table.dataTable.table-bordered th:first-child{
 }
 .bmro-table-margin{
     margin-left: 4px;
+}
+.badge strong{
+    padding: 4px;
 }
