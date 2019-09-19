@@ -133,12 +133,14 @@
               </div>
             </div>
           <% end %>
-          <% if !f.object.persisted? %>
-            <%= f.add_nested_fields_link :kit_product_rows, 'Add a product', class: 'btn btn-outline-success btn-block bmro-button' %>
-          <% else %>
-            <%= f.add_nested_fields_link :kit_product_rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
-              <i class="fal fa-plus-circle mr-1"></i>Add a product
-            <% end %>
+          <div class="bmro-button-parent">
+            <% if !f.object.persisted? %>
+              <%= f.add_nested_fields_link :kit_product_rows, 'Add a product', class: 'btn btn-outline-success btn-block bmro-button' %>
+            <% else %>
+              <%= f.add_nested_fields_link :kit_product_rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
+                <i class="fal fa-plus-circle mr-1"></i>Add a product
+              <% end %>
+          </div>
           <% end %>
         </div>
       <% end %>
