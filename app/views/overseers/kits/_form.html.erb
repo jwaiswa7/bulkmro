@@ -28,7 +28,7 @@
 
         <div class="form-row">
           <div class="col-6">
-            <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank:"Type to search", input_html: {class: ' select2-ajax bmro-form-input bmro-form-label'}, :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, label:"Tax code (Please Confirm With Procurement Specialist)" %>
+            <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank:"Type to search", input_html: {class: ' select2-ajax bmro-form-input bmro-form-label' , :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, label:"Tax code (Please Confirm With Procurement Specialist)" %>
           </div>
           <div class="col-6">
             <%= product.input :best_tax_code, disabled: true, input_html: {class: 'bmro-form-input bmro-form-label'} %>
@@ -40,10 +40,10 @@
             <%= product.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single bmro-form-label bmro-form-input'} %>
           </div>
           <div class="col-6 col-md-4">
-            <%= product.association :brand, collection: selected_option_or_nil(product, :brand), input_html: {class: 'select2-ajax bmro-form-input bmro-form-label'}, :'data-source' => autocomplete_overseers_brands_path}, :required => true %>
+            <%= product.association :brand, collection: selected_option_or_nil(product, :brand), input_html: {class: 'select2-ajax bmro-form-input bmro-form-label', :'data-source' => autocomplete_overseers_brands_path}, :required => true %>
           </div>
           <div class="col-6 col-md-4">
-            <%= product.association :category, collection: selected_option_or_nil(product, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax bmro-form-label bmro-form-input'}, :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service => false)} %>
+            <%= product.association :category, collection: selected_option_or_nil(product, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax bmro-form-label bmro-form-input', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service => false)} %>
           </div>
         </div>
 
@@ -92,7 +92,7 @@
               <%= kit_product.hidden_field :id %>
               <div class="col-6">
                 <div class="select2-wrap">
-                  <%= kit_product.association :product, collection: [kit_product.object.product], label_method: :to_s, include_blank:"Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => non_kit_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
+                  <%= kit_product.association :product, collection: [kit_product.object.product], label_method: :to_s, include_blank:"Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-form-label', :'data-source' => non_kit_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
                 </div>
               </div>
 
