@@ -91,7 +91,7 @@
             <div class="form-row flex-row align-items-start bmro-form-heading">
               <%= kit_product.hidden_field :id %>
               <div class="col-6">
-                <div class="select2-wrap bmro-form-input bmro-form-label">
+                <div class="select2-wrap">
                   <%= kit_product.association :product, collection: [kit_product.object.product], label_method: :to_s, include_blank:"Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-form-label', :'data-source' => non_kit_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
                 </div>
               </div>
@@ -119,7 +119,7 @@
                     <%= kit_product.association :tax_code, collection: selected_option_or_nil(kit_product, :tax_code), label_method: :to_s, include_blank:"Type to search", input_html: {class: 'select2-ajax bmro-form-label bmro-form-input', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: kit_product.object.product.is_service)}, label: false if kit_product.object.product.present? %>
                   </div>
                   <div class="col-4">
-                    <%= kit_product.association :tax_rate, input_html: { class: 'bmro-form-label bmro-dropdown-icon bmro-form-input' },  :wrapper => :custom_multi_select, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: false %>
+                    <%= kit_product.association :tax_rate, input_html: { class: 'bmro-form-label bmro-form-input' },  :wrapper => :custom_multi_select, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: false %>
                   </div>
                   <div class="col-1">
                     <%= kit_product.remove_nested_fields_link do %>
