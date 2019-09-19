@@ -10,6 +10,7 @@ class Services::Resources::PurchaseOrders::SaveAndSync < Services::Shared::BaseS
       if po_json.present?
         if po_json['DocEntry'].present?
           doc_entry = po_json['DocEntry']
+          ::Resources::PurchaseOrder.update(doc_entry, purchase_order)
           purchase_order.update_attributes(remote_uid: doc_entry)
         end
       end

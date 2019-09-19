@@ -25,6 +25,14 @@
   <section class="mb-3">
     <div class="card">
       <div class="card-body">
+        <% if @account.logo.attached? %>
+          <div class="form-row mb-3">
+            <div class="col-md-2 col-xs-12">
+              <img src="<%= url_for(@account.logo) %>" alt="<%= @account.name %>">
+            </div>
+          </div>
+        <% end %>
+        <h6 class="text-uppercase text-black-50 mb-2">Account Details</h6>
         <div class="form-row">
           <div class="col-6 col-md-6 mb-2">
             <strong class="d-block">Is Supplier</strong>

@@ -112,9 +112,9 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     authorize_acl @invoice
 
     if params['email_message']['auto_attach']
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Original_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Original_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
     end
 
 
@@ -145,7 +145,6 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
         attachment: {'Original Invoice' => overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank, stamp: true), 'Duplicate Invoice' => duplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank), 'Triplicate Invoice' => triplicate_overseers_inquiry_sales_invoice_path(@invoice.inquiry, @invoice, format: :pdf, target: :_blank)}
     }
 
-
     authorize_acl @invoice
     render 'shared/layouts/email_messages/new'
   end
@@ -161,11 +160,10 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     authorize_acl @invoice
 
     if params['email_message']['auto_attach']
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Original_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Original_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
     end
-
 
     if @email_message.save!
       SalesInvoiceMailer.send_delivery_mail(@email_message).deliver_now
@@ -203,6 +201,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
             :delivery_date,
             :sales_invoice_id,
             :_destroy,
+            :grn_no,
             attachments: []
         ]
       )
