@@ -185,18 +185,26 @@
   </div> 
 <script type="text/javascript">
   $('.bmro-click-toggle').click(function () {
-      if ($('.bmro-collaps1').hasClass("show")) {
+      if ($('.bmro-collaps1').hasClass("show"))
+      {
         $('.bmro-invoice-box-one').hide();
-        $('.bmro-invoice-box-two').show();
-      } else {
+        $('.bmro-invoice-box-two').hide();
+      } 
+      else 
+      {
         $('.bmro-invoice-box-one').show();
         $('.bmro-invoice-box-two').hide();
-      };
+      }
 
-        if ($('.bmro-collaps2').hasClass("show")) {
-        
-      } else {
-        
+      if ($('.bmro-collaps2').hasClass("show"))
+      {
+        $('.bmro-invoice-box-one').hide();
+        $('.bmro-invoice-box-two').show();
+      } 
+      else 
+      {
+        $('.bmro-invoice-box-one').hide();
+        $('.bmro-invoice-box-two').hide();
       };       
   });
 </script>
