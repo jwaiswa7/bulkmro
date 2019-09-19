@@ -76,9 +76,6 @@ let onProductChange = (container) => {
 //     let element = document.getElementById(page);
 //     element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
 // }
-    $(".bmro-li-right").click(function(){
-    $('.bmro-li-right').addClass('bmro-active-li',1000);
-    $(this).removeClass('bmro-active-li');
-});
+
 
 export default edit
