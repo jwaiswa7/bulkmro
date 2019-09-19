@@ -1137,6 +1137,9 @@ table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td
 }
 table.table.dataTable.table-bordered th{
     text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 8px 10px;
 }
 table.table.dataTable.table-bordered td:first-child{
     border-left: 1px solid #E0E2E7;
