@@ -9,38 +9,38 @@
 
     <div class="form-row">
       <div class="col-4">
-        <%= f.association :bank, collection: Bank.all, required: true, prompt: "Choose a bank" %>
+        <%= f.association :bank, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, collection: Bank.all, required: true, prompt: "Choose a bank" %>
       </div>
 
       <div class="col-4">
-        <%= f.input :branch, required: true %>
+        <%= f.input :branch, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, required: true %>
       </div>
 
       <div class="col-4">
-        <%= f.input :ifsc_code, required: true, label: 'IFSC Code' %>
+        <%= f.input :ifsc_code, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, required: true, label: 'IFSC Code' %>
       </div>
 
     </div>
 
     <div class="form-row">
       <div class="col-12">
-        <%= f.input :address, required: true %>
+        <%= f.input :address, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, required: true %>
       </div>
 
       <div class="col-4">
-        <%= f.input :city %>
+        <%= f.input :city, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
       </div>
 
       <div class="col-4">
-        <%= f.input :district %>
+        <%= f.input :district, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
       </div>
 
       <div class="col-4">
-        <%= f.input :state %>
+        <%= f.input :state, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
       </div>
 
       <div class="col-4">
-        <%= f.input :contact %>
+        <%= f.input :contact, input_html: { class: 'bmro-form-input bmro-dropdown-icon' } %>
       </div>
     </div>
 
