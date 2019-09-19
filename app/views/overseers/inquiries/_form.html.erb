@@ -517,33 +517,26 @@
           <ul class="bmro-label-ul">
             <li class="bmro-li-right">
               <!-- <button id="button" data-path="Opportuinity"class="bmro-list-button">Opportunity Details</button> -->
-              <a href="#Opportuinity" class="bmro-list-button">Opportunity Details</a>
+              <a href="#" data-path="Opportuinity" class="bmro-list-button">Opportunity Details</a>
             </li>
             <li class="bmro-li-right bmro-active-li">
               <!-- <button id="button" data-path="Billing" class="bmro-list-button">Billing/Shipping Details</button> -->
-              <a href="#Billing" class="bmro-list-button">Billing/Shipping Details</a>
+              <a href="#" data-path="Billing" class="bmro-list-button">Billing/Shipping Details</a>
             </li>
             <li class="bmro-li-right bmro-active-li">
               <!-- <button id="button" data-path="Owner" class="bmro-list-button">Owner Details</button> -->
-              <a href="#Owner" class="bmro-list-button">Owner Details</a>
+              <a href="#" data-path="Owner" class="bmro-list-button">Owner Details</a>
             </li>
             <li class="bmro-li-right bmro-active-li">
               <!-- <button id="button" data-path="Important" class="bmro-list-button">Important Dates</button> -->
-              <a href="#Important" class="bmro-list-button">Important Dates</a>
+              <a href="#" data-path="Important" class="bmro-list-button">Important Dates</a>
             </li>
             <li class="bmro-li-right bmro-active-li">
               <!-- <button id="button" data-path="Order" class="bmro-list-button">Order Details</button> -->
-              <a href="#Order" class="bmro-list-button">Order Details</a>
-
+              <!-- <a href="#" data-path="Order" class="bmro-list-button">Order Details</a> -->
+              <label class="bmro-list-button" data-path="Order">Order Details</label>
             </li>
           </ul>
-          <script type="text/javascript">
-            $(".bmro-li-right").click(function(){
-                $('.bmro-li-right').addClass('bmro-active-li',1000);
-                $(this).removeClass('bmro-active-li');
-                $('turbolinks-progress-bar').removeClass('turbolinks-progress-bar');
-            });            
-          </script>
         </nav>
       </div>
     </div>
