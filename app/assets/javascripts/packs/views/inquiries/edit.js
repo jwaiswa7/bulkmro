@@ -68,6 +68,11 @@ let onProductChange = (container) => {
             }
         });
     }
+    $(".bmro-li-right").click(function(){
+        $('.bmro-li-right').addClass('bmro-active-li',1000);
+        $(this).removeClass('bmro-active-li');
+        $('turbolinks-progress-bar').removeClass('turbolinks-progress-bar');
+    });      
 };
 
 // crezenta js
