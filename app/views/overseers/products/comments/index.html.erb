@@ -1,8 +1,8 @@
 <% if @product.inquiry_products.first.try(:inquiry) %>
   <% content_for :heading_button do %>
     <div class="d-flex flex-row">
-      <a class="d-sm-block btn btn-warning btn-rounded align-self-center btn-block-sm-down mr-1" href="<%= edit_overseers_product_path(@product) %>" target="_blank"><i class="fal fa-pencil mr-1"></i>Edit</a>
-      <%= link_to edit_overseers_inquiry_path(@product.inquiry_products.first.try(:inquiry)), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down" do %>
+      <a class="d-sm-block btn btn-warning btn-rounded align-self-center btn-block-sm-down mr-1 bmro-button" href="<%= edit_overseers_product_path(@product) %>" target="_blank"><i class="fal fa-pencil mr-1"></i>Edit</a>
+      <%= link_to edit_overseers_inquiry_path(@product.inquiry_products.first.try(:inquiry)), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down bmro-button" do %>
         <i class="fal fa-external-link mr-1"></i> Check Inquiry
       <% end %>
     </div>
@@ -10,15 +10,15 @@
 <% end %>
 
 <% content_for :heading_byline do %>
-  This will <em>'update/approve/reject <%= @product %>'</em> and log it under
-  <strong><%= current_overseer.full_name %></strong>.
+<!--   This will <em>'update/approve/reject <%= @product %>'</em> and log it under
+  <strong><%= current_overseer.full_name %></strong>. -->
 <% end %>
 
 <%= render layout: 'shared/layouts/form' do %>
   <div class="card">
     <div class="card-body">
       <div>
-        <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
+        <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Product Details</h6>
         <div class="form-row">
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Product</strong>
