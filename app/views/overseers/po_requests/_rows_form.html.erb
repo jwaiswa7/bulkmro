@@ -10,7 +10,7 @@
     </div>
   <% end %>
   <div class="col-12 col-md-4">
-    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, keep_raw: true, alphabetical: false), :include_blank => true, label: 'Supplier PO Type', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }  required: true %>
+    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, keep_raw: true, alphabetical: false), :include_blank => true, label: 'Supplier PO Type', input_html: { class: 'bmro-form-input bmro-dropdown-icon' },  required: true %>
   </div>
 
   <% if f.object.persisted? %>
