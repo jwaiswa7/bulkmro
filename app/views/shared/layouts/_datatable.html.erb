@@ -200,18 +200,21 @@
       // }  
 
       if ($('.bmro-collaps1').hasClass("show")) {
-        $('.bmro-invoice-box-one').hide();
-      } else {
         $('.bmro-invoice-box-one').show();
+        $('.bmro-invoice-box-two').hide();
+      } else {
+        $('.bmro-invoice-box-two').show();
+        $('.bmro-invoice-box-one').hide();
       }          
   });
   $('.bmro-invoice-two').click(function () {
       // $('.bmro-invoice-box-one').addClass('bmro-invoice-boxes-hide');
       // $('.bmro-invoice-box-two').removeClass('bmro-invoice-boxes-hide');
       if ($('.bmro-collaps2').hasClass("show")) {
-        $('.bmro-invoice-box-two').hide();
+        $('.bmro-invoice-box-two').show();
+        $('.bmro-invoice-box-one').hide();
       } else {
-        $('.bmro-invoice-box-hide').show();
+        $('.bmro-invoice-box-two').show();
       }      
   });  
 </script>
