@@ -74,7 +74,7 @@ let onProductChange = (container) => {
 
 function slideTo(page) {
     let element = document.getElementById(page);
-    element.scrollIntoView({behavior: "smooth", block: "start"});
+    element.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})-= 25;
 }
 $(".bmro-li-right").click(function(){
     $('.bmro-li-right').addClass('bmro-active-li',1000);
