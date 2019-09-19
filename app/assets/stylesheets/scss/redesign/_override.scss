@@ -1262,8 +1262,6 @@ table.bmro-new-table tr:last-child td{
 .custom-select.bmro-form-input{
     font-size: 13px!important;
 }
-table.bmro-new-table th:last-child{
-}
 table.bmro-new-table tr th:first-child{
   border-left: 1px solid #E0E2E7; 
   text-align: left; 
@@ -1274,4 +1272,8 @@ table.bmro-new-table tr:first-child{
 }
 .bmro-invoice-padding{
     padding: 20px; 
+}
+.bmro-icon-relationship{
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAA9hJREFUSA21VmtMFFcU/nZm9sXu7ANcWFgBXa3GqJhoTWuNsbG2hiCJ76aaELGxNUb8Iz7qHy2t1ib1BxqrNY3WakykvqLiix+ioQJG0QoY8YE8VlnBBRGWBdmd6b1j1swsjruGcCaTOfeec79vzr3nnns1R/45nylAc0AUBSeGQDQaxstAXMFREnd6inO4M3EIaACPt9VZ3/jsAEcjoSRWi3lIiCjo4waPkxky9AjgDybydXSivz8YARO9GTNR3+t+nCkpw/cbd6Dwz2Po6OyKji7ziInoeVs7ft3zN0qulGP7ptVgOQbrCgpxu7oOoijK4NTVqEQNzc+w7sdCPKpvwpb87zDGnYq83CWYMMaNzTv24lzJv+roMktUojRXMjbl5UCn0yHOqJeGchwLo9GAzFnT8NnUiTI4dZVTN72xMIwGNgsvNQRBQG/fa0kPEd1q5ZFgt0aDkOxRiahXT6AXT71t2LhtN8hOl9al1deBubNnxERCnWIicqe78Psv6+Hv6cXO/UeRuyQL8SSSdFfsVUuV6OCxsyCzEyGCRHaLZJvFbEZl1b23dlEMkTWbDpfT8bZPrqgmw6XSCjJFAkTZExJIKtN0Jq/yCaHsxl3cf9ggx1boqhHptFoszJoFO1nwsPh7Aqi8XYN5mTMxMtUV7kYwFEJ9UwsMJDPV5J0R0YGj3Wlk4ZXDDHo9pk3JgJW3KAwsw8Bht8FiMSn65Q12/uJlW0cMT4ZB/+ZvKqpq8VfRWdypfYD6Bg8SHfFITLCj+v5jHD55AdeuV6Gm7hHsNjNSkhxo9Hhx9PRFlN+6i9oHT2A06JGakgSGkFPpI9uh0dOCARHt3HcE/917iG+/yUbdk2Zs+HkXmp56sedgEUrLbmLp/DmghTW/YJfk98fhkzhVXIqsL6ZDS6Z7y2/7cflqpTwYSR9ApNVyyP5yBgE+jjmffwILb4bZZJIq9tfzvsKhE8XIGP8RRqalkH4j6MZdlD0b50vL4Yi3YvLEsTCZDDEQcRy6yaLzvBF+fwDBIM1xEWZznBQZb4oDq2HR+aoHHMOCY1k0NrfAxvNk+vXwtvqkbyTTgIh+2rCKgIcAQYNAoA8F+SsRb7Ngc14uEofZESRn0Yv2dvywdjnSU0kdXJODjHGj0N3th7fNh1U5C/DxpHGRPNAcKioWZ346WXGUC2S/PCeDaCLQjJJLm++llPK0sMqls6uLRGKAXqeVd5PIu3G1ourdJYgW0uSkYYoB4YYjwRZWFV8rmbr3ifJ33+c5SBtH7130SjRIHNXhBJtWfC85lMUV9N5Fr0Sq3oMwhC+Q/wO+gVq8GiFyMQAAAABJRU5ErkJggg==');
+    
 }
