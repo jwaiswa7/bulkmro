@@ -147,7 +147,7 @@ body{
     margin-right: 10px;
 }
 .bmro-form-heading {    
-    color: #2C4159;
+    color: #2C4159!important;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 19px!important;
@@ -1148,7 +1148,7 @@ a.bmro-click-toggle.collapsed:after{
     transform: rotate(180deg);  
 }
 .bmro-bg{
-    background-color: #fff;
+    background-color: #fff!important;
 }
 .form-group abbr{
     text-decoration: none;
