@@ -78,7 +78,7 @@
       <div class="form-group">
         <%= f.label :contact_ids, 'Contacts' %>
         <div class="select2-wrapper">
-          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple bmro-com-contacts select2-single', :"data-placeholder" => 'Select Contacts' %>
+          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple bmro-com-contacts', :"data-placeholder" => 'Select Contacts' %>
         </div>
       </div>
     <% end %>
