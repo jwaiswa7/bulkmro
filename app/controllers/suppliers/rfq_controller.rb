@@ -38,13 +38,8 @@ class Suppliers::RfqController < Suppliers::BaseController
   def edit_supplier_rfq
     authorize :rfq
     supplier = Company.find(params[:supplier_id])
-    if supplier.default_contact.present?
-      contact = supplier.default_contact
-      if contact.role == 'supplier'
-        @inquiry = Inquiry.find(params[:inquiry_id])
-        @supplier_rfqs = SupplierRfq.where(inquiry_id: @inquiry.id, supplier_id: supplier.id)
-      end
-    end
+    @inquiry = Inquiry.find(params[:inquiry_id])
+    @supplier_rfqs = SupplierRfq.where(inquiry_id: @inquiry.id, supplier_id: supplier.id)
   end
 
   private
