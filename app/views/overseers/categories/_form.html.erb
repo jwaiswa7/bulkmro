@@ -13,7 +13,7 @@
 
         <div class="form-row">
           <div class="col-6">
-            <%= f.association :tax_code, collection: selected_option_or_nil(f, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax bmro-form-input bmro-form-label', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)} %>
+            <%= f.association :tax_code, collection: selected_option_or_nil(f, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax bmro-form-input bmro-form-label bmro-dropdown-icon', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)} %>
           </div>
           <div class="col-6">
             <%= f.association :tax_rate, :wrapper => :custom_multi_select, input_html: {class: 'bmro-form-input bmro-form-label bmro-dropdown-icon'}, include_blank: 'Select a Tax Rate' %>
