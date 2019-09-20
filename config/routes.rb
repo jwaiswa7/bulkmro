@@ -936,7 +936,8 @@ Rails.application.routes.draw do
     resource :profile, controller: :profile, except: [:show, :index]
     resources :rfq, controller: :rfq do
       collection do
-        get 'edit_supplier_rfq'
+        get 'edit_supplier_rfqs'
+        get 'update_supplier_rfqs'
       end
     end
 

@@ -26,20 +26,19 @@ class Suppliers::RfqController < Suppliers::BaseController
     end
   end
 
-  def update_supplier_rfq
+  def update_supplier_rfqs
     authorize :rfq
-
   end
 
   def show
     authorize :rfq
   end
 
-  def edit_supplier_rfq
+  def edit_supplier_rfqs
     authorize :rfq
     supplier = Company.find(params[:supplier_id])
     @inquiry = Inquiry.find(params[:inquiry_id])
-    @supplier_rfqs = SupplierRfq.where(inquiry_id: @inquiry.id, supplier_id: supplier.id)
+    @supplier_rfqs = SupplierRfq.joins(:inquiry_product_suppliers).where(inquiry_id: @inquiry.id, supplier_id: supplier.id).uniq
   end
 
   private

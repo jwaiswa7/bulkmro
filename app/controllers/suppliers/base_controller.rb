@@ -53,7 +53,7 @@ class Suppliers::BaseController < ApplicationController
         elsif controller_name == 'sign_in_steps'
           suppliers_dashboard_path
         elsif request.fullpath.include? "edit_supplier_rfq"
-          edit_supplier_rfq_suppliers_rfq_index_path
+          edit_supplier_rfqs_suppliers_rfq_index_path
         end
       end
 
