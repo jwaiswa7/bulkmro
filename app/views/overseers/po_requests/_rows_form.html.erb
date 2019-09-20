@@ -292,7 +292,7 @@
 <%# if is_authorized(:po_request, 'add_service_product') %>
 <% if !stock %>
   <div class="col-md-3">
-    <%= f.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 bmro-button' do %>
+    <%= f.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0 bmro-button' do %>
       <i class="fal fa-plus-circle mr-1"></i>Add a Service product
     <% end %>
   </div>
