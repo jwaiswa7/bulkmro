@@ -1412,9 +1412,8 @@ table.bmro-new-table tr:first-child{
 .bmro-collegues label{
     margin-bottom: 12px;
 }
-.d-block{
-    width: 80%!important;
-    text-align: center;
+.bmro-not-border{
+    border:none; 
 }
 input:-internal-autofill-selected {
  background-color: #fff!important; 
