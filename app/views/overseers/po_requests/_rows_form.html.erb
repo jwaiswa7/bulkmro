@@ -6,24 +6,24 @@
 
   <% if stock %>
     <div class="col-12 ">
-      <%= f.association :supplier, label_method: :to_s, include_blank: "Type Supplier", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input', :'data-source' => autocomplete_overseers_suppliers_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier" %>
+      <%= f.association :supplier, label_method: :to_s, include_blank: "Type Supplier", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier" %>
     </div>
   <% end %>
   <div class="col-12 col-md-4">
-    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, keep_raw: true, alphabetical: false), :include_blank => true, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, label: 'Supplier PO Type', required: true %>
+    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, keep_raw: true, alphabetical: false), :include_blank => true, label: 'Supplier PO Type', required: true %>
   </div>
 
   <% if f.object.persisted? %>
     <% if stock %>
       <div class="col-12 col-md-4">
         <% if is_authorized(@po_request, 'can_cancel') && policy(@po_request).can_cancel? %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Requested', 'Stock Rejected'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, keep_raw: true), :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Requested', 'Stock Rejected'), alphabetical: false, keep_raw: true), :include_blank => false %>
         <% elsif is_authorized(@po_request, 'can_reject_stock_po') %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, keep_raw: true), :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, keep_raw: true), :include_blank => false %>
         <% elsif is_authorized(@po_request, 'can_update_rejected_po_requests') && policy(@po_request).can_update_rejected_po_requests? %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
         <% else %>
-          <%= f.input :stock_status, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, as: :select, collection: enum_to_collection(PoRequest.stock_statuses, alphabetical: false), disabled: true, :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses, alphabetical: false), disabled: true, :include_blank => false %>
         <% end %>
       </div>
     <% else %>
@@ -41,11 +41,11 @@
   <% else %>
     <% if stock %>
       <div class="col-12 col-md-4">
-        <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Rejected', 'Stock Supplier PO Created'), input_html: { class: 'bmro-form-input' }, alphabetical: false), :include_blank => false %>
+        <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Rejected', 'Stock Supplier PO Created'), alphabetical: false), :include_blank => false %>
       </div>
     <% else %>
       <div class="col-12 col-md-4">
-        <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.except('Supplier PO: Created Not Sent', 'Supplier PO Sent', 'Cancelled', 'Rejected', 'Supplier PO: Amendment Pending', 'Supplier PO: Amended'), input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, alphabetical: false, keep_raw: true), :include_blank => false %>
+        <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.except('Supplier PO: Created Not Sent', 'Supplier PO Sent', 'Cancelled', 'Rejected', 'Supplier PO: Amendment Pending', 'Supplier PO: Amended'), alphabetical: false, keep_raw: true), :include_blank => false %>
       </div>
     <% end %>
   <% end %>
@@ -53,7 +53,7 @@
   <% if f.object.persisted? %>
 
     <div class="col-4">
-      <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: 'Type Supplier PO Number', input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: 'Supplier PO Number' %>
+      <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: 'Type Supplier PO Number', input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: 'Supplier PO Number' %>
     </div>
   <% end %>
   <% if stock %>
@@ -62,15 +62,15 @@
     </div>
   <% else %>
     <div class="col-12 col-md-4">
-      <%= f.association :contact, collection: (f.object.supplier.contacts.map {|contact| [contact.to_s, contact.id, {'data-contact-email' => contact.email || nil, 'data-contact-phone' => contact.phone || nil, 'data-contact-mobile' => contact.mobile || nil}]} if f.object.supplier) || [], input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}, required: true, hint: 'Note: If left blank, above selected contact\'s email will be applied' %>
+      <%= f.association :contact, collection: (f.object.supplier.contacts.map {|contact| [contact.to_s, contact.id, {'data-contact-email' => contact.email || nil, 'data-contact-phone' => contact.phone || nil, 'data-contact-mobile' => contact.mobile || nil}]} if f.object.supplier) || [], input_html: {class: 'select2-single'}, required: true, hint: 'Note: If left blank, above selected contact\'s email will be applied' %>
 
     </div>
   <% end %>
   <div class="col-12 col-md-3">
-    <%= f.input :contact_email, input_html: { class: 'bmro-form-input' }, label: 'Contact Email', placeholder: 'Contact email', required: !stock %>
+    <%= f.input :contact_email, label: 'Contact Email', placeholder: 'Contact email', required: !stock %>
   </div>
   <div class="col-12 col-md-4">
-    <%= f.input :contact_phone, input_html: { class: 'bmro-form-input' }, label: 'Contact Phone', placeholder: 'Contact phone', required: !stock %>
+    <%= f.input :contact_phone, label: 'Contact Phone', placeholder: 'Contact phone', required: !stock %>
   </div>
 
   <!--  <div class="col-12 col-md-4">-->
@@ -78,45 +78,45 @@
   <!--  </div>-->
 
   <div class="col-12 col-md-4">
-    <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, required: true, label: 'Payment Terms:', collection: PaymentOption.active.pluck(:name, :id) %>
+    <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', required: true, label: 'Payment Terms:', collection: PaymentOption.active.pluck(:name, :id) %>
   </div>
   <div class="col-12 col-md-4">
-    <%= f.input :delivery_type, as: :select, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, collection: enum_to_collection(PoRequest.delivery_types, alphabetical: false, keep_raw: true), required: true %>
+    <%= f.input :delivery_type, as: :select, collection: enum_to_collection(PoRequest.delivery_types, alphabetical: false, keep_raw: true), required: true %>
   </div>
   <div class="col-12 col-md-4">
-    <%= f.input :transport_mode, as: :select, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, collection: enum_to_collection(PoRequest.transport_modes, alphabetical: false, keep_raw: true), required: true %>
+    <%= f.input :transport_mode, as: :select, collection: enum_to_collection(PoRequest.transport_modes, alphabetical: false, keep_raw: true), required: true %>
   </div>
   <div class="col-12 col-md-4 d-none late_lead_date_reason">
-    <%= f.input :late_lead_date_reason, input_html: { class: 'bmro-form-input select2-single' }, placeholder: 'Reason for late lead date', label: 'Late Lead Date Reason:' %>
+    <%= f.input :late_lead_date_reason, placeholder: 'Reason for late lead date', label: 'Late Lead Date Reason:' %>
   </div>
 
   <div class="col-12 ">
     <div class="form-row">
       <% if stock %>
         <div class="col-12 col-md-6">
-          <%= f.association :bill_from, collection: selected_option_or_nil(f, :bill_from), label_method: :to_s, input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.supplier || f.object.inquiry.company)}, required: true %>
+          <%= f.association :bill_from, collection: selected_option_or_nil(f, :bill_from), label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.supplier || f.object.inquiry.company)}, required: true %>
         </div>
         <div class="col-12 col-md-6">
-          <%= f.association :ship_from, collection: selected_option_or_nil(f, :ship_from), label_method: :to_s, input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.supplier || f.object.inquiry.company)}, required: true %>
+          <%= f.association :ship_from, collection: selected_option_or_nil(f, :ship_from), label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.supplier || f.object.inquiry.company)}, required: true %>
         </div>
         <div class="col-12 col-md-6">
-          <%= f.association :bill_to, collection: Warehouse.where('is_active = ? AND series_code IS NOT ?', true, nil).with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq}, required: true %>
+          <%= f.association :bill_to, collection: Warehouse.where('is_active = ? AND series_code IS NOT ?', true, nil).with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq}, required: true %>
         </div>
         <div class="col-12 col-md-6">
-          <%= f.association :ship_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single bmro-dropdown-icon bmro-form-input', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq}, required: true %>
+          <%= f.association :ship_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq}, required: true %>
         </div>
       <% else %>
         <div class="col-12 col-md-6">
-          <%= f.association :bill_from, collection: Address.with_includes.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}, required: true %>
+          <%= f.association :bill_from, collection: Address.with_includes.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single'}, required: true %>
         </div>
         <div class="col-12 col-md-6">
-          <%= f.association :ship_from, collection: Address.with_includes.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single bmro-dropdown-icon bmro-form-input'}, required: true %>
+          <%= f.association :ship_from, collection: Address.with_includes.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single'}, required: true %>
         </div>
         <div class="col-12 col-md-6">
-          <%= f.association :bill_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier is from a location where Bulk MRO has no office eg. Coimbatore, then the \'Bill To/\' for the supplier PO will be the Bulk MRO office from which the Sales Order has been created eg. Mumbai, Ahmedabad, Delhi, etc.' %>
+          <%= f.association :bill_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier is from a location where Bulk MRO has no office eg. Coimbatore, then the \'Bill To/\' for the supplier PO will be the Bulk MRO office from which the Sales Order has been created eg. Mumbai, Ahmedabad, Delhi, etc.' %>
         </div>
         <div class="col-12 col-md-6">
-          <%= f.association :ship_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier is from a location where Bulk MRO has no office eg. Coimbatore, then the \'Bill To\' for the supplier PO will be the Bulk MRO office from which the Sales Order has been created eg. Mumbai, Ahmedabad, Delhi, etc.' %>
+          <%= f.association :ship_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier is from a location where Bulk MRO has no office eg. Coimbatore, then the \'Bill To\' for the supplier PO will be the Bulk MRO office from which the Sales Order has been created eg. Mumbai, Ahmedabad, Delhi, etc.' %>
         </div>
       <% end %>
       <div id="warehouse-div" data-warehouse-id=""></div>
@@ -163,9 +163,9 @@
       <% if f.object.persisted? %>
         <div class="form-group">
           <% f.object.attachments.each do |attachment| %>
-            <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+            <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
               <i class="fal fa-download"></i>
-              <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0 bmro-button', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+              <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                 <i class="fal fa-trash-alt"></i>
               <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
             <% end %>
@@ -179,7 +179,7 @@
       <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |po_request_comment| %>
         <%= po_request_comment.hidden_field :created_by_id %>
         <%= po_request_comment.hidden_field :updated_by_id %>
-        <%= po_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '', class: 'bmro-form-input'}, label: 'Comment Message' %>
+        <%= po_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''}, label: 'Comment Message' %>
       <% end %>
     </div>
   <% end %>
@@ -191,10 +191,10 @@
     <label class="custom-control-label" for="all_lead_dates">Select All</label>
   </div>
   <div class="col-12 col-md-4 update_lead_date_wrapper">
-    <%= f.input :common_lead_date, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'overall-lead-time bmro-form-input'}, label: 'Lead Date' %>
+    <%= f.input :common_lead_date, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'overall-lead-time'}, label: 'Lead Date' %>
   </div>
   <div class="col-12 col-md-6 mt-3">
-    <button type="button" id="update_lead_date" class="bmro-button btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_lead_date_wrapper">
+    <button type="button" id="update_lead_date" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_lead_date_wrapper">
       <i class="fal fa-plus mr-1"></i>Update Lead Date
     </button>
   </div>
@@ -228,7 +228,7 @@
 
         <div class="col-12 col-md-3">
           <div class="select2-wrap">
-            <%= po_request_row.association :product, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :product), include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input', :'data-source' => product_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, disabled: po_request_row.object.field_disabled? %>
+            <%= po_request_row.association :product, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :product), include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => product_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, disabled: po_request_row.object.field_disabled? %>
           </div>
         </div>
 
