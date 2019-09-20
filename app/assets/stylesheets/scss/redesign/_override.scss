@@ -295,6 +295,9 @@ a.bmro-list-button{
     -webkit-appearance:none!important;
     font-weight: 500;
 }
+.form-group input.form-control::placeholder{
+    font-weight: 500!important;
+}
 .select2-selection.disabled.bmro-form-input{
     height: 38px!important;
     -webkit-appearance:none!important;
