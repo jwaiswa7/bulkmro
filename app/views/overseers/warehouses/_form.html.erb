@@ -15,11 +15,11 @@
           </div>
           <div class="form-row">
             <div class="col-6 col-md-3">
-              <%= address.input :country_code, as: :country, input_html: { class: 'bmro-form-input select2-single' }, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
+              <%= address.input :country_code, as: :country, input_html: { class: 'bmro-form-input select2-single bmro-dropdown-icon' }, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
             </div>
 
               <div class="col-6 col-md-3">
-                <%= address.association :state, input_html: { class: 'bmro-form-input select2-single' }, :wrapper => :custom_multi_select, collection: AddressState.indian %>
+                <%= address.association :state, input_html: { class: 'bmro-form-input select2-single bmro-dropdown-icon' }, :wrapper => :custom_multi_select, collection: AddressState.indian %>
               </div>
 
             <div class="col-6 col-md-3">
