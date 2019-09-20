@@ -143,16 +143,6 @@ class PurchaseOrder < ApplicationRecord
     self.material_status = 'Material Readiness Follow-Up'
   end
 
-  def po_material_status
-    if self.material_status.present?
-      self.material_status
-    elsif self.po_request.present? && self.po_request.status == 'Supplier PO Sent' && self.has_sent_email_to_supplier?
-      self.material_status = 'Material Readiness Follow-Up'
-    else
-      ''
-    end
-  end
-
   def has_supplier?
     self.get_supplier(self.rows.first.metadata['PopProductId'].to_i).present?
   end
