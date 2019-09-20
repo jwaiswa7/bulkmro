@@ -1376,3 +1376,7 @@ table.bmro-new-table tr:first-child{
 .bmro-logist-text{
     height: 38px!important;
 }
+.form-control:focus{
+    border-color: none;
+    border-radius: none;
+}
