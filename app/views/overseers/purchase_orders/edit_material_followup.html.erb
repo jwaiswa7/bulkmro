@@ -51,7 +51,7 @@
             <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |purchase_order_comment| %>
               <%= purchase_order_comment.hidden_field :created_by_id %>
               <%= purchase_order_comment.hidden_field :updated_by_id %>
-              <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '', input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input'} %>
+              <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '', class: 'select2-ajax select2-wrap-text bmro-form-input'} %>
             <% end %>
           </div>
 
