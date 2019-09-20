@@ -78,7 +78,7 @@
       <div class="form-group">
         <%= f.label :contact_ids, 'Contacts' %>
         <div class="select2-wrapper">
-          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts', input_html: {class: "bmro-form-input bmro-dropdown-icon"} %>
+          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts' %>
         </div>
       </div>
     <% end %>
@@ -120,7 +120,7 @@
       </div>
     </div>
   </div>
-  <div class="card-footer bmro-button-parent">
+  <div class="card-footer bmro-button-parent bmro-card-footer">
     <%= action_button(action_name, @company) %>
   </div>
 </div>
