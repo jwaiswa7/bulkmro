@@ -233,17 +233,17 @@
         </div>
 
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s, class: 'bmro-form-input'}, label: 'Make', disabled: true %>
+          <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: 'Make', disabled: true %>
         </div>
         <div class="col-12 col-md-2">
           <% if !stock %>
-            <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: 'HSN', required: true %>
+            <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: 'HSN', required: true %>
           <% else %>
-            <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: { class: 'select2-ajax select2-wrap-text bmro-form-input', :'data-source' => autocomplete_overseers_tax_codes_path }, label: 'HSN', required: true %>
+            <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: { class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path }, label: 'HSN', required: true %>
           <% end %>
         </div>
         <div class="col-12 col-md-2">
-          <%= po_request_row.association :tax_rate, collection: TaxRate.all, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, label_method: :to_s, include_blank: false, label: 'Tax Rate' %>
+          <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: 'Tax Rate' %>
         </div>
         <div class="col-12 col-md-1">
           <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 0.01}, disabled: false, required: true %>
