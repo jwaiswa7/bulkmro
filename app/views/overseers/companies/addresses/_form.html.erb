@@ -4,7 +4,7 @@
   <%= simple_form_for([:overseers, @company, @address], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :company_id %>
     <%= render 'shared/snippets/form_errors', f: f %>
-
+<div class="bmro-card bmro-card-padding">
     <div class="form-row">
       <% if is_authorized(@address, 'edit_remote_uid') %>
         <div class="col-3 col-md-1">
@@ -87,4 +87,5 @@
     <%= action_button(action_name, @address) %>
     </div>
   <% end %>
+  </div>
 </div>
