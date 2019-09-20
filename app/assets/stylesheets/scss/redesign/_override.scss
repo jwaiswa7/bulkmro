@@ -1376,14 +1376,13 @@ table.bmro-new-table tr:first-child{
 .bmro-logist-text{
     height: 38px!important;
 }
-.form-control:focus{
-    border-color: none;
-    border-radius: none;
-}
 .bmro-chosen-height-parent .custom-file{
     height: calc(1.9rem + 8px);
 }
 .bmro-trash-icon-p{
     background-size: 16px 17px;
     padding: 8px 9px;   
+}
+.bmro-form-icon-mb{
+    margin-bottom: 19px;
 }
