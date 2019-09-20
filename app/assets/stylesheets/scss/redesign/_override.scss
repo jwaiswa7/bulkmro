@@ -547,9 +547,6 @@ a.bmro-list-button{
     color: #2C4159 !important;
 }
 .bmro-card-body .custom-file-label { margin-top:0!important; }
-.bmro-button-parent{
-    margin-right: 10px;
-}
 .bmro-button-parent button{
     padding: 8px 10px !important;
     border: 2px solid #2C4159 !important;
@@ -565,6 +562,9 @@ a.bmro-list-button{
     outline: none !important;
     text-transform: capitalize !important; 
     box-shadow: none !important;   
+}
+.bmro-button-parent-mr0{
+    margin-right: 10px;
 }
 .bmro-button-parent button:hover{
     background-color: #385372 !important;
