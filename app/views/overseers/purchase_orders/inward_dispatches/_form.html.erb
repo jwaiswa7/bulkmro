@@ -92,7 +92,7 @@
             </div>
 
             <div class="col-6">
-              <%= f.input :other_logistics_partner, as: :text, label: 'Other Logistics Partner' %>
+              <%= f.input :other_logistics_partner, input_html: {class: "bmro-form-input"}, as: :text, label: 'Other Logistics Partner' %>
             </div>
 
             <div class="col-12">
@@ -136,7 +136,6 @@
                 </button>
               </div>
             </div>
-            <hr>
           </div>
         <% end %>
         <div class="card-body">
