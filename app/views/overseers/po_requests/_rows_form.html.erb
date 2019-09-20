@@ -17,13 +17,13 @@
     <% if stock %>
       <div class="col-12 col-md-4">
         <% if is_authorized(@po_request, 'can_cancel') && policy(@po_request).can_cancel? %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Requested', 'Stock Rejected'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, keep_raw: true), :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Requested', 'Stock Rejected'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, keep_raw: true), :include_blank => false %>
         <% elsif is_authorized(@po_request, 'can_reject_stock_po') %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, keep_raw: true), :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, keep_raw: true), :include_blank => false %>
         <% elsif is_authorized(@po_request, 'can_update_rejected_po_requests') && policy(@po_request).can_update_rejected_po_requests? %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
         <% else %>
-          <%= f.input :stock_status, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, collection: enum_to_collection(PoRequest.stock_statuses, alphabetical: false), disabled: true, :include_blank => false %>
+          <%= f.input :stock_status, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, as: :select, collection: enum_to_collection(PoRequest.stock_statuses, alphabetical: false), disabled: true, :include_blank => false %>
         <% end %>
       </div>
     <% else %>
@@ -78,7 +78,7 @@
   <!--  </div>-->
 
   <div class="col-12 col-md-4">
-    <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', required: true, label: 'Payment Terms:', collection: PaymentOption.active.pluck(:name, :id) %>
+    <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms',  required: true, label: 'Payment Terms:', collection: PaymentOption.active.pluck(:name, :id) %>
   </div>
   <div class="col-12 col-md-4">
     <%= f.input :delivery_type, as: :select, collection: enum_to_collection(PoRequest.delivery_types, alphabetical: false, keep_raw: true), required: true %>
