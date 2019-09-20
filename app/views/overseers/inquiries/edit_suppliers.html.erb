@@ -12,9 +12,6 @@
                 <label class="custom-control-label" for="select_all_suppliers">Select All</label>
               </div>
             </div>
-            <!--            <div class="col-md-6">-->
-            <%#= f.input :common_supplier_id, label: false, :as => :select, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, 'data-placeholder': 'Select Common Supplier'} %>
-            <!--            </div>-->
             <% if is_authorized(@inquiry, 'link_product_suppliers') %>
               <div class="col-md-4">
                 <%= button_tag(type: "button", name: 'mass_link_supplier', class: "btn btn-success btn-block mass-link-supplier") do %>
@@ -22,7 +19,6 @@
                 <% end %>
               </div>
               <div class="col-md-4">
-                <%#= link_to 'Draft RFQ', new_overseers_inquiry_supplier_rfq_path(@inquiry), class: "btn-block btn btn-success draft-rfq" %>
                 <%= button_tag(type: "button", name: 'mass_link_supplier', class: "btn btn-success btn-block draft-rfq") do %>
                   Draft RFQ
                 <% end %>

@@ -12,12 +12,12 @@
         <div class="card mt-3 option-wrapper">
           <div class="card-body accordion" id="ac-<%= inquiry_product.id %>">
             <div class="btn btn-danger float-right" :class="showProductButton('<%= inquiry_product.id %>')? '': 'disabled'" data-v-event="" data-v-on:click="hideProduct('<%= inquiry_product.id %>')">
-              <template v-if="showProductButton('<%= inquiry_product.id %>')">
-                Remove Product
-              </template>
-              <template v-else>
-                Product Removed
-              </template>
+              <!--              <template v-if="showProductButton('<%#= inquiry_product.id %>')">-->
+              <!--                Remove Product-->
+              <!--              </template>-->
+              <!--              <template v-else>-->
+              <!--                Product Removed-->
+              <!--              </template>-->
             </div>
             <h6 class="text-uppercase mb-0">
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.sr_no %></span>
@@ -54,11 +54,11 @@
                         <%= row.label '', for: /id="([a-z\d_]*)"/.match(radio)[1], :class => 'd-block' do %>
                           <h6 class="text-black-50 mb-1 text-uppercase">
                             <%= row.object.inquiry_product_supplier %>
-                            <% if !row.object.persisted? %>
-                              <div class="float-right badge badge-secondary">
-                                Removed Last Save
-                              </div>
-                            <% end %>
+                            <%# if !row.object.persisted? %>
+                            <!--                              <div class="float-right badge badge-secondary">-->
+                            <!--                                Removed Last Save-->
+                            <!--                              </div>-->
+                            <%# end %>
                           </h6>
                           <div class="row">
                             <div class="col-12 d-block d-md-flex flex-row">
@@ -120,7 +120,6 @@
         </div>
       <% end %>
       <div class="card mt-3">
-
         <div class="card-body">
           <div class="form-row">
             <div class="col-6">

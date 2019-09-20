@@ -83,10 +83,10 @@ let draftRfq = () => {
                 inquiry_product_ids.push(j);
             }
         });
-        let data = JSON.stringify({
+        let data = {
             inquiry_product_ids: inquiry_product_ids,
             inquiry_product_supplier_ids: inquiry_product_supplier_ids
-        });
+        };
 
         $.ajax({
             url: Routes.add_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id),
