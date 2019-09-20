@@ -788,6 +788,8 @@ a.bmro-click-toggle.collapsed:after{
     background-color: #f7f7f7;
     border-color: #eceef2!important;
     color: #687686!important;
+    -webkit-appearance:none!important;
+    appearance: none;
 }
 .bmro-trash-icon{
     width: 100%;
