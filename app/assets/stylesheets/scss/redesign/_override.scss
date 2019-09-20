@@ -1387,3 +1387,17 @@ table.bmro-new-table tr:first-child{
 .bmro-form-icon-mb{
     margin-bottom: 19px;
 }
+.form-control:focus{
+    border-color: none;
+}
+.bmro-icon-bottom{
+    margin-bottom: 13px;
+}
+.bmro-trashreturn-icon{
+    width: 100%;
+    float: left;
+    background-size: 16px 16px;
+    padding: 8px 10px;
+    background-repeat: no-repeat;
+    background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAoCAYAAACfKfiZAAAAAXNSR0IArs4c6QAAASFJREFUWAntV7ENwkAMfEcEKBiAEehpkJiDgoINmAYxAcyCxAiwBwVJIMYGHD1G8AkohMJpPvb5fc7Zkf7BVXyOSYbvtnQ7MbzDNRZpx69tCH1R3QU1roAVUEysnoWq0xyalVf5rQWmQOMKtELTK/irKS6LS5xeG1fACjAFTAFTwBQwBUwBU6D0iSh0Twjh+iQktrXgfxQAgIP0hVdE7Pv2N+86l8/lKYB7nyRNzwu90cfLvnMOzvUYjzuxi78AXbRyLh8KgA4nSXqa0H1AXB+tlONpH3GtxVlcz6nSKM1OG0Q3ErCOFcBt23FrTG3IOX/RAnYQMOWAOog5552cOG7kV58mYyWSLJ+Dy2e0ZUB2T8dUsW8DhzuWvRNHS5+c81wAZT9hrvlUzHMAAAAASUVORK5CYII='); 
+}
