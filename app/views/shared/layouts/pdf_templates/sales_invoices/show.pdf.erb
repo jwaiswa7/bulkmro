@@ -99,7 +99,7 @@
                     <b><span>Sales Order Date</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" class="content content-with-border" valign="top">
                     <span>
-                      <%= record.sales_order.created_at.strftime("%d-%b-%Y") if record.sales_order.created_at.present? %>
+                      <%= record.sales_order.mis_date.strftime("%d-%b-%Y") if record.sales_order.mis_date.present? %>
                         </span></td>
                 </tr>
 
