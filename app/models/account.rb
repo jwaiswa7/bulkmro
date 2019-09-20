@@ -4,7 +4,7 @@ class Account < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasPaymentCollections
 
-  pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:name], associated_against: {}, using: {tsearch: {prefix: true}}
 
   # validates_presence_of :alias
   # validates_uniqueness_of :alias
@@ -38,6 +38,7 @@ class Account < ApplicationRecord
   validates_with ImageFileValidator, attachment: :logo
 
   after_initialize :set_defaults, if: :new_record?
+
   def set_defaults
     self.account_type ||= :is_customer
   end
@@ -75,5 +76,4 @@ class Account < ApplicationRecord
       0
     end
   end
-
 end
