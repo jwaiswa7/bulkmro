@@ -10,20 +10,20 @@
     </div>
   <% end %>
   <div class="col-12 col-md-4">
-    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, keep_raw: true, alphabetical: false), :include_blank => true, label: 'Supplier PO Type', required: true %>
+    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, keep_raw: true, alphabetical: false), :include_blank => true, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, label: 'Supplier PO Type', required: true %>
   </div>
 
   <% if f.object.persisted? %>
     <% if stock %>
       <div class="col-12 col-md-4">
         <% if is_authorized(@po_request, 'can_cancel') && policy(@po_request).can_cancel? %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Requested', 'Stock Rejected'), alphabetical: false, keep_raw: true), :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Requested', 'Stock Rejected'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, keep_raw: true), :include_blank => false %>
         <% elsif is_authorized(@po_request, 'can_reject_stock_po') %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, keep_raw: true), :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, keep_raw: true), :include_blank => false %>
         <% elsif is_authorized(@po_request, 'can_update_rejected_po_requests') && policy(@po_request).can_update_rejected_po_requests? %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
         <% else %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses, alphabetical: false), disabled: true, :include_blank => false %>
+          <%= f.input :stock_status, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, as: :select, collection: enum_to_collection(PoRequest.stock_statuses, alphabetical: false), disabled: true, :include_blank => false %>
         <% end %>
       </div>
     <% else %>
@@ -41,11 +41,11 @@
   <% else %>
     <% if stock %>
       <div class="col-12 col-md-4">
-        <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Rejected', 'Stock Supplier PO Created'), alphabetical: false), :include_blank => false %>
+        <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Rejected', 'Stock Supplier PO Created'), input_html: { class: 'bmro-form-input' }, alphabetical: false), :include_blank => false %>
       </div>
     <% else %>
       <div class="col-12 col-md-4">
-        <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.except('Supplier PO: Created Not Sent', 'Supplier PO Sent', 'Cancelled', 'Rejected', 'Supplier PO: Amendment Pending', 'Supplier PO: Amended'), alphabetical: false, keep_raw: true), :include_blank => false %>
+        <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.except('Supplier PO: Created Not Sent', 'Supplier PO Sent', 'Cancelled', 'Rejected', input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, 'Supplier PO: Amendment Pending', 'Supplier PO: Amended'), alphabetical: false, keep_raw: true), :include_blank => false %>
       </div>
     <% end %>
   <% end %>
@@ -53,7 +53,7 @@
   <% if f.object.persisted? %>
 
     <div class="col-4">
-      <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: 'Type Supplier PO Number', input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: 'Supplier PO Number' %>
+      <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: 'Type Supplier PO Number', input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: 'Supplier PO Number' %>
     </div>
   <% end %>
   <% if stock %>
