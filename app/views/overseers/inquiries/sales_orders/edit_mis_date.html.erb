@@ -8,7 +8,7 @@
       <div class="card bmro-card">
         <div class="card-header bmro-card">
           <div class="form-row">
-            <div class="col-8 col-md-3">
+            <div class="col-8 col-md-4">
               <%= f.input :order_number, as: :string, disabled: true, input_html: { class: 'bmro-form-input' }, label: "Order #" %>
             </div>
 
@@ -16,13 +16,16 @@
               <%= f.input :mis_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input' } %>
             </div>
 
+            <div class="col-12 col-md-4">
+              <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block bmro-button") do %>
+                <i class="fal fa-pen mr-1"></i> Update MIS Datd
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
 
-      <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block bmro-button") do %>
-        <i class="fal fa-pen mr-1"></i> Update MIS Datd
-      <% end %>
+      
     <% end %>
   <% end %>
 </div>
