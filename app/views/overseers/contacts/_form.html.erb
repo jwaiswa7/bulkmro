@@ -9,21 +9,20 @@
 
     <div class="card bmro-card">
 
-      <div class="form-row">
-        <div class="col-12">
-          <%= f.input :account, disabled: true, input_html: { class: 'bmro-form-input' } %>
-        </div>
-      </div>  
+    <div class="card-body">
 
       <div class="form-row">
-        <div class="col-12">
+        <div class="col-6">
+          <%= f.input :account, disabled: true, input_html: { class: 'bmro-form-input' } %>
+        </div>
+        <div class="col-6">
           <% if !params[:company_id].present? && params[:action] == 'new' %>
             <%= f.input :company_id, as: :select, collection: selected_option_or_nil(f, :companies), input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_companies_path, label: "Companies"} %>
           <% else %>
             <%= f.input :companies, input_html: {value: format_collection(f.object.companies)}, disabled: true %>
           <% end %>
         </div>
-      </div>
+      </div>  
 
       <div class="form-row">
         <div class="col-1">
@@ -55,28 +54,44 @@
         </div>
       </div>
 
-
-      <%= f.input :email, required: true, input_html: {class: 'bmro-form-input bmro-bg'} %>
-      <%= f.input :legacy_email, disabled: false, input_html: {class: 'bmro-form-input'} %>
-      <%= f.input :password, required: false, input_html: {class: 'bmro-form-input'} %>
-      <%= f.input :password_confirmation, required: false %>
-
-      <%= f.input :status, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Contact.statuses), input_html: {class: 'bmro-form-input bmro-dropdown-icon bmro-bg'} %>
-
       <div class="form-row">
-        <div class="col-4">
-          <%= f.input :is_active, input_html: {class: 'bmro-form-input bmro-bg'} %>
+        <div class="col-6">
+          <%= f.input :email, required: true, input_html: {class: 'bmro-form-input bmro-bg'} %>
+        </div>
+        <div class="col-6">
+          <%= f.input :legacy_email, disabled: false, input_html: {class: 'bmro-form-input'} %>
         </div>
       </div>
-      <% if action_name.capitalize == "New" %>
-        <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button") do %>
-          <i class="fal fa-plus-circle"></i> <%= submit_text(@contact) %>
+      
+      <div class="form-row">
+        <div class="col-6">
+          <%= f.input :password, required: false, input_html: {class: 'bmro-form-input'} %>
+        </div>
+        <div class="col-6">
+          <%= f.input :password_confirmation, required: false %>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="col-6">
+          <%= f.input :status, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Contact.statuses), input_html: {class: 'bmro-form-input bmro-dropdown-icon bmro-bg'} %>
+        </div>
+        <div class="col-2">
+          <%= f.input :is_active, input_html: {class: 'bmro-form-input bmro-bg'} %>
+        </div>
+        <div class="col-4">
+          <% if action_name.capitalize == "New" %>
+            <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button") do %>
+              <i class="fal fa-plus-circle"></i> <%= submit_text(@contact) %>
+            <% end %>
+          <% else %>
+            <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
+              <i class="fal fa-pen"></i> <%= submit_text(@contact) %>
+            <% end %>
+          <% end %>
         <% end %>
-      <% else %>
-        <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
-          <i class="fal fa-pen"></i> <%= submit_text(@contact) %>
-        <% end %>
-      <% end %>
-    <% end %>
+        </div>
+      </div>
+      
   </div></div>  
 </div>
