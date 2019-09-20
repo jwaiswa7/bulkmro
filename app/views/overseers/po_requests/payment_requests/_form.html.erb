@@ -136,27 +136,27 @@
             <%= f.nested_fields_for :transactions, wrapper_tag: :div do |transaction| %>
               <div class="form-row flex-row align-items-start">
                 <div class="col-2">
-                  <%= transaction.input :payment_type, placeholder: 'Payment Type', placeholder: placeholder_for(transaction, :utr_or_cheque_no), :required => is_authorized(@payment_request, 'edit_payment_queue'), as: :select, disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)), collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => 'Select a Payment Type' %>
+                  <%= transaction.input :payment_type, placeholder: 'Payment Type', placeholder: placeholder_for(transaction, :utr_or_cheque_no), :required => is_authorized(@payment_request, 'edit_payment_queue'), as: :select, disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)), collection: enum_to_collection(PaymentRequestTransaction.payment_types, alphabetical: true, keep_raw: true), :include_blank => 'Select a Payment Type' , input_html: {class: 'bmro-dropdown-icon bmro-form-input'} %>
                 </div>
                 <div class="col-2">
-                  <%= transaction.input :utr_or_cheque_no, placeholder: 'UTR/Cheque Number', label: 'UTR/Cheque Number', :required => false, disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)) %>
+                  <%= transaction.input :utr_or_cheque_no, placeholder: 'UTR/Cheque Number', label: 'UTR/Cheque Number', :required => false, disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)), input_html: {class: 'bmro-form-input'} %>
                 </div>
                 <div class="col-2">
-                  <%= transaction.input :issue_date, placeholder: 'NEFT/Cheque Issue Date', label:'NEFT/Cheque Issue Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, placeholder: placeholder_for(transaction, :issue_date), disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)) %>
+                  <%= transaction.input :issue_date, placeholder: 'NEFT/Cheque Issue Date', label:'NEFT/Cheque Issue Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, placeholder: placeholder_for(transaction, :issue_date), disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)), input_html: {class: 'bmro-form-input'} %>
                 </div>
                 <div class="col-2">
-                  <%= transaction.input :cheque_date, placeholder: 'Cheque Date', label: 'Cheque Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)) %>
+                  <%= transaction.input :cheque_date, placeholder: 'Cheque Date', label: 'Cheque Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)) , input_html: {class: 'bmro-form-input'}%>
                 </div>
                 <div class="col-1">
-                  <%= transaction.input :status, placeholder: 'Status', :required => is_authorized(@payment_request, 'edit_payment_queue'), as: :select, disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)), collection: enum_to_collection(PaymentRequestTransaction.statuses, alphabetical: true, keep_raw: true), :include_blank => 'Select a Status' %>
+                  <%= transaction.input :status, placeholder: 'Status', :required => is_authorized(@payment_request, 'edit_payment_queue'), as: :select, disabled: !is_authorized(@payment_request, 'edit_payment_queue') || (PaymentRequest.Rejected.include? (f.object)), collection: enum_to_collection(PaymentRequestTransaction.statuses, alphabetical: true, keep_raw: true), :include_blank => 'Select a Status', input_html: {class: 'bmro-form-input bmro-dropdown-icon'} %>
                 </div>
                 <div class="col-2">
-                  <%= transaction.input :transaction_due_date, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'transaction-due-date', :'data-due-date'=> (f.object.due_date if f.object.due_date.present?) },  placeholder: 'Due Date', label: 'Due Date', required: true %>
+                  <%= transaction.input :transaction_due_date, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'transaction-due-date', :'data-due-date'=> (f.object.due_date if f.object.due_date.present?) },  placeholder: 'Due Date', label: 'Due Date', required: true, input_html: {class: 'bmro-form-input'} %>
                 </div>
                 <div class="col-1">
                   <div class="d-flex">
                     <div class="flex-grow-1">
-                      <%= transaction.input :amount_paid, placeholder: 'Amount', placeholder: placeholder_for(transaction, :amount_paid), label: "Amount", :required => is_authorized(@payment_request, 'payment_request_logistics_and_accounts'), disabled: !is_authorized(@payment_request, 'payment_request_logistics_and_accounts') || (PaymentRequest.Rejected.include? (f.object)) %>
+                      <%= transaction.input :amount_paid, placeholder: 'Amount', placeholder: placeholder_for(transaction, :amount_paid), label: "Amount", :required => is_authorized(@payment_request, 'payment_request_logistics_and_accounts'), disabled: !is_authorized(@payment_request, 'payment_request_logistics_and_accounts') || (PaymentRequest.Rejected.include? (f.object)), input_html: {class: 'bmro-form-input'} %>
                     </div>
                     <%= transaction.remove_nested_fields_link do %>
                       <span class="align-self-center ml-2">
