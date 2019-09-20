@@ -132,7 +132,7 @@ class Overseer < ApplicationRecord
   end
 
   def get_monthly_target(target_type, date_range = nil)
-    if date_range['date_range'].present?
+    if date_range.present? && date_range['date_range'].present?
       from = date_range['date_range'].split('~').first.to_date.strftime('%Y-%m-01')
       to = date_range['date_range'].split('~').last.to_date.strftime('%Y-%m-01')
       target_periods = TargetPeriod.where(period_month: from..to).pluck(:id)
