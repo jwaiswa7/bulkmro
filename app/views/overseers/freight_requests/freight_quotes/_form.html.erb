@@ -121,7 +121,7 @@
             <div class="col-6">
               <div class="form-row">
                 <div class="col-4">
-                  <%= f.input :gst_percentage, label: "GST %", input_html: { class: 'bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: [5, 12, 18, 28], :include_blank => false %>
+                  <%= f.input :gst_percentage, label: "GST %", input_html: { class: 'bmro-dropdown-icon select2-single' }, as: :select, :wrapper => :custom_multi_select, collection: [5, 12, 18, 28], :include_blank => false %>
                 </div>
                 <div class="col-8">
                   <%= f.input :gst, label: "GST", :readonly => true, input_type: "number" %>
