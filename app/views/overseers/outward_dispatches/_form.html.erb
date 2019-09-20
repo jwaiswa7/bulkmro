@@ -37,7 +37,7 @@
               <i class="fa fa-times clear-date" aria-hidden="true" id="" title="Clear the material delivery date"></i>
             </div>
             <div class="col-4 mt-2">
-              <%= f.input :dispatched_by, collection: enum_to_collection(InwardDispatch.dispatched_bies, keep_raw: true), label: "Material Dispatched By", input_html: {class: "select2-single bmro-form-input"}, required: true %>
+              <%= f.input :dispatched_by, collection: enum_to_collection(InwardDispatch.dispatched_bies, keep_raw: true), label: "Material Dispatched By", input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon"}, required: true %>
             </div>
             <div class="col-4 mt-2">
               <%= f.input :logistics_partner, collection: f.object.grouped_logistics_partners, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, required: false %>
