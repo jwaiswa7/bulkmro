@@ -250,11 +250,12 @@
               <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0 bmro-button', role: 'button' %>
             <% end %>
           <% end %>
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
+            <i class="fal fa-pen"></i> <%= submit_text(@inward_dispatch) %>
+          <% end %>
         </div>
 
-        <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
-          <i class="fal fa-pen"></i> <%= submit_text(@inward_dispatch) %>
-        <% end %>
+        
         <% if f.object.comments.persisted.size > 0 %>
           <div class="card-body">
             <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
