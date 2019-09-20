@@ -77,8 +77,8 @@
     <% if @account.present? %>
       <div class="form-group">
         <%= f.label :contact_ids, 'Contacts' %>
-        <div class="select2-wrapper bmro-form-input bmro-bg bmro-dropdown-icon">
-          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts' %>
+        <div class="select2-wrapper">
+          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts', input_html: {class: "select2-single bmro-form-input bmro-bg bmro-dropdown-icon"} %>
         </div>
       </div>
     <% end %>
