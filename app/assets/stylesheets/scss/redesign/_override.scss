@@ -104,7 +104,6 @@ body{
     display: unset!important;
     flex-direction: unset!important;
     border-radius: 0px !important;
-    border-bottom:none; 
 }
 .bmro-card-footer{
     width: 100%;
@@ -1376,7 +1375,7 @@ table.bmro-new-table tr:first-child{
 }
 .bmro-logist-text{
     height: 38px!important;
-    overflow: inherit;
+    overflow: inherit!important;
 }
 .bmro-chosen-height-parent .custom-file{
     height: calc(1.9rem + 8px);
