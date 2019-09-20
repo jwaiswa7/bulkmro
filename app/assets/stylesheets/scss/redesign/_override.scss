@@ -1376,3 +1376,6 @@ table.bmro-new-table tr:first-child{
 .bmro-logist-text{
     height: 38px!important;
 }
+.bmro-chosen-height-parent .custom-file{
+    height: calc(1.9rem + 8px);
+}
