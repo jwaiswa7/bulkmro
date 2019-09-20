@@ -360,6 +360,9 @@ a.bmro-list-button{
 .select2-selection__arrow{
     display: none!important;
 }
+.select2-container--bootstrap .select2-selection{
+    font-size: 13px;
+}
 .select2-container.bmro-form-input-height .select2-selection--single .select2-selection__rendered{
     white-space:unset;
 }
