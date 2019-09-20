@@ -388,7 +388,7 @@ a.bmro-list-button{
     white-space: nowrap;
     overflow: hidden;
     float: left;
-    font-size: 14px;
+    font-size: 13px;
     padding: 9px 8px 4px;
     color: #2C4159!important;
     height: 40px;
@@ -1340,9 +1340,12 @@ table.bmro-new-table tr:first-child{
     margin-bottom: 19px!important;
     width: 100%;
 }
-.bmro-card-body .file{
+.bmro-card .file{
     overflow: visible;
 }
 .form-group{
     overflow: hidden;
+}
+.form-group input.form-control{
+    font-size: 13px!important;
 }
