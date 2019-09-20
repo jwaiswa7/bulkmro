@@ -366,6 +366,8 @@ a.bmro-list-button{
 }
 .select2-container--bootstrap .select2-selection{
     font-size: 13px;
+    border:2px solid #eceef2;
+    border-radius: unset!important;
 }
 .select2-container.bmro-form-input-height .select2-selection--single .select2-selection__rendered{
     white-space:unset;
@@ -1361,7 +1363,6 @@ table.bmro-new-table tr:first-child{
     background-size: 10px 16px!important;
     background-position: right 9px top 8px;
     margin-top: 0px!important;
-    border: 2px solid #eceef2;
 }
 .bmro-com-contacts{
     margin-top: 0px!important;
