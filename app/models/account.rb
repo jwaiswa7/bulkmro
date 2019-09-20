@@ -23,6 +23,8 @@ class Account < ApplicationRecord
   has_many :sales_receipts
   has_many :payment_collections
   has_many :email_messages
+  has_one_attached :logo
+
 
   has_many :annual_targets
   has_many :account_targets
@@ -33,6 +35,7 @@ class Account < ApplicationRecord
   }
 
   validates_presence_of :account_type
+  validates_with ImageFileValidator, attachment: :logo
 
   after_initialize :set_defaults, if: :new_record?
   def set_defaults

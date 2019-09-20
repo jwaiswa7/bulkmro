@@ -60,7 +60,6 @@ class Overseers::CompaniesController < Overseers::BaseController
       else
         account_params = {name: params[:company]['account_name'], account_type: params[:company]['acc_type']}
         @account = Account.new(account_params.merge(overseer: current_overseer))
-        @account.save_and_sync
       end
       @company.account = @account
       @company.save_and_sync
