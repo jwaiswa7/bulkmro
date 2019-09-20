@@ -46,7 +46,7 @@
             <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'bmro-form-input', :'data-source' => autocomplete_overseers_contacts_path, :'data-placeholder' => "Select a billing contact"}, required: true, disabled: true %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping contact", input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_contacts_path}, disabled: true %>
+            <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping contact", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_contacts_path}, disabled: true %>
           </div>
         </div>
       </div>
