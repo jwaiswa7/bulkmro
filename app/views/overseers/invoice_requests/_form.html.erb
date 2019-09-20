@@ -132,7 +132,7 @@
           <% end %>
         </div>
 
-        <div class=" card-alternative">
+        <div class="bmro-card card-alternative">
           <div class="form-row">
           <div class="col-6">
             <%= f.association :sales_order, disabled: f.object.sales_order.present?, collection: f.object.inquiry.sales_orders.where.not(:order_number => nil), label_method: :to_s, include_blank: "Type Order Number", input_html: {class: 'select2-single select2-wrap-text bmro-form-input', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Order Number", :selected => [(@sales_order.present? ? @sales_order.id : f.object.sales_order_id)] %>
@@ -178,7 +178,7 @@
 
           <div class="col-6">
             <% if f.object.persisted? %>
-              <%= f.association :sales_invoice, collection: [f.object.sales_invoice], label_method: :to_s, include_blank: 'Type AR Invoice Number', input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_sales_invoices_path(:inquiry_id => f.object.inquiry.id), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: 'AR Invoice Number' %>
+              <%= f.association :sales_invoice, collection: [f.object.sales_invoice], label_method: :to_s, include_blank: 'Type AR Invoice Number', input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_sales_invoices_path(:inquiry_id => f.object.inquiry.id), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: 'AR Invoice Number' %>
             <% end %>
           </div>
 
@@ -189,10 +189,10 @@
               </div>
               <div class="form-group">
                 <% f.object.attachments.each do |attachment| %>
-                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                    <i class="fal fa-download"></i>
-                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                      <i class="fal fa-trash-alt"></i>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 bmro-button btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="bmro-download-icon"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm bmro-button ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                      <i class="bmro-trash-icon"></i>
                     <% end if attachment.present? && attachment.id.present? && is_authorized(:attachment,'destroy') %>
                   <% end %>
                 <% end if f.object.attachments.attached? %>
@@ -328,7 +328,7 @@
 
       </div>
 
-      <div class="card-footer">
+      <div class="card-footer bmro-card-footer">
         <div class="form-row">
           <%= button_tag(type: "submit", class: "btn btn-success bmro-button btn-block submit-form") do %>
             <% if action_name.capitalize == "New" %>
