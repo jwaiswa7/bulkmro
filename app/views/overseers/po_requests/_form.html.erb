@@ -64,11 +64,11 @@
 
         <%= render 'overseers/po_requests/rows_form', f: f, product_path: service_autocomplete_overseers_products_path, stock: false%>
         <% if action_name.capitalize == "New" %>
-          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+          <%= button_tag(type: "submit", class: "btn btn-success bmro-button btn-block") do %>
             <i class="fal fa-plus-circle"></i> Create PO Request
           <% end %>
         <% else %>
-          <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2 submit-form") do %>
+          <%= button_tag(type: "submit", class: "btn btn-warning bmro-button btn-block mb-2 submit-form") do %>
             <i class="fal fa-pen"></i> Update PO Request
           <% end %>
         <% end %>
