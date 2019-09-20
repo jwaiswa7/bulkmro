@@ -6,24 +6,24 @@
 
   <% if stock %>
     <div class="col-12 ">
-      <%= f.association :supplier, label_method: :to_s, include_blank: "Type Supplier", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier" %>
+      <%= f.association :supplier, label_method: :to_s, include_blank: "Type Supplier", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input', :'data-source' => autocomplete_overseers_suppliers_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier" %>
     </div>
   <% end %>
   <div class="col-12 col-md-4">
-    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, keep_raw: true, alphabetical: false), :include_blank => true, label: 'Supplier PO Type', required: true %>
+    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, keep_raw: true, alphabetical: false), :include_blank => true, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, label: 'Supplier PO Type', required: true %>
   </div>
 
   <% if f.object.persisted? %>
     <% if stock %>
       <div class="col-12 col-md-4">
         <% if is_authorized(@po_request, 'can_cancel') && policy(@po_request).can_cancel? %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Requested', 'Stock Rejected'), alphabetical: false, keep_raw: true), :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Requested', 'Stock Rejected'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, keep_raw: true), :include_blank => false %>
         <% elsif is_authorized(@po_request, 'can_reject_stock_po') %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, keep_raw: true), :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, keep_raw: true), :include_blank => false %>
         <% elsif is_authorized(@po_request, 'can_update_rejected_po_requests') && policy(@po_request).can_update_rejected_po_requests? %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
         <% else %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses, alphabetical: false), disabled: true, :include_blank => false %>
+          <%= f.input :stock_status, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, as: :select, collection: enum_to_collection(PoRequest.stock_statuses, alphabetical: false), disabled: true, :include_blank => false %>
         <% end %>
       </div>
     <% else %>
@@ -41,11 +41,11 @@
   <% else %>
     <% if stock %>
       <div class="col-12 col-md-4">
-        <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Rejected', 'Stock Supplier PO Created'), alphabetical: false), :include_blank => false %>
+        <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Rejected', 'Stock Supplier PO Created'), input_html: { class: 'bmro-form-input' }, alphabetical: false), :include_blank => false %>
       </div>
     <% else %>
       <div class="col-12 col-md-4">
-        <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.except('Supplier PO: Created Not Sent', 'Supplier PO Sent', 'Cancelled', 'Rejected', 'Supplier PO: Amendment Pending', 'Supplier PO: Amended'), alphabetical: false, keep_raw: true), :include_blank => false %>
+        <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.except('Supplier PO: Created Not Sent', 'Supplier PO Sent', 'Cancelled', 'Rejected', 'Supplier PO: Amendment Pending', 'Supplier PO: Amended'), input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, alphabetical: false, keep_raw: true), :include_blank => false %>
       </div>
     <% end %>
   <% end %>
@@ -53,7 +53,7 @@
   <% if f.object.persisted? %>
 
     <div class="col-4">
-      <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: 'Type Supplier PO Number', input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: 'Supplier PO Number' %>
+      <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: 'Type Supplier PO Number', input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: 'Supplier PO Number' %>
     </div>
   <% end %>
   <% if stock %>
@@ -62,15 +62,15 @@
     </div>
   <% else %>
     <div class="col-12 col-md-4">
-      <%= f.association :contact, collection: (f.object.supplier.contacts.map {|contact| [contact.to_s, contact.id, {'data-contact-email' => contact.email || nil, 'data-contact-phone' => contact.phone || nil, 'data-contact-mobile' => contact.mobile || nil}]} if f.object.supplier) || [], input_html: {class: 'select2-single'}, required: true, hint: 'Note: If left blank, above selected contact\'s email will be applied' %>
+      <%= f.association :contact, collection: (f.object.supplier.contacts.map {|contact| [contact.to_s, contact.id, {'data-contact-email' => contact.email || nil, 'data-contact-phone' => contact.phone || nil, 'data-contact-mobile' => contact.mobile || nil}]} if f.object.supplier) || [], input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}, required: true, hint: 'Note: If left blank, above selected contact\'s email will be applied' %>
 
     </div>
   <% end %>
   <div class="col-12 col-md-3">
-    <%= f.input :contact_email, label: 'Contact Email', placeholder: 'Contact email', required: !stock %>
+    <%= f.input :contact_email, input_html: { class: 'bmro-form-input' }, label: 'Contact Email', placeholder: 'Contact email', required: !stock %>
   </div>
   <div class="col-12 col-md-4">
-    <%= f.input :contact_phone, label: 'Contact Phone', placeholder: 'Contact phone', required: !stock %>
+    <%= f.input :contact_phone, input_html: { class: 'bmro-form-input' }, label: 'Contact Phone', placeholder: 'Contact phone', required: !stock %>
   </div>
 
   <!--  <div class="col-12 col-md-4">-->
