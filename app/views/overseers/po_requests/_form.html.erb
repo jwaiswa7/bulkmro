@@ -12,7 +12,7 @@
         <%= simple_form_for(:document_creation, :url => overseers_document_creations_path, :method => :post) do |f| %>
           <div class="mr-2 d-md-inline-block">
             <%= f.hidden_field :option, value: 'Purchase Order' %>
-            <%= f.input :document_number, as: :integer, input_html: { value: session[:number] }, label: false, input_html: { class: 'bmro-form-input  bmro-bg' }, placeholder: "Enter Purchase Order #" %>
+            <%= f.input :document_number, as: :integer, input_html: { value: session[:number], class: 'bmro-form-input  bmro-bg' }, label: false, input_html: {  }, placeholder: "Enter Purchase Order #" %>
           </div>
           <%= f.submit "Request from SAP", class: "btn btn-rounded btn-dark bmro-button" %>
         <% end %>
