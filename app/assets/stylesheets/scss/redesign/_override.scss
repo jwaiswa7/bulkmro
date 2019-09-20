@@ -278,6 +278,23 @@ a.bmro-list-button{
     -webkit-appearance:none!important;
     font-weight: 500;
 }
+.form-group input.form-control{
+    line-height: 1.5!important;
+    color:#2C4159 !important;
+    padding: 7px 23px 6px 8px!important;
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    border-width: 2px!important;
+    border-style: solid!important;
+    border-color: rgb(236, 238, 242)!important;
+    /* border-image: initial; */
+    border-radius: 2px!important;
+    outline: none!important;
+    height: auto!important;
+    box-shadow: unset!important;
+    -webkit-appearance:none!important;
+    font-weight: 500;
+}
 .select2-selection.disabled.bmro-form-input{
     height: 38px!important;
     -webkit-appearance:none!important;
