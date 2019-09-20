@@ -90,10 +90,12 @@ class Overseers::ContactsController < Overseers::BaseController
     authorize_acl @contact
     sign_in(:contact, @contact)
 
-    if @contact.role == "supplier"
-      redirect_to suppliers_dashboard_url(became: true)
-    else
-      redirect_to customers_dashboard_url(became: true)
+    if @contact.company.present?
+      if @contact.company.is_supplier?
+        redirect_to suppliers_dashboard_url(became: true)
+      else
+        redirect_to customers_dashboard_url(became: true)
+      end
     end
   end
 
