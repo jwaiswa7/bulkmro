@@ -3,8 +3,8 @@
 
   <div class="page-header">
     <h2>PO Requests for Order <%= format_id(@sales_order.order_number) %></h2>
-    <p>This will <em>Create purchase order requests</em> and log it under
-      <strong><%= current_overseer.full_name %></strong>.</p>
+    <!-- <p>This will <em>Create purchase order requests</em> and log it under
+      <strong><%= current_overseer.full_name %></strong>.</p> -->
   </div>
 
   <%= simple_form_for(@sales_order, url: preview_purchase_orders_requests_overseers_sales_order_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>

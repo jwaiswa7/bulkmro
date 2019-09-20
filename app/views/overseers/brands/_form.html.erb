@@ -1,13 +1,17 @@
 <% content_for :heading_byline do %>
-  This will <em>'<%= submit_text(@brand).downcase %>'</em> and log it under
-  <strong><%= current_overseer.full_name %></strong>.
+<!--   This will <em>'<%= submit_text(@brand).downcase %>'</em> and log it under
+  <strong><%= current_overseer.full_name %></strong>. -->
 <% end %>
 
 <%= render layout: 'shared/layouts/form' do %>
   <%= simple_form_for([:overseers, @brand], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
-    <%= f.input :name %>
-    <%= f.input :is_active %>
-    <%= action_button(action_name, @brand) %>
-  <% end %>
+    <div class="bmro-card bmro-card-padding">
+	    <%= f.input :name, input_html: { class: 'bmro-form-input bmro-form-label' } %>
+	    <%= f.input :is_active %>
+	    <div class="bmro-button-parent">
+	   	 	<%= action_button(action_name, @brand) %>
+	    </div>
+	  <% end %>
+	</div>
 <% end %>

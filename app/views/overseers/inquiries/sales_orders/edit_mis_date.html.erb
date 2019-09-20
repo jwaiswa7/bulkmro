@@ -9,18 +9,18 @@
         <div class="card-header">
           <div class="form-row">
             <div class="col-8 col-md-3">
-              <%= f.input :order_number, as: :string, disabled: true, label: "Order #" %>
+              <%= f.input :order_number, as: :string, disabled: true, input_html: { class: 'bmro-form-input' }, label: "Order #" %>
             </div>
 
             <div class="col-12 col-md-4">
-              <%= f.input :mis_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+              <%= f.input :mis_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input' } %>
             </div>
 
           </div>
         </div>
       </div>
 
-      <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block") do %>
+      <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block bmro-button") do %>
         <i class="fal fa-pen mr-1"></i> Update MIS Date
       <% end %>
     <% end %>
