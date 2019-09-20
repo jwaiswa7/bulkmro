@@ -14,7 +14,7 @@
     <%= f.hidden_field :purchase_order_id %>
     <%= f.hidden_field :inquiry_id %>
     <div class="card">
-      <div class="card-header">
+      <div class="card-header bmro-card">
         <div class="form-row">
           <% if action_name.capitalize == "New" %>
             <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button payment_request_submit") do %>
@@ -64,7 +64,7 @@
           <!--      <div class="col-12">-->
           <%#= f.input :description %>
           <!--      </div>-->
-          <div class="mt-3 card-alternative ">
+          <div class="mt-3 card-alternative bmro-bg">
             <div class="form-row">
               <div class="col-4">
                 <%#= f.input :status, collection: enum_to_collection(PaymentRequest.statuses, alphabetical: false, keep_raw: true), input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => grouped_statuses_overseer_payment_requests_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, :include_blank => false %>
@@ -197,7 +197,7 @@
 
 
           </div>
-          <div class="mt-3 card-alternative">
+          <div class="mt-3 card-alternative bmro-bg">
             <div class="form-row">
               <div class="col-12 col-md-12">
                 <div class="d-block d-md-flex align-items-end">
