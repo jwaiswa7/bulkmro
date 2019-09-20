@@ -1416,3 +1416,6 @@ table.bmro-new-table tr:first-child{
     width: 80%!important;
     text-align: center;
 }
+input:-internal-autofill-selected {
+ background-color: #fff!important; 
+}
