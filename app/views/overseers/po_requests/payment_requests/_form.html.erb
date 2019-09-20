@@ -170,12 +170,12 @@
             <% if f.object.remaining_amount > 0.0 && (!PaymentRequest.Rejected.include? (f.object)) %>
               <div class="form-row">
                 <div class="col-md-6">
-                  <%= f.add_nested_fields_link :transactions, class: 'btn btn-outline-success btn-block mb-2 mb-md-0 add-transaction' do %>
+                  <%= f.add_nested_fields_link :transactions, class: 'btn bmro-button btn-outline-success btn-block mb-2 mb-md-0 add-transaction' do %>
                     <i class="fal fa-plus-circle mr-1"></i>Add payment transaction
                   <% end %>
                 </div>
                 <div class="col-md-6">
-                  <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2 payment_request_submit") do %>
+                  <%= button_tag(type: "submit", class: "btn bmro-button btn-warning btn-block mb-2 payment_request_submit") do %>
                     <i class="fal fa-pen"></i>  Save payment transaction
                   <% end %>
                 </div>
@@ -244,14 +244,14 @@
                 <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |payment_request_comment| %>
                   <%= payment_request_comment.hidden_field :created_by_id %>
                   <%= payment_request_comment.hidden_field :updated_by_id %>
-                  <%= payment_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+                  <%= payment_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '',class: 'bmro-form-input'} %>
                 <% end %>
               </div>
             </div>
           </div>
           </div>
     </div>
-    <div class="card-footer">
+    <div class="card-footer bmro-card-footer">
       <div class="form-row">
         <% if action_name.capitalize == "New" %>
           <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button payment_request_submit") do %>
