@@ -29,7 +29,7 @@
       <div class="card-header">
         <div class="form-row">
           <div class="col-6">
-            <%= f.input :material_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrder.material_statuses, alphabetical: false, keep_raw: true), :disabled => true,input_html: {class: 'bmro-form-input bmro-dropdown-icon' %>
+            <%= f.input :material_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrder.material_statuses, alphabetical: false, keep_raw: true), :disabled => true,input_html: {class: 'bmro-form-input bmro-dropdown-icon'} %>
           </div>
 
           <div class="col-6">
