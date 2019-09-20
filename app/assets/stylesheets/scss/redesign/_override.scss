@@ -104,7 +104,6 @@ body{
     display: unset!important;
     flex-direction: unset!important;
     border-radius: 0px !important;
-    border-bottom:none; 
 }
 .bmro-card-footer{
     width: 100%;
@@ -1376,12 +1375,13 @@ table.bmro-new-table tr:first-child{
 }
 .bmro-logist-text{
     height: 38px!important;
+    overflow: inherit!important;
 }
 .bmro-chosen-height-parent .custom-file{
     height: calc(1.9rem + 8px);
 }
 .bmro-trash-icon-p{
-    background-size: 16px 17px;
+    background-size: 16px 16px;
     padding: 8px 9px;   
 }
 .bmro-form-icon-mb{
