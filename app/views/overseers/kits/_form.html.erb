@@ -37,7 +37,7 @@
 
         <div class="form-row">
           <div class="col-12 col-md-4">
-            <%= product.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single bmro-form-label bmro-form-input'} %>
+            <%= product.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single bmro-form-label bmro-form-input bmro-dropdown-icon'} %>
           </div>
           <div class="col-6 col-md-4">
             <%= product.association :brand, collection: selected_option_or_nil(product, :brand), input_html: {class: 'select2-ajax bmro-form-input bmro-form-label bmro-dropdown-icon', :'data-source' => autocomplete_overseers_brands_path}, :required => true %>
@@ -56,7 +56,7 @@
 
       <% if @kit.inquiry.present? %>
         <div class="mt-3">
-          <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
+          <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Products</h6>
           <div class="form-row d-none d-md-flex">
             <div class="col-6">
               <div class="form-group mb-0">
@@ -143,7 +143,7 @@
         </div>
       <% end %>
     </div>
-    <div class="card-footer bmro-button-parent">
+    <div class="card-footer bmro-button-parent bmro-card-footer">
       <% if action_name.capitalize =="New" %>
         <%= button_tag(type:"submit", class:"btn btn-success btn-block bmro-button-parent") do %>
           <i class="fal fa-plus-circle"></i> <%= submit_text(@kit) %>
