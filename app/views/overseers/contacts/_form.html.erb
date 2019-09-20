@@ -76,12 +76,12 @@
         <div class="col-6">
           <%= f.input :status, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Contact.statuses), input_html: {class: 'bmro-form-input bmro-dropdown-icon bmro-bg'} %>
         </div>
-        <div class="col-2">
+        <div class="col-2 bmro-actice-pt">
           <%= f.input :is_active %>
         </div>
         <div class="col-4">
           <% if action_name.capitalize == "New" %>
-            <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button") do %>
+            <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button bmro-button-mt") do %>
               <i class="fal fa-plus-circle"></i> <%= submit_text(@contact) %>
             <% end %>
           <% else %>
