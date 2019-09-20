@@ -74,7 +74,7 @@ let onProductChange = (container) => {
 
 function slideTo(page) {
     let element = document.getElementById(page);
-    element.scrollIntoView({behavior: "smooth",offsetTop: 20 });
+    element.scrollIntoView({block: "start"});
 }
 
 $(".bmro-li-right").click(function(){

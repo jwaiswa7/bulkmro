@@ -272,13 +272,13 @@
               </div>
             </div>
             <div class="col-12 col-md-4">
-              <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
+              <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input' }, disabled: f.object.sales_quotes.blank? %>
             </div>
             <div class="col-12 col-md-4">
               <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input' }, disabled: f.object.sales_quotes.blank? %>
             </div>
             <div class="col-12 col-md-4">
-              <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, input_html: { class: 'bmro-form-input' }, disabled: f.object.sales_quotes.blank? %>
+              <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input' }, disabled: f.object.sales_quotes.blank? %>
             </div>
             <div class="col-12 col-md-6">
               <%= f.input :customer_po_received_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input' }, label: 'Customer PO Received Date' %>
