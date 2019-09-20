@@ -320,6 +320,9 @@ a.bmro-list-button{
     appearance: none !important; 
     height: 38px!important;   
 }
+.form-group:focus span{
+    border-color:#2c4159!important;
+}
 .bmro-form-input:focus{
     border-color: #2C4159;
 }
