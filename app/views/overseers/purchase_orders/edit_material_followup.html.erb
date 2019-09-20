@@ -29,33 +29,33 @@
       <div class="card-header">
         <div class="form-row">
           <div class="col-6">
-            <%= f.input :material_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrder.material_statuses, alphabetical: false, keep_raw: true), :disabled => true %>
+            <%= f.input :material_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrder.material_statuses, alphabetical: false, keep_raw: true), :disabled => true,input_html: {class: 'bmro-form-input bmro-dropdown-icon'} %>
           </div>
 
           <div class="col-6">
-            <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single"}, label: "Logistics Owner" %>
+            <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single bmro-form-input"}, label: "Logistics Owner" %>
           </div>
           <div class="col-4">
-            <%= f.input :supplier_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.supplier_dispatch_date.try(:strftime, "%d-%b-%Y"), class: 'supplier-dispatch-date'}, required: true %>
-          </div>
-
-          <div class="col-4">
-            <%= f.input :revised_supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.revised_supplier_delivery_date.try(:strftime, "%d-%b-%Y"), class: 'revised-supplier-delivery-date'}, required: true %>
+            <%= f.input :supplier_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.supplier_dispatch_date.try(:strftime, "%d-%b-%Y"), class: 'supplier-dispatch-date '}, required: true, input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input'} %>
           </div>
 
           <div class="col-4">
-            <%= f.input :followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.followup_date.try(:strftime, "%d-%b-%Y"), class: 'followup-date'}, required: true %>
+            <%= f.input :revised_supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.revised_supplier_delivery_date.try(:strftime, "%d-%b-%Y"), class: 'revised-supplier-delivery-date'}, required: true, input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input'} %>
+          </div>
+
+          <div class="col-4">
+            <%= f.input :followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.followup_date.try(:strftime, "%d-%b-%Y"), class: 'followup-date'}, required: true, input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input'} %>
           </div>
 
           <div class="col-12">
             <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |purchase_order_comment| %>
               <%= purchase_order_comment.hidden_field :created_by_id %>
               <%= purchase_order_comment.hidden_field :updated_by_id %>
-              <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '', class: 'select2-ajax select2-wrap-text bmro-form-input'} %>
             <% end %>
           </div>
 
-          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+          <%= button_tag(type: "submit", class: "btn btn-success bmro-button btn-block") do %>
             <i class="fal fa-plus-circle"></i> update material followup
           <% end %>
         </div>
