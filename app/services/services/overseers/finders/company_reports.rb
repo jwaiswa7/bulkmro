@@ -30,7 +30,7 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
       indexed_records = indexed_records.filter(filter_by_value('outside_sales_executive', executives))
     end
     if @company_report_params.present? && @company_report_params['sales_manager'].present?
-      sales_executives = sales_executives.map {|o| o if (o.parent_id == @company_report_params['sales_manager'].to_i)}.compact
+      sales_executives = sales_executives.map {|o| o if o.parent_id == @company_report_params['sales_manager'].to_i}.compact
       indexed_records = indexed_records.filter(filter_for_self_and_descendants(['inside_sales_executive', 'outside_sales_executive', 'sales_manager_id'], sales_executives.pluck(:id)))
     end
 
@@ -92,13 +92,13 @@ class Services::Overseers::Finders::CompanyReports < Services::Overseers::Finder
           "aggs": {
               "accounts": {
                   "terms": {
-                      "field": "account_id",
+                      "field": 'account_id',
                       "size": 10000
                   },
                   "aggs": {
                       "companies": {
                           "terms": {
-                              "field": "company_key",
+                              "field": 'company_key',
                               "size": 10000
                           },
                           aggs: {

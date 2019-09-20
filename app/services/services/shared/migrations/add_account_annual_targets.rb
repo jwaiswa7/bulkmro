@@ -18,5 +18,4 @@ class Services::Shared::Migrations::AddAccountAnnualTargets < Services::Shared::
       end
     end
   end
-
 end

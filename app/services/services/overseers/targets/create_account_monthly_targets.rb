@@ -32,11 +32,11 @@ class Services::Overseers::Targets::CreateAccountMonthlyTargets < Services::Shar
               if inquiry.bible_sales_orders.present?
                 sales_order_total = inquiry.bible_sales_order_total
               else
-                sales_order_total = inquiry.total_sales_orders.present? ?  (inquiry.total_sales_orders.map { |so| so.calculated_total || 0 }.compact.sum) : 0
+                sales_order_total = inquiry.total_sales_orders.present? ? (inquiry.total_sales_orders.map { |so| so.calculated_total || 0 }.compact.sum) : 0
               end
               total_target_achieved += sales_order_total.round(2)
             end
-            target_achieved_percentage = (total_target_achieved/monthly_target)*100
+            target_achieved_percentage = (total_target_achieved / monthly_target) * 100
             target.update_attributes(achieved_target: total_target_achieved, achieved_target_percentage: target_achieved_percentage)
             remaining_target = ((changed_monthly_target).to_f - total_target_achieved)
             changed_monthly_target = ((monthly_target).to_f + remaining_target)

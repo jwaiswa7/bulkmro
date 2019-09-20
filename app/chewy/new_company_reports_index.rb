@@ -1,6 +1,6 @@
 class NewCompanyReportsIndex < BaseIndex
   statuses =  Inquiry.statuses.except('Lead by O/S', 'Order Lost', 'Regret').keys
-  define_type Inquiry.where.not(company_id: 1).with_includes do
+  define_type Inquiry.where.not(company_id: 1).where(status: statuses).with_includes do
     # default_import_options batch_size: 10000, bulk_size: 10.megabytes, refresh: false
     field :id, type: 'integer'
     field :live_inquiry, value: -> (record) { statuses.include?(record.status) ? 1 : 0 }, type: 'integer'
