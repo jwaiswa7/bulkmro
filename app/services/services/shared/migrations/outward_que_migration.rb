@@ -206,4 +206,46 @@ class Services::Shared::Migrations::OutwardQueMigration < Services::Shared::Migr
     purchase_orders = PurchaseOrder.where(po_number: po_numbers)
     purchase_orders.update_all(material_status: 'Manually Closed')
   end
+
+  def insert_inward_dispatch_ids
+    delivered_inward_dispatches = InwardDispatch.where(status: 'Material Delivered')
+    delivered_inward_dispatches.each do |inward_dispatch|
+      if inward_dispatch.is_inward_completed?
+        ar_invoices = inward_dispatch.show_ar_invoice_requests
+        if ar_invoices.present?
+          if ar_invoices.count == 1
+            sales_order = inward_dispatch.sales_order
+            ar_invoice = ar_invoices.last
+            ar_invoice_id = ar_invoice.id
+            ar_invoice_ids = []
+            if sales_order.present?
+              inward_dispatches = InwardDispatch.where(sales_order_id: sales_order.id).where.not(id: inward_dispatch.id)
+              ar_invoice_ids = inward_dispatches.map {|x| if x.show_ar_invoice_requests.pluck(:id).include? ar_invoice_id; x.id; end}.compact
+            end
+            ar_invoice_ids << inward_dispatch.id
+            ar_invoice.inward_dispatch_ids = ar_invoice_ids
+            ar_invoice.save
+          else
+          end
+        end
+      end
+      # delivered_inward_dispatches.map{|x| if x.is_inward_completed? && x.show_ar_invoice_requests.count > 1;[x.rows.count,x.show_ar_invoice_requests.map{|y| y.rows.count}];end;}.compact
+    end
+  end
+
+  def multiple_inward_ids
+    invoice_ids = []
+    none_ids = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inward_dispatch_ids.csv', 'seed_files_3')
+    service.loop(nil) do |x|
+      invoice = ArInvoiceRequest.where(id: x.get_column('ar_invoice_id')).last
+      if invoice.present?
+        invoice.inward_dispatch_ids = x.get_column('inward_ids').split(',').map {|x| x.to_i}
+        invoice.save!
+        invoice_ids << invoice.id
+      else
+        none_ids << x.get_column('ar_invoice_id')
+      end
+    end
+  end
 end

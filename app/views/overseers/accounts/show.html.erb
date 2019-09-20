@@ -3,7 +3,11 @@
   <section class="pt-3 pt-lg-4 pb-4 pb-lg-5">
     <div class="d-md-flex justify-content-between">
       <h1 class="display-5 d-flex align-items-center">
-        <img src="https://ui-avatars.com/api/?size=128&name=<%= @account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/><%= @account.alias %>
+        <% if @account.id == 3 %> <!-- To show logo of GE for GE Account -->
+          <img src="<%= url_for(@account.companies.where(id: 2).first.try(:logo)) %>" alt="<%= @account.name %>" height="65" class="pr-2">
+        <% else %>
+          <img src="https://ui-avatars.com/api/?size=128&name=<%= @account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/><%= @account.alias %>
+        <% end %>
         <span class="pl-2 lead text-muted"><%= @account.name %></span>
       </h1>
       <% if is_authorized(@account, 'edit') %>
@@ -21,6 +25,14 @@
   <section class="mb-3">
     <div class="card">
       <div class="card-body">
+        <% if @account.logo.attached? %>
+          <div class="form-row mb-3">
+            <div class="col-md-2 col-xs-12">
+              <img src="<%= url_for(@account.logo) %>" alt="<%= @account.name %>">
+            </div>
+          </div>
+        <% end %>
+        <h6 class="text-uppercase text-black-50 mb-2">Account Details</h6>
         <div class="form-row">
           <div class="col-6 col-md-6 mb-2">
             <strong class="d-block">Is Supplier</strong>

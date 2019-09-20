@@ -22,7 +22,11 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def uom
-    get_product.measurement_unit.name if get_product.present? && get_product.measurement_unit.present?
+    if get_product.present? && get_product.measurement_unit.present?
+      get_product.measurement_unit.name
+    elsif self.product.present?
+      self.product.measurement_unit.name
+    end
   end
 
   def brand

@@ -1,5 +1,5 @@
 class Overseers::Bible::ImportsController < Overseers::BaseController
-  before_action :set_bible_upload, only: [:bible_upload_log]
+  before_action :set_bible_upload_log, only: [:bible_upload_log]
 
   def new_bible_import
     authorize_acl :bible_upload
@@ -61,7 +61,7 @@ class Overseers::Bible::ImportsController < Overseers::BaseController
           )
     end
 
-    def set_bible_upload
-      @bible_uploads = BibleUploadLog.where(bible_upload_id: BibleUpload.decode_id(params[:id]))
+    def set_bible_upload_log
+      @bible_upload_logs = BibleUploadLog.where(bible_upload_id: BibleUpload.decode_id(params[:id]))
     end
 end
