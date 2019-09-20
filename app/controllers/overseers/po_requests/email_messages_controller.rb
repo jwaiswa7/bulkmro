@@ -40,6 +40,10 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
       if PoRequestMailer.send_supplier_notification(@email_message).deliver_now
         @po_request.update_attributes(sent_at: Time.now, status: :'Supplier PO Sent')
       end
+      if @po_request.purchase_order.present? && @po_request.status == 'Supplier PO Sent' && @po_request.purchase_order.has_sent_email_to_supplier? && !@po_request.purchase_order.material_status.present?
+        @po_request.purchase_order.material_status = 'Material Readiness Follow-Up'
+        @po_request.purchase_order.save
+      end
       redirect_to overseers_po_requests_path, notice: flash_message(@po_request, action_name)
     else
       render 'new'
