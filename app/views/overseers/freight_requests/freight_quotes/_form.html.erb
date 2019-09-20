@@ -3,8 +3,8 @@
     <h2><%= action_name.capitalize %> Freight Quote for Inquiry
       <%= format_id(@freight_quote.inquiry.inquiry_number) %>
       :&nbsp;<%= status_badge(@freight_quote.status) %></h2>
-    <p>This will <em>'<%= submit_text(@freight_quote).downcase %>'</em> and log it under
-      <strong><%= current_overseer.full_name %></strong>.</p>
+    <!-- <p>This will <em>'<%= submit_text(@freight_quote).downcase %>'</em> and log it under
+      <strong><%= current_overseer.full_name %></strong>.</p> -->
   </div>
 
   <%= simple_form_for([:overseers, @freight_request, @freight_quote], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
@@ -55,7 +55,7 @@
           <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Custom Duty</h6>
           <div class="form-row">
             <div class="col-6">
-              <%= f.input :currency, collection: Currency.all.map {|currency| [currency.to_s, {'data-conversion-rate' => currency.conversion_rate}]}, include_blank: true, input_html: { class: 'bmro-dropdown-icon' }, :input_html => { :value => '' } %>
+              <%= f.input :currency, collection: Currency.all.map {|currency| [currency.to_s, {'data-conversion-rate' => currency.conversion_rate}]}, include_blank: true, :input_html => { :value => '', class: 'bmro-dropdown-icon select2-single' } %>
             </div> 
             <div class="col-6">
               <%= f.input :exchange_rate, label: "Exchange Rate" %>
