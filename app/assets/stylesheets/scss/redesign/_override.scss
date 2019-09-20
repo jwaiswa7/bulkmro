@@ -343,6 +343,7 @@ a.bmro-list-button{
 }
 .select2-container--bootstrap .form-control{
     border-color:#eceef2!important;
+
 }
 .bmro-form-input:focus{
     border-color: #2C4159;
@@ -1339,6 +1340,6 @@ table.bmro-new-table tr:first-child{
     margin-bottom: 19px!important;
     width: 100%;
 }
-.form-group{
-    overflow: hidden;
+.bmro-card-body .file{
+    overflow: visible;
 }
