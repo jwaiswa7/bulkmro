@@ -1,7 +1,7 @@
 <div class="col-lg-12">
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
-      <h3 class="display-5 d-flex align-items-center">
+      <h3 class="display-5 d-flex align-items-center bmro-form-heading">
         Edit Material Followup: <%= format_id(@purchase_order.po_number) %>
       </h3>
       <span>
@@ -33,7 +33,7 @@
           </div>
 
           <div class="col-6">
-            <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single bmro-form-input"}, label: "Logistics Owner" %>
+            <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon"}, label: "Logistics Owner" %>
           </div>
           <div class="col-4">
             <%= f.input :supplier_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.supplier_dispatch_date.try(:strftime, "%d-%b-%Y"), class: 'supplier-dispatch-date '}, required: true, input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input'} %>
