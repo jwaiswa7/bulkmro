@@ -320,6 +320,10 @@ a.bmro-list-button{
     appearance: none !important; 
     height: 38px!important;   
 }
+.form-control:disabled, .form-control[readonly] {
+    background-color: #f7f7f7;
+     opacity: unset; 
+}
 .form-group:focus span{
     border-color:#2c4159!important;
 }
