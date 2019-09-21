@@ -13,13 +13,15 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
 
   def add_supplier_rfqs
     if params['inquiry_product_ids'].present?
-      params['inquiry_product_ids'].each do |inquiry_product_id|
+      params['inquiry_product_ids'].reject(&:empty?).each do |inquiry_product_id|
         inquiry_product = InquiryProduct.find(inquiry_product_id)
-        params['inquiry_product_supplier_ids'].each do |inquiry_product_supplier_id|
+        params['inquiry_product_supplier_ids'].reject(&:empty?).each do |inquiry_product_supplier_id|
           inquiry_product_supplier = InquiryProductSupplier.find(inquiry_product_supplier_id)
-          supplier_rfq = SupplierRfq.where(inquiry_id: @inquiry.id, inquiry_product_id: inquiry_product.id, product_id: inquiry_product.product.id, supplier_id: inquiry_product_supplier.supplier.id, status: 1).first_or_create
-          inquiry_product_supplier.supplier_rfq = supplier_rfq
-          inquiry_product_supplier.save
+          if inquiry_product_supplier.present?
+            supplier_rfq = SupplierRfq.where(inquiry_id: @inquiry.id, inquiry_product_id: inquiry_product.id, product_id: inquiry_product.product.id, supplier_id: inquiry_product_supplier.supplier.id, status: 1).first_or_create
+            inquiry_product_supplier.supplier_rfq = supplier_rfq
+            inquiry_product_supplier.save
+          end
         end if params['inquiry_product_supplier_ids'].present?
       end
       redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry, isp_ids: params['inquiry_product_supplier_ids'])
@@ -41,24 +43,27 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
 
   def update
     authorize_acl @supplier_rfq
-    # @supplier_rfq.assign_attributes(supplier_rfq_params.merge(overseer: current_overseer))
     if @supplier_rfq.present?
       @supplier_rfq.assign_attributes(supplier_rfq_params.merge(overseer: current_overseer))
       @supplier_rfq.save
-      supplier = Company.find(@supplier_rfq.supplier_id)
-      if supplier.default_contact.present?
-        @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: supplier.default_contact, inquiry: @inquiry, company: supplier)
-        subject = "Bulk MRO RFQ Ref # #{@supplier_rfq.inquiry_product.id}"
-        @action = 'send_email_request_for_quote'
-        @email_message.assign_attributes(
-            subject: subject,
-            body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq, @quantity).body.raw_source
-        )
-        @params = {
-            record: [:overseers, @supplier_rfq, @email_message],
-            url: "#{@supplier_rfq.to_param}/send_email_request_for_quote"
-        }
-        render 'shared/layouts/email_messages/new'
+      if params['button'] == 'update_and_send_link'
+        supplier = Company.find(@supplier_rfq.supplier_id)
+        if supplier.default_contact.present?
+          @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: supplier.default_contact, inquiry: @inquiry, company: supplier)
+          subject = "Bulk MRO RFQ Ref # #{@supplier_rfq.inquiry_product.id}"
+          @action = 'send_email_request_for_quote'
+          @email_message.assign_attributes(
+              subject: subject,
+              body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq, @quantity).body.raw_source
+          )
+          @params = {
+              record: [:overseers, @supplier_rfq, @email_message],
+              url: "#{@supplier_rfq.to_param}/send_email_request_for_quote"
+          }
+          render 'shared/layouts/email_messages/new'
+        else
+          redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
+        end
       else
         redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
       end
