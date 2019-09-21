@@ -3,14 +3,14 @@
 
   <%= simple_form_for([:overseers, @warehouse], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <div class="bmro-card bmro-card-padding">
-      <div class="form-group">
+      <div class="form-group bmro-margin-bottom">
         <%= f.input :name, label: 'Warehouse Name', :placeholder => 'e.g. Reliance Industries', :required => 'true', :class => 'form-control bmro-form-input' %>
       </div>
       <%= f.simple_fields_for :address do |address| %>
-         <div class="form-group">
+         <div class="form-group bmro-margin-bottom">
             <%= address.input :street1, input_html: { class: 'bmro-form-input' }, label:"Street1"  %>
           </div>
-          <div class="form-group">
+          <div class="form-group bmro-margin-bottom">
             <%= address.input :street2, input_html: { class: 'bmro-form-input' }, label:"Street2"  %>
           </div>
           <div class="form-row">
