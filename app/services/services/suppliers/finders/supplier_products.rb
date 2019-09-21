@@ -1,4 +1,4 @@
-class Services::Suppliers::Finders::SupplierProducts < Services::Suppliers::Finders::BaseFinder
+class Services::Suppliers::Finders::SupplierProducts < Services::Customers::Finders::BaseFinder
   def call
     call_base
   end
