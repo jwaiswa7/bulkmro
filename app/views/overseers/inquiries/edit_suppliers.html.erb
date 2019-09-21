@@ -62,10 +62,10 @@
                       </div>
                     </div>
                     <div class="col-6 col-md-2">
-                      <%= inquiry_product_supplier.input :bp_catalog_name, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Supplier Material Name" : false, placeholder: placeholder_for(inquiry_product_supplier, :bp_catalog_name) %>
+                      <%= inquiry_product.input :bp_catalog_name, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product.object ? "Supplier Material Name" : false, placeholder: placeholder_for(inquiry_product, :bp_catalog_name) %>
                     </div>
                     <div class="col-6 col-md-2">
-                      <%= inquiry_product_supplier.input :bp_catalog_sku, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Supplier Material Code" : false, placeholder: placeholder_for(inquiry_product_supplier, :bp_catalog_sku) %>
+                      <%= inquiry_product.input :bp_catalog_sku, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product.object ? "Supplier Material Code" : false, placeholder: placeholder_for(inquiry_product, :bp_catalog_sku) %>
                     </div>
                     <div class="col-md-5">
                       <div class="d-flex flex-row">

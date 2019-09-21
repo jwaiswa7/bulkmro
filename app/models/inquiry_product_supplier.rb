@@ -3,6 +3,7 @@ class InquiryProductSupplier < ApplicationRecord
   include Mixins::HasSupplier
 
   belongs_to :inquiry_product
+  belongs_to :supplier, class_name: 'Company', foreign_key: :supplier_id
   has_one :product, through: :inquiry_product
   has_one :inquiry, through: :inquiry_product
   has_many :sales_quote_rows, dependent: :destroy
