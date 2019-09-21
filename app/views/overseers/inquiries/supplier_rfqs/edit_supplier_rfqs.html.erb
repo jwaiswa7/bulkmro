@@ -105,11 +105,22 @@
             </div>
           </div>
           <div class="card-footer">
-            <%# if is_authorized(inquiry_product_supplier, 'request_for_quote') %>
-              <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-                <i class="fal fa-pen"></i> Update and Send Link
-              <% end %>
-            <%# end %>
+            <div class="form-row">
+              <div class="col-6">
+                <div class="form-group mb-0">
+                  <%= button_tag(type: "submit", class: "btn btn-warning btn-block", value: 'update') do %>
+                    <i class="fal fa-pen"></i> Update
+                  <% end %>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group mb-0">
+                <%= button_tag(type: "submit", class: "btn btn-warning btn-block", value: 'update_and_send_link') do %>
+                  <i class="fal fa-pen"></i> Update and Send Link
+                <% end %>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       <% end %>
