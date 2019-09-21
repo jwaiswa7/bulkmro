@@ -1,5 +1,5 @@
 <div class="col-lg-12">
-    <%= simple_form_for([@inquiry_product_supplier], url: suppliers_rfq_path, method: :PUT, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= simple_form_for([@inquiry_product_supplier], url: update_ips_suppliers_rfq_index_path, method: :PATCH, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= render 'shared/snippets/form_errors', f: f %>
       <div class="card">
         <div class="card-body">

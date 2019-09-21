@@ -937,7 +937,7 @@ Rails.application.routes.draw do
     resources :rfq, controller: :rfq do
       collection do
         get 'edit_supplier_rfqs'
-        get 'update_supplier_rfqs'
+        patch 'update_ips'
       end
     end
 

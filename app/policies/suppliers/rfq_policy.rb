@@ -5,7 +5,7 @@ class Suppliers::RfqPolicy < Suppliers::ApplicationPolicy
     true
   end
 
-  def update_supplier_rfqs?
+  def update_ips?
     true
   end
 end
