@@ -65,11 +65,12 @@
               <%= f.input :document_type, collection: enum_to_collection(InwardDispatch.document_types, keep_raw: true), label: "Type of Document", input_html: {class: "bmro-form-input bmro-dropdown-icon select2-single"} %>
             </div>
 
-            <div class="col-6">
+            <!-- <div class="col-6">
               <%#= f.input :status, as: :select, collection: enum_to_collection(InwardDispatch.statuses, keep_raw: true), disabled: true, readonly: true %>
-              <%= f.hidden_field :status %>
-              <%= f.hidden_field :sales_order_id %>
-            </div>
+              
+            </div> -->
+            <%= f.hidden_field :status %>
+            <%= f.hidden_field :sales_order_id %>
 
             <div class="col-6">
               <%= f.input :dispatched_by, collection: enum_to_collection(InwardDispatch.dispatched_bies, keep_raw: true), label: "Material Dispatched By", input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon"}, required: true %>
