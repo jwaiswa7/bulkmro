@@ -95,18 +95,18 @@
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
           <% end %>
           <strong>Email</strong>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-          <span class="d-block bmro-summary-heading"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
+          <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block bmro-summary-heading">Customer - Shipping Address</strong>
-          <span class="d-block bmro-summary-heading"><%= (@inquiry.shipping_company.name) %></span>
-          <span class="d-block bmro-summary-heading"><%= @sales_order.serialized_shipping_address.to_compact_multiline_s %></span>
+          <span class="d-block"><%= (@inquiry.shipping_company.name) %></span>
+          <span class="d-block"><%= @sales_order.serialized_shipping_address.to_compact_multiline_s %></span>
           <% if @inquiry.shipping_contact.phone.present? %>
-            <span class="d-block bmro-summary-heading"><strong>Contact</strong>: <%= @inquiry.shipping_contact.full_name %>
+            <span class="d-block"><strong>Contact</strong>: <%= @inquiry.shipping_contact.full_name %>
               - <%= @inquiry.shipping_contact.phone %></span>
           <% end %>
           <strong>Email</strong>: <%= @inquiry.shipping_contact.email if @inquiry.shipping_contact.email.present? %>
-          <span class="d-block bmro-summary-heading"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
+          <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
         </div>
       </div>
     </div>
