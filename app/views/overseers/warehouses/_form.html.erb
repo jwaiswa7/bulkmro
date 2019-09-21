@@ -13,7 +13,7 @@
           <div class="form-group bmro-margin-bottom">
             <%= address.input :street2, input_html: { class: 'bmro-form-input' }, label:"Street2"  %>
           </div>
-          <div class="form-row">
+          <div class="form-row bmro-margin-bottom">
             <div class="col-6 col-md-3">
               <%= address.input :country_code, as: :country, input_html: { class: 'bmro-form-input select2-single bmro-dropdown-icon' }, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
             </div>
