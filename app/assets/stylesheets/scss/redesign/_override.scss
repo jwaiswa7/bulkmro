@@ -1210,7 +1210,6 @@ table.table.dataTable.table-bordered td:first-child{
     border-left: 1px solid #E0E2E7;
     text-align: left;
     width: 98px;
-    display: inline-block;
 }
 .table.table.dataTable.table-bordered td:first-child a span{
     display: none;
@@ -1516,7 +1515,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     float: left; 
     background-color: #f1f7f6!important;
     border-radius: 0px !important;
-    padding-top: 0px;
+    padding: 0px;
     border-top: none;
 }
 .bmro-border-right{
