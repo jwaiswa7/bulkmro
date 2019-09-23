@@ -1463,11 +1463,13 @@ input:-internal-autofill-selected {
 .bmro-summary-table th{
     color: #2C4159!important;
     text-align: left!important;
+    border-radius: 0px!important;
 }
 .bmro-summary-table td{
     color: #687686!important;
     text-align: left!important;
-}  
+    border-radius: 0px!important;
+}
 .bmro-margin-neg{
     margin-top: -14px;
 }
