@@ -605,7 +605,7 @@ table.dataTable td{
     font-weight: 500;
     letter-spacing: -0.5px;
     line-height: 15px;
-    text-align: right!important;
+    text-align: right;
     padding-right: 10px;
     padding-left: 10px;    
 }
@@ -1472,4 +1472,7 @@ input:-internal-autofill-selected {
     .container {
         max-width: 1740px;
     }
+}    
+.bmro-margin-neg{
+    margin-top: -14px;
 }
