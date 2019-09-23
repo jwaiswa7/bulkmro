@@ -1,5 +1,5 @@
 
-  <div class="bmro-full-container bmro-bg" id="company_summary">
+  <div class="bmro-full-container bmro-bg bmro-company-summary-slide">
     <div class="card-body bmro-summary-body bmro-summary-body-pt bmro-bg">
       <div class=form-row>
         <div class="col-6 col-md-3">
@@ -103,7 +103,7 @@
         </div>
       </div>
 
-  <div class="bmro-summary-dotted-line" id="Produts_summary"></div>
+  <div class="bmro-summary-dotted-line bmro-Produts-summary-slide" id="Produts_summary"></div>
       <div class="form-row mt-3">
         <% if @inquiry.calculation_sheet.attached? %>
 
@@ -330,18 +330,29 @@
           </div>
         <% end %>
         <div class="bmro-view-right-ul">
-          <nav class="bmro-nav" data-spy="affix" data-offset-top="205">
+          <nav class="bmro-nav">
             <ul class="bmro-label-ul">
 
               <li class="bmro-li-right">
-                 <label data-path="company_summary" class="bmro-list-button">Company Details</label>
+                 <label data-path="company_summary" class="bmro-list-button bmro-company-summary">Company Details</label>
               </li>
 
               <li class="bmro-li-right bmro-active-li">
-                  <label data-path="Produts_summary" class="bmro-list-button">Products</label>
+                  <label data-path="Produts_summary" class="bmro-list-button bmro-Produts-summary">Products</label>
               </li>
-
             </ul>
+            <script type="text/javascript">
+              $('.bmro-company-summary').click(function() {
+                $('html, body').animate({
+                scrollTop: $(".bmro-company-summary-slide").offset().top
+                }, 1000)
+              }), 
+              $('.bmro-Produts-summary').click(function (){
+                $('html, body').animate({
+                  scrollTop: $(".bmro-Produts-summary-slide").offset().top
+                }, 1000)
+              })            
+            </script>
           </nav>          
         </div>
     </div>
