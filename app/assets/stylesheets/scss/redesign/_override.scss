@@ -671,7 +671,6 @@ li.select2-results__option{
     padding: 5px 2px;
     box-shadow: unset;
     border:none;   
-    float: left;
 }
 .bmro-datatable-style tbody tr td a:hover{
     outline: unset;
@@ -697,7 +696,6 @@ li.select2-results__option{
 }
 table.bmro-datatable-style{
     border-spacing:0px!important;
-    table-layout: fixed;
 }
 .bmro-ar-invoice{
     width: 100%;
@@ -1211,7 +1209,7 @@ table.table.dataTable.table-bordered th{
 table.table.dataTable.table-bordered td:first-child{
     border-left: 1px solid #E0E2E7;
     text-align: left;
-    width: 97px;
+    width: 98px;
 }
 .table.table.dataTable.table-bordered td:first-child a span{
     display: none;
