@@ -12,10 +12,10 @@ const edit = () => {
         gtag('event', 'click-duplicate', {event_category: 'duplicate-inquiry', event_label: 'Duplicate Inquiry'})
     })
 
-    $('.bmro-list-button').unbind('click').bind('click',function () {
-        let page = $(this).data('path');
-        slideTo(page);
-    })
+    // $('.bmro-list-button').unbind('click').bind('click',function () {
+    //     let page = $(this).data('path');
+    //     slideTo(page);
+    // })
 
     $('form').on('change', 'select[id*=inquiry_status]', function (e) {
         var selectedValue = $("option:selected").val();
@@ -72,10 +72,10 @@ let onProductChange = (container) => {
 
 // crezenta js
 
-function slideTo(page) {
-    let element = document.getElementById(page);
-    element.scrollIntoView({behavior: "smooth",offsetTop: 20 });
-}
+// function slideTo(page) {
+//     let element = document.getElementById(page);
+//     element.scrollIntoView({behavior: "smooth",offsetTop: 20 });
+// }
 
 $(".bmro-li-right").click(function(){
     $('.bmro-li-right').addClass('bmro-active-li',1000);
