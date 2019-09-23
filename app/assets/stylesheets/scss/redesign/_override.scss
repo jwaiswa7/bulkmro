@@ -1548,3 +1548,27 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 .bmro-table-icon-padding{
     padding: 2px 15px !important;
 }
+.btn{
+    padding: 8px 10px!important;
+    border: 2px solid #2C4159!important;
+    border-radius: 2px!important;
+    background-color: #2C4159;
+    color: #FFFFFF;
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 13px!important;
+    font-weight: 600!important;
+    letter-spacing: -0.5px;
+    line-height: 16px!important;
+    outline: none!important;
+    text-transform: capitalize!important;
+    box-shadow: none!important;
+}
+.btn:hover{
+    background-color: #385372!important;
+    color: #FFFFFF!important;
+}
+.btn:disabled{
+    background-color: #385372!important;
+    color: #FFFFFF!important;
+}
