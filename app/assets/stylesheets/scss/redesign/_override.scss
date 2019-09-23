@@ -1210,7 +1210,7 @@ table.table.dataTable.table-bordered td:first-child{
     border-left: 1px solid #E0E2E7;
     text-align: left;
     width: 98px;
-    display: flow-root;
+    display: inline-block;
 }
 .table.table.dataTable.table-bordered td:first-child a span{
     display: none;
@@ -1497,4 +1497,8 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 .bmro-summary-body-pt{
     padding-top: 60px!important;
+}
+.bmro-table-checkbox{
+    float: left;
+    width: 32px;
 }

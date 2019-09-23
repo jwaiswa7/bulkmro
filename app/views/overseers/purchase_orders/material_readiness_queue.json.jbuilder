@@ -2,7 +2,7 @@ json.data (@purchase_orders) do |purchase_order|
   columns = [
                   [
                       if is_authorized(purchase_order, 'update_logistics_owner') && policy(purchase_order).update_logistics_owner?
-                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='purchase_orders[]' class='custom-control-input' value='#{purchase_order.id}' id='c-#{purchase_order.id}'><label class='custom-control-label' for='c-#{purchase_order.id}'></label></div>"
+                        "<div class='d-inline-block custom-control custom-checkbox align-middle bmro-table-checkbox'><input type='checkbox' name='purchase_orders[]' class='custom-control-input' value='#{purchase_order.id}' id='c-#{purchase_order.id}'><label class='custom-control-label' for='c-#{purchase_order.id}'></label></div>"
                       end,
                       if is_authorized(purchase_order, 'show') && policy(purchase_order).show?
                         row_action_button_without_fa(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'bmro-icon-table bmro-icon-downmaterial', 'Download', 'dark', :_blank)
