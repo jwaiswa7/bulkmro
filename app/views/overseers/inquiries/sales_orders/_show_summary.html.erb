@@ -280,7 +280,22 @@
     <% end %>
 </div>
 <div class="bmro-dotted-line"></div>
+</div>
+
+<div class="card bmro-card-header">
+  <div class="card-header bmro-bg">      
+      <% if sales_order.status || sales_order.legacy_request_status == "Approved" %>
+        <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
+          <% if is_authorized(@sales_order, 'show_pdf') %>
+            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn bmro-button btn-info btn-sm", target: "_blank" do %>
+              <i class="fal fa-eye mr-1"></i>Proforma I.
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>  
   </div>
+</div>
+
   <div class="card-footer bmro-card-footer">
     <div class=form-row>
       <div class="col-6 col-md-1">
@@ -316,16 +331,3 @@
   </div>
 </div>
 
-<div class="card bmro-card-header">
-  <div class="card-header bmro-bg">      
-      <% if sales_order.status || sales_order.legacy_request_status == "Approved" %>
-        <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
-          <% if is_authorized(@sales_order, 'show_pdf') %>
-            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn bmro-button btn-info btn-sm", target: "_blank" do %>
-              <i class="fal fa-eye mr-1"></i>Proforma I.
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>  
-  </div>
-</div>
