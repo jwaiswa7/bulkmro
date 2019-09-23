@@ -343,12 +343,12 @@
                     </td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.round(0) / 2).to_f.round(2) %>%</span></td>
+                      <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span></td>
                     <td align="right" valign="top">
                       <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %></span>
                     </td>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.round(0) / 2).to_f.round(2) %>%</span></td>
+                      <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span></td>
                     <td align="center" valign="top">
                       <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %>
                         <br></span>
