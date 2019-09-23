@@ -82,4 +82,39 @@ $(".bmro-li-right").click(function(){
     $(this).removeClass('bmro-active-li');
 });   
 
+$('.bmro-company-summary').click(function() {
+    $('html, body').animate({
+        scrollTop: $(".bmro-company-summary-slide").offset().top -200
+        }, 1000)
+    }), 
+
+$('.bmro-Produts-summary').click(function (){
+    $('html, body').animate({
+      scrollTop: $(".bmro-Produts-summary-slide").offset().top
+    }, 1000)
+}),
+
+$('.bmro-Opportunity-Details').click(function (){
+    $('html, body').animate({
+      scrollTop: $(".bmro-Opportunity-Details-slide").offset().top - 10
+    }, 1000)
+})
+
+$('.bmro-Billing').click(function (){
+    $('html, body').animate({
+      scrollTop: $(".bmro-Billing-slide").offset().top - 10
+    }, 1000)
+})
+
+$('.bmro-owner-details').click(function (){
+    $('html, body').animate({
+      scrollTop: $(".bmro-owner-details-slide").offset().top - 10
+    }, 1000)
+}) 
+
+$('.bmro-important').click(function (){
+    $('html, body').animate({
+      scrollTop: $(".bmro-important-slide").offset().top - 10
+    }, 1000)
+})
 export default edit
