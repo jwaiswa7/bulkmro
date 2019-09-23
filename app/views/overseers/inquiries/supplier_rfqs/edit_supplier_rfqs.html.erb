@@ -16,89 +16,96 @@
               <%= f.hidden_field :inquiry_id %>
 
               <div class="col-12">
+                <% shown_title = false %>
                 <%= f.nested_fields_for :inquiry_product_suppliers, f.object.inquiry_product_suppliers do |inquiry_product_supplier| %>
-
                   <% if inquiry_product_supplier.object.id.present? %>
-
                     <div class="col-12">
-                      <div class="mt-3">
-                        <%= check_box_tag 'inquiry_product_supplier_ids[]', inquiry_product_supplier.object.id, false, id: "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}", class: 'custom-control-input' %>
-                        <label class="custom-control-label" for="<%= "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}" %>"></label>
+                      <span>
                         <strong>
                           <%= hidden_field_tag :inquiry_product_supplier, inquiry_product_supplier.object.id %>
-                          <%= "#{inquiry_product_supplier.object.to_s}: ##{inquiry_product_supplier.object.id}" %>
+                          <% unless shown_title %>
+                            <%= "#{inquiry_product_supplier.object.to_s}: ##{@inquiry.inquiry_number}" %>
+                            <hr>
+                            <% shown_title = true %>
+                          <% end %>
                         </strong>
+                      </span>
+                    </div>
+
+                    <div class="form-row d-none d-md-flex">
+                      <div class="col-1 pl-3">
+                        <span class="custom-control custom-checkbox d-inline">
+                            <%= check_box_tag 'inquiry_product_supplier_ids[]', inquiry_product_supplier.object.id, false, id: "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}", class: 'custom-control-input' %>
+                          <label class="custom-control-label" for="<%= "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}" %>"></label>
+                        </span>
+                      </div>
+                      <div class="col-5">
+                        <div class="form-group mb-0">
+                          <label>Product</label><br>
+                          <%= inquiry_product_supplier.object.inquiry_product.product.to_s %>
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="form-group mb-0">
+                          <label>MPN</label><br>
+                          <%= inquiry_product_supplier.object.inquiry_product.product.mpn %>
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="form-group mb-0">
+                          <label>Brand</label><br>
+                          <%= inquiry_product_supplier.object.inquiry_product.product.brand.to_s %>
+                        </div>
                       </div>
                     </div>
-                    <hr>
-                  <div class="form-row d-none d-md-flex">
-                    <div class="col-6">
-                      <div class="form-group mb-0">
-                        <label>Product</label><br>
-                        <%= inquiry_product_supplier.object.inquiry_product.product.to_s %>
+                    <br>
+                    <div class="form-row d-none d-md-flex">
+                      <div class="col-1">
+                        <div class="form-group mb-0">
+                          <%= inquiry_product_supplier.input :quantity, :input_html => {:value => inquiry_product_supplier.object.inquiry_product.quantity} %>
+                        </div>
+                      </div>
+                      <div class="col-1">
+                        <div class="form-group mb-0">
+                          <%= inquiry_product_supplier.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+                        </div>
+                      </div>
+                      <div class="col-2">
+                        <div class="form-group mb-0">
+                          <%= inquiry_product_supplier.input :last_unit_price, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                        </div>
+                      </div>
+                      <div class="col-2">
+                        <div class="form-group mb-0">
+                          <%= inquiry_product_supplier.input :unit_cost_price, label: 'Basic Unit Price', input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                        </div>
+                      </div>
+                      <div class="col-1">
+                        <div class="form-group mb-0">
+                          <%= inquiry_product_supplier.input :gst, label: 'GST%', input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                        </div>
+                      </div>
+                      <div class="col-1">
+                        <div class="form-group mb-0">
+                          <%= inquiry_product_supplier.input :unit_freight, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                        </div>
+                      </div>
+                      <div class="col-2">
+                        <div class="form-group mb-0">
+                          <%= inquiry_product_supplier.input :final_unit_price, readonly: true, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                        </div>
+                      </div>
+                      <div class="col-1">
+                        <div class="form-group mb-0">
+                          <%= inquiry_product_supplier.input :total_price, readonly: true, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                        </div>
+                      </div>
+                      <div class="col-1">
+                        <div class="form-group mb-0">
+                          <%= inquiry_product_supplier.input :remarks, input_html: {'rows' => 1} %>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-3">
-                      <div class="form-group mb-0">
-                        <label>MPN</label><br>
-                        <%= inquiry_product_supplier.object.inquiry_product.product.mpn %>
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <div class="form-group mb-0">
-                        <label>Brand</label><br>
-                        <%= inquiry_product_supplier.object.inquiry_product.product.brand.to_s %>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="form-row d-none d-md-flex">
-                    <div class="col-1">
-                      <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :quantity, :input_html => { :value => inquiry_product_supplier.object.inquiry_product.quantity } %>
-                      </div>
-                    </div>
-                    <div class="col-1">
-                      <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
-                      </div>
-                    </div>
-                    <div class="col-2">
-                      <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :last_unit_price, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
-                      </div>
-                    </div>
-                    <div class="col-2">
-                      <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :unit_cost_price, label: 'Basic Unit Price', input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
-                      </div>
-                    </div>
-                    <div class="col-1">
-                      <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :gst, label: 'GST%', input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
-                      </div>
-                    </div>
-                    <div class="col-1">
-                      <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :unit_freight, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
-                      </div>
-                    </div>
-                    <div class="col-2">
-                      <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :final_unit_price, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
-                      </div>
-                    </div>
-                    <div class="col-1">
-                      <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :total_price, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
-                      </div>
-                    </div>
-                    <div class="col-1">
-                      <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :remarks %>
-                      </div>
-                    </div>
-                  </div>
                   <% end %>
                 <% end %>
               </div>
@@ -115,9 +122,9 @@
               </div>
               <div class="col-6">
                 <div class="form-group mb-0">
-                <%= button_tag(type: "submit", class: "btn btn-warning btn-block", value: 'update_and_send_link') do %>
-                  <i class="fal fa-pen"></i> Update and Send Link
-                <% end %>
+                  <%= button_tag(type: "submit", class: "btn btn-warning btn-block", value: 'update_and_send_link') do %>
+                    <i class="fal fa-pen"></i> Update and Send Link
+                  <% end %>
                 </div>
               </div>
             </div>
