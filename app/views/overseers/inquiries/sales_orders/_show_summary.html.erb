@@ -1,7 +1,6 @@
-<div class="card">
-  <div class="card-header bmro-bg">
-    <div class=form-row>
 
+  <div class="card-body bmro-card-body bmro-card-body-pt">
+    <div class=form-row>
       <div class="col-6 col-md-3">
         <strong class="d-block bmro-summary-heading">Order Number</strong>
        <span class="bmro-summary-data"> #<%= sales_order.try(:order_number).blank? ? "SAP Request Pending" : sales_order.order_number %></span>
@@ -18,19 +17,10 @@
         <strong class="d-block bmro-summary-heading">Opportunity Type</strong>
         <span class="bmro-summary-data"> <%= sales_order.inquiry.present? ? sales_order.inquiry.opportunity_type.capitalize.titleize : '-' %></span>
       </div>
-      <% if sales_order.status || sales_order.legacy_request_status == "Approved" %>
-        <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
-          <% if is_authorized(@sales_order, 'show_pdf') %>
-            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn bmro-button btn-info btn-sm", target: "_blank" do %>
-              <i class="fal fa-eye mr-1"></i>Proforma I.
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
     </div>
-<div class="bmro-dotted-line"></div>
-  </div>
-  <div class="card-body">
+
+    <div class="bmro-dotted-line"></div>
+
     <div class="form-row mb-1">
       <div class="col-6 col-md-3">
         <strong class="d-block bmro-summary-heading">Customer Purchase Order No.</strong>
@@ -288,9 +278,24 @@
         </table>
       <% end %>
     <% end %>
-
+</div>
 <div class="bmro-dotted-line"></div>
+</div>
+
+<div class="card bmro-card-header">
+  <div class="card-header bmro-bg">      
+      <% if sales_order.status || sales_order.legacy_request_status == "Approved" %>
+        <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
+          <% if is_authorized(@sales_order, 'show_pdf') %>
+            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn bmro-button btn-info btn-sm", target: "_blank" do %>
+              <i class="fal fa-eye mr-1"></i>Proforma I.
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>  
   </div>
+</div>
+
   <div class="card-footer bmro-card-footer">
     <div class=form-row>
       <div class="col-6 col-md-1">
@@ -325,3 +330,4 @@
     </div>
   </div>
 </div>
+
