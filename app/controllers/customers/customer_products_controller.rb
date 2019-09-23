@@ -14,7 +14,7 @@ class Customers::CustomerProductsController < Customers::BaseController
     service = Services::Customers::Finders::CustomerProducts.new(params, current_contact, current_company)
     service.call
     @indexed_customer_products = service.indexed_records
-    @customer_products = service.records.order("RANDOM()")
+    @customer_products = service.records.with_eager_loaded_images.order("RANDOM()")
     # for henkel company specific changes
     @is_henkel = (current_company.account == account)
     @default_quantity = nil
