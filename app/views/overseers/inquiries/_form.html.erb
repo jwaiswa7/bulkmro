@@ -63,7 +63,7 @@
           </div>
           <div class="col-6">
             <% if f.object.calculation_sheet.attached? %>
-              <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: "#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe %>
+              <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: "#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe %>
             <% else %>
               <%= f.input :calculation_sheet, wrapper: :custom_file, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, label: 'Calculation sheet', hint: false %>
             <% end %>
@@ -248,10 +248,10 @@
               <%= f.input :customer_po_number, label: 'Customer purchase order number', input_html: { class: 'bmro-form-input' }, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
             </div>
             <div class="col-12 col-md-7">
-              <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer purchase order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_sheet.filename}".html_safe) : false %>
+              <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer purchase order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_sheet.filename}".html_safe) : false %>
             </div>
             <div class="col-12 col-md-5">
-              <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.copy_of_email.filename}".html_safe) : false %>
+              <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="bmro-download-icon "></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.copy_of_email.filename}".html_safe) : false %>
             </div>
 
             <div class="col-12 col-md-7">
@@ -261,7 +261,7 @@
                 </div>
                 <div class="form-group bmro-download-icon bmro-btn-pos width-30">
                   <% f.object.supplier_quotes.attachments.each do |attachment| %>
-                    <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                       <i class="bmro-download-icon"></i>
                       <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0 bmro-button bmro-trash-parent', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                         <i class="bmro-trash-icon"></i>
