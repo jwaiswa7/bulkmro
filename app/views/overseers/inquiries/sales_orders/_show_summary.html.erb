@@ -342,17 +342,16 @@
               </li>
             </ul>
             <script type="text/javascript">
-            $( '.bmro-list-button' ).on( 'click', function(e){
-
-              var href = $(this).attr( 'class' );
-
-              $( 'html, body' ).animate({
-                scrollTop: $( href ).offset().top
-              }, '0' );
-
-              e.preventDefault();
-
-            });            
+              $('.bmro-company-summary').click(function() {
+                $('html, body').animate({
+                scrollTop: $(".bmro-company-summary-slide").offset().top
+                }, 1000)
+              }), 
+              $('.bmro-Produts-summary').click(function (){
+                $('html, body').animate({
+                  scrollTop: $(".bmro-Produts-summary-slide").offset().top
+                }, 1000)
+              })            
             </script>
           </nav>          
         </div>
