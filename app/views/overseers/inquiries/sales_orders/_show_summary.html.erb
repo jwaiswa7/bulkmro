@@ -1,5 +1,5 @@
 
-  <div class="bmro-full-container bmro-bg">
+  <div class="bmro-full-container bmro-bg" id="company_summary">
     <div class="card-body bmro-summary-body bmro-summary-body-pt bmro-bg">
       <div class=form-row>
         <div class="col-6 col-md-3">
@@ -103,7 +103,7 @@
         </div>
       </div>
 
-  <div class="bmro-summary-dotted-line"></div>
+  <div class="bmro-summary-dotted-line" id="Produts_summary"></div>
       <div class="form-row mt-3">
         <% if @inquiry.calculation_sheet.attached? %>
 
@@ -328,7 +328,22 @@
               <% end %>
             <% end %>
           </div>
-        <% end %>  
+        <% end %>
+        <div class="bmro-view-right-ul">
+          <nav class="bmro-nav" data-spy="affix" data-offset-top="205">
+            <ul class="bmro-label-ul">
+
+              <li class="bmro-li-right">
+                 <label data-path="company_summary" class="bmro-list-button">Company Details</label>
+              </li>
+
+              <li class="bmro-li-right bmro-active-li">
+                  <label data-path="Produts_summary" class="bmro-list-button">Products</label>
+              </li>
+
+            </ul>
+          </nav>          
+        </div>
     </div>
   </div> 
   </div>
