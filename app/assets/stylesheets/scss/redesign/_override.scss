@@ -696,7 +696,6 @@ li.select2-results__option{
 }
 table.bmro-datatable-style{
     border-spacing:0px!important;
-    table-layout: fixed;
 }
 .bmro-ar-invoice{
     width: 100%;
@@ -1209,8 +1208,9 @@ table.table.dataTable.table-bordered th{
 }
 table.table.dataTable.table-bordered td:first-child{
     border-left: 1px solid #E0E2E7;
-    text-align: left;
-    width: 97px;
+    text-align: left;/*
+    width: 98px;
+    float: left;*/
 }
 .table.table.dataTable.table-bordered td:first-child a span{
     display: none;
@@ -1218,6 +1218,10 @@ table.table.dataTable.table-bordered td:first-child{
 .bmro-datatable-style tbody tr td a.btn{
     margin-left: 2px;
     margin-bottom: 3px;
+    float: left;
+}
+.bmro-datatable-style tbody tr td{
+    overflow: hidden;
 }
 table.table.dataTable.table-bordered tr:last-child td{
     border-bottom: 1px solid #E0E2E7;
