@@ -102,19 +102,19 @@ $('.bmro-Opportunity-Details').click(function (){
 
 $('.bmro-Billing').click(function (){
     $('html, body').animate({
-      scrollTop: $(".bmro-Billing-slide").offset().top - 10
+      scrollTop: $(".bmro-Billing-slide").offset().top - 50
     }, 1000)
 })
 
 $('.bmro-owner-details').click(function (){
     $('html, body').animate({
-      scrollTop: $(".bmro-owner-details-slide").offset().top - 10
+      scrollTop: $(".bmro-owner-details-slide").offset().top - 50 
     }, 1000)
 }) 
 
 $('.bmro-important').click(function (){
     $('html, body').animate({
-      scrollTop: $(".bmro-important-slide").offset().top - 10
+      scrollTop: $(".bmro-important-slide").offset().top - 50
     }, 1000)
 })
 export default edit
