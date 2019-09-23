@@ -82,7 +82,8 @@ class Suppliers::RfqController < Suppliers::BaseController
       :gst,
       :unit_freight,
       :final_unit_price,
-      :total_price
+      :total_price,
+      :remarks
     )
   end
 end

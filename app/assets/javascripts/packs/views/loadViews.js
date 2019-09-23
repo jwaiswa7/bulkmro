@@ -99,6 +99,9 @@ import emailMessages from "./emailMessages/init";
 //Supplier RFQ
 import supplierRfqs from "./supplierRfqs/init"
 
+//Supplier Portal RFQ
+import rfqs from "./rfq/init"
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -137,7 +140,8 @@ let loader = {
     packingSlips:packingSlips,
     addresses: addresses,
     emailMessages: emailMessages,
-    supplierRfqs: supplierRfqs
+    supplierRfqs: supplierRfqs,
+    rfq: rfqs
 };
 
 // Imports

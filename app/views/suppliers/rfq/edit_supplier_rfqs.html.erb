@@ -15,7 +15,7 @@
                     <div class="mt-3">
                       <strong>
                         <%= hidden_field_tag :inquiry_product_supplier, inquiry_product_supplier.object.id %>
-                        <%= "#{inquiry_product_supplier.object.to_s}: ##{inquiry_product_supplier.object.id}" %>
+                        <%= "Inquiry: ##{inquiry_product_supplier.object.inquiry.inquiry_number}" %>
                       </strong>
                     </div>
                   </div>
@@ -41,10 +41,10 @@
                     </div>
                   </div>
                   <br>
-                  <div class="form-row d-none d-md-flex">
+                  <div class="form-row d-none d-md-flex rfq_edit">
                     <div class="col-1">
                       <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :quantity, :input_html => { :value => inquiry_product_supplier.object.inquiry_product.quantity } %>
+                        <%= inquiry_product_supplier.input :quantity, :input_html => { :value => inquiry_product_supplier.object.inquiry_product.quantity }, readonly: true %>
                       </div>
                     </div>
                     <div class="col-1">
@@ -52,11 +52,13 @@
                         <%= inquiry_product_supplier.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
                       </div>
                     </div>
-                    <div class="col-2">
-                      <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :last_unit_price, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                    <% if inquiry_product_supplier.object.last_unit_price.present? %>
+                      <div class="col-2">
+                        <div class="form-group mb-0">
+                          <%= inquiry_product_supplier.input :last_unit_price, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                        </div>
                       </div>
-                    </div>
+                    <% end %>
                     <div class="col-2">
                       <div class="form-group mb-0">
                         <%= inquiry_product_supplier.input :unit_cost_price, label: 'Basic Unit Price', input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
@@ -79,10 +81,12 @@
                     </div>
                     <div class="col-1">
                       <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :total_price, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                        <%= inquiry_product_supplier.input :total_price, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, readonly: true %>
                       </div>
                     </div>
-                    <div class="col-1">
+                  </div>
+                  <div class="form-row d-none d-md-flex">
+                    <div class="col-10">
                       <div class="form-group mb-0">
                         <%= inquiry_product_supplier.input :remarks %>
                       </div>
