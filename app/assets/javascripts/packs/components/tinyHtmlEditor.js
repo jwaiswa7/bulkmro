@@ -9,7 +9,7 @@ const tinyHtmlEditor = () => {
         fullpage_default_encoding: "UTF-8",
         visual : false,
         relative_urls : false,
-        remove_script_host : false,
+        remove_script_host : true,
         document_base_url: 'https://lab.bulkmro.com/'
     });
 };
