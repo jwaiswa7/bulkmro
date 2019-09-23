@@ -17,6 +17,11 @@ class Services::Overseers::Inquiries::LinkSuppliersToProducts < Services::Shared
             inquiry_product_supplier = InquiryProductSupplier.where(inquiry_product_id: inquiry_product.id, supplier_id: supplier_id).first_or_initialize
             inquiry_product_supplier.save
           end
+        else
+          supplier_ids.each do |supplier_id|
+            inquiry_product_supplier = InquiryProductSupplier.where(inquiry_product_id: inquiry_product.id, supplier_id: supplier_id).first_or_initialize
+            inquiry_product_supplier.save
+          end
         end
       end
     end

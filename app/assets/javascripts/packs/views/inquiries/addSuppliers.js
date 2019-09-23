@@ -43,13 +43,11 @@ let addProductSuppliers = () => {
         suppliers.push($(element).val());
     });
     if (suppliers.length > 0) {
-        let data = JSON.stringify({supplier_ids: suppliers, inquiry_product_ids: product_ids});
+        let data = { supplier_ids: suppliers, inquiry_product_ids: product_ids };
         $.ajax({
             url: Routes.link_product_suppliers_overseers_inquiry_path(inquiry_id),
             type: "POST",
             data: data,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
             success: function () {
                 window.location.reload();
             }
