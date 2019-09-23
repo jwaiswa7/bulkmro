@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-1">
                       <div class="form-group mb-0">
-                        <%= f.input :lead_time, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                        <%= f.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
                       </div>
                     </div>
                     <div class="col-2">

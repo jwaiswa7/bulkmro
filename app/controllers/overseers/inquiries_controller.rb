@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment, :render_followup_edit_form, :update_followup_date, :link_product_suppliers, :draft_rfq]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment, :render_followup_edit_form, :update_followup_date, :link_product_suppliers, :draft_rfq, :destroy_supplier]
 
   def index
     authorize_acl :inquiry
@@ -408,6 +408,13 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def search_suppliers
     authorize_acl @inquiry
+  end
+
+  def destroy_supplier
+    authorize_acl @inquiry
+    if params[:inquiry_product_supplier_id].present?
+      InquiryProductSupplier.find(params[:inquiry_product_supplier_id]).destroy
+    end
   end
 
   def stages

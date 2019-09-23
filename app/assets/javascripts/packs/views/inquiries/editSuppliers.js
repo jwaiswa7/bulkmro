@@ -25,6 +25,7 @@ const editSuppliers = () => {
     massLinkSupplier();
     addSuppliers();
     draftRfq();
+    deleteIsp();
 };
 
 let onSupplierChange = (container) => {
@@ -99,5 +100,23 @@ let draftRfq = () => {
     });
 };
 
+let deleteIsp = () => {
+    $('.delete-isp').on('click', function () {
+        let $this = $(this);
+        let inquiry_id = $('input[name=inquiry_id]').val();
+        let inquiry_product_supplier_id = $this.attr('id');
+        let data = {
+            inquiry_product_supplier_id: inquiry_product_supplier_id
+        };
+        $.ajax({
+            url: Routes.destroy_supplier_overseers_inquiry_path(inquiry_id),
+            type: "POST",
+            data: data,
+            success: function () {
+
+            }
+        });
+    })
+}
 
 export default editSuppliers

@@ -494,6 +494,7 @@ Rails.application.routes.draw do
         post 'update_suppliers'
         post 'link_product_suppliers'
         post 'search_suppliers'
+        post 'destroy_supplier'
         get 'draft_rfq'
         post 'request_for_quote'
         post 'send_email_request_for_quote'
