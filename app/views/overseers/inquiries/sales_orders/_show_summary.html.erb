@@ -337,6 +337,7 @@
                  <label class="bmro-list-button bmro-company-summary" 
                   data-scroll-to="#id1"
                   data-scroll-speed="700"
+                  data-scroll-focus="#id2"
                   data-scroll-offset="200"
                   >Company Details</label>
               </li>
@@ -350,7 +351,7 @@
               $("[data-scroll-to]").click(function() {
                 var $this = $(this),
                     $toElement      = $this.attr('data-scroll-to'),
-                    // $focusElement   = $this.attr('data-scroll-focus'),
+                    $focusElement   = $this.attr('data-scroll-focus'),
                     $offset         = $this.attr('data-scroll-offset') * 1 || 0,
                     $speed          = $this.attr('data-scroll-speed') * 1 || 500;
 
