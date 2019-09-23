@@ -491,6 +491,26 @@ class Inquiry < ApplicationRecord
     end
   end
 
+  def bible_total_quote_margin_percentage
+    total_margin_percentage_value = 0
+    sales_quotes_ids = []
+    BibleSalesOrder.where(inquiry_number: self.inquiry_number).each do |bso|
+      sales_order = SalesOrder.find_by_order_number(bso.order_number)
+      if sales_order.present?
+        if !sales_quotes_ids.include? sales_order.sales_quote.id
+          total_margin_percentage_value += sales_order.sales_quote.calculated_total_margin_percentage
+          sales_quotes_ids << sales_order.sales_quote.id
+        end
+      end
+    end
+
+    if self.final_sales_quote.present? && !(sales_quotes_ids.include? self.final_sales_quote.id)
+      total_margin_percentage_value += self.final_sales_quote.calculated_total_margin_percentage || 0
+    end
+    # c.inquiries.where(status: statuses).map { |x| x.bible_total_quote_margin_percentage if x.bible_final_sales_quotes.present? }.compact.sum
+    total_margin_percentage_value
+  end
+
   def bible_total_quote_value
     total_quote_value = 0
     sales_quotes_ids = []
@@ -512,8 +532,7 @@ class Inquiry < ApplicationRecord
   end
 
   def unique_skus_in_order
-    bible_orders = BibleSalesOrder.where(inquiry_number: self.inquiry_number)
-    bible_orders.map {|bo| bo.metadata.map {|m| m['sku']} }.flatten.compact.uniq.count
+    self.bible_sales_orders.present? ? self.bible_sales_orders.map {|bo| bo.metadata.map {|m| m['sku']} }.flatten.compact.uniq.count : 0
   end
 
   def bible_sales_orders
@@ -525,11 +544,11 @@ class Inquiry < ApplicationRecord
   end
 
   def bible_margin_percentage
-    BibleSalesOrder.where(inquiry_number: self.inquiry_number).pluck(:overall_margin_percentage).sum
+    self.bible_sales_orders.present? ? self.bible_sales_orders.pluck(:overall_margin_percentage).compact.sum : 0
   end
 
   def bible_sales_order_total
-    BibleSalesOrder.where(inquiry_number: self.inquiry_number).pluck(:order_total).sum
+    self.bible_sales_orders.present? ? self.bible_sales_orders.pluck(:order_total).compact.sum : 0
   end
 
   def bible_sales_invoice_total
@@ -537,15 +556,15 @@ class Inquiry < ApplicationRecord
   end
 
   def bible_assumed_margin
-    BibleSalesOrder.where(inquiry_number: self.inquiry_number).pluck(:total_margin).sum
+    self.bible_sales_orders.present? ? self.bible_sales_orders.pluck(:total_margin).compact.sum : 0
   end
 
   def bible_actual_margin
-    BibleInvoice.where(inquiry_number: self.inquiry_number).pluck(:total_margin).sum
+    BibleInvoice.where(inquiry_number: self.inquiry_number).pluck(:total_margin).compact.sum
   end
 
   def bible_actual_margin_percentage
-    BibleInvoice.where(inquiry_number: self.inquiry_number).pluck(:overall_margin_percentage).sum
+    BibleInvoice.where(inquiry_number: self.inquiry_number).pluck(:overall_margin_percentage).compact.sum
   end
 
   def self.bible_data_till_date

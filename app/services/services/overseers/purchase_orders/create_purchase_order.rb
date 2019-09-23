@@ -62,6 +62,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
       end
       @purchase_order.save_and_sync(po_request)
       po_request.update_attributes(status: 'Supplier PO: Amended')
+      @purchase_order.update_attributes(material_status: nil)
       comments = po_request.comments.build(created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id)
       comments.message = "Status Changed: #{po_request.status}"
       comments.save!
