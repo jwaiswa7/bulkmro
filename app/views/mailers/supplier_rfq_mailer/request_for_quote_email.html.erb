@@ -1,25 +1,27 @@
 <div class="font-family: Arial; font-size: 14.5px;">
   <p style="color: #555;">Dear Sir/Madam,</p>
   <p style="color: #555;">Greetings from Bulk MRO!<br/></p>
-  <p style="color: #555;">Request you to provide your best offer for the requirements as detailed below by clicking on this <a href="https://lab.bulkmro.com/suppliers/rfq/edit_supplier_rfqs?supplier_id=<%= @supplier.id%>&inquiry_id=<%= @inquiry.id %>&supplier_contact_id=<%= @contact.id %>">Link</a></p>
+  <p style="color: #555;">Request you to provide your best offer for the requirements as detailed below by clicking on this
+    <%= link_to 'Link', edit_supplier_rfqs_suppliers_rfq_index_url(supplier_id: @supplier.id, inquiry_id: @inquiry.id, supplier_contact_id: @contact.id) %>
+  </p>
   <table border="1" cellspacing="0" class="table table-bordered" align="center" width="100%" style="color: #333;">
     <tbody>
-    <tr>
-      <th style="padding: 5px; text-align: center;">Sr No.</th>
-      <th style="padding: 5px; text-align: center;">Product</th>
-      <th style="padding: 5px; text-align: center;">MPN</th>
-      <th style="padding: 5px; text-align: center;">Brand</th>
-      <th style="padding: 5px; text-align: center;">Qty</th>
-    </tr>
-    <% @inquiry_products.each_with_index do |inquiry_product, index| %>
       <tr>
-        <td style="padding: 5px; text-align: center;"><%= index + 1 %></td>
-        <td style="padding: 5px; text-align: left;"><%= inquiry_product.product.to_s %></td>
-        <td style="padding: 5px; text-align: center;"><%= inquiry_product.product.mpn %></td>
-        <td style="padding: 5px; text-align: left;"><%= inquiry_product.product.brand.to_s %></td>
-        <td style="padding: 5px; text-align: center;"><%= @quantity  %></td>
+        <th style="padding: 5px; text-align: center;">Sr No.</th>
+        <th style="padding: 5px; text-align: center;">Product</th>
+        <th style="padding: 5px; text-align: center;">MPN</th>
+        <th style="padding: 5px; text-align: center;">Brand</th>
+        <th style="padding: 5px; text-align: center;">Qty</th>
       </tr>
-    <% end %>
+      <% @inquiry_products.each_with_index do |inquiry_product, index| %>
+        <tr>
+          <td style="padding: 5px; text-align: center;"><%= index + 1 %></td>
+          <td style="padding: 5px; text-align: left;"><%= inquiry_product.product.to_s %></td>
+          <td style="padding: 5px; text-align: center;"><%= inquiry_product.product.mpn %></td>
+          <td style="padding: 5px; text-align: left;"><%= inquiry_product.product.brand.to_s %></td>
+          <td style="padding: 5px; text-align: center;"><%= @quantity %></td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 
