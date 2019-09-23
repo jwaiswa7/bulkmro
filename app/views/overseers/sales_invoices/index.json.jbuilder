@@ -7,11 +7,12 @@ json.data (@sales_invoices) do |sales_invoice|
                       if is_authorized(sales_invoice, 'show') && policy(sales_invoice).show? && sales_invoice.inquiry.present?
                         [
                          row_action_button_without_fa(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), 'bmro-icon-table bmro-icon-used-view', 'View AR Invoice ', 'info', :_blank),
-                         row_action_button_without_fa(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, stamp: 1, format: :pdf), 'bmro-icon-table bmro-icon-sighnature-plus', 'Original with Signature', 'success', :_blank, 'get', '', false, 'O',),
+                         row_action_button_without_fa(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, stamp: 1, format: :pdf), 'bmro-icon-table bmro-icon-orignal-sighnature', 'Original with Signature', 'success', :_blank, 'get', '', false, 'O',),
                          # row_action_button(duplicate_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, stamp: 1, format: :pdf), 'none', 'Duplicate with Signature', 'success', :_blank, 'get', false, 'D'),
                          # row_action_button(triplicate_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, stamp: 1, format: :pdf), 'none', 'Triplicate with Signature', 'success', :_blank, 'get', false, 'T'),
-                         row_action_button(make_zip_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, stamp: 1, format: :zip), 'stamp', 'Zip with Signature', 'info', :_blank),
-                         row_action_button(make_zip_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :zip), 'file-archive', 'Zip without Signature', 'info', :_blank)
+                         row_action_button(make_zip_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, stamp: 1, format: :zip), 'bmro-icon-table bmro-icon-sighnature-plus', 'Zip with Signature', 'info', :_blank),
+                         row_action_button(make_zip_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :zip), '
+                          bmro-icon-table bmro-icon-sighnature-minus', 'Zip without Signature', 'info', :_blank)
                         ]
                       end,
                       if is_authorized(sales_invoice, 'can_send_pod_email') && policy(sales_invoice).create_email_message?
