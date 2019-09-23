@@ -1530,3 +1530,11 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 .table th:first-child{
     border-left:1px solid #f1f7f6!important; 
 }
+.bmro-summary-dotted-line{
+    box-sizing: border-box;
+    width: 100%;
+    border-bottom: 2px dashed #C3CAD2;
+    float: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
