@@ -22,5 +22,20 @@ class Services::Shared::Migrations::ChangeInquiriesQuoteDate < Services::Shared:
       end
     end
   end
+
+  def download_inquiry_export
+    service = "#{Rails.root}/tmp/tax_rate_script_issues.csv"
+    headers = ['Inquiry', 'Created At', 'Sales Quote Date']
+    @inquiries_number = [38908, 38905, 38753, 38725, 38723, 38721, 38716, 38714, 38713, 38712, 38708, 38707, 38706, 38704, 38703, 38670, 38450, 38411, 38223, 38104, 27463, 25518, 25418, 25127, 25128, 21414, 21131, 20898, 20897, 20896, 20894, 20893, 20895, 20899, 20504, 20137, 20138, 19908, 19880, 19807, 19243]
+    csv_data = CSV.generate(write_headers: true, headers: headers) do |writer|
+      inquiries_number.each do |inq|
+        writer << [inq.inquiry_number, inq.created_at, inq.quotation_date]
+      end
+    end
+    temp_file = File.open(service, 'wb')
+    temp_file.write(csv_data)
+    temp_file.close
+  end
+
   attr_accessor :inquiries_number, :missing_inquiry, :inquiry, :inquiry_present
 end
