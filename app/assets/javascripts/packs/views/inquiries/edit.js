@@ -114,7 +114,7 @@ $('.bmro-owner-details').click(function (){
 
 $('.bmro-important').click(function (){
     $('html, body').animate({
-      scrollTop: $(".bmro-important-slide").offset().top - 70
+      scrollTop: $(".bmro-important-slide").offset().top - 80
     }, 1000)
 })
 export default edit
