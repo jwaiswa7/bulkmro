@@ -696,6 +696,7 @@ li.select2-results__option{
 }
 table.bmro-datatable-style{
     border-spacing:0px!important;
+    table-layout: fixed;
 }
 .bmro-ar-invoice{
     width: 100%;
@@ -1215,7 +1216,6 @@ table.table.dataTable.table-bordered td:first-child{
     display: none;
 }
 .bmro-datatable-style tbody tr td a.btn{
-    float: left;
     margin-left: 2px;
     margin-bottom: 3px;
 }
