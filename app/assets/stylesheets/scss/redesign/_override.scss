@@ -1212,6 +1212,9 @@ table.table.dataTable.table-bordered td:first-child{
     width: 98px;
     display: flow-root;
 }
+.table.table.dataTable.table-bordered td:first-child a span{
+    display: none;
+}
 .bmro-datatable-style tbody tr td a.btn{
     float: left;
     margin-left: 2px;
