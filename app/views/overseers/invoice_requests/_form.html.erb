@@ -186,7 +186,7 @@
                 <div class="flex-grow-1">
                   <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments',required: (f.object.attachments.count <= 0) %>
                 </div>
-                <div class="form-group bmro-icon-bottom">
+                <div class="form-group bmro-icon-bottom-padding">
                   <% f.object.attachments.each do |attachment| %>
                     <%= link_to url_for(attachment), class: 'ml-md-1 bmro-button btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                       <i class="bmro-download-icon"></i>
