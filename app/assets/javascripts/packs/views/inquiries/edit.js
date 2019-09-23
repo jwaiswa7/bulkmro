@@ -96,7 +96,7 @@ $('.bmro-Produts-summary').click(function (){
 
 $('.bmro-Opportunity-Details').click(function (){
     $('html, body').animate({
-      scrollTop: $(".bmro-Opportunity-Details-slide").offset().top - 10
+      scrollTop: $(".bmro-Opportunity-Details-slide").offset().top - 200
     }, 1000)
 })
 
