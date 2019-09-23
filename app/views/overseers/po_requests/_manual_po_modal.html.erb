@@ -1,19 +1,19 @@
 <div class="modal fade" id="manualPo" role="dialog">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content bmro-bg">
       <div class="modal-header">
-        <h5 class="modal-title">Create PO</h5>
+        <h5 class="modal-title bmro-form-heading">Create PO</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+          <i class="bmro-btn-cancel"></i>
         </button>
       </div>
 <!--      Not good way have to change the code-->
       <%= simple_form_for([:overseers, PoRequest.last], :url => '', :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-        <%= f.association :inquiry, collection: nil, input_html: {class: 'select2-ajax inquiry_id', :'data-source' => autocomplete_overseers_inquiries_path(encoded: true)}, include_blank: 'Leave blank if no inquiry connected' %>
+        <%= f.association :inquiry, collection: nil, input_html: {class: 'select2-ajax inquiry_id bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_inquiries_path(encoded: true)}, include_blank: 'Leave blank if no inquiry connected' %>
       <% end %>
 
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-warning confirm-create disabled">Create</button>
+      <div class="modal-footer bmro-card-footer bmro-button-parent">
+        <button type="submit" class="btn btn-warning bmro-button confirm-create disabled">Create</button>
       </div>
     </div>
   </div>

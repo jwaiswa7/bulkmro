@@ -34,7 +34,7 @@
             </div>
 
             <div class="col-3">
-              <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single bmro-form-input"}, label: "Logistics Owner" %>
+              <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon"}, label: "Logistics Owner" %>
             </div>
 
             <% if action_name == "confirm_delivery" || action_name == "edit" %>
@@ -42,7 +42,7 @@
                 <%= f.input :show_supplier_delivery_date, input_html: { class: 'bmro-form-input' }, disabled: true, label: "Supplier Delivery Date(Overall)" %>
               </div>
             <% end %>
-            <div class="col-12 col-md-12">
+            <div class="col-6 col-md-12">
               <div class="d-block d-md-flex align-items-end">
                 <div class="flex-grow-1 bmro-chosen-height-parent">
                   <%= f.input :attachments, wrapper: :custom_file, input_html: { class: 'bmro-form-input' }, input_html: {multiple: true}, label: 'Supplier Documents' %>
@@ -65,11 +65,12 @@
               <%= f.input :document_type, collection: enum_to_collection(InwardDispatch.document_types, keep_raw: true), label: "Type of Document", input_html: {class: "bmro-form-input bmro-dropdown-icon select2-single"} %>
             </div>
 
-            <div class="col-6">
+            <!-- <div class="col-6">
               <%#= f.input :status, as: :select, collection: enum_to_collection(InwardDispatch.statuses, keep_raw: true), disabled: true, readonly: true %>
-              <%= f.hidden_field :status %>
-              <%= f.hidden_field :sales_order_id %>
-            </div>
+              
+            </div> -->
+            <%= f.hidden_field :status %>
+            <%= f.hidden_field :sales_order_id %>
 
             <div class="col-6">
               <%= f.input :dispatched_by, collection: enum_to_collection(InwardDispatch.dispatched_bies, keep_raw: true), label: "Material Dispatched By", input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon"}, required: true %>

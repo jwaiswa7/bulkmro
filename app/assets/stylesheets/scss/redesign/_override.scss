@@ -142,6 +142,10 @@ body{
     background-color: #385372!important;
     color: #FFFFFF!important;
 }
+.bmro-button:disabled{
+    background-color: #385372!important;
+    color: #FFFFFF!important;
+}
 .bmro-button-imp{
     background-color: #2C4159!important;
     color: #FFFFFF!important;   
@@ -554,8 +558,8 @@ a.bmro-list-button{
     padding: 8px 10px !important;
     border: 2px solid #2C4159 !important;
     border-radius: 2px !important;
-    background-color: #2C4159;
-    color: #FFFFFF;
+    background-color: #2C4159!important;
+    color: #FFFFFF!important;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased; 
     font-size: 13px !important;
@@ -986,6 +990,7 @@ a.bmro-click-toggle.collapsed:after{
 }
 .custom-file{
     top: 2px;
+    height: calc(2.9rem + 2px);
 }
 .bmro-invoice-boxes{
     width: 100%;
@@ -1423,4 +1428,34 @@ input:-internal-autofill-selected {
 }
 .bmro-button-mt{
     margin-top: 25px;
+}
+.bmro-margin-bottom{
+    margin-bottom: 8px;
+}
+.bmro-summary-heading{
+    color: #2C4159;
+    font-family:'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.51px;
+    line-height: 16px;
+}
+.bmro-summary-data{
+    color: #687686;
+    font-family:'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: -0.47px;
+    line-height: 15px;
+}
+.bmro-summary-link{
+    color: #FF8800;
+    font-family:'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: -0.47px;
+    line-height: 15px;
 }
