@@ -7,71 +7,6 @@
 
       <%= render 'shared/snippets/form_errors', f: f %>
 
-      <% f.object.rows.sort_by(&:sr_no).group_by(&:inquiry_product).each do |inquiry_product, rows| %>
-        <div class="card mt-3 option-wrapper">
-          <div class="card-body accordion" id="ac-<%= inquiry_product.id %>">
-            <h6 class="text-uppercase mb-0">
-              <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.sr_no %></span>
-              <strong>
-                <%= inquiry_product.product.sku %>
-                - <%= inquiry_product.bp_catalog_name? ? inquiry_product.bp_catalog_name : inquiry_product.product.name %>
-                <%= inquiry_product.bp_catalog_sku? ? '(' + inquiry_product.bp_catalog_sku + ')' : '' %>
-                <% if is_authorized(inquiry_product.product, 'sku_purchase_history') && policy(inquiry_product.product).sku_purchase_history? %>
-                  <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a>
-                <% end %>
-              </strong>
-              <span class="lead text-black-50 text-small mt-1 mr-1 d-block"><%= inquiry_product.product.brand %> <%= inquiry_product.product.mpn? ? '(' + inquiry_product.product.mpn + ')' : '' %></span>
-            </h6>
-
-            <%= f.simple_fields_for :rows, rows.sort_by(&:unit_cost_price), wrapper_tag: :div do |row| %>
-              <%= row.hidden_field :inquiry_product_id %>
-              <%= row.hidden_field :sales_quote_id %>
-              <%= row.hidden_field :id %>
-
-              <% if f.object.rows.first != row.object.product %>
-                <hr class="my-3">
-              <% end %>
-              <div class="form-row simple-row" data-index="<%= row.index %>">
-                <%= row.hidden_field :inquiry_product_supplier_id, "data-bind": "" %>
-                <div class="col-12">
-                  <div class="d-flex flex-row">
-                    <div class="custom-control custom-radio align-self-center mr-2">
-                      <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, (f.object.persisted? && row.object.persisted?) || (rows.select { |r| r.new_record? }.size == rows.size && rows[0] == row.object), "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input supplier_id', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' %>
-                      <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1], :"data-toggle" => "collapse", "data-target" => "#c-" + row.object.inquiry_product_supplier_id.to_s do %><%= '' %>
-                      <% end %>
-                    </div>
-                    <div class="flex-grow-1">
-                      <div class="" data-toggle="collapse" data-target="#c-<%= row.object.inquiry_product_supplier_id %>">
-                        <%= row.label '', for: /id="([a-z\d_]*)"/.match(radio)[1], :class => 'd-block' do %>
-                          <h6 class="text-black-50 mb-1 text-uppercase">
-                            <%= row.object.inquiry_product_supplier %>
-                          </h6>
-                          <div class="row">
-                            <div class="col-12 d-block d-md-flex flex-row">
-                              <div class="flex-fill">
-                                <strong>Unit Cost</strong><br>
-                                <span data-bind-html="unit_cost_price"><%= format_currency(row.object.unit_cost_price) %></span>
-                              </div>
-                              <div class="flex-fill mt-2 mt-md-0">
-                                <strong>Unit Cost with Freight</strong><br>
-                                <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= format_currency(row.object.inquiry_product_supplier.final_unit_price) %></span>
-                              </div>
-                              <div class="flex-fill mt-2 mt-md-0">
-                                <strong>Total Selling Price</strong><br>
-                                <span data-bind-html="total_selling_price"><%= format_currency(row.object.inquiry_product_supplier.total_price) %></span>
-                              </div>
-                            </div>
-                          </div>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
       <div class="card mt-3">
         <div class="card-body">
           <div class="form-row">
@@ -82,6 +17,72 @@
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        <table class="w-100 datatable table table-bordered dt-responsive dt-responsive wrap-whitespace mt-0" data-fixed-header="false">
+          <thead>
+          <tr>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+            </th>
+            <th class="no-sort product-width-adjustment">
+              <span data-toggle="tooltip" title="Product">Product</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Suppliers">Suppliers</span>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <% f.object.rows.sort_by(&:sr_no).group_by(&:inquiry_product).each do |inquiry_product, rows| %>
+            <tr>
+              <td>
+                <span><%= inquiry_product.sr_no %></span>
+              </td>
+              <td>
+                <span>
+                  <strong>
+                    <%= inquiry_product.product.sku %>
+                    - <%= inquiry_product.bp_catalog_name? ? inquiry_product.bp_catalog_name : inquiry_product.product.name %>
+                    <%= inquiry_product.bp_catalog_sku? ? '(' + inquiry_product.bp_catalog_sku + ')' : '' %>
+                  </strong>
+                </span>
+              </td>
+              <td>
+                <span>
+                  <%= f.simple_fields_for :rows, rows.sort_by(&:unit_cost_price), wrapper_tag: :div do |row| %>
+                    <%= row.hidden_field :inquiry_product_id %>
+                    <%= row.hidden_field :sales_quote_id %>
+                    <%= row.hidden_field :id %>
+                          <div class="form-row simple-row" data-index="<%= row.index %>">
+                      <%= row.hidden_field :inquiry_product_supplier_id, "data-bind": "" %>
+                            <div class="col-12">
+                        <div class="d-flex flex-row">
+                          <div class="custom-control custom-radio align-self-center mr-2">
+                            <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, (f.object.persisted? && row.object.persisted?) || (rows.select { |r| r.new_record? }.size == rows.size && rows[0] == row.object), "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input supplier_id', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' %>
+                            <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1], :"data-toggle" => "collapse", "data-target" => "#c-" + row.object.inquiry_product_supplier_id.to_s do %><%= '' %>
+                            <% end %>
+                          </div>
+                          <div class="flex-grow-1">
+                            <div class="" data-target="#c-<%= row.object.inquiry_product_supplier_id %>">
+                              <%= row.label '', for: /id="([a-z\d_]*)"/.match(radio)[1], :class => 'd-block' do %>
+                                <h6 class="text-black-50 mb-1 text-uppercase">
+                                  <%= row.object.inquiry_product_supplier %><br>
+                                  Price: <%= row.object.inquiry_product_supplier.unit_cost_price %><br>
+                                </h6>
+                              <% end %>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </span>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
       </div>
     <% end %>
   <% end %>
