@@ -1210,6 +1210,7 @@ table.table.dataTable.table-bordered td:first-child{
     border-left: 1px solid #E0E2E7;
     text-align: left;
     width: 98px;
+    float: left;
 }
 .bmro-datatable-style tbody tr td a.btn{
     float: left;
@@ -1322,7 +1323,6 @@ table.bmro-new-table td:first-child{
     border-left: 1px solid #E0E2E7;
     text-align: left;
     width: 98px;
-    float: left;
 }
 table.bmro-new-table tr:last-child td{
     border-bottom: 1px solid #E0E2E7;
