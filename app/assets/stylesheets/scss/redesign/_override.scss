@@ -868,7 +868,7 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-trash-parent{
     padding: 5px 10px !important;
     background-size: 20px 20px;
-    background-color: #fff;
+    margin-bottom: 14px;
 }
 .bmro-trash-parent:hover .bmro-trash-icon{
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAoCAYAAACb3CikAAAAAXNSR0IArs4c6QAAAZFJREFUWAljZCAR6DpHl/3/968TlzZGBoauy/uXl+OSxyXOhEuC3uKMhHxIawfBQnDQhMioQ9CjHBhFEICeVmBxB5OnlCZk/mjUoIfwaIgM2hBhQXcZLj6hVE9IHpe5MPHRNAILCRg9GiKwkIDRoyECCwkYPRoisJCA0aMhAgsJGD0aIrCQgNGjIQILCRg9GiKwkIDRgyZEiG6hXd67tAvoehDGCgjJY9WEJDhoQmTUIUixAmbCQ4SR4d8XZMn/TIwSyHyK2f//SaKawYhiH9whDP9ZbqAo/McQpucY4xca2sCGIk4ix6GhgUXXJcoFqC0RRSsjA4p98NEA47Q01l+3P9/6z8CggKKBBhxGRsZXfDwcKkc3zfsMMx7uEJCAnlOs07//f/YAmSjiMMXUopmYGUIu7Vm+Ftk8ZmTOy/uX7osp6b9kZGRwAoqzIstRhc3I8AsYGtWX9y6fjW4eikNAkq/uXz4jq2i08i/jP0Ggg0SAmBsojEhL6CYQ4jMy/gMqAXluGxMLS/TlPUvXY9MCAEywbfrl5EbwAAAAAElFTkSuQmCC');
@@ -1526,7 +1526,7 @@ table.bmro-summary-table td:first-child{
     display: table-cell!important;
 }
 .bmro-margin-neg{
-    margin-top: -14px;
+    margin-top: 14px;
 }
 .bmro-icon-orignal-sighnature{
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAdRJREFUSA1jXLJ6m+c/BsZ5////k2CgAWBkZHrBxPA/iQVkiZK8lISMhBgNrGFgePLilcS9h8/msYB8ArKEn4+HJhaBDL374IkEE81MRzN4+FnEguZDnNxv338wlDRNYrh84w5WNQ3FqQzONqZY5UCCRFmEbImKoiyDr6st3MCfP34yTFu0Fs7HxSBoEcySe4+eMoiLCjFIA1NokKcD3LzPX74SZRHexIBsSW99PoOUhCjcAlIZeC2CxQkPNyfDzCXrGW7fe0yq+XD1eIMOFPGgOAEFFwgY62ky6KgrwTWTwsBrEcggUMQjxwnM8B37jzO4O1jAuARpghbBTPjx8xcDBzsbmNszfSnDxl0HGSREhRmUFaRhSvDSRFn0589fhuzqLgYzfW2Gz1++gS2pyI5jMNBRA/K/4rUAJkmURSwszAwu1qbwZAyyxNvFBmYGUTRRFoFMigx0Z2BkZGTg5eEi2RKQfqItAimOCHADUWQBghY9ffGK4dL12zgN//rtB045ZAmCFq3atIcBhCkFeC2a319PtPkSooJ41eK1SIXIPILXBqgk3rKOGAOIVUM3i1hA7S5Qk4hYl5GqDmg2MP8xvWABNe5A7S5Qk4hUQ4hRD2tAAgC4iJMu+3Z2gwAAAABJRU5ErkJggg==');   
@@ -1627,4 +1627,9 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     padding-right: 9px !important;
     background-repeat: no-repeat;
     background-position: top 10px left 14px;
+}
+.chat-item .chat-item-title{
+    display: contents;
+    text-align: right;
+    justify-content: space-between;
 }
