@@ -1647,9 +1647,9 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 
 
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1140px) {
     table.dataTable.fixedHeader-floating{
-        top: 50px;
+        top: 88px!important;;
     }
 }
 
