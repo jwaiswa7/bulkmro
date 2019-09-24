@@ -420,16 +420,6 @@ a.bmro-list-button{
     width: 100%;
 }
 .custom-file label.custom-file-label {
-/*    line-height: 1.65;
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden; 
-    float: left;
-    padding: 6px 8px 4px;
-    color: #2C4159;
-    height: 58px;
-    opacity: unset;*/
-
     line-height: 1.65;
     font-weight: 500!important;
     font-family: 'Inter UI', sans-serif;
@@ -446,9 +436,7 @@ a.bmro-list-button{
     top: -5px;
     border: 2px solid #ECEEF2 !important;
     box-shadow: none;
-  
 }
-
 .custom-file-label::after {
     position: absolute;
     top: 0;
@@ -1648,6 +1636,10 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     background-color: #E7E9ED;
     color: #2C4159;
 }
+@media only screen and (max-width: 1280px) {
+    table.bmro-datatable-style{
+        top: 50px;
+    }
 .bmro-button-parent .dropdown-menu{
     min-width: auto;
     border-radius: 0px;
