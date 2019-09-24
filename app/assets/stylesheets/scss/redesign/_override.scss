@@ -753,7 +753,8 @@ table.bmro-datatable-style{
     font-weight: 500;
     letter-spacing: -0.5px;
     line-height: 25px;
-    float: left;    
+    float: left;
+    cursor: pointer;
     margin: 0px;    
     margin-right: 25px;
 }
@@ -773,8 +774,9 @@ table.bmro-datatable-style{
     border: 5px solid transparent;
     border-color: #2C4159 transparent transparent transparent;
     position: relative;
-    top: 17px;
+    top: 6px;
     right: -8px;
+    opacity: unset;
 }
 .bmro-summary{
     width: 100%;  

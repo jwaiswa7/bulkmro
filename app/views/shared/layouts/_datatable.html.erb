@@ -27,7 +27,14 @@
 <% end %>
 <div class="bmro-ar-invoice">
   <div class="bmro-invoice-heading">
-    <span class="bmro-downimg"></span><h4>AR Invoice</h4>
+    <div class="dropdown">
+        <span class="bmro-downimg"></span><h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">AR Invoice</h4>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="#">dropdown 1</a>
+        <a class="dropdown-item" href="#">dropdown 2</a>
+        <a class="dropdown-item" href="#">dropdown 3</a>
+      </div>    
+    </div>
     <input class="form-control is-valid string required bmro-form-ar-invoice" data-toggle="datepicker" required="required" aria-required="true" type="text" value="07-Aug-2019">
   </div>
   <div class="bmro-summary" id="accordionExample">
