@@ -1502,7 +1502,7 @@ input:-internal-autofill-selected {
     letter-spacing: -0.47px;
     line-height: 18px;
 }
-.bmro-summary-link{
+.bmro-summary-link a{
     color: #FF8800;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -1633,3 +1633,17 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     text-align: right;
     justify-content: space-between;
 }
+.dropdown-item{
+    color: #2C4159;
+    background-color: #fff;
+    font-family: 'Inter UI',sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: -0.14px;
+    line-height: 11px;
+}
+.dropdown-item:hover{
+    background-color: #E7E9ED;
+}
+
+
