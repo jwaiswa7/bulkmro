@@ -222,16 +222,16 @@
             <hr class="<%= f.object.po_requests.last == po_request.object ? 'd-none' : '' %>"/>
           <% end %>
         </div>
-        <div class="card-footer">
+        <div class="card-footer bmro-card-footer">
           <% if is_authorized(@sales_order, 'create_purchase_orders_requests') %>
             <div class="form-row">
               <div class="col-md-6">
-                <%= link_to :back, :class => "btn btn-warning btn-block" do %>
+                <%= link_to :back, :class => "btn btn-warning btn-block bmro-button" do %>
                   <i class="fal fa-angle-double-left"></i> Back
                 <% end %>
               </div>
               <div class="col-md-6">
-                <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+                <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button") do %>
                   <i class="fal fa-pen"></i> Create PO request
                 <% end %>
               </div>
