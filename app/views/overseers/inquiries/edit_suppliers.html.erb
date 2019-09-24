@@ -23,7 +23,7 @@
           </div>
           <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select {|ip| ip.approved?;} do |inquiry_product, i| %>
             <%= inquiry_product.hidden_field :id %>
-            <h6 class="text-uppercase pl-3 bmro-form-heading">
+            <h6 class="text-uppercase pl-3 bmro-form-label">
                 <span class="custom-control custom-checkbox d-inline pl-0">
                   <%= check_box_tag 'inquiry_product_ids[]', inquiry_product.object.id, false, id: "inquiry_product_id_#{inquiry_product.object.id}", class: 'custom-control-input bmro-form-input' %>
                   <label class="custom-control-label" for="<%= "inquiry_product_id_#{inquiry_product.object.id}" %>"></label>
