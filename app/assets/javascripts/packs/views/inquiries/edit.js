@@ -49,6 +49,27 @@ const edit = () => {
             });
         }
     });
+    // end
+
+    var footTop2 = $('.bmro-summary-product').offset().top - parseFloat($('.bmro-summary-product').css('marginTop').replace(/auto/, 0));
+
+    var maxY2 = footTop2 - $('.bmro-summary-header').outerHeight();
+
+    $(window).scroll(function(evt) {
+        var y = $(this).scrollTop();
+
+        if (y < maxY2) {
+            $('.bmro-summary-header').removeAttr('style');
+        } else {
+
+            $('.bmro-summary-header').css({
+                position: 'relative',
+                // top: (maxY - top) + 'px'
+                top:'1760px'
+            });
+        }
+    });
+    // end 
 
 };
 let onProductChange = (container) => {
