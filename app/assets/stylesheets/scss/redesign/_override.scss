@@ -1593,3 +1593,9 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 .bmro-summary-footer-padding .col-6 { 
     padding:12px;
 }
+.bmro-datatable-style .chat-item {
+ width:175px;
+}
+.bmro-datatable-style .chat-item .chat-item-author span {
+ margin-right:0 !important; 
+}
