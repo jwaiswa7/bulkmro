@@ -122,6 +122,26 @@ body{
     background-color: #fff!important;
     color: #495057!important;
 }
+.bmro-nav-main div a.btn{
+    padding: 8px 10px!important;
+    border: 2px solid #2C4159!important;
+    border-radius: 2px!important;
+    background-color: #2C4159;
+    color: #FFFFFF;
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 13px!important;
+    font-weight: 600!important;
+    letter-spacing: -0.5px;
+    line-height: 16px!important;
+    outline: none!important;
+    text-transform: capitalize!important;
+    box-shadow: none!important
+}
+.bmro-nav-main div a.btn:hover{
+    background-color: #385372!important;
+    color: #FFFFFF!important;
+}
 .bmro-button{
     padding: 8px 10px!important;
     border: 2px solid #2C4159!important;
