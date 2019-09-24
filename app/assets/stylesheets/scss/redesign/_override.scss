@@ -325,23 +325,22 @@ a.bmro-list-button{
 }
 .bmro-form-ar-invoice{
     float: left;
-    width: 200px;
-    line-height: 1.5!important;
-    color:#2C4159 !important;
-    padding: 9px 23px 6px 8px;
+    width: 175px;
+    line-height: 1.5 !important;
+    color: #2C4159 !important;
+    padding: 4px 14px 5px;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
-    border-width: 2px!important;
-    border-style: solid!important;
-    border-color: rgb(236, 238, 242)!important;
-    /* border-image: initial; */
-    border-radius: 2px!important;
-    outline: none!important;
+    border-width: 2px !important;
+    border-style: solid !important;
+    border-color: #eceef2 !important;
+    border-radius: 15px !important;
+    outline: none !important;
     height: auto;
-    box-shadow: unset!important;
-    -webkit-appearance:none!important;
+    box-shadow: unset !important;
+    -webkit-appearance: none !important;
     font-weight: 500;
-    font-size: 13px;    
+    font-size: 13px;   
 }
 .form-group input.form-control::placeholder{
     font-weight: 500!important;
