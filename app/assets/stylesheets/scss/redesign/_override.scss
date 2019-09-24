@@ -1648,13 +1648,16 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     color: #2C4159;
     background-color: #fff;
     font-family: 'Inter UI',sans-serif;
-    font-weight: 600;
-    font-size: 9px;
+    font-weight: 500;
+    font-size: 12px;
     letter-spacing: -0.14px;
-    line-height: 11px;
+    line-height: 20px;
+    border-radius: none;
 }
 .dropdown-item:hover{
     background-color: #E7E9ED;
+    color: #2C4159;
 }
+
 
 
