@@ -1252,7 +1252,7 @@ table.table.dataTable.table-bordered td:first-child{
     border-left: 1px solid #E0E2E7;
     text-align: left;
     width: 98px;
-    display: table-caption;
+    display: table-cell;
 }
 .table.table.dataTable.table-bordered td:first-child a span{
     display: none;
@@ -1655,4 +1655,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 .bmro-button-parent .dropdown-menu{
     min-width: auto;
     border-radius: 0px;
+}
+.bmro-table-icon-set th{
+
 }
