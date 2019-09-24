@@ -1119,9 +1119,6 @@ a.bmro-click-toggle.collapsed:after{
   .bmro-nav-ul {
     top: 88px;
   }
-  table.bmro-datatable-style{
-    top: 67px;
-  }
 }
 .bmro-form-input-height .select2-selection__rendered{
     white-space: normal!important;
@@ -1648,6 +1645,15 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     background-color: #E7E9ED;
     color: #2C4159;
 }
+
+
+@media only screen and (max-width: 1280px) {
+    table.dataTable.fixedHeader-floating{
+        top: 50px;
+    }
+}
+
+
 .bmro-button-parent .dropdown-menu{
     min-width: auto;
     border-radius: 0px;
