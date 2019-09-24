@@ -25,7 +25,7 @@ $(window).scroll(function(){
         console.log($(window).scrollTop());
         console.log('asassa');
     if ($(window).scrollTop() >= 500) {
-        $('.bmro-datatable-style').addClass('bmro-datatable-style-position');
+        // $('.bmro-datatable-style').addClass('bmro-datatable-style-position');
         // $('nav div').addClass('visible-title');
         console.log('true');
     }
