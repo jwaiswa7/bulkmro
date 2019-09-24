@@ -342,6 +342,16 @@ a.bmro-list-button{
     font-weight: 500;
     font-size: 13px;   
 }
+.bmro-form-ar-invoice:after{
+    content: "";
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    position: relative;
+    border-color: transparent transparent #2C4159 transparent;
+    top: -7px;
+    right: -8px;    
+}
 .form-group input.form-control::placeholder{
     font-weight: 500!important;
 }
@@ -1623,10 +1633,11 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 .bmro-date-bag{
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAbVJREFUSA1jXLJ6m+c/BsZ5////k2CgAWBkZHrBxPA/iQVkiZK8lISMhBgNrGFgePLilcS9h8/msYB8ArKEn4+HJhaBDL374IkEE81MRzN41CK0ACGeS1TQdU9fwgDC6ACXOLo6EJ8FmyBM7OK12wzzV25muHP/KVjo5t2HMCkw/eLVOzD99MUrhsRwXwZ9LVUUeWQOXoua+ucwmOhrMfz58xesx83eHFkvw66DJ8F8cVFhBpDatbM7UeSROXgtevXmPUOQpwPDgycvwHrc0SxiZ2cHiyvISDBs23sU2VwMNl6LYKrRLUAXRw9SmDwyTVRiQNZALpsoHyEb/uzFa4ay1ilwodykMAYBIoovkn306/dvhodPnjMkR/oxfP/xg+Hrtx9wS/ExSLYIZtiDR88Yfv36A+MSpEm2iIuLk8HR2oThPtBXhrrqDGIiAgQtASnAG0c83FwM5y7dwDAoOtAdRQykBqQWH8BrUU5CCMOUBWsYpi1ai88MsCUgtfgAXou8XWwYQJgagOQ4ItfSUYvIDTkGFlC7C9QkItsEAhqBZjOA7GABNe5A7S5Qk4iAHrKkYQ1IANyrhHLc9U3aAAAAAElFTkSuQmCC');
-    padding-left: 30px !important;
-    padding-right: 9px !important;
+    padding-left: 35px !important;
+    padding-right: 3px !important;
     background-repeat: no-repeat;
-    background-position: top 10px left 14px;
+    background-position: top 5px left 10px;
+    background-size: 18px;
 }
 .chat-item .chat-item-title{
     display: contents;
