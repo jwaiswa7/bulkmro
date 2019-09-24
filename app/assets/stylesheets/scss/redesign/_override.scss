@@ -1231,9 +1231,9 @@ table.table.dataTable.table-bordered th{
 }
 table.table.dataTable.table-bordered td:first-child{
     border-left: 1px solid #E0E2E7;
-    text-align: left;/*
+    text-align: left;
     width: 98px;
-    float: left;*/
+    display: table-caption;
 }
 .table.table.dataTable.table-bordered td:first-child a span{
     display: none;
