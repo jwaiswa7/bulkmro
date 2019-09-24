@@ -21,21 +21,20 @@ let bindSummaryBox = (classname) => {
     });
 };
 
-var stickyEl = document.querySelector('.bmro-datatable-style')
-var stickyPosition = stickyEl.getBoundingClientRect().top;
-var offset = -20
-window.addEventListener('scroll', function() {
-    if (window.pageYOffset >= stickyPosition + offset) {
-        // stickyEl.style.position = 'fixed';
-        // stickyEl.style.top = '0px';
-        stickyEl.addClass('bmro-datatable-style-position');
-    } else {
-        // stickyEl.style.position = 'static';
-        // stickyEl.style.top = '';
-        yourNavigation.removeClass('bmro-datatable-style-position');
-    }
-});
-
+// $(window).scroll(function(){
+//         console.log($(window).scrollTop());
+//         console.log('asassa');
+//     if ($(window).scrollTop() >= 500) {
+//         // $('.bmro-datatable-style').addClass('bmro-datatable-style-position');
+//         // $('nav div').addClass('visible-title');
+//         console.log('true');
+//     }
+//     else {
+//         $('bmro-datatable-style').removeClass('bmro-datatable-style-position');
+//         // $('nav div').removeClass('visible-title');
+//         console.log('false');
+//     }
+// });
 
 let aggregateSummaryBox = () => {
     let table = $('.datatable').DataTable();

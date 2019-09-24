@@ -1650,8 +1650,8 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     min-width: auto;
     border-radius: 0px;
 }
-.bmro-datatable-style-position thead tr:first-child{
+.table.dataTable.fixedHeader-floating{
     position: fixed;
-    top: 48px;
+    top: 48px!important;
     z-index: 100; 
 }
