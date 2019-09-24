@@ -22,6 +22,7 @@ let bindSummaryBox = (classname) => {
 };
 
 $(window).scroll(function(){
+        console.log($(window).scrollTop());
     if ($(window).scrollTop() >= 500) {
         $('.bmro-datatable-style').addClass('bmro-datatable-style-position');
         // $('nav div').addClass('visible-title');
