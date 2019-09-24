@@ -1,0 +1,57 @@
+<% provide :container_fluid, true %>
+
+<div class="col-lg-12 mb-0">
+  <div class="page-header mb-0">
+    <h2>Bible File Upload Log</h2>
+  </div>
+</div>
+
+<div class="col-12 mt-2">
+  <table class="table-bordered table">
+    <thead>
+    <tr>
+      <th>Bible File Upload ID</th>
+      <th>Sr. No</th>
+      <th>Bible Row Data</th>
+      <th>Status</th>
+      <th>Error</th>
+      <th style="display:none;"></th>
+    </tr>
+    </thead>
+    <tbody>
+      <% @bible_upload_logs.each do |upload_log| %>
+        <tr>
+          <td><%= upload_log.bible_upload_id %></td>
+          <td><%= upload_log.sr_no %></td>
+          <td data-toggle="modal" data-target="#BibleRowModal" class="sheet-view-data">
+            View Data
+          </td>
+          <td><%= status_badge(upload_log.status) %></td>
+          <td><%= upload_log.error %></td>
+          <td class="sheet-row-data" style="display:none;"><%= upload_log.bible_row_data %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div id="BibleRowModal" class="modal hide fade" role="dialog" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Bible Sheet Row Data</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+    <div class="modal-content">
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div id="bible-row-data"></div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+
+
+

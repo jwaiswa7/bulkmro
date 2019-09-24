@@ -2,7 +2,9 @@
   <% content_for :heading_byline do %>
     This will <em>send an notification to supplier</em> and log it under
     <strong><%= current_overseer.full_name %></strong>. <% if !current_overseer.accounts?  %> <span style="float:right">
+  <% if (action_name != 'material_received_in_bm_warehouse') && (current_overseer.inside? || current_overseer.outside?) %>
     <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm" >Edit Supplier Rating</a></span>
+  <% end %>
     <% end %>
   <% end %>
 
@@ -36,5 +38,6 @@
     <% end %>
   <% end %>
 </div>
-
-<%= render partial: 'shared/layouts/rating_modal_with_multiple_tab' %>
+<% if (action_name != 'material_received_in_bm_warehouse') && (current_overseer.inside? || current_overseer.outside?) %>
+  <%= render partial: 'shared/layouts/rating_modal_with_multiple_tab' %>
+<% end %>

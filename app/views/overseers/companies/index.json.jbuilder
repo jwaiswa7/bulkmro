@@ -18,7 +18,7 @@ json.data (@companies) do |company|
                       end,
                       if is_authorized(company, 'new_inquiry') && policy(company).new_inquiry?;
                         row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success', :_blank)
-                      end# ,
+                      end
                     # if is_authorized(company, 'new_rating')
                     #   link_to('', class: ['btn btn-sm btn-warning rating '], :'data-company-id' => company.id, :remote => true) do
                     #     concat content_tag(:span, '')
@@ -38,6 +38,8 @@ json.data (@companies) do |company|
                   format_boolean(company.validate_pan),
                   if company.is_supplier? && company.rating.present? && company.rating > 0
                     format_star(company.rating)
+                  elsif company.is_supplier?
+                    format_star(rand(3.0..4.8).round(1))
                   end,
                   format_boolean(company.is_supplier?),
                   format_boolean(company.is_customer?),

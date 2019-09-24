@@ -99,7 +99,7 @@
                     <b><span>Sales Order Date</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" class="content content-with-border" valign="top">
                     <span>
-                      <%= record.sales_order.created_at.strftime("%d-%b-%Y") if record.sales_order.created_at.present? %>
+                      <%= record.sales_order.mis_date.strftime("%d-%b-%Y") if record.sales_order.mis_date.present? %>
                         </span></td>
                 </tr>
 
@@ -147,12 +147,14 @@
               <tbody>
               <tr>
                 <td class="address-wrapper" style="height: auto;width: 49%;">
-                  <% if inquiry.bill_from.address.present? %>
-                    <%= inquiry.bill_from.address.name.to_s %><br>
-                  <% end %>
-                  <% if inquiry.bill_from.present? %>
-                    <%= inquiry.bill_from.address.to_multiline_s %><br>
-                    GST No.: <%= inquiry.bill_from.address.gst %><br>
+                  <% if @bill_from_warehouse.present? %>
+                    <%= @bill_from_warehouse.address.name.to_s %><br>
+                    <%= @bill_from_warehouse.address.to_multiline_s %><br>
+                    GST No.: <%= @bill_from_warehouse.address.gst %><br>
+                  <% elsif defined?(bill_from_warehouse) && bill_from_warehouse.present? %>
+                    <%= bill_from_warehouse.address.name.to_s %><br>
+                    <%= bill_from_warehouse.address.to_multiline_s %><br>
+                    GST No.: <%= bill_from_warehouse.address.gst %><br>
                   <% end %>
                   PAN No.: AAGCB7343G
                   <% if record.inquiry.is_sez? || record.serialized_billing_address.country_code != 'IN' %>
@@ -341,12 +343,12 @@
                     </td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate / 2).to_f.round(2) %>%</span></td>
+                      <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span></td>
                     <td align="right" valign="top">
                       <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %></span>
                     </td>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate / 2).to_f.round(2) %>%</span></td>
+                      <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span></td>
                     <td align="center" valign="top">
                       <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %>
                         <br></span>

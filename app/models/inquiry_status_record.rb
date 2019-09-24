@@ -2,7 +2,8 @@ require 'action_view'
 class InquiryStatusRecord < ApplicationRecord
   include ActionView::Helpers::DateHelper
   belongs_to :subject, polymorphic: true, required: false
-  belongs_to :parent, class_name: 'InquiryStatusRecord', foreign_key: 'parent_id', required: false
+  belongs_to :parent, polymorphic: true, foreign_key: 'parent_id', required: false
+  belongs_to :previous_status_record, class_name: 'InquiryStatusRecord', foreign_key: 'previous_status_record_id', required: false
 
   scope :last_inquiry, -> { where(subject_type: 'Inquiry').last.subject }
   scope :not_expected_order, -> { where.not(status: 'Expected Order') }
@@ -66,7 +67,7 @@ class InquiryStatusRecord < ApplicationRecord
     end
   end
 
-  def previous_status_record
+  def fetch_previous_status_record
     parent_record = parent
     if parent_record.blank?
       service = Services::Overseers::Inquiries::InquiryPreviousStatusRecord.new(self)
@@ -75,34 +76,33 @@ class InquiryStatusRecord < ApplicationRecord
     parent_record
   end
 
-  def tat
-    previous_status_record.present? ? (((self.created_at.to_time.to_i - previous_status_record.created_at.to_time.to_i) / 60.0).ceil.abs) : '-'
-  end
+  # def tat
+  #   previous_status_record.present? ? (((self.created_at.to_time.to_i - previous_status_record.created_at.to_time.to_i) / 60.0).ceil.abs) : '-'
+  # end
 
   def save_inquiry_mapping_tat_record
     InquiryMappingTat.save_record(self.inquiry, self.subject)
   end
 
+  def calculate_turn_around_time(previous_status)
+    prev_status_time = previous_status.present? ? previous_status.created_at.to_time.to_i : 0
+    current_status_time = self.created_at
+    minutes = ((current_status_time.to_time.to_i - prev_status_time) / 60.0).ceil.abs
+    minutes
+  end
+
   def self.tat_created_at(inquiry_id, type, subject_id, status)
-    inquiry_status_record = InquiryStatusRecord.where(inquiry_id: inquiry_id, subject_id: subject_id, subject_type: type, status: status)
-    inquiry_status_record.present? ? inquiry_status_record.last.created_at : ''
+    record = InquiryStatusRecord.where(inquiry_id: inquiry_id, subject_id: subject_id, subject_type: type, status: status).last
+    record.created_at if record.present?
   end
 
   def self.turn_around_time(inquiry_id, type, subject_id, status)
     if status == 'Order Won'
-      subject_id = type == 'Inquiry' ? inquiry_id : subject_id
+      subject_id = (type == 'Inquiry') ? inquiry_id : subject_id
       type = ['Inquiry', 'SalesOrder']
     end
-    inquiry_status_record = InquiryStatusRecord.valid_status_records.where(inquiry_id: inquiry_id, subject_id: subject_id, subject_type: type, status: status).last
-    if inquiry_status_record.present?
-      prev_status = inquiry_status_record.previous_status_record
-      prev_status_time = prev_status.present? ? prev_status.created_at.to_time.to_i : 0
-      current_status_time = inquiry_status_record.created_at
-
-      minutes = ((current_status_time.to_time.to_i - prev_status_time) / 60.0).ceil.abs
-      tat = minutes
-    end
-    tat
+    record = InquiryStatusRecord.where(inquiry_id: inquiry_id, subject_id: subject_id, subject_type: type, status: status).last
+    record.tat_minutes if record.present?
   end
 
   belongs_to :inquiry

@@ -14,7 +14,7 @@ class Customers::CustomerProductsController < Customers::BaseController
     service = Services::Customers::Finders::CustomerProducts.new(params, current_contact, current_company)
     service.call
     @indexed_customer_products = service.indexed_records
-    @customer_products = service.records.try(:reverse)
+    @customer_products = service.records.order("RANDOM()")
     # for henkel company specific changes
     @is_henkel = (current_company.account == account)
     @default_quantity = nil
@@ -22,8 +22,9 @@ class Customers::CustomerProductsController < Customers::BaseController
       @default_quantity = 0
     end
 
-    @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{ |t| [t.id, t.name] }
-    @checked_tags = (params['custom_filters']['tags'].nil? ? [] : params['custom_filters']['tags'].map(&:to_i)) if params['custom_filters'].present?
+    # Incomplete feature
+    # @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{ |t| [t.id, t.name] }
+    # @checked_tags = (params['custom_filters']['tags'].nil? ? [] : params['custom_filters']['tags'].map(&:to_i)) if params['custom_filters'].present?
 
     @customer_products_paginate = @indexed_customer_products.page(params[:page]) if params[:page].present?
   end

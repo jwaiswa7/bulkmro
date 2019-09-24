@@ -2,11 +2,9 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
   before_action :set_purchase_order_details, only: [:sending_po_to_supplier, :sending_po_to_supplier_notification, :dispatch_from_supplier_delayed, :dispatch_from_supplier_delayed_notification, :material_received_in_bm_warehouse, :material_received_in_bm_warehouse_notification]
   ``
   def sending_po_to_supplier
-    if current_overseer.logistics?
-      @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @po_request.supplier).first_or_create]
-    elsif !current_overseer.accounts?
+    # if !current_overseer.accounts?
       @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier).first_or_create]
-    end
+    # end
     @to = @po_request.contact_email.present? ? @po_request.try(:contact_email) : @po_request.contact.try(:email)
     cc_addresses = [@po_request.purchase_order.logistics_owner.try(:email), 'sales@bulkmro.com', 'logistics@bulkmro.com'].compact.join(', ')
     if @po_request.purchase_order.present?
@@ -41,6 +39,10 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
     if @email_message.save
       if PoRequestMailer.send_supplier_notification(@email_message).deliver_now
         @po_request.update_attributes(sent_at: Time.now, status: :'Supplier PO Sent')
+      end
+      if @po_request.purchase_order.present? && @po_request.status == 'Supplier PO Sent' && @po_request.purchase_order.has_sent_email_to_supplier? && !@po_request.purchase_order.material_status.present?
+        @po_request.purchase_order.material_status = 'Material Readiness Follow-Up'
+        @po_request.purchase_order.save
       end
       redirect_to overseers_po_requests_path, notice: flash_message(@po_request, action_name)
     else

@@ -3,7 +3,7 @@
     <%= render 'shared/snippets/form_errors', f: f %>
     <%= f.hidden_field :company_creation_request_id %>
     <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
-    <% if is_authorized(@company, 'edit_remote_uid') %>
+    <% if is_authorized(@company, 'edit_remote_uid') && action_name == 'edit' %>
       <div class="form-row">
         <div class="col-12 col-md-8">
           <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
@@ -58,13 +58,13 @@
     <h6 class="text-uppercase text-black-50 mb-1 d-block mt-3">Default owners and managers</h6>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', include_blank: 'Select a Procurement Specialist', input_html: {class: "select2-single"} %>
+        <%= f.association :inside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', include_blank: 'Select a Procurement Specialist', input_html: {class: "select2-single"} %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :outside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, required: true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', include_blank: 'Select a Account Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :sales_manager, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', include_blank: 'Select a Account Owner', input_html: {class: "select2-single"} %>
       </div>
     </div>
 

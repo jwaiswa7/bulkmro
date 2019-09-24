@@ -64,11 +64,16 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
   def create
     @outward_dispatch = OutwardDispatch.new(outward_dispatch_params.merge(overseer: current_overseer))
     authorize_acl @outward_dispatch
-
     respond_to do |format|
       if @outward_dispatch.save
-        @outward_dispatch.ar_invoice_request.inward_dispatches.map {|inward_dispatch| inward_dispatch.set_outward_status}
-        format.html { redirect_to add_packing_overseers_outward_dispatch_packing_slips_url (@outward_dispatch), notice: 'Outward dispatch was successfully created.' }
+        if @outward_dispatch.packing_slips.present?
+          url = add_packing_overseers_outward_dispatch_packing_slips_url (@outward_dispatch)
+        else
+          url = overseers_outward_dispatch_path(@outward_dispatch)
+        end
+        inward_dispatches = InwardDispatch.where(id: @outward_dispatch.ar_invoice_request.inward_dispatch_ids)
+        inward_dispatches.map {|inward_dispatch| inward_dispatch.set_outward_status}
+        format.html { redirect_to url, notice: 'Outward dispatch was successfully created.' }
         format.json { render :add_packing, status: :created, location: @outward_dispatch }
       else
         format.html { render :new }
@@ -100,7 +105,8 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     authorize_acl @outward_dispatch
     respond_to do |format|
       if @outward_dispatch.update(outward_dispatch_params.merge(overseer: current_overseer))
-        @outward_dispatch.ar_invoice_request.inward_dispatches.map{|inward_dispatch| inward_dispatch.set_outward_status}
+        inward_dispatches = InwardDispatch.where(id: @outward_dispatch.ar_invoice_request.inward_dispatch_ids)
+        inward_dispatches.map {|inward_dispatch| inward_dispatch.set_outward_status}
         format.html { redirect_to overseers_outward_dispatch_path (@outward_dispatch), notice: 'Outward dispatch was successfully updated.' }
         format.json { render :show, status: :ok, location: @outward_dispatch }
       else

@@ -15,7 +15,7 @@ class Overseers::Dashboard
   end
 
   def recent_inquiries
-    inquiries.first(15)
+    inquiries
   end
 
   def inquiry_needs_followup?(inquiry)
@@ -31,7 +31,7 @@ class Overseers::Dashboard
   end
 
   def recent_sales_orders
-    sales_orders.first(15)
+    sales_orders
   end
 
   attr_accessor :overseer

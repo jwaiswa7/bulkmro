@@ -1,10 +1,10 @@
 <a class="card text-black-50 purchase-order" target="_blank" href="/overseers/inquiries/<%= po.inquiry.to_param %>/purchase_orders/<%= po.to_param %>">
-  <div class="card-header text-center p-1">
+  <div class="card-header text-center p-1 text-black">
     <strong>Purchase Order</strong>
   </div>
-  <div class="card-body p-1 text-center">
+  <div class="card-body p-1 text-center text-black">
     <div>
-      <%= po.status.present? ? status_badge(po.status) : '-' %>
+      <%= po.material_status.present? ? status_badge(po.material_status) : po.status.present? ? status_badge(po.status) : '-'%>
     </div>
     <hr class="my-1">
     <div>

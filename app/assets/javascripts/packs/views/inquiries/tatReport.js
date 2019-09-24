@@ -7,8 +7,8 @@ const tatReport = () => {
                 $('.avg_summary_box').show();
                 let inside_sales_owner_id = parseInt(value.split('%7C')[1]);
                 let date_range = value.split('Time=')[1];
-                if (date_range)  {
-                    date_range = date_range.replace('+%7E+','~')
+                if (date_range) {
+                    date_range = date_range.replace('+%7E+', '~')
                 }
                 $.ajax({
                     type: "GET",

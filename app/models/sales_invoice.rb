@@ -44,7 +44,7 @@ class SalesInvoice < ApplicationRecord
   scope :with_inquiry, -> { where.not(invoice_number: nil) }
 
   enum status: {
-      'Open': 1,
+      'Invoiced': 1,
       'Paid': 2,
       'Cancelled': 3,
       'Partial: Shipped': 201,
@@ -155,6 +155,15 @@ class SalesInvoice < ApplicationRecord
       self.pod_rows.order(:delivery_date).last.delivery_date
     end
   end
+
+  # def delivery_date
+  #   delivery_date = if self.ar_invoice_request.present? && self.ar_invoice_request.outward_dispatches.present?
+  #     self.ar_invoice_request.outward_dispatches.order(material_delivery_date: :desc).last.material_delivery_date
+  #   end
+  #   if !delivery_date.present? && self.pod_rows.present?
+  #     self.pod_rows.order(:delivery_date).last.delivery_date
+  #   end
+  # end
 
   def amount_received
     # SalesReceipt.where(:sales_invoice_id => self.id).pluck(:payment_amount_received).compact.sum
@@ -332,5 +341,29 @@ class SalesInvoice < ApplicationRecord
     if self.delivery_date.present? && self.inquiry.customer_committed_date.present?
       ((self.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
     end
+  end
+
+  def self.get_invoice_count(overseer, date_range)
+    if date_range.present?
+      from = date_range.split('~').first.to_date.beginning_of_day.strftime('%d-%m-%Y')
+      to = date_range.split('~').last.to_date.end_of_day.strftime('%d-%m-%Y')
+      overseer_role = overseer.role == 'inside_sales_executive' ? 'inside_sales_owner_id' : 'outside_sales_owner_id'
+      invoices = SalesInvoice.joins(:inquiry).where(mis_date: from..to).where(inquiries: {"#{overseer_role}": overseer.id})
+      invoice_count = invoices.count
+      revenue = invoices.map { |invoice| invoice.calculated_total }.compact.sum
+      [invoice_count, revenue]
+    end
+  end
+
+  def get_bill_from_warehouse
+    metadata = self.metadata.deep_symbolize_keys
+    if metadata[:bill_from].present?
+      bill_from_warehouse = Warehouse.find_by_remote_uid(metadata[:bill_from])
+    else
+      inquiry = self.inquiry
+      bill_from_warehouse = inquiry.bill_from
+    end
+
+    bill_from_warehouse
   end
 end

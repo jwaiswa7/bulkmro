@@ -99,8 +99,40 @@ class Overseer < ApplicationRecord
     AclRole.all
   end
 
+  def set_monthly_target
+    annual_target = self.annual_targets.last
+    if annual_target.present?
+      overseer_target_months = self.targets
+      remaining_target_periods = TargetPeriod.where('id > ?', overseer_target_months.pluck(:target_period_id).last)
+      monthly_target = ((annual_target['inquiry_target'] * 100000) / 12.0).round(2)
+      changed_monthly_target = overseer_target_months.last.target_value
+
+      remaining_target_periods.each do |remaining_target_period|
+        target_start_date = remaining_target_period.period_month - 1.month
+        target_end_date = (remaining_target_period.period_month - 1.day).end_of_day
+        inquiries = Inquiry.where(outside_sales_owner_id: self.id, status: 'Order Won').where(created_at: target_start_date..target_end_date)
+        total_target_achieved = 0
+        inquiries.each do |inquiry|
+          if inquiry.bible_sales_order_total.present? && inquiry.bible_sales_order_total != 0
+            sales_order_total = inquiry.bible_sales_order_total
+          else
+            sales_order_total = (inquiry.sales_orders.approved.map { |so| so.calculated_total || 0 }.sum).to_f
+          end
+          p 'inquiry---------' + inquiry.inquiry_number.to_s
+          p 'sales order total==================' + sales_order_total.to_s
+          total_target_achieved += sales_order_total
+        end
+        p "----total_target_achieved----------#{total_target_achieved}--------------"
+        remaining_target = ((changed_monthly_target).to_f - total_target_achieved)
+        changed_monthly_target = ((monthly_target).to_f + remaining_target)
+        target = Target.where(overseer_id: self.id, target_period_id: remaining_target_period.id, target_type: 'Inquiry').first_or_initialize(target_value: changed_monthly_target, manager_id: annual_target.manager_id, business_head_id: annual_target.business_head_id, annual_target_id: annual_target.id)
+        target.save unless target.id.present?
+      end
+    end
+  end
+
   def get_monthly_target(target_type, date_range = nil)
-    if date_range['date_range'].present?
+    if date_range.present? && date_range['date_range'].present?
       from = date_range['date_range'].split('~').first.to_date.strftime('%Y-%m-01')
       to = date_range['date_range'].split('~').last.to_date.strftime('%Y-%m-01')
       target_periods = TargetPeriod.where(period_month: from..to).pluck(:id)
