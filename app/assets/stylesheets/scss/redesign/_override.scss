@@ -1622,12 +1622,12 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
  margin-right:0 !important; 
 }
 .bmro-date-bag{
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAVtJREFUKBWNUrFKxEAQnZlkzRdcoYWVCEJs1FIPYqOFNlqIwfpqba41lYWNFlZXyiFaiIWNzSGctlrkREFszkILK+3CHTvO5kjYFQIGZjPz3pu8zexikiR02X1dRMA5zfqIkPYQ4Q2shxmmCo6BHzfr0/cYRvE5AG9Zun+keEEIsAGAB0ReXVwfzDsY8ybssDmjNT2+WCtp6Ked9p1YLVTYfRbcbBTP5D1htM2A+I4MXxVNDswINWCe9A2KwH1ZXxxFRSFacYRRIzC2e7dnrQqtA8tWGzLMJXJQqwiX42sTBpLJf0i+b9GQb9UGitwjOClyIGwS43NZS+I0zq/sjGdDqj11TlNfK+sSeKlS2hmes9VsoBughzfmyxkMjk3kLoLlXF6MFscxUNQSxytDBaB2Sx35q4HvOqL89LcIunKO+SBKcUUi57guVN1H5CYzHsptWKvQ/oHxx/T8ApOwcv0J5NuxAAAAAElFTkSuQmCC');
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAVtJREFUKBWNUrFKxEAQnZlkzRdcoYWVCEJs1FIPYqOFNlqIwfpqba41lYWNFlZXyiFaiIWNzSGctlrkREFszkILK+3CHTvO5kjYFQIGZjPz3pu8zexikiR02X1dRMA5zfqIkPYQ4Q2shxmmCo6BHzfr0/cYRvE5AG9Zun+keEEIsAGAB0ReXVwfzDsY8ybssDmjNT2+WCtp6Ked9p1YLVTYfRbcbBTP5D1htM2A+I4MXxVNDswINWCe9A2KwH1ZXxxFRSFacYRRIzC2e7dnrQqtA8tWGzLMJXJQqwiX42sTBpLJf0i+b9GQb9UGitwjOClyIGwS43NZS+I0zq/sjGdDqj11TlNfK+sSeKlS2hmes9VsoBughzfmyxkMjk3kLoLlXF6MFscxUNQSxytDBaB2Sx35q4HvOqL89LcIunKO+SBKcUUi57guVN1H5CYzHsptWKvQ/oHxx/T8ApOwcv0J5NuxAAAAAElFTkSuQmCC'),url('url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAMCAYAAABr5z2BAAAAAXNSR0IArs4c6QAAASNJREFUKBVjYKAQMOo4x+kx/v+9i+E/I9t/RoZ/DP+BLIb//xmAbCD5nxEkxgAU+A+kGRn/g9hA8h+Q+MfEyJzICHKAnnNU8r9//+eA2EQDRqbWK/uW1oANAGnScYqaBrQnkxgDgK7adGnvsgBGoIuYYBrYVXjyGRgYj8L4OGlGxmt8PJwxIM0gNXAXgDimXgkSP378PAP0rzSIjw4YGRjfszGymp7dt/AuTA7uApDA6W0LXjCysAQDjf0JUwCjgc7+y8DMEIasGSTHDFMAo1/evfRUQknvOdAVfjAxEM3ExFh0ee+y5chiIDaGASDBl/cvnxdT0hMHMk1BfKB/51/et6wKxEYHKF5AloQFKlDzcRl2YaJiB1k/mA0KVBDGkKCmAABUx1k+lWB0mwAAAABJRU5ErkJggg==')');
     padding-left: 35px !important;
     padding-right: 3px !important;
-    background-repeat: no-repeat;
-    background-position: top 6px left 12px;
-    background-size: 15px;
+    background-repeat: no-repeat,no-repeat;
+    background-position: top 6px left 12px,right 0px top 0px;
+    background-size: 15px,15px;
 }
 .chat-item .chat-item-title{
     display: contents;
