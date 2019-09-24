@@ -1650,7 +1650,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     min-width: auto;
     border-radius: 0px;
 }
-.bmro-datatable-style-position{
+.bmro-datatable-style-position thead tr:first-child{
     position: fixed;
     top: 150px;
     z-index: 100; 
