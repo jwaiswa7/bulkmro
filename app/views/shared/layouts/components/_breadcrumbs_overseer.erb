@@ -28,7 +28,7 @@
               <%= f.input :document_number, as: :integer, input_html: { value: session[:number] }, label: false, placeholder: "Enter #{current_model.singularize.titleize.gsub('_', '')} #" %>
             <% end %>
           </div>
-          <%= f.submit "Request from SAP", class: "btn btn-rounded bmro-button btn-dark" %>
+          <%= f.submit "Request from SAP", class: "btn btn-rounded bmro-button btn-dark bmro-button" %>
         <% end %>
       </div>
     <% end %>
