@@ -120,9 +120,9 @@
 
           <div class="col-6 mb-1">
             <strong class="d-block bmro-summary-heading ">Customer Purchase Order</strong>
-            <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
-              <span class="bmro-summary-link"> <%= @inquiry.customer_po_sheet.filename %>
-            <% end if @inquiry.customer_po_sheet.attached? %></span>
+            <span class="bmro-summary-link"> <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
+              <%= @inquiry.customer_po_sheet.filename %></span>
+            <% end if @inquiry.customer_po_sheet.attached? %>
           </div>
           <div class="col-6 mb-1">
             <% if @inquiry.copy_of_email.attached? %>
