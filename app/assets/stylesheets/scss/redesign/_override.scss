@@ -1500,6 +1500,9 @@ input:-internal-autofill-selected {
     text-align: left!important;
     border-radius: 0px!important;
 }
+table.bmro-summary-table td:first-child{
+    display: unset;
+}
 .bmro-margin-neg{
     margin-top: -14px;
 }
@@ -1555,6 +1558,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 .bmro-border-left{
     border-left: 1px solid #DBE0E8;   
+    word-break: break-word;
 }
 .bmro-summary-padding{
     padding-left: 10px;
