@@ -1,6 +1,6 @@
 
   <div class="bmro-full-container bmro-bg bmro-company-summary-slide">
-    <div class="card-body bmro-summary-body bmro-summary-body-pt bmro-bg" id="bmro_form_height">
+    <div class="card-body bmro-summary-body bmro-summary-body-pt bmro-bg">
       <div class=form-row>
         <div class="col-6 col-md-3">
           <strong class="d-block bmro-summary-heading">Order Number</strong>
@@ -145,41 +145,8 @@
       </div>
     
       <div class="bmro-summary-dotted-line"></div>
-
-
-  </div>
-
-
-
-  <div class="card bmro-summary-header" id="bmro_stiky_height">
-    <div class="card-header bmro-bg bmro-card-border-summary">      
-        <% if sales_order.status || sales_order.legacy_request_status == "Approved" %>
-          <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
-            <% if is_authorized(@sales_order, 'show_pdf') %>
-              <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn bmro-button btn-info btn-sm", target: "_blank" do %>
-                <i class="fal fa-eye mr-1"></i>Proforma I.
-              <% end %>
-            <% end %>
-          </div>
-        <% end %>
-        <div class="bmro-view-right-ul">
-          <nav class="bmro-nav">
-            <ul class="bmro-label-ul">
-
-              <li class="bmro-li-right">
-                 <label data-path="company_summary" class="bmro-list-button bmro-company-summary">Company Details</label>
-              </li>
-
-              <li class="bmro-li-right bmro-active-li">
-                  <label data-path="Produts_summary" class="bmro-list-button bmro-Produts-summary">Products</label>
-              </li>
-            </ul>
-          </nav>          
-        </div>
-        </div>
-    </div>
   <div class="bmro-summary-product" >
-          <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace bmro-datatable-style bmro-summary-table" data-fixed-header="false">
+      <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace bmro-datatable-style bmro-summary-table" data-fixed-header="false">
         <thead>
         <tr>
           <th class="no-sort">
@@ -351,7 +318,38 @@
         </div>
       </div>
     </div> 
-
   </div> 
+
+  </div>
+
+
+
+  <div class="card bmro-summary-header">
+    <div class="card-header bmro-bg bmro-card-border-summary">      
+        <% if sales_order.status || sales_order.legacy_request_status == "Approved" %>
+          <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
+            <% if is_authorized(@sales_order, 'show_pdf') %>
+              <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn bmro-button btn-info btn-sm", target: "_blank" do %>
+                <i class="fal fa-eye mr-1"></i>Proforma I.
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+        <div class="bmro-view-right-ul">
+          <nav class="bmro-nav">
+            <ul class="bmro-label-ul">
+
+              <li class="bmro-li-right">
+                 <label data-path="company_summary" class="bmro-list-button bmro-company-summary">Company Details</label>
+              </li>
+
+              <li class="bmro-li-right bmro-active-li">
+                  <label data-path="Produts_summary" class="bmro-list-button bmro-Produts-summary">Products</label>
+              </li>
+            </ul>
+          </nav>          
+        </div>
+        </div>
+    </div>
   </div>
 </div>
