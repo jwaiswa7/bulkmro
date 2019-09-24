@@ -342,7 +342,7 @@ a.bmro-list-button{
     font-weight: 500;
     font-size: 13px;   
 }
-.bmro-form-ar-invoice:after{
+.bmro-form-ar-invoice::after{
     content: "";
     width: 0;
     height: 0;
