@@ -78,6 +78,7 @@ let onProductChange = (container) => {
 //     element.scrollIntoView({behavior: "smooth",offsetTop: 20 });
 // }
 
+
 $(".bmro-li-right").click(function(){
     $('.bmro-li-right').addClass('bmro-active-li',1000);
     $(this).removeClass('bmro-active-li');

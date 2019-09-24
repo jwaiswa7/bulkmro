@@ -1646,14 +1646,12 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     color: #2C4159;
 }
 
-
-@media only screen and (max-width: 1140px) {
-    table.dataTable.fixedHeader-floating{
-        top: 88px!important;;
-    }
-}
-
 .bmro-button-parent .dropdown-menu{
     min-width: auto;
     border-radius: 0px;
+}
+.bmro-datatable-style-position{
+    position: fixed;
+    top: 150px;
+    z-index: 100; 
 }
