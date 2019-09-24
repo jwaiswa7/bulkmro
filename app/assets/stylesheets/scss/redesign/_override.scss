@@ -1501,7 +1501,7 @@ input:-internal-autofill-selected {
     border-radius: 0px!important;
 }
 table.bmro-summary-table td:first-child{
-    display: unset;
+    display: table-cell!important;
 }
 .bmro-margin-neg{
     margin-top: -14px;
@@ -1548,7 +1548,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 .bmro-summary-footer{
     width: 100%;
     float: left; 
-    background-color: #f1f7f6!important;
+    background-color: #F0F2F6!important;
     border-radius: 0px !important;
     padding: 0px;
     border-top: none;
@@ -1589,4 +1589,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 .bmro-card-border-summary{
     border-bottom: none;
+}
+.bmro-summary-footer-padding .col-6 { 
+    padding:12px;
 }
