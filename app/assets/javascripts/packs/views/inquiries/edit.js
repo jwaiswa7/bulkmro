@@ -49,10 +49,7 @@ const edit = () => {
             });
         }
     });
-    // end
-    var client_h1 = document.getElementById('bmro_form_height').clientHeight;
-    // document.getElementById('info_h1').innerHTML = 'height:' + client_h1 + 'px';
-    document.getElementById('bmro_stiky_height').clientHeight = client_h1;    
+
 
 };
 let onProductChange = (container) => {
@@ -73,7 +70,14 @@ let onProductChange = (container) => {
         });
     }   
 };
-
+    // end
+    $(document).ready(function(){
+        var client_h1 = $('#bmro_form_height').height();
+        // document.getElementById('info_h1').innerHTML = 'height:' + client_h1 + 'px';
+        $('bmro_stiky_height').height(client_h1); 
+        console.log(client_h1);
+        console.log('asasas');
+    });      
 // crezenta js
 
 // function slideTo(page) {
