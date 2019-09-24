@@ -1446,6 +1446,10 @@ input:-internal-autofill-selected {
     color: #2C4159;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
+    position: sticky;
+    top: 130px;
+    z-index: 100;
+    padding: 0px;
     font-size: 13px;
     font-weight: 500;
     letter-spacing: -0.51px;
@@ -1458,7 +1462,7 @@ input:-internal-autofill-selected {
     font-size: 12px;
     font-weight: 500;
     letter-spacing: -0.47px;
-    line-height: 15px;
+    line-height: 18px;
 }
 .bmro-summary-link{
     color: #FF8800;
@@ -1544,7 +1548,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     width: 100%;
     border-bottom: 2px dashed #C3CAD2;
     float: left;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     margin-top: 20px;
 }
 .bmro-container-fluid{
@@ -1569,5 +1573,8 @@ td.bmro-icon-pl a:nth-child(3n){
     padding-left: 20px;
 }
 .bmro-summary-product-bottom{
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+}
+.bmro-card-margin-summary{
+    border-bottom: none;
 }
