@@ -23,7 +23,7 @@
 <% end %>
 
 
-<div class="col-lg-12 bmro-icon-pl">
+<div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all bmro-material-queue" data-width="98px" width="98">
       <% if is_authorized(:purchase_order, 'update_logistics_owner') && policy(:purchase_order).update_logistics_owner? %>
