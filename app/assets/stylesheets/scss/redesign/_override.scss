@@ -1468,6 +1468,7 @@ input:-internal-autofill-selected {
     font-weight: 500;
     letter-spacing: -0.47px;
     line-height: 15px;
+    text-decoration: underline;
 }
 .bmro-summary-table th{
     color: #2C4159!important;
@@ -1501,6 +1502,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     padding-top: 55px;
     padding-left: 60px;
     box-sizing: border-box; 
+    padding-bottom: 0px;
 }
 .bmro-summary-body-pt{
     padding-top: 60px!important;
