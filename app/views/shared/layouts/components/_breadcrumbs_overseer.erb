@@ -41,7 +41,7 @@
           <input type="text" id="export_daterange" name="export_daterange" class="form-control bmro-form-input" data-toggle="daterangepicker" data-direction="left" placeholder="Pick a daterange" />
         </div>
         <a href="<%= [request.path, '/', 'export_all.csv'].join %>" id="export_daterange_button" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down export_daterange_wrapper bmro-button" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
-          <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+          <i class="bmro-download-icon"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
         </a>
       </div>
     <% end %>
