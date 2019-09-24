@@ -1552,7 +1552,9 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     padding: 2px 15px !important;
 }
 .bmro-summary-product{
-    width: 100%;
+    width: 920px;
+    margin-left: 60px;
+    float: left;
 }
 .bmro-material-queue{
     width: 130px!important;
@@ -1563,4 +1565,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 td.bmro-icon-pl a:nth-child(2n+1){
     padding-left: 20px;
+}
+.bmro-summary-product-bottom{
+    margin-bottom: 20px;
 }
