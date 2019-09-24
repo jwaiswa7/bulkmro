@@ -50,9 +50,12 @@ const edit = () => {
         }
     });
     // end
-    var client_h1 = document.getElementById('bmro_form_height').clientHeight;
-    // document.getElementById('info_h1').innerHTML = 'height:' + client_h1 + 'px';
-    document.getElementById('bmro_stiky_height').clientHeight = client_h1;    
+    $(document).ready(function(){
+        var client_h1 = document.getElementById('bmro_form_height').clientHeight;
+        // document.getElementById('info_h1').innerHTML = 'height:' + client_h1 + 'px';
+        document.getElementById('bmro_stiky_height').clientHeight = client_h1; 
+        console.log(client_h1);
+    });      
 
 };
 let onProductChange = (container) => {
