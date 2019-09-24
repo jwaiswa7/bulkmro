@@ -323,6 +323,25 @@ a.bmro-list-button{
     font-weight: 500;
     font-size: 13px;
 }
+.bmro-form-ar-invoice{
+    float: left;
+    width: 175px;
+    line-height: 1.5 !important;
+    color: #2C4159 !important;
+    padding: 4px 14px 5px;
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    border-width: 2px !important;
+    border-style: solid !important;
+    border-color: #eceef2 !important;
+    border-radius: 15px !important;
+    outline: none !important;
+    height: auto;
+    box-shadow: unset !important;
+    -webkit-appearance: none !important;
+    font-weight: 500;
+    font-size: 13px;   
+}
 .form-group input.form-control::placeholder{
     font-weight: 500!important;
 }
@@ -736,6 +755,7 @@ table.bmro-datatable-style{
     line-height: 25px;
     float: left;    
     margin: 0px;    
+    margin-right: 25px;
 }
 .bmro-invoice-heading span{
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAAXNSR0IArs4c6QAAAWFJREFUOBHdUj1LA0EQnbkLAcHC1sqrQkCFA1uJCn6hhRHTBFLkH2hjH+I1thaCVhaCnaRULII/QAjof7AxoCGCd7ndcSZmL2cgi6R0YNiZN++9HW4PwRJ+sToD3diH6Uyr1bh6H0d1xg0Ejzu9eqxUU3W+Tmw8qwkCfP6I3e7EJjZhembdJE201f/MhB/gdyxtVWbDSDUInDvXgSmt9TEinmqEyNG0mc26+0/3169pVf+b+OuVVX+76skgVLoIiHOIdKSI8oIRwjxqOiREL+zFe4IJX3RSO4sb5ZX+DxVFtwKUlnMXvF7AGXLuCgYEO4M+KBXylwIp5otOjJLXIaIPGdZqNX1QyJ1zWWdhWzAkavN2dcFlLpjhS52YSGPCGBFBwBZvBBikDQzPnBlTjJ6DG88Yl4SX5ihj2CcmvLq3sFa2UIciqYRPAygxYcBjTPJPYQyEzIYA8kJyThLPDzeP374TgKovP6tiAAAAAElFTkSuQmCC');
