@@ -70,14 +70,7 @@ let onProductChange = (container) => {
         });
     }   
 };
-    // end
-    $(document).ready(function(){
-        var client_h1 = $('#bmro_form_height').height();
-        // document.getElementById('info_h1').innerHTML = 'height:' + client_h1 + 'px';
-        $('bmro_stiky_height').height(client_h1); 
-        console.log(client_h1);
-        console.log('asasas');
-    });      
+    // end      
 // crezenta js
 
 // function slideTo(page) {
