@@ -1663,6 +1663,6 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 @media only screen and (max-width: 1920px) {
   .table.dataTable.fixedHeader-floatin{
-    top: 40px!important;
+    padding-top: 0px;
   }
 }
