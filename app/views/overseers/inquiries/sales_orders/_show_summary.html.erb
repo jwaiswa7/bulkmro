@@ -152,7 +152,7 @@
 
 
   <div class="card bmro-summary-header">
-    <div class="card-header bmro-bg">      
+    <div class="card-header bmro-bg bmro-card-border-summary">      
         <% if sales_order.status || sales_order.legacy_request_status == "Approved" %>
           <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
             <% if is_authorized(@sales_order, 'show_pdf') %>
