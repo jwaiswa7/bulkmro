@@ -44,6 +44,7 @@ class Product < ApplicationRecord
   scope :with_includes, -> { includes(:brand, :approval, :category, :tax_code) }
   scope :with_manage_failed_skus, -> { includes(:brand, :tax_code, category: [:tax_code]) }
   scope :is_service, -> { where(is_service: true) }
+  scope :with_eager_loaded_images, -> { eager_load(images_attachments: :blob) }
 
   validates_presence_of :name
   validates_presence_of :sku, if: :not_rejected?

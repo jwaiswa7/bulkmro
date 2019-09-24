@@ -3,7 +3,7 @@ class Suppliers::ProductsController < Suppliers::BaseController
 
   def index
     authorize :product
-    @supplier_products = ApplyDatatableParams.to(Product.joins(:inquiry_product_suppliers).where(inquiry_product_suppliers: {supplier_id: current_company.id}).distinct, params)
+    @supplier_products = ApplyDatatableParams.to(Product.joins(:inquiry_product_suppliers).where(inquiry_product_suppliers: {supplier_id: current_company.id}).distinct.with_eager_loaded_images, params)
   end
 
   def show
