@@ -18,21 +18,21 @@
           <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Category Details</h6>
           <div class="form-row">
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block bmro-form-heading">Name</strong>
+              <strong class="d-block bmro-summary-heading">Name</strong>
               <div class="bmro-summary-data">
               <%= @category.name %>
             </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block bmro-form-heading">Description</strong>
+              <strong class="d-block bmro-summary-heading">Description</strong>
               <div class="bmro-summary-data">
               <%= @category.description %>
             </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block bmro-form-heading">Parent</strong>
+              <strong class="d-block bmro-summary-heading">Parent</strong>
               <div class="bmro-summary-data">
               <%= @category.parent.name if @category.parent.present? %>
             </div>
@@ -40,7 +40,7 @@
 
             <% if @category.created_at %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block bmro-form-heading">Created At</strong>
+                <strong class="d-block bmro-summary-heading">Created At</strong>
                 <div class="bmro-summary-data">
                 <%= format_date(@category.created_at) %>
               </div>
@@ -48,21 +48,21 @@
             <% end %>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block bmro-form-heading">Service</strong>
+              <strong class="d-block bmro-summary-heading">Service</strong>
               <div class="bmro-summary-data">
               <%= format_boolean(@category.is_service) %>
               </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block bmro-form-heading">Active</strong>
+              <strong class="d-block bmro-summary-heading">Active</strong>
               <div class="bmro-summary-data">
               <%= format_boolean(@category.is_active) %>
               </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block bmro-form-heading">SAP Synced</strong>
+              <strong class="d-block bmro-summary-heading">SAP Synced</strong>
               <div class="bmro-summary-data">
               <%= format_boolean_label(@category.synced?, 'synced') %>
               </div>
