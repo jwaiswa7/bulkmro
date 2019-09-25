@@ -4,7 +4,7 @@
   <%#= simple_form_for([:overseers, @po_request],:url => create_purchase_order_overseers_po_request_path(@po_request), :method => :post, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :id %>
     <div class="card mb-2">
-      <div class="card-body">
+      <div class="card-body bmro-card-body">
         <div>
           <h6 class="text-uppercase text-black-50 mb-2 bmro-form-heading">Details</h6>
           <div class="form-row mb-1">
@@ -78,7 +78,7 @@
       </div>
     </div>
     <div class="card mb-2">
-      <div class="card-body">
+      <div class="card-body bmro-card-body">
         <div>
           <h6 class="text-uppercase text-black-50 mb-2 bmro-form-heading">Supplier Details</h6>
           <h6 class="text-uppercase mb-1"><strong><%= f.object.supplier.to_s %></strong></h6>
@@ -104,7 +104,7 @@
       </div>
     </div>
     <div class="card">
-      <div class="card-body">
+      <div class="card-body bmro-card-body">
         <h6 class="text-uppercase text-black-50 mb-2 bmro-form-heading">Address Details</h6>
         <div>
           <div class="form-row ">
