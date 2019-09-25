@@ -136,7 +136,7 @@
                   <%= link_to url_for(attachment), class: 'ml-md-1 btn bmro-button btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                     <i class="bmro-download-icon"></i>
                     <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 bmro-button mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                      <i class="bmro-trash-icon"></i>
+                      <i class="bmro-trash-icon bmro-trash-padding"></i>
                     <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
                   <% end %>
                 <% end %>
