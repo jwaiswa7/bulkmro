@@ -35,7 +35,9 @@
         <% if po_request.inquiry.present? && po_request.inquiry.inside_sales_owner.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Inside Sales</strong>
-            <%= po_request.inquiry.inside_sales_owner.to_s, input_html: {class: 'bmro-summary-data'} %>
+            <div class=bmro-summary-link>
+              <%= po_request.inquiry.inside_sales_owner.to_s %>
+            </div>
           </div>
         <% end %>
 
@@ -58,21 +60,27 @@
         <% if po_request.sales_order.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Supplier PO Type</strong>
-            <%= po_request.try(:supplier_po_type), input_html: {class: 'bmro-summary-data'} %>
+             <div class=bmro-summary-link>
+            <%= po_request.try(:supplier_po_type) %>
+          </div>
           </div>
         <% end %>
 
         <% if po_request.payment_option.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Payment Terms</strong>
-            <%= po_request.payment_option, input_html: {class: 'bmro-summary-data'} %>
+             <div class=bmro-summary-link>
+            <%= po_request.payment_option %>
+          </div>
           </div>
         <% end %>
 
         <% if po_request.inquiry.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Customer Committed Date</strong>
-            <%= po_request.inquiry.customer_committed_date , input_html: {class: 'bmro-summary-data'}%>
+             <div class=bmro-summary-link>
+            <%= po_request.inquiry.customer_committed_date %>
+          </div>
           </div>
         <% end %>
 
@@ -80,14 +88,18 @@
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Supplier Committed Delivery Date</strong>
             <%#= po_request.supplier_committed_date %>
-            <%= po_request.show_supplier_delivery_date, input_html: {class: 'bmro-summary-data'} %>
+             <div class=bmro-summary-link>
+            <%= po_request.show_supplier_delivery_date %>
+          </div>
           </div>
         <% end %>
 
         <% if po_request.supplier.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Supplier</strong>
-            <%= po_request.supplier.to_s, input_html: {class: 'bmro-summary-data'} %>
+             <div class=bmro-summary-link>
+            <%= po_request.supplier.to_s %>
+          </div>
           </div>
         <% end %>
 
@@ -95,37 +107,47 @@
           <div class="col-6 col-md-6 mb-2">
             <strong class="d-block bmro-summary-heading">Supplier Contact</strong>
             <%= po_request.contact.to_s, input_html: {class: 'bmro-summary-data'}, %><br>
-            <% if po_request.contact_email.present?, input_html: {class: 'bmro-summary-data'} %>
+             <div class=bmro-summary-link>
+            <% if po_request.contact_email.present? %>
               <strong>Email: </strong><%= po_request.contact_email %><br>
             <% end %>
-            <% if po_request.contact_phone.present?, input_html: {class: 'bmro-summary-data'} %>
+            <% if po_request.contact_phone.present? %>
               <strong>Phone: </strong><%= po_request.contact_phone %>
             <% end %>
+          </div>
           </div>
         <% end %>
 
         <% if po_request.bill_from.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Bill From</strong>
-            <%= po_request.bill_from.to_s, input_html: {class: 'bmro-summary-data'} %>
+             <div class=bmro-summary-link>
+            <%= po_request.bill_from.to_s %>
+          </div>
           </div>
         <% end %>
         <% if po_request.ship_from.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Ship From</strong>
-            <%= po_request.ship_from.to_s, input_html: {class: 'bmro-summary-data'} %>
+             <div class=bmro-summary-link>
+            <%= po_request.ship_from.to_s %>
+          </div>
           </div>
         <% end %>
         <% if po_request.bill_to.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Bill To</strong>
-            <%= po_request.bill_to.to_s, input_html: {class: 'bmro-summary-data'} %>
+             <div class=bmro-summary-link>
+            <%= po_request.bill_to.to_s %>
+          </div>
           </div>
         <% end %>
         <% if po_request.ship_to.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block bmro-summary-heading">Ship To</strong>
-            <%= po_request.ship_to.to_s, input_html: {class: 'bmro-summary-data'} %>
+             <div class=bmro-summary-link>
+            <%= po_request.ship_to.to_s %>
+          </div>
           </div>
         <% end %>
 
