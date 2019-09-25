@@ -616,7 +616,7 @@
                   </div> -->
 
                   <div class="flex-grow-1">
-                    <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                    <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '',class: 'bmro-serial-number-products'} %>
                     <% if inquiry_product.object.persisted? %>
                       <%= format_boolean_label(inquiry_product.object.product.synced?, 'synced') %>
                     <% else %>
