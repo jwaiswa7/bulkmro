@@ -1679,6 +1679,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 .table.dataTable.fixedHeader-floating{
     /*top: 78px;*/
     padding-top: 47px;
+    transition: all 0.9s ease;
     z-index: 100;
     background-color: #f0f2f6!important; 
 }
