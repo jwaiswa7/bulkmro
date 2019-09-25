@@ -1192,7 +1192,22 @@ a.bmro-click-toggle.collapsed:after{
     font-weight: 600;
     line-height: 15px;
 }
-.bmro-arrow-parent .select2:before{
+.bmro-arrow-parent .select2 .select2-selection:before{
+    font-size: 17px;
+    content: "\25be";
+    float: right;
+    transition: all 0.5s;
+    position: relative;
+    right: 0;
+    top: -2px;
+    color: #2C4159;
+}
+.bmro-arrow-parent .select2.select2-container--open .select2-selection:before{
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    transform: rotate(180deg);  
+}
+/*.bmro-arrow-parent .select2:before{
     font-size: 17px;
     content: "\25be";
     float: right;
@@ -1206,7 +1221,7 @@ a.bmro-click-toggle.collapsed:after{
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
     transform: rotate(180deg);  
-}
+}*/
 .bmro-bg{
     background-color: #fff!important;
 }
@@ -1675,6 +1690,6 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 @media only screen and (min-width: 1440px) {
   .bmro-datatable-style.fixedHeader-floating{
-    padding-top: 57px!important;
+    padding-top: 57px;
   }
 }

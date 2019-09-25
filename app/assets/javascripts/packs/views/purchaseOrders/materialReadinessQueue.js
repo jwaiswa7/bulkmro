@@ -21,21 +21,6 @@ let bindSummaryBox = (classname) => {
     });
 };
 
-// $(window).scroll(function(){
-//         console.log($(window).scrollTop());
-//         console.log('asassa');
-//     if ($(window).scrollTop() >= 500) {
-//         // $('.bmro-datatable-style').addClass('bmro-datatable-style-position');
-//         // $('nav div').addClass('visible-title');
-//         console.log('true');
-//     }
-//     else {
-//         $('bmro-datatable-style').removeClass('bmro-datatable-style-position');
-//         // $('nav div').removeClass('visible-title');
-//         console.log('false');
-//     }
-// });
-
 let aggregateSummaryBox = () => {
     let table = $('.datatable').DataTable();
     table.on('xhr', function () {
