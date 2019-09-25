@@ -1,6 +1,6 @@
 <div class="col-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <div class="row flex-lg-row-reverse">
+    <div class="row flex-lg-row-reverse bmro-bg">
       <div class="col-lg-2">
         <div class="card mb-3" data-toggle="sticky">
           <div class="card-header">
@@ -86,7 +86,7 @@
                 </div>
               </div>
 
-              <div class="card-alternative mt-3">
+              <div class="card-alternative bmro-bg mt-3">
                 <div class="form-row">
                   <div class="col-md-6 mt-2 mt-md-0">
                     <strong class="d-block">Supplier - Billing Address</strong>
@@ -340,7 +340,7 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer bmro-footer">
               <div class=form-row>
                 <div class="col-5 col-md-1">
                   Products
@@ -377,7 +377,7 @@
               </div>
             </div>
           </div>
-          <div class="card-footer">
+          <div class="card-footer bmro-footer">
             <div class="form-row">
               <div class="col-6">
                 <a class="btn btn-danger btn-block account-rejection bmro-button" data-parent="#rejection-comments" data-toggle="collapse" data-target="#internal-comments" style="color: #FFFFFF;">Reject</a>
@@ -397,7 +397,7 @@
                           <div class="form-group">
                             <%= c.label :reject_reasons, 'Reject Reasons', class: "form-control-label text-capitalize string optional"%>
                             <%= c.select :reject_reasons, SalesOrder.reject_reasons,
-                                         {selected: SalesOrder.reject_reasons.values}, :multiple => true, :class => 'form-control select2-multiple bmro-dropdown-icon', required: true %>
+                                         {selected: SalesOrder.reject_reasons.values}, :multiple => true, :class => 'form-control select2-multiple bmro-dropdown-icon-none', required: true %>
                           </div>
                           <%= c.input :message, :placeholder => 'Type message', required: false,input_html: {class: 'bmro-form-input'}  %>
                           <%= c.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@sales_order).reject? %>
