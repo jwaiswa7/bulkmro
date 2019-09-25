@@ -108,7 +108,9 @@
         <% if po_request.contact.present? %>
           <div class="col-6 col-md-6 mb-2">
             <strong class="d-block bmro-summary-heading">Supplier Contact</strong>
-            <%= po_request.contact.to_s, input_html: {class: 'bmro-summary-data'}, %><br>
+             <div class=bmro-summary-data>
+            <%= po_request.contact.to_s %><br>
+          </div>
              <div class=bmro-summary-data>
             <% if po_request.contact_email.present? %>
               <strong>Email: </strong><%= po_request.contact_email %><br>
