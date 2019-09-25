@@ -87,29 +87,37 @@
                 <% if @invoice_request.grpo_number.present? %>
                   <div class="col-6 col-md-3 mb-2">
                     <strong class="d-block bmro-summary-heading">GRPO #</strong>
+                    <div class="bmro-summary-data">
                     <%= @invoice_request.grpo_number %>
+                  </div>
                   </div>
                 <% end %>
 
                 <% if @invoice_request.shipment_number.present? %>
                   <div class="col-6 col-md-3 mb-2">
-                    <strong class="d-block">Shipment #</strong>
+                    <strong class="d-block bmro-summary-heading">Shipment #</strong>
+                    <div class="bmro-summary-data">
                     <%= @invoice_request.shipment_number %>
+                  </div>
                   </div>
                 <% end %>
 
                 <% if @invoice_request.ap_invoice_number.present? %>
                   <div class="col-6 col-md-3 mb-2">
-                    <strong class="d-block">AP Invoice #</strong>
+                    <strong class="d-block bmro-summary-heading">AP Invoice #</strong>
+                    <div class="bmro-summary-data">
                     <%= @invoice_request.ap_invoice_number %>
+                  </div>
                   </div>
                 <% end %>
 
 
                 <% if @invoice_request.ar_invoice_number.present? %>
                   <div class="col-6 col-md-3 mb-2">
-                    <strong class="d-block">AR Invoice #</strong>
+                    <strong class="d-block bmro-summary-heading">AR Invoice #</strong>
+                    <div class="bmro-summary-data">
                     <%= @invoice_request.ar_invoice_number %>
+                  </div>
                   </div>
                 <% end %>
 
@@ -125,10 +133,10 @@
               <div class="col-12 col-md-3 mb-2 mt-2">
                 <strong class="d-block">Attachments </strong>
                 <% @invoice_request.attachments.each do |attachment| %>
-                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                    <i class="fal fa-download"></i>
-                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                      <i class="fal fa-trash-alt"></i>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 btn bmro-button btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="bmro-download-icon"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 bmro-button mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                      <i class="bmro-trash-icon"></i>
                     <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
                   <% end %>
                 <% end %>
@@ -140,7 +148,7 @@
     </div>
 
     <% if @products_list.present? %>
-      <div class="card mb-2">
+      <div class="card mb-2 bmro-card">
         <div class="card-body">
           <div class="chats">
             <% if @invoice_request.purchase_order.present? %>
