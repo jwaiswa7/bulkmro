@@ -361,6 +361,7 @@ a.bmro-list-button{
     -webkit-appearance: none !important;
     appearance: none !important;
 }
+.select2-container--disabled .bmro-dropdown-icon { background: none; }
 /*.form-control.select{
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcCAYAAABsxO8nAAAAAXNSR0IArs4c6QAAAftJREFUOBHNlM8vA0EUx9/s4k+wbpSQiGyb9A/Q1I+DnoiQWKHOzjhKIyHhf5CI0Is4icRBqxFcXMQ2CBLlpgc3laA73luG3e3u7IGDSZPtvPedz7w3894A/NFQwzjR5NhsYyTWUi6ZpkwrBRHEAlhhjA9qLbFbGSwQJCBfUShhMF+QByIyksJqQAGQUJgL5AdhjFUYAP5AkaUpnBAAecbFA8CYgaR3ERbnoAKz1vXkuCFsdkQSSMrMZw/Ld+aF1hq9QtgQLhSbu86M6UkjxYHvCjJ9MR2KxIY47XqPMQKcZzlAnbAzBlXO6uPKcKJjDxeu/Tj8IeTH6La8aeJ8qZhbP1cLhQKfTg/vXD48NSOwHfU1kYhN6OtMkyls0cxl551+yGQySrxvotNllExiyXSXxP2fXL9Nza4JgmwfXq++WdVTvOLusASpDCx4PdN7jQWhVQWEcz6Fxga8uVEtoh/h7dwLkfPrqiUOCa0tqqL24M8KUsXH6qYpolewWvsdO9dE5orkS0hVDVyZLOY39qmr7SHrNxRofq1BEPNgM0uAbxBN9N7xOW5Zy/RfDDyzCkIavP3lhJDW9R7hoR1rbbEXXOhMsx51ouOxtT7TEZGIDV0gMhLM58xsfRCEnDUgMj6WiidemAwSCPLCwiCkDx3RHmPG+aSGLvit4AOV+RqTGNSXjQAAAABJRU5ErkJggg==');
     background-size: 10px 16px!important;
@@ -1396,7 +1397,8 @@ table.bmro-new-table tr:first-child{
     padding: 20px; 
 }
 .bmro-icon-relationship{
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAsRJREFUSA1jXLJ6m+c/BsZ5////k2CgAWBkZHrBxPA/iQVkiZK8lISMhBgNrGFgePLilcS9h8/msYB8ArKEn4+HJhaBDL374IkEE81MRzN4+FnEguZDornPXrxmmDx/FcOfP38ZIvzdGIz1NPDqJdqiG3ceMCxcvZXh7KUbDN9//GRgZGRkkJUSZxDk52WoaJvCsHpWO4MAHy9Oy4iKo7Xb9jOkl7czPH/5hiExzIehpiAZaBEDg5O1CYOnoyXDj5+/GF6+fofTEpAEQR+BfDBxzgqGIE8HhtzkcAZmJojbzl+5ybBg1Ra44a/ffmBQV5aH89EZeC26fOMOQ9+sZQzKCjIM+SkR4OCCGVCeFcvgZmvO8OvPb4aVm3YzzFi8jsHGTB8mjUHjtOjIqYsMle1TwT4Axcel63cY9LVU4QaAxIz01MH8v3//AuNpKsOLV28ZJMSE4WqQGTjj6MCxMwxSEqIMu1dMAZcaID4uAEoUIAAsbnApYcBpkYqiHDjyS1omMrx9/5FBQ0URpyFv3n4Ey/Hz4C7GcAZdqK8zw7cfPxhWbdrDoKuhwuDuYIFh0eevX4H56B/DjoPHwclcUU4KQw1MAKdFoNSVFO7LICoowNA1fTHDgWNnGRysjGH6GNZtP8AwYfZyhv///4PFQGpZWJjh8ugMnBbBFPq42jCcuniNoa5nFoOfqx2Dj5sNgwjQ8hmL1jJ4OVsxcHFyMKzevJfBydYEpgUrTdAiUOpqLk1nWLJuO8PyDbsZNu46CDfo06evcDY7KxucjY1B0CKYppggT4ZQHxcGUFH06s17htdv3zPMWb4RUtYFuOFM1jD9RFsE0sDOxoqSlwKBpcWfv38YeLm5YebhpEmyCN0UTg52kPXowlj5OPMRVtUUCA4/i1hA7S5Qk4iCUMGrFVT+gexgATXuQO0uUJMIrw4yJWENSACq8NrCu9OGdwAAAABJRU5ErkJggg==');}
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAsRJREFUSA1jXLJ6m+c/BsZ5////k2CgAWBkZHrBxPA/iQVkiZK8lISMhBgNrGFgePLilcS9h8/msYB8ArKEn4+HJhaBDL374IkEE81MRzN4+FnEguZDornPXrxmmDx/FcOfP38ZIvzdGIz1NPDqJdqiG3ceMCxcvZXh7KUbDN9//GRgZGRkkJUSZxDk52WoaJvCsHpWO4MAHy9Oy4iKo7Xb9jOkl7czPH/5hiExzIehpiAZaBEDg5O1CYOnoyXDj5+/GF6+fofTEpAEQR+BfDBxzgqGIE8HhtzkcAZmJojbzl+5ybBg1Ra44a/ffmBQV5aH89EZeC26fOMOQ9+sZQzKCjIM+SkR4OCCGVCeFcvgZmvO8OvPb4aVm3YzzFi8jsHGTB8mjUHjtOjIqYsMle1TwT4Axcel63cY9LVU4QaAxIz01MH8v3//AuNpKsOLV28ZJMSE4WqQGTjj6MCxMwxSEqIMu1dMAZcaID4uAEoUIAAsbnApYcBpkYqiHDjyS1omMrx9/5FBQ0URpyFv3n4Ey/Hz4C7GcAZdqK8zw7cfPxhWbdrDoKuhwuDuYIFh0eevX4H56B/DjoPHwclcUU4KQw1MAKdFoNSVFO7LICoowNA1fTHDgWNnGRysjGH6GNZtP8AwYfZyhv///4PFQGpZWJjh8ugMnBbBFPq42jCcuniNoa5nFoOfqx2Dj5sNgwjQ8hmL1jJ4OVsxcHFyMKzevJfBydYEpgUrTdAiUOpqLk1nWLJuO8PyDbsZNu46CDfo06evcDY7KxucjY1B0CKYppggT4ZQHxcGUFH06s17htdv3zPMWb4RUtYFuOFM1jD9RFsE0sDOxoqSlwKBpcWfv38YeLm5YebhpEmyCN0UTg52kPXowlj5OPMRVtUUCA4/i1hA7S5Qk4iCUMGrFVT+gexgATXuQO0uUJMIrw4yJWENSACq8NrCu9OGdwAAAABJRU5ErkJggg==');
+}
 .page-header h2{
     color: #2C4159;
     font-family: 'Inter UI', sans-serif;
@@ -1656,13 +1658,19 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     border-radius: 0px;
 }
 .table.dataTable.fixedHeader-floating{
-    top: 78px!important;
-    padding-top: 27px;
+    /*top: 78px;*/
+    padding-top: 47px;
     z-index: 100;
     background-color: #f0f2f6!important; 
 }
-@media only screen and (max-width: 1920px) {
-  .table.dataTable.fixedHeader-floatin{
-    top: 40px!important;
+@media only screen and (min-width: 1920px) {
+  .bmro-datatable-style.fixedHeader-floating{
+    padding-top: 25px!important;
+    top: 48px!important;
+  }
+}
+@media only screen and (min-width: 1440px) {
+  .bmro-datatable-style.fixedHeader-floating{
+    padding-top: 57px!important;
   }
 }
