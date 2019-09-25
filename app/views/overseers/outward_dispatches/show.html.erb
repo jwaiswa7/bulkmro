@@ -103,8 +103,10 @@
         </div>
       </div>
     </div>
+    <div class="bmro-form-heading">
     <% @outward_dispatch.packing_slips.each_with_index do |packing_slip, index| %>
       <%= render 'packing_slip', index: index, packing_slip: packing_slip %>
+      </div>
       <br/>
     <% end %>
     <div class="card bmro-card">
