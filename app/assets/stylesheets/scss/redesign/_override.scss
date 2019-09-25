@@ -1657,15 +1657,15 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     min-width: auto;
     border-radius: 0px;
 }
+.table.dataTable.fixedHeader-floating{
+    top: 78px!important;
+    padding-top: 65px;
+    z-index: 100;
+    background-color: #f0f2f6!important; 
+}
 @media only screen and (max-width: 1920px) {
   .bmro-datatable-style.fixedHeader-floating{
     padding-top: 10px!important;
     top: 48px!important;
   }
-}
-.table.dataTable.fixedHeader-floating{
-    top: 78px!important;
-    padding-top: 65px!important;
-    z-index: 100;
-    background-color: #f0f2f6!important; 
 }
