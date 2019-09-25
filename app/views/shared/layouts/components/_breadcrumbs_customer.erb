@@ -62,7 +62,7 @@
     <% end %>
     <% if content_for?(:can_be_exported_material_readiness_queue) && policy(current_model.singularize.downcase).export_material_readiness? %>
       <a href= "<%= [request.path.chomp('material_readiness_queue'), 'export_material_readiness.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
-        <i class="bmro-download-icon"></i>Material Readiness Queue
+        <i class="bmro-download-icon bmro-mate-icon-pr"></i>Material Readiness Queue
       </a>
     <% end %>
   </div>
