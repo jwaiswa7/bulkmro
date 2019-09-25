@@ -312,8 +312,8 @@ a.bmro-list-button{
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     border-width: 2px!important;
-    border-style: solid!important;
-    border-color: rgb(236, 238, 242)!important;
+    border-style: solid;
+    border-color: rgb(236, 238, 242);
     /* border-image: initial; */
     border-radius: 2px!important;
     outline: none!important;
@@ -471,7 +471,7 @@ a.bmro-list-button{
 }
 .bmro-product-btn-parent{
     position: absolute;
-    bottom: 20px;
+    bottom: -27px;
     background-color: #fff!important;
     border: 2px solid #ECEEF2!important;
     width: fit-content;
