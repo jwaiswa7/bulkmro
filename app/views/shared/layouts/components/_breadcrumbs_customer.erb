@@ -1,6 +1,6 @@
 <% if content_for?(:can_be_exported_for_amat_customer) && current_overseer.present? && current_overseer == Overseer.find_by_email('sufiyan.siddique@bulkmro.com') %>
   <a href= "<%= [request.path,'/', 'export_for_amat_customer.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" >
-    <i class="fal fa-download mr-1"></i>Export
+    <i class="bmro-download-icon"></i>Export
   </a>
 <% end %>
 
@@ -15,7 +15,7 @@
           <input type="text" id="export_daterange" name="export_daterange" class="form-control bmro-form-input" data-toggle="daterangepicker" data-direction="left" placeholder="Pick a daterange" />
         </div>
         <a href="<%= [request.path, '/', 'export_all.csv'].join %>" id="export_daterange_button" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down export_daterange_wrapper bmro-button" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
-          <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+          <i class="bmro-download-icon"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
         </a>
       </div>
     <% end %>
@@ -26,7 +26,7 @@
     <% end %>
     <% if content_for?(:can_be_directly_exported) && policy(current_model.singularize.downcase).export_all? %>
       <a href="<%= [request.path, '/', 'export_all.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
-        <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+        <i class="bmro-download-icon"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
       </a>
     <% end %>
 
@@ -37,12 +37,12 @@
     <% end %>
     <% if content_for?(:can_be_directly_exported_inquiry_tat) && policy(current_model.singularize.downcase).export_inquiries_tat? %>
       <%= link_to ("#{export_inquiries_tat_overseers_inquiries_path}.csv"), class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button", 'data-badge': ([time_ago_in_words(Export.where(export_type: 2).last.created_at), "ago"].join(' ') if Export.where(export_type: 2).last.present?) do %>
-        <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %> TAT
+        <i class="bmro-download-icon"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %> TAT
       <% end %>
     <% end %>
     <% if content_for?(:can_exported_report) && policy(current_model.singularize.downcase).export_report? %>
       <%= link_to ("#{export_report_overseers_report_path}.csv"), class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button", 'data-badge': ([time_ago_in_words(Export.where(export_type: 2).last.created_at), "ago"].join(' ') if Export.where(export_type: 2).last.present?) do %>
-        <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+        <i class="bmro-download-icon"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
       <% end %>
     <% end %>
     <% if content_for?(:can_be_directly_downloaded) %>
@@ -52,17 +52,17 @@
            report_url = params[report_name].present? ? "export_#{report_name}?#{report_query}.csv" : "export_#{report_name}.csv"
          end %>
       <a href="<%= report_url %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button" >
-        <i class="fal fa-download mr-1"></i><%= action_name.split('/').last.split("_").join(" ").upcase%>
+        <i class="bmro-download-icon"></i><%= action_name.split('/').last.split("_").join(" ").upcase%>
       </a>
     <% end %>
     <% if content_for?(:can_be_directly_generated) && policy(current_model.singularize.downcase).generate_all? %>
       <a href="<%= [request.path, '/', 'generate_all'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down bmro-button">
-        <i class="fal fa-download mr-1"></i>Generate <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+        <i class="bmro-download-icon"></i>Generate <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
       </a>
     <% end %>
     <% if content_for?(:can_be_exported_material_readiness_queue) && policy(current_model.singularize.downcase).export_material_readiness? %>
       <a href= "<%= [request.path.chomp('material_readiness_queue'), 'export_material_readiness.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
-        <i class="fal fa-download mr-1"></i>Material Readiness Queue
+        <i class="bmro-download-icon"></i>Material Readiness Queue
       </a>
     <% end %>
   </div>
