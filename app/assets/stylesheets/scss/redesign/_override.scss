@@ -1703,6 +1703,12 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 .bmro-mate-icon-pr{
     padding-right: 17px;
 }
+.bmro-form-overflow{
+    overflow: unset;
+}
 .bmro-invoice-capi{
     text-transform: capitalize!important;
+}
+.btn-success:hover{
+    background-color: #385372;
 }

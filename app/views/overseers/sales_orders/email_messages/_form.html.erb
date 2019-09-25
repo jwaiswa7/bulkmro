@@ -8,7 +8,7 @@
       <%= f.input :bcc, input_html: { class: 'bmro-form-input' } %>
       <%= f.input :subject, input_html: { class: 'bmro-form-input' } %>
       <%= f.input :files, input_html: { class: 'bmro-form-input' }, wrapper: :custom_file, input_html: {multiple: true} %>
-      <%= f.input :body, input_html: {rows: 10, class: 'html-editor bmro-form-input'} %>
+      <%= f.input :body, input_html: {rows: 10, class: 'html-editor bmro-form-input  bmro-form-overflow'} %>
     </div>
     <div class="card-footer bmro-card-footer">
       <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button") do %>
