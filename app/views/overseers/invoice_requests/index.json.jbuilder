@@ -10,7 +10,7 @@ json.data (@invoice_requests) do |invoice_request|
                       if !invoice_request.status.downcase.include?('cancel') && is_authorized(invoice_request, 'can_cancel_or_reject')
                         link_to('', class: ['btn btn-sm btn-danger cancel-invoice'], 'data-invoice-request-id': invoice_request.id, title: 'Cancel', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-ban'].join
                         end
                       end,
                       if is_authorized(invoice_request, 'index')
