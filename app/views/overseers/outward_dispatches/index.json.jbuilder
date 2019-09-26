@@ -10,7 +10,7 @@ json.data (@outward_dispatches) do |outward_dispatch|
                         row_action_button_without_fa(edit_overseers_outward_dispatch_path(outward_dispatch), 'bmro-icon-table bmro-icon-new-freight', 'Edit Outward Dispatch', 'warning', :_blank)
                       end,
                       if is_authorized(:outward_dispatch, 'can_create_packing_slip') && policy(outward_dispatch).can_create_packing_slip?
-                        row_action_button(new_overseers_outward_dispatch_packing_slip_path(outward_dispatch), 'plus', 'Create Packing Slip', 'success', :_blank)
+                        row_action_button_without_fa(new_overseers_outward_dispatch_packing_slip_path(outward_dispatch), 'bmro-icon-table bmro-icon-circle', 'Create Packing Slip', 'success', :_blank)
                       end,
                       if is_authorized(:outward_dispatch, 'can_send_dispatch_email') && current_overseer.can_send_emails? && (outward_dispatch.status == 'Material Ready for Dispatch')
                         row_action_button(dispatch_mail_to_customer_overseers_outward_dispatch_email_messages_path(outward_dispatch), 'envelope', 'Send Dispatch Mail', 'dark', :_blank)
@@ -19,7 +19,7 @@ json.data (@outward_dispatches) do |outward_dispatch|
                         row_action_button(delivery_mail_to_customer_overseers_sales_invoice_path(sales_invoice), 'envelope', 'Delivery Email', 'success')
                       end,
                       if sales_invoice.present? && is_authorized(sales_invoice, 'edit_pod') && policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count == 0)
-                        row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success')
+                        row_action_button_without_fa(edit_pod_overseers_sales_invoice_path(sales_invoice), 'bmro-icon-table bmro-icon-truck', 'Add Proof of Delivery', 'success')
                       end,
                       if sales_invoice.present? && is_authorized(sales_invoice, 'edit_pod') && policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count > 0)
                         [
