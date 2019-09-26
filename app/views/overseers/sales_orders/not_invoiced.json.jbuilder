@@ -2,25 +2,25 @@ json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
                       if is_authorized(sales_order,'show')
-                        row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'eye', 'View Sales Order', 'info', :_blank)
+                        row_action_button_without_fa(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'bmro-icon-table bmro-icon-used-view', 'View Sales Order', 'info', :_blank)
                       end,
                       if is_authorized(sales_order,'comments')
-                        row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', 'Comments and Approval', 'success', :_blank)
+                        row_action_button_without_fa(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'bmro-icon-table bmro-icon-comment', 'Comments and Approval', 'success', :_blank)
                       end,
                       if is_authorized(sales_order,'go_to_inquiry') && policy(sales_order).go_to_inquiry?
-                        row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark', :_blank)
+                       row_action_button_without_fa(edit_overseers_inquiry_path(sales_order.inquiry), 'bmro-icon-table bmro-icon-comments-approval', 'Go to Inquiry', 'dark', :_blank)
                       end,
                       if is_authorized(sales_order,'edit_mis_date')
-                        row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar-alt', 'Update MIS Date', 'success', :_blank)
+                        row_action_button_without_fa(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'bmro-icon-table bmro-icon-calender', 'Update MIS Date', 'success', :_blank)
                       end,
                       if is_authorized(sales_order,'can_request_po')
-                        row_action_button(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'file', 'PO Request', 'success', :_blank)
+                        row_action_button_without_fa(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'bmro-icon-table bmro-icon-file', 'PO Request', 'success', :_blank)
                       end,
                       if is_authorized(sales_order,'can_request_invoice')
-                        row_action_button(new_overseers_invoice_request_path(sales_order_id: sales_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
+                       row_action_button_without_fa(new_overseers_invoice_request_path(sales_order_id: sales_order.to_param), 'bmro-icon-table bmro-icon-dollar', 'GRPO Request', 'success', :_blank)
                       end,
                       if is_authorized(sales_order.sales_quote,'new_freight_request') && policy(sales_order.sales_quote).new_freight_request?
-                        row_action_button(new_overseers_freight_request_path(sales_order_id: sales_order.to_param), 'external-link', 'New Freight Request', 'warning')
+                        row_action_button_without_fa(new_overseers_freight_request_path(sales_order_id: sales_order.to_param), 'bmro-icon-table bmro-icon-new-freight', 'New Freight Request', 'warning')
                       end
                   ].join(' '),
                   sales_order.order_number.present? ? conditional_link(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), is_authorized(sales_order.inquiry,'show')) : '-',
