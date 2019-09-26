@@ -2,7 +2,7 @@ json.data (@company_reviews) do |company_review|
   json.array! [
                   [
                       if is_authorized(company_review,'show')
-                        row_action_button(overseers_company_review_path(company_review), 'eye', 'View Company', 'info', :_blank)
+                       row_action_button_without_fa(overseers_company_review_path(company_review), 'bmro-icon-table bmro-icon-used-view', 'View Company', 'info', :_blank)
                       end,
                       format_review_document(company_review)
                   ].join(' '),
