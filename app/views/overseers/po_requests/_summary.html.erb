@@ -160,7 +160,7 @@
       <% if po_request.attachments.attached? %>
         <div class="form-row">
           <div class="col-12 col-md-3 mb-2">
-            <strong class="d-block">Attachments </strong>
+            <strong class="d-block bmro-summary-heading">Attachments </strong>
             <% po_request.attachments.each do |attachment| %>
               <%= link_to url_for(attachment), class: 'mr-md-1 btn bmro-button btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                 <i class="bmro-download-icon"></i>
