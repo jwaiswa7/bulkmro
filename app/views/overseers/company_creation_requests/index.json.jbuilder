@@ -2,13 +2,13 @@ json.data (@company_creation_requests) do |company|
   json.array! [
   				  [
                 if !company.company.present? && is_authorized(:company, 'new')
-                  row_action_button(new_overseers_company_path(ccr_id: company.id), 'building', 'New Company', 'success', :_blank)
+                  row_action_button_without_fa(new_overseers_company_path(ccr_id: company.id), 'bmro-icon-table bmro-icon-new-company', 'New Company', 'success', :_blank)
                 end,
                 if is_authorized(company, 'show')
-                  row_action_button(overseers_company_creation_request_path(company), 'eye',  'View Company Creation Request', 'info', :_blank)
+                 row_action_button_without_fa(overseers_company_creation_request_path(company), 'bmro-icon-table bmro-icon-used-view',  'View Company Creation Request', 'info', :_blank)
                 end,
                 if is_authorized(company.activity, 'show')
-                  row_action_button(edit_overseers_activity_path(company.activity), 'pencil',  'Edit Activity', 'warning', :_blank)
+                row_action_button_without_fa(edit_overseers_activity_path(company.activity), 'bmro-icon-table bmro-icon-pencil',  'Edit Activity', 'warning', :_blank)
                 end
             ].join(' '),
 	              link_to(company.name, overseers_company_creation_request_path(company), target: '_blank'),
