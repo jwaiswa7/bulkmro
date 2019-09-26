@@ -15,7 +15,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                         row_action_button_without_fa(edit_overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'bmro-icon-table bmro-icon-pencil', 'Edit Inward Dispatch', 'warning', :_blank)
                       end,
                       if is_authorized(inward_dispatch, 'confirm_delivery') && policy(inward_dispatch).confirm_delivery?
-                        row_action_button(confirm_delivery_overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'check', 'Confirm Delivery', 'success', :_blank)
+                        row_action_button_without_fa(confirm_delivery_overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'bmro-icon-table bmro-icon-check', 'Confirm Delivery', 'success', :_blank)
                       end,
                       if is_authorized(inward_dispatch, 'delivered') && policy(inward_dispatch).delivered? && is_authorized(inward_dispatch, 'can_request_invoice') && policy(inward_dispatch).can_request_invoice? && inward_dispatch.purchase_order.sap_sync == 'Sync'
                         row_action_button(new_overseers_invoice_request_path(purchase_order_id: inward_dispatch.purchase_order, inward_dispatch_id: inward_dispatch), 'plus', 'Create GRPO Request',  'success', target: :_blank)
