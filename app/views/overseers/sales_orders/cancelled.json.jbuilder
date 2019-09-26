@@ -3,10 +3,10 @@ json.data (@sales_orders) do |sales_order|
   columns = [
       [
           if is_authorized(sales_order, 'show')
-            row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'eye', 'View Sales Order', 'info')
+            row_action_button_without_fa(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'bmro-icon-table bmro-icon-used-view', 'View Sales Order', 'info')
           end,
           if is_authorized(sales_order, 'comments')
-            row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', 'Comments and Approval', 'success')
+            row_action_button_without_fa(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'bmro-icon-table bmro-icon-comment', 'Comments and Approval', 'success')
           end
       ].join(' '),
       sales_order.order_number.present? ? conditional_link(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), is_authorized(sales_order.inquiry, 'show')) : '',
