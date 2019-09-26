@@ -2,10 +2,10 @@ json.data (@categories) do |category|
   json.array! [
                   [
                       if is_authorized(category, 'show')
-                        row_action_button(overseers_category_path(category), 'fal fa-eye', 'View Category', 'dark', :_blank)
+                        row_action_button_without_fa(overseers_category_path(category), 'bmro-icon-table bmro-icon-used-view', 'View Category', 'dark', :_blank)
                       end,
                       if is_authorized(category, 'edit')
-                        row_action_button(edit_overseers_category_path(category), 'pencil', 'Edit Category', 'warning', :_blank)
+                        row_action_button_without_fa(edit_overseers_category_path(category), 'bmro-icon-table bmro-icon-pencil', 'Edit Category', 'warning', :_blank)
                       end
                   ].join(' '),
                   category.id,
