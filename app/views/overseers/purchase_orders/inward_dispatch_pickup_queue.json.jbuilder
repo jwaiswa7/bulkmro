@@ -9,13 +9,13 @@ json.data (@inward_dispatches) do |inward_dispatch|
                       #   "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
                       # end,
                       if is_authorized(inward_dispatch, 'show') && policy(inward_dispatch).show?
-                        row_action_button(overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'eye', 'View Inward Dispatch', 'info', target: :_blank)
+                        row_action_button_without_fa(overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'bmro-icon-table bmro-icon-used-view', 'View Inward Dispatch', 'info', target: :_blank)
                       end,
                       if is_authorized(inward_dispatch, 'edit') && policy(inward_dispatch).edit?
-                        row_action_button(edit_overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'pencil', 'Edit Inward Dispatch', 'warning', :_blank)
+                        row_action_button_without_fa(edit_overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'bmro-icon-table bmro-icon-pencil', 'Edit Inward Dispatch', 'warning', :_blank)
                       end,
                       if is_authorized(inward_dispatch, 'confirm_delivery') && policy(inward_dispatch).confirm_delivery?
-                        row_action_button(confirm_delivery_overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'check', 'Confirm Delivery', 'success', :_blank)
+                        row_action_button_without_fa(confirm_delivery_overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'bmro-icon-table bmro-icon-check', 'Confirm Delivery', 'success', :_blank)
                       end,
                       if is_authorized(inward_dispatch, 'delivered') && policy(inward_dispatch).delivered? && is_authorized(inward_dispatch, 'can_request_invoice') && policy(inward_dispatch).can_request_invoice? && inward_dispatch.purchase_order.sap_sync == 'Sync'
                         row_action_button(new_overseers_invoice_request_path(purchase_order_id: inward_dispatch.purchase_order, inward_dispatch_id: inward_dispatch), 'plus', 'Create GRPO Request',  'success', target: :_blank)
@@ -30,7 +30,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                       if is_authorized(inward_dispatch, 'index')
                         link_to('', class: ['btn btn-sm btn-success comment-inward-dispatch'], 'data-inward-dispatch-id': inward_dispatch.id, 'data-purchase-id': inward_dispatch.purchase_order.id, title: 'Comment', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end
                       end,
 
