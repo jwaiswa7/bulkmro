@@ -150,7 +150,7 @@
 
   </section>
   <section class="pb-4 pb-lg-5">
-    <ul class="nav nav-tabs nav-fill">
+    <ul class="nav nav-tabs nav-fill bmro-nav-ul">
       <% if @po_request.present? %>
         <li class="nav-item">
           <a class="nav-link active" data-toggle="tab" href="#po_request" role="tab">Po Request</a>
@@ -395,10 +395,10 @@
         <% end %>
       </div>
       <div class="tab-pane fade " id="comments" role="tabpanel">
-        <div class="card bmro-card">
+        <div class="card bmro-bg">
           <% if @inward_dispatch.comments.persisted.size > 0 %>
             <div class="card-body">
-              <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
+              <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Comments</h6>
               <div class="chats">
                 <% @inward_dispatch.comments.persisted.each do |comment| %>
                   <%= format_comment(comment) %>
