@@ -8,7 +8,7 @@ json.data (@overseers) do |overseer|
                         row_action_button_without_fa(edit_overseers_overseer_path(overseer), 'bmro-icon-table bmro-icon-pencil', 'Edit Overseer', 'warning')
                       end,
                       if is_authorized('overseer', 'edit') && policy(overseer).edit_acl?
-                        row_action_button(edit_acl_overseers_overseer_path(overseer), 'lock', 'Edit ACL', 'success')
+                        row_action_button(edit_acl_overseers_overseer_path(overseer), 'bmro-icon-table bmro-icon-lock', 'Edit ACL', 'success')
                       end,
                       if is_authorized('overseer', 'can_add_edit_target') && policy(overseer).can_add_edit_target?
                         overseer.annual_targets.present? ? row_action_button(overseers_annual_target_path(overseer.annual_targets.last), 'bullseye', 'View Target', 'warning') : row_action_button(new_overseers_annual_target_path(overseer_id: overseer), 'bullseye', 'Add Target', 'danger')
