@@ -8,4 +8,8 @@ class Overseers::InquiryProductSupplierPolicy < Overseers::ApplicationPolicy
   def request_for_quote?
     record.supplier.contacts.present?
   end
+
+  def update_and_send_link?
+    record.supplier.default_contact.present? if record.supplier.present?
+  end
 end

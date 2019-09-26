@@ -7,7 +7,7 @@ const addSuppliers = () => {
         addProductSuppliers();
     });
 
-    checkProductSuppliers();
+    // checkProductSuppliers();
     showOrHideDraftRfq();
 };
 
@@ -66,16 +66,17 @@ let showOrHideActions = () => {
 
 };
 
-let checkProductSuppliers = () => {
-    $('input[name="inquiry_product_ids[]"]').change(function () {
-        let $this = $(this);
-        let value = $this.is(':checked');
-        let selector = $this.closest('.product_wrapper').find($('input[name="inquiry_product_supplier_ids[]"]'));
-        selector.each(function () {
-            $(this).prop("checked", value);
-        });
-    });
-};
+// let checkProductSuppliers = () => {
+//     $('input[name="inquiry_product_ids[]"]').change(function () {
+//         alert('test')
+//         let $this = $(this);
+//         let value = $this.is(':checked');
+//         let selector = $this.closest('.product_wrapper').find($('input[name="inquiry_product_supplier_ids[]"]'));
+//         selector.each(function () {
+//             $(this).prop("checked", value);
+//         });
+//     });
+// };
 
 let showOrHideDraftRfq = () => {
 

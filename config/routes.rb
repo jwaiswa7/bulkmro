@@ -544,6 +544,7 @@ Rails.application.routes.draw do
             get 'edit_supplier_rfqs'
             get 'rfq_review'
             post 'rfq_review_submit'
+            post 'update_all'
           end
           member do
             post 'send_email_request_for_quote'
