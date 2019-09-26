@@ -53,7 +53,7 @@
         <%= f.input :status, as: :check_boxes, :wrapper => :vertical_collection_inline, collection: enum_to_collection(Overseer.statuses.except("inactive")) %>
       </div>
     </div>
-    <div class="bmro-button-parent bmro-button">
+    <div class="bmro-button-parent">
     <%= action_button(action_name, @overseer) %>
     </div>
   <% end %>
