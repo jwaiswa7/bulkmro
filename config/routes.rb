@@ -388,6 +388,7 @@ Rails.application.routes.draw do
         get 'export_all'
         get 'so_sync_pending'
         get 'export_rows'
+        get 'export_rows_in_bible_format'
         get 'export_for_logistics'
         get 'export_for_sap'
         get 'export_for_reco'
