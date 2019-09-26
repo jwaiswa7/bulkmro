@@ -5,7 +5,7 @@
         <div class="col">
           <%= f.input :date_range, as: :string,
                       input_html: {
-                          :'data-toggle' => 'daterangepicker', class: 'bmro-form-input' :placeholder => 'Date Range',
+                          :'data-toggle' => 'daterangepicker', class: 'bmro-form-input', :placeholder => 'Date Range',
                           :value => (params['pipeline_report'].present? && params['pipeline_report']['date_range'].present? ? params['pipeline_report']['date_range'] : '')
                       }, required: false, label: 'Pick a Date Range' %>
         </div>
