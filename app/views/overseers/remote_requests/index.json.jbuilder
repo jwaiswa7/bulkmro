@@ -2,7 +2,7 @@ json.data (@remote_requests) do |remote_request|
   columns = [
                   [
                       if is_authorized(remote_request, 'show')
-                        row_action_button(overseers_remote_request_path(remote_request), 'eye', 'Show Remote Request', 'info')
+                        row_action_button_without_fa(overseers_remote_request_path(remote_request), 'bmro-icon-table bmro-icon-pencil', 'Show Remote Request', 'info')
                       end,
                   ].join(' '),
                   if remote_request.subject.present? && is_authorized(remote_request.subject,'show')
