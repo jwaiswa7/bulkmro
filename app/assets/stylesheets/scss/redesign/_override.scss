@@ -1192,6 +1192,9 @@ a.bmro-click-toggle.collapsed:after{
     .bmro-icon-table{
         font-size: 12px;
     }
+    .easy-autocomplete.eac-solid input{
+        min-width: 50px;
+    }
 
 }
 .bmro-form-input-height .select2-selection__rendered{
