@@ -1183,6 +1183,16 @@ a.bmro-click-toggle.collapsed:after{
     .bmro-nav-ul{
         top:108px;
     }
+    .bmro-container-fluid{
+        max-width: 960px;
+    }
+    table.table.dataTable.table-bordered th:first-child{
+        width: 130px!important;
+    }
+    .bmro-icon-table{
+        font-size: 12px;
+    }
+
 }
 .bmro-form-input-height .select2-selection__rendered{
     white-space: normal!important;
