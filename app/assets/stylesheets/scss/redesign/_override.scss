@@ -1181,7 +1181,7 @@ a.bmro-click-toggle.collapsed:after{
 }
 @media only screen and (max-width: 1040px){
     .bmro-nav-ul{
-        top:108px;
+        top:75px;
     }
     table.table.dataTable{
         width: 915px!important;
@@ -1199,7 +1199,12 @@ a.bmro-click-toggle.collapsed:after{
         min-width: 50px;
         max-width: 110px;
     }
-
+    .bmro-summary-body{
+        width: 670px;
+    }
+    .bmro-summary-card{
+        top: 140px;
+    }
 }
 .bmro-form-input-height .select2-selection__rendered{
     white-space: normal!important;
