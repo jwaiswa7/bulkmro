@@ -1201,9 +1201,19 @@ a.bmro-click-toggle.collapsed:after{
     }
     .bmro-summary-body{
         width: 780px!important;
+
     }
     .bmro-summary-card{
         top: 140px!important;
+    }
+    .bmro-card-border-summary{
+        position: sticky;
+        top:143px;
+        z-index: 97;
+    }
+    .bmro-summary-header{
+        min-height: 640px;
+        position: unset!important;
     }
 }
 .bmro-form-input-height .select2-selection__rendered{
