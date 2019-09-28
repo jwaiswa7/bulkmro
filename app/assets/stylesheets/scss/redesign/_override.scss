@@ -1852,8 +1852,8 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     width: 99%;
 }
 .brmo-inward-card{
-   border-top: 2px; 
-   border-right: 2px; 
-   border-left: 2px; 
-   border-bottom: 4px solid transparent; 
+    border-top: 1px solid;
+    border-right: 1px solid;
+    border-left: 1px solid;
+    border-bottom: 4px solid transparent; 
 }
