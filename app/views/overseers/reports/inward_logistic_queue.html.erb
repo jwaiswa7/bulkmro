@@ -6,10 +6,10 @@
   <div id="summary" class="collapse show">
     <div class="form-row d-flex flex-row align-content-stretch bm-2 bmro-bg bmro-inward-colum-parent">
       <% @data.summary_box_data.each_with_index do |title, index| %>
-        <div class="col-3 col-md-3 col-lg-3 col-xl-3 d-flex flex-row align-content-stretch">
+        <div class="col-2 col-md-2 col-lg-2 col-xl-2 d-flex flex-row align-content-stretch">
 
           <div class="brmo-inward-card card w-100 mb-2 rim border-<%= index == @data.summary_box_data.size - 1 ? "warning" : "success" %>">
-            <div class="card-body px-3 pt-3 pb-3">
+            <div class="card-body px-1 pt-1 pb-1">
               <div class="text-center d-flex flex-column h-100">
                 <p class="mb-1 text-small bmro-logistics-p">
                   <a href="#"><strong><%= title.first.to_s == "with_inward_pending" ? "Delivered : GRPO Pending".upcase : title.first.to_s.humanize.remove("With").upcase %></strong></a>
