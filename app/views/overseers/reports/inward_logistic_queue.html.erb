@@ -10,7 +10,7 @@
 
           <div class="brmo-inward-card card w-100 mb-2 rim border-<%= index == @data.summary_box_data.size - 1 ? "warning" : "success" %>">
             <div class="card-body px-1 pt-1 pb-1">
-              <div class="text-center d-flex flex-column h-100">
+              <div class="d-flex flex-column h-100">
                 <p class="mb-1 text-small bmro-logistics-p">
                   <a href="#"><strong><%= title.first.to_s == "with_inward_pending" ? "Delivered : GRPO Pending".upcase : title.first.to_s.humanize.remove("With").upcase %></strong></a>
                 </p>
