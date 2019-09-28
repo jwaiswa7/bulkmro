@@ -1897,8 +1897,10 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     float: left;
 }
 .bmro-collapse-button-bg{
-    width: 30%;
+    width: 25%;
      background-color: #f7f7f7;
      text-decoration: none;
      font-size: 9px;
+     border-top-right-radius: 25px;
+     color: #2C4159;
 }
