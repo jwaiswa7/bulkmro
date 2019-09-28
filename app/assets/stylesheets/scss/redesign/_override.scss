@@ -1823,7 +1823,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 .bmro-icon-used-trash{
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAWpJREFUSA1jXLJ6m+c/BoZZ////l2GgAWBkZHzCxMCQxgKyREleWkZGQowG1jAwPHnxSubew6ezWEA+AVnCz8dDE4tAht598EQG6Cv6gMFp0fwVmxlsA9PAGMQmBbDgU7xq0x4U6Ss378H5IDa6fJifC1wenYHXosnzV6Grh/NPXbjKAMLIgGyLmkrTGeq6ZzKAaG11JWQz4eyrQJ/B1MAFsTDwJgZBPl6wFhDNxsrCADIURCOzkdVgMR8uhNciuCog4/7jZ2CXg2hkNrIafGyiLcJnCDFyoxYRE0pY1Qy/oMNbMiCHgYyEOENuYhgDiAYBGPvp81fIynCyibZIVFiAAbmIgbGpYpGEmDADExMjQ25tD06XgiRAakBq8QG8PgJp7qzOZTh76TrDv///sZrDxMjIYKynSZlFIJMtjHTAGKstJAgOw+QNaneBmkQkhAJJSoFmM4DsYAGGXRqo3QVqEpFkApGKYQ1IAO3VcgXF191PAAAAAElFTkSuQmCC');
 }
-.bmro-logistics-p{
+.bmro-logistics-p a{
     color: #546272;
     font-family: inter ui,sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -1835,7 +1835,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     margin: 0;    
 }
 .bmro-inward-head{
-    color: #2c4159;
+    color: #2c4159!important;
     font-family: inter ui,sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 24px;
