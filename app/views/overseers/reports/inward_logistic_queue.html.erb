@@ -11,10 +11,10 @@
           <div class="card w-100 mb-2 rim rim-bottom border-<%= index == @data.summary_box_data.size - 1 ? "warning" : "success" %>">
             <div class="card-body px-3 pt-3 pb-3">
               <div class="text-center d-flex flex-column h-100">
-                <p class="mb-1 text-small">
+                <p class="mb-1 text-small bmro-logistics-p">
                   <a href="#"><strong><%= title.first.to_s == "with_inward_pending" ? "Delivered : GRPO Pending".upcase : title.first.to_s.humanize.remove("With").upcase %></strong></a>
                 </p>
-                <h5 class="mb-0 mt-auto text-<%= index == @data.summary_box_data.size - 1 ? "warning" : "success" %>"><%= @data.summary_box_data[title.first] %></h5>
+                <h5 class="bmro-inward-head mb-0 mt-auto text-<%= index == @data.summary_box_data.size - 1 ? "warning" : "success" %>"><%= @data.summary_box_data[title.first] %></h5>
               </div>
             </div>
           </div>
@@ -35,7 +35,7 @@
 
 <div class="sticky-top" style="width: 100%;display: none" id="stick-tid">
   <table class="table text-center mt-3 bmro-datatable-style" style="margin-top: 0px !important;margin-bottom: 0px" >
-    <thead >
+    <thead>
     <tr>
       <th class="text-uppercase">Logistics Owner</th>
       <th class="text-uppercase text-black-50">Material Not Ready</th>
@@ -47,7 +47,7 @@
   </table>
 </div>
 
-<table class="table text-center mt-3" id="sticky-nav">
+<table class="table text-center mt-3 bmro-datatable-style" id="sticky-nav">
   <thead data-toggle="sticky">
   <tr>
     <td><h5 class="mb-0 text-black-50">Logistics Owner</h5></td>
