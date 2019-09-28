@@ -953,7 +953,7 @@ a.bmro-click-toggle.collapsed:after{
     background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAARJJREFUWAntV4sNwiAQLcYldAt/IzVdSdORjGMYtxDfEdqmIHA0RUiEhFyhx+P13dFem6aQJgYeUspuuE5hhRC3IC5ItOipm/dBN0GWP3IohsjW8cAPzIdj6lisp1vYi99luusi0iO5+skt/goJR4vYRIoJzf8SQciO6G/0p7YnimEORWhjepHutT3DZiFC+1othyIWCZqoRExZqiJVEVMBc1xzpFhFXPVIhw+SSTp2TIURu7mIHIBwZaOs4FiT1RRRhYbq0xVywsSejUM18JgjIccZaoLBSMSHDbWoqlKVlM+Pee/raWIRwQZ39PE/mblhlBv31LyiUBc4c4nsFmBHLeGGhvJDlf1R6Azn3IfEovgBxlOT3m4+yooAAAAASUVORK5CYII=');
 }
 .bmro-summary-box1{
-    width: 491px;
+    width: 500px;
     border-radius: 2px 2px 0 0;
     float: left;  
     margin-right: 10px;
@@ -1168,6 +1168,15 @@ a.bmro-click-toggle.collapsed:after{
     position: relative;
     right: 9px;
     top: 4px;
+}
+.form-row{
+    width: 100%;
+}
+
+@media only screen and (max-width: 1600px) {
+   table.table.dataTable{
+    width: 1400px!important;
+  }
 }
 @media only screen and (max-width: 1440px) {
   .bmro-nav-ul {
