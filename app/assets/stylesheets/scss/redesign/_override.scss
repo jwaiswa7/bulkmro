@@ -1179,6 +1179,43 @@ a.bmro-click-toggle.collapsed:after{
     top: 88px;
   }
 }
+@media only screen and (max-width: 1040px){
+    .bmro-nav-ul{
+        top:75px;
+    }
+    table.table.dataTable{
+        width: 915px!important;
+    }
+    .bmro-container-fluid{
+        max-width: 960px;
+    }
+    table.table.dataTable.table-bordered th:first-child{
+        width: 130px!important;
+    }
+    .bmro-icon-table{
+        font-size: 12px;
+    }
+    .easy-autocomplete.eac-solid input{
+        min-width: 50px;
+        max-width: 110px;
+    }
+    .bmro-summary-body{
+        width: 780px!important;
+
+    }
+    .bmro-summary-card{
+        top: 140px!important;
+    }
+    .bmro-card-border-summary{
+        position: sticky;
+        top:143px;
+        z-index: 97;
+    }
+    .bmro-summary-header{
+        min-height: 640px;
+        position: unset!important;
+    }
+}
 .bmro-form-input-height .select2-selection__rendered{
     white-space: normal!important;
 }
@@ -1807,4 +1844,10 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     line-height: 29px;
     float: left;
     margin: 0;    
+}
+.bmro-fix-width{
+    width: 250px;
+}
+.mce-panel{
+    width: 99%;
 }
