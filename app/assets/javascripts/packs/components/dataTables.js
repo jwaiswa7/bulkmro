@@ -13,6 +13,7 @@ const dataTables = () => {
             $('.datatable').DataTable().rowGroup().enable().draw();
         }
     }
+
 };
 
 // Setup the filter field before all dataTables, if the filter attribute exists
@@ -27,22 +28,10 @@ let preSetup = () => {
 
         if (searchText) {
             let $input = "<input type='search' class='form-control filter-list-input' placeholder='" + searchText + "'>";
-            $input = $($input);
+            $input = $('.bmro-search-width');
             $input.bindWithDelay('keyup', function (e) {
                 $('#' + $target.attr('id')).DataTable().search($(this).val()).draw();
             }, 300);
-
-            let $wrapper = "<div class='input-group mt-2'>" +
-                "<div class='input-group-prepend'>" +
-                "<span class='input-group-text'>" +
-                "<i class='material-icons'>filter_list</i>" +
-                "</span>" +
-                "</div>" +
-                "</div>";
-
-            let $filter = $($wrapper).append($input);
-
-            $filter.insertBefore($target);
             $target.data('has-search', true);
         }
     });
