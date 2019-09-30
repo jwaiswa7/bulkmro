@@ -71,6 +71,19 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     redirect_to url_for(Export.sales_order_rows.last.report)
   end
 
+  def export_rows_in_bible_format
+    authorize_acl :sales_order
+
+    service = Services::Overseers::Exporters::SalesOrdersBibleFormatExporter.new
+    service.call
+
+    if Export.sales_orders_bible_format.last.present?
+      redirect_to url_for(Export.sales_orders_bible_format.last.report)
+    else
+      redirect_to overseers_sales_orders_path
+    end
+  end
+
   def export_for_logistics
     authorize_acl :sales_order
     service = Services::Overseers::Exporters::SalesOrdersLogisticsExporter.new

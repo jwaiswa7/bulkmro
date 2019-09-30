@@ -1,9 +1,9 @@
-<div class="card bmro-card">
+<div class="card">
   <div class="card-body">
     <%= render 'shared/snippets/form_errors', f: f %>
     <%= f.hidden_field :company_creation_request_id %>
     <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Company Details</h6>
-    <% if is_authorized(@company, 'edit_remote_uid') %>
+    <% if is_authorized(@company, 'edit_remote_uid') && action_name == 'edit' %>
       <div class="form-row">
         <div class="col-12 col-md-8">
           <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences', input_html: { class: 'bmro-form-input bmro-bg' } %>

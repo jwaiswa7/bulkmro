@@ -19,6 +19,7 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.order_number,
                   status_badge(format_enum(sales_order.order_status || sales_order.legacy_request_status, humanize_text: false)),
                   format_succinct_date(sales_order.sent_at),
+                  sales_order.approval.present? ? format_date_time_meridiem(sales_order.approval.created_at) : '-',
                   sales_order.created_by.to_s,
                   sales_order.inside_sales_owner.to_s,
                   sales_order.outside_sales_owner.to_s,

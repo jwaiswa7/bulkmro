@@ -3,11 +3,11 @@ json.data (@accounts) do |account|
                   [
                        row_action_button_without_fa(overseers_account_path(account), 'bmro-icon-table bmro-icon-used-view', 'View Account', 'info', :_blank),
                       if is_authorized(account, 'edit');
-                         row_action_button_without_fa(edit_overseers_account_path(account), 'bmro-icon-table bmro-icon-pencil', 'Edit Account', 'warning', :_blank)
+                        row_action_button_without_fa(edit_overseers_account_path(account), 'bmro-icon-table bmro-icon-pencil', 'Edit Account', 'warning', :_blank)
                       end,
                       if is_authorized(:company, 'new')
-                         row_action_button_without_fa(new_overseers_account_company_path(account), 'bmro-icon-table bmro-icon-new-company', 'New Company', 'success', :_blank)
-                      end,
+                        row_action_button_without_fa(new_overseers_account_company_path(account), 'bmro-icon-table bmro-icon-new-company', 'New Company', 'success', :_blank)
+                      end
                   ].join(' '),
                   conditional_link(account.to_s, overseers_account_path(account), is_authorized(account, 'show')),
                   account.companies.size,
