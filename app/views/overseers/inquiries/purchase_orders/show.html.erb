@@ -218,7 +218,13 @@
                 <span><%= item.product.present? ? item.product.brand.to_s : item.brand %></span>
               </td>
               <td>
-                <span><%= item.metadata['PopHsn'] %></span>
+                <% if item.metadata['PopHsn'].present? %>
+                  <span><%= item.metadata['PopHsn'] %></span>
+                <% elsif item.po_request_row.present? %>
+                  <span><%= item.po_request_row.tax_code.try(:code) %></span>
+                <% else %>
+                  <span>-</span>
+                <% end %>
               </td>
               <td>
                 <span><%= item.uom  %></span>
