@@ -75,11 +75,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def get_product
-    if self.metadata.kind_of?(Array)
-      Product.where(id: self.metadata.first['PopProductId']).try(:first)
-    else
       Product.where(legacy_id: self.metadata['PopProductId'].to_i).or(Product.where(id: Product.decode_id(self.metadata['PopProductId']))).try(:first)
-    end
   end
 
 
