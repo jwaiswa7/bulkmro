@@ -53,18 +53,18 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
       purchase_order.rows.where(po_request_row_id: nil).delete_all
       purchase_order_params = assign_purchase_order_attributes(@purchase_order.po_number)
       purchase_order.update_attributes(purchase_order_params)
-      purchase_order_row = purchase_order.rows
       po_request.rows.each_with_index do |row, index|
-        if purchase_order_row[index].present?
-          purchase_order_row[index].update_attributes(
+        purchase_order_row = purchase_order.rows.where(product_id: row.product.id)
+        if purchase_order_row.present?
+          purchase_order_row.last.update_attributes(
             metadata: set_product_data(row, index),
             updated_by_id: params[:overseer].id
           )
         else
           po_row = PurchaseOrderRow.new
           po_row.purchase_order_id = @purchase_order.id
-          po_row.product_id = row.product_id,
-          po_row.po_request_row_id = row.id,
+          po_row.product = row.product
+          po_row.po_request_row_id = row.id
           po_row.metadata = set_product_data(row, index)
           po_row.save!
         end
