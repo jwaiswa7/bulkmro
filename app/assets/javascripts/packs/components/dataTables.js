@@ -222,21 +222,21 @@ let setup = () => {
                         let input = '';
 
                         if (filter == 'dropdown') {
-                            input = $('<select class="select2-single form-control" data-placeholder="' + [text, ' '].join('') + '"><option value="" selected disabled></option></select>');
+                            input = $('<div class="bmro-input-search bmro-arrow-parent"><select class="form-control select select2-single bmro-form-input select2-hidden-accessible" data-placeholder="' + [text, ' '].join('') + '"><option value="" selected disabled></option></select></div>');
                             json.columnFilters[this.index()].forEach(function (f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
-                                input.append(option);
+                                input.find('select').append(option);
                             });
                         } else if (filter == 'daterange') {
-                            input = $('<input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" />');
+                            input = $('<div class="bmro-input-search bmro-arrow-parent"><input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" /></div>');
                         } else if (filter == 'ajax') {
                             let source = "";
                             json.columnFilters[this.index()].forEach(function (f) {
                                 source = f.source;
                             });
-                            input = $('<select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' '].join('') + '"></select>');
+                            input = $('<div class="bmro-input-search bmro-arrow-parent"><select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' '].join('') + '"></select></div>');
                         } else {
-                            input = $('<input type="text" class="form-control" placeholder="' + [text, ' ', 'Filter'].join('') + '" />');
+                            input = $('<div class="bmro-input-search bmro-arrow-parent"><input type="text" class="form-control" placeholder="' + [text, ' ', 'Filter'].join('') + '" /></div>');
                         }
 
                         input.on('change', function () {
@@ -254,7 +254,7 @@ let setup = () => {
                             $(that).trigger('filters:change');
                         });
 
-                        td.append(input);
+                        $('.bmro-search-table').append(input);
                         select2s();
 
 
