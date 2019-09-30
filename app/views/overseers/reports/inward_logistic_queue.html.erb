@@ -3,6 +3,28 @@
     Inward Logistics Queue Summary
   </a>
 
+   <div class="bmro-collaps bmro-collaps2">
+<div class="bmro-invoice-data">
+<div class="bmro-invoice-edit">
+<label>Material Not Ready</label>
+<span>396</span>
+</div>
+<div class="bmro-invoice-edit">
+<label>Material Pickup Pending</label>
+<span>93</span>
+</div>
+<div class="bmro-invoice-edit">
+<label>Delivered:GRPO Pending</label>
+<span>2630</span>
+</div>
+<div class="bmro-invoice-edit">
+<label>Status Partial GRPO Done</label>
+<span>0</span>
+</div>
+</div>
+</div>
+</div>
+
   <div id="summary" class="collapse show">
     <div class="form-row d-flex flex-row align-content-stretch bm-2 bmro-bg bmro-inward-colum-parent">
       <% @data.summary_box_data.each_with_index do |title, index| %>
@@ -24,27 +46,7 @@
   </div>
 </div>
 
- <div class="bmro-collaps bmro-collaps2">
-<div class="bmro-invoice-data">
-<div class="bmro-invoice-edit">
-<label>Material Not Ready</label>
-<span>396</span>
-</div>
-<div class="bmro-invoice-edit">
-<label>Material Pickup Pending</label>
-<span>93</span>
-</div>
-<div class="bmro-invoice-edit">
-<label>Delivered:GRPO Pending</label>
-<span>2630</span>
-</div>
-<div class="bmro-invoice-edit">
-<label>Status Partial GRPO Done</label>
-<span>0</span>
-</div>
-</div>
-</div>
-</div>
+
 
 <% provide :container_fluid, true %>
 <div class="col-lg-12 mb-0">
