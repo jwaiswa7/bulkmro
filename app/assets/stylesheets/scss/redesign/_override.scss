@@ -1897,11 +1897,22 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     float: left;
 }
 .bmro-collapse-button-bg{
-    width: 20%;
+   /* width: 20%;
      background-color: #f7f7f7;
      text-decoration: none;
      font-size: 9px;
      border-top-right-radius: 50px;
-     color: #2C4159;
-
+     color: #2C4159;*/
+    color: #2C4159;
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    line-height: 12px;
+    display: inline-block;
+    text-transform: uppercase;
+    background-color: #fff;
+    padding: 6px 44px 6px 14px;
+    border-top-right-radius: 58px;  
 }
