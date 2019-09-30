@@ -218,7 +218,9 @@
                 <span><%= item.product.present? ? item.product.brand.to_s : item.brand %></span>
               </td>
               <td>
-                <%= show_tax_code(item) %>
+                <span>
+                  <%= item.show_tax_code %>
+                </span>
               </td>
               <td>
                 <span><%= item.uom  %></span>
