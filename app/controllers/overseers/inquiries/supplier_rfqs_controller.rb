@@ -47,19 +47,37 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
     if @supplier_rfq.present?
       @supplier_rfq.assign_attributes(supplier_rfq_params.merge(overseer: current_overseer))
       @supplier_rfq.save
+
+      supplier = Company.find(@supplier_rfq.supplier_id)
+      contact = supplier.default_contact
       if params['button'] == 'update_and_send_link'
-        supplier = Company.find(@supplier_rfq.supplier_id)
-        contact = supplier.default_contact
-        contact.update_attribute('email', "bulkmro007+#{@supplier_rfq.id}@gmail.com")
-        if supplier.default_contact.present?
+        if contact.present?
+          contact.update_attributes(email: "bulkmro007+#{@supplier_rfq.id}@gmail.com")
           @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
           subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
           @action = 'send_email_request_for_quote'
-          @quantity = params['quantity']
+          @quantity = supplier_rfq_params['inquiry_product_suppliers_attributes']['0']['quantity']
           @email_message.assign_attributes(
               subject: subject,
               body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq, @quantity).body.raw_source
           )
+          @params = {
+              record: [:overseers, @supplier_rfq, @email_message],
+              url: "#{@supplier_rfq.to_param}/send_email_request_for_quote"
+          }
+          render 'shared/layouts/email_messages/new'
+        end
+      elsif params['button'] == 'update_and_send_link_all'
+        if contact.present?
+          contact.update_attributes(email: "bulkmro007+#{@supplier_rfq.id}@gmail.com")
+          @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
+          subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
+          @quantity = supplier_rfq_params['inquiry_product_suppliers_attributes']['0']['quantity']
+          @email_message.assign_attributes(
+              subject: subject,
+              body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq, @quantity).body.raw_source
+          )
+
           if @email_message.save
             unless SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
             end
@@ -82,12 +100,12 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
       if params['button'] == 'update_and_send_link'
         supplier = Company.find(@supplier_rfq.supplier_id)
         contact = supplier.default_contact
-        contact.update_attribute('email', "bulkmro007+#{contact.id}@gmail.com")
+        contact.update_attributes(email: "bulkmro007+#{@supplier_rfq.id}@gmail.com")
         if supplier.default_contact.present?
           @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
           subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
           @action = 'send_email_request_for_quote'
-          @quantity = params['quantity']
+          @quantity = supplier_rfq_params['inquiry_product_suppliers_attributes']['0']['quantity']
           @email_message.assign_attributes(
               subject: subject,
               body: SupplierRfqMailer.request_for_quote_email(@email_message, @quantity).body.raw_source
@@ -150,6 +168,7 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
                                                                                 :lead_time,
                                                                                 :last_unit_price,
                                                                                 :gst,
+                                                                                :quantity,
                                                                                 :unit_freight,
                                                                                 :final_unit_price,
                                                                                 :total_price,
