@@ -307,6 +307,16 @@ module DisplayHelper
     end
   end
 
+  def show_tax_code(po_row)
+    (if po_row.metadata['PopHsn'].present?
+      '<span>'+ po_row.metadata['PopHsn']+'</span>'
+    elsif po_row.po_request_row.present?
+      '<span>'+ po_row.po_request_row.tax_code.try(:code) +'</span>'
+    else
+      '<span>-</span>'
+    end).html_safe
+  end
+
   def format_review_document(company_review)
     if company_review.rateable_type == 'PoRequest'
       row_action_button(overseers_po_request_path(company_review.rateable), 'file-invoice', 'View PO Request', 'success', :_blank)
