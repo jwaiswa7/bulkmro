@@ -25,7 +25,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
       po_request.rows.each_with_index do |row, index|
         @purchase_order.rows.where(product_id: row.product_id).first_or_create! do |po_row|
           po_row.update_attributes(
-              metadata: set_product(row, index),
+              metadata: set_product_data(row, index),
               product: row.product,
               created_by_id: params[:overseer].id,
               updated_by_id: params[:overseer].id,
@@ -57,22 +57,21 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
       po_request.rows.each_with_index do |row, index|
         if purchase_order_row[index].present?
           purchase_order_row[index].update_attributes(
-              metadata: set_product(row, index),
+              metadata: set_product_data(row, index),
               updated_by_id: params[:overseer].id
           )
         else
           po_row = PurchaseOrderRow.new
           po_row.purchase_order_id = @purchase_order.id
-          po_row.metadata = set_product(row, index),
           po_row.product_id = row.product_id,
-          po_row.created_by_id = params[:overseer].id,
-          po_row.updated_by_id = params[:overseer].id,
-          po_row.po_request_row_id = row.id
+          po_row.po_request_row_id = row.id,
+          po_row.metadata = set_product_data(row, index)
           po_row.save!
         end
       end
       @purchase_order.save_and_sync(po_request)
       po_request.update_attributes(status: 'Supplier PO: Amended')
+
       @purchase_order.update_attributes(material_status: nil)
       comments = po_request.comments.build(created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id)
       comments.message = "Status Changed: #{po_request.status}"
@@ -146,13 +145,13 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def item_line_json
     rows_array = []
     po_request.rows.each_with_index do |row, index|
-      rows_array << set_product(row, index + 1)
+      rows_array << set_product_data(row, index + 1)
     end
     rows_array
   end
 
 
-  def set_product(row, index)
+  def set_product_data(row, index)
     {
         PopHsn: row.tax_code.chapter.present? ? row.tax_code.chapter : row.tax_code.code[0..3],
         PopQty: row.quantity.to_f,
