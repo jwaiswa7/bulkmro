@@ -953,6 +953,7 @@ a.bmro-click-toggle.collapsed:after{
 }
 .row{
     display: inline-block;
+    width: 100%;
 }
 .bmro-summary-box1{
     width: 500px;
@@ -1921,4 +1922,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 .card{
     border-radius: 0px;
+}
+.bmro-width-100{
+    width: 100%;
 }
