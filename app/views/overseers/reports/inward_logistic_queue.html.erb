@@ -1,5 +1,5 @@
 <div class="col-lg-12 mb-2">
-  <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg">
+  <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg" type="button" data-toggle="collapse" data-target="#summary">
     Inward Logistics Queue Summary
   </a>
 
@@ -25,8 +25,8 @@
 </div>
 </div>
 
-  <div id="summary" class="collapse show">
-    <div class="form-row d-flex flex-row align-content-stretch bm-2 bmro-bg bmro-inward-colum-parent">
+  <div id="summary" class="collapse">
+    <div class="form-row d-flex flex-row align-content-stretch bm-2 bmro-bg bmro-inward-colum-parent bmro-margin-bottom-20">
       <% @data.summary_box_data.each_with_index do |title, index| %>
         <div class="col-2 col-md-2 col-lg-2 col-xl-2 d-flex flex-row align-content-stretch">
 
