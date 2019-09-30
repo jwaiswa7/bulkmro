@@ -67,13 +67,16 @@
                       </div>
                       <div class="col-4">
                         <div class="form-group mb-0">
-                          <%= button_tag(type: "submit", class: "btn btn-warning btn-block", value: 'update_and_send_link', disabled: !(policy(inquiry_product_supplier.object).update_and_send_link?), title: policy(inquiry_product_supplier.object).update_and_send_link? ? '' : 'Set default contact for supplier') do %>
+                          <%= button_tag(type: "submit", class: "btn btn-warning btn-block", value: 'update_and_send_link', disabled: !(policy(inquiry_product_supplier.object).update_and_send_link?)) do %>
                             <i class="fal fa-pen"></i> Update and Send Link
+                          <% end %>
+                          <% if !(policy(inquiry_product_supplier.object).update_and_send_link?) %>
+                            <div class="text-red text-center">Default contact not set for supplier to send email.</div>
                           <% end %>
                         </div>
                       </div>
                     </div>
-                    <hr>
+                    <br>
                     <div class="form-row d-none d-md-flex">
                       <div class="col-1 pl-3">
                         <span class="custom-control custom-checkbox d-inline">
@@ -148,6 +151,9 @@
                         </div>
                       </div>
                     </div>
+                    <% if f.object.inquiry_product_suppliers.count > 1 %>
+                      <hr>
+                    <% end %>
                   <% end %>
                 <% end %>
               </div>

@@ -27,13 +27,14 @@ let rfqReview = () => {
 };
 let updateAllInquiryProductSuppliers = () => {
     $(".update-all, .update-and-send-link-all").click(function () {
+        let $this = $(this);
+        let form_type = $this.val();
         $.each($("input[name='inquiry_product_supplier_ids[]']:checked"), function () {
-            let $this = $(this);
-            let form_type = $(".update-and-send-link-all").val();
-            let form = $this.closest('form');
+            let $this1 = $(this);
+            let form = $this1.closest('form');
             let input = $("<input>")
                 .attr("type", "hidden")
-                .attr("name", "button").val("update_and_send_link_all");
+                .attr("name", "button").val(form_type);
             form.append(input);
             form.submit();
         });

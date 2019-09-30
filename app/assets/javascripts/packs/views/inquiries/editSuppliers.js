@@ -17,8 +17,15 @@ const editSuppliers = () => {
             // onSupplierChange(this);
         });
 
-    $('#select_all_suppliers').change(function () {
+    $('#select_all_products').change(function () {
         $('input[name="inquiry_product_ids[]"]').each(function () {
+            console.log($(this));
+            $(this).prop('checked', $('#select_all_products').prop("checked")).trigger('change');
+        });
+    });
+
+    $('#select_all_suppliers').change(function () {
+        $('input[name="inquiry_product_supplier_ids[]"]').each(function () {
             $(this).prop('checked', $('#select_all_suppliers').prop("checked")).trigger('change');
         });
     });
