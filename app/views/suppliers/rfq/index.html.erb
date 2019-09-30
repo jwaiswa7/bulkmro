@@ -2,6 +2,9 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :use_url_as_page_title, true %>
+<% content_for :page_title do %>
+  RFQ
+<% end %>
 
 <% content_for :heading do %>
   RFQ's
