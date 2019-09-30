@@ -813,7 +813,8 @@ table.bmro-datatable-style{
 .bmro-invoice-heading{
     width: 100%;
     float: left;
-    margin-bottom: 27px;
+    margin-bottom: 25px;
+    margin-top: 15px;
 }
 .bmro-invoice-heading h4{
     color: #2C4159;
@@ -1976,6 +1977,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     width: 100%;
     padding-right: 6px;
 }
-.bmro-form-row-padd .form-row{
-    padding-left: 0px;
+.form-row.align-content-stretch{
+    margin-left: 0;
+    padding-right: 7px;
 }
