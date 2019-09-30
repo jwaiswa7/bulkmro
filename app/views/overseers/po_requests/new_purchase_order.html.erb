@@ -240,7 +240,7 @@
                 <span> - </span>
               </td>
               <td>
-                <span><%= row.tax_code.code[0..3] %></span>
+                <span><%= row.tax_code.try(:code) %></span>
               </td>
               <td>
                 <span><%= row.tax_code.tax_percentage.to_f %>%</span>
