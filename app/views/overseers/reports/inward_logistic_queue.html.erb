@@ -62,30 +62,31 @@
   </div>
 </div>
 
-<div class="sticky-top" style="width: 100%;display: none;margin-bottom: 4px;" id="stick-tid">
-  <table class="table table-bordered bmro-new-table bmro-datatable-style" style="margin-top: 0px !important;margin-bottom: 0px" >
+<div class="sticky-top" style="width: 100%;display: none" id="stick-tid">
+  <table class="table text-center mt-3 bmro-new-table bmro-datatable-style" style="margin-top: 0px !important;margin-bottom: 0px" >
     <thead>
     <tr class="bmro-th">
-      <th>Logistics Owner</th>
-      <th>Material Not Ready</th>
-      <th>Material Pickups Pending</th>
-      <th>Inward Pending</th>
-      <th>Status Partial Grpo Done</th>
+      <th class="text-uppercase">Logistics Owner</th>
+      <th class="text-uppercase text-black-50">Material Not Ready</th>
+      <th class="text-uppercase text-black-50">Material Pickups Pending</th>
+      <th class="text-uppercase text-black-50">Inward Pending</th>
+      <th class="text-uppercase text-black-50">Status Partial Grpo Done</th>
     </tr>
     </thead>
   </table>
 </div>
 
-<table class="table text-center table-bordered bmro-new-table mt-3 bmro-datatable-style" id="sticky-nav">
+<table class="table text-center mt-3 bmro-new-table bmro-datatable-style" id="sticky-nav">
   <thead data-toggle="sticky">
   <tr class="bmro-th">
-    <td class="mb-0 text-black-50 ">Logistics Owner</td>
-    <td class="mb-0 text-black-50 ">Material Not Ready</td>
-    <td class="mb-0 text-black-50 ">Material Pickups Pending</td>
-    <td class="mb-0 text-black-50 ">Inward Pending</td>
-    <td class="mb-0 text-black-50 ">Status Partial GRPO Done</td>
+    <td><h5 class="mb-0 text-black-50">Logistics Owner</h5></td>
+    <td><h5 class="mb-0 text-black-50">Material Not Ready</h5></td>
+    <td><h5 class="mb-0 text-black-50">Material Pickups Pending</h5></td>
+    <td><h5 class="mb-0 text-black-50">Inward Pending</h5></td>
+    <td><h5 class="mb-0 text-black-50">Status Partial GRPO Done</h5></td>
   </tr>
   </thead>
+
   <tbody>
   <% @data.entries.each do |overseer, values| %>
     <% if values.except(:name).values.uniq.length > 1 %>
