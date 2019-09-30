@@ -2,7 +2,7 @@
   <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg">
     Inward Logistics Queue Summary
   </a>
-
+<!-- 
   <div id="summary" class="collapse show">
     <div class="form-row d-flex flex-row align-content-stretch bm-2 bmro-bg bmro-inward-colum-parent">
       <% @data.summary_box_data.each_with_index do |title, index| %>
@@ -23,6 +23,28 @@
     </div>
   </div>
 </div>
+ -->
+ <div class="bmro-collaps bmro-collaps2">
+<div class="bmro-invoice-data">
+<div class="bmro-invoice-edit">
+<label>Material Not Ready</label>
+<span>396</span>
+</div>
+<div class="bmro-invoice-edit">
+<label>Material Pickup Pending</label>
+<span>93</span>
+</div>
+<div class="bmro-invoice-edit">
+<label>Delivered:GRPO Pending</label>
+<span>2630</span>
+</div>
+<div class="bmro-invoice-edit">
+<label>Status Partial GRPO Done</label>
+<span>0</span>
+</div>
+</div>
+</div>
+</div>
 
 <% provide :container_fluid, true %>
 <div class="col-lg-12 mb-0">
@@ -34,7 +56,7 @@
 </div>
 
 <div class="sticky-top" style="width: 100%;display: none" id="stick-tid">
-  <table class="table text-center mt-3 bmro-datatable-style" style="margin-top: 0px !important;margin-bottom: 0px" >
+  <table class="table table-bordered bmro-datatable-style" style="margin-top: 0px !important;margin-bottom: 0px" >
     <thead>
     <tr>
       <th class="text-uppercase">Logistics Owner</th>
@@ -47,7 +69,7 @@
   </table>
 </div>
 
-<table class="table text-center mt-3 bmro-datatable-style" id="sticky-nav">
+<table class="table text-center table-bordered mt-3 bmro-datatable-style" id="sticky-nav">
   <thead data-toggle="sticky">
   <tr>
     <td><h5 class="mb-0 text-black-50">Logistics Owner</h5></td>
