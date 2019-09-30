@@ -62,12 +62,12 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
           )
           if @email_message.save
             unless SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
-              p supplier.to_s
             end
             @supplier_rfq.update_attributes(email_sent_at: Time.now, status: 'Email Sent: Response Pending')
           end
         end
       else
+        flash[:notice] = 'Record updated successfully'
         redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
       end
     end
@@ -78,12 +78,12 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
     if @supplier_rfq.present?
       @supplier_rfq.assign_attributes(supplier_rfq_params.merge(overseer: current_overseer))
       @supplier_rfq.save
+      flash[:notice] = 'Records updated successfully'
       if params['button'] == 'update_and_send_link'
         supplier = Company.find(@supplier_rfq.supplier_id)
         contact = supplier.default_contact
-        contact.update_attribute('email', "meenakshi.naik+#{contact.id}@bulkmro.com")
+        contact.update_attribute('email', "bulkmro007+#{contact.id}@gmail.com")
         if supplier.default_contact.present?
-          supplier.default_contact.email = 'meenakshi.naik@bulkmro.com'
           @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
           subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
           @action = 'send_email_request_for_quote'
@@ -96,7 +96,7 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
               record: [:overseers, @supplier_rfq, @email_message],
               url: "#{@supplier_rfq.to_param}/send_email_request_for_quote"
           }
-          render 'shared/layouts/email_messages/new'
+          # render 'shared/layouts/email_messages/new'
         else
           redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
         end
@@ -117,7 +117,8 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
     if @email_message.save
       SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
       @supplier_rfq.update_attributes(email_sent_at: Time.now, status: 'Email Sent: Response Pending')
-      redirect_to overseers_inquiry_sales_quotes_path(@inquiry)
+      redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
+      # redirect_to overseers_inquiry_sales_quotes_path(@inquiry)
     else
       render 'shared/layouts/email_messages/new'
     end
