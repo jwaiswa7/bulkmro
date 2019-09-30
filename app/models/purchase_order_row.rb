@@ -19,12 +19,12 @@ class PurchaseOrderRow < ApplicationRecord
 
   def show_tax_code
     if self.metadata['PopHsn'].present?
-       self.metadata['PopHsn']
-     elsif self.po_request_row.present?
-       self.po_request_row.tax_code.try(:code)
-     else
-       '-'
-     end
+      self.metadata['PopHsn']
+    elsif self.po_request_row.present?
+      self.po_request_row.tax_code.try(:code)
+    else
+      '-'
+    end
   end
 
   def sku
