@@ -50,7 +50,7 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
       if params['button'] == 'update_and_send_link'
         supplier = Company.find(@supplier_rfq.supplier_id)
         contact = supplier.default_contact
-        contact.update_attribute('email', "meenakshi.naik+#{@supplier_rfq.id}@bulkmro.com")
+        contact.update_attribute('email', "bulkmro007+#{@supplier_rfq.id}@gmail.com")
         if supplier.default_contact.present?
           @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
           subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
