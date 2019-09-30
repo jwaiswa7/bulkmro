@@ -2,8 +2,13 @@
   <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg" type="button" data-toggle="collapse" data-target="#summary">
     Inward Logistics Queue Summary
   </a>
+<script type="text/javascript">
+  $("button").click(function(){
+  $(".bmro-collaps2").toggleClass("hide");
+});
+</script>
 
-   <div class="bmro-collaps bmro-collaps2 collapse show">
+   <div class="bmro-collaps bmro-collaps2">
       <div class="bmro-invoice-data">
           <div class="bmro-invoice-edit">
               <label>Material Not Ready</label>
