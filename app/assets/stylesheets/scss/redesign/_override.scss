@@ -887,7 +887,7 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-collaps{
     background-color: #DFE5F0;
     float: left;
-    padding: 6px 15px 4px;
+    padding: 0px 15px 4px;
     width: 100%;
     display: block!important;
     transition: unset;
@@ -1865,10 +1865,10 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 .bmro-inward-p{
     color: #546272;
-    font-family: inter ui,sans-serif;
+    font-family: Inter UI,sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 10px;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: -.5px;
     line-height: 12px;
     text-transform: uppercase;
@@ -1876,7 +1876,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 .bmro-inward-head{
     color: #2c4159!important;
-    font-family: inter ui,sans-serif;
+    font-family: Inter UI,sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 24px;
     font-weight: 700;
@@ -1928,7 +1928,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     display: inline-block;
     text-transform: uppercase;
     background-color: #fff;
-    padding: 6px 44px 6px 14px;
+    padding: 0px 44px 6px 14px;
     border-top-right-radius: 58px;  
     border: none;
     border-color: none;
