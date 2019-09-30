@@ -1971,6 +1971,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     width: 100%;
     padding-right: 6px;
 }
-.form-row{
-    padding-left: 0px;
+.form-row.align-content-stretch{
+    margin-left: 0;
+    padding-right: 7px;
 }
