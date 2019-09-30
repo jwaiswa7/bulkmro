@@ -1904,7 +1904,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
      font-size: 9px;
      border-top-right-radius: 50px;
      color: #2C4159;*/
-     width: 40%;
+     width: auto;
     color: #2C4159!important;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -1934,7 +1934,6 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     background-color: #fff;
     font-weight: 500;
     text-align: right;
-    display: table-cell;
     vertical-align: middle;
     padding: 8px 10px;
 }
