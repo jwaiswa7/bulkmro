@@ -11,12 +11,12 @@
             <div name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-<%= data_elm[1][:color] %>" >
               <div class="card-body px-1 pt-1 pb-1 brmo-inward-card">
                 <div class="d-flex flex-column h-100">
-                  <p class="bmro-inward-p mb-1 text-small text-uppercase text-<%= data_elm[1][:color] %>">
+                  <p class="bmro-ar-report-head mb-1 text-small text-uppercase text-<%= data_elm[1][:color] %>">
                     <strong><%=data_elm[1][:name] %></strong>
                   </p>
-                  <h5 class="bmro-inward-head mb-0 mt-auto text-<%= data_elm[1][:color] %> status-count-50"><%= data_elm[1][:total_count]%></h5>
+                  <h5 class="bmro-ar-report-data mb-0 mt-auto text-<%= data_elm[1][:color] %> status-count-50"><%= data_elm[1][:total_count]%></h5>
                   <hr class="my-2 bmro-hr">
-                  <h5 class="bmro-inward-head my-0 text-small text-<%= data_elm[1][:color] %> "><%= format_currency(data_elm[1][:value]) %></h5>
+                  <h5 class="bmro-ar-report-subdata my-0 text-small text-<%= data_elm[1][:color] %> "><%= format_currency(data_elm[1][:value]) %></h5>
                 </div>
               </div>
             </div>
