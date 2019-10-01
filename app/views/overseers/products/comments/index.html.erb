@@ -129,7 +129,7 @@
           <div class="col-lg-6">
             <div class="form-row">
               <div class="col-12 col-md-2">
-                <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark btn-block' %>
+                <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark btn-block bmro-button' %>
               </div>
               <div class="col-12 col-md-5 mt-1 mt-md-0">
                 <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-block' if is_authorized(@product, 'approve') && policy(@product).approve? %>
@@ -143,7 +143,7 @@
           <div class="col-lg-6 text-right">
             <%= content_tag :div, class: 'd-flex flex-row align-items-start justify-content-end mt-1 mt-md-0' do %>
               <div class="mr-1">
-                <%= f.input :merge_with_product_id, :as => :select, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path}, label: false %>
+                <%= f.input :merge_with_product_id, :as => :select, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_products_path}, label: false %>
               </div>
               <div>
                 <%= f.submit 'Merge', name: 'merge', class: 'btn btn-warning float-right bmro-button' %>
