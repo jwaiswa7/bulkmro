@@ -8,13 +8,13 @@ json.data (@invoice_requests) do |invoice_request|
                         row_action_button_without_fa(edit_overseers_invoice_request_path(invoice_request), 'bmro-icon-table bmro-icon-pencil', "Edit #{invoice_request.readable_status}", 'warning')
                       end,
                       if !invoice_request.status.downcase.include?('cancel') && is_authorized(invoice_request, 'can_cancel_or_reject')
-                        link_to('', class: ['btn btn-sm btn-danger cancel-invoice'], 'data-invoice-request-id': invoice_request.id, title: 'Cancel', remote: true) do
+                        link_to('','data-toggle': 'tooltip', class: ['btn btn-sm btn-danger cancel-invoice'], 'data-invoice-request-id': invoice_request.id, title: 'Cancel', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-ban'].join
                         end
                       end,
                       if is_authorized(invoice_request, 'index')
-                        link_to('', class: ['btn btn-sm btn-success comment-invoice-request'], 'data-model-id': invoice_request.id, title: 'Comment', remote: true) do
+                        link_to('','data-toggle': 'tooltip', class: ['btn btn-sm btn-success comment-invoice-request'], 'data-model-id': invoice_request.id, title: 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end
