@@ -41,7 +41,7 @@
                   <strong><%= format_enum(status) %></strong>
                 </p>
                 <h5 class="mb-0 bmro-ar-report-data text-<%= status_color(status) %> status-count-<%= status_id %>"></h5>
-                <h5 class="my-0 bmro-ar-report-subdata text-small text-<%= status_color(status) %> status-value-<%= status_id %>">&#8377;0</h5>
+                <span class="my-0 bmro-ar-report-subdata text-small text-<%= status_color(status) %> status-value-<%= status_id %>">&#8377;0</span>
               </div>
           </div>
         </a>
@@ -55,7 +55,7 @@
               <strong><%=label %></strong>
             </p>
             <h5 class="mb-0 bmro-ar-report-data text-red overall-status-count"></h5>
-            <h5 class="my-0 bmro-ar-report-subdata text-small text-red overall-status-value">&#8377;0</h5>
+            <span class="my-0 bmro-ar-report-subdata text-small text-red overall-status-value">&#8377;0</span>
           </div>
         </div>
       </div>
@@ -69,7 +69,7 @@
               <strong>Total Order</strong>
             </p>
             <h5 class="mb-0 bmro-ar-report-data text-blue"><%= number_with_delimiter(SalesOrder.remote_approved.count, options = {}) %></h5>
-            <h5 class="my-0 bmro-ar-report-subdata text-small text-blue status-value"><%= format_currency(SalesOrder.remote_approved.pluck(:order_total).compact.sum) %></h5>
+            <span class="my-0 bmro-ar-report-subdata text-small text-blue status-value"><%= format_currency(SalesOrder.remote_approved.pluck(:order_total).compact.sum) %></span>
           </div>
         </div>
       </div>
