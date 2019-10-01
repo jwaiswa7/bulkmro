@@ -1,3 +1,4 @@
+<div class="brmo-float">
 <a class="btn btn-light text-left btn-lg btn-block mt-1 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg" type="button" data-toggle="collapse" data-target="#summary">
   <% if alias_name.present? %>
     <%= alias_name.titleize %> Summary&nbsp;&nbsp;&nbsp;
@@ -6,31 +7,33 @@
   <% end %><!-- 
   <i class="fa fa-chevron-down" aria-hidden="true"></i> -->
 </a>
+<div class="brmo-float">
   <div class="bmro-collaps bmro-collaps2">
-      <div class="bmro-invoice-data">
-          <div class="bmro-invoice-edit">
-              <label>Invoiced created</label>
-              <span>396</span>
-          </div>
-          <div class="bmro-invoice-edit">
-              <label>regular</label>
-              <span>93</span>
-          </div>
-          <div class="bmro-invoice-edit">
-              <label>route through</label>
-              <span>578</span>
-          </div>
-          <div class="bmro-invoice-edit">
-              <label>Total Pending POD</label>
-              <span>12</span>
-          </div>
+    <div class="bmro-invoice-data">
+      <div class="bmro-invoice-edit">
+        <label>Invoiced created</label>
+        <span>396</span>
+      </div>
+      <div class="bmro-invoice-edit">
+        <label>regular</label>
+        <span>93</span>
+      </div>
+      <div class="bmro-invoice-edit">
+        <label>route through</label>
+        <span>578</span>
+      </div>
+      <div class="bmro-invoice-edit">
+        <label>Total Pending POD</label>
+        <span>12</span>
       </div>
     </div>
+  </div>
+</div> 
 </div>
 <% if klass.name == 'Inquiry' %>
   <% statuses = statuses.except('Lead by O/S') %>
 <% end %>
-<div id="summary" class="collapse">
+<div id="summary" class="collapse bmro-float">
   <div class="mt-2 form-row d-flex flex-row align-content-stretch">
     <% statuses.each do |status, status_id| %>
       <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">

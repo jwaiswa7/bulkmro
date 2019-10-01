@@ -1,27 +1,29 @@
 <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg">
   Proof of Delivery Summary
 </a>
- <div class="bmro-collaps bmro-collaps2">
-<div class="bmro-invoice-data">
-<div class="bmro-invoice-edit">
-<label>Invoiced created</label>
-<span>396</span>
+<div class="bmro-float">
+  <div class="bmro-collaps bmro-collaps2">
+    <div class="bmro-invoice-data">
+      <div class="bmro-invoice-edit">
+        <label>Invoiced created</label>
+        <span>396</span>
+      </div>
+      <div class="bmro-invoice-edit">
+        <label>regular</label>
+        <span>93</span>
+      </div>
+      <div class="bmro-invoice-edit">
+        <label>route through</label>
+        <span>578</span>
+      </div>
+      <div class="bmro-invoice-edit">
+        <label>Total Pending POD</label>
+        <span>12</span>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="bmro-invoice-edit">
-<label>regular</label>
-<span>93</span>
-</div>
-<div class="bmro-invoice-edit">
-<label>route through</label>
-<span>578</span>
-</div>
-<div class="bmro-invoice-edit">
-<label>Total Pending POD</label>
-<span>12</span>
-</div>
-</div>
-</div>
-</div>  
+
 <div id="pod-summary" class="collapse show">
   <div class="mt-2 form-row d-flex flex-row align-content-stretch text-right">
     <% if @invoice_over_month.present? && @pod_over_month.present? %>
