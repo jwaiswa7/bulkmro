@@ -45,11 +45,11 @@
         <a data-value="<%= status_id %>" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-<%= status_color(status) %> status-<%= status_id %>" href="#">
           <div class=" px-2 pt-2 brmo-inward-card">
             <div class="d-flex flex-column h-100">
-              <p class="mb-1 text-small bmro-inward-p text-uppercase text-<%= status_color(status) %>">
+              <p class="mb-1 text-small bmro-ar-report-head text-uppercase text-<%= status_color(status) %>">
                 <strong><%= format_enum(status) %></strong>
               </p>
-              <h5 class="mb-0 brmo-inward-head mt-auto text-<%= status_color(status) %> status-count-<%= status_id %>"></h5>
-              <h5 class="my-0 brmo-inward-head text-small text-<%= status_color(status) %> status-value-<%= status_id %>">&#8377;0</h5>
+              <h5 class="mb-0 bmro-ar-report-data mt-auto text-<%= status_color(status) %> status-count-<%= status_id %>"></h5>
+              <h5 class="my-0 bmro-ar-report-subdata text-small text-<%= status_color(status) %> status-value-<%= status_id %>">&#8377;0</h5>
             </div>
           </div>
         </a>

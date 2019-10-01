@@ -1515,6 +1515,7 @@ table.bmro-new-table th, table.bmro-new-table td{
     border-left: none; 
     padding: 13px 14px 8px 9px;   
     text-align: right;
+    border-radius: 0px !important;
 }
 table.bmro-new-table td:first-child{
     border-left: 1px solid #E0E2E7;
@@ -1864,11 +1865,11 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     margin: 0;    
 }
 .bmro-inward-p{
-    color: #546272;
+    color: #546272!important;
     font-family: Inter UI,sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: -.5px;
     line-height: 12px;
     text-transform: uppercase;
@@ -1879,7 +1880,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     font-family: Inter UI,sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: -.5px;
     line-height: 29px;
     float: left;
@@ -2006,4 +2007,13 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 .bmro-padding-for-table {
     padding: 10px;
+}
+.bmro-remove-radius{
+    border-radius: none!important;
+}
+table tr:last-child th:first-child{ 
+    border-bottom: 1px solid #E0E2E7;
+}
+.bmro-font-size{
+font-size: 12px!important;
 }
