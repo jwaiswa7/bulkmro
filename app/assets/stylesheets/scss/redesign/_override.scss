@@ -887,7 +887,7 @@ a.bmro-click-toggle.collapsed:after{
 .bmro-collaps{
     background-color: #DFE5F0;
     float: left;
-    padding: 0px 15px 4px;
+    padding: 6px 15px 4px;
     width: 100%;
     display: block!important;
     transition: unset;
@@ -1928,7 +1928,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     display: inline-block;
     text-transform: uppercase;
     background-color: #fff;
-    padding: 0px 44px 6px 14px;
+    padding: 6px 44px 6px 14px;
     border-top-right-radius: 58px;  
     border: none;
     border-color: none;
@@ -1981,11 +1981,10 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     margin-left: 0;
     padding-right: 7px;
 }
-.bmro-box-card-body{
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    border-color: black!important;
+.rim.rim-bottom {
+    border-top: 1px solid black!important;
+    border-left: 1px solid black!important;
+    border-right: 1px solid black!important;
 }
 .bmro-col-pl{
     padding-left: 0px!important;
