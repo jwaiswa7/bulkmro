@@ -2010,6 +2010,6 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 .bmro-remove-radius{
     border-radius: none!important;
 }
-table th:last-child{
+table tr:last-child td:first-child{ 
     border-bottom: 1px solid #E0E2E7;
 }
