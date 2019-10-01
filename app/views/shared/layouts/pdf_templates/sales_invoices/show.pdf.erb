@@ -99,7 +99,7 @@
                     <b><span>Sales Order Date</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" class="content content-with-border" valign="top">
                     <span>
-                      <%= record.sales_order.created_at.strftime("%d-%b-%Y") if record.sales_order.created_at.present? %>
+                      <%= record.sales_order.mis_date.strftime("%d-%b-%Y") if record.sales_order.mis_date.present? %>
                         </span></td>
                 </tr>
 
@@ -343,12 +343,12 @@
                     </td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate / 2).to_f.round(2) %>%</span></td>
+                      <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span></td>
                     <td align="right" valign="top">
                       <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %></span>
                     </td>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate / 2).to_f.round(2) %>%</span></td>
+                      <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span></td>
                     <td align="center" valign="top">
                       <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %>
                         <br></span>
