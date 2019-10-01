@@ -1,5 +1,5 @@
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-2">
+  <section class="pt-0 pt-lg-4 pb-0">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center bmro-form-heading">
         <% if @freight_request.sales_order.present? %>
@@ -11,7 +11,7 @@
         <% end %>
       </h3>
       <% if is_authorized(@freight_request, 'edit') %>
-        <a href="<%= edit_overseers_freight_request_path(@freight_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down bmro-button"><i class="fal fa-pen mr-1"></i>Edit</a>
+        <a href="<%= edit_overseers_freight_request_path(@freight_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down bmro-button mr-2"><i class="fal fa-pen mr-1"></i>Edit</a>
       <% end %>
 
       <% if is_authorized(@freight_request, 'new_freight_quote') %>
@@ -88,10 +88,10 @@
               <div class="col-12 col-md-3 mb-2">
                 <strong class="d-block bmro-summary-heading">Attachments </strong>
                 <% @freight_request.attachments.each do |attachment| %>
-                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                    <i class="fal fa-download"></i>
-                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                      <i class="fal fa-trash-alt"></i>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success bmro-button bmro-download-padding-fr', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="bmro-download-icon"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0 bmro-button', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                      <i class="bmro-trash-icon bmro-trash-padding-fr"></i>
                     <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
                   <% end %>
                 <% end %>
