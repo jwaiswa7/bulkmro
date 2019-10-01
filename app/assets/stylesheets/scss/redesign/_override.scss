@@ -1220,6 +1220,7 @@ a.bmro-click-toggle.collapsed:after{
     }
     table.table.dataTable.table-bordered th:first-child{
         width: 130px!important;
+        display: table-cell!important;
     }
     .bmro-icon-table{
         font-size: 12px;
