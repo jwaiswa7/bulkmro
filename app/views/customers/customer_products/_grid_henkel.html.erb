@@ -53,7 +53,7 @@
                 <%# else %>
                 <!--                <img data-src="<%#= image_path('coming_soon.png') %>" alt="<%#= customer_product.sku %>" width="500" class="lazy-load" src="<%#= image_path('coming_soon.png') %>" />-->
                 <%# end %>
-                <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.name, :length => 100) %></strong>
+                <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.product.name, :length => 100) %></strong>
                 </h5>
                 <h5 class="mb-0 text-small"><strong>(#<%= customer_product.product.sku %>)</strong></h5>
                 <h5 class="mb-0 mt-1 text-small text-black-50">
@@ -66,12 +66,9 @@
                   <em>Instock Qty
                     - <%= customer_product.product.stocks.sum(&:instock).to_i if customer_product.product.present? %></em><br>
 
-                    <strong class="d-block mt-2">BP Catalog</strong>
-                    <em>No
-                      - <%= customer_product.sku if customer_product.sku.present? %></em><br>
-                    <em> Name
-                      - <%= customer_product.name if customer_product.name.present? %></em>
-
+                    <strong class="d-block mt-2">Customer Catalog</strong>
+                    <em><%= truncate(customer_product.name, :length => 100) %></em><br>
+                    <em>(#<%= customer_product.product.sku %>)</em>
                 </p>
               </a>
             </div>
