@@ -5,7 +5,7 @@
         Payment Request for PO <%= format_id(@payment_request.po_request.purchase_order.present? ? @payment_request.po_request.purchase_order.po_number : nil ) %>:&nbsp;<%= status_badge(@payment_request.status) %>
       </h3>
       <% if is_authorized(@payment_request, 'edit') && !@payment_request.Cancelled?%>
-        <a href="<%= edit_overseers_po_request_payment_request_path(@payment_request.po_request, @payment_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="bmro-pencil-icon"></i>Edit</a>
+        <a href="<%= edit_overseers_po_request_payment_request_path(@payment_request.po_request, @payment_request) %>" class="btn btn-warning btn-rounded align-self-center bmro-button btn-block-sm-down"><i class="bmro-pencil-icon"></i>Edit</a>
       <% end %>
     </div>
   </section>
@@ -130,9 +130,9 @@
               <div class="col-12 col-md-3 mb-2 mt-2">
                 <strong class="d-block bmro-summary-heading">Attachments </strong>
                 <% @payment_request.attachments.each do |attachment| %>
-                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 btn bmro-button btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                     <i class="bmro-download-icon"></i>
-                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn bmro-button btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                       <i class="bmro-trash-icon"></i>
                     <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
                   <% end %>
