@@ -67,8 +67,8 @@
                     - <%= customer_product.product.stocks.sum(&:instock).to_i if customer_product.product.present? %></em><br>
 
                     <strong class="d-block mt-2">Customer Catalog</strong>
-                    <em><%= truncate(customer_product.name, :length => 100) %></em><br>
-                    <em>(#<%= customer_product.product.sku %>)</em>
+                    <em><%= truncate(customer_product.name, :length => 100) if customer_product.name.present? %></em><br>
+                    <em>(#<%= customer_product.sku if customer_product.sku.present? %>)</em>
                 </p>
               </a>
             </div>
