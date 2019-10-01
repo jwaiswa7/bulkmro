@@ -1220,7 +1220,6 @@ a.bmro-click-toggle.collapsed:after{
     }
     table.table.dataTable.table-bordered th:first-child{
         width: 130px!important;
-        display: table-cell!important;
     }
     .bmro-icon-table{
         font-size: 12px;
@@ -2001,4 +2000,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 .bmro-collaps2-bg .bmro-collaps2{
     background-color: #fff;
+}
+.btn-light:hover{
+    background-color: unset;
 }
