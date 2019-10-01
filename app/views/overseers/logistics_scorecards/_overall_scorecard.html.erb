@@ -1,4 +1,4 @@
-<div class="bmro-float">
+<div class="bmro-float ">
   <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg" type="button" data-toggle="collapse" data-target="#pod-summary">
     Overall Scorecard 
   </a>
@@ -25,6 +25,11 @@
     </div>
   </div> 
 </div>  
+<script type="text/javascript">
+  $(".bmro-click-toggle").click(function(){
+    $(this).parent().toggleClass("bmro-collaps2-bg");
+  });
+</script>    
 <div id="pod-summary" class="collapse">
   <div class="mt-2 form-row d-flex flex-row align-content-stretch text-right">
     <% if @months.present? %>
