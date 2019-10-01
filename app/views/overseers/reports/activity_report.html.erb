@@ -10,32 +10,37 @@
 <div class="col-12">
   <%= render layout: 'search_layout' do %>
     <div class="bmro-summary">
-      <a class="btn btn-light text-left btn-lg btn-block my-2 collapsed mb-2 bmro-click-toggle bmro-invoice-one" type="button" data-toggle="collapse" data-target="#summary">
+      <a class="btn btn-light text-left btn-lg btn-block my-2 collapsed mb-2 bmro-click-toggle bmro-invoice-one bmro-width-auto bmro-activity-a" type="button" data-toggle="collapse" data-target="#summary">
         Activity Report Summary
       </a>
+      <div class="bmro-collaps bmro-collaps1 bmro-width-auto">
+        <div class="bmro-invoice-data">
+          <div class="bmro-invoice-edit">
+            <label>Invoiced</label>
+            <span>13,396</span>
+          </div>
+          <div class="bmro-invoice-edit">
+            <label>paid</label>
+            <span>93</span>
+          </div>
+          <div class="bmro-invoice-edit">
+            <label>ready for dispatch</label>
+            <span>578</span>
+          </div>
+          <div class="bmro-invoice-edit">
+            <label class="bmro-invoice-capi">Partial:shipped</label>
+            <span>72</span>
+          </div>
+        </div>
     </div>
-    <div class="bmro-collaps bmro-collaps1 bmro-width-auto">
-      <div class="bmro-invoice-data">
-        <div class="bmro-invoice-edit">
-          <label>Invoiced</label>
-          <span>13,396</span>
-        </div>
-        <div class="bmro-invoice-edit">
-          <label>paid</label>
-          <span>93</span>
-        </div>
-        <div class="bmro-invoice-edit">
-          <label>ready for dispatch</label>
-          <span>578</span>
-        </div>
-        <div class="bmro-invoice-edit">
-          <label class="bmro-invoice-capi">Partial:shipped</label>
-          <span>72</span>
-        </div>
-      </div>
+<script type="text/javascript">
+  $(".bmro-click-toggle").click(function(){
+    $(this).parent().toggleClass("bmro-collaps2-bg");
+  });
+</script>      
     </div>      
     <div id="summary" class="collapse">
-      <div class="form-row text-center">
+      <div class="form-row text-center bmro-collaps-pading">
         <% @data.geographies.each do |geography| %>
           <div class="col-2">
             <div class="card mb-2">
