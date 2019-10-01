@@ -2,54 +2,15 @@
   <%= render 'shared/snippets/page_header', e: @annual_target %>
   <%= simple_form_for([:overseers, @annual_target], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
+    <% if params['overseer_id'].present? %>
+      <%= render 'overseers/annual_targets/overseer_targets_form', f: f %>
+    <% end %>
+    <% if params['account_id'].present? %>
+      <%= render 'overseers/annual_targets/account_targets_form', f: f %>
+    <% end %>
     <div class="form-row">
-      <div class="col-6 col-md-6">
-        <%= f.hidden_field :overseer_id, value: params[:overseer_id].present? ? params[:overseer_id] : @annual_target.overseer_id %>
-        <%= f.input :overseer, label: 'Name', :required => 'true', :class => 'form-control', disabled: true %>
-      </div>
-      <div class="col-6 col-md-6">
-        <%= f.input :year, as: :select, collection: AnnualTarget.year_range, label: 'Year', :placeholder => 'Year', :required => 'true', :class => 'form-control', include_blank: 'Select Year', selected: AnnualTarget.current_year %>
-      </div>
+      <%= action_button(action_name, @annual_target) %>
     </div>
-    <div class="form-row">
-      <div class="col-6 col-md-6">
-        <%= f.input :manager_id, required: true, collection: Overseer.managers.alphabetical, label: 'Manager', selected: @annual_target.manager_id.present? ? @annual_target.manager_id : '', input_html: {class: "select2-single"}, disabled: @overseer.parent.present? ? true : false %>
-      </div>
-      <div class="col-6 col-md-6">
-        <%= f.input :business_head_id, required: true, collection: Overseer.managers.alphabetical, label: 'Business Head', selected: @annual_target.business_head_id.present? ? @annual_target.business_head_id : '', input_html: {class: "select2-single"}, disabled: @overseer.parent.present? && @overseer.parent.parent.present? ? true : false %>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="col-6 col-md-4">
-        <%= f.input :inquiry_target, label: 'Inquiry Target', :required => 'true', :class => 'form-control', :input_html => {:type => "number"}, disabled: @annual_target.disabled_status('inquiry_target') %>
-      </div>
-<!--      <div class="col-6 col-md-4">-->
-        <%#= f.input :company_target, label: 'Company Target', :class => 'form-control', :input_html => {:type => "number"}, disabled: @annual_target.disabled_status('company_target') %>
-<!--      </div>-->
-<!--      <div class="col-6 col-md-4">-->
-        <%#= f.input :invoice_target, label: 'Invoice Target', :class => 'form-control', :input_html => {:type => "number"}, disabled: @annual_target.disabled_status('invoice_target') %>
-<!--      </div>-->
-    </div>
-
-<!--    <div class="form-row">-->
-<!--      <div class="col-6 col-md-4">-->
-        <%#= f.input :invoice_margin_target, label: 'Invoice Margin Target', :class => 'form-control', :input_html => {:type => "number"}, disabled: @annual_target.disabled_status('invoice_margin_target') %>
-<!--      </div>-->
-<!--      <div class="col-6 col-md-4">-->
-        <%#= f.input :order_target, label: 'Order Target', :class => 'form-control', :input_html => {:type => "number"}, disabled: @annual_target.disabled_status('order_target') %>
-<!--      </div>-->
-<!--      <div class="col-6 col-md-4">-->
-        <%#= f.input :order_margin_target, label: 'Order Margin Target', :class => 'form-control', :input_html => {:type => "number"}, disabled: @annual_target.disabled_status('order_margin_target') %>
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="form-row">-->
-<!--      <div class="col-6 col-md-4">-->
-        <%#= f.input :new_client_target, label: 'New Client Target', :class => 'form-control', :input_html => {:type => "number"}, disabled: @annual_target.disabled_status('new_client_target') %>
-<!--      </div>-->
-<!--    </div>-->
-
-    <%= action_button(action_name, @annual_target) %>
   <% end %>
 </div>
 

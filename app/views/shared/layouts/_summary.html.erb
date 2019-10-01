@@ -4,7 +4,7 @@
       <%= alias_name.titleize %> Summary&nbsp;&nbsp;&nbsp;
     <% else %>
       <%= klass.name.titleize.pluralize %> Summary&nbsp;&nbsp;&nbsp;
-    <% end %><!-- 
+    <% end %><!--
     <i class="fa fa-chevron-down" aria-hidden="true"></i> -->
   </a>
   <div class="brmo-float">
@@ -28,12 +28,7 @@
         </div>
       </div>
     </div>
-  </div> 
-<script type="text/javascript">
-  $(".bmro-click-toggle").click(function(){
-    $(this).parent().toggleClass("bmro-collaps2-bg");
-  });
-</script>  
+  </div>
 </div>
 <% if klass.name == 'Inquiry' %>
   <% statuses = statuses.except('Lead by O/S') %>

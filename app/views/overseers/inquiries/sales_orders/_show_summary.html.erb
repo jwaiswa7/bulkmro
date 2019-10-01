@@ -87,7 +87,7 @@
               Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
             <% end %>
             Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-           GST Number: <%= @sales_order.serialized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
+           GST Number: <%= @sales_order.serialized_billing_address.gst || '-' %></span>
           </div>
           <div class="col-md-6 mt-2 mt-md-0">
             <strong class="d-block bmro-summary-heading">Customer - Shipping Address</strong>
@@ -98,7 +98,7 @@
                 - <%= @inquiry.shipping_contact.phone %></span>
             <% end %>
             <span class="bmro-summary-data"> Email: <%= @inquiry.shipping_contact.email if @inquiry.shipping_contact.email.present? %></span>
-            <span class="d-block bmro-summary-data">GST Number: <%= @sales_order.serialized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
+            <span class="d-block bmro-summary-data">GST Number: <%= @sales_order.serialized_shipping_address.gst || '-' %></span>
           </div>
         </div>
       </div>
@@ -143,7 +143,7 @@
 
         <% end %>
       </div>
-    
+
       <div class="bmro-summary-dotted-line"></div>
   <div class="bmro-summary-product" >
       <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace bmro-datatable-style bmro-summary-table" data-fixed-header="false">
@@ -317,15 +317,15 @@
           <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.converted_total_with_tax, symbol: sales_order.currency_sign) %></strong>
         </div>
       </div>
-    </div> 
-  </div> 
+    </div>
+  </div>
 
   </div>
 
 
 
   <div class="card bmro-summary-header">
-    <div class="card-header bmro-bg bmro-card-border-summary">      
+    <div class="card-header bmro-bg bmro-card-border-summary">
         <% if sales_order.status || sales_order.legacy_request_status == "Approved" %>
           <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
             <% if is_authorized(@sales_order, 'show_pdf') %>
@@ -347,7 +347,7 @@
                   <label data-path="Produts_summary" class="bmro-list-button bmro-Produts-summary">Products</label>
               </li>
             </ul>
-          </nav>          
+          </nav>
         </div>
         </div>
     </div>

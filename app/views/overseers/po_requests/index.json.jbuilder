@@ -13,7 +13,7 @@ json.data (@po_requests) do |po_request|
                         end
                       end,
                       if is_authorized(po_request, 'index') && policy(po_request).index?
-                        link_to('', class: ['btn btn-sm btn-success comment-po-request'], 'data-model-id': po_request.id, title: 'Comment', remote: true) do
+                        link_to('','data-toggle': 'tooltip', class: ['btn btn-sm btn-success comment-po-request'], 'data-model-id': po_request.id, title: 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end

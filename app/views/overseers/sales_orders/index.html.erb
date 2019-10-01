@@ -12,6 +12,7 @@
       <a class="dropdown-item" href="<%= export_for_logistics_overseers_sales_orders_path(format: :csv) %>">Sales Orders
         (Logistics)</a>
       <a class="dropdown-item" href="<%= export_rows_overseers_sales_orders_path(format: :csv) %>">Sales Order Rows</a>
+      <a class="dropdown-item" href="<%= export_rows_in_bible_format_overseers_sales_orders_path(format: :csv) %>">Sales Order Rows(Bible Format)</a>
       <a class="dropdown-item" href="<%= export_for_sap_overseers_sales_orders_path(format: :csv) %>">Sales Order
         (SAP)</a>
       <% if is_authorized(:sales_order, 'export_for_reco') && policy(:sales_order).export_for_reco? %>

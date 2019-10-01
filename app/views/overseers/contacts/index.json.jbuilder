@@ -8,7 +8,7 @@ json.data (@contacts) do |contact|
                       if is_authorized(contact, 'edit') && policy(contact).edit?
                         row_action_button_without_fa(edit_overseers_contact_path(contact), 'bmro-icon-table bmro-icon-pencil', 'Edit Contact', 'warning', :_blank)
                       end,
-                      if is_authorized(contact, 'become') && policy(contact).become?
+                      if is_authorized(contact, 'become')
                         row_action_button_without_fa(become_overseers_contact_path(contact), 'bmro-icon-table bmro-icon-signin', 'Sign in as Contact', 'dark', :_blank)
                       end,
                       if is_authorized(contact.company, 'new_inquiry') && policy(contact.company).new_inquiry?
