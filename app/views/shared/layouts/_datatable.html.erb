@@ -25,6 +25,11 @@
 
   </section>
 <% end %>
+
+<div class="col-lg-12">
+  <%= render partial: "shared/layouts/summary", locals: {klass: Inquiry, statuses: Inquiry.statuses, alias_name: ''} %>
+</div>
+
 <section class="pb-4 pb-lg-5">
   <table class="datatable table table-bordered table-hover dt-responsive
    <% if content_for?(:wrap_whitespace) %> wrap-whitespace

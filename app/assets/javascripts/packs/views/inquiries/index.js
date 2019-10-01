@@ -4,7 +4,6 @@ import exportFilteredRecords from '../common/exportFilteredRecords'
 import commanComment from "../common/commanComment";
 
 const index = () => {
-
     bindSummaryBox(".summary_box", '.status-filter')
     updateSummaryBox()
     aggregateSummaryBox()

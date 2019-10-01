@@ -41,41 +41,44 @@
       </div>
     </div>
 
-<!--    <div class="bmro-summary-box2">-->
-<!--      <a href="#" data-toggle="collapse" data-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo" class="bmro-click-toggle bmro-invoice-two collapsed">-->
-<!--        Proof of delivery summary(aug,19)</a>-->
-<!--      <div id="collapsetwo" class="bmro-collaps bmro-collaps2 collapse" aria-labelledby="headingOne" data-parent="#accordionExample">-->
-<!--        <div class="bmro-invoice-data">-->
-<!--          <div class="bmro-invoice-edit">-->
-<!--            <label>Invoiced created</label>-->
-<!--            <span>396</span>-->
-<!--          </div>-->
-<!--          <div class="bmro-invoice-edit">-->
-<!--            <label>regular</label>-->
-<!--            <span>93</span>-->
-<!--          </div>-->
-<!--          <div class="bmro-invoice-edit">-->
-<!--            <label>route through</label>-->
-<!--            <span>578</span>-->
-<!--          </div>-->
-<!--          <div class="bmro-invoice-edit">-->
-<!--            <label>Total Pending POD</label>-->
-<!--            <span>12</span>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class="bmro-summary-box2">-->
+    <!--      <a href="#" data-toggle="collapse" data-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo" class="bmro-click-toggle bmro-invoice-two collapsed">-->
+    <!--        Proof of delivery summary(aug,19)</a>-->
+    <!--      <div id="collapsetwo" class="bmro-collaps bmro-collaps2 collapse" aria-labelledby="headingOne" data-parent="#accordionExample">-->
+    <!--        <div class="bmro-invoice-data">-->
+    <!--          <div class="bmro-invoice-edit">-->
+    <!--            <label>Invoiced created</label>-->
+    <!--            <span>396</span>-->
+    <!--          </div>-->
+    <!--          <div class="bmro-invoice-edit">-->
+    <!--            <label>regular</label>-->
+    <!--            <span>93</span>-->
+    <!--          </div>-->
+    <!--          <div class="bmro-invoice-edit">-->
+    <!--            <label>route through</label>-->
+    <!--            <span>578</span>-->
+    <!--          </div>-->
+    <!--          <div class="bmro-invoice-edit">-->
+    <!--            <label>Total Pending POD</label>-->
+    <!--            <span>12</span>-->
+    <!--          </div>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
   </div>
 
-  <% statuses.each do |status, status_id| %>
-    <div class="bmro-invoice-boxes bmro-invoice-box-one bmro-invoice-boxes-hide" id="displayText">
-      <!-- <a data-value="<%#= status_id %>" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-<%#= status_color(status) %> status-<%#= status_id %>" href="#">-->
-      <div class="bmro-ar-reports">
-        <label class="bmro-ar-report-head"><%= format_enum(status) %></label>
-        <h5 class="bmro-ar-report-data"><%= status_id %></h5>
-        <span class="bmro-ar-report-subdata"><%= status_id %></span>
-      </div>
-      <!-- </a> -->
-    </div>
-  <% end %>
+
+  <div class="bmro-invoice-boxes bmro-invoice-box-one bmro-invoice-boxes-hide" id="displayText">
+    <% statuses.each do |status, status_id| %>
+      <a data-value="<%= status_id %>" name="status" class="summary_box" href="#">
+
+        <div class="bmro-ar-reports rim rim-bottom border-<%= status_color(status) %> status-<%= status_id %>">
+          <label class="bmro-ar-report-head"><%= format_enum(status) %></label>
+          <h5 class="bmro-ar-report-data status-count-<%= status_id %>"></h5>
+          <span class="bmro-ar-report-subdata status-value-<%= status_id %>"></span>
+        </div>
+      </a>
+    <% end %>
+  </div>
+
 </div>
