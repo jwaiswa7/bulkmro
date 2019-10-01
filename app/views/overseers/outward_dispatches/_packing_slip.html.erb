@@ -11,12 +11,16 @@
   <div class="card-body">
     <div class="form-row">
       <div class="col-6 col-md-3 mb-2">
-        <strong class="d-block">Box Number </strong>
+        <strong class="d-block bmro-summary-heading">Box Number </strong>
+        <div class="bmro-summary-data">
         <%= packing_slip.box_number  %>
       </div>
+      </div>
       <div class="col-6 col-md-3 mb-2">
-        <strong class="d-block">Box Detail </strong>
+        <strong class="d-block bmro-summary-heading">Box Detail </strong>
+         <div class="bmro-summary-data">
         <%= packing_slip.box_dimension  %>
+      </div>
       </div>
     </div>
     <table class="w-100 table table-bordered dt-responsive bmro-datatable-style bmro-summary-table wrap-whitespace" data-fixed-header="false">
