@@ -13,6 +13,20 @@ const dataTables = () => {
             $('.datatable').DataTable().rowGroup().enable().draw();
         }
     }
+
+    $('.bmro-invoice-one').click(function () {
+        console.log('HELLO')
+        if ($('.bmro-collaps1').hasClass("show"))
+        {
+            $('.bmro-invoice-box-one').hide();
+            $('.bmro-invoice-box-two').hide();
+        }
+        else
+        {
+            $('.bmro-invoice-box-one').show();
+            $('.bmro-invoice-box-two').hide();
+        }
+    });
 };
 
 // Setup the filter field before all dataTables, if the filter attribute exists
