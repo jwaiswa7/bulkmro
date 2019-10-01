@@ -29,8 +29,8 @@
   <% content_for :header_row do %>
     <th class="no-sort all" width="98px">Quick Actions
       <% if is_authorized(:inward_dispatch, 'update_logistics_owner_for_inward_dispatches') && policy(:inward_dispatch).update_logistics_owner_for_inward_dispatches? && (action_name != 'inward_dispatch_delivered_queue') %>
-        <div class="custom-control custom-checkbox bmro-select-table">
-          <input type="checkbox" class="custom-control-input brmo-form-input" name="all_inward_dispatches" id="all_inward_dispatches">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" name="all_inward_dispatches" id="all_inward_dispatches">
           <label class="custom-control-label" for="all_inward_dispatches">Select All</label>
         </div>
       <% end %>
