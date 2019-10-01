@@ -1892,10 +1892,10 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 .mce-panel{
     width: 99%;
 }
-.brmo-inward-card{
+.brmo-inward-card{/*
     border-top: 1px solid;
     border-right: 1px solid;
-    border-left: 1px solid;
+    border-left: 1px solid;*/
     border-bottom: 4px solid transparent; 
 }
 .bmro-inward-colum-parent{
@@ -2015,6 +2015,10 @@ table tr:last-child th:first-child{
     border-bottom: 1px solid #E0E2E7;
 }
 .bmro-font-size{
+font-size: 12px!important;
+}
+.pb-2{
+    margin-bottom: 0px!important;
     font-size: 12px!important;
 }
 .bmro-width-auto{
