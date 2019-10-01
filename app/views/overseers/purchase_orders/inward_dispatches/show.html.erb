@@ -288,6 +288,7 @@
                   <% end %>
 
                   <% if @po_request.bill_from.present? %>
+                  <div class="bmro-dotted-line"></div>
                     <div class="col-6 col-md-3 mb-2">
                       <strong class="d-block bmro-summary-heading">Bill From</strong>
                       <div class="bmro-summary-data">
@@ -338,8 +339,8 @@
                 <% end %>
 
                 <% if @po_request.comments.persisted.size > 0 %>
-                  <div class="card bmro-card">
-                    <div class="card-body">
+                  <div class="card bmro-card bmro-border-none">
+                    <div class="card-body bmro-inward-dis-body">
                       <div class="flex-fill">
                         <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
                       </div>
