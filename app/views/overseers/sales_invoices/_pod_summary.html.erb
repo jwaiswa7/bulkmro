@@ -1,4 +1,4 @@
-<a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg">
+<a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg"type="button" data-toggle="collapse" data-target="#summary">
   Proof of Delivery Summary
 </a>
 <div class="bmro-float">
@@ -23,14 +23,18 @@
     </div>
   </div>
 </div>
-
-<div id="pod-summary" class="collapse show">
+<script type="text/javascript">
+  $(".bmro-click-toggle").click(function(){
+    $(this).parent().toggleClass("bmro-collaps2-bg");
+  });
+</script> 
+<div id="pod-summary" class="collapse">
   <div class="mt-2 form-row d-flex flex-row align-content-stretch text-right">
     <% if @invoice_over_month.present? && @pod_over_month.present? %>
       <div class="col-12 col-lg-12">
         <div class="card">
             <div class="card-body">
-                <table class="table w-100 wrap-whitespace bmro-datatable-style">
+                <table class="table w-100 wrap-whitespace bmro-new-table bmro-datatable-style">
                     <tbody>
                     <tr>
                       <th></th>
