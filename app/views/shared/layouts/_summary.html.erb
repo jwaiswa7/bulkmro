@@ -33,7 +33,7 @@
 <% if klass.name == 'Inquiry' %>
   <% statuses = statuses.except('Lead by O/S') %>
 <% end %>
-<div id="summary" class="collapse bmro-float">
+<div id="summary" class="collapse bmro-float bmro-collaps-bg">
   <div class="mt-2 form-row d-flex flex-row align-content-stretch">
     <% statuses.each do |status, status_id| %>
       <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
