@@ -1,7 +1,33 @@
-<a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 brmo-bg" type="button" data-toggle="collapse" data-target="#summary">
+<a "btn btn-light text-left btn-lg btn-block mt-1 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg" type="button" data-toggle="collapse" data-target="#summary">
    Summary
 </a>
-
+ <div class="brmo-float">
+    <div class="bmro-collaps bmro-collaps2">
+      <div class="bmro-invoice-data">
+        <div class="bmro-invoice-edit">
+          <label>Invoiced created</label>
+          <span>396</span>
+        </div>
+        <div class="bmro-invoice-edit">
+          <label>regular</label>
+          <span>93</span>
+        </div>
+        <div class="bmro-invoice-edit">
+          <label>route through</label>
+          <span>578</span>
+        </div>
+        <div class="bmro-invoice-edit">
+          <label>Total Pending POD</label>
+          <span>12</span>
+        </div>
+      </div>
+    </div>
+  </div> 
+<script type="text/javascript">
+  $(".bmro-click-toggle").click(function(){
+    $(this).parent().toggleClass("bmro-collaps2-bg");
+  });
+</script>
 <div id="summary" class="collapse bmro-bg pt-1 px-1 pr-1">
     <% @summery_data.each do |data| %>
       <h5 class="m-2 bmro-form-heading"><%= data[0].to_s.tr("_"," ").capitalize %></h5>
@@ -15,7 +41,6 @@
                     <strong><%=data_elm[1][:name] %></strong>
                   </p>
                   <h5 class="bmro-ar-report-data mb-0 mt-auto text-<%= data_elm[1][:color] %> status-count-50"><%= data_elm[1][:total_count]%></h5>
-                  <hr class="my-2 bmro-hr">
                   <h5 class="bmro-ar-report-subdata my-0 text-small text-<%= data_elm[1][:color] %> "><%= format_currency(data_elm[1][:value]) %></h5>
                 </div>
               </div>
