@@ -1070,7 +1070,7 @@ a.bmro-click-toggle.collapsed:after{
     margin-bottom: 10px;
 }
 .bmro-ar-report-head {
-    color: #546272;
+    color: #546272!important;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 10px;
@@ -1083,7 +1083,7 @@ a.bmro-click-toggle.collapsed:after{
     margin: 0px;
 }
 .bmro-ar-report-data {
-    color: #2C4159;
+    color: #2C4159!important;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 24px;
@@ -1095,7 +1095,7 @@ a.bmro-click-toggle.collapsed:after{
 }
 .bmro-ar-report-subdata {
     margin: 0px 5px;
-    color: #546272;
+    color: #546272!important;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 12px;
