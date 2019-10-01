@@ -1070,11 +1070,11 @@ a.bmro-click-toggle.collapsed:after{
     margin-bottom: 10px;
 }
 .bmro-ar-report-head {
-    color: #546272;
+    color: #546272!important;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 10px;
-    font-weight: bold;
+    font-weight: 500;
     letter-spacing: -0.5px;
     line-height: 12px;
     width: 100%;
@@ -1083,7 +1083,7 @@ a.bmro-click-toggle.collapsed:after{
     margin: 0px;
 }
 .bmro-ar-report-data {
-    color: #2C4159;
+    color: #2C4159!important;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 24px;
@@ -1095,7 +1095,7 @@ a.bmro-click-toggle.collapsed:after{
 }
 .bmro-ar-report-subdata {
     margin: 0px 5px;
-    color: #546272;
+    color: #546272!important;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 12px;
@@ -1220,7 +1220,6 @@ a.bmro-click-toggle.collapsed:after{
     }
     table.table.dataTable.table-bordered th:first-child{
         width: 130px!important;
-        display: table-cell!important;
     }
     .bmro-icon-table{
         font-size: 12px;
@@ -2001,4 +2000,10 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 .bmro-collaps2-bg .bmro-collaps2{
     background-color: #fff;
+}
+.btn-light:hover{
+    background-color: unset;
+}
+.bmro-padding-for-table {
+    padding: 10px;
 }

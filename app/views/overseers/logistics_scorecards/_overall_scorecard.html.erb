@@ -39,7 +39,7 @@
       <div class="col-12 col-lg-12">
         <div class="card">
           <div class="card-body">
-            <table border="1" cellspacing="0" class="table table-bordered bmro-datatable-style" align="center" width="100%" style="color: #333;">
+            <table border="1" cellspacing="0" class="table bmro-new-table table-bordered bmro-datatable-style" align="center" width="100%" style="color: #333;">
               <tbody>
               <tr>
                 <th colspan="15" style="text-align: center; font-size: medium;"><b>Committed Month of Delivery</b></th>
@@ -150,7 +150,7 @@
                 <%# end %>
 <!--              </tr>-->
               <tr>
-                <th class="text-uppercase text-left" style="font-size: 12px;"><b>Total</b></th>
+                <th class="text-uppercase text-left" style="font-size: 12px;border-bottom: 1px solid #E0E2E7"><b>Total</b></th>
                 <% @records.each do |month, record| %>
                   <td class="text-uppercase">
                     <b><%= calculate_percentage(record['sum_delay_buckets']['value'].to_i, record['sum_delay_buckets']['value'].to_i) %></b>
