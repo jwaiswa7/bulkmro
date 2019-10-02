@@ -2114,8 +2114,10 @@ table tr:last-child th:first-child{
 .bmro-activity-body{
     padding-top: 6px;
     padding-left: 6px;
+    padding-bottom: 0px;
+    padding-right: 0px;
     border: 1px solid black;
-    border-bottom: 7px solid black;
+    border-bottom: 6px solid black;
 }
 .bmro-activity-a{
     width: auto;
