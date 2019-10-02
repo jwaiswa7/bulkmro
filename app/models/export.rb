@@ -27,6 +27,7 @@ class Export < ApplicationRecord
     monthly_sales_report: 94,
     customer_product: 95,
     material_readiness_queue: 96,
-    amat_customer_portal: 97
+    amat_customer_portal: 97,
+    sales_orders_bible_format: 100
   }
 end

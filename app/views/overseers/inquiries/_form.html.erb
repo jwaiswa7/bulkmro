@@ -1,6 +1,6 @@
 <%= simple_form_for([:overseers, @inquiry], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
   <%= f.hidden_field :company_id %>
-  
+
   <%= render 'shared/snippets/form_errors', f: f %>
   <div class="card bmro-card">
 
@@ -8,7 +8,7 @@
       <div class="bmro-Opportunity-slide" id="Opportunity-Details"></div>
       <div>
         <h6 class="mb-1 bmro-form-heading bmro-Opportunity-Details-slide">Opportunity Details</h6>
-        
+
         <div class="form-row">
           <div class="col-3 col-md-5">
             <%= f.input :company, as: :string, disabled: true, input_html: { class: 'select2-single bmro-form-input' } %>
@@ -83,7 +83,7 @@
               </div>
               <div class="col-6 col-md-6">
                 <% if  is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
-                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), disabled:true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' } %>
+                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), disabled:true %>
                 <% else %>
                   <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez) %>
                 <% end %>
