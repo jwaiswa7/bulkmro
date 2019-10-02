@@ -1222,6 +1222,9 @@ a.bmro-click-toggle.collapsed:after{
   }
 }
 @media only screen and (max-width: 1024px){
+    .table td:first-child{
+        display: table-cell!important;
+    }
     .bmro-nav-ul{
         top:75px;
     }
@@ -1258,6 +1261,9 @@ a.bmro-click-toggle.collapsed:after{
     .bmro-summary-header{
         min-height: 640px;
         position: unset!important;
+    }
+    .bmro-container{
+        max-width: 980px!important;
     }
 }
 .bmro-form-input-height .select2-selection__rendered{

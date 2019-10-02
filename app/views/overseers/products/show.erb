@@ -6,7 +6,7 @@
       </h3>
       <div>
         <% if @product.is_kit %>
-          <a href="<%= overseers_kit_path(@product.kit) %>" class="btn btn-info btn-rounded align-self-center btn-block-sm-down mr-1"><i class="fal fa-eye mr-1 bmro-button"></i>View
+          <a href="<%= overseers_kit_path(@product.kit) %>" class="btn bmro-button btn-info btn-rounded align-self-center btn-block-sm-down mr-1"><i class="fal fa-eye mr-1"></i>View
             Kit</a>
         <% end %>
         <% if is_authorized(@product, 'edit') && policy(@product).edit? %>
@@ -151,10 +151,10 @@
                 <h4 class="modal-title">Product Inventory</h4>
               </div>
               <div class="modal-body py-0 px-2">
-                <table class="table table-bordered dt-responsive datatable w-100" data-sort="false">
+                <table class="table table-bordered bmro-datatable-style dt-responsive datatable w-100" data-sort="false">
                   <thead>
                   <tr>
-                    <th class="no-sort">Warehouse</th>
+                    <th class="no-sort" width="50px">Warehouse</th>
                     <th class="no-sort text-right">In Stock</th>
                     <th class="no-sort text-right">Committed</th>
                     <th class="no-sort text-right">Ordered</th>
@@ -175,7 +175,7 @@
                 </table>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger btn-block" data-dismiss="modal">Close</button>
+                <button type="button" class="btn bmro-button btn-outline-danger btn-block" data-dismiss="modal">Close</button>
               </div>
             </div>
           </div>
@@ -192,10 +192,10 @@
       History searchable with relevant term/keywords under <strong><%= @product.name %></strong>.
     </p>
 
-    <table class="datatable table table-bordered dt-responsive abc" data-search="Enter search term/keywords" style="width:100%;">
+    <table class="datatable table table-bordered bmro-datatable-style dt-responsive abc" data-search="Enter search term/keywords" style="width:100%;">
       <thead>
       <tr>
-        <th class="no-sort"></th>
+        <th class="no-sort" width="98px">Quick Actions</th>
         <th class="no-sort">Inquiry #</th>
         <th class="no-sort">Buyer</th>
         <th class="no-sort">Seller</th>
