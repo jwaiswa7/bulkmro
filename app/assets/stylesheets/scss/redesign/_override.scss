@@ -1221,12 +1221,13 @@ a.bmro-click-toggle.collapsed:after{
     top: 88px;
   }
 }
-@media only screen and (max-width: 1040px){
+@media only screen and (max-width: 1024px){
     .bmro-nav-ul{
         top:75px;
     }
     table.table.dataTable{
         width: 915px!important;
+        margin-left: -30px;
     }
     .bmro-container-fluid{
         max-width: 960px;
