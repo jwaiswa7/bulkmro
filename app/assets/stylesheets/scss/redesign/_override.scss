@@ -1229,7 +1229,7 @@ a.bmro-click-toggle.collapsed:after{
         top:75px;
     }
     table.table.dataTable{
-        width: 890px!important;
+        width: 840px!important;
         margin-left: -8px;
     }
     .bmro-container-fluid{
@@ -1259,6 +1259,7 @@ a.bmro-click-toggle.collapsed:after{
         z-index: 97;
     }
     .bmro-summary-header{
+        widows: 150px;
         min-height: 640px;
         position: unset!important;
     }
