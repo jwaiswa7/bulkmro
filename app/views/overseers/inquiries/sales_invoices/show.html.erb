@@ -165,7 +165,7 @@
               <% end if @inquiry.customer_po_sheet.attached? %>
             </div>
             </div>
-            <div class="col-6">
+           <!--  <div class="col-6">
               <% if @inquiry.copy_of_email.attached? %>
                 <strong class="d-block bmro-summary-heading">Email attachment</strong>
                 <div class="bmro-summary-data">
@@ -174,8 +174,8 @@
                 <% end %>
               <% end %>
             </div>
-            </div>
-            <div class="col-6 mt-2">
+            </div> -->
+            <div class="col-6">
               <strong class="d-block bmro-summary-heading">Supplier Quotes Attachment</strong>
               <div class="bmro-summary-data">
               <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
@@ -350,7 +350,7 @@
       </div>
       <div class="card-body bmro-bg">
         <div>
-          <th><h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">
+          <th><h6 class="bmro-summary-heading text-black-50 mb-1">
             Note :
           </h6></th>
           <ul>
@@ -362,9 +362,9 @@
           </ul>
         </div>
       </div>
-      <div class="card-footer bmro-summary-footer">
+      <div class="card-footer bmro-bg">
         <div>
-          <th><h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">
+          <th><h6 class="bmro-summary-heading text-black-50 mb-1">
             Other Information :
           </h6></th>
           <ul>
@@ -377,7 +377,7 @@
       </div>
       <div class="card-body bmro-bg">
         <div>
-          <th><h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">
+          <th><h6 class="bmro-summary-heading text-black-50 mb-1">
             Bulk MRO bank details :
           </h6></th>
           <ul>
