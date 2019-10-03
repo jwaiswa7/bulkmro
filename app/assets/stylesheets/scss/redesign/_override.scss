@@ -1996,7 +1996,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 .bmro-padd-col .col-lg-12:first-child{
     padding-left: 0px;
-    margin-left: 20px;
+    margin-left: 0px;
 }
 .bmro-form-row-padd{
     width: 100%;
@@ -2149,6 +2149,9 @@ td .d-inline-block.custom-control.custom-checkbox.align-middle{
 .bmro-ml0{
     margin-left: 0px;
 }
+.bmro-container-fluid .col-lg-12{
+    padding-left: 0px;
+}
 .status-check-success{
     background-repeat: no-repeat;
     display: block;
@@ -2165,5 +2168,38 @@ td .d-inline-block.custom-control.custom-checkbox.align-middle{
     background-position: center;
     background-size: 14px;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAaCAYAAACgoey0AAAAAXNSR0IArs4c6QAAAjBJREFUSA3Flr9rFEEUx7+zVUJyAbVSa/8C/4SQgDYBIYZYi0LaqFWKFKmC7RWKjY0SxcLGgAqpAwZOrBSSUisNmd3sXnG553zndtZb73ZvZ0QdWGZ/vPc+7zu7++YB+UhTuazj7MtJnIo9kvSDiJxzz33mJOku6iTLilhx2v7dP+INQntn3T2BXMHRIdTXb4Dgqj7N3vnCCe1DXhu/KezvQ/V6YhBrJokyvKS080n00g3Ry6uiPx96Ky8p3Xklen5R9PoD0ce6n6sv4FGv3921SuMYanMTSBLgx3dgY8NLeUnpm12ox4+4mECnA2m31eACazpJ7/M8iqDuKaW6aLUgq7fy52bygFdCGe38Bajlm4O4CgetmeknvLCZTHLE1hbk0kVaH8zNTC+YRI8HkbhAQ+90WCkNDLTK1y1BUIBQKHMqwLzwCRQJtkWpp/br9VBKDkcJzBuN4TTmCIDSbQTMm43hgdBKcCP4wjyw84Kmg1HzITmT4XmsYmdQq9wZcfaE0qUWTIOJ8AAo49pazZN/PWoVT1Trsg1QXam4FkrQSl4GCfcory7XseCJUJZQU9flzl0Xxxs+stSNoKzbbgT+yyXFjaFmszCOK3ZXu34tSHmh2AfqdqgQH7dQFvwnAUJ9Vaijy5xzSIzINGYP7dbG1uf5s1/xPP7N2dmpt6aTWap65/Iyr+mmgYxPs9sW8r+avVH4R9NpBnSYbqm47EVP/X5vbIfpbEfhbOr/ckP/E8/EHWjNEj/7AAAAAElFTkSuQmCC');
-
+}
+.bmro-arrow-parent .select2-selection{
+    line-height: 1.5 !important;
+    color: #2C4159 !important;
+    padding: 9px 23px 6px 8px;
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    border-width: 2px !important;
+    border-style: solid !important;
+    border-color: #eceef2 !important;
+    /* border-image: initial; */
+    border-radius: 2px !important;
+    outline: none !important;
+    height: auto !important;
+    box-shadow: unset !important;
+    -webkit-appearance: none !important;
+    font-weight: 500;
+}
+.bmro-arrow-parent .form-control{
+    line-height: 1.5 !important;
+    color: #2C4159 !important;
+    padding: 9px 23px 6px 8px;
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    border-width: 2px !important;
+    border-style: solid !important;
+    border-color: #eceef2 !important;
+    /* border-image: initial; */
+    border-radius: 2px !important;
+    outline: none !important;
+    height: auto !important;
+    box-shadow: unset !important;
+    -webkit-appearance: none !important;
+    font-weight: 500;
 }
