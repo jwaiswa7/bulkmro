@@ -3,8 +3,8 @@
 <% end %>
 <div class="col-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <div class="card bmro-card">
-      <div class="card-header bmro-bg">
+    <div class="card bmro-card bmro-card-body-padding">
+      <div class="card-header bmro-bg bmro-border-none">
         <div class=form-row>
           <div class="col-6 col-md-2">
             <strong class="d-block bmro-summary-heading">Bulk MRO Reference #</strong>
@@ -47,6 +47,7 @@
           </div>
         </div>
       </div>
+      <div class="bmro-dotted-line"></div>
       <div class="card-body">
         <div class="form-row mb-1">
           <div class="col-6 col-md-2">
@@ -148,17 +149,15 @@
             </div>
             </div>
             <div class="col-6">
-              <% if @inquiry.copy_of_email.attached? %>
+            <!--   <% if @inquiry.copy_of_email.attached? %>
                 <strong class="d-block bmro-summary-heading">Email attachment</strong>
                 <div class="bmro-summary-data">
                 <%= link_to @inquiry.copy_of_email, target: '_blank' do %>
                   <%= @inquiry.copy_of_email.filename %>
                 <% end %>
               <% end %>
-            </div>
-            </div>
-            <div class="col-6 mt-2">
-              <strong class="d-block bmro-summary-heading">Supplier Quotes Attachment</strong>
+            </div> -->
+            <strong class="d-block bmro-summary-heading">Supplier Quotes Attachment</strong>
               <div class="bmro-summary-data">
               <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
                 <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
@@ -167,9 +166,19 @@
               <% end if @inquiry.supplier_quotes.attached? %>
             </div>
             </div>
+            <div class="col-6 mt-2">
+             <!--  <strong class="d-block bmro-summary-heading">Supplier Quotes Attachment</strong>
+              <div class="bmro-summary-data">
+              <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
+                <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
+                  <span class="d-block"><%= attachment.filename %></span>
+                <% end %>
+              <% end if @inquiry.supplier_quotes.attached? %>
+            </div> -->
+            </div>
           </div>
         <% end %>
-        <table class="w-100 table table-bordered dt-responsive bmro-datatable-style datatable wrap-whitespace" data-fixed-header="false">
+        <table class="w-100 table table-bordered dt-responsive bmro-datatable-style datatable wrap-whitespace bmro-table-pl bmro-table-margin-neg" data-fixed-header="false">
           <thead>
           <tr>
             <th class="no-sort">
@@ -296,33 +305,35 @@
           </tbody>
         </table>
       </div>
-      <div class="card-footer bmro-card-footer">
-        <div class="form-row">
+      <div class="bmro-dotted-line bmro-dotted-mt0"></div>
+      <div class="card-footer bmro-summary-footer bmro-summary-product-bottom">
+        <div class="form-row bmro-summary-footer-padding">
           <div class="col-6 col-md-3">
             Products
             <strong class="d-block bmro-summary-heading"><%= @purchase_order.rows.count %></strong>
           </div>
-          <div class="col-6 col-md-3">
+          <div class="col-6 col-md-3 bmro-border-left">
             Subtotal
             <strong class="d-block bmro-summary-heading"><%= format_currency(@purchase_order.calculated_total, symbol: nil) %></strong>
           </div>
           <% if (@metadata[:PoTaxRate].to_s.include? "IG") || (@metadata[:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-3 bmro-border-left">
               Tax Amt
               <strong class="d-block bmro-summary-heading"><%= format_currency(@purchase_order.calculated_total_tax, symbol: nil) %></strong>
             </div>
           <% else %>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-3 bmro-border-left">
               Tax Amt
               <strong class="d-block bmro-summary-heading"><%= format_currency(@purchase_order.calculated_total_tax / 2, symbol: nil) %></strong>
             </div>
           <% end %>
-          <div class="col-6 col-md-3">
+          <div class="col-6 col-md-3 bmro-border-left">
             Grand Total
             <strong class="d-block bmro-summary-heading"><%= format_currency(@purchase_order.calculated_total_with_tax, symbol: nil) %></strong>
           </div>
         </div>
       </div>
+      <div class="bmro-dotted-line bmro-dotted-mt0"></div>
       <div class="card-body bmro-bg">
         <div>
           <th><h6 class="text-uppercase text-black-50 mb-1 bmro-summary-heading">

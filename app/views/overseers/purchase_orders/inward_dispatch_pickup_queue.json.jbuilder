@@ -22,7 +22,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                       elsif is_authorized(inward_dispatch, 'delivered') && policy(inward_dispatch).delivered? && is_authorized(inward_dispatch, 'can_request_invoice') && policy(inward_dispatch).can_request_invoice? && inward_dispatch.purchase_order.sap_sync == 'Not Sync'
                         link_to '', 'data-toggle': 'tooltip', 'data-placement': 'top', 'data-toggle': 'modal', 'data-target': '#goodsReceiptPurchaseOrderId', title: '', class: 'btn btn-sm btn-success' do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: 'fal fa-plus'
+                          concat content_tag :i, nil, class: 'bmro-icon-table bmro-icon-used-view'
                         end
                       elsif inward_dispatch.invoice_request.present? && is_authorized(inward_dispatch.invoice_request, 'show') && policy(inward_dispatch.invoice_request).show?
                         row_action_button(overseers_invoice_request_path(inward_dispatch.invoice_request), 'eye', "View #{inward_dispatch.invoice_request.readable_status}", 'success', target: :_blank)
