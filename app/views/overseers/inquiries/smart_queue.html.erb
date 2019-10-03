@@ -34,15 +34,15 @@
     $(this).parent().toggleClass("bmro-collaps2-bg");
   }); 
 </script>
-  <div id="summary" class="collapse show">
+  <div id="summary" class="collapse">
     <div class="mt-2 form-row d-flex flex-row align-content-stretch">
       <% @statuses.each do |title,status| %>
         <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
           <div class="card w-100 mb-2 rim rim-bottom border-<%= status[:color] %>">
             <div class="card-body px-3 pt-3 pb-3">
-              <div class="text-center d-flex flex-column h-100">
-                <p class="mb-1 text-small"><strong><%= title %></strong></p>
-                <h5 class="mb-0 mt-auto text-<%= status[:color] %>"><%= number_with_delimiter(status[:value]) %></h5>
+              <div class="text-left d-flex flex-column h-100">
+                <p class="mb-1 text-small bmro-ar-report-head"><strong><%= title %></strong></p>
+                <h5 class="mb-0 mt-auto bmro-ar-report-data text-<%= status[:color] %>"><%= number_with_delimiter(status[:value]) %></h5>
               </div>
             </div>
           </div>
