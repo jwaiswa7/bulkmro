@@ -2218,3 +2218,23 @@ td .d-inline-block.custom-control.custom-checkbox.align-middle{
 table.fixedHeader-floating{
     margin-left: 0px;
 }
+.fillter-wrapper{
+    line-height: 1.5!important;
+    color:#2C4159 !important;
+    padding: 9px 23px 6px 8px;
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    border-width: 2px!important;
+    border-style: solid!important;
+    border-color: rgb(236, 238, 242)!important;
+    border-radius: 2px!important;
+    outline: none!important;
+    height: auto!important;
+    box-shadow: unset!important;
+    -webkit-appearance:none!important;
+    font-weight: 500;
+    margin-top: -12px;
+}
+.fillter-wrapper:placeholder{
+    color:#2C4159 !important;  
+}
