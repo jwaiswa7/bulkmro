@@ -27,13 +27,19 @@
       </div>
       <div class="form-row">
         <div class="col-12 col-md-4">
-          <%= f.input :is_service %>
+          <div class="bmro-summary-data">
+            <%= f.input :is_service %>
+        </div>
         </div>
         <div class="col-12 col-md-4">
-          <%= f.input :is_active %>
+          <div class="bmro-summary-data">
+            <%= f.input :is_active %>
+          </div>
         </div>
         <div class="col-12 col-md-4">
-          <%= f.input :is_pre_gst %>
+          <div class="bmro-summary-data">
+            <%= f.input :is_pre_gst %>
+        </div>
         </div>
       </div>
       <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
