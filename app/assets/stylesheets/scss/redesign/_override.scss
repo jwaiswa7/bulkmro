@@ -2230,7 +2230,7 @@ table.fixedHeader-floating{
     padding: 6px 13px;
     background-repeat: no-repeat;    
 }
-.fillter-wrapper{
+.fillter-wrapper {
     line-height: 1.5!important;
     color:#2C4159 !important;
     padding: 9px 23px 6px 8px;
@@ -2247,9 +2247,12 @@ table.fixedHeader-floating{
     font-weight: 500;
     margin-top: -12px;
 }
-.fillter-wrapper:placeholder{
+.fillter-wrapper::placeholder{
     color: #9AA1AA!important;
     font-size: 12px;
     font-weight: 600;
     line-height: 15px;
+}
+.select2-container--bootstrap .select2-selection--single .select2-selection__placeholder{
+    
 }
