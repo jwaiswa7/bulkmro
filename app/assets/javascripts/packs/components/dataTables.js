@@ -240,7 +240,7 @@ let setup = () => {
                         }
 
                         input.on('change', function () {
-                            let val = $(this).val();
+                            let val = $(this).find('select').val();
                             column.search(val).draw();
 
                             // Override the value for dropdowns/select2s in the text|value format
@@ -254,7 +254,7 @@ let setup = () => {
                             $(that).trigger('filters:change');
                         });
 
-                        $('.bmro-search-table').append(input);
+                        $('.fillter-wrapper').append(input);
                         select2s();
 
 
@@ -263,11 +263,11 @@ let setup = () => {
                         if (selected == "") return;
                         $(this).data('filtered', false);
                         if (filter == 'dropdown') {
-                            input.val(selected[1]).trigger('change');
+                            input.find('select').val(selected[1]).trigger('change');
                         } else if (filter == 'ajax') {
-                            input.append(new Option(selected[0], selected[1], true, true)).trigger('change');
+                            input.find('select').append(new Option(selected[0], selected[1], true, true)).trigger('change');
                         } else {
-                            input.val(selected).trigger('change');
+                            input.find('select').val(selected).trigger('change');
                         }
                     }
                 });
