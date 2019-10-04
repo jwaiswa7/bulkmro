@@ -5,7 +5,9 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl :inquiry
 
     respond_to do |format|
-      format.html {}
+      format.html {
+        @statuses = Inquiry.statuses.except('Lead by O/S')
+      }
       format.json do
         service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
         service.call

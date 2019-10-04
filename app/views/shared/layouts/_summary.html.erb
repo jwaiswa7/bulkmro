@@ -30,9 +30,6 @@
     </div>
   </div>
 </div>
-<% if klass.name == current_model.classify.constantize %>
-  <% statuses = @statuses.except('Lead by O/S') %>
-<% end %>
 <div id="summary" class="collapse bmro-float bmro-collaps-bg">
   <div class="mt-2 form-row d-flex flex-row align-content-stretch">
     <% if statuses.present? %>
