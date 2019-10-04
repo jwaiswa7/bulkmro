@@ -22,7 +22,7 @@ class Services::Overseers::Finders::Addresses < Services::Overseers::Finders::Ba
   end
 
   def perform_query(query)
-    query = query[0, 35]
+    query = query[0, 75]
 
     indexed_records = index_klass.query(
       multi_match: {

@@ -26,7 +26,7 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
   end
 
   def perform_query(query)
-    query = query[0, 35]
+    query = query[0, 100]
 
     indexed_records = index_klass.query(
       multi_match: {
@@ -58,7 +58,7 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
 
   def manage_failed_skus(query, per, page)
     return [] if query.blank?
-    query = query[0, 35]
+    query = query[0, 100]
 
     search_query = {
         multi_match: {
