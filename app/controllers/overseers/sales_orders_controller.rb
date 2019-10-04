@@ -5,7 +5,10 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize_acl :sales_order
 
     respond_to do |format|
-      format.html { render 'pending' }
+      format.html {
+        @statuses = SalesOrder.statuses.except("Approved", "Order Deleted", "Hold by Finance", "Cancelled")
+        render 'pending'
+      }
       format.json do
         service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer)
         service.call
@@ -118,7 +121,10 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def index
     authorize_acl :sales_order
     respond_to do |format|
-      format.html { }
+      format.html {
+        @statuses = SalesOrder.remote_statuses
+        @alias_name = 'Total Sales Order'
+      }
       format.json do
         service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
         service.call

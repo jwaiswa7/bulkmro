@@ -6,6 +6,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
     respond_to do |format|
       format.html {
+        @statuses = SalesInvoice.statuses
         service = Services::Overseers::SalesInvoices::ProofOfDeliverySummary.new(params, current_overseer)
         service.call
 

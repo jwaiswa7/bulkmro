@@ -4,7 +4,9 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def index
     authorize_acl :purchase_order
     respond_to do |format|
-      format.html {}
+      format.html {
+        @statuses = PurchaseOrder.statuses
+      }
       format.json do
         service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer)
         service.call
