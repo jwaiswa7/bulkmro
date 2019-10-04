@@ -219,7 +219,8 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         U_CnfrmTotal: 'A',
         U_CnfrmHSN: 'A',
         U_CnfrmTaxTYpe: 'A',
-        U_CnfrmPrice: 'A'
+        U_CnfrmPrice: 'A',
+        U_TermCondition: po_request.commercial_terms_and_conditions
     }
   end
 
