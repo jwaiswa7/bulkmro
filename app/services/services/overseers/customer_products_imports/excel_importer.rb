@@ -57,6 +57,7 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
   end
 
   def set_rows
+    customer_products = []
     excel_rows.each do |excel_row|
       row = excel_header_row.zip(excel_row).to_h
       if excel_row.compact.length > 1 && (row['sku'].present? && row['price'].present?)
@@ -68,19 +69,20 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
           customer_product.sku = row['material_code'] || product.sku
           customer_product.brand = (Brand.find_by_name(row['brand']) if row['brand'].present?) || product.brand
           customer_product.measurement_unit = (MeasurementUnit.find_by_name(row['uom']) if row['uom'].present?) || product.measurement_unit
-          customer_product.moq =  row['moq'].to_i > 1 ? row['moq'].to_i : 1
+          customer_product.moq = row['moq'].to_i > 1 ? row['moq'].to_i : 1
           if row['url'].present?
             filename = row['url'].split('/').last
             attach_file(customer_product, row['url'], filename)
           end
           customer_product.tax_code = (TaxCode.where("code LIKE '%?%'", row['hsn'].to_i).first if row['hsn'].present?) || product.tax_code
           customer_product.tax_rate = (TaxRate.where(tax_percentage: row['tax_percentage'].to_d).first if row['tax_percentage'].present?) || product.tax_rate
-          customer_product.save
+          customer_products << customer_product
         end
       else
         excel_rows.delete(excel_row)
       end
     end
+    CustomerProduct.import customer_products
   end
 
   attr_accessor :company, :import, :excel_rows, :excel_header_row, :excel_products, :rows
