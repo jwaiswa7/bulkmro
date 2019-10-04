@@ -27,7 +27,7 @@ class Services::Customers::Finders::Products < Services::Customers::Finders::Bas
   end
 
   def perform_query(query)
-    query = query[0, 35]
+    query = query[0, 100]
 
     indexed_records = index_klass.query(multi_match: { query: query, operator: 'and', fields: %w[sku^3 sku_edge has_images name approved brand category], minimum_should_match: '100%' }).order(sort_definition)
 
