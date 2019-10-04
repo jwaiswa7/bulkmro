@@ -8,7 +8,7 @@ class Services::Overseers::Finders::Contacts < Services::Overseers::Finders::Bas
   end
 
   def perform_query(query)
-    query = query[0, 50]
+    query = query[0, 35]
 
     index_klass.query(
       multi_match: {
