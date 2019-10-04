@@ -37,7 +37,7 @@ class Services::Customers::Finders::CustomerProducts < Services::Customers::Find
   end
 
   def perform_query(query)
-    query = query[0, 100]
+    query = query[0, 35]
 
     indexed_records = index_klass.query(multi_match: { query: query, operator: 'and', fields: %w[sku^3 name brand category], minimum_should_match: '100%' }).order(sort_definition)
 
