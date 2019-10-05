@@ -2,11 +2,6 @@
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
 
-<% if Settings.reports.show_summary %>
-  <div class="col-lg-12">
-    <%= render partial: "shared/layouts/summary", locals: {klass: SalesShipment, statuses: SalesShipment.statuses, alias_name: ''} %>
-  </div>
-<% end %>
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all">Quick Action</th>

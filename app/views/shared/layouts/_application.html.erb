@@ -37,7 +37,7 @@
 
       <div class="container bmro-container<% if content_for?(:container_fluid) %>-fluid<% end %>">
         <%= render 'shared/layouts/components/breadcrumbs' if local_assigns[:navigation].present? %>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center bmro-padd-col">
           <%= yield %>
 
           <% flash.each do |message_type, message| %>

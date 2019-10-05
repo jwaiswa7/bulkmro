@@ -2,12 +2,6 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
-<% if Settings.reports.show_summary %>
-  <div class="col-lg-12">
-    <%= render partial: "shared/layouts/summary", locals: {klass: PaymentRequest, statuses: PaymentRequest.statuses, alias_name: ''} %>
-  </div>
-<% end %>
-
 <% content_for :heading do %>
   <% ['Payment Requests', @param].compact.join(': ') %>
 <% end %>

@@ -26,16 +26,17 @@
   </section>
 <% end %>
 
-<div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: Inquiry, statuses: Inquiry.statuses, alias_name: ''} %>
-</div>
+<% if Settings.reports.show_summary && @statuses.present? %>
+  <div class="col-lg-12">
+    <%= render partial: "shared/layouts/summary", locals: {klass: current_model.classify.constantize, statuses: @statuses, alias_name: @alias_name} %>
+  </div>
+<% end %>
 
 <div class="bmro-search-table">
   <div class="bmro-input-search">
     <input type="text" name="" class="bmro-form-input bmro-search-width filter-list-input" placeholder="Search by Account, Company, Owner ect...">
   </div>
-  <br>
-  <div class="fillter-wrapper"></div>
+  <div class="fillter-wrapper bmro-input-edit"></div>
 </div>
 
 <section class="pb-4 pb-lg-5">

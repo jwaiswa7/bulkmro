@@ -1,17 +1,8 @@
 // to set the status filter upon selected status
 
 const bindSummaryBox = function (classname, select) {
-    $('.bmro-invoice-one').click(function () {
-        if ($('.bmro-collaps1').hasClass("show"))
-        {
-            $('.bmro-invoice-box-one').hide();
-            $('.bmro-invoice-box-two').hide();
-        }
-        else
-        {
-            $('.bmro-invoice-box-one').show();
-            $('.bmro-invoice-box-two').hide();
-        }
+    $(".bmro-click-toggle").click(function(){
+        $(this).parent().toggleClass("bmro-collaps2-bg");
     });
 
     $(classname).on('click', function (e) {
