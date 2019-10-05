@@ -84,7 +84,7 @@
               <%= row_action_button(new_overseers_freight_request_path(:sales_quote_id => sales_quote.to_param), 'external-link', 'New Freight Request', 'warning') %>
             <% end %>
           </td>
-          <td class="text-right"><%= sales_quote.ancestors.count > 0 ? "R#{sales_quote.ancestors.count} - #{sales_quote.id}" : ""  %></td>
+          <td class="text-right"><%= sales_quote.ancestors.count > 0 ? "R#{sales_quote.ancestors.count} - #{sales_quote.id}" : "#{sales_quote.id}"  %></td>
           <td class="text-right"><%= format_date(sales_quote.sent_at) %></td>
           <td class="text-right"><%= sales_quote.created_by.to_s %></td>
           <td class="text-right"><%= sales_quote.rows.size %></td>
