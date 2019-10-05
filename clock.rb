@@ -66,8 +66,33 @@ every(1.day, 'generate_exports_daily', at: '04:00') do
   end
 end
 
-every(1.day, 'refresh_calculated_totals', at: '21:00') do
-  service = Services::Overseers::Inquiries::RefreshCalculatedTotals.new
+every(1.day, 'purchase_order_reindex', at: '07:00') do
+  puts 'For reindexing purchase orders'
+
+  index_class = PurchaseOrdersIndex
+  if index_class <= BaseIndex
+    index_class.reset!
+  end
+end
+
+every(1.day, 'inquiry_product_inventory_update', at: '07:30') do
+  service = Services::Resources::Products::UpdateRecentInquiryProductInventory.new
+  service.call
+end if Rails.env.production?
+
+# every(1.day, 'resync_failed_requests', at: '07:00') do
+#   service = Services::Overseers::FailedRemoteRequests::Resync.new
+#   service.call
+# end if Rails.env.production?
+
+
+# every(1.day, 'resync_requests_status', at: '08:30') do
+#   service = Services::Overseers::FailedRemoteRequests::Resync.new
+#   service.verify
+# end if Rails.env.production?
+
+every(1.day, 'log_currency_rates', at: '20:00') do
+  service = Services::Overseers::Currencies::LogCurrencyRates.new
   service.call
 end
 
@@ -78,23 +103,8 @@ every(1.day, 'flush_unavailable_images', at: '20:30') do
   end
 end
 
-every(1.day, 'resync_failed_requests', at: '07:00') do
-  service = Services::Overseers::FailedRemoteRequests::Resync.new
-  service.call
-end if Rails.env.production?
-
-every(1.day, 'inquiry_product_inventory_update', at: '07:30') do
-  service = Services::Resources::Products::UpdateRecentInquiryProductInventory.new
-  service.call
-end if Rails.env.production?
-
-every(1.day, 'resync_requests_status', at: '08:30') do
-  service = Services::Overseers::FailedRemoteRequests::Resync.new
-  service.verify
-end if Rails.env.production?
-
-every(1.day, 'log_currency_rates', at: '20:00') do
-  service = Services::Overseers::Currencies::LogCurrencyRates.new
+every(1.day, 'refresh_calculated_totals', at: '21:00') do
+  service = Services::Overseers::Inquiries::RefreshCalculatedTotals.new
   service.call
 end
 
@@ -119,15 +129,6 @@ every(1.day, 'set_overseer_monthly_target', if: lambda { |t| t.day == 1 }) do
   puts 'For setting Monthly Targets'
   service = Services::Overseers::Targets::SetMonthlyTarget.new
   service.set_overseer_monthly_target
-end
-
-every(1.day, 'purchase_order_reindex', at: '09:20') do
-  puts 'For reindexing purchase orders'
-
-  index_class = PurchaseOrdersIndex
-  if index_class <= BaseIndex
-    index_class.reset!
-  end
 end
 
 # every(1.month, 'product_inventory_update', :at => '05:00') do
