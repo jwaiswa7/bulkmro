@@ -2250,12 +2250,15 @@ table.fixedHeader-floating{
     font-weight: 500;
     margin-top: -12px;
 }
-.fillter-wrapper::placeholder{
+.select2-container--bootstrap .select2-selection--single .select2-selection__placeholder{
     color: #9AA1AA!important;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 15px;
 }
-.select2-container--bootstrap .select2-selection--single .select2-selection__placeholder{
-    
+.bmro-arrow-parent .form-control::placeholder{
+    color: #9AA1AA!important;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
 }
