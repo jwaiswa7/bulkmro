@@ -244,7 +244,7 @@ let setup = () => {
                             if (input.has('input').length > 0){
                                 val = $(this).find('input').val();
                                 column.search(val).draw();
-                            } else if (input.has('select').length >= 0){
+                            } else if (input.has('select').length > 0){
                                 val = $(this).find('select').val();
                                 column.search(val).draw();
                             }
