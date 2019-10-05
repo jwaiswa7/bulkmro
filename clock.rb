@@ -50,8 +50,14 @@ end
 
 every(1.day, 'refresh_indices', at: '00:00') do
   # Chewy.strategy(:sidekiq) do
-  Services::Shared::Chewy::RefreshIndices.new
+  #   Services::Shared::Chewy::RefreshIndices.new
   # end
+
+  Dir[[Chewy.indices_path, '/*'].join()].map do |path|
+    puts "Indexing #{path}"
+    path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
+    puts "Indexed #{path}"
+  end
 end
 
 every(1.day, 'generate_exports_daily', at: '04:00') do
@@ -115,7 +121,7 @@ every(1.day, 'set_overseer_monthly_target', if: lambda { |t| t.day == 1 }) do
   service.set_overseer_monthly_target
 end
 
-every(1.day, 'purchase_order_reindex', at: '09:10') do
+every(1.day, 'purchase_order_reindex', at: '09:20') do
   puts 'For reindexing purchase orders'
 
   index_class = PurchaseOrdersIndex
