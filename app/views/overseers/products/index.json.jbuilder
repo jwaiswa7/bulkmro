@@ -2,19 +2,19 @@ json.data (@products) do |product|
   json.array! [
                   [
                       if is_authorized(product, 'show') && policy(product).show?
-                         row_action_button_without_fa(overseers_product_path(product), 'bmro-icon-table bmro-icon-used-view', 'View Product', 'info', :_blank)
+                        row_action_button(overseers_product_path(product), 'eye', 'View Product', 'info', :_blank)
                       end,
                       if is_authorized(product, 'edit') && policy(product).edit?
-                         row_action_button_without_fa(edit_overseers_product_path(product), 'bmro-icon-table bmro-icon-pencil', 'Edit Product', 'warning', :_blank)
+                        row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit Product', 'warning', :_blank)
                       end,
                       if is_authorized(product, 'comments') && policy(product).comments?
-                         row_action_button_without_fa(overseers_product_comments_path(product), 'bmro-icon-table bmro-icon-comment', 'View Comments', 'dark', :_blank)
+                        row_action_button(overseers_product_comments_path(product), 'comment-lines', 'View Comments', 'dark', :_blank)
                       end,
                       if is_authorized(product, 'sku_purchase_history') && policy(product).sku_purchase_history?
-                         row_action_button_without_fa(sku_purchase_history_overseers_product_path(product), 'bmro-icon-table bmro-icon-purchase-history', 'View Purchase History', 'outline-dark', :_blank)
+                        row_action_button(sku_purchase_history_overseers_product_path(product), 'history', 'View Purchase History', 'outline-dark', :_blank)
                       end,
                       if is_authorized(product, 'resync_inventory') && policy(product).resync_inventory?
-                         row_action_button_without_fa(resync_inventory_overseers_product_path(product), 'bmro-icon-table bmro-icon-inventory', 'Resync Inventory', 'outline-dark', :_blank)
+                        row_action_button(resync_inventory_overseers_product_path(product), 'inventory', 'Resync Inventory', 'outline-dark', :_blank)
                       end
                   ].join(' '),
                   link_to(product.name, overseers_product_path(product), target: '_blank'),

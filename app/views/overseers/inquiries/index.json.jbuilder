@@ -2,18 +2,18 @@ json.data (@inquiries) do |inquiry|
   columns = [
       [
           if is_authorized(inquiry, 'relationship_map') && policy(inquiry).relationship_map?
-            row_action_button_without_fa(relationship_map_overseers_inquiry_path(inquiry.to_param), 'your-class-name', 'Relationship Map', 'info', :_blank,  true )
+            row_action_button(relationship_map_overseers_inquiry_path(inquiry.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
           end,
           if is_authorized(inquiry, 'edit') && policy(inquiry).edit?
-            row_action_button_without_fa(overseers_inquiry_comments_path(inquiry), 'bmro-icon-table bmro-icon-comment', inquiry.comments.last ? inquiry.comments.last.try(:message) : 'No comments', inquiry.comments.last ? 'success' : 'dark', :_blank)
+            row_action_button(overseers_inquiry_comments_path(inquiry), 'comment-alt-check', inquiry.comments.last ? inquiry.comments.last.try(:message) : 'No comments', inquiry.comments.last ? 'success' : 'dark', :_blank)
           end,
           if is_authorized(inquiry, 'new_freight_request') && policy(inquiry).new_freight_request?
             row_action_button(new_overseers_freight_request_path(inquiry_id: inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
           end,
           if is_authorized(inquiry, 'index')
-            link_to('','data-toggle': 'tooltip', class: ['btn btn-sm btn-success comment-inquiry'], 'data-model-id': inquiry.id, title: 'Comment', remote: true) do
+            link_to('', class: ['btn btn-sm btn-success comment-inquiry'], 'data-model-id': inquiry.id, title: 'Comment', remote: true) do
               concat content_tag(:span, '')
-              concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
+              concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
             end
           end,
       ].join(' '),
