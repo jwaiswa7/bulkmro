@@ -5,7 +5,7 @@ require './config/environment'
 require 'active_support/time'
 
 handler do |job, time|
-  Chewy.strategy(:sidekiq)
+  Chewy.strategy(:atomic)
   puts "Running #{job}, at #{time}"
 end
 
@@ -49,13 +49,13 @@ every(4.hour, 'generate_exports_hourly') do
 end
 
 every(1.day, 'refresh_indices', at: '00:00') do
-  Chewy.strategy(:sidekiq) do
-    Services::Shared::Chewy::RefreshIndices.new
-  end
+  # Chewy.strategy(:sidekiq) do
+  Services::Shared::Chewy::RefreshIndices.new
+  # end
 end
 
 every(1.day, 'generate_exports_daily', at: '04:00') do
-  Chewy.strategy(:sidekiq) do
+  Chewy.strategy(:atomic) do
     Services::Overseers::Exporters::GenerateExportsDaily.new
   end
 end
@@ -113,6 +113,15 @@ every(1.day, 'set_overseer_monthly_target', if: lambda { |t| t.day == 1 }) do
   puts 'For setting Monthly Targets'
   service = Services::Overseers::Targets::SetMonthlyTarget.new
   service.set_overseer_monthly_target
+end
+
+every(1.day, 'purchase_order_reindex', at: '09:10') do
+  puts 'For reindexing purchase orders'
+
+  index_class = PurchaseOrdersIndex
+  if index_class <= BaseIndex
+    index_class.reset!
+  end
 end
 
 # every(1.month, 'product_inventory_update', :at => '05:00') do
