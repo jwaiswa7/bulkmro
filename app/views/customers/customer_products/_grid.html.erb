@@ -40,35 +40,39 @@
   <input type="search" name="q" class="form-control filter-list-input" placeholder="Enter search term/keywords" value="<%= params[:q] %>">
 </div>
 
-<% if @tags.count > 0 %>
-  <div class="accordion mt-2" id="product-filters">
-    <div class="card">
-      <a class="card-header py-2 text-black-50 text-uppercase" href="#" data-toggle="collapse" data-target="#filters">
-        <strong>Filters</strong>
-      </a>
-      <div id="filters" class="collapse show" data-parent="#product-filters">
-        <%= simple_form_for :custom_filters, :method => 'get' do |f| %>
-          <div class='card-body'>
-            <p class="text-uppercase text-black-50 mb-2">Categories</p>
-            <%= f.input :tags, :collection => @tags, :value_method => :first, :label_method => :second, checked: @checked_tags, :as => :check_boxes %>
-            <div class="form-row mt-2">
-              <div class="col-4 col-lg-2 col-md-3">
-                <%= link_to "Clear", customers_products_path, class: "btn btn-outline-danger btn-block" %>
-                <!--              <button type="reset" href="customers_products_path" class="btn btn-outline-danger btn-block">Clear</button>-->
-              </div>
-              <div class="col-8 col-lg-10 col-md-0">
-                <button type="submit" href="#" class="btn btn-success btn-block">Filter products</button>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
-<% end %>
+<!--Incomplete feature-->
+<%# if @tags.count > 0 %>
+<!--  <div class="accordion mt-2" id="product-filters">-->
+<!--    <div class="card">-->
+<!--      <a class="card-header py-2 text-black-50 text-uppercase" href="#" data-toggle="collapse" data-target="#filters">-->
+<!--        <strong>Filters</strong>-->
+<!--      </a>-->
+<!--      <div id="filters" class="collapse show" data-parent="#product-filters">-->
+        <%#= simple_form_for :custom_filters, :method => 'get' do |f| %>
+<!--          <div class='card-body'>-->
+<!--            <p class="text-uppercase text-black-50 mb-2">Categories</p>-->
+            <%#= f.input :tags, :collection => @tags, :value_method => :first, :label_method => :second, checked: @checked_tags, :as => :check_boxes %>
+<!--            <div class="form-row mt-2">-->
+<!--              <div class="col-4 col-lg-2 col-md-3">-->
+                <%#= link_to "Clear", customers_products_path, class: "btn btn-outline-danger btn-block" %>
+<!--                             <button type="reset" href="customers_products_path" class="btn btn-outline-danger btn-block">Clear</button>-->
+<!--              </div>-->
+<!--              <div class="col-8 col-lg-10 col-md-0">-->
+<!--                <button type="submit" href="#" class="btn btn-success btn-block">Filter products</button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+        <%# end %>
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<%# end %>
+<!--Incomplete feature-->
+
 <div class="form-row mt-2" id="product-grid">
   <% if @customer_products.count > 0 %>
-    <% @customer_products.each do |customer_product| %>
+    <% cache(@customer_products) do %>
+      <% @customer_products.each do |customer_product| %>
       <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12 d-flex">
         <div class="card mb-2">
           <div class="card-body">
@@ -99,6 +103,7 @@
           </div>
         </div>
       </div>
+      <% end %>
     <% end %>
   <% else %>
     <div class="col-12">

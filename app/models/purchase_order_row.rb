@@ -17,12 +17,26 @@ class PurchaseOrderRow < ApplicationRecord
     product.update_attribute('total_pos', (product.total_pos == 0 ? 0 : (product.total_pos - 1))) if product.present?
   end
 
+  def show_tax_code
+    if self.metadata['PopHsn'].present?
+      self.metadata['PopHsn']
+    elsif self.po_request_row.present?
+      self.po_request_row.tax_code.try(:code)
+    else
+      '-'
+    end
+  end
+
   def sku
     get_product.sku if get_product.present?
   end
 
   def uom
-    get_product.measurement_unit.name if get_product.present? && get_product.measurement_unit.present?
+    if get_product.present? && get_product.measurement_unit.present?
+      get_product.measurement_unit.name
+    elsif self.product.present?
+      self.product.measurement_unit.name
+    end
   end
 
   def brand
@@ -71,7 +85,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def get_product
-    Product.where(legacy_id: self.metadata['PopProductId'].to_i).or(Product.where(id: Product.decode_id(self.metadata['PopProductId']))).try(:first)
+      Product.where(legacy_id: self.metadata['PopProductId'].to_i).or(Product.where(id: Product.decode_id(self.metadata['PopProductId']))).try(:first)
   end
 
 

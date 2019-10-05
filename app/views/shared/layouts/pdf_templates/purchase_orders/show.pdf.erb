@@ -253,10 +253,12 @@
                     <span><%= item.product.present? ? item.product.brand.to_s : item.brand %></span>
                   </td>
                   <td align="center" valign="top">
-                    <span><%= item.metadata['PopHsn'] %></span>
+                    <span>
+                      <%= item.show_tax_code %>
+                    </span>
                   </td>
                   <td align="center" valign="top">
-                    <span><%= item.product.present? ? item.product.measurement_unit.name : item.uom %></span>
+                    <span><%= item.uom  %></span>
                   </td>
                   <td align="center" valign="top">
                     <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
@@ -436,7 +438,11 @@
                 <tr>
                   <td align="left" style="padding-left: 10px; padding-top: 0px" valign="top">
                     <span>
+                      <% if locals[:purchase_order].commercial_terms_and_conditions.present? %>
+                      <%= (locals[:purchase_order].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
+                        <% else %>
                       <%= (locals[:inquiry].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
+                      <% end %>
                     </span>
                   </td>
                 </tr>

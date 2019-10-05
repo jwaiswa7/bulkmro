@@ -183,8 +183,8 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         DocNum: record.po_number,
         HandWritten: "tYES",
         PoSupNum: '',
-        PoSupBillFrom: po_request.bill_from.remote_uid,
-        PoSupShipFrom: po_request.ship_from.remote_uid,
+        PayToCode: po_request.bill_from.remote_uid,
+        ShipFrom: po_request.ship_from.remote_uid,
         PoShippingCost: '0',
         PoTargetWarehouse: po_request.ship_to.remote_uid,
         DocumentLines: item_row,
@@ -219,7 +219,8 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         U_CnfrmTotal: 'A',
         U_CnfrmHSN: 'A',
         U_CnfrmTaxTYpe: 'A',
-        U_CnfrmPrice: 'A'
+        U_CnfrmPrice: 'A',
+        U_TermCondition: po_request.commercial_terms_and_conditions
     }
   end
 
