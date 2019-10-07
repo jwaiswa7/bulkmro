@@ -2573,3 +2573,9 @@ table.fixedHeader-floating{
 .bmro-float-margin{
     margin-left: 10px;
 }
+.bmro-container .col-lg-12,.col-sm-12 {
+    padding-left: 0px;
+}
+.bmro-container table {
+    padding-left: 0px;
+}
