@@ -1328,6 +1328,22 @@ a.bmro-click-toggle.collapsed:after{
     float: left;
     margin-right: 10px;
 }
+.bmro-input-search .form-control{
+    line-height: 1.5!important;
+    color:#2C4159 !important;
+    padding: 9px 23px 6px 8px;
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    border-width: 2px!important;
+    border-style: solid!important;
+    border-color: rgb(236, 238, 242)!important;
+    border-radius: 2px!important;
+    outline: none!important;
+    height: auto!important;
+    box-shadow: unset!important;
+    -webkit-appearance:none!important;
+    font-weight: 500;
+}
 .bmro-search-width{
     width: 200px;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAOCAYAAAAbvf3sAAAAAXNSR0IArs4c6QAAAU9JREFUKBWFkr0vBFEUxe+942MVGhXiP1AQS6ETJLKr0WhEYmXZXqOeWiPRWTYiEZHoFGRFREdhC4VaIzYajWaQfdc9jycy2eUlk5mc+7tf5w3T91FVzuaXV9i5ohINQmaiexWp1E73dpnZZK8RZWdKfcTJgSpNQkwfZrokzSzWquW6oHKALfAozAtMmX48/ts0X8gXVOaRXGGVnCsD7uhuH7o+rrz87jA+X+x5f/24s6QBEikJZgZgbdbTMHRoiHnGWAkLqnZeQWx2QgysNAP+0gTWAWB+m2gFhhhYgc8AlXQDC6aToCHmGWMZto7mli5gHZzCgmFmipJZdbRl1bpwF7dn+9Nmtd2gXQoEWOdUD5WSJ/80aAcwBlBt2wZrY32dVr+GbVe3inPW+VkiHv5JCInpdxzHcnLzcG49psyZo38TUGAsX+htON2MhNc+AedxnRztIqLbAAAAAElFTkSuQmCC');
