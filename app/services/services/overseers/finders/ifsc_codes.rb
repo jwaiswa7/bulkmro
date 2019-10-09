@@ -39,7 +39,7 @@ class Services::Overseers::Finders::IfscCodes < Services::Overseers::Finders::Ba
   end
 
   def perform_query(query)
-    query = query[0, 50]
+    query = query[0, 35]
 
     indexed_records = index_klass.query(
       multi_match: {
