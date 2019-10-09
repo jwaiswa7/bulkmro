@@ -4,7 +4,7 @@ module MenuHelper
   def active_if_path_is(path = nil)
     return nil if path.nil? || request.nil?
 
-    request.path == path ? 'active' : nil
+    controller_path.split('/').last == path.split('/').last ? 'active' : nil
   end
 
   def show_if(bool)

@@ -240,8 +240,14 @@ let setup = () => {
                         }
 
                         input.on('change', function () {
-                            let val = $(this).find('select').val();
-                            column.search(val).draw();
+                            let val
+                            if (input.has('input').length > 0){
+                                val = $(this).find('input').val();
+                                column.search(val).draw();
+                            } else if (input.has('select').length > 0){
+                                val = $(this).find('select').val();
+                                column.search(val).draw();
+                            }
 
                             // Override the value for dropdowns/select2s in the text|value format
                             if ($(input).is('select'))
