@@ -7,7 +7,7 @@ class Overseers::DashboardController < Overseers::BaseController
     # if Rails.env.development?
     #   render 'default_dashboard'
     # else
-      if current_overseer.inside_sales_executive?
+      if current_overseer.admin?
         @dashboard = Overseers::Dashboard.new(current_overseer)
         render 'new_sales_dashboard'
       elsif current_overseer.admin?
