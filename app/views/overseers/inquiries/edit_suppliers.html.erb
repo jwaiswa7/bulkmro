@@ -2,8 +2,6 @@
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <%= simple_form_for(@inquiry, url: update_suppliers_overseers_inquiry_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= render 'shared/snippets/form_errors', f: f %>
-<!--      <div class="card">-->
-<!--        <div class="card-body">-->
       <div class="form-row">
         <div class="col-6 col-md-2">
           <div class="custom-control custom-checkbox">
@@ -64,45 +62,45 @@
                 <a class="ml-2" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-inventory mr-1"></i>Resync Inventory</a>
               <% end %>
             </td>
-            <td >
+            <td>
               <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
                 <%= inquiry_product.nested_fields_for :inquiry_product_suppliers do |inquiry_product_supplier| %>
-                  <table>
+                  <%= inquiry_product_supplier.hidden_field :id %>
+                  <table class="table mb-0 table-border-styling">
                     <tbody>
-                    <%= inquiry_product_supplier.hidden_field :id %>
-                    <td class="col-6 col-md-3 pl-4">
-                      <span class="custom-control custom-checkbox d-inline">
-                        <%= check_box_tag 'inquiry_product_supplier_ids[]', inquiry_product.object.id, false, id: "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}", class: 'custom-control-input' %>
-                        <label class="custom-control-label" for="<%= "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}" %>"></label>
-                        <%= inquiry_product_supplier.object.supplier.to_s %>
-                          <span class="<%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "align-self-center" : "align-self-top" %> ml-1">
-                          <% if inquiry_product.object.inquiry_product_suppliers.present? && !inquiry_product.object.inquiry_product_suppliers.first.supplier.rating.nil? %>
-                            <%= format_star(inquiry_product.object.inquiry_product_suppliers.first.supplier.rating) %>
-                          <% end %>
-                        </span>
-                      </span>
-                    </td>
-                    <td class="col-md-5">
-                      <div class="d-flex flex-row">
-                        <div class="mr-1">
+                      <tr class="row">
+                        <td class="col-md-7">
+                          <div class="d-flex flex-row pl-1">
+                            <div class="custom-control custom-checkbox d-inline">
+                              <%= check_box_tag 'inquiry_product_supplier_ids[]', inquiry_product.object.id, false, id: "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}", class: 'custom-control-input' %>
+                              <label class="custom-control-label" for="<%= "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}" %>"></label>
+                              <%= inquiry_product_supplier.object.supplier.to_s %>
+                              <span class="ml-1">
+                                <% if inquiry_product.object.inquiry_product_suppliers.present? && !inquiry_product.object.inquiry_product_suppliers.first.supplier.rating.nil? %>
+                                  <%= format_star(inquiry_product.object.inquiry_product_suppliers.first.supplier.rating) %>
+                                <% end %>
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="col-md-1">
                           <label title="Lowest Unit Cost Price">Lowest</label><br>
                           <%= inquiry_product_supplier.object.lowest_unit_cost_price %>
-                        </div>
-                        <div class="mr-1">
+                        </td>
+                        <td class="col-md-1">
                           <label title="Unit Cost Price">Unit Price</label><br>
                           <%= inquiry_product_supplier.object.unit_cost_price %>
-                        </div>
-                        <div class="mr-1">
+                        </td>
+                        <td class="col-md-1">
                           <label title="Lowest Unit Cost Price">Latest</label><br>
                           <%= inquiry_product_supplier.object.latest_unit_cost_price %>
-                        </div>
-                        <div class="ml-1 <%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'align-self-center' : '' %>">
+                        </td>
+                        <td class="col-md-1">
                           <%= inquiry_product_supplier.remove_nested_fields_link do %>
                             <i class="far fa-times text-danger delete-isp" id="<%= inquiry_product_supplier.object.id %>"></i>
                           <% end if is_authorized(inquiry_product_supplier.object, 'destroy') && policy(inquiry_product_supplier.object).destroy? %>
-                        </div>
-                      </div>
-                    </td>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 <% end %>

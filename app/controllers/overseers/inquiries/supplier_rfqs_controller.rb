@@ -49,10 +49,10 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
       @supplier_rfq.save
 
       supplier = Company.find(@supplier_rfq.supplier_id)
-      contact = supplier.default_contact
+      # contact = supplier.default_contact
+      contact = Contact.find_by_email('bulkmro007@gmail.com')
       if params['button'] == 'update_and_send_link'
         if contact.present?
-          contact.update_attributes(email: "bulkmro007+#{@supplier_rfq.id}@gmail.com")
           @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
           subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
           @action = 'send_email_request_for_quote'
@@ -68,62 +68,60 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
           render 'shared/layouts/email_messages/new'
         end
       elsif params['button'] == 'update_and_send_link_all'
-        if contact.present?
-          contact.update_attributes(email: "bulkmro007+#{@supplier_rfq.id}@gmail.com")
-          @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
-          subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
-          @quantity = supplier_rfq_params['inquiry_product_suppliers_attributes']['0']['quantity']
-          @email_message.assign_attributes(
-              subject: subject,
-              body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq, @quantity).body.raw_source
-          )
-
-          if @email_message.save
-            if SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
-              @supplier_rfq.update_attributes(email_sent_at: Time.now, status: 'Email Sent: Response Pending')
-            end
+        @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
+        subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
+        @quantity = supplier_rfq_params['inquiry_product_suppliers_attributes']['0']['quantity']
+        @email_message.assign_attributes(
+            subject: subject,
+            body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq, @quantity).body.raw_source
+        )
+        if @email_message.save
+          if SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
+            @supplier_rfq.update_attributes(email_sent_at: Time.now, status: 'Email Sent: Response Pending')
           end
         end
         flash[:notice] = 'Record updated successfully and Emails has been sent to suppliers!'
+        redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
       else
         flash[:notice] = 'Record updated successfully'
+        redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
       end
-      redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
+      #
     end
   end
 
-  def update_all
-    authorize_acl @supplier_rfq
-    if @supplier_rfq.present?
-      @supplier_rfq.assign_attributes(supplier_rfq_params.merge(overseer: current_overseer))
-      @supplier_rfq.save
-      flash[:notice] = 'Records updated successfully'
-      if params['button'] == 'update_and_send_link'
-        supplier = Company.find(@supplier_rfq.supplier_id)
-        contact = supplier.default_contact
-        contact.update_attributes(email: "bulkmro007+#{@supplier_rfq.id}@gmail.com")
-        if supplier.default_contact.present?
-          @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
-          subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
-          @action = 'send_email_request_for_quote'
-          @quantity = supplier_rfq_params['inquiry_product_suppliers_attributes']['0']['quantity']
-          @email_message.assign_attributes(
-              subject: subject,
-              body: SupplierRfqMailer.request_for_quote_email(@email_message, @quantity).body.raw_source
-          )
-          @params = {
-              record: [:overseers, @supplier_rfq, @email_message],
-              url: "#{@supplier_rfq.to_param}/send_email_request_for_quote"
-          }
-          # render 'shared/layouts/email_messages/new'
-        else
-          redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
-        end
-      else
-        redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
-      end
-    end
-  end
+  # def update_all
+  #   authorize_acl @supplier_rfq
+  #   if @supplier_rfq.present?
+  #     @supplier_rfq.assign_attributes(supplier_rfq_params.merge(overseer: current_overseer))
+  #     @supplier_rfq.save
+  #     flash[:notice] = 'Records updated successfully'
+  #     if params['button'] == 'update_and_send_link'
+  #       supplier = Company.find(@supplier_rfq.supplier_id)
+  #       contact = supplier.default_contact
+  #       contact.update_attributes(email: "bulkmro007+#{@supplier_rfq.id}@gmail.com")
+  #       if supplier.default_contact.present?
+  #         @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
+  #         subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
+  #         @action = 'send_email_request_for_quote'
+  #         @quantity = supplier_rfq_params['inquiry_product_suppliers_attributes']['0']['quantity']
+  #         @email_message.assign_attributes(
+  #             subject: subject,
+  #             body: SupplierRfqMailer.request_for_quote_email(@email_message, @quantity).body.raw_source
+  #         )
+  #         @params = {
+  #             record: [:overseers, @supplier_rfq, @email_message],
+  #             url: "#{@supplier_rfq.to_param}/send_email_request_for_quote"
+  #         }
+  #         # render 'shared/layouts/email_messages/new'
+  #       else
+  #         redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
+  #       end
+  #     else
+  #       redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
+  #     end
+  #   end
+  # end
 
   def send_email_request_for_quote
     authorize_acl @supplier_rfq
