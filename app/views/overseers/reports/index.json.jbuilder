@@ -2,7 +2,7 @@ json.data (@reports) do |report|
   json.array! [
                   [
                       if is_authorized(report,'show')
-                        row_action_button(overseers_report_path(report), 'bmro-table-icon bmro-icon-used-view', 'Show Report', 'info')
+                        row_action_button(overseers_report_path(report), 'eye', 'Show Report', 'info')
                       end,
                   ].join(' '),
                   report.name.titlecase,

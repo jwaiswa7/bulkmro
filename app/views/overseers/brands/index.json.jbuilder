@@ -2,10 +2,10 @@ json.data (@brands) do |brand|
   json.array! [
                   [
                       if is_authorized(brand, 'show')
-                        row_action_button_without_fa(overseers_brand_path(brand), 'bmro-icon-table bmro-icon-used-view', 'View Details', 'info', :_blank)
+                        row_action_button(overseers_brand_path(brand), 'eye', 'View Details', 'info', :_blank)
                       end,
                       if is_authorized(brand, 'edit')
-                        row_action_button_without_fa(edit_overseers_brand_path(brand), 'bmro-icon-table bmro-icon-pencil', 'Edit Brand', 'warning', :_blank)
+                        row_action_button(edit_overseers_brand_path(brand), 'pencil', 'Edit Brand', 'warning', :_blank)
                       end
                   ].join(' '),
                   link_to(brand.to_s, overseers_brand_path(brand)),

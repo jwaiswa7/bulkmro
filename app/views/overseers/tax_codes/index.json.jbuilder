@@ -2,7 +2,7 @@ json.data (@tax_codes) do |tax_code|
   json.array! [
                   [
                       if is_authorized(tax_code, 'edit')
-                        row_action_button_without_fa(edit_overseers_tax_code_path(tax_code), 'bmro-icon-table bmro-icon-used-view', 'Edit Tax Code', 'warning')
+                        row_action_button(edit_overseers_tax_code_path(tax_code), 'pencil', 'Edit Tax Code', 'warning')
                       end,
                   ].join(' '),
                   conditional_link(tax_code.to_s, edit_overseers_tax_code_path(tax_code), is_authorized(tax_code, 'new')),

@@ -2,7 +2,7 @@ json.data (@acl_roles) do |acl_role|
   json.array! [
                   [
                       if is_authorized('acl_role', 'edit')
-                        row_action_button_without_fa(edit_overseers_acl_role_path(acl_role), 'bmro-icon-table bmro-icon-used-view', 'Edit Role', 'warning')
+                        row_action_button(edit_overseers_acl_role_path(acl_role), 'pencil', 'Edit Role', 'warning')
                       end,
                   ].join(' '),
                   acl_role.role_name.titleize,
