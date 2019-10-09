@@ -60,7 +60,6 @@ app.initializeComponents = () => {
 
 // Turbolinks load event
 document.addEventListener("turbolinks:load", function() {
-    console.log('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
     app.initializeComponents();
 
     // Load all views
