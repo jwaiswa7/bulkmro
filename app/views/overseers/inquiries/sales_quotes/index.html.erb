@@ -14,7 +14,7 @@
     <% end %>
 
     <% if @sales_quotes.present? && @inquiry.final_sales_quote.present? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
-      <ul class="list-group text-info mb-3">
+      <ul class="list-group text-info mb-3 bmro-float-left-left">
         <li class="list-group-item">
           <h5 class="text-info mb-0">Before making a sales order, Please fulfill the following.</h5>
         </li>
