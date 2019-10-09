@@ -2,7 +2,7 @@ json.data (@inquiries) do |inquiry|
   columns = [
       [
           if is_authorized(inquiry, 'edit')
-            row_action_button_without_fa(edit_overseers_inquiry_path(inquiry), 'bmro-icon-table bmro-icon-pencil', 'Edit Inquiry', 'warning')
+            row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning')
           end,
       ].join(' '),
       priority_helper_format_label(inquiry.priority),

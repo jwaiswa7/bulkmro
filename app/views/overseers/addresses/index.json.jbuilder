@@ -3,10 +3,10 @@ json.data (@addresses) do |address|
 
                   [
                       if is_authorized(address, 'show')
-                        row_action_button_without_fa(overseers_company_address_path(address.company, address), 'bmro-icon-table bmro-icon-used-view', 'View Address', 'info', :_blank)
+                        row_action_button(overseers_company_address_path(address.company, address), 'fal fa-eye', 'View Address', 'info', :_blank)
                       end,
                       if is_authorized(address, 'edit')
-                        row_action_button_without_fa(edit_overseers_company_address_path(address.company, address), 'bmro-icon-table bmro-icon-pencil', 'Edit Address', 'warning', :_blank)
+                        row_action_button(edit_overseers_company_address_path(address.company, address), 'pencil', 'Edit Address', 'warning', :_blank)
                       end,
                   ].join(' '),
                   link_to(address.company.to_s.truncate(50), overseers_company_path(address.company), target: '_blank'),

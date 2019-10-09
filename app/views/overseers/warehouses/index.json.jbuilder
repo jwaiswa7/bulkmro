@@ -2,10 +2,10 @@ json.data (@warehouses) do |warehouse|
   json.array! [
                   [
                       if is_authorized(warehouse, 'show')
-                        row_action_button_without_fa(overseers_warehouse_path(warehouse), 'bmro-icon-table bmro-icon-used-view', 'View Warehouse', 'info', :_blank)
+                        row_action_button(overseers_warehouse_path(warehouse), 'eye', 'View Warehouse', 'info', :_blank)
                       end,
                       if is_authorized(warehouse, 'edit')
-                        row_action_button_without_fa(edit_overseers_warehouse_path(warehouse), 'bmro-icon-table bmro-icon-pencil', 'Edit Warehouse', 'warning', :_blank)
+                        row_action_button(edit_overseers_warehouse_path(warehouse), 'pencil', 'Edit Warehouse', 'warning', :_blank)
                       end,
                   ].join(' '),
                   conditional_link(warehouse.name.to_s, overseers_warehouse_path(warehouse), is_authorized(warehouse, 'edit')),
