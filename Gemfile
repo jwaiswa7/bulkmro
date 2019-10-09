@@ -244,4 +244,4 @@ gem 'parser'
 gem 'unparser'
 
 # Heroku autoscaling add-on
-gem 'rails_autoscale_agent'
+# gem 'rails_autoscale_agent'

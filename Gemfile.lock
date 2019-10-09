@@ -423,8 +423,6 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
-    rails_autoscale_agent (0.6.3)
-      activesupport (>= 3.2)
     railties (5.2.3)
       actionpack (= 5.2.3)
       activesupport (= 5.2.3)
@@ -640,7 +638,6 @@ DEPENDENCIES
   puma (~> 3.11)
   pundit
   rails (~> 5.2.0)
-  rails_autoscale_agent
   ratyrate
   razorpay
   rubocop (~> 0.63.0)
