@@ -12,7 +12,7 @@
   <% elsif @po_request.status == 'Supplier PO Sent' %>
     <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' },  :include_blank => false, :disabled => is_authorized(@po_request, 'can_update_rejected_po_requests') && policy(@po_request).can_update_rejected_po_requests? ? ['Supplier PO Request Rejected', 'Supplier PO: Created Not Sent', 'Supplier PO: Amendment Pending', 'Supplier PO: Amended', 'Supplier PO Sent'] : ['Supplier PO: Request Pending', 'Supplier PO Request Rejected', 'Supplier PO: Created Not Sent', 'Supplier PO: Amendment Pending', 'Supplier PO: Amended', 'Supplier PO Sent']  %>
   <% else %>
-    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), disabled: false, :include_blank => false %>
+    <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false, keep_raw: true), disabled: false, input_html: { class: 'bmro-form-input bmro-dropdown-icon select2-single' }, :include_blank => false %>
   <% end %>
   <%= f.hidden_field :id %>
 </div>

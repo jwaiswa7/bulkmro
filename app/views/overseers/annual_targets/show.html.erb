@@ -13,58 +13,40 @@
     <div class="card">
       <div class="card-body">
         <div>
-          <div class="form-row">
-            <div class="col-6 col-md-3 mb-3">
-              <strong class="d-block">Name</strong>
-              <%= link_to @annual_target.overseer.try(:full_name), overseers_overseer_path(@annual_target.overseer) %>
+          <% if @annual_target.overseer.present? %>
+            <div class="form-row">
+              <div class="col-6 col-md-3 mb-3">
+                <strong class="d-block">Name</strong>
+                <%= link_to @annual_target.overseer.try(:full_name), overseers_overseer_path(@annual_target.overseer) %>
+              </div>
+              <div class="col-6 col-md-3 mb-3">
+                <strong class="d-block">Manager</strong>
+                <%= @annual_target.manager.try(:full_name) %>
+              </div>
+
+              <div class="col-6 col-md-3 mb-3">
+                <strong class="d-block">Business Head</strong>
+                <%= @annual_target.business_head.try(:full_name) %>
+              </div>
             </div>
-            <div class="col-6 col-md-3 mb-3">
-              <strong class="d-block">Manager</strong>
-              <%= @annual_target.manager.try(:full_name) %>
+            <div class="form-row">
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Inquiry Target</strong>
+                INR <%= number_with_delimiter((@annual_target.inquiry_target)*100000, delimiter: ',') %>
+              </div>
             </div>
-
-            <div class="col-6 col-md-3 mb-3">
-              <strong class="d-block">Business Head</strong>
-              <%= @annual_target.business_head.try(:full_name) %>
+          <% elsif  @annual_target.account.present? %>
+            <div class="form-row">
+              <div class="col-6 col-md-3 mb-3">
+                <strong class="d-block">Account Name</strong>
+                <%= link_to @annual_target.account.to_s, overseers_account_path(@annual_target.account) %>
+              </div>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Account Target</strong>
+                INR <%= number_with_delimiter((@annual_target.account_target)*100000, delimiter: ',') %>
+              </div>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Inquiry Target</strong>
-              <%= @annual_target.inquiry_target %>
-            </div>
-
-<!--            <div class="col-6 col-md-3 mb-2">-->
-<!--              <strong class="d-block">Company Target</strong>-->
-              <%#= @annual_target.company_target %>
-<!--            </div>-->
-
-<!--            <div class="col-6 col-md-3 mb-2">-->
-<!--              <strong class="d-block">Invoice Target</strong>-->
-              <%#= @annual_target.invoice_target %>
-<!--            </div>-->
-
-<!--            <div class="col-6 col-md-3 mb-2">-->
-<!--              <strong class="d-block">Invoice Margin Target</strong>-->
-              <%#= @annual_target.invoice_margin_target %>
-<!--            </div>-->
-
-<!--            <div class="col-6 col-md-3 mb-2">-->
-<!--              <strong class="d-block">Inquiry Target</strong>-->
-              <%#= @annual_target.order_target %>
-<!--            </div>-->
-
-<!--            <div class="col-6 col-md-3 mb-2">-->
-<!--              <strong class="d-block">Order Margin Target</strong>-->
-              <%#= @annual_target.order_margin_target %>
-<!--            </div>-->
-
-<!--            <div class="col-6 col-md-3 mb-2">-->
-<!--              <strong class="d-block">New Cilent Target</strong>-->
-              <%#= @annual_target.new_client_target %>
-<!--            </div>-->
-
-          </div>
+          <% end %>
         </div>
       </div>
     </div>
@@ -77,12 +59,12 @@
           <tr>
             <th class="no-sort"></th>
             <th class="no-sort">Month</th>
-            <th class="no-sort">Inquiry Target</th>
+            <th class="no-sort">Target</th>
           </tr>
           </thead>
           <tbody>
           <% if @targets.present? %>
-            <% @targets.each do |target| %>
+            <% @targets.order(target_period_id: :asc).each do |target| %>
               <tr>
                 <td></td>
                 <td><%= target.target_period.to_s %></td>

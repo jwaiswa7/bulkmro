@@ -4,13 +4,13 @@
 <% end %>
 
 <div class="col-12">
-  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+  <section class="pt-0 pt-lg-0 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
-      <h1 class="display-5 mb-1">Order <%= format_id(@customer_order.online_order_number) %></h1>
+      <h1 class="display-5 mb-1 bmro-form-heading">Order <%= format_id(@customer_order.online_order_number) %></h1>
     </div>
-    <p class="lead mt-1">
+<!--     <p class="lead mt-1">
       There are a total of <strong><%= @customer_order.rows.count %></strong> product(s) in this order.
-    </p>
+    </p> -->
   </section>
 
   <div class="card mb-2">

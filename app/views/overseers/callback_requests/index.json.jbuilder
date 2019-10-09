@@ -2,7 +2,7 @@ json.data (@callback_requests) do |callback_request|
   columns = [
                   [
                       if is_authorized(callback_request,'show')
-                        row_action_button(overseers_callback_request_path(callback_request), 'eye', 'Show Callback Request', 'info', :_blank)
+                        row_action_button_without_fa(overseers_callback_request_path(callback_request), 'bmro-icon-table bmro-icon-used-view', 'Show Callback Request', 'info', :_blank)
                       end,
                   ].join(' '),
                   status_badge(callback_request.status),

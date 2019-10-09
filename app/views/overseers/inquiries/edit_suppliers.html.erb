@@ -23,7 +23,7 @@
           </div>
           <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select {|ip| ip.approved?;} do |inquiry_product, i| %>
             <%= inquiry_product.hidden_field :id %>
-            <h6 class="text-uppercase pl-3 bmro-form-heading">
+            <h6 class="text-uppercase pl-3 bmro-form-label">
                 <span class="custom-control custom-checkbox d-inline pl-0">
                   <%= check_box_tag 'inquiry_product_ids[]', inquiry_product.object.id, false, id: "inquiry_product_id_#{inquiry_product.object.id}", class: 'custom-control-input bmro-form-input' %>
                   <label class="custom-control-label" for="<%= "inquiry_product_id_#{inquiry_product.object.id}" %>"></label>
@@ -42,7 +42,7 @@
                   <div class="col-12 col-md-3">
                     <div class="d-flex">
                       <span class="flex-fill">
-                        <%= inquiry_product_supplier.association :supplier, collection: selected_option_or_nil(inquiry_product_supplier, :supplier), label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_suppliers_path, :'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id, 'data-placeholder': 'Type to Search'} %>
+                        <%= inquiry_product_supplier.association :supplier, collection: selected_option_or_nil(inquiry_product_supplier, :supplier), label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon bmro-fix-width', :'data-source' => autocomplete_overseers_suppliers_path, :'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id, 'data-placeholder': 'Type to Search'} %>
                       </span>
                       <span class="<%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "align-self-center" : "align-self-top" %> ml-1">
                         <% if inquiry_product.object.inquiry_product_suppliers.present? && !inquiry_product.object.inquiry_product_suppliers.first.supplier.rating.nil? %>

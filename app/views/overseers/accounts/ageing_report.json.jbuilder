@@ -2,7 +2,7 @@ json.data (@accounts) do |account|
   json.array! [
                   [
                       if policy(account).show?
-                        row_action_button(ageing_report_overseers_account_companies_path(account_id: account.id), 'eye', 'View Account', 'info', :_blank)
+                        row_action_button_without_fa(ageing_report_overseers_account_companies_path(account_id: account.id), 'bmro-icon-table bmro-icon-used-view', 'View Account', 'info', :_blank)
                       end,
                   ].join(' '),
                   account.alias,

@@ -50,6 +50,7 @@ const edit = () => {
         }
     });
 
+
 };
 let onProductChange = (container) => {
     let optionSelected = $("option:selected", container);
@@ -69,13 +70,14 @@ let onProductChange = (container) => {
         });
     }   
 };
-
+    // end      
 // crezenta js
 
 // function slideTo(page) {
 //     let element = document.getElementById(page);
 //     element.scrollIntoView({behavior: "smooth",offsetTop: 20 });
 // }
+
 
 $(".bmro-li-right").click(function(){
     $('.bmro-li-right').addClass('bmro-active-li',1000);

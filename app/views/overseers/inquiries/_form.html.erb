@@ -1,6 +1,6 @@
 <%= simple_form_for([:overseers, @inquiry], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
   <%= f.hidden_field :company_id %>
-  
+
   <%= render 'shared/snippets/form_errors', f: f %>
   <div class="card bmro-card">
 
@@ -8,7 +8,7 @@
       <div class="bmro-Opportunity-slide" id="Opportunity-Details"></div>
       <div>
         <h6 class="mb-1 bmro-form-heading bmro-Opportunity-Details-slide">Opportunity Details</h6>
-        
+
         <div class="form-row">
           <div class="col-3 col-md-5">
             <%= f.input :company, as: :string, disabled: true, input_html: { class: 'select2-single bmro-form-input' } %>
@@ -59,7 +59,7 @@
         </div>
         <div class="form-row">
           <div class="col-6">
-            <%= f.input :subject, input_html: { class: 'bmro-form-input' }, required: true %>
+            <%= f.input :subject, input_html: { class: 'bmro-form-input-subject-height bmro-form-input ' }, required: true %>
           </div>
           <div class="col-6">
             <% if f.object.calculation_sheet.attached? %>
@@ -83,7 +83,7 @@
               </div>
               <div class="col-6 col-md-6">
                 <% if  is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
-                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), disabled:true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' } %>
+                  <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez), disabled:true %>
                 <% else %>
                   <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, required: true, selected: ((f.object.company.default_billing_address.present? && action_name == 'new') ? f.object.company.default_billing_address.is_sez : f.object.is_sez) %>
                 <% end %>
@@ -132,16 +132,16 @@
         <% else %>
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= f.association :bill_from, label_method: :to_s, include_blank: "Select a bill from", input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_warehouses_path(bill_from: true)}, disabled: is_authorized(@inquiry,'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
+              <%= f.association :bill_from, label_method: :to_s, include_blank: "Select a bill from", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_warehouses_path(bill_from: true)}, disabled: is_authorized(@inquiry,'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
             </div>
             <div class="col-12 col-md-6">
-              <%= f.association :ship_from, label_method: :to_s, include_blank: "Select a ship from", input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
+              <%= f.association :ship_from, label_method: :to_s, include_blank: "Select a ship from", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
             </div>
           </div>
         <% end %>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :billing_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'select2-single bmro-form-input' }, disabled: true %>
+            <%= f.association :billing_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: true %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.association :shipping_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, include_blank: "Select a shipping company" %>
@@ -541,7 +541,7 @@
         <div class="mt-3 mb-3">
           <h6 class="mb-1 bmro-form-heading">Products</h6>
           <div class="form-row d-none d-md-flex">
-            <div class="col-1 text-center">
+            <div class="col-1 text-center bmro-serial-number-products">
               <div class="form-group mb-0">
                 <label>Serial No</label>
               </div>
@@ -616,7 +616,7 @@
                   </div> -->
 
                   <div class="flex-grow-1">
-                    <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                    <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '',class: 'bmro-serial-number-products'} %>
                     <% if inquiry_product.object.persisted? %>
                       <%= format_boolean_label(inquiry_product.object.product.synced?, 'synced') %>
                     <% else %>

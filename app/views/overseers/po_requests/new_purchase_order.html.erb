@@ -4,12 +4,12 @@
   <%#= simple_form_for([:overseers, @po_request],:url => create_purchase_order_overseers_po_request_path(@po_request), :method => :post, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :id %>
     <div class="card mb-2">
-      <div class="card-body">
+      <div class="card-body bmro-card-body">
         <div>
-          <h6 class="text-uppercase text-black-50 mb-2">Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-2 bmro-form-heading">Details</h6>
           <div class="form-row mb-1">
             <div class="col-8 col-md-3 mt-2 mt-md-0">
-              <strong>Sales Order</strong><br>
+              <strong class="bmro-summary-heading">Sales Order</strong><br>
               <% if @po_request.sales_order.present? %>
                 <%= link_to overseers_inquiry_sales_order_path(@po_request.inquiry, @po_request.sales_order), target: '_blank' do %>
                   <%= format_id(@po_request.sales_order.order_number) %>
@@ -19,17 +19,17 @@
               <% end %>
             </div>
             <div class="col-8 col-md-3">
-              <strong>Inquiry</strong><br>
+              <strong class="bmro-summary-heading">Inquiry</strong><br>
               <%= link_to edit_overseers_inquiry_path(@po_request.inquiry), target: '_blank' do %>
                 <%= format_id(@po_request.inquiry.inquiry_number) %>
               <% end %>
             </div>
             <div class="col-4 col-md-3 mt-2 mt-md-0">
-              <strong>Currency</strong><br>
+              <strong class="bmro-summary-heading">Currency</strong><br>
               <span data-v-html="calculated_total_margin"><%= f.object.sales_order.present? ? f.object.sales_order.currency : '-' %></span>
             </div>
             <div class="col-4 col-md-3 mt-2 mt-md-0">
-              <strong>Purchase Order Request</strong><br>
+              <strong class="bmro-summary-heading">Purchase Order Request</strong><br>
               <span data-v-html="calculated_total_margin">
                 #<%= f.object.id %></span>
             </div>
@@ -37,20 +37,20 @@
 
           <div class="form-row mb-1">
             <div class="col-8 col-md-3 mt-2 mt-md-0">
-              <strong>Procurement Specialist</strong><br>
+              <strong class="bmro-summary-heading">Procurement Specialist</strong><br>
               <%= f.object.inquiry.inside_sales_owner.to_s %>
             </div>
             <div class="col-4 col-md-3 mt-2 mt-md-0">
-              <strong>Procurement Specialist</strong><br>
+              <strong class="bmro-summary-heading">Procurement Specialist</strong><br>
               <span data-v-html="calculated_total_margin"><%= f.object.inquiry.procurement_operations.to_s %></span>
             </div>
             <div class="col-8 col-md-3">
-              <strong>Outside Sales</strong><br>
+              <strong class="bmro-summary-heading">Outside Sales</strong><br>
               <%= f.object.inquiry.outside_sales_owner.to_s %>
             </div>
 
             <div class="col-4 col-md-3 mt-2 mt-md-0">
-              <strong>Account Owner</strong><br>
+              <strong class="bmro-summary-heading">Account Owner</strong><br>
               <span data-v-html="calculated_total_margin">
                 <%= f.object.supplier.sales_manager.to_s %></span>
             </div>
@@ -58,19 +58,19 @@
 
           <div class="form-row mb-1">
             <div class="col-8 col-md-3 mt-2 mt-md-0">
-              <strong>Customer Name</strong><br>
+              <strong class="bmro-summary-heading">Customer Name</strong><br>
               <%= f.object.inquiry.company.to_s %>
             </div>
             <div class="col-4 col-md-3 mt-2 mt-md-0">
-              <strong>PO Margin</strong><br>
+              <strong class="bmro-summary-heading">PO Margin</strong><br>
               <span data-v-html="calculated_total_margin"><%= f.object.po_margin_percentage %>%</span>
             </div>
             <div class="col-8 col-md-3">
-              <strong>Overall Margin</strong><br>
+              <strong class="bmro-summary-heading">Overall Margin</strong><br>
               <%= f.object.sales_order.present? ? f.object.sales_order.calculated_total_margin_percentage : '-'%>%
             </div>
             <div class="col-8 col-md-3">
-              <strong>Payment Term</strong><br>
+              <strong class="bmro-summary-heading">Payment Term</strong><br>
               <%= f.object.payment_option.present? ? f.object.payment_option.to_s : '-'%>
             </div>
           </div>
@@ -78,25 +78,25 @@
       </div>
     </div>
     <div class="card mb-2">
-      <div class="card-body">
+      <div class="card-body bmro-card-body">
         <div>
-          <h6 class="text-uppercase text-black-50 mb-2">Supplier Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-2 bmro-form-heading">Supplier Details</h6>
           <h6 class="text-uppercase mb-1"><strong><%= f.object.supplier.to_s %></strong></h6>
           <div class="form-row">
             <div class="col-8 col-md-4 mt-2 mt-md-0">
-              <strong>Supplier Code</strong><br>
+              <strong class="bmro-summary-heading">Supplier Code</strong><br>
               <span><%= f.object.supplier.remote_uid %></span>
             </div>
             <div class="col-4 col-md-4 mt-2 mt-md-0">
-              <strong>Contact</strong><br>
+              <strong class="bmro-summary-heading">Contact</strong><br>
               <span data-v-html="calculated_total_margin"><%= f.object.contact.to_s %></span>
             </div>
             <div class="col-4 col-md-4 mt-2 mt-md-0">
-              <strong>Delivery Term</strong><br>
+              <strong class="bmro-summary-heading">Delivery Term</strong><br>
               <span data-v-html="delivery_type"><%= f.object.delivery_type.present? ? f.object.delivery_type : ' - ' %></span>
             </div>
             <div class="col-4 col-md-4 mt-2 mt-md-0">
-              <strong>Transport Mode</strong><br>
+              <strong class="bmro-summary-heading">Transport Mode</strong><br>
               <span data-v-html="transport_mode"><%= f.object.transport_mode.present? ? f.object.transport_mode : ' - ' %></span>
             </div>
           </div>
@@ -104,12 +104,12 @@
       </div>
     </div>
     <div class="card">
-      <div class="card-body">
-        <h6 class="text-uppercase text-black-50 mb-2">Address Details</h6>
+      <div class="card-body bmro-card-body">
+        <h6 class="text-uppercase text-black-50 mb-2 bmro-form-heading">Address Details</h6>
         <div>
           <div class="form-row ">
             <div class="col-md-6 mt-md-0 mb-2">
-              <strong class="d-block">Supplier - Bill To</strong>
+              <strong class="d-block bmro-summary-heading">Supplier - Bill To</strong>
               <% if f.object.supplier.default_billing_address.present? %>
                 <i><%= f.object.supplier.default_billing_address.name.to_s %></i><br>
                 <%= f.object.supplier.default_billing_address.to_compact_multiline_s %><br>
@@ -123,7 +123,7 @@
               <% end %>
             </div>
             <div class="col-md-6 mt-2 mt-md-0">
-              <strong class="d-block">Supplier - Ship To</strong>
+              <strong class="d-block bmro-summary-heading">Supplier - Ship To</strong>
               <% if f.object.supplier.default_shipping_address.present? %>
                 <i><%= f.object.supplier.default_shipping_address.name.to_s %></i><br>
                 <%= f.object.supplier.default_shipping_address.to_compact_multiline_s %><br>
@@ -139,7 +139,7 @@
           </div>
           <div class="form-row">
             <div class="col-md-6 mt-2 mt-md-0 mb-2">
-              <strong class="d-block">Bulk MRO - Bill To</strong>
+              <strong class="d-block bmro-summary-heading">Bulk MRO - Bill To</strong>
               <% if f.object.bill_to.present? %>
                 <i><%= f.object.bill_to.address.name.to_s %></i><br>
                 <%= f.object.bill_to.address.to_compact_multiline_s %><br>
@@ -149,7 +149,7 @@
               <% end %>
             </div>
             <div class="col-md-6 mt-2 mt-md-0">
-              <strong class="d-block">Bulk MRO - Ship To</strong>
+              <strong class="d-block bmro-summary-heading">Bulk MRO - Ship To</strong>
               <% if f.object.bill_to.present? %>
                 <i><%= f.object.ship_to.address.name.to_s %></i><br>
                 <%= f.object.ship_to.address.to_compact_multiline_s %><br>
@@ -161,8 +161,8 @@
           </div>
         </div>
 
-        <h6 class="text-uppercase text-black-50 mb-0 mt-2">Products Details</h6>
-        <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
+        <h6 class="text-uppercase text-black-50 mb-0 mt-2 bmro-form-heading">Products Details</h6>
+        <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace bmro-datatable-style" data-fixed-header="false">
           <thead>
           <tr>
             <th class="no-sort">
@@ -240,7 +240,7 @@
                 <span> - </span>
               </td>
               <td>
-                <span><%= row.tax_code.code[0..3] %></span>
+                <span><%= row.tax_code.try(:code) %></span>
               </td>
               <td>
                 <span><%= row.tax_code.tax_percentage.to_f %>%</span>
@@ -254,13 +254,13 @@
         </table>
       </div>
     </div>
-    <div class="card-footer">
+    <div class="card-footer bmro-bg">
       <div class="form-row">
         <div class="col-6">
-          <a id="rejection-purchase-order-button" data-po-request-id="<%= @po_request.id %>" class="btn-block btn btn-danger text-white" remote="true" ><i class="fa fa-ban mr-1"></i>Reject Supplier PO</a>
+          <a id="rejection-purchase-order-button" data-po-request-id="<%= @po_request.id %>" class="btn-block btn btn-danger text-white bmro-button" remote="true" ><i class="fa fa-ban mr-1"></i>Reject Supplier PO</a>
         </div>
         <div class="col-6">
-          <%= button_tag(type: "submit", name: "update_sent_at_field", class: "btn btn-success btn-block") do %>
+          <%= button_tag(type: "submit", name: "update_sent_at_field", class: "btn btn-success btn-block bmro-button") do %>
             <i class="far fa-check mr-1"></i> Create Supplier PO
           <% end %>
         </div>

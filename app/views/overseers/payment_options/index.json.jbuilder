@@ -2,10 +2,10 @@ json.data (@payment_options) do |payment_option|
   json.array! [
                   [
                       if is_authorized(payment_option, 'edit')
-                        row_action_button(overseers_payment_option_path(payment_option), 'eye', 'View Payment Term', 'info')
+                        row_action_button_without_fa(overseers_payment_option_path(payment_option), 'bmro-icon-table bmro-icon-used-view', 'View Payment Term', 'info')
                       end,
                       if is_authorized(payment_option, 'edit')
-                        row_action_button(edit_overseers_payment_option_path(payment_option), 'pencil', 'Edit Payment Term', 'warning')
+                        row_action_button_without_fa(edit_overseers_payment_option_path(payment_option), 'bmro-icon-table bmro-icon-pencil', 'Edit Payment Term', 'warning')
                       end,
                   ].join(' '),
                   conditional_link(payment_option.name.to_s, overseers_payment_option_path(payment_option), is_authorized(payment_option, 'edit')),

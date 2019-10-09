@@ -1,12 +1,12 @@
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-2">
+  <section class="pt-0 pt-lg-0 pb-2">
     <div class="d-md-flex justify-content-between">
-      <h3 class="display-5 d-flex align-items-center">
+      <h3 class="display-5 d-flex align-items-center bmro-form-heading">
         <%= @brand.name %>
       </h3>
       <%# if policy(@brand).edit? %>
       <% if is_authorized(@brand, 'edit') %>
-        <a href="<%= edit_overseers_brand_path(@brand) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+        <a href="<%= edit_overseers_brand_path(@brand) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down bmro-button"><i class="fal fa-pen mr-1"></i>Edit
           Brand</a>
       <% end %>
     </div>
@@ -16,22 +16,28 @@
     <div class="card">
       <div class="card-body">
         <div>
-          <h6 class="text-uppercase text-black-50 mb-1">Brand Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Brand Details</h6>
           <div class="form-row">
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Products</strong>
+              <strong class="d-block bmro-summary-heading">Products</strong>
+              <div class="bmro-summary-data">
               <%= @brand_products.count %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Suppliers</strong>
+              <strong class="d-block bmro-summary-heading">Suppliers</strong>
+              <div class="bmro-summary-data">
               <%= @brand_suppliers.count %>
-            </div>
+              </div>
+          </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Active</strong>
+              <strong class="d-block bmro-summary-heading">Active</strong>
+              <div class="bmro-summary-data">
               <%= format_boolean(@brand.is_active) %>
-            </div>
+              </div>
+          </div>
           </div>
         </div>
       </div>
@@ -40,10 +46,10 @@
 
   <% if @brand_suppliers.present? %>
     <div class="d-md-flex justify-content-between mt-5">
-      <h3 class="display-5 mb-1">Suppliers List</h3>
+      <h3 class="display-5 mb-1 bmro-form-heading">Suppliers List</h3>
     </div>
 
-    <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;">
+    <table class="datatable table table-bordered dt-responsive bmro-datatable-style" data-search="Enter search term/keywords" style="width:100%;">
       <thead>
       <tr>
         <th></th>

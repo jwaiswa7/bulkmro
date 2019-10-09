@@ -15,21 +15,27 @@
         <%= f.hidden_field :order_number, as: :string %>
         <div class="form-row">
           <div class="col-4">
-            <strong class="d-block">Order Number</strong>
+            <strong class="d-block bmro-summary-heading">Order Number</strong>
+            <div class="bmro-summary-data">
             <%= link_to overseers_inquiry_sales_order_path(f.object.inquiry, f.object), target: :_blank do %>
               <%= f.object.order_number %>
             <% end %>
+            </div>
           </div>
           <div class="col-4">
-            <strong class="d-block">Inquiry</strong>
+            <strong class="d-block bmro-summary-heading">Inquiry</strong>
+            <div class="bmro-summary-data">
             <%= link_to overseers_inquiry_path(f.object.inquiry) do %>
               <%= f.object.inquiry %>
             <% end %>
+            </div>
           </div>
           <br>
           <div class="col-4">
-            <strong class="d-block">Customer Committed Date</strong>
+            <strong class="d-block bmro-summary-heading">Customer Committed Date</strong>
+            <div class="bmro-summary-data">
             <%= @sales_order.inquiry.customer_committed_date %>
+            </div>
           </div>
         </div>
       </div>
@@ -66,9 +72,9 @@
             <hr class="<%= f.object.po_requests.last == po_request.object ? 'd-none' : '' %>"/>
           <% end %>
         </div>
-        <div class="card-footer">
+        <div class="card-footer bmro-card-footer">
           <% if is_authorized(@sales_order, 'create_purchase_orders_requests') %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+            <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
               <i class="fal fa-pen"></i> Preview PO request
             <% end %>
           <% end %>
@@ -91,7 +97,7 @@
               <% end %>
             </ul>
           </p>
-          <table class="table table-bordered dt-responsive wrap-whitespace w-100 mb-0 datatable" data-fixed-header="false" data-sort="false">
+          <table class="table table-bordered dt-responsive wrap-whitespace w-100 mb-0 datatable bmro-datatable-style" data-fixed-header="false" data-sort="false">
             <tr>
               <th class="no-sort desktop" data-name="name">PO Request No.</th>
               <th class="no-sort desktop" data-name="name">Inquiry</th>

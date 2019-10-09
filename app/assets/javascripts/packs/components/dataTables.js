@@ -5,6 +5,15 @@ const dataTables = () => {
     preSetup();
     setup();
     ajax();
+    $('.datatable').DataTable().rowGroup().disable().draw();
+    if (typeof $(".dataTable").data('ajax') !== 'undefined'){
+        let data_ajax = $('.datatable').data('ajax');
+        let report_name = data_ajax.split('/').pop();
+        if (report_name == 'company_report') {
+            $('.datatable').DataTable().rowGroup().enable().draw();
+        }
+    }
+
 };
 
 // Setup the filter field before all dataTables, if the filter attribute exists
@@ -19,22 +28,10 @@ let preSetup = () => {
 
         if (searchText) {
             let $input = "<input type='search' class='form-control filter-list-input' placeholder='" + searchText + "'>";
-            $input = $($input);
+            $input = $('.bmro-search-width');
             $input.bindWithDelay('keyup', function (e) {
                 $('#' + $target.attr('id')).DataTable().search($(this).val()).draw();
             }, 300);
-
-            let $wrapper = "<div class='input-group mt-2'>" +
-                "<div class='input-group-prepend'>" +
-                "<span class='input-group-text'>" +
-                "<i class='material-icons'>filter_list</i>" +
-                "</span>" +
-                "</div>" +
-                "</div>";
-
-            let $filter = $($wrapper).append($input);
-
-            $filter.insertBefore($target);
             $target.data('has-search', true);
         }
     });
@@ -48,6 +45,7 @@ let setup = () => {
         let isFixedHeader = $(this).data('fixed-header') == "false" ? false : true;
         let allowSort = $(this).data('sort') ? $(this).data(sort) : true;
         let that = this;
+
 
         $.fn.dataTable.ext.errMode = 'throw';
 
@@ -77,7 +75,7 @@ let setup = () => {
                         style: 'currency',
                         currency: 'INR',
                         minimumFractionDigits: 2
-                    })
+                    });
                     if (value && value != "") {
                         if (td.hasClass('currency')){
                             td.empty().append(parseInt(value))
@@ -105,6 +103,9 @@ let setup = () => {
                         }
                         else if(td.hasClass('no-data')){
                             td.empty()
+                        }
+                        else if (td.hasClass('total')){
+                            td.empty().append('<strong>Total</strong>');
                         }
                         else{
                             td.empty()
@@ -152,7 +153,11 @@ let setup = () => {
             }, {
                     "targets": 'text-center',
                     "class": 'text-center text-nowrap'
-                }],
+                },{
+                "targets": 'row-group',
+                "class": 'row-group'
+            }],
+            rowGroup: {dataSrc: [ 1 ]},
             fnServerParams: function (data) {
                 data['columns'].forEach(function (items, index) {
                     data['columns'][index]['name'] = $(that).find('th:eq(' + index + ')').data('name');
@@ -217,25 +222,25 @@ let setup = () => {
                         let input = '';
 
                         if (filter == 'dropdown') {
-                            input = $('<select class="select2-single form-control" data-placeholder="' + [text, ' '].join('') + '"><option value="" selected disabled></option></select>');
+                            input = $('<div class="bmro-input-search bmro-arrow-parent"><select class="form-control select select2-single bmro-form-input select2-hidden-accessible" data-placeholder="' + [text, ' '].join('') + '"><option value="" selected disabled></option></select></div>');
                             json.columnFilters[this.index()].forEach(function (f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
-                                input.append(option);
+                                input.find('select').append(option);
                             });
                         } else if (filter == 'daterange') {
-                            input = $('<input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" />');
+                            input = $('<div class="bmro-input-search bmro-arrow-parent"><input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" /></div>');
                         } else if (filter == 'ajax') {
                             let source = "";
                             json.columnFilters[this.index()].forEach(function (f) {
                                 source = f.source;
                             });
-                            input = $('<select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' '].join('') + '"></select>');
+                            input = $('<div class="bmro-input-search bmro-arrow-parent"><select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' '].join('') + '"></select></div>');
                         } else {
-                            input = $('<input type="text" class="form-control" placeholder="' + [text, ' ', 'Filter'].join('') + '" />');
+                            input = $('<div class="bmro-input-search bmro-arrow-parent"><input type="text" class="form-control" placeholder="' + [text, ' ', 'Filter'].join('') + '" /></div>');
                         }
 
                         input.on('change', function () {
-                            let val = $(this).val();
+                            let val = $(this).find('select').val();
                             column.search(val).draw();
 
                             // Override the value for dropdowns/select2s in the text|value format
@@ -249,7 +254,7 @@ let setup = () => {
                             $(that).trigger('filters:change');
                         });
 
-                        td.append(input);
+                        $('.fillter-wrapper').append(input);
                         select2s();
 
 
@@ -258,11 +263,11 @@ let setup = () => {
                         if (selected == "") return;
                         $(this).data('filtered', false);
                         if (filter == 'dropdown') {
-                            input.val(selected[1]).trigger('change');
+                            input.find('select').val(selected[1]).trigger('change');
                         } else if (filter == 'ajax') {
-                            input.append(new Option(selected[0], selected[1], true, true)).trigger('change');
+                            input.find('select').append(new Option(selected[0], selected[1], true, true)).trigger('change');
                         } else {
-                            input.val(selected).trigger('change');
+                            input.find('select').val(selected).trigger('change');
                         }
                     }
                 });

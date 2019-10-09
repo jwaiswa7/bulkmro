@@ -9,8 +9,8 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
     ActiveRecord::Base.transaction do
       @sales_order.create_approval(
         comment: @comment,
-        overseer: overseer,
-        metadata: Serializers::InquirySerializer.new(@sales_order.inquiry)
+        overseer: overseer
+        #metadata: Serializers::InquirySerializer.new(@sales_order.inquiry)
       )
 
       @sales_order.update_attributes(

@@ -1,7 +1,7 @@
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-2">
+  <section class="pt-0 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
-      <h3 class="display-5 d-flex align-items-center">
+      <h3 class="display-5 d-flex align-items-center bmro-width-auto bmro-bradecrumb-edit">
         Freiqht Quote for Request <%= format_id(@freight_quote.freight_request.id) %>:&nbsp;<%= status_badge(@freight_quote.status) %>
       </h3>
       <% if is_authorized(@freight_quote,'edit') %>

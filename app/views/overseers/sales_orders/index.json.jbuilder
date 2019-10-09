@@ -2,16 +2,16 @@ json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
                       if is_authorized(sales_order, 'relationship_map')
-                        row_action_button_without_fa(relationship_map_overseers_inquiry_sales_order_path(sales_order.inquiry.to_param, sales_order.to_param), 'bmro-icon-table bmro-icon-relationship', 'Relationship Map', 'info', :_blank)
+                        row_action_button(relationship_map_overseers_inquiry_sales_order_path(sales_order.inquiry.to_param, sales_order.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
                       end,
                       if is_authorized(sales_order, 'comments')
-                        row_action_button_without_fa(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'bmro-icon-table bmro-icon-truck', sales_order.comments.last ? sales_order.comments.last.try(:message) : 'Comments and Approval', sales_order.comments.last ? 'success' : 'dark', :_blank)
+                        row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', sales_order.comments.last ? sales_order.comments.last.try(:message) : 'Comments and Approval', sales_order.comments.last ? 'success' : 'dark', :_blank)
                       end,
                       if is_authorized(sales_order, 'edit_mis_date')
-                        row_action_button_without_fa(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'bmro-icon-table bmro-icon-update', 'Update MIS Date', 'success', :_blank)
+                        row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar-alt', 'Update MIS Date', 'success', :_blank)
                       end,
                       if is_authorized(sales_order, 'can_request_po')
-                        row_action_button_without_fa(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'bmro-icon-table bmro-icon-pencil', 'PO Request', 'success', :_blank)
+                        row_action_button(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'file', 'PO Request', 'success', :_blank)
                       end,
 =begin
                       if is_authorized(sales_order, 'can_request_invoice')
@@ -22,18 +22,18 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(new_overseers_freight_request_path(sales_order_id: sales_order.to_param), 'external-link', 'New Freight Request', 'warning')
                       end, '<br/>', '<br/>',
                       if is_authorized(sales_order, 'material_dispatched_to_customer_new_email_msg')
-                        row_action_button_without_fa(material_dispatched_to_customer_overseers_sales_order_email_messages_path(sales_order), 'bmro-icon-table bmro-icon-deliverd', 'Material Dispatched to Customer Notification', 'dark', :_blank)
+                        row_action_button(material_dispatched_to_customer_overseers_sales_order_email_messages_path(sales_order), 'envelope', 'Material Dispatched to Customer Notification', 'dark', :_blank)
                       end,
                       if is_authorized(sales_order, 'material_delivered_to_customer_new_email_msg')
-                        row_action_button_without_fa(material_delivered_to_customer_overseers_sales_order_email_messages_path(sales_order), 'bmro-icon-table bmro-icon-deliverd', 'Material Delivered to Customer Notification', 'dark', :_blank)
+                        row_action_button(material_delivered_to_customer_overseers_sales_order_email_messages_path(sales_order), 'envelope', 'Material Delivered to Customer Notification', 'dark', :_blank)
                       end,
                       if is_authorized(sales_order, 'debugging')
-                        row_action_button_without_fa(debugging_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'bmro-icon-table bmro-icon-debugging', 'Debugging', 'danger', :_blank)
+                        row_action_button(debugging_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'cogs', 'Debugging', 'danger', :_blank)
                       end,
                       if is_authorized(sales_order, 'index')
                         link_to('', class: ['btn btn-sm btn-success comment-sales-order'], 'data-model-id': sales_order.id, title: 'Comment', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
+                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
                         end
                       end,
 

@@ -87,7 +87,7 @@
               Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
             <% end %>
             Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-           GST Number: <%= @sales_order.serialized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
+           GST Number: <%= @sales_order.serialized_billing_address.gst || '-' %></span>
           </div>
           <div class="col-md-6 mt-2 mt-md-0">
             <strong class="d-block bmro-summary-heading">Customer - Shipping Address</strong>
@@ -98,7 +98,7 @@
                 - <%= @inquiry.shipping_contact.phone %></span>
             <% end %>
             <span class="bmro-summary-data"> Email: <%= @inquiry.shipping_contact.email if @inquiry.shipping_contact.email.present? %></span>
-            <span class="d-block bmro-summary-data">GST Number: <%= @sales_order.serialized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
+            <span class="d-block bmro-summary-data">GST Number: <%= @sales_order.serialized_shipping_address.gst || '-' %></span>
           </div>
         </div>
       </div>
@@ -120,9 +120,9 @@
 
           <div class="col-6 mb-1">
             <strong class="d-block bmro-summary-heading ">Customer Purchase Order</strong>
-            <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
-              <span class="bmro-summary-link"> <%= @inquiry.customer_po_sheet.filename %>
-            <% end if @inquiry.customer_po_sheet.attached? %></span>
+            <span class="bmro-summary-link"> <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
+              <%= @inquiry.customer_po_sheet.filename %></span>
+            <% end if @inquiry.customer_po_sheet.attached? %>
           </div>
           <div class="col-6 mb-1">
             <% if @inquiry.copy_of_email.attached? %>
@@ -143,8 +143,10 @@
 
         <% end %>
       </div>
-      <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace bmro-datatable-style bmro-summary-table" data-fixed-header="false">
+
       <div class="bmro-summary-dotted-line"></div>
+  <div class="bmro-summary-product" >
+      <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace bmro-datatable-style bmro-summary-table" data-fixed-header="false">
         <thead>
         <tr>
           <th class="no-sort">
@@ -280,15 +282,16 @@
         <% end %>
       <% end %>
 
-  <div class="bmro-summary-dotted-line"></div>
+    <div class="bmro-summary-dotted-line"></div>
 
-  <div class="card-footer bmro-summary-footer">
-      <div class=form-row>
+
+    <div class="card-footer bmro-summary-footer bmro-summary-product-bottom">
+      <div class="form-row bmro-summary-footer-padding">
         <div class="col-6 col-md-1">
          <span class="bmro-summary-data bmro-summary-padding"> Products</span>
           <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= sales_order.rows.size %></strong>
         </div>
-        <div class="col-6 col-md-1 bmro-border-left">
+        <div class="col-6 col-md-2 bmro-border-left">
           <span class="bmro-summary-data bmro-summary-padding">Total Freight</span>
           <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.calculated_freight_cost_total, symbol: sales_order.currency_sign) %></strong>
         </div>
@@ -305,7 +308,7 @@
          <span class="bmro-summary-data bmro-summary-padding"> Selling Price (E. tax)</span>
           <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.converted_total, symbol: sales_order.currency_sign) %></strong>
         </div>
-        <div class="col-6 col-md-2 mt-2 mt-md-0 bmro-border-left">
+        <div class="col-6 col-md-1 mt-2 mt-md-0 bmro-border-left">
          <span class="bmro-summary-data bmro-summary-padding"> Tax</span>
           <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.converted_total_tax, symbol: sales_order.currency_sign) %></strong>
         </div>
@@ -315,11 +318,14 @@
         </div>
       </div>
     </div>
-    
   </div>
 
+  </div>
+
+
+
   <div class="card bmro-summary-header">
-    <div class="card-header bmro-bg">      
+    <div class="card-header bmro-bg bmro-card-border-summary">
         <% if sales_order.status || sales_order.legacy_request_status == "Approved" %>
           <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
             <% if is_authorized(@sales_order, 'show_pdf') %>
@@ -341,9 +347,9 @@
                   <label data-path="Produts_summary" class="bmro-list-button bmro-Produts-summary">Products</label>
               </li>
             </ul>
-          </nav>          
+          </nav>
+        </div>
         </div>
     </div>
-  </div> 
   </div>
 </div>

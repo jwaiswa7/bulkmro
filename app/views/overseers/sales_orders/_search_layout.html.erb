@@ -3,21 +3,21 @@
     <div class="card-body">
       <div class="form-row">
         <div class="col-12 col-md-3">
-          <%= f.input :delivery_status, as: :select, collection: @delivery_statuses, input_html: {class: 'select2-single select2-wrap-text'}, :include_blank => false, label: "Delivery Status", required: false, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['delivery_status'].present? ? params['customer_order_status_report']['delivery_status'] : @delivery_statuses[0] %>
+          <%= f.input :delivery_status, as: :select, collection: @delivery_statuses, input_html: {class: 'select2-single select2-wrap-text bmro-form-input'}, :include_blank => false, label: "Delivery Status", required: false, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['delivery_status'].present? ? params['customer_order_status_report']['delivery_status'] : @delivery_statuses[0] %>
         </div>
         <div class="col-12 col-md-3">
-          <%= f.input :category, as: :select, collection: @categories, input_html: {class: 'select2-single select2-wrap-text'}, :include_blank => false, label: "Category", required: false, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['category'].present? ? params['customer_order_status_report']['category'] : @categories[0] %>
+          <%= f.input :category, as: :select, collection: @categories, input_html: {class: 'select2-single select2-wrap-text bmro-form-input'}, :include_blank => false, label: "Category", required: false, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['category'].present? ? params['customer_order_status_report']['category'] : @categories[0] %>
         </div>
         <div class="col-12 col-md-3">
-          <%= f.input :procurement_specialist, as: :select, collection: Inquiry.procurement_specialists, input_html: {class: "select2-single", :'data-placeholder' => 'Select Procurement Specialist'}, required: false, include_blank: true, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['procurement_specialist'].present? ? params['customer_order_status_report']['procurement_specialist'].to_i : '' %>
+          <%= f.input :procurement_specialist, as: :select, collection: Inquiry.procurement_specialists, input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select Procurement Specialist'}, required: false, include_blank: true, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['procurement_specialist'].present? ? params['customer_order_status_report']['procurement_specialist'].to_i : '' %>
         </div>
         <div class="col-12 col-md-3">
-          <%= f.input :outside_sales_owner, as: :select, collection: Inquiry.outside_sales_owners, input_html: {class: "select2-single", :'data-placeholder' => 'Select Outside Sales Owner'}, required: false, include_blank: true, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['outside_sales_owner'].present? ? params['customer_order_status_report']['outside_sales_owner'].to_i : '' %>
+          <%= f.input :outside_sales_owner, as: :select, collection: Inquiry.outside_sales_owners, input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select Outside Sales Owner'}, required: false, include_blank: true, selected: params['customer_order_status_report'].present? && params['customer_order_status_report']['outside_sales_owner'].present? ? params['customer_order_status_report']['outside_sales_owner'].to_i : '' %>
         </div>
       </div>
       <div class="form-row">
         <div class="col-4">
-          <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range', :value => (params['customer_order_status_report']['date_range'].present? ? params['customer_order_status_report']['date_range'] : "01-Apr-2018~#{Date.today.strftime('%d-%b-%Y')}")}, required: false, label: 'Pick a Date Range' %>
+          <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', class:'bmro-form-input', :placeholder => 'Date Range', :value => (params['customer_order_status_report']['date_range'].present? ? params['customer_order_status_report']['date_range'] : "01-Apr-2018~#{Date.today.strftime('%d-%b-%Y')}")}, required: false, label: 'Pick a Date Range' %>
         </div>
         <div class="col-8 text-right">
           <br>
@@ -29,13 +29,13 @@
       </div>
       <div class="form-row">
         <div class="col-3 text-center">
-          <%= button_tag(type: "submit", class: "btn btn-success btn-block mt-3") do %>
-            <i class="fal fa-hand-point-down mr-2"></i>Fetch Report
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block mt-3 bmro-button") do %>
+            <i class="bmro-icon-handpoint"></i>Fetch Report
           <% end %>
         </div>
         <div class="col-3 text-center">
-          <a href="<%= customer_order_status_report_overseers_sales_orders_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 mt-3">
-            <i class="fal fa-redo mr-2"></i> Reset Report</a>
+          <a href="<%= customer_order_status_report_overseers_sales_orders_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 mt-3 bmro-button">
+            <i class="bmro-icon-refresh2"></i> Reset Report</a>
         </div>
       </div>
     </div>

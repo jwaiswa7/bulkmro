@@ -33,7 +33,7 @@
         <%= f.input :country_code, as: :country, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"], input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-input-label bmro-bg'} %>
       </div>
       <div class="col-6 col-md-3">
-        <%= f.association :state, :wrapper => :custom_multi_select, collection: AddressState.indian, input_html: { class: 'bmro-form-input bmro-input-label bmro-dropdown-icon bmro-bg'} %>
+        <%= f.association :state, :wrapper => :custom_multi_select, collection: AddressState.indian, include_blank: 'None', input_html: { class: 'bmro-form-input bmro-input-label bmro-dropdown-icon bmro-bg'} %>
       </div>
       <div class="col-6 col-md-3">
         <%= f.input :city_name, input_html: { class: 'bmro-form-input bmro-input-label bmro-dropdown-icon bmro-bg'} %>
@@ -71,6 +71,10 @@
         </div>
       </div>
 
+       <div class="col-12 col-md-12">
+        <%= f.input :gst_proof, :wrapper => :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'GST Number Proof' %>
+      </div>
+
       <div class="col-6 col-md-6">
         <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select,input_html: { class: 'bmro-form-input bmro-input-label bmro-dropdown-icon'}, label: 'Is SEZ', required: true %>
       </div>
@@ -79,13 +83,10 @@
         <%= f.input :gst_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Address.gst_types), label: 'GST Type' %>
       </div>
 
-      <div class="col-12 col-md-6">
-        <%= f.input :gst_proof, :wrapper => :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'GST Number Proof' %>
-      </div>
     </div>
-    <div class="bmro-button-parent bmro-model-button">   
+    <div class="bmro-button-parent bmro-model-button">
     <%= action_button(action_name, @address) %>
-  </div>
+     </div>
   <% end %>
   </div>
 </div>

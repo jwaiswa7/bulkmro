@@ -7,7 +7,7 @@ json.data (@accounts) do |account|
                       end,
                       if is_authorized(:company, 'new')
                         row_action_button(new_overseers_account_company_path(account), 'building', 'New Company', 'success', :_blank)
-                      end,
+                      end
                   ].join(' '),
                   conditional_link(account.to_s, overseers_account_path(account), is_authorized(account, 'show')),
                   account.companies.size,

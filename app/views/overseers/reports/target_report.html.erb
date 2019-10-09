@@ -4,8 +4,8 @@
 <div class="col-lg-12 mb-0">
   <div class="page-header mb-0">
     <h2>Target Report</h2>
-    <p>Target report from <strong><%= format_date_without_time(@report.start_at) %></strong> to
-      <strong><%= format_date_without_time(@report.end_at) %></strong>.</p>
+    <!-- <p>Target report from <strong><%= format_date_without_time(@report.start_at) %></strong> to
+      <strong><%= format_date_without_time(@report.end_at) %></strong>.</p> -->
   </div>
 </div>
 
@@ -17,7 +17,7 @@
     <%= render layout: 'search_layout' do %>
 
       <div class="table-responsive">
-        <table class="table text-center mt-3">
+        <table class="table text-center bmro-table-in-new-table mt-3 bmro-new-table bmro-th bmro-datatable-style">
           <thead data-toggle="sticky">
           <tr>
             <th></th>

@@ -20,14 +20,14 @@
 
 <% content_for(:heading_buttons) do %>
   <% if is_authorized(:sales_order, 'index') %>
-    <a href = "<%= overseers_sales_orders_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >
+    <a href = "<%= overseers_sales_orders_path %>" class=" btn btn-success bmro-button btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >
       <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
     </a>
   <% end %>
 <% end %>
 
 <% content_for :header_row do %>
-  <th class="no-sort all" data-width="70px"></th>
+  <th class="no-sort all" data-width="98px">Quick Actions</th>
   <th class="no-sort desktop text-right">Req. No.</th>
   <th class="no-sort desktop" data-name="status">Status</th>
   <th class="no-sort desktop text-right">Inquiry #</th>
