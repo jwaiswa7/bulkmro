@@ -56,7 +56,7 @@
         <div class="bmro-dash-inqu">
           <div class="bmro-width100 bmro-inquries-main">
             <div class="bmro-width100 bmro-sales-pedding">
-              <span class="bmro-inqu-no">12</span>
+              <span class="bmro-inqu-no"><%= @dashboard.recent_inquiries.count %></span>
               <p class="bmro-menu bmro-font-size-dash dropdown-toggle" id="My-inquries" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
                 My Inquries
                 <span class="bmro-menu-dropdown bmro-menu-dropdown-ml"></span>
@@ -73,97 +73,34 @@
                 <label class="bmro-cursol">Reset</label>
               </div>
             </div>
-            <div class="bmro-width100 bmro-dash-table-mt">
-              <div class="bmro-width100 brmo-pl-pr">
-                <div class="bmro-all-task-th bmro-Inquries-width1">
-                  <span class="bmro-task-th">Inquiry No</span>
+            <% @dashboard.recent_inquiries.each do |inquiry| %>
+              <div class="bmro-width100 bmro-dash-table-mt">
+                <div class="bmro-width100 brmo-pl-pr">
+                  <div class="bmro-all-task-th bmro-Inquries-width1">
+                    <span class="bmro-task-th">Inquiry No</span>
+                  </div>
+                  <div class="bmro-all-task-th bmro-Inquries-width2">
+                    <span class="bmro-task-th bmro-task-th-p0">Account</span>
+                  </div>
+                  <div class="bmro-all-task-th bmro-Inquries-width3 bmro-text-right">
+                    <span class="bmro-task-th">Orders</span>
+                  </div>
                 </div>
-                <div class="bmro-all-task-th bmro-Inquries-width2">
-                  <span class="bmro-task-th bmro-task-th-p0">Account</span>
-                </div>
-                <div class="bmro-all-task-th bmro-Inquries-width3 bmro-text-right">
-                  <span class="bmro-task-th">Orders</span>
-                </div>
-              </div>
-              <div class="bmro-width100 bmro-Inquries-task ">
-                <div class="brmo-task-no-td bmro-Inquries-width1 brmo-fl brmo-position-relative">
-                  <img src="image/show-starred.png" class="bmro-dash-star bmro-task-star-pos" alt="star">
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span bmro-order-show bmro-cursol">32165</span>
-                </div>
-                <div class="brmo-task-print bmro-Inquries-width2 brmo-fl">
-                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
-                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
-                </div>
-                <div class="bmro-Inquries-width3 brmo-fl bmro-text-right">
-                  <span class="bmro-table-order-no bmro-right-side-open">12</span>
-                </div>
-              </div>
-              <div class="bmro-width100 bmro-Inquries-task ">
-                <div class="brmo-task-no-td bmro-Inquries-width1 brmo-fl brmo-position-relative">
-                  <img src="image/star-after-selection.png" class="bmro-dash-star bmro-task-star-pos" alt="star">
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span bmro-order-show bmro-cursol">12365</span>
-                </div>
-                <div class="brmo-task-print bmro-Inquries-width2 brmo-fl">
-                  <span class="bmro-account-label-one">Asian Electronics</span>
-                  <span class="bmro-status-label bmro-color-yellow">SO Draft: Pending Accounts App</span>
-                </div>
-                <div class="bmro-Inquries-width3 brmo-fl bmro-text-right">
-                  <span class="bmro-table-order-no bmro-right-side-open">12</span>
+                <div class="bmro-width100 bmro-Inquries-task ">
+                  <div class="brmo-task-no-td bmro-Inquries-width1 brmo-fl brmo-position-relative">
+                    <img src="image/show-starred.png" class="bmro-dash-star bmro-task-star-pos" alt="star">
+                    <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span bmro-order-show bmro-cursol"><%= inquiry.inquiry_number %></span>
+                  </div>
+                  <div class="brmo-task-print bmro-Inquries-width2 brmo-fl">
+                    <span class="bmro-account-label-one"><%= inquiry.company.name %></span>
+                    <span class="bmro-status-label bmro-color-green"><%= inquiry.status %></span>
+                  </div>
+                  <div class="bmro-Inquries-width3 brmo-fl bmro-text-right">
+                    <span class="bmro-table-order-no bmro-right-side-open"><%= inquiry.sales_orders.count %></span>
+                  </div>
                 </div>
               </div>
-              <div class="bmro-width100 bmro-Inquries-task ">
-                <div class="brmo-task-no-td bmro-Inquries-width1 brmo-fl brmo-position-relative">
-                  <img src="image/show-starred.png" class="bmro-dash-star bmro-task-star-pos" alt="star">
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span bmro-order-show bmro-cursol">45123</span>
-                </div>
-                <div class="brmo-task-print bmro-Inquries-width2 brmo-fl">
-                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
-                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
-                </div>
-                <div class="bmro-Inquries-width3 brmo-fl bmro-text-right">
-                  <span class="bmro-table-order-no bmro-right-side-open">12</span>
-                </div>
-              </div>
-              <div class="bmro-width100 bmro-Inquries-task ">
-                <div class="brmo-task-no-td bmro-Inquries-width1 brmo-fl brmo-position-relative">
-                  <img src="image/show-starred.png" class="bmro-dash-star bmro-task-star-pos" alt="star">
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span bmro-order-show bmro-cursol">65214</span>
-                </div>
-                <div class="brmo-task-print bmro-Inquries-width2 brmo-fl">
-                  <span class="bmro-account-label-one">Cummins Technologies India Pvt. Ltd.</span>
-                  <span class="bmro-status-label bmro-color-blue">Inward Dispatch Partial</span>
-                </div>
-                <div class="bmro-Inquries-width3 brmo-fl bmro-text-right">
-                  <span class="bmro-table-order-no bmro-right-side-open">12</span>
-                </div>
-              </div>
-              <div class="bmro-width100 bmro-Inquries-task ">
-                <div class="brmo-task-no-td bmro-Inquries-width1 brmo-fl brmo-position-relative">
-                  <img src="image/show-starred.png" class="bmro-dash-star bmro-task-star-pos" alt="star">
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span bmro-order-show bmro-cursol">65234</span>
-                </div>
-                <div class="brmo-task-print bmro-Inquries-width2 brmo-fl">
-                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
-                  <span class="bmro-status-label bmro-color-red">Manully Closed</span>
-                </div>
-                <div class="bmro-Inquries-width3 brmo-fl bmro-text-right">
-                  <span class="bmro-table-order-no bmro-right-side-open">12</span>
-                </div>
-              </div>
-              <div class="bmro-width100 bmro-Inquries-task ">
-                <div class="brmo-task-no-td bmro-Inquries-width1 brmo-fl brmo-position-relative">
-                  <img src="image/show-starred.png" class="bmro-dash-star bmro-task-star-pos" alt="star">
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span bmro-order-show bmro-cursol">25143</span>
-                </div>
-                <div class="brmo-task-print bmro-Inquries-width2 brmo-fl">
-                  <span class="bmro-account-label-one">Asian Electronics </span>
-                  <span class="bmro-status-label bmro-color-yellow">Material Delivery Delayed</span>
-                </div>
-                <div class="bmro-Inquries-width3 brmo-fl bmro-text-right">
-                  <span class="bmro-table-order-no bmro-right-side-open">12</span>
-                </div>
-              </div>
-            </div>
+            <% end %>
           </div>
           <div class="bmro-width100 bmro-sales-show-hide bmro-sales-main">
             <div class="bmro-width100 bmro-sales-pedding">
