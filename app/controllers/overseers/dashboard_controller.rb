@@ -8,7 +8,7 @@ class Overseers::DashboardController < Overseers::BaseController
     #   render 'default_dashboard'
     # else
       if current_overseer.inside_sales_executive?
-        @dashboard = Overseers::Dashboard.new(current_overseer)
+        @dashboard = Overseers::NewSalesDashboard.new(current_overseer)
         render 'new_sales_dashboard'
       elsif current_overseer.admin?
         @dashboard = Rails.cache.fetch('admin_dashboard_data') do
