@@ -11,12 +11,12 @@ class Overseers::InquiriesController < Overseers::BaseController
       @indexed_inquiries = service.indexed_records
       @inquiries = service.records
 
-      status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry, main_summary_status: Inquiry.main_statuses)
+      status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry, main_summary_status: Inquiry.main_summary_statuses)
       status_service.call
 
       format.html {
         @statuses = Inquiry.statuses.except('Lead by O/S')
-        @main_statuses = status_service.indexed_main_statuses
+        @main_summary_statuses = status_service.indexed_main_summary_statuses
       }
       format.json do
         @total_values = status_service.indexed_total_values
