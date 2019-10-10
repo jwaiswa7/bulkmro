@@ -58,17 +58,17 @@
           <% end %>
         </div>
         <div class="form-row">
-          <div class="col-6">
+          <div class="col-5">
             <%= f.input :subject, input_html: { class: 'bmro-form-input-subject-height bmro-form-input ' }, required: true %>
           </div>
-          <div class="col-6">
+          <div class="col-5">
             <% if f.object.calculation_sheet.attached? %>
               <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: "#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe %>
             <% else %>
               <%= f.input :calculation_sheet, wrapper: :custom_file, input_html: { class: 'bmro-form-input bmro-dropdown-icon' }, label: 'Calculation sheet', hint: false %>
             <% end %>
           </div>
-          <div>
+          <div class="col-1">
           <% if f.object.persisted? %>
                          <a class="btn btn-sm ml-1 mt-2 align-self-center text-small mt-0 bmro-button bmro-button-imp" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path(id: f.object.to_param) %>" target="_blank">
               <i class="bmro-download-icon"></i>
