@@ -4,12 +4,12 @@ class Overseers::DashboardController < Overseers::BaseController
   def show
     authorize_acl :dashboard
 
-    if Rails.env.development?
-      render 'default_dashboard'
-    else
-      if current_overseer.inside_sales_executive?
+    # if Rails.env.development?
+    #   render 'default_dashboard'
+    # else
+      if current_overseer.admin?
         @dashboard = Overseers::Dashboard.new(current_overseer)
-        render 'sales_dashboard'
+        render 'new_sales_dashboard'
       elsif current_overseer.admin?
         @dashboard = Rails.cache.fetch('admin_dashboard_data') do
           service = Services::Overseers::Dashboards::Admin.new
@@ -19,7 +19,7 @@ class Overseers::DashboardController < Overseers::BaseController
       else
         render 'default_dashboard'
       end
-    end
+    # end
   end
 
   def serializer

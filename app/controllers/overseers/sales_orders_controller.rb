@@ -120,20 +120,21 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def index
     authorize_acl :sales_order
+    service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
+    service.call
+    @indexed_sales_orders = service.indexed_records
+    @sales_orders = service.records
+
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: 'remote_status', main_summary_status: SalesOrder.main_statuses)
+    status_service.call
+
     respond_to do |format|
       format.html {
         @statuses = SalesOrder.remote_statuses
         @alias_name = 'Total Sales Order'
+        @main_statuses = status_service.indexed_main_statuses
       }
       format.json do
-        service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
-        service.call
-        @indexed_sales_orders = service.indexed_records
-        @sales_orders = service.records
-
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: 'remote_status')
-        status_service.call
-
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
         @statuses_count = @statuses.values.sum
