@@ -11,7 +11,7 @@ class Services::Overseers::Statuses::GetSummaryStatusBuckets < Services::Shared:
     end
     @model_klass = model_klass
     @custom_status = custom_status
-    @main_summary_status = main_summary_status.values
+    @main_summary_status = main_summary_status.values if main_summary_status.present?
   end
 
   def call
