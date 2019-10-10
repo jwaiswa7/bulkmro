@@ -97,12 +97,12 @@ $status-color-grey: #F1F2F4;
 
 $custom-colors: ();
 $custom-colors: map-merge((
-        "status-color-green": $status-color-green: #A8DC59;
-        "status-color-blue": $status-color-blue;
-        "status-color-yellow": $status-color-yellow;
-        "status-color-red": $status-color-red;
-        "status-color-orange": $status-color-orange;
-        "status-color-grey": $status-color-grey;
+        "status-color-green": $status-color-green,
+        "status-color-blue": $status-color-blue,
+        "status-color-yellow": $status-color-yellow,
+        "status-color-red": $status-color-red,
+        "status-color-orange": $status-color-orange,
+        "status-color-grey": $status-color-grey,
         "color-light-blue": $color-light-blue,
         "color-dark-blue": $color-dark-blue,
         "color-yellow": $color-yellow,
