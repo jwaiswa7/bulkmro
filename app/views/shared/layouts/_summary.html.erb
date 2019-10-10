@@ -20,18 +20,20 @@
       <% end %><!--
     <i class="fa fa-chevron-down" aria-hidden="true"></i> -->
   </a>
-  <div class="bmro-float">
-    <% main_summary_statuses.each do |status| %>
-      <div class="bmro-collaps bmro-collaps2">
-        <div class="bmro-invoice-data">
-          <div class="bmro-invoice-edit">
-            <label><%= klass.main_summary_statuses.key(status[0]) %></label>
-            <span><%= status[1] %></span>
+  <% if main_summary_statuses.present? %>
+    <div class="bmro-float">
+        <% main_summary_statuses.each do |status| %>
+          <div class="bmro-collaps bmro-collaps2">
+            <div class="bmro-invoice-data">
+              <div class="bmro-invoice-edit">
+                <label><%= klass.main_summary_statuses.key(status[0]) %></label>
+                <span><%= status[1] %></span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
+        <% end %>
+    </div>
+  <% end %>
 </div>
 <div id="summary" class="collapse bmro-float bmro-collaps-bg">
   <div class="mt-2 form-row d-flex flex-row align-content-stretch">
