@@ -97,7 +97,7 @@ $status-color-grey: #F1F2F4;
 
 $custom-colors: ();
 $custom-colors: map-merge((
-        "status-color-green": $status-color-green: #A8DC59;
+        "status-color-green": $status-color-green;
         "status-color-blue": $status-color-blue;
         "status-color-yellow": $status-color-yellow;
         "status-color-red": $status-color-red;
