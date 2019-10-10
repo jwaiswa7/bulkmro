@@ -16,9 +16,9 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
 
     @is_cgst_sgst = if (bill_to.present? && bill_to.country_code == 'IN') && bill_from.present? && ship_from.present?
       if is_service
-        ship_from.state == bill_to.address.state
+        ship_from.address.state == bill_to.state
       else
-        bill_from.state == bill_to.address.state
+        bill_from.address.state == bill_to.state
       end
     else
       false
