@@ -100,3 +100,11 @@ $custom-colors: map-merge((
         "color-orange": $color-orange,
         "color-grey": $color-grey
 ), $custom-colors);
+
+/* New Status Classes added here */
+$status-color-green: #A8DC59;
+$status-color-blue: #98CAFA;
+$status-color-yellow: #FFE000;
+$status-color-red: #FFA294;
+$status-color-orange: #FFB65C;
+$status-color-grey: #F1F2F4;
