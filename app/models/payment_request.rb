@@ -44,6 +44,13 @@ class PaymentRequest < ApplicationRecord
       'NEFT/RTGS': 20
   }
 
+  enum main_summary_status: {
+      'Payment Pending': 10,
+      'Payment Made': 50,
+      'Excess Payment Made': 71,
+      'Material Rejected': 73
+  }, _suffix: true
+
   enum purpose_of_payment: {
       'Advance - On issue of PO': 10,
       'Advance - Material Ready for dispatch': 20,
