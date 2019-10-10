@@ -2033,7 +2033,7 @@ a.bmro-action-button:hover{
 .bmro-act-mr{
   margin-right: 20px;
 }
-.collapse{
+.bmro-order-action .collapse{
   overflow: hidden;
 }
 .collapse.in{
@@ -2132,4 +2132,17 @@ canvas {
   position: relative;
   top: 1px;
   height: 14px;  
+}
+.bmro-close-icon{
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAeNJREFUOBGVUz1PG0EQ3d0Lf4Fzy1lIkfCdK2rArmzTUnD04fujQmlSp0QQAiR0SLZF/kCqmJZEQMG5QELCVHxYgihVupu8d8cdmFgyjLS3ezPvvd2dmbUmJr5Zlt1Xal8G5+oV5o755ZHhDxeWlXlTFaU+Zpz8n9tWcPgSDa8wtSJK9u7+ng0apcwBSBJKuOYV/eVeAsQQSw65VrsVnNgD3jUc4yKq1J/1fsP3s5tQrugvYad1krXSM8FBbdciEPc/trPuDTQrGKV+J38PkV9PRXKFqUUlshGRjZoNGvWvjEcCXLRbzWMQbyFewSjbjneXiLgFfwHkT4CJ0mau2ah9IYem4+nx6xX82VDkM2PamAVGJAw3OcXk6g59if0nwMBTkQegGK3nTxu17YSYzOkVEgdnlPMok3XfIqk5/hut9k8b9fdcP7euAvEJ1CrA0QlRr6GM47Up3FMA2Z4RkS2SYYsY37EuQ6TMJCOxHSIdJ3CLk9PINu+JMpslZHuTlWBZWRmMCsvNiiUnSQXQ2+9wZ2b4gVxl2SLrEEGvsPHYOwxGAhFZSUw2ehk7p+RYgn2Ck6BL2WjwjdtO/gq+E7wFmJZRfo3RK80fNXZbV2OMGASR3HAsBfFJ83mmjh4LYskh7B/lP9tLxcAq7gAAAABJRU5ErkJggg==');
+  float: left;
+  width: 20px;
+  background-repeat: no-repeat;
+  background-size: 14px;
+  position: relative;
+  top: 1px;
+  height: 14px; 
+}
+.bmro-button-pl{
+  margin-right: 43px;
 }
