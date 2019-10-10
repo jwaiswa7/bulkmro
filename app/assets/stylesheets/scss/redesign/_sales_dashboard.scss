@@ -1134,9 +1134,10 @@ p.bmro-menu{
   border: 1px solid #E0E2E7;
   transition: all 0.5s ease;
   padding-top: 30px;
-    padding-left: 20px; 
-    padding-right: 10px;
-    overflow: auto;
+  padding-left: 20px; 
+  padding-right: 10px;
+  overflow: auto;
+  overflow-x: hidden;
 }
 .bmro-slide-order-no::-webkit-scrollbar {
   width: 6px;
