@@ -1,4 +1,17 @@
 <div class="bmro-float">
+  <div class="bmro-invoice-heading">
+    <div class="dropdown">
+      <span class="bmro-downimg"></span>
+      <h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= klass %></h4>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="#">dropdown 1</a>
+        <a class="dropdown-item" href="#">dropdown 2</a>
+        <a class="dropdown-item" href="#">dropdown 3</a>
+      </div>
+    </div>
+    <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="25-Sep-2019">
+  </div>
+
   <a class="btn btn-light text-left btn-lg btn-block mt-1 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg" type="button" data-toggle="collapse" data-target="#summary">
     <% if alias_name.present? %>
       <%= alias_name.titleize %> Summary&nbsp;&nbsp;&nbsp;
@@ -7,18 +20,20 @@
       <% end %><!--
     <i class="fa fa-chevron-down" aria-hidden="true"></i> -->
   </a>
-  <div class="bmro-float">
-    <% main_statuses.each do |status| %>
-      <div class="bmro-collaps bmro-collaps2">
-        <div class="bmro-invoice-data">
-          <div class="bmro-invoice-edit">
-            <label><%= klass.main_statuses.key(status[0]) %></label>
-            <span><%= status[1] %></span>
+  <% if main_summary_statuses.present? %>
+    <div class="bmro-float">
+        <% main_summary_statuses.each do |status| %>
+          <div class="bmro-collaps bmro-collaps2">
+            <div class="bmro-invoice-data">
+              <div class="bmro-invoice-edit">
+                <label><%= klass.main_summary_statuses.key(status[0]) %></label>
+                <span><%= status[1] %></span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
+        <% end %>
+    </div>
+  <% end %>
 </div>
 <div id="summary" class="collapse bmro-float bmro-collaps-bg">
   <div class="mt-2 form-row d-flex flex-row align-content-stretch">

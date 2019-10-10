@@ -120,7 +120,7 @@ class Inquiry < ApplicationRecord
       'Regret': 10,
   }, _suffix: true
 
-  enum main_status: {
+  enum main_summary_status: {
       'Cross Reference': 3,
       'Quotation Sent': 5,
       'Follow Up on Quotation': 6,

@@ -16,11 +16,11 @@
     </button>
   <% end %>
 <% end %>
-<% if Settings.reports.show_summary && action_name == "material_readiness_queue" %>
-  <div class="col-lg-12">
-    <%= render partial: "shared/layouts/summary", locals: {klass: PurchaseOrder, statuses: PurchaseOrder.material_summary_statuses, alias_name: 'Followup'} %>
-  </div>
-<% end %>
+<%# if Settings.reports.show_summary && action_name == "material_readiness_queue" %>
+<!--  <div class="col-lg-12">-->
+    <%#= render partial: "shared/layouts/summary", locals: {klass: PurchaseOrder, statuses: PurchaseOrder.material_summary_statuses, alias_name: 'Followup'} %>
+<!--  </div>-->
+<%# end %>
 
 
 <div class="col-lg-12">

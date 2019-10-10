@@ -11,7 +11,7 @@ class Services::Overseers::Statuses::GetSummaryStatusBuckets < Services::Shared:
     end
     @model_klass = model_klass
     @custom_status = custom_status
-    @main_summary_status = main_summary_status.values
+    @main_summary_status = main_summary_status.values if main_summary_status.present?
   end
 
   def call
@@ -31,9 +31,9 @@ class Services::Overseers::Statuses::GetSummaryStatusBuckets < Services::Shared:
     total_values = indexed_buckets.inject({}) { |hash, bucket| hash[bucket['key']] = bucket['total_value']['value']; hash }
 
     @indexed_statuses = default_statuses.merge(statuses)
-    @indexed_main_statuses = main_statuses
+    @indexed_main_summary_statuses = main_statuses
     @indexed_total_values = default_statuses.merge(total_values)
   end
 
-  attr_accessor :indexed_statuses, :indexed_main_statuses, :all_indexed_records, :model_klass, :indexed_total_values, :custom_status, :indexed_buckets, :main_summary_status
+  attr_accessor :indexed_statuses, :indexed_main_summary_statuses, :all_indexed_records, :model_klass, :indexed_total_values, :custom_status, :indexed_buckets, :main_summary_status
 end
