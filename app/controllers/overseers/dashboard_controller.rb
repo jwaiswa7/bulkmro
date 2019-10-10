@@ -7,7 +7,7 @@ class Overseers::DashboardController < Overseers::BaseController
     # if Rails.env.development?
     #   render 'default_dashboard'
     # else
-      if current_overseer.admin?
+      if current_overseer.inside_sales_executive?
         @dashboard = Overseers::Dashboard.new(current_overseer)
         render 'new_sales_dashboard'
       elsif current_overseer.admin?
@@ -20,6 +20,16 @@ class Overseers::DashboardController < Overseers::BaseController
         render 'default_dashboard'
       end
     # end
+  end
+
+  def get_status_records
+    inquiry = Inquiry.find_by_inquiry_number(params['inquiry_number'])
+    inquiry_status_records = inquiry.inquiry_status_records.order(created_at: :desc).group_by { |c| c.created_at.to_date }
+    if inquiry_status_records
+      respond_to do |format|
+        format.html { render partial: 'customers/dashboard/inq_status_records_data',  locals: {inquiry_status_records: inquiry_status_records, inquiry: inquiry}}
+      end
+    end
   end
 
   def serializer

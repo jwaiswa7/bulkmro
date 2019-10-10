@@ -89,11 +89,11 @@
                 <div class="bmro-width100 bmro-Inquries-task ">
                   <div class="brmo-task-no-td bmro-Inquries-width1 brmo-fl brmo-position-relative">
                     <img src="image/show-starred.png" class="bmro-dash-star bmro-task-star-pos" alt="star">
-                    <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span bmro-order-show bmro-cursol"><%= inquiry.inquiry_number %></span>
+                    <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span bmro-order-show bmro-cursol" id="inquiry_number"><%= inquiry.inquiry_number %></span>
                   </div>
                   <div class="brmo-task-print bmro-Inquries-width2 brmo-fl">
                     <span class="bmro-account-label-one"><%= inquiry.company.name %></span>
-                    <span class="bmro-status-label bmro-color-green"><%= inquiry.status %></span>
+                    <span class="bmro-status-label bmro-color-green" data-id="<%= inquiry.inquiry_number %>"><%= inquiry.status %></span>
                   </div>
                   <div class="bmro-Inquries-width3 brmo-fl bmro-text-right">
                     <span class="bmro-table-order-no bmro-right-side-open"><%= inquiry.sales_orders.count %></span>
@@ -736,143 +736,7 @@
       <!-- <div class="bmro-width100">
         <h5 class="bmro-big-heading-two">Abbott Healthcare Pvt.Ltd</h5>
       </div> -->
-      <div class="bmro-width100">
-        <span class="bmro-small-heading bmro-width100 bmro-mt-5">Inquiry N0.</span>
-        <h5 class="bmro-big-heading-two bmro-mt-5 bmro-fl bmro-wdith-auto">#45567
-          <span class="bmro-drop-icon-head bmro-slide-icon"></span>
-        </h5>
-        <button class="bmro-action-button bmro-fl">Activity Log
-          <span class="bmro-menu-dropdown bmro-button-drop-compos"></span>
-        </button>
-      </div>
-      <div class="bmro-width100 bmro-dotted-line-order bmro-mt-today bmro-dotted-line-order">
-        <div class="bmro-position-set">
-          <div class="bmro-circle-order"></div>
-          <div class="bmro-position-h5">
-            <h5 class="bmro-big-heading-two bmro-fl">06/09/19</h5>
-            <span class="bmro-today-heading bmro-ml-today">Today</span>
-          </div>
-        </div>
-        <div class="bmro-position-set">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Preparing</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Sales Quotation</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-subdata">Quotation Prepared</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Sales Quotation</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Sent</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Sales Quotation</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Approved</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-right-date-pt">
-          <div class="bmro-circle-order"></div>
-          <div class="bmro-position-h5">
-            <h5 class="bmro-big-heading-two bmro-fl">06/09/19</h5>
-            <span class="bmro-today-heading bmro-ml-today">Today</span>
-          </div>
-        </div>
-        <div class="bmro-position-set">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Preparing</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Sales Quotation</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-subdata">Quotation Prepared</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Sales Quotation</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Sent</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Sales Quotation</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Approved</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-right-date-pt">
-          <div class="bmro-circle-order"></div>
-          <div class="bmro-position-h5">
-            <h5 class="bmro-big-heading-two bmro-fl">06/09/19</h5>
-            <span class="bmro-today-heading bmro-ml-today">Today</span>
-          </div>
-        </div>
-        <div class="bmro-position-set">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Preparing</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Sales Quotation</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-subdata">Quotation Prepared</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Sales Quotation</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Sent</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Sales Quotation</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Approved</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-      </div>
+      <div id="status-record-div"></div>
     </div>
 
     <div class="bmro-slide-order-no">
@@ -1049,12 +913,27 @@
     $(".bmro-dashbord-click").click(function () {
         $('.bmro-dash-main-menu').removeClass('bmro-dash-main-menu-show');
         $('.bmro-menu-click').removeClass('bmro-menu-roted');
-    })
-    $(".bmro-status-label").click(function () {
+    });
+
+    $(".bmro-status-label").click(function (e) {
+        let inquiry_number = $(this).data('id');
+        e.preventDefault();
+        $.ajax({
+            url: "dashboard/get_status_records",
+            type: "GET",
+            data: {
+                inquiry_number: inquiry_number
+            },
+            success: function (data) {
+              $('#status-record-div').empty();
+              $('#status-record-div').append(data);
+            },
+        });
         $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
         $('.bmro-slide-on-inquries').addClass('bmro-inquries-po');
         // $('.bmro-close-right-slide').addClass('bmro-close-right-slide-fix',15000);
-    })
+    });
+
     $(".bmro-close-right-slide").click(function () {
         $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
         // $(this).removeClass('bmro-close-right-slide-fix');
