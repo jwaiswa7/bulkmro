@@ -849,51 +849,57 @@
     </div>
     <div class="bmro-width100">
       <div class="bmro-dash-right-menu">
-        <a href="#" class="bmro-all-notification active-menu">All</a>
-        <a href="#" class="bmro-all-notification">Notification</a>
-        <a href="#" class="bmro-all-notification">Comments</a>
+        <a href="javascript:void(0)" class="bmro-all-notification" id="notifications">Notification</a>
+        <a href="javascript:void(0)" class="bmro-all-notification" id="comments">Comments</a>
       </div>
     </div>
-    <div class="bmro-width100">
-      <div class="brmo-today-list bmro-today-mt-mb">
-        <div class="bmro-width100 brmo-today-line-parent">
-          <div class="bmro-today-parent">
-            <span class="bmro-big-heading bmro-fl">Today</span>
+    <div class="bmro-width100" id="notification-rows">
+      <% @dashboard.notifications.each do |date, notifications| %>
+        <div class="brmo-today-list bmro-today-mt-mb">
+          <div class="bmro-width100 brmo-today-line-parent">
+            <div class="bmro-today-parent">
+              <% if date.today? %>
+                <span class="bmro-big-heading bmro-fl">Today</span>
+              <% else %>
+                <span class="bmro-big-heading bmro-fl"><%= date.strftime("%d/%m/%Y") %></span>
+              <% end %>
+            </div>
+            <span class="bmro-today-line"></span>
           </div>
-          <span class="bmro-today-line"></span>
         </div>
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678</h5>
-        <span class="bmro-today-span">Supplier not picking call mail send for material rediness.</span>
-      </div>
-      <div class="brmo-today-list">
-        <h5 class="bmro-big-heading bmro-hash-mt">Farhan. A <span class="bmro-today-button">Logistics</span></h5>
-        <span class="bmro-today-posted">Posted on:31/07/19, 09:00PM</span>
-      </div>
-      <div class="brmo-today-list brmo-today-list-bm">
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678 <span class="bmro-today-button">Notification</span></h5>
-        <span class="bmro-today-span">Invoice rejected by account</span>
-        <span class="bmro-today-posted">Posted on:31/07/19, 09:00PM</span>
-      </div>
-      <div class="brmo-today-list brmo-today-list-bm">
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678</h5>
-        <span class="bmro-today-span">Supplier not picking call mail send for material rediness.</span>
-      </div>
-      <div class="brmo-today-list brmo-today-list-bm">
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678 <span class="bmro-today-button">Logistics</span></h5>
-        <span class="bmro-today-span">Supplier not picking call mail send for material rediness.</span>
-      </div>
-      <div class="brmo-today-list brmo-today-list-bm">
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678 <span class="bmro-today-button">Logistics</span></h5>
-        <span class="bmro-today-span">Supplier not picking call mail send for material rediness.</span>
-      </div>
-      <div class="brmo-today-list brmo-today-list-bm">
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678</h5>
-        <span class="bmro-today-span">Supplier not picking call mail send for material rediness.</span>
-      </div>
-      <div class="brmo-today-list brmo-today-list-bm">
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678</h5>
-        <span class="bmro-today-span">Supplier not picking call mail send for material rediness.</span>
-      </div>
+        <% notifications.each do |notification| %>
+          <div class="brmo-today-list ">
+            <h5 class="bmro-big-heading bmro-hash-mt">#<%= notification.id %> <span class="bmro-today-button">Notification</span></h5>
+            <span class="bmro-today-span"><%= notification.message %></span>
+            <span class="bmro-today-posted">Posted on: <%= notification.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="bmro-width100" id="comment-rows">
+      <% @dashboard.comments.each do |date, comments| %>
+        <div class="brmo-today-list bmro-today-mt-mb">
+          <div class="bmro-width100 brmo-today-line-parent">
+            <div class="bmro-today-parent">
+              <% if date.today? %>
+                <span class="bmro-big-heading bmro-fl">Today</span>
+              <% else %>
+                <span class="bmro-big-heading bmro-fl"><%= date.strftime("%d/%m/%Y") %></span>
+              <% end %>
+            </div>
+            <span class="bmro-today-line"></span>
+          </div>
+        </div>
+        <% comments.each do |comment| %>
+          <div class="brmo-today-list ">
+            <h5 class="bmro-big-heading bmro-hash-mt">#<%= comment.id %> <span class="bmro-today-button">Comment</span></h5>
+            <span class="bmro-today-span"><%= comment.message %></span>
+            <h5 class="bmro-big-heading bmro-hash-mt"><%= comment.created_by.to_s %> <span class="bmro-today-button"><%= comment.created_by.role %></span></h5>
+            <span class="bmro-today-posted">Posted on: <%= comment.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
+          </div>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>
@@ -901,15 +907,21 @@
 
 
 <script>
+    $( document ).ready(function() {
+      $("#notifications").trigger('click');
+    });
+
     $(".bmro-menu-click").click(function () {
         $('.bmro-dash-main-menu').toggleClass('bmro-dash-main-menu-show');
         $(this).toggleClass('bmro-menu-roted');
-    })
+    });
+
     $('.bmro-main-drop-col p').hover(function(){
         $(this).children('.bmro-dash-hover').css("display","block");
     }, function() {
         $(this).children('.bmro-dash-hover').css("display","none");
-    })
+    });
+
     $(".bmro-dashbord-click").click(function () {
         $('.bmro-dash-main-menu').removeClass('bmro-dash-main-menu-show');
         $('.bmro-menu-click').removeClass('bmro-menu-roted');
@@ -937,27 +949,31 @@
     $(".bmro-close-right-slide").click(function () {
         $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
         // $(this).removeClass('bmro-close-right-slide-fix');
-    })
+    });
+
     $(".bmro-right-side-open").click(function () {
         $('.bmro-slide-order-no').addClass('bmro-slide-order-show');
         $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
         // $('.bmro-close-order-slide').addClass('bmro-close-right-slide-fix',15000);
-    })
+    });
     $(".bmro-close-order-slide").click(function () {
         // $(this).removeClass('bmro-close-right-slide-fix');
         $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
-    })
+    });
+
     $(".bmro-same-box").click(function () {
         $('.bmro-same-box').removeClass('bmro-same-box-active');
         $(this).addClass('bmro-same-box-active',1000);
         $('.bmro-sales-main').removeClass('bmro-sales-show-hide');
         $('.bmro-inquries-main').addClass('bmro-inquiry-show-hide');
-    })
+    });
+
     $(".bmro-sales-back").click(function () {
         $('.bmro-same-box').removeClass('bmro-same-box-active');
         $('.bmro-sales-main').addClass('bmro-sales-show-hide');
         $('.bmro-inquries-main').removeClass('bmro-inquiry-show-hide');
-    })
+    });
+
     $(".bmro-order-show").click(function () {
         $('.bmro-order-action').removeClass('bmro-order-hide');
         $('.bmro-all-task-action').addClass('bmro-order-hide');
@@ -966,7 +982,8 @@
         $(this).parent().parent().addClass('bmro-active-white',1000);
         $('.bmro-show-star').addClass('bmro-inquiry-show-hide');
         $('.bmro-reset-button').removeClass('bmro-inquiry-show-hide');
-    })
+    });
+
     $(".bmro-reset-button").click(function () {
         $('.bmro-order-action').addClass('bmro-order-hide');
         $('.bmro-all-task-action').removeClass('bmro-order-hide');
@@ -974,5 +991,15 @@
         $('.bmro-Inquries-task').removeClass('bmro-active-white');
         $('.bmro-show-star').removeClass('bmro-inquiry-show-hide');
         $('.bmro-reset-button').addClass('bmro-inquiry-show-hide');
+    });
+
+    $("#notifications").click(function () {
+        $('#comment-rows').hide();
+        $('#notification-rows').show();
+    });
+
+    $('#comments').click(function () {
+        $('#notification-rows').hide();
+        $('#comment-rows').show();
     })
 </script>
