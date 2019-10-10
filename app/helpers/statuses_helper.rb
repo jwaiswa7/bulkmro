@@ -30,7 +30,7 @@ module StatusesHelper
     when :'Full Payment Received'
       'status-color-green'
     when :'Short Closed'
-      'status-color-grey'
+      'status-color-red'
     when :'Cancelled'
       'status-color-red'
     when :'Material Readiness Follow-Up'
@@ -58,7 +58,7 @@ module StatusesHelper
 
     # defaults
     when :'Lead by O/S'
-      'status-color-grey'
+      'status-color-blue'
     when :'New Inquiry'
       'status-color-blue'
     when :'Acknowledgement Mail'
@@ -74,7 +74,7 @@ module StatusesHelper
     when :'Follow Up on Quotation'
       'status-color-blue'
     when :'Expected Order'
-      'status-color-grey'
+      'status-color-blue'
     when :'Inquiry Sent'
       'status-color-green'
     when :'Supplier PO: Request Pending'
