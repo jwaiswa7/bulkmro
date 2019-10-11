@@ -2033,9 +2033,6 @@ a.bmro-action-button:hover{
 .bmro-act-mr{
   margin-right: 20px;
 }
-.bmro-order-action .collapse{
-  overflow: hidden;
-}
 .collapse.in{
   display: block;
 }
@@ -2180,8 +2177,4 @@ canvas {
 }
 .dropdown-toggle{
   cursor: pointer;
-}
-.bmro-right-drop{
-  top: 25px;
-  transform: unset;
 }
