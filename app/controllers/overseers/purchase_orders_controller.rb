@@ -39,7 +39,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       format.html {
         @statuses = PurchaseOrder.material_summary_statuses
         @alias_name = 'Followup'
-        @main_summary_statuses = PurchaseOrder.main_summary_statuses
+        @main_summary_statuses = PurchaseOrder.material_summary_statuses
       }
       format.json do
         @total_values = status_service.indexed_total_values
@@ -106,7 +106,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       format.html {
         @statuses = PurchaseOrder.material_summary_statuses
         @alias_name = 'Followup'
-        @main_summary_statuses = PurchaseOrder.main_summary_statuses
+        @main_summary_statuses = PurchaseOrder.material_summary_statuses
       }
       format.json do
         @total_values = status_service.indexed_total_values
