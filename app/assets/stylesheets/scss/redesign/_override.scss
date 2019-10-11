@@ -1429,6 +1429,7 @@ table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td
     border: 1px solid #E0E2E7;
     border-bottom: none;
     border-left: none; 
+    padding: 0px 4px;
 }
 table.table.dataTable.table-bordered th{
     text-align: right;
@@ -2587,14 +2588,11 @@ table.fixedHeader-floating{
 }
 .chat-item>.media-body{
     width: 170px;
+    box-shadow: 0px 0px 2px 0px black;
 }
 .bmro-btn-calc{
     margin-top: 24px!important;
 }
 .bmro-table-actions {
-    padding-right: 38px!important;
     width: 98px!important;
-}
-.bmro-padding-td{
-    padding: 8px;
 }
