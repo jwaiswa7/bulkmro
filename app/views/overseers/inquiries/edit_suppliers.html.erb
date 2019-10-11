@@ -64,7 +64,7 @@
                           <%= inquiry_product_supplier.input_field :lowest_unit_cost_price, class: "form-control text-right bmro-form-input", disabled: true, placeholder: placeholder_for(inquiry_product_supplier, :lowest_unit_cost_price) %>
                           <div class="input-group-append bmro-button-parent">
                             <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-lowest-unit-cost-price" do %>
-                              <i class="far fa-arrow-right"></i>
+                              <i class="bmro-icon-arrow-right"></i>
                             <% end %>
                           </div>
                         <% end %>
@@ -76,7 +76,7 @@
                         <%= inquiry_product_supplier.input :latest_unit_cost_price, disabled: true, input_html: { class: 'bmro-form-input' }, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Latest" : false, wrapper: :input_group do %>
                           <div class="input-group-prepend bmro-button-parent">
                             <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-latest-unit-cost-price" do %>
-                              <i class="far fa-arrow-left"></i>
+                              <i class="bmro-icon-arrow-right"></i>
                             <% end %>
                           </div>
                           <%= inquiry_product_supplier.input_field :latest_unit_cost_price, class: "form-control bmro-form-input", disabled: true, placeholder: placeholder_for(inquiry_product_supplier, :latest_unit_cost_price) %>
