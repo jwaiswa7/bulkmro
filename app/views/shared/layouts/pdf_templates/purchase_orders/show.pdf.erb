@@ -116,24 +116,24 @@
               <tbody>
               <tr>
                 <td class="address-wrapper" style="height: auto;width: 49%;">
-                  <% if locals[:supplier].present? %>
-                    <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
-                    <%= locals[:supplier].billing_address&.to_multiline_s %>
+                  <% if locals[:purchase_order].billing_address.present? %>
+                    <%= locals[:purchase_order].billing_address.name if locals[:purchase_order].billing_address.name.present? %><br>
+                    <%= locals[:purchase_order].billing_address.to_multiline_s if locals[:purchase_order].billing_address.present? %>
                     <br>
-                    Tel: <%= record.billing_address&.phone || locals[:supplier]&.phone || (locals[:supplier].default_company_contact.present? ? locals[:supplier].default_company_contact.contact&.phone : '') %>
+                    Tel: <%= locals[:purchase_order].billing_address.try(:mobile) || locals[:purchase_order].billing_address.try(:telephone) if locals[:purchase_order].billing_address.present? %>
                     <br>
-                    GST No.: <%= record.billing_address&.gst %><br>
+                    GST No. : <%= locals[:purchase_order].billing_address.try(:gst) %><br>
                   <% end %>
                 </td>
                 <td style="width: 2%;"></td>
                 <td class="address-wrapper" style="height: auto;width: 49%;">
-                  <% if locals[:supplier].present? %>
-                    <%= locals[:supplier].name if locals[:supplier].name.present? %><br>
-                    <%= locals[:supplier].shipping_address&.to_multiline_s %>
+                  <% if locals[:purchase_order].present? %>
+                    <%= locals[:purchase_order].shipping_address.name if locals[:purchase_order].shipping_address.name.present? %><br>
+                    <%= locals[:purchase_order].shipping_address&.to_multiline_s %>
                     <br>
-                    Tel: <%= record.shipping_address&.phone || locals[:supplier]&.phone || (locals[:supplier].default_company_contact.present? ? locals[:supplier].default_company_contact.contact&.phone : '') %>
+                    Tel: <%=  locals[:purchase_order].shipping_address.try(:mobile) || locals[:purchase_order].shipping_address.try(:telephone) if locals[:purchase_order].shipping_address.present? %>
                     <br>
-                    GST No.: <%= record.shipping_address&.gst %><br>
+                    GST No.: <%= locals[:purchase_order].shipping_address.try(:gst) %> <br>
                   <% end %>
                 </td>
               </tr>
@@ -253,7 +253,9 @@
                     <span><%= item.product.present? ? item.product.brand.to_s : item.brand %></span>
                   </td>
                   <td align="center" valign="top">
-                    <span><%= item.metadata['PopHsn'].present? ? item.metadata['PopHsn'] : item.po_request_row.tax_code.try(:code) %></span>
+                    <span>
+                      <%= item.show_tax_code %>
+                    </span>
                   </td>
                   <td align="center" valign="top">
                     <span><%= item.uom  %></span>
@@ -436,7 +438,11 @@
                 <tr>
                   <td align="left" style="padding-left: 10px; padding-top: 0px" valign="top">
                     <span>
-                      <%= (locals[:inquiry].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
+                      <% if locals[:purchase_order].commercial_terms_and_conditions.present? %>
+                      <%= (locals[:purchase_order].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
+                        <%# else %>
+                      <%#= (locals[:inquiry].commercial_terms_and_conditions.gsub(/\n/, '<br>')).html_safe %>
+                      <% end %>
                     </span>
                   </td>
                 </tr>

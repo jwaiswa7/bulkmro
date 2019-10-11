@@ -87,6 +87,9 @@ gem 'axlsx', '3.0.0.pre'
 gem 'axlsx_rails', '0.5.2'
 gem 'rubyzip', '~> 1.2'
 
+# For imports
+gem 'activerecord-import'
+
 # Validate file uploads
 gem 'file_validators'
 
@@ -240,10 +243,5 @@ gem 'dalli'
 gem 'parser'
 gem 'unparser'
 
-# required for azure deployments
-gem 'capistrano', '~> 3.11'
-gem 'capistrano-rails', '~> 1.4'
-gem 'capistrano-passenger', '~> 0.2.0'
-gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.4'
-gem 'capistrano-yarn'
-gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
+# Heroku autoscaling add-on
+gem 'rails_autoscale_agent'

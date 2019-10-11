@@ -33,6 +33,8 @@ class PurchaseOrder < ApplicationRecord
   scope :with_inquiry_by_company, -> (company_id) { joins(:inquiry).where(inquiries: { company_id: company_id }) }
   scope :with_all_material_statuses, -> { where('material_status IN (?)', [10, 20, 25, 30, 35]) }
 
+  delegate :commercial_terms_and_conditions, to: :po_request
+
   def filename(include_extension: false)
     [
         ['po', po_number].join('_'),
