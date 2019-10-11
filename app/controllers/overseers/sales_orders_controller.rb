@@ -7,6 +7,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html {
         @statuses = SalesOrder.statuses.except("Approved", "Order Deleted", "Hold by Finance", "Cancelled")
+        @main_summary_statuses = SalesOrder.main_summary_statuses
         render 'pending'
       }
       format.json do
@@ -53,6 +54,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
+        @main_summary_statuses = SalesOrder.main_summary_statuses
         render 'pending'
       end
     end
@@ -132,7 +134,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       format.html {
         @statuses = SalesOrder.remote_statuses
         @alias_name = 'Total Sales Order'
-        @main_summary_statuses = status_service.indexed_main_summary_statuses
+        @main_summary_statuses = SalesOrder.main_summary_statuses
       }
       format.json do
         @total_values = status_service.indexed_total_values
@@ -159,6 +161,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
+        @main_summary_statuses = SalesOrder.main_summary_statuses
         @statuses_count = @statuses.values.sum
         @not_invoiced_total = @total_values.values.sum
       end
