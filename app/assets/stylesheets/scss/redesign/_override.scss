@@ -1433,7 +1433,7 @@ table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td
     border: 1px solid #E0E2E7;
     border-bottom: none;
     border-left: none; 
-    padding: 0px 4px;
+    padding: 4px 8px;
 }
 table.table.dataTable.table-bordered th{
     text-align: right;
@@ -1467,7 +1467,7 @@ table.table.dataTable.table-bordered tr:last-child td{
     border-bottom: 1px solid #E0E2E7;
 }
 li.paginate_button{
-    padding: 7px 2px 3px;
+    padding: 5px 2px 5px 4px;
     background-color: #fff;
 }
 .paginate_button.first{

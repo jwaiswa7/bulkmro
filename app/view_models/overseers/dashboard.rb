@@ -18,6 +18,15 @@ class Overseers::Dashboard
     inquiries
   end
 
+  def notifications
+    Notification.where(recipient: overseer).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
+  end
+
+  def comments
+    recent_inquiry_ids = recent_inquiries.pluck(:id)
+    InquiryComment.where(inquiry_id: recent_inquiry_ids).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
+  end
+
   def inquiry_needs_followup?(inquiry)
     ((inquiry.quotation_followup_date.present? &&
         (inquiry.quotation_followup_date == Date.today ||
