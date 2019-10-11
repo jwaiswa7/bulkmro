@@ -2149,12 +2149,13 @@ canvas {
 .bmro-compose .modal-dialog{
   max-width: 667px;
 }
-.bmro-compose .modal-header{
-  display: block;
-  padding: 0rem;
-  border-bottom: 0 solid #EEF2F5;
-  border-radius: unset;
-}
 .bmro-compose .modal-body{
   padding: 0px;
+}
+.bmro-modal-close{
+  padding: 0;
+  margin: 0;
+  position: relative;
+  top: 4px;
+  opacity: unset; 
 }
