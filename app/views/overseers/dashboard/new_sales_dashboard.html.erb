@@ -407,15 +407,15 @@
                         Supplier Quotation Not Sent
                       </div>
                     </div>
-                    <div class="bmro-action-button-parent bmro-action-width bmro-fl">
+                    <div class="bmro-action-button-parent bmro-action-width bmro-fl dropdown">
                       <a href="#" class="bmro-action-button bmro-fr dropdown-toggle">
                         Selects
                         <span class="bmro-menu-dropdown bmro-button-drop-compos"></span>
                       </a>
                       <div class="dropdown-menu">
-                        <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 1</a>
-                        <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 2</a>
-                        <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 3</a>
+                        <a class="bmro-dropdown-item dropdown-item bmro-clickable" href="#">Display Option 1</a>
+                        <a class="bmro-dropdown-item dropdown-item bmro-clickable" href="#">Display Option 2</a>
+                        <a class="bmro-dropdown-item dropdown-item bmro-clickable" href="#">Display Option 3</a>
                       </div>  
                     </div>
                   </div>
@@ -1630,16 +1630,16 @@
         $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
         $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
       })  
-      $('.bmro-dropdown-item').click(function(){
-        $('.dropdown-toggle').parent().removeClass('dropdown-show');
-      })  
-      $('.dropdown-toggle').click(function() {
-        $('.dropdown-toggle').parent().removeClass('dropdown-show');
-        $(this).parent().addClass('dropdown-show',2000);
-      })
-      $(".dropdown-menu").mouseleave(function() { 
-        $('.dropdown-toggle').parent().removeClass('dropdown-show');
-      })
+      // $('.bmro-dropdown-item').click(function(){
+      //   $('.dropdown-toggle').parent().removeClass('dropdown-show');
+      // })  
+      // $('.dropdown-toggle').click(function() {
+      //   $('.dropdown-toggle').parent().removeClass('dropdown-show');
+      //   $(this).parent().addClass('dropdown-show',2000);
+      // })
+      // $(".dropdown-menu").mouseleave(function() { 
+      //   $('.dropdown-toggle').parent().removeClass('dropdown-show');
+      // })
 
       $('.bmro-show-purchse').click(function(){
         $('.bmro-purchase-order').addClass('bmro-show');
