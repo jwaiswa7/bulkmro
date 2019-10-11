@@ -1808,7 +1808,7 @@ p.bmro-menu{
   background-color: #fff;
 }
 .bmro-input-light{
-  width: 49%;
+  width: 227px;
   float: left;
   box-sizing: border-box;
 }
@@ -2163,7 +2163,7 @@ canvas {
   opacity: unset; 
 }
 .bmro-modal-close:hover{
-  opacity: unset;
+  opacity: unset!important;
 }
 .bmro-modal-close .bmro-close-icon{
   top: 0px;
