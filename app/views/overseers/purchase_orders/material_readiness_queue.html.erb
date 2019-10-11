@@ -28,8 +28,8 @@
     <th class="no-sort all bmro-material-queue">
       <% if is_authorized(:purchase_order, 'update_logistics_owner') && policy(:purchase_order).update_logistics_owner? %>
         <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" name="all_purchase_orders" id="all_purchase_orders">
-          <label class="custom-control-label" for="all_purchase_orders">Select All</label>
+          <input type="checkbox" class="custom-control-input" name="all_purchase_orders" id="all_purchase_orders"><!-- 
+          <label class="custom-control-label" for="all_purchase_orders">Select All</label> -->
         </div>
       <% end %>
     </th>
