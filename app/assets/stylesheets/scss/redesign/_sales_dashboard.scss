@@ -651,6 +651,7 @@ p.bmro-menu{
   border-left: none;
   background: linear-gradient(180deg, #F8F9FA 0%, #EEF0F2 100%);
   font-weight: 700;
+  cursor: pointer;
 }
 .bmro-all-notification:first-child{
   border-left: 1px solid #889EB7;
@@ -2176,8 +2177,5 @@ canvas {
   width: 300px;
 }
 .dropdown-toggle{
-  cursor: pointer;
-}
-.bmro-all-action{
   cursor: pointer;
 }
