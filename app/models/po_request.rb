@@ -142,13 +142,13 @@ class PoRequest < ApplicationRecord
   def set_defaults
     self.status ||= :'Supplier PO: Request Pending' if self.po_request_type == 'Regular'
     self.stock_status ||= :'Stock Requested' if self.po_request_type == 'Stock'
-    self.commercial_terms_and_conditions ||= [
-        '1. Cost does not include any additional certification if required as per Indian regulations.',
-        '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',
-        '3. Order once placed cannot be changed.',
-        '4. BulkMRO does not accept any financial penalties for late deliveries.',
-        '5. Warranties are applicable as per OEM\'s Standard warranty only.'
-    ].join("\r\n")
+#     self.commercial_terms_and_conditions ||= [
+#         '1. Cost does not include any additional certification if required as per Indian regulations.',
+#         '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',
+#         '3. Order once placed cannot be changed.',
+#         '4. BulkMRO does not accept any financial penalties for late deliveries.',
+#         '5. Warranties are applicable as per OEM\'s Standard warranty only.'
+#     ].join("\r\n")
   end
 
   def amending?
