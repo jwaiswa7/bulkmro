@@ -8,11 +8,11 @@ const editSupplierRfqs = () => {
         });
     });
 
-    $(".rfq_edit :input").on('keyup', function () {
+    $(".rfq_edit :input").on('change', function () {
         let data_id= $(this).data('id');
         let active_element_number = typeof data_id === 'undefined' ? '' : data_id.split('_').pop();
         let basic_unit_price = $('input[data-id="unit_cost_price_' + active_element_number + '"]').val() || 0;
-        let gst = $('input[data-id="gst_' + active_element_number + '"]').val();
+        let gst = $('select[data-id="gst_' + active_element_number + '"]').val();
         let unit_freight = $('input[data-id="unit_freight_' + active_element_number + '"]').val() || 0;
 
         calculate_final_unit_price(gst, basic_unit_price, unit_freight, active_element_number);
