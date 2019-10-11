@@ -14,7 +14,8 @@
     <% end %>
 
     <% if @sales_quotes.present? && @inquiry.final_sales_quote.present? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
-      <ul class="list-group text-info mb-3 bmro-float-left-left">
+    <h4 class="bmro-instruction-head"><span class="bmro-information"></span>Instructions heading will be displayed here   <i class="bmro-minus-icon"></i></h4>
+      <ul class="list-group text-info mb-3 bmro-float-left-left bmro-instruction-head">
         <li class="list-group-item">
           <h5 class="text-info mb-0">Before making a sales order, Please fulfill the following.</h5>
         </li>
