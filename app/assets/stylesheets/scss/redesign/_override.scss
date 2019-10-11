@@ -2670,10 +2670,23 @@ table.fixedHeader-floating{
     margin: 0px;
     padding-right: 7px!important;
     padding-left: 8px!important;
-
 }
 .bmro-button-parent2{
     padding: 0px;
     width: auto;
     margin-right: 10px;
+}
+.bmro-width-md{
+    width: 100%;
+}
+.bmro-inside-width{
+width: 110px;
+float: left;
+}
+.bmro-btn-direction{
+    width: 50px;
+    float: left;
+    padding: 0px;
+    margin: 0px;
+    margin-left: 10px;
 }
