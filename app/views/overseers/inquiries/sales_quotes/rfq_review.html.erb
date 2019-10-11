@@ -67,8 +67,8 @@
                             <div class="" data-target="#c-<%= row.object.inquiry_product_supplier_id %>">
                               <%= row.label '', for: /id="([a-z\d_]*)"/.match(radio)[1], :class => 'd-block' do %>
                                 <h6 class="text-black-50 mb-1 text-uppercase">
-                                  <%= row.object.inquiry_product_supplier %><br>
-                                  Price: <%= row.object.inquiry_product_supplier.unit_cost_price %><br>
+                                  <strong><%= row.object.inquiry_product_supplier %></strong><br>
+                                  <small><strong>Unit Cost Price: <%= row.object.inquiry_product_supplier.unit_cost_price %> | Final Unit Price: <%= row.object.inquiry_product_supplier.total_price %></strong></small>
                                 </h6>
                               <% end %>
                             </div>

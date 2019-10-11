@@ -8,21 +8,20 @@ const editSupplierRfqs = () => {
         });
     });
 
-    $(".rfq_edit :input").on('input', function(){
-        let active_element_number = document.activeElement.id.match(/\d+/)[0];
-        let basic_unit_price = $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_unit_cost_price").val();
-        let gst = $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_gst").val();
-        let unit_freight = $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_unit_freight").val();
-        let final_unit_price = $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_final_unit_price").val();
-        let quantity = $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_quantity").val();
-        calculate_gst(gst, basic_unit_price, active_element_number);
-        calculate_freight(unit_freight, final_unit_price, active_element_number);
-        calculate_total_price($("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_final_unit_price").val(), quantity, active_element_number);
+    $(".rfq_edit :input").on('keyup', function () {
+        let data_id= $(this).data('id');
+        let active_element_number = typeof data_id === 'undefined' ? '' : data_id.split('_').pop();
+        let basic_unit_price = $('input[data-id="unit_cost_price_' + active_element_number + '"]').val() || 0;
+        let gst = $('input[data-id="gst_' + active_element_number + '"]').val();
+        let unit_freight = $('input[data-id="unit_freight_' + active_element_number + '"]').val() || 0;
+
+        calculate_final_unit_price(gst, basic_unit_price, unit_freight, active_element_number);
+
         if (!(basic_unit_price) || basic_unit_price == "0") {
-            $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_final_unit_price").val('');
-            $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_gst").val('');
-            $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_unit_freight").val('');
-            $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_total_price").val('');
+            $('input[data-id="final_unit_price_' + active_element_number + '"]').val('');
+            $('input[data-id="gst_' + active_element_number + '"]').val('');
+            $('input[data-id="unit_freight_' + active_element_number + '"]').val('');
+            $('input[data-id="total_price_' + active_element_number + '"]').val('');
         }
     });
 
@@ -59,26 +58,31 @@ let updateAllInquiryProductSuppliers = () => {
     });
 };
 
-let calculate_gst = (gst, basic_unit_price, active_element_number) => {
+let calculate_final_unit_price = (gst, basic_unit_price, unit_freight, active_element_number) => {
+    let final_unit_price_input = $("form").find("[data-id='final_unit_price_" + active_element_number + "']");
+    let quantity = $('input[data-id="quantity_' + active_element_number + '"]').val();
+    let final_unit_price;
     if ((gst && gst != 0) && basic_unit_price) {
-        let gst_value = parseFloat(basic_unit_price) * parseFloat(gst) / 100;
-        $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_final_unit_price").val(parseFloat(basic_unit_price) + parseFloat(gst_value));
-    }else if(basic_unit_price) {
-        $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_final_unit_price").val(parseFloat(basic_unit_price));
+        let unit_price_with_gst = (parseFloat(basic_unit_price) * parseFloat(gst) / 100) || 0;
+        let unit_price_with_freight = parseFloat(unit_freight)  || 0;
+        final_unit_price = parseFloat(basic_unit_price) + unit_price_with_gst + unit_price_with_freight;
+        final_unit_price_input.val(parseFloat(final_unit_price).toFixed(2));
+    } else if (basic_unit_price) {
+        let unit_price_with_gst = 0;
+        let unit_price_with_freight = parseFloat(unit_freight)  || 0;
+        final_unit_price = parseFloat(basic_unit_price) + unit_price_with_gst + unit_price_with_freight;
+        final_unit_price_input.val(parseFloat(final_unit_price).toFixed(2));
     }
-};
-
-let calculate_freight = (unit_freight, final_unit_price, active_element_number) => {
-    if (unit_freight) {
-        $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_final_unit_price").val(parseFloat(unit_freight) + parseFloat(final_unit_price));
-    }
+    calculate_total_price(final_unit_price, quantity, active_element_number)
 };
 
 let calculate_total_price = (final_unit_price, quantity, active_element_number) => {
+    let total_unit_price_input = $('input[data-id="total_price_' + active_element_number + '"]');
     if (final_unit_price != null && quantity != null) {
-        $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_total_price").val(parseFloat(final_unit_price) * parseFloat(quantity));
-    }else{
-        $("#supplier_rfq_inquiry_product_suppliers_attributes_" + active_element_number + "_total_price").val('');
+        let total = parseFloat(final_unit_price) * parseFloat(quantity);
+        total_unit_price_input.val(total.toFixed(2));
+    } else {
+        total_unit_price_input.val('');
     }
 };
 

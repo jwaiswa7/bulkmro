@@ -139,9 +139,9 @@ class SalesQuoteRow < ApplicationRecord
 
   def unit_cost_price_with_unit_freight_cost
     if !self.sales_quote.is_credit_note_entry
-      unit_cost_price + unit_freight_cost if unit_cost_price.present? && unit_freight_cost.present?
+      self.inquiry_product_supplier.unit_cost_price + self.inquiry_product_supplier.unit_freight if self.inquiry_product_supplier.unit_cost_price.present? && self.inquiry_product_supplier.unit_freight.present?
     else
-      unit_cost_price + 0.0
+      self.inquiry_product_supplier.unit_cost_price + 0.0
     end
   end
 
