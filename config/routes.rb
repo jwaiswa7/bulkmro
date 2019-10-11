@@ -55,6 +55,7 @@ Rails.application.routes.draw do
       get 'serializer'
       get 'migrations'
       get 'console'
+      get 'get_status_records'
     end
 
     resources :remote_requests do

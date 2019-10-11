@@ -89,11 +89,11 @@
                 <div class="bmro-width100 bmro-Inquries-task ">
                   <div class="brmo-task-no-td bmro-Inquries-width1 brmo-fl brmo-position-relative">
                     <img src="image/show-starred.png" class="bmro-dash-star bmro-task-star-pos" alt="star">
-                    <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span bmro-order-show bmro-cursol"><%= inquiry.inquiry_number %></span>
+                    <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span bmro-order-show bmro-cursol" id="inquiry_number"><%= inquiry.inquiry_number %></span>
                   </div>
                   <div class="brmo-task-print bmro-Inquries-width2 brmo-fl">
                     <span class="bmro-account-label-one"><%= inquiry.company.name %></span>
-                    <span class="bmro-status-label bmro-color-green"><%= inquiry.status %></span>
+                    <span class="bmro-status-label bmro-color-green" data-id="<%= inquiry.inquiry_number %>"><%= inquiry.status %></span>
                   </div>
                   <div class="bmro-Inquries-width3 brmo-fl bmro-text-right">
                     <span class="bmro-table-order-no bmro-right-side-open"><%= inquiry.sales_orders.count %></span>
@@ -736,143 +736,7 @@
       <!-- <div class="bmro-width100">
         <h5 class="bmro-big-heading-two">Abbott Healthcare Pvt.Ltd</h5>
       </div> -->
-      <div class="bmro-width100">
-        <span class="bmro-small-heading bmro-width100 bmro-mt-5">Inquiry N0.</span>
-        <h5 class="bmro-big-heading-two bmro-mt-5 bmro-fl bmro-wdith-auto">#45567
-          <span class="bmro-drop-icon-head bmro-slide-icon"></span>
-        </h5>
-        <button class="bmro-action-button bmro-fl">Activity Log
-          <span class="bmro-menu-dropdown bmro-button-drop-compos"></span>
-        </button>
-      </div>
-      <div class="bmro-width100 bmro-dotted-line-order bmro-mt-today bmro-dotted-line-order">
-        <div class="bmro-position-set">
-          <div class="bmro-circle-order"></div>
-          <div class="bmro-position-h5">
-            <h5 class="bmro-big-heading-two bmro-fl">06/09/19</h5>
-            <span class="bmro-today-heading bmro-ml-today">Today</span>
-          </div>
-        </div>
-        <div class="bmro-position-set">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Preparing</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Sales Quotation</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-subdata">Quotation Prepared</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Sales Quotation</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Sent</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Sales Quotation</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Approved</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-right-date-pt">
-          <div class="bmro-circle-order"></div>
-          <div class="bmro-position-h5">
-            <h5 class="bmro-big-heading-two bmro-fl">06/09/19</h5>
-            <span class="bmro-today-heading bmro-ml-today">Today</span>
-          </div>
-        </div>
-        <div class="bmro-position-set">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Preparing</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Sales Quotation</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-subdata">Quotation Prepared</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Sales Quotation</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Sent</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Sales Quotation</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Approved</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-right-date-pt">
-          <div class="bmro-circle-order"></div>
-          <div class="bmro-position-h5">
-            <h5 class="bmro-big-heading-two bmro-fl">06/09/19</h5>
-            <span class="bmro-today-heading bmro-ml-today">Today</span>
-          </div>
-        </div>
-        <div class="bmro-position-set">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Preparing</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Sales Quotation</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-subdata">Quotation Prepared</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Sales Quotation</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Sent</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-16">
-          <div class="bmro-circle-order-sub"></div>
-          <span class="bmro-today-data">Sales Quotation</span>
-          <span class="bmro-today-subdata bmro-head-ml-6">Approved</span>
-        </div>
-        <div class="bmro-position-set bmro-head-mt-6">
-          <span class="bmro-today-data bmro-wdith-auto bmro-fl">at 17:55 PM</span>
-          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>You</span>
-        </div>
-      </div>
+      <div id="status-record-div"></div>
     </div>
 
     <div class="bmro-slide-order-no">
@@ -985,51 +849,57 @@
     </div>
     <div class="bmro-width100">
       <div class="bmro-dash-right-menu">
-        <a href="#" class="bmro-all-notification active-menu">All</a>
-        <a href="#" class="bmro-all-notification">Notification</a>
-        <a href="#" class="bmro-all-notification">Comments</a>
+        <a href="javascript:void(0)" class="bmro-all-notification" id="notifications">Notification</a>
+        <a href="javascript:void(0)" class="bmro-all-notification" id="comments">Comments</a>
       </div>
     </div>
-    <div class="bmro-width100">
-      <div class="brmo-today-list bmro-today-mt-mb">
-        <div class="bmro-width100 brmo-today-line-parent">
-          <div class="bmro-today-parent">
-            <span class="bmro-big-heading bmro-fl">Today</span>
+    <div class="bmro-width100" id="notification-rows">
+      <% @dashboard.notifications.each do |date, notifications| %>
+        <div class="brmo-today-list bmro-today-mt-mb">
+          <div class="bmro-width100 brmo-today-line-parent">
+            <div class="bmro-today-parent">
+              <% if date.today? %>
+                <span class="bmro-big-heading bmro-fl">Today</span>
+              <% else %>
+                <span class="bmro-big-heading bmro-fl"><%= date.strftime("%d/%m/%Y") %></span>
+              <% end %>
+            </div>
+            <span class="bmro-today-line"></span>
           </div>
-          <span class="bmro-today-line"></span>
         </div>
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678</h5>
-        <span class="bmro-today-span">Supplier not picking call mail send for material rediness.</span>
-      </div>
-      <div class="brmo-today-list">
-        <h5 class="bmro-big-heading bmro-hash-mt">Farhan. A <span class="bmro-today-button">Logistics</span></h5>
-        <span class="bmro-today-posted">Posted on:31/07/19, 09:00PM</span>
-      </div>
-      <div class="brmo-today-list brmo-today-list-bm">
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678 <span class="bmro-today-button">Notification</span></h5>
-        <span class="bmro-today-span">Invoice rejected by account</span>
-        <span class="bmro-today-posted">Posted on:31/07/19, 09:00PM</span>
-      </div>
-      <div class="brmo-today-list brmo-today-list-bm">
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678</h5>
-        <span class="bmro-today-span">Supplier not picking call mail send for material rediness.</span>
-      </div>
-      <div class="brmo-today-list brmo-today-list-bm">
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678 <span class="bmro-today-button">Logistics</span></h5>
-        <span class="bmro-today-span">Supplier not picking call mail send for material rediness.</span>
-      </div>
-      <div class="brmo-today-list brmo-today-list-bm">
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678 <span class="bmro-today-button">Logistics</span></h5>
-        <span class="bmro-today-span">Supplier not picking call mail send for material rediness.</span>
-      </div>
-      <div class="brmo-today-list brmo-today-list-bm">
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678</h5>
-        <span class="bmro-today-span">Supplier not picking call mail send for material rediness.</span>
-      </div>
-      <div class="brmo-today-list brmo-today-list-bm">
-        <h5 class="bmro-big-heading bmro-hash-mt">#2345678</h5>
-        <span class="bmro-today-span">Supplier not picking call mail send for material rediness.</span>
-      </div>
+        <% notifications.each do |notification| %>
+          <div class="brmo-today-list ">
+            <h5 class="bmro-big-heading bmro-hash-mt">#<%= notification.id %> <span class="bmro-today-button">Notification</span></h5>
+            <span class="bmro-today-span"><%= notification.message %></span>
+            <span class="bmro-today-posted">Posted on: <%= notification.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="bmro-width100" id="comment-rows">
+      <% @dashboard.comments.each do |date, comments| %>
+        <div class="brmo-today-list bmro-today-mt-mb">
+          <div class="bmro-width100 brmo-today-line-parent">
+            <div class="bmro-today-parent">
+              <% if date.today? %>
+                <span class="bmro-big-heading bmro-fl">Today</span>
+              <% else %>
+                <span class="bmro-big-heading bmro-fl"><%= date.strftime("%d/%m/%Y") %></span>
+              <% end %>
+            </div>
+            <span class="bmro-today-line"></span>
+          </div>
+        </div>
+        <% comments.each do |comment| %>
+          <div class="brmo-today-list ">
+            <h5 class="bmro-big-heading bmro-hash-mt">#<%= comment.id %> <span class="bmro-today-button">Comment</span></h5>
+            <span class="bmro-today-span"><%= comment.message %></span>
+            <h5 class="bmro-big-heading bmro-hash-mt"><%= comment.created_by.to_s %> <span class="bmro-today-button"><%= comment.created_by.role %></span></h5>
+            <span class="bmro-today-posted">Posted on: <%= comment.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
+          </div>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>
@@ -1037,48 +907,73 @@
 
 
 <script>
+    $( document ).ready(function() {
+      $("#notifications").trigger('click');
+    });
+
     $(".bmro-menu-click").click(function () {
         $('.bmro-dash-main-menu').toggleClass('bmro-dash-main-menu-show');
         $(this).toggleClass('bmro-menu-roted');
-    })
+    });
+
     $('.bmro-main-drop-col p').hover(function(){
         $(this).children('.bmro-dash-hover').css("display","block");
     }, function() {
         $(this).children('.bmro-dash-hover').css("display","none");
-    })
+    });
+
     $(".bmro-dashbord-click").click(function () {
         $('.bmro-dash-main-menu').removeClass('bmro-dash-main-menu-show');
         $('.bmro-menu-click').removeClass('bmro-menu-roted');
-    })
-    $(".bmro-status-label").click(function () {
+    });
+
+    $(".bmro-status-label").click(function (e) {
+        let inquiry_number = $(this).data('id');
+        e.preventDefault();
+        $.ajax({
+            url: "dashboard/get_status_records",
+            type: "GET",
+            data: {
+                inquiry_number: inquiry_number
+            },
+            success: function (data) {
+              $('#status-record-div').empty();
+              $('#status-record-div').append(data);
+            },
+        });
         $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
         $('.bmro-slide-on-inquries').addClass('bmro-inquries-po');
         // $('.bmro-close-right-slide').addClass('bmro-close-right-slide-fix',15000);
-    })
+    });
+
     $(".bmro-close-right-slide").click(function () {
         $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
         // $(this).removeClass('bmro-close-right-slide-fix');
-    })
+    });
+
     $(".bmro-right-side-open").click(function () {
         $('.bmro-slide-order-no').addClass('bmro-slide-order-show');
         $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
         // $('.bmro-close-order-slide').addClass('bmro-close-right-slide-fix',15000);
-    })
+    });
     $(".bmro-close-order-slide").click(function () {
         // $(this).removeClass('bmro-close-right-slide-fix');
         $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
-    })
+    });
+
     $(".bmro-same-box").click(function () {
         $('.bmro-same-box').removeClass('bmro-same-box-active');
         $(this).addClass('bmro-same-box-active',1000);
         $('.bmro-sales-main').removeClass('bmro-sales-show-hide');
         $('.bmro-inquries-main').addClass('bmro-inquiry-show-hide');
-    })
+    });
+
     $(".bmro-sales-back").click(function () {
         $('.bmro-same-box').removeClass('bmro-same-box-active');
         $('.bmro-sales-main').addClass('bmro-sales-show-hide');
         $('.bmro-inquries-main').removeClass('bmro-inquiry-show-hide');
-    })
+    });
+
     $(".bmro-order-show").click(function () {
         $('.bmro-order-action').removeClass('bmro-order-hide');
         $('.bmro-all-task-action').addClass('bmro-order-hide');
@@ -1087,7 +982,8 @@
         $(this).parent().parent().addClass('bmro-active-white',1000);
         $('.bmro-show-star').addClass('bmro-inquiry-show-hide');
         $('.bmro-reset-button').removeClass('bmro-inquiry-show-hide');
-    })
+    });
+
     $(".bmro-reset-button").click(function () {
         $('.bmro-order-action').addClass('bmro-order-hide');
         $('.bmro-all-task-action').removeClass('bmro-order-hide');
@@ -1095,5 +991,15 @@
         $('.bmro-Inquries-task').removeClass('bmro-active-white');
         $('.bmro-show-star').removeClass('bmro-inquiry-show-hide');
         $('.bmro-reset-button').addClass('bmro-inquiry-show-hide');
+    });
+
+    $("#notifications").click(function () {
+        $('#comment-rows').hide();
+        $('#notification-rows').show();
+    });
+
+    $('#comments').click(function () {
+        $('#notification-rows').hide();
+        $('#comment-rows').show();
     })
 </script>
