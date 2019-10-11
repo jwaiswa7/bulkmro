@@ -1865,6 +1865,9 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     padding-top: 25px!important;
     top: 48px!important;
   }
+  .container.bmro-container {
+    max-width: 94%;
+  }
 }
 @media only screen and (min-width: 1440px) {
   .bmro-datatable-style.fixedHeader-floating{
