@@ -48,7 +48,7 @@ every(4.hour, 'generate_exports_hourly') do
   end
 end
 
-every(1.day, 'refresh_indices', at: '00:00') do
+every(1.day, 'refresh_indices', at: '01:00') do
   # Chewy.strategy(:sidekiq) do
   #   Services::Shared::Chewy::RefreshIndices.new
   # end
@@ -66,7 +66,7 @@ every(1.day, 'generate_exports_daily', at: '04:00') do
   end
 end
 
-every(1.day, 'purchase_order_reindex', at: '07:00') do
+every(1.day, 'purchase_order_reindex', at: '00:00') do
   puts 'For reindexing purchase orders'
 
   index_class = PurchaseOrdersIndex
