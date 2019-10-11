@@ -22,6 +22,16 @@ class Overseers::DashboardController < Overseers::BaseController
     # end
   end
 
+  def get_status_records
+    inquiry = Inquiry.find_by_inquiry_number(params['inquiry_number'])
+    inquiry_status_records = inquiry.inquiry_status_records.order(created_at: :desc).group_by { |c| c.created_at.to_date }
+    if inquiry_status_records
+      respond_to do |format|
+        format.html { render partial: 'customers/dashboard/inq_status_records_data',  locals: {inquiry_status_records: inquiry_status_records, inquiry: inquiry}}
+      end
+    end
+  end
+
   def serializer
     authorize_acl :dashboard, :show?
     render json: Serializers::InquirySerializer.new(Inquiry.find(1004),
