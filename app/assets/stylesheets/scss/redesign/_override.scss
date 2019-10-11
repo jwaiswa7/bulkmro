@@ -2597,3 +2597,24 @@ table.fixedHeader-floating{
 .bmro-table-actions {
     width: 98px!important;
 }
+.bmro-table-bg-green{
+    box-sizing: border-box;
+    border: 1px solid #E0E2E7;
+    border-left: 4px solid #34B864;
+    background-color: #F3FBF6;
+}
+.bmro-table-bg-red{
+    box-sizing: border-box;
+    border: 1px solid #E0E2E7;
+    border-left: 4px solid #FF4258;
+    background-color: #FFEFF1;
+}
+.bmro-table-bg-yellow{
+    box-sizing: border-box;
+    border: 1px solid #E0E2E7;
+    border-left: 4px solid #FFC444;
+    background-color: #FCF1D8;
+}
+.bmro-block-display{
+    display: block!important;
+}
