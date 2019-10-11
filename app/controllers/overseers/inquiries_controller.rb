@@ -16,7 +16,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
       format.html {
         @statuses = Inquiry.statuses.except('Lead by O/S')
-        @main_summary_statuses = status_service.indexed_main_summary_statuses
+        @main_summary_statuses = Inquiry.main_summary_statuses
       }
       format.json do
         @total_values = status_service.indexed_total_values

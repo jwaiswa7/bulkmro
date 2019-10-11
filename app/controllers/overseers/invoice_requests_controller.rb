@@ -63,7 +63,9 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def index
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.order(id: :desc), params)
     authorize_acl @invoice_requests
-    @statuses = @invoice_requests.pluck(:status)
+    # @invoice_requests.pluck(:status)
+    @statuses = InvoiceRequest.statuses
+    @main_summary_statuses = InvoiceRequest.main_summary_statuses
   end
 
   def show
