@@ -3,20 +3,22 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
 
   def index
     authorize_acl :payment_request
+
+    service = Services::Overseers::Finders::PaymentRequests.new(params, current_overseer)
+    service.call
+
+    @indexed_payment_requests = service.indexed_records
+    @payment_requests = service.records
+
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_payment_requests, PaymentRequest, main_summary_status: PaymentRequest.main_summary_statuses)
+    status_service.call
+
     respond_to do |format|
       format.html {
         @statuses = PaymentRequest.statuses
+        @main_summary_statuses = status_service.indexed_main_summary_statuses
       }
       format.json do
-        service = Services::Overseers::Finders::PaymentRequests.new(params, current_overseer)
-        service.call
-
-        @indexed_payment_requests = service.indexed_records
-        @payment_requests = service.records
-
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_payment_requests, PaymentRequest)
-        status_service.call
-
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
       end
