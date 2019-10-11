@@ -790,7 +790,7 @@
                       </div>
                     </div>
                     <div class="bmro-action-button-parent bmro-action-width bmro-fl">
-                      <a href="lightbox.html" class="bmro-action-button bmro-fr bmro-lightbox">Compose Email
+                      <a href="#" class="bmro-action-button bmro-fr bmro-lightbox" data-toggle="modal" data-target="#myModal" role="button">Compose Email
                       </a>                        
                     </div>
                   </div>
@@ -1404,6 +1404,23 @@
         </div>              
       </div>
     </div>
+    
+    <div class="modal fade bmro-compose" id="myModal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Modal Header</h4>
+          </div>
+          <div class="modal-body">
+            <p>Some text in the modal.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script>
       var ctx = document.getElementById('myChart').getContext('2d');
       var myChart = new Chart(ctx, {
@@ -1537,14 +1554,5 @@
         $('.bmro-purchase-order').addClass('bmro-hide');
         $('.bmro-inquries-main').removeClass('bmro-hide');
       })
-
-      // $(".bmro-lightbox").fancybox({
-      //   'width'       : 767,
-      //   'height'      : 687,
-      //   'autoScale'     : false,
-      //   'transitionIn'    : 'none',
-      //   'transitionOut'   : 'none',
-      //   'type'        : 'iframe'
-      // })
   
     </script    
