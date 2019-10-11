@@ -222,7 +222,8 @@ let setup = () => {
                         let input = '';
 
                         if (filter == 'dropdown') {
-                            input = $('<div class="bmro-input-search bmro-arrow-parent"><select class="form-control select select2-single bmro-form-input select2-hidden-accessible" data-placeholder="' + [text, ' '].join('') + '"><option value="" selected disabled></option></select></div>');
+                            let status_class = (text == 'Status' ? 'status-filter': '')
+                            input = $('<div class="bmro-input-search bmro-arrow-parent '+status_class+'"><select class="form-control select select2-single bmro-form-input select2-hidden-accessible" data-placeholder="' + [text, ' '].join('') + '"><option value="" selected disabled></option></select></div>');
                             json.columnFilters[this.index()].forEach(function (f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
                                 input.find('select').append(option);
