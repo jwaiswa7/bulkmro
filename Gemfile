@@ -239,3 +239,11 @@ gem 'dalli'
 # required for parsing requests
 gem 'parser'
 gem 'unparser'
+
+# required for azure deployments
+gem 'capistrano', '~> 3.11'
+gem 'capistrano-rails', '~> 1.4'
+gem 'capistrano-passenger', '~> 0.2.0'
+gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.4'
+gem 'capistrano-yarn'
+gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'

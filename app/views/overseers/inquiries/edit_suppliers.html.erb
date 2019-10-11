@@ -31,8 +31,8 @@
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.object.sr_no %></span>
               <strong><%= inquiry_product.object.product.sku %> - <%= inquiry_product.object.product.name %>
                 <% if is_authorized(inquiry_product.object.product,'sku_purchase_history') && policy(inquiry_product.object.product).sku_purchase_history? %>
-                  <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a>
-                  <a class="ml-2 text-small" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-inventory mr-1 text-small"></i>Resync Inventory</a>
+                  <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="bmro-history-icon mr-1 text-small"></i>History</a>
+                  <a class="ml-2 text-small" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="bmro-inventory-icon mr-1 text-small"></i>Resync Inventory</a>
                 <% end %></strong>
             </h6>
             <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
@@ -59,12 +59,12 @@
                   </div>
                   <div class="col-md-5">
                     <div class="d-flex flex-row">
-                      <div class="mr-1">
-                        <%= inquiry_product_supplier.input :lowest_unit_cost_price, disabled: true, input_html: { class: 'bmro-form-input' }, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Lowest" : false, wrapper: :input_group do %>
+                      <div class="mr-1 bmro-width-md">
+                        <%= inquiry_product_supplier.input :lowest_unit_cost_price, disabled: true, input_html: { class: 'bmro-form-input bmro-inside-width' }, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Lowest" : false, wrapper: :input_group do %>
                           <%= inquiry_product_supplier.input_field :lowest_unit_cost_price, class: "form-control text-right bmro-form-input", disabled: true, placeholder: placeholder_for(inquiry_product_supplier, :lowest_unit_cost_price) %>
-                          <div class="input-group-append bmro-button-parent">
+                          <div class="input-group-append bmro-btn-direction bmro-button-parent">
                             <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-lowest-unit-cost-price" do %>
-                              <i class="far fa-arrow-right"></i>
+                              <i class="bmro-icon-arrow-left"></i>
                             <% end %>
                           </div>
                         <% end %>
@@ -72,11 +72,11 @@
                       <div class="mr-1">
                         <%= inquiry_product_supplier.input :unit_cost_price, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Unit Price' : false, input_html: { class: 'bmro-form-input' }, placeholder: placeholder_for(inquiry_product_supplier, :unit_cost_price) %>
                       </div>
-                      <div class="mr-1">
-                        <%= inquiry_product_supplier.input :latest_unit_cost_price, disabled: true, input_html: { class: 'bmro-form-input' }, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Latest" : false, wrapper: :input_group do %>
-                          <div class="input-group-prepend bmro-button-parent">
-                            <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-latest-unit-cost-price" do %>
-                              <i class="far fa-arrow-left"></i>
+                      <div class="mr-1 bmro-width-md">
+                        <%= inquiry_product_supplier.input :latest_unit_cost_price, disabled: true, input_html: { class: 'bmro-form-input bmro-inside-width' }, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Latest" : false, wrapper: :input_group do %>
+                          <div class="input-group-prepend bmro-btn-direction bmro-button-parent">
+                            <%= f.button :button, type: "button", class: "btn btn-success bmro-btn-direction update-with-best-price update-with-latest-unit-cost-price" do %>
+                              <i class="bmro-icon-arrow-right"></i>
                             <% end %>
                           </div>
                           <%= inquiry_product_supplier.input_field :latest_unit_cost_price, class: "form-control bmro-form-input", disabled: true, placeholder: placeholder_for(inquiry_product_supplier, :latest_unit_cost_price) %>
