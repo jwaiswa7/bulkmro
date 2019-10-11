@@ -1631,16 +1631,16 @@
         $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
         $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
       })  
-      // $('.bmro-dropdown-item').click(function(){
-      //   $('.dropdown-toggle').parent().removeClass('dropdown-show');
-      // })  
-      // $('.dropdown-toggle').click(function() {
-      //   $('.dropdown-toggle').parent().removeClass('dropdown-show');
-      //   $(this).parent().addClass('dropdown-show',2000);
-      // })
-      // $(".dropdown-menu").mouseleave(function() { 
-      //   $('.dropdown-toggle').parent().removeClass('dropdown-show');
-      // })
+      $('.bmro-dropdown-item').click(function(){
+        $('.dropdown-toggle').parent().removeClass('dropdown-show');
+      })  
+      $('.dropdown-toggle').click(function() {
+        $('.dropdown-toggle').parent().removeClass('dropdown-show');
+        $(this).parent().addClass('dropdown-show',2000);
+      })
+      $(".dropdown-menu").mouseleave(function() { 
+        $('.dropdown-toggle').parent().removeClass('dropdown-show');
+      })
 
       $('.bmro-show-purchse').click(function(){
         $('.bmro-purchase-order').addClass('bmro-show');
