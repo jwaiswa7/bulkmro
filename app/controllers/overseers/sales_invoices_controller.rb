@@ -21,7 +21,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
         @route_through_pod_over_month = service.route_through_pod_over_month
         @pod_over_month = @regular_pod_over_month.merge(@route_through_pod_over_month) { |key, regular_value, route_through_value| regular_value['doc_count'] + route_through_value['doc_count']}
 
-        @main_summary_statuses = status_service.indexed_main_summary_statuses
+        @main_summary_statuses = SalesInvoice.main_summary_statuses
       }
       format.json do
         @total_values = status_service.indexed_total_values

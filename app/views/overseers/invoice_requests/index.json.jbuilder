@@ -41,3 +41,4 @@ json.recordsTotal @invoice_requests.count
 json.recordsFiltered @invoice_requests.total_count
 json.draw params[:draw]
 json.recordsSummary InvoiceRequest.statuses.map {|k, v| {status_id: v, "label": k, "size": @invoice_requests.pluck(:status).count(k)}}.as_json
+json.recordsMainSummary InvoiceRequest.main_summary_statuses.map {|k, v| {status_id: v, "label": k, "size": @invoice_requests.pluck(:status).count(k)}}.as_json
