@@ -145,6 +145,10 @@ class SalesQuoteRow < ApplicationRecord
     end
   end
 
+  def get_tax_rate
+    TaxRate.where(tax_percentage: self.inquiry_product_supplier.gst).last.id
+  end
+
   def calculated_unit_selling_price
     if self.unit_cost_price_with_unit_freight_cost.present? && self.margin_percentage.present?
       if self.margin_percentage >= 100

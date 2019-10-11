@@ -47,7 +47,7 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
     if @supplier_rfq.present?
       @supplier_rfq.assign_attributes(supplier_rfq_params.merge(overseer: current_overseer))
       @supplier_rfq.save
-
+      @quantity = supplier_rfq_params['inquiry_product_suppliers_attributes']['0']['quantity']
       supplier = Company.find(@supplier_rfq.supplier_id)
       # contact = supplier.default_contact
       contact = Contact.find_by_email('bulkmro007@gmail.com')
@@ -56,7 +56,7 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
           @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
           subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
           @action = 'send_email_request_for_quote'
-          @quantity = supplier_rfq_params['inquiry_product_suppliers_attributes']['0']['quantity']
+
           @email_message.assign_attributes(
               subject: subject,
               body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq, @quantity).body.raw_source
@@ -70,7 +70,7 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
       elsif params['button'] == 'update_and_send_link_all'
         @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
         subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
-        @quantity = supplier_rfq_params['inquiry_product_suppliers_attributes']['0']['quantity']
+
         @email_message.assign_attributes(
             subject: subject,
             body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq, @quantity).body.raw_source
