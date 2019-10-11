@@ -2151,11 +2151,21 @@ canvas {
 }
 .bmro-compose .modal-body{
   padding: 0px;
+  background: #fff;
 }
 .bmro-modal-close{
   padding: 0;
   margin: 0;
   position: relative;
-  top: 4px;
+  top: 44px;
+  height: 14px;
+  right: 25px;
   opacity: unset; 
+}
+.bmro-modal-close:hover{
+  opacity: unset;
+}
+.bmro-modal-close .bmro-close-icon{
+  top: 0px;
+  right: 0px;
 }
