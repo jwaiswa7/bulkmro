@@ -2024,7 +2024,7 @@ a.bmro-action-button:hover{
   font-weight: 600;
 }
 .bmro-back2{
-  background-position: right 6px top 11px;
+  background-position: right 7px top 8px;
 }
 .bmro-star-parent:hover{
   border-color: #2C4159;
@@ -2168,4 +2168,13 @@ canvas {
 .bmro-modal-close .bmro-close-icon{
   top: 0px;
   right: 0px;
+}
+.bmro-checkbox-parent .bmro-priority-lable{
+  padding-left: 8px;
+}
+.bmro-checkbox-parent .bmro-checkmark{
+  right: 7px;
+}
+.bmro-btn-call{
+  width: 300px;
 }
