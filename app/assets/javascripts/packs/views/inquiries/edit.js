@@ -119,4 +119,9 @@ $('.bmro-important').click(function (){
       scrollTop: $(".bmro-important-slide").offset().top - 80
     }, 1000)
 })
+$('.bmro-slide-top').click(function (){
+    $('html, body').animate({
+      scrollTop: $(".bmro-top-slide").offset().top - 70 
+    }, 1000)
+}) 
 export default edit
