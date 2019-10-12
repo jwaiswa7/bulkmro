@@ -75,7 +75,7 @@
         </div>
         <div class="card-footer bmro-card-footer">
           <% if is_authorized(@sales_order, 'create_purchase_orders_requests') %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
+            <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button bmro-width-auto") do %>
               <i class="fal fa-pen"></i> Preview PO request
             <% end %>
           <% end %>

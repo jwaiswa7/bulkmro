@@ -189,7 +189,7 @@
     </div>
   </div>
 </div>
-<hr>
+<div class="bmro-border-dashed"></div>
 <div class="form-row ml-1">
   <div class="col-12 col-md-2 mt-4 custom-control custom-checkbox">
     <input type="checkbox" class="custom-control-input" name="all_lead_dates" id="all_lead_dates">
@@ -204,7 +204,7 @@
     </button>
   </div>
 </div>
-<hr>
+<div class="bmro-border-dashed"></div>
 
 <%= f.nested_fields_for :rows, f.object.persisted? ? f.object.rows.order(id: :asc) : f.object.rows do |po_request_row| %>
   <%= po_request_row.hidden_field :id %>
@@ -213,7 +213,7 @@
   <%= po_request_row.hidden_field :tax_code_id %>
   <%= po_request_row.hidden_field :tax_rate_id %>
   <%= po_request_row.hidden_field :measurement_unit_id, value: po_request_row.object.measurement_unit_id || MeasurementUnit.default.id %>
-  <div class="form-row po-request-row">
+  <div class="form-row po-request-row bmro-product-slide-on">
     <div class="col-12 col-md-12 mb-1 ml-2">
       <span class="custom-control custom-checkbox d-inline pl-0">
         <%= check_box_tag 'po_request_row[]', po_request_row.object.id, false, id: "po_request_row_id_#{po_request_row.object.id}", class: 'custom-control-input' %>
@@ -290,10 +290,11 @@
         <% end %>
       </div>
     </div>
-    <hr class="divider">
+    <!-- <hr class="divider"> -->
+    <div class="bmro-border-dashed"></div>
   </div>
 <% end %>
-  <div class="bmro-add-new-parant">
+  <div class="bmro-add-new-parant bmro-new-slide-on">
     <div class="bmro-add-new bmro-product-btn-parent">
       <div class="bmro-fl">
         <a href="#" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addnew-icon mr-1"></i>Add New</a>
