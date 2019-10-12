@@ -2804,11 +2804,15 @@ table.fixedHeader-floating{
     padding: 0px 10px;
 }
 .bmro-add-new{
-    bottom: 0px;
+    bottom: -52px;
 }
 .bmro-border-dashed{
     width: 100%;
     border-bottom: 2px dashed #C3CAD2;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
+}
+.bmro-des-btn{
+    padding: 0;
+    margin: 17px 0px 0px 5px;    
 }
