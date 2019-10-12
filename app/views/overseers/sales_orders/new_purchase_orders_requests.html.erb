@@ -10,11 +10,11 @@
   <%= simple_form_for(@sales_order, url: preview_purchase_orders_requests_overseers_sales_order_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
   <div class="bmro-width-100 bmro-fl bmro-bg-white">
     <div class="card bmro-bg-frey">
-      <div class="card-body" id="top">
+      <div class="card-body">
         <%= render 'shared/snippets/form_errors', f: f %>
 
         <%= f.hidden_field :order_number, as: :string %>
-        <div class="form-row">
+        <div class="form-row bmro-top-slide">
           <div class="col-4">
             <strong class="d-block bmro-summary-heading">Order Number</strong>
             <div class="bmro-summary-data">
@@ -91,7 +91,7 @@
           <nav class="bmro-nav bmro-width-100 bmro-fl" data-spy="affix" data-offset-top="205">
             <ul class="bmro-label-ul">
               <li class="bmro-li-right">
-                <label data-path="top" class="bmro-list-button bmro-Opportunity-Details">Top</label>
+                <label class="bmro-list-button bmro-Opportunity-Details bmro-slide-top">Top</label>
               </li>
               <li class="bmro-li-right bmro-active-li">
                 <label data-path="product" class="bmro-list-button bmro-Billing">Product</label>
