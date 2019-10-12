@@ -225,7 +225,7 @@
     <div class="col-12 col-md-12 mb-1 ml-2">
       <%= link_to  product_resync_inventory_overseers_po_requests_path(product_id: po_request_row.object.product_id), 'data-toggle': 'tooltip', 'data-placement': 'top', 'data-toggle': 'modal', 'data-product-id': po_request_row.object.product_id, 'data-warehouse-id': po_request_row.object.product_id, title: 'Show Inventory', class: 'btn btn-sm btn-outline-dark product-stock-inventory bmro-inventory-icon' do %>
         <% concat content_tag(:span, '') %>
-        <% concat content_tag :i, nil, class: 'bmro-inventory-icon' %>
+        <% concat content_tag :i, nil, class: 'bmro-inventory-icon bmro-inventory-padd' %>
       <% end %>
     </div>
     <div class="col-12 col-md-12">
@@ -304,8 +304,8 @@
 
 <%# if is_authorized(:po_request, 'add_service_product') %>
 <% if !stock %>
-  <div class="col-md-3">
-    <%= f.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 bmro-button' do %>
+  <div class="bmro-fl bmro-width-auto">
+    <%= f.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 bmro-button bmro-fl bmro-width-auto' do %>
       <i class="fal fa-plus-circle mr-1"></i>Add a Service product
     <% end %>
   </div>
