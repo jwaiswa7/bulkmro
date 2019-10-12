@@ -14,7 +14,7 @@
             <%= f.hidden_field :option, value: 'Purchase Order' %>
             <%= f.input :document_number, as: :integer, input_html: { value: session[:number], class: 'bmro-form-input  bmro-bg' }, label: false, input_html: {  }, placeholder: "Enter Purchase Order #" %>
           </div>
-          <%= f.submit "Request from SAP", class: "btn btn-rounded btn-dark bmro-button" %>
+          <%= f.submit "Request from SAP", class: "btn btn-rounded btn-dark bmro-button bmro-sap-mb" %>
         <% end %>
       </div>
     <% end %>
