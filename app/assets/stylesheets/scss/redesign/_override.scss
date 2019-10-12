@@ -2695,6 +2695,8 @@ table.fixedHeader-floating{
     font-family: "Inter UI",sans-serif;
     font-size: 14px;
     font-weight: 600;
+    padding-top: 10px;
+    padding-left: 10px;
     letter-spacing: -0.22px;
     line-height: 16px;
 }
@@ -2713,10 +2715,8 @@ table.fixedHeader-floating{
    padding: 2px 10px;
 }
 .bmro-instruction-heading{
-    position: relative;
-    display: block;
-    padding: 0.75rem 1.25rem;
-    margin-bottom: -1px;
+    width: 38%;
+    margin-top: 72px;
     background-color: #DFE5F0;
     border: 1px solid #E9EEF2;
 }
