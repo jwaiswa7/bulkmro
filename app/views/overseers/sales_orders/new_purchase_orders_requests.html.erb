@@ -41,7 +41,7 @@
       </div>
     </div>
     <% if @po_requests.present? %>
-      <div class="card bmro-fix-width">
+      <div class="card bmro-fix-left">
         <div class="card-body">
           <p>
             <ul class="list-group text-danger mb-3">
@@ -81,7 +81,18 @@
         </div>
       </div>
       <div class="bmro-fix-right">
-        
+        <div class="bmro-right-ul bmro-width-100 bmro-fl">
+          <nav class="bmro-nav bmro-width-100 bmro-fl" data-spy="affix" data-offset-top="205">
+            <ul class="bmro-label-ul">
+              <li class="bmro-li-right">
+                <label data-path="Opportunity-Details" class="bmro-list-button bmro-Opportunity-Details">Opportunity Details</label>
+              </li>
+              <li class="bmro-li-right bmro-active-li">
+                <label data-path="Billing" class="bmro-list-button bmro-Billing">Billing/Shipping Details</label>
+              </li>
+            </ul>
+          </nav>
+        </div>        
       </div>
     <% else %>
       <div class="card">
