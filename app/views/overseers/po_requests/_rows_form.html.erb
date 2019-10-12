@@ -205,8 +205,6 @@
       </button>
     </div>
   </div>
-  <div class="bmro-border-dashed"></div>
-
   <%= f.nested_fields_for :rows, f.object.persisted? ? f.object.rows.order(id: :asc) : f.object.rows do |po_request_row| %>
     <%= po_request_row.hidden_field :id %>
     <%= po_request_row.hidden_field :sales_order_row_id %>

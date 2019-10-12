@@ -2774,7 +2774,7 @@ table.fixedHeader-floating{
 }
 .bmro-fix-sticky{
     position: sticky;
-    top: 57px;
+    top: 100px;
     z-index: 24;
 }
 .bmro-accordian{
@@ -2849,5 +2849,6 @@ table.fixedHeader-floating{
     padding-left: 0px;
 }
 .bmro-border-left-icon{
-    
+    border-left: 2px solid #C3CAD2;
+    padding-left: 34px!important;
 }
