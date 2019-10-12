@@ -2756,6 +2756,8 @@ table.fixedHeader-floating{
 .bmro-bg-white{
     background-color: #fff;
 }
-
-
-
+.bmro-nav-sticky{
+   position: sticky;
+   top: 0px;
+   z-index: 222;
+}
