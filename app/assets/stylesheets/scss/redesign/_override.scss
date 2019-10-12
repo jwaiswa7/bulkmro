@@ -2743,11 +2743,13 @@ table.fixedHeader-floating{
 .bmro-fix-left{
     width: 80%;
     float: left;
+    border-color: #fff;
 }
 .bmro-fix-right{
     width: 20%;
     float: left;
     background-color: #fff;
+    padding-top: 65px;
 }
 
 
