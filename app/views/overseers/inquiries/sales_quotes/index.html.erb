@@ -19,7 +19,7 @@
     </div>
       <ul class="list-group text-info mb-3 bmro-float-left-left">
         <li class="list-group-item bmro-instruction-ul">
-          <h5 class="text-info mb-0 bmro-instruction-ul">Before making a sales order, Please fulfill the following.</h5>
+          Before making a sales order, Please fulfill the following.
         </li>
         <% if @inquiry.customer_po_number.blank? %><li class="list-group-item bmro-instruction-ul"><i class="fal fa-check mr-2"></i>Customer PO number must be present.</li><% end %>
         <% if @inquiry.customer_order_date.blank? %><li class="list-group-item bmro-instruction-ul"><i class="fal fa-check mr-2"></i>Customer order date has to be defined.</li><% end %>
