@@ -45,7 +45,7 @@ const edit = () => {
             $('.bmro-card-header').css({
                 position: 'relative',
                 // top: (maxY - top) + 'px'
-                top:'1760px'
+                top:'1360px'
             });
         }
     });
