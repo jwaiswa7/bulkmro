@@ -18,7 +18,7 @@
        <h4 class="bmro-instruction-head"><span class="bmro-information"></span>Instructions heading will be displayed here   <i class="bmro-minus-icon"></i></h4>
     </div>
       <ul class="list-group text-info mb-3 bmro-float-left-left">
-        <li class="list-group-item bmro-instruction-ul">
+        <li class="list-group-item bmro-instruction-ul bmro-padding-ul-left">
           Before making a sales order, Please fulfill the following.
         </li>
         <% if @inquiry.customer_po_number.blank? %><li class="list-group-item bmro-instruction-ul"><i class="fal fa-check mr-2"></i>Customer PO number must be present.</li><% end %>

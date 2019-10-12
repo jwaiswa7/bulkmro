@@ -2713,6 +2713,7 @@ table.fixedHeader-floating{
     color: #022B54;
     font-family: "Inter UI",sans-serif;
     font-size: 12px;
+    border:none;
     font-weight: 600;
     letter-spacing: -0.47px;
     line-height: 15px;
@@ -2760,4 +2761,7 @@ table.fixedHeader-floating{
    position: sticky;
    top: 0px;
    z-index: 222;
+}
+.bmro-padding-ul-left{
+    padding-left: 32px;
 }
