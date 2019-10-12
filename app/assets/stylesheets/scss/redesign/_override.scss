@@ -1367,6 +1367,7 @@ a.bmro-click-toggle.collapsed:after{
     font-size: 12px;
     font-weight: 600;
     line-height: 15px;
+    font-family: "Inter UI",sans-serif;
 }
 .bmro-arrow-parent .select2 .select2-selection:before{
     font-size: 17px;
@@ -2769,4 +2770,12 @@ table.fixedHeader-floating{
     position: sticky;
     top: 57px;
     z-index: 24;
+}
+.bmro-accordian{
+    padding-left: 30px;
+    padding-top: 20px;
+    font-size: 20px!important;
+}
+.bmro-message-tab-margin{
+    margin-top: 30px;
 }
