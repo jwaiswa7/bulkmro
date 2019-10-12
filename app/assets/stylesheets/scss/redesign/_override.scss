@@ -2765,3 +2765,8 @@ table.fixedHeader-floating{
 .bmro-padding-ul-left{
     padding-left: 32px;
 }
+.bmro-fix-sticky{
+    position: sticky;
+    top: 57px;
+    z-index: 24;
+}
