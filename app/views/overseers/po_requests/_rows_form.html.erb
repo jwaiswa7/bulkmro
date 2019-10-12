@@ -189,7 +189,7 @@
     </div>
   </div>
 </div>
-<hr>
+<div class="bmro-border-dashed"></div>
 <div class="form-row ml-1">
   <div class="col-12 col-md-2 mt-4 custom-control custom-checkbox">
     <input type="checkbox" class="custom-control-input" name="all_lead_dates" id="all_lead_dates">
@@ -204,7 +204,7 @@
     </button>
   </div>
 </div>
-<hr>
+<div class="bmro-border-dashed"></div>
 
 <%= f.nested_fields_for :rows, f.object.persisted? ? f.object.rows.order(id: :asc) : f.object.rows do |po_request_row| %>
   <%= po_request_row.hidden_field :id %>
