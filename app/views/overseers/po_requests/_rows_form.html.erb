@@ -1,4 +1,4 @@
-<div class="bmro-left-side">
+<div class="bmro-left-side bmro-top-slide">
   <div class="form-row mt-2 po-request-form">
     <%= f.hidden_field :id %>
     <%= f.hidden_field :sales_order_id %>
@@ -299,14 +299,14 @@
 
   <%# if is_authorized(:po_request, 'add_service_product') %>
   <% if !stock %>
-    <div class="bmro-fl bmro-width-auto">
+    <div class="bmro-fl bmro-width-auto bmro-new-slide-on">
       <%= f.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 bmro-button bmro-fl bmro-width-auto' do %>
         <i class="fal fa-plus-circle mr-1"></i>Add a Service product
       <% end %>
     </div>
   <% end %>
 </div>
-<div class="bmro-left-side">
+<div class="bmro-right-side">
   <div class="bmro-fix-right bmro-fix-sticky">
     <div class="bmro-right-ul bmro-width-100 bmro-fl">
       <div class="bmro-width-100 bmro-fl">
