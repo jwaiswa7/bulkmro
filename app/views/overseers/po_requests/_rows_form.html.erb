@@ -225,7 +225,7 @@
     <div class="col-12 col-md-12 mb-1 ml-2">
       <%= link_to  product_resync_inventory_overseers_po_requests_path(product_id: po_request_row.object.product_id), 'data-toggle': 'tooltip', 'data-placement': 'top', 'data-toggle': 'modal', 'data-product-id': po_request_row.object.product_id, 'data-warehouse-id': po_request_row.object.product_id, title: 'Show Inventory', class: 'btn btn-sm btn-outline-dark product-stock-inventory' do %>
         <% concat content_tag(:span, '') %>
-        <% concat content_tag :i, nil, class: 'fal fa-inventory' %>
+        <% concat content_tag :i, nil, class: 'bmro-icon-inventory' %>
       <% end %>
     </div>
     <div class="col-12 col-md-12">
