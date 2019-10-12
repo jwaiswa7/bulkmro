@@ -2698,7 +2698,7 @@ table.fixedHeader-floating{
     float: left;
     padding: 0px!important;
     margin: 0px!important;
-    margin-left: 10px!important;
+    margin-left: 5px!important;
 }
 .bmro-instruction-head{
     color: #022B54;
@@ -2777,12 +2777,15 @@ table.fixedHeader-floating{
     font-size: 20px!important;
 }
 .bmro-message-tab-margin{
-    margin-top: 30px;
+    margin-bottom: 30px;
 }
 .bmro-add-new-parant{
     position: relative;    
     width: 100%;
     float: left;
+}
+.bmro-danger-icon-padding{
+    padding-top: 13px;
 }
 .bmro-inventory-icon{
    padding: 6px 9px;
