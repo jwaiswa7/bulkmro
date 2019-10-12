@@ -124,4 +124,14 @@ $('.bmro-slide-top').click(function (){
       scrollTop: $(".bmro-top-slide").offset().top - 200 
     }, 1000)
 }) 
+$('.bmro-product-slide').click(function (){
+    $('html, body').animate({
+      scrollTop: $(".bmro-product-slide-on").offset().top - 200 
+    }, 1000)
+}) 
+$('.bmro-new-slide').click(function (){
+    $('html, body').animate({
+      scrollTop: $(".bmro-new-slide-on").offset().top - 200 
+    }, 1000)
+}) 
 export default edit
