@@ -663,7 +663,7 @@
                   </div>
                   <%= inquiry_product.remove_nested_fields_link do %>
                     <div class="form-group align-self-center flex-grow-1 ml-2">
-                      <i class="far fa-times text-danger"></i>
+                      <i class="far fa-times text-danger bmro-display-none"></i>
                     </div>
                   <% end if is_authorized(inquiry_product.object, 'destroy') && policy(inquiry_product.object).destroy? %>
                 </div>
