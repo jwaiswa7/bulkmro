@@ -8,6 +8,7 @@
   </div>
 
   <%= simple_form_for(@sales_order, url: preview_purchase_orders_requests_overseers_sales_order_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <div class="bmro-width-100 bmro-fl bmro-bg-white">
     <div class="card bmro-bg-frey">
       <div class="card-body">
         <%= render 'shared/snippets/form_errors', f: f %>
@@ -102,6 +103,7 @@
           </nav>
         </div>        
       </div>
+  </div>
     <% else %>
       <div class="card">
         <div class="card-body">
