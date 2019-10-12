@@ -45,12 +45,18 @@
       </div>
     <% end %>
     <%= f.input :delivery_completed %>
-    <%= f.add_nested_fields_link :pod_rows, class: 'btn btn-outline-success bmro-button btn-block mb-2 mb-md-0' do %>
-      <span>New POD</span>
-    <% end %>
-    <%= button_tag(type: "submit", class: "btn btn-success bmro-button btn-block") do %>
-      <i class="fal fa-plus-circle"></i> Update POD
-    <% end %>
+    <div class="form-row flex-row align-items-start">
+      <div class="col-12 col-md-6">
+        <%= f.add_nested_fields_link :pod_rows, class: 'btn btn-outline-success bmro-button btn-block mb-2 mb-md-0' do %>
+          <span>New POD</span>
+        <% end %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= button_tag(type: "submit", class: "btn btn-success bmro-button btn-block") do %>
+          <i class="fal fa-plus-circle"></i> Update POD
+        <% end %> 
+      </div> 
+    </div>
   <% end %>
  </div> 
 </div>
