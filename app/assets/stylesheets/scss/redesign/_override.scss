@@ -2646,6 +2646,11 @@ table.fixedHeader-floating{
     margin: 6px;
     box-shadow:1px 1px 1px 1px grey;
 }
+.chat-item>.comment-wrap{
+    width: 210px;
+    margin: 6px;
+    box-shadow:1px 1px 1px 1px grey;
+}
 .bmro-btn-calc{
     margin-top: 24px!important;
 }
@@ -2790,4 +2795,8 @@ table.fixedHeader-floating{
 .bmro-inventory-icon{
    padding: 0;
     border: none; 
+}
+.bmro-table-changes{
+    display: block!important;
+    padding: 25px 15px!important;
 }
