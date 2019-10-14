@@ -162,7 +162,7 @@
         </div>
 
         <% if f.object.persisted? %>
-          <div class="form-group">
+          <div class="form-group bmro-alignment">
             <% f.object.attachments.each do |attachment| %>
               <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                 <i class="bmro-download-icon"></i>
