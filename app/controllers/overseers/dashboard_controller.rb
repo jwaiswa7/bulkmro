@@ -32,6 +32,18 @@ class Overseers::DashboardController < Overseers::BaseController
     end
   end
 
+  def show_email_message_modal
+    inquiry = Inquiry.find_by_inquiry_number(params['inquiry_number'])
+    email_message = inquiry.email_messages.build(overseer: current_overseer, contact: inquiry.contact, inquiry: inquiry)
+    email_message.assign_attributes(
+      subject: inquiry.subject,
+      body: InquiryMailer.acknowledgement(email_message).body.raw_source,
+    )
+    respond_to do |format|
+      format.html { render partial: 'customers/dashboard/email_message',  locals: {inquiry: inquiry, email_message: email_message}}
+    end
+  end
+
   def serializer
     authorize_acl :dashboard, :show?
     render json: Serializers::InquirySerializer.new(Inquiry.find(1004),
