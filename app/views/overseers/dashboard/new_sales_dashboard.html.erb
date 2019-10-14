@@ -33,31 +33,13 @@
     <div class="bmro-width100">
       <div class="bmro-width100">
         <div class="bmro-dash-box">
-          <div class="bmro-same-box col">
-            <label>sales Order draft</label>
-            <h5>458</h5>
-            <span>&#8377; 48,000</span>
-          </div>
-          <div class="bmro-same-box col">
-            <label>sales Order draft</label>
-            <h5>458</h5>
-            <span>&#8377; 48,000</span>
-          </div>
-          <div class="bmro-same-box col">
-            <label>sales Order draft</label>
-            <h5>458</h5>
-            <span>&#8377; 48,000</span>
-          </div>
-          <div class="bmro-same-box col">
-            <label>sales Order draft</label>
-            <h5>458</h5>
-            <span>&#8377; 48,000</span>
-          </div>
-          <div class="bmro-same-box col">
-            <label>sales Order draft</label>
-            <h5>458</h5>
-            <span>&#8377; 48,000</span>
-          </div>
+          <% @dashboard.main_statuses.each do |status| %>
+            <div class="bmro-same-box col">
+              <label><%= status %></label>
+              <h5><%= @dashboard.get_status_metrics(status)[:'count'] %></h5>
+              <span><%= format_currency(@dashboard.get_status_metrics(status)[:'value']) %></span>
+            </div>
+          <% end %>
         </div>
       </div>
       <div class="bmro-width100 bmro-main-pedding">
