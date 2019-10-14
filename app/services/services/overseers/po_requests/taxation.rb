@@ -2,8 +2,8 @@ class Services::Overseers::PoRequests::Taxation < Services::Shared::BaseService
   def initialize(po_request_row)
     @po_request_row = po_request_row
     @po_request = po_request_row.po_request
-    @bill_from = po_request.default_billing_address
-    @ship_from = po_request.default_shipping_address
+    @bill_from = po_request.bill_from
+    @ship_from = po_request.ship_from
     @bill_to = po_request.bill_to
     @ship_to = po_request.ship_to
   end
