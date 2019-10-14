@@ -28,6 +28,7 @@
       </div>
     <% end %>
   </th>
+  <th class="no-sort" >Quick Actions</th>
   <th class="no-sort" data-name="created_by_id">Created By</th>
   <th class="sort text-right" data-name="activity_date">Activity Date</th>
   <th class="no-sort" data-name="account_id">Account</th>
@@ -48,6 +49,7 @@
 
 
 <% content_for :filter_row do %>
+  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="dropdown"></td>
   <td data-filter="daterange"></td>
