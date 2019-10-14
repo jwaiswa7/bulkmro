@@ -2980,6 +2980,9 @@ table.fixedHeader-floating{
     border-color: #fff!important;  
     margin-right: 10px;
 }
+.bmro-help-btn::afeter{
+    content: unset;
+}
 .bmro-fr{
     float: right;
 }
