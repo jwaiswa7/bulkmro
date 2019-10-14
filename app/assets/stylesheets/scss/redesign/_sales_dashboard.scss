@@ -2081,6 +2081,7 @@ canvas {
   display: block;
   position: relative;
   top: 9px;
+  left: 1px;
 }
 .blue-chart-indicator {
   height: 7px;
@@ -2185,4 +2186,7 @@ canvas {
 }
 .dropdown-toggle{
   cursor: pointer;
+}
+.bmro-canvas-ul{
+  padding-left: 0;
 }
