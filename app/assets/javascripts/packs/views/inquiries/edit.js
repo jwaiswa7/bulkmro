@@ -134,4 +134,7 @@ $('.bmro-new-slide').click(function (){
       scrollTop: $(".bmro-new-slide-on").offset().top - 200 
     }, 1000)
 }) 
+$('.bmro-invoice-one').click(function(){
+    $(this).parent().toggleClass('bmro-parent-bg')
+})
 export default edit
