@@ -76,3 +76,5 @@ json.columnFilters [
 json.recordsTotal @activities.model.all.count
 json.recordsFiltered @indexed_activities.total_count
 json.draw params[:draw]
+json.recordsSummary Activity.activity_types.map { |status, status_id| {'status_id': status_id,'label':status, size:  Activity.send(status).size }}.as_json
+json.recordsMainSummary Activity.activity_types.map { |status, status_id| {'status_id': status_id,'label':status, size:  Activity.send(status).size }}.as_json

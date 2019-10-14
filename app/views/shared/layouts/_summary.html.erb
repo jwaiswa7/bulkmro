@@ -37,7 +37,7 @@
       <%# end %>
     </div>
     <% if klass == 'SalesInvoice'.constantize  %>
-      <div class="bmro-width-auto">
+      <div class="bmro-width-auto bmro-fl">
           <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#pod-summary">
             Proof of Delivery Summary
           </a>
@@ -79,7 +79,9 @@
                     <strong><%= format_enum(status) %></strong>
                   </p>
                   <h5 class="mb-0 bmro-ar-report-data mt-auto text-<%= status_color(status) %> status-count-<%= status_id %>"></h5>
-                  <h5 class="my-0 bmro-ar-report-subdata text-small text-<%= status_color(status) %> status-value-<%= status_id %>">&#8377;0</h5>
+                  <% if klass != 'Activity'.constantize %>
+                    <h5 class="my-0 bmro-ar-report-subdata text-small text-<%= status_color(status) %> status-value-<%= status_id %>">&#8377;0</h5>
+                  <% end %>
                 </div>
               </div>
             </a>
