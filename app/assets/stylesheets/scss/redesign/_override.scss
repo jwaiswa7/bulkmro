@@ -2889,3 +2889,6 @@ table.fixedHeader-floating{
     background-position: center;
     padding: 19px 6px 8px 9px!important;
 }
+.row div[class*="col"]{
+    float: left;
+}
