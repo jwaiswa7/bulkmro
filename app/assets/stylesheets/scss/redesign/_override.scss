@@ -2736,7 +2736,7 @@ table.fixedHeader-floating{
    margin-right: 7px;
 }
 .bmro-instruction-heading{
-    width: 38%;
+    width: 39%;
     margin-top: 72px;
     background-color: #DFE5F0;
     border: 1px solid #E9EEF2;
@@ -2773,7 +2773,7 @@ table.fixedHeader-floating{
    z-index: 222;
 }
 .bmro-padding-ul-left{
-    padding-left: 68px;
+    padding-left: 55px;
 }
 .bmro-fix-sticky{
     position: sticky;
@@ -3035,6 +3035,9 @@ table.fixedHeader-floating{
 }
 .bmro-minus-icon {
     display: block;
+}
+.bmro-instruction-ul{
+    background-color: #fff;
 }
 .collapsed .bmro-minus-icon{
     display: none;
