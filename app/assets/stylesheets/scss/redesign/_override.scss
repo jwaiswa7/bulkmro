@@ -2877,3 +2877,6 @@ table.fixedHeader-floating{
 .bmro-parent-bg .bmro-float .bmro-collaps{
     background-color: #fff;
 }
+.row div[class*="col"]{
+    float: left;
+}
