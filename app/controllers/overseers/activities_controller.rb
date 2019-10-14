@@ -7,6 +7,8 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
     @indexed_activities = service.indexed_records
     @activities = service.records
+    @statuses = Activity.activity_types
+    @main_summary_statuses = Activity.main_summary_statuses
     authorize_acl @activities
   end
 
