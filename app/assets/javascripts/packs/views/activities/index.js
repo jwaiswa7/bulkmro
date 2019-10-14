@@ -1,7 +1,11 @@
 import exportDaterange from '../common/exportDaterange'
 import exportFilteredRecords from "../common/exportFilteredRecords";
+import bindSummaryBox from '../common/bindSummaryBox'
+import updateSummaryBox from '../common/updateSummaryBox'
 
 const index = () => {
+    bindSummaryBox(".summary_box", '.status-filter')
+    updateSummaryBox()
     $('.add_to_inquiry_wrapper').hide();
     toggleCheckboxes();
 
