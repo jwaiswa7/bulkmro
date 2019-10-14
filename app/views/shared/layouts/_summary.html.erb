@@ -13,8 +13,7 @@
   </div>
 
   <div class="row">
-    <div class="col-lg-6 bmro-width-auto">
-      <div class="bmro-collaps-parent">
+    <div class="bmro-fix-width bmro-width-auto">
         <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#summary">
           <% if alias_name.present? %>
             <%= alias_name.titleize %> Summary&nbsp;&nbsp;&nbsp;
@@ -22,8 +21,8 @@
             <%= klass.name.titleize.pluralize %> Summary&nbsp;&nbsp;&nbsp;
             <% end %><!-- <i class="fa fa-chevron-down" aria-hidden="true"></i> -->
         </a>
-      </div>
       <%# if main_summary_statuses.present? %>
+        <div class="bmro-float">
           <% main_summary_statuses.each do |main_status, main_status_id| %>
             <div class="bmro-collaps bmro-collaps2">
               <div class="bmro-invoice-data">
@@ -34,32 +33,33 @@
               </div>
             </div>
           <% end %>
+        </div>  
       <%# end %>
     </div>
     <% if klass == 'SalesInvoice'.constantize  %>
-      <div class="col-lg-6 bmro-width-auto">
-        <div class="bmro-collaps-parent">
+      <div class="bmro-width-auto bmro-fl">
           <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#pod-summary">
             Proof of Delivery Summary
           </a>
-        </div> 
-          <div class="bmro-collaps bmro-collaps2">
-            <div class="bmro-invoice-data">
-              <div class="bmro-invoice-edit">
-                <label>Invoiced created</label>
-                <span>396</span>
-              </div>
-              <div class="bmro-invoice-edit">
-                <label>regular</label>
-                <span>93</span>
-              </div>
-              <div class="bmro-invoice-edit">
-                <label>route through</label>
-                <span>578</span>
-              </div>
-              <div class="bmro-invoice-edit">
-                <label>Total Pending POD</label>
-                <span>12</span>
+          <div class="bmro-float">
+            <div class="bmro-collaps bmro-collaps2">
+              <div class="bmro-invoice-data">
+                <div class="bmro-invoice-edit">
+                  <label>Invoiced created</label>
+                  <span>396</span>
+                </div>
+                <div class="bmro-invoice-edit">
+                  <label>regular</label>
+                  <span>93</span>
+                </div>
+                <div class="bmro-invoice-edit">
+                  <label>route through</label>
+                  <span>578</span>
+                </div>
+                <div class="bmro-invoice-edit">
+                  <label>Total Pending POD</label>
+                  <span>12</span>
+                </div>
               </div>
             </div>
           </div>
