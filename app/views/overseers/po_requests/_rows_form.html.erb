@@ -1,4 +1,4 @@
-<!-- <div class="bmro-left-side bmro-top-slide"> -->
+<div class="bmro-left-side bmro-top-slide"> -->
   <div class="form-row mt-2 po-request-form">
     <%= f.hidden_field :id %>
     <%= f.hidden_field :sales_order_id %>
@@ -226,6 +226,9 @@
           <% concat content_tag(:span, '') %>
           <% concat content_tag :i, nil, class: 'bmro-inventory-icon bmro-inventory-padd' %>
         <% end %>
+          <%= po_request_row.remove_nested_fields_link(class: 'btn form-group align-self-center flex-grow-1 bmro-des-btn') do %>
+            <span class="bmro-product-trash"></span>
+          <% end if is_authorized(:po_request_row, 'destroy') %>
       </div>
       <div class="col-12 col-md-12">
         <div class="form-row">
@@ -282,9 +285,9 @@
           </div>
           <% if stock || (f.object.rows.present? && f.object.rows.length > 1) %>
             <div class="col-12 col-md-1">
-              <%= po_request_row.remove_nested_fields_link(class: 'btn form-group align-self-center flex-grow-1 bmro-des-btn') do %>
+            <!--   <%= po_request_row.remove_nested_fields_link(class: 'btn form-group align-self-center flex-grow-1 bmro-des-btn') do %>
                 <span class="bmro-product-trash"></span>
-              <% end if is_authorized(:po_request_row, 'destroy') %>
+              <% end if is_authorized(:po_request_row, 'destroy') %> -->
             </div>
           <% end %>
         </div>
@@ -327,4 +330,4 @@
       </nav>
     </div>        
   </div>  
-</div> -->
+</div>

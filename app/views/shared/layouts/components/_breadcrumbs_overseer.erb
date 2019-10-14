@@ -1,28 +1,30 @@
 <% if content_for?(:can_be_directly_created) || content_for?(:can_be_searched_or_created) || content_for?(:can_be_directly_exported) || content_for?(:can_be_directly_export_by_daterange) || content_for?(:heading_buttons) || content_for?(:can_be_directly_downloaded) || content_for?(:can_be_directly_exported_filtered_records) || content_for?(:can_be_directly_exported_inquiry_tat) || content_for?(:can_exported_report) %>
   <div>
     <% if content_for?(:so_po_doc_included) %>
-      <div class="d-none d-md-inline-block align-top">
-        <a href="https://drive.google.com/file/d/1WESvKgCACbwgM6uuESXrTY5kPOOd1KIi/view" target="_blank">
-          <button align="right" data-toggle="tooltip" title="SO/PO User Guide" class="bmro-help-btn">Help
-            <span class="bmro-help-icon"></span>
+      <div class="d-none d-md-inline-block align-top bmro-pr">
+          <button data-toggle="dropdown" class="bmro-help-btn dropdown-toggle" id="help">Help
+            <span class="bmro-help-icon bmro-fr"></span>
           </button>
-        </a>
+          <div class="dropdown-menu" aria-labelledby="help">
+            <a class="dropdown-item" href="https://drive.google.com/file/d/1WESvKgCACbwgM6uuESXrTY5kPOOd1KIi/view" target="_blank" target="_blank">Drive Link</a>
+          </div>
       </div>
     <% end %>
     <% if content_for?(:manual_po_user_guide) %>
-      <div class="d-none d-md-inline-block align-top">
-        <a href="https://drive.google.com/file/d/1x1gkvgqLc-BpC2mF7MRJtGHQBo84D7_V/view" target="_blank">
-          <button align="right" data-toggle="tooltip" title="Create Manual PO User Guide" class="bmro-help-btn">Help
-            <span class="bmro-help-icon"></span>
+      <div class="d-none d-md-inline-block align-top bmro-pr">
+          <button class="bmro-help-btn dropdown-toggle" id="help2" data-toggle="dropdown">Help
+            <span class="bmro-help-icon bmro-fr"></span>
           </button>
-        </a>
+          <div class="dropdown-menu" aria-labelledby="help2">
+            <a class="dropdown-item" href="https://drive.google.com/file/d/1x1gkvgqLc-BpC2mF7MRJtGHQBo84D7_V/view" target="_blank" target="_blank">Drive Link</a>
+          </div>
       </div>
     <% end %>
 
     <% if content_for?(:outward_doc_included) %>
       <div class="d-none d-md-inline-block align-top">
         <a href="https://drive.google.com/file/d/11UWh4lSmDcHK_Hu__m4WKv-XJd9Sj9q2/view" target="_blank"><img src="<%= image_path('doc_icon.png') %>" alt="Italian Trulli" align="right" data-toggle="tooltip" title="Outward Queue User Guide">
-          <button align="right" data-toggle="tooltip" title="Outward Queue User Guide">Help
+          <button align="right" data-toggle="tooltip" title="Outward Queue User Guide" class="bmro-help-btn">Help
             <span class="bmro-help-icon"></span>
           </button>
         </a>
