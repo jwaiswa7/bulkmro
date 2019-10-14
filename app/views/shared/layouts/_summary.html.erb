@@ -13,8 +13,8 @@
   </div>
 
   <div class="row">
-    <div class="col-lg-6 bmro-width-auto">
-      <div class="bmro-collaps-parent">
+    <div class="bmro-coltwo bmro-width-auto">
+      <div class="bmro-float">
         <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#summary">
           <% if alias_name.present? %>
             <%= alias_name.titleize %> Summary&nbsp;&nbsp;&nbsp;
@@ -37,8 +37,8 @@
       <%# end %>
     </div>
     <% if klass == 'SalesInvoice'.constantize  %>
-      <div class="col-lg-6 bmro-width-auto">
-        <div class="bmro-collaps-parent">
+      <div class="bmro-coltwo bmro-width-auto">
+        <div class="bmro-float">
           <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#pod-summary">
             Proof of Delivery Summary
           </a>
