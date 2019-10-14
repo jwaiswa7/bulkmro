@@ -2072,7 +2072,10 @@ canvas {
   display: block;
   padding-top: 7px;
 }
-.stat-label { padding-left: 20px; }
+.stat-label {
+  padding-left: 20px; 
+  width: 100%;
+}
 .green-chart-indicator {
   height: 7px;
   width: 7px;
