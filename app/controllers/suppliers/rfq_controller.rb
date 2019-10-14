@@ -44,46 +44,46 @@ class Suppliers::RfqController < Suppliers::BaseController
 
   private
 
-  def get_rfqs
-    rfq_ids = SupplierRfq.where(supplier_id: current_company.id).pluck :id
-    @product_suppliers = InquiryProductSupplier.where(supplier_rfq_id: rfq_ids, supplier_id: current_company.id)
-  end
+    def get_rfqs
+      rfq_ids = SupplierRfq.where(supplier_id: current_company.id).pluck :id
+      @product_suppliers = InquiryProductSupplier.where(supplier_rfq_id: rfq_ids, supplier_id: current_company.id)
+    end
 
-  def set_ips
-    @inquiry_product_supplier = InquiryProductSupplier.find(params[:id])
-  end
+    def set_ips
+      @inquiry_product_supplier = InquiryProductSupplier.find(params[:id])
+    end
 
-  def set_rfq
-    @rfq = SupplierRfq.find(supplier_rfqs_params[:id])
-  end
+    def set_rfq
+      @rfq = SupplierRfq.find(supplier_rfqs_params[:id])
+    end
 
-  def supplier_rfqs_params
-    params.require(:supplier_rfq).permit(:id,
-                                         inquiry_product_suppliers_attributes: [:id,
-                                                                                :quantity,
-                                                                                :lead_time,
-                                                                                :last_unit_price,
-                                                                                :unit_cost_price,
-                                                                                :gst,
-                                                                                :unit_freight,
-                                                                                :final_unit_price,
-                                                                                :total_price,
-                                                                                :remarks]
-    )
-  end
+    def supplier_rfqs_params
+      params.require(:supplier_rfq).permit(:id,
+                                           inquiry_product_suppliers_attributes: [:id,
+                                                                                  :quantity,
+                                                                                  :lead_time,
+                                                                                  :last_unit_price,
+                                                                                  :unit_cost_price,
+                                                                                  :gst,
+                                                                                  :unit_freight,
+                                                                                  :final_unit_price,
+                                                                                  :total_price,
+                                                                                  :remarks]
+      )
+    end
 
-  def ips_params
-    params.require(:inquiry_product_supplier).permit(
-      :id,
-      :quantity,
-      :lead_time,
-      :last_unit_price,
-      :unit_cost_price,
-      :gst,
-      :unit_freight,
-      :final_unit_price,
-      :total_price,
-      :remarks
-    )
-  end
+    def ips_params
+      params.require(:inquiry_product_supplier).permit(
+        :id,
+        :quantity,
+        :lead_time,
+        :last_unit_price,
+        :unit_cost_price,
+        :gst,
+        :unit_freight,
+        :final_unit_price,
+        :total_price,
+        :remarks
+      )
+    end
 end

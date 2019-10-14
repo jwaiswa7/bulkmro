@@ -19,7 +19,7 @@
           <td style="padding: 5px; text-align: left;"><%= inquiry_product.product.to_s %></td>
           <td style="padding: 5px; text-align: center;"><%= inquiry_product.product.mpn %></td>
           <td style="padding: 5px; text-align: left;"><%= inquiry_product.product.brand.to_s %></td>
-          <td style="padding: 5px; text-align: center;"><%= @quantity %></td>
+          <td style="padding: 5px; text-align: center;"><%= inquiry_product.quantity %></td>
         </tr>
       <% end %>
     </tbody>

@@ -52,7 +52,7 @@
                         <div class="form-group mb-0">
                           <strong>
                             <% unless shown_title %>
-                              <%= "#{inquiry_product_supplier.object.to_s}: ##{@inquiry.inquiry_number} RFQ:##{inquiry_product_supplier.object.supplier_rfq_id}" %>
+                              <%= "#{inquiry_product_supplier.object.to_s}: ##{@inquiry.inquiry_number}-RFQ:##{inquiry_product_supplier.object.supplier_rfq_id}" %>
                               <% shown_title = true %>
                             <% end %>
                           </strong>
