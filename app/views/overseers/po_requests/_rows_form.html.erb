@@ -227,8 +227,8 @@
           <% concat content_tag :i, nil, class: 'bmro-inventory-icon bmro-inventory-padd' %>
         <% end %>
           <%= po_request_row.remove_nested_fields_link(class: 'btn form-group align-self-center flex-grow-1 bmro-des-btn') do %>
-                <span class="bmro-product-trash"></span>
-              <% end if is_authorized(:po_request_row, 'destroy') %>
+            <span class="bmro-product-trash"></span>
+          <% end if is_authorized(:po_request_row, 'destroy') %>
       </div>
       <div class="col-12 col-md-12">
         <div class="form-row">
