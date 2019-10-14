@@ -3018,3 +3018,12 @@ table.fixedHeader-floating{
     background-size: 15px;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAClJREFUGBljYEADTNoh/0EYTZiBCV0AF5/6ChmxuQeb9URbjaF5EPoaALKfB5CkuE3kAAAAAElFTkSuQmCC');
 }
+.bmro-hide{
+    display: none;
+}
+.collapsed .bmro-minus-icon{
+    display: none;
+}
+.collapsed .bmro-add-icon{
+    display: block;
+}

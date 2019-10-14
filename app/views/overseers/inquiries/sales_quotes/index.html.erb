@@ -15,7 +15,9 @@
 
     <% if @sales_quotes.present? && @inquiry.final_sales_quote.present? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
     <div class="bmro-instruction-heading">
-       <h4 class="bmro-instruction-head" data-toggle="collapse" data-target="#instruction"><span class="bmro-information"></span>Instructions heading will be displayed here   <i class="bmro-minus-icon"></i></h4>
+       <h4 class="bmro-instruction-head collapsed" data-toggle="collapse" data-target="#instruction"><span class="bmro-information"></span>Instructions heading will be displayed here   <i class="bmro-add-icon bmro-hide"></i>
+        <i class="bmro-minus-icon bmro-hide"></i>
+       </h4>
     </div>
       <ul class="list-group text-info mb-3 bmro-float-left-left collapse" id="instruction">
         <li class="list-group-item bmro-instruction-ul bmro-padding-ul-left">
