@@ -10,6 +10,10 @@ class Overseers::Dashboard
     }.compact
   end
 
+  def inq_for_sales_dash
+    Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret']).order(updated_at: :desc)
+  end
+
   def sales_orders
     SalesOrder.with_includes.joins(:inquiry).where('inquiries.inside_sales_owner_id = ?', overseer.id).where('sales_orders.updated_at > ?', Date.new(2018, 04, 01)).latest
   end

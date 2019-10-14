@@ -2186,3 +2186,10 @@ canvas {
 .dropdown-toggle{
   cursor: pointer;
 }
+.sales-form-inline{
+  display: flex;
+  margin-left: -70px;
+  .btn{
+    height: 38px;
+  }
+}
