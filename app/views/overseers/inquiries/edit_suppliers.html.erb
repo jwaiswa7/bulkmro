@@ -84,7 +84,7 @@
                       </div>
                       <div class="ml-1 bmro-danger-icon-padding <%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'align-self-center' : '' %>">
                         <%= inquiry_product_supplier.remove_nested_fields_link do %>
-                          <i class="far fa-times text-danger"></i>
+                          <i class="bmro-product-trash"></i>
                         <% end if is_authorized(inquiry_product_supplier.object,'destroy') && policy(inquiry_product_supplier.object).destroy? %>
                       </div>
                     </div>
