@@ -14,13 +14,15 @@
 
   <div class="row">
     <div class="col-lg-6 bmro-width-auto">
-      <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#summary">
-        <% if alias_name.present? %>
-          <%= alias_name.titleize %> Summary&nbsp;&nbsp;&nbsp;
-        <% else %>
-          <%= klass.name.titleize.pluralize %> Summary&nbsp;&nbsp;&nbsp;
-          <% end %><!-- <i class="fa fa-chevron-down" aria-hidden="true"></i> -->
-      </a>
+      <div class="bmro-collaps-parent">
+        <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#summary">
+          <% if alias_name.present? %>
+            <%= alias_name.titleize %> Summary&nbsp;&nbsp;&nbsp;
+          <% else %>
+            <%= klass.name.titleize.pluralize %> Summary&nbsp;&nbsp;&nbsp;
+            <% end %><!-- <i class="fa fa-chevron-down" aria-hidden="true"></i> -->
+        </a>
+      </div>
       <%# if main_summary_statuses.present? %>
           <% main_summary_statuses.each do |main_status, main_status_id| %>
             <div class="bmro-collaps bmro-collaps2">
@@ -36,9 +38,11 @@
     </div>
     <% if klass == 'SalesInvoice'.constantize  %>
       <div class="col-lg-6 bmro-width-auto">
+        <div class="bmro-collaps-parent">
           <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#pod-summary">
             Proof of Delivery Summary
           </a>
+        </div> 
           <div class="bmro-collaps bmro-collaps2">
             <div class="bmro-invoice-data">
               <div class="bmro-invoice-edit">
