@@ -2073,7 +2073,7 @@ canvas {
   padding-top: 7px;
 }
 .stat-label {
-  padding-left: 20px; 
+  padding-left: 20px;
   width: 100%;
 }
 .green-chart-indicator {
@@ -2204,4 +2204,11 @@ canvas {
 }
 .bmro-purchase-width3{
     width: 20%;
+}
+.sales-form-inline{
+  display: flex;
+  margin-left: -70px;
+  .btn{
+    height: 38px;
+  }
 }

@@ -27,7 +27,7 @@ class Overseers::DashboardController < Overseers::BaseController
     inquiry_status_records = inquiry.inquiry_status_records.order(created_at: :desc).group_by { |c| c.created_at.to_date }
     if inquiry_status_records
       respond_to do |format|
-        format.html { render partial: 'customers/dashboard/inq_status_records_data',  locals: {inquiry_status_records: inquiry_status_records, inquiry: inquiry}}
+        format.html { render partial: 'overseers/dashboard/inq_status_records_data',  locals: {inquiry_status_records: inquiry_status_records, inquiry: inquiry}}
       end
     end
   end
@@ -40,8 +40,18 @@ class Overseers::DashboardController < Overseers::BaseController
       body: InquiryMailer.acknowledgement(email_message).body.raw_source,
     )
     respond_to do |format|
-      format.html { render partial: 'customers/dashboard/email_message',  locals: {inquiry: inquiry, email_message: email_message}}
+      format.html { render partial: 'overseers/dashboard/email_message',  locals: {inquiry: inquiry, email_message: email_message}}
     end
+  end
+
+  def update_inquiry
+    inquiry = Inquiry.find_by_inquiry_number(inquiry_params['inquiry_number'])
+    if inquiry_params['customer_po_number'].present?
+      inquiry.update_attributes(customer_po_number: inquiry_params['customer_po_number'])
+    else
+      inquiry.update_attributes(customer_order_date: inquiry_params['customer_order_date'])
+    end
+    redirect_back fallback_location: overseers_dashboard_path
   end
 
   def serializer
@@ -87,5 +97,15 @@ class Overseers::DashboardController < Overseers::BaseController
     authorize_acl :dashboard
     Services::Shared::Migrations::Migrations.new.call
     render json: {}, status: :ok
+  end
+
+  private
+
+  def inquiry_params
+    params.require(:inquiry).permit(
+      :inquiry_number,
+      :customer_po_number,
+      :customer_order_date
+    )
   end
 end
