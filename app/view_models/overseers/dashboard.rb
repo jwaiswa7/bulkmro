@@ -27,6 +27,17 @@ class Overseers::Dashboard
     InquiryComment.where(inquiry_id: recent_inquiry_ids).order(created_at: :desc).limit(10).group_by { |c| c.created_at.to_date }
   end
 
+  def main_statuses
+    ['New Inquiry', 'Preparing Quotation', 'Quotation Sent', 'Follow Up on Quotation', 'Expected Order']
+  end
+
+  def get_status_metrics(status)
+    {
+        count: recent_inquiries.pluck(:status).count(status),
+        value: recent_inquiries.map {|inquiry| inquiry.calculated_total if inquiry.status == status}.compact.sum
+    }
+  end
+
   def inquiry_needs_followup?(inquiry)
     ((inquiry.quotation_followup_date.present? &&
         (inquiry.quotation_followup_date == Date.today ||
