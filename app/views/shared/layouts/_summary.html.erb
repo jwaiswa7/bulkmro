@@ -22,7 +22,6 @@
           <% end %><!-- <i class="fa fa-chevron-down" aria-hidden="true"></i> -->
       </a>
       <%# if main_summary_statuses.present? %>
-        <div class="bmro-float">
           <% main_summary_statuses.each do |main_status, main_status_id| %>
             <div class="bmro-collaps bmro-collaps2">
               <div class="bmro-invoice-data">
@@ -33,7 +32,6 @@
               </div>
             </div>
           <% end %>
-        </div>
       <%# end %>
     </div>
     <% if klass == 'SalesInvoice'.constantize  %>
@@ -41,7 +39,6 @@
           <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#pod-summary">
             Proof of Delivery Summary
           </a>
-        <div class="bmro-float">
           <div class="bmro-collaps bmro-collaps2">
             <div class="bmro-invoice-data">
               <div class="bmro-invoice-edit">
@@ -62,7 +59,6 @@
               </div>
             </div>
           </div>
-        </div>
       </div>
     <%end %>
   </div>
