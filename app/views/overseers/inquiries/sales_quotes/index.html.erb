@@ -21,18 +21,18 @@
     </div>
       <ul class="list-group text-info mb-3 bmro-float-left-left collapse" id="instruction">
         <li class="list-group-item bmro-instruction-ul bmro-padding-ul-left">
-          Before making a sales order, Please fulfill the following.0
+          <i class="bmro-bullets-icon"></i> Before making a sales order, Please fulfill the following.
         </li>
-        <% if @inquiry.customer_po_number.blank? %><li class="list-group-item bmro-instruction-ul"><i class="fal fa-check mr-2"></i>Customer PO number must be present.</li><% end %>
-        <% if @inquiry.customer_order_date.blank? %><li class="list-group-item bmro-instruction-ul"><i class="fal fa-check mr-2"></i>Customer order date has to be defined.</li><% end %>
-        <% if @inquiry.not_synced? %><li class="list-group-item bmro-instruction-ul"><i class="fal fa-check mr-2"></i>Inquiry must be synced with SAP.</li><% end %>
-        <% if @inquiry.final_sales_quote.not_synced? || @inquiry.last_synced_quote_id != @inquiry.final_sales_quote.id %><li class="list-group-item bmro-instruction-ul"><i class="fal fa-check mr-2"></i> Last Sales quote must be synced with SAP.</li><% end %>
-        <% if @inquiry.final_sales_quote.email_messages.blank? %><li class="list-group-item bmro-instruction-ul"><i class="fal fa-check mr-2"></i>Quotation has to be emailed to Customer; make sure your SMTP settings and phone number are updated in your profile.</li><% end %>
-        <% if !@inquiry.final_sales_quote.sales_quote_quantity_not_fulfilled? %><li class="list-group-item bmro-instruction-ul"><i class="fas fa-info mr-2"></i>Sales quote total quantity already fulfilled by non-rejected sales orders.</li><% end %>
-        <% if @inquiry.customer_committed_date.blank? %><li class="list-group-item bmro-instruction-ul"><i class="fal fa-check mr-2"></i>Customer committed date has to be defined.</li><% end %>
-        <% if !@inquiry.customer_po_sheet.attached? %><li class="list-group-item bmro-instruction-ul"><i class="fal fa-check mr-2"></i>Customer PO sheet has to be uploaded.</li><% end %>
-       <% if !@inquiry.calculation_sheet.attached? %><li class="list-group-item bmro-instruction-ul"><i class="fal fa-check mr-2"></i>Calculation sheet has to be uploaded.</li><% end %>
-        <% if !@inquiry.supplier_quotes.attached? %><li class="list-group-item bmro-instruction-ul"><i class="fal fa-check mr-2"></i>Supplier quote(s) have to be uploaded.</li><% end %>
+        <% if @inquiry.customer_po_number.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer PO number must be present.</li><% end %>
+        <% if @inquiry.customer_order_date.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer order date has to be defined.</li><% end %>
+        <% if @inquiry.not_synced? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Inquiry must be synced with SAP.</li><% end %>
+        <% if @inquiry.final_sales_quote.not_synced? || @inquiry.last_synced_quote_id != @inquiry.final_sales_quote.id %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i> Last Sales quote must be synced with SAP.</li><% end %>
+        <% if @inquiry.final_sales_quote.email_messages.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Quotation has to be emailed to Customer; make sure your SMTP settings and phone number are updated in your profile.</li><% end %>
+        <% if !@inquiry.final_sales_quote.sales_quote_quantity_not_fulfilled? %><li class="list-group-item bmro-instruction-ul"><i class=bmro-bullets-icon"></i>Sales quote total quantity already fulfilled by non-rejected sales orders.</li><% end %>
+        <% if @inquiry.customer_committed_date.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer committed date has to be defined.</li><% end %>
+        <% if !@inquiry.customer_po_sheet.attached? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer PO sheet has to be uploaded.</li><% end %>
+       <% if !@inquiry.calculation_sheet.attached? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Calculation sheet has to be uploaded.</li><% end %>
+        <% if !@inquiry.supplier_quotes.attached? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Supplier quote(s) have to be uploaded.</li><% end %>
       </ul>
     <% end %>
 
