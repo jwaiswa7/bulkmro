@@ -36,11 +36,16 @@
         <% else %>
           <h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model.titleize %></h4>
         <% end %>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">dropdown 1</a>
-          <a class="dropdown-item" href="#">dropdown 2</a>
-          <a class="dropdown-item" href="#">dropdown 3</a>
-        </div>
+        <% if content_for?(:can_be_directly_exported) && is_authorized(current_model.singularize.downcase,'export_all') %>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="<%= [request.path, '/', 'export_all.csv'].join %>"><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %></a>
+            <% if content_for?(:can_be_directly_exported_filtered_records) && is_authorized(current_model.singularize.downcase,'export_filtered_records') %>
+              <a class="dropdown-item" href="#" id="export_filtered_records">Filtered <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %></a>
+            <% end %>
+          </div>
+        <% else %>
+          <%= render partial:   "overseers/"+current_model.downcase+"/download_dropdown" rescue nil %>
+        <% end %>
       </div>
       <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="25-Sep-2019">
     </div>
