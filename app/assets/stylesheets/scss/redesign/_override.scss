@@ -2736,7 +2736,7 @@ table.fixedHeader-floating{
    margin-right: 7px;
 }
 .bmro-instruction-heading{
-    width: 38%;
+    width: 39%;
     margin-top: 72px;
     background-color: #DFE5F0;
     border: 1px solid #E9EEF2;
@@ -2773,7 +2773,7 @@ table.fixedHeader-floating{
    z-index: 222;
 }
 .bmro-padding-ul-left{
-    padding-left: 68px;
+    padding-left: 55px;
 }
 .bmro-fix-sticky{
     position: sticky;
@@ -3006,7 +3006,7 @@ table.fixedHeader-floating{
 .bmro-minus-icon{
      background-repeat: no-repeat;
     padding: 10px 19px;
-    background-position: right 10px top 3px;
+    background-position: right 10px top 9px;
        background-size: 15px;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAADCAYAAABF//VLAAAAAXNSR0IArs4c6QAAAB1JREFUCB1jZNIJqWcgErAw/GdoIFItAwsDI/GKAR7BAwuUbBW8AAAAAElFTkSuQmCC');
      position: absolute;
@@ -3023,11 +3023,24 @@ table.fixedHeader-floating{
     right: 10px;
     top: 8px;
 }
+.bmro-bullets-icon{
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAAXNSR0IArs4c6QAAAEZJREFUCB1j/L+KgY3hLkMTAwNDHBCDwCIGZYY6FqhgOUQMTJYDxRiYgEyYSiQ5hjiQBFYAkliERWYRC8gikJlAADMSbDkAk7ANCNXgOy8AAAAASUVORK5CYII=');
+    background-repeat: no-repeat;
+    background-size: 8px;
+    padding: 0px 12px;
+    background-position: center;
+}
+.bmro-ul-float-initial{
+    float: initial!important;
+}
 .bmro-hide{
     display: none;
 }
 .bmro-minus-icon {
     display: block;
+}
+.bmro-instruction-ul{
+    background-color: #fff;
 }
 .collapsed .bmro-minus-icon{
     display: none;
