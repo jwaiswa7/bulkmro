@@ -3006,7 +3006,7 @@ table.fixedHeader-floating{
 .bmro-minus-icon{
      background-repeat: no-repeat;
     padding: 10px 19px;
-    background-position: right 10px top 3px;
+    background-position: right 10px top 9px;
        background-size: 15px;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAADCAYAAABF//VLAAAAAXNSR0IArs4c6QAAAB1JREFUCB1jZNIJqWcgErAw/GdoIFItAwsDI/GKAR7BAwuUbBW8AAAAAElFTkSuQmCC');
      position: absolute;
@@ -3022,6 +3022,12 @@ table.fixedHeader-floating{
     position: absolute;
     right: 10px;
     top: 8px;
+}
+.bmro-bullets-icon{
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAAXNSR0IArs4c6QAAAEZJREFUCB1j/L+KgY3hLkMTAwNDHBCDwCIGZYY6FqhgOUQMTJYDxRiYgEyYSiQ5hjiQBFYAkliERWYRC8gikJlAADMSbDkAk7ANCNXgOy8AAAAASUVORK5CYII=');
+    background-repeat: no-repeat;
+    background-size: 15px;
+    padding: 10px 19px;
 }
 .bmro-hide{
     display: none;
