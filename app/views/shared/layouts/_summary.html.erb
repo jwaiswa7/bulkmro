@@ -1,16 +1,3 @@
-<div class="bmro-float">
-  <div class="bmro-invoice-heading">
-    <div class="dropdown">
-      <span class="bmro-downimg"></span>
-      <h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= klass %></h4>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="#">dropdown 1</a>
-        <a class="dropdown-item" href="#">dropdown 2</a>
-        <a class="dropdown-item" href="#">dropdown 3</a>
-      </div>
-    </div>
-    <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="25-Sep-2019">
-  </div>
 
   <div class="row">
     <div class="bmro-fix-width bmro-width-auto">
@@ -93,7 +80,6 @@
   <% if klass == 'SalesInvoice'.constantize %>
     <%= render partial: "pod_summary" %>
   <% end %>
-</div>
 
 <!--<script type="text/javascript">-->
 <!--    $(".bmro-click-toggle").click(function () {-->
