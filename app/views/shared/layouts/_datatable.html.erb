@@ -26,11 +26,32 @@
   </section>
 <% end %>
 
-<% if Settings.reports.show_summary && @statuses.present? %>
-  <div class="col-lg-12">
-    <%= render partial: "shared/layouts/summary", locals: {klass: current_model.classify.constantize, statuses: @statuses, alias_name: @alias_name, main_summary_statuses: @main_summary_statuses } %>
-  </div>
-<% end %>
+<div class="bmro-float">
+
+    <div class="bmro-invoice-heading">
+      <div class="dropdown">
+        <span class="bmro-downimg"></span>
+        <% if content_for?(:heading) %>
+          <h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
+        <% else %>
+          <h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model.titleize %></h4>
+        <% end %>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">dropdown 1</a>
+          <a class="dropdown-item" href="#">dropdown 2</a>
+          <a class="dropdown-item" href="#">dropdown 3</a>
+        </div>
+      </div>
+      <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="25-Sep-2019">
+    </div>
+
+  <% if Settings.reports.show_summary && @statuses.present? %>
+    <div class="col-lg-12">
+      <%= render partial: "shared/layouts/summary", locals: {klass: current_model.classify.constantize, statuses: @statuses, alias_name: @alias_name, main_summary_statuses: @main_summary_statuses } %>
+    </div>
+  <% end %>
+</div>
+
 
 <div class="bmro-search-table">
   <div class="bmro-input-search">
