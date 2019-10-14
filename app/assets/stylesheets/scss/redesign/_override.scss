@@ -1434,7 +1434,7 @@ table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td
     padding: 4px 8px;
 }
 table.table.dataTable.table-bordered th{
-    text-align: right;
+    text-align: right!important;
     display: table-cell;
     vertical-align: middle;
     padding: 8px 10px;
@@ -2878,7 +2878,7 @@ table.fixedHeader-floating{
     width: 50%;
     padding-bottom: 10px;
 }
-.bmro-trash-height{
+.bmro-trashdown-icon-height{
     height: 40px!important;
 }
 .bmro-parent-bg .bmro-float .bmro-collaps{
