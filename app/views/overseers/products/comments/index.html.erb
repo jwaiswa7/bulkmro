@@ -1,9 +1,9 @@
 <% if @product.inquiry_products.first.try(:inquiry) %>
   <% content_for :heading_button do %>
     <div class="d-flex flex-row">
-      <a class="d-sm-block btn btn-warning btn-rounded align-self-center btn-block-sm-down mr-1 bmro-button" href="<%= edit_overseers_product_path(@product) %>" target="_blank"><i class="fal fa-pencil mr-1"></i>Edit</a>
+      <a class="d-sm-block btn btn-warning btn-rounded align-self-center btn-block-sm-down mr-1 bmro-button" href="<%= edit_overseers_product_path(@product) %>" target="_blank"><i class="bmro-fa-pencil"></i>Edit</a>
       <%= link_to edit_overseers_inquiry_path(@product.inquiry_products.first.try(:inquiry)), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down bmro-button" do %>
-        <i class="fal fa-external-link mr-1"></i> Check Inquiry
+        <i class="bmro-fa-external-link"></i> Check Inquiry
       <% end %>
     </div>
   <% end %>
