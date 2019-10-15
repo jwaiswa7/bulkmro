@@ -45,7 +45,7 @@ const edit = () => {
             $('.bmro-card-header').css({
                 position: 'relative',
                 // top: (maxY - top) + 'px'
-                top:'1760px'
+                top:'1360px'
             });
         }
     });
@@ -118,5 +118,23 @@ $('.bmro-important').click(function (){
     $('html, body').animate({
       scrollTop: $(".bmro-important-slide").offset().top - 80
     }, 1000)
+})
+$('.bmro-slide-top').click(function (){
+    $('html, body').animate({
+      scrollTop: $(".bmro-top-slide").offset().top - 200 
+    }, 1000)
+}) 
+$('.bmro-product-slide').click(function (){
+    $('html, body').animate({
+      scrollTop: $(".bmro-product-slide-on").offset().top - 200 
+    }, 1000)
+}) 
+$('.bmro-new-slide').click(function (){
+    $('html, body').animate({
+      scrollTop: $(".bmro-new-slide-on").offset().top - 200 
+    }, 1000)
+}) 
+$('.bmro-invoice-one').click(function(){
+    $(this).parent().toggleClass('bmro-parent-bg')
 })
 export default edit

@@ -14,25 +14,30 @@
     <% end %>
 
     <% if @sales_quotes.present? && @inquiry.final_sales_quote.present? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
-      <ul class="list-group text-info mb-3 bmro-float-left-left">
-        <li class="list-group-item">
-          <h5 class="text-info mb-0">Before making a sales order, Please fulfill the following.</h5>
+    <div class="bmro-instruction-heading">
+       <h4 class="bmro-instruction-head collapsed" data-toggle="collapse" data-target="#instruction"><span class="bmro-information"></span>Instructions heading will be displayed here   <i class="bmro-add-icon bmro-hide"></i>
+        <i class="bmro-minus-icon bmro-hide"></i>
+       </h4>
+    </div>
+      <ul class="list-group text-info mb-3 bmro-float-left-left collapse" id="instruction">
+        <li class="list-group-item bmro-instruction-ul bmro-padding-ul-left">
+          <i class="bmro-bullets-icon"></i> Before making a sales order, Please fulfill the following.
         </li>
-        <% if @inquiry.customer_po_number.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer PO number must be present.</li><% end %>
-        <% if @inquiry.customer_order_date.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer order date has to be defined.</li><% end %>
-        <% if @inquiry.not_synced? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Inquiry must be synced with SAP.</li><% end %>
-        <% if @inquiry.final_sales_quote.not_synced? || @inquiry.last_synced_quote_id != @inquiry.final_sales_quote.id %><li class="list-group-item"><i class="fal fa-check mr-2"></i> Last Sales quote must be synced with SAP.</li><% end %>
-        <% if @inquiry.final_sales_quote.email_messages.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Quotation has to be emailed to Customer; make sure your SMTP settings and phone number are updated in your profile.</li><% end %>
-        <% if !@inquiry.final_sales_quote.sales_quote_quantity_not_fulfilled? %><li class="list-group-item "><i class="fas fa-info mr-2"></i>Sales quote total quantity already fulfilled by non-rejected sales orders.</li><% end %>
-        <% if @inquiry.customer_committed_date.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer committed date has to be defined.</li><% end %>
-        <% if !@inquiry.customer_po_sheet.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer PO sheet has to be uploaded.</li><% end %>
-       <% if !@inquiry.calculation_sheet.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Calculation sheet has to be uploaded.</li><% end %>
-        <% if !@inquiry.supplier_quotes.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Supplier quote(s) have to be uploaded.</li><% end %>
+        <% if @inquiry.customer_po_number.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer PO number must be present.</li><% end %>
+        <% if @inquiry.customer_order_date.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer order date has to be defined.</li><% end %>
+        <% if @inquiry.not_synced? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Inquiry must be synced with SAP.</li><% end %>
+        <% if @inquiry.final_sales_quote.not_synced? || @inquiry.last_synced_quote_id != @inquiry.final_sales_quote.id %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i> Last Sales quote must be synced with SAP.</li><% end %>
+        <% if @inquiry.final_sales_quote.email_messages.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Quotation has to be emailed to Customer; make sure your SMTP settings and phone number are updated in your profile.</li><% end %>
+        <% if !@inquiry.final_sales_quote.sales_quote_quantity_not_fulfilled? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Sales quote total quantity already fulfilled by non-rejected sales orders.</li><% end %>
+        <% if @inquiry.customer_committed_date.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer committed date has to be defined.</li><% end %>
+        <% if !@inquiry.customer_po_sheet.attached? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer PO sheet has to be uploaded.</li><% end %>
+       <% if !@inquiry.calculation_sheet.attached? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Calculation sheet has to be uploaded.</li><% end %>
+        <% if !@inquiry.supplier_quotes.attached? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Supplier quote(s) have to be uploaded.</li><% end %>
       </ul>
     <% end %>
 
     <% content_for :header_row do %>
-      <th class="no-sort"></th>
+      <th class="no-sort" width="98px">Quick Actions</th>
       <th class="no-sort desktop text-right">Doc ID</th>
       <th class="no-sort desktop text-right">Sent At</th>
       <th>Created By</th>
@@ -75,28 +80,31 @@
               <%= row_action_button(new_overseers_inquiry_sales_quote_email_message_path(@inquiry, sales_quote), 'envelope', 'Send Email', 'dark') %>
             <% end %>
             <% if is_authorized(sales_quote, 'show') && policy(sales_quote).show? %>
-              <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+              <% if sales_quote.ancestors.count > 0 %>
+                <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf, is_revision_visible: true), 'file-pdf', 'Sales Quote with Revision', 'success', :_blank) %>
+              <% end %>
+              <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf, is_revision_visible: false), 'file-pdf', 'Download', 'dark', :_blank) %>
             <% end %>
             <% if is_authorized(sales_quote, 'new_freight_request') && policy(sales_quote).new_freight_request? %>
               <%= row_action_button(new_overseers_freight_request_path(:sales_quote_id => sales_quote.to_param), 'external-link', 'New Freight Request', 'warning') %>
             <% end %>
           </td>
-          <td><%= sales_quote.id %></td>
-          <td><%= format_date(sales_quote.sent_at) %></td>
-          <td><%= sales_quote.created_by.to_s %></td>
-          <td><%= sales_quote.rows.size %></td>
-          <td><%= format_currency(sales_quote.calculated_total) %></td>
-          <td><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
-          <td><%= format_date(sales_quote.created_at) %></td>
-          <td>
-            <% if policy(sales_quote).reset_quote_form? %>
-              <% if sales_quote.sales_orders.present? %>
-                <%= status_badge(sales_quote.sales_orders.last.status) %>
-              <% else %>
-                N / A
-              <% end %>
-            <% end %>
-          </td>
+          <td class="text-right"><%= sales_quote.ancestors.count > 0 ? "R#{sales_quote.ancestors.count} - #{sales_quote.id}" : "#{sales_quote.id}"  %></td>
+          <td class="text-right"><%= format_date(sales_quote.sent_at) %></td>
+          <td class="text-right"><%= sales_quote.created_by.to_s %></td>
+          <td class="text-right"><%= sales_quote.rows.size %></td>
+          <td class="text-right"><%= format_currency(sales_quote.calculated_total) %></td>
+          <td class="text-right"><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
+          <td class="text-right"><%= format_date(sales_quote.created_at) %></td>
+          <% if policy(sales_quote).reset_quote_form? %>
+            <td class="text-right">
+                <% if sales_quote.sales_orders.present? %>
+                  <%= status_badge(sales_quote.sales_orders.last.status) %>
+                <% else %>
+                  N / A
+                <% end %>
+            </td>
+          <% end %>
         </tr>
       <% end %>
     <% end %>

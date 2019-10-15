@@ -36,7 +36,7 @@
                     <div class="modal-header bmro-model-header">
                       <!-- <h4 class="modal-title">Select Status <abbr>*</abbr></h4> -->
                       <div class="modal-footer bmro-model-close">
-                        <button type="button" class="btn btn-default bmro-button bmro-btn-cancel" data-dismiss="modal"><i class="bmro-btn-cancel-icon"></i></button>
+                        <button type="button" class="btn btn-default bmro-button bmro-btn-cancel bmro-hover-none" data-dismiss="modal"><i class="bmro-btn-cancel-icon"></i></button>
                       </div>
                     </div>
                     <div class="modal-body bmro-model-body-padding">
@@ -45,7 +45,7 @@
                       <% elsif ["Order Lost", "Regret"].include?(@inquiry.status) %>
                         <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
                       <% else %>
-                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
+                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-width-select  bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
                       <% end %>
                     </div>
                     <div class="bmro-button-parent bmro-model-button">
@@ -663,7 +663,7 @@
                   </div>
                   <%= inquiry_product.remove_nested_fields_link do %>
                     <div class="form-group align-self-center flex-grow-1 ml-2">
-                      <i class="far fa-times text-danger"></i>
+                      <i class="far fa-times text-danger bmro-display-none"></i>
                     </div>
                   <% end if is_authorized(inquiry_product.object, 'destroy') && policy(inquiry_product.object).destroy? %>
                 </div>

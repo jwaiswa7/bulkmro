@@ -16,58 +16,6 @@
   <% end %>
 <% end %>
 
-<% if Settings.reports.show_summary %>
-<div class="col-lg-12">
-  <a class="btn btn-light text-left btn-lg btn-block mt-1 mt-lg-4 bmro-click-toggle bmro-invoice-one bmro-collapse-button-bg collapsed" type="button" data-toggle="collapse" data-target="#summary">
-    Activities Summary
-  </a>
-<div class="bmro-float">
-        <div class="bmro-collaps bmro-collaps1 bmro-width-auto">
-          <div class="bmro-invoice-data">
-            <div class="bmro-invoice-edit">
-              <label>Invoiced</label>
-              <span>13,396</span>
-            </div>
-            <div class="bmro-invoice-edit">
-              <label>paid</label>
-              <span>93</span>
-            </div>
-            <div class="bmro-invoice-edit">
-              <label>ready for dispatch</label>
-              <span>578</span>
-            </div>
-            <div class="bmro-invoice-edit">
-              <label class="bmro-invoice-capi">Partial:shipped</label>
-              <span>72</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <script type="text/javascript">
-        $(".bmro-click-toggle").click(function(){
-          $('.bmro-collaps1').toggleClass("bmro-collaps-bg");
-        });
-      </script>      
-    </div>     
-  <div id="summary" class="collapse">
-    <div class="form-row mt-2">
-      <% Activity.activity_types.each do |activity_type, v| %>
-        <div class="col-md-2">
-          <div class="card mb-2 mb-md-3">
-            <div class="card-body bmro-activity-body">
-              <div class="text-left">
-                <p class="text-uppercase bmro-ar-report-head text-black-50 mb-1"><strong><%= format_enum(activity_type) %></strong></p>
-                <h3 class="mb-0 bmro-ar-report-data"><%= number_with_delimiter(Activity.send(activity_type).size, options = {}) %></h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  </div>
-</div>
-<% end %>
-
 <% content_for :header_row do %>
   <th class="no-sort all">
     <% if is_authorized(:activity, 'perform_actions') %>
@@ -77,7 +25,8 @@
       </div>
     <% end %>
   </th>
-  <th class="no-sort all" data-name="created_by_id">Created By</th>
+  <th></th>
+  <th class="no-sort all" >Quick Actions</th>
   <th class="sort all text-right" data-name="activity_date">Activity Date</th>
   <th class="no-sort" data-name="account_id">Account</th>
   <th class="no-sort" data-name="company_id">Company</th>
@@ -94,6 +43,7 @@
   <th class="desktop text-right" data-name="created_at">Created</th>
 <% end %>
 <% content_for :filter_row do %>
+  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="dropdown"></td>
   <td data-filter="daterange"></td>

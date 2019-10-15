@@ -1,5 +1,5 @@
  <div class="brmo-float">
-<a class="btn btn-light text-left btn-lg btn-block mt-1 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg" type="button" data-toggle="collapse" data-target="#summary">
+<a class="btn btn-light text-left btn-lg btn-block mt-1 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#summary">
    Summary
 </a>
  <div class="brmo-float">
@@ -37,8 +37,8 @@
         <% data[1].each do |data_elm| %>
           <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
             <div name="status" class="summary_box card w-100 mb-2 bmro-border-bottom border-<%= data_elm[1][:color] %>" >
-              <div class="card-body px-1 pt-1 pb-1 brmo-inward-card">
-                <div class="d-flex flex-column h-100">
+              <div class="card-body px-1 pt-1 pb-1 bmro-inward-card">
+                <div class="h-100">
                   <p class="bmro-ar-report-head mb-1 text-small text-uppercase text-<%= data_elm[1][:color] %>">
                     <strong><%=data_elm[1][:name] %></strong>
                   </p>

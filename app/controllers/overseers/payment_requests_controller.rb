@@ -16,7 +16,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
     respond_to do |format|
       format.html {
         @statuses = PaymentRequest.statuses
-        @main_summary_statuses = status_service.indexed_main_summary_statuses
+        @main_summary_statuses = PaymentRequest.main_summary_statuses
       }
       format.json do
         @total_values = status_service.indexed_total_values

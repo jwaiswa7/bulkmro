@@ -18,7 +18,7 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
       if is_service
         ship_from.address.state == bill_to.state
       else
-        ship_from.address.state == bill_to.state
+        bill_from.address.state == bill_to.state
       end
     else
       false

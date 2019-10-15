@@ -5,7 +5,7 @@ require './config/environment'
 require 'active_support/time'
 
 handler do |job, time|
-  Chewy.strategy(:sidekiq)
+  Chewy.strategy(:atomic)
   puts "Running #{job}, at #{time}"
 end
 
@@ -48,20 +48,51 @@ every(4.hour, 'generate_exports_hourly') do
   end
 end
 
-every(1.day, 'refresh_indices', at: '00:00') do
-  Chewy.strategy(:sidekiq) do
-    Services::Shared::Chewy::RefreshIndices.new
+every(1.day, 'refresh_indices', at: '01:00') do
+  # Chewy.strategy(:sidekiq) do
+  #   Services::Shared::Chewy::RefreshIndices.new
+  # end
+
+  Dir[[Chewy.indices_path, '/*'].join()].map do |path|
+    puts "Indexing #{path}"
+    path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
+    puts "Indexed #{path}"
   end
 end
 
 every(1.day, 'generate_exports_daily', at: '04:00') do
-  Chewy.strategy(:sidekiq) do
+  Chewy.strategy(:atomic) do
     Services::Overseers::Exporters::GenerateExportsDaily.new
   end
 end
 
-every(1.day, 'refresh_calculated_totals', at: '21:00') do
-  service = Services::Overseers::Inquiries::RefreshCalculatedTotals.new
+every(1.day, 'purchase_order_reindex', at: '00:00') do
+  puts 'For reindexing purchase orders'
+
+  index_class = PurchaseOrdersIndex
+  if index_class <= BaseIndex
+    index_class.reset!
+  end
+end
+
+every(1.day, 'inquiry_product_inventory_update', at: '07:30') do
+  service = Services::Resources::Products::UpdateRecentInquiryProductInventory.new
+  service.call
+end if Rails.env.production?
+
+# every(1.day, 'resync_failed_requests', at: '07:00') do
+#   service = Services::Overseers::FailedRemoteRequests::Resync.new
+#   service.call
+# end if Rails.env.production?
+
+
+# every(1.day, 'resync_requests_status', at: '08:30') do
+#   service = Services::Overseers::FailedRemoteRequests::Resync.new
+#   service.verify
+# end if Rails.env.production?
+
+every(1.day, 'log_currency_rates', at: '20:00') do
+  service = Services::Overseers::Currencies::LogCurrencyRates.new
   service.call
 end
 
@@ -72,23 +103,8 @@ every(1.day, 'flush_unavailable_images', at: '20:30') do
   end
 end
 
-every(1.day, 'resync_failed_requests', at: '07:00') do
-  service = Services::Overseers::FailedRemoteRequests::Resync.new
-  service.call
-end if Rails.env.production?
-
-every(1.day, 'inquiry_product_inventory_update', at: '07:30') do
-  service = Services::Resources::Products::UpdateRecentInquiryProductInventory.new
-  service.call
-end if Rails.env.production?
-
-every(1.day, 'resync_requests_status', at: '08:30') do
-  service = Services::Overseers::FailedRemoteRequests::Resync.new
-  service.verify
-end if Rails.env.production?
-
-every(1.day, 'log_currency_rates', at: '20:00') do
-  service = Services::Overseers::Currencies::LogCurrencyRates.new
+every(1.day, 'refresh_calculated_totals', at: '21:00') do
+  service = Services::Overseers::Inquiries::RefreshCalculatedTotals.new
   service.call
 end
 
