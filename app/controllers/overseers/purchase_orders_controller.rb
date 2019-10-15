@@ -37,7 +37,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
     respond_to do |format|
       format.html {
-        @statuses = PurchaseOrder.material_summary_statuses
+        # @statuses = PurchaseOrder.material_summary_statuses
         @alias_name = 'Followup'
         @main_summary_statuses = PurchaseOrder.material_summary_statuses
       }
