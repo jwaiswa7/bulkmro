@@ -2643,6 +2643,10 @@ table.fixedHeader-floating{
 .chat-item>.media-body{
     width: 210px;
     margin: 6px;
+}
+.comments-wrap{
+     width: 210px;
+    margin: 6px;
     border: 1px solid #EAEAEA;
     border-radius: 3px;
     background-color: #FFFFFF;
@@ -2835,9 +2839,6 @@ table.fixedHeader-floating{
     width: 100%;
     padding-top: 0px;
     padding-left: 30px;
-}
-.chat-item > .media-body{
-   background-color: #F7F7F7; 
 }
 .media-body .chat-item-body .text-left{
     text-align: right!important;
