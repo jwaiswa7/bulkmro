@@ -1499,7 +1499,7 @@ li.paginate_button{
     font-weight: 400;
     font-size: 12px; 
 }
-.custom-file-label:hove::after{
+.custom-file-label:hover::after{
     background-color: #385372!important;
     color: #FFFFFF!important;
 }
@@ -1520,7 +1520,7 @@ table.table.dataTable.table-bordered th:first-child{
     color: #687686;
     font-size: 12px;
     font-weight: 500;
-    opacity: none;
+    opacity: 0;
 }
 .bmro-card-body-pt{
     padding-top: 0px;
@@ -1641,7 +1641,7 @@ table.bmro-new-table tr:first-child{
     margin-bottom: 19px;
 }
 .form-control:focus{
-    border-color: none;
+    border-color: unset;
 }
 .bmro-icon-bottom{
     margin-bottom: 13px;
@@ -1667,7 +1667,7 @@ table.bmro-new-table tr:first-child{
 .bmro-not-border{
     border:none; 
 }
-input:-internal-autofill-selected {
+input internal-autofill-selected {
  background-color: #fff!important; 
 }
 .bmro-actice-pt .form-check{
@@ -1798,8 +1798,8 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     padding: 2px 15px !important;
 }
 .bmro-summary-product{
-    width: 100;
-      float: left;
+  width: 100%;
+  float: left;
 }
 .bmro-summary-product-bottom{
     margin-bottom: 25px;
@@ -1838,7 +1838,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     font-size: 12px;
     letter-spacing: -0.14px;
     line-height: 20px;
-    border-radius: none;
+    border-radius: 0;
 }
 .dropdown-item:hover{
     background-color: #E7E9ED;
@@ -1981,7 +1981,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     padding: 6px 44px 6px 14px;
     border-top-right-radius: 58px;  
     border: none;
-    border-color: none;
+    border-color: unset;
 }
 .card{
     border-radius: 0px;
@@ -2059,7 +2059,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     padding: 10px;
 }
 .bmro-remove-radius{
-    border-radius: none!important;
+    border-radius: 0px!important;
 }
 table tr:last-child th:first-child{ 
     border-bottom: 1px solid #E0E2E7;
