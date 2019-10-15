@@ -57,7 +57,15 @@ class Overseers::DashboardController < Overseers::BaseController
   def get_filtered_inquiries
     @dashboard = Overseers::Dashboard.new(current_overseer)
     respond_to do |format|
-      format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_sales_dash: @dashboard.recent_inquiries.map { |inquiry| inquiry if inquiry.status == params['status'] }.compact}}
+      format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_sales_dash: @dashboard.inq_for_sales_dash.map { |inquiry| inquiry if inquiry.status == params['status'] }.compact}}
+    end
+  end
+
+  def get_inquiry_tasks
+    @dashboard = Overseers::Dashboard.new(current_overseer)
+    inquiry = @dashboard.inq_for_sales_dash.map { |inquiry| inquiry if inquiry.inquiry_number == params['inquiry_number'].to_i }.compact
+    respond_to do |format|
+      format.html {render partial: 'task_list_wrapper', locals: {inq_for_sales_dash: inquiry, inquiry_tasks: true}}
     end
   end
 
