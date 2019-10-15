@@ -147,7 +147,10 @@ let setup = () => {
             }, {
                 "targets": 'text-right-report',
                 "class": 'text-right'
-            }, {
+            },  {
+                "targets": 'checkbox',
+                "class": 'no-dispay-checkbox'
+            },{
                 "targets": 'text-right',
                 "class": 'text-right text-nowrap'
             }, {
