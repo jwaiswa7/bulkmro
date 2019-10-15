@@ -289,7 +289,7 @@
 <!--                </div>-->
 <!--              </div>-->
               <% @dashboard.inq_for_sales_dash.each do |inquiry| %>
-                <% if inquiry.status == 'New Inquiry' %>
+                <% if inquiry.status == 'Acknowledgement Mail' %>
                   <div class="bmro-width100 bmro-padding-task">
                     <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
                       <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
