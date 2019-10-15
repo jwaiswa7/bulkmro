@@ -2212,11 +2212,8 @@ canvas {
 .btn{
   height: 38px;
 }
-.bmro-bb-none{
-  border-bottom: none;
-}
 .bmro-purchase{
-  padding-top: 9px;
+  padding-top: 0px;
   padding-bottom: 9px;
   border-bottom: 1px solid #EDEDED; 
   border-left: 4px solid transparent;
@@ -2231,5 +2228,10 @@ canvas {
   line-height: 15px;
 }
 .bmro-task-th-pl{
-  padding-left: 0px;
+  padding-left: 0;
+  padding-bottom: 4px;
+  padding-top: 9px;
+}
+.bmro-pb-task{
+  padding-bottom: 0px;
 }
