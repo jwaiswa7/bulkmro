@@ -1,0 +1,15 @@
+<% inq_for_sales_dash.each do |inquiry| %>
+  <div class="bmro-width100 bmro-Inquries-task">
+    <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+      <span class="bmro-dash-star"></span>
+      <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span bmro-cursol bmro-order-show"><%= inquiry.inquiry_number %></span>
+    </div>
+    <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+      <span class="bmro-account-label-one"><%= inquiry.company.name %></span>
+      <span class="bmro-status-label bmro-color-yellow" data-id="<%= inquiry.inquiry_number %>"><%= inquiry.status %></span>
+    </div>
+    <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+      <span class="bmro-table-order-no bmro-right-side-open"><%= inquiry.sales_orders.count %></span>
+    </div>
+  </div>
+<% end %>
