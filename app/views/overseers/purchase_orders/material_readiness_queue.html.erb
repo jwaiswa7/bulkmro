@@ -9,7 +9,7 @@
 <% content_for(:heading_buttons) do %>
   <% if is_authorized(:purchase_order, 'update_logistics_owner') && policy(:purchase_order).update_logistics_owner? %>
     <div class="mr-2 float-left update_logistics_owner_wrapper">
-      <%= select_tag :logistics_owner, options_for_select(Overseer.logistics.collect { |o| [o.full_name.to_s, o.id] }), class: 'form-control select2-wrap update_logistics_owner_wrapper', include_blank: 'Select a logistics owner', id: 'logistics_owner_select' %>
+      <%= select_tag :logistics_owner, options_for_select(Overseer.logistics.collect { |o| [o.full_name.to_s, o.id] }), class: 'form-control select2-wrap bmro-form-input bmro-dropdown-icon update_logistics_owner_wrapper', include_blank: 'Select a logistics owner', id: 'logistics_owner_select' %>
     </div>
     <button type="button" id="update_logistics_owner" class=" btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_logistics_owner_wrapper">
       <i class="fal fa-plus mr-1"></i>Update Logistics Owner
