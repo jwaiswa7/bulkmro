@@ -2208,7 +2208,18 @@ canvas {
 .sales-form-inline{
   display: flex;
   margin-left: -70px;
-  .btn{
-    height: 38px;
-  }
+}
+.btn{
+  height: 38px;
+}
+.bmro-bb-none{
+  border-bottom: none;
+}
+.bmro-purchase{
+  padding-top: 9px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #EDEDED; 
+  border-left: 4px solid transparent;
+  padding-left: 20px;
+  padding-right: 30px; 
 }
