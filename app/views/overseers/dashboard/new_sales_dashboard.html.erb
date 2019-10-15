@@ -2,34 +2,34 @@
 
 <div class="bmro-width100">
   <div class="bmro-dash-leftside">
-    <div class="bmro-width100 bmro-priority-section bmro-radio-parent-padding">
-      <div class="bmro-radio-parent">
-        <div class="bmro-form-radio">
+<!--    <div class="bmro-width100 bmro-priority-section bmro-radio-parent-padding">-->
+<!--      <div class="bmro-radio-parent">-->
+<!--        <div class="bmro-form-radio">-->
           <!-- <input type="radio" name="bmro" class="bmro-pri-input">
           <label class="bmro-priority-lable">Priority Quotes </label> -->
-          <label class="bmro-priority-lable bmro-radio-container">Priority Quotes
-            <input type="radio" name="bmro" class="bmro-top-radio" checked>
-            <span class="bmro-checkmark"></span>
-          </label>
-        </div>
-        <div class="bmro-form-radio">
+<!--          <label class="bmro-priority-lable bmro-radio-container">Priority Quotes-->
+<!--            <input type="radio" name="bmro" class="bmro-top-radio" checked>-->
+<!--            <span class="bmro-checkmark"></span>-->
+<!--          </label>-->
+<!--        </div>-->
+<!--        <div class="bmro-form-radio">-->
           <!-- <input type="radio" name="bmro" class="bmro-pri-input">
           <label class="bmro-priority-lable">Strategic Clients</label> -->
-          <label class="bmro-priority-lable bmro-radio-container">Strategic Clients
-            <input type="radio" name="bmro" class="bmro-top-radio">
-            <span class="bmro-checkmark"></span>
-          </label>
-        </div>
-        <div class="bmro-form-radio">
+<!--          <label class="bmro-priority-lable bmro-radio-container">Strategic Clients-->
+<!--            <input type="radio" name="bmro" class="bmro-top-radio">-->
+<!--            <span class="bmro-checkmark"></span>-->
+<!--          </label>-->
+<!--        </div>-->
+<!--        <div class="bmro-form-radio">-->
           <!-- <input type="radio" name="bmro" class="bmro-pri-input">
           <label class="bmro-priority-lable">Repeat Orders</label> -->
-          <label class="bmro-priority-lable bmro-radio-container">Repeat Orders
-            <input type="radio" name="bmro" class="bmro-top-radio">
-            <span class="bmro-checkmark"></span>
-          </label>
-        </div>
-      </div>
-    </div>
+<!--          <label class="bmro-priority-lable bmro-radio-container">Repeat Orders-->
+<!--            <input type="radio" name="bmro" class="bmro-top-radio">-->
+<!--            <span class="bmro-checkmark"></span>-->
+<!--          </label>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="bmro-width100">
       <div class="bmro-width100">
         <div class="bmro-dash-box">
@@ -45,24 +45,6 @@
       <div class="bmro-width100 bmro-main-pedding">
         <div class="bmro-dash-inqu">
           <div class="bmro-width100 bmro-inquries-main inquiries-card">
-            <div class="bmro-width100 bmro-sales-pedding">
-              <span class="bmro-inqu-no"><%= @dashboard.inq_for_sales_dash.count %></span>
-              <p class="bmro-menu bmro-font-size-dash dropdown-toggle" id="My-inquries" data-toggle="dropdown" role="button">
-                My Inquiries
-                <span class="bmro-menu-dropdown bmro-menu-dropdown-ml"></span>
-              </p>
-              <div class="dropdown-menu">
-                <a class="bmro-dropdown-item bmro-new-fw bmro-show-sales" href="#"><span class="bmro-inqu-no-drop">12</span>My Sales Invoices</a>
-                <a class="bmro-dropdown-item bmro-new-fw bmro-show-purchse" href="#"><span class="bmro-inqu-no-drop">02</span>My Purchase Orders</a>
-              </div>
-              <div class="bmro-star-parent">
-                <span class="bmro-dash-star bmro-show-star"></span>
-                <label class="bmro-cursol">Show Starred</label>
-              </div>
-              <div class="bmro-star-parent bmro-reset-button bmro-inquiry-show-hide bmro-cursol">
-                <label class="bmro-cursol">Reset</label>
-              </div>
-            </div>
             <div class="inquiry-list-wrapper">
               <%= render partial: 'inquiry_list_wrapper', locals:{inq_for_sales_dash: @dashboard.inq_for_sales_dash} %>
             </div>
@@ -478,65 +460,65 @@
       </div>
       </div>
       </div>
-  <div class="bmro-dash-rightside bmro-right-mb">
-    <div class="bmro-width100">
-      <div id="canvas-holder">
-        <canvas id="myChart" width="400" height="400"></canvas>
-        <div class="sidebar-stats bmro-width100">
-          <ul class="bmro-canvas-ul">
-            <li>
-              <span class="green-chart-indicator bmro-fl"></span>
-              <span class="stat-label bmro-fl">Quoted Inquiries</span>
-              <span class="stat-numbers bmro-fl">12</span>
-            </li>
-            <li>
-              <span class="green-chart-indicator bmro-fl"></span>
-              <span class="stat-label bmro-fl">Incentive Earned</span>
-              <span class="stat-numbers bmro-fl">&#8377;4,67,010</span>
-            </li>
-            <li>
-              <span class="blue-chart-indicator bmro-fl"></span>
-              <span class="stat-label bmro-fl">My Target</span>
-              <span class="stat-numbers bmro-fl">52</span>
-            </li>
-            <li>
-              <span class="blue-chart-indicator bmro-fl"></span>
-              <span class="stat-label bmro-fl">Potential Earning</span>
-              <span class="stat-numbers bmro-fl">&#8377;40,67,010</span>
-            </li>
-            <li>
-              <span class="red-chart-indicator bmro-fl"></span>
-              <span class="stat-label bmro-fl">New Label</span>
-              <span class="stat-numbers bmro-fl">&#8377;40,67,010</span>
-            </li>
-            <li>
-              <span class="yellow-chart-indicator bmro-fl"></span>
-              <span class="stat-label bmro-fl">New Label</span>
-              <span class="stat-numbers bmro-fl">&#8377;40,67,010</span>
-            </li>
-          </ul>
-        </div>
-        <div class="bmro-width100">
-          <h4 class="bmro-canvas-head bmro-fl">Calculate Earning</h4>
-          <button class="bmro-canvas-button bmro-fr">Reset</button>
-          <div class="bmro-width100">
-              <div class="bmro-width50 bmro-mr-width">
-                <label class="bmro-form-lable">Quoted Inquiries</label>
-                <input type="text" name="QuotedInquiries" class="bmro-input-style">
-              </div>
-              <div class="bmro-width50">
-                <label class="bmro-form-lable">Target</label>
-                <input type="text" name="Target" class="bmro-input-style">
-              </div>
-              <div class="bmro-width100">
-                <label class="bmro-form-lable">Potential Earning</label>
-                <input type="text" name="QuotedInquiries" class="bmro-input-style">
-              </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!--  <div class="bmro-dash-rightside bmro-right-mb">-->
+<!--    <div class="bmro-width100">-->
+<!--      <div id="canvas-holder">-->
+<!--        <canvas id="myChart" width="400" height="400"></canvas>-->
+<!--        <div class="sidebar-stats bmro-width100">-->
+<!--          <ul class="bmro-canvas-ul">-->
+<!--            <li>-->
+<!--              <span class="green-chart-indicator bmro-fl"></span>-->
+<!--              <span class="stat-label bmro-fl">Quoted Inquiries</span>-->
+<!--              <span class="stat-numbers bmro-fl">12</span>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <span class="green-chart-indicator bmro-fl"></span>-->
+<!--              <span class="stat-label bmro-fl">Incentive Earned</span>-->
+<!--              <span class="stat-numbers bmro-fl">&#8377;4,67,010</span>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <span class="blue-chart-indicator bmro-fl"></span>-->
+<!--              <span class="stat-label bmro-fl">My Target</span>-->
+<!--              <span class="stat-numbers bmro-fl">52</span>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <span class="blue-chart-indicator bmro-fl"></span>-->
+<!--              <span class="stat-label bmro-fl">Potential Earning</span>-->
+<!--              <span class="stat-numbers bmro-fl">&#8377;40,67,010</span>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <span class="red-chart-indicator bmro-fl"></span>-->
+<!--              <span class="stat-label bmro-fl">New Label</span>-->
+<!--              <span class="stat-numbers bmro-fl">&#8377;40,67,010</span>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <span class="yellow-chart-indicator bmro-fl"></span>-->
+<!--              <span class="stat-label bmro-fl">New Label</span>-->
+<!--              <span class="stat-numbers bmro-fl">&#8377;40,67,010</span>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--        <div class="bmro-width100">-->
+<!--          <h4 class="bmro-canvas-head bmro-fl">Calculate Earning</h4>-->
+<!--          <button class="bmro-canvas-button bmro-fr">Reset</button>-->
+<!--          <div class="bmro-width100">-->
+<!--              <div class="bmro-width50 bmro-mr-width">-->
+<!--                <label class="bmro-form-lable">Quoted Inquiries</label>-->
+<!--                <input type="text" name="QuotedInquiries" class="bmro-input-style">-->
+<!--              </div>-->
+<!--              <div class="bmro-width50">-->
+<!--                <label class="bmro-form-lable">Target</label>-->
+<!--                <input type="text" name="Target" class="bmro-input-style">-->
+<!--              </div>-->
+<!--              <div class="bmro-width100">-->
+<!--                <label class="bmro-form-lable">Potential Earning</label>-->
+<!--                <input type="text" name="QuotedInquiries" class="bmro-input-style">-->
+<!--              </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
   <div class="bmro-dash-rightside">
     <div class="bmro-slide-on-inquries-2">
       <div class="bmro-width100 bmro-close-right-slide-fix">
@@ -847,34 +829,34 @@
 </div>
 
 <script>
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            datasets: [{
-                label: 'Total Earning',
-                data: [2, 3, 4, 25],
-                backgroundColor: [
-                    'rgba(254, 209, 2)',
-                    'rgba(60, 214, 179)',
-                    'rgba(252, 108, 78)',
-                    'rgba(78, 104, 142)'
-                ],
-                borderColor: [
-                    'rgba(254, 209, 2)',
-                    'rgba(60, 214, 179)',
-                    'rgba(252, 108, 78)',
-                    'rgba(78, 104, 142)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            rotation: 1 * Math.PI,
-            circumference: 1 * Math.PI
-        }
-    });
+    // var ctx = document.getElementById('myChart').getContext('2d');
+    // var myChart = new Chart(ctx, {
+    //     type: 'doughnut',
+    //     data: {
+    //         datasets: [{
+    //             label: 'Total Earning',
+    //             data: [2, 3, 4, 25],
+    //             backgroundColor: [
+    //                 'rgba(254, 209, 2)',
+    //                 'rgba(60, 214, 179)',
+    //                 'rgba(252, 108, 78)',
+    //                 'rgba(78, 104, 142)'
+    //             ],
+    //             borderColor: [
+    //                 'rgba(254, 209, 2)',
+    //                 'rgba(60, 214, 179)',
+    //                 'rgba(252, 108, 78)',
+    //                 'rgba(78, 104, 142)'
+    //             ],
+    //             borderWidth: 1
+    //         }]
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         rotation: 1 * Math.PI,
+    //         circumference: 1 * Math.PI
+    //     }
+    // });
 
     $( document ).ready(function() {
         $("#notifications").trigger('click');
@@ -911,24 +893,7 @@
     $(".bmro-dashbord-click").click(function () {
         $('.bmro-dash-main-menu').removeClass('bmro-dash-main-menu-show');
         $('.bmro-menu-click').removeClass('bmro-menu-roted');
-    })
-    $(".bmro-status-label").click(function (e) {
-        let inquiry_number = $(this).data('id');
-        e.preventDefault();
-        $.ajax({
-            url: Routes.get_status_records_overseers_dashboard_path({format: "html"}),
-            type: "GET",
-            data: {
-                inquiry_number: inquiry_number
-            },
-            success: function (data) {
-                $('#status-record-div').empty();
-                $('#status-record-div').append(data);
-            },
-        });
-        $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
-        $('.bmro-slide-on-inquries').addClass('bmro-inquries-po');
-    })
+    });
 
     $(".compose-email").click(function (e) {
       let inquiry_number = $(this).data('id');
@@ -978,6 +943,50 @@
     //     $('.bmro-inquries-main').addClass('bmro-inquiry-show-hide');
     // });
 
+    const getInquiryTasks = function(){
+        $(".inquiry").click(function (e) {
+            let inquiry_number = $(this).data('inquiry');
+            e.preventDefault();
+            $.ajax({
+                url: Routes.get_inquiry_tasks_overseers_dashboard_path({format: "html"}),
+                type: "GET",
+                data: {
+                    inquiry_number: inquiry_number
+                },
+                success: function (data) {
+                    $('.inquiry-tasks').empty();
+                    $('.inquiry-tasks').append(data);
+                    $('.bmro-order-action').removeClass('bmro-order-hide');
+                    $('.bmro-all-task-action').addClass('bmro-order-hide');
+                    // $('.bmro-reset-button').addClass('bmro-inquiry-show-hide');
+                },
+            });
+        });
+    };
+
+    const getStatusRecords = function(){
+        $(".bmro-status-label").click(function (e) {
+            let inquiry_number = $(this).data('id');
+            e.preventDefault();
+            $.ajax({
+                url: Routes.get_status_records_overseers_dashboard_path({format: "html"}),
+                type: "GET",
+                data: {
+                    inquiry_number: inquiry_number
+                },
+                success: function (data) {
+                    $('#status-record-div').empty();
+                    $('#status-record-div').append(data);
+                },
+            });
+            $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
+            $('.bmro-slide-on-inquries').addClass('bmro-inquries-po');
+        })
+    };
+
+    getStatusRecords();
+    getInquiryTasks();
+
     $(".status-box").click(function (e) {
         let inquiry_status = $(this).data('status');
         e.preventDefault();
@@ -990,22 +999,8 @@
             success: function (data) {
                 $('.inquiries-card').empty();
                 $('.inquiries-card').append(data);
-            },
-        });
-    });
-
-    $(".inquiry").click(function (e) {
-        let inquiry_number = $(this).data('inquiry');
-        e.preventDefault();
-        $.ajax({
-            url: Routes.get_inquiry_tasks_overseers_dashboard_path({format: "html"}),
-            type: "GET",
-            data: {
-                inquiry_number: inquiry_number
-            },
-            success: function (data) {
-                $('.inquiry-tasks').empty();
-                $('.inquiry-tasks').append(data);
+                getInquiryTasks();
+                getStatusRecords();
             },
         });
     });
