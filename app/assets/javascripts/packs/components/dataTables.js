@@ -13,7 +13,10 @@ const dataTables = () => {
             $('.datatable').DataTable().rowGroup().enable().draw();
         }
     }
-
+    $('.bmro-date-bag').on('change',function(){
+        var currentVal = $(this).val();
+        $('.date-item').find('input').val(currentVal).trigger('change');
+    })
 };
 
 // Setup the filter field before all dataTables, if the filter attribute exists
@@ -229,7 +232,8 @@ let setup = () => {
                                 input.find('select').append(option);
                             });
                         } else if (filter == 'daterange') {
-                            input = $('<div class="bmro-input-search bmro-arrow-parent"><input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" /></div>');
+                            let date_class = (text == 'Date' ? 'date-item': '')
+                            input = $('<div class="bmro-input-search bmro-arrow-parent '+date_class+'"><input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" /></div>');
                         } else if (filter == 'ajax') {
                             let source = "";
                             json.columnFilters[this.index()].forEach(function (f) {
