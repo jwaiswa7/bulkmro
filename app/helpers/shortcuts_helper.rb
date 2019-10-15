@@ -4,14 +4,14 @@ module ShortcutsHelper
   end
 
   def row_action_button(url, icon, title = '', color = 'success', target = :_self, method = :get, data = '', remote = false, label = '')
-    link_to url, 'data-toggle': 'tooltip', 'data-placement': 'top', target: target, title: title, method: method, remote: remote, class: ['btn btn-sm btn-', color].join, data: data do
+    link_to url, 'data-placement': 'top', target: target, title: title, method: method, remote: remote, class: ['icon-title btn btn-sm btn-', color].join, data: data do
       concat content_tag(:span, label)
       concat content_tag :i, nil, class: ['fal fa-', icon].join
     end
   end
 
   def row_action_button_without_fa(url, icon, title = '', color = 'success', target = :_self, method = :get, data = '', remote = false, label = '')
-    link_to url, 'data-toggle': 'tooltip', 'data-placement': 'top', target: target, title: title, method: method, remote: remote, class: ['btn btn-sm btn-', color].join, data: data do
+    link_to url, 'data-placement': 'top', target: target, title: title, method: method, remote: remote, class: ['icon-title btn btn-sm btn-', color].join, data: data do
       concat content_tag(:span, label)
       concat content_tag :i, nil, class: icon
     end
