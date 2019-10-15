@@ -916,7 +916,7 @@
         let inquiry_number = $(this).data('id');
         e.preventDefault();
         $.ajax({
-            url: "dashboard/get_status_records",
+            url: Routes.get_status_records_overseers_dashboard_path({format: "html"}),
             type: "GET",
             data: {
                 inquiry_number: inquiry_number
@@ -934,7 +934,7 @@
       let inquiry_number = $(this).data('id');
       e.preventDefault();
       $.ajax({
-          url: "dashboard/show_email_message_modal",
+          url: Routes.show_email_message_modal_overseers_dashboard_path({format: "html"}),
           type: "GET",
           data: {
               inquiry_number: inquiry_number
@@ -982,7 +982,7 @@
         let inquiry_status = $(this).data('status');
         e.preventDefault();
         $.ajax({
-            url: "dashboard/get_filtered_inquiries",
+            url: Routes.get_filtered_inquiries_overseers_dashboard_path({format: "html"}),
             type: "GET",
             data: {
                 status: inquiry_status
@@ -998,7 +998,7 @@
         let inquiry_number = $(this).data('inquiry');
         e.preventDefault();
         $.ajax({
-            url: "dashboard/get_inquiry_tasks",
+            url: Routes.get_inquiry_tasks_overseers_dashboard_path({format: "html"}),
             type: "GET",
             data: {
                 inquiry_number: inquiry_number
