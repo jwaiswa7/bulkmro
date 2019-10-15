@@ -33,7 +33,8 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
           )
         end
       end
-      if @purchase_order.save_and_sync(po_request)
+      @purchase_order.update_attributes(sap_sync: 'Sync')
+      if @purchase_order.save
         comments = po_request.comments.build(created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id)
         comments.message = "Purchase Order ##{@purchase_order.po_number} Approved by #{params[:overseer]}"
         comments.save!
@@ -69,7 +70,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
           po_row.save!
         end
       end
-      @purchase_order.save_and_sync(po_request)
+      @purchase_order.save
       po_request.update_attributes(status: 'Supplier PO: Amended')
 
       @purchase_order.update_attributes(material_status: nil)
