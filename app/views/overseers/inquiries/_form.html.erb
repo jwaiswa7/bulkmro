@@ -11,7 +11,7 @@
 
         <div class="form-row">
           <div class="col-3 col-md-5">
-            <%= f.input :company, as: :string, disabled: true, input_html: { class: 'select2-single bmro-form-input' } %>
+            <%= f.input :company, as: :string, disabled: false, input_html: { class: 'select2-single bmro-form-input' } %>
           </div>
           <div class="col-3 col-md-2">
             <%= f.input :inquiry_number, label: 'Inquiry #', input_html: { class: 'bmro-form-input' }, disabled: true %>
@@ -733,7 +733,7 @@
                 <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addnew-icon mr-1"></i>Add New</a>
               </div>
               <div class="bmro-fl">
-                <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addexcel-icon mr-1"></i>Add From Excel</a>
+                <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class:btn btn-block mb-2 mb-md-0 bmro-product-btn' %><i class="bmro-addexcel-icon mr-1"></i>Add From Excel</a>
               </div>
               <div class="bmro-fl">
                 <%= f.add_nested_fields_link :inquiry_products, class: 'btn btn-block mb-2 mb-md-0 bmro-product-btn' do %>
