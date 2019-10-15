@@ -9,13 +9,13 @@ default: &default
 
 development:
   <<: *default
-#  adapter: postgresql
-#  host: postgress-lab-bulkmro-com-22-aug.postgres.database.azure.com
-#  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-#  timeout: 50000
-#  username: LabDbUser@postgress-lab-bulkmro-com-22-aug
-#  password: '*#BmP62$cW&T'
-  database: sprint_dev
+  adapter: postgresql
+  host: postgress-lab-bulkmro-com-22-aug.postgres.database.azure.com
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 50000
+  username: LabDbUser@postgress-lab-bulkmro-com-22-aug
+  password: '*#BmP62$cW&T'
+  database: sprint_staging
 
 test:
   <<: *default
