@@ -749,17 +749,17 @@
       <% end %>
     </div>
 
-    <div class="card-footer bmro-card-footer bmro-mb-footer">
+    <div class="card-footer bmro-card-footer">
       <div class="form-row">
         <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? %>
           <div class="col-md-6">
-            <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark bmro-button"><i class="fal fa-envelope mr-1"></i>Send
+            <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark bmro-button bmro-mb-footer"><i class="fal fa-envelope mr-1"></i>Send
               Acknowledgement</a>
           </div>
         <% end %>
 
         <% if is_authorized(@inquiry, 'update') && policy(@inquiry).update? %>
-          <div class="mt-1 mt-md-0 <%= is_authorized(@inquiry, 'new_email_message') && policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
+          <div class="mt-1 bmro-button-parent mt-md-0 <%= is_authorized(@inquiry, 'new_email_message') && policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
             <%= action_button(action_name, @inquiry) %>
           </div>
         <% end %>
