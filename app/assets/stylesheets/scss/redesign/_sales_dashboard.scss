@@ -2243,3 +2243,37 @@ canvas {
 .bmro-container-fluid{
   max-width:94%;
 }
+.bmro-action-button-parent .form-group{
+  margin-bottom: 0px;
+  margin-right: 13px;
+}
+.bmro-task-button{
+  padding: 1px 13px;
+  height: 33px; 
+}
+.bmro-canvas-head{
+  color: #2E435C;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.47px;
+  line-height: 15px;
+  margin: 0px;
+}
+.bmro-canvas-button{
+  border: 0.6px solid #889EB7;
+  border-radius: 1px;
+  background: linear-gradient(180deg, #F8F9FA 0%, #EEF0F2 100%);
+  color: #2C4159;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: -0.15px;
+  line-height: 12px;
+}
+.bmro-form-lable{
+  color: #8B9AAB;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: -0.39px;
+  line-height: 12px;
+  margin: 0px; 
+}
