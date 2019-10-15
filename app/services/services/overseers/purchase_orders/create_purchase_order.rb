@@ -86,7 +86,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         updated_by_id: params[:overseer].id,
         status: PurchaseOrder.statuses.key(35),
         payment_option_id: po_request.payment_option.present? ? po_request.payment_option.id : nil,
-        logistics_owner_id: params[:overseer].id,
+        logistics_owner_id: po_request.inquiry.company.logistics_owner_id.present? ? po_request.inquiry.company.logistics_owner_id : 'Unassigned',
         company_id: po_request.supplier_id,
         is_partial: false,
         metadata: get_metadata(series_number),
