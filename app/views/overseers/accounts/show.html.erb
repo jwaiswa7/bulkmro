@@ -8,10 +8,10 @@
         <% else %>
           <img src="https://ui-avatars.com/api/?size=128&name=<%= @account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/><%= @account.alias %>
         <% end %>
-        <span class="pl-2 lead text-muted"><%= @account.name %></span>
+        <span class="pl-2 lead text-muted bmro-form-heading"><%= @account.name %></span>
       </h1>
       <% if is_authorized(@account, 'edit') %>
-        <a href="<%= edit_overseers_account_path(@account) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+        <a href="<%= edit_overseers_account_path(@account) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down bmro-button"><i class="fal fa-pen mr-1"></i>Edit
         Account</a>
       <% end %>
     </div>
@@ -35,7 +35,7 @@
         <h6 class="text-uppercase text-black-50 mb-2">Account Details</h6>
         <div class="form-row">
           <div class="col-6 col-md-6 mb-2">
-            <strong class="d-block bmro-summary-heading">Is Supplier</strong>
+            <strong class="d-block bmro-summary-heading bmro-fl">Is Supplier</strong>
             <div class="bmro-summary-data">
             <%= format_boolean(@account.is_supplier?) %>
             </div>
