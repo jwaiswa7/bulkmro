@@ -749,7 +749,7 @@
       <% end %>
     </div>
 
-    <div class="card-footer bmro-card-footer">
+    <div class="card-footer bmro-card-footer bmro-mb-footer">
       <div class="form-row">
         <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? %>
           <div class="col-md-6">
