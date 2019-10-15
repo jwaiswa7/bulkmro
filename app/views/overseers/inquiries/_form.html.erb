@@ -530,7 +530,7 @@
               <label data-path="Important" class="bmro-list-button bmro-important">Important Dates</label>
             </li>
             <li class="bmro-li-right bmro-active-li">
-              <label class="bmro-list-button" data-path="Order">Order Details</label>
+              <label class="bmro-list-button bmro-order-details-slide" data-path="Order">Order Details</label>
             </li>
           </ul>
         </nav>
@@ -733,7 +733,7 @@
                 <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addnew-icon mr-1"></i>Add New</a>
               </div>
               <div class="bmro-fl">
-                <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class:btn btn-block mb-2 mb-md-0 bmro-product-btn' %><i class="bmro-addexcel-icon mr-1"></i>Add From Excel</a>
+                <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addexcel-icon mr-1"></i>Add From Excel</a>
               </div>
               <div class="bmro-fl">
                 <%= f.add_nested_fields_link :inquiry_products, class: 'btn btn-block mb-2 mb-md-0 bmro-product-btn' do %>
@@ -749,11 +749,11 @@
       <% end %>
     </div>
 
-    <div class="card-footer bmro-card-footer">
+    <div class="card-footer bmro-card-footer bmro-mb-footer">
       <div class="form-row">
         <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? %>
           <div class="col-md-6">
-            <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark"><i class="fal fa-envelope mr-1"></i>Send
+            <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark bmro-button"><i class="fal fa-envelope mr-1"></i>Send
               Acknowledgement</a>
           </div>
         <% end %>

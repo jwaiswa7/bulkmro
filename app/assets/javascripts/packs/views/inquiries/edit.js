@@ -114,9 +114,9 @@ $('.bmro-owner-details').click(function (){
     }, 1000)
 }) 
 
-$('.bmro-order-slide').click(function (){
+$('.bmro-order-details-slide').click(function (){
     $('html, body').animate({
-      scrollTop: $(".bmro-order-slide").offset().top - 70 
+      scrollTop: $(".bmro-order-slide").offset().top - 80
     }, 1000)
 })
 
