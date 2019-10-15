@@ -35,7 +35,15 @@
 <!--        </div>-->
       <%# end %>
 <!--    </th>-->
-    <th class="sort desktop text-right" data-name="inquiry_number" width="98px">Quick Actions</th>
+    <th class="sort desktop text-right" data-name="inquiry_number" width="98px">
+      <% if is_authorized(:inward_dispatch, 'update_logistics_owner_for_inward_dispatches') && policy(:inward_dispatch).update_logistics_owner_for_inward_dispatches? && (action_name != 'inward_dispatch_delivered_queue') %>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="all_inward_dispatches" id="all_inward_dispatches">
+                <label class="custom-control-label" for="all_inward_dispatches">Quick Actions</label>
+              </div>
+      <% end %>
+
+    </th>
     <th class="sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
     <th class="no-sort desktop" data-name="customer_id">Customer Company Name</th>
     <th class="sort desktop text-right" data-name="so_number">Sales Order #</th>
