@@ -2,13 +2,64 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <div class="row">
-    <div class="col-lg-12">
-    <%= render partial: "overall_scorecard" %>
-  </div>
+  <div class="bmro-float">
+    <div class="col-lg-6">
+      <a class="btn text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-overall-toggole" type="button" data-toggle="collapse" aria-controls="pod-summary ownerwise-summary" aria-expanded="false" data-target="#pod-summary">
+        Overall Scorecard
+      </a>
+      <div class="bmro-float">
+        <div class="bmro-collaps bmro-collaps2">
+          <div class="bmro-invoice-data">
+            <div class="bmro-invoice-edit">
+              <label>Invoiced created</label>
+              <span>396</span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>regular</label>
+              <span>93</span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>route through</label>
+              <span>578</span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>Total Pending POD</label>
+              <span>12</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div class="col-lg-12">
-    <%= render partial: "ownerwise_scorecard" %>
+    <div class="col-lg-6">
+      <a class="btn text-left btn-lg btn-block mt-1 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg" aria-expanded="false" type="button" aria-controls="pod-summary ownerwise-summary" data-toggle="collapse" data-target="#ownerwise-summary">
+        Logistics Owner-wise Scorecard </a>
+      <div class="bmro-float">
+        <div class="bmro-collaps bmro-collaps2">
+          <div class="bmro-invoice-data">
+            <div class="bmro-invoice-edit">
+              <label>Invoiced created</label>
+              <span>396</span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>regular</label>
+              <span>93</span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>route through</label>
+              <span>578</span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>Total Pending POD</label>
+              <span>12</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <%= render partial: "overall_scorecard" %>
+  <%= render partial: "ownerwise_scorecard" %>
 </div>
 
 
@@ -20,11 +71,11 @@
       </div>
       <%= form_tag add_delay_reason_overseers_logistics_scorecards_path, method: :get do %>
         <div class="modal-body">
-          <p><%= select_tag(:selected, options_for_select({"Select a Reason"=>0}.merge(SalesInvoice.delay_reasons), selected: 0, disabled: 0), class: "form-control") %></p>
+          <p><%= select_tag(:selected, options_for_select({"Select a Reason" => 0}.merge(SalesInvoice.delay_reasons), selected: 0, disabled: 0), class: "form-control") %></p>
         </div>
         <div class="modal-footer">
           <%= hidden_field_tag :invoice_id %>
-          <%= submit_tag "Submit", class: "btn btn-default"  %>
+          <%= submit_tag "Submit", class: "btn btn-default" %>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       <% end %>
