@@ -2268,6 +2268,7 @@ canvas {
   font-weight: 500;
   letter-spacing: -0.15px;
   line-height: 12px;
+  padding: 6px 10px;
 }
 .bmro-form-lable{
   color: #8B9AAB;
@@ -2280,4 +2281,8 @@ canvas {
 .bmro-width50{
   width: 50%;
   float: left;
+}
+.bmro-mr-width{
+  margin-right: 10px;
+  width: 46%;
 }

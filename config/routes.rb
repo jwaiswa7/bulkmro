@@ -59,6 +59,7 @@ Rails.application.routes.draw do
       get 'show_email_message_modal'
       post 'update_inquiry'
       get 'get_filtered_inquiries'
+      get 'get_inquiry_tasks'
     end
 
     resources :remote_requests do

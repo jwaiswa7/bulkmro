@@ -18,11 +18,12 @@ class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseS
         row.converted_unit_selling_price = row.calculated_converted_unit_selling_price
       end
 
-      if sales_quote.sent_at.present?
-        sales_quote.save_and_sync
-      else
-        sales_quote.save
-      end
+      # if sales_quote.sent_at.present?
+      #   sales_quote.save_and_sync
+      # else
+      #   sales_quote.save
+      # end
+      sales_quote.save
     else
       sales_quote.reload
       sales_quote.inquiry.errors.add(:sales_quote, 'Must have at least one sales quote row')

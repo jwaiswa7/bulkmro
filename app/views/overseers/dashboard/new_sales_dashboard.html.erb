@@ -44,7 +44,7 @@
       </div>
       <div class="bmro-width100 bmro-main-pedding">
         <div class="bmro-dash-inqu">
-          <div class="bmro-width100 bmro-inquries-main" id="inquiries-card">
+          <div class="bmro-width100 bmro-inquries-main inquiries-card">
             <div class="bmro-width100 bmro-sales-pedding">
               <span class="bmro-inqu-no"><%= @dashboard.inq_for_sales_dash.count %></span>
               <p class="bmro-menu bmro-font-size-dash dropdown-toggle" id="My-inquries" data-toggle="dropdown" role="button">
@@ -198,7 +198,6 @@
             </div>
           </div>
           <div class="bmro-width100 bmro-purchase-order">
-
             <div class="bmro-width100 bmro-sales-pedding">
               <span class="bmro-inqu-no">12</span>
               <p class="bmro-menu bmro-font-size-dash dropdown-toggle" id="My-inquries" data-toggle="dropdown" role="button">
@@ -244,7 +243,7 @@
                 <div class="bmro-width100">
                    <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
                    <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
-                </div>              
+                </div>
               </div>
             </div>
 
@@ -274,7 +273,7 @@
                 <div class="bmro-width100">
                    <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
                    <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
-                </div>              
+                </div>
               </div>
             </div>
 
@@ -304,7 +303,7 @@
                 <div class="bmro-width100">
                    <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
                    <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
-                </div>              
+                </div>
               </div>
             </div>
 
@@ -334,7 +333,7 @@
                 <div class="bmro-width100">
                    <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
                    <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
-                </div>              
+                </div>
               </div>
             </div>
 
@@ -364,7 +363,7 @@
                 <div class="bmro-width100">
                    <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
                    <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
-                </div>              
+                </div>
               </div>
             </div>
 
@@ -394,10 +393,10 @@
                 <div class="bmro-width100">
                    <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
                    <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
-                </div>              
+                </div>
               </div>
             </div>
-                                    
+
             <div class="bmro-width100">
               <div class="bmro-width100 bmro-pl-pr">
                 <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
@@ -424,7 +423,7 @@
                 <div class="bmro-width100">
                    <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
                    <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
-                </div>              
+                </div>
               </div>
             </div>
 
@@ -436,6 +435,7 @@
 <!--              <span class="bmro-inqu-no">12</span>-->
               <p class="bmro-big-heading bmro-fl bmro-cursol bmro-font-size-dash dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
               All Tasks
+              <!-- Commented for demo -->
               <!-- <span class="bmro-drop-icon-head bmro-drop-icon-head-fr dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></span> --></p>
               <!--<div class="dropdown-menu ">-->
               <!--<a class="bmro-dropdown-item" href="#">Display Option 1</a>-->
@@ -448,18 +448,15 @@
               <!--</div>-->
             </div>
             <div class="bmro-width100 bmro-mt-collas">
-              <div class="bmro-width100 bmro-pl-pr">
-                <div class="bmro-all-task-th bmro-task-td-width">
-                  <span class="bmro-task-th">Task Id</span>
-                </div>
-                <div class="bmro-all-task-th bmro-task-width">
-                  <span class="bmro-task-th bmro-task-th-p0">Task</span>
-                </div>
-                <div class="bmro-all-task-th bmro-action-width bmro-text-right">
-                  <span class="bmro-task-th">Actions</span>
-                </div>
+              <div class="task-list-wrapper">
+                <%= render partial: 'task_list_wrapper', locals:{inq_for_sales_dash: @dashboard.inq_for_sales_dash, inquiry_tasks: false} %>
               </div>
+            </div>
+          </div>
 
+          <div class="bmro-width100 bmro-order-hide bmro-order-action inquiry-tasks">
+            <!-- Doc-wise tasks -->
+<!--            <div id="collapsetwo" class="collapse bmro-width100">-->
 <!--              <div class="bmro-width100 bmro-padding-task">-->
 <!--                <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">-->
 <!--                  <span class="bmro-dash-star"></span>-->
@@ -475,223 +472,7 @@
 <!--                  </a>-->
 <!--                </div>-->
 <!--              </div>-->
-              <% @dashboard.inq_for_sales_dash.each do |inquiry| %>
-                <% if inquiry.status == 'Acknowledgement Mail' %>
-                  <div class="bmro-width100 bmro-padding-task">
-                    <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
-                      <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
-                    </div>
-                    <div class="bmro-task-print bmro-task-width bmro-fl">
-                      <div class="bmro-commited-data bmro-task-td">
-                        Acknowledgement Email not sent.
-                      </div>
-                    </div>
-                    <div class="bmro-action-button-parent bmro-action-width bmro-fl">
-                      <a href="#" class="bmro-action-button bmro-fr bmro-lightbox compose-email" data-toggle="modal" data-target="#myModal" role="button" data-id="<%= inquiry.inquiry_number %>">Compose Email
-                      </a>
-                    </div>
-                  </div>
-                <% elsif inquiry.final_sales_quote.present? %>
-                  <% if inquiry.customer_po_number.blank? %>
-                    <div class="bmro-width100 bmro-padding-task">
-                      <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
-                        <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
-                      </div>
-                      <div class="bmro-task-print bmro-task-width bmro-fl">
-                        <div class="bmro-commited-data bmro-task-td">
-                          Customer PO number missing.
-                        </div>
-                      </div>
-                      <div class="bmro-action-button-parent bmro-action-width bmro-fl">
-                        <%= simple_form_for :inquiry, html: {class: 'sales-form-inline'}, :url => 'dashboard/update_inquiry' do |f| %>
-                          <%= f.hidden_field :inquiry_number, value: inquiry.inquiry_number %>
-                          <%= f.input :customer_po_number, placeholder: "Enter PO No.", :as => :string, class: "form-control", label: false %>
-                          <%= f.submit :submit, class: "btn btn-default" %>
-                        <% end %>
-                      </div>
-                    </div>
-                  <% end %>
-
-                  <% if inquiry.customer_order_date.blank? %>
-                    <div class="bmro-width100 bmro-padding-task">
-                      <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
-                        <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
-                      </div>
-                      <div class="bmro-task-print bmro-task-width bmro-fl">
-                        <div class="bmro-commited-data bmro-task-td">
-                            Customer Order date missing.
-                        </div>
-                      </div>
-                      <div class="bmro-action-button-parent bmro-action-width bmro-fl">
-                        <%= simple_form_for :inquiry, html: {class: 'sales-form-inline'}, :url => 'dashboard/update_inquiry' do |f| %>
-                          <%= f.hidden_field :inquiry_number, value: inquiry.inquiry_number %>
-                          <%= f.input :customer_order_date, placeholder: "Select Order Date", as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input form-control bmro-task-input' }, label: false %>
-                          <%= f.submit :submit, class: "btn btn-default bmro-task-button" %>
-                        <% end %>
-                      </div>
-                    </div>
-                  <% end %>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-          <div class="bmro-width100 bmro-order-hide bmro-order-action">
-            <div class="bmro-width100 bmro-pl-pr">
-              <div class="bmro-task-header">
-                <span class="bmro-small-heading bmro-width100 bmro-small-heading-mb">Inquiry No</span>
-                <h5 class="bmro-big-heading bmro-fl">
-                  34214-Tasks
-                </h5>
-                <span class="bmro-inqu-no bmro-task-no-po">15</span>
-              </div>
-              <div class="bmro-task-header bmr-text-right">
-                <span class="bmro-small-heading bmro-width100 bmro-small-heading-mb">Inquiry No</span>
-                <h5 class="bmro-big-heading">
-                  Abbott Healthcare Pvt.Ltd
-                </h5>
-              </div>
-            </div>
-            <div class="bmro-width100 bmro-pl-pr bmro-order-border-top">
-              <h5 class="bmro-big-heading bmro-fl bmro-cursol" data-toggle="collapse" data-target="#collapseOne">
-                <span class="bmro-drop-icon-head"></span> Order No. 122334
-              </h5>
-
-              <a href="#" class="bmro-action-a bmro-right-side-open">View Order</a>
-
-              <div class="bmro-completed-fr">
-                <span class="bmro-small-heading">Commited date:</span><span class="bmro-col-date">26/12/2019</span>
-              </div>
-              <p class="bmro-Logistics bmro-mt10">Partialy Delivered(Logistics)</p>
-            </div>
-            <div id="collapseOne" class="collapse show bmro-width100">
-              <div class="bmro-width100 bmro-padding-task">
-                <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">88888888</span>
-                </div>
-                <div class="bmro-task-print bmro-task-width bmro-fl">
-                  <div class="bmro-commited-data bmro-task-td">
-                    Supplier Quotation Not Sent
-                  </div>
-                </div>
-                <div class="bmro-action-button-parent bmro-action-width bmro-fl">
-                  <a href="#" class="bmro-action-button bmro-fr bmro-lightbox" data-toggle="modal" data-target="#myModal" role="button">Compose Email
-                  </a>
-                </div>
-              </div>
-              <div class="bmro-width100 bmro-padding-task">
-                <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">13456</span>
-                </div>
-                <div class="bmro-task-print bmro-task-width bmro-fl">
-                  <div class="bmro-commited-data bmro-task-td">
-                    Supplier Quotation Not Sent
-                  </div>
-                </div>
-                <div class="bmro-action-button-parent bmro-action-width bmro-fl dropdown">
-                  <span href="#" class="bmro-action-button bmro-fr dropdown-toggle" role="button" data-toggle="dropdown">
-                    Select
-                    <span class="bmro-menu-dropdown bmro-button-drop-compos"></span>
-                  </span>
-                    <div class="dropdown-menu ">
-                      <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 1</a>
-                      <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 2</a>
-                      <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 3</a>
-                    </div>
-                </div>
-              </div>
-              <div class="bmro-width100 bmro-padding-task">
-                <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">34214</span>
-                </div>
-                <div class="bmro-task-print bmro-task-width bmro-fl">
-                  <div class="bmro-commited-data bmro-task-td">
-                    Email Acknowledgement Pending
-                  </div>
-                </div>
-                <div class="bmro-action-button-parent bmro-action-width bmro-fl">
-                  <a href="#" class="bmro-action-button bmro-fr bmro-lightbox" data-toggle="modal" data-target="#myModal" role="button">Compose Email
-                  </a>
-                </div>
-              </div>
-              <div class="bmro-width100 bmro-padding-task bmro-complte-back">
-                <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
-                  <span class="bmro-dash-star"></span>
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">45567</span>
-                </div>
-                <div class="bmro-task-print bmro-task-width bmro-fl">
-                  <div class="bmro-commited-data bmro-task-td">
-                    Supplier Commited date higher than Customer Committed Date (Revise Date)
-                  </div>
-                  <span class="bmro-completed">
-                    <span class="bmro-complte-check"></span>
-                    Completed
-                  </span>
-                </div>
-                <div class="bmro-action-button-parent bmro-action-width bmro-fl dropdown">
-                  <span href="#" class="bmro-action-button bmro-fr dropdown-toggle" role="button" data-toggle="dropdown">
-                    Select
-                    <span class="bmro-menu-dropdown bmro-button-drop-compos"></span>
-                  </span>
-                    <div class="dropdown-menu ">
-                      <a class="bmro-dropdown-item bmro-clickable " href="#">Display Option 1</a>
-                      <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 2</a>
-                      <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 3</a>
-                    </div>
-                </div>
-              </div>
-              <div class="bmro-width100 bmro-padding-task">
-                <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">76342</span>
-                </div>
-                <div class="bmro-task-print bmro-task-width bmro-fl">
-                  <div class="bmro-commited-data bmro-task-td">
-                    Supplier Quotation Not Sent
-                  </div>
-                </div>
-                <div class="bmro-action-button-parent bmro-action-width bmro-fl dropdown">
-                  <span href="#" class="bmro-action-button bmro-fr dropdown-toggle" role="button" data-toggle="dropdown">
-                    Select
-                    <span class="bmro-menu-dropdown bmro-button-drop-compos"></span>
-                  </span>
-                    <div class="dropdown-menu ">
-                      <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 1</a>
-                      <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 2</a>
-                      <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 3</a>
-                    </div>
-                </div>
-              </div>
-              <div class="bmro-width100 bmro-padding-task">
-                <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">12243</span>
-                </div>
-                <div class="bmro-task-print bmro-task-width bmro-fl">
-                  <div class="bmro-commited-data bmro-task-td">
-                    Email Acknowledgement Pending
-                  </div>
-                </div>
-                <div class="bmro-action-button-parent bmro-action-width bmro-fl">
-                  <a href="#" class="bmro-action-button bmro-fr bmro-lightbox" data-toggle="modal" data-target="#myModal" role="button">Compose Email
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div id="collapsetwo" class="collapse bmro-width100">
-              <div class="bmro-width100 bmro-padding-task">
-                <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">
-                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">88888888</span>
-                </div>
-                <div class="bmro-task-print bmro-task-width bmro-fl">
-                  <div class="bmro-commited-data bmro-task-td">
-                    Supplier Quotation Not Sent
-                  </div>
-                </div>
-                <div class="bmro-action-button-parent bmro-action-width bmro-fl">
-                  <a href="#" class="bmro-action-button bmro-fr bmro-lightbox" data-toggle="modal" data-target="#myModal" role="button">Compose Email
-                  </a>
-                </div>
-              </div>
-            </div>
+<!--            </div>-->
           </div>
         </div>
       </div>
@@ -739,7 +520,7 @@
           <h4 class="bmro-canvas-head bmro-fl">Calculate Earning</h4>
           <button class="bmro-canvas-button bmro-fr">Reset</button>
           <div class="bmro-width100">
-              <div class="bmro-width50">
+              <div class="bmro-width50 bmro-mr-width">
                 <label class="bmro-form-lable">Quoted Inquiries</label>
                 <input type="text" name="QuotedInquiries" class="bmro-input-style">
               </div>
@@ -750,7 +531,7 @@
               <div class="bmro-width100">
                 <label class="bmro-form-lable">Potential Earning</label>
                 <input type="text" name="QuotedInquiries" class="bmro-input-style">
-              </div>                    
+              </div>
           </div>
         </div>
       </div>
@@ -1207,10 +988,24 @@
                 status: inquiry_status
             },
             success: function (data) {
-                console.log('DATA', data);
-                $('#inquiries-card').empty();
-                $('#inquiries-card').append(data);
-                debugger
+                $('.inquiries-card').empty();
+                $('.inquiries-card').append(data);
+            },
+        });
+    });
+
+    $(".inquiry").click(function (e) {
+        let inquiry_number = $(this).data('inquiry');
+        e.preventDefault();
+        $.ajax({
+            url: "dashboard/get_inquiry_tasks",
+            type: "GET",
+            data: {
+                inquiry_number: inquiry_number
+            },
+            success: function (data) {
+                $('.inquiry-tasks').empty();
+                $('.inquiry-tasks').append(data);
             },
         });
     });

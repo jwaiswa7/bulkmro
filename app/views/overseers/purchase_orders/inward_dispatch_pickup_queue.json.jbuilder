@@ -1,12 +1,9 @@
 json.data (@inward_dispatches) do |inward_dispatch|
   json.array! [
-                  if is_authorized(inward_dispatch, 'update_logistics_owner_for_inward_dispatches') && (policy(inward_dispatch).update_logistics_owner_for_inward_dispatches? || policy(inward_dispatch).can_request_invoice?) && inward_dispatch.sales_order.present? #&& (inward_dispatch.status != 'Material Delivered')
-                    "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-so-id='#{inward_dispatch.sales_order.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
-                  end,
                   [
-                      # if is_authorized(inward_dispatch, 'delivered') && policy(inward_dispatch).delivered? && is_authorized(inward_dispatch, 'can_request_invoice') && policy(inward_dispatch).can_request_invoice?
-                      #   "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
-                      # end,
+                      if is_authorized(inward_dispatch, 'update_logistics_owner_for_inward_dispatches') && (policy(inward_dispatch).update_logistics_owner_for_inward_dispatches? || policy(inward_dispatch).can_request_invoice?) && inward_dispatch.sales_order.present? #&& (inward_dispatch.status != 'Material Delivered')
+                        "<div class='d-inline-block custom-control custom-checkbox checkbox-wrapper align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-so-id='#{inward_dispatch.sales_order.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
+                      end,
                       if is_authorized(inward_dispatch, 'show') && policy(inward_dispatch).show?
                         row_action_button_without_fa(overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'bmro-icon-table bmro-icon-used-view', 'View Inward Dispatch', 'info', target: :_blank)
                       end,
@@ -19,7 +16,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                       if is_authorized(inward_dispatch, 'delivered') && policy(inward_dispatch).delivered? && is_authorized(inward_dispatch, 'can_request_invoice') && policy(inward_dispatch).can_request_invoice? && inward_dispatch.purchase_order.sap_sync == 'Sync'
                         row_action_button(new_overseers_invoice_request_path(purchase_order_id: inward_dispatch.purchase_order, inward_dispatch_id: inward_dispatch), 'plus', 'Create GRPO Request',  'success', target: :_blank)
                       elsif is_authorized(inward_dispatch, 'delivered') && policy(inward_dispatch).delivered? && is_authorized(inward_dispatch, 'can_request_invoice') && policy(inward_dispatch).can_request_invoice? && inward_dispatch.purchase_order.sap_sync == 'Not Sync'
-                        link_to '', 'data-toggle': 'tooltip', 'data-placement': 'top', 'data-toggle': 'modal', 'data-target': '#goodsReceiptPurchaseOrderId', title: '', class: 'btn btn-sm btn-success' do
+                        link_to '', 'data-placement': 'top', 'data-toggle': 'modal', 'data-target': '#goodsReceiptPurchaseOrderId', title: '', class: 'icon-title btn btn-sm btn-success' do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: 'bmro-icon-table bmro-icon-used-view'
                         end
@@ -27,7 +24,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                         row_action_button(overseers_invoice_request_path(inward_dispatch.invoice_request), 'eye', "View #{inward_dispatch.invoice_request.readable_status}", 'success', target: :_blank)
                       end,
                       if is_authorized(inward_dispatch, 'index')
-                        link_to('','data-toggle': 'tooltip', class: ['btn btn-sm btn-success comment-inward-dispatch'], 'data-inward-dispatch-id': inward_dispatch.id, 'data-purchase-id': inward_dispatch.purchase_order.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-success comment-inward-dispatch'], 'data-inward-dispatch-id': inward_dispatch.id, 'data-purchase-id': inward_dispatch.purchase_order.id, title: 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end
@@ -59,7 +56,6 @@ json.data (@inward_dispatches) do |inward_dispatch|
 end
 
 json.columnFilters [
-                       [],
                        [],
                        [],
                        [{ "source": autocomplete_overseers_companies_path }],
