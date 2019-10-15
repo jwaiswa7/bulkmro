@@ -34,7 +34,7 @@
         <% if content_for?(:heading) %>
           <h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
         <% else %>
-          <h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model.titleize %></h4>
+          <h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model.upcase %></h4>
         <% end %>
         <% if content_for?(:can_be_directly_exported) && is_authorized(current_model.singularize.downcase,'export_all') %>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -63,7 +63,7 @@
 
 <div class="bmro-search-table">
   <div class="bmro-input-search">
-    <input type="text" name="" class="bmro-form-input bmro-search-width filter-list-input" placeholder="Search by Account, Company, Owner ect...">
+    <input type="text" name="" class="bmro-form-input bmro-search-width filter-list-input" placeholder="Search by term/keywords...">
   </div>
   <div class="fillter-wrapper bmro-input-edit">
   </div>
