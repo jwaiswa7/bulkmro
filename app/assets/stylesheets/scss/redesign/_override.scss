@@ -1221,7 +1221,7 @@ a.bmro-click-toggle.collapsed:after{
 }
 @media only screen and (max-width: 1440px) {
   .bmro-nav-ul {
-    top: 68px;
+    top: 47px;
   }
 }
 @media only screen and (max-width: 1360px) {
@@ -1526,7 +1526,6 @@ table.table.dataTable.table-bordered th:first-child{
     color: #687686;
     font-size: 12px;
     font-weight: 500;
-    opacity: 0;
 }
 .bmro-card-body-pt{
     padding-top: 0px;
@@ -3098,4 +3097,14 @@ table.fixedHeader-floating{
  }
 .bmro-margin-in-lefts{
     margin-left: -12px;
+}
+.container.py-0 .row{
+    margin: 0 auto;
+    display: flex;
+}
+.bmro-envelope-icon-white{
+    background-size: 16px;
+     padding: 1px 12px;
+    background-repeat: no-repeat;
+    background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAMCAYAAABr5z2BAAAAAXNSR0IArs4c6QAAAOFJREFUKBWlkC0OwkAQhdmEEzQcgZDUY6ipQuEwCBIEgltwEAwJF8BxAQSHACSOH0tqgO/BtGwXUgSTvM7Me29md+vuRO2PqAezS/pTwIVtA6JfkLoBcQA3sAOtQgwKaeaRVzP3mj7EDAzAFZxBGszKl5omj7yaeS/QAH0CjiADo3yJauOkJeZ9Lij9A+fcBkMHwwosqJu2ZEregh6evXGvhEkx80n6CKwlWKiOAs/nDXIDp1wY6NLPjRvDZbnu59ITfMEGhj73rc4XxJw4+Wao4GJpTm+sMP2UdIP2T1eF4QHt8sLbD4RlkAAAAABJRU5ErkJggg==');
 }
