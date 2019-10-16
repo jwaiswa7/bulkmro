@@ -668,10 +668,10 @@
                   <% end if is_authorized(inquiry_product.object, 'destroy') && policy(inquiry_product.object).destroy? %>
                 </div>
               </div>
-              <div class="col-2 col-md-1 text-center">
+              <div class="col-2 col-md-1 text-center bmro-margin-in-lefts">
                 <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? %>
                   <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"
-                     <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success bmro-margin-in-lefts bmro-inventory-color bmro-product-height-input bmro-border"
+                     <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success bmro-inventory-color bmro-product-height-input bmro-border"
                      <% else %>  class="text-warning bmro-inventory-color bmro-product-height-input"
                      <% end %>title="Resync Inventory"><%= inquiry_product.object.product.stocks.total_qty %></a>
                 <% end %>
