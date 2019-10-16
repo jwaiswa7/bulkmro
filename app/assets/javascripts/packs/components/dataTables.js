@@ -232,7 +232,7 @@ let setup = () => {
                                 input.find('select').append(option);
                             });
                         } else if (filter == 'daterange') {
-                            let date_class = (text == 'Date' ? 'date-item': '')
+                            let date_class = ($(column.header()).data('name') == 'created_at') ? 'date-item hide': ''
                             input = $('<div class="bmro-input-search bmro-arrow-parent '+date_class+'"><input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" /></div>');
                         } else if (filter == 'ajax') {
                             let source = "";
