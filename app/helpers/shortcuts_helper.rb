@@ -3,6 +3,14 @@ module ShortcutsHelper
     controller_name.capitalize.pluralize
   end
 
+  def current_model_downcase
+    controller_name
+  end
+
+  def current_model_header
+    controller_name.humanize.upcase
+  end
+
   def row_action_button(url, icon, title = '', color = 'success', target = :_self, method = :get, data = '', remote = false, label = '')
     link_to url, 'data-placement': 'top', target: target, title: title, method: method, remote: remote, class: ['icon-title btn btn-sm btn-', color].join, data: data do
       concat content_tag(:span, label)
