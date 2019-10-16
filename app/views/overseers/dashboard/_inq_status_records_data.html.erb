@@ -2,8 +2,13 @@
   <span class="bmro-small-heading bmro-width100 bmro-mt-5">Company Name</span>
   <h5 class="bmro-big-heading-two bmro-mt-5 bmro-fl bmro-wdith-auto"><%= inquiry.company.to_s %></h5>
   <span class="bmro-small-heading bmro-width100 bmro-mt-5">Inquiry N0.</span>
-  <h5 class="bmro-big-heading-two bmro-mt-5 bmro-fl bmro-wdith-auto">#<%= inquiry.inquiry_number %>
+  <h5 class="bmro-big-heading-two bmro-mt-5 bmro-fl bmro-wdith-auto dropdown-toggle">#<%= inquiry.inquiry_number %>
     <span class="bmro-drop-icon-head bmro-slide-icon"></span>
+      <div class="dropdown-menu">
+        <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 1</a>
+        <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 2</a>
+        <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 3</a>
+      </div>
   </h5>
 <!--  <button class="bmro-action-button bmro-fl">Activity Log-->
 <!--    <span class="bmro-menu-dropdown bmro-button-drop-compos"></span>-->
