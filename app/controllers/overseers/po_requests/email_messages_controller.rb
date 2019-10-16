@@ -37,8 +37,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:bcc].present?
 
     authorize_acl @po_request, 'sending_po_to_supplier_create_email_message'
-
-    if params['email_message']['auto_attach']
+    if @email_message.auto_attach.present?
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@purchase_order, locals: {inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier})), filename: @purchase_order.filename(include_extension: true))
     end
     if @email_message.save
