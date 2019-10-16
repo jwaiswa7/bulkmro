@@ -47,7 +47,7 @@
           <%= render partial:   "overseers/"+current_model.downcase+"/download_dropdown" rescue nil %>
         <% end %>
       </div>
-      <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="">
+      <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="" placeholder="Select Date">
     </div>
   <% else %>
     <h4 class=" page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model.titleize %></h4>

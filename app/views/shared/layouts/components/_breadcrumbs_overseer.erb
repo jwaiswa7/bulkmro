@@ -44,7 +44,7 @@
 
     <% if content_for?(:can_be_directly_exported_filtered_records) && is_authorized(current_model.singularize.downcase,'export_filtered_records') %>
       <%= button_tag(type: 'button', class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button", id: 'export_filtered_records') do %>
-        <i class="fal fa-envelope mr-1"></i> Filtered <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+        <i class="bmro-icon-envelope-white"></i> Filtered <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
       <% end %>
     <% end %>
     <% if content_for?(:can_be_directly_exported_inquiry_tat) && is_authorized(current_model.singularize.downcase, 'export_inquiries_tat') %>
