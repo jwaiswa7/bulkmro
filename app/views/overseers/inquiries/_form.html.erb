@@ -656,7 +656,7 @@
                 <% end %>
               </div> -->
 
-              <div class="col-4 col-md-1">
+              <div class="col-4 col-md-2 bmro-margin-in-forms">
                 <div class="d-flex flex-row align-items-center">
                   <div>
                     <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity), input_html: { class: 'bmro-form-input bmro-product-height-input bmro-input-padding', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
@@ -668,7 +668,7 @@
                   <% end if is_authorized(inquiry_product.object, 'destroy') && policy(inquiry_product.object).destroy? %>
                 </div>
               </div>
-              <div class="col-2 col-md-1 text-center">
+              <div class="col-2 col-md-1 text-center bmro-margin-in-lefts">
                 <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? %>
                   <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"
                      <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success bmro-inventory-color bmro-product-height-input bmro-border"
