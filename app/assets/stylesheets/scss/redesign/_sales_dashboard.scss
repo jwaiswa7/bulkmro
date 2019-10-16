@@ -366,7 +366,7 @@ p.bmro-menu{
   border-radius: 4px;
   background-color: #FFFFFF;
   float: right;
-  padding: 0px 8px;
+  padding: 2px 8px;
   cursor: pointer;
 }
 .bmro-star-parent label{
@@ -1442,7 +1442,7 @@ p.bmro-menu{
 }
 .bmro-you-posi{
     position: relative;
-    top: -6px;  
+    top: -2px;  
 }
 .bmro-progress{
   width: 100%;
@@ -2285,4 +2285,21 @@ canvas {
 .bmro-mr-width{
   margin-right: 10px;
   width: 46%;
+}
+.bmro-new-submit-btn{
+    margin: 5px 0px;
+    padding: 0px 6px!important;
+    font-size: 12px!important;
+    font-weight: 500!important;
+    height: 20px;
+}
+.bmro-new-submit-input{
+    height: 22px!important;
+    font-size: 10px;
+    padding-left: 7px;
+    padding-bottom: 7px;
+    margin-top: 4px;
+    font-weight: 600;
+    box-shadow: none;
+    border-radius: 2px;
 }
