@@ -36,11 +36,6 @@
         <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
       </a>
     <% end %>
-    <% if content_for?(:can_be_directly_exported) && is_authorized(current_model.singularize.downcase,'export_all') %>
-      <a href="<%= [request.path, '/', 'export_all.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
-        <i class="bmro-download-icon bmro-padding-icons-title"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
-      </a>
-    <% end %>
 
     <% if content_for?(:can_be_directly_exported_filtered_records) && is_authorized(current_model.singularize.downcase,'export_filtered_records') %>
       <%= button_tag(type: 'button', class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button", id: 'export_filtered_records') do %>
