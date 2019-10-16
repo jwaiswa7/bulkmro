@@ -154,7 +154,8 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def get_tax_rate
-    TaxRate.where(tax_percentage: self.inquiry_product_supplier.gst).last.id
+    tax_rates = TaxRate.where(tax_percentage: self.inquiry_product_supplier.gst)
+    tax_rates.last.id if tax_rates.present?
   end
 
   def calculated_unit_selling_price
