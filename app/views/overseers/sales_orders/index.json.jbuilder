@@ -11,7 +11,7 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar-alt', 'Update MIS Date', 'success', :_blank)
                       end,
                       if is_authorized(sales_order, 'can_request_po')
-                        row_action_button(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'file', 'PO Request', 'success', :_blank)
+                        row_action_button(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'file-alt', 'PO Request', 'success', :_blank)
                       end,
 =begin
                       if is_authorized(sales_order, 'can_request_invoice')
