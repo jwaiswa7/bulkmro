@@ -11,7 +11,7 @@
 
         <div class="form-row">
           <div class="col-3 col-md-5">
-            <%= f.input :company, as: :string, disabled: true, input_html: { class: 'select2-single bmro-form-input' } %>
+            <%= f.input :company, as: :string, disabled: true, input_html: { class: 'bmro-form-input' } %>
           </div>
           <div class="col-3 col-md-2">
             <%= f.input :inquiry_number, label: 'Inquiry #', input_html: { class: 'bmro-form-input' }, disabled: true %>
@@ -486,7 +486,7 @@
     <div class="card-header bmro-card-header">
       <div class="form-row bmro-form-row">
         <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? && action_name != "new" %>
-          <div class="">
+          <div class="bmro-new-width-btn">
             <a href="<%= @inquiry.id.present? ? new_overseers_inquiry_email_message_path(@inquiry) : "#" %>" class='<%= policy(@inquiry).is_acknowledgement_enable? ? "btn-block btn btn-dark bmro-button bmro-btn-top-mb" : "btn-block btn btn-dark disabled bmro-button bmro-btn-top-mb" %>'><i class="bmro-envelope-icon-white"></i>Send
               Acknowledgement</a>
           </div>
@@ -730,14 +730,14 @@
           <% else %>
             <div class="form-row bmro-product-btn-parent">
               <div class="bmro-fl">
-                <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addnew-icon mr-1"></i>Add New</a>
+                <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addexcel-icon mr-1"></i>Add From Excel</a>
               </div>
               <div class="bmro-fl">
-                <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addexcel-icon mr-1"></i>Add From Excel</a>
+                <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addlist-icon mr-1"></i>Add From List</a>
               </div>
               <div class="bmro-fl">
                 <%= f.add_nested_fields_link :inquiry_products, class: 'btn btn-block mb-2 mb-md-0 bmro-product-btn' do %>
-                  <i class="bmro-addlist-icon mr-1"></i>Add From List
+                  <i class="bmro-addnew-icon mr-1"></i>Add New
                 <% end %>
               </div>
               <div class="bmro-fl">
@@ -749,7 +749,7 @@
       <% end %>
     </div>
 
-    <div class="card-footer bmro-card-footer bmro-mb-footer">
+    <div class="card-footer bmro-card-footer bmro-mb-footer hide">
       <div class="form-row">
         <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? %>
           <div class="col-md-6">

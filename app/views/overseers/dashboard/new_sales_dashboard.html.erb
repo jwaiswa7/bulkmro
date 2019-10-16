@@ -769,7 +769,7 @@
             </div>
           </div>
           <% notifications.each do |notification| %>
-            <div class="bmro-today-list">
+            <div class="bmro-today-list bmro-today-list-bm">
               <h5 class="bmro-big-heading bmro-hash-mt">#<%= notification.id %> <span class="bmro-today-button">Notification</span></h5>
               <span class="bmro-today-span"><%= notification.message %></span>
               <span class="bmro-today-posted">Posted on: <%= notification.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
@@ -788,7 +788,7 @@
 <!--          </div>-->
 <!--        </div>-->
         <% @dashboard.comments.each do |date, comments| %>
-          <div class="bmro-today-list bmro-today-mt-mb">
+          <div class="bmro-today-list bmro-today-list-bm bmro-today-mt-mb">
             <div class="bmro-width100 bmro-today-line-parent">
               <div class="bmro-today-parent">
                 <% if date.today? %>
