@@ -2292,6 +2292,13 @@ canvas {
     font-size: 12px!important;
     font-weight: 500!important;
     height: 20px;
+    color: #2C4159!important;
+    font-weight: 600;
+    letter-spacing: -0.39px!important;
+    line-height: 12px!important;
+    background: linear-gradient(180deg, #F8F9FA 0%, #EEF0F2 100%)!important;
+    outline: none;
+    border: 1px solid #E0E2E7!important;
 }
 .bmro-new-submit-input{
     height: 22px!important;
@@ -2301,5 +2308,9 @@ canvas {
     margin-top: 4px;
     font-weight: 600;
     box-shadow: none;
-    border-radius: 2px;
+    border-radius: 2px;  
+}
+.bmro-new-container-db{
+  max-width: 97%!important;
+  margin-left: 50px;
 }
