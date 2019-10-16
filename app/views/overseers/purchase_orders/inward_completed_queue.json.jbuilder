@@ -1,9 +1,9 @@
 json.data (@inward_dispatches) do |inward_dispatch|
   json.array! [
+                  if inward_dispatch.sales_order.present? && is_authorized(inward_dispatch, 'can_create_ar_invoice') && (policy(inward_dispatch).create_ar_invoice?) && inward_dispatch.sales_order.remote_uid.present?
+                    "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-so-id='#{inward_dispatch.sales_order.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
+                  end,
                   [
-                      if inward_dispatch.sales_order.present? && is_authorized(inward_dispatch, 'can_create_ar_invoice') && (policy(inward_dispatch).create_ar_invoice?) && inward_dispatch.sales_order.remote_uid.present?
-                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-so-id='#{inward_dispatch.sales_order.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
-                      end,
                       if is_authorized(inward_dispatch, 'show')
                         row_action_button_without_fa(overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'bmro-icon-table bmro-icon-used-view', 'View Inward Dispatch', 'info', target: :_blank)
                       end,
@@ -51,6 +51,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [],

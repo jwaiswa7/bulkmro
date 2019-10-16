@@ -15,7 +15,7 @@
 <% content_for(:heading_buttons) do %>
   <% if is_authorized(:sales_order, 'index') %>
     <a href = "<%= overseers_sales_orders_path %>" class=" btn btn-success bmro-button btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >
-      <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
+      <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").capitalize %>
     </a>
   <% end %>
 <% end %>
@@ -27,8 +27,8 @@
   <th class="no-sort desktop text-right">Inquiry #</th>
   <th class="no-sort all text-right">Order #</th>
   <th class="no-sort all text-right">PO #</th>
-  <th class="no-sort all text-center" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
-  <th class="no-sort all text-center" >Logistics Owner</th>
+  <th class="no-sort all text-right" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
+  <th class="no-sort all text-right" >Logistics Owner</th>
   <th class="sort desktop text-right" >Requested At</th>
   <th class="no-sort desktop text-right">Updated At</th>
   <th class="no-sort desktop">Latest Comment</th>

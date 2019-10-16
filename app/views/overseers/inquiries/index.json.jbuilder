@@ -23,7 +23,7 @@ json.data (@inquiries) do |inquiry|
       status_badge(inquiry.status),
       link_to(inquiry.account.to_s, overseers_account_path(inquiry.account), target: '_blank'),
       link_to(inquiry.company.to_s, overseers_company_path(inquiry.company), target: '_blank'),
-      inquiry.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", inquiry.po_subject].join('').html_safe, inquiry.customer_po_sheet, target: '_blank') : inquiry.po_subject,
+      inquiry.customer_po_sheet.attached? ? link_to(["<i class='bmro-fa-file-alt'></i>", inquiry.po_subject].join('').html_safe, inquiry.customer_po_sheet, target: '_blank') : inquiry.po_subject,
       format_succinct_date(inquiry.quotation_followup_date),
       format_succinct_date(inquiry.customer_committed_date),
       if inquiry.contact.present?
