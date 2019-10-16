@@ -161,9 +161,9 @@ class SalesQuoteRow < ApplicationRecord
   def calculated_unit_selling_price
     if self.unit_cost_price_with_unit_freight_cost.present? && self.margin_percentage.present?
       if self.margin_percentage >= 100
-        self.unit_selling_price
+        self.unit_selling_price.round(2)
       else
-        (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0)))
+        (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0))).round(2)
       end
     end
   end
