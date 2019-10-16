@@ -6,7 +6,7 @@ import updateSummaryBox from '../common/updateSummaryBox'
 const index = () => {
     bindSummaryBox(".summary_box", '.status-filter')
     updateSummaryBox()
-    $('.add_to_inquiry_wrapper').hide();
+    $('#add_to_inquiry_wrapper').hide();
     toggleCheckboxes();
 
     $('#add_to_inquiry').click((event) => {
@@ -22,7 +22,7 @@ let toggleCheckboxes = () => {
     $('#all_activities').prop("checked", false);
 
     $('#all_activities').change((event) => {
-        var $element = $(event.target);
+        let $element = $(event.target);
         if ($element.is(':checked')) {
             $('input[type=checkbox][name="activities[]"]').each((index, element) => {
                 //$(element).attr('checked', 'checked')
@@ -45,11 +45,12 @@ let toggleCheckboxes = () => {
 
 let addToInquiry = () => {
     let activities = [];
+
     $('input[type=checkbox][name="activities[]"]:checked').each((index, element) => {
         activities.push($(element).val());
     });
 
-    var inquiry = $('select[name*=inquiry]').val();
+    let inquiry = $('select[name*=inquiry]').val();
     if (inquiry == '') {
         alert("Please Choose an Inquiry to Assign");
         $('#inquiry_select').select2('open');
@@ -57,7 +58,8 @@ let addToInquiry = () => {
 
     if (activities.length > 0 && inquiry != '') {
 
-        var data = JSON.stringify({activities: activities, inquiry: inquiry});
+        let data = JSON.stringify({activities: activities, inquiry: inquiry});
+        console.log(data)
         $.ajax({
             url: Routes.add_to_inquiry_overseers_activities_path(),
             type: "POST",
@@ -65,7 +67,7 @@ let addToInquiry = () => {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function () {
-                var dataTable = $('.datatable').dataTable();
+                let dataTable = $('.datatable').dataTable();
                 dataTable.api().ajax.reload(null, false);
                 $('#all_activities').removeAttr('checked');
                 $('#all_activities').prop("checked", false);
@@ -76,12 +78,12 @@ let addToInquiry = () => {
 
 
 let showOrHideActions = () => {
-    var hide = true;
+    let hide = true;
 
     if ($('input[type=checkbox][name="activities[]"]:checked').length > 0) {
-        $('.add_to_inquiry_wrapper').show();
+        $('#add_to_inquiry_wrapper').show();
     } else {
-        $('.add_to_inquiry_wrapper').hide();
+        $('#add_to_inquiry_wrapper').hide();
     }
 
 };

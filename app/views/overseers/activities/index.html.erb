@@ -7,24 +7,28 @@
 
 <% provide :heading_buttons do %>
   <% if is_authorized(:activity, 'add_to_inquiry') %>
-    <div class="mr-2 d-block d-md-inline-block export_daterange_wrapper">
-      <%= select_tag :inquiry, '', class: 'select2-ajax select2-wrap add_to_inquiry_wrapper bmro-deopdown-icon bmro-form-input', 'data-source' => autocomplete_overseers_inquiries_path, include_blank: 'Choose an Inquiry to Assign to Activity', id: 'inquiry_select' %>
-    </div>
-    <button type="button" id="add_to_inquiry" class="mt-md-0 mt-1 mr-2 btn btn-warning btn-rounded align-self-center btn-block-sm-down mb-md-0 mb-1 add_to_inquiry_wrapper">
-      <i class="fal fa-plus mr-1"></i>Add to Inquiry
-    </button>
+    <span id="add_to_inquiry_wrapper">
+      <div class="mr-2 d-block d-md-inline-block export_daterange_wrapper">
+        <%= select_tag :inquiry, '', class: 'select2-ajax select2-wrap bmro-deopdown-icon bmro-form-input', 'data-source' => autocomplete_overseers_inquiries_path, include_blank: 'Choose an Inquiry to Assign to Activity', id: 'inquiry_select' %>
+      </div>
+      <button type="button" id="add_to_inquiry" class="mt-md-0 mt-1 mr-2 btn btn-warning btn-rounded align-self-center btn-block-sm-down mb-md-0 mb-1">
+        <i class="fal fa-plus mr-1"></i>Add to Inquiry
+      </button>
+    </span>
   <% end %>
 <% end %>
 
 <% content_for :header_row do %>
-  <th class="no-sort all">
-    <% if is_authorized(:activity, 'perform_actions') %>
+  <% if is_authorized(:activity, 'perform_actions') %>
+    <th class="no-sort all bmro-material-queue">
       <div class="custom-control custom-checkbox d-none d-md-block">
         <input type="checkbox" class="custom-control-input" name="all_activities" id="all_activities">
         <label class="custom-control-label" for="all_activities">Select All</label>
       </div>
-    <% end %>
-  </th>
+    </th>
+  <% else %>
+    <th class="no-sort all bmro-material-queue checkbox"></th>
+  <% end %>
   <th class="no-sort all" >Quick Actions</th>
   <th class="no-sort" >Created By</th>
   <th class="sort all text-right" data-name="activity_date">Activity Date</th>
