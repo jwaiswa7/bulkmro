@@ -2301,5 +2301,14 @@ canvas {
     margin-top: 4px;
     font-weight: 600;
     box-shadow: none;
-    border-radius: 2px;
+    border-radius: 2px;  
+    color: #2C4159!important;
+    font-weight: 600;
+    letter-spacing: -0.39px!important;
+    line-height: 12px!important;
+    background: linear-gradient(180deg, #F8F9FA 0%, #EEF0F2 100%)!important;
+}
+.bmro-new-container-db{
+  max-width: 97%!important;
+  margin-left: 50px;
 }
