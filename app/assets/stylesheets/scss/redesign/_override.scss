@@ -3080,28 +3080,29 @@ table.fixedHeader-floating{
   margin-bottom: 10px;
 }
 [title]{
+   cursor: pointer;
+   position: relative;
+}
+[title]:hover::before{
+    content: attr(title);
+    display: inline-block;
     border:1px solid black;
     font-weight: 500;
     background-color: #2C4159;
     color: #fff;
     text-align: center;
     line-height: 12px;
-}
-[title]:hover::before{
-    content: attr(title);
-    display: inline-block;
-     border:1px solid black;
-    font-weight: 500;
-    background-color: #2C4159;
-    color: #fff;
-    text-align: center;
-    line-height: 12px;
+    position: absolute;
+    bottom: -26px;
 }
 [title]:hover::after{
     content: '';
     display: inline-block;
     color: #fff;
-    border:1px solid black;   
+    border:1px solid black;
+    position: absolute;  
+    bottom: -10px;
+    left: 8px; 
 }
 .bmro-product-bottom .select2-container {
  margin-bottom: 10px;
