@@ -11,7 +11,7 @@
 
         <div class="form-row">
           <div class="col-3 col-md-5">
-            <%= f.input :company, as: :string, disabled: true, input_html: { class: 'select2-single bmro-form-input' } %>
+            <%= f.input :company, as: :string, disabled: true, input_html: { class: 'bmro-form-input' } %>
           </div>
           <div class="col-3 col-md-2">
             <%= f.input :inquiry_number, label: 'Inquiry #', input_html: { class: 'bmro-form-input' }, disabled: true %>
@@ -749,7 +749,7 @@
       <% end %>
     </div>
 
-    <div class="card-footer bmro-card-footer bmro-mb-footer">
+    <div class="card-footer bmro-card-footer bmro-mb-footer hide">
       <div class="form-row">
         <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? %>
           <div class="col-md-6">
