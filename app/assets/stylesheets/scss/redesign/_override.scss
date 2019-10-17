@@ -3079,13 +3079,29 @@ table.fixedHeader-floating{
 .bmro-btn-top-mb{
   margin-bottom: 10px;
 }
-a[title]{
+[title]{
     border:1px solid black;
     font-weight: 500;
     background-color: #2C4159;
     color: #fff;
     text-align: center;
     line-height: 12px;
+}
+[title]:hover::before{
+    content: attr(title);
+    display: inline-block;
+     border:1px solid black;
+    font-weight: 500;
+    background-color: #2C4159;
+    color: #fff;
+    text-align: center;
+    line-height: 12px;
+}
+[title]:hover::after{
+    content: '';
+    display: inline-block;
+    color: #fff;
+    border:1px solid black;   
 }
 .bmro-product-bottom .select2-container {
  margin-bottom: 10px;
