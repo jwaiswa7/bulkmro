@@ -3093,7 +3093,7 @@ table.fixedHeader-floating{
     text-align: center;
     line-height: 12px;
     position: absolute;
-    bottom: -26px;
+    top: -15px;
 }
 [title]:hover::after{
     content: '';
@@ -3101,7 +3101,7 @@ table.fixedHeader-floating{
     color: #fff;
     border:1px solid black;
     position: absolute;  
-    bottom: -10px;
+    top: -10px;
     left: 8px; 
 }
 .bmro-product-bottom .select2-container {
