@@ -96,6 +96,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   end
 
   def get_metadata(series_number)
+    product_ids = Product.where(sku: Settings.product_specific.freight).last.id
     {
         PoNum: series_number,
         PoDate: Time.now.strftime('%Y-%m-%d'),
@@ -118,7 +119,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         PoShipWarehouse: po_request.ship_to.remote_uid,
         PoComments: po_request.sales_order.present? ? "Purchase Order Against Sales Order #{po_request.sales_order.order_number}" : "Purchase Order Against For stock Inquiry Number #{po_request.inquiry.inquiry_number}",
         PoOrderId: (po_request.sales_order.present? ? po_request.sales_order.order_number : ''),
-        PoFreight: po_request.rows.pluck(:product_id).include?(38282) ? 'Excluded' : 'Included',
+        PoFreight: po_request.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included',
         PoRemarks: '',
         PoTaxRate: '',
         PoUpdatedAt: '',
