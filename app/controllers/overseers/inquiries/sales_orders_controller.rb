@@ -158,9 +158,8 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def resync
     authorize_acl @sales_order
-    if @sales_order.save_and_sync
-      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
-    end
+    @sales_order.save_and_sync
+    redirect_to so_sync_pending_overseers_sales_orders_path
   end
 
   def fetch_order_data
