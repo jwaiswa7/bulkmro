@@ -12,7 +12,7 @@ class Overseers::PaymentOptionsController < Overseers::BaseController
   end
 
   def autocomplete
-    @payment_options = ApplyParams.to(PaymentOption.all, params)
+    @payment_options = ApplyParams.to(PaymentOption.all.active, params)
     authorize_acl @payment_options
   end
 
@@ -51,7 +51,8 @@ class Overseers::PaymentOptionsController < Overseers::BaseController
         :name,
           :credit_limit,
           :general_discount,
-          :load_limit
+          :load_limit,
+          :is_active
       )
     end
 
