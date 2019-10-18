@@ -15,7 +15,7 @@ const dataTables = () => {
     }
     $('.bmro-date-bag').on('change',function(){
         var currentVal = $(this).val();
-        $('.date-item').find('input').val(currentVal).trigger('change');
+        $('.date-item.hide').find('input').val(currentVal).trigger('change');
     })
 };
 
@@ -214,13 +214,12 @@ let setup = () => {
                     e.preventDefault();
                 });
                 actionTd.append(clear);
-
+                var data_multiclass = [];
                 this.api().columns().every(function () {
                     let column = this;
                     let filter = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')').data('filter');
                     let td = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')');
                     let text = $(column.header()).text();
-                    // console.log('text '+text)
                     // Uses the window.hasher to get column-level filters, if defined, to set selected value that will allow filtering the datatable
                     let selected = (filter == 'dropdown' || filter == 'ajax') ? window.hasher.getParam(text).split('|') : window.hasher.getParam(text);
 
@@ -235,10 +234,13 @@ let setup = () => {
                                 input.find('select').append(option);
                             });
                         } else if (filter == 'daterange') {
-                            console.log('header name: '+$(column.header()).data('name'))
                             var dataNameTemp = $(column.header()).data('name')
-                            let date_class = ((dataNameTemp == 'mis_date')||(dataNameTemp=='po_date')||(dataNameTemp=='created_at')) ? 'date-item hide': '';
-                            console.log('date_class : '+date_class)
+                            let date_class = ((dataNameTemp == 'mis_date')||(dataNameTemp=='po_date')||(dataNameTemp=='created_at')) ? 'date-item hide '+dataNameTemp: '';
+                            if(data_multiclass.length == 0){
+                                data_multiclass.push(dataNameTemp)
+                            }else if(data_multiclass.includes('mis_date' || 'po_date') && dataNameTemp=='created_at'){
+                                $('.date-item').not('.created_at').removeClass("hide")
+                            }
                             input = $('<div class="bmro-input-search bmro-arrow-parent '+date_class+'"><input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" /></div>');
                         } else if (filter == 'ajax') {
                             let source = "";

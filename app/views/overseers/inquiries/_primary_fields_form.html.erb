@@ -31,11 +31,11 @@
 
       <div class="form-row">
         <div class="col-6 col-md-6">
-          <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), required: true, disabled: policy(f.object).restrict_fields_on_completed_orders?, input_html: {class: 'bmro-form-input bmro-dropdown-icon'} %>
+          <%= f.input :opportunity_type, collection: enum_to_collection(Inquiry.opportunity_types), required: true, disabled: policy(f.object).restrict_fields_on_completed_orders?, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'} %>
         </div>
 
         <div class="col-6 col-md-6">
-          <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), required: true, disabled: policy(f.object).restrict_fields_on_completed_orders?, input_html: {class: 'bmro-dropdown-icon bmro-form-input'} %>
+          <%= f.input :quote_category, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true), required: true, disabled: policy(f.object).restrict_fields_on_completed_orders?, input_html: {class: 'select2-single bmro-dropdown-icon bmro-form-input'} %>
         </div>
       </div>
 
@@ -43,7 +43,7 @@
         <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Contact Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'bmro-form-input select2-ajax', :'data-source' => autocomplete_overseers_contacts_path, :'data-placeholder' => "Select a billing contact"}, required: true, disabled: true %>
+            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'bmro-form-input select2-ajax bmro-dropdown-icon', :'data-source' => autocomplete_overseers_contacts_path, :'data-placeholder' => "Select a billing contact"}, required: true, disabled: true %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping contact", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_contacts_path}, disabled: true %>
