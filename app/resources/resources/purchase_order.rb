@@ -185,6 +185,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         PoSupNum: '',
         PayToCode: po_request.bill_from.remote_uid,
         ShipFrom: po_request.ship_from.remote_uid,
+        PoFreight: po_request.rows.pluck(:product_id).include?(38282) ? 'Excluded' : 'Included',
         PoShippingCost: '0',
         PoTargetWarehouse: po_request.ship_to.remote_uid,
         DocumentLines: item_row,
