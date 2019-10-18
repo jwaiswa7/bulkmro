@@ -66,7 +66,7 @@ every(1.day, 'generate_exports_daily', at: '04:00') do
   end
 end
 
-every(1.day, 'purchase_order_reindex', at: '19:10') do
+every(1.day, 'purchase_order_reindex', at: '19:15') do
   puts 'For reindexing purchase orders'
 
   index_class = PurchaseOrdersIndex
