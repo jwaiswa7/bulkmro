@@ -66,13 +66,15 @@ every(1.day, 'generate_exports_daily', at: '04:00') do
   end
 end
 
-every(1.day, 'purchase_order_reindex', at: '00:00') do
+every(1.day, 'purchase_order_reindex', at: '19:10') do
   puts 'For reindexing purchase orders'
 
   index_class = PurchaseOrdersIndex
   if index_class <= BaseIndex
     index_class.reset!
   end
+
+  Services::Overseers::Exporters::MaterialReadinessExporter.new.call
 end
 
 every(1.day, 'inquiry_product_inventory_update', at: '07:30') do
