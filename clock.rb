@@ -73,6 +73,8 @@ every(1.day, 'purchase_order_reindex', at: '00:00') do
   if index_class <= BaseIndex
     index_class.reset!
   end
+
+  Services::Overseers::Exporters::MaterialReadinessExporter.new.call
 end
 
 every(1.day, 'inquiry_product_inventory_update', at: '07:30') do
