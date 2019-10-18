@@ -176,7 +176,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
       }
       item_row << json
     end
-    product_ids = Product.where(sku: Settings.product_specific.freight).pluck(:id)
+    product_ids = Product.where(sku: Settings.product_specific.freight).last.id
     company_contact = CompanyContact.where(company_id: po_request.supplier_id, contact_id: po_request.contact_id).last
     {
         PoDate: Time.now.strftime('%Y-%m-%d'),

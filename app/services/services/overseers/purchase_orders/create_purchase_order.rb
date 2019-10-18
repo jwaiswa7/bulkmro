@@ -96,7 +96,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   end
 
   def get_metadata(series_number)
-    product_ids = Product.where(sku: Settings.product_specific.freight).pluck(:id)
+    product_ids = Product.where(sku: Settings.product_specific.freight).last.id
     {
         PoNum: series_number,
         PoDate: Time.now.strftime('%Y-%m-%d'),
