@@ -120,6 +120,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         PoComments: po_request.sales_order.present? ? "Purchase Order Against Sales Order #{po_request.sales_order.order_number}" : "Purchase Order Against For stock Inquiry Number #{po_request.inquiry.inquiry_number}",
         PoOrderId: (po_request.sales_order.present? ? po_request.sales_order.order_number : ''),
         PoFreight: po_request.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included',
+        U_Frghtterm: po_request.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included',
         PoRemarks: '',
         PoTaxRate: '',
         PoUpdatedAt: '',
