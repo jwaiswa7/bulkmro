@@ -41,7 +41,7 @@
         <div class="form-row mb-1">
           <div class="col-6 col-md-2">
             <strong class="d-block">Freight</strong>
-            <%= @metadata[:PoFreight] %>
+            <%= @metadata[:PoFreight] || @purchase_order.get_freight %>
           </div>
           <div class="col-6 col-md-3">
             <strong class="d-block">Packing & Forwarding</strong>
