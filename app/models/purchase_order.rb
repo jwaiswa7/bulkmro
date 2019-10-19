@@ -296,4 +296,12 @@ class PurchaseOrder < ApplicationRecord
   def max_lead_date
     self.po_request.present? ? self.po_request.rows.maximum(:lead_time).strftime('%d-%b-%Y') : Date.parse(self.metadata['PoDate']).strftime('%d-%b-%Y')
   end
+
+
+  def get_freight
+    product_ids = Product.where(sku: Settings.product_specific.freight).last.id
+    if product_ids.present?
+      self.po_request.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included'
+    end
+  end
 end
