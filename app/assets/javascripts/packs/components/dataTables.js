@@ -157,8 +157,8 @@ let setup = () => {
                 "targets": 'text-right',
                 "class": 'text-right text-nowrap'
             },{
-                "targets": 'company-tab-width',
-                "class": 'company-tab-width'
+                "targets": 'bmro-company-width',
+                "class": 'bmro-company-width'
             }, {
                     "targets": 'text-center',
                     "class": 'text-center text-nowrap'
