@@ -2184,6 +2184,12 @@ td .d-inline-block.custom-control.custom-checkbox.align-middle{
 .bmro-container-fluid .col-lg-12{
     padding-left: 0px;
 }
+.bmro-summary-data .status-check-success{
+    background-position: left!important;
+}
+.bmro-summary-data .status-cross-danger{
+    background-position: left!important;
+}
 .status-check-success{
     background-repeat: no-repeat;
     display: block;
