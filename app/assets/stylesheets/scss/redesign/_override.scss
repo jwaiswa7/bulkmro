@@ -304,6 +304,9 @@ a.bmro-list-button{
     -webkit-appearance:none!important;
     font-weight: 500;
 }
+.bmro-form-input:active{ 
+    border-color: rgb(236, 238, 242)!important;
+}
 .form-group input.form-control{
     line-height: 1.5!important;
     color:#2C4159 !important;
