@@ -3352,12 +3352,59 @@ background-color: #D4D8DF!important;
     padding: 7px 10px !important;
 }
 .bmro-sales-order-th{
-    width: 64px;
-    display: block;
-    min-height: 40px;
-    padding-right: 24px;
-    min-width: 64px;    
+    width: 64px!important;
 }
 .bmro-textarea-width{
     width: 400px!important;
+}
+.bmro-table-layout table{
+    table-layout: fixed;
+}
+.bmro-sales-orderdate{
+    width: 98px;
+}
+.bmro-sales-ccd-th{
+    width: 200px;
+}
+.bmro-sales-inq-th{
+    width: 75px;
+}
+.bmro-sales-si-th{
+    width: 163px;
+}
+.bmro-posub-th{
+   width: 163px; 
+}
+.bmro-sales-status-th{
+    width: 137px;
+}
+.bmro-sales-acc-th{
+    width: 106px;
+}
+.bmro-is-th{
+    width: 87px;
+}
+.bmro-os-th{
+    width: 97px;
+}
+.bmro-os-th{
+    width: 97px;
+}
+.bmro-qt-th{
+    width: 145px;
+}
+.bmro-ot-th{
+  width: 148px;  
+}
+.bmro-margin-th{
+    width: 97px;
+}
+.bmro-iq-th{
+    width: 85px;
+}
+.bmro-cd-th{
+    width: 68px;
+}
+.bmro-sp-th{
+    width: 70px;
 }
