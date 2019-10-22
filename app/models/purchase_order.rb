@@ -301,7 +301,11 @@ class PurchaseOrder < ApplicationRecord
   def get_freight
     product_ids = Product.where(sku: Settings.product_specific.freight).last.id
     if product_ids.present?
-      self.po_request.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included'
+      if self.po_request.present?
+        self.po_request.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included'
+      else
+        self.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included'
+      end
     end
   end
 end
