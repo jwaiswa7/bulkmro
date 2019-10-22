@@ -852,7 +852,7 @@ table.bmro-datatable-style{
     padding: 0px 0px;
     background-position-y: center;
 }
-.bmro-invoice-heading h4:after{
+/*.bmro-invoice-heading h4:after{
     content: "";
     width: 0;
     height: 0;
@@ -862,7 +862,7 @@ table.bmro-datatable-style{
     top: 6px;
     right: 1px;
     opacity: unset;
-}
+}*/
 .bmro-summary{
     width: 100%;  
     float: left;
@@ -3092,7 +3092,7 @@ table.fixedHeader-floating{
    cursor: pointer!important;
    position: relative;
 }
-/*[title]:hover::after{
+[title]:hover::after{
    content: attr(title);
     display: inline-block;
     border:1px solid black;
@@ -3108,7 +3108,7 @@ table.fixedHeader-floating{
     left: -12px;
     z-index: 400;
     pointer-events:none;
-}*/
+}
 .bmro-product-bottom .select2-container {
  margin-bottom: 10px;
  }
