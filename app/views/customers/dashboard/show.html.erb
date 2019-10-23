@@ -5,6 +5,13 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_exported_for_amat_customer, true %>
 
+<% provide :heading_buttons do %>
+  <div class="btn-group">
+    <a href= "<%= [request.path,'/', 'export_for_amat_customer.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" >
+      <i class="fal fa-download mr-1"></i>Export
+    </a>
+  </div>
+<% end %>
 
 <div class="col-12">
   <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
