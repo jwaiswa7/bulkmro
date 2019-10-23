@@ -16,7 +16,7 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
   def build_csv
     company = @company
 
-    records = company.inquiries.where(created_at: Date.parse('2018-09-01 00:00:00')..(Date.today.end_of_day))
+    records = company.inquiries.where(created_at: Date.parse('2018-11-01 00:00:00')..(Date.today.end_of_day))
 
     records.each do |inquiry|
       so_wo_cancelled = inquiry.sales_orders.without_cancelled
