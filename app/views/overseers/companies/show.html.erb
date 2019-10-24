@@ -44,14 +44,14 @@
             <h6 class="text-uppercase text-black-50 bmro-form-heading mb-1">Company Details</h6>
             <div class="form-row">
               <% if @company.account %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Account</strong>
                   <a class="bmro-summary-link" href="<%= overseers_account_path(@company.account) %>" target="_blank"><%= @company.account %></a>
                 </div>
               <% end %>
 
               <% if @company.site? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Site</strong>
                   <div class="bmro-summary-data">
                     <%= @company.site %>
@@ -61,7 +61,7 @@
 
               <% if @company.default_company_contact.present? %>
                 <% if @company.default_company_contact.contact.mobile %>
-                  <div class="col-6 col-md-3 mb-2">
+                  <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                     <strong class="d-block bmro-summary-heading">Mobile</strong>
                     <div class="bmro-summary-data">
                       <%= @company.default_company_contact.contact.mobile %>
@@ -70,7 +70,7 @@
                 <% end %>
 
                 <% if @company.default_company_contact.contact.email.present? %>
-                  <div class="col-6 col-md-3 mb-2">
+                  <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                     <strong class="d-block bmro-summary-heading">Email address</strong>
                     <div class="bmro-summary-data">
                       <%= @company.default_company_contact.contact.email %>
@@ -79,7 +79,7 @@
                 <% end %>
 
                 <% if @company.default_company_contact.contact.telephone.present? %>
-                  <div class="col-6 col-md-3 mb-2">
+                  <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                     <strong class="d-block bmro-summary-heading">Telephone</strong>
                     <div class="bmro-summary-data">
                       <%= @company.default_company_contact.contact.telephone %>
@@ -89,7 +89,7 @@
               <% end %>
 
               <% if @company.industry.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Industry</strong>
                   <div class="bmro-summary-data">
                     <%= @company.industry %>
@@ -98,7 +98,7 @@
               <% end %>
 
               <% if @company.company_type.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Type</strong>
                   <div class="bmro-summary-data">
                     <%= @company.company_type.titleize %>
@@ -107,7 +107,7 @@
               <% end %>
 
               <% if @company.nature_of_business.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Nature of business</strong>
                   <div class="bmro-summary-data">
                     <%= @company.nature_of_business %>
@@ -116,7 +116,7 @@
               <% end %>
 
               <% if @company.priority.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Priority</strong>
                   <div class="bmro-summary-data">
                     <%= @company.priority.titleize %>
@@ -126,20 +126,20 @@
 
 
               <% if @company.remote_uid.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">SAP Business Partner ID</strong>
                   <strong class="text-info bmro-summary-data"><%= @company.remote_uid %></strong>
                 </div>
               <% end %>
 
-              <div class="col-6 col-md-3 mb-2">
+              <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                 <strong class="d-block bmro-summary-heading">Active</strong>
                 <strong class="text-info"><%= format_boolean(@company.is_active) %></strong>
               </div>
 
 
               <% if @company.default_payment_option.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Default payment option</strong>
                   <div class="bmro-summary-data">
                     <%= @company.default_payment_option %>
@@ -148,7 +148,7 @@
               <% end %>
 
               <% if @company.credit_limit.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Credit limit</strong>
                   <div class="bmro-summary-data">
                      <%= @company.credit_limit %>
@@ -157,11 +157,11 @@
               <% end %>
             </div>
             <div class="form-row">
-              <div class="col-6 col-md-3 mb-2">
+              <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                 <strong class="d-block bmro-summary-heading">Is Supplier</strong>
                 <%= format_boolean(@company.is_supplier?) %>
               </div>
-              <div class="col-6 col-md-3 mb-2">
+              <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                 <strong class="d-block bmro-summary-heading">Is Customer</strong>
                 <%= format_boolean(@company.is_customer?) %>
               </div>
@@ -173,23 +173,23 @@
           <h6 class="text-uppercase text-black-50 bmro-form-heading mb-1 d-block">Accounting</h6>
           <div class="form-row">
             <% if @company.pan != '' %>
-              <div class="col-6 col-md-3 mb-2">
+              <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                 <strong class="d-block">PAN</strong>
                 <%= @company.pan %>
               </div>
             <% end %>
 
-            <div class="col-6 col-md-3 mb-2">
+            <div class="col-6 col-md-3 mb-2 bmro-summary-data">
               <strong class="d-block bmro-summary-heading">Is Valid Pan Card?</strong>
               <%= format_boolean(@company.validate_pan) %>
             </div>
 
-            <div class="col-6 col-md-3 mb-2">
+            <div class="col-6 col-md-3 mb-2 bmro-summary-data">
               <strong class="d-block bmro-summary-heading">Is MSME?</strong>
               <%= format_boolean(@company.is_msme) %>
             </div>
 
-            <div class="col-6 col-md-3 mb-2">
+            <div class="col-6 col-md-3 mb-2 bmro-summary-data">
               <strong class="d-block bmro-summary-heading">Is unregistered dealer?</strong>
               <%= format_boolean(@company.is_unregistered_dealer) %>
             </div>
@@ -201,7 +201,7 @@
             <h6 class="text-uppercase text-black-50 mb-1 d-block">Default owners and managers</h6>
             <div class="form-row">
               <% if @company.inside_sales_owner.present? %>
-                <div class="col-12 col-md-3 mb-2">
+                <div class="col-12 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Default inside sales</strong>
                   <div class="bmro-summary-data">
                     <%= @company.inside_sales_owner %>
@@ -210,7 +210,7 @@
               <% end %>
 
               <% if @company.outside_sales_owner.present? %>
-                <div class="col-12 col-md-3 mb-2">
+                <div class="col-12 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Default outside sales</strong>
                   <div class="bmro-summary-data">
                     <%= @company.outside_sales_owner %>
@@ -219,7 +219,7 @@
               <% end %>
 
               <% if @company.sales_manager.present? %>
-                <div class="col-12 col-md-3 mb-2">
+                <div class="col-12 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Default manager</strong>
                   <div class="bmro-summary-data">
                     <%= @company.sales_manager %>
@@ -228,7 +228,7 @@
               <% end %>
 
               <% if @company.logistics_owner.present? %>
-                <div class="col-12 col-md-3 mb-2">
+                <div class="col-12 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Default Logistics Owner</strong>
                   <div class="bmro-summary-data">
                     <%= @company.logistics_owner %>
