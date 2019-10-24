@@ -45,7 +45,7 @@ json.data (@po_requests) do |po_request|
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'warning disabled')
                       end,
                       if is_authorized(po_request, 'new_purchase_order') && policy(po_request).new_purchase_order? && po_request.purchase_order_id.nil?
-                        row_action_button(new_purchase_order_overseers_po_request_path(po_request), 'plus', 'Create New Purchase Order', 'success')
+                        row_action_button_without_fa(new_purchase_order_overseers_po_request_path(po_request), 'bmro-plus-circle-icon', 'Create New Purchase Order', 'success')
                       end,
                       if po_request.status == 'Supplier PO: Amendment Pending' && is_authorized(po_request, 'po_amended')
                         row_action_button(overseers_po_request_path(po_request), 'eye', 'Amendment Changes', 'success')
