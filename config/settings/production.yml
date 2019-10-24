@@ -120,3 +120,6 @@ sales_order:
 
 product_specific:
   freight: BM00008
+
+company_specific:
+  company_id: [5]
