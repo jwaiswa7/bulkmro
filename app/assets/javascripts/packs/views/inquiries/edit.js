@@ -138,6 +138,14 @@ $('.bmro-new-slide').click(function (){
 $('.bmro-invoice-one').click(function(){
     $(this).parent().toggleClass('bmro-parent-bg')
 })
+
+// table display remove
+$(document).ready(function() {
+    $('.bmro-remove-style th').removeAttr("style");
+    $('.bmro-remove-style td').removeAttr("style");
+    console.log('check print')
+});
+
 // title js
 $(document).ready(function() {
     
