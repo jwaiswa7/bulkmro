@@ -290,7 +290,7 @@ a.bmro-list-button{
 .bmro-form-input {
     line-height: 1.5!important;
     color:#2C4159 !important;
-    padding: 9px 23px 6px 8px;
+    padding: 4px 23px 6px 8px;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     border-width: 2px!important;
@@ -2193,6 +2193,7 @@ td .d-inline-block.custom-control.custom-checkbox.align-middle{
 }
 .bmro-summary-data .status-cross-danger{
     background-position: left!important;
+    margin-top: 12px;
 }
 .status-check-success{
     background-repeat: no-repeat;
@@ -2233,7 +2234,7 @@ td .d-inline-block.custom-control.custom-checkbox.align-middle{
     width: 100px;
     line-height: 1.5 !important;
     color: #2C4159 !important;
-    padding: 9px 10px 6px 6px;
+    padding: 5px 10px 6px 6px;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     border-width: 2px !important;
@@ -2631,10 +2632,7 @@ table.fixedHeader-floating{
     padding: 4px 23px 6px 8px;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
-    border-width: 2px!important;
-    border-style: solid!important;
     border-color: rgb(236, 238, 242)!important;
-    border-radius: 2px!important;
     outline: none!important;
     height: auto!important;
     box-shadow: unset!important;
@@ -3092,11 +3090,12 @@ table.fixedHeader-floating{
 }
 .page-title{
     text-transform: uppercase;
+    font-weight: 600!important;
 }
 .bmro-btn-top-mb{
   margin-bottom: 10px;
 }
-[title]{
+/*[title]{
    cursor: pointer!important;
    position: relative;
 }
@@ -3116,7 +3115,7 @@ table.fixedHeader-floating{
     left: -12px;
     z-index: 400;
     pointer-events:none;
-}
+}*/
 .bmro-product-bottom .select2-container {
  margin-bottom: 10px;
  }
@@ -3205,7 +3204,7 @@ background-color: #D4D8DF!important;
 .bmro-company-width{
     width: 50px!important;
 }
-.icon-title {
+/*.icon-title {
     border: 1px solid transparent;
     font-weight: 500;
     background-color: transparent;
@@ -3213,7 +3212,7 @@ background-color: #D4D8DF!important;
     text-align: center;
     line-height: 12px;
 }
-.bmro-new-width{
+*/.bmro-new-width{
     width: 400px;
 }
 .chats .comments-wrap{
@@ -3349,7 +3348,7 @@ background-color: #D4D8DF!important;
 }
 .bmro-set-size{
     margin-top: 2px;
-    padding: 7px 10px !important;
+    padding: 5px 10px !important;
 }
 .bmro-sales-order-th{
     width: 64px!important;
@@ -3416,4 +3415,14 @@ background-color: #D4D8DF!important;
 }
 .bmro-created-th{
     width: 150px;
+}
+#DataTables_Table_0_info{
+    display: block;
+}
+.bmro-new-fianl-width{
+    width: 100%!important;
+}
+.bmro-table-icons-width{
+    width: 127px!important;
+    display: block!important;
 }
