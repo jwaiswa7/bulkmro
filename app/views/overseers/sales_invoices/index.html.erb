@@ -7,23 +7,23 @@
   AR Invoice
 <% end %>
 
-<div class="col-lg-12">
+<div class="col-lg-12 bmro-table-layout">
   <% content_for :header_row do %>
     <th class="no-sort all" width="98px">Quick Actions</th>
-    <th class="sort all text-right" data-name="invoice_number">Invoice #</th>
-    <th class="sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
-    <th class="no-sort desktop text-right" data-name="order_number">Order #</th>
-    <th class="no-sort desktop" data-name="account_id">Account</th>
-    <th class="no-sort desktop" data-name="company_id">Company</th>
-    <th class="no-sort desktop text-right">Line Items</th>
-    <th class="no-sort desktop" data-name="status">Status</th>
-    <th class="no-sort desktop" data-name="inside_sales_executive" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
-    <th class="no-sort desktop" data-name="outside_sales_executive" data-toggle="tooltip" title="Outside Sales & Procurement">OS Owner</th>
-    <th class="no-sort desktop">Proof of Delivery</th>
-    <th class="no-sort desktop" data-name="is_pod">POD</th>
-    <th class="no-sort desktop" data-name="pod_type">POD Type</th>
-    <th class="sort desktop text-right" data-name="mis_date">Invoice Date</th>
-    <th class="sort desktop text-right" data-name="created_at">Created At</th>
+    <th class="sort all text-right" width="55px" data-name="invoice_number">Invoice #</th>
+    <th class="sort desktop text-right" width="45px" data-name="inquiry_number">Inquiry #</th>
+    <th class="no-sort desktop text-right" width="55px" data-name="order_number">Order #</th>
+    <th class="no-sort desktop" width="70px" data-name="account_id">Account</th>
+    <th class="no-sort desktop" width="152px" data-name="company_id">Company</th>
+    <th class="no-sort desktop  text-right" width="51px">Line Items</th>
+    <th class="no-sort desktop" width="75px" data-name="status">Status</th>
+    <th class="no-sort desktop" data-name="inside_sales_executive" data-toggle="tooltip" width="55px" title="Inside Sales & Procurement">IS&P</th>
+    <th class="no-sort desktop" data-name="outside_sales_executive" data-toggle="tooltip" width="60px" title="Outside Sales & Procurement">OS Owner</th>
+    <th class="no-sort desktop" width="81px">Proof of Delivery</th>
+    <th class="no-sort desktop" width="25px" data-name="is_pod">POD</th>
+    <th class="no-sort desktop" width="65px" data-name="pod_type">POD Type</th>
+    <th class="sort desktop text-right" width="61px" data-name="mis_date">Invoice Date</th>
+    <th class="sort desktop text-right" width="52px" data-name="created_at">Created At</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
