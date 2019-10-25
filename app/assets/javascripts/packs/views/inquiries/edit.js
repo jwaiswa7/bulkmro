@@ -140,10 +140,9 @@ $('.bmro-invoice-one').click(function(){
 })
 
 // table display remove
-$(document).ready(function() {
-    $('.bmro-remove-style th').removeAttr("style");
-    $("td[style='display:none;']").removeAttr("style");​
-});
+// $(document).ready(function() {
+//     $('.bmro-remove-style th').removeAttr("style");
+// });
 
 // title js
 $(document).ready(function() {
