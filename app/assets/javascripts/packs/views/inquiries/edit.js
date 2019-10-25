@@ -141,8 +141,8 @@ $('.bmro-invoice-one').click(function(){
 
 // table display remove
 $(document).ready(function() {
-    $('.bmro-remove-style th,td').removeAttr("style")
-    console.log('asssa')
+    $('.bmro-remove-style th').removeAttr("style");
+    $('td').removeAttr('style');
     // $('.bmro-remove-style table tr td').removeAttr("style");
 });
 
