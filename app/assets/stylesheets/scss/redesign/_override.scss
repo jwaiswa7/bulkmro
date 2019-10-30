@@ -3430,3 +3430,21 @@ background-color: #D4D8DF!important;
     text-decoration: underline;
     color: orange;
 }
+.bmro-star-high{
+    background-color: #A9DA61;
+}
+.bmro-star-medium{
+    background-color: #FFE000;
+}
+.bmro-star-low{
+    background-color: #FE8A78;
+}
+.bmro-star-rating{
+    border-radius: 4px;
+    border:1px solid transparent;
+    color: #2C4159;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: -0.18px;
+    line-height: 15px;
+}
