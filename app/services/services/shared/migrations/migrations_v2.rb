@@ -2182,5 +2182,5 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
     )
     warehouse.save!
   end
-
 end
+
