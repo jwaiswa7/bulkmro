@@ -808,13 +808,13 @@ li.select2-results__option{
     border-radius: unset;
 }
 .bmro-datatable-style tbody tr:nth-child(even){
-    background-color: #fff;   
+    background-color: #fff!important;   
 }
 .bmro-datatable-style tbody tr:nth-child(odd){
-    background-color: #F1F3F6;
+    background-color: #F1F3F6!important;
 }   
 .bmro-datatable-style tbody tr:hover{
-    background-color: #D4D8DF;
+    background-color: #D4D8DF!important;
 }
 table.bmro-datatable-style{
     border-spacing:0px!important;
@@ -3502,7 +3502,4 @@ table.table.dataTable{
 }
 .bmro-padd-col .bmro-summary-data .status-cross-danger{
      margin-top: 0px; 
-}
-.datatable .bg-highlight-sucess{
-    background-color: unset;
 }
