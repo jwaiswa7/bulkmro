@@ -2,14 +2,14 @@
 <div class="col-lg-12">
   <section class="pt-0 pt-lg-0 pb-0 pb-lg-0">
     <div class="d-md-flex justify-content-between">
-      <h1 class="display-5 d-flex align-items-center">
+      <h3 class="display-5 d-flex align-items-center">
         <% if @account.id == 3 %> <!-- To show logo of GE for GE Account -->
           <img src="<%= url_for(@account.companies.where(id: 2).first.try(:logo)) %>" alt="<%= @account.name %>" height="65" class="pr-2">
         <% else %>
           <img src="https://ui-avatars.com/api/?size=128&name=<%= @account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/><%= @account.alias %>
         <% end %>
         <span class="pl-2 lead text-muted bmro-form-heading"><%= @account.name %></span>
-      </h1>
+      </h3>
       <% if is_authorized(@account, 'edit') %>
         <a href="<%= edit_overseers_account_path(@account) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down bmro-button"><i class="fal fa-pen mr-1"></i>Edit
         Account</a>
