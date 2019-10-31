@@ -2752,6 +2752,7 @@ table.fixedHeader-floating{
     line-height: 16px;
 }
 .bmro-instruction-ul{
+    width: 600px;
     color: #022B54;
     font-family: "Inter UI",sans-serif;
     font-size: 12px;
@@ -2760,7 +2761,7 @@ table.fixedHeader-floating{
     letter-spacing: -0.47px;
     line-height: 15px;
     background-color: #fff;
-    padding-left: 55px;
+    padding-left: 28px;
 }
 .bmro-information{
    background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAAXNSR0IArs4c6QAAAplJREFUOBGNVE1sEkEY/XYpLAsFjUIFrTaopMaYXrQnLbGa2HjyYqIXTUyTxuhdLyYePKnxZNSDUY+e9OBJkloTaC/GRqUoUmJpiRXKT6VF9gdk13lEmi4sxu+w2Zl535uZb977OOoSb9Npe+N75ZjG0T5d1/0cx2V5nb5Z+l3To4GAYpbGtU9GIilvnVeuMZIrTtGuunrtgihYBVmtq5VfilqVZIERP7I17LdDoWBhc76BLPL+i7+mNuJ9ni3iYMAv2qw9m7HN/1r9N82ns/JKcV1qaNrY2MjQbAcoHI0dDkc+6fnSGrtVZ8SSS/qD5683FrL5nzrwOICBDFebnIkXAegWJy7d1N3DFwzL2HhyZq6EfBDy+KBGfR63w+fdiqFpXDxznO7fGDesebe5aQcrSc2iXMcCl0qlhMW8shoaPuAwq5Eh22SAGkbeJaSeXa7t/FJOHnGKQq0bUaUq09Vbj6l/dILiqUwHHfKcDlGFjPgG0V6XQ7R1oNgEdr337BVFZxNUrki0x+8xgxHkAz2ymuk7RdEqmKGw6/jZk5RYWKbzp4+Su9dhBiPokL2Mn5FxP2S5rpqi2OTTF1OkaRpdPneqG4Qg6KZDLEQLFUkxJQPJk5dTNDQ4QB+Ti5Qrlk0J4QxYjR/widGqrAioT3vE5jO0vFIinuNp/24f+Tyd0kEe8uHZZv6b6bm7sWRGMijy7yBb6C5kQJCHfBA1RWvV7HfyxTW5sLrefjjT07RAuUKZ8syjyN8gg/ttguXQh8+sLgzwP4GNY18zBLO3uoeha8DsFp4Pw1r/6hpJ1jVwExwgdORgtrW5gQyTHf3MwfoZ0yHkU5HkWlVWbezlHuJqrRN1JWstwLOwGhwCYUOPkBFePxgMmkrpD09FtENnCdBgAAAAAElFTkSuQmCC');
@@ -2769,7 +2770,7 @@ table.fixedHeader-floating{
    margin-right: 7px;
 }
 .bmro-instruction-heading{
-    width: 39%;
+    width: 53.5%;
     margin-top: 72px;
     background-color: #DFE5F0;
     border: 1px solid #E9EEF2;
@@ -2806,7 +2807,7 @@ table.fixedHeader-floating{
    z-index: 222;
 }
 .bmro-padding-ul-left{
-    padding-left: 55px;
+    padding-left: 28px;
 }
 .bmro-fix-sticky{
     position: sticky;
@@ -3484,4 +3485,7 @@ table.table.dataTable{
 }
 .dropdown-toggle:after{
     opacity: unset;
+}
+.bmro-ul-background{
+    background-color: #fff!important;
 }
