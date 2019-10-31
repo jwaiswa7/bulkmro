@@ -12,7 +12,7 @@
       <div class="modal-body mb-3 px-0 p-0">
         <%= simple_form_for([:overseers, @invoice_request], :url => add_comment_overseers_invoice_request_path(@invoice_request), :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
           <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
-          <div class="card">
+          <div class="card bmro-card-border-none">
             <div class="card-body">
               <div class="form-row">
                 <div class="col">
@@ -41,7 +41,7 @@
                         <% end %>
                       <% end %>
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer bmro-footer-margin">
                       <a href="<%= overseers_invoice_request_path(@invoice_request) %>" class="btn btn-success btn-block align-self-center btn-block-sm-down">View
                         More</a>
                     </div>

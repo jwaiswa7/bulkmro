@@ -10,7 +10,7 @@
 <!--        <button type="button" class="btn btn-warning review-later " data-dismiss="modal" aria-hidden="true"><i class="fal fa-clock "></i> Review Later</button>-->
       </div>
       <div class="modal-body mx-0 px-0 pb-0">
-        <ul class="nav bmro-nav-ul nav-tabs nav-fill mx-2">
+        <ul class="nav bmro-nav-ul bmro-new-nav nav-tabs nav-fill mx-2">
           <% @company_reviews.each_with_index do |company_review, index| %>
             <li class="nav-item">
               <a class="nav-link custom-tab disabled <%= index == 0 ? 'active' : '' %>" data-index='<%= index %>' data-toggle="tab" href="<%= '#company-' + index.to_s %>" role="tab" data-id='<%= company_review.id %>'><%= company_review.company.name %></a>

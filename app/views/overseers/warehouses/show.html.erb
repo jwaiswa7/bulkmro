@@ -71,9 +71,9 @@
             <div class="col-6 col-md-3 mb-2">
               <strong class="d-block bmro-summary-heading">Is Active</strong>
               <% if @warehouse.is_active %>
-                <i class="far fa-check text-success"></i>
+                <i class="status-check-success bmro-reposition"></i>
               <% else %>
-                <i class="far fa-times text-danger"></i>
+                <i class="status-cross-danger bmro-reposition"></i>
               <% end %>
             </div>
           </div>
