@@ -3482,3 +3482,6 @@ background-color: #D4D8DF!important;
 table.table.dataTable{
     border-spacing: unset!important;
 }
+.dropdown-toggle:after{
+    opacity: unset;
+}
