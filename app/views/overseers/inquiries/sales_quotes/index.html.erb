@@ -14,7 +14,7 @@
     <% end %>
 
     <% if @sales_quotes.present? && @inquiry.final_sales_quote.present? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
-    <div class="bmro-instruction-heading">
+    <div class="bmro-instruction-heading collapsed bmro-ul-background" data-toggle="collapse" data-target="#instruction">
        <h4 class="bmro-instruction-head collapsed" data-toggle="collapse" data-target="#instruction"><span class="bmro-information"></span>Instructions heading will be displayed here   <i class="bmro-add-icon bmro-hide"></i>
         <i class="bmro-minus-icon bmro-hide"></i>
        </h4>
