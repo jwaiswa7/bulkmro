@@ -3470,6 +3470,10 @@ background-color: #D4D8DF!important;
 .bmro-card-border-none{
     border:none!important;
 }
+.bmro-inline-lable fieldset .form-check label{
+    top: 3px;
+    position: relative;
+}
 .form-control.is-valid:focus{
     border-color: #2C4159;
 }
