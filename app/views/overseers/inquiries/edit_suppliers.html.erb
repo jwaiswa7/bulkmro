@@ -31,8 +31,8 @@
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.object.sr_no %></span>
               <strong><%= inquiry_product.object.product.sku %> - <%= inquiry_product.object.product.name %>
                 <% if is_authorized(inquiry_product.object.product,'sku_purchase_history') && policy(inquiry_product.object.product).sku_purchase_history? %>
-                  <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="bmro-history-icon mr-1 text-small" title="History"></i></a>
-                  <a class="ml-2 text-small" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="bmro-inventory-icon mr-1 text-small" title="Resync Inventory"></i></a>
+                  <a class="ml-2 text-small btn icon-title bmro-btn0"  title="History" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="bmro-history-icon mr-1 text-small"></i></a>
+                  <a class="ml-2 text-small btn icon-title bmro-btn0" title="Resync Inventory" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="bmro-inventory-icon mr-1 text-small"></i></a>
                 <% end %></strong>
             </h6>
             <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
