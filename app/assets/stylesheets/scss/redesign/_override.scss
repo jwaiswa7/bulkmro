@@ -1447,6 +1447,7 @@ table.table.dataTable.table-bordered th{
     display: table-cell;
     vertical-align: middle;
     padding: 8px 10px;
+    overflow: hidden;
 }
 table.table.dataTable.table-bordered th:first-child{
     width: 98px;
