@@ -6,10 +6,10 @@
       </h3>
       <div>
         <% if is_authorized(@outward_dispatch,'show')%>
-          <a href="<%= overseers_outward_dispatch_path(@outward_dispatch) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-show mr-1"></i>Go back to Outward Dispatch</a>
+          <a href="<%= overseers_outward_dispatch_path(@outward_dispatch) %>" class="btn btn-success bmro-button btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-show mr-1"></i>Go back to Outward Dispatch</a>
         <% end %>
         <% if is_authorized(:packing_slip ,'edit')%>
-          <a href="<%= edit_overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
+          <a href="<%= edit_overseers_outward_dispatch_packing_slip_path(@outward_dispatch, @packing_slip) %>" class="btn btn-warning btn-rounded bmro-button align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
         <% end %>
       </div>
     </div>
