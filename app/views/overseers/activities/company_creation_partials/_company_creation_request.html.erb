@@ -1,11 +1,11 @@
 <div class="mt-3 card-alternative bmro-bg">
     <div class="row" >
-      <div class="col-12 col-md-12 ">
+      <div class="col-12 col-md-12 bmro-padding-0 ">
         <button type="button" class="bmro-button btn btn-success btn-block existing-company <%= (@activity.company_creation_request.id.present? && !@activity.company.present?)  ? "" : "d-none"%> " >
           add existing company
         </button>
       </div>
-      <div class="col-12 col-md-12 " >
+      <div class="col-12 col-md-12 bmro-padding-0" >
         <button type="button" class="bmro-button btn btn-warning btn-block new-company <%= (@activity.company_creation_request.id.present?&& !@activity.company.present?)  ? "d-none" : ""%>" >
           add new company
         </button>
@@ -51,7 +51,7 @@
     <% end %>
   </div>
   <div class="existing-company-form mt-3 <%= (@activity.company_creation_request.id.present? && !@activity.company.present?)  ? "d-none" : ""%> mt-3" >
-    <%= f.association :company, label: "Existing company", collection: selected_option_or_nil(f, :company),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path }, include_blank: 'Leave blank if no company connected' %>
+    <%= f.association :company, label: "Existing company", collection: selected_option_or_nil(f, :company),  input_html: { class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_companies_path }, include_blank: 'Leave blank if no company connected' %>
     <h6 class="mt-2 text-center">
       AND
     </h6>
