@@ -2866,7 +2866,7 @@ table.fixedHeader-floating{
     padding: 0px 10px;
 }
 .bmro-extra-padd{
-    padding: 84px;
+    padding:0px 84px;
 }
 .bmro-add-new{
     bottom: -52px;
@@ -3670,4 +3670,7 @@ td .icon-title.btn{
 }
 .bmro-edit-icon i{
     padding: 1px 8px;
+}
+.bmro-new-padding{
+    padding-bottom: 40px;
 }
