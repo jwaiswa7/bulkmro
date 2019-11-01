@@ -304,8 +304,8 @@ a.bmro-list-button{
     -webkit-appearance:none!important;
     font-weight: 500;
 }
-.bmro-form-input:active{ 
-    border-color: rgb(236, 238, 242)!important;
+.bmro-form-input:focus{ 
+    border-color: #2C4159!important;
 }
 .form-group input.form-control{
     line-height: 1.5!important;
@@ -324,6 +324,9 @@ a.bmro-list-button{
     -webkit-appearance:none!important;
     font-weight: 500;
     font-size: 13px;
+}
+.form-group input.form-control:focus{
+    border-color: #2C4159!important;
 }
 .bmro-form-ar-invoice{
     float: left;
@@ -351,6 +354,9 @@ a.bmro-list-button{
     height: 38px!important;
     -webkit-appearance:none!important;
     appearance:none!important;
+}
+.select2-selection.disabled.bmro-form-input:focus{
+    border-color: #2C4159!important;
 }
 .bmro-form-input span{
     color: #2C4159 !important;
