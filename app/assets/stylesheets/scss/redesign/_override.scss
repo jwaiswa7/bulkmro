@@ -3504,7 +3504,7 @@ table.table.dataTable{
     background-color: #E0E2E7!important;
 }
 .bmro-padd-col .bmro-summary-data .status-cross-danger{
-     margin-top: 0px; 
+    margin-top: 0px; 
 }
 .bg-highlight-danger{
     background-color: #FFEFF1!important;
@@ -3519,4 +3519,21 @@ table.table.dataTable{
 .bmro-icon-button-padd{
     padding: 4px!important;
     margin-left: 7px;
+}
+.bmro-remopro{
+    padding: 14px 15px!important;
+    width: auto;
+    background-position: top 4px left 6px;    
+}
+.bmro-pro-trashset{
+    background-size: 20px !important;
+    padding: 15px 17px 8px 8px !important;
+    margin-top: -17px;    
+}
+.icon-title:focus{
+    outline: none!important;
+    box-shadow: none!important;
+}
+.bmor-minwidthset{
+    min-width: 517px;
 }
