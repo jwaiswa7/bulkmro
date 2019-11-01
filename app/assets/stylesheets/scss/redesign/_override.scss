@@ -325,6 +325,9 @@ a.bmro-list-button{
     font-weight: 500;
     font-size: 13px;
 }
+.form-group input.form-control:focus{
+    border-color: #2C4159!important;
+}
 .bmro-form-ar-invoice{
     float: left;
     width: 175px;
