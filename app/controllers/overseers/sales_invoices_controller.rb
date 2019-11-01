@@ -1,5 +1,5 @@
 class Overseers::SalesInvoicesController < Overseers::BaseController
-  before_action :set_invoice, only: [:edit_pod, :update_pod, :delivery_mail_to_customer, :delivery_mail_to_customer_notification, :dispatch_mail_to_customer, :dispatch_mail_to_customer_notification]
+  before_action :set_invoice, only: [:edit_pod, :update_pod, :delivery_mail_to_customer, :delivery_mail_to_customer_notification, :dispatch_mail_to_customer, :dispatch_mail_to_customer_notification, :resync_sap_status]
 
   def index
     authorize_acl :sales_invoice
@@ -181,6 +181,22 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     @sales_invoices = ApplyParams.to(sales_invoices, params)
 
     authorize :sales_invoice
+  end
+
+  def resync_sap_status
+    invoice_number = @invoice.invoice_number
+    if invoice_number.present?
+      sap_invoice_json = ::Resources::SalesInvoice.custom_find(invoice_number)
+      if sap_invoice_json.present?
+        if sap_invoice_json.has_key?('Cancelled')
+          is_invoice_cancelled = sap_invoice_json['Cancelled'] == 'tYES' ? true : false
+          if is_invoice_cancelled
+            @invoice.update_attributes(status: 'Cancelled')
+          end
+        end
+      end
+    end
+    redirect_to overseers_sales_invoices_path
   end
 
 

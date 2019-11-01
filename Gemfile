@@ -87,6 +87,9 @@ gem 'axlsx', '3.0.0.pre'
 gem 'axlsx_rails', '0.5.2'
 gem 'rubyzip', '~> 1.2'
 
+# For imports
+gem 'activerecord-import'
+
 # Validate file uploads
 gem 'file_validators'
 
@@ -239,3 +242,6 @@ gem 'dalli'
 # required for parsing requests
 gem 'parser'
 gem 'unparser'
+
+# Heroku autoscaling add-on
+# gem 'rails_autoscale_agent'

@@ -33,6 +33,8 @@ class PurchaseOrder < ApplicationRecord
   scope :with_inquiry_by_company, -> (company_id) { joins(:inquiry).where(inquiries: { company_id: company_id }) }
   scope :with_all_material_statuses, -> { where('material_status IN (?)', [10, 20, 25, 30, 35]) }
 
+  delegate :commercial_terms_and_conditions, to: :po_request
+
   def filename(include_extension: false)
     [
         ['po', po_number].join('_'),
@@ -293,5 +295,17 @@ class PurchaseOrder < ApplicationRecord
 
   def max_lead_date
     self.po_request.present? ? self.po_request.rows.maximum(:lead_time).strftime('%d-%b-%Y') : Date.parse(self.metadata['PoDate']).strftime('%d-%b-%Y')
+  end
+
+
+  def get_freight
+    product_ids = Product.where(sku: Settings.product_specific.freight).last.id
+    if product_ids.present?
+      if self.po_request.present?
+        self.po_request.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included'
+      else
+        self.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included'
+      end
+    end
   end
 end

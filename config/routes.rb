@@ -458,6 +458,7 @@ Rails.application.routes.draw do
         post 'delivery_mail_to_customer_notification'
         get 'dispatch_mail_to_customer'
         post 'dispatch_mail_to_customer_notification'
+        get 'resync_sap_status'
       end
       collection do
         get 'autocomplete'

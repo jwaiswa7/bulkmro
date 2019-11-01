@@ -117,3 +117,9 @@ acl:
 
 sales_order:
   default_manager_approved: true
+
+product_specific:
+  freight: BM00008
+
+company_specific:
+  company_id: [5]

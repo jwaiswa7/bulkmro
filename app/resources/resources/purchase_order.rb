@@ -176,6 +176,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
       }
       item_row << json
     end
+    product_ids = Product.where(sku: Settings.product_specific.freight).last.id
     company_contact = CompanyContact.where(company_id: po_request.supplier_id, contact_id: po_request.contact_id).last
     {
         PoDate: Time.now.strftime('%Y-%m-%d'),
@@ -185,6 +186,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         PoSupNum: '',
         PayToCode: po_request.bill_from.remote_uid,
         ShipFrom: po_request.ship_from.remote_uid,
+        PoFreight: po_request.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included',
         PoShippingCost: '0',
         PoTargetWarehouse: po_request.ship_to.remote_uid,
         DocumentLines: item_row,
@@ -219,7 +221,8 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         U_CnfrmTotal: 'A',
         U_CnfrmHSN: 'A',
         U_CnfrmTaxTYpe: 'A',
-        U_CnfrmPrice: 'A'
+        U_CnfrmPrice: 'A',
+        U_TermCondition: po_request.commercial_terms_and_conditions
     }
   end
 

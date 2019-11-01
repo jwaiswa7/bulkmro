@@ -41,7 +41,7 @@
         <div class="form-row mb-1">
           <div class="col-6 col-md-2">
             <strong class="d-block">Freight</strong>
-            <%= @metadata[:PoFreight] %>
+            <%= @metadata[:PoFreight] || @purchase_order.get_freight %>
           </div>
           <div class="col-6 col-md-3">
             <strong class="d-block">Packing & Forwarding</strong>
@@ -218,7 +218,9 @@
                 <span><%= item.product.present? ? item.product.brand.to_s : item.brand %></span>
               </td>
               <td>
-                <span><%= item.metadata['PopHsn'].present? ? item.metadata['PopHsn'] : item.po_request_row.tax_code.try(:code) %></span>
+                <span>
+                  <%= item.show_tax_code %>
+                </span>
               </td>
               <td>
                 <span><%= item.uom  %></span>

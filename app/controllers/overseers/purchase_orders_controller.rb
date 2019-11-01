@@ -54,11 +54,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def resync_po
     authorize_acl @purchase_order
-    if @purchase_order.save_and_sync(@purchase_order.po_request)
-      redirect_to overseers_inquiry_purchase_order_path(@purchase_order.inquiry.to_param, @purchase_order.to_param)
-    else
-      redirect_to pending_sap_sync_overseers_purchase_orders_path
-    end
+    @purchase_order.save_and_sync(@purchase_order.po_request)
+    redirect_to pending_sap_sync_overseers_purchase_orders_path
   end
 
   def resync_all_purchase_orders
