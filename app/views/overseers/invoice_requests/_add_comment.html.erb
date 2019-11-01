@@ -11,7 +11,7 @@
       </div>
       <div class="modal-body mb-3 px-0 p-0">
         <%= simple_form_for([:overseers, @invoice_request], :url => add_comment_overseers_invoice_request_path(@invoice_request), :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-          <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
+          <div class="error bg-danger text-white px-1 rounded"></div>
           <div class="card bmro-card-border-none">
             <div class="card-body">
               <div class="form-row">
@@ -29,7 +29,7 @@
                 </button>
               </div>
               <% if @invoice_request.comments.persisted.size > 0 %>
-                <div class="card">
+                <div class="card bmro-comment-padding">
                   <div class="card-body">
                     <div class="flex-fill">
                       <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
@@ -41,7 +41,7 @@
                         <% end %>
                       <% end %>
                     </div>
-                    <div class="card-footer bmro-footer-margin">
+                    <div class="card-footer bmro-footer-margin bmro-model-header">
                       <a href="<%= overseers_invoice_request_path(@invoice_request) %>" class="btn btn-success btn-block align-self-center btn-block-sm-down">View
                         More</a>
                     </div>
