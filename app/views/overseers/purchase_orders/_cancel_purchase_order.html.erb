@@ -1,11 +1,11 @@
 <div class="modal fade" id="cancelPurchaseOrder">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-content">
+      <div class="modal-content bmro-bg-white">
         <div class="modal-header">
           <h5 class="modal-title bmro-form-heading">Cancel Purchase Order</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true"><i class="bmro-btn-cancel-icon"></i></span>
           </button>
         </div>
         <%= simple_form_for([:overseers, @purchase_order], :url => cancelled_purchase_order_overseers_purchase_order_path(@purchase_order.to_param), :'novalidate' => '', :html => {:class => 'needs-validation', :'data-parsley-validate' => ''}) do |f| %>
