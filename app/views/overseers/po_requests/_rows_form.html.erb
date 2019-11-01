@@ -222,16 +222,14 @@
         <%#= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, disabled: true %>
       </div>
       <div class="col-4 col-md-4 mb-1 bmro-border-left-icon">
-        <%= link_to  product_resync_inventory_overseers_po_requests_path(product_id: po_request_row.object.product_id), 'data-placement': 'top', 'data-toggle': 'modal', 'data-product-id': po_request_row.object.product_id, 'data-warehouse-id': po_request_row.object.product_id, title: 'Show Inventory', class: 'icon-title btn btn-sm product-stock-inventory bmro-inventory-icon' do %>
+        <%= link_to  product_resync_inventory_overseers_po_requests_path(product_id: po_request_row.object.product_id), 'data-placement': 'top', 'data-toggle': 'modal', 'data-product-id': po_request_row.object.product_id, 'data-warehouse-id': po_request_row.object.product_id, title: 'Show Inventory', class: 'icon-title btn btn-sm product-stock-inventory bmro-inventory-icon bmro-fl bmro-ive-pen' do %>
           <% concat content_tag(:span, '') %>
           <% concat content_tag :i, nil, class: 'bmro-inventory-icon bmro-inventory-paddd' %>
         <% end %>
         <% if stock || (f.object.rows.present? && f.object.rows.length > 1) %>
-          <div class="col-12 col-md-1">
-          <%= po_request_row.remove_nested_fields_link(class: 'btn form-group align-self-center flex-grow-1 bmro-des-btn') do %>
+          <%= po_request_row.remove_nested_fields_link(class: 'bmro-btn-traspare btn form-group align-self-center flex-grow-1 bmro-des-btn') do %>
               <span class="bmro-product-trash bmro-tras-border"></span>
             <% end if is_authorized(:po_request_row, 'destroy') %>
-          </div>
         <% end %>        
       </div>
       <div class="col-12 col-md-12">
