@@ -3659,8 +3659,8 @@ td .icon-title.btn{
 .star{
     margin-top: 10px;
 }
-.form-control.is-invalid{
-   border-color: #dc3545!important; 
+.was-validated .form-control:invalid ~ .select2-container--bootstrap .form-control, .was-validated .form-control.is-invalid ~ .select2-container--bootstrap .form-control {
+    border-color: #dc3545!important;
 }
 .bmro-mfp{
    padding-left: 10px;
