@@ -5,7 +5,7 @@
         <p class="mb-1 text-small text-uppercase">
           <strong>Total Open Inquiries</strong>
         </p>
-        <h5 class="mb-0">
+        <h5 class="mb-0 bmro-fl">
           <%= company.total_open_inquiries %>
         </h5>
         <hr class="my-2">
@@ -19,7 +19,7 @@
         <p class="mb-1 text-small text-uppercase">
           <strong>Total Open Quotes</strong>
         </p>
-        <h5 class="mb-0 mt-auto"><%= company.total_open_quotes[:open_quotes] %></h5>
+        <h5 class="mb-0 mt-auto bmro-fl"><%= company.total_open_quotes[:open_quotes] %></h5>
         <hr class="my-2">
         <h5 class="my-0 text-small">
           &#8377;<%= number_to_currency(company.total_open_quotes[:total_value], precision: 0, unit: '') %>
@@ -35,7 +35,7 @@
         <p class="mb-1 text-small text-uppercase">
           <strong>Total Sales Orders</strong>
         </p>
-        <h5 class="mb-0 mt-auto"><%= company.total_sales_order[:confirmed_orders] %></h5>
+        <h5 class="mb-0 mt-auto bmro-fl"><%= company.total_sales_order[:confirmed_orders] %></h5>
         <hr class="my-2">
         <h5 class="my-0 text-small">
           &#8377;<%= number_to_currency(company.total_sales_order[:confirmed_orders_total_value], precision: 0, unit: '') %>
@@ -50,7 +50,7 @@
         <p class="mb-1 text-small text-uppercase">
           <strong>Total Invoices</strong>
         </p>
-        <h5 class="mb-0 mt-auto"><%= company.total_sales_order[:confirmed_invoices] %></h5>
+        <h5 class="mb-0 mt-auto bmro-fl"><%= company.total_sales_order[:confirmed_invoices] %></h5>
         <hr class="my-2">
         <h5 class="my-0 text-small">
           &#8377;<%= number_to_currency(company.total_sales_order[:confirmed_invoices_total_value], precision: 0, unit: '') %>
