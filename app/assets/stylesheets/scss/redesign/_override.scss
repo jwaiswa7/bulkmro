@@ -3654,7 +3654,7 @@ td .icon-title.btn{
     border-bottom: 4px solid #fd7e14!important; 
 }
 .bmro-minwidth-col{
-    min-width: 500px;
+    min-width: 100%;
 }
 .star{
     margin-top: 10px;
@@ -3673,4 +3673,7 @@ td .icon-title.btn{
 }
 .bmro-new-padding{
     padding-bottom: 40px;
+}
+.bmro-ld{
+   color: #fff;    
 }
