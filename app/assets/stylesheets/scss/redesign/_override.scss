@@ -3665,6 +3665,9 @@ td .icon-title.btn{
 .was-validated .form-control:invalid ~ .select2-container--bootstrap .form-control, .was-validated .form-control.is-invalid ~ .select2-container--bootstrap .form-control {
     border-color: #dc3545!important;
 }
+.was-validated .form-control:valid, .form-control.is-valid, .was-validated .custom-select:valid, .custom-select.is-valid{
+    border-color: unset;
+}
 .bmro-mfp{
    padding-left: 10px;
 }
