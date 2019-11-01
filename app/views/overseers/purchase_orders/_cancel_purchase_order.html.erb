@@ -10,13 +10,13 @@
         </div>
         <%= simple_form_for([:overseers, @purchase_order], :url => cancelled_purchase_order_overseers_purchase_order_path(@purchase_order.to_param), :'novalidate' => '', :html => {:class => 'needs-validation', :'data-parsley-validate' => ''}) do |f| %>
           <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
-          <div class="modal-body" style="padding: 0px 1.5rem;">
+          <div class="modal-body" style="padding: 0px 18px;">
             <%= f.hidden_field :created_by_id %>
               <div class="mb-2 form-group">
                 <strong> Do you want to cancel this #<%= @purchase_order.po_number %> Purchase Order?</strong>
               </div>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer bmro-mfp">
             <div class="form-row">
               <div class="col-6">
                 <%= button_tag(type: "submit", name: "update_sent_at_field", class: "btn btn-success bmro-button btn-block confirm-cancel") do %>
