@@ -23,7 +23,7 @@
         </div>
         <div class="col-12 col-md-3">
           <%= f.input :procurement_specialist, as: :select, collection: Inquiry.procurement_specialists,
-                      input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select a  Procurement Specialist'}, required: false, include_blank: true,
+                      input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select a  Procurement Specialist'}, required: false, include_blank: true,
                       selected: params['pipeline_report'].present? && params['pipeline_report']['procurement_specialist'].present? ? params['pipeline_report']['procurement_specialist'].to_i : '' %>
         </div>
         <div class="col-12 col-md-3">
