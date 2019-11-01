@@ -32,9 +32,9 @@
   <% if content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all') %>
         <span class="bmro-downimg"></span>
         <% if content_for?(:heading) %>
-          <h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
+          <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
         <% else %>
-          <h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4>
+          <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4>
         <% end %>
 
         <% if content_for?(:can_be_directly_exported_partial) %>
