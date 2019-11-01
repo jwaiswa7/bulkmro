@@ -809,17 +809,17 @@ li.select2-results__option{
 .width-30{
     width: 30%;
 }
-.bmro-datatable-style tr{
+.bmro-datatable-style tbody tr{
     border-color: #E0E2E7;
     border-radius: unset;
 }
-.bmro-datatable-style tr:nth-child(even){
+.bmro-datatable-style tbody tr:nth-child(even){
     background-color: #fff;   
 }
-.bmro-datatable-style tr:nth-child(odd){
+.bmro-datatable-style tbody tr:nth-child(odd){
     background-color: #F1F3F6;
 }   
-.bmro-datatable-style tr:hover{
+.bmro-datatable-style tbody tr:hover{
     background-color: #D4D8DF;
 }
 .bg-highlight-success{
