@@ -355,6 +355,9 @@ a.bmro-list-button{
     -webkit-appearance:none!important;
     appearance:none!important;
 }
+.select2-selection.disabled.bmro-form-input:focus{
+    border-color: #2C4159!important;
+}
 .bmro-form-input span{
     color: #2C4159 !important;
 }
