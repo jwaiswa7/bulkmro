@@ -37,7 +37,7 @@
 <!--    </th>-->
 
       <% if is_authorized(:inward_dispatch, 'update_logistics_owner_for_inward_dispatches') && policy(:inward_dispatch).update_logistics_owner_for_inward_dispatches? && (action_name != 'inward_dispatch_delivered_queue') %>
-        <th class="sort desktop text-right" width="98px">
+        <th class="sort desktop text-right" width="127px">
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" name="all_inward_dispatches" id="all_inward_dispatches">
               <label class="custom-control-label" for="all_inward_dispatches">Quick Actions</label>
