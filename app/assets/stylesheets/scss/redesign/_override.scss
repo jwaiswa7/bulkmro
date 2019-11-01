@@ -3546,3 +3546,27 @@ table.table.dataTable{
 .bmro-fixtab-width{
     margin-right: 14px;
 }
+.bmro-col-pl .border-status-color-yellow{
+    border-top: 1px solid #ffe000!important;
+    border-left: 1px solid #ffe000!important;
+    border-right: 1px solid #ffe000!important;   
+    border-color: #ffe000!important;
+}
+.bmro-col-pl .border-status-color-green {
+    border-top: 1px solid #ffe000!important;
+    border-left: 1px solid #ffe000!important;
+    border-right: 1px solid #ffe000!important;       
+    border-color: #a8dc59!important;
+}
+.bmro-col-pl .border-blue {
+    border-top: 1px solid #007bff!important;
+    border-left: 1px solid #007bff!important;
+    border-right: 1px solid #007bff!important;       
+    border-color: #007bff!important;
+}
+.bmro-col-pl .border-red {
+    border-top: 1px solid #dc3545!important;
+    border-left: 1px solid #dc3545!important;
+    border-right: 1px solid #dc3545!important;       
+    border-color: #dc3545!important;
+}
