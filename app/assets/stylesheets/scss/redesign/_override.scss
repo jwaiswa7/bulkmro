@@ -3524,5 +3524,8 @@ table.table.dataTable{
 }
 .icon-title:focus{
     outline: none!important;
-    box-shadow: none;
+    box-shadow: none!important;
+}
+.bmor-minwidthset{
+    min-width: 517px;
 }
