@@ -2866,7 +2866,7 @@ table.fixedHeader-floating{
     padding: 0px 10px;
 }
 .bmro-extra-padd{
-    padding: 84px;
+    padding:0px 84px;
 }
 .bmro-add-new{
     bottom: -52px;
@@ -3664,4 +3664,7 @@ input.form-control.is-invalid{
 }
 .bmro-mfp{
    padding-left: 10px;
+}
+.bmro-new-padding{
+    padding-bottom: 40px;
 }
