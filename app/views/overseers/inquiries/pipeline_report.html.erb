@@ -41,12 +41,12 @@
   <table class="table-bordered table bmro-datatable-style" id="sticky-nav">
     <thead>
     <tr>
-      <th style="font-weight:bold;">Month</th>
+      <th style="">Month</th>
       <% @pipeline_statuses.invert.each do |index, status| %>
-        <th style="font-weight:bold; white-space:normal;"><%= status %></th>
+        <th style="white-space:normal;"><%= status %></th>
       <% end %>
-      <th style="font-weight:bold;">Grand Total</th>
-      <th style="font-weight:bold;">Won %</th>
+      <th style="">Grand Total</th>
+      <th style="">Won %</th>
     </tr>
     </thead>
     <tbody style="text-align:left;">
@@ -90,7 +90,7 @@
         </td>
       </tr>
     <% end %>
-    <tr style="font-weight:bold;">
+    <tr style="">
       <td>Total Summary</td>
       <% @pipeline_statuses.each do |index, status| %>
         <td>
