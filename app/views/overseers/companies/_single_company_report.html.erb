@@ -5,7 +5,7 @@
         <p class="mb-1 text-small text-uppercase">
           <strong>Total Open Inquiries</strong>
         </p>
-        <h5 class="mb-0 bmro-fl">
+        <h5 class="mb-0 bmro-fl bmro-ar-report-data">
           <%= company.total_open_inquiries %>
         </h5>
       </div>
@@ -18,8 +18,8 @@
         <p class="mb-1 text-small text-uppercase">
           <strong>Total Open Quotes</strong>
         </p>
-        <h5 class="mb-0 mt-auto bmro-fl"><%= company.total_open_quotes[:open_quotes] %></h5>
-        <h5 class="my-0 text-small bmro-fl bmro-mlsummaryh5">
+        <h5 class="mb-0 mt-auto bmro-fl bmro-ar-report-data"><%= company.total_open_quotes[:open_quotes] %></h5>
+        <h5 class="my-0 text-small bmro-fl bmro-mlsummaryh5 bmro-ar-report-subdata">
           &#8377;<%= number_to_currency(company.total_open_quotes[:total_value], precision: 0, unit: '') %>
           <%# Inquiry.left_outer_joins(:sales_quotes).left_outer_joins(:sales_orders).where('inquiries.company_id = ? AND inquiries.status NOT IN (?,?)', company.id, 9, 10).where(sales_orders: {id: nil}).size %>
         </h5>
@@ -33,8 +33,8 @@
         <p class="mb-1 text-small text-uppercase">
           <strong>Total Sales Orders</strong>
         </p>
-        <h5 class="mb-0 mt-auto bmro-fl"><%= company.total_sales_order[:confirmed_orders] %></h5>
-        <h5 class="my-0 text-small bmro-fl bmro-mlsummaryh5">
+        <h5 class="mb-0 mt-auto bmro-fl bmro-ar-report-data"><%= company.total_sales_order[:confirmed_orders] %></h5>
+        <h5 class="my-0 text-small bmro-fl bmro-mlsummaryh5 bmro-ar-report-subdata">
           &#8377;<%= number_to_currency(company.total_sales_order[:confirmed_orders_total_value], precision: 0, unit: '') %>
         </h5>
       </div>
@@ -47,8 +47,8 @@
         <p class="mb-1 text-small text-uppercase">
           <strong>Total Invoices</strong>
         </p>
-        <h5 class="mb-0 mt-auto bmro-fl"><%= company.total_sales_order[:confirmed_invoices] %></h5>
-        <h5 class="my-0 text-small bmro-fl bmro-mlsummaryh5">
+        <h5 class="mb-0 mt-auto bmro-fl bmro-ar-report-data"><%= company.total_sales_order[:confirmed_invoices] %></h5>
+        <h5 class="my-0 text-small bmro-fl bmro-mlsummaryh5 bmro-ar-report-subdata">
           &#8377;<%= number_to_currency(company.total_sales_order[:confirmed_invoices_total_value], precision: 0, unit: '') %>
         </h5>
       </div>
