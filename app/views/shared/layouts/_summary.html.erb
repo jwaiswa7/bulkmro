@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="bmro-fix-width bmro-width-auto">
+  <div class="bmro-fixtab-width bmro-fl">
     <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#summary">
       <% if alias_name.present? %>
         <%= alias_name.titleize %> Summary&nbsp;&nbsp;&nbsp;
@@ -8,7 +8,7 @@
         <% end %><!-- <i class="fa fa-chevron-down" aria-hidden="true"></i> -->
     </a>
     <% if main_summary_statuses.present? %>
-      <div class="bmro-float">
+      <div class="bmro-width-100">
         <% main_summary_statuses.each do |main_status, main_status_id| %>
           <div class="bmro-collaps bmro-collaps2">
             <div class="bmro-invoice-data">
