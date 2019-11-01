@@ -20,8 +20,7 @@
           <strong>Total Open Quotes</strong>
         </p>
         <h5 class="mb-0 mt-auto bmro-fl"><%= company.total_open_quotes[:open_quotes] %></h5>
-        <hr class="my-2">
-        <h5 class="my-0 text-small">
+        <h5 class="my-0 text-small bmro-fl">
           &#8377;<%= number_to_currency(company.total_open_quotes[:total_value], precision: 0, unit: '') %>
           <%# Inquiry.left_outer_joins(:sales_quotes).left_outer_joins(:sales_orders).where('inquiries.company_id = ? AND inquiries.status NOT IN (?,?)', company.id, 9, 10).where(sales_orders: {id: nil}).size %>
         </h5>
@@ -36,8 +35,7 @@
           <strong>Total Sales Orders</strong>
         </p>
         <h5 class="mb-0 mt-auto bmro-fl"><%= company.total_sales_order[:confirmed_orders] %></h5>
-        <hr class="my-2">
-        <h5 class="my-0 text-small">
+        <h5 class="my-0 text-small bmro-fl">
           &#8377;<%= number_to_currency(company.total_sales_order[:confirmed_orders_total_value], precision: 0, unit: '') %>
         </h5>
       </div>
@@ -51,8 +49,7 @@
           <strong>Total Invoices</strong>
         </p>
         <h5 class="mb-0 mt-auto bmro-fl"><%= company.total_sales_order[:confirmed_invoices] %></h5>
-        <hr class="my-2">
-        <h5 class="my-0 text-small">
+        <h5 class="my-0 text-small bmro-fl">
           &#8377;<%= number_to_currency(company.total_sales_order[:confirmed_invoices_total_value], precision: 0, unit: '') %>
         </h5>
       </div>
