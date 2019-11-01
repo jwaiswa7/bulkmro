@@ -1,4 +1,4 @@
-<div class="col-lg-12">
+<div class="col-lg-12 bmro-padding-0">
   <%= render 'shared/snippets/page_header', e: @activity %>
 
   <%= simple_form_for([:overseers, @activity], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
@@ -27,9 +27,9 @@
                 <div class="form-group">
                   <% f.object.attachments.each do |attachment| %>
                     <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                      <i class="fal fa-download"></i>
+                      <i class="bmro-download-icon"></i>
                       <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
-                        <i class="fal fa-trash-alt"></i>
+                        <i class="bmro-trash-icon"></i>
                       <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
                     <% end %>
                   <% end if f.object.attachments.attached? %>
@@ -60,8 +60,8 @@
             </div>
           </div>
 
-          <%= f.input :points_discussed, input_html: {class: 'bmro-form-input' } %>
-          <%= f.input :actions_required, input_html: {class: 'bmro-form-input' } %>
+          <%= f.input :points_discussed, input_html: {class: 'bmro-form-input bmro-input-values' } %>
+          <%= f.input :actions_required, input_html: {class: 'bmro-form-input bmro-input-values' } %>
 
           <div class="form-row">
             <% if action_name.capitalize == "New" %>
