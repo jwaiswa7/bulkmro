@@ -3532,9 +3532,10 @@ table.table.dataTable{
     background-position: top 4px left 6px;    
 }
 .bmro-pro-trashset{
-    background-size: 20px !important;
-    padding: 15px 17px 8px 8px !important;
-    margin-top: -17px;    
+    background-size: 18px !important;
+    padding: 20px 21px 8px 8px !important;
+    margin-top: -17px;  
+    background-position: center!important; 
 }
 .icon-title:focus{
     outline: none!important;
@@ -3547,7 +3548,7 @@ table.table.dataTable{
     margin-right: 14px;
 }
 .bmro-table-padding-bot{
-    padding-bottom: 36px;
+    padding-bottom: 36px!important;
 }
 .bmro-border-class.border-status-color-yellow{
     border-top: 1px solid #ffe000!important;
