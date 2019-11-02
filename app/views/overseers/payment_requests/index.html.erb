@@ -2,6 +2,8 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+
+<div class="col-lg-12 bmro-table-layout">
 <% content_for :heading do %>
   <% ['Payment Requests', @param].compact.join(': ') %>
 <% end %>
@@ -16,21 +18,21 @@
 
 <% content_for :header_row do %>
   <th class="no-sort all" data-width="98px">Quick Action</th>
-  <th class="desktop text-right" data-name="id">Req. No.</th>
-  <th class="no-sort desktop" data-name="status">Status</th>
-  <th class="desktop" data-name="inquiry_number">Inquiry #</th>
-  <th class="no-sort all">PO #</th>
-  <th class="no-sort all">Owner</th>
+  <th class="desktop text-right" width="44px" data-name="id">Req. No.</th>
+  <th class="no-sort desktop" width="140px" data-name="status">Status</th>
+  <th class="desktop" width="78px" data-name="inquiry_number">Inquiry #</th>
+  <th class="no-sort all" width="120px">PO #</th>
+  <th class="no-sort all" width="40px">Owner</th>
   <!--<th class="no-sort all">Payment Type</th>
   <th class="no-sort all">UTR/Cheque No</th>-->
-  <th class="no-sort all" title="Inside Sales & Procurement" data-toggle="tooltip">IS&P</th>
-  <th class="desktop" data-name="due_date">Due Date</th>
-  <th class="no-sort desktop">Total Amount</th>
-  <th class="no-sort desktop">Remaining Amount</th>
-  <th class="no-sort desktop">Percentage Paid</th>
-  <th class="desktop" data-name="created_at">Requested At</th>
-  <th class="desktop" data-name="updated_at_by_comment">Updated At</th>
-  <th class="no-sort desktop">Latest Comment</th>
+  <th class="no-sort all" title="Inside Sales & Procurement" width="88px" data-toggle="tooltip">IS&P</th>
+  <th class="desktop" data-name="due_date" width="88px">Due Date</th>
+  <th class="no-sort desktop" width="66px">Total Amount</th>
+  <th class="no-sort desktop" width="65px">Remaining Amount</th>
+  <th class="no-sort desktop" width="65px">Percentage Paid</th>
+  <th class="desktop" width="75px" data-name="created_at">Requested At</th>
+  <th class="desktop" width="55px" data-name="updated_at_by_comment">Updated At</th>
+  <th class="no-sort desktop" width="230px">Latest Comment</th>
 <% end %>
 
 <% content_for :filter_row do %>
@@ -50,7 +52,6 @@
   <td data-filter="false"></td>
 <% end %>
 
-<div class="col-lg-12">
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>
