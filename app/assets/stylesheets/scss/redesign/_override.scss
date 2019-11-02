@@ -805,7 +805,6 @@ li.select2-results__option{
     background-color: unset!important;
     border: none; 
 }
-
 .width-30{
     width: 30%;
 }
@@ -824,6 +823,7 @@ li.select2-results__option{
 }
 .bg-highlight-success{
     background-color: #F3FBF6!important;
+    border-left: 10px solid #34B864!important;
 }
 table.bmro-datatable-style{
     border-spacing:0px!important;
@@ -1679,6 +1679,18 @@ table.bmro-new-table tr:first-child{
 }
 .bmro-collegues .form-group{
     margin-bottom: 0px;
+}
+.bmro-collegues span{
+    width: 190px;
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcCAYAAABsxO8nAAAAAXNSR0IArs4c6QAAAftJREFUOBHNlM8vA0EUx9/s4k+wbpSQiGyb9A/Q1I+DnoiQWKHOzjhKIyHhf5CI0Is4icRBqxFcXMQ2CBLlpgc3laA73luG3e3u7IGDSZPtvPedz7w3894A/NFQwzjR5NhsYyTWUi6ZpkwrBRHEAlhhjA9qLbFbGSwQJCBfUShhMF+QByIyksJqQAGQUJgL5AdhjFUYAP5AkaUpnBAAecbFA8CYgaR3ERbnoAKz1vXkuCFsdkQSSMrMZw/Ld+aF1hq9QtgQLhSbu86M6UkjxYHvCjJ9MR2KxIY47XqPMQKcZzlAnbAzBlXO6uPKcKJjDxeu/Tj8IeTH6La8aeJ8qZhbP1cLhQKfTg/vXD48NSOwHfU1kYhN6OtMkyls0cxl551+yGQySrxvotNllExiyXSXxP2fXL9Nza4JgmwfXq++WdVTvOLusASpDCx4PdN7jQWhVQWEcz6Fxga8uVEtoh/h7dwLkfPrqiUOCa0tqqL24M8KUsXH6qYpolewWvsdO9dE5orkS0hVDVyZLOY39qmr7SHrNxRofq1BEPNgM0uAbxBN9N7xOW5Zy/RfDDyzCkIavP3lhJDW9R7hoR1rbbEXXOhMsx51ouOxtT7TEZGIDV0gMhLM58xsfRCEnDUgMj6WiidemAwSCPLCwiCkDx3RHmPG+aSGLvit4AOV+RqTGNSXjQAAAABJRU5ErkJggg==');
+    background-size: 10px 16px!important;
+    background-position: right 9px top 8px;
+    background-repeat: no-repeat;
+    -webkit-appearance: none !important;
+    appearance: none !important;
 }
 .bmro-collegues label{
     margin-bottom: 12px;
@@ -3532,9 +3544,12 @@ table.table.dataTable{
 }
 .bg-highlight-danger{
     background-color: #FFEFF1!important;
+    border-left: 10px solid #FF4258!important;
 }
+
 .bg-highlight-warning{
-    background-color: #FCF1D8!important;
+    background-color: #FCF1D8!important;  
+    border-left: 10px solid #FFC444!important;
 }
 .bmro-new-update-icon{
     background-size: 15px!important;
@@ -3700,4 +3715,25 @@ td .icon-title.btn{
 .bmro-summalign .bmro-summary-data i{
     width: 100%;
     float: left;
+}
+.bmro-conditions textarea:focus{
+    border:2px solid #2C4159!important;
+}
+.chat-item{
+    color: #2C4159;
+}
+.table tr:hover{
+    background-color: #D4D8DF!important;
+}
+table.table.dataTable{
+    border-collapse: collapse!important;
+    overflow: hidden;
+}
+.chat-item-title .mt-2{
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: -0.35px;
+    line-height: 11px;
+    text-align: right;
+    color: #999FA7;
 }
