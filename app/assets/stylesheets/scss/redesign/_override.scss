@@ -823,7 +823,7 @@ li.select2-results__option{
 }
 .bg-highlight-success{
     background-color: #F3FBF6!important;
-    border-left: 6px solid #34B864;
+    border-left: 6px solid #34B864!important;
 }
 table.bmro-datatable-style{
     border-spacing:0px!important;
@@ -3725,6 +3725,6 @@ td .icon-title.btn{
 .table tr:hover{
     background-color: #D4D8DF!important;
 }
-.table{
-    border-collapse: collapse;
+table.table.dataTable{
+    border-collapse: collapse!important;
 }
