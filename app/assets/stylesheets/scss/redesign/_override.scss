@@ -805,7 +805,6 @@ li.select2-results__option{
     background-color: unset!important;
     border: none; 
 }
-
 .width-30{
     width: 30%;
 }
@@ -824,6 +823,7 @@ li.select2-results__option{
 }
 .bg-highlight-success{
     background-color: #F3FBF6!important;
+    border-left: 6px solid #34B864;
 }
 table.bmro-datatable-style{
     border-spacing:0px!important;
@@ -3544,9 +3544,11 @@ table.table.dataTable{
 }
 .bg-highlight-danger{
     background-color: #FFEFF1!important;
+    border-left: 6px solid #FF4258!important;
 }
 .bg-highlight-warning{
-    background-color: #FCF1D8!important;
+    background-color: #FCF1D8!important;  
+    border-left: 6px solid #FFC444!important;
 }
 .bmro-new-update-icon{
     background-size: 15px!important;
@@ -3720,5 +3722,5 @@ td .icon-title.btn{
     color: #2C4159;
 }
 .table tr:hover{
-    background-color: #D4D8DF;
+    background-color: #D4D8DF!important;
 }
