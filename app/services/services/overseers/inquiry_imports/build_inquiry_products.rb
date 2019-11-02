@@ -25,7 +25,7 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
             name: row.metadata['name'],
             sku: row.sku,
             mpn: row.metadata['mpn'],
-            brand: Brand.find_by_name(row.metadata['brand']).is_active ? Brand.find_by_name(row.metadata['brand']) : nil,
+            brand: Brand.find_by_name(row.metadata['brand']).present? && Brand.find_by_name(row.metadata['brand']).is_active ? Brand.find_by_name(row.metadata['brand']) : nil,
             tax_code: tax_code.present? ? TaxCode.where(code: tax_code, is_service: is_service, is_active: true).last : nil,
             tax_rate: tax_rate.present? ? TaxRate.where(tax_percentage: tax_rate).last : nil,
             category: category.present? ? Category.where(id: category, is_service: is_service, is_active: true).last : nil,
