@@ -34,13 +34,13 @@
         <% end %>
         <h6 class="text-uppercase text-black-50 mb-2">Account Details</h6>
         <div class="form-row">
-          <div class="col-6 col-md-6 mb-2 bmro-summary-data">
+          <div class="col-6 col-md-6 mb-2 bmro-summary-data bmro-summalign">
             <strong class="d-block bmro-summary-heading bmro-fl">Is Supplier</strong>
             <div class="bmro-summary-data">
             <%= format_boolean(@account.is_supplier?) %>
             </div>
           </div>
-          <div class="col-6 col-md-6 mb-2 bmro-summary-data">
+          <div class="col-6 col-md-6 mb-2 bmro-summary-data bmro-summalign">
             <strong class="d-block bmro-summary-heading">Is Customer</strong>
             <div class="bmro-summary-data">
             <%= format_boolean(@account.is_customer?) %>
