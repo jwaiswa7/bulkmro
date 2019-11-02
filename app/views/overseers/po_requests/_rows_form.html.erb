@@ -186,7 +186,7 @@
     <% end %>
     <div class="col-12">
       <div class="form-group">
-        <%= f.input :commercial_terms_and_conditions %>
+        <%= f.input :commercial_terms_and_conditions, input_html: class: {'bmro-form-input'} %>
       </div>
     </div>
   </div>
@@ -237,7 +237,7 @@
 
           <div class="col-12 col-md-2">
             <div class="select2-wrap">
-              <%= po_request_row.association :product, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :product), include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input', :'data-source' => product_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, disabled: po_request_row.object.field_disabled? %>
+              <%= po_request_row.association :product, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :product), include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon', :'data-source' => product_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, disabled: po_request_row.object.field_disabled? %>
             </div>
           </div>
 
@@ -246,44 +246,44 @@
           </div>
           <div class="col-12 col-md-2">
             <% if !stock %>
-              <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: 'HSN', required: true %>
+              <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: 'HSN', required: true %>
             <% else %>
-              <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: { class: 'select2-ajax select2-wrap-text bmro-form-input', :'data-source' => autocomplete_overseers_tax_codes_path }, label: 'HSN', required: true %>
+              <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: { class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_tax_codes_path }, label: 'HSN', required: true %>
             <% end %>
           </div>
           <div class="col-12 col-md-2">
-            <%= po_request_row.association :tax_rate, collection: TaxRate.all, input_html: { class: 'bmro-form-input select2-single' }, label_method: :to_s, include_blank: false, label: 'Tax Rate' %>
+            <%= po_request_row.association :tax_rate, collection: TaxRate.all, input_html: { class: 'bmro-form-input select2-single bmro-dropdown-icon' }, label_method: :to_s, include_blank: false, label: 'Tax Rate' %>
           </div>
           <div class="col-12 col-md-1">
-            <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 0.01}, disabled: false, required: true %>
+            <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 0.01, class: 'bmro-form-input'}, disabled: false, required: true %>
           </div>
 
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :measurement_unit, value: po_request_row.object.measurement_unit || MeasurementUnit.default.name, disabled: true %>
+            <%= po_request_row.input :measurement_unit, value: po_request_row.object.measurement_unit || MeasurementUnit.default.name, disabled: true, input_html: { class: 'bmro-form-input' } %>
           </div>
         </div>
       </div>
       <div class="col-12 col-md-12">
         <div class="form-row">
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price || po_request_row.object.unit_price_per_quantity.round(2)}, disabled: false, required: true %>
+            <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price || po_request_row.object.unit_price_per_quantity.round(2), class: 'bmro-form-input'}, disabled: false, required: true %>
           </div>
           <div class="col-12 col-md-1">
-            <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage || 0}, label: 'Disc. %', disabled: false %>
+            <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage || 0, class: 'bmro-form-input'}, label: 'Disc. %', disabled: false %>
           </div>
 
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price}, disabled: true, label: 'Total Selling Price' %>
+            <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price}, class: 'bmro-form-input'}, disabled: true, label: 'Total Selling Price' %>
           </div>
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :converted_total_tax, input_html: {value: po_request_row.object.converted_total_tax}, disabled: true, label: 'Total Tax' %>
+            <%= po_request_row.input :converted_total_tax, input_html: {value: po_request_row.object.converted_total_tax, class: 'bmro-form-input'}, disabled: true, label: 'Total Tax' %>
           </div>
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax}, disabled: true, label: 'Total Selling Price with Tax' %>
+            <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax, class: 'bmro-form-input'}, disabled: true, label: 'Total Selling Price with Tax' %>
           </div>
 
           <div class="col-12 col-md-2">
-            <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :'data-customer-committed-date' => !stock ? f.object.sales_order.customer_committed_date : '', :class => 'lead-time'}, label: 'Lead Date', required: true %>
+            <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :'data-customer-committed-date' => !stock ? f.object.sales_order.customer_committed_date : '', :class => 'lead-time', class: 'bmro-form-input'}, label: 'Lead Date', required: true %>
           </div>
 <!--           <% if stock || (f.object.rows.present? && f.object.rows.length > 1) %>
             <div class="col-12 col-md-1">
