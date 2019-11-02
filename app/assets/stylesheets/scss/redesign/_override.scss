@@ -3546,6 +3546,7 @@ table.table.dataTable{
     background-color: #FFEFF1!important;
     border-left: 6px solid #FF4258!important;
 }
+
 .bg-highlight-warning{
     background-color: #FCF1D8!important;  
     border-left: 6px solid #FFC444!important;
@@ -3723,4 +3724,7 @@ td .icon-title.btn{
 }
 .table tr:hover{
     background-color: #D4D8DF!important;
+}
+.table{
+    border-collapse: collapse;
 }
