@@ -159,6 +159,13 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
     authorize_acl @invoice_request
     if @invoice_request.valid?
+      if @invoice_request.is_checked == true
+        inward_dispatch_ids = @invoice_request.inward_dispatch_ids
+        if inward_dispatch_ids.present?
+          InwardDispatch.where(id: inward_dispatch_ids).update_all(status: 'Cancelled')
+          # @invoice_request.purchase_order.update_material_status
+        end
+      end
       service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)
       service.call
       render json: {sucess: 'Successfully updated '}, status: 200
@@ -216,6 +223,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
           :grpo_cancellation_reason,
           :ap_rejection_reason,
           :ap_cancellation_reason,
+          :is_checked,
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           attachments: []
       )

@@ -42,7 +42,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def new_inward_dispatch?
-    (record.rows.sum(&:get_pickup_quantity) > 0) && record.followup_date.present?
+    (record.rows.sum(&:get_pickup_quantity) > 0) && record.followup_date.present? || record.inward_dispatches.map{ |s| s.status == 'Cancelled'}
   end
 
   def inward_dispatch_pickup_queue?
@@ -100,4 +100,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   def change_material_status?
     true
   end
+  # def cancelled_inward_dispatches?
+  #   true
+  # end
 end

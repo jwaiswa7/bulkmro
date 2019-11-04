@@ -18,6 +18,11 @@
               <%= f.input :grpo_cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', :required => true , input_html: {:'data-parsely-no-valid-feedback' => ''} %>
               <%= f.hidden_field :status, :value => 'Cancelled GRPO' %>
             <% end %>
+<!--            <div class='d-inline-block custom-control custom-checkbox align-middle'>-->
+<!--              <input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='<%#= @invoice_request.inward_dispatch_ids%>' id='<%#= @invoice_request.inward_dispatch_ids%>' data-po-id='<%#= @invoice_request.purchase_order_id %>'>-->
+<!--              <label class='custom-control-label' for='<%#= @invoice_request.inward_dispatch_ids%>'>Remove Inward</label>-->
+<!--            </div>-->
+            <%= f.input :is_checked, label: 'Remove Inward' %>
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-warning confirm-cancel">Cancel <%= @invoice_request.readable_status%></button>
