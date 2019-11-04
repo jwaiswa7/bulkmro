@@ -1,5 +1,7 @@
 class Services::Shared::Migrations::CategoriesActivate < Services::Shared::Migrations::Migrations
-  @array = []
+  @category_error = []
+  @invalid_category_names = []
+
   def activate_category
     service = Services::Shared::Spreadsheets::CsvImporter.new('final_categories.csv', 'seed_files')
     service.loop do |row|
@@ -20,19 +22,29 @@ class Services::Shared::Migrations::CategoriesActivate < Services::Shared::Migra
         if middle_category.present?
           last_category = Category.where(parent_id: middle_category.id, name: last_category_name).last
           category_activation(last_category, is_active: true, is_service: is_service)
+          if !last_category.present?
+            @invalid_category_names << last_category_name
+          end
         end
+      else
+        @invalid_category_names << middle_category_name
       end
+    else
+      @invalid_category_names << parent_category_name
     end
-    puts @array
+    puts @category_error
+    puts "Invalid Categories Array : #{@invalid_category_names}"
   end
 
   def category_activation(cat, is_active: true, is_service: false)
     if cat.present?
-      cat.is_active = true
-      cat.is_service = is_service
-      cat.save_and_sync
+      begin
+        cat.is_active = true
+        cat.is_service = is_service
+        cat.save_and_sync
+      rescue => e
+        @category_error << [cat.id, e.message]
+      end
     end
-  rescue => e
-    @array << [cat.id, e.message]
   end
 end
