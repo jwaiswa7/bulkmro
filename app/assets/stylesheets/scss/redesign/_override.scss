@@ -3737,3 +3737,32 @@ table.table.dataTable{
     text-align: right;
     color: #999FA7;
 }
+.bmro-rating-head{
+    color: #2C4159;
+    font-family: "Inter UI";
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.58px;
+    line-height: 24px;
+}
+.bmro-rating-desc{
+    color: #7C8997;
+    font-family: "Inter UI";
+    font-size: 12px;
+    letter-spacing: -0.5px;
+    line-height: 15px;
+}
+.bmro-rate-stars .stars{
+    border:2px solid #ECEEF2;
+}
+.bmro-rate-stars h6{
+    color: #2C4159;
+    font-family: "Inter UI";
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.39px;
+    line-height: 24px;
+}
+.bmro-rate-btn{
+    width: auto!important;
+}
