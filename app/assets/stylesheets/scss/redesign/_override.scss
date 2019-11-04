@@ -2430,6 +2430,7 @@ table.fixedHeader-floating{
     padding: 8px 13px;
     background-repeat: no-repeat;
     background-size: 15px;
+    background-position: center;
 }
 .fa-file-archive{
     background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAAXNSR0IArs4c6QAAAjZJREFUSA1jXLJ6m+c/BoZZ////l2GgAWBkZHzCxMCQxgKyREleWkZGQowG1jAwPHnxSubew6ezWEA+AVnCz8dDE4tAht598EQG6Cv6ABZirfnz5y9Dded0hmNnLuHV4mRtwtBYkoahhigfoVtiqK3OAMLK8pD0w8bKCuZjmI4kQNAidEtAeie1FINxdmIo2ChBAV4wH8lcDCbeoEO2xMpEj+HT568MV27eZdh16CTDwlVbGbTUFBmWTmliYGFhxjAYXQCnj9AtaS3PZGBlgbjr85dvDI+evmB4++4Dg5y0BIOUuCi6uRh8nD5CjniQT4oaJjDcfvAIbICVsS6DuIgQw9dv3xkq26cCswYvQ0V2HIbhyAI4LUJOXaDgQgaS4iIMIHz64nWGI6cuMoiLCiFLY2XjtAikGpSyQBGPDq7cuMtw+NQFBn5eHobMuGAGLi4OdCUYfLwWYaiGCty894hh2fqdDKb6mgx9DYW4lKGIk2WRoowUg7eLNYMwPz/D799/GFhZCRtDWAWKuyAcIz11Bj1tFYbonDqGP//+goMPizIUIZzJG0UVFs75K7cYLAy1Ga7duo9FFlOIbIs0VOQY3n38TLDogVlJVtCBNPNyczM0l6bDzCFIk+0jgiajKcDro8/fvjJcAMYFNQBei+7cf8KQW9tDDXsYcFqUFO5LlgWKclJY9eG0KDGCPIuw2gIUpF9iALW7QE0iXC6hVBxoNgPIDhagl9JA7S5Qk4hSQ7HphzUgAZJwtyX/UCxPAAAAAElFTkSuQmCC');
@@ -3743,12 +3744,14 @@ table.table.dataTable{
     font-weight: 600;
     letter-spacing: -0.58px;
     line-height: 24px;
+    text-transform: capitalize!important;
 }
 .bmro-rating-desc{
     color: #7C8997;
     font-size: 12px;
     letter-spacing: -0.5px;
     line-height: 15px;
+    text-transform: capitalize!important;
 }
 .bmro-rate-stars .star{
     border:2px solid #ECEEF2;
@@ -3759,9 +3762,24 @@ table.table.dataTable{
     font-weight: 600;
     letter-spacing: -0.39px;
     line-height: 24px;
+    text-transform: capitalize!important;
 }
 .bmro-rate-btn{
-    width: auto!important;
+    width: auto!important; 
+    padding: 12px 100px;
+    border: 2px solid #2C4159!important;
+    border-radius: 2px!important;
+    background-color: #2C4159;
+    color: #FFFFFF;
+    font-family: 'Inter UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 13px!important;
+    font-weight: 600!important;
+    letter-spacing: -0.5px;
+    line-height: 16px!important;
+    outline: none!important;
+    text-transform: capitalize!important;
+    box-shadow: none!important;
 }
 .bmro-rate-margin{
     margin-left: 18px;
