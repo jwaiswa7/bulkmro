@@ -3,7 +3,7 @@
     <div class="modal-content bmro-bg">
       <div class="modal-header text-center pb-0">
         <h4 class="modal-title bmro-form-heading text-black-50 text-left w-100 text-small pt-1">
-          <span class="bmro-rating-head">Company Review</span>
+          <span class="bmro-rating-head">Company Review</span><br>
           <span class="bmro-rating-desc">Please rate on all parameters before submitting.</span>
         </h4>
 <!--        <button type="button" class="btn btn-danger mr-1" data-dismiss="modal" aria-hidden="true"><i class="fal fa-times "></i> Skip</button>-->
@@ -13,7 +13,7 @@
         <ul class="nav bmro-nav-ul bmro-new-nav nav-tabs nav-fill mx-2"> -->
           <% @company_reviews.each_with_index do |company_review, index| %>
            <!--  <li class="nav-item"> -->
-            <label class="bmro-rating-desc">Name Of Company</label>
+            <label class="bmro-rating-desc bmro-rate-margin">Name Of Company</label>
               <a class="nav-link custom-tab bmro-rating-head disabled <%= index == 0 ? 'active' : '' %>" data-index='<%= index %>' data-toggle="tab" href="<%= '#company-' + index.to_s %>" role="tab" data-id='<%= company_review.id %>'><%= company_review.company.name %></a>
            <!--  </li> -->
           <% end %>

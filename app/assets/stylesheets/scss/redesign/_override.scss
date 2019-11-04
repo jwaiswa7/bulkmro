@@ -3739,7 +3739,6 @@ table.table.dataTable{
 }
 .bmro-rating-head{
     color: #2C4159;
-    font-family: "Inter UI";
     font-size: 21px;
     font-weight: 600;
     letter-spacing: -0.58px;
@@ -3747,17 +3746,15 @@ table.table.dataTable{
 }
 .bmro-rating-desc{
     color: #7C8997;
-    font-family: "Inter UI";
     font-size: 12px;
     letter-spacing: -0.5px;
     line-height: 15px;
 }
-.bmro-rate-stars .stars{
+.bmro-rate-stars .star{
     border:2px solid #ECEEF2;
 }
 .bmro-rate-stars h6{
     color: #2C4159;
-    font-family: "Inter UI";
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.39px;
@@ -3765,4 +3762,7 @@ table.table.dataTable{
 }
 .bmro-rate-btn{
     width: auto!important;
+}
+.bmro-rate-margin{
+    margin-left: 18px;
 }
