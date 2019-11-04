@@ -1,4 +1,5 @@
 class Services::Shared::Migrations::CategoriesActivate < Services::Shared::Migrations::Migrations
+  @array = []
   def activate_category
     service = Services::Shared::Spreadsheets::CsvImporter.new('final_categories.csv', 'seed_files')
     service.loop do |row|
@@ -22,13 +23,18 @@ class Services::Shared::Migrations::CategoriesActivate < Services::Shared::Migra
         end
       end
     end
+    puts @array
   end
 
   def category_activation(cat, is_active: true, is_service: false)
-    if cat.present?
-      cat.is_active = true
-      cat.is_service = is_service
-      cat.save_and_sync
+    begin
+      if cat.present?
+        cat.is_active = true
+        cat.is_service = is_service
+        cat.save_and_sync
+      end
+    rescue => e
+      @array << [cat.id, e.message]
     end
   end
 end
