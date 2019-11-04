@@ -1,28 +1,28 @@
-<div class="col-lg-12">
+<div class="col-lg-12 bmro-table-layout">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <% provide :hide_table_desc, true %>
     <% provide :hide_table_heading, true %>
 
     <% content_for :header_row do %>
-      <th class="no-sort" width="98px">Quick Actions</th>
-      <th class="no-sort desktop text-right">Order #</th>
-      <th class="no-sort desktop text-right">Doc ID</th>
-      <th class="no-sort desktop text-right">Quote ID</th>
-      <th>Status</th>
+      <th class="no-sort" width="117px">Quick Actions</th>
+      <th class="no-sort desktop text-right" width="55px">Order #</th>
+      <th class="no-sort desktop text-right" width="50px">Doc ID</th>
+      <th class="no-sort desktop text-right" width="50px">Quote ID</th>
+      <th width="80px">Status</th>
       <% if @sales_orders.where(status: "Approved").count > 1 %>
         <th> SAP Status</th>
       <% end %>
-      <th class="no-sort desktop text-right">Sent At</th>
+      <th class="no-sort desktop text-right" width="70px">Sent At</th>
 
-      <th class="no-sort desktop text-right">Line Items</th>
-      <th class="no-sort desktop text-right">Quote Total</th>
-      <th class="no-sort desktop text-right">Order Total</th>
-      <th class="no-sort desktop text-right">Order Date</th>
-      <th class="no-sort desktop text-right">Created At</th>
-      <th>Created By</th>
-      <th>Approved By</th>
-      <th>Rejected By</th>
-      <th>SAP Status</th>
+      <th class="no-sort desktop text-right" width="60px">Line Items</th>
+      <th class="no-sort desktop text-right" width="60px">Quote Total</th>
+      <th class="no-sort desktop text-right" width="60px">Order Total</th>
+      <th class="no-sort desktop text-right" width="60px">Order Date</th>
+      <th class="no-sort desktop text-right" width="60px">Created At</th>
+      <th width="60px">Created By</th>
+      <th width="60px">Approved By</th>
+      <th width="60px">Rejected By</th>
+      <th width="60px">SAP Status</th>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>

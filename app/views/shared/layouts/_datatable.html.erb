@@ -32,9 +32,9 @@
   <% if content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all') %>
         <span class="bmro-downimg"></span>
         <% if content_for?(:heading) %>
-          <h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
+          <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
         <% else %>
-          <h4 class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4>
+          <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4>
         <% end %>
 
         <% if content_for?(:can_be_directly_exported_partial) %>
@@ -50,9 +50,11 @@
         <% end %>
 
   <% elsif content_for?(:heading)%>
-    <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
+    <h4 class="page-title"><%= yield :heading %></h4>
+  <!--   <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4> -->
   <% else %>
-        <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4>
+        <h4 class="page-title"><%= current_model_header %></h4>
+         <!--  <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4> -->
     <% end %>
   <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="" placeholder="Select Date">
     </div>
@@ -71,6 +73,9 @@
     <input type="text" name="" class="bmro-form-input bmro-search-width filter-list-input" placeholder="Search by term/keywords...">
   </div>
   <div class="fillter-wrapper bmro-input-edit">
+    <div class="bmro-input-search bmro-arrow-parent">
+      <input type="button" name="clear-btn" value="Reset" class="bmro-button bmro-set-size">
+    </div>
   </div>
 </div>
 

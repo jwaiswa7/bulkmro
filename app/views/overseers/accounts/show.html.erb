@@ -2,7 +2,7 @@
 <div class="col-lg-12">
   <section class="pt-0 pt-lg-0 pb-0 pb-lg-0">
     <div class="d-md-flex justify-content-between">
-      <h1 class="display-5 d-flex align-items-center">
+      <h3 class="display-5 d-flex align-items-center">
         <% if @account.id == 3 %> <!-- To show logo of GE for GE Account -->
           <img src="<%= url_for(@account.companies.where(id: 2).first.try(:logo)) %>" alt="<%= @account.name %>" height="65" class="pr-2">
         <% else %>
@@ -34,13 +34,13 @@
         <% end %>
         <h6 class="text-uppercase text-black-50 mb-2">Account Details</h6>
         <div class="form-row">
-          <div class="col-6 col-md-6 mb-2">
+          <div class="col-6 col-md-6 mb-2 bmro-summary-data bmro-summalign">
             <strong class="d-block bmro-summary-heading bmro-fl">Is Supplier</strong>
             <div class="bmro-summary-data">
             <%= format_boolean(@account.is_supplier?) %>
             </div>
           </div>
-          <div class="col-6 col-md-6 mb-2">
+          <div class="col-6 col-md-6 mb-2 bmro-summary-data bmro-summalign">
             <strong class="d-block bmro-summary-heading">Is Customer</strong>
             <div class="bmro-summary-data">
             <%= format_boolean(@account.is_customer?) %>

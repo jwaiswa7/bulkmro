@@ -1,7 +1,7 @@
 <% if comments.persisted.size > 0 %>
   <div class="chats bmro-message-tab-margin">
     <% comments.persisted.each do |comment| %>
-      <div class="media chat-item comments-wrap">
+      <div class="media chat-item comments-wrap bmro-new-width">
         <div class="media-body">
           <div class="chat-item-title">
             <span class="chat-item-author">
@@ -38,7 +38,7 @@
 <% end %>
 
 
-<%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '',class: 'bmro-form-input'} %>
+<%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '',class: 'bmro-form-input bmro-textarea-width'} %>
 <%= f.hidden_field :show_to_customer, value: show_to_customer %>
 
 <div class="flex-fill">

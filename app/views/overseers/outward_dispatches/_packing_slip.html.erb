@@ -1,10 +1,10 @@
 <div class="card mb-2">
   <div class="card-header d-md-flex justify-content-between">
     <h5 class="text-uppercase bmro-form-heading text-black-50 mb-1 "> Packing Slip <%= index + 1 %></h5>
-    <div>
-      <%= row_action_button(overseers_outward_dispatch_packing_slip_path(@outward_dispatch, packing_slip, format: :pdf), 'file-pdf', 'Download Pdf', 'dark', :_blank) %>
-      <a href="<%= edit_overseers_outward_dispatch_packing_slip_path(@outward_dispatch,packing_slip) %>" class="btn btn-warning align-self-center bmro-button btn-block-sm-down">
-        <i class="bmro-icon-pencil"></i>
+    <div class="bmro-aparent-width">
+      <%= row_action_button_without_fa(overseers_outward_dispatch_packing_slip_path(@outward_dispatch, packing_slip, format: :pdf), 'bmro-file-pdf', 'Download Pdf', 'dark', :_blank) %>
+      <a href="<%= edit_overseers_outward_dispatch_packing_slip_path(@outward_dispatch,packing_slip) %>" class="btn btn-warning align-self-center bmro-icon-button-padd bmro-button btn-block-sm-down">
+        <i class="bmro-update-icon bmro-new-update-icon"></i>
       </a>
     </div>
   </div>
@@ -23,7 +23,7 @@
       </div>
       </div>
     </div>
-    <table class="w-100 table-bordered dt-responsive bmro-datatable-style bmro-summary-table wrap-whitespace" data-fixed-header="false">
+    <table class="w-100 table-bordered bmro-datatable-style dt-responsive bmro-datatable-style bmro-summary-table wrap-whitespace" data-fixed-header="false">
       <thead>
       <tr>
         <th class="no-sort">

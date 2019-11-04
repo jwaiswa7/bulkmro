@@ -25,7 +25,7 @@
   <% end %>
 <% end %>
 
-<div class="col-lg-12">
+<div class="col-lg-12 bmro-table-layout">
   <% content_for :header_row do %>
 <!--    <th class="no-sort all bmro-inward-queue">-->
       <%# if is_authorized(:inward_dispatch, 'update_logistics_owner_for_inward_dispatches') && policy(:inward_dispatch).update_logistics_owner_for_inward_dispatches? && (action_name != 'inward_dispatch_delivered_queue') %>
@@ -37,7 +37,7 @@
 <!--    </th>-->
 
       <% if is_authorized(:inward_dispatch, 'update_logistics_owner_for_inward_dispatches') && policy(:inward_dispatch).update_logistics_owner_for_inward_dispatches? && (action_name != 'inward_dispatch_delivered_queue') %>
-        <th class="sort desktop text-right" width="98px">
+        <th class="sort desktop text-right" width="100px">
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" name="all_inward_dispatches" id="all_inward_dispatches">
               <label class="custom-control-label" for="all_inward_dispatches">Quick Actions</label>
@@ -48,25 +48,25 @@
       <% end %>
 
 
-    <th class="sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
-    <th class="no-sort desktop" data-name="customer_id">Customer Company Name</th>
-    <th class="sort desktop text-right" data-name="so_number">Sales Order #</th>
-    <th class="sort desktop text-right" data-name="so_date">Sales Order Date</th>
-    <th class="sort desktop text-right" data-name="customer_committed_date">Committed Date to Customer</th>
-    <th class="sort desktop text-right" data-name="po_number">Supplier PO #</th>
-    <th class="sort desktop right" data-name="po_date">Supplier PO Date</th>
-    <th class="no-sort desktop" data-name="supplier_id">Supplier Name</th>
-    <th class="no-sort desktop" data-name="sales_owner" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
-    <th class="no-sort desktop" data-name="logistics_owner_id">Logistics Owner</th>
-    <th class="no-sort desktop" data-name="po_status">Status</th>
-    <th class="no-sort desktop" data-name="po_request_status">PO Request Status</th>
-    <th class="no-sort desktop" data-name="pr_status">Payment Request Status</th>
-    <th class="no-sort all" data-name="material_status">Material Status</th>
-    <th class="sort desktop" data-name="latest_comment" width="106px">Latest Comment</th>
-    <th class="sort desktop text-right" data-name="expected_dispatch_date">Expected Dispatch Date</th>
-    <th class="no-sort desktop" data-name="logistics_partner">Logistics Partner</th>
-    <th class="no-sort desktop" data-name="tracking_number">Tracking Details</th>
-    <th class="sort desktop text-right" data-name="expected_delivery_date">Expected Delivery Date</th>
+    <th class="sort desktop text-right" width="78px" data-name="inquiry_number">Inquiry #</th>
+    <th class="no-sort desktop" width="130px" data-name="customer_id">Customer Company Name</th>
+    <th class="sort desktop text-right" width="88px" data-name="so_number">Sales Order #</th>
+    <th class="sort desktop text-right" width="88px" data-name="so_date">Sales Order Date</th>
+    <th class="sort desktop text-right" width="82px" data-name="customer_committed_date">Committed Date<br> to Customer</th>
+    <th class="sort desktop text-right" width="88px" data-name="po_number">Supplier PO #</th>
+    <th class="sort desktop right" width="88px" data-name="po_date">Supplier PO Date</th>
+    <th class="no-sort desktop" width="130px" data-name="supplier_id">Supplier Name</th>
+    <th class="no-sort desktop" width="94px" data-name="sales_owner" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
+    <th class="no-sort desktop" width="94px" data-name="logistics_owner_id">Logistics Owner</th>
+    <th class="no-sort desktop" width="98px" data-name="po_status">Status</th>
+    <th class="no-sort desktop" width="98px" data-name="po_request_status">PO Request Status</th>
+    <th class="no-sort desktop" width="130px" data-name="pr_status">Payment Request Status</th>
+    <th class="no-sort all" width="98px" data-name="material_status">Material Status</th>
+    <th class="sort desktop" width="222px" data-name="latest_comment" width="230px">Latest Comment</th>
+    <th class="sort desktop text-right" width="90px" data-name="expected_dispatch_date">Expected Dispatch<br> Date</th>
+    <th class="no-sort desktop" width="85px" data-name="logistics_partner">Logistics Partner</th>
+    <th class="no-sort desktop" width="90px" data-name="tracking_number">Tracking Details</th>
+    <th class="sort desktop text-right" width="80px" data-name="expected_delivery_date">Expected Delivery Date</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>

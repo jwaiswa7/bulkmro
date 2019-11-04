@@ -3,7 +3,7 @@
 <% provide :wrap_whitespace, true %>
 <div class="row">
   <div class="bmro-float">
-    <div class="col-lg-6">
+    <div class="col-lg-3 bmor-minwidthset">
       <a class="btn text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-overall-toggole" type="button" data-toggle="collapse" aria-controls="pod-summary ownerwise-summary" aria-expanded="false" data-target="#pod-summary">
         Overall Scorecard
       </a>
@@ -83,31 +83,32 @@
   </div>
 </div>
 
+<div class="col-lg-12 bmro-table-layout">
 <% content_for :header_row do %>
   <th class="no-sort all" width="98px">Quick Actions</th>
-  <th class="no-sort desktop text-right">BM Inquiry #</th>
-  <th class="no-sort desktop">Inquiry Date</th>
-  <th class="no-sort desktop" data-name="company_id">Company</th>
-  <th class="no-sort desktop">IS Owner</th>
-  <th class="no-sort desktop" data-name="logistics_owner_id">Logistics Owner</th>
-  <th class="no-sort desktop">Regular / Route Through</th>
-  <th class="no-sort all text-right" data-name="sku">BM Number</th>
-  <th class="no-sort desktop">Item Description</th>
-  <th class="no-sort desktop">Item Make</th>
-  <th class="no-sort desktop">Quantity</th>
-  <th class="no-sort desktop">Delivery Location</th>
-  <th class="no-sort desktop">Customer PO Date</th>
-  <th class="no-sort desktop">Customer PO Received Date</th>
-  <th class="no-sort desktop" data-name="cp_committed_date">Committed Delivery Date to Customer</th>
-  <th class="no-sort desktop">SO Creation Date</th>
-  <th class="no-sort desktop">Actual Customer Delivery Date</th>
-  <th class="no-sort desktop">Committed Delivery TAT (days)</th>
-  <th class="no-sort desktop">Actual Delivery TAT (days)</th>
-  <th class="no-sort desktop">Delay</th>
-  <th class="no-sort desktop">SLA Bucket</th>
-  <th class="no-sort desktop" data-name="delay_bucket">Delay Bucket</th>
-  <th class="no-sort desktop" data-name="delay_reason">Delay Reason</th>
-  <th class="no-sort desktop">Committed Month of Delivery</th>
+  <th class="no-sort desktop text-right" width="62px">BM Inquiry #</th>
+  <th class="no-sort desktop" width="88px">Inquiry Date</th>
+  <th class="no-sort desktop" width="130px" data-name="company_id">Company</th>
+  <th class="no-sort desktop" width="94px">IS Owner</th>
+  <th class="no-sort desktop" width="94px" data-name="logistics_owner_id">Logistics Owner</th>
+  <th class="no-sort desktop" width="72px">Regular / Route Through</th>
+  <th class="no-sort all text-right" width="60px" data-name="sku">BM Number</th>
+  <th class="no-sort desktop" width="172px">Item Description</th>
+  <th class="no-sort desktop" width="62px">Item Make</th>
+  <th class="no-sort desktop" width="41px">Quantity</th>
+  <th class="no-sort desktop" width="58px">Delivery Location</th>
+  <th class="no-sort desktop" width="88px">Customer PO Date</th>
+  <th class="no-sort desktop" width="88px">Customer PO Received Date</th>
+  <th class="no-sort desktop" width="88px" data-name="cp_committed_date">Committed Delivery Date to Customer</th>
+  <th class="no-sort desktop" width="88px">SO Creation Date</th>
+  <th class="no-sort desktop" width="88px">Actual Customer Delivery Date</th>
+  <th class="no-sort desktop" width="54px" >Committed Delivery TAT (days)</th>
+  <th class="no-sort desktop" width="40px">Actual Delivery TAT (days)</th>
+  <th class="no-sort desktop" width="30px">Delay</th>
+  <th class="no-sort desktop" width="50px">SLA Bucket</th>
+  <th class="no-sort desktop" width="50px" data-name="delay_bucket">Delay Bucket</th>
+  <th class="no-sort desktop" width="60px" data-name="delay_reason">Delay Reason</th>
+  <th class="no-sort desktop" >Committed Month of Delivery</th>
 <% end %>
 
 <% content_for :filter_row do %>
@@ -137,7 +138,6 @@
   <td data-filter="false"></td>
 <% end %>
 
-<div class="col-lg-12">
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>

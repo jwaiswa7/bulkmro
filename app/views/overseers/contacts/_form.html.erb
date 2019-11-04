@@ -17,7 +17,7 @@
         </div>
         <div class="col-6">
           <% if !params[:company_id].present? && params[:action] == 'new' %>
-            <%= f.input :company_id, as: :select, collection: selected_option_or_nil(f, :companies), input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_companies_path, label: "Companies"} %>
+            <%= f.input :company_id, as: :select, collection: selected_option_or_nil(f, :companies), input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_companies_path, label: "Companies"} %>
           <% else %>
             <%= f.input :companies, input_html: {value: format_collection(f.object.companies)}, disabled: true %>
           <% end %>
@@ -68,7 +68,7 @@
           <%= f.input :password, required: false, input_html: {class: 'bmro-form-input'} %>
         </div>
         <div class="col-6">
-          <%= f.input :password_confirmation, required: false %>
+          <%= f.input :password_confirmation, required: false, input_html: {class: 'bmro-form-input'} %>
         </div>
       </div>
       

@@ -156,6 +156,27 @@ let setup = () => {
             },{
                 "targets": 'text-right',
                 "class": 'text-right text-nowrap'
+            },{
+                "targets": 'bmro-company-width',
+                "class": 'bmro-company-width'
+            },{
+                "targets": 'bmro-quick-actions-width',
+                "class": 'bmro-quick-actions-width'
+            },{
+                "targets": 'bmro-inquiry-width',
+                "class": 'bmro-inquiry-width'
+            },{
+                "targets": 'bmro-sales-invoice-sub-width',
+                "class": 'bmro-sales-invoice-sub-width'
+            },{
+                "targets": 'bmro-date-width',
+                "class": 'bmro-date-width'
+            },{
+                "targets": 'bmro-sap-status-width',
+                "class": 'bmro-sap-status-width'
+            },{
+                "targets": 'bmro-inside-sale-width',
+                "class": 'bmro-inside-sale-width'
             }, {
                     "targets": 'text-center',
                     "class": 'text-center text-nowrap'

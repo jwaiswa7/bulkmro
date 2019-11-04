@@ -8,7 +8,7 @@
       </h3>
 
       <% if is_authorized(@company, 'edit') %>
-        <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down"><i class="bmro-pencil-icon"></i>Edit
+        <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down"><i class="bmro-update-icon"></i>Edit
           Company</a>
       <% end %>
     </div>
@@ -44,14 +44,14 @@
             <h6 class="text-uppercase text-black-50 bmro-form-heading mb-1">Company Details</h6>
             <div class="form-row">
               <% if @company.account %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Account</strong>
                   <a class="bmro-summary-link" href="<%= overseers_account_path(@company.account) %>" target="_blank"><%= @company.account %></a>
                 </div>
               <% end %>
 
               <% if @company.site? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Site</strong>
                   <div class="bmro-summary-data">
                     <%= @company.site %>
@@ -61,7 +61,7 @@
 
               <% if @company.default_company_contact.present? %>
                 <% if @company.default_company_contact.contact.mobile %>
-                  <div class="col-6 col-md-3 mb-2">
+                  <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                     <strong class="d-block bmro-summary-heading">Mobile</strong>
                     <div class="bmro-summary-data">
                       <%= @company.default_company_contact.contact.mobile %>
@@ -70,7 +70,7 @@
                 <% end %>
 
                 <% if @company.default_company_contact.contact.email.present? %>
-                  <div class="col-6 col-md-3 mb-2">
+                  <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                     <strong class="d-block bmro-summary-heading">Email address</strong>
                     <div class="bmro-summary-data">
                       <%= @company.default_company_contact.contact.email %>
@@ -79,7 +79,7 @@
                 <% end %>
 
                 <% if @company.default_company_contact.contact.telephone.present? %>
-                  <div class="col-6 col-md-3 mb-2">
+                  <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                     <strong class="d-block bmro-summary-heading">Telephone</strong>
                     <div class="bmro-summary-data">
                       <%= @company.default_company_contact.contact.telephone %>
@@ -89,7 +89,7 @@
               <% end %>
 
               <% if @company.industry.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Industry</strong>
                   <div class="bmro-summary-data">
                     <%= @company.industry %>
@@ -98,7 +98,7 @@
               <% end %>
 
               <% if @company.company_type.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Type</strong>
                   <div class="bmro-summary-data">
                     <%= @company.company_type.titleize %>
@@ -107,7 +107,7 @@
               <% end %>
 
               <% if @company.nature_of_business.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Nature of business</strong>
                   <div class="bmro-summary-data">
                     <%= @company.nature_of_business %>
@@ -116,7 +116,7 @@
               <% end %>
 
               <% if @company.priority.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Priority</strong>
                   <div class="bmro-summary-data">
                     <%= @company.priority.titleize %>
@@ -126,20 +126,20 @@
 
 
               <% if @company.remote_uid.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">SAP Business Partner ID</strong>
                   <strong class="text-info bmro-summary-data"><%= @company.remote_uid %></strong>
                 </div>
               <% end %>
 
-              <div class="col-6 col-md-3 mb-2">
+              <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                 <strong class="d-block bmro-summary-heading">Active</strong>
                 <strong class="text-info"><%= format_boolean(@company.is_active) %></strong>
               </div>
 
 
               <% if @company.default_payment_option.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Default payment option</strong>
                   <div class="bmro-summary-data">
                     <%= @company.default_payment_option %>
@@ -148,7 +148,7 @@
               <% end %>
 
               <% if @company.credit_limit.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Credit limit</strong>
                   <div class="bmro-summary-data">
                      <%= @company.credit_limit %>
@@ -157,11 +157,11 @@
               <% end %>
             </div>
             <div class="form-row">
-              <div class="col-6 col-md-3 mb-2">
+              <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                 <strong class="d-block bmro-summary-heading">Is Supplier</strong>
                 <%= format_boolean(@company.is_supplier?) %>
               </div>
-              <div class="col-6 col-md-3 mb-2">
+              <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                 <strong class="d-block bmro-summary-heading">Is Customer</strong>
                 <%= format_boolean(@company.is_customer?) %>
               </div>
@@ -173,23 +173,23 @@
           <h6 class="text-uppercase text-black-50 bmro-form-heading mb-1 d-block">Accounting</h6>
           <div class="form-row">
             <% if @company.pan != '' %>
-              <div class="col-6 col-md-3 mb-2">
+              <div class="col-6 col-md-3 mb-2 bmro-summary-data">
                 <strong class="d-block">PAN</strong>
                 <%= @company.pan %>
               </div>
             <% end %>
 
-            <div class="col-6 col-md-3 mb-2">
+            <div class="col-6 col-md-3 mb-2 bmro-summary-data">
               <strong class="d-block bmro-summary-heading">Is Valid Pan Card?</strong>
               <%= format_boolean(@company.validate_pan) %>
             </div>
 
-            <div class="col-6 col-md-3 mb-2">
+            <div class="col-6 col-md-3 mb-2 bmro-summary-data">
               <strong class="d-block bmro-summary-heading">Is MSME?</strong>
               <%= format_boolean(@company.is_msme) %>
             </div>
 
-            <div class="col-6 col-md-3 mb-2">
+            <div class="col-6 col-md-3 mb-2 bmro-summary-data">
               <strong class="d-block bmro-summary-heading">Is unregistered dealer?</strong>
               <%= format_boolean(@company.is_unregistered_dealer) %>
             </div>
@@ -201,7 +201,7 @@
             <h6 class="text-uppercase text-black-50 mb-1 d-block">Default owners and managers</h6>
             <div class="form-row">
               <% if @company.inside_sales_owner.present? %>
-                <div class="col-12 col-md-3 mb-2">
+                <div class="col-12 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Default inside sales</strong>
                   <div class="bmro-summary-data">
                     <%= @company.inside_sales_owner %>
@@ -210,7 +210,7 @@
               <% end %>
 
               <% if @company.outside_sales_owner.present? %>
-                <div class="col-12 col-md-3 mb-2">
+                <div class="col-12 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Default outside sales</strong>
                   <div class="bmro-summary-data">
                     <%= @company.outside_sales_owner %>
@@ -219,7 +219,7 @@
               <% end %>
 
               <% if @company.sales_manager.present? %>
-                <div class="col-12 col-md-3 mb-2">
+                <div class="col-12 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Default manager</strong>
                   <div class="bmro-summary-data">
                     <%= @company.sales_manager %>
@@ -228,7 +228,7 @@
               <% end %>
 
               <% if @company.logistics_owner.present? %>
-                <div class="col-12 col-md-3 mb-2">
+                <div class="col-12 col-md-3 mb-2 bmro-summary-data">
                   <strong class="d-block bmro-summary-heading">Default Logistics Owner</strong>
                   <div class="bmro-summary-data">
                     <%= @company.logistics_owner %>
@@ -267,11 +267,11 @@
     </div>
 
     <% if @company.legacy_metadata.present? && (@company.legacy_metadata["sup_mail"] != "NULL" || @company.legacy_metadata["sup_tel"] != "NULL" || @company.legacy_metadata["sup_tel2"] != "NULL" || @company.legacy_metadata["sup_contact"] != "NULL") %>
-      <a class="btn btn-light bmro-button text-left btn-lg btn-block mt-1 mt-lg-4" type="button" data-toggle="collapse" data-target="#dump">
+      <a class="btn btn-light bmro-button text-left btn-lg btn-block mt-1 mt-lg-4 bmro-ld" type="button" data-toggle="collapse" data-target="#dump">
         Legacy Data
       </a>
 
-      <div id="dump" class="collapse">
+      <div id="dump" class="collapse bmro-minwidth-col">
         <div class="card bmro-card">
           <div class="card-body">
             <div class="form-row">
@@ -399,7 +399,7 @@
         <% end %>
         <% content_for :heading_buttons, flush: true do %>
           <% if is_authorized(:contact, 'new') && is_authorized(@company, 'new_contact') %>
-            <a href="<%= new_overseers_contact_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+            <a href="<%= new_overseers_contact_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 bmro-button"><i class="fal fa-plus-circle mr-1"></i>New
               Contact</a>
           <% end %>
         <% end %>
@@ -422,7 +422,7 @@
         <% end %>
         <% content_for :heading_buttons, flush: true do %>
           <% if is_authorized(:contact, 'new') %>
-            <a href="<%= new_overseers_company_company_bank_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+            <a href="<%= new_overseers_company_company_bank_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 bmro-button"><i class="fal fa-plus-circle mr-1"></i>New
               Bank</a>
           <% end %>
         <% end %>
@@ -455,18 +455,18 @@
           <% content_for :heading_buttons, flush: true do %>
             <div>
               <% if is_authorized(:customer_product, 'generate_catalog') %>
-                <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-plus-circle mr-1"></i>Generate
+                <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1 bmro-button"><i class="fal fa-plus-circle mr-1"></i>Generate
                   Catalog</a>
               <% end %>
               <% if is_authorized(:customer_product, 'destroy_all') %>
-                <a href="<%= destroy_all_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-minus-circle mr-1"></i>Destroy
+                <a href="<%= destroy_all_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1 bmro-button"><i class="fal fa-minus-circle mr-1"></i>Destroy
                   Catalog</a>
               <% end %>
               <% if is_authorized(:customer_product, 'new') %>
-                <a href="<%= new_overseers_company_customer_product_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-plus-circle mr-1"></i>New
+                <a href="<%= new_overseers_company_customer_product_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1 bmro-button"><i class="fal fa-plus-circle mr-1"></i>New
                   Customer Product</a>
               <% end %>
-              <a href="<%= new_excel_customer_product_import_overseers_company_imports_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-file-excel mr-1"></i>Add
+              <a href="<%= new_excel_customer_product_import_overseers_company_imports_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 bmro-button"><i class="fal fa-file-excel mr-1"></i>Add
                 products using excel</a>
               <% if @company.customer_products.count > 0 && is_authorized(:customer_product, 'export_customer_product') %>
                 <a href="<%= export_customer_product_overseers_company_customer_products_path(@company, format: :csv) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-download mr-1"></i>Company Product Export</a>
@@ -482,7 +482,7 @@
           <h3 class="display-5 mb-1 d-none d-md-block">Product Categories</h3>
           <div>
             <% if is_authorized(:tag, 'new') %>
-              <a href="<%= new_overseers_company_tag_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+              <a href="<%= new_overseers_company_tag_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 bmro-button"><i class="fal fa-plus-circle mr-1"></i>New
                 Product Category</a>
             <% end %>
           </div>
@@ -523,7 +523,7 @@
         <% end %>
         <% content_for :heading_buttons, flush: true do %>
           <% if is_authorized(@company, 'new_inquiry') && policy(@company).new_inquiry? %>
-            <a href="<%= new_overseers_inquiry_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+            <a href="<%= new_overseers_inquiry_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 bmro-button"><i class="fal fa-plus-circle mr-1"></i>New
               Inquiry</a>
           <% else %>
             <a href="#"></a>

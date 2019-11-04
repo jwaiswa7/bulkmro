@@ -13,32 +13,32 @@
       <div class="form-row">
         <div class="col-12 col-md-6">
           <%= f.input :company, as: :select, collection: Company.acts_as_customer,
-                      input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select Customer Company' }, required: false, include_blank: true,
+                      input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select Customer Company' }, required: false, include_blank: true,
                       selected: params['pipeline_report'].present? && params['pipeline_report']['company'].present? ? params['pipeline_report']['company'].to_i : '' %>
         </div>
         <div class="col-12 col-md-6">
           <%= f.input :company_alias, as: :select, collection: Account.all,
-                      input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select Customer Company Alias' }, required: false, include_blank: true,
+                      input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select Customer Company Alias' }, required: false, include_blank: true,
                       selected: params['pipeline_report'].present? && params['pipeline_report']['company_alias'].present? ? params['pipeline_report']['company_alias'].to_i : '' %>
         </div>
         <div class="col-12 col-md-3">
           <%= f.input :procurement_specialist, as: :select, collection: Inquiry.procurement_specialists,
-                      input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select a  Procurement Specialist'}, required: false, include_blank: true,
+                      input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select a  Procurement Specialist'}, required: false, include_blank: true,
                       selected: params['pipeline_report'].present? && params['pipeline_report']['procurement_specialist'].present? ? params['pipeline_report']['procurement_specialist'].to_i : '' %>
         </div>
         <div class="col-12 col-md-3">
           <%= f.input :outside_sales_owner, as: :select, collection: Inquiry.outside_sales_owners,
-                      input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select an Outside Sales Owner'}, required: false, include_blank: true,
+                      input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select an Outside Sales Owner'}, required: false, include_blank: true,
                       selected: params['pipeline_report'].present? && params['pipeline_report']['outside_sales_owner'].present? ? params['pipeline_report']['outside_sales_owner'].to_i : '' %>
         </div>
         <div class="col-12 col-md-3">
           <%= f.input :procurement_operations, as: :select, collection: Inquiry.procurement_operations,
-                      input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select a Procurement_Opreations'}, required: false, include_blank: true,
+                      input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select a Procurement_Opreations'}, required: false, include_blank: true,
                       selected: params['pipeline_report'].present? && params['pipeline_report']['procurement_operations'].present? ? params['pipeline_report']['procurement_operations'].to_i : '' %>
         </div>
         <div class="col-12 col-md-3">
           <%= f.input :sales_manager, as: :select, collection: Overseer.all.map {|o| [o.parent.full_name, o.parent.id] if o.parent.present?}.compact.uniq.sort,
-                      input_html: {class: "select2-single bmro-form-input", :'data-placeholder' => 'Select a Sales Manager' }, required: false, include_blank: true,
+                      input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select a Sales Manager' }, required: false, include_blank: true,
                       selected: params['pipeline_report'].present? && params['pipeline_report']['sales_manager'].present? ? params['pipeline_report']['sales_manager'].to_i : '' %>
         </div>
       </div>
@@ -46,7 +46,7 @@
       <div class="form-row">
         <div class="col text-center">
           <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button") do %>
-            <i class="bmro-fa-redo"></i>Refresh Report
+            <i class="bmro-fa-redo bmro-fa-redo-po"></i>Refresh Report
           <% end %>
         </div>
         <div class="col text-center">

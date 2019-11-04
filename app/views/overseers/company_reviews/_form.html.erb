@@ -5,7 +5,7 @@
     <div class="simple-row px-3">
       <div class="form-row mt-2">
         <div class="col-12">
-          <h6 class="text-uppercase mb-0">
+          <h6 class="bmro-rating-head mb-0">
             <strong><%= company_rating.object.review_question %></strong>
           </h6>
 <!--          <div class="mb-2 mt-1 star">-->
@@ -16,8 +16,8 @@
       </div>
     </div>
   <% end %>
-  <div class="card-footer mt-2">
-    <%= button_tag(type: "submit", class: "btn btn-success btn-block submit-rating") do %>
+  <div class="card-footer mt-2 bmro-bg">
+    <%= button_tag(type: "submit", class: "btn btn-success btn-block submit-rating bmro-rate-btn") do %>
        Submit Review
     <% end %>
   </div>

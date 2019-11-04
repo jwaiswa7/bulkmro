@@ -4,21 +4,21 @@
 
   <%= simple_form_for([:overseers, @company], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <% if params[:ccr_id].present? %>
-      <%= f.association :account, collection: selected_option_or_nil(f, :account), input_html: {class: 'select2-ajax ', :'data-source' => autocomplete_overseers_accounts_path}, include_blank: 'Link company with account' %>
+      <%= f.association :account, collection: selected_option_or_nil(f, :account), input_html: {class: 'select2-ajax  bmro-form-input bmro-dropdown-input', :'data-source' => autocomplete_overseers_accounts_path}, include_blank: 'Link company with account' %>
       <%= render 'overseers/companies/common_form', :f => f %>
     <% else %>
       <div class="card">
         <div class="card-body">
           <div class="form-row ">
             <div class="col-md-6">
-              <label class="d-flex justify-content-center align-items-center flex-row btn btn-success bmro-button">
-                <%= radio_button_tag :account, 'existing', class: 'custom-control-input bmro-button' %> &nbsp; Add Existing Account
-              </label>
+              <!-- <label class="d-flex justify-content-center align-items-center flex-row bmro-button btn btn-success"> -->
+                <%= radio_button_tag :account, 'existing', class: 'custom-control-input' %> &nbsp; Add Existing Account
+              <!-- </label> -->
             </div>
             <div class="col-md-6">
-              <label class="d-flex justify-content-center align-items-center flex-row bmro-button btn btn-success">
+              <!-- <label class="d-flex justify-content-center align-items-center flex-row bmro-button btn btn-success"> -->
                 <%= radio_button_tag :account, 'new', class: 'custom-control-input' %> &nbsp; Add New Account
-              </label>
+              <!-- </label> -->
             </div>
           </div>
           <br>

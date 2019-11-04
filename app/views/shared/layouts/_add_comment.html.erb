@@ -3,7 +3,7 @@
     <div class="modal-content bmro-bg">
       <div class="modal-header text-center mb-0 mt-2 px-0 p-0">
         <div class="card-header-tabs w-100">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button type="button" class="close" data-dismiss="modal"><i class="bmro-btn-cancel-icon"></i></button>
           <h4 class="modal-title bmro-form-heading text-black-150 text-lg-center w-100 text-large pt-1 pb-1">
             <strong class="text-uppercase">Add Comment</strong>
           </h4>
@@ -11,7 +11,7 @@
       </div>
       <div class="modal-body mb-3 px-0 p-0">
         <%= simple_form_for([:overseers, obj], :url => url, :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-          <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
+          <div class="error bg-danger text-white px-1 rounded"></div>
           <div class="card bmro-card bmro-not-border">
             <div class="card-body">
               <div class="form-row">
@@ -29,8 +29,8 @@
                 </button>
               </div>
               <% if obj.comments.persisted.size > 0 %>
-                <div class="card">
-                  <div class="card-body">
+                <div class="card bmro-card-border-none">
+                  <div class="card-body  bmro-comment-padding">
                     <div class="flex-fill">
                       <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Comments History</h6>
                     </div>
@@ -41,7 +41,7 @@
                         <% end %>
                       <% end %>
                     </div>
-                    <div class="card-footer bmro-card-footer">
+                    <div class="card-footer bmro-card-footer bmro-footer-margin bmro-model-header">
                       <a href="<%= view_more + '#comments' %>" class="btn btn-success bmro-button btn-block align-self-center btn-block-sm-down">View
                         More</a>
                     </div>

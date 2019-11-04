@@ -2,7 +2,7 @@ json.data (@measurement_units) do |measurement_unit|
   json.array! [
                   [
                       if is_authorized(measurement_unit,'edit')
-                        row_action_button_without_fa(edit_overseers_measurement_unit_path(measurement_unit), 'bmro-icon-table bmro-icon-pencil', 'Edit Measurement Unit', 'warning')
+                        row_action_button(edit_overseers_measurement_unit_path(measurement_unit), 'fal fa-pencil', 'Edit Measurement Unit', 'warning')
                       end,
                   ].join(' '),
                   conditional_link(measurement_unit.to_s, edit_overseers_measurement_unit_path(measurement_unit),  is_authorized(measurement_unit,'edit')),

@@ -7,7 +7,7 @@
       </h3>
 
       <% if !@company_creation_request.company.present? && is_authorized(:company, 'new') %>
-        <a class="bmro-color-button" href="<%= new_overseers_company_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center bmro-button bmro-summary-heading btn-block-sm-down"><i class="bmro-plus-icon"></i>Create
+        <a class="bmro-color-button bmro-button" href="<%= new_overseers_company_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center bmro-button bmro-summary-heading btn-block-sm-down"><i class="bmro-plus-icon"></i>Create
           New
           Company</a>
       <% end %>

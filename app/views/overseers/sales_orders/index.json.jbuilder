@@ -43,7 +43,7 @@ json.data (@sales_orders) do |sales_order|
                   format_succinct_date(sales_order.inquiry.customer_committed_date),
                   conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), is_authorized(sales_order.inquiry, 'edit') && policy(sales_order.inquiry).edit?),
                   sales_order.invoices.map {|invoice| link_to(invoice.invoice_number, overseers_inquiry_sales_invoice_path(sales_order.inquiry, invoice), target: '_blank')}.compact.join(' '),
-                  sales_order.inquiry.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", sales_order.inquiry.po_subject].join('').html_safe, sales_order.inquiry.customer_po_sheet, target: '_blank') : sales_order.inquiry.po_subject,
+                  sales_order.inquiry.customer_po_sheet.attached? ? link_to(["<i class='bmro-fa-file-alt'></i>", sales_order.inquiry.po_subject].join('').html_safe, sales_order.inquiry.customer_po_sheet, target: '_blank') : sales_order.inquiry.po_subject,
                   status_badge(format_enum(sales_order.order_status, humanize_text: false)),
                   status_badge(format_enum(sales_order.remote_status, humanize_text: false)),
                   conditional_link(sales_order.inquiry.company.account.name, overseers_account_path(sales_order.inquiry.company.account), is_authorized(sales_order.inquiry.company.account, 'show')),

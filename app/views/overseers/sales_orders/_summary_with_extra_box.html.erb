@@ -34,9 +34,9 @@
   <div class="bmro-bg bmro-padding-for-table mt-2 form-row d-flex flex-row align-content-stretch">
     <% statuses.each do |status, status_id| %>
       <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch bmro-col-pl">
-        <a data-value="<%= status_id %>" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-<%= status_color(status) %> status-<%= status_id %>" href="#">
+        <a data-value="<%= status_id %>" name="status" class="bmro-border-class summary_box card w-100 mb-2 rim rim-bottom border-<%= status_color(status) %> status-<%= status_id %>" href="#">
             <div class="card-body px-2 pt-2 pb-2 bmro-box-card-body">
-              <div class="d-flex flex-column h-100">
+              <div class="bmro-fl h-100">
                 <p class="mb-1 text-small bmro-ar-report-head text-uppercase text-<%= status_color(status) %>">
                   <strong><%= format_enum(status) %></strong>
                 </p>
@@ -48,9 +48,9 @@
       </div>
     <% end %>
     <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch bmro-col-pl">
-      <div data-value="" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-red">
+      <div data-value="" name="status" class="summary_box card w-100 mb-2 bmro-border-class rim rim-bottom border-red">
         <div class="card-body px-2 pt-2 pb-2 bmro-box-card-body">
-          <div class="d-flex flex-column h-100">
+          <div class="bmro-fl h-100">
             <p class="mb-1 text-small bmro-ar-report-head text-uppercase text-red">
               <strong><%=label %></strong>
             </p>
@@ -62,9 +62,9 @@
     </div>
     <% if label == 'Not Invoiced' %>
     <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch bmro-col-pl">
-      <div data-value="" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-blue " >
+      <div data-value="" name="status" class="summary_box card w-100 mb-2 rim bmro-border-class rim-bottom border-blue " >
         <div class="card-body px-2 pt-2 pb-2 bmro-box-card-body">
-          <div class="d-flex flex-column h-100">
+          <div class="bmro-fl h-100">
             <p class="mb-1 text-small bmro-ar-report-head text-uppercase text-blue">
               <strong>Total Order</strong>
             </p>

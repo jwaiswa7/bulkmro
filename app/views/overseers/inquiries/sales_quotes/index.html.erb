@@ -1,11 +1,11 @@
-<div class="col-lg-12">
+<div class="col-lg-12 bmro-remove-style">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <% provide :hide_table_desc, true %>
     <% provide :hide_table_heading, true %>
 
     <% if is_authorized(@inquiry, 'new_sales_quote') && policy(@inquiry).new_sales_quote? %>
       <div class="form-row mb-3">
-        <div class="col-12">
+        <div class="col-12 bmro-table-layout">
           <a href="<%= new_overseers_inquiry_sales_quote_path(@inquiry) %>" class="btn-block btn btn-success btn-rounded">
             <i class="fal fa-plus-circle mr-1"></i>New Sales Quote
           </a>
@@ -15,7 +15,7 @@
 
     <% if @sales_quotes.present? && @inquiry.final_sales_quote.present? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
     <div class="bmro-instruction-heading">
-       <h4 class="bmro-instruction-head collapsed" data-toggle="collapse" data-target="#instruction"><span class="bmro-information"></span>Instructions heading will be displayed here   <i class="bmro-add-icon bmro-hide"></i>
+       <h4 class="bmro-instruction-head bmro-margin-ul collapsed bmro-ul-background" data-toggle="collapse" data-target="#instruction"><span class="bmro-information"></span>Instructions heading will be displayed here   <i class="bmro-add-icon bmro-hide"></i>
         <i class="bmro-minus-icon bmro-hide"></i>
        </h4>
     </div>
@@ -38,15 +38,15 @@
 
     <% content_for :header_row do %>
       <th class="no-sort" width="98px">Quick Actions</th>
-      <th class="no-sort desktop text-right">Doc ID</th>
-      <th class="no-sort desktop text-right">Sent At</th>
+      <th class="no-sort desktop text-right" width="77px">Doc ID</th>
+      <th class="no-sort desktop text-right" width="124px">Sent At</th>
       <th>Created By</th>
-      <th class="no-sort desktop text-right">Line Items</th>
-      <th class="no-sort desktop text-right">Total(Excl. Tax)</th>
-      <th class="no-sort desktop text-right">Total(Incl. Tax)</th>
-      <th class="no-sort desktop text-right">Created At</th>
+      <th class="no-sort desktop text-right" width="117px">Line Items</th>
+      <th class="no-sort desktop text-right" width="108px">Total(Excl. Tax)</th>
+      <th class="no-sort desktop text-right" width="149px">Total(Incl. Tax)</th>
+      <th class="no-sort desktop text-right" width="143px">Created At</th>
       <% if policy(@sales_quotes).reset_quote_form? %>
-        <th class="no-sort desktop text-right">Last SO Status</th>
+        <th class="no-sort desktop text-right" width="125px">Last SO Status</th>
       <% end %>
     <% end %>
 

@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="bmro-fix-width bmro-width-auto">
+  <div class="bmro-fixtab-width bmro-fl">
     <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#summary">
       <% if alias_name.present? %>
         <%= alias_name.titleize %> Summary&nbsp;&nbsp;&nbsp;
@@ -8,7 +8,7 @@
         <% end %><!-- <i class="fa fa-chevron-down" aria-hidden="true"></i> -->
     </a>
     <% if main_summary_statuses.present? %>
-      <div class="bmro-float">
+      <div class="bmro-width-100">
         <% main_summary_statuses.each do |main_status, main_status_id| %>
           <div class="bmro-collaps bmro-collaps2">
             <div class="bmro-invoice-data">
@@ -59,7 +59,7 @@
     <% if statuses.present? %>
       <% statuses.each do |status, status_id| %>
         <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
-          <a data-value="<%= status_id %>" name="status" class="summary_box card w-100 mb-2 rim rim-bottom bmro-border-bottom border-<%= status_color(status) %> status-<%= status_id %>" href="#">
+          <a data-value="<%= status_id %>" name="status" class="summary_box card w-100 mb-2 rim rim-bottom bmro-border-class border-<%= status_color(status) %> status-<%= status_id %>" href="#">
             <div class=" px-2 pt-2 bmro-inward-card">
               <div class="h-100">
                 <p class="mb-1 text-small bmro-ar-report-head text-uppercase text-<%= status_color(status) %>">
