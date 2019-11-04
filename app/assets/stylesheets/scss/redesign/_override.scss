@@ -3839,3 +3839,9 @@ strong{
 .border-color-light-blue{
      border-bottom: 6px solid;
 }
+.custom-control-input:checked ~ .custom-control-label::before{
+    background-color: #98cafa;
+}
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before{
+    background-color: #98cafa;
+}
