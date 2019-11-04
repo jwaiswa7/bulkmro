@@ -3754,7 +3754,7 @@ table.table.dataTable{
     text-transform: capitalize!important;
 }
 .bmro-rate-stars .star{
-    border:2px solid #ECEEF2;
+    margin: 0px;
 }
 .bmro-rate-stars h6{
     color: #2C4159;
@@ -3784,6 +3784,7 @@ table.table.dataTable{
 }
 .bmro-rate-margin{
     margin-left: 18px;
+    margin-bottom: 0px;
 }
 .bmro-rating-reset{
     box-sizing: border-box;
@@ -3806,5 +3807,11 @@ background-color: #eceef2;
 .bmro-rate-close{
     position: absolute;
     right: 30px;
-    top: 20px;
+    top: 70px;
+}
+.bmro-modal-margin{
+    padding: 50px 70px;
+}
+.bmro-model-line{
+    border-top: 1px solid #eceef2;
 }
