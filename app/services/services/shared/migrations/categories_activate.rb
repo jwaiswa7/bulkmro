@@ -6,7 +6,7 @@ class Services::Shared::Migrations::CategoriesActivate < Services::Shared::Migra
       parent_category_name = row.get_column('Category')
       middle_category_name = row.get_column('sub_cat_1')
       last_category_name = row.get_column('sub_cat_2')
-      is_service = row.get_column('product_service').downcase == "product" ? false : true
+      is_service = row.get_column('product_service').downcase == 'product' ? false : true
       parent_category = Category.find_by_name(parent_category_name)
       if parent_category.present?
         if parent_category.is_active == false
@@ -27,14 +27,12 @@ class Services::Shared::Migrations::CategoriesActivate < Services::Shared::Migra
   end
 
   def category_activation(cat, is_active: true, is_service: false)
-    begin
-      if cat.present?
-        cat.is_active = true
-        cat.is_service = is_service
-        cat.save_and_sync
-      end
-    rescue => e
-      @array << [cat.id, e.message]
+    if cat.present?
+      cat.is_active = true
+      cat.is_service = is_service
+      cat.save_and_sync
     end
+  rescue => e
+    @array << [cat.id, e.message]
   end
 end
