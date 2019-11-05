@@ -1892,17 +1892,6 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     z-index: 100;
     background-color: #f0f2f6!important; 
 }
-@media only screen and (min-width: 1920px) {
-  .bmro-datatable-style.fixedHeader-floating{
-    padding-top: 25px!important;
-    top: 48px!important;
-  }
-}
-@media only screen and (min-width: 1440px) {
-  .bmro-datatable-style.fixedHeader-floating{
-    padding-top: 57px;
-  }
-}
 
 .bmro-serial-number-products{
     border-style: none!important;
@@ -3882,4 +3871,15 @@ td .media .media-body{
 }
 td .media.chat-item{
     line-height: 1.1rem;
+}
+@media only screen and (min-width: 1920px) {
+  .bmro-datatable-style.fixedHeader-floating{
+    padding-top: 25px!important;
+    top: 48px!important;
+  }
+}
+@media only screen and (min-width: 1440px) {
+  .bmro-datatable-style.fixedHeader-floating{
+    padding-top: 57px;
+  }
 }
