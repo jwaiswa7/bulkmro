@@ -27,7 +27,7 @@
   <% content_for :header_row do %>
 
     <% if is_authorized(:purchase_order, 'update_logistics_owner') && policy(:purchase_order).update_logistics_owner? %>
-      <th class="no-sort all bmro-material-queue bmro-selectp" width="70px">
+      <th class="no-sort all bmro-material-queue bmro-selectp" width="16px">
         <div class="custom-control custom-checkbox">
           <input type="checkbox" class="custom-control-input" name="all_purchase_orders" id="all_purchase_orders">
           <label class="custom-control-label" for="all_purchase_orders"></label>
@@ -37,7 +37,7 @@
       <th class="no-sort all bmro-material-queue checkbox" width="70px">
       </th>
     <% end %>
-    <th class="sort desktop text-right bmro-table-actions bmro-block-display bmro-table-padding-bot" data-name="inquiry_number" width="98px">Quick Actions</th>
+    <th class="sort desktop text-right bmro-table-actions" data-name="inquiry_number" width="98px">Quick Actions</th>
     <th class="no-sort desktop text-right" width="70px" data-name="po_request_id">PO Request #</th>
     <th class="no-sort desktop text-right" width="42px" data-name="inquiry_number">Inquiry #</th>
     <th class="no-sort desktop" width="130px" data-name="customer_id">Customer Company Name</th>
