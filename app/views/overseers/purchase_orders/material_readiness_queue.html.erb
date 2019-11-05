@@ -27,10 +27,10 @@
   <% content_for :header_row do %>
 
     <% if is_authorized(:purchase_order, 'update_logistics_owner') && policy(:purchase_order).update_logistics_owner? %>
-      <th class="no-sort all bmro-material-queue " width="70px">
+      <th class="no-sort all bmro-material-queue bmro-selectp" width="70px">
         <div class="custom-control custom-checkbox">
           <input type="checkbox" class="custom-control-input" name="all_purchase_orders" id="all_purchase_orders">
-          <label class="custom-control-label" for="all_purchase_orders">Select All</label>
+          <label class="custom-control-label" for="all_purchase_orders"></label>
         </div>
       </th>
     <%else %>
@@ -57,10 +57,10 @@
     <th class="no-sort desktop" width="130px" data-name="payment_request_status">Payment Request status</th>
     <th class="no-sort desktop" width="60px" data-name="percentage_paid">Percentage Paid</th>
     <th class="no-sort desktop" width="55px">Requested Date</th>
-    <th class="no-sort desktop" width="50" data-name="buying_price">Buying Price</th>
-    <th class="no-sort desktop" width="50" data-name="selling_price">Selling Price</th>
-    <th class="no-sort desktop" width="75px" data-name="po_margin">PO Margin %</th>
-    <th class="no-sort desktop" width="85px">Overall Margin %</th>
+    <th class="no-sort desktop" width="88px" data-name="buying_price">Buying Price</th>
+    <th class="no-sort desktop" width="88px" data-name="selling_price">Selling Price</th>
+    <th class="no-sort desktop" width="52px" data-name="po_margin">PO Margin %</th>
+    <th class="no-sort desktop" width="52px">Overall Margin %</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
