@@ -75,11 +75,11 @@
                               <%= check_box_tag 'inquiry_product_supplier_ids[]', inquiry_product.object.id, false, id: "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}", class: 'custom-control-input' %>
                               <label class="custom-control-label" for="<%= "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}" %>"></label>
                               <%= inquiry_product_supplier.object.supplier.to_s %>
-                              <span class="ml-1">
-                                <% if inquiry_product.object.inquiry_product_suppliers.present? && !inquiry_product.object.inquiry_product_suppliers.first.supplier.rating.nil? %>
-                                  <%= format_star(inquiry_product.object.inquiry_product_suppliers.first.supplier.rating) %>
-                                <% end %>
-                              </span>
+<!--                              <span class="ml-1">-->
+                                <%# if inquiry_product.object.inquiry_product_suppliers.present? && !inquiry_product.object.inquiry_product_suppliers.first.supplier.rating.nil? %>
+                                  <%#= format_star(inquiry_product.object.inquiry_product_suppliers.first.supplier.rating) %>
+                                <%# end %>
+<!--                              </span>-->
                             </div>
                           </div>
                         </td>
