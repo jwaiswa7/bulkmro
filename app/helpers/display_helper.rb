@@ -218,7 +218,7 @@ module DisplayHelper
       color = 'text-warning'
     end
 
-    (["<i class='fas fa-star #{color}'></i>", "<span class='render-star #{color}'>", star_given, '<span/>'].join(' ')).html_safe
+    (["<div class='rating-star-wrapper'><i class='fas fa-star #{color}'></i>", "<span class='render-star #{color}'>", star_given, '<span/></div>'].join(' ')).html_safe
   end
 
   def format_count(count, zero_if_nil: true)
