@@ -291,7 +291,7 @@
          <span class="bmro-summary-data bmro-summary-padding"> Products</span>
           <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= sales_order.rows.size %></strong>
         </div>
-        <div class="col-6 col-md-2 bmro-border-left">
+        <div class="col-6 col-md-2 bmro-border-left bmrotf-width">
           <span class="bmro-summary-data bmro-summary-padding">Total Freight</span>
           <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.calculated_freight_cost_total, symbol: sales_order.currency_sign) %></strong>
         </div>
@@ -308,7 +308,7 @@
          <span class="bmro-summary-data bmro-summary-padding"> Selling Price (E. tax)</span>
           <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.converted_total, symbol: sales_order.currency_sign) %></strong>
         </div>
-        <div class="col-6 col-md-1 mt-2 mt-md-0 bmro-border-left">
+        <div class="col-6 col-md-1 mt-2 mt-md-0 bmro-border-left bmrotax-width">
          <span class="bmro-summary-data bmro-summary-padding"> Tax</span>
           <strong class="d-block bmro-summary-heading bmro-summary-padding"><%= format_currency(sales_order.converted_total_tax, symbol: sales_order.currency_sign) %></strong>
         </div>
@@ -330,7 +330,7 @@
           <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
             <% if is_authorized(@sales_order, 'show_pdf') %>
               <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn bmro-button btn-info btn-sm", target: "_blank" do %>
-                <i class="fal fa-eye mr-1"></i>Proforma I.
+                <i class="fal fa-eye-tras mr-1"></i>Proforma I.
               <% end %>
             <% end %>
           </div>
