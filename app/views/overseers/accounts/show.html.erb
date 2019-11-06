@@ -8,8 +8,8 @@
         <% else %>
           <img src="https://ui-avatars.com/api/?size=128&name=<%= @account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/><%= @account.alias %>
         <% end %>
-        <span class="pl-2 lead text-muted bmro-form-heading"><%= @account.name %></span>
-      </h3>
+<!--        <span class="pl-2 lead text-muted bmro-form-heading"><%#= @account.name %></span>-->
+      </h1>
       <% if is_authorized(@account, 'edit') %>
         <a href="<%= edit_overseers_account_path(@account) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down bmro-button"><i class="fal fa-pen mr-1"></i>Edit
         Account</a>
