@@ -19,7 +19,7 @@
               <div class="media-body">
                 <div class="chat-item-title">
                   <span class="chat-item-author"><%= comment.created_by.full_name %></span>
-                  <span><span class="mr-1"><strong><% if comment.approval.present? %><span class="badge badge-success">Approved</span><% end %>
+                  <span class="bmro-comment-age"><span class="mr-1"><strong><% if comment.approval.present? %><span class="badge badge-success">Approved</span><% end %>
                     <% if comment.rejection.present? %><span class="badge badge-danger">Rejected</span><% end %></strong></span><%= time_ago_in_words(comment.created_at) %>
                     ago</span>
                 </div>
