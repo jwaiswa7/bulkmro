@@ -3891,14 +3891,6 @@ strong{
 .render-star.text-warning::parent{
     background-color: #FFE000!important;
 }
-
-@element '.render-star'{
-  $this {
-   background-color: #FE8A78!important;
-  }
-}
-
-
 .bmro-parent-bg .bmro-bgcolor .bmro-collaps{
     background-color: #fff;
 }
