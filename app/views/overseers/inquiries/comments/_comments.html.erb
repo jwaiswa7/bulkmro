@@ -10,7 +10,7 @@
                 <span class="badge badge-secondary"><%= comment.author_role %></span>
               </strong></span>
             </span>
-            <span>
+            <span class="bmro-comment-age">
               <span class="mr-1"><strong>
                 <% if comment.approval.present? && @sales_order.present? && comment.sales_order_id == @sales_order.id %><span class="badge badge-success">Approved <%= "(Doc ID #{comment.sales_order_id}  )" if comment.sales_order_id.present? %></span><% end %>
                 <% if comment.rejection.present? && @sales_order.present? && comment.sales_order_id == @sales_order.id %><span class="badge badge-danger">Rejected <%= "(Doc ID #{comment.sales_order_id}  )" if comment.sales_order_id.present? %></span><% end %>
