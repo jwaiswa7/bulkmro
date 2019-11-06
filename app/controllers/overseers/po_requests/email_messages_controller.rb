@@ -31,6 +31,8 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
       email_type: 'Sending PO to Supplier'
     )
     @metadata = @po_request.purchase_order.metadata.deep_symbolize_keys
+    @payment_terms = PaymentOption.find_by(remote_uid: @metadata[:PoPaymentTerms])
+    @metadata[:packing] = @purchase_order.get_packing(@metadata)
     @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
     @email_message.assign_attributes(email_message_params)
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:cc].present?
@@ -38,7 +40,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
 
     authorize_acl @po_request, 'sending_po_to_supplier_create_email_message'
     if @email_message.auto_attach.present? && @email_message.auto_attach != false
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@purchase_order, locals: {inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier})), filename: @purchase_order.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@purchase_order, locals: {inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier, payment_terms: @payment_terms})), filename: @purchase_order.filename(include_extension: true))
     end
     if @email_message.save
       if PoRequestMailer.send_supplier_notification(@email_message).deliver_now
