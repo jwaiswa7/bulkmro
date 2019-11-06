@@ -6,7 +6,7 @@
       </h3>
       <span>
         <% if is_authorized(@purchase_order, 'new_inward_dispatch') && policy(@purchase_order).new_inward_dispatch? %>
-          <a href="<%= new_overseers_purchase_order_inward_dispatch_path(@purchase_order) %> " class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ">
+          <a href="<%= new_overseers_purchase_order_inward_dispatch_path(@purchase_order) %> " class=" btn btn-success btn-rounded align-self-center bmro-button btn-block-sm-down ">
             <i class="fal fa-plus-circle mr-1"></i>New Inward Dispatch
           </a>
         <% else %>
