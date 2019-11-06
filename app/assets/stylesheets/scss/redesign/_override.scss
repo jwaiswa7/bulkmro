@@ -3866,6 +3866,23 @@ strong{
     line-height: 11px; 
     text-align: right   
 }
+.rating-star-wrapper{
+    border-radius: 4px;
+    background-color: #A9DA61;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: -0.18px;
+    line-height: 15px;
+    overflow: hidden;
+    display: inline-block;
+    padding: 5px 10px;
+}
+.rating-star-wrapper .render-star.text-danger{
+    background-color: #FE8A78!important;
+}
+.rating-star-wrapper .render-star.text-warning{
+    background-color: #FFE000!important;
+}
 .bmro-parent-bg .bmro-bgcolor .bmro-collaps{
     background-color: #fff;
 }
@@ -3892,3 +3909,6 @@ td .media.chat-item{
     padding-top: 57px;
   }
 }
+
+
+
