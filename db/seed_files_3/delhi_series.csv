@@ -1,0 +1,12 @@
+document_type,series_name,series,period_ indicator,length
+Sales Order,LPN 2019,112,FY2019-20,9
+A/R Invoice,LPN 2019,260,FY2019-20,9
+A/R Invoice Branch Transfer,BTLPN 19,261,FY2019-20,9
+A/R Invoice Credit Memo,LPN 2019,262,FY2019-20,9
+A/R Invoice Cancel,CANLPN 19,263,FY2019-20,9
+Delivery,LPN 2019,311,FY2019-20,9
+Purchase Order,LPN 2019,417,FY2019-20,9
+GRPO,LPN 2019,512,FY2019-20,9
+A/P Invoice,LPN 2019,644,FY2019-20,9
+A/P Invoice Branch Transfer,BTLPN 19,645,FY2019-20,9
+A/P Invoice Credit Memo,LPN 2019,646,FY2019-20,9
