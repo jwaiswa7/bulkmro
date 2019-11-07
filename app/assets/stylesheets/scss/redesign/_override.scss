@@ -1880,7 +1880,6 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     height: 39px!important;
     margin-top:-2px;
 }
-
 .bmro-button-parent .dropdown-menu{
     min-width: auto;
     border-radius: 0px;
@@ -3972,4 +3971,35 @@ td .media.chat-item{
 }
 .display-5{
     color: #2c4159;
+}
+
+
+.bmro-radio-container {
+    font-weight: 600;
+    display: block;
+    position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.bmro-radio-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.bmro-checkmark {
+    position: relative;
+    /* top: 0; */
+    /* left: 0; */
+    right: 7px;
+    height: 15px;
+    float: left;
+    width: 15px;
+    background-color: transparent;
+    border-radius: 50%;
+    border: 1px solid #2C4159;
 }

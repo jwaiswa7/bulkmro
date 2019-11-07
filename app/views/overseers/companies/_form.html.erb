@@ -12,8 +12,13 @@
           <div class="form-row ">
             <div class="col-md-6">
               <!-- <label class="d-flex justify-content-center align-items-center flex-row bmro-button btn btn-success"> -->
-                <%= radio_button_tag :account, 'existing', class: 'custom-control-input' %> &nbsp; Add Existing Account
+              <!--   <%= radio_button_tag :account, 'existing', class: 'custom-control-input' %> &nbsp; Add Existing Account -->
               <!-- </label> -->
+              <label class="bmro-priority-lable bmro-radio-container">Priority Quotes 
+               <!--  <input type="radio" name="bmro" class="bmro-top-radio" checked=""> -->
+                  <%= radio_button_tag :account, 'existing', class: 'custom-control-input' %> &nbsp; Add Existing Account
+                <span class="bmro-checkmark"></span>
+              </label>
             </div>
             <div class="col-md-6">
               <!-- <label class="d-flex justify-content-center align-items-center flex-row bmro-button btn btn-success"> -->
