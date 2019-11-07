@@ -223,7 +223,7 @@
                     <%= row.input :pickup_quantity, input_html: {value: row.object.pickup_quantity}, readonly: true, label: false %>
                   </div>
                   <div class="col-6 col-md-2">
-                    <%= row.input :delivered_quantity, type: "number", input_html: {value: row.object.delivered_quantity, min: 0.01, max: (row.object.pickup_quantity.to_i if row.object.pickup_quantity.to_i > 1)}, readonly: f.object.invoice_request.present?, label: false %>
+                    <%= row.input :delivered_quantity, type: "number", input_html: {value: row.object.delivered_quantity, min: 0.01, max: (row.object.pickup_quantity.to_f if row.object.pickup_quantity.to_i > 1)}, readonly: f.object.invoice_request.present?, label: false %>
                   </div>
                   <div class="col-6 col-md-2">
                     <%= row.input :supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true, label: false %>
