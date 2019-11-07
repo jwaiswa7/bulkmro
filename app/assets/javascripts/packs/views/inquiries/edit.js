@@ -148,7 +148,7 @@ $('.bmro-invoice-one').click(function(){
 $(document).ready(function() {
     
     
-    $('.icon-title').tooltipster({
+    $('a').tooltipster({
           delay: 100,
           maxWidth: 500,
           speed: 300,
