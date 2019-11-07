@@ -308,4 +308,7 @@ class PurchaseOrder < ApplicationRecord
       end
     end
   end
+  def supplier_contact
+     self.po_request.contact_phone if self.po_request.present? && self.po_request.contact_phone.present?
+  end
 end
