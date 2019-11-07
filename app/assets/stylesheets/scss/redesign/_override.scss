@@ -4003,3 +4003,20 @@ td .media.chat-item{
     border-radius: 50%;
     border: 1px solid #2C4159;
 }
+.bmro-radio-container input:checked ~ .bmro-checkmark:after {
+    display: block;
+}
+.bmro-radio-container .bmro-checkmark:after {
+    top: 4px;
+    left: 4px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: white;
+    background-color: #2C4159;
+}
+.bmro-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
