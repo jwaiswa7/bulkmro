@@ -86,13 +86,22 @@
 
     <div class="form-row">
       <div class="col-4">
-        <%= f.input :is_msme, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is MSME?' %>
+         <label class="bmro-priority-lable bmro-radio-container">
+               <%= f.input :is_msme, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is MSME?' %>
+                <span class="bmro-checkmark"></span>
+          </label>
       </div>
       <div class="col-4">
-        <%= f.input :is_unregistered_dealer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %>
+         <label class="bmro-priority-lable bmro-radio-container">
+            <%= f.input :is_unregistered_dealer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %> 
+             <span class="bmro-checkmark"></span>
+          </label>
       </div>
       <div class="col-4">
-        <%= f.input :is_international, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is international?' %>
+        <label class="bmro-priority-lable bmro-radio-container">
+            <%= f.input :is_international, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is international?' %>
+            <span class="bmro-checkmark"></span>
+        </label>
       </div>
     </div>
 

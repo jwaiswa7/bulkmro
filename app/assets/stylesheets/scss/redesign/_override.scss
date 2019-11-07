@@ -3993,9 +3993,9 @@ td .media.chat-item{
 }
 .bmro-checkmark {
     position: relative;
-    /* top: 0; */
+     top: 2px;
     /* left: 0; */
-    right: 7px;
+    right: 2px;
     height: 15px;
     float: left;
     width: 15px;
@@ -4014,6 +4014,7 @@ td .media.chat-item{
     border-radius: 50%;
     background: white;
     background-color: #2C4159;
+    margin-bottom: 0px;
 }
 .bmro-checkmark:after {
     content: "";
