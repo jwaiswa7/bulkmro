@@ -31,7 +31,7 @@ class InwardDispatchRow < ApplicationRecord
   end
 
   def pending_delivery
-    self.purchase_order_row.quantity - self.delivered_quantity.to_i
+    self.purchase_order_row.quantity - self.delivered_quantity.to_f
   end
 
   def check_pickup_quantity?
