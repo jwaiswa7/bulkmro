@@ -369,7 +369,9 @@ a.bmro-list-button{
     -webkit-appearance: none !important;
     appearance: none !important;
 }
-.select2-container--disabled .bmro-dropdown-icon { background: none; }
+.select2-container--disabled .bmro-dropdown-icon { 
+    background: none;
+}
 /*.form-control.select{
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAcCAYAAABsxO8nAAAAAXNSR0IArs4c6QAAAftJREFUOBHNlM8vA0EUx9/s4k+wbpSQiGyb9A/Q1I+DnoiQWKHOzjhKIyHhf5CI0Is4icRBqxFcXMQ2CBLlpgc3laA73luG3e3u7IGDSZPtvPedz7w3894A/NFQwzjR5NhsYyTWUi6ZpkwrBRHEAlhhjA9qLbFbGSwQJCBfUShhMF+QByIyksJqQAGQUJgL5AdhjFUYAP5AkaUpnBAAecbFA8CYgaR3ERbnoAKz1vXkuCFsdkQSSMrMZw/Ld+aF1hq9QtgQLhSbu86M6UkjxYHvCjJ9MR2KxIY47XqPMQKcZzlAnbAzBlXO6uPKcKJjDxeu/Tj8IeTH6La8aeJ8qZhbP1cLhQKfTg/vXD48NSOwHfU1kYhN6OtMkyls0cxl551+yGQySrxvotNllExiyXSXxP2fXL9Nza4JgmwfXq++WdVTvOLusASpDCx4PdN7jQWhVQWEcz6Fxga8uVEtoh/h7dwLkfPrqiUOCa0tqqL24M8KUsXH6qYpolewWvsdO9dE5orkS0hVDVyZLOY39qmr7SHrNxRofq1BEPNgM0uAbxBN9N7xOW5Zy/RfDDyzCkIavP3lhJDW9R7hoR1rbbEXXOhMsx51ouOxtT7TEZGIDV0gMhLM58xsfRCEnDUgMj6WiidemAwSCPLCwiCkDx3RHmPG+aSGLvit4AOV+RqTGNSXjQAAAABJRU5ErkJggg==');
     background-size: 10px 16px!important;
@@ -3847,8 +3849,7 @@ strong{
     padding: 6px 13px;
     background-size: 20px;
     background-repeat: no-repeat;
-    background-position: top 7px left 4px  
-
+    background-position: top 7px left 4px;
 }
 .bmrotf-width{
    max-width: 100px; 
@@ -3972,8 +3973,6 @@ td .media.chat-item{
 .display-5{
     color: #2c4159;
 }
-
-
 .bmro-radio-container {
     font-weight: 600;
     display: block;
@@ -3994,7 +3993,6 @@ td .media.chat-item{
 .bmro-checkmark {
     position: relative;
      top: 2px;
-    /* left: 0; */
     right: 2px;
     height: 15px;
     float: left;
@@ -4020,4 +4018,35 @@ td .media.chat-item{
     content: "";
     position: absolute;
     display: none;
+}
+.bmro-sap-status-dot{
+   width: 5px;
+    height: 12px;
+    float: right;
+    position: relative;
+    display: inline;
+    top: 10px;
+    border-radius: 36px;
+}
+.bmro-sap-green{
+    background-color: #A9D978;
+}
+.bmro-sap-yellow{
+    background-color:#FFBE31;
+}
+.bmro-sap-blue{
+    background-color: #4A90E2;
+}
+.bmro-sap-purple{
+    background-color: #A855F0;
+}
+.bmro-sap-label{
+    word-wrap: normal;
+    white-space: normal;
+    line-height: 15px;
+    font-size:12px;
+    color:#2c4159;
+    font-weight:500;
+    text-align:right;
+    letter-spacing:-0.47px;
 }
