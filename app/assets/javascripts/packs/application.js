@@ -57,7 +57,7 @@ app.initializeComponents = () => {
     treant();
     easyAutocomplete();
     globalSearch();
-    // navigationMenu();
+    navigationMenu();
 };
 
 // Turbolinks load event
