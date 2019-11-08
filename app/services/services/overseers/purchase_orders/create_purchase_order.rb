@@ -99,7 +99,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     product_ids = Product.where(sku: Settings.product_specific.freight).last.id
     {
         PoNum: series_number,
-        PoDate: Time.now.strftime('%Y-%m-%d'),
+        PoDate: po_request.purchase_order.present? ? po_request.purchase_order.created_at.to_date.to_s : Time.now.strftime('%Y-%m-%d'),
         PoType: 'Manual',
         PoStatus: '63',
         ItemLine: item_line_json,
