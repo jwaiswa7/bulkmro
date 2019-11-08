@@ -29,7 +29,7 @@
 <div class="bmro-float">
   <div class="bmro-invoice-heading">
     <div class="dropdown">
-  <% if content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all') %>
+  <% if (content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all')) || (content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness')) %>
         <span class="bmro-downimg"></span>
         <% if content_for?(:heading) %>
           <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
@@ -41,14 +41,19 @@
           <%= render partial:   "overseers/"+current_model.downcase+"/download_dropdown" rescue nil %>
         <% else %>
 
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="<%= [request.path, '/', 'export_all.csv'].join %>"><%= "EXPORT " +current_model_header %></a>
-            <% if content_for?(:can_be_directly_exported_filtered_records) && is_authorized(current_model_downcase,'export_filtered_records') %>
-              <a class="dropdown-item" href="#" id="export_filtered_records">Filtered <%= current_model_header %></a>
-            <% end %>
-          </div>
+          <% if content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all') %>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="<%= [request.path, '/', 'export_all.csv'].join %>"><%= "EXPORT " +current_model_header %></a>
+              <% if content_for?(:can_be_directly_exported_filtered_records) && is_authorized(current_model_downcase,'export_filtered_records') %>
+                <a class="dropdown-item" href="#" id="export_filtered_records">Filtered <%= current_model_header %></a>
+              <% end %>
+            </div>
+          <% elsif content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness') %>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="<%= [request.path.chomp('material_readiness_queue'), 'export_material_readiness.csv'].join %>">Material Readiness Queue</a>
+            </div>
+          <% end %>
         <% end %>
-
   <% elsif content_for?(:heading)%>
     <h4 class="page-title"><%= yield :heading %></h4>
   <!--   <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4> -->

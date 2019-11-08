@@ -4051,7 +4051,7 @@ td .media.chat-item{
     letter-spacing:-0.47px;
 }
 .bmro-adjusting-form{
-    width: 66%;
+    width: 1120px;
     margin: 0 auto;
 }
 .bmro-radio-border{
@@ -4062,4 +4062,14 @@ td .media.chat-item{
 }
 .bmro-radio-border label{
     margin-bottom: 0px;
+}
+.bmro-fix-width-slide{
+  float: left;
+  height: 1800px;
+}
+.bmro-nav-ul .nav-link:active{
+    background-color: #fff!important;
+}
+.bmro-nav-ul .nav-link:focus{
+    background-color: #fff!important;
 }

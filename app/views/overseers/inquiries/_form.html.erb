@@ -482,8 +482,8 @@
       </div> -->
     </div>
 
-
-    <div class="card-header bmro-card-header">
+    <div class="bmro-fix-width-slide">
+        <div class="card-header bmro-card-header">
       <div class="form-row bmro-form-row">
         <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? && action_name != "new" %>
           <div class="bmro-new-width-btn">
@@ -535,8 +535,8 @@
           </ul>
         </nav>
       </div>
+        </div>
     </div>
-
 
     <div class="bmro-product-bottom">
       <% if f.object.persisted? %>
