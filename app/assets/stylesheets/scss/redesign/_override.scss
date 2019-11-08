@@ -104,7 +104,6 @@ body{
     flex-direction: unset!important;
     border-radius: 0px !important;
     border-bottom:none;
-    padding: 20px 50px;
 }
 .bmro-card-footer{
     width: 100%;
@@ -566,7 +565,7 @@ a.bmro-list-button{
     text-decoration: none;
 }
 .bmro-product-bottom{
-    width:80%;
+    width:100%;
     float:left;
     padding-left: 100px;
     padding-right: 100px;
@@ -4051,6 +4050,17 @@ td .media.chat-item{
     text-align:right;
     letter-spacing:-0.47px;
 }
-.bmro-padding-extras{
-    padding-left: 17rem;
+.bmro-adjusting-form{
+    width: 1120px;
+    margin: 0 auto;
+}
+.bmro-fix-width-slide{
+  float: left;
+  height: 1800px;
+}
+.bmro-nav-ul .nav-link:active{
+    background-color: #fff!important;
+}
+.bmro-nav-ul .nav-link:focus{
+    background-color: #fff!important;
 }

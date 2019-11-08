@@ -2,9 +2,8 @@
   <%= f.hidden_field :company_id %>
 
   <%= render 'shared/snippets/form_errors', f: f %>
-
   <div class="card bmro-card">
-  <div class=""></div>
+<div class="bmro-adjusting-form">
     <div class="card-body bmro-card-body bmro-card-body-pt" data-spy="scroll" data-target=".bmro-nav" data-offset="100">
       <div class="bmro-Opportunity-slide" id="Opportunity-Details"></div>
       <div>
@@ -482,9 +481,9 @@
         <% end %>
       </div> -->
     </div>
-</div>
 
-    <div class="card-header bmro-card-header">
+    <div class="bmro-fix-width-slide">
+        <div class="card-header bmro-card-header">
       <div class="form-row bmro-form-row">
         <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? && action_name != "new" %>
           <div class="bmro-new-width-btn">
@@ -536,8 +535,8 @@
           </ul>
         </nav>
       </div>
+        </div>
     </div>
-
 
     <div class="bmro-product-bottom">
       <% if f.object.persisted? %>
@@ -749,7 +748,7 @@
         </div>
       <% end %>
     </div>
-
+</div>
     <div class="card-footer bmro-card-footer bmro-mb-footer hide">
       <div class="form-row">
         <% if policy(@inquiry).new_email_message? && is_authorized(@inquiry, 'new_email_message') && is_authorized(@inquiry, 'update') && policy(@inquiry).update? %>
