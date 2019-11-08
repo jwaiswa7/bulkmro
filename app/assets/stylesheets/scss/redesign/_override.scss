@@ -1826,7 +1826,7 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
 }
 .bmro-container-fluid{
    max-width:96%;
-   margin-left: 50px;
+   margin-left: auto!important;
 }
 .bmro-table-icon-padding{
     padding: 2px 15px !important;
@@ -4051,7 +4051,7 @@ td .media.chat-item{
     letter-spacing:-0.47px;
 }
 .bmro-adjusting-form{
-    width: 1120px;
+    width: 1240px;
     margin: 0 auto;
 }
 .bmro-radio-border{
@@ -4072,4 +4072,7 @@ td .media.chat-item{
 }
 .bmro-nav-ul .nav-link:focus{
     background-color: #fff!important;
+}
+.container{
+    margin-left: 95px;
 }
