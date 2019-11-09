@@ -829,71 +829,7 @@
 </div>
 
 <script>
-    // var ctx = document.getElementById('myChart').getContext('2d');
-    // var myChart = new Chart(ctx, {
-    //     type: 'doughnut',
-    //     data: {
-    //         datasets: [{
-    //             label: 'Total Earning',
-    //             data: [2, 3, 4, 25],
-    //             backgroundColor: [
-    //                 'rgba(254, 209, 2)',
-    //                 'rgba(60, 214, 179)',
-    //                 'rgba(252, 108, 78)',
-    //                 'rgba(78, 104, 142)'
-    //             ],
-    //             borderColor: [
-    //                 'rgba(254, 209, 2)',
-    //                 'rgba(60, 214, 179)',
-    //                 'rgba(252, 108, 78)',
-    //                 'rgba(78, 104, 142)'
-    //             ],
-    //             borderWidth: 1
-    //         }]
-    //     },
-    //     options: {
-    //         responsive: true,
-    //         rotation: 1 * Math.PI,
-    //         circumference: 1 * Math.PI
-    //     }
-    // });
 
-    $( document ).ready(function() {
-        $("#notifications").trigger('click');
-    });
-
-    $(".bmro-all-notification").click(function () {
-        $('.bmro-all-notification').removeClass('active-menu');
-        $(this).addClass('active-menu',1000);
-    })
-    $(".bmro-all-action").click(function () {
-        $('.bmro-all-sec').removeClass('bmro-hide');
-        $('.bmro-notification-sec').addClass('bmro-hide');
-        $('.bmro-comments-sec').addClass('bmro-hide');
-    })
-    $(".bmro-notification-action").click(function () {
-        $('.bmro-all-sec').addClass('bmro-hide');
-        $('.bmro-notification-sec').removeClass('bmro-hide');
-        $('.bmro-comments-sec').addClass('bmro-hide');
-    })
-    $(".bmro-Comments-action").click(function () {
-        $('.bmro-all-sec').addClass('bmro-hide');
-        $('.bmro-notification-sec').addClass('bmro-hide');
-        $('.bmro-comments-sec').removeClass('bmro-hide');
-    })
-    $(".bmro-menu-click").click(function () {
-        $('.bmro-dash-main-menu').toggleClass('bmro-dash-main-menu-show');
-        $(this).toggleClass('bmro-menu-roted');
-    })
-    $('.bmro-main-drop-col p').hover(function(){
-        $(this).children('.bmro-dash-hover').css("display","block");
-    }, function() {
-        $(this).children('.bmro-dash-hover').css("display","none");
-    })
-    $(".bmro-dashbord-click").click(function () {
-        $('.bmro-dash-main-menu').removeClass('bmro-dash-main-menu-show');
-        $('.bmro-menu-click').removeClass('bmro-menu-roted');
-    });
 
     $(".compose-email").click(function (e) {
       let inquiry_number = $(this).data('id');
