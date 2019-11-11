@@ -68,7 +68,7 @@
             <% if is_authorized(sales_quote, 'reset_quote') && policy(sales_quote).reset_quote? %>
               <%= row_action_button(reset_quote_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'retweet-alt', 'Reset Quote', 'dark') %>
             <% elsif policy(sales_quote).reset_quote_for_manager? %>
-              <%= link_to('', class: ['btn btn-sm btn-danger manager-sales-quote-reset'], 'data-sales-quote-id': sales_quote.to_param, 'data-inquiry-id': @inquiry.to_param , title: 'Reset Quote', remote: true) do
+              <%= link_to('', class: ['icon-title btn btn-sm btn-danger manager-sales-quote-reset'], 'data-sales-quote-id': sales_quote.to_param, 'data-inquiry-id': @inquiry.to_param , title: 'Reset Quote', remote: true) do
                 concat content_tag(:span, '')
                 concat content_tag :i, nil, class: ['fal fa-retweet-alt'].join
               end %>
