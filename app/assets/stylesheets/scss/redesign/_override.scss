@@ -4102,3 +4102,10 @@ td .media.chat-item{
     top: -2px;
     color: #2c4159;
 }
+.dropdown.show .bmro-drop-arr{
+    display: block;
+    background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAMCAYAAABr5z2BAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEPSURBVDhPY6ApMPVKkABhKBcrYILSGMDTM5f9x49f675//7XGOC2NFSqMAXAa8OTn2+n///+3ZGD4b/3zzpeJUGEMwAylUYCec1Q+UHMllAsCphLKek9e3r98HsqHA0YoDQe6LlEuDP/+7/j/H81wRoafTCws9pd2LT4JFQEDFAOMneKVf/3/ffo/w39BqBAKYGRkeMrBwW5yetuCF1AhRBhY+yXx/mT4vQmXZhAAukoaPVDBBgD9y/jpy/clQIYWWBQvQA1UsD/XHr7TAtScChYhDsADlVHPOcb23/+/8xn/MzL9ZwS7iBFoGCPQv2A20NlMQDZQjIHpPygUgJARyAbK/PrPyOoGNo58wMAAAOTDabCy9TntAAAAAElFTkSuQmCC') ;
+    background-size: 14px;
+    background-repeat: no-repeat;
+    background-position: right 1px bottom 8px;
+}
