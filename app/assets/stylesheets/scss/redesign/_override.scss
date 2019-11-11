@@ -4081,14 +4081,9 @@ td .media.chat-item{
 .bmro-datepicker-margin{
     margin-left: 30px;
 }
-.bmro-drop-arr{
+.bmro-drop-arr::after{
+    background-position: top 3px left 5px;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAMCAYAAABr5z2BAAAAAXNSR0IArs4c6QAAASNJREFUKBVjYKAQMOo4x+kx/v+9i+E/I9t/RoZ/DP+BLIb//xmAbCD5nxEkxgAU+A+kGRn/g9hA8h+Q+MfEyJzICHKAnnNU8r9//+eA2EQDRqbWK/uW1oANAGnScYqaBrQnkxgDgK7adGnvsgBGoIuYYBrYVXjyGRgYj8L4OGlGxmt8PJwxIM0gNXAXgDimXgkSP378PAP0rzSIjw4YGRjfszGymp7dt/AuTA7uApDA6W0LXjCysAQDjf0JUwCjgc7+y8DMEIasGSTHDFMAo1/evfRUQknvOdAVfjAxEM3ExFh0ee+y5chiIDaGASDBl/cvnxdT0hMHMk1BfKB/51/et6wKxEYHKF5AloQFKlDzcRl2YaJiB1k/mA0KVBDGkKCmAABUx1k+lWB0mwAAAABJRU5ErkJggg==');
-    background-size: 10px;
-    padding: 2px 10px;
-    background-repeat: no-repeat;
-}
-.dropdown-menu.show .bmro-drop-arr{
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAMCAYAAABr5z2BAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEPSURBVDhPY6ApMPVKkABhKBcrYILSGMDTM5f9x49f675//7XGOC2NFSqMAXAa8OTn2+n///+3ZGD4b/3zzpeJUGEMwAylUYCec1Q+UHMllAsCphLKek9e3r98HsqHA0YoDQe6LlEuDP/+7/j/H81wRoafTCws9pd2LT4JFQEDFAOMneKVf/3/ffo/w39BqBAKYGRkeMrBwW5yetuCF1AhRBhY+yXx/mT4vQmXZhAAukoaPVDBBgD9y/jpy/clQIYWWBQvQA1UsD/XHr7TAtScChYhDsADlVHPOcb23/+/8xn/MzL9ZwS7iBFoGCPQv2A20NlMQDZQjIHpPygUgJARyAbK/PrPyOoGNo58wMAAAOTDabCy9TntAAAAAElFTkSuQmCC');
     background-size: 10px;
     padding: 2px 10px;
     background-repeat: no-repeat;
