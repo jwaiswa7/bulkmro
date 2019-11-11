@@ -31,7 +31,7 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(debugging_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'cogs', 'Debugging', 'danger', :_blank)
                       end,
                       if is_authorized(sales_order, 'index')
-                        link_to('', class: ['btn btn-sm btn-success comment-sales-order'], 'data-model-id': sales_order.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-success comment-sales-order'], 'data-model-id': sales_order.id, title: 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
                         end
