@@ -3133,22 +3133,6 @@ table.fixedHeader-floating{
 .page-title{
     text-transform: uppercase;
     font-weight: 600!important;
-
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAMCAYAAABr5z2BAAAAAXNSR0IArs4c6QAAASNJREFUKBVjYKAQMOo4x+kx/v+9i+E/I9t/RoZ/DP+BLIb//xmAbCD5nxEkxgAU+A+kGRn/g9hA8h+Q+MfEyJzICHKAnnNU8r9//+eA2EQDRqbWK/uW1oANAGnScYqaBrQnkxgDgK7adGnvsgBGoIuYYBrYVXjyGRgYj8L4OGlGxmt8PJwxIM0gNXAXgDimXgkSP378PAP0rzSIjw4YGRjfszGymp7dt/AuTA7uApDA6W0LXjCysAQDjf0JUwCjgc7+y8DMEIasGSTHDFMAo1/evfRUQknvOdAVfjAxEM3ExFh0ee+y5chiIDaGASDBl/cvnxdT0hMHMk1BfKB/51/et6wKxEYHKF5AloQFKlDzcRl2YaJiB1k/mA0KVBDGkKCmAABUx1k+lWB0mwAAAABJRU5ErkJggg==');
-    background-size: 10px;
-    padding: 2px 10px;
-    background-repeat: no-repeat;
-}
-.page-title:after{
-    background-position: top 3px left 5px;
-    font-size: 17px;
-    content: "\25be";
-    float: right;
-    transition: all .5s;
-    position: relative;
-    right: 0;
-    top: -2px;
-    color: #2c4159;
 }
 
 .bmro-btn-top-mb{
