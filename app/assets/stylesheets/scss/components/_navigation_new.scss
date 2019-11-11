@@ -192,6 +192,9 @@ p.bmro-menu{
   height: 60px;
   box-sizing: border-box;
   padding: 15px 0px;
+  position: fixed;
+  top:0px;
+  z-index: 1000;
 }
 .bmro-iq-border{
   background-color: #fff;
