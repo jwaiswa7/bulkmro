@@ -3,7 +3,7 @@
     This will <em>send an notification to supplier</em> and log it under
     <strong><%= current_overseer.full_name %></strong>. <% if !current_overseer.accounts?  %> <span style="float:right">
   <% if (action_name != 'material_received_in_bm_warehouse') && (current_overseer.inside? || current_overseer.outside?) %>
-    <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm" >Edit Supplier Rating</a></span>
+    <a href="#" class="btn btn-default btn-rounded btn-danger bmro-button align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm" >Edit Supplier Rating</a></span>
   <% end %>
     <% end %>
   <% end %>
@@ -21,8 +21,8 @@
         <% if f.object.auto_attach == true %>
           <div class="d-flex flex-row align-items-center">
             <div class="form-group mr-2">
-              <%= link_to overseers_purchase_order_path(@po_request.purchase_order, format: :pdf), target: :_blank, :class => 'btn btn-success' do %>
-                <i class="fal fa-file-pdf mr-2"></i>Purchase Order
+              <%= link_to overseers_purchase_order_path(@po_request.purchase_order, format: :pdf), target: :_blank, :class => 'btn bmro-button btn-success' do %>
+                <i class="bmro-file-pdf"></i>Purchase Order
               <% end %>
             </div>
             <%= f.input :auto_attach, wrapper: :custom_boolean, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
@@ -31,8 +31,8 @@
         <%= f.input :body, input_html: {rows: 10, class: 'html-editor'} %>
       </div>
       <div class="card-footer">
-        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-          <i class="fal fa-paper-plane"></i> Send Email
+        <%= button_tag(type: "submit", class: "btn btn-success bmro-button btn-block") do %>
+          <i class="bmro-fa-paper-plane"></i> Send Email
         <% end %>
       </div>
     <% end %>
