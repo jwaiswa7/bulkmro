@@ -5,6 +5,7 @@ body{
   font-family: 'Inter UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   background-color: #F0F2F6;
+  padding-top: 40px;
 }
 .bmro-dash-mt{
   padding-left: 60px;
@@ -190,6 +191,9 @@ p.bmro-menu{
   height: 60px;
   box-sizing: border-box;
   padding: 15px 0px;
+  position: fixed;
+  top:0px;
+  z-index: 1000;
 }
 .bmro-same-box{
   margin-right: 8px;
