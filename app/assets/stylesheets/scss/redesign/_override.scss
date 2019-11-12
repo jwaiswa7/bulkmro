@@ -1231,7 +1231,7 @@ a.bmro-click-toggle.collapsed:after{
     max-width: 1800px;
   }
 }
-@media only screen and (min-width: 1600px) {
+@media only screen and (max-width: 1600px) {
    table.table.dataTable{
     width: 1510px;
   }
@@ -1244,7 +1244,7 @@ a.bmro-click-toggle.collapsed:after{
     top: 47px;
   }
   .bmro-container{
-    max-width: 1300px;
+    max-width: 1270px;
   }
 }
 @media only screen and (max-width: 1360px) {
