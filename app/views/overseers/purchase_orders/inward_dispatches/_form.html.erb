@@ -248,10 +248,10 @@
               </div>
             <% end %>
             <% if is_authorized(f.object, 'add_products') && policy(f.object).add_products? %>
-              <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0 bmro-button', role: 'button' %>
+              <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success bmro-dispatch-prod-btn btn-outline-success btn-block mb-2 mb-md-0 bmro-button', role: 'button' %>
             <% end %>
           <% end %>
-          <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button bmro-dispatch-btn") do %>
             <i class="fal fa-pen"></i> <%= submit_text(@inward_dispatch) %>
           <% end %>
         </div>
