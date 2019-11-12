@@ -1225,6 +1225,9 @@ a.bmro-click-toggle.collapsed:after{
     display: -ms-flexbox; 
     display: -webkit-flex;
 }
+.bmro-container{
+    width: 95%!important;
+}
 
 @media only screen and (min-width: 1920px) {
   .bmro-container{
