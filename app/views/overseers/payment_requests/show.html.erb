@@ -5,7 +5,7 @@
         Payment Request for PO <%= format_id(@payment_request.po_request.purchase_order.present? ? @payment_request.po_request.purchase_order.po_number : nil ) %>:&nbsp;<%= status_badge(@payment_request.status) %>
       </h3>
       <% if is_authorized(@payment_request, 'edit') && !@payment_request.Cancelled?%>
-        <a href="<%= edit_overseers_po_request_payment_request_path(@payment_request.po_request, @payment_request) %>" class="btn btn-warning btn-rounded align-self-center bmro-button btn-block-sm-down"><i class="bmro-pencil-icon"></i>Edit</a>
+        <a href="<%= edit_overseers_po_request_payment_request_path(@payment_request.po_request, @payment_request) %>" class="btn btn-warning btn-rounded align-self-center bmro-button btn-block-sm-down"><i class="bmro-update-icon"></i>Edit</a>
       <% end %>
     </div>
   </section>

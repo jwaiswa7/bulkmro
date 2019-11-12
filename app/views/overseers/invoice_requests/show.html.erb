@@ -5,7 +5,7 @@
         <%= @invoice_request.readable_status %> for Order #<%= @invoice_request.sales_order.order_number if @invoice_request.sales_order.present?%>:&nbsp;<%= status_badge(@invoice_request.status) %>
       </h3>
       <% if is_authorized(@invoice_request, 'edit') %>
-        <a href="<%= edit_overseers_invoice_request_path(@invoice_request) %>" class="btn btn-warning btn-rounded align-self-center bmro-button btn-block-sm-down"><i class="bmro-pencil-icon"></i>Edit</a>
+        <a href="<%= edit_overseers_invoice_request_path(@invoice_request) %>" class="btn btn-warning btn-rounded align-self-center bmro-button btn-block-sm-down"><i class="bmro-update-icon"></i>Edit</a>
       <% end %>
       <%if !current_overseer.accounts? %>
         <a href="#" class="btn btn-default bmro-button btn-rounded btn-danger align-self-center add-review -align-right" data-toggle="modal" data-target="#modalRatingForm" >Add/Edit Supplier Rating</a>
