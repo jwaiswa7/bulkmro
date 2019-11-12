@@ -1229,7 +1229,12 @@ a.bmro-click-toggle.collapsed:after{
     width: 95%!important;
 }
 
-@media only screen and (min-width: 1920px) {
+@media only screen and (min-width: 2880px) {
+  .bmro-container{
+    max-width: 2650px;
+  }
+}
+@media only screen and (max-width: 1920px) {
   .bmro-container{
     max-width: 1800px;
   }
