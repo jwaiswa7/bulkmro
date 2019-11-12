@@ -59,9 +59,6 @@ body{
 .bmro-mp-0 .mt-3{
     margin-top: 0px!important;
 }
-.bmro-container{
-    max-width: 1920px;
-}
 .bmro-bradecrumb-edit{
     float: left!important;
     color: #2C4159!important;
@@ -1229,19 +1226,33 @@ a.bmro-click-toggle.collapsed:after{
     display: -webkit-flex;
 }
 
+@media only screen and (min-width: 1920px) {
+  .bmro-container{
+    max-width: 1800px;
+  }
+}
 @media only screen and (min-width: 1600px) {
    table.table.dataTable{
     width: 1510px;
+  }
+  .bmro-container{
+    max-width: 1500px;
   }
 }
 @media only screen and (max-width: 1440px) {
   .bmro-nav-ul {
     top: 47px;
   }
+  .bmro-container{
+    max-width: 1300px;
+  }
 }
 @media only screen and (max-width: 1360px) {
   .bmro-nav-ul {
     top: 88px;
+  }
+  .bmro-container{
+    max-width: 1200px;
   }
 }
 @media only screen and (max-width: 1024px){
@@ -1255,6 +1266,9 @@ a.bmro-click-toggle.collapsed:after{
         width: 860px!important;
         margin-left: -8px;
     }
+    .bmro-container{
+    max-width: 960px;
+  }
     .bmro-container-fluid{
         max-width: 960px;
     }
