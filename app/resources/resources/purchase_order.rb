@@ -142,7 +142,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         'PoSupShipFrom' => remote_response['ShipToCode'],
         'PoCommittedDate' => remote_response['U_CustComDt'],
         'PoDeliveryTerms' => remote_response['U_TrmDeli'],
-        'PoShipWarehouse' => remote_response['U_BM_BillFromTo'],
+        'PoShipWarehouse' => remote_response['DocumentLines'][0]['WarehouseCode'],
         'PoBillingAddress' => remote_response['PayToCode'],
         'po_sales_manager' => remote_response['U_SalesMgr'],
         'PoTargetWarehouse' => remote_response['U_BM_BillFromTo'],
@@ -169,8 +169,8 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
           TaxCode: row.taxation.to_remote_s, # row.tax_rate.to_s.gsub('.0%', '').gsub('GST ', 'GST@'),
           HSNEntry: row.product.is_service ? nil : row.tax_code.remote_uid,
           SACEntry: row.product.is_service ? row.tax_code.remote_uid : nil,
-          WarehouseCode: po_request.bill_to.remote_uid,
-          LocationCode: po_request.bill_to.location_uid,
+          WarehouseCode: po_request.ship_to.remote_uid,
+          LocationCode: po_request.ship_to.location_uid,
           MeasureUnit: row.measurement_unit.name,
           U_ProdBrand: row.brand_id.present? ? row.brand.name : row.product.brand.name
       }
