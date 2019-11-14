@@ -160,7 +160,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         PopQty: row.quantity.to_f,
         Linenum: index,
         UnitMsr: row.measurement_unit.name,
-        WhsCode: row.po_request.bill_to.remote_uid,
+        WhsCode: row.po_request.ship_to.remote_uid,
         PopPriceHt: row.unit_price.to_f,
         PopTaxRate: row.tax_rate.to_s.gsub('.0%', '').gsub('GST ', 'CSG@'),
         PopDiscount: row.discount_percentage,
