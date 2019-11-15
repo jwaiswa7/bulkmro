@@ -30,4 +30,9 @@ class Export < ApplicationRecord
     amat_customer_portal: 97,
     sales_orders_bible_format: 100
   }
+  enum status: {
+      'Enqueued': 1,
+      'Processing': 2,
+      'Completed': 3
+  }
 end

@@ -16,19 +16,17 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       @ids = args[2].pluck(:id).uniq
     end
     @rows = []
+    @export = Export.create!(filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
   end
-
   def filename
     "#{export_name}.csv"
   end
-
   def generate_csv(object)
     csv_data = CSV.generate(write_headers: true, headers: columns) do |csv|
       rows.each do |row|
         csv << row.values
       end
     end
-
     temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
     begin
       temp_file.write(csv_data)
@@ -42,6 +40,5 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       puts ex.message
     end
   end
-
   attr_accessor :start_at, :end_at, :columns, :model, :rows, :path, :export_name, :arguments
 end
