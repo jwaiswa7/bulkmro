@@ -99,7 +99,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
     product_ids = Product.where(sku: Settings.product_specific.freight).last.id
     {
         PoNum: series_number,
-        PoDate: Time.now.strftime('%Y-%m-%d'),
+        PoDate: po_request.purchase_order.present? ? po_request.purchase_order.created_at.strftime('%Y-%m-%d') : Time.now.strftime('%Y-%m-%d'),
         PoType: 'Manual',
         PoStatus: '63',
         ItemLine: item_line_json,
@@ -131,7 +131,8 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         PoDeliveryTerms: po_request.delivery_type.present? ? po_request.delivery_type : 'Door delivery',
         PoModeOfTrasport: po_request.transport_mode.present? ? po_request.transport_mode : 'Road',
         PoPackingForwarding: '',
-        DocumentLines: item_line_json
+        DocumentLines: item_line_json,
+        DocDueDate: po_request.rows.present? ? po_request.rows.maximum(:lead_time).strftime('%Y-%m-%d') : Time.now.strftime('%Y-%m-%d')
       # Project: po_request.inquiry.inquiry_number,
       # CardCode: po_request.supplier.remote_uid,
       # CardName: po_request.supplier.to_s,
@@ -159,7 +160,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         PopQty: row.quantity.to_f,
         Linenum: index,
         UnitMsr: row.measurement_unit.name,
-        WhsCode: row.po_request.bill_to.remote_uid,
+        WhsCode: row.po_request.ship_to.remote_uid,
         PopPriceHt: row.unit_price.to_f,
         PopTaxRate: row.tax_rate.to_s.gsub('.0%', '').gsub('GST ', 'CSG@'),
         PopDiscount: row.discount_percentage,

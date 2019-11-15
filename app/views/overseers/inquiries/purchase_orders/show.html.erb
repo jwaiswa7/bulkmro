@@ -69,7 +69,7 @@
                 <%= @purchase_order.billing_address.name if @purchase_order.billing_address.name.present? %><br>
                 <%= @purchase_order.billing_address.to_multiline_s if @purchase_order.billing_address.present? %>
                 <br>
-                Tel: <%= @purchase_order.billing_address.try(:mobile) || @purchase_order.billing_address.try(:telephone) if @purchase_order.billing_address.present? %>
+                Tel: <%=  @purchase_order.supplier_contact || (@purchase_order.supplier.default_company_contact.present? ? @purchase_order.supplier.default_company_contact.contact&.phone : '')%>
                 <br>
                 GST No. : <%= @purchase_order.billing_address.try(:gst) %><br>
                 <%end %>
@@ -80,7 +80,7 @@
                 <%= @purchase_order.shipping_address.name if @purchase_order.shipping_address.name.present? %><br>
                 <%= @purchase_order.shipping_address.to_multiline_s if @purchase_order.shipping_address.present? %>
                 <br>
-                Tel: <%=  @purchase_order.shipping_address.try(:mobile) || @purchase_order.shipping_address.try(:telephone) if @purchase_order.shipping_address.present? %>
+                Tel: <%=  @purchase_order.supplier_contact || (@purchase_order.supplier.default_company_contact.present? ? @purchase_order.supplier.default_company_contact.contact&.phone : '')%>
                 <br>
                 GST No. : <%= @purchase_order.shipping_address.try(:gst) %><br>
               <% end %>
@@ -246,12 +246,12 @@
                 </td>
               <% else %>
                 <td>
-                  <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
+                  <span><%= (item.tax_rate.to_f / 2) %>%</span></td>
                 <td align="right" valign="top">
                   <span><%= format_currency(item.total_tax / 2, precision: 2, symbol: nil) %></span>
                 </td>
                 <td>
-                  <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
+                  <span><%= (item.tax_rate.to_f / 2) %>%</span></td>
                 <td>
                   <span><%= format_currency(item.total_tax / 2, precision: 2, symbol: nil) %><br></span>
                 </td>
