@@ -14,4 +14,8 @@ class Customers::SalesInvoicePolicy < Customers::ApplicationPolicy
   def export_all?
     true
   end
+
+  def show_pods?
+    true
+  end
 end
