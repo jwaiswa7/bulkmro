@@ -1,5 +1,5 @@
 class Customers::SalesInvoicesController < Customers::BaseController
-  before_action :set_sales_invoice, only: [:show]
+  before_action :set_sales_invoice, only: [:show, :show_pods]
 
   def index
     authorize :sales_invoice
@@ -35,6 +35,10 @@ class Customers::SalesInvoicesController < Customers::BaseController
 
     # Set the status to success
     response.status = 200
+  end
+
+  def show_pods
+    authorize @sales_invoice
   end
 
   private

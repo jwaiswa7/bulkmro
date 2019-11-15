@@ -10,11 +10,9 @@ json.data (@sales_invoices) do |sales_invoice|
                       if policy(sales_invoice).show_original_invoice? && sales_invoice.inquiry.present?
                         row_action_button(url_for(sales_invoice.original_invoice), 'file-pdf', sales_invoice.original_invoice.filename, 'dark', :_blank)
                       end,
-                      # if policy(sales_invoice).edit_pod? && sales_invoice.pod_attachments.attached?
-                      #   [
-                      #       if sales_invoice.pod_attachments.attached?; row_action_button(url_for(sales_invoice.pod_attachments), 'certificate', 'Download Proof of Delivery', 'success', :_blank); end
-                      #   ]
-                      #end
+                      if policy(sales_invoice).edit_pod? && sales_invoice.pod_rows.present?
+                        row_action_button(show_pods_customers_invoice_path(sales_invoice), 'eye', "View POD's", 'success', :_blank)
+                      end
                   ].join(' '),
                   sales_invoice.inquiry.customer_po_number,
                   format_date(sales_invoice.inquiry.customer_order_date),
@@ -24,12 +22,14 @@ json.data (@sales_invoices) do |sales_invoice|
                   sales_invoice.inquiry.present? ? sales_invoice.rows.count : '',
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.inside_sales_owner.to_s : '',
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.outside_sales_owner.to_s : '',
-                  format_date(sales_invoice.delivery_date),
-                  format_date(sales_invoice.created_at)
+                  format_succinct_date(sales_invoice.delivery_date),
+                  format_boolean_with_badge(sales_invoice.pod_status),
+                  format_succinct_date(sales_invoice.created_at)
               ]
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [],

@@ -855,6 +855,9 @@ Rails.application.routes.draw do
     end
 
     resources :invoices, controller: :sales_invoices, only: %i[index show] do
+      member do
+        get 'show_pods'
+      end
       collection do
         get 'export_all'
       end
