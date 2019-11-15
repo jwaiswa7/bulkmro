@@ -1,7 +1,7 @@
 class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::Exporters::BaseExporter
   def initialize(*params)
     super(*params)
-    @model = Inquiry.limit(10)
+    @model = Inquiry
     @export_name = 'inquiries'
     @path = Rails.root.join('tmp', filename)
     @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'quote_date', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'potential amount', 'total (Exc. Tax)', 'comments', 'reason', 'customer_order_date', 'customer_po_number']
