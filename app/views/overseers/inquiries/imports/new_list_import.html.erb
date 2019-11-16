@@ -7,7 +7,7 @@
   <%= simple_form_for([:overseers, @inquiry, @list_import], url: create_list_import_overseers_inquiry_imports_path(@inquiry), :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <div class="card-body bmro-bg">
       <div class="form-group">
-        <%= f.input :import_text, label: 'List', as: :text, placeholder: 'SKU, Quantity; one product per row', required: true %>
+        <%= f.input :import_text,class: 'bmro-form-input',label: 'List', as: :text, placeholder: 'SKU, Quantity; one product per row', required: true %>
       </div>
 
       <div class="form-group mb-0">
