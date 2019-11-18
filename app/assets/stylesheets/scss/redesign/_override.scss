@@ -3961,6 +3961,9 @@ td .media .media-body{
 td .media.chat-item{
     line-height: 1.1rem;
 }
+.bmro-datatable-style.fixedHeader-floating{
+    top: 60px!important;
+}
 @media only screen and (min-width: 1920px) {
   .bmro-datatable-style.fixedHeader-floating{
     padding-top: 25px!important;
