@@ -4177,3 +4177,13 @@ td .media.chat-item{
     border-color: #2c4159 transparent transparent transparent;
     top: 8px;
 }
+.bmro-color-coll a::after{
+    content: "";
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    position: relative;
+    border-color: transparent transparent #2C4159 transparent;
+    top: -7px;
+    right: -8px;
+}
