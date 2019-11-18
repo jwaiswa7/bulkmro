@@ -60,7 +60,7 @@ let setup = () => {
             stateSave: false,
             fixedHeader: {
                 header: isFixedHeader,
-                headerOffset: $('.navbar.navbar-expand-lg').height()
+                headerOffset: $('.bmro-head-bg').outerHeight()
             },
             fnDrawCallback: function (oSettings) {
                 let table = this;
