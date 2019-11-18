@@ -4152,3 +4152,9 @@ td .media.chat-item{
 .bmro-color-coll.bmro-collaps2-bg .bmro-overall-toggole{
     background-color: #fff;
 }
+.bmrocol-openclose{
+    display: none!important;
+}
+.bmrocol-openclose.collapse{
+    display: block!important;
+}
