@@ -3,7 +3,7 @@
 <% provide :wrap_whitespace, true %>
 <div class="row">
   <div class="bmro-float">
-    <div class="col-lg-3 bmor-minwidthset">
+    <div class="col-lg-3 bmor-minwidthset bmro-color-coll">
       <a class="btn text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-overall-toggole" type="button" data-toggle="collapse" aria-controls="pod-summary ownerwise-summary" aria-expanded="false" data-target="#pod-summary">
         Overall Scorecard
       </a>
@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="col-lg-6">
+    <div class="col-lg-6 bmro-color-coll">
       <a class="btn text-left btn-lg btn-block mt-1 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg" aria-expanded="false" type="button" aria-controls="pod-summary ownerwise-summary" data-toggle="collapse" data-target="#ownerwise-summary">
         Logistics Owner-wise Scorecard </a>
       <div class="bmro-float">
@@ -144,8 +144,8 @@
 
 <script type="text/javascript">
     $(".bmro-click-toggle").click(function(){
-        $(' div.collapsed').removeClass('collapsed')
-        $(' div.bmro-collaps2-bg.bmro-parent-bg').removeClass('.bmro-collaps2-bg.bmro-parent-bg')
+        $('div.collapsed').removeClass('collapsed')
+        $('div.bmro-collaps2-bg.bmro-parent-bg').removeClass('.bmro-collaps2-bg.bmro-parent-bg')
         $('div.collapse.show').removeClass('show')
         $(this).parent().toggleClass("bmro-collaps2-bg");
     });
