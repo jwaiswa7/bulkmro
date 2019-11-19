@@ -10,7 +10,7 @@ handler do |job, time|
 end
 
 every(10.minutes, 'resync_remote_requests') do
-  ResyncRemoteRequest.where('hits < 5').each do | resync_request |
+  ResyncRemoteRequest.where('hits < 5').each do |resync_request|
     service = Services::Resources::Shared::ResyncFailedRequests.new(resync_request)
     service.call
   end
@@ -60,13 +60,14 @@ every(1.day, 'refresh_indices', at: '01:00') do
   end
 end
 
-every(1.day, 'generate_exports_daily', at: '04:00') do
-  Chewy.strategy(:atomic) do
-    Services::Overseers::Exporters::GenerateExportsDaily.new
-  end
-end
+# every(1.day, 'generate_exports_daily', at: '04:00') do
+# Refactor exports and include status and find_each_with_batch in all exports
+# Chewy.strategy(:atomic) do
+#   Services::Overseers::Exporters::GenerateExportsDaily.new
+# end
+# end
 
-every(1.day, 'purchase_order_reindex', at: '19:15') do
+every(1.day, 'purchase_order_reindex', at: '09:00') do
   puts 'For reindexing purchase orders'
 
   index_class = PurchaseOrdersIndex
@@ -77,7 +78,7 @@ every(1.day, 'purchase_order_reindex', at: '19:15') do
   Services::Overseers::Exporters::MaterialReadinessExporter.new.call
 end
 
-every(1.day, 'inquiry_product_inventory_update', at: '07:30') do
+every(1.day, 'inquiry_product_inventory_update', at: '04:00') do
   service = Services::Resources::Products::UpdateRecentInquiryProductInventory.new
   service.call
 end if Rails.env.production?
