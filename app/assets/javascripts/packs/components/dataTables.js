@@ -157,6 +157,9 @@ let setup = () => {
                 "targets": 'text-right',
                 "class": 'text-right text-nowrap'
             },{
+                "targets": 'text-left',
+                "class": 'text-left'
+            },{
                 "targets": 'bmro-company-width',
                 "class": 'bmro-company-width'
             },{
