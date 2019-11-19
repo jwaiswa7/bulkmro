@@ -16,6 +16,7 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       @ids = args[2].pluck(:id).uniq
     end
     @rows = []
+    @export = Export.create!(filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
   end
 
   def filename
@@ -28,7 +29,6 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
         csv << row.values
       end
     end
-
     temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
     begin
       temp_file.write(csv_data)

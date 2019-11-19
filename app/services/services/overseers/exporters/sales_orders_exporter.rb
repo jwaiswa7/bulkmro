@@ -1,6 +1,5 @@
 class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers::Exporters::BaseExporter
   def initialize(*params)
-    SprintLog.debug(params.to_json)
     super(*params)
     @model = SalesOrder
     @export_name = 'sales_orders'
@@ -22,6 +21,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         'Quote Type',
         'Opportunity Type'
     ]
+    @export.update_attributes(export_type: 40, status: 'Enqueued')
   end
 
   def call
@@ -34,7 +34,8 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
     else
       records = model.remote_approved.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc)
     end
-    records.each do |sales_order|
+    @export.update_attributes(status: 'Processing')
+    records.find_each(batch_size: 500) do |sales_order|
       inquiry = sales_order.inquiry
 
       rows.push(
@@ -55,8 +56,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         opportunity_type: inquiry.try(:opportunity_type) || '',
                 ) if inquiry.present?
     end
-    filtered = @ids.present?
-    export = Export.create!(export_type: 40, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end
