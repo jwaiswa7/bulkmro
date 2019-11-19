@@ -17,7 +17,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
     else
       records = model.where(created_at: start_at..end_at).order(created_at: :desc)
     end
-    @export.update_attributes(export_type: 1, status: 'Processing')
+    @export.update_attributes(status: 'Processing')
     records.find_each(batch_size: 500) do |record|
       rows.push(
           inquiry_number: record.inquiry_number,
@@ -47,7 +47,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
       )
     end
     # filtered = @ids.present?
-    @export.update_attributes(export_type: 1, status: 'Completed')
+    @export.update_attributes(status: 'Completed')
     generate_csv(@export)
   end
 end

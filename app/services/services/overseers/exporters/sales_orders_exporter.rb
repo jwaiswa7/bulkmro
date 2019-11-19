@@ -34,7 +34,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
     else
       records = model.remote_approved.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc)
     end
-    @export.update_attributes(export_type: 40, status: 'Processing')
+    @export.update_attributes(status: 'Processing')
     records.find_each(batch_size: 500) do |sales_order|
       inquiry = sales_order.inquiry
 
@@ -56,7 +56,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         opportunity_type: inquiry.try(:opportunity_type) || '',
                 ) if inquiry.present?
     end
-    @export.update_attributes(export_type: 40, status: 'Completed')
+    @export.update_attributes(status: 'Completed')
     generate_csv(@export)
   end
 end
