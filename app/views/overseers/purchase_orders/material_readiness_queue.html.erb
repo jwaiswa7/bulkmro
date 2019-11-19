@@ -41,13 +41,14 @@
     <th class="no-sort desktop text-right" width="70px" data-name="po_request_id">PO Request #</th>
     <th class="no-sort desktop text-right" width="76px" data-name="inquiry_number">Inquiry #</th>
     <th class="no-sort desktop" width="130px" data-name="customer_id">Customer Company Name</th>
+    <th class="no-sort desktop text-left" width="130px" data-name="customer_id">Customer Company Name</th>
     <th class="no-sort all text-left" width="140px" data-name="material_status">Material Status</th>
     <th class="no-sort desktop text-right" width="70px" data-name="supplier_po_number">Supplier PO #</th>
     <th class="no-sort desktop text-right" width="85px" data-name="supplier_po_date">Supplier<br> PO Date</th>
-    <th class="no-sort desktop" width="130px" data-name="supplier_id">Supplier Name</th>
-    <th class="no-sort desktop" width="64px" data-name="po_type">PO Type</th>
-    <th class="sort desktop" width="230px" data-name="latest_comment">Latest Comment</th>
-    <th class="no-sort desktop text-right" width="85px" data-name="so_date">Sales Order Date</th>
+    <th class="no-sort desktop text-left" width="130px" data-name="supplier_id">Supplier Name</th>
+    <th class="no-sort desktop text-left" width="64px" data-name="po_type">PO Type</th>
+    <th class="sort desktop text-left" width="230px" data-name="latest_comment">Latest Comment</th>
+    <th class="no-sort desktop text-left" width="85px" data-name="so_date">Sales Order Date</th>
     <th class="no-sort desktop text-right" width="70px"  data-name="so_number">Sales Order #</th>
     <th class="no-sort desktop text-right" width="88px" data-name="committed_date">Committed Date<br> to Customer</th>
     <th class="no-sort desktop" data-toggle="tooltip" width="60px" title="Inside Sales & Procurement" data-name="inside_sales_executive">IS&P</th>
@@ -61,6 +62,18 @@
     <th class="no-sort desktop" width="88px" data-name="selling_price">Selling Price</th>
     <th class="no-sort desktop" width="52px" data-name="po_margin">PO Margin %</th>
     <th class="no-sort desktop" width="52px">Overall Margin %</th>
+    <th class="no-sort desktop text-left" width="88px" data-name="committed_date">Committed Date<br> to Customer</th>
+    <th class="no-sort desktop text-left" data-toggle="tooltip" width="60px" title="Inside Sales & Procurement" data-name="inside_sales_executive">IS&P</th>
+    <th class="no-sort desktop text-left" width="90px" data-name="logistics_owner">Logistics Owner</th>
+    <th class="sort desktop text-left" width="88px" data-name="followup_date">Material Follow<br> Up Date</th>
+    <th class="sort desktop text-left" width="98px" data-name="expected_delivery_date">Expected Supplier<br> Delivery Date</th>
+    <th class="no-sort desktop text-left" width="130px" data-name="payment_request_status">Payment Request status</th>
+    <th class="no-sort desktop text-right" width="60px" data-name="percentage_paid">Percentage Paid</th>
+    <th class="no-sort desktop text-left" width="55px">Requested Date</th>
+    <th class="no-sort desktop text-right" width="88px" data-name="buying_price">Buying Price</th>
+    <th class="no-sort desktop text-right" width="88px" data-name="selling_price">Selling Price</th>
+    <th class="no-sort desktop text-right" width="52px" data-name="po_margin">PO Margin %</th>
+    <th class="no-sort desktop text-right" width="52px">Overall Margin %</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
