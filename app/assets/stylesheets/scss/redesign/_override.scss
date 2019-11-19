@@ -4158,6 +4158,9 @@ td .media.chat-item{
 .bmro-color-coll.bmro-collaps2-bg .bmro-overall-toggole{
     background-color: #fff;
 }
+.logisowner.show{
+    display: none!important;
+}
 .bmrocol-openclose{
     display: none!important;
 }
@@ -4169,9 +4172,6 @@ td .media.chat-item{
 }
 .overallscore{
     display: block!important;
-}
-.logisowner.show{
-    display: none!important;
 }
 .logisowner{
     display: block!important;
