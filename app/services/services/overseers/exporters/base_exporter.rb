@@ -18,9 +18,11 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
     @rows = []
     @export = Export.create!(filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
   end
+
   def filename
     "#{export_name}.csv"
   end
+
   def generate_csv(object)
     csv_data = CSV.generate(write_headers: true, headers: columns) do |csv|
       rows.each do |row|
@@ -40,5 +42,6 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       puts ex.message
     end
   end
+
   attr_accessor :start_at, :end_at, :columns, :model, :rows, :path, :export_name, :arguments
 end
