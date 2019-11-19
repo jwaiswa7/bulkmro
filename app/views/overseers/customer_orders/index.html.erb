@@ -8,18 +8,18 @@
 <% content_for :header_row do %>
   <th class="no-sort all" data-width="98px">Quick Actions</th>
   <th class="no-sort desktop text-right" width="72px">Online Order #</th>
-  <th class="no-sort desktop text-right" width="72px">Status</th>
-  <th class="no-sort desktop" width="85px">Payment Method</th>
-  <th class="no-sort desktop" width="85px">Account</th>
-  <th class="no-sort all" width="130px">Company</th>
-  <th class="no-sort all" width="100px">Customer Name</th>
+  <th class="no-sort desktop text-left" width="72px">Status</th>
+  <th class="no-sort desktop text-left" width="85px">Payment Method</th>
+  <th class="no-sort desktop text-left" width="85px">Account</th>
+  <th class="no-sort all text-left" width="130px">Company</th>
+  <th class="no-sort all text-left" width="100px">Customer Name</th>
   <th class="no-sort all text-right" width="51px">Line Items</th>
   <th class="sort all text-right" width="76px">Total (Excl. Tax)</th>
   <th class="sort all text-right" width="76px" data-name="grand_total">Total (Incl. Tax)</th>
-  <th class="no-sort all" width="72px">Inside Sales</th>
-  <th class="no-sort all" width="72px">Outside Sales</th>
-  <th class="no-sort all" width="74px">Manager</th>
-  <th class="sort desktop text-right" width="52px" data-name="created_at">Created</th>
+  <th class="no-sort all text-left" width="72px">Inside Sales</th>
+  <th class="no-sort all text-left" width="72px">Outside Sales</th>
+  <th class="no-sort all text-left" width="74px">Manager</th>
+  <th class="sort desktop text-left" width="52px" data-name="created_at">Created</th>
 <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
