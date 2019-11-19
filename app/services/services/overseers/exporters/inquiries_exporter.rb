@@ -6,6 +6,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
     @path = Rails.root.join('tmp', filename)
     @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'quote_date', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'potential amount', 'total (Exc. Tax)', 'comments', 'reason', 'customer_order_date', 'customer_po_number']
     @start_at = Date.new(2018, 04, 01)
+    @export.update_attributes(export_type: 1, status: 'Enqueued')
   end
 
   def call
@@ -18,7 +19,8 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
     else
       records = model.where(created_at: start_at..end_at).order(created_at: :desc)
     end
-    records.each do |record|
+    @export.update_attributes(status: 'Processing')
+    records.find_each(batch_size: 500) do |record|
       rows.push(
         inquiry_number: record.inquiry_number,
         order_number: record.sales_orders.pluck(:order_number).compact.join(','),
@@ -44,10 +46,10 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
         reason: '',
         customer_order_date: record.customer_order_date,
         customer_po_number: record.customer_po_number
-                )
+      )
     end
-    filtered = @ids.present?
-    export = Export.create!(export_type: 1, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # filtered = @ids.present?
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end
