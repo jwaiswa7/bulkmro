@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="col-lg-6 bmro-color-coll">
+    <div class="col-lg-6 bmro-color-coll logiscoll">
       <a class="btn text-left btn-lg btn-block mt-1 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-log-scor" aria-expanded="false" type="button" aria-controls="pod-summary ownerwise-summary" data-toggle="collapse" data-target="#ownerwise-summary">
         Logistics Owner-wise Scorecard </a>
       <div class="bmro-float">
@@ -150,7 +150,10 @@
         $(this).parent().toggleClass("bmro-collaps2-bg");
     });
     $('.bmro-over-scor').click(function(){
-      $('#pod-summary').toggleClass('bmrocol-openclose')
+      $('#pod-summary').toggleClass('bmrocol-openclose');
+      $('.logisowner').addClass('bmrocol-openclose');
+      $('.logiscoll').removeClass('bmro-collaps2-bg');
+      $('.logiscoll').removeClass('bmro-parent-bg');
     });
     $('.bmro-log-scor').click(function(){
       $('#ownerwise-summary').toggleClass('bmrocol-openclose')
