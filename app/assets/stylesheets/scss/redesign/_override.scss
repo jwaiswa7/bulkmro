@@ -654,7 +654,6 @@ table.dataTable td{
     font-weight: 500;
     letter-spacing: -0.5px;
     line-height: 15px;
-    text-align: right;
     padding-right: 10px;
     padding-left: 10px;    
 }
@@ -1477,7 +1476,6 @@ table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td
     padding: 8px 8px;
 }
 table.table.dataTable.table-bordered th{
-    text-align: center!important;
     display: table-cell;
     vertical-align: middle;
     padding: 8px 10px;
@@ -2059,7 +2057,6 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     font-size: 13px;
     background-color: #fff;
     font-weight: 500;
-    text-align: right;
     vertical-align: middle;
     background-color: #fff;
 }
@@ -4195,4 +4192,7 @@ td .media.chat-item{
     border-color: transparent transparent #2C4159 transparent;
     top: -7px;
     right: -8px;
+}
+.bmro-log-margin{
+    margin-left: -16px;
 }
