@@ -23,7 +23,6 @@ class SalesInvoice < ApplicationRecord
   has_many :email_messages
   has_many :sales_receipts
   has_many :sales_receipt_rows
-  has_many :email_messages
   has_many :pod_rows, dependent: :destroy
   accepts_nested_attributes_for :pod_rows, reject_if: lambda { |attributes|
     if attributes[:id].present?

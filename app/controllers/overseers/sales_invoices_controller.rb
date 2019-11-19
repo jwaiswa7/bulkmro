@@ -110,8 +110,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
 
     authorize_acl @invoice
-
-    if params['email_message']['auto_attach']
+    if @email_message.auto_attach? && @email_message.auto_attach != false
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Original_' + @invoice.filename(include_extension: true))
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
@@ -158,8 +157,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
 
     authorize_acl @invoice
-
-    if params['email_message']['auto_attach']
+    if @email_message.auto_attach? && @email_message.auto_attach != false
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Original_' + @invoice.filename(include_extension: true))
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
@@ -230,6 +228,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
           :to,
           :cc,
           :bcc,
+          :auto_attach,
           files: []
       )
     end
