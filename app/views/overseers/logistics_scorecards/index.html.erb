@@ -1,7 +1,7 @@
 <%= provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
-<div class="row">
+<div class="row" id="accordion">
   <div class="bmro-float">
     <div class="col-lg-3 bmor-minwidthset bmro-color-coll bmro-log-margin">
       <a class="btn text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-overall-toggole bmro-over-scor" type="button" data-toggle="collapse" aria-controls="pod-summary" aria-expanded="false" data-target="#pod-summary">
@@ -32,7 +32,7 @@
     </div>
 
     <div class="col-lg-6 bmro-color-coll logiscoll">
-      <a class="btn text-left btn-lg btn-block mt-1 mt-lg-4 bmro-click-toggle bmro-invoice-one bmro-collapse-button-bg bmro-log-scor" data-toggle="collapse" data-target="#ownerwise-summary">
+      <a class="btn text-left btn-lg btn-block mt-1 mt-lg-4 bmro-click-toggle bmro-invoice-one bmro-collapse-button-bg bmro-log-scor" data-toggle="collapse" data-target="#ownerwise-summary" aria-controls="ownerwise-summary" aria-expanded="false">
         Logistics Owner-wise Scorecard </a>
       <div class="bmro-float">
         <div class="bmro-collaps bmro-collaps2">
@@ -143,21 +143,21 @@
 </div>
 
 <script type="text/javascript">
-    $(".bmro-click-toggle").click(function(){
-        $('div.collapsed').removeClass('collapsed')
-        $('div.bmro-collaps2-bg.bmro-parent-bg').removeClass('.bmro-collaps2-bg.bmro-parent-bg')
-        $('div.collapse.show').removeClass('show')
-        $(this).parent().toggleClass("bmro-collaps2-bg");
-    });
+    // $(".bmro-click-toggle").click(function(){
+    //     $('div.collapsed').removeClass('collapsed')
+    //     $('div.bmro-collaps2-bg.bmro-parent-bg').removeClass('.bmro-collaps2-bg.bmro-parent-bg')
+    //     $('div.collapse.show').removeClass('show')
+    //     $(this).parent().toggleClass("bmro-collaps2-bg");
+    // });
     $('.bmro-over-scor').click(function(){
-      $('#pod-summary').toggleClass('bmrocol-openclose');
-      $('.logisowner').addClass('bmrocol-openclose');
+      // $('#pod-summary').toggleClass('bmrocol-openclose');
+      // $('.logisowner').addClass('bmrocol-openclose');
       $('.logiscoll').removeClass('bmro-collaps2-bg');
       $('.logiscoll').removeClass('bmro-parent-bg');
     });
     $('.bmro-log-scor').click(function(){
-      $('#ownerwise-summary').toggleClass('bmrocol-openclose');
-      $('.overallscore').addClass('bmrocol-openclose');
+      // $('#ownerwise-summary').toggleClass('bmrocol-openclose');
+      // $('.overallscore').addClass('bmrocol-openclose');
       $('.bmor-minwidthset').removeClass('bmro-collaps2-bg');
       $('.bmor-minwidthset').removeClass('bmro-parent-bg');
     });    
