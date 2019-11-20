@@ -1908,14 +1908,14 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     min-width: auto;
     border-radius: 0px;
 }
-.table.dataTable.fixedHeader-floating{
-    /*top: 78px;*/
+/*.table.dataTable.fixedHeader-floating{
+    top: 78px;
     padding-top: 47px;
     transition: all 0.9s ease;
     z-index: 100;
     background-color: #f0f2f6!important; 
     display: inline-table;
-}
+}*/
 
 .bmro-serial-number-products{
     border-style: none!important;
@@ -3971,7 +3971,7 @@ td .media .media-body{
 td .media.chat-item{
     line-height: 1.1rem;
 }
-@media only screen and (min-width: 1920px) {
+/*@media only screen and (min-width: 1920px) {
   .bmro-datatable-style.fixedHeader-floating{
     padding-top: 25px!important;
     top: 48px!important;
@@ -3981,7 +3981,7 @@ td .media.chat-item{
   .bmro-datatable-style.fixedHeader-floating{
     padding-top: 57px;
   }
-}
+}*/
 .badge-success{
     background-color: #3CB767;
 }
