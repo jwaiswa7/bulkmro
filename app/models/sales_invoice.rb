@@ -138,8 +138,8 @@ class SalesInvoice < ApplicationRecord
   end
 
   def pod_status
-    if self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached?
-      if self.delivery_completed
+    if (self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached?) || self.is_manual_closed
+      if self.delivery_completed || self.is_manual_closed
         'complete'
       else
         'partial'

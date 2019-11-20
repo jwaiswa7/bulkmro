@@ -13,14 +13,15 @@ class Services::Shared::Migrations::AddPodToSalesInvoices < Services::Shared::Mi
         sales_invoice = SalesInvoice.find_by_invoice_number(invoice_number)
         if sales_invoice.present?
           pod_row = sales_invoice.pod_rows.build(delivery_date: delivery_date)
-          pod_row.attachments.attach(io: File.open("#{Rails.root}/lib/assets/pod_attachments/dummy_pod.pdf"), filename: 'dummy_pod.pdf')
+          # pod_row.attachments.attach(io: File.open("#{Rails.root}/lib/assets/pod_attachments/dummy_pod.pdf"), filename: 'dummy_pod.pdf')
+          sales_invoice.update_attributes(is_manual_closed: true)
           pod_row.save!
           sales_invoice_array << sales_invoice.invoice_number
         else
           writer << [ branch, invoice_number, customer_name, delivery_date ]
         end
       end
-      SalesInvoice.where(invoice_number: sales_invoice_array).update_attributes(is_manual_closed: true)
+      #SalesInvoice.where(invoice_number: sales_invoice_array).update_attributes(is_manual_closed: true)
     end
       fetch_csv('missing_sales_invoices.csv', csv_data)
     end
