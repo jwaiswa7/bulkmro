@@ -68,13 +68,16 @@ end
 # end
 
 every(1.day, 'purchase_order_reindex', at: '09:00') do
-  puts 'For reindexing purchase orders'
+  # deletes old indexes/alias_index
+  require 'httparty'
+  auth = {:username => "#{ENV['ELASTIC_USER_NAME']}", :password => "#{ENV['ELASTIC_PASSWORD']}"}
+  HTTParty.delete("#{ENV['FOUNDELASTICSEARCH_URL']}/purchase_orders_*", :basic_auth => auth)
 
+  # reindex
   index_class = PurchaseOrdersIndex
   if index_class <= BaseIndex
     index_class.reset!
   end
-
   Services::Overseers::Exporters::MaterialReadinessExporter.new.call
 end
 
