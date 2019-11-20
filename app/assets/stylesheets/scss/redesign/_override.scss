@@ -2119,6 +2119,7 @@ table tr:last-child th:first-child{
 }
 .bmro-width-auto{
     width: auto;
+    max-width: 600px;
 }
 .bmro-table-in-new-table{
     font-size: 10px!important;
@@ -4196,9 +4197,16 @@ td .media.chat-item{
 .bmro-log-margin{
     margin-left: -16px;
 }
-.logisowner{
-    transition: unset;
-}
 .badge.badge-wrap{
     text-align: left;
+}
+.badge-danger{
+    background-color: #FFA294;
+}
+.badge-success{
+    background-color: #A8DC59;
+}
+.bmro-tab-width{
+    max-width: 440px;
+    width: auto;
 }
