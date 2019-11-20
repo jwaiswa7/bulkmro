@@ -38,8 +38,8 @@ class SalesInvoicesIndex < BaseIndex
     field :potential_value, value: -> (record) { record.report_total }, type: 'double'
     field :invoice_created_at, value: -> (record) { record.mis_date if record.status != 'Cancelled' }, type: 'date'
     field :is_pod, value: -> (record) {(record.has_attachment? ? 1 : 0) if record.status != 'Cancelled'}, type: 'integer'
-    field :regular_pod, value: -> (record) {record.mis_date if (!record.has_attachment? || !record.is_manual_closed) && record.inquiry.present? && record.inquiry.opportunity_type != 'route_through' && record.status != 'Cancelled' }, type: 'date'
-    field :route_through_pod, value: -> (record) {record.mis_date if (!record.has_attachment? || !record.is_manual_closed) && record.inquiry.present? && record.inquiry.opportunity_type == 'route_through' && record.status != 'Cancelled'}, type: 'date'
+    field :regular_pod, value: -> (record) {record.mis_date if !record.has_attachment? && record.inquiry.present? && record.inquiry.opportunity_type != 'route_through' && record.status != 'Cancelled' }, type: 'date'
+    field :route_through_pod, value: -> (record) {record.mis_date if !record.has_attachment? && record.inquiry.present? && record.inquiry.opportunity_type == 'route_through' && record.status != 'Cancelled'}, type: 'date'
     field :opportunity_type, value: -> (record) {opportunity_type[record.inquiry.opportunity_type] if record.inquiry.present?}, type: 'integer'
     field :pod_type, value: -> (record) {(record.inquiry.opportunity_type != 'route_through' ? 40 : 70) if record.inquiry.present? && record.status != 'Cancelled' }, type: 'integer'
   end
