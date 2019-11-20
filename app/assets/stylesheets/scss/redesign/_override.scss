@@ -4202,11 +4202,16 @@ td .media.chat-item{
 }
 .badge-danger{
     background-color: #FFA294;
+    color: #2C4159;
 }
 .badge-success{
     background-color: #A8DC59;
+    color: #2C4159;
 }
 .bmro-tab-width{
     max-width: 440px;
     width: auto;
+}
+.bmro-report-border{
+    border:none!important;
 }
