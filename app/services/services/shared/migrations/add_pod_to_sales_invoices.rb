@@ -13,7 +13,7 @@ class Services::Shared::Migrations::AddPodToSalesInvoices < Services::Shared::Mi
         if sales_invoice.present?
           pod_row = sales_invoice.pod_rows.build(delivery_date: delivery_date)
           # pod_row.attachments.attach(io: File.open("#{Rails.root}/lib/assets/pod_attachments/dummy_pod.pdf"), filename: 'dummy_pod.pdf')
-          sales_invoice.update_attributes(is_manual_closed: true)
+          sales_invoice.update_attributes(is_manual_closed: true, delivery_completed: true)
           pod_row.save!
         else
           writer << [ branch, invoice_number, customer_name, delivery_date ]
