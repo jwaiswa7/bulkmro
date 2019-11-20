@@ -183,11 +183,11 @@ module DisplayHelper
       if status == 'Order Won' || status == 'Order Lost'
         ''
       elsif (status != 'Order Won' || status != 'Order Lost') && month_difference >= 2
-        'bg-highlight-danger'
+        'bg-highlight-danger bmro-report-border'
       elsif (status != 'Order Won' || status != 'Order Lost') && month_difference >= 1 && month_difference < 2
-        'bg-highlight-warning'
+        'bg-highlight-warning bmro-report-border'
       elsif month_difference < 1
-        'bg-highlight-success'
+        'bg-highlight-success bmro-report-border'
       end
     end
   end
