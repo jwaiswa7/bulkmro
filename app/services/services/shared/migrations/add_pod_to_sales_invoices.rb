@@ -8,7 +8,7 @@ class Services::Shared::Migrations::AddPodToSalesInvoices < Services::Shared::Mi
         delivery_date = x.get_column('Date')
         customer_name = x.get_column('Customer')
         branch = x.get_column('Branch')
-        sales_invoice = SalesInvoice.where(invoice_number: invoice_number).last
+        sales_invoice = SalesInvoice.find_by_invoice_number(invoice_number)
         if sales_invoice.present?
           pod_row = sales_invoice.pod_rows.build(delivery_date: delivery_date)
           pod_row.attachments.attach(io: File.open("#{Rails.root}/lib/assets/pod_attachments/dummy_pod.pdf"), filename: 'dummy_pod.pdf')
