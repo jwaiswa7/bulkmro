@@ -365,4 +365,9 @@ class SalesInvoice < ApplicationRecord
 
     bill_from_warehouse
   end
+
+
+  def get_contact_for_email
+    [self.inquiry.billing_contact.email, self.inquiry.shipping_contact.email].uniq.join(',')
+  end
 end
