@@ -5,6 +5,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
     @export_name = 'purchase_orders'
     @path = Rails.root.join('tmp', filename)
     @columns = %w(po_number inquiry_number inquiry_date company_name inside_sales procurement_date order_number order_date order_status po_date po_status supplier_name payment_terms committed_customer_date supplier_phone_no supplier_email route_through ship_from ship_to)
+    @export.update_attributes(export_type: 15, status: 'Enqueued')
   end
 
   def call
@@ -17,8 +18,8 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
     else
       records = model.where(created_at: start_at..end_at).order(po_number: :asc)
     end
-
-    records.each do |purchase_order|
+    @export.update_attributes(status: 'Processing')
+    records.find_each(batch_size: 500) do |purchase_order|
       inquiry = purchase_order.inquiry
 
       row = {
@@ -131,8 +132,8 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
 
       rows.push(row)
     end
-    filtered = @ids.present?
-    export = Export.create!(export_type: 15, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # filtered = @ids.present?
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end
