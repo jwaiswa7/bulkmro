@@ -1,11 +1,11 @@
 class Services::Overseers::Exporters::GenerateExportsDaily < Services::Shared::BaseService
   def initialize
     export_arr = [
+        'SalesInvoicesExporter',
+        'ProductsExporter',
         'SalesOrderRowsExporter',
         'SalesInvoiceRowsExporter',
-        'ProductsExporter',
         'CompaniesExporter',
-        'SalesInvoicesExporter',
         'SalesInvoicesLogisticsExporter',
         'SalesOrdersLogisticsExporter',
         'PurchaseOrdersExporter'
