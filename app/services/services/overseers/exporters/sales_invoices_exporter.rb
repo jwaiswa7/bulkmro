@@ -17,7 +17,8 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
         'Invoice Tax Amount',
         'Invoice Gross Amount',
         'Branch (Bill From)',
-        'Invoice Status'
+        'Invoice Status',
+        'POD Status'
     ]
   end
 
@@ -47,7 +48,8 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
         tax_amount: ('%.2f' % sales_invoice.metadata['tax_amount'] if sales_invoice.metadata['tax_amount']),
         gross_amount: ('%.2f' % sales_invoice.metadata['grand_total'] if sales_invoice.metadata['grand_total']),
         bill_from_branch: (inquiry.bill_from.address.state.name if inquiry.bill_from.present?),
-        invoice_status: sales_invoice.sales_order.remote_status
+        invoice_status: sales_invoice.sales_order.remote_status,
+        pod_status: sales_invoice.pod_status
                 )
     end
 
