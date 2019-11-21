@@ -33,9 +33,9 @@ class PurchaseOrderRow < ApplicationRecord
 
   def uom
     if get_product.present? && get_product.measurement_unit.present?
-      get_product.measurement_unit.name
+      get_product.measurement_unit.try(:name)
     elsif self.product.present?
-      self.product.measurement_unit.name
+      self.product.measurement_unit.try(:name)
     end
   end
 
