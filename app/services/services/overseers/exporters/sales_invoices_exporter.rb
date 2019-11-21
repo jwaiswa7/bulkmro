@@ -17,8 +17,10 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
         'Invoice Tax Amount',
         'Invoice Gross Amount',
         'Branch (Bill From)',
-        'Invoice Status'
+        'Invoice Status',
+        'POD Status'
     ]
+    @export.update_attributes(export_type: 25, status: 'Enqueued')
   end
 
   def call
@@ -31,7 +33,8 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
     else
       records = model.where(created_at: start_at..end_at).where.not(sales_order_id: nil).where.not(metadata: nil).order(invoice_number: :asc)
     end
-    records.each do |sales_invoice|
+    @export.update_attributes(status: 'Processing')
+    records.find_each(batch_size: 500) do |sales_invoice|
       sales_order = sales_invoice.sales_order
       inquiry = sales_invoice.inquiry
       rows.push(
@@ -47,12 +50,13 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
         tax_amount: ('%.2f' % sales_invoice.metadata['tax_amount'] if sales_invoice.metadata['tax_amount']),
         gross_amount: ('%.2f' % sales_invoice.metadata['grand_total'] if sales_invoice.metadata['grand_total']),
         bill_from_branch: (inquiry.bill_from.address.state.name if inquiry.bill_from.present?),
-        invoice_status: sales_invoice.sales_order.remote_status
+        invoice_status: sales_invoice.sales_order.remote_status,
+        pod_status: sales_invoice.pod_status
                 )
     end
 
-    filtered = @ids.present?
-    export = Export.create!(export_type: 25, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # filtered = @ids.present?
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end
