@@ -29,9 +29,9 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
 
   def build_csv
     if @ids.present?
-      records = model.where(id: @ids).order(created_at: :desc)
+      records = model.where(id: @ids).order(mis_date: :desc)
     else
-      records = model.where(created_at: start_at..end_at).where.not(sales_order_id: nil).where.not(metadata: nil).order(invoice_number: :asc)
+      records = model.where(mis_date: start_at..end_at).where.not(sales_order_id: nil).where.not(metadata: nil).order(invoice_number: :asc)
     end
     @export.update_attributes(status: 'Processing')
     records.find_each(batch_size: 500) do |sales_invoice|
@@ -40,7 +40,7 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
       rows.push(
         inquiry_number: sales_invoice.inquiry.inquiry_number.to_s,
         invoice_number: sales_invoice.invoice_number,
-        invoice_date: sales_invoice.created_at.to_date.to_s,
+        invoice_date: sales_invoice.mis_date.to_date.to_s,
         order_number: sales_invoice.sales_order.order_number.to_s,
         order_date: sales_invoice.sales_order.created_at.to_date.to_s,
         customer_name: sales_invoice.inquiry.company.name.to_s,
