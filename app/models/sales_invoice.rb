@@ -6,7 +6,7 @@ class SalesInvoice < ApplicationRecord
   update_index('customer_order_status_report#sales_order') { sales_order }
   update_index('logistics_scorecards#sales_invoice') { self }
 
-  pg_search_scope :locate, against: [:id, :invoice_number], associated_against: { company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:id, :invoice_number], associated_against: {company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name]}, using: {tsearch: {prefix: true}}
 
   belongs_to :sales_order
   belongs_to :billing_address, class_name: 'Address', required: false
@@ -138,7 +138,9 @@ class SalesInvoice < ApplicationRecord
   end
 
   def pod_status
-    if self.pod_rows.present? && (self.pod_rows.order(:delivery_date).last.attachments.attached? || self.is_manual_closed)
+    if is_manual_closed
+      'complete'
+    elsif self.pod_rows.present? && (self.pod_rows.order(:delivery_date).last.attachments.attached?)
       if self.delivery_completed
         'complete'
       else
