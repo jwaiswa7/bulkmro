@@ -2,6 +2,7 @@ import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from "../common/updateSummaryBox";
 import exportFilteredRecords from "../common/exportFilteredRecords";
 import commanComment from "../common/commanComment";
+import removeHrefExport from '../common/removeHrefExport';
 
 const index = () => {
     bindSummaryBox(".summary_box", '.status-filter')
@@ -13,6 +14,7 @@ const index = () => {
     salesOrderCancel()
 
     commanComment('sales-order','sales_orders');
+    removeHrefExport();
 };
 
 let salesOrderCancel = () => {

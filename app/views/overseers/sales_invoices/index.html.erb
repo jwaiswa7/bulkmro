@@ -12,9 +12,9 @@
     <a href="<%= export_all_overseers_sales_invoices_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All AR Invoice"><i class="fal fa-download mr-1"></i>AR Invoice</a>
     <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
     <div class="dropdown-menu dropdown-menu-right">
-      <a class="dropdown-item" href="<%= export_for_logistics_overseers_sales_invoices_path(format: :csv) %>">AR Invoice (Logistics)</a>
+      <a class="dropdown-item export-button" href="<%= Export.send(controller_path.split('/').last).not_filtered.last.status == ('Enqueued' || 'Processing') ? '' : export_for_logistics_overseers_sales_invoices_path(format: :csv)  %>">AR Invoice (Logistics)</a>
 
-      <a class="dropdown-item" href="<%= export_rows_overseers_sales_invoices_path(format: :csv) %>">AR Invoice
+      <a class="dropdown-item export-button" href="<%= Export.send(controller_path.split('/').last).not_filtered.last.status == ('Enqueued' || 'Processing') ? '' : export_rows_overseers_sales_invoices_path(format: :csv) %>">AR Invoice
         Rows</a>
     </div>
   </div>
