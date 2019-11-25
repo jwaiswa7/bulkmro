@@ -237,7 +237,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     service = Services::Overseers::Exporters::PurchaseOrdersExporter.new([], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.purchase_orders.not_filtered.last.report)
+    redirect_to url_for(Export.purchase_orders.not_filtered.completed.last.report)
   end
 
   def export_filtered_records
@@ -271,7 +271,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     service = Services::Overseers::Exporters::MaterialReadinessExporter.new([], current_overseer)
     service.call
 
-    redirect_to url_for(Export.material_readiness_queue.not_filtered.last.report)
+    redirect_to url_for(Export.material_readiness_queue.not_filtered.completed.last.report)
   end
 
   def cancelled_purchase_modal
