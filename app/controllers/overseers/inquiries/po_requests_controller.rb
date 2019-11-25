@@ -37,6 +37,18 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
           else
             @po_request_comment = PoRequestComment.new(message: "Stock Status Changed: #{@po_request.stock_status}", po_request: @po_request, overseer: current_overseer)
           end
+          po_request_row_ids = []
+          params[:po_request][:rows_attributes].each do |key, value|
+            if value.key?('_destroy')
+              po_request_row_ids << value['id']
+            end
+          end
+          if @po_request.purchase_order.present?
+            @purchase_order_rows = @po_request.purchase_order.rows.where(po_request_row_id: po_request_row_ids)
+            if @purchase_order_rows.present?
+              @purchase_order_rows.update_all(po_request_row_id: nil)
+            end
+          end
           @po_request.save!
           @po_request_comment.save!
         else
