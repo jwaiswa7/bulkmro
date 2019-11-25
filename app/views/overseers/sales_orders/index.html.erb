@@ -10,7 +10,7 @@
     <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
     <div class="dropdown-menu dropdown-menu-right">
       <% status_process = ['Enqueued','Processing'] %>
-      <% export_status =  Export.send(controller_path.split('/').last).not_filtered.last%>
+      <% export_status =  Export.send(controller_path.split('/').last).not_filtered.last %>
       <a class="dropdown-item export-button" href="<%= status_process.include?(export_status.status) ? '' : export_for_logistics_overseers_sales_orders_path(format: :csv) %>">Sales Orders
         (Logistics)</a>
       <a class="dropdown-item export-button" href="<%= status_process.include?(export_status.status) ? '' : export_rows_overseers_sales_orders_path(format: :csv) %>">Sales Order Rows</a>

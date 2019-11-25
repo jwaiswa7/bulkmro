@@ -60,7 +60,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     service = Services::Overseers::Exporters::SalesOrdersExporter.new
     service.call
 
-    redirect_to url_for(Export.sales_orders.not_filtered.last.report)
+    redirect_to url_for(Export.sales_orders.not_filtered.completed.last.report)
   end
 
   def export_rows
