@@ -1,4 +1,5 @@
 import exportFilteredRecords from "../common/exportFilteredRecords";
+import removeHrefExport from '../common/removeHrefExport';
 
 const index = () => {
 
@@ -8,6 +9,7 @@ const index = () => {
     $(".select2-selection__clear").on("click", function () {
         alert("hello");
     })
+    removeHrefExport();
 
     // $('.datatable').on('click','.rating',function () {
     //     var id = $(this).data('company-id')

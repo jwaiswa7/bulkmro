@@ -5,6 +5,7 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
     @export_name = 'activities'
     @path = Rails.root.join('tmp', filename)
     @columns = ['created_by', 'account', 'company', 'company_type', 'inquiry', 'commercial_status', 'contact_name', 'purpose', 'type', 'points_discussed', 'actions_required', 'misc_expences', 'activity_date', 'created']
+    @export.update_attributes(export_type: 55, status: 'Enqueued')
   end
 
   def call
@@ -17,7 +18,8 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
     else
       records = model.where('created_at >= :start_at AND created_at <= :end_at', start_at: @start_at, end_at: @end_at).order(created_at: :desc)
     end
-    records.each do |record|
+    @export.update_attributes(status: 'Processing')
+    records.find_each(batch_size: 500) do |record|
       name = record.created_by.present? ? record.created_by.full_name : record.id
       rows.push(
         created_by: name,
@@ -36,8 +38,8 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
         created: record.created_at.to_date.to_s
                 )
     end
-    filtered = @ids.present?
-    export = Export.create!(export_type: 55, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # filtered = @ids.present?
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

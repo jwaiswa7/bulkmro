@@ -1,7 +1,8 @@
 import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from '../common/updateSummaryBox'
 import exportFilteredRecords from '../common/exportFilteredRecords'
-import commanComment from "../common/commanComment";
+import commanComment from "../common/commanComment"
+import removeHrefExport from '../common/removeHrefExport';
 
 const index = () => {
 
@@ -13,6 +14,7 @@ const index = () => {
      exportFilteredRecords(Routes.export_filtered_records_overseers_inquiries_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
 
     commanComment('inquiry','inquiries');
+    removeHrefExport()
 
 };
 
