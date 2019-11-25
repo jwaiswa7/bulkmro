@@ -1,11 +1,13 @@
 import updateSummaryBox from "../common/updateSummaryBox";
 import updateLogisticsOwner from "./updateLogisticsOwner"
+import removeHrefExport from '../common/removeHrefExport';
 
 const materialReadinessQueue = () => {
     bindSummaryBox(".summary_box");
     updateSummaryBox();
     // aggregateSummaryBox();
     updateLogisticsOwner();
+    removeHrefExport();
 };
 
 let bindSummaryBox = (classname) => {

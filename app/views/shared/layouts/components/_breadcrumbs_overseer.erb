@@ -1,5 +1,6 @@
 <% if content_for?(:can_be_directly_created) || content_for?(:can_be_searched_or_created) || content_for?(:can_be_directly_exported) || content_for?(:can_be_directly_export_by_daterange) || content_for?(:heading_buttons) || content_for?(:can_be_directly_downloaded) || content_for?(:can_be_directly_exported_filtered_records) || content_for?(:can_be_directly_exported_inquiry_tat) || content_for?(:can_exported_report) %>
   <div>
+    <% status_process = ['Enqueued','Processing'] %>
     <% if content_for?(:so_po_doc_included) %>
       <div class="d-none d-md-inline-block align-top">
         <a href="https://drive.google.com/file/d/1WESvKgCACbwgM6uuESXrTY5kPOOd1KIi/view" target="_blank"><img src="<%= image_path('doc_icon.png') %>" alt="Italian Trulli" align="right" data-toggle="tooltip" title="SO/PO User Guide"></a>
@@ -40,9 +41,11 @@
         <div class="mr-2 d-md-inline-block export_daterange_wrapper">
           <input type="text" id="export_daterange" name="export_daterange" class="form-control" data-toggle="daterangepicker" data-direction="left" placeholder="Pick a daterange" />
         </div>
-        <a href="<%= [request.path, '/', 'export_all.csv'].join %>" id="export_daterange_button" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down export_daterange_wrapper" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
+        <% export_status = Export.send(controller_path.split('/').last).not_filtered.last %>
+        <a href="<%= status_process.include?(export_status.status) ? '' : [request.path, '/', 'export_all.csv'].join %>" id="export_daterange_button" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down export_daterange_wrapper export-button <%= status_process.include?(export_status.status) ? 'export-disable' : '' %>" <% if export_status.present? %>data-badge="<%= [time_ago_in_words(export_status.created_at), "ago"].join(' ') %><% end %>">
           <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
         </a>
+
       </div>
     <% end %>
     <% if content_for?(:can_be_directly_created) && is_authorized(current_model.singularize.downcase,'new') %>
@@ -51,7 +54,8 @@
       </a>
     <% end %>
     <% if content_for?(:can_be_directly_exported) && is_authorized(current_model.singularize.downcase,'export_all') %>
-      <a href="<%= [request.path, '/', 'export_all.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
+      <% export_status = Export.send(controller_path.split('/').last).not_filtered.last %>
+      <a href="<%= status_process.include?(export_status.status) ? '' : [request.path, '/', 'export_all.csv'].join  %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 export-button <%= status_process.include?(export_status.status) ? 'export-disable' : '' %>" <% if export_status.present? %>data-badge="<%= [time_ago_in_words(export_status.created_at), "ago"].join(' ') %><% end %>">
         <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
       </a>
     <% end %>
@@ -87,7 +91,8 @@
       </a>
     <% end %>
     <% if content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness') %>
-      <a href= "<%= [request.path.chomp('material_readiness_queue'), 'export_material_readiness.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" <% if Export.send(controller_path.split('/').last).not_filtered.last.present? %>data-badge="<%= [time_ago_in_words(Export.where(export_type: 96).not_filtered.last.created_at), "ago"].join(' ') %><% end %>">
+      <% export_status = Export.where(export_type: 96).not_filtered.last %>
+      <a href= "<%= status_process.include?(export_status.status) ? '' : [request.path.chomp('material_readiness_queue'), 'export_material_readiness.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 export-button <%= status_process.include?(export_status.status) ? 'export-disable' : '' %> " <% if export_status.present? %>data-badge="<%= [time_ago_in_words(status_process.created_at), "ago"].join(' ') %><% end %>">
         <i class="fal fa-download mr-1"></i>Material Readiness Queue
       </a>
     <% end %>
