@@ -38,6 +38,12 @@
   }
 }
 
+
+.export-disable{
+  pointer-events: none;
+}
+
+
 @include media-breakpoint-up(lg) {
   .breadcrumb-bar {
     min-height: 2.5625rem;

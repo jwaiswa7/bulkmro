@@ -3,7 +3,7 @@ const removeHrefExport = () => {
         event.preventDefault();
         let url = $(this).attr('href');
         $(this).removeAttr('href');
-        $(this).css('pointer-events','none');
+        $(this).addClass("export-disable");
         window.location.href = url
     });
 };
