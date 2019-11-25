@@ -1,8 +1,10 @@
 const removeHrefExport = () => {
     $('.export-button').click(function (event) {
-        $('.export-button').click(function (event) {
-            $(this).removeAttr('href');
-        });
+        event.preventDefault();
+        let url = $(this).attr('href');
+        $(this).removeAttr('href');
+        $(this).css('pointer-events','none');
+        window.location.href = url
     });
 };
 
