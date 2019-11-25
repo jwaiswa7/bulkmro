@@ -155,7 +155,7 @@ class Overseers::ProductsController < Overseers::BaseController
     service = Services::Overseers::Exporters::ProductsExporter.new(params[:q], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.products.not_filtered.last.report)
+    redirect_to url_for(Export.products.not_filtered.completed.last.report)
   end
 
   def export_filtered_records

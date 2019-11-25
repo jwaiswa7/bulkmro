@@ -52,7 +52,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     service = Services::Overseers::Exporters::SalesInvoicesExporter.new([], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.sales_invoices.not_filtered.last.report)
+    redirect_to url_for(Export.sales_invoices.not_filtered.completed.last.report)
   end
 
   def export_filtered_records
