@@ -9,14 +9,16 @@
       Orders</a>
     <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"></button>
     <div class="dropdown-menu dropdown-menu-right">
-      <a class="dropdown-item export-button" href="<%= Export.send(controller_path.split('/').last).not_filtered.last.status == ('Enqueued' || 'Processing') ? '' : export_for_logistics_overseers_sales_orders_path(format: :csv) %>">Sales Orders
+      <% status_process = ['Enqueued','Processing'] %>
+      <% export_status =  Export.send(controller_path.split('/').last).not_filtered.last%>
+      <a class="dropdown-item export-button" href="<%= status_process.include?(export_status.status) ? '' : export_for_logistics_overseers_sales_orders_path(format: :csv) %>">Sales Orders
         (Logistics)</a>
-      <a class="dropdown-item export-button" href="<%= Export.send(controller_path.split('/').last).not_filtered.last.status == ('Enqueued' || 'Processing') ? '' : export_rows_overseers_sales_orders_path(format: :csv) %>">Sales Order Rows</a>
-      <a class="dropdown-item export-button" href="<%= Export.send(controller_path.split('/').last).not_filtered.last.status == ('Enqueued' || 'Processing') ? '' : export_rows_in_bible_format_overseers_sales_orders_path(format: :csv) %>">Sales Order Rows(Bible Format)</a>
-      <a class="dropdown-item export-button" href="<%= Export.send(controller_path.split('/').last).not_filtered.last.status == ('Enqueued' || 'Processing') ? '' : export_for_sap_overseers_sales_orders_path(format: :csv) %>">Sales Order
+      <a class="dropdown-item export-button" href="<%= status_process.include?(export_status.status) ? '' : export_rows_overseers_sales_orders_path(format: :csv) %>">Sales Order Rows</a>
+      <a class="dropdown-item export-button" href="<%= status_process.include?(export_status.status) ? '' : export_rows_in_bible_format_overseers_sales_orders_path(format: :csv) %>">Sales Order Rows(Bible Format)</a>
+      <a class="dropdown-item export-button" href="<%= status_process.include?(export_status.status) ? '' : export_for_sap_overseers_sales_orders_path(format: :csv) %>">Sales Order
         (SAP)</a>
       <% if is_authorized(:sales_order, 'export_for_reco') && policy(:sales_order).export_for_reco? %>
-        <a class="dropdown-item export-button" href="<%= Export.send(controller_path.split('/').last).not_filtered.last.status == ('Enqueued' || 'Processing') ? '' : export_for_reco_overseers_sales_orders_path(format: :csv) %>">Sales Order
+        <a class="dropdown-item export-button" href="<%= status_process.include?(export_status.status) ? '' : export_for_reco_overseers_sales_orders_path(format: :csv) %>">Sales Order
           For Inquiry RECO</a>
       <% end %>
     </div>
