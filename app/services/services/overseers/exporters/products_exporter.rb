@@ -21,7 +21,7 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
     end
     # records.each do |record|
     @export.update_attributes(status: 'Processing')
-    records.includes(:category, :brand, :measurement_unit).all.order(created_at: :desc).find_each(batch_size: 500) do |record|
+    records.includes(:category, :brand, :measurement_unit).all.order(created_at: :desc).find_each(batch_size: 100) do |record|
       rows.push(
         id: record.id,
         sku: record.sku,

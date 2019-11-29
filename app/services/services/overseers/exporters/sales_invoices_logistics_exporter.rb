@@ -12,7 +12,7 @@ class Services::Overseers::Exporters::SalesInvoicesLogisticsExporter < Services:
   end
 
   def build_csv
-    model.where(created_at: start_at..end_at).where.not(sales_order_id: nil).where.not(metadata: nil).order(invoice_number: :asc).each do |sales_invoice|
+    model.where(created_at: start_at..end_at).where.not(sales_order_id: nil).where.not(metadata: nil).order(invoice_number: :asc).find_each(batch_size: 100) do |sales_invoice|
       rows.push(
         inquiry_number: sales_invoice.inquiry.inquiry_number.to_s,
         inquiry_date: sales_invoice.inquiry.created_at.to_date.to_s,

@@ -19,7 +19,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
       records = model.where(created_at: start_at..end_at).order(po_number: :asc)
     end
     @export.update_attributes(status: 'Processing')
-    records.find_each(batch_size: 500) do |purchase_order|
+    records.find_each(batch_size: 100) do |purchase_order|
       inquiry = purchase_order.inquiry
 
       row = {
