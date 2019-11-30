@@ -35,7 +35,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
       records = model.remote_approved.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc)
     end
     @export.update_attributes(status: 'Processing')
-    records.find_each(batch_size: 500) do |sales_order|
+    records.find_each(batch_size: 200) do |sales_order|
       inquiry = sales_order.inquiry
 
       rows.push(
