@@ -19,7 +19,7 @@ class Services::Overseers::Exporters::SuppliersExporter < Services::Overseers::E
       records = model.includes({ addresses: :state }, :company_contacts, :account).all.order(created_at: :desc)
     end
     @export.update_attributes(status: 'Processing')
-    records.find_each(batch_size: 500) do |record|
+    records.find_each(batch_size: 100) do |record|
       rows.push(
         name: record.name,
         comapny_alias: record.account.name,
