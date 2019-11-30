@@ -29,7 +29,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
 
   def build_csv
     @export.update_attributes(status: 'Processing')
-    model.where(created_at: start_at..end_at).order(sales_invoice_id: :asc).where('sales_invoices.sales_order_id IS NOT NULL').joins(:sales_invoice).each do |row|
+    model.where(created_at: start_at..end_at).order(sales_invoice_id: :asc).where('sales_invoices.sales_order_id IS NOT NULL').joins(:sales_invoice).find_each(batch_size: 100) do |row|
       sales_invoice = row.sales_invoice
       sales_order = sales_invoice.sales_order
       inquiry = sales_invoice.inquiry

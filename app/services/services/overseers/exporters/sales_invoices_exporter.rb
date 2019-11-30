@@ -35,7 +35,7 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
       records = model.where(created_at: start_at..end_at).where.not(sales_order_id: nil).where.not(metadata: nil).order(invoice_number: :asc)
     end
     @export.update_attributes(status: 'Processing')
-    records.find_each(batch_size: 500) do |sales_invoice|
+    records.find_each(batch_size: 200) do |sales_invoice|
       sales_order = sales_invoice.sales_order
       inquiry = sales_invoice.inquiry
       rows.push(

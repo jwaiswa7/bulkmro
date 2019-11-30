@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   post '/rate' => 'rater#create', :as => 'rate'
   mount Maily::Engine, at: '/maily' if Rails.env.development?
   mount ActionCable.server, at: '/cable'
-  mount Sidekiq::Web => '/sidekiq'
+  authenticate :overseer, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
   root to: 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
   get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'

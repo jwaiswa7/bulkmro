@@ -19,7 +19,7 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
       records = model.where('created_at >= :start_at AND created_at <= :end_at', start_at: @start_at, end_at: @end_at).order(created_at: :desc)
     end
     @export.update_attributes(status: 'Processing')
-    records.find_each(batch_size: 500) do |record|
+    records.find_each(batch_size: 100) do |record|
       name = record.created_by.present? ? record.created_by.full_name : record.id
       rows.push(
         created_by: name,

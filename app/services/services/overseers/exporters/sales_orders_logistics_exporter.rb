@@ -15,7 +15,7 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
   def build_csv
     puts ">>>>> Sales Order Logistics Service started >>>>>>>>>"
     @export.update_attributes(status: 'Processing')
-    model.status_Approved.where(created_at: start_at..end_at).where.not(sales_quote_id: nil).order(created_at: :desc).each do |sales_order|
+    model.status_Approved.where(created_at: start_at..end_at).where.not(sales_quote_id: nil).order(created_at: :desc).find_each(batch_size: 100) do |sales_order|
       inquiry = sales_order.inquiry
 
       rows.push(
@@ -40,9 +40,7 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
         customer_committed_date: (inquiry.customer_committed_date.present? ? inquiry.customer_committed_date.to_date.to_s : nil),
                 )
     end
-    # export = Export.create!(export_type: 45)
-    @export.update_attributes(status: 'Completed')
-    generate_csv(@export)
-    puts ">>>>> Sales Order Logistics Service ends >>>>>>>>>"
+    export = Export.create!(export_type: 45)
+    generate_csv(export)
   end
 end
