@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class ApplicationExportJob < ActiveJob::Base
-  #include Sidekiq::Worker
+  # include Sidekiq::Worker
   queue_as :exports
-  #sidekiq_options retry: 1, queue: 'high_priority'
+  # sidekiq_options retry: 1, queue: 'high_priority'
 
   def perform(*args)
     GC.start
