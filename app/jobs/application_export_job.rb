@@ -6,7 +6,7 @@ class ApplicationExportJob < ActiveJob::Base
   # sidekiq_options retry: 1, queue: 'high_priority'
 
   def perform(*args)
-    GC.start
+    # GC.start
     service_class = ['Services', 'Overseers', 'Exporters', args[0]].join('::').constantize
     args.shift
     service = service_class.send(:new, *args[0])
