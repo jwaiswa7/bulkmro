@@ -88,6 +88,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
         'Landed (Usd Million)',
         'Margin (Usd Million)'
     ]
+    @export.update_attributes(export_type: 35, status: 'Enqueued')
   end
 
   def call
@@ -95,6 +96,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
   end
 
   def build_csv
+    @export.update_attributes(status: 'Processing')
     model.joins(:sales_order).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where.not('sales_orders.order_number': nil).where.not('sales_orders.sales_quote_id': nil).where(created_at: start_at..end_at).order(created_at: :desc).each do |row|
       sales_order = row.sales_order
       inquiry = sales_order.inquiry
@@ -192,7 +194,8 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
         Margin_Usd_Million: ''
                 )
     end
-    export = Export.create!(export_type: 35)
-    generate_csv(export)
+    # export = Export.create!(export_type: 35)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

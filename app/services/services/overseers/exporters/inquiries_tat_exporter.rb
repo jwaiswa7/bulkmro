@@ -5,6 +5,7 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
     @export_name = 'inquiries_tat'
     @path = Rails.root.join('tmp', filename)
     @columns = ['Inquiry ID', 'Inquiry Number', 'Inquiry Created Time', 'Products', 'Inside Sales Owner', 'Sales Quote', 'SO Doc ID', 'Sales Order Number', 'Sales Order Status', 'New Inquiry(Minutes)',  'New Inquiry Date', 'Acknowledgement Mail(Minutes)', 'Acknowledgement Mail(Time)', 'Acknowledgement Mail Date', 'Cross Reference(Minutes)', 'Cross Reference(Time)', 'Cross Reference Date', 'Preparing Quotation(Minutes)', 'Preparing Quotation(Time)', 'Preparing Quotation Date', 'Quotation Sent(Minutes)', 'Quotation Sent(Time)', 'Quotation Sent Date', 'Draft SO for Approval by Sales Manager(Minutes)', 'Draft SO for Approval by Sales Manager(Time)', 'Draft SO for Approval by Sales Manager Date', 'SO Rejected by Sales Manager(Minutes)', 'SO Rejected by Sales Manager(Time)', 'SO Rejected by Sales Manager Date', 'SO Draft: Pending Accounts Approval(Minutes)', 'SO Draft: Pending Accounts Approval(Time)', 'SO Draft: Pending Accounts Approval Date', 'Rejected by Accounts(Minutes)', 'Rejected by Accounts(Time)', 'Rejected by Accounts Date', 'Hold by Accounts(Minutes)', 'Hold by Accounts(Time)', 'Hold by Accounts Date', 'Order Won(Minutes)', 'Order Won(Time)', 'Order Won Date', 'Order Lost(Minutes)', 'Order Lost(Time)', 'Order Lost Date', 'Regret(Minutes)', 'Regret(Time)', 'Regret Date']
+    @export.update_attributes(export_type: 2, status: 'Enqueued')
   end
 
   def call
@@ -12,6 +13,7 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
   end
 
   def build_csv
+    @export.update_attributes(status: 'Processing')
     if @indexed_records.present?
       records = @indexed_records
     end
@@ -66,7 +68,8 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
         time_regret: record.attributes['status_regret'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_regret'][0]['created_at'])) : '-'
       )
     end
-    export = Export.create!(export_type: 2, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # export = Export.create!(export_type: 2, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

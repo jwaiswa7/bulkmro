@@ -1,0 +1,78 @@
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+
+<% content_for :header_row do %>
+  <th class="no-sort desktop">Export Type</th>
+  <th class="no-sort all">Created By</th>
+  <th class="no-sort all">Status</th>
+  <th class="no-sort all">Created At</th>
+  <th class="no-sort all">Updated At</th>
+  <th class="no-sort all"></th>
+<% end %>
+
+<div class="col-12">
+  <div>
+    <table class="table-bordered table" id="sticky-nav" style="margin-top: 0px !important;margin-bottom: 0px" >
+      <thead>
+      <tr>
+        <th style="font-weight:bold;width: 100px;">Export Type</th>
+        <th style="font-weight:bold;white-space:normal;width: 69px;">Created By</th>
+        <th style="font-weight:bold;white-space:normal;width: 51px;">Status</th>
+        <th style="font-weight:bold;white-space:normal;width: 57px;">Created At</th>
+        <th style="font-weight:bold;white-space:normal;width: 114px;">Updated At</th>
+        <th style="font-weight:bold;white-space:normal;width: 88px;"></th>
+        <th style="font-weight:bold;white-space:normal;width: 88px;"></th>
+      </tr>
+      </thead>
+      <tbody style="text-align:left;">
+      <% status_process = ['Enqueued','Processing'] %>
+      <% export_val = Array.new %>
+      <% attached_export = Array.new %>
+      <% @exports_all.each do |export_type, export| %>
+        <% export.each do |exp| %>
+          <% if exp.status == 'Completed' || exp.status == 'Enqueued' || exp.status == 'Processing'%>
+          <%   export_val.push(exp) %>
+          <% end %>
+        <% end %>
+        <% export_val.reverse.each do |exp| %>
+          <% if exp.report.attached? %>
+            <% attached_export.push(exp) %>
+            <% break %>
+          <% end %>
+        <% end %>
+        <% if export_type != nil %>
+          <tr>
+            <td>
+              <%= export_type.present? ? export_type.humanize : '' %>
+            </td>
+            <td>
+              <%= export_val.last.created_by.to_s if export_val.present? %>
+            </td>
+            <td>
+              <%= (export_val.last.status.present? ? export_val.last.status : '') if export_val.present? %>
+            </td>
+<!--            <td>-->
+              <%#= export_val.last.created_at.strftime('%d-%m-%Y %H:%M') if export_val.present? %>
+<!--            </td>-->
+<!--            <td>-->
+              <%#= export_val.last.updated_at.strftime('%d-%m-%Y %H:%M') if export_val.present? %>
+<!--            </td>-->
+            <td>
+              <a href="<%= @export_service_hash[export_type] %>" class="btn btn-primary btn-rounded align-self-center btn-block-sm-down ml-1 export-button <%= status_process.include?(export_val.last.status) ? 'export-disable' : ''%>" data-original-title="Click to Process New Download" data-toggle="tooltip">
+                <i class="fal fa-download mr-1"></i>Process
+              </a>
+            </td>
+            <td>
+              <% if attached_export.last.report.attached? %>
+                <a href="<%= url_for(attached_export.last.report) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" data-badge="<%= [time_ago_in_words(attached_export.last.created_at), "ago"].join(' ') %>" data-original-title="Last Download Available" data-toggle="tooltip">
+                  <i class="fal fa-download mr-1"></i>Download
+                </a>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

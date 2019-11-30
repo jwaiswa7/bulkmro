@@ -170,6 +170,12 @@ Rails.application.routes.draw do
 
     resources :annual_targets
 
+    resources :exports do
+      collection do
+        post 'generate_export'
+      end
+    end
+
     resources :suppliers do
       collection do
         get 'autocomplete'

@@ -1,6 +1,6 @@
 class Export < ApplicationRecord
   has_one_attached :report
-
+  paginates_per 24
   scope :not_filtered, -> { where(filtered: false) }
   scope :completed, -> { where(status: 'Completed') }
 
@@ -34,6 +34,7 @@ class Export < ApplicationRecord
   enum status: {
       'Enqueued': 1,
       'Processing': 2,
-      'Completed': 3
+      'Completed': 3,
+      'Failed': 4
   }
 end

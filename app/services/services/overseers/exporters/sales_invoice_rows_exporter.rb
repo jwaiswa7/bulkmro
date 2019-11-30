@@ -20,6 +20,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
         'Branch (Bill From)',
         'Invoice Status'
     ]
+    @export.update_attributes(export_type: 20, status: 'Enqueued')
   end
 
   def call
@@ -27,6 +28,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
   end
 
   def build_csv
+    @export.update_attributes(status: 'Processing')
     model.where(created_at: start_at..end_at).order(sales_invoice_id: :asc).where('sales_invoices.sales_order_id IS NOT NULL').joins(:sales_invoice).each do |row|
       sales_invoice = row.sales_invoice
       sales_order = sales_invoice.sales_order
@@ -48,7 +50,8 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
         invoice_status: sales_invoice.sales_order.remote_status
                 )
     end
-    export = Export.create!(export_type: 20)
-    generate_csv(export)
+    # export = Export.create!(export_type: 20)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end
