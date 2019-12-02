@@ -9,7 +9,7 @@ handler do |job, time|
   puts "Running #{job}, at #{time}"
 end
 
-every(10.minutes, 'resync_remote_requests') do
+every(20.minutes, 'resync_remote_requests') do
   ResyncRemoteRequest.where('hits < 5').each do |resync_request|
     service = Services::Resources::Shared::ResyncFailedRequests.new(resync_request)
     service.call
