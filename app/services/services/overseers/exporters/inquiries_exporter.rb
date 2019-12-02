@@ -20,7 +20,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
       records = model.where(created_at: start_at..end_at).order(created_at: :desc)
     end
     @export.update_attributes(status: 'Processing')
-    records.find_each(batch_size: 500) do |record|
+    records.find_each(batch_size: 100) do |record|
       rows.push(
         inquiry_number: record.inquiry_number,
         order_number: record.sales_orders.pluck(:order_number).compact.join(','),

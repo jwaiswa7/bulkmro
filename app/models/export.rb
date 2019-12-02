@@ -34,6 +34,7 @@ class Export < ApplicationRecord
   enum status: {
       'Enqueued': 1,
       'Processing': 2,
-      'Completed': 3
+      'Completed': 3,
+      'Failed': 4
   }
 end
