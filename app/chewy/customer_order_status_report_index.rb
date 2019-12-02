@@ -92,4 +92,5 @@ class CustomerOrderStatusReportIndex < BaseIndex
       end
     end
   end
+
 end
