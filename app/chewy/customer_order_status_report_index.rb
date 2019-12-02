@@ -1,5 +1,5 @@
 class CustomerOrderStatusReportIndex < BaseIndex
-  define_type SalesOrder.where.not(order_number: nil, status: 'Cancelled').where(created_at: Date.new(2019, 8, 01).beginning_of_day..Date.today.end_of_day).with_includes do
+  define_type SalesOrder.where.not(order_number: nil, status: 'Cancelled').with_includes do
     field :id, type: 'integer'
     field :inquiry_id, value: -> (record) { record.inquiry.id if record.inquiry.present? }, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
@@ -59,7 +59,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
       field :rows do
         field :on_time_or_delayed_time, value: -> (record) { record.sales_invoice.cosr_calculate_time_delay }, type: 'integer'
         field :invoice_number, value: -> (record) { record.sales_invoice.try(:invoice_number) }, type: 'integer'
-        field :invoice_number_string, value: -> (record) { record.sales_invoice.try(:invoice_number).to_s }, type: 'integer'
+        field :invoice_number_string, value: -> (record) { record.sales_invoice.try(:invoice_number).to_s }, analyzer: 'substring'
         field :outward_date, value: -> (record) { record.sales_invoice.try(:mis_date) }, type: 'date'
         field :customer_delivery_date, value: -> (record) { record.sales_invoice.try(:delivery_date) }, type: 'date'
         field :product_id, value: -> (record) { record.get_product_details.try(:id) }, type: 'integer'
@@ -90,11 +90,6 @@ class CustomerOrderStatusReportIndex < BaseIndex
           field :lead_time, value: -> (record) {record.po_request_row.try(:lead_time)}, type: 'date'
         end
       end
-      #field :rows do
-      #  field :product_id, value: -> (record) { record.product.try(:id) }, type: 'integer'
-      #  field :sku, value: -> (record) { record.product.try(:sku) }, analyzer: 'sku_substring'
-      #  field :lead_time, value: -> (record) {record.po_request_row.try(:lead_time)}, type: 'date'
-      #end
     end
   end
 end

@@ -25,7 +25,6 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
         invoice_skus = so_invoices.map { |si| si['rows'].map { |row| row['sku'] } if si['rows'].present? }.compact.uniq.flatten if so_invoices.present?
         po_skus = so_purchase_orders.map { |po| po['rows'].pluck('sku') if po.present? }.compact.flatten if so_purchase_orders.present?
         inquiry_po_skus = so_inquiry_purchase_orders.map { |po| po['rows'].pluck('sku') if po.present? }.compact.flatten if so_inquiry_purchase_orders.present?
-
         so_rows.each do |so_row|
           purchase_order_details = {}
           # if invoices present of sales order
@@ -63,6 +62,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
           end
           #  if invoices not present and po requests and purchase orders present
           if so_purchase_orders.present? && !so_invoices.present?
+
             so_purchase_orders.each do |so_purchase_order|
               if so_purchase_order.present? && so_purchase_order['rows'].present?
                 so_purchase_order['rows'].each do |po_row|

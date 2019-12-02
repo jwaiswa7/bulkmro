@@ -18,8 +18,6 @@ class PoRequestRow < ApplicationRecord
 
   accepts_nested_attributes_for :product
 
-  #update_index('customer_order_status_report#sales_order') { po_request.rows }
-
   # delegate :measurement_unit, to: :sales_order_row, allow_nil: true
   attr_accessor :sr, :product_name, :brand, :lead_time_option
 
