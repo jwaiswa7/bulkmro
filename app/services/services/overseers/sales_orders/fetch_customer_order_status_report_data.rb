@@ -179,7 +179,6 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
         'lead_time': so_purchase_order['rows'].select { |row| row['sku'] == sku  }.first['lead_time']
     }
     po_details
-
   end
 
   def get_sales_order_details(so_details, so_row, invoice_details = nil, purchase_order_details = nil)
