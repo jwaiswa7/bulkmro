@@ -1,5 +1,5 @@
 class CustomerOrderStatusReportIndex < BaseIndex
-  define_type SalesOrder.where.not(order_number: nil, status: 'Cancelled').with_includes do
+  define_type SalesOrder.where.not(order_number: nil, status: 'Cancelled').where(created_at: Date.new(2019, 8, 01).beginning_of_day..Date.today.end_of_day).with_includes do
     field :id, type: 'integer'
     field :inquiry_id, value: -> (record) { record.inquiry.id if record.inquiry.present? }, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i if record.inquiry.present? }, type: 'integer'
@@ -32,6 +32,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
       field :sku, value: -> (record) { record.get_product.try(:sku) }, analyzer: 'sku_substring'
     end
 
+    # inquiry purchase orders when po requests not present
     field :inquiry, type: 'nested' do
       field :purchase_orders, type: 'nested' do
         field :po_number, value: -> (record) { record.po_number }, type: 'integer'
@@ -48,8 +49,8 @@ class CustomerOrderStatusReportIndex < BaseIndex
         field :pickup_date, value: -> (record) { record.inward_dispatches.last.created_at if record.inward_dispatches.present? }, type: 'date'
         field :inward_date, value: -> (record) { record.inward_dispatches.last.actual_delivery_date if record.inward_dispatches.present? }, type: 'date'
         field :rows do
-          field :product_id, value: -> (record) { record.get_product.try(:id) }, type: 'integer'
-          field :sku, value: -> (record) { record.get_product.try(:sku) }, analyzer: 'sku_substring'
+          field :product_id, value: -> (record) { record.product.try(:id) }, type: 'integer'
+          field :sku, value: -> (record) { record.product.try(:sku) }, analyzer: 'sku_substring'
         end
       end
     end
@@ -84,10 +85,16 @@ class CustomerOrderStatusReportIndex < BaseIndex
         field :pickup_date, value: -> (record) { record.inward_dispatches.last.created_at if record.inward_dispatches.present? }, type: 'date'
         field :inward_date, value: -> (record) { record.inward_dispatches.last.actual_delivery_date if record.inward_dispatches.present? }, type: 'date'
         field :rows do
-          field :product_id, value: -> (record) { record.get_product.try(:id) }, type: 'integer'
-          field :sku, value: -> (record) { record.get_product.try(:sku) }, analyzer: 'sku_substring'
+          field :product_id, value: -> (record) { record.product.try(:id) }, type: 'integer'
+          field :sku, value: -> (record) { record.product.try(:sku) }, analyzer: 'sku_substring'
+          field :lead_time, value: -> (record) {record.po_request_row.try(:lead_time)}, type: 'date'
         end
       end
+      #field :rows do
+      #  field :product_id, value: -> (record) { record.product.try(:id) }, type: 'integer'
+      #  field :sku, value: -> (record) { record.product.try(:sku) }, analyzer: 'sku_substring'
+      #  field :lead_time, value: -> (record) {record.po_request_row.try(:lead_time)}, type: 'date'
+      #end
     end
   end
 end

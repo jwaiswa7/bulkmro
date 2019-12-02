@@ -17,6 +17,7 @@ json.data (@customer_order_status_records) do |sales_order|
                     ''
                   end,
                   sales_order[:mis_date].present? ? format_date_without_time(Date.parse(sales_order[:mis_date])) : '-',
+                  sales_order[:lead_time].present? ? format_date_without_time(Date.parse(sales_order[:lead_time])) : '-',
                   sales_order[:cp_committed_date].present? ? format_date_without_time(Date.parse(sales_order[:cp_committed_date])) : '-',
                   sales_order[:po_number].present? ? conditional_link(sales_order[:po_number], overseers_inquiry_purchase_orders_path(record.inquiry), is_authorized(record.inquiry, 'edit')) : '-',
                   sales_order[:supplier_name].present? ? conditional_link(sales_order[:supplier_name], overseers_company_path(sales_order[:supplier_id]), target: '_blank') : '-',
@@ -49,6 +50,7 @@ json.data (@customer_order_status_records) do |sales_order|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [{ "source": autocomplete_overseers_companies_path(is_customer: true) }],
