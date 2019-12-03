@@ -15,7 +15,7 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
       else
         footer = {}
       end
-      render({
+      render(
         pdf: record.filename,
         template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
         layout: 'shared/layouts/pdf_templates/show',
@@ -25,6 +25,6 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
         locals: {
             record: record
         }.merge(locals)
-             })
+             )
     end
 end
