@@ -245,3 +245,6 @@ gem 'unparser'
 
 # Heroku autoscaling add-on
 gem 'rails_autoscale_agent'
+
+# memory leaks, N+1s, slow code monitoring add-on
+gem 'scout_apm'
