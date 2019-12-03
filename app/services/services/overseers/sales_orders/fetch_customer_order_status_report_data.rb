@@ -32,7 +32,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
             so_invoices.each do |so_invoice|
               if so_invoice['rows'].present?
                 so_invoice['rows'].each do |invoice_row|
-                  if (invoice_row['sku'] == so_row['sku']) && so_purchase_orders.present?
+                  if (invoice_row['sku'] == so_row['sku']) && (so_purchase_orders.present? && so_purchase_orders.pluck('sku').include?(so_row['sku']))
                     so_purchase_orders.each do |so_purchase_order|
                       if so_purchase_order.present? && so_purchase_order['rows'].present?
                         so_purchase_order['rows'].each do |po_row|
@@ -43,6 +43,8 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
                         end
                       end
                     end
+                  elsif (invoice_row['sku'] == so_row['sku']) && (so_purchase_orders.present? && so_purchase_orders.pluck('sku').exclude?(so_row['sku']))
+                    sales_orders << get_sales_order_details(so_primary_details, so_row, invoice_row, nil)
                   end
                 end
               end
@@ -62,7 +64,6 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
           end
           #  if invoices not present and po requests and purchase orders present
           if so_purchase_orders.present? && !so_invoices.present?
-
             so_purchase_orders.each do |so_purchase_order|
               if so_purchase_order.present? && so_purchase_order['rows'].present?
                 so_purchase_order['rows'].each do |po_row|
@@ -74,7 +75,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
               end
             end
             #   if po requests and purchase orders present but sku is not present in purchase order but present in sales order
-          elsif po_skus.present? && po_skus.exclude?(so_row['sku'])
+          elsif po_skus.present? && po_skus.exclude?(so_row['sku']) && invoice_skus.exclude?(so_row['sku'])
             sales_orders << get_sales_order_details(so_primary_details, so_row, nil, nil)
           end
 
