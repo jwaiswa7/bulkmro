@@ -22,6 +22,7 @@ json.data (@customer_order_status_records) do |sales_order|
                   sales_order[:supplier_name].present? ? conditional_link(sales_order[:supplier_name], overseers_company_path(sales_order[:supplier_id]), target: '_blank') : '-',
                   sales_order[:supplier_po_request_date].present? ? format_date_without_time(Date.parse(sales_order[:supplier_po_request_date])) : '-',
                   sales_order[:supplier_po_date].present? ? format_date_without_time(Date.parse(sales_order[:supplier_po_date])) : '-',
+                  sales_order[:lead_time].present? ? format_date_without_time(Date.parse(sales_order[:lead_time])) : '-',
                   sales_order[:po_email_sent].present? ? format_date_without_time(Date.parse(sales_order[:po_email_sent])) : '-',
                   # sales_order[:payment_request_date].present? ? format_date_without_time(Date.parse(sales_order[:payment_request_date])) : '-',
                   # sales_order[:payment_date].present? ? format_date_without_time(Date.parse(sales_order[:payment_date])) : '-',
@@ -49,6 +50,7 @@ json.data (@customer_order_status_records) do |sales_order|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [{ "source": autocomplete_overseers_companies_path(is_customer: true) }],
