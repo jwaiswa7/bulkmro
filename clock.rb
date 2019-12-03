@@ -9,7 +9,7 @@ handler do |job, time|
   puts "Running #{job}, at #{time}"
 end
 
-every(10.minutes, 'resync_remote_requests') do
+every(20.minutes, 'resync_remote_requests') do
   ResyncRemoteRequest.where('hits < 5').each do |resync_request|
     service = Services::Resources::Shared::ResyncFailedRequests.new(resync_request)
     service.call
@@ -48,26 +48,25 @@ every(4.hour, 'generate_exports_hourly') do
   end
 end
 
-every(1.day, 'refresh_indices', at: '01:00') do
-  # Chewy.strategy(:sidekiq) do
-  #   Services::Shared::Chewy::RefreshIndices.new
-  # end
+every(1.day, 'refresh_indices', at: '01:30') do
+  GC.start
+  Services::Shared::Chewy::RefreshIndices.new
 
-  Dir[[Chewy.indices_path, '/*'].join()].map do |path|
-    puts "Indexing #{path}"
-    path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
-    puts "Indexed #{path}"
-  end
+  #Dir[[Chewy.indices_path, '/*'].join()].map do |path|
+  #  puts "Indexing #{path}"
+  #  path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
+  #  puts "Indexed #{path}"
+  #end
 end
 
-# every(1.day, 'generate_exports_daily', at: '04:00') do
-# Refactor exports and include status and find_each_with_batch in all exports
-# Chewy.strategy(:atomic) do
-#   Services::Overseers::Exporters::GenerateExportsDaily.new
-# end
-# end
+#every(1.day, 'generate_exports_daily', at: '04:00') do
+#  to-do check for memory leaks on heroku
+#  Chewy.strategy(:atomic) do
+#    Services::Overseers::Exporters::GenerateExportsDaily.new
+#  end
+#end
 
-every(1.day, 'purchase_order_reindex', at: '09:00') do
+every(1.day, 'purchase_order_reindex', at: '00:10') do
   # deletes old indexes/alias_index
   require 'httparty'
   auth = {username: "#{ENV['ELASTIC_USER_NAME']}", password: "#{ENV['ELASTIC_PASSWORD']}"}
