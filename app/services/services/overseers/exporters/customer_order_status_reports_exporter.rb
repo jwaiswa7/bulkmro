@@ -4,7 +4,7 @@ class Services::Overseers::Exporters::CustomerOrderStatusReportsExporter < Servi
     @model = SalesOrder
     @export_name = 'Customer Order Status Report'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['Inquiry', 'Company', 'Sales Order', 'Sales Order Date', 'Invoice Number', 'SKU', 'Committed Customer Delivery Date', 'Supplier PO No.', 'Supplier Name', 'PO Request Date', 'PO Date', 'PO Sent to Supplier Date', 'Payment Request Date', 'Payment Date', 'Committed Date of Material Readiness', 'Actual Date of Material Readiness', 'Date of Pickup', 'Date of Inward', 'Date of Outward', 'Date of Customer Delivery', 'On Time / Delayed (viz. customer committed date)']
+    @columns = ['Inquiry', 'Company', 'Sales Order', 'Sales Order Date', 'Sales Order Created Date', 'Invoice Number', 'SKU', 'Committed Customer Delivery Date', 'Supplier PO No.', 'Supplier Name', 'PO Request Date', 'PO Date', 'PO Sent to Supplier Date', 'Payment Request Date', 'Payment Date', 'Committed Date of Material Readiness', 'Actual Date of Material Readiness', 'Date of Pickup', 'Date of Inward', 'Date of Outward', 'Date of Customer Delivery', 'On Time / Delayed (viz. customer committed date)']
   end
 
   def call
@@ -21,6 +21,7 @@ class Services::Overseers::Exporters::CustomerOrderStatusReportsExporter < Servi
         company: sales_order[:company],
         order_number: sales_order[:order_number].present? ? sales_order[:order_number] : '-',
         mis_date: sales_order[:mis_date].present? ? format_date_without_time(Date.parse(sales_order[:mis_date])) : '-',
+        created_at: sales_order[:created_at].present? ? format_date_without_time(Date.parse(sales_order[:created_at])) : '-',
         invoice_number: sales_order.present? ? sales_order[:invoice_number] : '',
         sku: sales_order[:sku].present? ? sales_order[:sku] : '',
         cp_committed_date: sales_order[:cp_committed_date].present? ? format_date_without_time(Date.parse(sales_order[:cp_committed_date])) : '-',
