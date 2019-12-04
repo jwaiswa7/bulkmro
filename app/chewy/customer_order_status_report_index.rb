@@ -19,7 +19,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
     field :account, value: -> (record) { record.inquiry.account.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :order_number, value: -> (record) { record.order_number }, type: 'long'
     field :order_number_string, value: -> (record) { record.order_number.to_s }, analyzer: 'substring'
-    field :created_at, value: -> (record) { record.created_at if record.created_at.present?  }, type: 'date'
+    field :created_at, value: -> (record) { record.created_at }, type: 'date'
     field :mis_date, value: -> (record) { record.mis_date if record.mis_date.present? }, type: 'date'
     field :cp_committed_date, value: -> (record) { record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present? }, type: 'date'
     field :outward_date_so_wise, value: -> (record) { record.invoices.last.mis_date if record.invoices.present? && record.invoices.last.status != 'Cancelled' }, type: 'date'
