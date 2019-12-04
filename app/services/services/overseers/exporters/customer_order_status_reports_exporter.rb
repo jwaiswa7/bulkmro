@@ -4,7 +4,7 @@ class Services::Overseers::Exporters::CustomerOrderStatusReportsExporter < Servi
     @model = SalesOrder
     @export_name = 'Customer Order Status Report'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['Inquiry', 'Company', 'Sales Order', 'Sales Order Date', 'Invoice Number', 'SKU', 'Committed Customer Delivery Date', 'Supplier PO No.', 'Supplier Name', 'PO Request Date', 'PO Date', 'PO Sent to Supplier Date', 'Payment Request Date', 'Payment Date', 'Committed Date of Material Readiness', 'Actual Date of Material Readiness', 'Date of Pickup', 'Date of Inward', 'Date of Outward', 'Date of Customer Delivery', 'On Time / Delayed (viz. customer committed date)']
+    @columns = ['Inquiry', 'Company', 'Sales Order', 'Sales Order Date', 'Invoice Number', 'SKU', 'Committed Customer Delivery Date', 'Supplier PO No.', 'Supplier Name', 'PO Request Date', 'PO Date', 'Lead Date', 'PO Sent to Supplier Date', 'Payment Request Date', 'Payment Date', 'Committed Date of Material Readiness', 'Actual Date of Material Readiness', 'Date of Pickup', 'Date of Inward', 'Date of Outward', 'Date of Customer Delivery', 'On Time / Delayed (viz. customer committed date)']
   end
 
   def call
@@ -28,6 +28,7 @@ class Services::Overseers::Exporters::CustomerOrderStatusReportsExporter < Servi
         supplier_name: sales_order[:supplier_name].present? ? sales_order[:supplier_name] : '-',
         supplier_po_request_date: sales_order[:supplier_po_request_date].present? ? format_date_without_time(Date.parse(sales_order[:supplier_po_request_date])) : '-',
         supplier_po_date: sales_order[:supplier_po_date].present? ? format_date_without_time(Date.parse(sales_order[:supplier_po_date])) : '-',
+        lead_time: sales_order[:lead_time].present? ? format_date_without_time(Date.parse(sales_order[:lead_time])) : '-',
         po_email_sent: sales_order[:po_email_sent].present? ? format_date_without_time(Date.parse(sales_order[:po_email_sent])) : '-',
         payment_request_date: sales_order[:payment_request_date].present? ? format_date_without_time(Date.parse(sales_order[:payment_request_date])) : '-',
         payment_date: sales_order[:payment_date].present? ? format_date_without_time(Date.parse(sales_order[:payment_date])) : '-',
