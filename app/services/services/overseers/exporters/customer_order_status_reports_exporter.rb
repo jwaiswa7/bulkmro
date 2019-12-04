@@ -13,10 +13,10 @@ class Services::Overseers::Exporters::CustomerOrderStatusReportsExporter < Servi
   end
 
   def build_csv
-    @export.update_attributes(status: 'Processing')
     if @indexed_records.present?
       records = @indexed_records
     end
+    @export.update_attributes(status: 'Processing')
     records.each do |sales_order|
       rows.push(
         inquiry_number: sales_order[:inquiry_number],
@@ -43,7 +43,6 @@ class Services::Overseers::Exporters::CustomerOrderStatusReportsExporter < Servi
         on_time_or_delayed_time: sales_order[:on_time_or_delayed_time].present? ? humanize(sales_order[:on_time_or_delayed_time]) : '-'
       )
     end
-    # export = Export.create!(export_type: 92, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     @export.update_attributes(status: 'Completed')
     generate_csv(@export)
   end
