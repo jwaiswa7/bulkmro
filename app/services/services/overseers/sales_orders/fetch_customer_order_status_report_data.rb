@@ -22,11 +22,9 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
         so_inquiry_purchase_orders = sales_order.attributes['inquiry']['purchase_orders'] if sales_order.attributes['inquiry']['purchase_orders'].present?
         so_po_requests = sales_order.attributes['po_requests'] if sales_order.attributes['po_requests'].present?
         so_purchase_orders = so_po_requests.map { |po_request| po_request['purchase_order'] } if so_po_requests.present?
-
         invoice_skus = so_invoices.map { |si| si['rows'].map { |row| row['sku'] } if si['rows'].present? }.compact.uniq.flatten if so_invoices.present?
         po_skus = so_purchase_orders.map { |po| po['rows'].pluck('sku') if po.present? }.compact.flatten if so_purchase_orders.present?
         inquiry_po_skus = so_inquiry_purchase_orders.map { |po| po['rows'].pluck('sku') if po.present? }.compact.flatten if so_inquiry_purchase_orders.present?
-
         so_rows.each do |so_row|
           purchase_order_details = {}
           # if invoices present of sales order
@@ -64,6 +62,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
           end
           #  if invoices not present and po requests and purchase orders present
           if so_purchase_orders.present? && !so_invoices.present?
+
             so_purchase_orders.each do |so_purchase_order|
               if so_purchase_order.present? && so_purchase_order['rows'].present?
                 so_purchase_order['rows'].each do |po_row|
@@ -119,9 +118,9 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
       }
       invoice_details = {
           outward_date: sales_order.attributes['outward_date_so_wise'],
-          customer_delivery_date: sales_order.attributes['customer_delivery_date_so_wise'],
+          customer_delivery_date: sales_order.attributes['customer_delivery_date'],
           on_time_or_delayed_time: sales_order.attributes['on_time_or_delayed_time_so_wise'],
-          delivery_status:  sales_order.attributes['delivery_status_so_wise'],
+          delivery_status: sales_order.attributes['delivery_status_so_wise'],
       }
 
       if sales_order.attributes['rows'].present?
@@ -163,7 +162,8 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
   end
 
   def get_purchase_order_details(sku, so_purchase_order)
-    {
+    po_details = {}
+    po_details = {
         'sku': sku,
         'supplier_po_request_date': so_purchase_order['supplier_po_request_date'],
         'po_number': so_purchase_order['po_number'],
@@ -175,8 +175,10 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
         'committed_material_readiness_date': so_purchase_order['committed_material_readiness_date'],
         'actual_material_readiness_date': so_purchase_order['actual_material_readiness_date'],
         'pickup_date': so_purchase_order['pickup_date'],
-        'inward_date': so_purchase_order['inward_date']
+        'inward_date': so_purchase_order['inward_date'],
+        'lead_time': so_purchase_order['rows'].select { |row| row['sku'] == sku  }.first['lead_time']
     }
+    po_details
   end
 
   def get_sales_order_details(so_details, so_row, invoice_details = nil, purchase_order_details = nil)
@@ -202,6 +204,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
         actual_material_readiness_date: purchase_order_details.present? && purchase_order_details[:actual_material_readiness_date].present? ? purchase_order_details[:actual_material_readiness_date] : '',
         pickup_date: purchase_order_details.present? && purchase_order_details[:pickup_date].present? ? purchase_order_details[:pickup_date] : '',
         inward_date: purchase_order_details.present? && purchase_order_details[:inward_date].present? ? purchase_order_details[:inward_date] : '',
+        lead_time: purchase_order_details.present? && purchase_order_details[:lead_time].present? ? purchase_order_details[:lead_time] : '',
         outward_date: invoice_details.present? && invoice_details['outward_date'].present? ? invoice_details['outward_date'] : '',
         customer_delivery_date: invoice_details.present? && invoice_details['customer_delivery_date'].present? ? invoice_details['customer_delivery_date'] : '',
         delivery_status: invoice_details.present? && invoice_details['delivery_status'].present? ? invoice_details['delivery_status'] : 'Not Delivered',
