@@ -7,8 +7,8 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
       @inquiry = Inquiry.find(params[:inquiry_id])
     end
 
-    def render_pdf_for(record, locals={is_pages_visible: true})
-      if locals[:is_pages_visible]
+    def render_pdf_for(record, locals_variables)
+      if locals_variables[:locals][:is_pages_visible]
         footer = {
             center: '[page] of [topage]'
         }
@@ -24,7 +24,7 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
         # show_as_html: true,
         locals: {
             record: record
-        }.merge(locals)
+        }.merge(locals_variables)
              )
     end
 end
