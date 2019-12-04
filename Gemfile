@@ -208,9 +208,12 @@ group :test do
   # gem 'chromedriver-helper'
 end
 
-# group :production do
-#   gem 'bonsai-elasticsearch-rails', '< 7.0.0'
-# end
+ group :production do
+   # memory leaks, N+1s, slow code monitoring add-on
+   gem 'scout_apm'
+
+   # gem 'bonsai-elasticsearch-rails', '< 7.0.0'
+ end
 #
 # group :staging do
 #   gem 'bonsai-elasticsearch-rails', '< 7.0.0'
@@ -246,6 +249,3 @@ gem 'unparser'
 #
 # Heroku autoscaling add-on
 # gem 'rails_autoscale_agent'
-
-# memory leaks, N+1s, slow code monitoring add-on
-gem 'scout_apm'
