@@ -14,7 +14,9 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
           account: sales_order.attributes['account'],
           order_number: sales_order.attributes['order_number'],
           mis_date: sales_order.attributes['mis_date'],
-          cp_committed_date: sales_order.attributes['cp_committed_date']
+          cp_committed_date: sales_order.attributes['cp_committed_date'],
+          created_at: sales_order.attributes['created_at']
+
       }
       if sales_order.attributes['rows'].present?
         so_rows = sales_order.attributes['rows']
@@ -32,7 +34,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
             so_invoices.each do |so_invoice|
               if so_invoice['rows'].present?
                 so_invoice['rows'].each do |invoice_row|
-                  if (invoice_row['sku'] == so_row['sku']) && so_purchase_orders.present?
+                  if (invoice_row['sku'] == so_row['sku']) && (so_purchase_orders.present? && po_skus.include?(so_row['sku']))
                     so_purchase_orders.each do |so_purchase_order|
                       if so_purchase_order.present? && so_purchase_order['rows'].present?
                         so_purchase_order['rows'].each do |po_row|
@@ -43,6 +45,8 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
                         end
                       end
                     end
+                  elsif (invoice_row['sku'] == so_row['sku']) && (so_purchase_orders.present? && po_skus.exclude?(so_row['sku']))
+                    sales_orders << get_sales_order_details(so_primary_details, so_row, invoice_row, nil)
                   end
                 end
               end
@@ -62,7 +66,6 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
           end
           #  if invoices not present and po requests and purchase orders present
           if so_purchase_orders.present? && !so_invoices.present?
-
             so_purchase_orders.each do |so_purchase_order|
               if so_purchase_order.present? && so_purchase_order['rows'].present?
                 so_purchase_order['rows'].each do |po_row|
@@ -74,7 +77,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
               end
             end
             #   if po requests and purchase orders present but sku is not present in purchase order but present in sales order
-          elsif po_skus.present? && po_skus.exclude?(so_row['sku'])
+          elsif po_skus.present? && po_skus.exclude?(so_row['sku']) && invoice_skus.exclude?(so_row['sku'])
             sales_orders << get_sales_order_details(so_primary_details, so_row, nil, nil)
           end
 
@@ -114,7 +117,9 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
           account: sales_order.attributes['account'],
           order_number: sales_order.attributes['order_number'],
           mis_date: sales_order.attributes['mis_date'],
-          cp_committed_date: sales_order.attributes['cp_committed_date']
+          cp_committed_date: sales_order.attributes['cp_committed_date'],
+          created_at: sales_order.attributes['created_at']
+
       }
       invoice_details = {
           outward_date: sales_order.attributes['outward_date_so_wise'],
@@ -163,6 +168,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
 
   def get_purchase_order_details(sku, so_purchase_order)
     po_details = {}
+    so_purchase_order_row = so_purchase_order['rows'].present? ? so_purchase_order['rows'].select { |row| row['sku'] == sku  } : nil
     po_details = {
         'sku': sku,
         'supplier_po_request_date': so_purchase_order['supplier_po_request_date'],
@@ -176,7 +182,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
         'actual_material_readiness_date': so_purchase_order['actual_material_readiness_date'],
         'pickup_date': so_purchase_order['pickup_date'],
         'inward_date': so_purchase_order['inward_date'],
-        'lead_time': so_purchase_order['rows'].select { |row| row['sku'] == sku  }.first['lead_time']
+        'lead_time': so_purchase_order_row.present? ? so_purchase_order_row.first['lead_time'] : nil
     }
     po_details
   end
@@ -191,6 +197,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
         invoice_number: invoice_details.present? && invoice_details['invoice_number'].present? ? invoice_details['invoice_number'] : '',
         sku: so_row['sku'].present? ? so_row['sku'] : '',
         mis_date: so_details[:mis_date],
+        created_at: so_details[:created_at],
         cp_committed_date: so_details[:cp_committed_date],
         po_number: purchase_order_details.present? && purchase_order_details[:po_number].present? ? purchase_order_details[:po_number] : '',
         supplier_id: purchase_order_details.present? && purchase_order_details[:supplier_id].present? ? purchase_order_details[:supplier_id] : '',
