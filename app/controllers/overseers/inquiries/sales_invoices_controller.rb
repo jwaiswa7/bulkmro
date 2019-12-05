@@ -15,7 +15,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     respond_to do |format|
       format.html { render 'show' }
       format.pdf do
-        render_pdf_for @sales_invoice, locals
+        render_pdf_for @sales_invoice, locals: locals
       end
     end
   end
@@ -28,7 +28,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     respond_to do |format|
       format.html { }
       format.pdf do
-        render_pdf_for @sales_invoice, locals
+        render_pdf_for @sales_invoice, locals: locals
       end
     end
   end
@@ -42,7 +42,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     respond_to do |format|
       format.html { }
       format.pdf do
-        render_pdf_for @sales_invoice, locals
+        render_pdf_for @sales_invoice, locals: locals
       end
     end
   end
