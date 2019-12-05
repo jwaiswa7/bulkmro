@@ -13,7 +13,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     respond_to do |format|
       format.html {}
       format.pdf do
-        render_pdf_for(@sales_quote, is_revision_visible:  is_revision_visible, is_pages_visible: true)
+        render_pdf_for(@sales_quote, { is_revision_visible:  is_revision_visible, is_pages_visible: true })
       end
     end
   end
