@@ -19,6 +19,7 @@ class Customers::SalesInvoicesController < Customers::BaseController
   def show
     authorize @sales_invoice
 
+    @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
     respond_to do |format|
       format.html { }
       format.pdf do
