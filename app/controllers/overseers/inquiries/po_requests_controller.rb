@@ -28,6 +28,8 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
       if @po_request.purchase_order.present? && @po_request.stock_status == 'Stock Requested'
         @po_request.stock_status = 'Stock Supplier PO Created'
         @po_request.approved_by = current_overseer
+      else @po_request.changed?
+        @po_request.stock_status = 'Supplier PO: Amendment Pending'
       end
       ActiveRecord::Base.transaction do
         if @po_request.stock_status_changed?
