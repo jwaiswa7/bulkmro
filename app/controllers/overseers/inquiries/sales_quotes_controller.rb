@@ -10,10 +10,11 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     authorize_acl @sales_quote
 
     is_revision_visible = params[:is_revision_visible]
+    locals = { is_revision_visible:  is_revision_visible, is_pages_visible: true }
     respond_to do |format|
       format.html {}
       format.pdf do
-        render_pdf_for(@sales_quote, is_revision_visible:  is_revision_visible, is_pages_visible: true )
+        render_pdf_for(@sales_quote, locals: locals)
       end
     end
   end
