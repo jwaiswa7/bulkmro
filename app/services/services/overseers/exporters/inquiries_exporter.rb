@@ -14,7 +14,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
   end
 
   def build_csv
-    puts ">>>>> Inquiry Exporter Service started >>>>>>>>>"
+    puts '>>>>> Inquiry Exporter Service started >>>>>>>>>'
     if @ids.present?
       records = model.where(id: @ids).order(created_at: :desc)
     else
@@ -52,6 +52,6 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
     # filtered = @ids.present?
     @export.update_attributes(status: 'Completed')
     generate_csv(@export)
-    puts ">>>>> Inquiry Exporter Service ends >>>>>>>>>"
+    puts '>>>>> Inquiry Exporter Service ends >>>>>>>>>'
   end
 end

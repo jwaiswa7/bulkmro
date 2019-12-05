@@ -13,7 +13,7 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
   end
 
   def build_csv
-    puts ">>>>> Sales Order Logistics Service started >>>>>>>>>"
+    puts '>>>>> Sales Order Logistics Service started >>>>>>>>>'
     @export.update_attributes(status: 'Processing')
     model.status_Approved.where(created_at: start_at..end_at).where.not(sales_quote_id: nil).order(created_at: :desc).find_each(batch_size: 100) do |sales_order|
       inquiry = sales_order.inquiry
