@@ -5,7 +5,7 @@ class Services::Overseers::Exporters::CustomerOrderStatusReportsExporter < Servi
     @export_name = 'Customer Order Status Report'
     @path = Rails.root.join('tmp', filename)
     @columns = ['Inquiry', 'Company', 'Sales Order', 'Sales Order Date', 'Sales Order Created Date', 'Invoice Number', 'SKU', 'Committed Customer Delivery Date', 'Supplier PO No.', 'Supplier Name', 'PO Request Date', 'PO Date', 'Lead Date', 'PO Sent to Supplier Date', 'Payment Request Date', 'Payment Date', 'Committed Date of Material Readiness', 'Actual Date of Material Readiness', 'Date of Pickup', 'Date of Inward', 'Date of Outward', 'Date of Customer Delivery', 'On Time / Delayed (viz. customer committed date)']
-    @export.update_attributes(export_type: 92, status: 'Enqueued')
+    @export.update_attributes(export_type: 92, filtered:false, status: 'Enqueued')
   end
 
   def call
