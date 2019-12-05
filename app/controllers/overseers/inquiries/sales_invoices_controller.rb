@@ -11,6 +11,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     authorize_acl @sales_invoice
 
     @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
+    locals.merge!(is_pages_visible: false)
     respond_to do |format|
       format.html { render 'show' }
       format.pdf do
@@ -23,7 +24,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
     @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
-    locals.merge!(duplicate: true)
+    locals.merge!(duplicate: true, is_pages_visible: false)
     respond_to do |format|
       format.html { }
       format.pdf do
@@ -35,8 +36,9 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def triplicate
     authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-     @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
-    locals.merge!(triplicate: true)
+    @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
+    locals.merge!(triplicate: true, is_pages_visible: false)
+
     respond_to do |format|
       format.html { }
       format.pdf do
