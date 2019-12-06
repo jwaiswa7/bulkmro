@@ -7,7 +7,10 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
       @inquiry = Inquiry.find(params[:inquiry_id])
     end
 
-    def render_pdf_for(record, locals = {pagination: true})
+    def render_pdf_for(record, locals = {})
+      locals[:pagination] =  locals[:pagination] == false ? locals[:pagination] : true
+
+      #if !locals[:pagination]
       #if locals_variables[:locals][:is_pages_visible]
       #  footer = {
       #      center: '[page] of [topage]'
