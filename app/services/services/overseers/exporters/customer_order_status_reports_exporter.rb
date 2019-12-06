@@ -15,9 +15,14 @@ class Services::Overseers::Exporters::CustomerOrderStatusReportsExporter < Servi
   def build_csv
     if @indexed_records.present?
       records = @indexed_records
+    else
+      service = Services::Overseers::Finders::CustomerOrderStatusReports.new({}, @overseer, paginate: false)
+      service.call
+      records = service.indexed_records
+      sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(records, 'All').fetch_data_bm_wise
     end
     @export.update_attributes(status: 'Processing')
-    records.each do |sales_order|
+    sales_orders.each do |sales_order|
       rows.push(
         inquiry_number: sales_order[:inquiry_number],
         company: sales_order[:company],
