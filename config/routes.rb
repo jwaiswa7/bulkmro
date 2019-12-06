@@ -172,9 +172,9 @@ Rails.application.routes.draw do
 
     resources :annual_targets
 
-    resources :exports do
+    resources :exports, except: [:show] do
       collection do
-        post 'generate_export'
+        get 'generate_export'
       end
     end
 

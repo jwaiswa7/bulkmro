@@ -18,10 +18,8 @@
         <th style="font-weight:bold;width: 100px;">Export Type</th>
         <th style="font-weight:bold;white-space:normal;width: 69px;">Created By</th>
         <th style="font-weight:bold;white-space:normal;width: 51px;">Status</th>
-        <th style="font-weight:bold;white-space:normal;width: 57px;">Created At</th>
-        <th style="font-weight:bold;white-space:normal;width: 114px;">Updated At</th>
-        <th style="font-weight:bold;white-space:normal;width: 88px;"></th>
-        <th style="font-weight:bold;white-space:normal;width: 88px;"></th>
+        <th style="font-weight:bold;white-space:normal;width: 88px;">Export Process</th>
+        <th style="font-weight:bold;white-space:normal;width: 88px;">Download</th>
       </tr>
       </thead>
       <tbody style="text-align:left;">
@@ -51,22 +49,19 @@
             <td>
               <%= (export_val.last.status.present? ? export_val.last.status : '') if export_val.present? %>
             </td>
-<!--            <td>-->
-              <%#= export_val.last.created_at.strftime('%d-%m-%Y %H:%M') if export_val.present? %>
-<!--            </td>-->
-<!--            <td>-->
-              <%#= export_val.last.updated_at.strftime('%d-%m-%Y %H:%M') if export_val.present? %>
-<!--            </td>-->
             <td>
-              <a href="<%= @export_service_hash[export_type] %>" class="btn btn-primary btn-rounded align-self-center btn-block-sm-down ml-1 export-button <%= status_process.include?(export_val.last.status) ? 'export-disable' : ''%>" data-original-title="Click to Process New Download" data-toggle="tooltip">
-                <i class="fal fa-download mr-1"></i>Process
-              </a>
+              <%= link_to generate_export_overseers_exports_path(export_type: export_type), class: ['btn btn-primary btn-rounded align-self-center btn-block-sm-down ml-1 export-button',status_process.include?(export_val.last.status) ? 'export-disable' : ''].join('  '), :"data-original-title" => 'Click to Process New Download',:"data-toggle" => 'tooltip' do %>
+                <i class="fal fa-download mr-1"></i>
+                Process
+              <% end %>
+
             </td>
             <td>
               <% if attached_export.last.report.attached? %>
-                <a href="<%= url_for(attached_export.last.report) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" data-badge="<%= [time_ago_in_words(attached_export.last.created_at), "ago"].join(' ') %>" data-original-title="Last Download Available" data-toggle="tooltip">
-                  <i class="fal fa-download mr-1"></i>Download
-                </a>
+                <%= link_to url_for(attached_export.last.report), class: 'btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1', :"data-original-title" => 'Last Download Available',:"data-toggle" => 'tooltip', :"data-badge"=> [time_ago_in_words(attached_export.last.created_at), "ago"].join(' ') do %>
+                  <i class="fal fa-download mr-1"></i>
+                  Download
+                <% end %>
               <% end %>
             </td>
           </tr>
