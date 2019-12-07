@@ -8,16 +8,16 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
     end
 
     def render_pdf_for(record, locals = {})
-      locals[:pagination] =  locals[:pagination] == false ? locals[:pagination] : true
+      locals[:pagination] = locals[:pagination] == false ? locals[:pagination] : true
 
-      #if !locals[:pagination]
-      #if locals_variables[:locals][:is_pages_visible]
+      # if !locals[:pagination]
+      # if locals_variables[:locals][:is_pages_visible]
       #  footer = {
       #      center: '[page] of [topage]'
       #  }
-      #else
+      # else
       #  footer = {}
-      #end
+      # end
       render(
         pdf: record.filename,
         template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
