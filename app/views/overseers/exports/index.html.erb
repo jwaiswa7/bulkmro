@@ -32,7 +32,7 @@
           <%   export_val.push(exp) %>
           <% end %>
         <% end %>
-        <% export_val.compact.reverse.each do |exp| %>
+        <% export_val.reverse.each do |exp| %>
           <% if exp.report.attached? %>
             <% attached_export.push(exp) %>
             <% break %>
@@ -50,7 +50,7 @@
               <%= (export_val.last.status.present? ? export_val.last.status : '') if export_val.present? %>
             </td>
             <td>
-              <%= link_to generate_export_overseers_exports_path(export_type: export_type), class: ['btn btn-primary btn-rounded align-self-center btn-block-sm-down ml-1 export-button',status_process.include?(export_val.last.status) ? 'export-disable' : ''].join('  '), :"data-original-title" => 'Click to Process New Download',:"data-toggle" => 'tooltip' do %>
+              <%= link_to generate_export_overseers_exports_path(export_type: export_type), class: ['btn btn-primary btn-rounded align-self-center btn-block-sm-down ml-1 export-button',(export_val.present? && status_process.include?(export_val.last.status)) ? 'export-disable' : ''].join(' '), :"data-original-title" => 'Click to Process New Download',:"data-toggle" => 'tooltip' do %>
                 <i class="fal fa-download mr-1"></i>
                 Process
               <% end %>
