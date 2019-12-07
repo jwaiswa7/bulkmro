@@ -1,3 +1,4 @@
+<% if @company_reviews.present? %>
 <div class="modal fade" id="multipleRatingForm">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -32,3 +33,4 @@
 <div class="rating-modal">
   <a href="#" class="btn btn-default btn-rounded mb-4 d-none" data-toggle="modal" data-target="#multipleRatingForm" data-backdrop="static" data-keyboard="false" data-rating= <%=@company_reviews.map(&:rating).compact.present? %>></a>
 </div>
+<% end %>
