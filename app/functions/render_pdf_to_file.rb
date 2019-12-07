@@ -1,6 +1,6 @@
 class RenderPdfToFile < BaseFunction
   def self.for(record, locals = {})
-    locals[:pagination] =  locals[:pagination] == false ? locals[:pagination] : true
+    locals[:pagination] = locals[:pagination] == false ? locals[:pagination] : true
     action_view = ActionView::Base.new(ActionController::Base.view_paths, {})
     action_view.class.send(:include, DisplayHelper)
 
