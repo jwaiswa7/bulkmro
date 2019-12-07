@@ -32,7 +32,7 @@
           <%   export_val.push(exp) %>
           <% end %>
         <% end %>
-        <% export_val.reverse.each do |exp| %>
+        <% export_val.compact.reverse.each do |exp| %>
           <% if exp.report.attached? %>
             <% attached_export.push(exp) %>
             <% break %>
