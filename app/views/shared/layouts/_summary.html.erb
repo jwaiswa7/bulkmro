@@ -1,31 +1,90 @@
-<a class="btn btn-light text-left btn-lg btn-block mt-2 lg-4" type="button" data-toggle="collapse" data-target="#summary">
-  <% if alias_name.present? %>
-    <%= alias_name.titleize %> Summary&nbsp;&nbsp;&nbsp;
-  <% else %>
-    <%= klass.name.titleize.pluralize %> Summary&nbsp;&nbsp;&nbsp;
-  <% end %>
-  <i class="fa fa-chevron-down" aria-hidden="true"></i>
-</a>
-<% if klass.name == 'Inquiry' %>
-  <% statuses = statuses.except('Lead by O/S') %>
-<% end %>
-<div id="summary" class="collapse">
-  <div class="mt-2 form-row d-flex flex-row align-content-stretch">
-    <% statuses.each do |status, status_id| %>
-      <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
-        <a data-value="<%= status_id %>" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-<%= status_color(status) %> status-<%= status_id %>" href="#">
-          <div class="card-body px-3 pt-3 pb-3">
-            <div class="text-center d-flex flex-column h-100">
-              <p class="mb-1 text-small text-uppercase text-<%= status_color(status) %>">
-                <strong><%= format_enum(status) %></strong>
-              </p>
-              <h5 class="mb-0 mt-auto text-<%= status_color(status) %> status-count-<%= status_id %>"></h5>
-              <hr class="my-2">
-              <h5 class="my-0 text-small text-<%= status_color(status) %> status-value-<%= status_id %>">&#8377;0</h5>
+<div class="row">
+  <div class="bmro-fixtab-width bmro-fl">
+    <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#summary">
+      <% if alias_name.present? %>
+        <%= alias_name.titleize %> Summary&nbsp;&nbsp;&nbsp;
+      <% else %>
+        <%= klass.name.titleize.pluralize %> Summary&nbsp;&nbsp;&nbsp;
+        <% end %><!-- <i class="fa fa-chevron-down" aria-hidden="true"></i> -->
+    </a>
+    <% if main_summary_statuses.present? %>
+      <div class="bmro-width-100 bmro-bgcolor">
+        <% main_summary_statuses.each do |main_status, main_status_id| %>
+          <div class="bmro-collaps bmro-collaps2">
+            <div class="bmro-invoice-data">
+              <div class="bmro-invoice-edit main-status-<%= main_status_id %>">
+                <label><%= format_enum(main_status) %></label>
+                <span class="main-status-count-<%= main_status_id %>"></span>
+              </div>
             </div>
           </div>
-        </a>
+        <% end %>
       </div>
     <% end %>
   </div>
+  <% if klass == 'SalesInvoice'.constantize %>
+    <div class="bmro-width-auto bmro-fl bmro-summary-margin">
+      <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#pod-summary">
+        Proof of Delivery Summary
+      </a>
+
+      <div class="bmro-float">
+        <div class="bmro-collaps bmro-collaps2">
+          <div class="bmro-invoice-data">
+            <div class="bmro-invoice-edit">
+              <label>Invoiced created</label>
+              <span><%= @invoice_over_month.map { |iom| iom[1]['doc_count'] }.sum %></span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>regular</label>
+              <span><%= @regular_pod_over_month.map { |reg| reg[1]['doc_count'] }.sum %></span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>route through</label>
+              <span><%= @route_through_pod_over_month.map { |rout_through| rout_through[1]['doc_count'] }.sum %></span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>Total Pending POD</label>
+              <span><%= @pod_over_month.map { |pod| pod[1] }.sum %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
+
+<div id="summary" class="collapse col-lg-12 bmro-float bmro-collaps-bg bmro-coltminus">
+  <div class="mt-2 form-row d-flex flex-row align-content-stretch">
+    <% if statuses.present? %>
+      <% statuses.each do |status, status_id| %>
+        <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
+          <a data-value="<%= status_id %>" name="status" class="summary_box card w-100 mb-2 rim rim-bottom bmro-border-class border-<%= status_color(status) %> status-<%= status_id %>" href="#">
+            <div class=" px-2 pt-2 bmro-inward-card">
+              <div class="h-100">
+                <p class="mb-1 text-small bmro-ar-report-head text-uppercase text-<%= status_color(status) %>">
+                  <strong><%= format_enum(status) %></strong>
+                </p>
+                <h5 class="mb-0 bmro-ar-report-data mt-auto text-<%= status_color(status) %> status-count-<%= status_id %>"></h5>
+                <% if klass != 'Activity'.constantize %>
+                  <h5 class="my-0 bmro-ar-report-subdata text-small text-<%= status_color(status) %> status-value-<%= status_id %>">&#8377;0</h5>
+                <% end %>
+              </div>
+            </div>
+          </a>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<% if klass == 'SalesInvoice'.constantize %>
+  <%= render partial: "pod_summary" %>
+<% end %>
+
+<!--<script type="text/javascript">-->
+<!--    $(".bmro-click-toggle").click(function () {-->
+<!--        $(this).parent().toggleClass("bmro-collaps2-bg");-->
+<!--    });-->
+<!--</script>-->
+
+

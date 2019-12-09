@@ -1,11 +1,11 @@
   <div class="row mt-3" >
     <div class="col-12 col-md-12 ">
-      <button type="button" class="btn btn-success btn-block existing-account <%= ( @activity.company_creation_request.account_name.present?) ? '' : 'd-none' %>" >
+      <button type="button" class="bmro-button btn btn-success btn-block existing-account <%= ( @activity.company_creation_request.account_name.present?) ? '' : 'd-none' %>" >
         add existing account
       </button>
     </div>
     <div class="col-12 col-md-12 " >
-      <button type="button" class="btn btn-warning btn-block new-account <%= ( @activity.company_creation_request.account_name.present?) ? 'd-none' : '' %>" >
+      <button type="button" class="bmro-button btn btn-warning btn-block new-account <%= ( @activity.company_creation_request.account_name.present?) ? 'd-none' : '' %>" >
         add new account
       </button>
     </div>

@@ -25,6 +25,7 @@
         })(window,document,'script','dataLayer','GTM-PDPC36K');
     </script>
   <% end %>
+
   <!-- End Google Tag Manager -->
 </head>
 
@@ -33,10 +34,11 @@
   <%= navigation if local_assigns[:navigation].present? %>
   <div class="layout layout-nav-top">
     <div class="main-container">
-      <%= render 'shared/layouts/components/breadcrumbs' if local_assigns[:navigation].present? %>
+      <!-- <%= render 'shared/layouts/components/breadcrumbs' if local_assigns[:navigation].present? %> -->
 
-      <div class="container<% if content_for?(:container_fluid) %>-fluid<% end %>">
-        <div class="row justify-content-center">
+      <div class="container bmro-container bmro-container-fluid<% if content_for?(:container_fluid) %>-fluid<% end %>">
+        <%= render 'shared/layouts/components/breadcrumbs' if (local_assigns[:navigation].present? &&  !params[:controller].include?('dashboard')) %>
+        <div class="row justify-content-center bmro-padd-col">
           <%= yield %>
 
           <% flash.each do |message_type, message| %>

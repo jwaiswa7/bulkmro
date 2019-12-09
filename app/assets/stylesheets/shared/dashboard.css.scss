@@ -1,0 +1,13 @@
+@charset "UTF-8";
+@import "../../../../node_modules/bootstrap/scss/functions";
+@import "../../../../node_modules/bootstrap/scss/variables";
+@import "../scss/variables";
+//
+//// Bootstrap
+@import "../scss/bootstrap_overrides";
+@import "../../../../node_modules/bootstrap/scss/bootstrap";
+//
+//// Plugins
+//datepicker
+@import "../scss/plugins/daterangepicker/init";
+

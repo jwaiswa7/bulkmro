@@ -2,26 +2,26 @@
   <div class="card-body">
     <%= render 'shared/snippets/form_errors', f: f %>
     <%= f.hidden_field :company_creation_request_id %>
-    <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
+    <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Company Details</h6>
     <% if is_authorized(@company, 'edit_remote_uid') && action_name == 'edit' %>
       <div class="form-row">
         <div class="col-12 col-md-8">
-          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
+          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences', input_html: { class: 'bmro-form-input bmro-bg' } %>
         </div>
         <div class="col-12 col-md-4">
-          <%= f.input :remote_uid, :label => 'SAP Business Partner ID' %>
+          <%= f.input :remote_uid, :label => 'SAP Business Partner ID', input_html: { class: 'bmro-form-input bmro-bg' } %>
         </div>
       </div>
     <% else %>
       <div class="form-row">
         <div class="col-12 col-md-12">
-          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
+          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences', input_html: { class: 'bmro-form-input bmro-bg' } %>
         </div>
       </div>
     <% end %>
     <div class="form-row">
       <div class="col-12 col-md-12">
-        <%= f.input :site %>
+        <%= f.input :site, input_html: { class: 'bmro-form-input bmro-bg' }  %>
       </div>
 <!--      <div class="col-6 col-md-3">-->
         <%#= f.input :mobile, disabled: true %>
@@ -35,42 +35,42 @@
     </div>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :industry, wrapper: :custom_multi_select, include_blank: 'Select an Industry' %>
+        <%= f.association :industry, wrapper: :custom_multi_select, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon' } , include_blank: 'Select an Industry' %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.input :company_type, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.company_types), include_blank: 'Select a company type' %>
+        <%= f.input :company_type, wrapper: :custom_multi_select, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon' } , as: :select, collection: enum_to_collection(Company.company_types), include_blank: 'Select a company type' %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.input :nature_of_business, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.nature_of_businesses), include_blank: 'Select a nature of business' %>
+        <%= f.input :nature_of_business, wrapper: :custom_multi_select, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon' } , as: :select, collection: enum_to_collection(Company.nature_of_businesses), include_blank: 'Select a nature of business' %>
       </div>
 
       <div class="col-6 col-md-4">
-        <%= f.input :priority, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.priorities), include_blank: false %>
+        <%= f.input :priority, wrapper: :custom_multi_select, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon' } , as: :select, collection: enum_to_collection(Company.priorities), include_blank: false %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :default_payment_option, wrapper: :custom_multi_select, include_blank: 'Select a default' %>
+        <%= f.association :default_payment_option, input_html: { class: 'bmro-form-input bmro-bg bmro-dropdown-icon' } , wrapper: :custom_multi_select, include_blank: 'Select a default' %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.input :credit_limit %>
+        <%= f.input :credit_limit ,input_html: { class: 'bmro-form-input bmro-bg' } %>
       </div>
     </div>
 
-    <h6 class="text-uppercase text-black-50 mb-1 d-block mt-3">Default owners and managers</h6>
+    <h6 class="text-uppercase text-black-50 mb-1 d-block mt-3 bmro-form-heading">Default owners and managers</h6>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', include_blank: 'Select a Procurement Specialist', input_html: {class: "select2-single"} %>
+        <%= f.association :inside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', include_blank: 'Select a Procurement Specialist', input_html: {class: "select2-single bmro-form-input bmro-bg bmro-dropdown-icon"} %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :outside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :outside_sales_owner, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single bmro-form-input bmro-bg bmro-dropdown-icon"} %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', include_blank: 'Select a Account Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :sales_manager, required: @company.account.present? ? @company.is_customer? : true, collection: Overseer.managers_and_obj(f.object.sales_manager).alphabetical, label: 'Account Owner', include_blank: 'Select a Account Owner', input_html: {class: "select2-single bmro-form-input bmro-bg bmro-dropdown-icon"} %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :logistics_owner, collection: Overseer.logistics.alphabetical, include_blank: 'Select a Logistics Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :logistics_owner, collection: Overseer.logistics.alphabetical, include_blank: 'Select a Logistics Owner', input_html: {class: "select2-single bmro-form-input bmro-bg bmro-dropdown-icon"} %>
       </div>
     </div>
 
@@ -78,7 +78,7 @@
       <div class="form-group">
         <%= f.label :contact_ids, 'Contacts' %>
         <div class="select2-wrapper">
-          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts' %>
+          <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple bmro-com-contacts', :"data-placeholder" => 'Select Contacts' %>
         </div>
       </div>
     <% end %>
@@ -86,22 +86,22 @@
 
     <div class="form-row">
       <div class="col-4">
-        <%= f.input :is_msme, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is MSME?' %>
+               <%= f.input :is_msme, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is MSME?' %>
       </div>
       <div class="col-4">
-        <%= f.input :is_unregistered_dealer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %>
+            <%= f.input :is_unregistered_dealer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %> 
       </div>
       <div class="col-4">
-        <%= f.input :is_international, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is international?' %>
+            <%= f.input :is_international, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is international?' %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="col-12 col-md-6">
-        <%= f.input :pan, label: 'PAN', input_html: {minlength: 10, maxlength: 10} %>
+        <%= f.input :pan, label: 'PAN', input_html: {minlength: 10, maxlength: 10, class: "bmro-form-input bmro-bg"} %>
       </div>
       <div class="col-12 col-md-6">
-        <%= f.input :pan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'PAN Proof' %>
+        <%= f.input :pan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'PAN Proof'  %>
       </div>
     </div>
     <div class="form-row">
@@ -110,9 +110,9 @@
       </div>
     </div>
     <% if f.object.persisted? %>
-      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
-      <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
-      <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
+      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select, input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-input-label' } %>
+      <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select, input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-input-label'}  %>
+      <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select, input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-input-label'}  %>
     <% end %>
     <div class="form-row">
       <div class="col-12 col-md-6">
@@ -120,7 +120,7 @@
       </div>
     </div>
   </div>
-  <div class="card-footer">
+  <div class="card-footer bmro-button-parent bmro-card-footer">
     <%= action_button(action_name, @company) %>
   </div>
 </div>

@@ -4,14 +4,17 @@ test:
   host: 'localhost:9250'
   prefix: 'test'
 development:
-  host: 'localhost:9200'
+  host: es-prod-bulkmro-com.centralindia.cloudapp.azure.com:9200
+  user: ''
+  password: ''
+  scheme: 'http'
 production:
   host: <%= ENV["FOUNDELASTICSEARCH_URL"] %>
   user: <%= ENV["ELASTIC_USER_NAME"] %>
   password: <%= ENV["ELASTIC_PASSWORD"] %>
   scheme: 'https'
 staging:
-  host: <%= ENV["FOUNDELASTICSEARCH_URL"] %>
-  user: <%= ENV["ELASTIC_USER_NAME"] %>
-  password: <%= ENV["ELASTIC_PASSWORD"] %>
-  scheme: 'https'
+  host: es-prod-bulkmro-com.centralindia.cloudapp.azure.com:9200
+  user: ''
+  password: ''
+  scheme: 'http'

@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Reject Purchase Order</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close bmro-cancel-icon" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -17,15 +17,15 @@
               <%= po_request_comment.hidden_field :po_request_id, :value => @po_request.id %>
               <div class="mb-2 form-group">
                 <label class="form-control-label text-capitalize">Rejection Reason</label>
-                <%= select_tag "status", options_for_select(PoRequest.rejection_reasons), class: "custom-select is-valid select optional", id: 'rejection-purchase-order-dropdown' %>
+                <%= select_tag "status", options_for_select(PoRequest.rejection_reasons), class: "custom-select is-valid select optional bmro-form-input bmro-dropdown-icon", id: 'rejection-purchase-order-dropdown' %>
               </div>
               <div class="mb-2 form-group">
-                <%= po_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '', id:'purchase-order-rejection-textbox' }, :disabled => true %>
+                <%= po_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '', id:'purchase-order-rejection-textbox' }, class: "bmro-form-input" :disabled => true %>
               </div>
             <% end %>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-warning confirm-reject">Reject <%#= @invoice_request.readable_status%></button>
+            <button type="submit" class="btn btn-warning bmro-button confirm-reject">Reject <%#= @invoice_request.readable_status%></button>
           </div>
         <% end %>
       </div>

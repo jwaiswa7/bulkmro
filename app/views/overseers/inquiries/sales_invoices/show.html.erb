@@ -4,69 +4,89 @@
 <div class="col-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <div class="card">
-      <div class="card-header">
+      <div class="card-header bmro-bg">
         <div class=form-row>
           <div class="col-6 col-md-1 mt-1 mt-md-0">
-            <strong class="d-block">Quotation #</strong>
+            <strong class="d-block bmro-summary-heading">Quotation #</strong>
+            <div class="bmro-summary-data">
             <%= @inquiry.inquiry_number %>
           </div>
+          </div>
           <div class="col-6 col-md-3 mt-1 mt-md-0">
-            <strong class="d-block">Customer Inquiry Reference</strong>
+            <strong class="d-block bmro-summary-heading">Customer Inquiry Reference</strong>
+            <div class="bmro-summary-data">
             <%= [@inquiry.inquiry_number, @inquiry.subject].join(" - ") %>
           </div>
+          </div>
           <div class="col-6 col-md-3 mt-1 mt-md-0">
-            <strong class="d-block">Customer Purchase Order # </strong>
+            <strong class="d-block bmro-summary-heading">Customer Purchase Order # </strong>
+            <div class="bmro-summary-data">
             <%= @inquiry.customer_po_number if @inquiry.customer_po_number.present? %>
           </div>
+          </div>
           <div class="col-6 col-md-3 mt-2  mt-md-0">
-            <strong class="d-block">Customer Purchase Order Date </strong>
+            <strong class="d-block bmro-summary-heading">Customer Purchase Order Date </strong>
+            <div class="bmro-summary-data">
             <%= @inquiry.customer_order_date.strftime("%d-%b-%Y") if @inquiry.customer_order_date.present? %>
+          </div>
           </div>
 
           <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
             <% if is_authorized(@sales_invoice,'show') && policy(@sales_invoice).show? %>
-              <%= row_action_button(overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get','', false, 'O') %>
-              <%= row_action_button(duplicate_overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get','', false, 'D') %>
-              <%= row_action_button(triplicate_overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get','', false, 'T') %>
-              <%= row_action_button(make_zip_overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :zip), 'file-archive', 'Download zip', 'info', :_blank) %>
+              <%= row_action_button_without_fa(overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get','', false, 'O') %>
+              <%= row_action_button_without_fa(duplicate_overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get','', false, 'D') %>
+              <%= row_action_button_without_fa(triplicate_overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get','', false, 'T') %>
+              <%= row_action_button_without_fa(make_zip_overseers_inquiry_sales_invoice_path(@inquiry, @sales_invoice, format: :zip), 'file-archive', 'Download zip', 'info', :_blank) %>
 
             <% end %>
           </div>
         </div>
       </div>
-      <div class="card-body">
+      <div class="card-body bmro-bg">
         <div class="form-row mb-1">
           <div class="col-12 col-md-2 mt-1 mt-md-0">
-            <strong class="d-block">Sales Order # </strong>
+            <strong class="d-block bmro-summary-heading">Sales Order # </strong>
+            <div class="bmro-summary-data">
             <%= @sales_invoice.sales_order.order_number if @sales_invoice.sales_order.order_number.present? %>
           </div>
+          </div>
           <div class="col-6 col-md-2 mt-1 mt-md-0">
-            <strong class="d-block">Sales Order Date</strong>
+            <strong class="d-block bmro-summary-heading">Sales Order Date</strong>
+            <div class="bmro-summary-data">
             <%= @sales_invoice.sales_order.mis_date.strftime("%d-%b-%Y") if @sales_invoice.sales_order.mis_date.present? %>
           </div>
+          </div>
           <div class="col-6 col-md-2 mt-1 mt-md-0">
-            <strong class="d-block">Invoice #</strong>
+            <strong class="d-block bmro-summary-heading">Invoice #</strong>
+            <div class="bmro-summary-data">
             <%= @sales_invoice.metadata['increment_id'] %>
           </div>
+          </div>
           <div class="col-6 col-md-2 mt-1 mt-md-0">
-            <strong class="d-block">Invoice Dates</strong>
+            <strong class="d-block bmro-summary-heading">Invoice Dates</strong>
+            <div class="bmro-summary-data">
             <%= @sales_invoice.mis_date %>
+          </div>
 
           </div>
           <div class="col-6 col-md-2 mt-1 mt-md-0">
-            <strong class="d-block">GRN # </strong>
-
+            <strong class="d-block bmro-summary-heading">GRN # </strong>
+            <div class="bmro-summary-data">
+            </div>
           </div>
           <div class="col-6 col-md-2 mt-1 mt-md-0">
-            <strong class="d-block">Payment Terms</strong>
+            <strong class="d-block bmro-summary-heading">Payment Terms</strong>
+            <div class="bmro-summary-data">
             <%= @inquiry.payment_option %>
+          </div>
           </div>
         </div>
 
-        <div class="card-alternative mt-3">
+        <div class="card-alternative bmro-bg mt-3">
           <div class="form-row">
             <div class="col-md-6 mt-2 mt-md-0">
-              <strong class="d-block">Supplier - Bill from:</strong>
+              <strong class="d-block bmro-summary-heading">Supplier - Bill from:</strong>
+              <div class="bmro-summary-data">
               <% if @inquiry.bill_from.present? %>
                 <%= @inquiry.bill_from.address.name.to_s %><br>
                 <%= @inquiry.bill_from.address.to_compact_multiline_s %><br>
@@ -80,8 +100,10 @@
                 <em>GST Number</em>: <%= @inquiry.bill_from.address.gst %><br>
               <% end %>
             </div>
+            </div>
             <div class="col-md-6 mt-2 mt-md-0">
-              <strong class="d-block">Supplier - Ship from:</strong>
+              <strong class="d-block bmro-summary-heading">Supplier - Ship from:</strong>
+              <div class="bmro-summary-data">
               <% if @inquiry.bill_from.present? %>
                 <%= @inquiry.ship_from.address.name.to_s %><br>
                 <%= @inquiry.ship_from.address.to_compact_multiline_s %><br>
@@ -93,11 +115,13 @@
                 <% end %>
               <% end %>
             </div>
+            </div>
           </div>
 
           <div class="form-row mt-0 mt-md-2">
             <div class="col-md-6 mt-2 mt-md-0">
-              <strong class="d-block">Customer - Bill to:</strong>
+              <strong class="d-block bmro-summary-heading">Customer - Bill to:</strong>
+              <div class="bmro-summary-data">
               <%= @inquiry.contact.full_name %><br>
               <%= @sales_invoice.serialized_billing_address.name %><br>
               <%= @sales_invoice.serialized_billing_address.to_multiline_s if @sales_invoice.serialized_billing_address.present? %>
@@ -110,8 +134,10 @@
               <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %><br>
               GST No.:<%= @sales_invoice.serialized_billing_address.gst %><br>
             </div>
+            </div>
             <div class="col-md-6 mt-2 mt-md-0">
-              <strong class="d-block">Customer - Ship to:</strong>
+              <strong class="d-block bmro-summary-heading">Customer - Ship to:</strong>
+              <div class="bmro-summary-data">
               <%= (@inquiry.shipping_company.name) %>
               <br>
               <%= @sales_invoice.serialized_shipping_address.name if @sales_invoice.serialized_shipping_address.present? %>
@@ -119,11 +145,12 @@
               <%= @sales_invoice.serialized_shipping_address.to_multiline_s if @sales_invoice.serialized_shipping_address.present? %>
               <br>
               <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
-            <span class="d-block"><em>Contact</em>: <%= @inquiry.contact.full_name %>
+            <span class="d-block bmro-summary-heading"><em>Contact</em>: <%= @inquiry.contact.full_name %>
               - <%= @inquiry.contact.phone %></span>
               <% end %>
               <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-              <span class="d-block"><em>GST Number</em>: <%= @sales_invoice.serialized_billing_address.gst || @inquiry.company.default_serialized_shipping_address.gst %></span>
+              <span class="d-block bmro-summary-heading"><em>GST Number</em>: <%= @sales_invoice.serialized_billing_address.gst || @inquiry.company.default_serialized_shipping_address.gst %></span>
+            </div>
             </div>
           </div>
         </div>
@@ -131,30 +158,36 @@
         <% if @inquiry.attachments.present? %>
           <div class="form-row mt-3">
             <div class="col-6">
-              <strong class="d-block">Customer Purchase Order</strong>
+              <strong class="d-block bmro-summary-heading">Customer Purchase Order</strong>
+              <div class="bmro-summary-data">
               <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
                 <%= @inquiry.customer_po_sheet.filename %>
               <% end if @inquiry.customer_po_sheet.attached? %>
             </div>
-            <div class="col-6">
+            </div>
+           <!--  <div class="col-6">
               <% if @inquiry.copy_of_email.attached? %>
-                <strong class="d-block">Email attachment</strong>
+                <strong class="d-block bmro-summary-heading">Email attachment</strong>
+                <div class="bmro-summary-data">
                 <%= link_to @inquiry.copy_of_email, target: '_blank' do %>
                   <%= @inquiry.copy_of_email.filename %>
                 <% end %>
               <% end %>
             </div>
-            <div class="col-6 mt-2">
-              <strong class="d-block">Supplier Quotes Attachment</strong>
+            </div> -->
+            <div class="col-6">
+              <strong class="d-block bmro-summary-heading">Supplier Quotes Attachment</strong>
+              <div class="bmro-summary-data">
               <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
                 <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
                   <span class="d-block"><%= attachment.filename %></span>
                 <% end %>
               <% end if @inquiry.supplier_quotes.attached? %>
             </div>
+            </div>
           </div>
         <% end %>
-        <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
+        <table class="w-100 table table-bordered bmro-summary-table bmro-datatable-style dt-responsive datatable wrap-whitespace" data-fixed-header="false">
           <thead>
           <tr>
             <th class="no-sort">
@@ -291,33 +324,33 @@
           </tbody>
         </table>
       </div>
-      <div class="card-footer">
-        <div class=form-row>
+      <div class="card-footer bmro-summary-footer bmro-summary-product-bottom">
+        <div class="form-row bmro-summary-footer-padding">
           <div class="col-6 col-md-2">
             Products
-            <strong class="d-block"><%= @sales_invoice.rows.count %></strong>
+            <strong class="d-block bmro-summary-heading"><%= @sales_invoice.rows.count %></strong>
           </div>
           <div class="col-6 col-md-4">
             Total Freight
-            <strong class="d-block"><%= format_currency(@sales_invoice.calculated_freight_cost_total) %></strong>
+            <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.calculated_freight_cost_total) %></strong>
           </div>
           <div class="col-6 col-md-2 mt-2 mt-md-0">
             Subtotal
-            <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_grand_total'].to_f - @sales_invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %></strong>
+            <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.metadata['base_grand_total'].to_f - @sales_invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %></strong>
           </div>
           <div class="col-6 col-md-2">
             Total Tax Amt
-            <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_tax_amount'].to_f / 2, precision: 2, symbol: nil) %></strong>
+            <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.metadata['base_tax_amount'].to_f / 2, precision: 2, symbol: nil) %></strong>
           </div>
           <div class="col-6 col-md-2">
             Grand Total
-            <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_grand_total'].to_f, precision: 2, symbol: nil) %></strong>
+            <strong class="d-block bmro-summary-heading"><%= format_currency(@sales_invoice.metadata['base_grand_total'].to_f, precision: 2, symbol: nil) %></strong>
           </div>
         </div>
       </div>
-      <div class="card-body">
+      <div class="card-body bmro-bg">
         <div>
-          <th><h6 class="text-uppercase text-black-50 mb-1">
+          <th><h6 class="bmro-summary-heading text-black-50 mb-1">
             Note :
           </h6></th>
           <ul>
@@ -329,9 +362,9 @@
           </ul>
         </div>
       </div>
-      <div class="card-footer">
+      <div class="card-footer bmro-bg">
         <div>
-          <th><h6 class="text-uppercase text-black-50 mb-1">
+          <th><h6 class="bmro-summary-heading text-black-50 mb-1">
             Other Information :
           </h6></th>
           <ul>
@@ -342,9 +375,9 @@
           </ul>
         </div>
       </div>
-      <div class="card-body">
+      <div class="card-body bmro-bg">
         <div>
-          <th><h6 class="text-uppercase text-black-50 mb-1">
+          <th><h6 class="bmro-summary-heading text-black-50 mb-1">
             Bulk MRO bank details :
           </h6></th>
           <ul>

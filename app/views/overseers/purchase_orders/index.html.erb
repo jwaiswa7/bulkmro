@@ -5,39 +5,34 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_directly_exported_filtered_records, true %>
 
-<% if Settings.reports.show_summary %>
-<div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: PurchaseOrder, statuses: PurchaseOrder.statuses, alias_name: ''} %>
-</div>
-<% end %>
-
-<div class="col-lg-12">
+<div class="col-lg-12 bmro-table-layout">
   <% content_for :header_row do %>
-    <th class="no-sort all"></th>
-    <th class="sort desktop text-right" data-name="po_number">Purchase #</th>
-    <th class="sort desktop text-right" data-name="inquiry_id">Inquiry #</th>
-    <th class="no-sort desktop" data-name="supplier_id">Supplier</th>
-    <th class="no-sort desktop">Rating</th>
-    <th class="no-sort desktop" data-name="customer_id">Customer</th>
-    <th class="no-sort all" data-name="po_status">Status</th>
-    <th class="sort desktop text-right" data-name="line_item">Line Items</th>
-    <th class="no-sort desktop" data-name="inside_sales_executive" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
-    <th class="no-sort desktop" data-name="outside_sales_executive" data-toggle="tooltip" title="Outside Sales & Procurement">OS Owner</th>
-    <th class="sort desktop text-right" data-name="po_date">PO Date</th>
-    <th class="no-sort desktop" data-name="material_status">Material Status</th>
-    <th class="no-sort desktop" data-name="payment_status">Payment Status</th>
-    <th class="no-sort desktop" data-name="percentage">Percentage</th>
-    <th class="sort desktop text-right" data-name="created_at">Created</th>
-    <th class="no-sort all">SAP Status</th>
+    <th class="no-sort all" width="98px">Quick Actions</th>
+    <th class="sort desktop text-right" width="52px" data-name="po_number">Purchase #</th>
+    <th class="sort desktop text-right" width="52px" data-name="inquiry_id">Inquiry #</th>
+    <th class="no-sort desktop text-left" width="130px" data-name="supplier_id">Supplier</th>
+    <th class="no-sort desktop text-left" width="50px">Rating</th>
+    <th class="no-sort desktop text-left" width="130px" data-name="customer_id">Customer</th>
+    <th class="no-sort all text-left" width="140px" data-name="po_status">Status</th>
+    <th class="sort desktop text-right" width="52px" data-name="line_item">Line Items</th>
+    <th class="no-sort desktop text-left" data-name="inside_sales_executive" width="94px" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
+    <th class="no-sort desktop text-left" data-name="outside_sales_executive" width="94px" data-toggle="tooltip" title="Outside Sales & Procurement">OS Owner</th>
+    <th class="sort desktop text-left" width="52px" data-name="po_date">PO Date</th>
+    <th class="no-sort desktop text-left" width="97px" data-name="material_status">Material Status</th>
+    <th class="no-sort desktop text-left" width="52px" data-name="payment_status">Payment Status</th>
+    <th class="no-sort desktop text-right" width="52px" data-name="percentage">Percentage</th>
+    <th class="sort desktop text-left" width="52px" data-name="created_at">Created</th>
+    <th class="no-sort all text-left" width="52px">SAP Status</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
+
     <td data-filter="false"></td>
     <td data-filter="ajax"></td>
     <td data-filter="false"></td>
     <td data-filter="ajax"></td>
-    <td class="status-filter" data-filter="dropdown"></td>
+    <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>

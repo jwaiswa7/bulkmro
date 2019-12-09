@@ -1,17 +1,17 @@
 <% content_for :heading_byline do %>
-  This will <em>'<%= submit_text(@inquiry).downcase %>'</em> and log it under
-  <strong><%= current_overseer.full_name %></strong>.
+ <!--  This will <em>'<%= submit_text(@inquiry).downcase %>'</em> and log it under
+  <strong><%= current_overseer.full_name %></strong>. -->
 <% end %>
 
 <%= render layout: 'shared/layouts/form' do %>
   <%= simple_form_for([:overseers, @inquiry, @list_import], url: create_list_import_overseers_inquiry_imports_path(@inquiry), :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <div class="card-body">
+    <div class="card-body bmro-bg">
       <div class="form-group">
-        <%= f.input :import_text, label: 'List', as: :text, placeholder: 'SKU, Quantity; one product per row', required: true %>
+        <%= f.input :import_text,class: 'bmro-form-input',label: 'List', as: :text, placeholder: 'SKU, Quantity; one product per row', required: true %>
       </div>
 
       <div class="form-group mb-0">
-        <%= f.submit(class: 'btn btn-success btn-block') %>
+        <%= f.submit(class: 'btn btn-success bmro-button btn-block') %>
       </div>
     </div>
   <% end %>

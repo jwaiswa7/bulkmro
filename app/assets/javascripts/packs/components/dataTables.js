@@ -13,6 +13,10 @@ const dataTables = () => {
             $('.datatable').DataTable().rowGroup().enable().draw();
         }
     }
+    $('.bmro-date-bag').on('change',function(){
+        var currentVal = $(this).val();
+        $('.date-item.hide').find('input').val(currentVal).trigger('change');
+    })
 };
 
 // Setup the filter field before all dataTables, if the filter attribute exists
@@ -27,22 +31,10 @@ let preSetup = () => {
 
         if (searchText) {
             let $input = "<input type='search' class='form-control filter-list-input' placeholder='" + searchText + "'>";
-            $input = $($input);
+            $input = $('.bmro-search-width');
             $input.bindWithDelay('keyup', function (e) {
                 $('#' + $target.attr('id')).DataTable().search($(this).val()).draw();
             }, 300);
-
-            let $wrapper = "<div class='input-group mt-2'>" +
-                "<div class='input-group-prepend'>" +
-                "<span class='input-group-text'>" +
-                "<i class='material-icons'>filter_list</i>" +
-                "</span>" +
-                "</div>" +
-                "</div>";
-
-            let $filter = $($wrapper).append($input);
-
-            $filter.insertBefore($target);
             $target.data('has-search', true);
         }
     });
@@ -68,7 +60,7 @@ let setup = () => {
             stateSave: false,
             fixedHeader: {
                 header: isFixedHeader,
-                headerOffset: $('.navbar.navbar-expand-lg').height()
+                headerOffset: $('.bmro-head-bg').outerHeight()
             },
             fnDrawCallback: function (oSettings) {
                 let table = this;
@@ -158,9 +150,36 @@ let setup = () => {
             }, {
                 "targets": 'text-right-report',
                 "class": 'text-right'
-            }, {
+            },  {
+                "targets": 'checkbox',
+                "class": 'no-dispay-checkbox'
+            },{
                 "targets": 'text-right',
                 "class": 'text-right text-nowrap'
+            },{
+                "targets": 'text-left',
+                "class": 'text-left'
+            },{
+                "targets": 'bmro-company-width',
+                "class": 'bmro-company-width'
+            },{
+                "targets": 'bmro-quick-actions-width',
+                "class": 'bmro-quick-actions-width'
+            },{
+                "targets": 'bmro-inquiry-width',
+                "class": 'bmro-inquiry-width'
+            },{
+                "targets": 'bmro-sales-invoice-sub-width',
+                "class": 'bmro-sales-invoice-sub-width'
+            },{
+                "targets": 'bmro-date-width',
+                "class": 'bmro-date-width'
+            },{
+                "targets": 'bmro-sap-status-width',
+                "class": 'bmro-sap-status-width'
+            },{
+                "targets": 'bmro-inside-sale-width',
+                "class": 'bmro-inside-sale-width'
             }, {
                     "targets": 'text-center',
                     "class": 'text-center text-nowrap'
@@ -219,13 +238,12 @@ let setup = () => {
                     e.preventDefault();
                 });
                 actionTd.append(clear);
-
+                var data_multiclass = [];
                 this.api().columns().every(function () {
                     let column = this;
                     let filter = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')').data('filter');
                     let td = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')');
                     let text = $(column.header()).text();
-
                     // Uses the window.hasher to get column-level filters, if defined, to set selected value that will allow filtering the datatable
                     let selected = (filter == 'dropdown' || filter == 'ajax') ? window.hasher.getParam(text).split('|') : window.hasher.getParam(text);
 
@@ -233,26 +251,40 @@ let setup = () => {
                         let input = '';
 
                         if (filter == 'dropdown') {
-                            input = $('<select class="select2-single form-control" data-placeholder="' + [text, ' '].join('') + '"><option value="" selected disabled></option></select>');
+                            let status_class = ((text == 'Status' || text == 'SAP Status') ? 'status-filter': '');
+                            input = $('<div class="bmro-input-search bmro-arrow-parent '+status_class+'"><select class="form-control select select2-single bmro-form-input select2-hidden-accessible" data-placeholder="' + [text, ' '].join('') + '"><option value="" selected disabled></option></select></div>');
                             json.columnFilters[this.index()].forEach(function (f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
-                                input.append(option);
+                                input.find('select').append(option);
                             });
                         } else if (filter == 'daterange') {
-                            input = $('<input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" />');
+                            var dataNameTemp = $(column.header()).data('name')
+                            let date_class = ((dataNameTemp == 'mis_date')||(dataNameTemp=='po_date')||(dataNameTemp=='created_at')) ? 'date-item hide '+dataNameTemp: '';
+                            if(data_multiclass.length == 0){
+                                data_multiclass.push(dataNameTemp)
+                            }else if(data_multiclass.includes('mis_date' || 'po_date') && dataNameTemp=='created_at'){
+                                $('.date-item').not('.created_at').removeClass("hide")
+                            }
+                            input = $('<div class="bmro-input-search bmro-arrow-parent '+date_class+'"><input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" /></div>');
                         } else if (filter == 'ajax') {
                             let source = "";
                             json.columnFilters[this.index()].forEach(function (f) {
                                 source = f.source;
                             });
-                            input = $('<select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' '].join('') + '"></select>');
+                            input = $('<div class="bmro-input-search bmro-arrow-parent"><select class="form-control select2-ajax" data-source="' + source + '" data-placeholder="' + [text, ' '].join('') + '"></select></div>');
                         } else {
-                            input = $('<input type="text" class="form-control" placeholder="' + [text, ' ', 'Filter'].join('') + '" />');
+                            input = $('<div class="bmro-input-search bmro-arrow-parent"><input type="text" class="form-control" placeholder="' + [text, ' ', 'Filter'].join('') + '" /></div>');
                         }
 
                         input.on('change', function () {
-                            let val = $(this).val();
-                            column.search(val).draw();
+                            let val
+                            if (input.has('input').length > 0){
+                                val = $(this).find('input').val();
+                                column.search(val).draw();
+                            } else if (input.has('select').length > 0){
+                                val = $(this).find('select').val();
+                                column.search(val).draw();
+                            }
 
                             // Override the value for dropdowns/select2s in the text|value format
                             if ($(input).is('select'))
@@ -265,7 +297,7 @@ let setup = () => {
                             $(that).trigger('filters:change');
                         });
 
-                        td.append(input);
+                        $('.fillter-wrapper').append(input);
                         select2s();
 
 
@@ -274,11 +306,11 @@ let setup = () => {
                         if (selected == "") return;
                         $(this).data('filtered', false);
                         if (filter == 'dropdown') {
-                            input.val(selected[1]).trigger('change');
+                            input.find('select').val(selected[1]).trigger('change');
                         } else if (filter == 'ajax') {
-                            input.append(new Option(selected[0], selected[1], true, true)).trigger('change');
+                            input.find('select').append(new Option(selected[0], selected[1], true, true)).trigger('change');
                         } else {
-                            input.val(selected).trigger('change');
+                            input.find('select').val(selected).trigger('change');
                         }
                     }
                 });

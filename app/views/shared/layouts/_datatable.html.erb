@@ -25,12 +25,71 @@
 
   </section>
 <% end %>
+
+<div class="bmro-float">
+  <div class="bmro-invoice-heading">
+    <div class="dropdown">
+  <% if (content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all')) || (content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness')) %>
+        <span class="bmro-downimg"></span>
+        <% if content_for?(:heading) %>
+          <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
+        <% else %>
+          <h4 class="dropdown-toggle page-title bmro-drop-arr" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4>
+        <% end %>
+
+        <% if content_for?(:can_be_directly_exported_partial) %>
+          <%= render partial:   "overseers/"+current_model.downcase+"/download_dropdown" rescue nil %>
+        <% else %>
+
+          <% if content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all') %>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="<%= [request.path, '/', 'export_all.csv'].join %>"><%= "EXPORT " +current_model_header %></a>
+              <% if content_for?(:can_be_directly_exported_filtered_records) && is_authorized(current_model_downcase,'export_filtered_records') %>
+                <a class="dropdown-item" href="#" id="export_filtered_records">Filtered <%= current_model_header %></a>
+              <% end %>
+            </div>
+          <% elsif content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness') %>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="<%= [request.path.chomp('material_readiness_queue'), 'export_material_readiness.csv'].join %>">Material Readiness Queue</a>
+            </div>
+          <% end %>
+        <% end %>
+  <% elsif content_for?(:heading)%>
+    <h4 class="page-title"><%= yield :heading %></h4>
+  <!--   <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4> -->
+  <% else %>
+        <h4 class="page-title"><%= current_model_header %></h4>
+         <!--  <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4> -->
+    <% end %>
+  <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="" placeholder="Select Date">
+    </div>
+</div>
+
+  <% if Settings.reports.show_summary && @statuses.present? %>
+    <div class="col-lg-12">
+      <%= render partial: "shared/layouts/summary", locals: {klass: current_model.classify.constantize, statuses: @statuses, alias_name: @alias_name, main_summary_statuses: @main_summary_statuses } %>
+    </div>
+  <% end %>
+</div>
+
+
+<div class="bmro-search-table">
+  <div class="bmro-input-search">
+    <input type="text" name="" class="bmro-form-input bmro-search-width filter-list-input" placeholder="Search by term/keywords...">
+  </div>
+  <div class="fillter-wrapper bmro-input-edit">
+    <div class="bmro-input-search bmro-arrow-parent">
+      <input type="button" name="clear-btn" value="Reset" class="bmro-button bmro-set-size">
+    </div>
+  </div>
+</div>
+
 <section class="pb-4 pb-lg-5">
-  <table class="datatable table table-bordered table-hover dt-responsive
+  <table class="datatable table table-bordered table-hover dt-responsive bmro-datatable-style
    <% if content_for?(:wrap_whitespace) %> wrap-whitespace
    <% end %>" data-search="Enter search term/keywords"
          <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.fullpath %>"
-         <% end %><% if not content_for?(:enable_sort_on_last_column) %>data-sorting="false"<% end %>>
+         <% end %><% if not content_for?(:enable_sort_on_last_column) %>data-sorting="false"<% end %> style="width:100%">
     <thead>
     <tr>
       <%= yield :header_row %>

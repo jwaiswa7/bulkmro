@@ -4,28 +4,30 @@
   <%= simple_form_for(@overseer, url: overseers_profile_path, :method => :patch, :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <div class="form-row">
       <div class="col-6">
-        <%= f.input :first_name, :required => true, placeholder: 'e.g. Jon' %>
+        <%= f.input :first_name, :required => true, placeholder: 'e.g. Jon', class: 'bmro-form-input' %>
       </div>
       <div class="col-6">
-        <%= f.input :last_name, :required => true, placeholder: 'e.g. Snow' %>
+        <%= f.input :last_name, :required => true, placeholder: 'e.g. Snow', class: 'bmro-form-input' %>
       </div>
       <div class="col-6">
-        <%= f.input :mobile %>
+        <%= f.input :mobile, class: 'bmro-form-input' %>
       </div>
       <div class="col-6">
-        <%= f.input :telephone %>
+        <%= f.input :telephone, class: 'bmro-form-input' %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="col-6">
-        <%= f.input :smtp_password, as: :string, label: 'SMTP Password', placeholder: 'e.g. password@1337' %>
+        <%= f.input :smtp_password, as: :string, label: 'SMTP Password', placeholder: 'e.g. password@1337', class: 'bmro-form-input' %>
       </div>
       <div class="col-6">
-        <%= f.input :slack_uid, label: 'Slack UID', placeholder: 'e.g. bhargav.trivedi' %>
+        <%= f.input :slack_uid, label: 'Slack UID', placeholder: 'e.g. bhargav.trivedi', class: 'bmro-form-input' %>
       </div>
     </div>
 
+    <div class="bmro-button-parent">
     <%= action_button(action_name, @overseer) %>
   <% end %>
+  </div>
 </div>

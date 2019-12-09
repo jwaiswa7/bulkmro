@@ -74,6 +74,13 @@ class PurchaseOrder < ApplicationRecord
       'Delivered': 97
   }
 
+  enum main_summary_status: {
+      'PO Sent to Supplier': 36,
+      'Material Readiness: Follow-Up': 39,
+      'Supplier Pro Forma Invoice / Invoice Awaited': 63,
+      'Supplier PI Pending Finance Approval': 64
+  }, _suffix: true
+
   enum material_status: {
       'Material Readiness Follow-Up': 10,
       'Inward Dispatch': 20,

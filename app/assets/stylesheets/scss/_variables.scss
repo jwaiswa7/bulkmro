@@ -87,8 +87,22 @@ $color-dark-green: #6aa84f;
 $color-orange: #f9cb9c;
 $color-grey: #b7b7b7;
 
+/* New Status Classes added here */
+$status-color-green: #A8DC59;
+$status-color-blue: #98CAFA;
+$status-color-yellow: #FFE000;
+$status-color-red: #FFA294;
+$status-color-orange: #FFB65C;
+$status-color-grey: #DFE5F0;
+
 $custom-colors: ();
 $custom-colors: map-merge((
+        "status-color-green": $status-color-green,
+        "status-color-blue": $status-color-blue,
+        "status-color-yellow": $status-color-yellow,
+        "status-color-red": $status-color-red,
+        "status-color-orange": $status-color-orange,
+        "status-color-grey": $status-color-grey,
         "color-light-blue": $color-light-blue,
         "color-dark-blue": $color-dark-blue,
         "color-yellow": $color-yellow,
@@ -100,3 +114,5 @@ $custom-colors: map-merge((
         "color-orange": $color-orange,
         "color-grey": $color-grey
 ), $custom-colors);
+
+

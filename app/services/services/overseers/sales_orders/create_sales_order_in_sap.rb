@@ -12,9 +12,9 @@ class Services::Overseers::SalesOrders::CreateSalesOrderInSap < Services::Shared
       if series.present?
         sales_order.update_attributes(remote_status: :'Supplier PO: Request Pending', status: :'Approved', mis_date: Date.today, order_number: series.first.last_number)
         series.first.increment_last_number
-        doc_id = ::Resources::Order.create(sales_order)
-        order = ::Resources::Order.find(doc_id)
-        sales_order.update_attributes(remote_uid: order['DocEntry'])
+        # doc_id = ::Resources::Order.create(sales_order)
+        # order = ::Resources::Order.find(doc_id)
+        # sales_order.update_attributes(remote_uid: order['DocEntry'])
         Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :order_won).call
         comment = sales_order.inquiry.comments.create!(message: 'SAP Approved', overseer: overseer, sales_order: sales_order)
         if sales_order.approval.blank?

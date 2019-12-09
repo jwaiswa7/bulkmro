@@ -7,7 +7,7 @@
       </h3>
 
       <% if !@contact_creation_request.contact.present? && is_authorized(:contact, 'new') && @contact_creation_request.activity.company_id.present? %>
-        <a href="<%= new_overseers_contact_path(:ccr_id => @contact_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
+        <a href="<%= new_overseers_contact_path(:ccr_id => @contact_creation_request.id) %>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus-circle mr-1"></i>Create
           New
           Contact</a>
       <% end %>
@@ -17,45 +17,55 @@
   <section class="mb-3">
     <div class="card">
       <div class="card-body">
-        <h6 class="text-uppercase text-black-50 mb-1">Contact Details</h6>
+        <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Contact Details</h6>
         <div class="form-row">
           <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-head">
               First Name
             </strong>
             <%= @contact_creation_request.first_name %>
           </div>
           <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-head">
               Last Name
             </strong>
-            <%= @contact_creation_request.last_name %>
+            <div class="bmro-summary-data">
+             <%= @contact_creation_request.last_name %>
+          </div>
           </div>
           <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-head">
               Email
             </strong>
-            <%= @contact_creation_request.email %>
+            <div class="bmro-summary-data">
+              <%= @contact_creation_request.email %>
+            </div>
           </div>
         </div>
         <div class="form-row">
           <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-head">
               Telephone
             </strong>
-            <%= @contact_creation_request.telephone %>
+            <div class="bmro-summary-data">
+               <%= @contact_creation_request.telephone %>
+             </div>
           </div>
           <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-head">
               Mobile Number
             </strong>
+            <div class="bmro-summary-data">
             <%= @contact_creation_request.mobile %>
+          </div>  
           </div>
           <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-head">
               Requested by
             </strong>
+            <div class="bmro-summary-data">
             <%= @contact_creation_request.activity.created_by.name %>
+          </div>
           </div>
         </div>
       </div>

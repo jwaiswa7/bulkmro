@@ -30,15 +30,15 @@
           <%= f.input :body, input_html: {class: 'html-editor'} %>
         </div>
       </div>
-      <div class="card-footer">
+      <div class="card-footer bmro-card-footer">
         <div class="row">
           <div class="col-md-6">
-            <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-              <i class="fal fa-paper-plane"></i> Send Email
+            <%= button_tag(type: "submit", class: "btn btn-success bmro-button btn-block") do %>
+              <i class="bmro-fa-paper-plane"></i> Send Email
             <% end %>
           </div>
           <div class="col-md-6">
-            <%= link_to 'Skip', edit_overseers_inquiry_path(@inquiry),class: "btn-block btn btn-warning duplicate-inquiry" %>
+            <%= link_to 'Skip', edit_overseers_inquiry_path(@inquiry),class: "btn-block bmro-button btn btn-warning duplicate-inquiry" %>
           </div>
         </div>
       </div>

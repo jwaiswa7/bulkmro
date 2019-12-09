@@ -27,9 +27,9 @@ class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseServic
       inquiry.update_attributes(attachment_uid: ::Resources::Attachment.create(inquiry))
     end
 
-    if inquiry.final_sales_quote.present?
-      inquiry.final_sales_quote.save_and_sync
-    end
+    # if inquiry.final_sales_quote.present?
+    #   inquiry.final_sales_quote.save_and_sync
+    # end
   end
 
   attr_accessor :inquiry

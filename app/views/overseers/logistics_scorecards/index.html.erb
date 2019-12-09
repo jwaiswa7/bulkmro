@@ -1,14 +1,67 @@
 <%= provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
+<div class="row" id="accordion">
+  <div class="bmro-float">
+    <div class="col-lg-3 bmor-minwidthset bmro-color-coll bmro-log-margin">
+      <a class="btn text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-overall-toggole bmro-over-scor" type="button" data-toggle="collapse" aria-controls="pod-summary" aria-expanded="false" data-target="#pod-summary">
+        Overall Scorecard
+      </a>
+      <div class="bmro-float">
+        <div class="bmro-collaps bmro-collaps2">
+          <div class="bmro-invoice-data">
+            <div class="bmro-invoice-edit">
+              <label>Invoiced created</label>
+              <span>396</span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>regular</label>
+              <span>93</span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>route through</label>
+              <span>578</span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>Total Pending POD</label>
+              <span>12</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<div class="col-lg-12">
+    <div class="col-lg-6 bmro-color-coll logiscoll">
+      <a class="btn text-left btn-lg btn-block mt-1 mt-lg-4 bmro-click-toggle bmro-invoice-one bmro-collapse-button-bg bmro-log-scor" data-toggle="collapse" data-target="#ownerwise-summary" aria-controls="ownerwise-summary" aria-expanded="false">
+        Logistics Owner-wise Scorecard </a>
+      <div class="bmro-float">
+        <div class="bmro-collaps bmro-collaps2">
+          <div class="bmro-invoice-data">
+            <div class="bmro-invoice-edit">
+              <label>Invoiced created</label>
+              <span>396</span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>regular</label>
+              <span>93</span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>route through</label>
+              <span>578</span>
+            </div>
+            <div class="bmro-invoice-edit">
+              <label>Total Pending POD</label>
+              <span>12</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <%= render partial: "overall_scorecard" %>
-</div>
-
-<div class="col-lg-12">
   <%= render partial: "ownerwise_scorecard" %>
 </div>
+
 
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -18,11 +71,11 @@
       </div>
       <%= form_tag add_delay_reason_overseers_logistics_scorecards_path, method: :get do %>
         <div class="modal-body">
-          <p><%= select_tag(:selected, options_for_select({"Select a Reason"=>0}.merge(SalesInvoice.delay_reasons), selected: 0, disabled: 0), class: "form-control") %></p>
+          <p><%= select_tag(:selected, options_for_select({"Select a Reason" => 0}.merge(SalesInvoice.delay_reasons), selected: 0, disabled: 0), class: "form-control") %></p>
         </div>
         <div class="modal-footer">
           <%= hidden_field_tag :invoice_id %>
-          <%= submit_tag "Submit", class: "btn btn-default"  %>
+          <%= submit_tag "Submit", class: "btn btn-default" %>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       <% end %>
@@ -30,31 +83,32 @@
   </div>
 </div>
 
+<div class="col-lg-12 bmro-table-layout">
 <% content_for :header_row do %>
-  <th class="no-sort all"></th>
-  <th class="no-sort desktop text-right">BM Inquiry #</th>
-  <th class="no-sort desktop">Inquiry Date</th>
-  <th class="no-sort desktop" data-name="company_id">Company</th>
-  <th class="no-sort desktop">IS Owner</th>
-  <th class="no-sort desktop" data-name="logistics_owner_id">Logistics Owner</th>
-  <th class="no-sort desktop">Regular / Route Through</th>
-  <th class="no-sort all text-right" data-name="sku">BM Number</th>
-  <th class="no-sort desktop">Item Description</th>
-  <th class="no-sort desktop">Item Make</th>
-  <th class="no-sort desktop">Quantity</th>
-  <th class="no-sort desktop">Delivery Location</th>
-  <th class="no-sort desktop">Customer PO Date</th>
-  <th class="no-sort desktop">Customer PO Received Date</th>
-  <th class="no-sort desktop" data-name="cp_committed_date">Committed Delivery Date to Customer</th>
-  <th class="no-sort desktop">SO Creation Date</th>
-  <th class="no-sort desktop">Actual Customer Delivery Date</th>
-  <th class="no-sort desktop">Committed Delivery TAT (days)</th>
-  <th class="no-sort desktop">Actual Delivery TAT (days)</th>
-  <th class="no-sort desktop">Delay</th>
-  <th class="no-sort desktop">SLA Bucket</th>
-  <th class="no-sort desktop" data-name="delay_bucket">Delay Bucket</th>
-  <th class="no-sort desktop" data-name="delay_reason">Delay Reason</th>
-  <th class="no-sort desktop">Committed Month of Delivery</th>
+  <th class="no-sort all" width="98px">Quick Actions</th>
+  <th class="no-sort desktop text-right" width="62px">BM Inquiry #</th>
+  <th class="no-sort desktop text-left" width="88px">Inquiry Date</th>
+  <th class="no-sort desktop text-left" width="130px" data-name="company_id">Company</th>
+  <th class="no-sort desktop text-left" width="94px">IS Owner</th>
+  <th class="no-sort desktop text-left" width="94px" data-name="logistics_owner_id">Logistics Owner</th>
+  <th class="no-sort desktop text-left" width="72px">Regular / Route Through</th>
+  <th class="no-sort all text-right text-right" width="60px" data-name="sku">BM Number</th>
+  <th class="no-sort desktop text-left" width="172px">Item Description</th>
+  <th class="no-sort desktop text-left" width="62px">Item Make</th>
+  <th class="no-sort desktop text-right" width="41px">Quantity</th>
+  <th class="no-sort desktop text-left" width="58px">Delivery Location</th>
+  <th class="no-sort desktop text-left" width="88px">Customer PO Date</th>
+  <th class="no-sort desktop text-left" width="88px">Customer PO Received Date</th>
+  <th class="no-sort desktop text-left" width="88px" data-name="cp_committed_date">Committed Delivery Date to Customer</th>
+  <th class="no-sort desktop text-left" width="88px">SO Creation Date</th>
+  <th class="no-sort desktop text-left" width="88px">Actual Customer Delivery Date</th>
+  <th class="no-sort desktop text-right" width="54px" >Committed Delivery TAT (days)</th>
+  <th class="no-sort desktop text-right" width="40px">Actual Delivery TAT (days)</th>
+  <th class="no-sort desktop text-right" width="30px">Delay</th>
+  <th class="no-sort desktop text-left" width="50px">SLA Bucket</th>
+  <th class="no-sort desktop text-left" width="50px" data-name="delay_bucket">Delay Bucket</th>
+  <th class="no-sort desktop text-left" width="60px" data-name="delay_reason">Delay Reason</th>
+  <th class="no-sort desktop text-left" >Committed Month of Delivery</th>
 <% end %>
 
 <% content_for :filter_row do %>
@@ -84,7 +138,27 @@
   <td data-filter="false"></td>
 <% end %>
 
-<div class="col-lg-12">
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>
+
+<script type="text/javascript">
+    // $(".bmro-click-toggle").click(function(){
+    //     $('div.collapsed').removeClass('collapsed')
+    //     $('div.bmro-collaps2-bg.bmro-parent-bg').removeClass('.bmro-collaps2-bg.bmro-parent-bg')
+    //     $('div.collapse.show').removeClass('show')
+    //     $(this).parent().toggleClass("bmro-collaps2-bg");
+    // });
+    $('.bmro-over-scor').click(function(){
+      // $('#pod-summary').toggleClass('bmrocol-openclose');
+      // $('.logisowner').addClass('bmrocol-openclose');
+      $('.logiscoll').removeClass('bmro-collaps2-bg');
+      $('.logiscoll').removeClass('bmro-parent-bg');
+    });
+    $('.bmro-log-scor').click(function(){
+      // $('#ownerwise-summary').toggleClass('bmrocol-openclose');
+      // $('.overallscore').addClass('bmrocol-openclose');
+      $('.bmor-minwidthset').removeClass('bmro-collaps2-bg');
+      $('.bmor-minwidthset').removeClass('bmro-parent-bg');
+    });    
+</script>

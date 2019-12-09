@@ -2,35 +2,37 @@
   <div class="card mt-3">
     <div class="card-body">
       <div class="form-row">
-        <div class="col-12 col-md-3">
+        <div class="col-6">
           <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range', :value => (@date_range.present? ? @date_range : '')}, required: false, label: 'Pick a Date Range' %>
         </div>
         <div class="col-12 col-md-3">
           <%= f.input :procurement_specialist, as: :select, collection: Inquiry.procurement_specialists,
-                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a  Procurement Specialist'}, required: false, include_blank: true,
+                      input_html: {class: "select2-single bmro-form-input bmro-dropdown-input", :'data-placeholder' => 'Select a  Procurement Specialist'}, required: false, include_blank: true,
                       selected: params['company_report'].present? && params['company_report']['procurement_specialist'].present? ? params['company_report']['procurement_specialist'].to_i : '' %>
         </div>
         <div class="col-12 col-md-3">
           <%= f.input :outside_sales_owner, as: :select, collection: Inquiry.outside_sales_owners,
-                      input_html: {class: "select2-single", :'data-placeholder' => 'Select an Outside Sales Owner'}, required: false, include_blank: true,
+                      input_html: {class: "select2-single bmro-form-input bmro-dropdown-input", :'data-placeholder' => 'Select an Outside Sales Owner'}, required: false, include_blank: true,
                       selected: params['company_report'].present? && params['company_report']['outside_sales_owner'].present? ? params['company_report']['outside_sales_owner'].to_i : '' %>
         </div>
 
         <div class="col-12 col-md-3">
           <%= f.input :sales_manager, as: :select, collection: Overseer.all.map {|o| [o.parent.full_name, o.parent.id] if o.parent.present?}.compact.uniq.sort,
-                      input_html: {class: "select2-single", :'data-placeholder' => 'Select a Sales Manager' }, required: false, include_blank: true,
+                      input_html: {class: "select2-single bmro-form-input bmro-dropdown-input", :'data-placeholder' => 'Select a Sales Manager' }, required: false, include_blank: true,
                       selected: params['company_report'].present? && params['company_report']['sales_manager'].present? ? params['company_report']['sales_manager'].to_i : '' %>
         </div>
         <div class="col-3 text-center">
-          <%= button_tag(type: "submit", class: "btn btn-success btn-block mt-3") do %>
-            <i class="fal fa-hand-point-down mr-2"></i>Fetch Report
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block mt-3 bmro-button") do %>
+            <i class="bmro-hand-point-down"></i>Fetch Report
           <% end %>
         </div>
         <div class="col-3 text-center">
-          <a href="<%= company_report_overseers_companies_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 mt-3">
-            <i class="fal fa-redo mr-2"></i> Reset Report</a>
+          <a href="<%= company_report_overseers_companies_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 mt-3 bmro-button">
+            <i class="bmro-fa-redo"></i> Reset Report</a>
         </div>
       </div>
     </div>
   </div>
 <% end %>
+
+<!-- have to check the col-grid -->

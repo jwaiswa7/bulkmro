@@ -45,6 +45,14 @@ class Activity < ApplicationRecord
       'Tender preparation': 50
   }
 
+  enum main_summary_status: {
+      'Meeting': 10,
+      'Phone call': 20,
+      'Email': 30,
+      'Quote/Tender Prep': 40,
+  }, _suffix: true
+
+
   enum activity_status: {
       'Approved': 10,
       'Pending Approval': 20,

@@ -54,4 +54,3 @@ let onStatusChange = (selector) => {
     $("."+selector).find('select').prop('required',true);
     $("."+selector).find('input').prop('required',true);
 }
-

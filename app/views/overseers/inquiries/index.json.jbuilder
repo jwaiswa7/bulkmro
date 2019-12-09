@@ -11,7 +11,7 @@ json.data (@inquiries) do |inquiry|
             row_action_button(new_overseers_freight_request_path(inquiry_id: inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
           end,
           if is_authorized(inquiry, 'index')
-            link_to('', class: ['btn btn-sm btn-success comment-inquiry'], 'data-model-id': inquiry.id, title: 'Comment', remote: true) do
+            link_to('', class: ['icon-title btn btn-sm btn-success comment-inquiry'], 'data-model-id': inquiry.id, title: 'Comment', remote: true) do
               concat content_tag(:span, '')
               concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
             end
@@ -23,7 +23,7 @@ json.data (@inquiries) do |inquiry|
       status_badge(inquiry.status),
       link_to(inquiry.account.to_s, overseers_account_path(inquiry.account), target: '_blank'),
       link_to(inquiry.company.to_s, overseers_company_path(inquiry.company), target: '_blank'),
-      inquiry.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", inquiry.po_subject].join('').html_safe, inquiry.customer_po_sheet, target: '_blank') : inquiry.po_subject,
+      inquiry.customer_po_sheet.attached? ? link_to(["<i class='bmro-fa-file-alt'></i>", inquiry.po_subject].join('').html_safe, inquiry.customer_po_sheet, target: '_blank') : inquiry.po_subject,
       format_succinct_date(inquiry.quotation_followup_date),
       format_succinct_date(inquiry.customer_committed_date),
       if inquiry.contact.present?
@@ -65,3 +65,4 @@ json.recordsFiltered @indexed_inquiries.total_count
 json.recordsTotalValue @total_values
 json.draw params[:draw]
 json.recordsSummary Inquiry.statuses.map { |status, status_id| { status_id: status_id, "label": status, "size": @statuses[status_id] } }.as_json
+json.recordsMainSummary Inquiry.main_summary_statuses.map { |status, status_id| { status_id: status_id, "label": status, "size": @statuses[status_id] } }.as_json

@@ -1,0 +1,44 @@
+<div class="bmro-width100">
+  <span class="bmro-small-heading bmro-width100 bmro-mt-5">Company Name</span>
+  <h5 class="bmro-big-heading-two bmro-mt-5 bmro-fl bmro-wdith-auto"><%= inquiry.company.to_s %></h5>
+  <span class="bmro-small-heading bmro-width100 bmro-mt-5">Inquiry N0.</span>
+  <h5 class="bmro-big-heading-two bmro-mt-5 bmro-fl bmro-wdith-auto dropdown-toggle" id="inquiry-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#<%= inquiry.inquiry_number %>
+    <!--    <span class="bmro-drop-icon-head bmro-slide-icon"></span>-->
+  </h5>
+  <!--   <div class="dropdown-menu">-->
+  <!--      <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 1</a>-->
+  <!--      <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 2</a>-->
+  <!--      <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 3</a>-->
+  <!--    </div>-->
+  <!--  <button class="bmro-action-button bmro-fl">Activity Log-->
+  <!--    <span class="bmro-menu-dropdown bmro-button-drop-compos"></span>-->
+  <!--  </button>-->
+</div>
+<div class="bmro-width100 bmro-dotted-line-order bmro-mt-today">
+  <% inquiry_status_records.each do |date, records| %>
+    <div class="bmro-position-set">
+      <div class="bmro-circle-order"></div>
+      <div class="bmro-position-h5">
+        <h5 class="bmro-big-heading-two bmro-fl"><%= date.strftime('%d/%m/%Y') %></h5>
+        <% if date.today? %>
+          <span class="bmro-today-heading bmro-ml-today">Today</span>
+        <% end %>
+      </div>
+    </div>
+    <% records.each do |record| %>
+      <div class="bmro-position-set">
+        <div class="bmro-circle-order-sub"></div>
+        <span class="bmro-today-data"><%= record.subject_type %></span>
+        <span class="bmro-today-subdata bmro-head-ml-6"><%= record.status %></span>
+      </div>
+      <div class="bmro-position-set bmro-head-mt-6">
+        <span class="bmro-today-data bmro-wdith-auto bmro-fl">at <%= record.created_at.strftime("%I:%M %P") %></span>
+        <% if current_overseer.to_s == inquiry.inside_sales_owner.to_s %>
+          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span>YOU</span>
+        <% else %>
+          <span class="bmro-today-subdata bmro-head-ml-6 bmro-you-posi"><span class="bmro-dote"></span><%= inquiry.inside_sales_owner.to_s %></span>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -120,6 +120,13 @@ class Inquiry < ApplicationRecord
       'Regret': 10,
   }, _suffix: true
 
+  enum main_summary_status: {
+      'Cross Reference': 3,
+      'Quotation Sent': 5,
+      'Follow Up on Quotation': 6,
+      'Order Won': 18
+  }, _suffix: true
+
   def regrettable_statuses
     Inquiry.statuses.keys.sort.reject {|status| ['Order Lost', 'Regret', 'Expected Order'].include?(status)}
   end

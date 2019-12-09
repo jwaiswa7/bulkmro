@@ -1,7 +1,7 @@
 <% if comments.persisted.size > 0 %>
-  <div class="chats">
+  <div class="chats bmro-message-tab-margin">
     <% comments.persisted.each do |comment| %>
-      <div class="media chat-item">
+      <div class="media chat-item comments-wrap bmro-new-width">
         <div class="media-body">
           <div class="chat-item-title">
             <span class="chat-item-author">
@@ -10,7 +10,7 @@
                 <span class="badge badge-secondary"><%= comment.author_role %></span>
               </strong></span>
             </span>
-            <span>
+            <span class="bmro-comment-age">
               <span class="mr-1"><strong>
                 <% if comment.approval.present? && @sales_order.present? && comment.sales_order_id == @sales_order.id %><span class="badge badge-success">Approved <%= "(Doc ID #{comment.sales_order_id}  )" if comment.sales_order_id.present? %></span><% end %>
                 <% if comment.rejection.present? && @sales_order.present? && comment.sales_order_id == @sales_order.id %><span class="badge badge-danger">Rejected <%= "(Doc ID #{comment.sales_order_id}  )" if comment.sales_order_id.present? %></span><% end %>
@@ -38,24 +38,24 @@
 <% end %>
 
 
-<%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+<%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '',class: 'bmro-form-input bmro-textarea-width'} %>
 <%= f.hidden_field :show_to_customer, value: show_to_customer %>
 
 <div class="flex-fill">
-  <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
+  <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark bmro-button' %>
   <% if sales_order.present? %>
     <% if sales_order.calculated_total_margin_percentage.to_f < 10.0 %>
       <% if is_authorized(sales_order,'approve_low_margin')  %>
 <!--        && policy(sales_order).approve_low_margin?-->
-          <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' %>
+          <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success bmro-button' %>
       <% else %>
         <span data-toggle='tooltip' title="Margin is below 10%; need Devang Shah's, Gaurang Shah's or Nilesh Desai's approval to move forward">
-          <%= f.submit 'Reply and Approve', class: 'btn btn-success btn-disabled', disabled: true %>
+          <%= f.submit 'Reply and Approve', class: 'btn btn-success bmro-button btn-disabled', disabled: true %>
         </span>
       <% end %>
     <% else %>
-      <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if is_authorized(sales_order,'approve') && policy(sales_order).approve? %>
+      <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success bmro-button' if is_authorized(sales_order,'approve') && policy(sales_order).approve? %>
     <% end %>
-    <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if is_authorized(sales_order,'reject') && policy(sales_order).reject? %>
+    <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger bmro-button' if is_authorized(sales_order,'reject') && policy(sales_order).reject? %>
   <% end %>
 </div>

@@ -1,6 +1,6 @@
 <%= provide :container_fluid, true %>
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-2">
+  <section class="pt-0 pt-lg-0 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
         PO Request for
@@ -8,22 +8,22 @@
       </h3>
       <div>
         <% if is_authorized(@po_request, 'edit') && @po_request.status != 'Cancelled' %>
-          <a href="<%= edit_overseers_po_request_path(@po_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
+          <a href="<%= edit_overseers_po_request_path(@po_request) %>" class="btn btn-warning btn-rounded align-self-center bmro-button btn-block-sm-down bmro-edit-icon"><i class="fal fa-pen mr-1"></i>Edit</a>
         <% end %>
         <% if @po_request.status == 'Supplier PO: Amendment Pending'%>
-          <a href="<%= manager_amended_overseers_po_request_path(@po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down">Amend PO Request</a>
+          <a href="<%= manager_amended_overseers_po_request_path(@po_request) %>" class="btn btn-success bmro-button btn-rounded align-self-center btn-block-sm-down">Amend PO Request</a>
         <% end %>
         <% if !current_overseer.accounts? %>
-          <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm">Add/Edit
+          <a href="#" class="btn btn-default btn-rounded btn-danger bmro-button align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm">Add/Edit
             Supplier Rating</a>
         <% end %>
         <% if @po_request.purchase_order.present? && !@po_request.purchase_order.is_legacy? %>
           <% if is_authorized(@po_request, 'new_payment_request') && policy(@po_request).new_payment_request? %>
-            <a href="<%= new_overseers_po_request_payment_request_path(@po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
+            <a href="<%= new_overseers_po_request_payment_request_path(@po_request) %>" class="btn btn-success bmro-button btn-rounded align-self-center btn-block-sm-down"><i class="bmro-dollar-sign"></i>Payment
               Request</a>
           <% end %>
           <% if @po_request.payment_request.present? && is_authorized(@po_request.payment_request, 'show') %>
-            <a href="<%= overseers_payment_request_path(@po_request.payment_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
+            <a href="<%= overseers_payment_request_path(@po_request.payment_request) %>" class="btn btn-success bmro-button btn-rounded align-self-center btn-block-sm-down"><i class="bmro-dollar-sign"></i>Payment
               Request</a>
           <% end %>
         <% end %>
@@ -35,28 +35,28 @@
     <%= render 'overseers/po_requests/summary', po_request: @po_request %>
 
     <% if @po_request.rows.present? %>
-      <div class="card mb-2">
+      <div class="card mb-2 bmro-bg">
         <div class="card-body">
           <div class="flex-fill">
-            <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
+            <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Products</h6>
           </div>
 
-          <table class="table table-bordered dt-responsive wrap-whitespace w-100 datatable m-0" data-fixed-header="false" data-sort="false">
+          <table class="table table-bordered dt-responsive bmro-datatable-style wrap-whitespace w-100 datatable m-0" data-fixed-header="false" data-sort="false">
             <thead>
             <tr>
-              <th class="no-sort text-right">Sr. No.</th>
-              <th class="no-sort">Product</th>
-              <th class="no-sort">Make</th>
-              <th class="no-sort">HSN</th>
-              <th class="no-sort" data-toggle="tooltip" title="Tax Rate">T. Rate</th>
-              <th class="no-sort text-right">Quantity</th>
-              <th class="no-sort text-right" data-toggle="tooltip" title="Unit of Measurement">UoM</th>
-              <th class="no-sort text-right" data-toggle="tooltip" title="Unit Price">UP</th>
-              <th class="no-sort text-right" data-toggle="tooltip" title="Total Price">TP</th>
-              <th class="no-sort text-right" data-toggle="tooltip" title="Total Tax">TT</th>
-              <th class="no-sort text-right" data-toggle="tooltip" title="Total Price with tax">TP with Tax</th>
-              <th class="no-sort text-right" data-toggle="tooltip" title="Discount percentage">Disc. %</th>
-              <th class="no-sort text-right">Lead Date</th>
+              <th class="no-sort text-left" width="10px">Sr. No.</th>
+              <th class="no-sort text-left">Product</th>
+              <th class="no-sort text-left">Make</th>
+              <th class="no-sort text-left">HSN</th>
+              <th class="no-sort text-left" data-toggle="tooltip" title="Tax Rate">T.Rate</th>
+              <th class="no-sort text-left">Quantity</th>
+              <th class="no-sort text-left" data-toggle="tooltip" title="Unit of Measurement">UoM</th>
+              <th class="no-sort text-left" data-toggle="tooltip" title="Unit Price">UP</th>
+              <th class="no-sort text-left" data-toggle="tooltip" title="Total Price">TP</th>
+              <th class="no-sort text-left" data-toggle="tooltip" title="Total Tax">TT</th>
+              <th class="no-sort text-left" data-toggle="tooltip" title="Total Price with tax">TP with Tax</th>
+              <th class="no-sort text-left" data-toggle="tooltip" title="Discount percentage">Disc. %</th>
+              <th class="no-sort text-left">Lead Date</th>
             </tr>
             </thead>
             <tbody>
@@ -89,9 +89,9 @@
 
     <% if @po_request.comments.persisted.size > 0 %>
       <div class="card">
-        <div class="card-body">
+        <div class="card-body bmro-bg">
           <div class="flex-fill">
-            <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+            <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Comments History</h6>
           </div>
 
 

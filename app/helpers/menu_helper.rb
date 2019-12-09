@@ -56,4 +56,12 @@ module MenuHelper
       end
     end
   end
+
+  def nav_dropdown_item_new(name, path, authorized = false, _li_classes = nil, a_classes = nil, attributes: nil)
+    if authorized
+      content_tag(:a, class: [active_if_path_is(path),  a_classes].compact.join(' '), href: path, role: 'tab') do
+        name
+      end
+    end
+  end
 end

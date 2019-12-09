@@ -170,7 +170,7 @@ module DisplayHelper
   end
 
   def format_boolean(true_or_false)
-    (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
+    (true_or_false ? '<i class="status-check-success"></i>' : '<i class="status-cross-danger"></i>').html_safe
   end
   def format_invoiced_qty(invoiced_qty, ordered_qty)
     "#{invoiced_qty}&nbspoff&nbsp#{ordered_qty}"
@@ -183,11 +183,11 @@ module DisplayHelper
       if status == 'Order Won' || status == 'Order Lost'
         ''
       elsif (status != 'Order Won' || status != 'Order Lost') && month_difference >= 2
-        'bg-highlight-danger'
+        'bg-highlight-danger bmro-report-border'
       elsif (status != 'Order Won' || status != 'Order Lost') && month_difference >= 1 && month_difference < 2
-        'bg-highlight-warning'
+        'bg-highlight-warning bmro-report-border'
       elsif month_difference < 1
-        'bg-highlight-success'
+        'bg-highlight-success bmro-report-border'
       end
     end
   end
@@ -195,11 +195,11 @@ module DisplayHelper
   def format_boolean_with_badge(status)
     (
     if status == 'complete'
-      '<i class="far fa-check text-success"></i>'
+      '<i class="far status-check-success text-success"></i>'
     elsif status == 'partial'
-      '<i class="far fa-check text-color-dark-blue"> <span class="badge badge-color-dark-blue">Partial</span></i>'
+      '<i class="far status-check-success"> <span class="badge badge-color-dark-blue">Partial</span></i>'
     else
-      '<i class="far fa-times text-danger"></i>'
+      '<i class="far status-cross-danger text-danger"></i>'
     end).html_safe
   end
 
@@ -218,7 +218,7 @@ module DisplayHelper
       color = 'text-warning'
     end
 
-    (["<i class='fas fa-star #{color}'></i>", "<span class='render-star #{color}'>", star_given, '<span/>'].join(' ')).html_safe
+    (["<div class='rating-star-wrapper rating-star-#{color}'><i class='fas fa-star #{color}'></i>", "<span class='render-star #{color}'>", star_given, '<span/></div>'].join(' ')).html_safe
   end
 
   def format_count(count, zero_if_nil: true)

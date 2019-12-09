@@ -5,16 +5,20 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl :inquiry
 
     respond_to do |format|
-      format.html {}
+      service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
+      service.call
+
+      @indexed_inquiries = service.indexed_records
+      @inquiries = service.records
+
+      status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry, main_summary_status: Inquiry.main_summary_statuses)
+      status_service.call
+
+      format.html {
+        @statuses = Inquiry.statuses.except('Lead by O/S')
+        @main_summary_statuses = Inquiry.main_summary_statuses
+      }
       format.json do
-        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
-        service.call
-
-        @indexed_inquiries = service.indexed_records
-        @inquiries = service.records
-
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry)
-        status_service.call
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
       end
@@ -36,14 +40,14 @@ class Overseers::InquiriesController < Overseers::BaseController
         @date_range = params['kra_report']['date_range']
         @category = params['kra_report']['category']
         if @category == 'company_key'
-          @category_filter = { filter_name: 'company_key', filter_type: 'ajax' }
+          @category_filter = {filter_name: 'company_key', filter_type: 'ajax'}
         elsif @category == 'inside_sales_owner_id' || @category == 'inside_by_sales_order'
-          @category_filter = { filter_name: 'inside_sales_owner_id', filter_type: 'dropdown' }
+          @category_filter = {filter_name: 'inside_sales_owner_id', filter_type: 'dropdown'}
         elsif @category == 'outside_sales_owner_id' || @category == 'outside_by_sales_order'
-          @category_filter = { filter_name: 'outside_sales_owner_id', filter_type: 'dropdown' }
+          @category_filter = {filter_name: 'outside_sales_owner_id', filter_type: 'dropdown'}
         end
       else
-        @category_filter = { filter_name: 'inside_sales_owner_id', filter_type: 'dropdown' }
+        @category_filter = {filter_name: 'inside_sales_owner_id', filter_type: 'dropdown'}
       end
       format.html {}
       format.json do
@@ -160,12 +164,12 @@ class Overseers::InquiriesController < Overseers::BaseController
       service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
       service.call
       @indexed_tat_reports = service.indexed_records
-      status_avgs = @indexed_tat_reports.aggregations['tat_by_sales_owner']['buckets']['custom-range']['inquiry_mapping_tats']['buckets'].select {|avg| avg['key'] == @inside_sales_owner.to_i}
+      status_avgs = @indexed_tat_reports.aggregations['tat_by_sales_owner']['buckets']['custom-range']['inquiry_mapping_tats']['buckets'].select { |avg| avg['key'] == @inside_sales_owner.to_i }
       unless status_avgs.blank?
         @sales_owner_average_values = status_avgs[0].except('key', 'doc_count')
         statuses = {'new_inquiry': 0, 'acknowledgment_mail': 0, 'cross_reference': 0, 'preparing_quotation': 0, 'quotation_sent': 0, 'draft_so_appr_by_sales_manager': 0, 'so_reject_by_sales_manager': 0, 'so_draft_pending_acct_approval': 0, 'rejected_by_accounts': 0, 'hold_by_accounts': 0, 'order_won': 0, 'order_lost': 0, 'regret': 0}
-        @status_average = statuses.map {|status, value| {status: status.to_s, value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / status_avgs.first['doc_count']).round(2) : 0}}
-        format.html {render partial: 'sales_owner_status_average'}
+        @status_average = statuses.map { |status, value| {status: status.to_s, value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / status_avgs.first['doc_count']).round(2) : 0} }
+        format.html { render partial: 'sales_owner_status_average' }
       else
         format.html
       end
@@ -232,7 +236,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl @inquiry
 
     send_file(
-      "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
         filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
     )
   end
@@ -296,7 +300,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       end
       message = params['inquiry']['comments_attributes']['0']['message']
       if message.present?
-        @inquiry.comments.create(message: "Status changed to: #{@inquiry.status}. \r\n Lost or Regret Reason: #{@inquiry.lost_regret_reason}. \r\n Comment: #{message}." , overseer: current_overseer)
+        @inquiry.comments.create(message: "Status changed to: #{@inquiry.status}. \r\n Lost or Regret Reason: #{@inquiry.lost_regret_reason}. \r\n Comment: #{message}.", overseer: current_overseer)
       end
 
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -309,7 +313,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl :inquiry
 
     respond_to do |format|
-      format.html {render partial: 'overseers/dashboard/edit_followup', locals: {obj: @inquiry, url: update_followup_date_overseers_inquiry_path(@inquiry)}}
+      format.html { render partial: 'overseers/dashboard/edit_followup', locals: {obj: @inquiry, url: update_followup_date_overseers_inquiry_path(@inquiry)} }
     end
   end
 
@@ -474,7 +478,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     if inquiries.present?
       query_params = params['bulk_update_inquiries'].to_enum.to_h
-      update_query = query_params.except('inquiries').reject {|_, v| v.blank?}
+      update_query = query_params.except('inquiries').reject { |_, v| v.blank? }
       if update_query.present?
         inquiries.update_all(update_query)
         redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
@@ -564,7 +568,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl @inquiry
     respond_to do |format|
       if params[:title] == 'Comment'
-        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @inquiry, url: add_comment_overseers_inquiry_path(@inquiry), view_more: overseers_inquiry_comments_path(@inquiry)}}
+        format.html { render partial: 'shared/layouts/add_comment', locals: {obj: @inquiry, url: add_comment_overseers_inquiry_path(@inquiry), view_more: overseers_inquiry_comments_path(@inquiry)} }
       end
     end
   end
@@ -591,67 +595,67 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   private
 
-    def set_inquiry
-      @inquiry ||= Inquiry.find(params[:id])
-    end
+  def set_inquiry
+    @inquiry ||= Inquiry.find(params[:id])
+  end
 
-    def inquiry_params
-      params.require(:inquiry).permit(
+  def inquiry_params
+    params.require(:inquiry).permit(
         :project_uid,
-          :company_id,
-          :contact_id,
-          :industry_id,
-          :inside_sales_owner_id,
-          :outside_sales_owner_id,
-          :sales_manager_id,
-          :procurement_operations_id,
-          :billing_address_id,
-          :billing_company_id,
-          :shipping_address_id,
-          :shipping_company_id,
-          :shipping_contact_id,
-          :bill_from_id,
-          :ship_from_id,
-          :status,
-          :opportunity_type,
-          :opportunity_source,
-          :subject,
-          :gross_profit_percentage,
-          :quotation_date,
-          :customer_committed_date,
-          :customer_order_date,
-          :valid_end_time,
-          :quotation_followup_date,
-          :customer_po_received_date,
-          :procurement_date,
-          :expected_closing_date,
-          :quote_category,
-          :price_type,
-          :potential_amount,
-          :freight_option,
-          :freight_cost,
-          :total_freight_cost,
-          :customer_po_number,
-          :packing_and_forwarding_option,
-          :payment_option_id,
-          :weight_in_kgs,
-          :customer_po_sheet,
-          :final_supplier_quote,
-          :copy_of_email,
-          :is_sez,
-          :calculation_sheet,
-          :commercial_terms_and_conditions,
-          :comments,
-          :product_type,
-          :lost_regret_reason,
-          supplier_quotes: [],
-          inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
-      )
-    end
+        :company_id,
+        :contact_id,
+        :industry_id,
+        :inside_sales_owner_id,
+        :outside_sales_owner_id,
+        :sales_manager_id,
+        :procurement_operations_id,
+        :billing_address_id,
+        :billing_company_id,
+        :shipping_address_id,
+        :shipping_company_id,
+        :shipping_contact_id,
+        :bill_from_id,
+        :ship_from_id,
+        :status,
+        :opportunity_type,
+        :opportunity_source,
+        :subject,
+        :gross_profit_percentage,
+        :quotation_date,
+        :customer_committed_date,
+        :customer_order_date,
+        :valid_end_time,
+        :quotation_followup_date,
+        :customer_po_received_date,
+        :procurement_date,
+        :expected_closing_date,
+        :quote_category,
+        :price_type,
+        :potential_amount,
+        :freight_option,
+        :freight_cost,
+        :total_freight_cost,
+        :customer_po_number,
+        :packing_and_forwarding_option,
+        :payment_option_id,
+        :weight_in_kgs,
+        :customer_po_sheet,
+        :final_supplier_quote,
+        :copy_of_email,
+        :is_sez,
+        :calculation_sheet,
+        :commercial_terms_and_conditions,
+        :comments,
+        :product_type,
+        :lost_regret_reason,
+        supplier_quotes: [],
+        inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
+    )
+  end
 
-    def edit_suppliers_params
-      if params.has_key?(:inquiry)
-        params.require(:inquiry).permit(
+  def edit_suppliers_params
+    if params.has_key?(:inquiry)
+      params.require(:inquiry).permit(
           inquiry_products_attributes: [
               :id,
               inquiry_product_suppliers_attributes: [
@@ -663,80 +667,80 @@ class Overseers::InquiriesController < Overseers::BaseController
                   :_destroy
               ]
           ]
-        )
-      else
-        {}
-      end
+      )
+    else
+      {}
     end
+  end
 
-    def sort_buckets(sort_by, sort_order, indexed_kra_reports)
-      value_present = indexed_kra_reports[0][sort_by].present? && indexed_kra_reports[0][sort_by]['value'].present?
-      case
-      when !value_present && sort_order == 'asc'
-        indexed_kra_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }
-      when !value_present && sort_order == 'desc'
-        indexed_kra_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }.reverse!
-      when value_present && sort_order == 'asc'
-        indexed_kra_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }
-      when value_present && sort_order == 'desc'
-        indexed_kra_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
-      end
+  def sort_buckets(sort_by, sort_order, indexed_kra_reports)
+    value_present = indexed_kra_reports[0][sort_by].present? && indexed_kra_reports[0][sort_by]['value'].present?
+    case
+    when !value_present && sort_order == 'asc'
+      indexed_kra_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }
+    when !value_present && sort_order == 'desc'
+      indexed_kra_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }.reverse!
+    when value_present && sort_order == 'asc'
+      indexed_kra_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }
+    when value_present && sort_order == 'desc'
+      indexed_kra_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
     end
+  end
 
-    def new_purchase_orders_requests_params
-      if params.has_key?(:inquiry)
-        params.require(:inquiry).permit(
+  def new_purchase_orders_requests_params
+    if params.has_key?(:inquiry)
+      params.require(:inquiry).permit(
           :id,
-            po_requests_attributes: [
-                :id,
-                :supplier_id,
-                :inquiry_id,
-                :company_id,
-                :reason_to_stock,
-                :estimated_date_to_unstock,
-                :requested_by_id,
-                :approved_by_id,
-                :_destroy,
-                :logistics_owner_id,
-                :address_id,
-                :contact_id,
-                :payment_option_id,
-                :stock_status,
-                :supplier_committed_date,
-                :blobs,
-                :supplier_po_type,
-                :contact_email,
-                :contact_phone,
-                :bill_from_id,
-                :ship_from_id,
-                :bill_to_id,
-                :ship_to_id,
-                attachments: [],
-                rows_attributes: [
-                    :id,
-                    :_destroy,
-                    :status,
-                    :quantity,
-                    :sales_order_row_id,
-                    :product_id,
-                    :brand,
-                    :tax_code_id,
-                    :tax_rate_id,
-                    :measurement_unit_id,
-                    :unit_price,
-                    :conversion,
-                    :lead_time,
-                    :discount_percentage
-                ],
-                comments_attributes: [
-                    :created_by_id,
-                    :updated_by_id,
-                    :message
-                ]
-            ]
-        )
-      else
-        {}
-      end
+          po_requests_attributes: [
+              :id,
+              :supplier_id,
+              :inquiry_id,
+              :company_id,
+              :reason_to_stock,
+              :estimated_date_to_unstock,
+              :requested_by_id,
+              :approved_by_id,
+              :_destroy,
+              :logistics_owner_id,
+              :address_id,
+              :contact_id,
+              :payment_option_id,
+              :stock_status,
+              :supplier_committed_date,
+              :blobs,
+              :supplier_po_type,
+              :contact_email,
+              :contact_phone,
+              :bill_from_id,
+              :ship_from_id,
+              :bill_to_id,
+              :ship_to_id,
+              attachments: [],
+              rows_attributes: [
+                  :id,
+                  :_destroy,
+                  :status,
+                  :quantity,
+                  :sales_order_row_id,
+                  :product_id,
+                  :brand,
+                  :tax_code_id,
+                  :tax_rate_id,
+                  :measurement_unit_id,
+                  :unit_price,
+                  :conversion,
+                  :lead_time,
+                  :discount_percentage
+              ],
+              comments_attributes: [
+                  :created_by_id,
+                  :updated_by_id,
+                  :message
+              ]
+          ]
+      )
+    else
+      {}
     end
+  end
 end

@@ -1,23 +1,24 @@
-  <div class="page-header">
+  <div class="page-header bmro-page-header">
   <div class="">
-    <h2>
+    <h2 class="bmro-bradecrumb-edit">
       <% if content_for?(:heading) %>
         <%= yield :heading %>
       <% else %>
         <%= request.path.split('/').last.titleize %>
       <% end %>
-      <small class="text-black-50 mb-2 ml-2 float-right"><strong>#<%= @inquiry.inquiry_number %></strong></small>
+      <!-- <small class="mb-2 ml-2"><strong>#<%= @inquiry.inquiry_number %></strong></small> -->
+      <span><span class="bmro-edit-dash">-</span>#<%= @inquiry.inquiry_number %></span>
     </h2>
 
 
-    <a href="https://drive.google.com/file/d/1rA8bcaxQDkAR091cM5o-RRvG-rlK7X62/view" target="_blank"><img src="<%= image_path('doc_icon.png') %>" alt="Italian Trulli" align="right" data-toggle="tooltip" title="SO/PO User Guide"></a>
+<!--     <a href="https://drive.google.com/file/d/1rA8bcaxQDkAR091cM5o-RRvG-rlK7X62/view" target="_blank"><img src="<%= image_path('doc_icon.png') %>" alt="Italian Trulli" align="right" data-toggle="tooltip" title="SO/PO User Guide"></a>
 
-    <% if content_for?(:heading_byline) %>
+   <% if content_for?(:heading_byline) %>
       <p class="mt-2 mt-md-0"><%= yield :heading_byline %></p>
     <% else %>
       <p>This will <em>'<%= submit_text(@inquiry).downcase %> <strong>#<%= @inquiry.inquiry_number %></strong>'</em> and log it under
         <strong><%= current_overseer.full_name %></strong>.</p>
-    <% end %>
+    <% end %>  -->
   </div>
 
   <% if content_for?(:heading_button) %>
@@ -25,8 +26,8 @@
   <% end %>
 </div>
 
-<section class="pb-4 pb-lg-5">
-  <ul class="nav nav-tabs nav-fill" data-toggle="sticky">
+<section class="bmro-width-fl">
+  <ul class="nav nav-tabs nav-fill bmro-nav-ul">
     <%= nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
     <%= nav_item('Imports', overseers_inquiry_imports_path(@inquiry), is_authorized(@inquiry,'imports') && policy(@inquiry).imports?) %>
     <%= nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit_suppliers') && policy(@inquiry).edit_suppliers?) %>
@@ -38,8 +39,8 @@
     <%= nav_item('Stages', stages_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
     <%= nav_item('Comments', overseers_inquiry_comments_path(@inquiry), is_authorized(@inquiry,'comments') && policy(@inquiry).comments?) %>
   </ul>
-  <div class="tab-content">
-    <div class="tab-pane fade active show" role="tabpanel">
+  <div class="tab-content bmro-mp-0">
+    <div class="tab-pane fade active show bmro-mp-0" role="tabpanel">
       <%= yield %>
     </div>
   </div>

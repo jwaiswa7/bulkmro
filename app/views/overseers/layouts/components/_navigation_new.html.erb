@@ -1,0 +1,284 @@
+<div class="bmro-width100 bmro-head-bg">
+<!-- Header Logo Starts Here -->
+  <div class="bmro-logo-head">
+    <a href="<%= request.url %>"><img src="<%= image_path('BulkMRO_logo.svg') %>" alt="logo"></a>
+  </div>
+  <!-- Header Logo Ends Here -->
+
+  <!-- Menu Code Starts Here -->
+  <div class="bmro-menu-head">
+    <p class="bmro-menu bmro-menu-click">
+      <span class="bmro-menu-border"></span> Menu
+<span class="bmro-menu-dropdown bmro-menu-dash-left"></span>
+      <span class="bmro-menu-dropup bmro-menu-dash-left bmro-hide"></span>
+</p>
+    <div class="bmro-dash-main-menu">
+      <div class="bmro-main-fav bmro-main-drop-col-a">
+        <h5><img src="<%= image_path('star-after-selection.png') %>" class="bmro-dash-star bmro-menu-dash-heading" alt="star">Favourites</h5>
+<p>
+<img src="<%= image_path('star-after-selection.png') %>" class="bmro-dash-star bmro-menu-dash" alt="star">
+<%= nav_dropdown_item_new 'Product List', overseers_products_path, is_authorized(:product, 'index') %>
+        </p>
+        <p>
+          <img src="<%= image_path('star-after-selection.png') %>" class="bmro-dash-star bmro-menu-dash" alt="star">
+<%= nav_dropdown_item_new 'Online Orders', overseers_customer_orders_path, is_authorized(:customer_order, 'index') %>
+        </p>
+        <p>
+          <img src="<%= image_path('star-after-selection.png') %>" class="bmro-dash-star bmro-menu-dash" alt="star">
+<%= nav_dropdown_item_new 'AR Invoice Request', overseers_ar_invoice_requests_path, is_authorized(:ar_invoice_request, 'index') %>
+        </p>
+        <a href="<%= request.url %>" class="bmro-dashbord-click bmro-big-heading bmro-dash-heading-menu"><span class="bmro-dashbord-left-arrow bmro-menu-dropdown"></span>
+            Dashboard
+        </a>
+</div>
+      <div class="bmro-col-bg">
+        <div class="bmro-main-drop-col bmro-main-drop-col-a">
+          <h5>Catalog</h5>
+<p>
+<img src="<%= image_path('star-after-selection.png') %>" class="bmro-dash-star bmro-menu-dash" alt="star">
+<%= nav_dropdown_item_new 'Product List', overseers_products_path, is_authorized(:product, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('star-after-selection.png') %>" class="bmro-dash-star bmro-menu-dash" alt="star">
+<%= nav_dropdown_item_new 'Product Approval Queue', pending_overseers_products_path, is_authorized(:product, 'pending') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Kits', overseers_kits_path, is_authorized(:kit, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Categories', overseers_categories_path, is_authorized(:category, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Brands', overseers_brands_path, is_authorized(:brand, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Measurement Units', overseers_measurement_units_path, is_authorized(:measurement_unit, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'HSN / SAC Codes', overseers_tax_codes_path, is_authorized(:tax_code, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Payment Terms', overseers_payment_options_path, is_authorized(:payment_option, 'index') %>
+          </p>
+        </div>
+        <div class="bmro-main-drop-col bmro-main-drop-col-a">
+<h5>Sales</h5>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'Inquiries', overseers_inquiries_path, is_authorized(:inquiry, 'index') %>
+          </p>
+<p>
+<img src="<%= image_path('star-after-selection.png') %>" class="bmro-dash-star bmro-menu-dash" alt="star">
+<%= nav_dropdown_item_new 'Online Orders', overseers_customer_orders_path, is_authorized(:customer_order, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Sales Orders', overseers_sales_orders_path, is_authorized(:sales_order, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'GRPO', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'AP Invoice Request', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('star-after-selection.png') %>" class="bmro-dash-star bmro-menu-dash" alt="star">
+<%= nav_dropdown_item_new 'AR Invoice Request', overseers_ar_invoice_requests_path, is_authorized(:ar_invoice_request, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Sales Receipt', overseers_sales_receipts_path, is_authorized(:sales_receipt, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Freight Requests', overseers_freight_requests_path, is_authorized(:freight_request, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Smart Queue', smart_queue_overseers_inquiries_path, is_authorized(:inquiry, 'smart_queue') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Sales Shipments', overseers_sales_shipments_path, is_authorized(:sales_shipment, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Activities', overseers_activities_path, is_authorized(:activity, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Activities Approval Queue', pending_overseers_activities_path, is_authorized(:activity, 'pending') %>
+        </div>
+        <div class="bmro-main-drop-col bmro-main-drop-col-a">
+<h5>Logistics</h5>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'Purchase Orders', overseers_purchase_orders_path, is_authorized(:purchase_order, 'index') %>
+          </p>
+<p>
+<img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Payment Requests', overseers_payment_requests_path, is_authorized(:payment_request, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'AR Invoices', overseers_sales_invoices_path, is_authorized(:sales_invoice, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'GRPO', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'AP Invoices Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'AR Invoice Requests', overseers_ar_invoice_requests_path, is_authorized(:ar_invoice_request, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Outward Dispatches', overseers_outward_dispatches_path, is_authorized(:outward_dispatch, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Freight Requests', overseers_freight_requests_path, is_authorized(:freight_request, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Freight Quotes', overseers_freight_quotes_path, is_authorized(:freight_quote, 'index') %>
+          </p>
+          <h5 class="bmro-margin-top-menu">Inventory</h5>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'Warehouses', overseers_warehouses_path, is_authorized(:warehouse, 'index') %>
+          </p>
+</div>
+        <div class="bmro-main-drop-col bmro-main-drop-col-a">
+          <h5>Reports</h5>
+<% Report.all.each do |report| %>
+            <p>
+<img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new report.name.titleize, overseers_report_path(report), is_authorized(report, 'show') %>
+            </p>
+          <% end %>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'KRA Report', kra_report_overseers_inquiries_path, is_authorized(:inquiry, 'kra_report') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Company Report', company_report_overseers_companies_path, is_authorized(:company, 'company_report') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Pipeline Report', pipeline_report_overseers_inquiries_path, is_authorized(:inquiry, 'pipeline_report') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'TAT Report', tat_report_overseers_inquiries_path, is_authorized(:inquiry, 'tat_report') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Customer Order Status Report', customer_order_status_report_overseers_sales_orders_path, is_authorized(:sales_order, 'customer_order_status_report') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+<%= nav_dropdown_item_new 'Logistics Scorecard', overseers_logistics_scorecards_path, is_authorized(:logistics_scorecard, 'index') %>
+          </p>
+        </div>
+        <div class="bmro-main-drop-col bmro-main-drop-col-a">
+<h5>B.Partners</h5>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'Accounts / Aliases', overseers_accounts_path, is_authorized(:account, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'Companies', overseers_companies_path, is_authorized(:company, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'Suppliers', overseers_suppliers_path, is_authorized(:company, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'Addresses', overseers_addresses_path, is_authorized(:address, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'Contacts', overseers_contacts_path, is_authorized((:contact), 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'Banks', overseers_banks_path, is_authorized(:bank, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'IFSC Codes', overseers_ifsc_codes_path, is_authorized(:ifsc_code, 'index') %>
+          </p>
+          <p>
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'Company Creation Requests', overseers_company_creation_requests_path, is_authorized(:company_creation_request, 'index') %>
+          </p>
+          <p class="bmro-dash-hover2">
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'Contact Creation Requests', overseers_contact_creation_requests_path, is_authorized(:contact_creation_request, 'index') %>
+          </p>
+          <p class="bmro-dash-hover2">
+            <img src="<%= image_path('show-starred.png') %>" class="bmro-dash-star bmro-menu-dash bmro-dash-hover" alt="star">
+            <%= nav_dropdown_item_new 'Company Reviews', overseers_company_reviews_path, is_authorized(:company_review,'index') %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Menu Code Ends Here -->
+
+  <!-- Search TextField Starts Here -->
+  <div class="bmro-search-head">
+    <input type="text" name="search" class="bmro-head-search-width bmro-head-form-input global-search" id="global-search"  placeholder="Search Inquiry, Account, Company, Product" data-toggle="tooltip" title="Use this input search box for global level Inquiry, Account, Company & Product search ">
+  </div>
+
+  <!-- Search TextField Ends Here -->
+
+  <!-- Header Right Navigation Starts Here -->
+  <div class="bmro-profile-head">
+    <div class="bmro-profile-parent">
+      <div class="bmro-dash-plus-icon">
+        <img alt="icon" src="<%= image_path('add-icon.png') %>" class="dropdown-toggle bmro-cursol">
+        <div class="dropdown-menu">
+          <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 1</a>
+          <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 2</a>
+          <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 3</a>
+        </div>
+      </div>
+      <div class="bmro-border-line"></div>
+      <div class="bmro-profile-logo">
+        <img src="<%= image_path('my-profile.png') %>" alt="profile">
+      </div>
+      <div class="bmro-fl">
+        <p class="bmro-menu dropdown-toggle" role="button">
+          Profile Name
+          <span class="bmro-menu-dropdown bmro-left-left-left"></span>
+        </p>
+        <div class="dropdown-menu bmro-drop-pos">
+          <%= link_to edit_overseers_profile_path, class: 'bmro-dropdown-item bmro-new-size bmro-new-fw' do %>
+            <i class="bmro-profile-icon"></i>&nbsp;My Profile
+          <% end %>
+          <%= link_to destroy_overseer_session_path, method: :delete, :class => 'bmro-dropdown-item bmro-new-size bmro-new-fw' do %>
+            <i class="bmro-signout-icon"></i>&nbsp;Sign Out
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Header Right Navigation Ends Here -->
+</div>

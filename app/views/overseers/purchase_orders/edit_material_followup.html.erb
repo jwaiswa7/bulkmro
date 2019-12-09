@@ -1,17 +1,17 @@
 <div class="col-lg-12">
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
-      <h3 class="display-5 d-flex align-items-center">
+      <h3 class="display-5 d-flex align-items-center bmro-form-heading">
         Edit Material Followup: <%= format_id(@purchase_order.po_number) %>
       </h3>
       <span>
         <% if is_authorized(@purchase_order, 'new_inward_dispatch') && policy(@purchase_order).new_inward_dispatch? %>
-          <a href="<%= new_overseers_purchase_order_inward_dispatch_path(@purchase_order) %> " class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ">
+          <a href="<%= new_overseers_purchase_order_inward_dispatch_path(@purchase_order) %> " class=" btn btn-success btn-rounded align-self-center bmro-button btn-block-sm-down ">
             <i class="fal fa-plus-circle mr-1"></i>New Inward Dispatch
           </a>
         <% else %>
           <span data-toggle="tooltip" title="<%= @purchase_order.followup_date.blank? ? 'Followup Date Needed' : 'No Product Left to Pickup' %>">
-            <a href=# class=" btn btn-success btn-rounded align-self-center btn-block-sm-down disabled">
+            <a href=# class=" btn btn-rounded align-self-center bmro-button bmro-button-parent btn-block-sm-down disabled">
               <i class="fal fa-plus-circle mr-1"></i>New Inward Dispatch
             </a>
           </span>
@@ -26,36 +26,36 @@
       <%= render 'overseers/po_requests/summary', po_request: @po_request %>
     <% end %>
     <div class="card">
-      <div class="card-header">
+      <div class="card-header bmro-card">
         <div class="form-row">
           <div class="col-6">
-            <%= f.input :material_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrder.material_statuses, alphabetical: false, keep_raw: true), :disabled => true %>
+            <%= f.input :material_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrder.material_statuses, alphabetical: false, keep_raw: true), :disabled => true,input_html: {class: 'bmro-form-input bmro-dropdown-icon'} %>
           </div>
 
           <div class="col-6">
-            <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single"}, label: "Logistics Owner" %>
+            <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon"}, label: "Logistics Owner" %>
           </div>
           <div class="col-4">
-            <%= f.input :supplier_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.supplier_dispatch_date.try(:strftime, "%d-%b-%Y"), class: 'supplier-dispatch-date'}, required: true %>
-          </div>
-
-          <div class="col-4">
-            <%= f.input :revised_supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.revised_supplier_delivery_date.try(:strftime, "%d-%b-%Y"), class: 'revised-supplier-delivery-date'}, required: true %>
+            <%= f.input :supplier_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.supplier_dispatch_date.try(:strftime, "%d-%b-%Y"), class: 'supplier-dispatch-date '}, required: true, input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input'} %>
           </div>
 
           <div class="col-4">
-            <%= f.input :followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.followup_date.try(:strftime, "%d-%b-%Y"), class: 'followup-date'}, required: true %>
+            <%= f.input :revised_supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.revised_supplier_delivery_date.try(:strftime, "%d-%b-%Y"), class: 'revised-supplier-delivery-date'}, required: true, input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input'} %>
+          </div>
+
+          <div class="col-4">
+            <%= f.input :followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.followup_date.try(:strftime, "%d-%b-%Y"), class: 'followup-date'}, required: true, input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input'} %>
           </div>
 
           <div class="col-12">
             <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |purchase_order_comment| %>
               <%= purchase_order_comment.hidden_field :created_by_id %>
               <%= purchase_order_comment.hidden_field :updated_by_id %>
-              <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '', class: 'select2-ajax select2-wrap-text bmro-form-input'} %>
             <% end %>
           </div>
 
-          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+          <%= button_tag(type: "submit", class: "btn btn-success bmro-button btn-block") do %>
             <i class="fal fa-plus-circle"></i> update material followup
           <% end %>
         </div>
@@ -72,11 +72,11 @@
               <thead>
               <tr>
                 <th class="no-sort text-right">No.</th>
-                <th class="no-sort">Product</th>
+                <th class="no-sort text-left">Product</th>
                 <th class="no-sort text-right">PO Total Quantity</th>
                 <th class="no-sort text-right">Available Pickup Quantity</th>
                 <th class="no-sort text-right">Quantity Pickup / Delivered</th>
-                <th class="no-sort text-right">Lead Date</th>
+                <th class="no-sort text-left">Lead Date</th>
               </tr>
               </thead>
               <tbody>

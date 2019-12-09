@@ -1,9 +1,9 @@
 json.data (@activities) do |activity|
   json.array! [
+                  if is_authorized(:activity, 'perform_actions');
+                    "<div class='d-none d-md-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='activities[]' class='custom-control-input' value='#{activity.id}' id='c-#{activity.id}'><label class='custom-control-label' for='c-#{activity.id}'></label></div>"
+                  end,
                   [
-                      if is_authorized(:activity, 'perform_actions');
-                        "<div class='d-none d-md-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='activities[]' class='custom-control-input' value='#{activity.id}' id='c-#{activity.id}'><label class='custom-control-label' for='c-#{activity.id}'></label></div>"
-                      end,
                       if is_authorized(activity, 'edit') && policy(activity).edit?;
                         row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning', :_blank)
                       end,
@@ -55,6 +55,7 @@ json.data (@activities) do |activity|
 end
 json.columnFilters [
                        [],
+                       [],
                        Overseer.outside.map { |value| { 'label' => value.name.to_s, 'value' => value.id } }.as_json,
                        [],
                        [{ "source": autocomplete_overseers_accounts_path }],
@@ -75,3 +76,5 @@ json.columnFilters [
 json.recordsTotal @activities.model.all.count
 json.recordsFiltered @indexed_activities.total_count
 json.draw params[:draw]
+json.recordsSummary Activity.activity_types.map { |status, status_id| {'status_id': status_id,'label':status, size:  Activity.send(status).size }}.as_json
+json.recordsMainSummary Activity.activity_types.map { |status, status_id| {'status_id': status_id,'label':status, size:  Activity.send(status).size }}.as_json

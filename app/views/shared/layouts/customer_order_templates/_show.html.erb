@@ -3,26 +3,30 @@
     <div class="col-md-6">
       <% if customer_order.billing_address.present? %>
         <div>
-          <strong class="d-block">Billing Address</strong>
-          <em class="d-block"><%= customer_order.contact.name %></em>
-          <%= customer_order.billing_address.to_multiline_s %><br/>
-          <% if customer_order.contact.telephone.present? %>
-            T: <%= customer_order.contact.telephone %><br/>
-          <% end %>
-          GST No: <%= customer_order.billing_address.gst %>
+          <strong class="d-block bmro-summary-heading">Billing Address</strong>
+          <div class="bmro-summary-data">  
+            <em class="d-block"><%= customer_order.contact.name %></em>
+            <%= customer_order.billing_address.to_multiline_s %><br/>
+            <% if customer_order.contact.telephone.present? %>
+              T: <%= customer_order.contact.telephone %><br/>
+            <% end %>
+            GST No: <%= customer_order.billing_address.gst %>
+          </div>
         </div>
       <% end %>
     </div>
     <div class="col-md-6 mt-2 mt-md-0">
       <% if customer_order.shipping_address.present? %>
         <div>
-          <strong class="d-block">Shipping Address</strong>
-          <em class="d-block"><%= customer_order.contact.name %></em>
-          <%= customer_order.shipping_address.to_multiline_s %><br/>
-          <% if customer_order.contact.telephone.present? %>
-            T: <%= customer_order.contact.telephone %><br/>
-          <% end %>
-          GST No: <%= customer_order.shipping_address.gst %>
+          <strong class="d-block bmro-summary-heading">Shipping Address</strong>
+          <div class="bmro-summary-data">
+            <em class="d-block"><%= customer_order.contact.name %></em>
+            <%= customer_order.shipping_address.to_multiline_s %><br/>
+            <% if customer_order.contact.telephone.present? %>
+              T: <%= customer_order.contact.telephone %><br/>
+            <% end %>
+            GST No: <%= customer_order.shipping_address.gst %>
+          </div>
         </div>
       <% end %>
     </div>
@@ -30,20 +34,24 @@
   <hr class="my-2">
   <% if customer_order.po_reference.present? && customer_order.po_reference != 0 %>
     <div>
-      <strong class="d-block">PO Reference</strong>
+      <strong class="d-block bmro-summary-heading">PO Reference</strong>
+      <div class="bmro-summary-data">
       <%= customer_order.po_reference %>
+      </div>
     </div>
     <hr class="my-2">
   <% end %>
   <% if customer_order.special_instructions.present? %>
     <div>
-      <strong class="d-block">Special Instructions</strong>
+      <strong class="d-block bmro-summary-heading">Special Instructions</strong>
+      <div class="bmro-summary-data">
       <%= customer_order.special_instructions %>
+      </div>
     </div>
     <hr class="my-2">
   <% end %>
 
-  <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
+  <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100 bmro-datatable-style" data-fixed-header="false">
     <thead>
     <tr>
       <th class="no-sort desktop">Image</th>

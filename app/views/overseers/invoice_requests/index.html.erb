@@ -8,36 +8,31 @@
   </div>
 <% end %>
 
-<% if Settings.reports.show_summary %>
-<div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: InvoiceRequest, statuses: InvoiceRequest.statuses, alias_name: ''} %>
-</div>
-<% end %>
-
 <% content_for :heading do %>
   Invoice Requests<% if @status.present? %><%= ": #{@status}" %><% end %>
 <% end %>
 
 <% content_for(:heading_buttons) do %>
   <% if is_authorized(:sales_order, 'index') %>
-    <a href = "<%= overseers_sales_orders_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >
-      <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
+    <a href = "<%= overseers_sales_orders_path %>" class=" btn btn-success bmro-button btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >
+      <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").capitalize %>
     </a>
   <% end %>
 <% end %>
 
+<div class="col-lg-12 bmro-table-layout">
 <% content_for :header_row do %>
-  <th class="no-sort all" data-width="70px"></th>
-  <th class="no-sort desktop text-right">Req. No.</th>
-  <th class="no-sort desktop" data-name="status">Status</th>
-  <th class="no-sort desktop text-right">Inquiry #</th>
-  <th class="no-sort all text-right">Order #</th>
-  <th class="no-sort all text-right">PO #</th>
-  <th class="no-sort all text-center" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
-  <th class="no-sort all text-center" >Logistics Owner</th>
-  <th class="sort desktop text-right" >Requested At</th>
-  <th class="no-sort desktop text-right">Updated At</th>
-  <th class="no-sort desktop">Latest Comment</th>
+  <th class="no-sort all" width="98px">Quick Actions</th>
+  <th class="no-sort desktop text-right" width="82px">Req. No.</th>
+  <th class="no-sort desktop text-left" width="98px" data-name="status">Status</th>
+  <th class="no-sort desktop text-right" width="78px">Inquiry #</th>
+  <th class="no-sort all text-right" width="98px">Order #</th>
+  <th class="no-sort all text-right" width="88px">PO #</th>
+  <th class="no-sort all text-left" width="94px" data-toggle="tooltip" title="Inside Sales & Procurement" >IS&P</th>
+  <th class="no-sort all text-left" width="94px" >Logistics Owner</th>
+  <th class="sort desktop text-left" width="88px">Requested At</th>
+  <th class="no-sort desktop text-left" width="88px">Updated At</th>
+  <th class="no-sort desktop text-left" width="222px">Latest Comment</th>
 <% end %>
 
 <%# content_for :filter_row do %>
@@ -54,7 +49,6 @@
 <!--  <td data-filter="false"></td>-->
 <%# end %>
 
-<div class="col-lg-12">
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
 </div>

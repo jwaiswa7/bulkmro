@@ -106,6 +106,12 @@ class SalesOrder < ApplicationRecord
       'CO': 90
   }, _prefix: true
 
+  enum main_summary_status: {
+      'Supplier PO: Pending': 17,
+      'Material Ready for Dispatch': 33,
+      'Invoiced': 25
+  }, _suffix: true
+
   enum remote_status: {
       'Supplier PO: Request Pending': 17,
       'Supplier PO: Partially Created': 18,

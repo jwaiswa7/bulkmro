@@ -1,12 +1,12 @@
 <% content_for :heading_button do %>
-  <a href="<%= excel_template_overseers_inquiry_imports_path(format: :xlsx) %>" target="_blank" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down">
-    <i class="fal fa-download mr-1"></i>Download Excel Template
+  <a href="<%= excel_template_overseers_inquiry_imports_path(format: :xlsx) %>" target="_blank" class="d-sm-block btn btn-dark bmro-button btn-rounded align-self-center btn-block-sm-down">
+    <i class="bmro-download-icon mr-1"></i>Download Excel Template
   </a>
 <% end %>
 
 <% content_for :heading_byline do %>
-  This will <em>'<%= submit_text(@inquiry).downcase %>'</em> and log it under
-  <strong><%= current_overseer.full_name %></strong>.
+<!--   This will <em>'<%= submit_text(@inquiry).downcase %>'</em> and log it under
+  <strong><%= current_overseer.full_name %></strong>. -->
 <% end %>
 
 <%= render layout: 'shared/layouts/form' do %>
@@ -14,12 +14,12 @@
     <%= f.hidden_field :import_type %>
     <%= render 'shared/snippets/form_errors', f: f %>
 
-    <div class="card">
+    <div class="card bmro-bg">
       <div class="card-body">
         <%= f.input :file, required: true, wrapper: :custom_file, label: 'Products Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
 
         <div class="form-group mb-0">
-          <%= f.submit(class: 'btn btn-success btn-block') %>
+          <%= f.submit(class: 'btn btn-success bmro-button btn-block') %>
         </div>
       </div>
     </div>

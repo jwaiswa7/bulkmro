@@ -21,11 +21,11 @@ import highlightjs from "./components/highlightjs";
 import lazyLoadImages from "./components/lazyLoadImages";
 import tableHighlightWholly from "./components/tableHighlightWholly";
 import hasher from "./components/hasher";
-import notifications from "./components/notifications";
 import treant from "./components/treant";
 import stringManipulations from "./components/stringManipulations";
 import easyAutocomplete from "./components/easyAutocomplete"
 import globalSearch from "./components/globalSearch"
+import navigationMenu from "./components/navigationMenu"
 
 // Namespacing all imports under app
 let app = {};
@@ -54,10 +54,10 @@ app.initializeComponents = () => {
     stringManipulations();
     highlightjs();
     tableHighlightWholly();
-    notifications();
     treant();
     easyAutocomplete();
     globalSearch();
+    navigationMenu();
 };
 
 // Turbolinks load event

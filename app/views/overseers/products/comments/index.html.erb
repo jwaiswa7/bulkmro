@@ -1,79 +1,95 @@
 <% if @product.inquiry_products.first.try(:inquiry) %>
   <% content_for :heading_button do %>
     <div class="d-flex flex-row">
-      <a class="d-sm-block btn btn-warning btn-rounded align-self-center btn-block-sm-down mr-1" href="<%= edit_overseers_product_path(@product) %>" target="_blank"><i class="fal fa-pencil mr-1"></i>Edit</a>
-      <%= link_to edit_overseers_inquiry_path(@product.inquiry_products.first.try(:inquiry)), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down" do %>
-        <i class="fal fa-external-link mr-1"></i> Check Inquiry
+      <a class="d-sm-block btn btn-warning btn-rounded align-self-center btn-block-sm-down mr-1 bmro-button" href="<%= edit_overseers_product_path(@product) %>" target="_blank"><i class="bmro-fa-pencil"></i>Edit</a>
+      <%= link_to edit_overseers_inquiry_path(@product.inquiry_products.first.try(:inquiry)), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down bmro-button" do %>
+        <i class="bmro-fa-external-link"></i> Check Inquiry
       <% end %>
     </div>
   <% end %>
 <% end %>
 
 <% content_for :heading_byline do %>
-  This will <em>'update/approve/reject <%= @product %>'</em> and log it under
-  <strong><%= current_overseer.full_name %></strong>.
+<!--   This will <em>'update/approve/reject <%= @product %>'</em> and log it under
+  <strong><%= current_overseer.full_name %></strong>. -->
 <% end %>
 
 <%= render layout: 'shared/layouts/form' do %>
   <div class="card">
     <div class="card-body">
       <div>
-        <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
+        <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Product Details</h6>
         <div class="form-row">
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Product</strong>
+            <strong class="d-block bmro-summary-heading">Product</strong>
+            <div class="bmro-summary-data">
             <%= @product %>
+            </div>
           </div>
 
           <% if @product.sku? %>
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">BM Number</strong>
+              <strong class="d-block bmro-summary-heading">BM Number</strong>
+              <div class="bmro-summary-data">
               <%= @product.sku %>
+              </div>
             </div>
           <% end %>
 
           <% if @product.category.present? %>
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Category</strong>
+              <strong class="d-block bmro-summary-heading">Category</strong>
+              <div class="bmro-summary-data">
               <%= @product.category %>
+              </div>
             </div>
           <% end %>
 
           <% if @product.brand.present? %>
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Brand</strong>
+              <strong class="d-block bmro-summary-heading">Brand</strong>
+              <div class="bmro-summary-data">
               <%= @product.brand %>
+              </div>
             </div>
           <% end %>
 
           <% if @product.mpn? %>
             <div class="col-6 col-md-3 mb-2">
               <strong class="d-block">Manufacturer Part Number</strong>
+              <div class="bmro-summary-data">
               <%= @product.mpn %>
+              </div>
             </div>
           <% end %>
 
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Is Service?</strong>
+            <strong class="d-block bmro-summary-heading">Is Service?</strong>
+            <div class="bmro-summary-data">
             <%= format_boolean(@product.is_service) %>
+            </div>
           </div>
 
         </div>
       </div>
       <div class="mt-3">
-        <h6 class="text-uppercase text-black-50 mb-1 d-block">Accounting and Logistics</h6>
+        <h6 class="text-uppercase text-black-50 mb-1 d-block bmro-form-heading">Accounting and Logistics</h6>
         <div class="form-row">
           <% if @product.tax_code.present? %>
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Tax Code</strong>
+              <strong class="d-block bmro-summary-heading">Tax Code</strong>
+              <div class="bmro-summary-data">
               <%= @product.tax_code %>
+              </div>
             </div>
           <% end %>
 
           <% if @product.measurement_unit %>
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Unit of Measurement</strong>
+              <strong class="d-block bmro-summary-heading">Unit of Measurement</strong>
+              <div class="bmro-summary-data">
               <%= @product.measurement_unit %>
+              </div>
             </div>
           <% end %>
         </div>
@@ -85,11 +101,11 @@
       <% if @comments.persisted.size > 0 %>
         <div class="chats">
           <% @comments.persisted.each do |comment| %>
-            <div class="media chat-item">
+            <div class="media chat-item comments-wrap">
               <div class="media-body">
                 <div class="chat-item-title">
                   <span class="chat-item-author"><%= comment.created_by.full_name %></span>
-                  <span><span class="mr-1"><strong>
+                  <span class="bmro-comment-age"><span class="mr-1"><strong>
                     <% if comment.merged? %><span class="badge badge-secondary">Merged</span><% end %>
                     <% if comment.approval.present? %><span class="badge badge-success">Approved</span><% end %>
                     <% if comment.rejection.present? %><span class="badge badge-danger">Rejected</span><% end %></strong></span><%= time_ago_in_words(comment.created_at) %>
@@ -113,7 +129,7 @@
           <div class="col-lg-6">
             <div class="form-row">
               <div class="col-12 col-md-2">
-                <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark btn-block' %>
+                <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark btn-block bmro-button' %>
               </div>
               <div class="col-12 col-md-5 mt-1 mt-md-0">
                 <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-block' if is_authorized(@product, 'approve') && policy(@product).approve? %>
@@ -127,10 +143,10 @@
           <div class="col-lg-6 text-right">
             <%= content_tag :div, class: 'd-flex flex-row align-items-start justify-content-end mt-1 mt-md-0' do %>
               <div class="mr-1">
-                <%= f.input :merge_with_product_id, :as => :select, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path}, label: false %>
+                <%= f.input :merge_with_product_id, :as => :select, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax bmro-form-input', :'data-source' => autocomplete_overseers_products_path}, label: false %>
               </div>
               <div>
-                <%= f.submit 'Merge', name: 'merge', class: 'btn btn-warning float-right' %>
+                <%= f.submit 'Merge', name: 'merge', class: 'btn btn-warning float-right bmro-button' %>
               </div>
             <% end if is_authorized(@product, 'merge')  %>
           </div>

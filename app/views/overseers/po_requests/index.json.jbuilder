@@ -28,7 +28,7 @@ json.data (@po_requests) do |po_request|
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
-                      end, '<br/>', '<br/>',
+                      end,
                       if is_authorized(po_request, 'new_payment_request') && policy(po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif is_authorized(po_request, 'show_payment_request') && po_request.payment_request.present?
@@ -43,9 +43,9 @@ json.data (@po_requests) do |po_request|
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       else
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'warning disabled')
-                      end, '<br/>', '<br/>',
+                      end,
                       if is_authorized(po_request, 'new_purchase_order') && policy(po_request).new_purchase_order? && po_request.purchase_order_id.nil?
-                        row_action_button(new_purchase_order_overseers_po_request_path(po_request), 'plus', 'Create New Purchase Order', 'success')
+                        row_action_button_without_fa(new_purchase_order_overseers_po_request_path(po_request), 'bmro-plus-circle-icon', 'Create New Purchase Order', 'success')
                       end,
                       if po_request.status == 'Supplier PO: Amendment Pending' && is_authorized(po_request, 'po_amended')
                         row_action_button(overseers_po_request_path(po_request), 'eye', 'Amendment Changes', 'success')

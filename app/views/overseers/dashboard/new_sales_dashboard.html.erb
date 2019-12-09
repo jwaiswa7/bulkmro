@@ -1,0 +1,988 @@
+<% provide :container_fluid, true %>
+
+<div class="bmro-width100">
+  <div class="bmro-dash-leftside">
+<!--    <div class="bmro-width100 bmro-priority-section bmro-radio-parent-padding">-->
+<!--      <div class="bmro-radio-parent">-->
+<!--        <div class="bmro-form-radio">-->
+          <!-- <input type="radio" name="bmro" class="bmro-pri-input">
+          <label class="bmro-priority-lable">Priority Quotes </label> -->
+<!--          <label class="bmro-priority-lable bmro-radio-container">Priority Quotes-->
+<!--            <input type="radio" name="bmro" class="bmro-top-radio" checked>-->
+<!--            <span class="bmro-checkmark"></span>-->
+<!--          </label>-->
+<!--        </div>-->
+<!--        <div class="bmro-form-radio">-->
+          <!-- <input type="radio" name="bmro" class="bmro-pri-input">
+          <label class="bmro-priority-lable">Strategic Clients</label> -->
+<!--          <label class="bmro-priority-lable bmro-radio-container">Strategic Clients-->
+<!--            <input type="radio" name="bmro" class="bmro-top-radio">-->
+<!--            <span class="bmro-checkmark"></span>-->
+<!--          </label>-->
+<!--        </div>-->
+<!--        <div class="bmro-form-radio">-->
+          <!-- <input type="radio" name="bmro" class="bmro-pri-input">
+          <label class="bmro-priority-lable">Repeat Orders</label> -->
+<!--          <label class="bmro-priority-lable bmro-radio-container">Repeat Orders-->
+<!--            <input type="radio" name="bmro" class="bmro-top-radio">-->
+<!--            <span class="bmro-checkmark"></span>-->
+<!--          </label>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+    <div class="bmro-width100">
+      <div class="bmro-width100">
+        <div class="bmro-dash-box">
+          <% @dashboard.main_statuses.each do |status| %>
+            <div class="bmro-same-box col status-box" data-status="<%= status %>">
+              <label><%= status %></label>
+              <h5><%= @dashboard.get_status_metrics(status)[:'count'] %></h5>
+              <span><%= format_currency(@dashboard.get_status_metrics(status)[:'value']) %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="bmro-width100 bmro-main-pedding">
+        <div class="bmro-dash-inqu">
+          <div class="bmro-width100 bmro-inquries-main inquiries-card">
+            <div class="inquiry-list-wrapper">
+              <%= render partial: 'inquiry_list_wrapper', locals:{inq_for_sales_dash: @dashboard.inq_for_sales_dash} %>
+            </div>
+          </div>
+          <div class="bmro-width100 bmro-sales-show-hide bmro-sales-main">
+            <div class="bmro-width100 bmro-sales-pedding">
+              <span class="bmro-sales-back bmro-menu-dropdown bmro-sales-draft-arrow bmro-font-size-dash bmro-cursol"></span>
+              <p class="bmro-menu bmro-cursol">
+                Sales Order Draft
+              </p>
+              <span class="bmro-inqu-no bmro-inqu-no-ml">12</span>
+              <div class="bmro-star-parent">
+                <span class="bmro-dash-star bmro-show-star"></span>
+                <label>Show Starred</label>
+              </div>
+            </div>
+            <div class="bmro-width100 bmro-dash-table-mt">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-all-task-th bmro-Inquries-width1">
+                  <span class="bmro-task-th">Inquiry No</span>
+                </div>
+                <div class="bmro-all-task-th bmro-Inquries-width2">
+                  <span class="bmro-task-th bmro-task-th-p0">Account</span>
+                </div>
+                <div class="bmro-all-task-th bmro-Inquries-width3 bmro-text-right">
+                  <span class="bmro-task-th">Orders</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bmro-width100 bmro-purchase-order">
+            <div class="bmro-width100 bmro-sales-pedding">
+              <span class="bmro-inqu-no">12</span>
+              <p class="bmro-menu bmro-font-size-dash dropdown-toggle" id="My-inquries" data-toggle="dropdown" role="button">
+                My Purchase Order
+                <span class="bmro-menu-dropdown bmro-menu-dropdown-ml"></span>
+              </p>
+              <div class="dropdown-menu">
+                <a class="bmro-dropdown-item bmro-new-fw bmro-show-sales" href="#"><span class="bmro-inqu-no-drop ">12</span>My Sales Invoices</a>
+                <a class="bmro-dropdown-item bmro-new-fw bmro-show-purchse" href="#"><span class="bmro-inqu-no-drop">02</span>My Purchase Orders</a>
+              </div>
+              <div class="bmro-star-parent">
+                <span class="bmro-dash-star bmro-show-star"></span>
+                <label class="bmro-cursol">Show Starred</label>
+              </div>
+              <div class="bmro-star-parent bmro-reset-button bmro-inquiry-show-hide bmro-cursol">
+                <label class="bmro-cursol">Reset</label>
+              </div>
+            </div>
+
+            <div class="bmro-width100 bmro-dash-table-mt">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                   <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                   <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmro-width100">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                   <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                   <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmro-width100">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                   <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                   <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmro-width100">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                   <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                   <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmro-width100">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                   <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                   <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmro-width100">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                   <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                   <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmro-width100">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                   <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                   <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="bmro-dash-task" id="bmro-dash-task">
+          <div class="bmro-width100 accordion bmro-all-task-action">
+            <div class="bmro-width100 bmro-pl-pr">
+<!--              <span class="bmro-inqu-no">12</span>-->
+              <p class="bmro-big-heading bmro-fl bmro-cursol bmro-font-size-dash dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+              All Tasks
+              <!-- Commented for demo -->
+              <!-- <span class="bmro-drop-icon-head bmro-drop-icon-head-fr dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></span> --></p>
+              <!--<div class="dropdown-menu ">-->
+              <!--<a class="bmro-dropdown-item" href="#">Display Option 1</a>-->
+              <!--<a class="bmro-dropdown-item" href="#">Display Option 2</a>-->
+              <!--<a class="bmro-dropdown-item" href="#">Display Option 3</a>-->
+              <!--</div>-->
+              <!--<div class="bmro-star-parent">-->
+              <!--<span class="bmro-dash-star bmro-show-star"></span>-->
+              <!--<label>Show Starred</label>-->
+              <!--</div>-->
+            </div>
+            <div class="bmro-width100 bmro-mt-collas">
+              <div class="task-list-wrapper">
+                <%= render partial: 'task_list_wrapper', locals:{inq_for_sales_dash: @dashboard.inq_for_sales_dash, show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
+              </div>
+            </div>
+          </div>
+
+          <div class="bmro-width100 bmro-order-hide bmro-order-action inquiry-tasks">
+            <!-- Doc-wise tasks -->
+<!--            <div id="collapsetwo" class="collapse bmro-width100">-->
+<!--              <div class="bmro-width100 bmro-padding-task">-->
+<!--                <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">-->
+<!--                  <span class="bmro-dash-star"></span>-->
+<!--                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">88888888</span>-->
+<!--                </div>-->
+<!--                <div class="bmro-task-print bmro-task-width bmro-fl">-->
+<!--                  <div class="bmro-commited-data bmro-task-td">-->
+<!--                    Supplier Commited date higher than Customer Commited Date (Revise Date)-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="bmro-action-button-parent bmro-action-width bmro-fl">-->
+<!--                  <a href="#" class="bmro-action-button bmro-fr bmro-lightbox" data-toggle="modal" data-target="#myModal" role="button">Compose Email-->
+<!--                  </a>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+<!--  <div class="bmro-dash-rightside bmro-right-mb">-->
+<!--    <div class="bmro-width100">-->
+<!--      <div id="canvas-holder">-->
+<!--        <canvas id="myChart" width="400" height="400"></canvas>-->
+<!--        <div class="sidebar-stats bmro-width100">-->
+<!--          <ul class="bmro-canvas-ul">-->
+<!--            <li>-->
+<!--              <span class="green-chart-indicator bmro-fl"></span>-->
+<!--              <span class="stat-label bmro-fl">Quoted Inquiries</span>-->
+<!--              <span class="stat-numbers bmro-fl">12</span>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <span class="green-chart-indicator bmro-fl"></span>-->
+<!--              <span class="stat-label bmro-fl">Incentive Earned</span>-->
+<!--              <span class="stat-numbers bmro-fl">&#8377;4,67,010</span>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <span class="blue-chart-indicator bmro-fl"></span>-->
+<!--              <span class="stat-label bmro-fl">My Target</span>-->
+<!--              <span class="stat-numbers bmro-fl">52</span>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <span class="blue-chart-indicator bmro-fl"></span>-->
+<!--              <span class="stat-label bmro-fl">Potential Earning</span>-->
+<!--              <span class="stat-numbers bmro-fl">&#8377;40,67,010</span>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <span class="red-chart-indicator bmro-fl"></span>-->
+<!--              <span class="stat-label bmro-fl">New Label</span>-->
+<!--              <span class="stat-numbers bmro-fl">&#8377;40,67,010</span>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <span class="yellow-chart-indicator bmro-fl"></span>-->
+<!--              <span class="stat-label bmro-fl">New Label</span>-->
+<!--              <span class="stat-numbers bmro-fl">&#8377;40,67,010</span>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--        <div class="bmro-width100">-->
+<!--          <h4 class="bmro-canvas-head bmro-fl">Calculate Earning</h4>-->
+<!--          <button class="bmro-canvas-button bmro-fr">Reset</button>-->
+<!--          <div class="bmro-width100">-->
+<!--              <div class="bmro-width50 bmro-mr-width">-->
+<!--                <label class="bmro-form-lable">Quoted Inquiries</label>-->
+<!--                <input type="text" name="QuotedInquiries" class="bmro-input-style">-->
+<!--              </div>-->
+<!--              <div class="bmro-width50">-->
+<!--                <label class="bmro-form-lable">Target</label>-->
+<!--                <input type="text" name="Target" class="bmro-input-style">-->
+<!--              </div>-->
+<!--              <div class="bmro-width100">-->
+<!--                <label class="bmro-form-lable">Potential Earning</label>-->
+<!--                <input type="text" name="QuotedInquiries" class="bmro-input-style">-->
+<!--              </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+  <div class="bmro-dash-rightside">
+    <div class="bmro-slide-on-inquries-2">
+      <div class="bmro-width100 bmro-close-right-slide-fix">
+        <span class="bmro-close-order-slide bmro-close-icon"></span>
+        <span class="bmro-close-arrow"></span>
+      </div>
+      <div class="bmro-width100 brmo-position-relative">
+        <span class="bmro-small-heading">Company Name</span>
+      </div>
+      <div class="bmro-width100">
+        <h5 class="bmro-big-heading-two">Abbott Healthcare Pvt.Ltd</h5>
+      </div>
+      <div class="bmro-width100">
+        <span class="bmro-small-heading bmro-width100 bmro-mt-5">Inquiry N0.</span>
+        <div class="bmro-fl">
+          <h5 class="bmro-big-heading-two bmro-mt-5 bmro-fl bmro-wdith-auto dropdown-toggle">#45567
+            <span class="bmro-drop-icon-head bmro-slide-icon"></span>
+          </h5>
+          <div class="dropdown-menu">
+            <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 1</a>
+            <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 2</a>
+            <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 3</a>
+          </div>
+        </div>
+        <div class="bmro-fl">
+          <a href="#" class="bmro-action-button bmro-fl dropdown-toggle">Activity Log
+            <span class="bmro-menu-dropdown bmro-button-drop-compos"></span>
+          </a>
+          <div class="dropdown-menu">
+            <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 1</a>
+            <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 2</a>
+            <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 3</a>
+          </div>
+        </div>
+      </div>
+      <div class="brmo-divider"></div>
+      <div class="bmro-width100">
+        <button class="bmro-star-parent bmro-reset-button bmro-cursol">Reset</button>
+      </div>
+      <div class="form-parant">
+        <form>
+          <div class="bmro-width100">
+            <label class="bmro-small-label">Single Line Form Field<sup>*</sup></label>
+            <input type="text" name="field" value="Delhi-Janakpuri" class="bmro-priority-lable bmro-form-input-box">
+          </div>
+          <div class="bmro-width100">
+            <label class="bmro-small-label">Multi Line Form Field<sup>*</sup></label>
+            <textarea rows="5" placeholder="Text Message" class="bmro-priority-lable bmro-form-input-box"></textarea>
+          </div>
+          <div class="bmro-width100">
+            <label class="bmro-small-label">Checkboxes<sup>*</sup></label>
+            <div class="bmro-width100 bmro-mb0">
+              <input type="checkbox" name="Inq1" value="" class="bmro-fl">
+              <label class="bmro-check-lable bmro-fl">Option 1</label>
+            </div>
+            <div class="bmro-width100 bmro-mb0">
+              <input type="checkbox" name="Inq1" value="" class="bmro-fl">
+              <label class="bmro-check-lable bmro-fl bmro-mb0">Option 2</label>
+            </div>
+          </div>
+          <div class="bmro-width100">
+            <label class="bmro-small-label bmro-width100 bmro-mb0">Radio Button<sup>*</sup></label>
+            <div class="bmro-fl bmro-radio-width">
+              <label class="bmro-priority-lable bmro-radio-container">Priority Quotes
+              <input type="radio" name="bmro" class="bmro-top-radio" checked="">
+              <span class="bmro-checkmark"></span>
+              </label>
+            </div>
+            <div class="bmro-fl bmro-radio-width">
+              <label class="bmro-priority-lable bmro-radio-container">Priority Quotes
+              <input type="radio" name="bmro" class="bmro-top-radio" checked="">
+              <span class="bmro-checkmark"></span>
+              </label>
+            </div>
+          </div>
+          <div class="bmro-width100">
+            <label class="bmro-small-label">With Dropdown<sup>*</sup></label><br>
+            <div class="bmro-width100">
+              <select class="custom-select is-valid select bmro-chosen-select select2-single bmro-dropdown-icon bmro-back2">
+                <option>Display Option 1</option>
+                <option>Display Option 1</option>
+                <option>Display Option 1</option>
+              </select>
+            </div>
+          </div>
+          <div class="bmro-width100">
+            <input type="submit" name="submit" value="Call to action" class="bmro-button bmro-button-smallbtn">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="bmro-slide-on-inquries">
+      <div class="bmro-width100 bmro-close-right-slide-fix">
+        <!-- <span class="bmro-small-heading">Company Name</span> -->
+        <span class="bmro-close-order-slide bmro-close-icon"></span>
+      </div>
+      <!-- <div class="bmro-width100">
+        <h5 class="bmro-big-heading-two">Abbott Healthcare Pvt.Ltd</h5>
+      </div> -->
+      <div id="status-record-div"></div>
+    </div>
+
+    <div class="bmro-slide-order-no">
+      <div class="bmro-width100 bmro-close-right-slide-fix">
+        <span class="bmro-close-order-slide bmro-close-icon"></span>
+      </div>
+      <div class="bmro-width100 bmro-position-relative">
+        <span class="bmro-small-heading bmro-width100">Company Name</span>
+        <h5 class="bmro-big-heading-two">Abbott Healthcare Pvt. Ltd</h5>
+      </div>
+      <div class="bmro-width100">
+        <span class="bmro-small-heading bmro-width100 bmro-mt-5">Inquiry No.</span>
+        <div class="bmro-fl">
+          <h5 class="bmro-big-heading-two bmro-mt-5 bmro-fl bmro-wdith-auto bmro-menu dropdown-toggle">
+            #45567
+            <span class="bmro-menu-dropdown bmro-left-left bmro-drop-icon-head bmro-slide-icon"></span>
+          </h5>
+          <div class="dropdown-menu">
+            <a class="bmro-dropdown-item bmro-new-size" href="#">Inquiry 1</a>
+            <a class="bmro-dropdown-item bmro-new-size" href="#">Inquiry 2</a>
+          </div>
+        </div>
+        <div class="bmro-fl">
+          <a href="#" class="bmro-action-button bmro-fl bmro-action-button bmro-fr dropdown-toggle">Abbott Healthcare Pvt. Ltd
+            <span class="bmro-menu-dropdown bmro-button-drop-compos"></span>
+          </a>
+          <div class="dropdown-menu">
+            <a class="bmro-dropdown-item" href="#">Display Option 1</a>
+            <a class="bmro-dropdown-item" href="#">Display Option 2</a>
+            <a class="bmro-dropdown-item" href="#">Display Option 3</a>
+          </div>
+        </div>
+      </div>
+      <div class="bmro-width100">
+        <span class="bmro-small-heading bmro-width100 bmro-mt-5">Order No.</span>
+        <h5 class="bmro-big-heading-two bmro-mt-5 bmro-fl bmro-wdith-auto bmro-menu dropdown-toggle" id="order-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#122334
+          <span class="bmro-item-list">(Item List)</span>
+          <span class="bmro-menu-dropdown bmro-left-left bmro-drop-icon-head bmro-slide-icon"></span>
+        </h5>
+        <div class="dropdown-menu">
+          <a class="bmro-dropdown-item bmro-new-size" href="#">Inquiry 1</a>
+          <a class="bmro-dropdown-item bmro-new-size" href="#">Inquiry 2</a>
+        </div>
+        <span class="bmro-status-label bmro-account-lable-color">Partialy Delivered(Logistics)</span>
+      </div>
+      <div class="bmro-width100 bmro-product-mt">
+        <div class="bmro-order-sr-no">
+          <span class="bmro-small-heading">S.No</span>
+        </div>
+        <div class="bmro-order-sr-product">
+          <span class="bmro-small-heading">Products</span>
+        </div>
+        <div class="bmro-width100 bmro-order-bd">
+          <div class="bmro-order-sr-no bmro-sno-print">01</div>
+          <div class="bmro-order-sr-product bmro-product-print">
+            BM9V7Z4 - Aggregator Service- The Metropole Hotel Bill WBSEA0-004902-1114 Project- Torrent Power PM- Ajay Rane
+            <div class="bmro-width100 bmro-qty-mt-10">
+              <span class="bmro-oty-lable">Qty.</span>
+              <span class="bmro-oty-no">1/1</span>
+              <span class="bmro-oty-lable">Status:</span>
+              <span class="bmro-status-print">Delivered</span>
+            </div>
+          </div>
+        </div>
+        <div class="bmro-width100 bmro-order-bd">
+          <div class="bmro-order-sr-no bmro-sno-print">02</div>
+          <div class="bmro-order-sr-product bmro-product-print">
+            BM9V7Z4 - Aggregator Service- The Metropole Hotel Bill WBSEA0-004902-1114 Project- Torrent Power PM- Ajay Rane
+            <div class="bmro-width100 bmro-qty-mt-10">
+              <span class="bmro-oty-lable">Qty.</span>
+              <span class="bmro-oty-no">1/1</span>
+              <span class="bmro-oty-lable">Status:</span>
+              <span class="bmro-status-print">Delivered</span>
+            </div>
+          </div>
+        </div>
+        <div class="bmro-width100 bmro-order-bd">
+          <div class="bmro-order-sr-no bmro-sno-print">03</div>
+          <div class="bmro-order-sr-product bmro-product-print">
+            BM9V7Z4 - Aggregator Service- The Metropole Hotel Bill WBSEA0-004902-1114 Project- Torrent Power PM- Ajay Rane
+            <div class="bmro-width100 bmro-qty-mt-10">
+              <span class="bmro-oty-lable">Qty.</span>
+              <span class="bmro-oty-no">1/1</span>
+              <span class="bmro-oty-lable">Status:</span>
+              <span class="bmro-status-print">Delivered</span>
+            </div>
+          </div>
+        </div>
+        <div class="bmro-width100 bmro-order-bd">
+          <div class="bmro-order-sr-no bmro-sno-print">04</div>
+          <div class="bmro-order-sr-product bmro-product-print">
+            BM9V7Z4 - Aggregator Service- The Metropole Hotel Bill WBSEA0-004902-1114 Project- Torrent Power PM- Ajay Rane
+            <div class="bmro-width100 bmro-qty-mt-10">
+              <span class="bmro-oty-lable">Qty.</span>
+              <span class="bmro-oty-no">1/1</span>
+              <span class="bmro-oty-lable">Status:</span>
+              <span class="bmro-status-print">Delivered</span>
+            </div>
+          </div>
+        </div>
+        <div class="bmro-width100 bmro-order-bd">
+          <div class="bmro-order-sr-no bmro-sno-print">05</div>
+          <div class="bmro-order-sr-product bmro-product-print">
+            BM9V7Z4 - Aggregator Service- The Metropole Hotel Bill WBSEA0-004902-1114 Project- Torrent Power PM- Ajay Rane
+            <div class="bmro-width100 bmro-qty-mt-10">
+              <span class="bmro-oty-lable">Qty.</span>
+              <span class="bmro-oty-no">1/1</span>
+              <span class="bmro-oty-lable">Status:</span>
+              <span class="bmro-status-print">Delivered</span>
+            </div>
+          </div>
+        </div>
+        <div class="bmro-width100 bmro-order-bd">
+          <div class="bmro-order-sr-no bmro-sno-print">06</div>
+          <div class="bmro-order-sr-product bmro-product-print">
+            BM9V7Z4 - Aggregator Service- The Metropole Hotel Bill WBSEA0-004902-1114 Project- Torrent Power PM- Ajay Rane
+            <div class="bmro-width100 bmro-qty-mt-10">
+              <span class="bmro-oty-lable">Qty.</span>
+              <span class="bmro-oty-no">1/1</span>
+              <span class="bmro-oty-lable">Status:</span>
+              <span class="bmro-status-print">Delivered</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bmro-width100">
+      <div class="bmro-width100">
+        <div class="bmro-dash-right-menu">
+<!--              <span class="bmro-all-notification active-menu bmro-all-action" role="button">All</span>-->
+          <span class="bmro-all-notification bmro-notification-action" role="button" id="notifications" >Notification</span>
+          <span class="bmro-all-notification bmro-Comments-action" role="button" id="comments">Comments</span>
+        </div>
+      </div>
+      <div class="bmro-width100 bmro-notification-sec bmro-hide" id="notification-rows">
+        <% @dashboard.notifications.each do |date, notifications| %>
+          <div class="bmro-today-list bmro-today-mt-mb">
+            <div class="bmro-width100 bmro-today-line-parent">
+              <div class="bmro-today-parent">
+                <% if date.today? %>
+                  <span class="bmro-big-heading bmro-fl">Today</span>
+                <% else %>
+                  <span class="bmro-big-heading bmro-fl"><%= date.strftime("%d/%m/%Y") %></span>
+                <% end %>
+              </div>
+              <span class="bmro-today-line"></span>
+            </div>
+          </div>
+          <% notifications.each do |notification| %>
+            <div class="bmro-today-list bmro-today-list-bm">
+              <h5 class="bmro-big-heading bmro-hash-mt">#<%= notification.id %> <span class="bmro-today-button">Notification</span></h5>
+              <span class="bmro-today-span"><%= notification.message %></span>
+              <span class="bmro-today-posted">Posted on: <%= notification.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
+              <!--<h5 class="bmro-big-heading bmro-hash-mt">Farhan. A <span class="bmro-today-button">Logistics</span></h5>-->
+            </div>
+          <%end %>
+        <%end %>
+      </div>
+      <div class="bmro-width100 bmro-comments-sec bmro-hide" id="comment-rows">
+<!--        <div class="bmro-today-list bmro-today-mt-mb">-->
+<!--          <div class="bmro-width100 bmro-today-line-parent">-->
+<!--            <div class="bmro-today-parent">-->
+<!--              <span class="bmro-big-heading bmro-fl">Comments</span>-->
+<!--            </div>-->
+<!--            <span class="bmro-today-line"></span>-->
+<!--          </div>-->
+<!--        </div>-->
+        <% @dashboard.comments.each do |date, comments| %>
+          <div class="bmro-today-list bmro-today-list-bm bmro-today-mt-mb">
+            <div class="bmro-width100 bmro-today-line-parent">
+              <div class="bmro-today-parent">
+                <% if date.today? %>
+                  <span class="bmro-big-heading bmro-fl">Today</span>
+                <% else %>
+                  <span class="bmro-big-heading bmro-fl"><%= date.strftime("%d/%m/%Y") %></span>
+                <% end %>
+              </div>
+              <span class="bmro-today-line"></span>
+            </div>
+          </div>
+          <% comments.each do |comment| %>
+            <div class="bmro-today-list">
+              <h5 class="bmro-big-heading bmro-hash-mt">#<%= comment.id %> <span class="bmro-today-button">Comment</span></h5>
+              <span class="bmro-today-span"><%= comment.message %></span>
+              <h5 class="bmro-big-heading bmro-hash-mt"><%= comment.created_by.to_s %> <span class="bmro-today-button"><%= comment.created_by.role %></span></h5>
+              <span class="bmro-today-posted">Posted on: <%= comment.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
+              <!--<h5 class="bmro-big-heading bmro-hash-mt">Farhan. A <span class="bmro-today-button">Logistics</span></h5>-->
+            </div>
+          <%end %>
+        <%end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bmro-compose" id="myModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close bmro-modal-close" data-dismiss="modal"><span class="bmro-close-icon"></span></button>
+        <div class="bmro-width100 bmro-padding-email">
+          <div id="email_message"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+
+    $(".compose-email").click(function (e) {
+      let inquiry_number = $(this).data('id');
+      e.preventDefault();
+      $.ajax({
+          url: Routes.show_email_message_modal_overseers_dashboard_path({format: "html"}),
+          type: "GET",
+          data: {
+              inquiry_number: inquiry_number
+          },
+          success: function (data) {
+              $('#email_message').empty();
+              $('#email_message').append(data);
+              tinymce.init({
+                  selector: '.html-editor',
+                  plugins: "fullpage code autoresize",
+                  skin: 'lightgray',
+                  toolbar: 'undo redo | bold italic | link | code',
+                  menubar: false,
+                  fullpage_default_doctype: '<!DOCTYPE html>',
+                  fullpage_default_encoding: "UTF-8",
+                  visual : false
+              });
+          },
+      });
+    });
+
+    $('#myModal').on('hidden.bs.modal', function () {
+        tinymce.remove('.html-editor');
+    })
+
+    $(".bmro-right-side-open").click(function () {
+        $('.bmro-slide-order-no').addClass('bmro-slide-order-show');
+        $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
+    })
+    $(".bmro-close-order-slide").click(function () {
+        $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
+        $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
+        $('.bmro-slide-on-inquries-2').removeClass('bmro-slide-on-inquries-2-show');
+        $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
+
+    })
+    // $(".bmro-same-box").click(function () {
+    //     $('.bmro-same-box').removeClass('bmro-same-box-active');
+    //     $(this).addClass('bmro-same-box-active',1000);
+    //     $('.bmro-sales-main').removeClass('bmro-sales-show-hide');
+    //     $('.bmro-inquries-main').addClass('bmro-inquiry-show-hide');
+    // });
+
+    const getInquiryTasks = function(){
+        $(".inquiry").click(function (e) {
+            let inquiry_number = $(this).data('inquiry');
+            e.preventDefault();
+            $.ajax({
+                url: Routes.get_inquiry_tasks_overseers_dashboard_path({format: "html"}),
+                type: "GET",
+                data: {
+                    inquiry_number: inquiry_number
+                },
+                success: function (data) {
+                    $('.inquiry-tasks').empty();
+                    $('.inquiry-tasks').append(data);
+                    $('.bmro-order-action').removeClass('bmro-order-hide');
+                    $('.bmro-all-task-action').addClass('bmro-order-hide');
+                    // $('.bmro-reset-button').addClass('bmro-inquiry-show-hide');
+                },
+            });
+        });
+    };
+
+    const getStatusRecords = function(){
+        $(".bmro-status-label").click(function (e) {
+            let inquiry_number = $(this).data('id');
+            e.preventDefault();
+            $.ajax({
+                url: Routes.get_status_records_overseers_dashboard_path({format: "html"}),
+                type: "GET",
+                data: {
+                    inquiry_number: inquiry_number
+                },
+                success: function (data) {
+                    $('#status-record-div').empty();
+                    $('#status-record-div').append(data);
+                },
+            });
+            $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
+            $('.bmro-slide-on-inquries').addClass('bmro-inquries-po');
+        })
+    };
+
+    getStatusRecords();
+    getInquiryTasks();
+
+    $(".status-box").click(function (e) {
+        let inquiry_status = $(this).data('status');
+        $('.bmro-same-box').removeClass('bmro-same-box-active');
+        $(this).addClass('bmro-same-box-active',1000);
+        e.preventDefault();
+        $.ajax({
+            url: Routes.get_filtered_inquiries_overseers_dashboard_path({format: "html"}),
+            type: "GET",
+            data: {
+                status: inquiry_status
+            },
+            success: function (data) {
+                $('.inquiries-card').empty();
+                $('.inquiries-card').append(data);
+                getInquiryTasks();
+                getStatusRecords();
+            },
+        });
+    });
+
+    $(".bmro-sales-back").click(function () {
+        // $('.bmro-same-box').removeClass('bmro-same-box-active');
+        $('.bmro-sales-main').addClass('bmro-sales-show-hide');
+        $('.bmro-inquries-main').removeClass('bmro-inquiry-show-hide');
+    })
+    $(".bmro-order-show").click(function () {
+        $('.bmro-order-action').removeClass('bmro-order-hide');
+        $('.bmro-all-task-action').addClass('bmro-order-hide');
+        $('.bmro-inquries-main').addClass('bmro-bg-color');
+        // $('.bmro-Inquries-task').removeClass('bmro-active-white');
+        $(this).parent().parent().addClass('bmro-active-white',1000);
+        $('.bmro-show-star').addClass('bmro-inquiry-show-hide');
+        $('.bmro-reset-button').removeClass('bmro-inquiry-show-hide');
+    })
+    $(".bmro-reset-button").click(function () {
+        $('.bmro-order-action').addClass('bmro-order-hide');
+        $('.bmro-all-task-action').removeClass('bmro-order-hide');
+        $('.bmro-inquries-main').removeClass('bmro-bg-color');
+        $('.bmro-Inquries-task').removeClass('bmro-active-white');
+        $('.bmro-Inquries-task').parent().removeClass('bmro-bg-color')
+        $('.bmro-show-star').removeClass('bmro-inquiry-show-hide');
+        $('.bmro-reset-button').addClass('bmro-inquiry-show-hide');
+    })
+    $(".bmro-dash-main-menu").mouseleave(function() {
+        $(".bmro-dash-main-menu").removeClass('bmro-dash-main-menu-show');
+    });
+    $(".bmro-clickable").click(function () {
+        $('.bmro-slide-on-inquries-2').addClass('bmro-slide-on-inquries-2-show');
+        $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
+        $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
+    })
+    $('.bmro-show-purchse').click(function(){
+        $('.bmro-purchase-order').addClass('bmro-show');
+        $('.bmro-inquries-main').addClass('bmro-hide');
+    })
+
+    $('.bmro-show-sales').click(function(){
+        $('.bmro-purchase-order').addClass('bmro-hide');
+        $('.bmro-inquries-main').removeClass('bmro-hide');
+    })
+</script>
+
+

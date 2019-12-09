@@ -1,9 +1,9 @@
 json.data (@sales_orders) do |sales_order|
   json.array! [
                  [
-                     row_action_button(new_accounts_confirmation_overseers_inquiry_sales_order_path(sales_order.inquiry.to_param, sales_order.to_param), 'comment-alt-check', 'Account Approval', 'warning'),
-                     row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
-                 ],
+                     row_action_button_without_fa(new_accounts_confirmation_overseers_inquiry_sales_order_path(sales_order.inquiry.to_param, sales_order.to_param), 'bmro-icon-table bmro-icon-comment', 'Account Approval', 'warning'),
+                     row_action_button_without_fa(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order, format: :pdf), 'bmro-icon-table bmro-icon-pdf', 'Download', 'dark', :_blank)
+                 ].join(' '),
                  sales_order.inquiry.inquiry_number,
                  sales_order.inquiry.company.to_s,
                  sales_order.inside_sales_owner.to_s,

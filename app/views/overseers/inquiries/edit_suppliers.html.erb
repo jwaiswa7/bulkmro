@@ -2,37 +2,37 @@
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <%= simple_form_for(@inquiry, url: update_suppliers_overseers_inquiry_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= render 'shared/snippets/form_errors', f: f %>
-      <div class="card">
+      <div class="card bmro-card">
         <div class="card-body">
           <div class="form-row">
             <div class="col-12 col-md-2">
               <div class="custom-control custom-checkbox">
                 <%= check_box_tag "select_all_suppliers", true, false, class: 'custom-control-input' %>
-                <label class="custom-control-label" for="select_all_suppliers">Select All</label>
+                <label class="custom-control-label" for="select_all_suppliers bmro-input-label">Select All</label>
               </div>
             </div>
             <div class="col-md-6">
-              <%= f.input :common_supplier_id, label: false, :as => :select, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, 'data-placeholder': 'Select Common Supplier'} %>
+              <%= f.input :common_supplier_id, label: false, :as => :select, input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_suppliers_path, 'data-placeholder': 'Select Common Supplier'} %>
             </div>
             <div class="col-md-4">
-              <%= button_tag(type: "submit", name: 'common_supplier_selected', class: "btn btn-success btn-block") do %>
+              <%= button_tag(type: "submit", name: 'common_supplier_selected', class: "btn btn-success bmro-button btn-block") do %>
                 Add Common Supplier and Update
               <% end %>
             </div>
-            <hr>
+            <hr class='bmro-dotted-line'>
           </div>
           <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select {|ip| ip.approved?;} do |inquiry_product, i| %>
             <%= inquiry_product.hidden_field :id %>
-            <h6 class="text-uppercase pl-3">
+            <h6 class="text-uppercase pl-3 bmro-form-label">
                 <span class="custom-control custom-checkbox d-inline pl-0">
-                  <%= check_box_tag 'inquiry_product_ids[]', inquiry_product.object.id, false, id: "inquiry_product_id_#{inquiry_product.object.id}", class: 'custom-control-input' %>
+                  <%= check_box_tag 'inquiry_product_ids[]', inquiry_product.object.id, false, id: "inquiry_product_id_#{inquiry_product.object.id}", class: 'custom-control-input bmro-form-input' %>
                   <label class="custom-control-label" for="<%= "inquiry_product_id_#{inquiry_product.object.id}" %>"></label>
                 </span>
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.object.sr_no %></span>
               <strong><%= inquiry_product.object.product.sku %> - <%= inquiry_product.object.product.name %>
                 <% if is_authorized(inquiry_product.object.product,'sku_purchase_history') && policy(inquiry_product.object.product).sku_purchase_history? %>
-                  <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a>
-                  <a class="ml-2 text-small" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-inventory mr-1 text-small"></i>Resync Inventory</a>
+                  <a class="ml-2 text-small btn icon-title bmro-btn0"  title="History" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="bmro-history-icon mr-1 text-small"></i></a>
+                  <a class="ml-2 text-small btn icon-title bmro-btn0" title="Resync Inventory" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="bmro-inventory-icon mr-1 text-small"></i></a>
                 <% end %></strong>
             </h6>
             <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
@@ -42,7 +42,7 @@
                   <div class="col-12 col-md-3">
                     <div class="d-flex">
                       <span class="flex-fill">
-                        <%= inquiry_product_supplier.association :supplier, collection: selected_option_or_nil(inquiry_product_supplier, :supplier), label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, :'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id, 'data-placeholder': 'Type to Search'} %>
+                        <%= inquiry_product_supplier.association :supplier, collection: selected_option_or_nil(inquiry_product_supplier, :supplier), label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon bmro-fix-width', :'data-source' => autocomplete_overseers_suppliers_path, :'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id, 'data-placeholder': 'Type to Search'} %>
                       </span>
                       <span class="<%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "align-self-center" : "align-self-top" %> ml-1">
                         <% if inquiry_product.object.inquiry_product_suppliers.present? && !inquiry_product.object.inquiry_product_suppliers.first.supplier.rating.nil? %>
@@ -52,39 +52,39 @@
                     </div>
                   </div>
                   <div class="col-6 col-md-2">
-                    <%= inquiry_product_supplier.input :bp_catalog_name, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Supplier Material Name" : false, placeholder: placeholder_for(inquiry_product_supplier, :bp_catalog_name) %>
+                    <%= inquiry_product_supplier.input :bp_catalog_name, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Supplier Material Name" : false, placeholder: placeholder_for(inquiry_product_supplier, :bp_catalog_name), input_html: { class: 'bmro-form-input' } %>
                   </div>
                   <div class="col-6 col-md-2">
-                    <%= inquiry_product_supplier.input :bp_catalog_sku, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Supplier Material Code" : false, placeholder: placeholder_for(inquiry_product_supplier, :bp_catalog_sku) %>
+                    <%= inquiry_product_supplier.input :bp_catalog_sku, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Supplier Material Code" : false, placeholder: placeholder_for(inquiry_product_supplier, :bp_catalog_sku), input_html: { class: 'bmro-form-input' } %>
                   </div>
                   <div class="col-md-5">
                     <div class="d-flex flex-row">
                       <div class="mr-1">
-                        <%= inquiry_product_supplier.input :lowest_unit_cost_price, disabled: true, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Lowest" : false, wrapper: :input_group do %>
-                          <%= inquiry_product_supplier.input_field :lowest_unit_cost_price, class: "form-control text-right", disabled: true, placeholder: placeholder_for(inquiry_product_supplier, :lowest_unit_cost_price) %>
-                          <div class="input-group-append">
+                        <%= inquiry_product_supplier.input :lowest_unit_cost_price, disabled: true, input_html: { class: 'bmro-form-input bmro-inside-width' }, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Lowest" : false, wrapper: :input_group do %>
+                          <%= inquiry_product_supplier.input_field :lowest_unit_cost_price, class: "form-control text-right bmro-form-input", disabled: true, placeholder: placeholder_for(inquiry_product_supplier, :lowest_unit_cost_price) %>
+                          <div class="input-group-append bmro-btn-direction bmro-button-parent">
                             <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-lowest-unit-cost-price" do %>
-                              <i class="far fa-arrow-right"></i>
+                              <i class="bmro-icon-arrow-left"></i>
                             <% end %>
                           </div>
                         <% end %>
                       </div>
-                      <div class="mr-1">
-                        <%= inquiry_product_supplier.input :unit_cost_price, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Unit Price' : false, placeholder: placeholder_for(inquiry_product_supplier, :unit_cost_price) %>
+                      <div class="mr-1 ">
+                        <%= inquiry_product_supplier.input :unit_cost_price, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Unit Price' : false, input_html: { class: 'bmro-form-input' }, placeholder: placeholder_for(inquiry_product_supplier, :unit_cost_price) %>
                       </div>
                       <div class="mr-1">
-                        <%= inquiry_product_supplier.input :latest_unit_cost_price, disabled: true, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Latest" : false, wrapper: :input_group do %>
-                          <div class="input-group-prepend">
-                            <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-latest-unit-cost-price" do %>
-                              <i class="far fa-arrow-left"></i>
+                        <%= inquiry_product_supplier.input :latest_unit_cost_price, disabled: true, input_html: { class: 'bmro-form-input bmro-inside-width' }, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Latest" : false, wrapper: :input_group do %>
+                          <div class="input-group-prepend bmro-btn-direction bmro-button-parent">
+                            <%= f.button :button, type: "button", class: "btn btn-success bmro-btn-direction update-with-best-price update-with-latest-unit-cost-price" do %>
+                              <i class="bmro-icon-arrow-right"></i>
                             <% end %>
                           </div>
-                          <%= inquiry_product_supplier.input_field :latest_unit_cost_price, class: "form-control", disabled: true, placeholder: placeholder_for(inquiry_product_supplier, :latest_unit_cost_price) %>
+                          <%= inquiry_product_supplier.input_field :latest_unit_cost_price, class: "form-control bmro-form-input", disabled: true, placeholder: placeholder_for(inquiry_product_supplier, :latest_unit_cost_price) %>
                         <% end %>
                       </div>
-                      <div class="ml-1 <%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'align-self-center' : '' %>">
+                      <div class="ml-1 bmro-danger-icon-padding <%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'align-self-center' : '' %>">
                         <%= inquiry_product_supplier.remove_nested_fields_link do %>
-                          <i class="far fa-times text-danger"></i>
+                          <i class="bmro-product-trash bmro-product-trash-margin"></i>
                         <% end if is_authorized(inquiry_product_supplier.object,'destroy') && policy(inquiry_product_supplier.object).destroy? %>
                       </div>
                     </div>
@@ -94,14 +94,14 @@
             <% end %>
 
             <div class="form-group">
-              <%= inquiry_product.add_nested_fields_link :inquiry_product_suppliers, 'Add Supplier', class: 'btn btn-outline-success btn-sm-down-block' %>
+              <%= inquiry_product.add_nested_fields_link :inquiry_product_suppliers, 'Add Supplier', class: 'btn btn-outline-success bmro-button btn-sm-down-block' %>
             </div>
             <hr class="<%= f.object.inquiry_products.last == inquiry_product.object ? 'd-none' : '' %>"/>
           <% end %>
         </div>
-        <div class="card-footer">
+        <div class="card-footer bmro-card-footer">
           <% if is_authorized(@inquiry,'update_suppliers') %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+            <%= button_tag(type: "submit", class: "btn bmro-button btn-warning btn-block") do %>
               <i class="fal fa-pen"></i> Update Suppliers
             <% end %>
           <% end %>

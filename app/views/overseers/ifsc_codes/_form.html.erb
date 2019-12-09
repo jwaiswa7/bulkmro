@@ -6,44 +6,46 @@
 
   <%= simple_form_for([:overseers, @ifsc_code], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
+    <div class="bmro-card bmro-card-padding">
+      <div class="form-row">
+        <div class="col-4">
+          <%= f.association :bank, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, collection: Bank.all, required: true, prompt: "Choose a bank" %>
+        </div>
 
-    <div class="form-row">
-      <div class="col-4">
-        <%= f.association :bank, collection: Bank.all, required: true, prompt: "Choose a bank" %>
+        <div class="col-4">
+          <%= f.input :branch, input_html: { class: 'bmro-form-input' }, required: true %>
+        </div>
+
+        <div class="col-4">
+          <%= f.input :ifsc_code, input_html: { class: 'bmro-form-input' }, required: true, label: 'IFSC Code' %>
+        </div>
+
       </div>
 
-      <div class="col-4">
-        <%= f.input :branch, required: true %>
+      <div class="form-row">
+        <div class="col-12">
+          <%= f.input :address, input_html: { class: 'bmro-form-input' }, required: true %>
+        </div>
+
+        <div class="col-4">
+          <%= f.input :city, input_html: { class: 'bmro-form-input' } %>
+        </div>
+
+        <div class="col-4">
+          <%= f.input :district, input_html: { class: 'bmro-form-input' } %>
+        </div>
+
+        <div class="col-4">
+          <%= f.input :state, input_html: { class: 'bmro-form-input' } %>
+        </div>
+
+        <div class="col-4">
+          <%= f.input :contact, input_html: { class: 'bmro-form-input' } %>
+        </div>
       </div>
-
-      <div class="col-4">
-        <%= f.input :ifsc_code, required: true, label: 'IFSC Code' %>
-      </div>
-
-    </div>
-
-    <div class="form-row">
-      <div class="col-12">
-        <%= f.input :address, required: true %>
-      </div>
-
-      <div class="col-4">
-        <%= f.input :city %>
-      </div>
-
-      <div class="col-4">
-        <%= f.input :district %>
-      </div>
-
-      <div class="col-4">
-        <%= f.input :state %>
-      </div>
-
-      <div class="col-4">
-        <%= f.input :contact %>
-      </div>
-    </div>
-
-    <%= action_button(action_name, @ifsc_code) %>
+      <div class="bmro-button-parent">
+        <%= action_button(action_name, @ifsc_code) %>
+      </div> 
+    </div>   
   <% end %>
 </div>

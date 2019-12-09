@@ -1,22 +1,24 @@
 <%= provide :container_fluid, true %>
+<% provide :so_po_doc_included, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :outward_doc_included, true %>
+<% provide :documentation_guide, true %>
 <% content_for :page_title do %>
   AR Invoice Requests
 <% end %>
 
 <% content_for :header_row do %>
-  <th class="no-sort all"></th>
-  <th class="no-sort">Status</th>
-  <th class="sort" data-toggle="tooltip" title="AR Invoice ID" data-name="ar_invoice_number"> AR Invoice number</th>
-  <th class="no-sort">Inquiry #</th>
-  <th class="no-sort">Company name</th>
-  <th class="no-sort all text-center" data-toggle="tooltip" title="Inside Sales & Procurement" data-name="is_owner_id">IS&P</th>
-  <th class="no-sort all text-center" data-name="logistics_owner_id">Logistics Owner</th>
-  <th class="no-sort">Order #</th>
-  <th class="no-sort">Outward dispatches</th>
-  <th class="sort desktop" data-name="created_at">Created On</th>
+  <th class="no-sort all" width="94px">Quick Actions</th>
+  <th class="sort text-left" data-toggle="tooltip" title="AR Invoice ID" data-name="ar_invoice_number">Invoice<span class="bmro-table-margin text-left">#</span></th>
+  <th class="no-sort text-left">Status</th>
+  <th class="no-sort text-right">Inquiry #</th>
+  <th class="no-sort text-left">Company name</th>
+  <th class="no-sort all text-left" data-toggle="tooltip" title="Inside Sales & Procurement" data-name="is_owner_id">IS&P</th>
+  <th class="no-sort all text-left" data-name="logistics_owner_id">Logistics Owner</th>
+  <th class="no-sort text-right">Order<span class="bmro-table-margin">#</span></th>
+  <th class="no-sort text-left">Outward dispatches</th>
+  <th class="sort desktop text-left" data-name="created_at">Created On</th>
 <% end %>
 
 <% content_for :filter_row do %>

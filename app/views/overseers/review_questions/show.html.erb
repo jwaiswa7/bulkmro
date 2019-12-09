@@ -1,12 +1,12 @@
 <div class="col-lg-12">
 
-  <section class="pt-3 pt-lg-4 pb-2">
+  <section class="pt-0 pt-lg-0 pb-0">
     <div class="d-md-flex justify-content-between">
-      <h3 class="display-5 d-flex align-items-center">
+      <h3 class="display-5 d-flex align-items-center bmro-form-heading">
         Review Question Show
       </h3>
       <% if is_authorized(@review_question, 'show') %>
-        <a href="<%= edit_overseers_review_question_path(@review_question) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
+        <a href="<%= edit_overseers_review_question_path(@review_question) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down bmro-button"><i class="fal fa-pen mr-1"></i>Edit</a>
       <% end %>
     </div>
 
@@ -28,21 +28,27 @@
   <section class="mb-3">
     <div class="card mb-2">
       <div class="card-body">
-        <h6 class="text-uppercase text-black-50 mb-1">Details</h6>
+        <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-12 mb-2">
-            <strong class="d-block">Question</strong>
+            <strong class="d-block bmro-summary-heading">Question</strong>
+            <div class="bmro-summary-data">
             <%= @review_question.question %>
+            </div>
           </div>
         </div>
         <div class="form-row">
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Weightage</strong>
+            <strong class="d-block bmro-summary-heading">Weightage</strong>
+            <div class="bmro-summary-data">
             <%= @review_question.weightage %>
+            </div>
           </div>
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Question Type</strong>
+            <strong class="d-block bmro-summary-heading">Question Type</strong>
+            <div class="bmro-summary-data">
             <%= @review_question.question_type %>
+            </div>
           </div>
         </div>
       </div>
