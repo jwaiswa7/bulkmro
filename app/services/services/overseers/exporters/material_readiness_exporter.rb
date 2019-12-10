@@ -5,16 +5,14 @@ class Services::Overseers::Exporters::MaterialReadinessExporter < Services::Over
     @export_name = 'material_readiness_queue'
     @path = Rails.root.join('tmp', filename)
     @columns = ['PO Request', 'Inquiry', 'Customer Company Name', 'Material Status', 'Supplier PO', 'Supplier PO Date', 'Supplier Name', 'PO Type', 'Comments(Latest First)', 'Sales Order Date', 'Sales Order', 'Committed Date to Customer', 'IS&P', 'Logistics Owner', 'Material Follow Up Date', 'Expected Delivery Date', 'Payment Request status', 'Percentage Paid', 'Requested Date', 'Buying Price', 'Selling Price', 'PO Margin %', 'Overall Margin %']
-    @export.update_attributes(export_type: 96, status: 'Enqueued')
   end
 
   def call
     perform_export_later('MaterialReadinessExporter', @arguments)
   end
 
-
   def build_csv
-    @export.update_attributes(status: 'Processing')
+    @export = Export.create!(export_type: 96, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     service = Services::Overseers::Finders::MaterialReadinessQueues.new({}, @overseer, paginate: false)
     service.call
     service.records.find_each(batch_size: 100) do |record|

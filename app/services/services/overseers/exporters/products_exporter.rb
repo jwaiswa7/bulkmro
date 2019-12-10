@@ -6,7 +6,6 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
     @export_name = 'products'
     @path = Rails.root.join('tmp', filename)
     @columns = ['id', 'SKU', 'Name', 'Category', 'Sub Category 1', 'Sub Category 2', 'Brand', 'UOM', 'Hsn/Sac Code', 'MPN', 'Tax Percentage', 'Is Service', 'Is Active', 'SAP Synced', 'Created by', 'Created At' ]
-    @export.update_attributes(export_type: 5, status: 'Enqueued')
   end
 
   def call
@@ -20,7 +19,7 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
       records = model
     end
     # records.each do |record|
-    @export.update_attributes(status: 'Processing')
+    @export = Export.create!(export_type: 5, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     records.includes(:category, :brand, :measurement_unit).all.order(created_at: :desc).find_each(batch_size: 100) do |record|
       rows.push(
         id: record.id,

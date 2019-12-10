@@ -5,7 +5,6 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
     @export_name = 'companies'
     @path = Rails.root.join('tmp', filename)
     @columns = ['name', 'company_alias', 'industry', 'remote_uid', 'state_name', 'company_contact', 'payment_option', 'inside_sales_owner', 'outside_sales_owner', 'sales_manager', 'site', 'phone', 'mobile', 'email', 'pan', 'tan', 'company_type', 'nature_of_business', 'credit_limit', 'is_msme', 'tax_identifier', 'created_at']
-    @export.update_attributes(export_type: 10, status: 'Enqueued')
   end
 
   def call
@@ -18,7 +17,8 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
     else
       records = model.includes({ addresses: :state }, :company_contacts, :inside_sales_owner, :outside_sales_owner, :industry, :account).all.order(created_at: :desc)
     end
-    @export.update_attributes(status: 'Processing')
+
+    @export = Export.create!(export_type: 10, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     records.find_each(batch_size: 100) do |record|
       rows.push(
         name: record.name,
