@@ -17,7 +17,6 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       @ids = args[2].pluck(:id).uniq
     end
     @rows = []
-    @export = Export.create!(filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
   end
 
   def filename
