@@ -21,7 +21,6 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
         'Invoice Status',
         'POD Status'
     ]
-    @export.update_attributes(export_type: 25, status: 'Enqueued')
   end
 
   def call
@@ -34,7 +33,8 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
     else
       records = model.where(created_at: start_at..end_at).where.not(sales_order_id: nil).where.not(metadata: nil).order(invoice_number: :asc)
     end
-    @export.update_attributes(status: 'Processing')
+
+    @export = Export.create!(export_type: 25, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     records.find_each(batch_size: 200) do |sales_invoice|
       sales_order = sales_invoice.sales_order
       inquiry = sales_invoice.inquiry

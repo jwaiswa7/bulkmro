@@ -5,7 +5,6 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
     @export_name = 'activities'
     @path = Rails.root.join('tmp', filename)
     @columns = ['created_by', 'account', 'company', 'company_type', 'inquiry', 'commercial_status', 'contact_name', 'purpose', 'type', 'points_discussed', 'actions_required', 'misc_expences', 'activity_date', 'created']
-    @export.update_attributes(export_type: 55, status: 'Enqueued')
   end
 
   def call
@@ -18,7 +17,8 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
     else
       records = model.where('created_at >= :start_at AND created_at <= :end_at', start_at: @start_at, end_at: @end_at).order(created_at: :desc)
     end
-    @export.update_attributes(status: 'Processing')
+
+    @export = Export.create!(export_type: 55, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     records.find_each(batch_size: 100) do |record|
       name = record.created_by.present? ? record.created_by.full_name : record.id
       rows.push(
