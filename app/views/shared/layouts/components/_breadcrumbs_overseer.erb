@@ -53,12 +53,6 @@
         <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
       </a>
     <% end %>
-    <% if content_for?(:can_be_directly_exported) && is_authorized(current_model.singularize.downcase,'export_all') %>
-      <% export_status = Export.send(controller_path.split('/').last).not_filtered.last %>
-      <a href="<%= status_process.include?(export_status.status) ? '' : [request.path, '/', 'export_all.csv'].join  %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 export-button <%= status_process.include?(export_status.status) ? 'export-disable' : '' %>" <% if export_status.present? %>data-badge="<%= [time_ago_in_words(export_status.created_at), "ago"].join(' ') %><% end %>">
-        <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
-      </a>
-    <% end %>
 
     <% if content_for?(:can_be_directly_exported_filtered_records) && is_authorized(current_model.singularize.downcase,'export_filtered_records') %>
       <%= button_tag(type: 'button', class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button", id: 'export_filtered_records') do %>
@@ -88,12 +82,6 @@
     <% if content_for?(:can_be_directly_generated) && is_authorized(current_model.singularize.downcase).generate_all? %>
       <a href="<%= [request.path, '/', 'generate_all'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down bmro-button">
         <i class="bmro-download-icon bmro-padding-icons-title"></i>Generate <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
-      </a>
-    <% end %>
-    <% if content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness') %>
-      <% export_status = Export.where(export_type: 96).not_filtered.last %>
-      <a href= "<%= status_process.include?(export_status.status) ? '' : [request.path.chomp('material_readiness_queue'), 'export_material_readiness.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 export-button <%= status_process.include?(export_status.status) ? 'export-disable' : '' %> " <% if export_status.present? %>data-badge="<%= [time_ago_in_words(export_status.created_at), "ago"].join(' ') %><% end %>">
-        <i class="fal fa-download mr-1"></i>Material Readiness Queue
       </a>
     <% end %>
   </div>

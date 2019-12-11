@@ -32,7 +32,7 @@
   <% if (content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all')) || (content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness')) %>
         <span class="bmro-downimg"></span>
         <% if content_for?(:heading) %>
-          <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
+          <h4 class="dropdown-toggle page-title bmro-drop-arr" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
         <% else %>
           <h4 class="dropdown-toggle page-title bmro-drop-arr" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4>
         <% end %>
@@ -40,17 +40,17 @@
         <% if content_for?(:can_be_directly_exported_partial) %>
           <%= render partial:   "overseers/"+current_model.downcase+"/download_dropdown" rescue nil %>
         <% else %>
-
+          <% export_status = Export.send(controller_path.split('/').last).not_filtered.last %>
           <% if content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all') %>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="<%= [request.path, '/', 'export_all.csv'].join %>"><%= "EXPORT " +current_model_header %></a>
+              <a class="btn dropdown-item" href="<%= [request.path, '/', 'export_all.csv'].join %>" data-badge="8 hours ago" <% if export_status.present? %>data-badge="<%= [time_ago_in_words(export_status.created_at), "ago"].join(' ') %><% end %>" ><%= "EXPORT " +current_model_header %></a>
               <% if content_for?(:can_be_directly_exported_filtered_records) && is_authorized(current_model_downcase,'export_filtered_records') %>
-                <a class="dropdown-item" href="#" id="export_filtered_records">Filtered <%= current_model_header %></a>
+                <a class="btn dropdown-item" href="#" id="export_filtered_records" <% if export_status.present? %>data-badge="<%= [time_ago_in_words(export_status.created_at), "ago"].join(' ') %><% end %>">Filtered <%= current_model_header %></a>
               <% end %>
             </div>
           <% elsif content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness') %>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="<%= [request.path.chomp('material_readiness_queue'), 'export_material_readiness.csv'].join %>">Material Readiness Queue</a>
+              <a class="btn dropdown-item" href="<%= [request.path.chomp('material_readiness_queue'), 'export_material_readiness.csv'].join %>" <% if export_status.present? %>data-badge="<%= [time_ago_in_words(export_status.created_at), "ago"].join(' ') %><% end %>">Material Readiness Queue</a>
             </div>
           <% end %>
         <% end %>
