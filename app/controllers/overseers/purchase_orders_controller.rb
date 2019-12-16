@@ -1,5 +1,6 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
   before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po, :cancelled_purchase_modal, :cancelled_purchase_order, :change_material_status]
+  skip_before_action :verify_authenticity_token, only: [:update_logistics_owner]
 
   def index
     authorize_acl :purchase_order
