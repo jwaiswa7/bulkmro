@@ -308,8 +308,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       if message.present?
         ActiveRecord::Base.transaction do
           @purchase_order.save!
-          @purchase_order_comment = @purchase_order.comments.build(message: message, purchase_order: @purchase_order, overseer: current_overseer)
-          @purchase_order_comment.save
+          @purchase_order_comment = PoComment.new(message: message, overseer: current_overseer)
         end
         render json: {success: 1, message: 'Successfully updated '}, status: 200
       else
