@@ -1,11 +1,11 @@
 <div class="col-lg-12">
   <%= render 'shared/snippets/page_header', e: @contact %>
-
+  <% debugger %>
   <%= simple_form_for(@contact, url: action_name == 'edit' ? overseers_contact_path(@contact.to_param) : overseers_contacts_path(:company_id => @company.to_param), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
 
     <%= f.hidden_field :account_id %>
-    <%= f.hidden_field :contact_creation_request_id, value: params[:ccr_id] %>
+    <%= f.hidden_field :contact_creation_request_id, value: params[:ccr_id] || ( params[:contact][:contact_creation_request_id] if params[:contact].present? ) %>
 
     <div class="form-row">
       <div class="col-12">
