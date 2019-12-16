@@ -21,7 +21,6 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         'Quote Type',
         'Opportunity Type'
     ]
-    @export.update_attributes(export_type: 40, status: 'Enqueued')
   end
 
   def call
@@ -34,7 +33,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
     else
       records = model.remote_approved.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc)
     end
-    @export.update_attributes(status: 'Processing')
+    @export = Export.create!(export_type: 40, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     records.find_each(batch_size: 200) do |sales_order|
       inquiry = sales_order.inquiry
 
