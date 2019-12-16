@@ -109,7 +109,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         assigned_email = [contact_email.split('@', 2)[0], '_duplicate', '@', contact_email.split('@', 2)[1]].join('')
       end
 
-      assigned_contact = Contact.where(email: assigned_email).first_or_create!
+      assigned_contact = Contact.where(email: assigned_email).first_or_create
 
       assigned_contact.account = company.account
       assigned_contact.first_name = contact['FirstName']

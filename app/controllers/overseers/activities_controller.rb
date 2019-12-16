@@ -67,7 +67,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
     authorize_acl @activity
     if @activity.save
-      redirect_to pending_overseers_activities_path, notice: flash_message(@activity, action_name)
+      redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
     end
   end
 
