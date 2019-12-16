@@ -295,7 +295,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     authorize_acl @purchase_order
     respond_to do |format|
       if params[:title] == 'Comment'
-        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @purchase_order, url: add_comment_overseers_purchase_order_path(@purchase_order), view_more: edit_material_followup_overseers_purchase_order_path(@purchase_order)}}
+        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @purchase_order, url: add_comment_overseers_purchase_order_path(@purchase_order), view_more: nil}}
       end
     end
   end
