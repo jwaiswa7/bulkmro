@@ -35,7 +35,7 @@ class Overseers::CompaniesController < Overseers::BaseController
   def create
     @company = Company.new(company_params.merge(overseer: current_overseer))
     authorize_acl @company
-    if params[:ccr_id].present?
+    if company_params[:company_creation_request_id].present?
       if @company.save
         if @company.company_creation_request.present?
           @company.company_creation_request.update_attributes(company_id: @company.id)
