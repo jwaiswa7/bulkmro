@@ -49,7 +49,6 @@ class Overseers::ContactsController < Overseers::BaseController
     password = Devise.friendly_token[0, 20]
     @contact = @company.contacts.build(contact_params.merge(account: @company.account, overseer: current_overseer, password: password, password_confirmation: password))
     authorize_acl @contact
-    debugger
     if @contact.save
       if @contact.contact_creation_request.present?
         @contact.contact_creation_request.update_attributes(contact_id: @contact.id)
