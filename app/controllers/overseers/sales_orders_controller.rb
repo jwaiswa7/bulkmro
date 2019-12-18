@@ -209,9 +209,15 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def revise_committed_delivery_date
     authorize_acl @sales_order
 
-    messages = FieldModifiedMessage.for(@sales_order, ['revised_committed_delivery_date'])
-    if messages.present?
-      @sales_order.comments.create(message: messages, overseer: current_overseer, revised_committed_delivery_date: true)
+    if @sales_order.valid?
+      @sales_order.assign_attributes(revised_committed_delivery_date: params['sales_order']['revised_committed_delivery_date'].to_date)
+      messages = FieldModifiedMessage.for(@sales_order, ['revised_committed_delivery_date'])
+      if messages.present? && @sales_order.save
+        @sales_order.inquiry.comments.create(message: messages, overseer: current_overseer, revised_committed_delivery_date: true)
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Either date or attachment is missing'}}, status: 500
+      end
     end
   end
 
@@ -384,8 +390,6 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                 :blobs,
                 :transport_mode,
                 :delivery_type,
-                :revised_committed_delivery_date,
-                revised_committed_delivery_attachments: [],
                 attachments: [],
                 rows_attributes: [
                     :id,
