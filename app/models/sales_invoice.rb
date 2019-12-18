@@ -309,10 +309,11 @@ class SalesInvoice < ApplicationRecord
   end
 
   def set_delay_for_nil_delivery_date
-    self.delivery_date.nil? && ((Date.today > self.sales_order.revised_committed_delivery_date) if self.sales_order.revised_committed_delivery_date.present? || self.inquiry.customer_committed_date.present?)
-
-    # TODO check
-    #self.delivery_date.nil? && ((Date.today > self.inquiry.customer_committed_date) if self.inquiry.customer_committed_date.present?)
+    if self.sales_order.revised_committed_delivery_date.present?
+      self.delivery_date.nil? && (Date.today > self.sales_order.revised_committed_delivery_date)
+    elsif self.inquiry.customer_committed_date.present?
+      self.delivery_date.nil? && (Date.today > self.inquiry.customer_committed_date)
+    end
   end
 
   def calculated_delay_bucket
