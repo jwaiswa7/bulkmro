@@ -75,6 +75,9 @@ class Inquiry < ApplicationRecord
   has_many_attached :supplier_quotes
   has_one_attached :final_supplier_quote
   has_one_attached :calculation_sheet
+  has_one_attached :committed_delivery_attachment
+  has_one_attached :customer_po_received_attachment
+  has_one_attached :customer_po_delivery_attachment
 
   enum status: {
       'Lead by O/S': 11,
@@ -220,8 +223,18 @@ class Inquiry < ApplicationRecord
     inquiry.validates_presence_of :customer_committed_date
   end
 
+  with_options if: :has_sales_orders_and_not_before_dec? do |inquiry|
+    inquiry.validates_with FilePresenceValidator, attachment: :committed_delivery_attachment
+    inquiry.validates_with FilePresenceValidator, attachment: :customer_po_received_attachment
+    inquiry.validates_with FilePresenceValidator, attachment: :customer_po_delivery_attachment
+  end
+
   def has_sales_orders_and_not_legacy?
     (self.sales_orders.present? || self.force_has_sales_orders == true) && not_legacy?
+  end
+
+  def has_sales_orders_and_not_before_dec?
+    (self.sales_orders.present? || self.force_has_sales_orders == true) && not_legacy? && self.created_at.beginning_of_day >= Date.new(2019, 12, 10).end_of_day
   end
 
   def valid_for_new_sales_order?

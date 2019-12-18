@@ -1,5 +1,5 @@
 class Overseers::SalesOrdersController < Overseers::BaseController
-  before_action :set_sales_order, only: [:resync, :new_purchase_orders_requests, :preview_purchase_orders_requests, :create_purchase_orders_requests, :render_modal_form, :add_comment]
+  before_action :set_sales_order, only: [:resync, :new_purchase_orders_requests, :preview_purchase_orders_requests, :create_purchase_orders_requests, :render_modal_form, :add_comment, :render_committed_date_revision_form, :revise_committed_delivery_date]
 
   def pending
     authorize_acl :sales_order
@@ -198,6 +198,23 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     redirect_to so_sync_pending_overseers_sales_orders_path
   end
 
+  def render_committed_date_revision_form
+    authorize_acl @sales_order
+
+    respond_to do |format|
+      format.html {render partial: 'overseers/dashboard/revise_committed_delivery_date', locals: {obj: @sales_order, url: revise_committed_delivery_date_overseers_sales_order_path(@sales_order)}}
+    end
+  end
+
+  def revise_committed_delivery_date
+    authorize_acl @sales_order
+
+    messages = FieldModifiedMessage.for(@sales_order, ['revised_committed_delivery_date'])
+    if messages.present?
+      @sales_order.comments.create(message: messages, overseer: current_overseer, revised_committed_delivery_date: true)
+    end
+  end
+
   def new_purchase_orders_requests
     authorize_acl :sales_order
 
@@ -367,6 +384,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                 :blobs,
                 :transport_mode,
                 :delivery_type,
+                :revised_committed_delivery_date,
+                revised_committed_delivery_attachments: [],
                 attachments: [],
                 rows_attributes: [
                     :id,

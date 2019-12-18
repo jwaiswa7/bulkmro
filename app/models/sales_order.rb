@@ -19,6 +19,7 @@ class SalesOrder < ApplicationRecord
   has_closure_tree(name_column: :to_s)
 
   has_one_attached :serialized_pdf
+  has_many_attached :revised_committed_delivery_attachments
 
   belongs_to :sales_quote
 
@@ -275,9 +276,13 @@ class SalesOrder < ApplicationRecord
   end
 
   def calculate_time_delay
-    if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present? && self.inquiry.customer_committed_date.present?
+    if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present? && self.inquiry.customer_committed_date.present? && self.revised_committed_delivery_date.present?
       ((self.invoices.last.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
     end
+    # TODO check
+    #if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present? && self.inquiry.customer_committed_date.present?
+    #  ((self.invoices.last.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
+    #end
   end
 
   def set_so_status_value

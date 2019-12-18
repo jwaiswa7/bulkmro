@@ -58,6 +58,7 @@
     <% end %>
 
     <div class="followup"></div>
+    <div class="revise-committed-delivery-date"></div>
 
     <% if @dashboard.recent_sales_orders.any? %>
       <div class="col-12 col-lg-6 mt-3 mt-lg-0">
@@ -82,6 +83,10 @@
                 <tr>
                   <td>
                     <%= row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'eye', 'View Sales Order', 'info', :_blank) %>
+                    <%= link_to('', class: ['btn btn-sm btn-dark revise-committed-delivery-date'], 'data-sales-order-id': sales_order.id, title: 'Revise Committed Delivery Date', remote: true) do
+                      concat content_tag(:span, '')
+                      concat content_tag :i, nil, class: ['fal fa-calendar'].join
+                    end %>
                   </td>
                   <td><%= link_to(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), target: '_blank') %></td>
                   <td><%= sales_order.id %></td>

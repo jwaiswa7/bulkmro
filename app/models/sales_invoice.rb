@@ -265,7 +265,9 @@ class SalesInvoice < ApplicationRecord
   # ======================================================================================================
 
   def calculated_committed_delivery_tat
-    if self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
+    if self.sales_order.revised_committed_delivery_date.present? && self.inquiry.customer_order_date.present?
+      (self.sales_order.revised_committed_delivery_date - self.inquiry.customer_order_date).to_i
+     elsif self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
       (self.inquiry.customer_committed_date - self.inquiry.customer_order_date).to_i
     end
   end
@@ -307,7 +309,10 @@ class SalesInvoice < ApplicationRecord
   end
 
   def set_delay_for_nil_delivery_date
-    self.delivery_date.nil? && ((Date.today > self.inquiry.customer_committed_date) if self.inquiry.customer_committed_date.present?)
+    self.delivery_date.nil? && ((Date.today > self.sales_order.revised_committed_delivery_date) if self.sales_order.revised_committed_delivery_date.present? || self.inquiry.customer_committed_date.present?)
+
+    # TODO check
+    #self.delivery_date.nil? && ((Date.today > self.inquiry.customer_committed_date) if self.inquiry.customer_committed_date.present?)
   end
 
   def calculated_delay_bucket
@@ -339,7 +344,9 @@ class SalesInvoice < ApplicationRecord
   end
 
   def cosr_calculate_time_delay
-    if self.delivery_date.present? && self.inquiry.customer_committed_date.present?
+    if self.delivery_date.present? && self.sales_order.revised_committed_delivery_date.present?
+      ((self.delivery_date.to_time.to_i - self.sales_order.revised_committed_delivery_date.to_time.to_i) / 60.0).ceil.abs
+    elsif self.delivery_date.present? && self.inquiry.customer_committed_date.present?
       ((self.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
     end
   end
