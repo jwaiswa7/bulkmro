@@ -2195,5 +2195,22 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
       end
     end
   end
+
+  def revised_committed_delivery_date_in_prev_inquiries
+    inquiries = Inquiry.where.not(customer_committed_date: nil)
+    Chewy.strategy(:bypass) do
+      inquiries.find_each(batch_size: 1000) do |inquiry|
+        if inquiry.sales_orders.present?
+          inquiry.sales_orders.each do |so|
+            begin
+              so.update_column(:revised_committed_delivery_date, inquiry.customer_committed_date)
+            rescue StandardError => e
+              puts "Rescued: #{e.inspect}"
+            end
+          end
+        end
+      end
+    end
+  end
 end
 
