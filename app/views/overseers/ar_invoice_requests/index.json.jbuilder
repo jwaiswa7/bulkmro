@@ -23,7 +23,7 @@ json.data (@ar_invoice_requests) do |ar_invoice|
                         row_action_button_without_fa(new_overseers_outward_dispatch_path(ar_invoice_request_id: ar_invoice), 'bmro-icon-table bmro-relationship', 'Add outward dispatch', 'info', :_blank)
                       end,
                       if is_authorized(ar_invoice, 'index') && policy(ar_invoice).index?
-                        link_to('', class: ['icon-title btn btn-sm btn-success comment-ar-invoice-request'], 'data-model-id': ar_invoice.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-success comment-ar-invoice-request'], 'data-model-id': ar_invoice.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-proof'].join
                         end

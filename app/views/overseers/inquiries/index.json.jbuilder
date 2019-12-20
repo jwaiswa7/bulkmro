@@ -11,7 +11,7 @@ json.data (@inquiries) do |inquiry|
             row_action_button(new_overseers_freight_request_path(inquiry_id: inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
           end,
           if is_authorized(inquiry, 'index')
-            link_to('', class: ['icon-title btn btn-sm btn-success comment-inquiry'], 'data-model-id': inquiry.id, title: 'Comment', remote: true) do
+            link_to('', class: ['icon-title btn btn-sm btn-success comment-inquiry'], 'data-model-id': inquiry.id, title: 'Comment','data-title': 'Comment', remote: true) do
               concat content_tag(:span, '')
               concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
             end

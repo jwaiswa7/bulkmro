@@ -14,7 +14,7 @@ json.data (@invoice_requests) do |invoice_request|
                         end
                       end,
                       if is_authorized(invoice_request, 'index')
-                        link_to('', class: ['icon-title btn btn-sm btn-success comment-invoice-request'], 'data-model-id': invoice_request.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-success comment-invoice-request'], 'data-model-id': invoice_request.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end
