@@ -15,6 +15,9 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
     if @indexed_records.present?
       records = @indexed_records
     end
+
+    @export = Export.create!(export_type: 2, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id, status: 'Processing')
+
     records.each do |record|
       rows.push(
         inquiry_id: record.attributes['id'],
@@ -66,7 +69,7 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
         time_regret: record.attributes['regret_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['regret_date'])) : '-'
       )
     end
-    export = Export.create!(export_type: 2, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id, status: 'Completed')
-    generate_csv(export)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end
