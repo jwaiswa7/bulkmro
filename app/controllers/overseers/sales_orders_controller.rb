@@ -202,7 +202,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize_acl @sales_order
 
     respond_to do |format|
-      format.html {render partial: 'overseers/dashboard/revise_committed_delivery_date', locals: {obj: @sales_order, url: revise_committed_delivery_date_overseers_sales_order_path(@sales_order)}}
+      format.html {render partial: 'shared/layouts/revise_committed_delivery_date', locals: {obj: @sales_order, url: revise_committed_delivery_date_overseers_sales_order_path(@sales_order)}}
     end
   end
 
