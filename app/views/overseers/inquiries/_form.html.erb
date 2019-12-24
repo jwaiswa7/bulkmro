@@ -47,6 +47,14 @@
                       <% else %>
                         <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-width-select  bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
                       <% end %>
+                      <div class= "<%='d-none' if !@inquiry.lost_regret_reason.present? %>" id="regret-field" >
+                        <%= f.input :lost_regret_reason, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.lost_regret_reasons), input_html: {class: 'disabled'}, include_blank: 'Select Reason', selected: @inquiry.lost_regret_reason %>
+                        <% if f.object.persisted? %>
+                          <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |inquiry_comment| %>
+                            <%= inquiry_comment.input :message, as: :text, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''}, label: 'Comment Message'%>
+                          <% end %>
+                        <% end %>
+                      </div>
                     </div>
                     <div class="bmro-button-parent bmro-model-button">
                       <%= action_button(action_name, @inquiry) %>
@@ -259,7 +267,7 @@
             <div class="col-12 col-md-7">
               <div class="d-block d-md-flex align-items-end">
                 <div class="flex-grow-1">
-                  <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: {multiple: true}, input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-custom-height' }, label: 'Supplier quotes' %>
+                  <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: {multiple: true, class: 'bmro-form-input bmro-dropdown-icon bmro-custom-height'},  label: 'Supplier quotes' %>
                 </div>
                 <div class="form-group bmro-download-icon bmro-btn-pos width-30">
                   <% f.object.supplier_quotes.attachments.each do |attachment| %>
