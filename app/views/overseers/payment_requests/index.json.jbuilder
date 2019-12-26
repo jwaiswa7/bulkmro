@@ -8,7 +8,7 @@ json.data (@payment_requests) do |payment_request|
                         row_action_button_without_fa(edit_overseers_po_request_payment_request_path(payment_request.po_request, payment_request), 'bmro-icon-table bmro-icon-pencil', 'Edit Payment Request', 'warning')
                       end,
                       if is_authorized(payment_request, 'index')
-                        link_to('', class: ['icon-title btn btn-sm btn-success comment-payment-request'], 'data-model-id': payment_request.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-success comment-payment-request'], 'data-model-id': payment_request.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end

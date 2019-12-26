@@ -27,7 +27,7 @@ json.data (@outward_dispatches) do |outward_dispatch|
                         ]
                       end,
                       if is_authorized(outward_dispatch, 'index')
-                        link_to('', class: ['icon-title btn btn-sm btn-success comment-outward-dispatch'], 'data-model-id': outward_dispatch.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-success comment-outward-dispatch'], 'data-model-id': outward_dispatch.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end
