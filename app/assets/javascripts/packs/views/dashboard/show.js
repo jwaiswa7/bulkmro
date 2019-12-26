@@ -18,7 +18,6 @@ const show = () => {
             disableBackdateOption($('#inquiry_quotation_followup_date'));
         });
     });
-    openModal()
 };
 
 export default show

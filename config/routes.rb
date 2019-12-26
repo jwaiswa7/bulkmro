@@ -372,8 +372,6 @@ Rails.application.routes.draw do
 
     resources :sales_orders do
       member do
-        get 'render_committed_date_revision_form'
-        patch 'revise_committed_delivery_date'
         get 'new_purchase_order'
         get 'new_purchase_orders_requests'
         post 'preview_purchase_orders_requests'
@@ -590,6 +588,8 @@ Rails.application.routes.draw do
             get 'get_relationship_map_json'
             get 'order_cancellation_modal'
             patch 'cancellation'
+            get 'revise_committed_delivery_date'
+            patch 'update_revised_committed_delivery_date'
           end
 
           collection do

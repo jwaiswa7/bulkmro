@@ -30,12 +30,8 @@ json.data (@sales_orders) do |sales_order|
                       if is_authorized(sales_order, 'debugging')
                         row_action_button(debugging_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'cogs', 'Debugging', 'danger', :_blank)
                       end,
-                      #revise_committed_delivery_date
-                      if is_authorized(sales_order, 'render_committed_date_revision_form')
-                        link_to('', class: ['btn btn-sm btn-dark revise-committed-delivery-date'], 'data-sales-order-id': sales_order.id, title: 'Revise Committed Delivery Date', remote: true) do
-                          concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-calendar'].join
-                        end
+                      if is_authorized(sales_order, 'revise_committed_delivery_date')
+                        row_action_button(revise_committed_delivery_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar', 'Revise Customer Committed Delivery Date', 'dark', :_blank)
                       end,
                       if is_authorized(sales_order, 'index')
                         link_to('', class: ['btn btn-sm btn-success comment-sales-order'], 'data-model-id': sales_order.id, title: 'Comment', remote: true) do

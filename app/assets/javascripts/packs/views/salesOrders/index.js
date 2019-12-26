@@ -16,7 +16,6 @@ const index = () => {
 
     commanComment('sales-order','sales_orders');
     removeHrefExport();
-    openModal();
 };
 
 let salesOrderCancel = () => {

@@ -1,5 +1,5 @@
 class Overseers::SalesOrdersController < Overseers::BaseController
-  before_action :set_sales_order, only: [:resync, :new_purchase_orders_requests, :preview_purchase_orders_requests, :create_purchase_orders_requests, :render_modal_form, :add_comment, :render_committed_date_revision_form, :revise_committed_delivery_date]
+  before_action :set_sales_order, only: [:resync, :new_purchase_orders_requests, :preview_purchase_orders_requests, :create_purchase_orders_requests, :render_modal_form, :add_comment]
 
   def pending
     authorize_acl :sales_order
@@ -29,8 +29,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize @sales_orders
 
     respond_to do |format|
-      format.json {render 'account_approval_pending'}
-      format.html {render 'account_approval_pending'}
+      format.json { render 'account_approval_pending' }
+      format.html { render 'account_approval_pending' }
     end
   end
 
@@ -118,7 +118,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def index
     authorize_acl :sales_order
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.json do
         service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
         service.call
@@ -175,7 +175,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     sales_orders = SalesOrder.where.not(sent_at: nil).where(remote_uid: nil, status: :'Approved').where("created_at >= '2019-07-18'")
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.json do
         @drafts_pending_count = sales_orders.count
         @sales_orders = ApplyDatatableParams.to(sales_orders, params)
@@ -196,29 +196,6 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     service = Services::Overseers::SalesOrders::ResyncAllSalesOrders.new
     service.call
     redirect_to so_sync_pending_overseers_sales_orders_path
-  end
-
-  def render_committed_date_revision_form
-    authorize_acl @sales_order
-
-    respond_to do |format|
-      format.html {render partial: 'shared/layouts/revise_committed_delivery_date', locals: {obj: @sales_order, url: revise_committed_delivery_date_overseers_sales_order_path(@sales_order)}}
-    end
-  end
-
-  def revise_committed_delivery_date
-    authorize_acl @sales_order
-
-    if @sales_order.valid?
-      @sales_order.assign_attributes(revised_committed_delivery_date: params['sales_order']['revised_committed_delivery_date'].to_date)
-      messages = FieldModifiedMessage.for(@sales_order, ['revised_committed_delivery_date'])
-      if messages.present? && @sales_order.save
-        @sales_order.inquiry.comments.create(message: messages, overseer: current_overseer, revised_committed_delivery_date: true)
-        render json: {success: 1, message: 'Successfully updated '}, status: 200
-      else
-        render json: {error: {base: 'Either date or attachment is missing'}}, status: 500
-      end
-    end
   end
 
   def new_purchase_orders_requests
@@ -259,7 +236,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       if params['customer_order_status_report'].present?
         delivery_status = params['customer_order_status_report']['delivery_status'] if params['customer_order_status_report']['delivery_status'].present?
       else
-        params['customer_order_status_report'] = { 'category': @categories[0] }
+        params['customer_order_status_report'] = {'category': @categories[0]}
         delivery_status = @delivery_statuses[0]
       end
       format.html {}
@@ -303,7 +280,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       delivery_status = params['customer_order_status_report']['delivery_status'] if params['customer_order_status_report']['delivery_status'].present?
       params['customer_order_status_report']['procurement_specialist'] = params['customer_order_status_report']['procurement_specialist'].split('.')[0] if params['customer_order_status_report']['procurement_specialist'].present?
     else
-      params['customer_order_status_report'] = { 'category': @categories[0] }
+      params['customer_order_status_report'] = {'category': @categories[0]}
       delivery_status = @delivery_statuses[0]
     end
 
@@ -336,7 +313,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize_acl @sales_order
     respond_to do |format|
       if params[:title] == 'Comment'
-        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @sales_order, url: add_comment_overseers_sales_order_path(@sales_order), view_more: overseers_inquiry_comments_path(@sales_order.inquiry.id)}}
+        format.html { render partial: 'shared/layouts/add_comment', locals: {obj: @sales_order, url: add_comment_overseers_sales_order_path(@sales_order), view_more: overseers_inquiry_comments_path(@sales_order.inquiry.id)} }
       end
     end
   end
@@ -362,74 +339,74 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   private
 
-    def set_sales_order
-      @sales_order = SalesOrder.find(params[:id])
-    end
+  def set_sales_order
+    @sales_order = SalesOrder.find(params[:id])
+  end
 
-    def new_purchase_orders_requests_params
-      if params.has_key?(:sales_order)
-        params.require(:sales_order).permit(
+  def new_purchase_orders_requests_params
+    if params.has_key?(:sales_order)
+      params.require(:sales_order).permit(
           :id,
-            po_requests_attributes: [
-                :id,
-                :supplier_id,
-                :inquiry_id,
-                :_destroy,
-                :logistics_owner_id,
-                :bill_from_id,
-                :ship_from_id,
-                :bill_to_id,
-                :ship_to_id,
-                :contact_id,
-                :payment_option_id,
-                :supplier_po_type,
-                :status,
-                :supplier_committed_date,
-                :contact_email,
-                :contact_phone,
-                :blobs,
-                :transport_mode,
-                :delivery_type,
-                attachments: [],
-                rows_attributes: [
-                    :id,
-                    :_destroy,
-                    :status,
-                    :quantity,
-                    :sales_order_row_id,
-                    :product_id,
-                    :brand_id,
-                    :tax_code_id,
-                    :tax_rate_id,
-                    :lead_time,
-                    :measurement_unit_id,
-                    :discount_percentage,
-                    :unit_price
-                ],
-            comments_attributes: [
-            :created_by_id,
-            :updated_by_id,
-            :message,
-            :inquiry_id,
-        ]
-            ],
-        )
-      else
-        {}
-      end
+          po_requests_attributes: [
+              :id,
+              :supplier_id,
+              :inquiry_id,
+              :_destroy,
+              :logistics_owner_id,
+              :bill_from_id,
+              :ship_from_id,
+              :bill_to_id,
+              :ship_to_id,
+              :contact_id,
+              :payment_option_id,
+              :supplier_po_type,
+              :status,
+              :supplier_committed_date,
+              :contact_email,
+              :contact_phone,
+              :blobs,
+              :transport_mode,
+              :delivery_type,
+              attachments: [],
+              rows_attributes: [
+                  :id,
+                  :_destroy,
+                  :status,
+                  :quantity,
+                  :sales_order_row_id,
+                  :product_id,
+                  :brand_id,
+                  :tax_code_id,
+                  :tax_rate_id,
+                  :lead_time,
+                  :measurement_unit_id,
+                  :discount_percentage,
+                  :unit_price
+              ],
+              comments_attributes: [
+                  :created_by_id,
+                  :updated_by_id,
+                  :message,
+                  :inquiry_id,
+              ]
+          ],
+      )
+    else
+      {}
     end
+  end
 
-    def sort_buckets(sort_by, sort_order, indexed_sales_reports)
-      value_present = indexed_sales_reports[0][sort_by].present? && indexed_sales_reports[0][sort_by]['value'].present?
-      case
-      when !value_present && sort_order == 'asc'
-        indexed_sales_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }
-      when !value_present && sort_order == 'desc'
-        indexed_sales_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }.reverse!
-      when value_present && sort_order == 'asc'
-        indexed_sales_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }
-      when value_present && sort_order == 'desc'
-        indexed_sales_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
-      end
+  def sort_buckets(sort_by, sort_order, indexed_sales_reports)
+    value_present = indexed_sales_reports[0][sort_by].present? && indexed_sales_reports[0][sort_by]['value'].present?
+    case
+    when !value_present && sort_order == 'asc'
+      indexed_sales_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }
+    when !value_present && sort_order == 'desc'
+      indexed_sales_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }.reverse!
+    when value_present && sort_order == 'asc'
+      indexed_sales_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }
+    when value_present && sort_order == 'desc'
+      indexed_sales_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
     end
+  end
 end

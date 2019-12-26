@@ -9,6 +9,7 @@ import salesOrdersPending from "./pending";
 import notInvoiced from "./notInvoiced";
 import newPurchaseOrdersRequests from "./newPurchaseOrdersRequests";
 import salesOrdersNewAccountsConfirmation from "./newAccountsConfirmation";
+import disableBackdateOption from "../common/disableBackdateOption";
 
 
 let salesOrders = {
@@ -23,6 +24,8 @@ let salesOrders = {
     notInvoiced: notInvoiced,
     newPurchaseOrdersRequests: newPurchaseOrdersRequests,
     newAccountsConfirmation: salesOrdersNewAccountsConfirmation
-}
+};
+
+disableBackdateOption($('.sales_order_revised_committed_delivery_date'));
 
 export default salesOrders

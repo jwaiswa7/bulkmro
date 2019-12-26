@@ -19,7 +19,7 @@ class SalesOrder < ApplicationRecord
   has_closure_tree(name_column: :to_s)
 
   has_one_attached :serialized_pdf
-  has_many_attached :revised_committed_delivery_attachments
+  has_many_attached :revised_committed_deliveries
 
   belongs_to :sales_quote
 
