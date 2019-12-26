@@ -9,8 +9,7 @@ import salesOrdersPending from "./pending";
 import notInvoiced from "./notInvoiced";
 import newPurchaseOrdersRequests from "./newPurchaseOrdersRequests";
 import salesOrdersNewAccountsConfirmation from "./newAccountsConfirmation";
-import disableBackdateOption from "../common/disableBackdateOption";
-
+import salesOrdersReviseCommittedDeliveryDate from "./reviseCommittedDeliveryDate";
 
 let salesOrders = {
     create: salesOrdersCreate,
@@ -23,9 +22,8 @@ let salesOrders = {
     pending: salesOrdersPending,
     notInvoiced: notInvoiced,
     newPurchaseOrdersRequests: newPurchaseOrdersRequests,
-    newAccountsConfirmation: salesOrdersNewAccountsConfirmation
+    newAccountsConfirmation: salesOrdersNewAccountsConfirmation,
+    reviseCommittedDeliveryDate: salesOrdersReviseCommittedDeliveryDate
 };
-
-disableBackdateOption($('.sales_order_revised_committed_delivery_date'));
 
 export default salesOrders

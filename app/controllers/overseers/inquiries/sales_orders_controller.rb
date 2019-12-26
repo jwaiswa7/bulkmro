@@ -163,16 +163,17 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def update_revised_committed_delivery_date
     authorize_acl @sales_order
+
     if @sales_order.valid?
       @sales_order.assign_attributes(revised_committed_delivery_date: params['sales_order']['revised_committed_delivery_date'], revised_committed_deliveries: params['sales_order']['revised_committed_deliveries'])
 
       messages = FieldModifiedMessage.for(@sales_order, ['revised_committed_delivery_date'])
-
       if messages.present? && @sales_order.save
         @sales_order.inquiry.comments.create(message: messages, overseer: current_overseer, revised_committed_delivery_date: true)
         # render json: {success: 1, message: 'Successfully updated '}, status: 200
       end
-      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
+
+      redirect_to request.referrer, notice: flash_message(@sales_order, action_name)
     end
   end
 

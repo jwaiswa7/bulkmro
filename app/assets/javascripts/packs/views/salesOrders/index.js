@@ -3,7 +3,6 @@ import updateSummaryBox from "../common/updateSummaryBox";
 import exportFilteredRecords from "../common/exportFilteredRecords";
 import commanComment from "../common/commanComment";
 import removeHrefExport from '../common/removeHrefExport';
-import openModal from "../common/openModal";
 
 const index = () => {
     bindSummaryBox(".summary_box", '.status-filter')

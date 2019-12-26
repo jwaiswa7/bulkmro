@@ -83,10 +83,7 @@
                 <tr>
                   <td>
                     <%= row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'eye', 'View Sales Order', 'info', :_blank) %>
-                    <%= link_to('', class: ['btn btn-sm btn-dark revise-committed-delivery-date'], 'data-sales-order-id': sales_order.id, title: 'Revise Committed Delivery Date', remote: true) do
-                      concat content_tag(:span, '')
-                      concat content_tag :i, nil, class: ['fal fa-calendar'].join
-                    end %>
+                    <%= row_action_button(revise_committed_delivery_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar', 'Revise Customer Committed Delivery Date', 'dark', :_blank) %>
                   </td>
                   <td><%= link_to(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), target: '_blank') %></td>
                   <td><%= sales_order.id %></td>
