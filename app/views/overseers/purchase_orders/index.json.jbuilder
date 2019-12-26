@@ -1,7 +1,7 @@
 json.data (@purchase_orders) do |purchase_order|
   json.array! [
                   [
-                      row_action_button_without_fa(relationship_map_overseers_inquiry_purchase_order_path(purchase_order.inquiry.to_param, purchase_order.to_param), 'bmro-icon-table bmro-icon-relationship', 'Relationship Map', 'info', :_blank),
+                      row_action_button_without_fa(relationship_map_overseers_inquiry_purchase_order_path(purchase_order.inquiry.to_param, purchase_order.to_param), 'fal fa-sitemap', 'Relationship Map', 'info', :_blank),
                       if is_authorized(purchase_order, 'show') && policy(purchase_order).show?
                         [row_action_button_without_fa(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order), 'bmro-icon-table bmro-icon-used-view', 'View PO', 'info', :_blank),
                          row_action_button_without_fa(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'bmro-icon-table bmro-icon-pdf', 'Download', 'dark', :_blank)
