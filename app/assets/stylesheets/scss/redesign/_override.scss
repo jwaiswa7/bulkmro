@@ -4220,10 +4220,13 @@ td .media.chat-item{
 .logiscoll.bmro-parent-bg a.bmro-invoice-one{
     background-color: #fff;
 }
-.bmro-trent .node{
-    position: unset;
-    width: 300px;
-    margin: 0 auto;
+/*.bmro-trent .node{
+    // position: unset;
+    // width: 300px;
+    // margin: 0 auto;
+}*/
+.treant svg{
+  all: unset;
 }
 .bmro-summary-margin{
     margin-left: -180px;
