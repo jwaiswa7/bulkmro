@@ -10,16 +10,26 @@
             </div>
 
             <div class="col-6 col-md-6">
-              <%= f.input :revised_committed_deliveries, wrapper: :custom_file, label: 'Delivery Date Revision Attachment' %>
+              <%= f.input :revised_committed_deliveries, wrapper: :custom_file, label: 'Delivery Date Revision Attachment', required: true %>
+
+                <% f.object.revised_committed_deliveries.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="fal fa-download"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                      <i class="fal fa-trash-alt"></i>
+                    <% end if attachment.present? %>
+<!--                  && is_authorized(:attachment, 'destroy') && policy(:attachment).destroy?-->
+                  <% end %>
+                <% end if f.object.revised_committed_deliveries.attached? %>
             </div>
           </div>
 
-          <div class="">
-            <% if f.object.comments.persisted.where(revised_committed_delivery_date: true).size > 0 %>
+          <div class="row">
+            <% if f.object.inquiry.comments.persisted.where(revised_committed_delivery_date: true).size > 0 %>
               <div class="card-body">
-                <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
+                <h6 class="text-uppercase text-black-50 mb-1">Date Revision History</h6>
                 <div class="chats">
-                  <% f.object.comments.persisted.where(revised_committed_delivery_date: true).order(created_at: :desc).each do |comment| %>
+                  <% f.object.inquiry.comments.persisted.where(revised_committed_delivery_date: true).order(created_at: :desc).each do |comment| %>
                     <%= format_comment(comment) %>
                   <% end %>
                 </div>
