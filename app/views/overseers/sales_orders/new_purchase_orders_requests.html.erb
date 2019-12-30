@@ -75,41 +75,41 @@
         </div>
         <div class="card-footer bmro-card-footer">
           <% if is_authorized(@sales_order, 'create_purchase_orders_requests') %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button bmro-width-auto") do %>
+            <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
               <i class="fal fa-pen"></i> Preview PO request
             <% end %>
           <% end %>
-          <div class="bmro-add-new-parant bmro-new-slide-on">
-            <div class="bmro-add-new bmro-product-btn-parent">
-              <div class="bmro-fl">
-                <a href="#" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addnew-icon mr-1"></i>Add New</a>
-              </div>
-            </div>
-          </div>          
+<!--          <div class="bmro-add-new-parant bmro-new-slide-on">-->
+<!--            <div class="bmro-add-new bmro-product-btn-parent">-->
+<!--              <div class="bmro-fl">-->
+<!--                <a href="#" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addnew-icon mr-1"></i>Add New</a>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>          -->
         </div>
       </div>
-      <div class="bmro-fix-right bmro-fix-sticky">
-        <div class="bmro-right-ul bmro-width-100 bmro-fl">
-          <div class="bmro-width-100 bmro-fl">
-            <a class="btn btn-outline-success btn-block mb-2 bmro-button add_nested_fields_link bmro-width-auto bmro-fl" data-association-path="sales_order_po_requests_0_rows" data-object-class="row" href="">
-              <i class="bmro-eye-icon mr-1"></i>Preview P.O Request
-            </a>
-          </div>
-          <nav class="bmro-nav bmro-width-100 bmro-fl" data-spy="affix" data-offset-top="205">
-            <ul class="bmro-label-ul">
-              <li class="bmro-li-right">
-                <label class="bmro-list-button bmro-slide-top">Top</label>
-              </li>
-              <li class="bmro-li-right bmro-active-li">
-                <label class="bmro-list-button bmro-product-slide">Product</label>
-              </li>
-              <li class="bmro-li-right bmro-active-li">
-                <label class="bmro-list-button bmro-new-slide">Add New Product</label>
-              </li>              
-            </ul>
-          </nav>
-        </div>        
-      </div>
+<!--      <div class="bmro-fix-right bmro-fix-sticky">-->
+<!--        <div class="bmro-right-ul bmro-width-100 bmro-fl">-->
+<!--          <div class="bmro-width-100 bmro-fl">-->
+<!--            <a class="btn btn-outline-success btn-block mb-2 bmro-button add_nested_fields_link bmro-width-auto bmro-fl" data-association-path="sales_order_po_requests_0_rows" data-object-class="row" href="">-->
+<!--              <i class="bmro-eye-icon mr-1"></i>Preview P.O Request-->
+<!--            </a>-->
+<!--          </div>-->
+<!--          <nav class="bmro-nav bmro-width-100 bmro-fl" data-spy="affix" data-offset-top="205">-->
+<!--            <ul class="bmro-label-ul">-->
+<!--              <li class="bmro-li-right">-->
+<!--                <label class="bmro-list-button bmro-slide-top">Top</label>-->
+<!--              </li>-->
+<!--              <li class="bmro-li-right bmro-active-li">-->
+<!--                <label class="bmro-list-button bmro-product-slide">Product</label>-->
+<!--              </li>-->
+<!--              <li class="bmro-li-right bmro-active-li">-->
+<!--                <label class="bmro-list-button bmro-new-slide">Add New Product</label>-->
+<!--              </li>              -->
+<!--            </ul>-->
+<!--          </nav>-->
+<!--        </div>        -->
+<!--      </div>-->
   </div>
     <% else %>
       <div class="card">
