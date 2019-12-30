@@ -2984,9 +2984,9 @@ table.fixedHeader-floating{
     background-position: center;
     padding: 19px 6px 8px 9px!important;
 }
-.row div[class*="col"]{
+/*.row div[class*="col"]{
     float: left;
-}
+}*/
 .fa-pen{    
     background-size: 16px;
      padding: 1px 12px;
@@ -4220,10 +4220,13 @@ td .media.chat-item{
 .logiscoll.bmro-parent-bg a.bmro-invoice-one{
     background-color: #fff;
 }
-.bmro-trent .node{
-    position: unset;
-    width: 300px;
-    margin: 0 auto;
+/*.bmro-trent .node{
+    // position: unset;
+    // width: 300px;
+    // margin: 0 auto;
+}*/
+.treant svg{
+  all: unset;
 }
 .bmro-summary-margin{
     margin-left: -180px;
