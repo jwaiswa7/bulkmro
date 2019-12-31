@@ -1,11 +1,11 @@
 json.data (@inquiries) do |inquiry|
   columns = [
       [
-          if is_authorized(inquiry, 'relationship_map') && policy(inquiry).relationship_map?
+          if is_authorized(inquiry, 'regret_inquiry_request_queue')
             row_action_button(regret_request_action_overseers_inquiries_path(inquiry: inquiry.id, action_name: 'Approve'), 'check', 'Approve', 'success')
           end,
-          if is_authorized(inquiry, 'edit') && policy(inquiry).edit?
-            row_action_button(regret_request_action_overseers_inquiries_path(inquiry: inquiry.id, action_name: 'Reject'), 'times','Reject','danger')
+          if is_authorized(inquiry, 'regret_inquiry_request_queue')
+            row_action_button(regret_request_action_overseers_inquiries_path(inquiry: inquiry.id, action_name: 'Reject'), 'times', 'Reject', 'danger')
           end,
       ].join(' '),
       link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),

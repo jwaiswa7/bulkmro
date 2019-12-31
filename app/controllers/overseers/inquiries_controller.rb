@@ -23,30 +23,30 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def regret_inquiry_request_queue
     respond_to do |format|
-    format.html {}
-    format.json do
-        service = Services::Overseers::Finders::Inquiries.new(params.merge(status: 22), current_overseer)
-        service.call
-        @indexed_inquiries = service.indexed_records
-        @inquiries = service.records
-      end
+      format.html {}
+      format.json do
+          service = Services::Overseers::Finders::Inquiries.new(params.merge(status: 22), current_overseer)
+          service.call
+          @indexed_inquiries = service.indexed_records
+          @inquiries = service.records
+        end
     end
   end
 
   def regret_request_action
     @inquiry = Inquiry.find(params['inquiry'])
-    if params['action_name'] == "Approve"
+    if params['action_name'] == 'Approve'
       if @inquiry.update_attributes(status: 'Regret')
-        message =  "Inquiry Regreted by #{current_overseer.to_s}"
-        inq_com = InquiryComment.new({ inquiry_id: @inquiry.id, message: message, created_by: current_overseer, updated_by: current_overseer})
+        message = "Inquiry Regreted by #{current_overseer}"
+        inq_com = InquiryComment.new(inquiry_id: @inquiry.id, message: message, created_by: current_overseer, updated_by: current_overseer)
         inq_com.save
       end
     else
       inquiry_status = "inquiry_status_#{@inquiry.inquiry_number}"
       if Rails.cache.exist?(inquiry_status)
         @prev_inquiry = Rails.cache.read(inquiry_status)
-        message =  "Inquiry Regret Request Rejected by #{current_overseer.to_s}"
-        inq_com = InquiryComment.new({ inquiry_id: @inquiry.id, message: message, created_by: current_overseer, updated_by: current_overseer})
+        message = "Inquiry Regret Request Rejected by #{current_overseer}"
+        inq_com = InquiryComment.new(inquiry_id: @inquiry.id, message: message, created_by: current_overseer, updated_by: current_overseer)
         inq_com.save
         @inquiry.update_attributes(status: @prev_inquiry.status)
       end
@@ -334,7 +334,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       end
       message = params['inquiry']['comments_attributes']['0']['message']
       if message.present?
-        @inquiry.comments.create(message: "Status changed to: #{@inquiry.status}. \r\n Lost or Regret Reason: #{@inquiry.lost_regret_reason}. \r\n Comment: #{message}." , overseer: current_overseer)
+        @inquiry.comments.create(message: "Status changed to: #{@inquiry.status}. \r\n Lost or Regret Reason: #{@inquiry.lost_regret_reason}. \r\n Comment: #{message}.", overseer: current_overseer)
       end
 
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
