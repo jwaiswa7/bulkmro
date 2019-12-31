@@ -109,6 +109,7 @@
         </a>
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'Inquiries', overseers_inquiries_path, is_authorized(:inquiry, 'index') %>
+          <%= nav_dropdown_item 'Inquiries Regret Requests', regret_inquiry_request_queue_overseers_inquiries_path, is_authorized(:inquiry, 'index') %>
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Online Orders</a>
             <ul class="dropdown-menu">
