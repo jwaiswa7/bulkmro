@@ -6,7 +6,6 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <!-- Drawer Toggle -->
-
   <!-- Logo -->
   <a class="navbar-brand" href="<%= overseers_dashboard_path %>">
     <img alt="BulkMRO" src="<%= image_path('BMIS_Logo_PNG.png') %>" height="22"/>
@@ -110,6 +109,7 @@
         </a>
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'Inquiries', overseers_inquiries_path, is_authorized(:inquiry, 'index') %>
+          <%= nav_dropdown_item 'Inquiries Regret Requests', regret_inquiry_request_queue_overseers_inquiries_path, is_authorized(:inquiry, 'regret_inquiry_request_queue') %>
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Online Orders</a>
             <ul class="dropdown-menu">
@@ -174,7 +174,7 @@
           <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, is_authorized(:sales_shipment, 'index') %>
           <div class="dropdown-divider"></div>
           <%= nav_dropdown_item 'Activities', overseers_activities_path, is_authorized(:activity, 'index') %>
-          <%= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, is_authorized(:activity, 'pending') %>
+          <%#= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, is_authorized(:activity, 'pending') %>
         </div>
       </li>
 

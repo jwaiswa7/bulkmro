@@ -2,6 +2,7 @@ class Export < ApplicationRecord
   has_one_attached :report
 
   scope :not_filtered, -> { where(filtered: false) }
+  scope :completed, -> { where(status: 'Completed') }
 
   enum export_type: {
     inquiries: 1,
@@ -29,5 +30,11 @@ class Export < ApplicationRecord
     material_readiness_queue: 96,
     amat_customer_portal: 97,
     sales_orders_bible_format: 100
+  }
+  enum status: {
+      'Enqueued': 1,
+      'Processing': 2,
+      'Completed': 3,
+      'Failed': 4
   }
 end

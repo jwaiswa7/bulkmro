@@ -38,6 +38,14 @@
   }
 }
 
+
+.export-disable{
+  pointer-events: none;
+  color: #6C757D;
+  opacity: 0.75;
+}
+
+
 @include media-breakpoint-up(lg) {
   .breadcrumb-bar {
     min-height: 2.5625rem;

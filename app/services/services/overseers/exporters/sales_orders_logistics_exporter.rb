@@ -12,7 +12,7 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
   end
 
   def build_csv
-    model.status_Approved.where(created_at: start_at..end_at).where.not(sales_quote_id: nil).order(created_at: :desc).each do |sales_order|
+    model.status_Approved.where(created_at: start_at..end_at).where.not(sales_quote_id: nil).order(created_at: :desc).find_each(batch_size: 100) do |sales_order|
       inquiry = sales_order.inquiry
 
       rows.push(

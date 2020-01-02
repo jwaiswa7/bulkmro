@@ -9,8 +9,8 @@ handler do |job, time|
   puts "Running #{job}, at #{time}"
 end
 
-every(10.minutes, 'resync_remote_requests') do
-  ResyncRemoteRequest.where('hits < 5').each do | resync_request |
+every(20.minutes, 'resync_remote_requests') do
+  ResyncRemoteRequest.where('hits < 5').each do |resync_request|
     service = Services::Resources::Shared::ResyncFailedRequests.new(resync_request)
     service.call
   end
@@ -48,36 +48,39 @@ every(4.hour, 'generate_exports_hourly') do
   end
 end
 
-every(1.day, 'refresh_indices', at: '01:00') do
-  # Chewy.strategy(:sidekiq) do
-  #   Services::Shared::Chewy::RefreshIndices.new
-  # end
+every(1.day, 'refresh_indices', at: '01:30') do
+  GC.start
+  Services::Shared::Chewy::RefreshIndices.new
 
-  Dir[[Chewy.indices_path, '/*'].join()].map do |path|
-    puts "Indexing #{path}"
-    path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
-    puts "Indexed #{path}"
-  end
+  #Dir[[Chewy.indices_path, '/*'].join()].map do |path|
+  #  puts "Indexing #{path}"
+  #  path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
+  #  puts "Indexed #{path}"
+  #end
 end
 
-every(1.day, 'generate_exports_daily', at: '04:00') do
-  Chewy.strategy(:atomic) do
-    Services::Overseers::Exporters::GenerateExportsDaily.new
-  end
-end
+#every(1.day, 'generate_exports_daily', at: '04:00') do
+#  to-do check for memory leaks on heroku
+#  Chewy.strategy(:atomic) do
+#    Services::Overseers::Exporters::GenerateExportsDaily.new
+#  end
+#end
 
-every(1.day, 'purchase_order_reindex', at: '19:15') do
-  puts 'For reindexing purchase orders'
+every(1.day, 'purchase_order_reindex', at: '00:10') do
+  # deletes old indexes/alias_index
+  require 'httparty'
+  auth = {username: "#{ENV['ELASTIC_USER_NAME']}", password: "#{ENV['ELASTIC_PASSWORD']}"}
+  HTTParty.delete("#{ENV['FOUNDELASTICSEARCH_URL']}/purchase_orders_*", basic_auth: auth)
 
+  # reindex
   index_class = PurchaseOrdersIndex
   if index_class <= BaseIndex
     index_class.reset!
   end
-
   Services::Overseers::Exporters::MaterialReadinessExporter.new.call
 end
 
-every(1.day, 'inquiry_product_inventory_update', at: '07:30') do
+every(1.day, 'inquiry_product_inventory_update', at: '04:00') do
   service = Services::Resources::Products::UpdateRecentInquiryProductInventory.new
   service.call
 end if Rails.env.production?

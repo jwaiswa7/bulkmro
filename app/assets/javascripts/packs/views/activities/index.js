@@ -1,5 +1,6 @@
 import exportDaterange from '../common/exportDaterange'
 import exportFilteredRecords from "../common/exportFilteredRecords";
+import removeHrefExport from '../common/removeHrefExport';
 
 const index = () => {
     $('.add_to_inquiry_wrapper').hide();
@@ -12,6 +13,7 @@ const index = () => {
 
     let controller = camelize($('body').data().controller);
     exportFilteredRecords(Routes.export_filtered_records_overseers_activities_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
+    removeHrefExport();
 };
 
 let toggleCheckboxes = () => {

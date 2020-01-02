@@ -18,7 +18,9 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
     else
       records = model.where(created_at: start_at..end_at).order(created_at: :desc)
     end
-    records.each do |record|
+
+    @export = Export.create!(export_type: 1, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+    records.find_each(batch_size: 100) do |record|
       rows.push(
         inquiry_number: record.inquiry_number,
         order_number: record.sales_orders.pluck(:order_number).compact.join(','),
@@ -44,10 +46,10 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
         reason: '',
         customer_order_date: record.customer_order_date,
         customer_po_number: record.customer_po_number
-                )
+      )
     end
-    filtered = @ids.present?
-    export = Export.create!(export_type: 1, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # filtered = @ids.present?
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

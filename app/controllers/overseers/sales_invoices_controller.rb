@@ -52,7 +52,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     service = Services::Overseers::Exporters::SalesInvoicesExporter.new([], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.sales_invoices.not_filtered.last.report)
+    redirect_to url_for(Export.sales_invoices.not_filtered.completed.last.report)
   end
 
   def export_filtered_records
@@ -82,11 +82,12 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
 
   def delivery_mail_to_customer
-    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice)
+    @email_message = @invoice.email_messages.build(overseer: current_overseer,  inquiry: @invoice.inquiry, sales_invoice: @invoice)
     subject = "Ref# #{@invoice.inquiry.inquiry_number}- Your Order #{@invoice.inquiry.customer_po_number} - Delivery Notification"
     @action = 'delivery_mail_to_customer_notification'
     @email_message.assign_attributes(
       subject: subject,
+      to: @invoice.get_contact_for_email,
       body: SalesInvoiceMailer.delivery_mail(@email_message).body.raw_source,
       auto_attach: true,
       cc: ['logistics@bulkmro.com', 'sales@bulkmro.com', @invoice.inquiry.inside_sales_owner.email, @invoice.inquiry.outside_sales_owner.email].join(', ')
@@ -110,8 +111,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
 
     authorize_acl @invoice
-
-    if params['email_message']['auto_attach']
+    if @email_message.auto_attach? && @email_message.auto_attach != false
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Original_' + @invoice.filename(include_extension: true))
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
@@ -130,11 +130,12 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
   def dispatch_mail_to_customer
     @outward_dispatch = @invoice.ar_invoice_request.outward_dispatches.last if @invoice.ar_invoice_request.present?
-    @email_message = @invoice.email_messages.build(overseer: current_overseer, contact: @invoice.inquiry.contact, inquiry: @invoice.inquiry, sales_invoice: @invoice, outward_dispatch: @outward_dispatch)
+    @email_message = @invoice.email_messages.build(overseer: current_overseer, inquiry: @invoice.inquiry, sales_invoice: @invoice, outward_dispatch: @outward_dispatch)
     subject = "Ref# #{@invoice.inquiry.inquiry_number}- Your Order #{@invoice.inquiry.customer_po_number} - Dispatch Notification"
     @action = 'dispatch_mail_to_customer_notification'
     @email_message.assign_attributes(
       subject: subject,
+      to: @invoice.get_contact_for_email,
       body: SalesInvoiceMailer.dispatch_mail(@email_message).body.raw_source,
       auto_attach: true,
       cc: ['logistics@bulkmro.com', 'sales@bulkmro.com', @invoice.inquiry.inside_sales_owner.email, @invoice.inquiry.outside_sales_owner.email].join(', ')
@@ -158,8 +159,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
 
     authorize_acl @invoice
-
-    if params['email_message']['auto_attach']
+    if @email_message.auto_attach? && @email_message.auto_attach != false
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Original_' + @invoice.filename(include_extension: true))
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
@@ -230,6 +230,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
           :to,
           :cc,
           :bcc,
+          :auto_attach,
           files: []
       )
     end

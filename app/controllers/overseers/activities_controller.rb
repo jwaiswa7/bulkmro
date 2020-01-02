@@ -48,8 +48,9 @@ class Overseers::ActivitiesController < Overseers::BaseController
       )
     end
     authorize_acl @activity
+
     if @activity.save
-      redirect_to pending_overseers_activities_path, notice: flash_message(@activity, action_name)
+      approve
     else
       render 'new'
     end
@@ -66,7 +67,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
     authorize_acl @activity
     if @activity.save
-      redirect_to pending_overseers_activities_path, notice: flash_message(@activity, action_name)
+      redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
     end
   end
 
@@ -125,7 +126,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     service = Services::Overseers::Exporters::ActivitiesExporter.new(params[:q], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.activities.not_filtered.last.report)
+    redirect_to url_for(Export.activities.not_filtered.completed.last.report)
   end
 
 
@@ -171,6 +172,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
             :id,
             :first_name,
             :last_name,
+            :designation,
             :email,
             :telephone,
             :mobile,
