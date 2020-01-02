@@ -100,7 +100,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   def change_material_status?
     true
   end
-   def cancelled_inward_dispatches?
-     true
-   end
+  def cancelled_inward_dispatches?
+    true
+  end
 end

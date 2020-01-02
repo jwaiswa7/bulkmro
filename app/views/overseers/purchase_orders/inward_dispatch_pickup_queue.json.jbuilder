@@ -2,7 +2,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
   json.array! [
                   [
 
-                      if is_authorized(inward_dispatch, 'update_logistics_owner_for_inward_dispatches') && (policy(inward_dispatch).update_logistics_owner_for_inward_dispatches? || policy(inward_dispatch).can_request_invoice?) #&& inward_dispatch.sales_order.present? #&& (inward_dispatch.status != 'Material Delivered')
+                      if is_authorized(inward_dispatch, 'update_logistics_owner_for_inward_dispatches') && (policy(inward_dispatch).update_logistics_owner_for_inward_dispatches? || policy(inward_dispatch).can_request_invoice?) # && inward_dispatch.sales_order.present? #&& (inward_dispatch.status != 'Material Delivered')
                         "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
                       end,
                       # if is_authorized(inward_dispatch, 'delivered') && policy(inward_dispatch).delivered? && is_authorized(inward_dispatch, 'can_request_invoice') && policy(inward_dispatch).can_request_invoice?
@@ -48,7 +48,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                   inward_dispatch.purchase_order.status || inward_dispatch.purchase_order.metadata_status,
                   (inward_dispatch.purchase_order.po_request.status if inward_dispatch.purchase_order.po_request.present?),
                   (inward_dispatch.purchase_order.payment_request.status if inward_dispatch.purchase_order.payment_request.present?),
-                  inward_dispatch.status== 'Cancelled'? inward_dispatch.status : inward_dispatch.purchase_order.material_status,
+                  inward_dispatch.status == 'Cancelled' ? inward_dispatch.status : inward_dispatch.purchase_order.material_status,
                   if inward_dispatch.last_comment.present?
                     format_comment(inward_dispatch.last_comment, trimmed: true)
                   end,
