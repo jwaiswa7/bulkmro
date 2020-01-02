@@ -1,7 +1,7 @@
 class Services::Shared::Migrations::InquiryExport < Services::Shared::Migrations::Migrations
   def export_inquiries
     inquiry_dump = "#{Rails.root}/tmp/inquiries.csv"
-    headers = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'quote_date', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'potential amount', 'total (Exc. Tax)', 'comments', 'reason', 'customer_order_date', 'customer_po_number']
+    headers = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'quote_date', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'potential amount', 'overall_margin(%)', 'total (Exc. Tax)', 'comments', 'reason', 'customer_order_date', 'customer_po_number']
     csv_data = CSV.generate(write_headers: true, headers: headers) do |writer|
       Inquiry.all.each do |record|
         writer << [ record.inquiry_number,
@@ -23,6 +23,7 @@ class Services::Shared::Migrations::InquiryExport < Services::Shared::Migrations
             record.subject,
             record.currency.try(:name),
             record.potential_amount,
+            record.overall_margin_percent,
             record.final_sales_quote.try(:calculated_total),
             record.comments.pluck(:message).join(','),
             '',
