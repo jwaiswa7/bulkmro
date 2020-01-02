@@ -30,6 +30,7 @@ class CustomerOrderStatusReportIndex < BaseIndex
     field :rows, type: 'nested' do
       field :product_id, value: -> (record) { record.get_product.try(:id) }, type: 'integer'
       field :sku, value: -> (record) { record.get_product.try(:sku) }, analyzer: 'sku_substring'
+      field :total_selling_price, value: -> (record) { record.converted_total_selling_price}, type: 'integer'
     end
 
     # inquiry purchase orders when po requests not present
