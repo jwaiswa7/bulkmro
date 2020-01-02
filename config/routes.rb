@@ -427,6 +427,8 @@ Rails.application.routes.draw do
         patch 'cancelled_purchase_order'
         get 'resync_po'
         get 'change_material_status'
+        get 'render_modal_form'
+        patch 'add_comment'
       end
 
       collection do
@@ -515,6 +517,8 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get 'regret_request_action'
+        get 'regret_inquiry_request_queue'
         get 'new_from_customer_order'
         get 'autocomplete'
         get 'index_pg'

@@ -41,9 +41,11 @@
                         <% end %>
                       <% end %>
                     </div>
-                    <div class="card-footer bmro-card-footer bmro-footer-margin bmro-model-header">
-                      <a href="<%= view_more + '#comments' %>" class="btn btn-success bmro-button btn-block align-self-center btn-block-sm-down">View
-                        More</a>
+                    <% if view_more.present? %>
+                      <div class="card-footer bmro-card-footer bmro-footer-margin bmro-model-header">
+                        <a href="<%= view_more + '#comments' %>" class="btn btn-success btn-block align-self-center btn-block-sm-down">View
+                          More</a>
+                    <% end %>
                     </div>
                   </div>
                 </div>

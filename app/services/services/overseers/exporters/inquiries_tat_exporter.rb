@@ -15,6 +15,9 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
     if @indexed_records.present?
       records = @indexed_records
     end
+
+    @export = Export.create!(export_type: 2, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id, status: 'Processing')
+
     records.each do |record|
       rows.push(
         inquiry_id: record.attributes['id'],
@@ -28,45 +31,45 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
         sales_order_status: record.attributes['sales_order_status'].present? ? record.attributes['sales_order_status'] : '-',
         new_inquiry_minutes: '-',
         time_new_inquiry: record.attributes['time_new_inquiry'].present? ? format_date_with_time(DateTime.parse(record.attributes['time_new_inquiry'])) : '-',
-        status_acknowledgment_mail_minutes: record.attributes['status_acknowledgment_mail'][0]['tat'],
-        status_acknowledgment_mail: record.attributes['status_acknowledgment_mail'].present? ? humanize(record.attributes['status_acknowledgment_mail'][0]['tat']) : '-',
-        time_acknowledgment_mail: record.attributes['status_acknowledgment_mail'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_acknowledgment_mail'][0]['created_at'])) : '-',
-        status_cross_reference_minutes: record.attributes['status_cross_reference'][0]['tat'],
-        status_cross_reference: record.attributes['status_cross_reference'].present? ? humanize(record.attributes['status_cross_reference'][0]['tat']) : '-',
-        time_cross_reference: record.attributes['status_cross_reference'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_cross_reference'][0]['created_at'])) : '-',
-        status_preparing_quotation_minutes: record.attributes['status_preparing_quotation'][0]['tat'],
-        status_preparing_quotation: record.attributes['status_preparing_quotation'].present? ? humanize(record.attributes['status_preparing_quotation'][0]['tat']) : '-',
-        time_preparing_quotation: record.attributes['status_preparing_quotation'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_preparing_quotation'][0]['created_at'])) : '-',
-        status_quotation_sent_minutes: record.attributes['status_quotation_sent'][0]['tat'],
-        status_quotation_sent: record.attributes['status_quotation_sent'].present? ? humanize(record.attributes['status_quotation_sent'][0]['tat']) : '-',
-        time_quotation_sent: record.attributes['status_quotation_sent'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_quotation_sent'][0]['created_at'])) : '-',
-        status_draft_so_appr_by_sales_manager_minutes: record.attributes['status_draft_so_appr_by_sales_manager'][0]['tat'],
-        status_draft_so_appr_by_sales_manager: record.attributes['status_draft_so_appr_by_sales_manager'].present? ? humanize(record.attributes['status_draft_so_appr_by_sales_manager'][0]['tat']) : '-',
-        time_draft_so_appr_by_sales_manager: record.attributes['status_draft_so_appr_by_sales_manager'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_draft_so_appr_by_sales_manager'][0]['created_at'])) : '-',
-        status_so_reject_by_sales_manager_minutes: record.attributes['status_so_reject_by_sales_manager'][0]['tat'],
-        status_so_reject_by_sales_manager: record.attributes['status_so_reject_by_sales_manager'].present? ? humanize(record.attributes['status_so_reject_by_sales_manager'][0]['tat']) : '-',
-        time_so_reject_by_sales_manager: record.attributes['status_so_reject_by_sales_manager'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_so_reject_by_sales_manager'][0]['created_at'])) : '-',
-        status_so_draft_pending_acct_approval_minutes: record.attributes['status_so_draft_pending_acct_approval'][0]['tat'],
-        status_so_draft_pending_acct_approval: record.attributes['status_so_draft_pending_acct_approval'].present? ? humanize(record.attributes['status_so_draft_pending_acct_approval'][0]['tat']) : '-',
-        time_so_draft_pending_acct_approval: record.attributes['status_so_draft_pending_acct_approval'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_so_draft_pending_acct_approval'][0]['created_at'])) : '-',
-        status_rejected_by_accounts_minutes: record.attributes['status_rejected_by_accounts'][0]['tat'],
-        status_rejected_by_accounts: record.attributes['status_rejected_by_accounts'].present? ? humanize(record.attributes['status_rejected_by_accounts'][0]['tat']) : '-',
-        time_rejected_by_accounts: record.attributes['status_rejected_by_accounts'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_rejected_by_accounts'][0]['created_at'])) : '-',
-        status_hold_by_accounts_minutes: record.attributes['status_hold_by_accounts'][0]['tat'],
-        status_hold_by_accounts: record.attributes['status_hold_by_accounts'].present? ? humanize(record.attributes['status_hold_by_accounts'][0]['tat']) : '-',
-        time_hold_by_accounts: record.attributes['status_hold_by_accounts'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_hold_by_accounts'][0]['created_at'])) : '-',
-        status_order_won_minutes: record.attributes['status_order_won'][0]['tat'],
-        status_order_won: record.attributes['status_order_won'].present? ? humanize(record.attributes['status_order_won'][0]['tat']) : '-',
-        time_order_won: record.attributes['status_order_won'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_order_won'][0]['created_at'])) : '-',
-        status_order_lost_minutes: record.attributes['status_order_lost'][0]['tat'],
-        status_order_lost: record.attributes['status_order_lost'].present? ? humanize(record.attributes['status_order_lost'][0]['tat']) : '-',
-        time_order_lost: record.attributes['status_order_lost'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_order_lost'][0]['created_at'])) : '-',
-        status_regret_minutes: record.attributes['status_regret'][0]['tat'],
-        status_regret: record.attributes['status_regret'].present? ? humanize(record.attributes['status_regret'][0]['tat']) : '-',
-        time_regret: record.attributes['status_regret'][0]['created_at'].present? ? format_date_with_time(DateTime.parse(record.attributes['status_regret'][0]['created_at'])) : '-'
+        status_acknowledgment_mail_minutes: record.attributes['acknowledgment_mail_mins'],
+        status_acknowledgment_mail: record.attributes['acknowledgment_mail_mins'].present? ? humanize(record.attributes['acknowledgment_mail_mins']) : '-',
+        time_acknowledgment_mail: record.attributes['acknowledgment_mail_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['acknowledgment_mail_date'])) : '-',
+        status_cross_reference_minutes: record.attributes['cross_reference_mins'],
+        status_cross_reference: record.attributes['cross_reference_mins'].present? ? humanize(record.attributes['cross_reference_mins']) : '-',
+        time_cross_reference: record.attributes['cross_reference_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['cross_reference_date'])) : '-',
+        status_preparing_quotation_minutes: record.attributes['preparing_quotation_mins'],
+        status_preparing_quotation: record.attributes['preparing_quotation_mins'].present? ? humanize(record.attributes['preparing_quotation_mins']) : '-',
+        time_preparing_quotation: record.attributes['preparing_quotation_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['preparing_quotation_date'])) : '-',
+        status_quotation_sent_minutes: record.attributes['quotation_sent_mins'],
+        status_quotation_sent: record.attributes['quotation_sent_mins'].present? ? humanize(record.attributes['quotation_sent_mins']) : '-',
+        time_quotation_sent: record.attributes['quotation_sent_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['quotation_sent_date'])) : '-',
+        status_draft_so_appr_by_sales_manager_minutes: record.attributes['draft_so_appr_by_sales_manager_mins'],
+        status_draft_so_appr_by_sales_manager: record.attributes['draft_so_appr_by_sales_manager_mins'].present? ? humanize(record.attributes['draft_so_appr_by_sales_manager_mins']) : '-',
+        time_draft_so_appr_by_sales_manager: record.attributes['draft_so_appr_by_sales_manager_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['draft_so_appr_by_sales_manager_date'])) : '-',
+        status_so_reject_by_sales_manager_minutes: record.attributes['so_reject_by_sales_manager_mins'],
+        status_so_reject_by_sales_manager: record.attributes['so_reject_by_sales_manager_mins'].present? ? humanize(record.attributes['so_reject_by_sales_manager_mins']) : '-',
+        time_so_reject_by_sales_manager: record.attributes['draft_so_appr_by_sales_manager_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['draft_so_appr_by_sales_manager_date'])) : '-',
+        status_so_draft_pending_acct_approval_minutes: record.attributes['so_draft_pending_acct_approval_mins'],
+        status_so_draft_pending_acct_approval: record.attributes['so_draft_pending_acct_approval_mins'].present? ? humanize(record.attributes['so_draft_pending_acct_approval_mins']) : '-',
+        time_so_draft_pending_acct_approval: record.attributes['so_draft_pending_acct_approval_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['so_draft_pending_acct_approval_date'])) : '-',
+        status_rejected_by_accounts_minutes: record.attributes['so_reject_by_sales_manager_mins'],
+        status_rejected_by_accounts: record.attributes['so_reject_by_sales_manager_mins'].present? ? humanize(record.attributes['so_reject_by_sales_manager_mins']) : '-',
+        time_rejected_by_accounts: record.attributes['so_reject_by_sales_manager_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['so_reject_by_sales_manager_date'])) : '-',
+        status_hold_by_accounts_minutes: record.attributes['hold_by_accounts_mins'],
+        status_hold_by_accounts: record.attributes['hold_by_accounts_mins'].present? ? humanize(record.attributes['hold_by_accounts_mins']) : '-',
+        time_hold_by_accounts: record.attributes['hold_by_accounts_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['hold_by_accounts_date'])) : '-',
+        status_order_won_minutes: record.attributes['order_won_mins'],
+        status_order_won: record.attributes['order_won_mins'].present? ? humanize(record.attributes['order_won_mins']) : '-',
+        time_order_won: record.attributes['order_won_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['order_won_date'])) : '-',
+        status_order_lost_minutes: record.attributes['order_lost_mins'],
+        status_order_lost: record.attributes['order_lost_mins'].present? ? humanize(record.attributes['order_lost_mins']) : '-',
+        time_order_lost: record.attributes['order_lost_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['order_lost_date'])) : '-',
+        status_regret_minutes: record.attributes['regret_mins'],
+        status_regret: record.attributes['regret_mins'].present? ? humanize(record.attributes['regret_mins']) : '-',
+        time_regret: record.attributes['regret_date'].present? ? format_date_with_time(DateTime.parse(record.attributes['regret_date'])) : '-'
       )
     end
-    export = Export.create!(export_type: 2, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

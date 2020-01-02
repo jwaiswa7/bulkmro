@@ -7,7 +7,10 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def create
     ActiveRecord::Base.transaction do
       warehouse = Warehouse.where(id: po_request.bill_to.id)
-      series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' ' + Date.today.year.to_s).last
+      date = Date.today
+      year = date.year
+      year = year - 1 if date.month < 4
+      series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' ' + year.to_s).last
       @purchase_order = PurchaseOrder.where(po_number: series.last_number).first_or_create! do |purchase_order|
         purchase_order_params = assign_purchase_order_attributes(series.last_number)
         # purchase_order.update_attributes(purchase_order_params)

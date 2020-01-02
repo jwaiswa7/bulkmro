@@ -96,6 +96,7 @@ class Inquiry < ApplicationRecord
       'Hold by Accounts': 20,
       'Order Lost': 9,
       'Regret': 10,
+      'Regret Request': 22
   }
 
   enum pipeline_status: {
@@ -117,7 +118,7 @@ class Inquiry < ApplicationRecord
       'Rejected by Accounts': 19,
       # 'Hold by Accounts': 20,
       'Order Lost': 9,
-      'Regret': 10,
+      'Regret': 10
   }, _suffix: true
 
   enum main_summary_status: {
@@ -128,7 +129,7 @@ class Inquiry < ApplicationRecord
   }, _suffix: true
 
   def regrettable_statuses
-    Inquiry.statuses.keys.sort.reject {|status| ['Order Lost', 'Regret', 'Expected Order'].include?(status)}
+    Inquiry.statuses.keys.sort.reject {|status| ['Order Lost', 'Regret Request', 'Expected Order'].include?(status)}
   end
 
   enum stage: {
