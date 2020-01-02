@@ -1,6 +1,5 @@
 import callAjaxFunction from "../common/callAjaxFunction";
 import disableBackdateOption from "../common/disableBackdateOption";
-import openModal from "../common/openModal";
 
 const show = () => {
     $('.datatable').on('click', '.update-followup', function (e) {
