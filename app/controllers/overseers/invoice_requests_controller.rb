@@ -163,7 +163,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         inward_dispatch_ids = @invoice_request.inward_dispatch_ids
         if inward_dispatch_ids.present?
           InwardDispatch.where(id: inward_dispatch_ids).update_all(status: 'Cancelled')
-          # @invoice_request.purchase_order.update_material_status
+           @invoice_request.purchase_order.update_material_status
         end
       end
       service = Services::Overseers::InvoiceRequests::Update.new(@invoice_request, current_overseer)

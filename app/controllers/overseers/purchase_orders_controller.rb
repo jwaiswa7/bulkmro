@@ -178,8 +178,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       end
     end
 
-    authorize_acl :inward_dispatch
-    # redirect_to cancelled_inward_dispatches_overseers_purchase_orders_path, notice: flash_message(@purchase_order, action_name)
+    authorize :inward_dispatch
+     #redirect_to cancelled_inward_dispatches_overseers_purchase_orders_path, notice: flash_message(@purchase_order, action_name)
     render 'inward_dispatch_pickup_queue'
   end
 
@@ -202,7 +202,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       end
     end
 
-    authorize :inward_dispatch
+    authorize_acl :inward_dispatch
     render 'inward_completed_queue'
   end
 
