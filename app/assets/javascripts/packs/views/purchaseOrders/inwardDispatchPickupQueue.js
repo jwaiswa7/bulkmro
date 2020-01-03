@@ -1,10 +1,9 @@
-
+import commanComment from "../common/commanComment";
 import callAjaxFunction from "../common/callAjaxFunction";
 
 const updateLogisticsOwner = () => {
     $('.update_logistics_owner_wrapper').hide();
     toggleCheckboxes();
-
     $('#update_logistics_owner').click((event) => {
         updateOwner();
     });
@@ -12,7 +11,7 @@ const updateLogisticsOwner = () => {
     $('.datatable').on('click', '.comment-inward-dispatch', function (e) {
         var id = $(this).data('inward-dispatch-id')
         var purchase_id = $(this).data('purchase-id')
-        var title = $(this).attr('title')
+        var title = $(this).attr('data-title')
         var json = {
             url: "/overseers/purchase_orders/" + purchase_id + "/inward_dispatches/" + id + "/render_modal_form?title=" + title,
             modalId: '#addComment',
