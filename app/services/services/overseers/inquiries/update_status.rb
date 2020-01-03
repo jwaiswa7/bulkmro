@@ -43,8 +43,8 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
       log_inquiry_status('Rejected by Accounts')
     when :order_lost then
       log_inquiry_status('Order Lost')
-    when :regret then
-      log_inquiry_status('Regret')
+    when :regret_request then
+      log_inquiry_status('Regret Request')
     else
       log_inquiry_status(inquiry.status)
     end
