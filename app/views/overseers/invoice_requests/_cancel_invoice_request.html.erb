@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Cancel <%= @invoice_request.readable_status%></h5>
+          <h5 class="modal-title">Cancel <%= @invoice_request.readable_status %></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -11,23 +11,23 @@
         <%= simple_form_for([:overseers, @invoice_request], :url => cancel_invoice_request_overseers_invoice_request_path(@invoice_request), :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
           <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
           <div class="modal-body">
-            <% if @invoice_request.status == 'Pending AP Invoice'  %>
-              <%= f.input :ap_cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', :required => true , input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+            <% if @invoice_request.status == 'Pending AP Invoice' %>
+              <%= f.input :ap_cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', :required => true, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
               <%= f.hidden_field :status, :value => 'Cancelled AP Invoice' %>
             <% else %>
-              <%= f.input :grpo_cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', :required => true , input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <%= f.input :grpo_cancellation_reason, as: :text, :placeholder => 'Type Cancellation Reason', :required => true, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
               <%= f.hidden_field :status, :value => 'Cancelled GRPO' %>
             <% end %>
-<!--            <div class='d-inline-block custom-control custom-checkbox align-middle'>-->
-<!--              <input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='<%#= @invoice_request.inward_dispatch_ids%>' id='<%#= @invoice_request.inward_dispatch_ids%>' data-po-id='<%#= @invoice_request.purchase_order_id %>'>-->
-<!--              <label class='custom-control-label' for='<%#= @invoice_request.inward_dispatch_ids%>'>Remove Inward</label>-->
-<!--            </div>-->
-            <%= f.input :is_checked, label: 'Remove Inward' %>
+            <div class='d-inline-block custom-control custom-checkbox align-middle'>
+              <input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='<%= @invoice_request.inward_dispatch_ids %>' id='<%= @invoice_request.inward_dispatch_ids %>' data-inward-id='<%= @invoice_request.inward_dispatch_ids %>'>
+              <label class='custom-control-label' for='<%= @invoice_request.inward_dispatch_ids %>'>Remove
+                Inward</label>
+            </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-warning confirm-cancel">Cancel <%= @invoice_request.readable_status%></button>
+            <button type="submit" class="btn btn-warning confirm-cancel">Cancel <%= @invoice_request.readable_status %></button>
           </div>
-         <% end %>
+        <% end %>
       </div>
     </div>
   </div>

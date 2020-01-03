@@ -159,7 +159,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @invoice_request.assign_attributes(invoice_request_params.merge(overseer: current_overseer))
     authorize_acl @invoice_request
     if @invoice_request.valid?
-      if @invoice_request.is_checked == true
+      if params['the_inward_dispatches'].present? && !(params['the_inward_dispatches']).blank?
         inward_dispatch_ids = @invoice_request.inward_dispatch_ids
         if inward_dispatch_ids.present?
           InwardDispatch.where(id: inward_dispatch_ids).update_all(status: 'Cancelled')
@@ -223,7 +223,6 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
           :grpo_cancellation_reason,
           :ap_rejection_reason,
           :ap_cancellation_reason,
-          :is_checked,
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           attachments: []
       )
