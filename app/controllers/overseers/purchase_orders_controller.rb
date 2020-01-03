@@ -202,7 +202,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       end
     end
 
-    authorize_acl :inward_dispatch
+    authorize :inward_dispatch
     render 'inward_completed_queue'
   end
 
