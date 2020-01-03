@@ -571,4 +571,10 @@ class Inquiry < ApplicationRecord
   def self.bible_data_till_date
     BibleSalesOrder.order('mis_date asc').last.mis_date.strftime('%b %Y')
   end
+
+  def overall_margin_percent
+    calculated_total_cost = self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total_cost).compact.sum : 0
+    calculated_total = self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : 0
+    ((1 - (calculated_total_cost / calculated_total)) * 100).round(2) if calculated_total > 0
+  end
 end
