@@ -444,6 +444,7 @@ Rails.application.routes.draw do
         get 'inward_dispatch_pickup_queue'
         get 'inward_dispatch_delivered_queue'
         get 'inward_completed_queue'
+        get 'cancelled_inward_dispatches'
         post 'update_logistics_owner'
         post 'update_logistics_owner_for_inward_dispatches'
       end
