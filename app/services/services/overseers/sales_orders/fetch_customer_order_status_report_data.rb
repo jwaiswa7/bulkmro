@@ -196,6 +196,7 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
         order_number: so_details[:order_number],
         invoice_number: invoice_details.present? && invoice_details['invoice_number'].present? ? invoice_details['invoice_number'] : '',
         sku: so_row['sku'].present? ? so_row['sku'] : '',
+        total_selling_price: so_row['total_selling_price'].present? ? so_row['total_selling_price'] : '',
         mis_date: so_details[:mis_date],
         created_at: so_details[:created_at],
         cp_committed_date: so_details[:cp_committed_date],
