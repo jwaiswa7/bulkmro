@@ -182,7 +182,7 @@ class InvoiceRequest < ApplicationRecord
 
   def allow_statuses(overseer)
     statuses = InvoiceRequest.statuses
-    disabled_statuses= []
+    disabled_statuses = []
     if self.status == 'Inward Completed'
       disabled_statuses = InvoiceRequest.statuses.keys
     elsif overseer.accounts? || overseer.admin?
