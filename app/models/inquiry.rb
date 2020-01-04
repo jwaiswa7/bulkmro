@@ -224,18 +224,8 @@ class Inquiry < ApplicationRecord
     inquiry.validates_presence_of :customer_committed_date
   end
 
-  with_options if: :has_sales_orders_and_not_before_dec? do |inquiry|
-    inquiry.validates_with FilePresenceValidator, attachment: :committed_delivery_attachment
-    inquiry.validates_with FilePresenceValidator, attachment: :customer_po_received_attachment
-    inquiry.validates_with FilePresenceValidator, attachment: :customer_po_delivery_attachment
-  end
-
   def has_sales_orders_and_not_legacy?
     (self.sales_orders.present? || self.force_has_sales_orders == true) && not_legacy?
-  end
-
-  def has_sales_orders_and_not_before_dec?
-    (self.sales_orders.present? || self.force_has_sales_orders == true) && not_legacy? && self.created_at.beginning_of_day >= Date.new(2019, 12, 10).end_of_day
   end
 
   def valid_for_new_sales_order?
