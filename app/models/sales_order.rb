@@ -147,6 +147,7 @@ class SalesOrder < ApplicationRecord
   scope :accounts_approval_pending, -> { where(status: 'Accounts Approval Pending').where("created_at >= '2019-07-18'") }
   scope :under_process, -> { where(status: [:'Approved', :'Accounts Approval Pending', 'Requested']) }
   scope :without_cancelled, -> { where.not(status: 'Cancelled') }
+  scope :discard_cancelled_and_rejected, -> { where.not(status: ['Cancelled', 'Rejected', 'SAP Rejected']) }
 
   def confirmed?
     self.confirmation.present?
