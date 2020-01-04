@@ -4,7 +4,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
     @model = Inquiry
     @export_name = 'inquiries'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'quote_date', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'potential amount', 'overall_margin(%)', 'total (Exc. Tax)', 'comments', 'reason', 'customer_order_date', 'customer_po_number']
+    @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'quote_date', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'potential amount', 'overall_margin(%)', 'total (Exc. Tax)', 'products count', 'comments', 'reason', 'customer_order_date', 'customer_po_number']
     @start_at = Date.new(2018, 04, 01)
   end
 
@@ -43,6 +43,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
         potential_amount: record.potential_amount,
         overall_margin_percentage: record.overall_margin_percent,
         total: record.final_sales_quote.try(:calculated_total),
+        products_count: record.inquiry_products.count,
         comments: record.comments.pluck(:message).join(','),
         reason: '',
         customer_order_date: record.customer_order_date,
