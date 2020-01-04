@@ -32,7 +32,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record.invoices.each do |invoice|
       pod_statuses_of_invoices << invoice.pod_status
     end
-    pod_statuses_of_invoices.uniq.size > 1
+    pod_statuses_of_invoices.uniq.size > 1 && pod_statuses_of_invoices.last != 'complete'
   end
 
   def show_pdf?
