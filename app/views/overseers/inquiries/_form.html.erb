@@ -321,7 +321,7 @@
                     <th></th>
                   </tr>
                   </thead>
-                  <% f.object.sales_orders.each do |so| %>
+                  <% f.object.sales_orders.discard_cancelled_and_rejected.each do |so| %>
                     <tbody>
                     <tr>
                       <td><%= so.order_number %></td>
@@ -349,7 +349,7 @@
                     <th>Actual Delivery Date</th>
                   </tr>
                   </thead>
-                  <% f.object.invoices.each do |si| %>
+                  <% f.object.invoices.not_cancelled_invoices.each do |si| %>
                     <tbody>
                     <tr>
                       <td><%= si.invoice_number %></td>
