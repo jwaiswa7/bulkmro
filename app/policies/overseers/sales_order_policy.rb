@@ -27,6 +27,14 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     edit_mis_date?
   end
 
+  def delivery_date_revision_allowed?
+    pod_statuses_of_invoices = []
+    record.invoices.each do |invoice|
+      pod_statuses_of_invoices << invoice.pod_status
+    end
+    pod_statuses_of_invoices.uniq.size > 1 && pod_statuses_of_invoices.last != 'complete'
+  end
+
   def show_pdf?
     record.persisted? && record.sent? && record.order_number.present?
   end

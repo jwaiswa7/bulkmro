@@ -169,7 +169,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
       messages = FieldModifiedMessage.for(@sales_order, ['revised_committed_delivery_date'])
       if messages.present? && @sales_order.save
-        @sales_order.inquiry.comments.create(message: messages, overseer: current_overseer, revised_committed_delivery_date: true)
+        @sales_order.inquiry.comments.create(sales_order: @sales_order , message: messages, overseer: current_overseer, revised_committed_delivery_date: true)
         # render json: {success: 1, message: 'Successfully updated '}, status: 200
       end
 

@@ -25,11 +25,11 @@
           </div>
 
           <div class="row">
-            <% if f.object.inquiry.comments.persisted.where(revised_committed_delivery_date: true).size > 0 %>
+            <% if f.object.inquiry.comments.persisted.where(sales_order: f.object, revised_committed_delivery_date: true).size > 0 %>
               <div class="card-body">
                 <h6 class="text-uppercase text-black-50 mb-1">Date Revision History</h6>
                 <div class="chats">
-                  <% f.object.inquiry.comments.persisted.where(revised_committed_delivery_date: true).order(created_at: :desc).each do |comment| %>
+                  <% f.object.inquiry.comments.persisted.where(sales_order: f.object, revised_committed_delivery_date: true).order(created_at: :desc).each do |comment| %>
                     <%= format_comment(comment) %>
                   <% end %>
                 </div>
