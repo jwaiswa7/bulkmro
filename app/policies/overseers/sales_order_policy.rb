@@ -28,11 +28,8 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def delivery_date_revision_allowed?
-    pod_statuses_of_invoices = []
-    record.invoices.each do |invoice|
-      pod_statuses_of_invoices << invoice.pod_status
-    end
-    pod_statuses_of_invoices.uniq.size > 1 && pod_statuses_of_invoices.last != 'complete'
+    pod_statuses_of_invoices = record.invoices.map(&:pod_status).uniq
+    !(pod_statuses_of_invoices.size == 1 && pod_statuses_of_invoices.last == 'complete')
   end
 
   def show_pdf?
