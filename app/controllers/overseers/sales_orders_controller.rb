@@ -339,74 +339,74 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   private
 
-  def set_sales_order
-    @sales_order = SalesOrder.find(params[:id])
-  end
+    def set_sales_order
+      @sales_order = SalesOrder.find(params[:id])
+    end
 
-  def new_purchase_orders_requests_params
-    if params.has_key?(:sales_order)
-      params.require(:sales_order).permit(
+    def new_purchase_orders_requests_params
+      if params.has_key?(:sales_order)
+        params.require(:sales_order).permit(
           :id,
-          po_requests_attributes: [
-              :id,
-              :supplier_id,
-              :inquiry_id,
-              :_destroy,
-              :logistics_owner_id,
-              :bill_from_id,
-              :ship_from_id,
-              :bill_to_id,
-              :ship_to_id,
-              :contact_id,
-              :payment_option_id,
-              :supplier_po_type,
-              :status,
-              :supplier_committed_date,
-              :contact_email,
-              :contact_phone,
-              :blobs,
-              :transport_mode,
-              :delivery_type,
-              attachments: [],
-              rows_attributes: [
-                  :id,
-                  :_destroy,
-                  :status,
-                  :quantity,
-                  :sales_order_row_id,
-                  :product_id,
-                  :brand_id,
-                  :tax_code_id,
-                  :tax_rate_id,
-                  :lead_time,
-                  :measurement_unit_id,
-                  :discount_percentage,
-                  :unit_price
-              ],
-              comments_attributes: [
-                  :created_by_id,
-                  :updated_by_id,
-                  :message,
-                  :inquiry_id,
-              ]
-          ],
-      )
-    else
-      {}
+            po_requests_attributes: [
+                :id,
+                :supplier_id,
+                :inquiry_id,
+                :_destroy,
+                :logistics_owner_id,
+                :bill_from_id,
+                :ship_from_id,
+                :bill_to_id,
+                :ship_to_id,
+                :contact_id,
+                :payment_option_id,
+                :supplier_po_type,
+                :status,
+                :supplier_committed_date,
+                :contact_email,
+                :contact_phone,
+                :blobs,
+                :transport_mode,
+                :delivery_type,
+                attachments: [],
+                rows_attributes: [
+                    :id,
+                    :_destroy,
+                    :status,
+                    :quantity,
+                    :sales_order_row_id,
+                    :product_id,
+                    :brand_id,
+                    :tax_code_id,
+                    :tax_rate_id,
+                    :lead_time,
+                    :measurement_unit_id,
+                    :discount_percentage,
+                    :unit_price
+                ],
+                comments_attributes: [
+                    :created_by_id,
+                    :updated_by_id,
+                    :message,
+                    :inquiry_id,
+                ]
+            ],
+        )
+      else
+        {}
+      end
     end
-  end
 
-  def sort_buckets(sort_by, sort_order, indexed_sales_reports)
-    value_present = indexed_sales_reports[0][sort_by].present? && indexed_sales_reports[0][sort_by]['value'].present?
-    case
-    when !value_present && sort_order == 'asc'
-      indexed_sales_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }
-    when !value_present && sort_order == 'desc'
-      indexed_sales_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }.reverse!
-    when value_present && sort_order == 'asc'
-      indexed_sales_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }
-    when value_present && sort_order == 'desc'
-      indexed_sales_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
+    def sort_buckets(sort_by, sort_order, indexed_sales_reports)
+      value_present = indexed_sales_reports[0][sort_by].present? && indexed_sales_reports[0][sort_by]['value'].present?
+      case
+      when !value_present && sort_order == 'asc'
+        indexed_sales_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }
+      when !value_present && sort_order == 'desc'
+        indexed_sales_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }.reverse!
+      when value_present && sort_order == 'asc'
+        indexed_sales_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }
+      when value_present && sort_order == 'desc'
+        indexed_sales_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
+      end
     end
-  end
 end

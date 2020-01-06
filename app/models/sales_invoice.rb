@@ -267,7 +267,7 @@ class SalesInvoice < ApplicationRecord
   def calculated_committed_delivery_tat
     if self.sales_order.revised_committed_delivery_date.present? && self.inquiry.customer_order_date.present?
       (self.sales_order.revised_committed_delivery_date - self.inquiry.customer_order_date).to_i
-     elsif self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
+    elsif self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
       (self.inquiry.customer_committed_date - self.inquiry.customer_order_date).to_i
     end
   end
