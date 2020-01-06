@@ -99,7 +99,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
         @sales_order.update_attributes(sent_at: Time.now)
       end
       @notification.send_order_confirmation(
-          @inquiry,
+        @inquiry,
           action_name.to_sym,
           @sales_order,
           overseers_inquiry_comments_path(@inquiry, sales_order_id: @sales_order.to_param, show_to_customer: false),
@@ -169,7 +169,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
       messages = FieldModifiedMessage.for(@sales_order, ['revised_committed_delivery_date'])
       if messages.present? && @sales_order.save
-        @sales_order.inquiry.comments.create(sales_order: @sales_order , message: messages, overseer: current_overseer, revised_committed_delivery_date: true)
+        @sales_order.inquiry.comments.create(sales_order: @sales_order, message: messages, overseer: current_overseer, revised_committed_delivery_date: true)
         # render json: {success: 1, message: 'Successfully updated '}, status: 200
       end
 
@@ -220,55 +220,55 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   private
 
-  def save
-    @sales_order.save
-  end
-
-  def save_and_confirm
-    if @sales_order.save
-      redirect_to new_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), notice: flash_message(@inquiry, action_name)
-    else
-      false
+    def save
+      @sales_order.save
     end
-  end
 
-  def set_sales_order
-    @sales_order = @inquiry.sales_orders.find(params[:id])
-  end
+    def save_and_confirm
+      if @sales_order.save
+        redirect_to new_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), notice: flash_message(@inquiry, action_name)
+      else
+        false
+      end
+    end
 
-  def sales_order_params
-    params.require(:sales_order).permit(
+    def set_sales_order
+      @sales_order = @inquiry.sales_orders.find(params[:id])
+    end
+
+    def sales_order_params
+      params.require(:sales_order).permit(
         :mis_date,
-        :sales_quote_id,
-        :parent_id,
-        :reject,
-        :approve,
-        :revised_committed_delivery_date,
-        custom_fields: [
-            :reject_reasons,
-            :message
-        ],
-        rows_attributes: [
-            :id,
-            :sales_order_id,
-            :sales_quote_row_id,
-            :quantity,
-            :product_id,
-            :_destroy
-        ],
-        comments_attributes: [
-            :message,
-            :inquiry_id,
-            :created_by_id,
-            :sales_order_id
-        ],
-        #revised_committed_deliveries: []
-    )
-  end
+          :sales_quote_id,
+          :parent_id,
+          :reject,
+          :approve,
+          :revised_committed_delivery_date,
+          custom_fields: [
+              :reject_reasons,
+              :message
+          ],
+          rows_attributes: [
+              :id,
+              :sales_order_id,
+              :sales_quote_row_id,
+              :quantity,
+              :product_id,
+              :_destroy
+          ],
+          comments_attributes: [
+              :message,
+              :inquiry_id,
+              :created_by_id,
+              :sales_order_id
+          ],
+        # revised_committed_deliveries: []
+      )
+    end
 
-  def mis_date_params
-    params.require(:sales_order).permit(
+    def mis_date_params
+      params.require(:sales_order).permit(
         :mis_date,
-    )
-  end
+      )
+    end
 end
