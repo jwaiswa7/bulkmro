@@ -14,7 +14,11 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
           account: sales_order.attributes['account'],
           order_number: sales_order.attributes['order_number'],
           mis_date: sales_order.attributes['mis_date'],
+          customer_order_date: sales_order.attributes['customer_order_date'],
+          customer_po_delivery_date: sales_order.attributes['customer_po_delivery_date'],
+          customer_po_received_date: sales_order.attributes['customer_po_received_date'],
           cp_committed_date: sales_order.attributes['cp_committed_date'],
+          revised_committed_delivery_date: sales_order.attributes['revised_committed_delivery_date'],
           created_at: sales_order.attributes['created_at']
 
       }
@@ -117,7 +121,11 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
           account: sales_order.attributes['account'],
           order_number: sales_order.attributes['order_number'],
           mis_date: sales_order.attributes['mis_date'],
+          customer_order_date: sales_order.attributes['customer_order_date'],
+          customer_po_delivery_date: sales_order.attributes['customer_po_delivery_date'],
+          customer_po_received_date: sales_order.attributes['customer_po_received_date'],
           cp_committed_date: sales_order.attributes['cp_committed_date'],
+          revised_committed_delivery_date: sales_order.attributes['revised_committed_delivery_date'],
           created_at: sales_order.attributes['created_at']
 
       }
@@ -196,9 +204,14 @@ class Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData < Ser
         order_number: so_details[:order_number],
         invoice_number: invoice_details.present? && invoice_details['invoice_number'].present? ? invoice_details['invoice_number'] : '',
         sku: so_row['sku'].present? ? so_row['sku'] : '',
+        total_selling_price: so_row['total_selling_price'].present? ? so_row['total_selling_price'] : '',
         mis_date: so_details[:mis_date],
         created_at: so_details[:created_at],
+        customer_order_date: so_details[:customer_order_date],
+        customer_po_delivery_date: so_details[:customer_po_delivery_date],
+        customer_po_received_date: so_details[:customer_po_received_date],
         cp_committed_date: so_details[:cp_committed_date],
+        revised_committed_delivery_date: so_details[:revised_committed_delivery_date],
         po_number: purchase_order_details.present? && purchase_order_details[:po_number].present? ? purchase_order_details[:po_number] : '',
         supplier_id: purchase_order_details.present? && purchase_order_details[:supplier_id].present? ? purchase_order_details[:supplier_id] : '',
         supplier_name: purchase_order_details.present? && purchase_order_details[:supplier_name].present? ? purchase_order_details[:supplier_name] : '',
