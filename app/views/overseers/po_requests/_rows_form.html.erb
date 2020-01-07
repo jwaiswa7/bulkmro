@@ -1,4 +1,4 @@
-<div class="bmro-left-side bmro-top-slide">
+<div class="bmro-left-side bmro-top-slide <%= "supplier-parent-div-#{supplier_index}" %>">
   <div class="form-row mt-2 po-request-form">
     <%= f.hidden_field :id %>
     <%= f.hidden_field :sales_order_id %>
@@ -193,19 +193,21 @@
   <div class="bmro-border-dashed"></div>
   <div class="form-row ml-1">
     <div class="col-12 col-md-2 mt-4 custom-control custom-checkbox">
-      <input type="checkbox" class="custom-control-input" name="all_lead_dates" id="all_lead_dates">
-      <label class="custom-control-label" for="all_lead_dates">Select All</label>
+      <input type="checkbox" class="custom-control-input select-all-checkboxes" name="all_lead_dates" id=<%="all_lead_dates_#{supplier_index}"%>>
+      <label class="custom-control-label" for=<%="all_lead_dates_#{supplier_index}"%>>Select All</label>
     </div>
     <div class="col-12 col-md-4 update_lead_date_wrapper">
       <%= f.input :common_lead_date, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'overall-lead-time bmro-form-input'}, label: 'Lead Date' %>
     </div>
     <div class="col-12 col-md-6 mt-3">
-      <button type="button" id="update_lead_date" class="bmro-button btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_lead_date_wrapper">
+      <button type="button" id="update_lead_date_<%= supplier_index %>" class="bmro-button btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_lead_date_wrapper">
         <i class="fal fa-plus mr-1"></i>Update Lead Date
       </button>
     </div>
   </div>
+  <% @supplier_product_index = 1 %>
   <%= f.nested_fields_for :rows, f.object.persisted? ? f.object.rows.order(id: :asc) : f.object.rows do |po_request_row| %>
+
     <%= po_request_row.hidden_field :id %>
     <%= po_request_row.hidden_field :sales_order_row_id %>
     <%= po_request_row.hidden_field :product_id %>
@@ -215,8 +217,8 @@
     <div class="form-row po-request-row bmro-product-slide-on">
       <div class="col-7 col-md-7 mb-1 ml-2">
         <span class="custom-control custom-checkbox d-inline pl-0">
-          <%= check_box_tag 'po_request_row[]', po_request_row.object.id, false, id: "po_request_row_id_#{po_request_row.object.id}", class: 'custom-control-input' %>
-          <label class="custom-control-label" for="<%= "po_request_row_id_#{po_request_row.object.id}" %>"></label>
+          <%= check_box_tag 'po_request_row[]', po_request_row.object.id, false, id: "po_request_row_id_#{supplier_index}_#{@supplier_product_index}", class: 'custom-control-input', 'data-parent-div-id': "supplier-parent-div-#{supplier_index}"  %>
+          <label class="custom-control-label" for="<%= "po_request_row_id_#{supplier_index}_#{@supplier_product_index}" %>"></label>
         </span>
         #<%= ((f.object.rows.index(po_request_row.object) || f.object.rows.size || 0) + 1) %> <strong class="mb-4"><%= po_request_row.object.to_s %></strong>
         <%#= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, disabled: true %>
@@ -297,6 +299,7 @@
       <!-- <hr class="divider"> -->
       <div class="bmro-border-dashed"></div>
     </div>
+    <% @supplier_product_index = @supplier_product_index + 1 %>
   <% end %>
 
 
