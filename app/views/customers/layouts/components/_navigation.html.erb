@@ -14,31 +14,41 @@
   <!-- Navigation Bar -->
   <div class="collapse navbar-collapse justify-content-between" id="navbar-collapse">
     <ul class="navbar-nav">
-      <%= nav_item 'Dashboard', customers_dashboard_path, true %>
-      <%= nav_item 'Quotes', customers_quotes_path, true %>
-      <%= nav_item 'Orders', customers_orders_path, true %>
-      <%= nav_item 'Products', customers_products_path, policy(:customer_product).index? %>
-      <%= nav_item 'Invoices', customers_invoices_path, true %>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
-          Reports
-        </a>
-        <div class="dropdown-menu">
-          <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, policy(:customer_product).most_ordered_products? %>
-          <%= nav_dropdown_item 'Aggregate Reports', quarterly_purchase_data_customers_reports_path, policy(:report).show_aggregate_reports? %>
-          <%= nav_dropdown_item 'Stock Reports', stock_reports_customers_reports_path, policy(:report).stock_reports? %>
-        </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-          Online Orders
-        </a>
-        <div class="dropdown-menu">
-          <%= nav_dropdown_item 'List', customers_customer_orders_path, policy(:customer_order).index? %>
-          <%= nav_dropdown_item 'Open Orders', pending_customers_customer_orders_path, policy(:customer_order).pending? %>
-          <%= nav_dropdown_item 'Closed/Fulfilled Orders', approved_customers_customer_orders_path, policy(:customer_order).approved? %>
-        </div>
-      </li>
+
+      <% if current_company.id == 11420 %>
+        <%= nav_item 'Products', customers_products_path, policy(:customer_product).index? %>
+        <%= nav_item 'Invoices', customers_invoices_path, true %>
+      <% else %>
+        <%= nav_item 'Dashboard', customers_dashboard_path, true %>
+        <%= nav_item 'Quotes', customers_quotes_path, true %>
+        <%= nav_item 'Orders', customers_orders_path, true %>
+        <%= nav_item 'Products', customers_products_path, policy(:customer_product).index? %>
+        <%= nav_item 'Invoices', customers_invoices_path, true %>
+      <% end %>
+      <% if current_company.id == 11420 %>
+        <%= nav_item 'Online Orders', customers_customer_orders_path, policy(:customer_order).index? %>
+      <% else %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
+            Reports
+          </a>
+          <div class="dropdown-menu">
+            <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, policy(:customer_product).most_ordered_products? %>
+            <%= nav_dropdown_item 'Aggregate Reports', quarterly_purchase_data_customers_reports_path, policy(:report).show_aggregate_reports? %>
+            <%= nav_dropdown_item 'Stock Reports', stock_reports_customers_reports_path, policy(:report).stock_reports? %>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+            Online Orders
+          </a>
+          <div class="dropdown-menu">
+            <%= nav_dropdown_item 'List', customers_customer_orders_path, policy(:customer_order).index? %>
+            <%= nav_dropdown_item 'Open Orders', pending_customers_customer_orders_path, policy(:customer_order).pending? %>
+            <%= nav_dropdown_item 'Closed/Fulfilled Orders', approved_customers_customer_orders_path, policy(:customer_order).approved? %>
+          </div>
+        </li>
+      <% end %>
       <%= nav_item 'Image Reader', customers_image_readers_path, policy(:image_reader).index? %>
     </ul>
   </div>
