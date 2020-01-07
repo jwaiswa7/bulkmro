@@ -102,4 +102,13 @@ module ShortcutsHelper
     end
   end
 
+  def chewy_exist?(controller_name)
+    chewy_files = Dir[[Chewy.indices_path, '/*'].join()].map{|p| p.gsub('app/chewy/', '').gsub('_index.rb','') }
+    if chewy_files.include?(controller_name)
+      true
+    else
+      false
+    end
+  end
+
 end

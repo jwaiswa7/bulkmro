@@ -7,10 +7,21 @@ class Services::Overseers::Finders::Contacts < Services::Overseers::Finders::Bas
     Contact
   end
 
+  def all_records
+    indexed_records = index_klass.all.order(sort_definition)
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+
+    indexed_records
+  end
+
+
   def perform_query(query)
     query = query[0, 35]
 
-    index_klass.query(
+    indexed_records = index_klass.query(
       multi_match: {
           query: query,
           operator: 'and',
@@ -18,6 +29,12 @@ class Services::Overseers::Finders::Contacts < Services::Overseers::Finders::Bas
           minimum_should_match: '100%'
       }
                       ).order(sort_definition)
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+
+    indexed_records
   end
 
   def sort_definition

@@ -3,13 +3,13 @@ class Overseers::ContactsController < Overseers::BaseController
   before_action :set_notification, only: [:create]
 
   def index
-    # service = Services::Overseers::Finders::Contacts.new(params)
-    # service.call
-    # @indexed_contacts = service.indexed_records
-    # @contacts = service.records
-    # authorize_acl @contacts
+     service = Services::Overseers::Finders::Contacts.new(params)
+     service.call
+     @indexed_contacts = service.indexed_records
+     @contacts = service.records
+     #authorize_acl @contacts
 
-    @contacts = ApplyDatatableParams.to(Contact.all.includes(:companies), params)
+    #@contacts = ApplyDatatableParams.to(Contact.all.includes(:companies), params)
     authorize_acl @contacts
   end
 

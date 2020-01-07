@@ -4,14 +4,14 @@ class Resources::ApplicationResource
   # debug_output @@remote_exchange_log
 
   def self.new_session_id
-    # response = post(
-    #   '/Login',
-    #     body: {CompanyDB: Settings.sap.DATABASE, UserName: Settings.sap.USERNAME, Password: Settings.sap.PASSWORD}.to_json,
-    #     verify: false,
-    #     debug_output: $stdout,
-    #     timeout: 30
-    # )
-    # response['SessionId']
+     response = post(
+       '/Login',
+         body: {CompanyDB: Settings.sap.DATABASE, UserName: Settings.sap.USERNAME, Password: Settings.sap.PASSWORD}.to_json,
+         verify: false,
+         debug_output: $stdout,
+         timeout: 30
+     )
+     response['SessionId']
   end
 
   def self.get_sap_cookie

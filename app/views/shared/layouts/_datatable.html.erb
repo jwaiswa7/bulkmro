@@ -63,10 +63,11 @@
         <h4 class="page-title"><%= current_model_header %></h4>
          <!--  <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4> -->
     <% end %>
-  <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="" placeholder="Select Date">
+      <% if chewy_exist?(controller_name) || (@model_name && chewy_exist?(@model_name))  %>
+        <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="" placeholder="Select Date">
+      <% end %>
     </div>
 </div>
-
   <% if Settings.reports.show_summary && @statuses.present? %>
     <div class="col-lg-12">
       <%= render partial: "shared/layouts/summary", locals: {klass: current_model.classify.constantize, statuses: @statuses, alias_name: @alias_name, main_summary_statuses: @main_summary_statuses } %>
