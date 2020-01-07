@@ -1,4 +1,4 @@
-document+AF8-type,series+AF8-name,series,period+AF8- indicator,length
+document_type,series_name,series,period_indicator,length
 Sales Order,BHW 2019,114,FY2019+AC0-20,9
 A/R Invoice,BHW 2019,264,FY2019+AC0-20,9
 Delivery,BHW 2019,312,FY2019+AC0-20,9
