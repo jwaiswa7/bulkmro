@@ -7,6 +7,7 @@ class PurchaseOrderRow < ApplicationRecord
   before_destroy :decrease_product_count
   belongs_to :po_request_row, required: false
 
+
   def increase_product_count
     product = self.get_product
     product.update_attribute('total_pos', product.total_pos + 1) if product.present?
@@ -33,9 +34,9 @@ class PurchaseOrderRow < ApplicationRecord
 
   def uom
     if get_product.present? && get_product.measurement_unit.present?
-      get_product.measurement_unit.name
+      get_product.measurement_unit.try(:name)
     elsif self.product.present?
-      self.product.measurement_unit.name
+      self.product.measurement_unit.try(:name)
     end
   end
 
@@ -85,7 +86,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def get_product
-      Product.where(legacy_id: self.metadata['PopProductId'].to_i).or(Product.where(id: Product.decode_id(self.metadata['PopProductId']))).try(:first)
+    Product.where(legacy_id: self.metadata['PopProductId'].to_i).or(Product.where(id: Product.decode_id(self.metadata['PopProductId']))).try(:first)
   end
 
 
@@ -101,7 +102,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def get_pickup_quantity
-    self.quantity - self.inward_dispatch_rows.sum(&:reserved_quantity)
+    self.quantity - self.inward_dispatch_rows.joins(:inward_dispatch).where.not(inward_dispatches: {status: 'Cancelled'}).sum(&:reserved_quantity)
   end
 
   def to_s

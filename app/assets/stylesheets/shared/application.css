@@ -16886,6 +16886,11 @@ label[class*=col] {
   z-index: 1019;
 }
 
+.export-disable {
+  pointer-events: none;
+  color: #6C757D;
+  opacity: 0.75; }
+
 @media (min-width: 992px) {
   .breadcrumb-bar {
     min-height: 2.5625rem;

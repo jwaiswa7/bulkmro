@@ -17,7 +17,6 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-
     if @customer_order_status_report_params.present?
       if @customer_order_status_report_params['procurement_specialist'].present?
         executives = @customer_order_status_report_params['procurement_specialist'].to_i
@@ -44,7 +43,7 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
     range = date_range.split('~')
     indexed_records = indexed_records.query(
       range: {
-          'mis_date': {
+          'created_at': {
               "time_zone": '+05:30',
               gte: range[0].strip.to_date,
               lte: range[1].strip.to_date
@@ -55,7 +54,7 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
   end
 
   def sort_definition
-    {mis_date: :asc}
+    {created_at: :asc}
   end
 
   def perform_query(query_string)
@@ -63,7 +62,7 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
       multi_match: {
           query: query_string,
           operator: 'and',
-          fields: ['inquiry_number_string', 'account', 'company', 'order_number_string']
+          fields: ['inquiry_number_string', 'account', 'company', 'order_number_string', 'po_number_string', 'invoice_number_string']
       }
     ).order(sort_definition)
 

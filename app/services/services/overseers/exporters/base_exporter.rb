@@ -1,7 +1,8 @@
 class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseService
   def initialize(*args)
     @arguments = args
-    @start_at = Date.new(2018, 10, 19)
+    @start_at = Date.new(2018, 10, 19).beginning_of_day
+    @ids = nil
     @end_at = Date.today.end_of_day
     @overseer = args[1].present? ? args[1] : Overseer.default
     if args[0].present? && (args[0].include? '~')
@@ -28,7 +29,6 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
         csv << row.values
       end
     end
-
     temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
     begin
       temp_file.write(csv_data)

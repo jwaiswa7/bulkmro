@@ -74,21 +74,21 @@
               <% end %>
             <% end %>
           </div>
-          <div class="form-row mt-2">
-            <% if @activity.persisted? && !(@activity.approved? || @activity.rejected?) %>
-              <% if is_authorized(@activity, 'approve') %>
+          <!--<div class="form-row mt-2">
+            <%# if @activity.persisted? && !(@activity.approved? || @activity.rejected?) %>
+              <%# if is_authorized(@activity, 'approve') %>
                 <div class="col-md-6">
-                  <a href="<%= approve_overseers_activity_path(@activity) %>" class="btn-block btn btn-success"><i class="fal fa-check mr-1"></i>
+                  <a href="<%#= approve_overseers_activity_path(@activity) %>" class="btn-block btn btn-success"><i class="fal fa-check mr-1"></i>
                     Approve</a>
                 </div>
-              <% end %>
-              <% if is_authorized(@activity, 'reject') %>
+              <%# end %>
+              <%# if is_authorized(@activity, 'reject') %>
                 <div class="col-md-6">
-                  <a href="<%= reject_overseers_activity_path(@activity) %>" class="btn-block btn btn-danger"><i class="fal fa-times mr-1"></i>Reject</a>
+                  <a href="<%#= reject_overseers_activity_path(@activity) %>" class="btn-block btn btn-danger"><i class="fal fa-times mr-1"></i>Reject</a>
                 </div>
-              <% end %>
-            <% end %>
-          </div>
+              <%# end %>
+            <%# end %>
+          </div>-->
         </div>
       </div>
     </div>

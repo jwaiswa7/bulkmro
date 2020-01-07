@@ -14,7 +14,8 @@ class Services::Customers::Exporters::SalesInvoicesExporter < Services::Customer
         'Invoice Net Amount',
         'Invoice Tax Amount',
         'Invoice Gross Amount',
-        'Invoice Status'
+        'Invoice Status',
+        'POD Status'
     ]
     @columns.each do |column|
       rows.push(column)
@@ -39,7 +40,8 @@ class Services::Customers::Exporters::SalesInvoicesExporter < Services::Customer
           invoice_net_amount: ('%.2f' % sales_invoice.metadata['subtotal'] if sales_invoice.metadata['subtotal']),
           tax_amount: ('%.2f' % sales_invoice.metadata['tax_amount'] if sales_invoice.metadata['tax_amount']),
           gross_amount: ('%.2f' % sales_invoice.metadata['grand_total'] if sales_invoice.metadata['grand_total']),
-          invoice_status: sales_invoice.sales_order.remote_status
+          invoice_status: sales_invoice.sales_order.remote_status,
+          pod_status: sales_invoice.pod_status
                   )
       end
       rows.drop(columns.count).each do |row|

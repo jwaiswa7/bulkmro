@@ -97,6 +97,7 @@ class Inquiry < ApplicationRecord
       'Hold by Accounts': 20,
       'Order Lost': 9,
       'Regret': 10,
+      'Regret Request': 22
   }
 
   enum pipeline_status: {
@@ -118,11 +119,11 @@ class Inquiry < ApplicationRecord
       'Rejected by Accounts': 19,
       # 'Hold by Accounts': 20,
       'Order Lost': 9,
-      'Regret': 10,
+      'Regret': 10
   }, _suffix: true
 
   def regrettable_statuses
-    Inquiry.statuses.keys.sort.reject {|status| ['Order Lost', 'Regret', 'Expected Order'].include?(status)}
+    Inquiry.statuses.keys.sort.reject {|status| ['Order Lost', 'Regret Request', 'Expected Order'].include?(status)}
   end
 
   enum stage: {
@@ -570,5 +571,11 @@ class Inquiry < ApplicationRecord
 
   def self.bible_data_till_date
     BibleSalesOrder.order('mis_date asc').last.mis_date.strftime('%b %Y')
+  end
+
+  def overall_margin_percent
+    calculated_total_cost = self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total_cost).compact.sum : (self.sales_quotes.present? ? self.sales_quotes.last.calculated_total_cost : 0)
+    calculated_total = self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : (self.sales_quotes.present? ? self.sales_quotes.last.calculated_total : 0)
+    ((1 - (calculated_total_cost / calculated_total)) * 100).round(2) if calculated_total > 0
   end
 end

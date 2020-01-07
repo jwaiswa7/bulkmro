@@ -19,10 +19,11 @@ class Customers::SalesQuotesController < Customers::BaseController
   def show
     authorize @sales_quote
     @sales_quote_rows = @sales_quote.sales_quote_rows
+    is_revision_visible = params[:is_revision_visible]
     respond_to do |format|
       format.html { }
       format.pdf do
-        render_pdf_for @sales_quote
+        render_pdf_for(@sales_quote, locals: {is_revision_visible:  is_revision_visible})
       end
     end
   end

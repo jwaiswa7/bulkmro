@@ -25,10 +25,12 @@ class Overseers::ContactsController < Overseers::BaseController
   def new
     if params[:ccr_id].present?
       requested_contact = ContactCreationRequest.where(id: params[:ccr_id]).last
+
       if !requested_contact.nil?
         @contact = Contact.new({ 'first_name': requested_contact.first_name, 'last_name':  requested_contact.last_name,
                                  'telephone': requested_contact&.telephone, 'mobile': requested_contact&.mobile,
-                                 'email': requested_contact&.email, 'account_id': requested_contact.activity.company.account_id
+                                 'email': requested_contact&.email, 'account_id': requested_contact.activity.company.account_id,
+                                 'designation': requested_contact.designation
                                }.merge(overseer: current_overseer))
         @company = requested_contact.activity.company
       end

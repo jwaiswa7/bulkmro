@@ -7,7 +7,7 @@ class InvoiceRequest < ApplicationRecord
 
   pg_search_scope :locate, against: [:id, :grpo_number, :ap_invoice_number, :ar_invoice_number], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
-  belongs_to :sales_order
+  belongs_to :sales_order, required: false
   belongs_to :inquiry
   belongs_to :purchase_order, required: false
   has_many :inward_dispatches
@@ -50,7 +50,7 @@ class InvoiceRequest < ApplicationRecord
   scope :ar_invoice_pending, -> { where(status: :'Pending AR Invoice') }
   scope :ar_invoice_generated, -> { where(status: :'Completed AR Invoice Request') }
 
-  validates_presence_of :sales_order
+  validates_presence_of :sales_order, :if => Proc.new { |invoice_request| invoice_request.purchase_order.po_request.po_request_type != 'Stock'}
   validates_presence_of :inquiry
   validates_numericality_of :ap_invoice_number, allow_blank: true
   validate :has_attachments?
@@ -182,8 +182,10 @@ class InvoiceRequest < ApplicationRecord
 
   def allow_statuses(overseer)
     statuses = InvoiceRequest.statuses
-    disabled_statuses = InvoiceRequest.statuses.keys
-    if overseer.accounts? || overseer.admin?
+    disabled_statuses = []
+    if self.status == 'Inward Completed'
+      disabled_statuses = InvoiceRequest.statuses.keys
+    elsif overseer.accounts? || overseer.admin?
       if self.status == 'GRPO Pending'
         statuses =  InvoiceRequest.statuses.except('Cancelled AP Invoice', 'Cancelled AR Invoice', 'Cancelled', 'AP Invoice Request Rejected')
       elsif self.status == 'Pending AP Invoice'
@@ -191,7 +193,6 @@ class InvoiceRequest < ApplicationRecord
       elsif self.status == 'Pending AR Invoice'
         statuses =  InvoiceRequest.statuses.except('Cancelled GRPO', 'Cancelled AP Invoice', 'Cancelled', 'AP Invoice Request Rejected', 'GRPO Request Rejected')
       end
-      disabled_statuses = []
     elsif overseer.logistics?
       if self.status == 'GRPO Request Rejected'
         disabled_statuses =  InvoiceRequest.statuses.except('In stock', 'GRPO Pending').keys

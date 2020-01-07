@@ -83,4 +83,17 @@ class Resources::Order < Resources::ApplicationResource
         TaxExtension: sez
     }
   end
+
+  def self.custom_find(doc_num)
+    response = get("/#{collection_name}?$filter=DocNum eq #{doc_num}")
+    log_request(:get, 'Sales Order - #{doc_num}', is_find: true)
+    validated_response = get_validated_response(response)
+    log_response(validated_response)
+
+    if validated_response['value'].present?
+      remote_record = validated_response['value'][0]
+    end
+
+    remote_record
+  end
 end

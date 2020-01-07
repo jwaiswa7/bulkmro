@@ -2162,4 +2162,25 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
 
     fetch_csv('sprint_si_dump.csv', csv_data)
   end
+
+  def new_warehouse
+    warehouse = Warehouse.where(name: 'HP - Baddi').first_or_initialize
+    warehouse.remote_uid = 33
+    warehouse.location_uid = 18
+    warehouse.remote_branch_name = 'HP - Baddi'
+    warehouse.remote_branch_code = '13'
+    warehouse.series_code = 'HP'
+    warehouse.build_address(
+        name: 'Bulk MRO Industrial Supply Pvt. Ltd.',
+        street1: 'Khasra No. 387/182 388/182,',
+        street2: 'Village Juddikalan,',
+        pincode: 173205,
+        city_name: 'Baddi',
+        country_code: 'IN',
+        gst: '02AAGCB7343G1ZZ',
+        state: AddressState.find_by_region_code('HP')
+    )
+    warehouse.save!
+  end
 end
+

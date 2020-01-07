@@ -17,7 +17,9 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
     else
       records = model.includes({ addresses: :state }, :company_contacts, :inside_sales_owner, :outside_sales_owner, :industry, :account).all.order(created_at: :desc)
     end
-    records.each do |record|
+
+    @export = Export.create!(export_type: 10, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+    records.find_each(batch_size: 100) do |record|
       rows.push(
         name: record.name,
         comapny_alias: record.account.name,
@@ -43,8 +45,8 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
         created_at: record.created_at.to_date.to_s
                 )
     end
-    filtered = @ids.present?
-    export = Export.create!(export_type: 10, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # filtered = @ids.present?
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

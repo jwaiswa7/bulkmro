@@ -20,7 +20,7 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
   end
 
   def can_request_invoice?
-    !record.invoice_request.present?
+    !record.invoice_request.present? || (record.invoice_request.present? && record.invoice_request.status == 'Cancelled GRPO')
   end
 
   def confirm_delivery?
@@ -45,6 +45,9 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
     else
       admin? && (record.status != 'Material Delivered')
     end
+  end
+  def cancelled_inward_dispatches?
+    true
   end
 
   def create_ar_invoice?

@@ -9,7 +9,7 @@
           <a class="btn btn-dark" href="<%= url_for(@sales_invoice.original_invoice) %>"><i class="fal fa-file-pdf"></i>
             Download PDF</a>
         <% elsif policy(@sales_invoice).show? %>
-          <a class="btn btn-dark" href="<%= overseers_inquiry_sales_invoice_path(@sales_invoice.inquiry, @sales_invoice, format: :pdf) %>"><i class="fal fa-file-pdf"></i> Download PDF</a>
+          <a class="btn btn-dark" href="<%= customers_invoice_path(@sales_invoice, stamp: 1, format: :pdf) %>"><i class="fal fa-file-pdf"></i> Download PDF</a>
         <% end %>
       </h2>
     </div>
@@ -205,7 +205,7 @@
                   </td>
                   <td>
                       <span>
-                          <%= row.tax_rate %>
+                          <%= row.tax_rate.round(0) %>
                       </span>
                   </td>
                   <td>

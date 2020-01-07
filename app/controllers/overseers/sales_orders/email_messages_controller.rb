@@ -1,8 +1,9 @@
 class Overseers::SalesOrders::EmailMessagesController < Overseers::SalesOrders::BaseController
   def material_dispatched_to_customer
-    @email_message = @sales_order.email_messages.build(overseer: current_overseer, contact: @inquiry.contact, inquiry: @inquiry)
+    @email_message = @sales_order.email_messages.build(overseer: current_overseer, inquiry: @inquiry)
     @action = 'material_dispatched_to_customer_notification'
     @email_message.assign_attributes(
+      to: [@inquiry.billing_contact.email, @inquiry.shipping_contact.email].uniq.join(','),
       subject: "Ref # #{@inquiry.id} Your Order # #{@inquiry.customer_po_number}- Dispatch Notification",
       body: SalesOrderMailer.material_dispatched_details_to_customer(@email_message).body.raw_source,
       auto_attach: true
@@ -35,9 +36,10 @@ class Overseers::SalesOrders::EmailMessagesController < Overseers::SalesOrders::
   end
 
   def material_delivered_to_customer
-    @email_message = @sales_order.email_messages.build(overseer: current_overseer, contact: @inquiry.contact, inquiry: @inquiry)
+    @email_message = @sales_order.email_messages.build(overseer: current_overseer, inquiry: @inquiry)
     @action = 'material_delivered_to_customer_notification'
     @email_message.assign_attributes(
+      to: [@inquiry.billing_contact.email, @inquiry.shipping_contact.email].uniq.join(','),
       subject: "Ref # #{@inquiry.id} Your Order # #{@inquiry.customer_po_number} - Material Delivery Notification",
       body: SalesOrderMailer.material_delivered_details_to_customer(@email_message).body.raw_source,
       auto_attach: true

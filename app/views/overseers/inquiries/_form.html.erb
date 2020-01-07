@@ -55,11 +55,11 @@
                     </div>
                     <div class="modal-body">
                       <% if current_overseer.admin? %>
-                        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
-                      <% elsif ["Order Lost", "Regret"].include?(@inquiry.status) %>
-                        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
+                        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S', 'Regret')), selected: @inquiry.status %>
+                      <% elsif ["Order Lost"].include?(@inquiry.status) %>
+                        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S', 'Regret')), selected: @inquiry.status %>
                       <% else %>
-                        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
+                        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S', 'Regret'), keep_raw: true), disabled: @inquiry.regrettable_statuses %>
                       <% end %>
                       <div class= "<%='d-none' if !@inquiry.lost_regret_reason.present? %>" id="regret-field" >
                         <%= f.input :lost_regret_reason, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.lost_regret_reasons), input_html: {class: 'disabled'}, include_blank: 'Select Reason', selected: @inquiry.lost_regret_reason %>
@@ -293,7 +293,7 @@
             <%= f.input :price_type, label: 'Delivery', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :payment_option, label: 'Payment terms', required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', collection: PaymentOption.active.pluck(:name, :id) %>
+            <%= f.association :payment_option, label: 'Payment terms', required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', collection: selected_option_or_nil(f, :payment_option), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_payment_options_path} %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.input :packing_and_forwarding_option, label: 'Packing and forwarding', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>

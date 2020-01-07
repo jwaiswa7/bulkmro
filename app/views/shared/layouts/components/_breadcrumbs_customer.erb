@@ -1,9 +1,3 @@
-<% if content_for?(:can_be_exported_for_amat_customer) && current_overseer.present? && current_overseer == Overseer.find_by_email('sufiyan.siddique@bulkmro.com') %>
-  <a href= "<%= [request.path,'/', 'export_for_amat_customer.csv'].join %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" >
-    <i class="fal fa-download mr-1"></i>Export
-  </a>
-<% end %>
-
 <% if content_for?(:can_be_directly_created) || content_for?(:can_be_searched_or_created) || content_for?(:can_be_directly_exported) || content_for?(:can_be_directly_export_by_daterange) || content_for?(:heading_buttons) || content_for?(:can_be_directly_downloaded) || content_for?(:can_be_directly_exported_filtered_records) || content_for?(:can_be_directly_exported_inquiry_tat) || content_for?(:can_exported_report) %>
   <div>
     <% if content_for?(:heading_buttons)%>

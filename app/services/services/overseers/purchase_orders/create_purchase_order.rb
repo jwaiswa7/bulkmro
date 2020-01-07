@@ -7,7 +7,10 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def create
     ActiveRecord::Base.transaction do
       warehouse = Warehouse.where(id: po_request.bill_to.id)
-      series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' ' + Date.today.year.to_s).last
+      date = Date.today
+      year = date.year
+      year = year - 1 if date.month < 4
+      series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' ' + year.to_s).last
       @purchase_order = PurchaseOrder.where(po_number: series.last_number).first_or_create! do |purchase_order|
         purchase_order_params = assign_purchase_order_attributes(series.last_number)
         # purchase_order.update_attributes(purchase_order_params)
@@ -96,9 +99,10 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   end
 
   def get_metadata(series_number)
+    product_ids = Product.where(sku: Settings.product_specific.freight).last.id
     {
         PoNum: series_number,
-        PoDate: Time.now.strftime('%Y-%m-%d'),
+        PoDate: po_request.purchase_order.present? ? po_request.purchase_order.created_at.strftime('%Y-%m-%d') : Time.now.strftime('%Y-%m-%d'),
         PoType: 'Manual',
         PoStatus: '63',
         ItemLine: item_line_json,
@@ -118,7 +122,8 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         PoShipWarehouse: po_request.ship_to.remote_uid,
         PoComments: po_request.sales_order.present? ? "Purchase Order Against Sales Order #{po_request.sales_order.order_number}" : "Purchase Order Against For stock Inquiry Number #{po_request.inquiry.inquiry_number}",
         PoOrderId: (po_request.sales_order.present? ? po_request.sales_order.order_number : ''),
-        PoFreight: po_request.rows.pluck(:product_id).include?(38282) ? 'Excluded' : 'Included',
+        PoFreight: po_request.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included',
+        U_Frghtterm: po_request.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included',
         PoRemarks: '',
         PoTaxRate: '',
         PoUpdatedAt: '',
@@ -129,7 +134,8 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         PoDeliveryTerms: po_request.delivery_type.present? ? po_request.delivery_type : 'Door delivery',
         PoModeOfTrasport: po_request.transport_mode.present? ? po_request.transport_mode : 'Road',
         PoPackingForwarding: '',
-        DocumentLines: item_line_json
+        DocumentLines: item_line_json,
+        DocDueDate: po_request.rows.present? ? po_request.rows.maximum(:lead_time).strftime('%Y-%m-%d') : Time.now.strftime('%Y-%m-%d')
       # Project: po_request.inquiry.inquiry_number,
       # CardCode: po_request.supplier.remote_uid,
       # CardName: po_request.supplier.to_s,
@@ -157,7 +163,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         PopQty: row.quantity.to_f,
         Linenum: index,
         UnitMsr: row.measurement_unit.name,
-        WhsCode: row.po_request.bill_to.remote_uid,
+        WhsCode: row.po_request.ship_to.remote_uid,
         PopPriceHt: row.unit_price.to_f,
         PopTaxRate: row.tax_rate.to_s.gsub('.0%', '').gsub('GST ', 'CSG@'),
         PopDiscount: row.discount_percentage,

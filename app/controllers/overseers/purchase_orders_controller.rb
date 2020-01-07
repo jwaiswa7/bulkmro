@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po, :cancelled_purchase_modal, :cancelled_purchase_order, :change_material_status]
+  before_action :set_purchase_order, only: [:show, :edit_material_followup, :update_material_followup, :resync_po, :cancelled_purchase_modal, :cancelled_purchase_order, :change_material_status, :render_modal_form, :add_comment]
 
   def index
     authorize_acl :purchase_order
@@ -54,11 +54,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def resync_po
     authorize_acl @purchase_order
-    if @purchase_order.save_and_sync(@purchase_order.po_request)
-      redirect_to overseers_inquiry_purchase_order_path(@purchase_order.inquiry.to_param, @purchase_order.to_param)
-    else
-      redirect_to pending_sap_sync_overseers_purchase_orders_path
-    end
+    @purchase_order.save_and_sync(@purchase_order.po_request)
+    redirect_to pending_sap_sync_overseers_purchase_orders_path
   end
 
   def resync_all_purchase_orders
@@ -161,6 +158,31 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     render 'inward_dispatch_pickup_queue'
   end
 
+  def cancelled_inward_dispatches
+    @status = 'Cancelled Inward Dispatches'
+
+    base_filter = {
+        base_filter_key: 'status',
+
+        base_filter_value: InwardDispatch.statuses['Cancelled']
+    }
+
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::InwardDispatches.new(params.merge(base_filter), current_overseer)
+        service.call
+        @indexed_inward_dispatches = service.indexed_records
+        @inward_dispatches = service.records.try(:reverse)
+      end
+    end
+
+    authorize :inward_dispatch
+    # redirect_to cancelled_inward_dispatches_overseers_purchase_orders_path, notice: flash_message(@purchase_order, action_name)
+    render 'inward_dispatch_pickup_queue'
+  end
+
   def inward_completed_queue
     @status = 'Inward Completed Queue'
 
@@ -240,7 +262,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     service = Services::Overseers::Exporters::PurchaseOrdersExporter.new([], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.purchase_orders.not_filtered.last.report)
+    redirect_to url_for(Export.purchase_orders.not_filtered.completed.last.report)
   end
 
   def export_filtered_records
@@ -274,7 +296,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     service = Services::Overseers::Exporters::MaterialReadinessExporter.new([], current_overseer)
     service.call
 
-    redirect_to url_for(Export.material_readiness_queue.not_filtered.last.report)
+    redirect_to url_for(Export.material_readiness_queue.not_filtered.completed.last.report)
   end
 
   def cancelled_purchase_modal
@@ -293,6 +315,33 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       @purchase_order.po_request.save!
     end
     render json: {sucess: 'Successfully updated ', url: overseers_purchase_orders_path }, status: 200
+  end
+  def render_modal_form
+    authorize_acl @purchase_order
+    respond_to do |format|
+      if params[:title] == 'Comment'
+        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @purchase_order, url: add_comment_overseers_purchase_order_path(@purchase_order), view_more: nil}}
+      end
+    end
+  end
+
+  def add_comment
+    @purchase_order.assign_attributes(purchase_order_params)
+    authorize_acl @purchase_order
+    if @purchase_order.valid?
+      message = params['purchase_order']['comments_attributes']['0']['message']
+      if message.present?
+        ActiveRecord::Base.transaction do
+          @purchase_order.save!
+          @purchase_order_comment = PoComment.new(message: message, overseer: current_overseer)
+        end
+        render json: {success: 1, message: 'Successfully updated '}, status: 200
+      else
+        render json: {error: {base: 'Field cannot be blank!'}}, status: 500
+      end
+    else
+      render json: {error: @purchase_order.errors}, status: 500
+    end
   end
 
   private

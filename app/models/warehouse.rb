@@ -29,7 +29,11 @@ class Warehouse < ApplicationRecord
       'JNK': 7,
       'CHE': 8,
       'HYD': 9,
-      'BAN': 10
+      'BAN': 10,
+      'HP': 11,
+      'LPN': 12,
+      'BHW': 13,
+      'AMB': 14
   }
 
 
