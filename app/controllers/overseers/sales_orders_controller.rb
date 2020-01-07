@@ -218,6 +218,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       service = Services::Overseers::SalesOrders::NewPoRequests.new(@sales_order, current_overseer)
       @po_requests = service.call
     end
+    @index = 1
   end
 
   def preview_purchase_orders_requests
