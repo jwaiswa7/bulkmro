@@ -84,8 +84,26 @@
                 </div>
               <% end %>
               <div class="col-6 col-md-3">
-                <strong class="d-block">Instock Quantity</strong>
-                <%= @customer_product.product.stocks.sum(&:instock).to_i %>
+                <% if current_company.id == 11420 %>
+                  <strong class="d-block">Instock Quantity(per Warehouse)</strong>
+                  <% if @warehouse_wise_products_quantity.stringify_keys.keys.include? @customer_product.sku.to_s %>
+                    <b>BH</b> - <% if @warehouse_wise_products_quantity.stringify_keys[@customer_product.sku.to_s][:BH].present? %>
+                                    <%= @warehouse_wise_products_quantity.stringify_keys[@customer_product.sku.to_s][:BH] %>
+                                  <% else %>
+                                    0
+                                  <% end %>
+                    ,<b>CN</b> - <% if @warehouse_wise_products_quantity.stringify_keys[@customer_product.sku.to_s][:CN].present? %>
+                                    <%= @warehouse_wise_products_quantity.stringify_keys[@customer_product.sku.to_s][:CN] %>
+                                  <% else %>
+                                    0
+                                  <% end %>
+                  <% else %>
+                    <b>BH</b> - 0, <b>CN</b> - 0
+                  <% end %>
+                <% else %>
+                  <strong class="d-block">Instock Quantity</strong>
+                  <%= @customer_product.product.stocks.sum(&:instock).to_i %>
+                <% end %>
               </div>
               <% if @is_henkel%>
                 <div class="col-6 col-md-3 mb-2">

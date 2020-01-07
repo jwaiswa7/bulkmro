@@ -96,10 +96,44 @@
               <p class="mb-0 text-small text-black-50">
                 <strong class="d-block"><%= customer_product.best_brand.name if customer_product.best_brand.present? %></strong>
                 <em>MOQ - <%= customer_product.moq %></em><br>
-                <em>Instock Qty
-                  - <%= customer_product.product.stocks.sum(&:instock).to_i if customer_product.product.present? %></em><br>
+                <%# if current_company.id == 11420 %>
+                <% if current_company.id == 11420 %>
+                  <% if @warehouse_wise_products_quantity.stringify_keys.keys.include? customer_product.sku.to_s %>
+                    <em>Instock Qty (per Warehouse)
+                    - <b>BH</b> - <% if @warehouse_wise_products_quantity.stringify_keys[customer_product.sku.to_s][:BH].present? %>
+                                    <%= @warehouse_wise_products_quantity.stringify_keys[customer_product.sku.to_s][:BH] %>
+                                  <% else %>
+                                    0
+                                  <% end %>
+                      ,<b>CN</b> - <% if @warehouse_wise_products_quantity.stringify_keys[customer_product.sku.to_s][:CN].present? %>
+                                    <%= @warehouse_wise_products_quantity.stringify_keys[customer_product.sku.to_s][:CN] %>
+                                  <% else %>
+                                    0
+                                  <% end %>
+                                </em><br>
+                  <% else %>
+                    <em>Instock Qty (per Warehouse) - <b>BH</b> - 0, <b>CN</b> - 0</em><br>
+                  <% end %>
+                <% else %>
+                  <em>Instock Qty
+                    - <%= customer_product.product.stocks.sum(&:instock).to_i if customer_product.product.present? %></em><br>
+                <% end %>
               </p>
             </a>
+            <% if (current_company.id == 11420) && (@warehouse_wise_products_quantity.stringify_keys.keys.include?(customer_product.sku.to_s)) %>
+              <%= simple_form_for([:customers, CartItem.new], :url => customers_cart_items_path, :method => :post, :remote => true) do |f| %>
+                <%= f.hidden_field :product_id, value: customer_product.product.id %>
+                <%= f.hidden_field :customer_product_id, value: customer_product.id %>
+                <div class="form-row w100 <%= @display_class %>" >
+                  <div class="col-6 col-md-2">
+                    <%= f.input :quantity, label: false, :class => 'form-control', input_html: {placeholder: 'Quantity'} %>
+                  </div>
+                  <div class="col-6 col-md-4">
+                    <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
           </div>
         </div>
       </div>
