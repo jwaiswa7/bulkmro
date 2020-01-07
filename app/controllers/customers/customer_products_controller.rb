@@ -22,6 +22,19 @@ class Customers::CustomerProductsController < Customers::BaseController
       @default_quantity = 0
     end
 
+    @warehouse_wise_products_quantity = {
+      'BM9O3Y9': {'BH': 27000},
+      'BM9O9D4': {'BH': 31000, 'CN': 6800},
+      'BM9Y0A4': {'BH': 10000},
+      'BM9X3F3': {'BH': 35000, 'CN': 8000},
+      'BM9S0I2': {'BH': 20000, 'CN': 13500},
+      'BM9U7U0': {'BH': 41000, 'CN': 4800},
+      'BM9O1H1': {'BH': 3100, 'CN': 600},
+      'BM9T1D6': {'BH': 2900, 'CN': 500},
+      'BM9W5T6': {'BH': 2900},
+      'BM9S3N2': {'BH': 12000, 'CN': 5600}
+    }
+
     # Incomplete feature
     # @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{ |t| [t.id, t.name] }
     # @checked_tags = (params['custom_filters']['tags'].nil? ? [] : params['custom_filters']['tags'].map(&:to_i)) if params['custom_filters'].present?
@@ -49,6 +62,18 @@ class Customers::CustomerProductsController < Customers::BaseController
       @default_quantity = 0
       @display_class = (@customer_product.product.stocks.sum(&:instock) > 0) ? '' : 'd-none'
     end
+    @warehouse_wise_products_quantity = {
+      'BM9O3Y9': {'BH': 27000},
+      'BM9O9D4': {'BH': 31000, 'CN': 6800},
+      'BM9Y0A4': {'BH': 10000},
+      'BM9X3F3': {'BH': 35000, 'CN': 8000},
+      'BM9S0I2': {'BH': 20000, 'CN': 13500},
+      'BM9U7U0': {'BH': 41000, 'CN': 4800},
+      'BM9O1H1': {'BH': 3100, 'CN': 600},
+      'BM9T1D6': {'BH': 2900, 'CN': 500},
+      'BM9W5T6': {'BH': 2900},
+      'BM9S3N2': {'BH': 12000, 'CN': 5600}
+    }
   end
 
   def most_ordered_products
