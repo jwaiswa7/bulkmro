@@ -16,6 +16,11 @@ json.data (@customer_order_status_records) do |sales_order|
                   else
                     ''
                   end,
+                  if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM'
+                    sales_order[:total_selling_price].present? ? sales_order[:total_selling_price] : '-'
+                  else
+                    ''
+                  end,
                   sales_order[:mis_date].present? ? format_date_without_time(Date.parse(sales_order[:mis_date])) : '-',
                   sales_order[:created_at].present? ? format_date_without_time(Date.parse(sales_order[:created_at])) : '-',
                   sales_order[:cp_committed_date].present? ? format_date_without_time(Date.parse(sales_order[:cp_committed_date])) : '-',
@@ -53,9 +58,9 @@ end
 json.columnFilters [
                        [],
                        [],
-                       [],
                        [{ "source": autocomplete_overseers_companies_path(is_customer: true) }],
                        [{ "source": autocomplete_overseers_accounts_path }],
+                       [],
                        [],
                        [],
                        [],

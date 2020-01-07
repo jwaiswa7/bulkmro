@@ -57,7 +57,7 @@
             </strong>
             <div class="bmro-summary-data">
             <%= @contact_creation_request.mobile %>
-          </div>  
+          </div>
           </div>
           <div class="col-6 col-md-4 mb-2">
             <strong class="d-block bmro-summary-head">
@@ -66,6 +66,14 @@
             <div class="bmro-summary-data">
             <%= @contact_creation_request.activity.created_by.name %>
           </div>
+          </div>
+          <div class="col-6 col-md-4 mb-2">
+            <strong class="d-block bmro-summary-head">
+              Designation
+            </strong>
+            <div class="bmro-summary-data">
+            <%= @contact_creation_request.designation %>
+            </div>
           </div>
         </div>
       </div>

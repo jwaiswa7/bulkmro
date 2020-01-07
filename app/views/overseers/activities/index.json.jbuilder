@@ -50,7 +50,12 @@ json.data (@activities) do |activity|
                   format_currency(activity.expenses),
                   activity.points_discussed,
                   activity.actions_required,
-                  format_succinct_date(activity.created_at)
+                  format_succinct_date(activity.created_at),
+                  if activity.approval.present?
+                    status_badge(activity.approval.activity_status)
+                  else
+                    ' - '
+                  end
               ]
 end
 json.columnFilters [
@@ -67,6 +72,7 @@ json.columnFilters [
                        [{ "source": autocomplete_overseers_contacts_path }],
                        Activity.purposes.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        Activity.activity_types.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       [],
                        [],
                        [],
                        [],

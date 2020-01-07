@@ -75,17 +75,17 @@
         </div>
         <div class="card-footer bmro-card-footer">
           <% if is_authorized(@sales_order, 'create_purchase_orders_requests') %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button bmro-width-auto") do %>
+            <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
               <i class="fal fa-pen"></i> Preview PO request
             <% end %>
           <% end %>
-          <div class="bmro-add-new-parant bmro-new-slide-on">
-            <div class="bmro-add-new bmro-product-btn-parent">
-              <div class="bmro-fl">
-                <a href="#" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addnew-icon mr-1"></i>Add New</a>
-              </div>
-            </div>
-          </div>          
+<!--          <div class="bmro-add-new-parant bmro-new-slide-on">-->
+<!--            <div class="bmro-add-new bmro-product-btn-parent">-->
+<!--              <div class="bmro-fl">-->
+<!--                <a href="#" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addnew-icon mr-1"></i>Add New</a>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
       </div>
       <div class="bmro-fix-right bmro-fix-sticky">
@@ -105,10 +105,10 @@
               </li>
               <li class="bmro-li-right bmro-active-li">
                 <label class="bmro-list-button bmro-new-slide">Add New Product</label>
-              </li>              
+              </li>
             </ul>
           </nav>
-        </div>        
+        </div>
       </div>
   </div>
     <% else %>
@@ -154,6 +154,5 @@
         </div>
       </div>
     <% end %>
-
   <% end %>
 </div>
