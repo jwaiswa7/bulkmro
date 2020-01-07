@@ -129,7 +129,7 @@
           <div class="col-lg-6">
             <div class="form-row">
               <div class="col-12 col-md-2">
-                <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark btn-block bmro-button' %>
+                <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark btn-block' %>
               </div>
               <div class="col-12 col-md-5 mt-1 mt-md-0">
                 <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-block' if is_authorized(@product, 'approve') && policy(@product).approve? %>
