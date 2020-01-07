@@ -30,14 +30,15 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
         @po_request.approved_by = current_overseer
       end
       po_request_row_ids = []
-          params[:po_request][:rows_attributes].each do |key, value|
-            if value.key?('_destroy')
-              po_request_row_ids << value['id']
-            end
-          end
-          if @po_request.purchase_order.present? && po_request_row_ids.present?
-            @po_request.purchase_order.rows.where(po_request_row_id: po_request_row_ids).update_all(po_request_row_id: nil)
-          end
+      params[:po_request][:rows_attributes].each do |key, value|
+        if value.key?('_destroy')
+          po_request_row_ids << value['id']
+        end
+      end
+      po_request_po = @po_request.purchase_order
+      if po_request_po.present? && po_request_row_ids.present?
+        po_request_po.rows.where(po_request_row_id: po_request_row_ids).update_all(po_request_row_id: nil)
+      end
       ActiveRecord::Base.transaction do
         if @po_request.stock_status_changed?
           if @po_request.stock_status == 'Stock Rejected'
