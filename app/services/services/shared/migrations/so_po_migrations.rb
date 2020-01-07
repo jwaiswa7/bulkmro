@@ -10,7 +10,7 @@ class Services::Shared::Migrations::SoPoMigrations < Services::Shared::Migration
       s = Series.new(document_type: x.get_column('document_type'),
                      series: x.get_column('series'),
                      series_name: x.get_column('series_name'),
-                     period_indicator: x.get_column('period_ indicator'),
+                     period_indicator: x.get_column('period_indicator'),
                      number_length: x.get_column('length').to_i)
       p '******************8'
       # p s.errors.full_message
