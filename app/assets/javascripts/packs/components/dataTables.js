@@ -362,6 +362,7 @@ $('.reset-table-filters').on('click', function(){
     $('.fillter-wrapper .select2-ajax').val('').trigger('change')
     $('.fillter-wrapper .select').val('').trigger('change')
     $('.fillter-wrapper [data-toggle="daterangepicker"]').val('').trigger('change')
+    $('.bmro-table-layout [data-toggle="daterangepicker"]').val('')
 })
 
 export default dataTables
