@@ -10,7 +10,7 @@ class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::Ba
           inquiry_product.product.lowest_inquiry_product_suppliers(number: 5).each do |product_supplier|
             unit_cost_price = product_supplier.lowest_unit_cost_price != 'N/A' ? product_supplier.lowest_unit_cost_price : 0.0
             if product_supplier.supplier.to_s != 'Local'
-              inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.first_or_initialize(
+              inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.build(
                   supplier_id: product_supplier.supplier.id,
                   unit_cost_price: unit_cost_price,
                   last_unit_price: unit_cost_price,
