@@ -125,10 +125,10 @@
                 <%= f.hidden_field :product_id, value: customer_product.product.id %>
                 <%= f.hidden_field :customer_product_id, value: customer_product.id %>
                 <div class="form-row w100 <%= @display_class %>" >
-                  <div class="col-6 col-md-2">
+                  <div class="col-6">
                     <%= f.input :quantity, label: false, :class => 'form-control', input_html: {placeholder: 'Quantity'} %>
                   </div>
-                  <div class="col-6 col-md-4">
+                  <div class="col-6">
                     <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
                   </div>
                 </div>
