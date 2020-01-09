@@ -751,7 +751,7 @@
         <div class="bmro-dash-right-menu">
 <!--              <span class="bmro-all-notification active-menu bmro-all-action" role="button">All</span>-->
           <span class="bmro-all-notification bmro-notification-action" role="button" id="notifications" >Notification</span>
-          <span class="bmro-all-notification bmro-Comments-action" role="button" id="comments">Comments</span>
+          <span class="bmro-all-notification bmro-Comments-action active-menu" role="button" id="comments">Comments</span>
         </div>
       </div>
       <div class="bmro-width100 bmro-notification-sec bmro-hide" id="notification-rows">
@@ -778,7 +778,7 @@
           <%end %>
         <%end %>
       </div>
-      <div class="bmro-width100 bmro-comments-sec bmro-hide" id="comment-rows">
+      <div class="bmro-width100 bmro-comments-sec" id="comment-rows">
 <!--        <div class="bmro-today-list bmro-today-mt-mb">-->
 <!--          <div class="bmro-width100 bmro-today-line-parent">-->
 <!--            <div class="bmro-today-parent">-->
@@ -829,7 +829,42 @@
 </div>
 
 <script>
+    $( document ).ready(function() {
+        $("#notifications").trigger('click');
+    });
 
+    $(".bmro-all-notification").click(function () {
+        $('.bmro-all-notification').removeClass('active-menu');
+        $(this).addClass('active-menu',1000);
+    });
+    $(".bmro-all-action").click(function () {
+        $('.bmro-all-sec').removeClass('bmro-hide');
+        $('.bmro-notification-sec').addClass('bmro-hide');
+        $('.bmro-comments-sec').addClass('bmro-hide');
+    });
+    $(".bmro-notification-action").click(function () {
+        $('.bmro-all-sec').addClass('bmro-hide');
+        $('.bmro-notification-sec').removeClass('bmro-hide');
+        $('.bmro-comments-sec').addClass('bmro-hide');
+    });
+    $(".bmro-Comments-action").click(function () {
+        $('.bmro-all-sec').addClass('bmro-hide');
+        $('.bmro-notification-sec').addClass('bmro-hide');
+        $('.bmro-comments-sec').removeClass('bmro-hide');
+    });
+    $(".bmro-menu-click").click(function () {
+        $('.bmro-dash-main-menu').toggleClass('bmro-dash-main-menu-show');
+        $(this).toggleClass('bmro-menu-roted');
+    });
+    $('.bmro-main-drop-col p').hover(function(){
+        $(this).children('.bmro-dash-hover').css("display","block");
+    }, function() {
+        $(this).children('.bmro-dash-hover').css("display","none");
+    });
+    $(".bmro-dashbord-click").click(function () {
+        $('.bmro-dash-main-menu').removeClass('bmro-dash-main-menu-show');
+        $('.bmro-menu-click').removeClass('bmro-menu-roted');
+    });
 
     $(".compose-email").click(function (e) {
       let inquiry_number = $(this).data('id');
@@ -859,19 +894,19 @@
 
     $('#myModal').on('hidden.bs.modal', function () {
         tinymce.remove('.html-editor');
-    })
+    });
 
     $(".bmro-right-side-open").click(function () {
         $('.bmro-slide-order-no').addClass('bmro-slide-order-show');
         $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
-    })
+    });
     $(".bmro-close-order-slide").click(function () {
         $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
         $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
         $('.bmro-slide-on-inquries-2').removeClass('bmro-slide-on-inquries-2-show');
         $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
 
-    })
+    });
     // $(".bmro-same-box").click(function () {
     //     $('.bmro-same-box').removeClass('bmro-same-box-active');
     //     $(this).addClass('bmro-same-box-active',1000);
@@ -956,7 +991,7 @@
         $(this).parent().parent().addClass('bmro-active-white',1000);
         $('.bmro-show-star').addClass('bmro-inquiry-show-hide');
         $('.bmro-reset-button').removeClass('bmro-inquiry-show-hide');
-    })
+    });
     $(".bmro-reset-button").click(function () {
         $('.bmro-order-action').addClass('bmro-order-hide');
         $('.bmro-all-task-action').removeClass('bmro-order-hide');
@@ -965,7 +1000,7 @@
         $('.bmro-Inquries-task').parent().removeClass('bmro-bg-color')
         $('.bmro-show-star').removeClass('bmro-inquiry-show-hide');
         $('.bmro-reset-button').addClass('bmro-inquiry-show-hide');
-    })
+    });
     $(".bmro-dash-main-menu").mouseleave(function() {
         $(".bmro-dash-main-menu").removeClass('bmro-dash-main-menu-show');
     });
@@ -973,11 +1008,12 @@
         $('.bmro-slide-on-inquries-2').addClass('bmro-slide-on-inquries-2-show');
         $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
         $('.bmro-slide-order-no').removeClass('bmro-slide-order-show');
-    })
+    });
+
     $('.bmro-show-purchse').click(function(){
         $('.bmro-purchase-order').addClass('bmro-show');
         $('.bmro-inquries-main').addClass('bmro-hide');
-    })
+    });
 
     $('.bmro-show-sales').click(function(){
         $('.bmro-purchase-order').addClass('bmro-hide');
