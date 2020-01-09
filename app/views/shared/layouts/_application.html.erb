@@ -38,7 +38,7 @@
 
       <div class="container bmro-container bmro-container-fluid <% if content_for?(:container_fluid) %>-fluid<% end %>">
         <%= render 'shared/layouts/components/breadcrumbs' if (local_assigns[:navigation].present? &&  !params[:controller].include?('dashboard')) %>
-        <div class="row justify-content-center bmro-padd-col">
+        <div class="<% if !(controller_name == "dashboard" && current_overseer.inside_sales_executive?) %>row<% end %> justify-content-center bmro-padd-col">
           <%= yield %>
 
           <% flash.each do |message_type, message| %>
