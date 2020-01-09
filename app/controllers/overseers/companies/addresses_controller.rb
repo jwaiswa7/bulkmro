@@ -37,8 +37,8 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     @address = @company.addresses.build(address_params.merge(overseer: current_overseer))
     authorize_acl @address
     @address.remove_gst_whitespace
-
     if @address.save
+      @address.update_attributes(remote_uid: @address.id, billing_address_uid: 0, shipping_address_uid: 1)
       @company.update_attributes(default_billing_address: @address) if @company.default_billing_address.blank?
       @company.update_attributes(default_shipping_address: @address) if @company.default_shipping_address.blank?
       @company.save_and_sync

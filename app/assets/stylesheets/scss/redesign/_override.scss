@@ -2988,6 +2988,11 @@ table.fixedHeader-floating{
 .row div[class*="col"]{
     float: left;
 }
+
+.row .acl-resources-parent-div div[class*="col"]{
+    float: unset !important;
+}
+
 .fa-pen{    
     background-size: 16px;
      padding: 1px 12px;
