@@ -94,7 +94,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
     @indexed_purchase_orders = service.indexed_records
     @purchase_orders = service.records.try(:reverse)
-
+    @model_name = 'material_readiness_queue'
     @summary_records = service.get_summary_records(@indexed_purchase_orders)
     status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@summary_records, PurchaseOrder, custom_status: 'material_summary_status', main_summary_status: PurchaseOrder.material_summary_statuses)
     status_service.call
@@ -119,7 +119,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def inward_dispatch_pickup_queue
     @status = 'Inward Dispatch Queue'
-
+    @model_name = 'inward_dispatch_pickup_queue'
 
     base_filter = {
         base_filter_key: 'status',
@@ -146,7 +146,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def inward_dispatch_delivered_queue
     @status = 'Inward Delivered Queue'
-
+    @model_name = 'inward_dispatch_delivered_queue'
     base_filter = {
         base_filter_key: 'status',
 
@@ -195,7 +195,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def inward_completed_queue
     @status = 'Inward Completed Queue'
-
+    @model_name = 'inward_completed_queue'
     base_filter = {
         base_filter_key: 'is_inward_completed',
         base_filter_value: true
