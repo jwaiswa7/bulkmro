@@ -140,7 +140,9 @@ class SalesOrder < ApplicationRecord
       "Wrong Shipping Warehouse": 'Wrong Shipping Warehouse',
       "Wrong Billing Address": 'Wrong Billing Address',
       "Wrong Shipping Address": 'Wrong Shipping Address',
+=begin
       "Wrong Attachments": 'Wrong Attachments',
+=end
       "Wrong HSN Codes": 'Wrong HSN Codes',
       "Wrong Tax Rates": 'Wrong Tax Rates',
       "Wrong Tax Types": 'Wrong Tax Types',
