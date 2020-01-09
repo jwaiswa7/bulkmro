@@ -1,0 +1,58 @@
+<% if company.is_customer? %>
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#addresses" role="tab">Addresses</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#inquiries" role="tab">Inquiries</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#contacts" role="tab">Contacts</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#banks" role="tab">Banks</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#products" role="tab">Products</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#product_categories" role="tab">Product Categories</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#online-orders" role="tab">Online Orders</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#payments" role="tab">Online Payments</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#quotes" role="tab">Quotes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#orders" role="tab">Fulfilled Orders</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#invoices" role="tab">Invoices</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#rating" role="tab">Ratings</a>
+  </li>
+<% elsif company.is_supplier? %>
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#addresses" role="tab">Addresses</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#contacts" role="tab">Contacts</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#purchase-orders" role="tab">Purchase Orders</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#supplier-products" role="tab">Supplied Products</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#banks" role="tab">Banks</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#rating" role="tab">Ratings</a>
+  </li>
+<% end %>
