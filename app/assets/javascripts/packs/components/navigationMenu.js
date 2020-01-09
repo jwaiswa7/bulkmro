@@ -21,10 +21,10 @@ const navigationMenu = () => {
     // $('.bmro-dropdown-item').click(function(){
     //     $('.dropdown-toggle').parent().removeClass('dropdown-show');
     // })
-    // $('.dropdown-toggle').click(function() {
-    //     $('.dropdown-toggle').parent().removeClass('dropdown-show');
-    //     $(this).parent().addClass('dropdown-show',2000);
-    // })
+    $('.dropdown-toggle').click(function() {
+        $('.dropdown-toggle').parent().removeClass('dropdown-show');
+        $(this).parent().addClass('dropdown-show',2000);
+    })
 
     function toggleFirstLevelHeading (classname, containerName) {
 
