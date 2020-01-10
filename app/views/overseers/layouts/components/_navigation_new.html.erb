@@ -449,14 +449,34 @@
           <div class="bmro-small-container">
             <div class="bmro-second-level-heading-container">
               <p class="bmro-second-level-header">
-                <% Report.all.each do |report| %>
-                  <%= nav_dropdown_item_new report.name.titleize, overseers_report_path(report), is_authorized(report, 'show') %>
-                <% end %>
+                <%= nav_dropdown_item_new 'Monthly Sales Report', overseers_report_path('monthly_sales_report'), is_authorized(:report, 'show') %>
               </p>
             </div>
-            <div>
-            </div>
           </div>
+            <div class="bmro-small-container">
+              <div class="bmro-second-level-heading-container">
+                <p class="bmro-second-level-header">
+                  <%= nav_dropdown_item_new 'Activity Report', overseers_report_path('activity_report'), is_authorized(:report, 'show') %>
+                </p>
+              </div>
+            </div>
+            <div class="bmro-small-container">
+              <div class="bmro-second-level-heading-container">
+                <p class="bmro-second-level-header">
+                  <%= nav_dropdown_item_new 'Target Report', overseers_report_path('target_report'), is_authorized(:report, 'show') %>
+                </p>
+              </div>
+            </div>
+            <div class="bmro-small-container">
+              <div class="bmro-second-level-heading-container">
+                <p class="bmro-second-level-header">
+                  <%= nav_dropdown_item_new 'Inward Logistics Queue Report', overseers_report_path('inward_logistic_queue'), is_authorized(:report, 'show') %>
+                </p>
+              </div>
+            </div>
+
+
+
           <div class="bmro-small-container">
             <div class="bmro-second-level-heading-container">
               <p class="bmro-second-level-header"><%= nav_dropdown_item_new 'KRA Report', kra_report_overseers_inquiries_path, is_authorized(:inquiry, 'kra_report') %></p>
