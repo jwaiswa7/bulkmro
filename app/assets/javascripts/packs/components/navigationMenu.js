@@ -48,6 +48,8 @@ const navigationMenu = () => {
         $(this).toggleClass('bmro-menu-roted');
     })
 
+    toggleFirstLevelHeading('nav-bpartners-heading', 'bpartners_heading_container')
+
     toggleFirstLevelHeading('nav-catalog-heading', 'catalog_heading_container')
 
     toggleFirstLevelHeading('nav-sales-heading', 'sales_heading_container')

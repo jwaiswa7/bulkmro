@@ -829,37 +829,17 @@ p.bmro-menu{
   padding-top: 0px;
   box-sizing: border-box;
 }
-.bmro-dash-main-menu-show{
+.bmro-dash-main-menu-show {
   position: absolute;
   will-change: transform;
   top: 60px;
   left: 0px;
-  display: block;
+  height: 32rem;
+  display: flex;
   background-color: #ffff;
   border: 1px solid #f0f2f6;
   z-index: 50;
   box-sizing: border-box;
-}
-.bmro-main-drop-col-a a{
-  color: #8C97A3;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: -0.5px;
-  line-height: 16px;
-  display: block;
-  float: left;
-  position: relative;
-  margin-left: 4px;
-}
-.bmro-main-menu-parent{
-  color: #8C97A3;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: -0.5px;
-  line-height: 16px;
-  display: block;
-  float: left;
-  position: relative;
 }
 .bmro-dash-hover{
   display: none;
@@ -927,7 +907,6 @@ p.bmro-menu{
 }
 .bmro-dash-heading-menu{
   border-bottom: none!important;
-  position: absolute!important;
   bottom: 0px;
   cursor: pointer;
 }
@@ -2315,4 +2294,88 @@ canvas {
 .bmro-new-container-db{
   max-width: 97%!important;
   margin-left: 50px;
+}
+
+
+.bmro-main-drop-col-level-one {
+  width: 10rem;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.bmro-select-level-one-to-see-second-and-third {
+  height: 2rem;
+  width: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 6px solid white;
+}
+.bmro-select-level-one-to-see-second-and-third.active {
+  background: #F8F9FB;
+  border-left: 6px solid #2C4159;
+}
+.bmro-select-level-one-to-see-second-and-third p {
+  width: 80%;
+  margin: auto;
+  text-align: left;
+}
+.bmro-second-and-third-level-headings {
+  background: #F8F9FB;
+  width: 100%;
+  margin-top: 1rem;
+  margin-right: 1.25rem;
+}
+.bmro-second-and-third-level-headings-container {
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 1.5rem 2rem;
+  width: 90%;
+}
+.bmro-small-container {
+  width: 19%;
+  padding-right: 1rem;
+  margin-bottom: 1.5rem;
+}
+.bmro-second-level-heading-container {
+  width: 75%;
+  border-bottom: 0.01rem solid #727A84
+}
+.bmro-second-level-header {
+  margin: 0;
+  padding-bottom: .5rem;
+  color: #2C4159;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.63px;
+  line-height: 19px;
+}
+.bmro-second-level-header a {
+  color: #2C4159;
+}
+.bmro-third-level-header {
+  margin: 0;
+  color: #727A84;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+}
+.bmro-third-level-header a{
+  color: #727A84;
+}
+.bmro-third-level-heading-container {
+  padding: 0.5rem 0;
+}
+.bmro-second-and-third-level-headings-container.show {
+  display: flex;
+}
+.bmro-dashboard-link {
+  display: flex;
+  align-items: center;
+}
+.bmro-dashboard-link p {
+  margin: 0;
 }

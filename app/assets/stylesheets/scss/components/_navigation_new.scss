@@ -213,7 +213,7 @@ p.bmro-menu{
   will-change: transform;
   top: 60px;
   left: 0px;
-  height: 30rem;
+  height: 32rem;
   display: flex;
   background-color: #ffff;
   border: 1px solid #f0f2f6;
@@ -503,7 +503,7 @@ p.bmro-menu{
   width: 90%;
 }
 .bmro-small-container {
-  width: 14rem;
+  width: 19%;
   padding-right: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -519,6 +519,9 @@ p.bmro-menu{
   font-weight: 600;
   letter-spacing: -0.63px;
   line-height: 19px;
+}
+.bmro-second-level-header a {
+  color: #2C4159;
 }
 .bmro-third-level-header {
   margin: 0;
