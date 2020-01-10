@@ -5,10 +5,10 @@ json.data (@freight_requests) do |freight_request|
                         row_action_button_without_fa(overseers_freight_request_path(freight_request), 'bmro-icon-table bmro-icon-used-view', 'View Freight Request', 'info')
                       end,
                       row_action_button_without_fa(edit_overseers_freight_request_path(freight_request), 'bmro-icon-table bmro-icon-pencil', 'Edit Freight Request', 'warning'),
-                      if freight_request.freight_quote.present? && is_authorized(:freight_request.freight_quote, 'show') && policy(freight_request.freight_quote).show?
+                      if freight_request.freight_quote.present? && is_authorized(freight_request.freight_quote, 'show') && policy(freight_request.freight_quote).show?
                         row_action_button_without_fa(overseers_freight_quote_path(freight_request.freight_quote), 'bmro-icon-table bmro-icon-used-view', 'View Freight Quote', 'primary')
                       end,
-                      if freight_request.freight_quote.present? && is_authorized(:freight_request.freight_quote, 'edit') && policy(freight_request.freight_quote).edit?
+                      if freight_request.freight_quote.present? && is_authorized(freight_request.freight_quote, 'edit') && policy(freight_request.freight_quote).edit?
                         row_action_button_without_fa(edit_overseers_freight_request_freight_quote_path(freight_request, freight_request.freight_quote), 'bmro-icon-table bmro-icon-pencil', 'Edit Freight Quote', 'success')
                       end,
                       if !freight_request.freight_quote.present? && is_authorized(:freight_request, 'new') && policy(freight_request).new?
