@@ -814,6 +814,9 @@ Rails.application.routes.draw do
     end
 
     resource :dashboard, controller: :dashboard do
+      get 'set_warehouse'
+      patch 'update_warehouse'
+      
       collection do
         get 'export_for_amat_customer'
       end
