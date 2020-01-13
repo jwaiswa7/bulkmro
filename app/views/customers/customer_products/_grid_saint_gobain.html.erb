@@ -40,70 +40,49 @@
   <input type="search" name="q" class="form-control filter-list-input" placeholder="Enter search term/keywords" value="<%= params[:q] %>">
 </div>
 
-<!--Incomplete feature-->
-<%# if @tags.count > 0 %>
-<!--  <div class="accordion mt-2" id="product-filters">-->
-<!--    <div class="card">-->
-<!--      <a class="card-header py-2 text-black-50 text-uppercase" href="#" data-toggle="collapse" data-target="#filters">-->
-<!--        <strong>Filters</strong>-->
-<!--      </a>-->
-<!--      <div id="filters" class="collapse show" data-parent="#product-filters">-->
-        <%#= simple_form_for :custom_filters, :method => 'get' do |f| %>
-<!--          <div class='card-body'>-->
-<!--            <p class="text-uppercase text-black-50 mb-2">Categories</p>-->
-            <%#= f.input :tags, :collection => @tags, :value_method => :first, :label_method => :second, checked: @checked_tags, :as => :check_boxes %>
-<!--            <div class="form-row mt-2">-->
-<!--              <div class="col-4 col-lg-2 col-md-3">-->
-                <%#= link_to "Clear", customers_products_path, class: "btn btn-outline-danger btn-block" %>
-<!--                             <button type="reset" href="customers_products_path" class="btn btn-outline-danger btn-block">Clear</button>-->
-<!--              </div>-->
-<!--              <div class="col-8 col-lg-10 col-md-0">-->
-<!--                <button type="submit" href="#" class="btn btn-success btn-block">Filter products</button>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-        <%# end %>
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<%# end %>
-<!--Incomplete feature-->
-
 <div class="form-row mt-2" id="product-grid">
   <% if @customer_products.count > 0 %>
-    <% cache(@customer_products) do %>
-      <% @customer_products.each do |customer_product| %>
+    <% @customer_products.each do |customer_product| %>
       <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12 d-flex">
         <div class="card mb-2">
           <div class="card-body">
             <a href="<%= customers_product_path(customer_product) %>">
-              <%# if customer_product.best_image.present? %>
               <img data-src="<%= url_for(customer_product.medium_best_image) %>" src="<%= image_path('coming_soon.png') %>" class="lazy-load" alt="<%= customer_product.sku %>" width="500"/>
-              <%# else %>
-              <!--                <img data-src="<%#= image_path('coming_soon.png') %>" alt="<%#= customer_product.sku %>" width="500" class="lazy-load" src="<%#= image_path('coming_soon.png') %>" />-->
-              <%# end %>
               <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.name, :length => 100) %></strong>
               </h5>
               <h5 class="mb-0 text-small"><strong>(#<%= customer_product.sku %>)</strong></h5>
               <h5 class="mb-0 mt-1 text-small text-black-50">
-                <% if current_company.id == 9504 %>
-                  <strong><%= format_currency(customer_product.try(&:customer_price)) %> / <%= customer_product.measurement_unit.try(&:name) %></strong>
-                <% else %>
-                  <strong><%= format_currency(customer_product.customer_price) %></strong>
-                <% end %>
+                <strong><%= format_currency(customer_product.customer_price) %></strong>
               </h5>
               <hr class="my-2">
               <p class="mb-0 text-small text-black-50">
                 <strong class="d-block"><%= customer_product.best_brand.name if customer_product.best_brand.present? %></strong>
                 <em>MOQ - <%= customer_product.moq %></em><br>
-                <em>Instock Qty
-                  - <%= customer_product.product.stocks.sum(&:instock).to_i if customer_product.product.present? %></em><br>
+                <em>Instock Qty (per Warehouse) - <%= display_stock_status(customer_product, [@bhiwandi_warehouse.id, @chennai_warehouse.id]) %> <br>
+                  <b>BH</b> - <%= customer_product.product.stocks.where(warehouse_id: @bhiwandi_warehouse.id).sum(&:instock).to_i %>
+                  , <b>CN</b> - <%= customer_product.product.stocks.where(warehouse_id: @chennai_warehouse.id).sum(&:instock).to_i %>
+                </em><br>
               </p>
             </a>
+            <hr class="my-2">
+            <!-- Hide add to cart button for contact named warehouse -->
+            <% if customer_product.product.stocks.where(warehouse_id: [@bhiwandi_warehouse.id, @chennai_warehouse.id]).sum(&:instock).to_i > 0 && !(current_contact.id == @view_only_contact_for_saint_gobain) %>
+              <%= simple_form_for([:customers, CartItem.new], :url => customers_cart_items_path, :method => :post, :remote => true) do |f| %>
+                <%= f.hidden_field :product_id, value: customer_product.product.id %>
+                <%= f.hidden_field :customer_product_id, value: customer_product.id %>
+                <div class="form-row w100 <%= @display_class %>" >
+                  <div class="col-6">
+                    <%= f.input :quantity, label: false, :class => 'form-control', input_html: {placeholder: 'Quantity'} %>
+                  </div>
+                  <div class="col-6">
+                    <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
           </div>
         </div>
       </div>
-      <% end %>
     <% end %>
   <% else %>
     <div class="col-12">

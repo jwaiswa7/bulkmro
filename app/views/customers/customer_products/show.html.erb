@@ -34,9 +34,12 @@
                     <%= f.input :quantity, label: false, :class => 'form-control', input_html: {placeholder: 'Quantity', step: @customer_product.moq, min: @customer_product.moq, value: @default_quantity} %>
                   <% end %>
                 </div>
-                <div class="col-8 col-md-4">
-                  <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
-                </div>
+                <!-- Hide add to cart button for contact named warehouse for customer saint gobain -->
+                <% unless (current_contact.id == @view_only_contact_for_saint_gobain) %>
+                  <div class="col-8 col-md-4">
+                    <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
+                  </div>
+                <% end %>
               </div>
             <% end %>
 
@@ -84,22 +87,10 @@
                 </div>
               <% end %>
               <div class="col-6 col-md-3">
-                <% if current_company.id == 11420 %>
+                <% if @is_saint_gobain %>
                   <strong class="d-block">Instock Quantity(per Warehouse)</strong>
-                  <% if @warehouse_wise_products_quantity.stringify_keys.keys.include? @customer_product.sku.to_s %>
-                    <b>BH</b> - <% if @warehouse_wise_products_quantity.stringify_keys[@customer_product.sku.to_s][:BH].present? %>
-                                    <%= @warehouse_wise_products_quantity.stringify_keys[@customer_product.sku.to_s][:BH] %>
-                                  <% else %>
-                                    0
-                                  <% end %>
-                    ,<b>CN</b> - <% if @warehouse_wise_products_quantity.stringify_keys[@customer_product.sku.to_s][:CN].present? %>
-                                    <%= @warehouse_wise_products_quantity.stringify_keys[@customer_product.sku.to_s][:CN] %>
-                                  <% else %>
-                                    0
-                                  <% end %>
-                  <% else %>
-                    <b>BH</b> - 0, <b>CN</b> - 0
-                  <% end %>
+                  <b>BH</b> - <%= @customer_product.product.stocks.where(warehouse_id: @bhiwandi_warehouse.id).sum(&:instock).to_i %>
+                  , <b>CN</b> - <%= @customer_product.product.stocks.where(warehouse_id: @chennai_warehouse.id).sum(&:instock).to_i %>
                 <% else %>
                   <strong class="d-block">Instock Quantity</strong>
                   <%= @customer_product.product.stocks.sum(&:instock).to_i %>
