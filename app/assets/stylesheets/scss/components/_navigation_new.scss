@@ -480,7 +480,7 @@ p.bmro-menu{
   border-left: 6px solid white;
 }
 .bmro-select-level-one-to-see-second-and-third.active {
-  background: #F8F9FB;
+  background: #F9F9F9;
   border-left: 6px solid #2C4159;
 }
 .bmro-select-level-one-to-see-second-and-third p {
@@ -488,8 +488,15 @@ p.bmro-menu{
   margin: auto;
   text-align: left;
 }
+.bmro-level-one-heading {
+  margin: 0;
+  color: #2C4159;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+}
 .bmro-second-and-third-level-headings {
-  background: #F8F9FB;
+  background: #F9F9F9;
   width: 100%;
   margin-top: 1rem;
   margin-right: 1.25rem;
@@ -509,7 +516,7 @@ p.bmro-menu{
 }
 .bmro-second-level-heading-container {
   width: 75%;
-  border-bottom: 0.01rem solid #727A84
+  border-bottom: 0.01rem solid #bfc6cd
 }
 .bmro-second-level-header {
   margin: 0;
@@ -530,11 +537,11 @@ p.bmro-menu{
   font-weight: 500;
   line-height: 16px;
 }
-.bmro-third-level-header a{
+.bmro-third-level-header a {
   color: #727A84;
 }
 .bmro-third-level-heading-container {
-  padding: 0.5rem 0;
+  padding: 0.4rem 0;
 }
 .bmro-second-and-third-level-headings-container.show {
   display: flex;
