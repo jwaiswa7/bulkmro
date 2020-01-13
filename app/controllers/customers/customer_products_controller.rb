@@ -73,6 +73,7 @@ class Customers::CustomerProductsController < Customers::BaseController
     def set_data_for_saint_gobain
       authorize :customer_product
       @is_saint_gobain = (current_company.id == 11420)
+      @view_only_contact_for_saint_gobain = Contact.where(id: 15667).first
       @bhiwandi_warehouse = Warehouse.find 'LGVfay'
       @chennai_warehouse = Warehouse.find 'OxGf6R'
     end

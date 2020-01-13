@@ -66,7 +66,7 @@
             </a>
             <hr class="my-2">
             <!-- Hide add to cart button for contact named warehouse -->
-            <% if customer_product.product.stocks.where(warehouse_id: [@bhiwandi_warehouse.id, @chennai_warehouse.id]).sum(&:instock).to_i > 0 && !(current_contact.first_name == 'Warehouse') %>
+            <% if customer_product.product.stocks.where(warehouse_id: [@bhiwandi_warehouse.id, @chennai_warehouse.id]).sum(&:instock).to_i > 0 && !(current_contact.id == @view_only_contact_for_saint_gobain) %>
               <%= simple_form_for([:customers, CartItem.new], :url => customers_cart_items_path, :method => :post, :remote => true) do |f| %>
                 <%= f.hidden_field :product_id, value: customer_product.product.id %>
                 <%= f.hidden_field :customer_product_id, value: customer_product.id %>
