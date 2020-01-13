@@ -22,9 +22,19 @@
               </span>
             </div>
           </div>
+
+          <% if record.status == "Cancelled" %>
+            <div id="cancelled-mark" style="width:80%;position:absolute;top:20%;left:15%;">
+              <div id="" style="position: relative;background-repeat: repeat-y;">
+                <%= wicked_pdf_image_tag 'cancelled_watermark.png', :width => "500", :height => "600" %>
+              </div>
+            </div>
+          <% end %>
+
           <br clear="all">
           <%#= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record %>
           <% inquiry = record.sales_order.inquiry %>
+
           <div style="border:1px solid; border-radius: 5px;padding: 2px">
             <table border="0" cellspacing="0" style="width: 100%;">
               <tbody>
