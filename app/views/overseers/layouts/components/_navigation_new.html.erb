@@ -331,14 +331,16 @@
   </div>
   <div class="bmro-profile-head">
     <div class="bmro-profile-parent">
-      <div class="bmro-dash-plus-icon">
-        <img alt="icon" src="<%= image_path('add-icon.png') %>" class="dropdown-toggle bmro-cursol">
-        <div class="dropdown-menu">
-          <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 1</a>
-          <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 2</a>
-          <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 3</a>
+      <% if content_for?(:can_be_directly_created) && is_authorized(current_model.singularize.downcase,'new') %>
+        <div class="bmro-dash-plus-icon">
+          <a href="<%= [request.path, '/', 'new'].join %>" data-toggle="tooltip" title="New <%= controller_path.split('/').last.singularize.split("_").join(" ").camelcase %>"><img alt="icon" src="<%= image_path('add-icon.png') %>" class=" bmro-cursol"></a>
+<!--          <div class="dropdown-menu">-->
+<!--            <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 1</a>-->
+<!--            <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 2</a>-->
+<!--            <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 3</a>-->
+<!--          </div>-->
         </div>
-      </div>
+      <% end %>
       <div class="bmro-border-line"></div>
       <div class="bmro-profile-logo">
         <img src="<%= image_path('my-profile.png') %>" alt="profile">
