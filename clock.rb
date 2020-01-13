@@ -136,10 +136,10 @@ every(1.day, 'set_overseer_monthly_target', if: lambda { |t| t.day == 1 }) do
   service.set_overseer_monthly_target
 end
 
-# every(1.month, 'product_inventory_update', :at => '05:00') do
-#   service = Services::Resources::Products::UpdateInventory.new
-#   service.call
-# end if Rails.env.production?
+every(1.day, 'product_inventory_update_for_saint_gobain', at: ['07:00', '11:00', '15:00', '19:00']) do
+  service = Services::Resources::Products::UpdateInventoryForSaintGobain.new
+  service.call
+end if Rails.env.production?
 
 =begin
 every(1.day, 'remote_unwanted_requests', at: '22:00') do
