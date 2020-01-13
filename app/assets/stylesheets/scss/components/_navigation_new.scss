@@ -514,6 +514,9 @@ p.bmro-menu{
   padding-right: 1rem;
   margin-bottom: 1.5rem;
 }
+.bmro-small-container:empty {
+  display: none;
+}
 .bmro-second-level-heading-container {
   width: 75%;
   border-bottom: 0.01rem solid #bfc6cd
