@@ -17,7 +17,7 @@
     <% if stock %>
       <div class="col-12 col-md-4">
         <% if is_authorized(@po_request, 'can_cancel') && policy(@po_request).can_cancel? %>
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Requested', 'Stock Rejected'), alphabetical: false, keep_raw: true), :include_blank => false, disabled: ['Supplier PO: Amended'] %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Requested', 'Stock Rejected'), alphabetical: false, keep_raw: true), :include_blank => false, disabled: ['Supplier Stock PO: Amended'] %>
         <% elsif is_authorized(@po_request, 'can_reject_stock_po') %>
           <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Supplier PO Created'), alphabetical: false, keep_raw: true), :include_blank => false %>
         <% elsif is_authorized(@po_request, 'can_update_rejected_po_requests') && policy(@po_request).can_update_rejected_po_requests? %>

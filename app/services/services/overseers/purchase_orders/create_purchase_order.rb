@@ -2,6 +2,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def initialize(po_request, params)
     @po_request = po_request
     @params = params
+    @is_stock = params['is_stock'].present? ? params['is_stock'] : 'no'
   end
 
   def create
@@ -73,7 +74,11 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         end
       end
       @purchase_order.save_and_sync(po_request)
-      po_request.update_attributes(status: 'Supplier PO: Amended')
+      if @is_stock == 'no'
+        po_request.update_attributes(status: 'Supplier PO: Amended')
+      else
+        po_request.update_attributes(stock_status: 'Supplier Stock PO: Amended')  
+      end  
 
       @purchase_order.update_attributes(material_status: nil)
       comments = po_request.comments.build(created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id)

@@ -73,8 +73,8 @@ class PoRequest < ApplicationRecord
       'Stock Requested': 10,
       'Stock Rejected': 20,
       'Stock Supplier PO Created': 30,
-      'Supplier PO: Amendment Pending': 40,
-      'Supplier PO: Amended': 50
+      'Supplier Stock PO: Amendment Pending': 40,
+      'Supplier Stock PO: Amended': 50
   }, _prefix: true
 
   enum transport_mode: {
