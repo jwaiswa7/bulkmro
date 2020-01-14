@@ -29,12 +29,11 @@
     <th class="sort desktop text-left" data-name="order_number">Sales Order #</th>
     <% if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM' %>
       <th class="sort desktop text-left" data-name="invoice_number">Invoice #</th>
+      <th class="no-sort desktop text-left" data-name="sku">BM #</th>
+      <th class="no-sort desktop text-left">Total Selling Price</th>
     <% else %>
       <th></th>
-    <% end %>
-    <% if params['customer_order_status_report'].present? && params['customer_order_status_report']['category'] == 'By BM' %>
-      <th class="no-sort desktop text-left" data-name="sku">BM #</th>
-    <% else %>
+      <th></th>
       <th></th>
     <% end %>
     <th class="sort desktop text-left" data-name="mis_date">Sales Order </br>Date</th>
@@ -61,6 +60,7 @@
     <td data-filter="false"></td>
     <td data-filter="ajax"></td>
     <td data-filter="ajax"></td>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>

@@ -1,5 +1,6 @@
 class Customers::CustomerProductsController < Customers::BaseController
   before_action :set_customer_product, only: [:show, :to_cart]
+  before_action :set_data_for_saint_gobain, only: [:index, :show]
 
   def index
     authorize :customer_product
@@ -17,6 +18,7 @@ class Customers::CustomerProductsController < Customers::BaseController
     @customer_products = service.records.with_eager_loaded_images.try(:reverse)
     # for henkel company specific changes
     @is_henkel = (current_company.account == account)
+
     @default_quantity = nil
     if @is_henkel
       @default_quantity = 0
@@ -66,5 +68,12 @@ class Customers::CustomerProductsController < Customers::BaseController
 
     def set_customer_product
       @customer_product ||= CustomerProduct.find(params[:id])
+    end
+
+    def set_data_for_saint_gobain
+      authorize :customer_product
+      @is_saint_gobain = (current_company.id == 11420)
+      @bhiwandi_warehouse = Warehouse.find 'LGVfay'
+      @chennai_warehouse = Warehouse.find 'OxGf6R'
     end
 end

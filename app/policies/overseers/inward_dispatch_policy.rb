@@ -46,6 +46,9 @@ class Overseers::InwardDispatchPolicy < Overseers::ApplicationPolicy
       admin? && (record.status != 'Material Delivered')
     end
   end
+  def cancelled_inward_dispatches?
+    true
+  end
 
   def create_ar_invoice?
     if record.sales_order.present?

@@ -1,20 +1,11 @@
 json.data (@inquiries) do |inquiry|
   columns = [
       [
-          if is_authorized(inquiry, 'relationship_map') && policy(inquiry).relationship_map?
-            row_action_button(relationship_map_overseers_inquiry_path(inquiry.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
+          if is_authorized(inquiry, 'regret_inquiry_request_queue')
+            row_action_button(regret_request_action_overseers_inquiries_path(inquiry: inquiry.id, action_name: 'Approve'), 'check', 'Approve', 'success')
           end,
-          if is_authorized(inquiry, 'edit') && policy(inquiry).edit?
-            row_action_button(overseers_inquiry_comments_path(inquiry), 'comment-alt-check', inquiry.comments.last ? inquiry.comments.last.try(:message) : 'No comments', inquiry.comments.last ? 'success' : 'dark', :_blank)
-          end,
-          if is_authorized(inquiry, 'new_freight_request') && policy(inquiry).new_freight_request?
-            row_action_button(new_overseers_freight_request_path(inquiry_id: inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
-          end,
-          if is_authorized(inquiry, 'index')
-            link_to('', class: ['btn btn-sm btn-success comment-inquiry'], 'data-model-id': inquiry.id, title: 'Comment', remote: true) do
-              concat content_tag(:span, '')
-              concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
-            end
+          if is_authorized(inquiry, 'regret_inquiry_request_queue')
+            row_action_button(regret_request_action_overseers_inquiries_path(inquiry: inquiry.id, action_name: 'Reject'), 'times', 'Reject', 'danger')
           end,
       ].join(' '),
       link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),
@@ -45,15 +36,15 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       Inquiry.statuses.except('Lead by O/S').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       [],
                        [{ "source": autocomplete_overseers_accounts_path }],
                        [{ "source": autocomplete_overseers_companies_path }],
                        [],
                        [],
                        [],
                        [{ "source": autocomplete_overseers_contacts_path }],
-                       Overseer.inside_with_additional_overseers.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
-                       Overseer.outside_with_additional_overseers.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       Overseer.outside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        [],
                        [],
                        [],
@@ -64,4 +55,4 @@ json.recordsTotal Inquiry.all.count
 json.recordsFiltered @indexed_inquiries.total_count
 json.recordsTotalValue @total_values
 json.draw params[:draw]
-json.recordsSummary Inquiry.statuses.map { |status, status_id| { status_id: status_id, "label": status, "size": @statuses[status_id] } }.as_json
+# json.recordsSummary Inquiry.statuses.map { |status, status_id| { status_id: status_id, "label": status, "size": @statuses[status_id] } }.as_json

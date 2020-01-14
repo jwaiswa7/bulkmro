@@ -17,7 +17,7 @@ const daterangePicker = () => {
                 opens: $(this).data('direction') ? $(this).data('direction') : "left",
                 startDate: $(this).val() ? $(this).val() : moment().subtract(30, 'days'),
                 minDate: moment('2015-01-01'),
-                maxDate: moment().endOf('year'),
+                maxDate: moment().endOf('year').add(2, 'years'),
                 showDropdowns: true,
                 locale: {
                     format: 'DD-MMM-YYYY',

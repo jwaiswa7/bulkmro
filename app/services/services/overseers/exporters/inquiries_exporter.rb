@@ -4,9 +4,8 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
     @model = Inquiry
     @export_name = 'inquiries'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'quote_date', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'potential amount', 'total (Exc. Tax)', 'comments', 'reason', 'customer_order_date', 'customer_po_number']
+    @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'quote_date', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'potential amount', 'overall_margin(%)', 'total (Exc. Tax)', 'products count', 'comments', 'reason', 'customer_order_date', 'customer_po_number']
     @start_at = Date.new(2018, 04, 01)
-    @export.update_attributes(export_type: 1, status: 'Enqueued')
   end
 
   def call
@@ -19,7 +18,8 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
     else
       records = model.where(created_at: start_at..end_at).order(created_at: :desc)
     end
-    @export.update_attributes(status: 'Processing')
+
+    @export = Export.create!(export_type: 1, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     records.find_each(batch_size: 100) do |record|
       rows.push(
         inquiry_number: record.inquiry_number,
@@ -41,7 +41,9 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
         subject: record.subject,
         currency: record.currency.try(:name),
         potential_amount: record.potential_amount,
+        overall_margin_percentage: record.overall_margin_percent,
         total: record.final_sales_quote.try(:calculated_total),
+        products_count: record.inquiry_products.count,
         comments: record.comments.pluck(:message).join(','),
         reason: '',
         customer_order_date: record.customer_order_date,
