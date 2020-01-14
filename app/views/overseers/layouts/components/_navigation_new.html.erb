@@ -220,7 +220,6 @@
               <%= nav_dropdown_sub_item 'Material Readiness Queue', material_readiness_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'material_readiness_queue') %>
               <%= nav_dropdown_sub_item 'Inward Dispatch Queue', inward_dispatch_pickup_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'inward_dispatch_pickup_queue') %>
               <%= nav_dropdown_sub_item 'Inward Delivered Queue', inward_dispatch_delivered_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'inward_dispatch_delivered_queue') %>
-              <%# binding.pry %>
               <%= nav_dropdown_sub_item 'Inward Completed Queue', inward_completed_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'inward_completed_queue') %>
               <%= nav_dropdown_sub_item 'Cancelled Inward Dispatches', cancelled_inward_dispatches_overseers_purchase_orders_path, is_authorized(:purchase_order, 'cancelled_inward_dispatches') %>
             </div>
@@ -333,12 +332,9 @@
     <div class="bmro-profile-parent">
       <% if content_for?(:can_be_directly_created) && is_authorized(current_model.singularize.downcase,'new') %>
         <div class="bmro-dash-plus-icon">
-          <a href="<%= [request.path, '/', 'new'].join %>" data-toggle="tooltip" title="New <%= controller_path.split('/').last.singularize.split("_").join(" ").camelcase %>"><img alt="icon" src="<%= image_path('add-icon.png') %>" class=" bmro-cursol"></a>
-<!--          <div class="dropdown-menu">-->
-<!--            <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 1</a>-->
-<!--            <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 2</a>-->
-<!--            <a class="bmro-dropdown-item bmro-clickable" href="#">Display Option 3</a>-->
-<!--          </div>-->
+          <a href="<%= [request.path, '/', 'new'].join %>" data-toggle="tooltip" title="New <%= controller_path.split('/').last.singularize.split("_").join(" ").camelcase %>">
+            <img alt="icon" src="<%= image_path('add-icon.png') %>" class=" bmro-cursol">
+          </a>
         </div>
       <% end %>
       <div class="bmro-border-line"></div>
