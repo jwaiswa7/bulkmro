@@ -9,6 +9,7 @@ class EmailMessage < ApplicationRecord
   belongs_to :sales_order, required: false
   belongs_to :sales_invoice, required: false
   belongs_to :outward_dispatch, required: false
+  belongs_to :supplier_rfq, required: false
 
   has_many_attached :files
 
@@ -19,7 +20,8 @@ class EmailMessage < ApplicationRecord
       'Dispatch from Supplier Delayed': 20,
       'Material Received in BM Warehouse': 30,
       'Material Dispatched to Customer': 40,
-      'Material Delivered to Customer': 50
+      'Material Delivered to Customer': 50,
+      'Request for Quote': 60
   }
 
   after_initialize :set_defaults, if: :new_record?

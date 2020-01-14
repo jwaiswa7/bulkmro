@@ -145,12 +145,25 @@ class SalesQuoteRow < ApplicationRecord
     end
   end
 
+  def unit_cost_price_with_unit_freight_cost_supplier
+    if !self.sales_quote.is_credit_note_entry
+      self.inquiry_product_supplier.unit_cost_price + self.inquiry_product_supplier.unit_freight if self.inquiry_product_supplier.unit_cost_price.present? && self.inquiry_product_supplier.unit_freight.present?
+    else
+      self.inquiry_product_supplier.unit_cost_price + 0.0
+    end
+  end
+
+  def get_tax_rate
+    tax_rates = TaxRate.where(tax_percentage: self.inquiry_product_supplier.gst)
+    tax_rates.last.id if tax_rates.present?
+  end
+
   def calculated_unit_selling_price
     if self.unit_cost_price_with_unit_freight_cost.present? && self.margin_percentage.present?
       if self.margin_percentage >= 100
-        self.unit_selling_price
+        self.unit_selling_price.round(2)
       else
-        (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0)))
+        (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0))).round(2)
       end
     end
   end

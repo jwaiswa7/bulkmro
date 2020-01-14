@@ -7,7 +7,10 @@ const tinyHtmlEditor = () => {
         menubar: false,
         fullpage_default_doctype: '<!DOCTYPE html>',
         fullpage_default_encoding: "UTF-8",
-        visual : false
+        visual : false,
+        relative_urls : false,
+        remove_script_host : false,
+        document_base_url: 'https://lab.bulkmro.com/'
     });
 };
 

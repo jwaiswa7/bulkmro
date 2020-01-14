@@ -104,7 +104,7 @@
                               </div>
                               <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Unit Cost with Freight</strong><br>
-                                <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= format_currency(row.object.unit_cost_price_with_unit_freight_cost) %></span>
+                                <span><%= format_currency(row.object.unit_cost_price_with_unit_freight_cost_supplier) %></span>
                               </div>
                               <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Total Selling Price</strong><br>
@@ -135,7 +135,7 @@
                           </div>
 
                           <div class="col-md-2"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path(is_service: row.object.is_service), "data-bind": ""} %></div>
-                          <div class="col-md-2"><%= row.association :tax_rate, collection: TaxRate.all.map {|tax_rate| [tax_rate.to_s, tax_rate.id, {'data-tax_rate' => tax_rate.tax_percentage}]} , input_html: { "data-bind": ""} %></div>
+                          <div class="col-md-2"><%= row.association :tax_rate, collection: TaxRate.first(5).map {|tax_rate| [tax_rate.to_s, tax_rate.id, {'data-tax_rate' => tax_rate.tax_percentage}]} , selected: row.object.get_tax_rate, input_html: { "data-bind": ""} %></div>
                           <%= row.hidden_field :unit_cost_price, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :unit_cost_price_with_unit_freight_cost, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :total_selling_price, "data-bind": "", disabled: true %>

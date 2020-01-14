@@ -1,0 +1,91 @@
+<%#= render 'overseers/inquiries/sales_quotes/form' %>
+<div class="col-lg-12">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <%= simple_form_for([:overseers, @inquiry, @sales_quote], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <%= f.hidden_field :inquiry_id %>
+      <%= f.hidden_field :parent_id %>
+
+      <%= render 'shared/snippets/form_errors', f: f %>
+
+      <div class="card mt-3">
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col-12">
+              <%= button_tag(type: "button", name: "generate_sales_quote", class: "btn btn-success btn-block generate_sales_quote ") do %>
+                <i class="far fa-check mr-1"></i> Generate Sales Quote
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <table class="w-100 datatable table table-bordered dt-responsive dt-responsive wrap-whitespace mt-0" data-fixed-header="false">
+          <thead>
+          <tr>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+            </th>
+            <th class="no-sort product-width-adjustment">
+              <span data-toggle="tooltip" title="Product">Product</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Suppliers">Suppliers</span>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <% f.object.rows.sort_by(&:sr_no).group_by(&:inquiry_product).each do |inquiry_product, rows| %>
+            <tr>
+              <td>
+                <span><%= inquiry_product.sr_no %></span>
+              </td>
+              <td>
+                <span>
+                  <strong>
+                    <%= inquiry_product.product.sku %>
+                    - <%= inquiry_product.bp_catalog_name? ? inquiry_product.bp_catalog_name : inquiry_product.product.name %>
+                    <%= inquiry_product.bp_catalog_sku? ? '(' + inquiry_product.bp_catalog_sku + ')' : '' %>
+                  </strong>
+                </span>
+              </td>
+              <td>
+                <span>
+                  <%= f.simple_fields_for :rows, rows.sort_by(&:unit_cost_price), wrapper_tag: :div do |row| %>
+                    <% if row.object.inquiry_product_supplier.unit_cost_price != 0.0 %>
+                      <%= row.hidden_field :inquiry_product_id %>
+                      <%= row.hidden_field :sales_quote_id %>
+                      <%= row.hidden_field :id %>
+                      <div class="form-row simple-row" data-index="<%= row.index %>">
+                        <%= row.hidden_field :inquiry_product_supplier_id, "data-bind": "" %>
+                        <div class="col-12">
+                          <div class="d-flex flex-row">
+                            <div class="custom-control custom-radio align-self-center mr-2">
+                              <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, (f.object.persisted? && row.object.persisted?) || (rows.select { |r| r.new_record? }.size == rows.size && rows[0] == row.object), "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input supplier_id', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' %>
+                              <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1], :"data-toggle" => "collapse", "data-target" => "#c-" + row.object.inquiry_product_supplier_id.to_s do %><%= '' %>
+                              <% end %>
+                            </div>
+                            <div class="flex-grow-1">
+                              <div class="" data-target="#c-<%= row.object.inquiry_product_supplier_id %>">
+                                <%= row.label '', for: /id="([a-z\d_]*)"/.match(radio)[1], :class => 'd-block' do %>
+                                  <h6 class="text-black-50 mb-1 text-uppercase">
+                                    <strong><%= row.object.inquiry_product_supplier %></strong><br>
+                                    <small><strong>Unit Cost Price: <%= row.object.inquiry_product_supplier.unit_cost_price %> | Final Unit Price: <%= row.object.inquiry_product_supplier.total_price %></strong></small>
+                                  </h6>
+                                <% end %>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </span>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -676,7 +676,6 @@
             </div>
           <% end %>
           <% if !f.object.persisted? || is_authorized(@inquiry, 'logistics') %>
-            <%#= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
           <% else %>
             <div class="form-row bmro-product-btn-parent">
               <div class="bmro-fl">

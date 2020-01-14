@@ -1,16 +1,21 @@
 class InquiryProductSupplier < ApplicationRecord
+  include Mixins::CanBeStamped
   include Mixins::HasSupplier
 
   belongs_to :inquiry_product
+  belongs_to :supplier, class_name: 'Company', foreign_key: :supplier_id
   has_one :product, through: :inquiry_product
   has_one :inquiry, through: :inquiry_product
   has_many :sales_quote_rows, dependent: :destroy
   has_one :final_sales_quote, through: :inquiry, class_name: 'SalesQuote'
   has_one :final_sales_quote_row, -> (record) { where(inquiry_product_supplier_id: record.id) }, through: :final_sales_quote, class_name: 'SalesQuoteRow', source: :rows
+  belongs_to :supplier_rfq, required: false
   delegate :sr_no, to: :inquiry_product
 
   validates_uniqueness_of :supplier, scope: :inquiry_product
   validates_numericality_of :unit_cost_price, greater_than_or_equal_to: 0
+
+  attr_accessor :quantity
 
   after_initialize :set_defaults, if: :new_record?
   def set_defaults

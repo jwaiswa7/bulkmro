@@ -1,5 +1,8 @@
 import productsSupplierRating from "../products/productSupplierRating"
+import addSuppliers from "./addSuppliers";
+
 const editSuppliers = () => {
+
     $('form[action$=update_suppliers]')
         .on('change', 'select[name*=supplier_id]', function (e) {
             onSupplierChange(this);
@@ -11,14 +14,25 @@ const editSuppliers = () => {
         })
         .find('select[name*=supplier_id]')
         .each(function (e) {
-            onSupplierChange(this);
+            // onSupplierChange(this);
         });
 
-    $('#select_all_suppliers').change(function () {
+    $('#select_all_products').change(function () {
         $('input[name="inquiry_product_ids[]"]').each(function () {
+            console.log($(this));
+            $(this).prop('checked', $('#select_all_products').prop("checked")).trigger('change');
+        });
+    });
+
+    $('#select_all_suppliers').change(function () {
+        $('input[name="inquiry_product_supplier_ids[]"]').each(function () {
             $(this).prop('checked', $('#select_all_suppliers').prop("checked")).trigger('change');
         });
     });
+    massLinkSupplier();
+    addSuppliers();
+    draftRfq();
+    deleteIsp();
 };
 
 let onSupplierChange = (container) => {
@@ -44,5 +58,72 @@ let onSupplierChange = (container) => {
         });
     }
 };
+
+let massLinkSupplier = () => {
+    $('.mass-link-supplier').click(function () {
+        $('#masslinksupplier').modal('show');
+        let products = [];
+        $.each($("input[name='inquiry_product_ids[]']:checked"), function () {
+            products.push($(this).val());
+        });
+        $('#product_ids').val(products);
+    });
+};
+
+let draftRfq = () => {
+    let product_ids = [];
+    let inquiry_product_ids = [];
+    let inquiry_id = $('input[name=inquiry_id]').val();
+
+    $('.draft-rfq').click(function () {
+        let inquiry_product_supplier_ids = [];
+        let inquiry_id = $('input[name=inquiry_id]').val();
+        $.each($("input[name='inquiry_product_supplier_ids[]']:checked"), function () {
+            let $this = $(this);
+            let selector = $this.closest('.product_wrapper').find($('input[name="inquiry_product_ids[]"]'));
+            let product_id = selector.attr('id').split('inquiry_product_id_')[1];
+            product_ids.push(product_id);
+            inquiry_product_supplier_ids.push($this.attr('id').split('inquiry_product_supplier_id_')[1]);
+        });
+
+        $.each(product_ids, function (i, j) {
+            if ($.inArray(j, inquiry_product_ids) == -1) {
+                inquiry_product_ids.push(j);
+            }
+        });
+        let data = {
+            inquiry_product_ids: inquiry_product_ids,
+            inquiry_product_supplier_ids: inquiry_product_supplier_ids
+        };
+
+        $.ajax({
+            url: Routes.add_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id),
+            type: "POST",
+            data: data,
+            success: function () {
+
+            }
+        });
+    });
+};
+
+let deleteIsp = () => {
+    $('.delete-isp').on('click', function () {
+        let $this = $(this);
+        let inquiry_id = $('input[name=inquiry_id]').val();
+        let inquiry_product_supplier_id = $this.attr('id');
+        let data = {
+            inquiry_product_supplier_id: inquiry_product_supplier_id
+        };
+        $.ajax({
+            url: Routes.destroy_supplier_overseers_inquiry_path(inquiry_id),
+            type: "POST",
+            data: data,
+            success: function () {
+
+            }
+        });
+    })
+}
 
 export default editSuppliers

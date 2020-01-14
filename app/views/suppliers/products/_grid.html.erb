@@ -1,0 +1,67 @@
+<% if content_for?(:heading) || (content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new?) || !content_for?(:hide_table_desc) %>
+  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <% if content_for?(:heading) %>
+        <h1 class="display-5 mb-1"><%= yield :heading %></h1>
+      <% else %>
+        <h1 class="display-5 mb-1"><%= current_model.humanize %></h1>
+      <% end unless content_for?(:hide_table_heading) %>
+    </div>
+
+    <% unless content_for?(:hide_table_desc) %>
+      <p class="lead mt-1">
+        All <%= current_model.humanize.downcase %> searchable with relevant term/keywords.
+      </p>
+    <% end %>
+  </section>
+<% end %>
+
+<div class="form-row mt-2" id="product-grid">
+  <% if @supplier_products.count > 0 %>
+    <% cache(@supplier_products) do %>
+      <% @supplier_products.each do |supplier_product| %>
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-12 d-flex">
+          <div class="card mb-2">
+            <div class="card-body">
+              <a href="<%= suppliers_product_path(supplier_product) %>">
+                <%# if supplier_product.best_image.present? %>
+                <img data-src="<%= url_for(supplier_product.medium_best_image) %>" src="<%= image_path('coming_soon.png') %>" class="lazy-load" alt="<%= supplier_product.sku %>" width="500"/>
+                <%# else %>
+                  <!--  <img data-src="<%#= image_path('coming_soon.png') %>" alt="<%#= supplier_product.sku %>" width="500" class="lazy-load" src="<%#= image_path('coming_soon.png') %>" />-->
+                <%# end %>
+                <h5 class="mb-0 text-small mt-2"><strong><%= truncate(supplier_product.name, :length => 100) %></strong>
+                </h5>
+                <h5 class="mb-0 text-small"><strong>(#<%= supplier_product.sku %>)</strong></h5>
+                <div class="mb-0 mt-1 text-small text-black-50">
+                  <strong class="col-md-11"><%= format_currency(supplier_product.supplier_unit_cost_price.present? ? supplier_product.supplier_unit_cost_price : supplier_product.latest_unit_cost_price_for(current_company)) %></strong>
+                </div>
+                <hr class="my-2">
+              </a>
+              <%= simple_form_for(supplier_product, :url => update_price_suppliers_product_path(supplier_product), :method => :post) do |f| %>
+                <%= f.hidden_field :product_id, value: supplier_product.id %>
+                <div class="form-row <%= @display_class %>">
+                  <div class="col-2 col-md-4">
+                    <%= f.input :supplier_unit_cost_price, label: false, :class => 'form-control', input_html: {value: supplier_product.supplier_unit_cost_price.present? ? supplier_product.supplier_unit_cost_price : supplier_product.latest_unit_cost_price_for(current_company)} %>
+                  </div>
+                  <div class="col-10 col-md-8">
+                    <%= f.submit 'Update Price', class: "btn btn-block btn-success" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  <% else %>
+    <div class="col-12">
+      <div class="card mb-12">
+        <div class="card-body">
+          <p class="text-small text-black-50">
+            <strong class="d-block ">No matching record found</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

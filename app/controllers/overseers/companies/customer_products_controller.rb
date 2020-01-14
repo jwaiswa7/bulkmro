@@ -59,6 +59,8 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     redirect_to overseers_company_path(@company)
   end
 
+
+
   def destroy_all
     authorize_acl :customer_product
     @company.customer_products.destroy_all
