@@ -356,4 +356,8 @@ module DisplayHelper
       AclResource.acl_resource_ids
     end
   end
+
+  def display_stock_status(customer_product, *warehouses)
+    format_boolean_label(customer_product.product.stocks.where(warehouse_id: warehouses).sum(&:instock).to_i > 0, 'In Stock')
+  end
 end

@@ -4,13 +4,13 @@ class Services::Shared::Migrations::SoPoMigrations < Services::Shared::Migration
   #s.set_warehouse_series
 
   def set_warehouse_series
-    service = Services::Shared::Spreadsheets::CsvImporter.new('delhi_series.csv', 'seed_files_3')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('tm_bhm_series.csv', 'seed_files_3')
     service.loop(nil) do |x|
       p x.get_column('period_ document_type')
       s = Series.new(document_type: x.get_column('document_type'),
                      series: x.get_column('series'),
                      series_name: x.get_column('series_name'),
-                     period_indicator: x.get_column('period_ indicator'),
+                     period_indicator: x.get_column('period_indicator'),
                      number_length: x.get_column('length').to_i)
       p '******************8'
       # p s.errors.full_message

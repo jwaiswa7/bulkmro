@@ -31,7 +31,9 @@ class Warehouse < ApplicationRecord
       'HYD': 9,
       'BAN': 10,
       'HP': 11,
-      'LPN': 12
+      'LPN': 12,
+      'BHW': 13,
+      'AMB': 14
   }
 
 
