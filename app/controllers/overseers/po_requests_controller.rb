@@ -283,6 +283,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize_acl :po_request
   end
 
+  def stock_amend_requests
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.stock_amend_request.order(id: :desc), params)
+    authorize_acl @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
   private
 
     def po_request_params

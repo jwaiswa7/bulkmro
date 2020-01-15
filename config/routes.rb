@@ -298,6 +298,7 @@ Rails.application.routes.draw do
         get 'under_amend'
         get 'amended'
         get 'pending_stock_approval'
+        get 'stock_amend_requests'
         get 'stock'
         get 'completed_stock'
         get 'add_comment'
