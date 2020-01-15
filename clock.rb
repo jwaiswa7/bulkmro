@@ -6,7 +6,7 @@ require 'active_support/time'
 
 configure do |config|
   config[:tz] = "Asia/Kolkata"
-  config[:max_threads] = 15
+  config[:max_threads] = 5
   config[:thread] = true
 end
 
