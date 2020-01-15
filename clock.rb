@@ -72,7 +72,7 @@ end
 #  end
 #end
 
-every(1.day, 'purchase_order_reindex', at: '16:10') do
+every(1.day, 'purchase_order_reindex', at: '00:10') do
   # deletes old indexes/alias_index
   require 'httparty'
   auth = {username: "#{ENV['ELASTIC_USER_NAME']}", password: "#{ENV['ELASTIC_PASSWORD']}"}
@@ -83,7 +83,6 @@ every(1.day, 'purchase_order_reindex', at: '16:10') do
   if index_class <= BaseIndex
     index_class.reset!
   end
-  Services::Overseers::Exporters::MaterialReadinessExporter.new.call
 end
 
 every(1.day, 'inquiry_product_inventory_update', at: '04:00') do
