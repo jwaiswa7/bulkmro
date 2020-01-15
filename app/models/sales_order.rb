@@ -314,7 +314,7 @@ class SalesOrder < ApplicationRecord
 
   def unique_skus_in_order
     bible_orders = BibleSalesOrder.where(order_number: self.order_number)
-    bible_orders.map { |bo| bo.metadata.map { |m| m['sku'] } }.flatten.compact.uniq.count
+    bible_orders.map { |bo| bo.metadata.map { |bible_order_row| bible_order_row['sku'] } }.flatten.compact.uniq.count
   end
 
   def bible_sales_invoices

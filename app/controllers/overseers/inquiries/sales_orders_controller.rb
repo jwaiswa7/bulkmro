@@ -208,6 +208,8 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def cancellation
     authorize_acl @sales_order
+
+    binding.pry
     @status = Services::Overseers::SalesOrders::CancelSalesOrder.new(@sales_order, sales_order_params.merge(status: 'Cancelled', remote_status: 'Cancelled by SAP')).call
     if @status.key?(:empty_message)
       render json: {error: 'Cancellation Message is Required'}, status: 500
@@ -261,8 +263,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
               :inquiry_id,
               :created_by_id,
               :sales_order_id
-          ],
-        # revised_committed_deliveries: []
+          ]
       )
     end
 
