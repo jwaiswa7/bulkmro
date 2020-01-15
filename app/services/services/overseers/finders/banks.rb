@@ -52,7 +52,4 @@ class Services::Overseers::Finders::Banks < Services::Overseers::Finders::BaseFi
     indexed_records
   end
 
-  def sort_definition
-    { created_at: :asc }
-  end
 end
