@@ -92,7 +92,7 @@ class Overseers::CompaniesController < Overseers::BaseController
 
   def company_report
     authorize_acl :company
-
+    @model_name = 'company_report'
     respond_to do |format|
       format.html {
         if params['company_report'].present?
