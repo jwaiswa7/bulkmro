@@ -77,8 +77,8 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
       if @is_stock == 'no'
         po_request.update_attributes(status: 'Supplier PO: Amended')
       else
-        po_request.update_attributes(stock_status: 'Supplier Stock PO: Amended')  
-      end  
+        po_request.update_attributes(stock_status: 'Supplier Stock PO: Amended')
+      end
 
       @purchase_order.update_attributes(material_status: nil)
       comments = po_request.comments.build(created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id)
