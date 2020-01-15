@@ -5,7 +5,7 @@ require './config/environment'
 require 'active_support/time'
 
 configure do |config|
-  config[:tz] = 'IST'
+  config[:tz] = "Asia/Kolkata"
   config[:max_threads] = 15
   config[:thread] = true
 end
@@ -147,7 +147,7 @@ every(1.day, 'product_inventory_update_for_saint_gobain', at: ['07:00', '11:00',
   service.call
 end if Rails.env.production?
 
-every(1.day, 'send_inventory_status_to_saint_gobain_customer', at: '13:35') do
+every(1.day, 'send_inventory_status_to_saint_gobain_customer', at: '14:20') do
   InventoryStatusMailer.send_inventory_status_to_customer.deliver_now
 end if Rails.env.production?
 
