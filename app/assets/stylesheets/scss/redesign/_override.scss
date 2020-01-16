@@ -4237,3 +4237,13 @@ td .media.chat-item{
 .bmro-summary-margin{
     margin-left: -180px;
 }
+
+.sticky-top-fixed{
+  position: fixed;
+  top: 0;
+  z-index: 1020;
+}
+.layout-body-wrapper{
+  position: relative;
+  top: 3rem;
+}
