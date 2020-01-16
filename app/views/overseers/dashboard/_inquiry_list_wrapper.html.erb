@@ -39,7 +39,7 @@
       </div>
       <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
         <span class="bmro-account-label-one"><%= inquiry.company.name %></span>
-        <span class="bmro-status-label bmro-color-yellow" data-id="<%= inquiry.inquiry_number %>"><%= inquiry.status %></span>
+        <span class="bmro-status-label bmro-<%= status_color(inquiry.status) %>" data-id="<%= inquiry.inquiry_number %>"><strong><%= inquiry.status %></strong></span>
       </div>
       <!-- bmro-right-side-open-->
       <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">

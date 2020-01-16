@@ -128,24 +128,29 @@ p.bmro-menu{
   float: left;
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAYAAADJEc7MAAAAAXNSR0IArs4c6QAAAK9JREFUGBljYMAB9ByjJoIwDmkGZmwSIA3/GP7n/WdgMJdQ1BN6+eDyDnR1GBphmhgYGX4C8V+gZmtsmhmRTULWxMjAFAiS+8/wbz2QYGdiYJx0af+yfJh6uI3omi7vW7r91f3Ld8QV9c8yMP4PQbcZrBGbJpjJuDQz6rnFKv7/8+c80EQOkPNANsE0IdO6TtGeIGcD/faDkYXFECwH1Gyu5xzjgawQGxukBqQWJAcAgMFaiZQ2610AAAAASUVORK5CYII=');
 }
-.bmro-color-green{
-  background-color:#A9DA61!important;
-  background-color: #A9DA61;
+.bmro-status-color-green{
+  background-color:#A8DC59!important;
+  color: #212529!important;
 }
-.bmro-color-yellow{
+.bmro-status-color-yellow{
   background-color: #FFE000!important;
+  color: #212529!important;
 }
-.bmro-color-green1{
+.bmro-status-color-green1{
   background-color: #A9DA61!important;
+  color: #212529!important;
 }
-.bmro-color-blue{
+.bmro-status-color-blue{
   background-color: #98CAFA!important;
+  color: #212529!important;
 }
-.bmro-color-red{
+.bmro-status-color-red{
   background-color: #FE8A78!important;
+  color: #212529!important;
 }
-.bmro-color-yellow2{
+.bmro-status-color-yellow2{
   background-color: #FFE000!important;
+  color: #212529!important;
 }
 .bmro-menu-border{
   border-top: 2px solid;
@@ -2311,6 +2316,7 @@ canvas {
   align-items: center;
   justify-content: center;
   border-left: 6px solid white;
+  cursor: pointer;
 }
 .bmro-select-level-one-to-see-second-and-third.active {
   background: #F8F9FB;
@@ -2342,7 +2348,8 @@ canvas {
 }
 .bmro-second-level-heading-container {
   width: 75%;
-  border-bottom: 0.01rem solid #727A84
+  border-bottom: 0.01rem solid #727A84;
+  cursor: pointer;
 }
 .bmro-second-level-header {
   margin: 0;

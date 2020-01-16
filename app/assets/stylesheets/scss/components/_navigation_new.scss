@@ -478,6 +478,7 @@ p.bmro-menu{
   align-items: center;
   justify-content: center;
   border-left: 6px solid white;
+  cursor: pointer;
 }
 .bmro-select-level-one-to-see-second-and-third.active {
   background: #F9F9F9;
@@ -519,7 +520,8 @@ p.bmro-menu{
 }
 .bmro-second-level-heading-container {
   width: 75%;
-  border-bottom: 0.01rem solid #bfc6cd
+  border-bottom: 0.01rem solid #bfc6cd;
+  cursor: pointer;
 }
 .bmro-second-level-header {
   margin: 0;

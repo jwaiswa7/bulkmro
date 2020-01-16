@@ -61,7 +61,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def kra_report
     authorize_acl :inquiry
-
+    @model_name = 'kra_report'
     if current_overseer.role == 'inside_sales_executive'
       @role_wise_collection = [['Inside Sales Owner by Inquiry', 'inside_sales_owner_id'], ['Inside Sales Owner by Sales Order', 'inside_by_sales_order']]
     elsif current_overseer.role == 'outside_sales_executive'
@@ -174,6 +174,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def tat_report
     authorize_acl :inquiry
+    @model_name = 'tat_report'
     respond_to do |format|
       service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
       service.call
