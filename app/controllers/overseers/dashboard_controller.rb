@@ -63,12 +63,12 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def get_inquiry_tasks
     @dashboard = Overseers::Dashboard.new(current_overseer)
-    inquiry = @dashboard.inq_for_sales_dash.map { |inquiry| inquiry if inquiry.inquiry_number == params['inquiry_number'].to_i }.compact
+    inquiry = @dashboard.inq_for_sales_dash.where(inquiry_number: params['inquiry_number'].to_i)
 
-    if inquiry.last.status != 'New Inquiry' && (inquiry.last.customer_po_number.present? || inquiry.last.customer_order_date.present?)
-      inquiry_has_tasks = false
-    else
+    if (inquiry.last.customer_po_number.blank? || inquiry.last.customer_order_date.blank? || (inquiry.last.approvals.any? && inquiry.last.inquiry_product_suppliers.any? && inquiry.last.sales_quotes.persisted.blank?) || (inquiry.last.final_sales_quote.present? && policy(inquiry.last.final_sales_quote).new_sales_order?) )
       inquiry_has_tasks = true
+    else
+      inquiry_has_tasks = false
     end
 
     respond_to do |format|
