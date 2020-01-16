@@ -12,17 +12,17 @@
               </span>
             </div>
             <div class="col-md-2">
-              <%= button_tag(type: "submit", class: "btn btn-success btn-block update-all", value: 'update') do %>
+              <%= button_tag(type: "submit", class: "btn btn-m btn-block btn-warning bmro-button update-all", value: 'update') do %>
                 Update All
               <% end %>
             </div>
             <div class="col-md-4">
-              <%= button_tag(type: "submit", class: "btn btn-success btn-block update-and-send-link-all", value: 'update_and_send_link_all') do %>
+              <%= button_tag(type: "submit", class: "btn btn-m btn-block btn-warning bmro-button update-and-send-link-all", value: 'update_and_send_link_all') do %>
                 Update and Send link to All
               <% end %>
             </div>
             <div class="col-md-3">
-              <%= button_tag(type: "submit", class: "btn btn-success btn-block rfq-review") do %>
+              <%= button_tag(type: "submit", class: "btn btn-m btn-block btn-warning bmro-button btn-block rfq-review") do %>
                 RFQ Review
               <% end %>
             </div>
@@ -60,14 +60,14 @@
                       </div>
                       <div class="col-4">
                         <div class="form-group mb-0">
-                          <%= button_tag(type: "submit", class: "btn btn-warning btn-block", value: 'update') do %>
+                          <%= button_tag(type: "submit", class: "btn btn-m btn-block btn-warning bmro-button", value: 'update') do %>
                             <i class="fal fa-pen"></i> Update
                           <% end %>
                         </div>
                       </div>
                       <div class="col-4">
                         <div class="form-group mb-0">
-                          <%= button_tag(type: "submit", class: "btn btn-warning btn-block", value: 'update_and_send_link') do %>
+                          <%= button_tag(type: "submit", class: "btn btn-m btn-block btn-warning bmro-button", value: 'update_and_send_link') do %>
                             <i class="fal fa-pen"></i> Update and Send Link
                           <% end %>
                           <%# if !(policy(inquiry_product_supplier.object).update_and_send_link?) %>

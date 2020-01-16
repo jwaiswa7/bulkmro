@@ -1030,12 +1030,12 @@
         $("#" + classname).click(() => {
             let toggle = $('.bmro-main-drop-col-level-one-container .bmro-select-level-one-to-see-second-and-third').hasClass('active')
             let toggleClass = $('.bmro-second-and-third-level-headings .bmro-second-and-third-level-headings-container').hasClass('show')
-            console.log(toggle)
+            // console.log(toggle)
             if(toggle || toggleClass) {
                 $('.bmro-main-drop-col-level-one-container .bmro-select-level-one-to-see-second-and-third').toggleClass('active', false)
                 $('.bmro-second-and-third-level-headings .bmro-second-and-third-level-headings-container').toggleClass('show', false)
             }
-            console.log(this)
+            // console.log(this)
             $("#" + classname).toggleClass('active', true)
             $("#" + containerName).toggleClass('show', true)
         })
