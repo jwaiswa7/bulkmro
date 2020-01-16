@@ -10,6 +10,10 @@ class Services::Overseers::Finders::Contacts < Services::Overseers::Finders::Bas
   def all_records
     indexed_records = index_klass.all.order(sort_definition)
 
+    if @base_filter.present?
+      indexed_records = indexed_records.filter(@base_filter)
+    end
+
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
@@ -29,6 +33,10 @@ class Services::Overseers::Finders::Contacts < Services::Overseers::Finders::Bas
           minimum_should_match: '100%'
       }
                       ).order(sort_definition)
+    
+    if @base_filter.present?
+      indexed_records = indexed_records.filter(@base_filter)
+    end
 
     if range_filters.present?
       indexed_records = range_query(indexed_records)
