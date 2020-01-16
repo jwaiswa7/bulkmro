@@ -29,8 +29,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize @sales_orders
 
     respond_to do |format|
-      format.json {render 'account_approval_pending'}
-      format.html {render 'account_approval_pending'}
+      format.json { render 'account_approval_pending' }
+      format.html { render 'account_approval_pending' }
     end
   end
 
@@ -118,7 +118,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def index
     authorize_acl :sales_order
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.json do
         service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
         service.call
@@ -175,7 +175,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     sales_orders = SalesOrder.where.not(sent_at: nil).where(remote_uid: nil, status: :'Approved').where("created_at >= '2019-07-18'")
     respond_to do |format|
-      format.html { }
+      format.html {}
       format.json do
         @drafts_pending_count = sales_orders.count
         @sales_orders = ApplyDatatableParams.to(sales_orders, params)
@@ -236,7 +236,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       if params['customer_order_status_report'].present?
         delivery_status = params['customer_order_status_report']['delivery_status'] if params['customer_order_status_report']['delivery_status'].present?
       else
-        params['customer_order_status_report'] = { 'category': @categories[0] }
+        params['customer_order_status_report'] = {'category': @categories[0]}
         delivery_status = @delivery_statuses[0]
       end
       format.html {}
@@ -280,7 +280,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       delivery_status = params['customer_order_status_report']['delivery_status'] if params['customer_order_status_report']['delivery_status'].present?
       params['customer_order_status_report']['procurement_specialist'] = params['customer_order_status_report']['procurement_specialist'].split('.')[0] if params['customer_order_status_report']['procurement_specialist'].present?
     else
-      params['customer_order_status_report'] = { 'category': @categories[0] }
+      params['customer_order_status_report'] = {'category': @categories[0]}
       delivery_status = @delivery_statuses[0]
     end
 
@@ -313,7 +313,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize_acl @sales_order
     respond_to do |format|
       if params[:title] == 'Comment'
-        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @sales_order, url: add_comment_overseers_sales_order_path(@sales_order), view_more: overseers_inquiry_comments_path(@sales_order.inquiry.id)}}
+        format.html { render partial: 'shared/layouts/add_comment', locals: {obj: @sales_order, url: add_comment_overseers_sales_order_path(@sales_order), view_more: overseers_inquiry_comments_path(@sales_order.inquiry.id)} }
       end
     end
   end
@@ -383,12 +383,12 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                     :discount_percentage,
                     :unit_price
                 ],
-            comments_attributes: [
-            :created_by_id,
-            :updated_by_id,
-            :message,
-            :inquiry_id,
-        ]
+                comments_attributes: [
+                    :created_by_id,
+                    :updated_by_id,
+                    :message,
+                    :inquiry_id,
+                ]
             ],
         )
       else

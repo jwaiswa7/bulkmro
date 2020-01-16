@@ -21,7 +21,13 @@ class CustomerOrderStatusReportIndex < BaseIndex
     field :order_number_string, value: -> (record) { record.order_number.to_s }, analyzer: 'substring'
     field :created_at, value: -> (record) { record.created_at }, type: 'date'
     field :mis_date, value: -> (record) { record.mis_date if record.mis_date.present? }, type: 'date'
+    field :customer_order_date, value: -> (record) { record.inquiry.customer_order_date if record.inquiry.customer_order_date.present? }, type: 'date'
+    field :customer_po_delivery_date, value: -> (record) { record.inquiry.customer_po_delivery_date if record.inquiry.customer_po_delivery_date.present? }, type: 'date'
+    field :customer_po_received_date, value: -> (record) { record.inquiry.customer_po_received_date if record.inquiry.customer_po_received_date.present? }, type: 'date'
     field :cp_committed_date, value: -> (record) { record.inquiry.customer_committed_date if record.inquiry.customer_committed_date.present? }, type: 'date'
+    field :revised_committed_delivery_date, value: -> (record) { record.revised_committed_delivery_date if record.revised_committed_delivery_date.present? }, type: 'date'
+
+
     field :outward_date_so_wise, value: -> (record) { record.invoices.last.mis_date if record.invoices.present? && record.invoices.last.status != 'Cancelled' }, type: 'date'
     field :customer_delivery_date_so_wise, value: -> (record) { record.invoices.last.delivery_date if record.invoices.present? }, type: 'date'
     field :delivery_status_so_wise, value: -> (record) { (record.invoices.present? && record.invoices.last.delivery_date.present?) ? (record.invoices.last.delivery_date < Date.today ? 'Delivered' : 'Not Delivered') : 'Not Delivered'}, analyzer: 'substring'

@@ -591,6 +591,8 @@ Rails.application.routes.draw do
             get 'get_relationship_map_json'
             get 'order_cancellation_modal'
             patch 'cancellation'
+            get 'revise_committed_delivery_date'
+            patch 'update_revised_committed_delivery_date'
           end
 
           collection do

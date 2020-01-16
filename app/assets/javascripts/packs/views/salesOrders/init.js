@@ -9,7 +9,7 @@ import salesOrdersPending from "./pending";
 import notInvoiced from "./notInvoiced";
 import newPurchaseOrdersRequests from "./newPurchaseOrdersRequests";
 import salesOrdersNewAccountsConfirmation from "./newAccountsConfirmation";
-
+import salesOrdersReviseCommittedDeliveryDate from "./reviseCommittedDeliveryDate";
 
 let salesOrders = {
     create: salesOrdersCreate,
@@ -22,7 +22,8 @@ let salesOrders = {
     pending: salesOrdersPending,
     notInvoiced: notInvoiced,
     newPurchaseOrdersRequests: newPurchaseOrdersRequests,
-    newAccountsConfirmation: salesOrdersNewAccountsConfirmation
-}
+    newAccountsConfirmation: salesOrdersNewAccountsConfirmation,
+    reviseCommittedDeliveryDate: salesOrdersReviseCommittedDeliveryDate
+};
 
 export default salesOrders
