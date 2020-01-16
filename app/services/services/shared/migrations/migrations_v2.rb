@@ -872,7 +872,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
               bible_total = bible_total + bible_order_row_total_with_tax
               tax_mismatch.push(current_row)
             else
-              # binding.pry
+
             end
           else
             # add missing skus in sprint
@@ -1664,11 +1664,9 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           # if !order_being_processed.include?(sales_order.order_number)
           #   if sales_order.inquiry.final_sales_quote == sales_order.sales_quote
           #     overseer = Overseer.find_by_first_name(x.get_column('Inside Sales Name').split(' ')[0])
-          #     binding.pry
           #     revised_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(sales_order.sales_quote, overseer).call
           #     revised_quote.save(validate: false)
           #     revised_quote.update_attributes(created_at: DateTime.parse(x.get_column('Client Order Date')).strftime('%Y-%m-%d %H:%M:%S'), sent_at: DateTime.parse(x.get_column('Client Order Date')).strftime('%Y-%m-%d %H:%M:%S'))
-          #     binding.pry
           #
           #     extra_rows = revised_quote.rows.joins(:product).where.not(products: {sku: ['BM9P8D8', 'BM9Y8U9', 'BM00008']})
           #     extra_rows.delete_all
@@ -1706,7 +1704,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             if x.get_column('Tax Rate').present? && x.get_column('Tax Type').present? && x.get_column('Tax Type').scan(/^\d*(?:\.\d+)?/)[0].to_f != x.get_column('Tax Rate').split('%')[0].to_f
               tax_rate_difference.push(current_row)
             end
-            binding.pry
             quote_row.quantity = x.get_column('Order Qty').to_f
             quote_row.unit_selling_price = x.get_column('Unit Selling Price').to_f
             quote_row.converted_unit_selling_price = x.get_column('Unit Selling Price').to_f
@@ -1722,7 +1719,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             puts '****************************** QUOTE ROW SAVED ****************************************'
             quote_row.sales_quote.save(validate: false)
             puts '****************************** QUOTE SAVED ****************************************'
-            binding.pry
             order_row.quantity = x.get_column('Order Qty').to_f
             sales_order.sent_at = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
             sales_order.mis_date = Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')
@@ -1735,7 +1731,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             new_row_total = order_row.total_selling_price.to_f.round(2)
             new_row_total_with_tax = order_row.total_selling_price_with_tax.to_f.round(2)
             tax_amount = ((tax_rate_percentage.to_f / 100) * new_row_total).to_f.round(2)
-            binding.pry
+
             if (order_row.total_tax.to_f.round(2) == tax_amount) && (new_row_total == bible_order_row_total)
               if updated_orders_with_matching_total_with_tax.include?(current_row)
                 repeating_rows.push(current_row)
@@ -1757,7 +1753,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
               bible_total = bible_total + bible_order_row_total_with_tax
               tax_mismatch.push(current_row)
             else
-              # binding.pry
+
             end
           else
             # add missing skus in sprint
@@ -1992,11 +1988,9 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         # if !order_being_processed.include?(sales_order.order_number)
         #   if sales_order.inquiry.final_sales_quote == sales_order.sales_quote
         #     overseer = Overseer.find_by_email('vijay.manjrekar@bulkmro.com')
-        #     binding.pry
         #     revised_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(sales_order.sales_quote, overseer).call
         #     revised_quote.save(validate: false)
         #     revised_quote.update_attributes(created_at: DateTime.parse(x.get_column('Posting Date')).strftime('%Y-%m-%d %H:%M:%S'), sent_at: DateTime.parse(x.get_column('Posting Date')).strftime('%Y-%m-%d %H:%M:%S'))
-        #     binding.pry
         #
         #     extra_rows = revised_quote.rows.joins(:product).where.not(products: {sku: ['BM9P0U7']})
         #     extra_rows.delete_all
@@ -2057,7 +2051,6 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
           new_row_total_with_tax = order_row.total_selling_price_with_tax.to_f.round(2)
           tax_amount = ((tax_rate_percentage.to_f / 100) * new_row_total).to_f.round(2)
 
-          binding.pry
           if (order_row.total_tax.to_f.round(2) == tax_amount) && (new_row_total == bible_order_row_total)
             if updated_orders_with_matching_total_with_tax.include?(current_row)
               repeating_rows.push(current_row)
@@ -2079,7 +2072,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
             bible_total = bible_total + bible_order_row_total_with_tax
             tax_mismatch.push(current_row)
           else
-            # binding.pry
+
           end
         else
           # add missing skus in sprint
@@ -2181,6 +2174,36 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         state: AddressState.find_by_region_code('HP')
     )
     warehouse.save!
+  end
+
+  def customer_po_delivery_date_to_prev_inquiries
+    inquiries = Inquiry.where.not(customer_committed_date: nil)
+    Chewy.strategy(:bypass) do
+      inquiries.find_each(batch_size: 1000) do |inquiry|
+        begin
+          inquiry.update_column(:customer_po_delivery_date, inquiry.customer_committed_date)
+        rescue StandardError => e
+          puts "Rescued: #{e.inspect}"
+        end
+      end
+    end
+  end
+
+  def revised_committed_delivery_date_in_prev_inquiries
+    inquiries = Inquiry.where.not(customer_committed_date: nil)
+    Chewy.strategy(:bypass) do
+      inquiries.find_each(batch_size: 1000) do |inquiry|
+        if inquiry.sales_orders.present?
+          inquiry.sales_orders.each do |so|
+            begin
+              so.update_column(:revised_committed_delivery_date, inquiry.customer_committed_date)
+            rescue StandardError => e
+              puts "Rescued: #{e.inspect}"
+            end
+          end
+        end
+      end
+    end
   end
 end
 

@@ -1204,7 +1204,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def purchase_orders_old
-    binding.pry
     service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_orders.csv', folder)
     errors = []
     service.loop(limit) do |x|
