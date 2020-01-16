@@ -105,6 +105,7 @@ class PoRequest < ApplicationRecord
   scope :pending_stock_po, -> { where(stock_status: [:'Stock Requested']) }
   scope :completed_stock_po, -> { where(stock_status: [:'Stock Supplier PO Created']) }
   scope :stock_po, -> { where(stock_status: [:'Stock Requested', :'Stock Rejected', :'Stock Supplier PO Created', 'Supplier Stock PO: Amendment Pending', 'Supplier Stock PO: Amended']) }
+  scope :stock_amend_request, -> { where(stock_status: ['Supplier Stock PO: Amendment Pending', 'Supplier Stock PO: Amended']) }
 
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? && !is_legacy }
