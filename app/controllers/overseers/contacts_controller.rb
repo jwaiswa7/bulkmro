@@ -3,7 +3,14 @@ class Overseers::ContactsController < Overseers::BaseController
   before_action :set_notification, only: [:create]
 
   def index
-     service = Services::Overseers::Finders::Contacts.new(params)
+      base_filter = {}
+      if params["company_id"].present?
+        base_filter = {
+            base_filter_key: 'company_id',
+            base_filter_value: params["company_id"].to_i
+        }
+      end
+     service = Services::Overseers::Finders::Contacts.new(params.merge(base_filter))
      service.call
      @indexed_contacts = service.indexed_records
      @contacts = service.records

@@ -460,6 +460,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def stages
+    @model_name = 'stages'
     @stages = @inquiry.inquiry_status_records.order(created_at: :asc)
     authorize_acl @inquiry
   end
