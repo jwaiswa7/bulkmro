@@ -50,23 +50,23 @@
     <% end %>
     <% if content_for?(:can_be_directly_created) && is_authorized(current_model.singularize.downcase,'new') %>
       <a href="<%= [request.path, '/', 'new'].join %>" class="mt-md-0 mt-1 mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" target="_blank" >
-        <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
+        <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").capitalize %>
       </a>
     <% end %>
 
     <% if content_for?(:can_be_directly_exported_filtered_records) && is_authorized(current_model.singularize.downcase,'export_filtered_records') %>
       <%= button_tag(type: 'button', class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button", id: 'export_filtered_records') do %>
-        <i class="bmro-icon-envelope-white"></i> Filtered <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+        <i class="bmro-icon-envelope-white"></i> Filtered <%= controller_path.split('/').last.pluralize.split("_").join(" ").capitalize %>
       <% end %>
     <% end %>
     <% if content_for?(:can_be_directly_exported_inquiry_tat) && is_authorized(current_model.singularize.downcase, 'export_inquiries_tat') %>
       <%= link_to ("#{export_inquiries_tat_overseers_inquiries_path}.csv"), class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button", 'data-badge': ([time_ago_in_words(Export.where(export_type: 2).last.created_at), "ago"].join(' ') if Export.where(export_type: 2).last.present?) do %>
-        <i class="bmro-download-icon bmro-padding-icons-title"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %> TAT
+        <i class="bmro-download-icon bmro-padding-icons-title"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").capitalize %> TAT
       <% end %>
     <% end %>
     <% if content_for?(:can_exported_report) && is_authorized(current_model.singularize.downcase, 'export_report') %>
       <%= link_to ("#{export_report_overseers_report_path}.csv"), class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button", 'data-badge': ([time_ago_in_words(Export.where(export_type: 2).last.created_at), "ago"].join(' ') if Export.where(export_type: 2).last.present?) do %>
-        <i class="bmro-download-icon bmro-padding-icons-title"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+        <i class="bmro-download-icon bmro-padding-icons-title"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").capitalize %>
       <% end %>
     <% end %>
     <% if content_for?(:can_be_directly_downloaded) %>
