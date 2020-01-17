@@ -2,36 +2,8 @@
 
 <div class="bmro-width100">
   <div class="bmro-dash-leftside">
-<!--    <div class="bmro-width100 bmro-priority-section bmro-radio-parent-padding">-->
-<!--      <div class="bmro-radio-parent">-->
-<!--        <div class="bmro-form-radio">-->
-          <!-- <input type="radio" name="bmro" class="bmro-pri-input">
-          <label class="bmro-priority-lable">Priority Quotes </label> -->
-<!--          <label class="bmro-priority-lable bmro-radio-container">Priority Quotes-->
-<!--            <input type="radio" name="bmro" class="bmro-top-radio" checked>-->
-<!--            <span class="bmro-checkmark"></span>-->
-<!--          </label>-->
-<!--        </div>-->
-<!--        <div class="bmro-form-radio">-->
-          <!-- <input type="radio" name="bmro" class="bmro-pri-input">
-          <label class="bmro-priority-lable">Strategic Clients</label> -->
-<!--          <label class="bmro-priority-lable bmro-radio-container">Strategic Clients-->
-<!--            <input type="radio" name="bmro" class="bmro-top-radio">-->
-<!--            <span class="bmro-checkmark"></span>-->
-<!--          </label>-->
-<!--        </div>-->
-<!--        <div class="bmro-form-radio">-->
-          <!-- <input type="radio" name="bmro" class="bmro-pri-input">
-          <label class="bmro-priority-lable">Repeat Orders</label> -->
-<!--          <label class="bmro-priority-lable bmro-radio-container">Repeat Orders-->
-<!--            <input type="radio" name="bmro" class="bmro-top-radio">-->
-<!--            <span class="bmro-checkmark"></span>-->
-<!--          </label>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-    <div class="bmro-width100">
-      <div class="bmro-width100">
+    <div class="bmro-width100 leftside">
+      <div class="bmro-width100 status-height">
         <div class="bmro-dash-box">
           <% @dashboard.main_statuses.each do |status| %>
             <div class="bmro-same-box col status-box" data-status="<%= status %>">
@@ -42,10 +14,10 @@
           <% end %>
         </div>
       </div>
-      <div class="bmro-width100 bmro-main-pedding">
-        <div class="bmro-dash-inqu">
-          <div class="bmro-width100 bmro-inquries-main inquiries-card">
-            <div class="inquiry-list-wrapper">
+      <div class="bmro-width100 bmro-main-pedding main-pedding">
+        <div class="bmro-dash-inqu h-100">
+          <div class="bmro-width100 bmro-inquries-main inquiries-card h-100">
+            <div class="inquiry-list-wrapper h-100">
               <%= render partial: 'inquiry_list_wrapper', locals:{inq_for_sales_dash: @dashboard.inq_for_sales_dash} %>
             </div>
           </div>
@@ -411,9 +383,9 @@
 
           </div>
         </div>
-        <div class="bmro-dash-task" id="bmro-dash-task">
-          <div class="bmro-width100 accordion bmro-all-task-action">
-            <div class="bmro-width100 bmro-pl-pr">
+        <div class="bmro-dash-task h-100" id="bmro-dash-task">
+          <div class="bmro-width100 accordion bmro-all-task-action h-100">
+            <div class="bmro-width100 bmro-pl-pr task-ht">
 <!--              <span class="bmro-inqu-no">12</span>-->
               <p class="bmro-big-heading bmro-fl bmro-cursol bmro-font-size-dash dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
               All Tasks
@@ -429,8 +401,21 @@
               <!--<label>Show Starred</label>-->
               <!--</div>-->
             </div>
-            <div class="bmro-width100 bmro-mt-collas">
-              <div class="task-list-wrapper">
+            <div class="bmro-width100 bmro-mt-collas subhead-height">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-all-task-th bmro-task-td-width">
+                  <span class="bmro-task-th">Inquiry</span>
+                </div>
+                <div class="bmro-all-task-th bmro-task-width">
+                  <span class="bmro-task-th bmro-task-th-p0">Task</span>
+                </div>
+                <div class="bmro-all-task-th bmro-action-width bmro-text-left">
+                  <span class="bmro-task-th d-flex justify-content-end">Actions</span>
+                </div>
+              </div>
+            </div>
+            <div class="bmro-width100 bmro-mt-collas content-mid-height">
+              <div class="task-list-wrapper h-100">
                 <%= render partial: 'task_list_wrapper', locals:{inq_for_sales_dash: @dashboard.inq_for_sales_dash, show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
               </div>
             </div>
@@ -460,65 +445,6 @@
       </div>
       </div>
       </div>
-<!--  <div class="bmro-dash-rightside bmro-right-mb">-->
-<!--    <div class="bmro-width100">-->
-<!--      <div id="canvas-holder">-->
-<!--        <canvas id="myChart" width="400" height="400"></canvas>-->
-<!--        <div class="sidebar-stats bmro-width100">-->
-<!--          <ul class="bmro-canvas-ul">-->
-<!--            <li>-->
-<!--              <span class="green-chart-indicator bmro-fl"></span>-->
-<!--              <span class="stat-label bmro-fl">Quoted Inquiries</span>-->
-<!--              <span class="stat-numbers bmro-fl">12</span>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--              <span class="green-chart-indicator bmro-fl"></span>-->
-<!--              <span class="stat-label bmro-fl">Incentive Earned</span>-->
-<!--              <span class="stat-numbers bmro-fl">&#8377;4,67,010</span>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--              <span class="blue-chart-indicator bmro-fl"></span>-->
-<!--              <span class="stat-label bmro-fl">My Target</span>-->
-<!--              <span class="stat-numbers bmro-fl">52</span>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--              <span class="blue-chart-indicator bmro-fl"></span>-->
-<!--              <span class="stat-label bmro-fl">Potential Earning</span>-->
-<!--              <span class="stat-numbers bmro-fl">&#8377;40,67,010</span>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--              <span class="red-chart-indicator bmro-fl"></span>-->
-<!--              <span class="stat-label bmro-fl">New Label</span>-->
-<!--              <span class="stat-numbers bmro-fl">&#8377;40,67,010</span>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--              <span class="yellow-chart-indicator bmro-fl"></span>-->
-<!--              <span class="stat-label bmro-fl">New Label</span>-->
-<!--              <span class="stat-numbers bmro-fl">&#8377;40,67,010</span>-->
-<!--            </li>-->
-<!--          </ul>-->
-<!--        </div>-->
-<!--        <div class="bmro-width100">-->
-<!--          <h4 class="bmro-canvas-head bmro-fl">Calculate Earning</h4>-->
-<!--          <button class="bmro-canvas-button bmro-fr">Reset</button>-->
-<!--          <div class="bmro-width100">-->
-<!--              <div class="bmro-width50 bmro-mr-width">-->
-<!--                <label class="bmro-form-lable">Quoted Inquiries</label>-->
-<!--                <input type="text" name="QuotedInquiries" class="bmro-input-style">-->
-<!--              </div>-->
-<!--              <div class="bmro-width50">-->
-<!--                <label class="bmro-form-lable">Target</label>-->
-<!--                <input type="text" name="Target" class="bmro-input-style">-->
-<!--              </div>-->
-<!--              <div class="bmro-width100">-->
-<!--                <label class="bmro-form-lable">Potential Earning</label>-->
-<!--                <input type="text" name="QuotedInquiries" class="bmro-input-style">-->
-<!--              </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
   <div class="bmro-dash-rightside">
     <div class="bmro-slide-on-inquries-2">
       <div class="bmro-width100 bmro-close-right-slide-fix">
@@ -746,7 +672,7 @@
       </div>
     </div>
 
-    <div class="bmro-width100">
+    <div class="bmro-width100 h-100">
       <div class="bmro-width100">
         <div class="bmro-dash-right-menu">
 <!--              <span class="bmro-all-notification active-menu bmro-all-action" role="button">All</span>-->

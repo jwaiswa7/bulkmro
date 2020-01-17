@@ -184,11 +184,43 @@ p.bmro-menu{
   width: 19%;
   float: right;
   background-color: #fff;
-  height: auto;
+  height: calc(44rem + 18px);
   border: 1px solid #E0E2E7;
   box-sizing: border-box;
   padding: 11px 16px 11px 16px;
   overflow: hidden;
+  margin-top: 21px;
+}
+.bmro-notification-sec{
+  height: 95%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.leftside{
+  max-height: 45rem;
+}
+.task-ht{
+  height: 3%;
+}
+.content-mid-height{
+  height: 90%;
+  overflow: auto;
+}
+.status-height{
+  height: calc(7rem + 8px);
+}
+.main-pedding{
+  height: 39rem;
+}
+.subhead-height{
+  height: 5%
+}
+.sales-dash-left{
+  height: 90%;
+}
+.sub-content-height{
+  height: 95%;
+  overflow: auto;
 }
 .bmro-head-bg{
   background-color: #fff;
@@ -1969,13 +2001,13 @@ a.bmro-button:hover{
   right: 0px;
 }
 .bmro-button-smallbtn{
-  //width: 100%;
-  //margin: 30px 2px;
-  height: 1.5rem;
-  padding: 0.4rem 1rem;
-  width: 6.5rem;
-  letter-spacing: -1px;
-  font-size: 11px;
+  width: 100%;
+  margin: 30px 2px;
+}
+.btn-dashboard{
+  padding: 4px 6px !important;
+  height: 27px !important;
+  font-size: 10px !important;
 }
 a.bmro-action-button:hover{
   text-decoration: none;
