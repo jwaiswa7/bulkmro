@@ -1919,6 +1919,10 @@ sup{
   box-shadow: none!important;
   /*margin: 10px 10px;*/
 }
+a.bmro-button:hover{
+  text-decoration: none;
+  color: #FFFFFF;
+}
 .bmro-check-radio-label{
   color: #2C4159;
   font-family: "Inter UI",sans-serif;
@@ -1930,6 +1934,12 @@ sup{
 }
 #fancybox-close{
   display: none;
+}
+.bmro-action-submit-width {
+  width: 35%;
+}
+.bmro-task-submit-width {
+  width: 50%;
 }
 .bmro-dropdown-options{
   color: #2C4159;
@@ -1959,8 +1969,13 @@ sup{
   right: 0px;
 }
 .bmro-button-smallbtn{
-  width: 100%;
-  margin: 30px 2px;
+  //width: 100%;
+  //margin: 30px 2px;
+  height: 1.5rem;
+  padding: 0.4rem 1rem;
+  width: 6.5rem;
+  letter-spacing: -1px;
+  font-size: 11px;
 }
 a.bmro-action-button:hover{
   text-decoration: none;
@@ -2193,7 +2208,7 @@ canvas {
 }
 .sales-form-inline{
   display: flex;
-  margin-left: -70px;
+  //margin-left: -70px;
 }
 .btn{
   height: 38px;

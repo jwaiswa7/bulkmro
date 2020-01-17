@@ -37,7 +37,7 @@
       <span class="bmro-task-th bmro-task-th-p0">Task</span>
     </div>
     <div class="bmro-all-task-th bmro-action-width bmro-text-left">
-      <span class="bmro-task-th">Actions</span>
+      <span class="bmro-task-th d-flex justify-content-end">Actions</span>
     </div>
   </div>
 
@@ -106,7 +106,7 @@
                 Add Suppliers
               </div>
             </div>
-            <div class="bmro-action-button-parent bmro-action-width bmro-fl">
+            <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
               <a href="<%= edit_suppliers_overseers_inquiry_path(inquiry) %>" class="btn bmro-button" role="button" data-id="<%= inquiry.inquiry_number %>">Compose
                 create
               </a>
@@ -124,7 +124,7 @@
                 Create new sales order
               </div>
             </div>
-            <div class="bmro-action-button-parent bmro-action-width bmro-fl">
+            <div class="bmro-action-button-parent bmro-action-width bmro-fl text-right">
               <a href="<%= new_overseers_inquiry_sales_order_path(inquiry, sales_quote_id: inquiry.final_sales_quote.to_param) %>" class="btn bmro-button" role="button" data-id="<%= inquiry.inquiry_number %>">Add to Order
               </a>
             </div>
