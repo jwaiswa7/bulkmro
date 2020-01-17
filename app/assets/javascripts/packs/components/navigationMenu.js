@@ -28,7 +28,7 @@ const navigationMenu = () => {
 
     function toggleFirstLevelHeading (classname, containerName) {
 
-        $("#" + classname).click(() => {
+        $("#" + classname).hover(() => {
             let toggle = $('.bmro-main-drop-col-level-one-container .bmro-select-level-one-to-see-second-and-third').hasClass('active');
             let toggleClass = $('.bmro-second-and-third-level-headings .bmro-second-and-third-level-headings-container').hasClass('show');
 
@@ -43,9 +43,14 @@ const navigationMenu = () => {
 
     }
 
-    $(".bmro-menu-click").click(function () {
-        $('.bmro-dash-main-menu').toggleClass('bmro-dash-main-menu-show');
-        $(this).toggleClass('bmro-menu-roted');
+    $(".bmro-menu-click").mouseenter(function () {
+        $('.bmro-dash-main-menu').addClass('bmro-dash-main-menu-show');
+        $(this).addClass('bmro-menu-roted');
+    });
+
+    $(".bmro-dash-main-menu").mouseleave(function () {
+        $('.bmro-dash-main-menu').removeClass('bmro-dash-main-menu-show');
+        $('.bmro-menu-click').removeClass('bmro-menu-roted');
     });
 
     toggleFirstLevelHeading('nav-bpartners-heading', 'bpartners_heading_container');
