@@ -3,13 +3,20 @@ class Overseers::ContactsController < Overseers::BaseController
   before_action :set_notification, only: [:create]
 
   def index
-    # service = Services::Overseers::Finders::Contacts.new(params)
-    # service.call
-    # @indexed_contacts = service.indexed_records
-    # @contacts = service.records
-    # authorize_acl @contacts
+      base_filter = {}
+      if params["company_id"].present?
+        base_filter = {
+            base_filter_key: 'company_id',
+            base_filter_value: params["company_id"].to_i
+        }
+      end
+     service = Services::Overseers::Finders::Contacts.new(params.merge(base_filter))
+     service.call
+     @indexed_contacts = service.indexed_records
+     @contacts = service.records
+     #authorize_acl @contacts
 
-    @contacts = ApplyDatatableParams.to(Contact.all.includes(:companies), params)
+    #@contacts = ApplyDatatableParams.to(Contact.all.includes(:companies), params)
     authorize_acl @contacts
   end
 
@@ -25,10 +32,12 @@ class Overseers::ContactsController < Overseers::BaseController
   def new
     if params[:ccr_id].present?
       requested_contact = ContactCreationRequest.where(id: params[:ccr_id]).last
+
       if !requested_contact.nil?
         @contact = Contact.new({ 'first_name': requested_contact.first_name, 'last_name':  requested_contact.last_name,
                                  'telephone': requested_contact&.telephone, 'mobile': requested_contact&.mobile,
-                                 'email': requested_contact&.email, 'account_id': requested_contact.activity.company.account_id
+                                 'email': requested_contact&.email, 'account_id': requested_contact.activity.company.account_id,
+                                 'designation': requested_contact.designation
                                }.merge(overseer: current_overseer))
         @company = requested_contact.activity.company
       end

@@ -4,7 +4,7 @@ body{
     background-color: #F0F2F6;
     font-family: 'Inter UI', sans-serif!important;
     -webkit-font-smoothing: antialiased!important;
-    padding-top: 40px;
+    //padding-top: 40px;
 }
 .bmro-label-sup{
     color: #FF8800 !important;
@@ -308,7 +308,7 @@ a.bmro-list-button{
 .form-group input.form-control{
     line-height: 1.5!important;
     color:#2C4159 !important;
-    padding: 9px 23px 6px 8px;
+    padding: 9px 8px 6px 8px;
     font-family: 'Inter UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     border-width: 2px!important;
@@ -1000,7 +1000,7 @@ a.bmro-click-toggle.collapsed:after{
     background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAARJJREFUWAntV4sNwiAQLcYldAt/IzVdSdORjGMYtxDfEdqmIHA0RUiEhFyhx+P13dFem6aQJgYeUspuuE5hhRC3IC5ItOipm/dBN0GWP3IohsjW8cAPzIdj6lisp1vYi99luusi0iO5+skt/goJR4vYRIoJzf8SQciO6G/0p7YnimEORWhjepHutT3DZiFC+1othyIWCZqoRExZqiJVEVMBc1xzpFhFXPVIhw+SSTp2TIURu7mIHIBwZaOs4FiT1RRRhYbq0xVywsSejUM18JgjIccZaoLBSMSHDbWoqlKVlM+Pee/raWIRwQZ39PE/mblhlBv31LyiUBc4c4nsFmBHLeGGhvJDlf1R6Azn3IfEovgBxlOT3m4+yooAAAAASUVORK5CYII=');
 }
 .row{
-    display: inline-block;
+    //display: inline-block;
     width: 100%;
     margin-left: 0px;
 }
@@ -1931,7 +1931,8 @@ background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAY
     text-transform: capitalize!important;
 }
 .btn-success:hover{
-    background-color: #385372;
+    background-color: #218838;
+    border-color: #1e7e34;
 }
 .bmro-trash-padding{
     padding: 8px 8px!important;
@@ -2916,7 +2917,7 @@ table.fixedHeader-floating{
     margin: 17px 0px 0px 5px;    
 }
 .bmro-left-side{
-    width: 80%;
+    width: 100%;
     float: left;
     background-color: #fff;
 }
@@ -2987,6 +2988,11 @@ table.fixedHeader-floating{
 .row div[class*="col"]{
     float: left;
 }
+
+.row .acl-resources-parent-div div[class*="col"]{
+    float: unset !important;
+}
+
 .fa-pen{    
     background-size: 16px;
      padding: 1px 12px;
@@ -3283,8 +3289,8 @@ background-color: #D4D8DF!important;
     width: 400px;
 }
 .btn-dark:hover{
-    background-color: transparent;
-    border-color: transparent;
+    background-color: #23272b;
+    border-color: #1d2124;
 }
 .bmro-data-left table th{
     text-align: left;
@@ -4220,11 +4226,24 @@ td .media.chat-item{
 .logiscoll.bmro-parent-bg a.bmro-invoice-one{
     background-color: #fff;
 }
-.bmro-trent .node{
-    position: unset;
-    width: 300px;
-    margin: 0 auto;
+/*.bmro-trent .node{
+    // position: unset;
+    // width: 300px;
+    // margin: 0 auto;
+}*/
+.treant svg{
+  all: unset;
 }
 .bmro-summary-margin{
     margin-left: -180px;
+}
+
+.sticky-top-fixed{
+  position: fixed;
+  top: 0;
+  z-index: 1020;
+}
+.layout-body-wrapper{
+  position: relative;
+  top: 3rem;
 }

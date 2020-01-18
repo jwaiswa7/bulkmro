@@ -7,7 +7,10 @@ class Services::Overseers::SalesOrders::CreateSalesOrderInSap < Services::Shared
 
   def call
     if params['approve'].present?
-      series_name = sales_order.sales_quote.bill_from.series_code + ' ' + Date.today.year.to_s
+      date = Date.today
+      year = date.year
+      year = year - 1 if date.month < 4
+      series_name = sales_order.sales_quote.bill_from.series_code + ' ' + year.to_s
       series = Series.where(document_type: 'Sales Order', series_name: series_name)
       if series.present?
         sales_order.update_attributes(remote_status: :'Supplier PO: Request Pending', status: :'Approved', mis_date: Date.today, order_number: series.first.last_number)

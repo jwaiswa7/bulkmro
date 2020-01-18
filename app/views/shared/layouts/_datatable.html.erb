@@ -30,16 +30,15 @@
 <div class="bmro-float">
   <div class="bmro-invoice-heading">
     <div class="dropdown">
-  <% if (content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all')) || (content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness')) %>
+      <% if (content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all')) || (content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness')) %>
         <span class="bmro-downimg"></span>
         <% if content_for?(:heading) %>
-          <h4 class="dropdown-toggle page-title bmro-drop-arr" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
+          <h4 class="export-toggle page-title bmro-drop-arr" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4>
         <% else %>
-          <h4 class="dropdown-toggle page-title bmro-drop-arr" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4>
+          <h4 class="export-toggle page-title bmro-drop-arr" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4>
         <% end %>
-
         <% if content_for?(:can_be_directly_exported_partial) %>
-          <%= render partial:   "overseers/"+current_model.downcase+"/download_dropdown" rescue nil %>
+          <%= render partial: "overseers/"+current_model.downcase+"/download_dropdown" rescue nil %>
         <% else %>
           <% if content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all') %>
             <% export_status = Export.send(controller_path.split('/').last).not_filtered.last %>
@@ -63,10 +62,11 @@
         <h4 class="page-title"><%= current_model_header %></h4>
          <!--  <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4> -->
     <% end %>
-  <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="" placeholder="Select Date">
+      <% if (chewy_exist?(controller_name) || (@model_name && chewy_exist?(@model_name))) && !(['inward_completed_queue', 'inward_dispatch_delivered_queue', 'inward_dispatch_pickup_queue', 'material_readiness_queue','logistics_scorecards','tat_report','company_report','kra_report','sales_quotes','sales_orders','purchase_orders','stages'].include? @model_name) %>
+        <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="" placeholder="Select Date">
+      <% end %>
     </div>
 </div>
-
   <% if Settings.reports.show_summary && @statuses.present? %>
     <div class="col-lg-12">
       <%= render partial: "shared/layouts/summary", locals: {klass: current_model.classify.constantize, statuses: @statuses, alias_name: @alias_name, main_summary_statuses: @main_summary_statuses } %>
@@ -81,7 +81,7 @@
   </div>
   <div class="fillter-wrapper bmro-input-edit">
     <div class="bmro-input-search bmro-arrow-parent">
-      <input type="button" name="clear-btn" value="Reset" class="bmro-button bmro-set-size">
+      <input type="button" name="clear-btn" value="Reset" class="bmro-button bmro-set-size reset-table-filters">
     </div>
   </div>
 </div>

@@ -8,6 +8,7 @@ class Overseers::SuppliersController < Overseers::BaseController
     service.call
     @indexed_companies = service.indexed_records
     @companies = service.records
+    @model_name = 'companies'
     authorize_acl @companies
 
     render 'index'

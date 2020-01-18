@@ -47,7 +47,7 @@
       <% f.object.rows.sort_by(&:sr_no).group_by(&:inquiry_product).each do |inquiry_product, rows| %>
         <div class="card mt-3 option-wrapper">
           <div class="card-body accordion" id="ac-<%= inquiry_product.id %>">
-            <div class="btn btn-danger float-right" :class="showProductButton('<%= inquiry_product.id %>')? '': 'disabled'" data-v-event="" data-v-on:click="hideProduct('<%= inquiry_product.id %>')">
+            <div class="btn btn-danger float-right bmro-button" :class="showProductButton('<%= inquiry_product.id %>')? '': 'disabled'" data-v-event="" data-v-on:click="hideProduct('<%= inquiry_product.id %>')">
               <template v-if="showProductButton('<%= inquiry_product.id %>')">
                 Remove Product
               </template>
@@ -182,12 +182,12 @@
         <div class="card-body">
           <div class="form-row">
             <div class="col-6">
-              <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block") do %>
+              <%= button_tag(type: "submit", name: "save", class: "bmro-button btn btn-warning btn-block") do %>
                 <i class="fal fa-pen mr-1"></i> Save as Draft
               <% end %>
             </div>
             <div class="col-6">
-              <%= button_tag(type: "submit", name: "save_and_preview", class: "btn btn-success btn-block") do %>
+              <%= button_tag(type: "submit", name: "save_and_preview", class: "bmro-button btn btn-success btn-block") do %>
                 <i class="far fa-check mr-1"></i> Save and Preview
               <% end %>
             </div>

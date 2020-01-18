@@ -11,7 +11,6 @@ class Customers::SignInStepsController < Customers::BaseController
 
   def edit_current_company
     authorize @contact
-
     if @contact.companies.size == 1
       session[:current_company_id] = @contact.companies.first.id
       redirect_to customers_dashboard_path

@@ -15,6 +15,20 @@
   <th class="desktop text-left" data-name="created_at">Created</th>
 <% end %>
 
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="daterange"></td>
+<% end %>
+
 <div class="col-lg-12">
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>

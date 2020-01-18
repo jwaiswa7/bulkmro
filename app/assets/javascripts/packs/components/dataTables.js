@@ -17,6 +17,11 @@ const dataTables = () => {
         var currentVal = $(this).val();
         $('.date-item.hide').find('input').val(currentVal).trigger('change');
     })
+
+    $('.export-toggle').click(function() {
+        $('.export-toggle').parent().removeClass('show');
+        $(this).parent().addClass('show',2000);
+    })
 };
 
 // Setup the filter field before all dataTables, if the filter attribute exists
@@ -357,5 +362,12 @@ let cleanUp = () => {
 document.addEventListener("turbolinks:before-cache", function () {
     cleanUp();
 });
+
+$('.reset-table-filters').on('click', function(){
+    $('.fillter-wrapper .select2-ajax').val('').trigger('change')
+    $('.fillter-wrapper .select').val('').trigger('change')
+    $('.fillter-wrapper [data-toggle="daterangepicker"]').val('').trigger('change')
+    $('.bmro-table-layout [data-toggle="daterangepicker"]').val('')
+})
 
 export default dataTables

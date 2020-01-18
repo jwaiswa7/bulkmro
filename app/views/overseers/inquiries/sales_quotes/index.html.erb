@@ -5,8 +5,8 @@
 
     <% if is_authorized(@inquiry, 'new_sales_quote') && policy(@inquiry).new_sales_quote? %>
       <div class="form-row mb-3">
-        <div class="col-12 bmro-table-layout">
-          <a href="<%= new_overseers_inquiry_sales_quote_path(@inquiry) %>" class="btn-block btn btn-success btn-rounded">
+        <div class="col-12 bmro-table-layout mt-4">
+          <a href="<%= new_overseers_inquiry_sales_quote_path(@inquiry) %>" class="bmro-button btn-block btn btn-success btn-rounded">
             <i class="fal fa-plus-circle mr-1"></i>New Sales Quote
           </a>
         </div>

@@ -50,8 +50,9 @@ class Overseers::ActivitiesController < Overseers::BaseController
       )
     end
     authorize_acl @activity
+
     if @activity.save
-      redirect_to pending_overseers_activities_path, notice: flash_message(@activity, action_name)
+      approve
     else
       render 'new'
     end
@@ -68,7 +69,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
     authorize_acl @activity
     if @activity.save
-      redirect_to pending_overseers_activities_path, notice: flash_message(@activity, action_name)
+      redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
     end
   end
 
@@ -173,6 +174,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
             :id,
             :first_name,
             :last_name,
+            :designation,
             :email,
             :telephone,
             :mobile,

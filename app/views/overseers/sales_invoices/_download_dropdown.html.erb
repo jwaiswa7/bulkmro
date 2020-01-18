@@ -1,7 +1,7 @@
+<% status_process = ['Enqueued','Processing'] %>
+<% export_status =  Export.send(controller_path.split('/').last).not_filtered.last %>
 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-  <a class="dropdown-item" href="<%= export_all_overseers_sales_invoices_path(format: :csv) %>">AR Invoice</a>
-  <a class="dropdown-item" href="<%= export_for_logistics_overseers_sales_invoices_path(format: :csv)  %>">Sales Order Rows</a>
-  <a class="dropdown-item" href="<%= export_rows_overseers_sales_invoices_path(format: :csv) %>">AR Invoice (Logistics)</a>
-  <a class="dropdown-item" href="<%= export_for_sap_overseers_sales_orders_path(format: :csv) %>">AR Invoice
+  <a class="dropdown-item export-button" href="<%= status_process.include?(export_status.status) ? '' : export_for_logistics_overseers_sales_invoices_path(format: :csv)  %>">AR Invoice (Logistics)</a>
+  <a class="dropdown-item export-button" href="<%= status_process.include?(export_status.status) ? '' : export_rows_overseers_sales_invoices_path(format: :csv) %>">AR Invoice
     Rows</a>
 </div>

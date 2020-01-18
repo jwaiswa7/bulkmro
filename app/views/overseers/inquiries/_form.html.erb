@@ -26,7 +26,7 @@
           </div>
           <% if is_authorized(@inquiry, 'update') %>
             <div class="col-6 col-md-2">
-              <button type="button" class="btn btn-m btn-block btn-warning bmro-button" data-toggle="modal" data-target="#statusModal" style="margin-top: 27px;padding: 2px 0px">Update
+              <button type="button" class="btn btn-m btn-block btn-warning bmro-button" data-toggle="modal" data-target="#statusModal" style="margin-top: 27px;padding: 2px 0px">Update Status
 
               </button>
               <div class="modal fade" id="statusModal" role="dialog">
@@ -41,12 +41,20 @@
                     </div>
                     <div class="modal-body bmro-model-body-padding">
                       <% if current_overseer.admin? %>
-                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
-                      <% elsif ["Order Lost", "Regret"].include?(@inquiry.status) %>
-                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), selected: @inquiry.status %>
+                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S','Regret')), selected: @inquiry.status %>
+                      <% elsif ["Order Lost"].include?(@inquiry.status) %>
+                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S', 'Regret')), selected: @inquiry.status %>
                       <% else %>
-                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-width-select  bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S')), disabled: @inquiry.regrettable_statuses %>
+                        <%= f.input :status,input_html: { class: 'select2-single bmro-form-input bmro-width-select  bmro-dropdown-icon' }, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S', 'Regret'), keep_raw: true), disabled: @inquiry.regrettable_statuses %>
                       <% end %>
+                      <div class= "<%='d-none' if !@inquiry.lost_regret_reason.present? %>" id="regret-field" >
+                        <%= f.input :lost_regret_reason, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.lost_regret_reasons), input_html: {class: 'disabled'}, include_blank: 'Select Reason', selected: @inquiry.lost_regret_reason %>
+                        <% if f.object.persisted? %>
+                          <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |inquiry_comment| %>
+                            <%= inquiry_comment.input :message, as: :text, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''}, label: 'Comment Message'%>
+                          <% end %>
+                        <% end %>
+                      </div>
                     </div>
                     <div class="bmro-button-parent bmro-model-button">
                       <%= action_button(action_name, @inquiry) %>
@@ -259,7 +267,7 @@
             <div class="col-12 col-md-7">
               <div class="d-block d-md-flex align-items-end">
                 <div class="flex-grow-1">
-                  <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: {multiple: true}, input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-custom-height' }, label: 'Supplier quotes' %>
+                  <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: {multiple: true, class: 'bmro-form-input bmro-dropdown-icon bmro-custom-height'},  label: 'Supplier quotes' %>
                 </div>
                 <div class="form-group bmro-download-icon bmro-btn-pos width-30">
                   <% f.object.supplier_quotes.attachments.each do |attachment| %>
@@ -592,7 +600,7 @@
               <%= inquiry_product.hidden_field :id %>
               <div class="col-3 col-md-1">
                 <div class="d-flex flex-row">
-                  <div class="form-group align-self-center mr-1">
+                  <div class="mr-1">
                     <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.approved? %>
                       <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-success" data-toggle="tooltip" title="Approved product
                       <% if inquiry_product.object.product.last_comment %>;  <%= inquiry_product.object.product.last_comment.message %>

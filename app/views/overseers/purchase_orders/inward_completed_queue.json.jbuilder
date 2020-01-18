@@ -17,7 +17,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
                         #row_action_button('#', 'plus', 'View Inward Dispatch', 'success')
                       end,
                       if is_authorized(inward_dispatch, 'index')
-                        link_to('', class: ['btn btn-sm btn-success comment-inward-dispatch'], 'data-inward-dispatch-id': inward_dispatch.id, 'data-purchase-id': inward_dispatch.purchase_order.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['btn btn-sm btn-success comment-inward-dispatch'], 'data-inward-dispatch-id': inward_dispatch.id, 'data-purchase-id': inward_dispatch.purchase_order.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['bmro-icon-comment'].join
                         end

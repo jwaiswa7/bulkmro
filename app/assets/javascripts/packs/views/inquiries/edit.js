@@ -19,7 +19,7 @@ const edit = () => {
 
     $('form').on('change', 'select[id*=inquiry_status]', function (e) {
         var selectedValue = $("option:selected").val();
-        if (selectedValue == "Order Lost" || selectedValue == "Regret") {
+        if (selectedValue == "Order Lost" || selectedValue == "Regret Request") {
             $("#regret-field").removeClass('d-none');
             $( "select[name*='lost_regret_reason'] option" ).removeClass('disabled')
             $("#inquiry_lost_regret_reason").attr("required", true);

@@ -1,3 +1,17 @@
+  <div class="d-none d-md-inline-block align-top float-right">
+      <div class="mr-2 d-md-inline-block align-top float-right">
+        <a href="<%= edit_outward_packing_slips_overseers_outward_dispatch_packing_slips_path(@outward_dispatch) %>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>
+          Edit All Packing Slip</a>
+
+        <% if is_authorized(@outward_dispatch, 'edit') && policy(@outward_dispatch).edit? %>
+          <a href="<%= edit_overseers_outward_dispatch_path(@outward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center bmro-button btn-block-sm-down mr-1"><i class="fal fa-pen mr-1"></i>
+            Edit Outward Dispatch</a>
+        <% end %>
+        <div class="mr-1 mt-1 float-right">
+          <%= row_action_button(make_packing_zip_overseers_outward_dispatch_path(@outward_dispatch, format: :zip), 'file-archive', 'Download Packing Zip', 'dark', :_blank) %>
+        </div>
+      </div>
+  </div>
 <p id="notice"><%= notice %></p>
 <div class="col-lg-12">
   <section class="pt-0 pt-lg-0 pb-2">
@@ -10,17 +24,6 @@
 <!--          <i class="fal fa-pen mr-1"></i>Add Packing Slip-->
 <!--        </a>-->
       <%# end %>
-
-        <a href="<%= edit_outward_packing_slips_overseers_outward_dispatch_packing_slips_path(@outward_dispatch) %>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>
-          Edit All Packing Slip</a>
-
-      <% if is_authorized(@outward_dispatch, 'edit') && policy(@outward_dispatch).edit? %>
-        <a href="<%= edit_overseers_outward_dispatch_path(@outward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center bmro-button btn-block-sm-down mr-1"><i class="fal fa-pen mr-1"></i>
-          Edit Outward Dispatch</a>
-      <% end %>
-      <div class="mr-1 mt-1">
-        <%= row_action_button(make_packing_zip_overseers_outward_dispatch_path(@outward_dispatch, format: :zip), 'file-archive', 'Download Packing Zip', 'dark', :_blank) %>
-      </div>
     </div>
   </section>
   <section class="mb-3">
