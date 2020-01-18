@@ -133,10 +133,10 @@
         <% if is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= f.input :bill_from, as: :string, input_html: { class: 'select2-single bmro-form-input' },  disabled: true %>
+              <%= f.input :bill_from, as: :string, input_html: { class: 'bmro-form-input' },  disabled: true %>
             </div>
             <div class="col-12 col-md-6">
-              <%= f.input :ship_from, as: :string, input_html: { class: 'select2-single bmro-form-input' }, disabled: true %>
+              <%= f.input :ship_from, as: :string, input_html: { class: 'bmro-form-input' }, disabled: true %>
             </div>
           </div>
         <% else %>
