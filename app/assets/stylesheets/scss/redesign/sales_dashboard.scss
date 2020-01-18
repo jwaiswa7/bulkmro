@@ -184,11 +184,43 @@ p.bmro-menu{
   width: 19%;
   float: right;
   background-color: #fff;
-  height: auto;
+  height: calc(44rem + 18px);
   border: 1px solid #E0E2E7;
   box-sizing: border-box;
   padding: 11px 16px 11px 16px;
   overflow: hidden;
+  margin-top: 21px;
+}
+.bmro-notification-sec{
+  height: 95%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.leftside{
+  max-height: 45rem;
+}
+.task-ht{
+  height: 3%;
+}
+.content-mid-height{
+  height: 90%;
+  overflow: auto;
+}
+.status-height{
+  height: calc(7rem + 8px);
+}
+.main-pedding{
+  height: 39rem;
+}
+.subhead-height{
+  height: 5%
+}
+.sales-dash-left{
+  height: 90%;
+}
+.sub-content-height{
+  height: 95%;
+  overflow: auto;
 }
 .bmro-head-bg{
   background-color: #fff;
@@ -1919,6 +1951,10 @@ sup{
   box-shadow: none!important;
   /*margin: 10px 10px;*/
 }
+a.bmro-button:hover{
+  text-decoration: none;
+  color: #FFFFFF;
+}
 .bmro-check-radio-label{
   color: #2C4159;
   font-family: "Inter UI",sans-serif;
@@ -1930,6 +1966,12 @@ sup{
 }
 #fancybox-close{
   display: none;
+}
+.bmro-action-submit-width {
+  width: 35%;
+}
+.bmro-task-submit-width {
+  width: 50%;
 }
 .bmro-dropdown-options{
   color: #2C4159;
@@ -1961,6 +2003,11 @@ sup{
 .bmro-button-smallbtn{
   width: 100%;
   margin: 30px 2px;
+}
+.btn-dashboard{
+  padding: 4px 6px !important;
+  height: 27px !important;
+  font-size: 10px !important;
 }
 a.bmro-action-button:hover{
   text-decoration: none;
@@ -2193,7 +2240,7 @@ canvas {
 }
 .sales-form-inline{
   display: flex;
-  margin-left: -70px;
+  //margin-left: -70px;
 }
 .btn{
   height: 38px;
