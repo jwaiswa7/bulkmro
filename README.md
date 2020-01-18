@@ -2,6 +2,8 @@
 Follow the below instructions and commands for basic setup to get the sprint running in development environment. Along with that sign up on bit Bucket and Heroku with official credentials.
 
 #### stable RVM 
+curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import -
+
 curl -sSL https://get.rvm.io | bash -s stable
 #### ruby (for version 2.5.3)
 rvm install 2.5.3
