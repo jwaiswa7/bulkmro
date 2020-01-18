@@ -1,6 +1,6 @@
 <div class="row">
   <div class="bmro-fixtab-width bmro-fl">
-    <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#summary">
+    <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm <%= klass == 'SalesInvoice'.constantize ? 'sales-invoice-summary-box' : '' %>" type="button" data-toggle="collapse" data-target="#summary">
       <% if alias_name.present? %>
         <%= alias_name.titleize %> Summary&nbsp;&nbsp;&nbsp;
       <% else %>
@@ -24,7 +24,7 @@
   </div>
   <% if klass == 'SalesInvoice'.constantize %>
     <div class="bmro-width-auto bmro-fl bmro-summary-margin">
-      <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm" type="button" data-toggle="collapse" data-target="#pod-summary">
+      <a class="btn btn-light text-left btn-lg btn-block bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg bmro-btn-padding-botm sales-invoice-summary-box" type="button" data-toggle="collapse" data-target="#pod-summary">
         Proof of Delivery Summary
       </a>
 
