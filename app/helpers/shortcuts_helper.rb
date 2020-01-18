@@ -44,9 +44,12 @@ module ShortcutsHelper
          'Manage SKUs'
       when 'ar_invoice_requests'
          'AR Invoice Request'   
+      when 'invoice_requests'
+         'AP Invoice Request'
       else
          element.titleize  
       end
+    
       # name = element == 'manage_failed_skus' ? 'Manage SKUs' : element.titleize
       begin
         prev_element = elements[index - 1]
