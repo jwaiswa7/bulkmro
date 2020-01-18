@@ -1257,7 +1257,7 @@ a.bmro-click-toggle.collapsed:after{
 }
 @media only screen and (max-width: 1360px) {
   .bmro-nav-ul {
-    top: 88px;
+    top: 55px;
   }
   .bmro-container{
     max-width: 1200px;
@@ -1627,6 +1627,35 @@ table.bmro-new-table tr th:first-child{
 table.bmro-new-table tr:first-child{
     background-color: transparent;
 }
+
+table.bmro-rfq-table{
+  color: #354960;
+  font-family: 'Inter UI',sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 13px;
+  letter-spacing: -0.5px;
+  line-height: 16px;
+  width: 100%;
+  border-collapse: collapse;
+}
+table.bmro-rfq-table th, table.bmro-rfq-table td{
+  border: 1px solid #E0E2E7;
+  padding: 13px 14px 8px 9px;
+  border-radius: 0px !important;
+}
+//table.bmro-rfq-table td:first-child{
+//  //border-left: 1px solid #E0E2E7;
+//  text-align: left;
+//  width: 20px;
+//}
+table.bmro-rfq-table tr th:first-child{
+  text-align: left;
+  width: auto;
+}
+table.bmro-rfq-table tr th{
+  font-weight: bold;
+}
+
 .bmro-invoice-padding{
     padding: 20px; 
 }
@@ -4246,4 +4275,7 @@ td .media.chat-item{
 .layout-body-wrapper{
   position: relative;
   top: 3rem;
+}
+.text-wrap {
+  white-space: normal;
 }
