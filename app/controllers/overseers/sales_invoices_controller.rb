@@ -114,7 +114,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     if @email_message.auto_attach? && @email_message.auto_attach != false
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: true, pagination: false, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Original_' + @invoice.filename(include_extension: true))
       @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: false, pagination: false, duplicate: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Duplicate_' + @invoice.filename(include_extension: true))
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: false, pagination: false, triplicate: true,bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@invoice, stamp: false, pagination: false, triplicate: true, bill_from_warehouse: @invoice.get_bill_from_warehouse)), filename: 'Triplicate_' + @invoice.filename(include_extension: true))
     end
 
 
