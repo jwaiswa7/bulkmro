@@ -48,7 +48,6 @@ class Overseers::AnnualTargetsController < Overseers::BaseController
         service.call
         redirect_to overseers_overseer_path(overseer), notice: 'Annual Target was successfully created.'
       elsif account.present?
-        # binding.pry
         service = Services::Overseers::Targets::CreateAccountMonthlyTargets.new(account, annual_target)
         service.call
         redirect_to overseers_accounts_path, notice: 'Annual Target was successfully created.'

@@ -71,4 +71,8 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def ageing_report?
     index?
   end
+
+  def delivery_date_revision_allowed?
+    record.pod_status != 'complete'
+  end
 end

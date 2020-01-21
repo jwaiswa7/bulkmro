@@ -324,7 +324,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize_acl @sales_order
     respond_to do |format|
       if params[:title] == 'Comment'
-        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @sales_order, url: add_comment_overseers_sales_order_path(@sales_order), view_more: overseers_inquiry_comments_path(@sales_order.inquiry.id)}}
+        format.html { render partial: 'shared/layouts/add_comment', locals: {obj: @sales_order, url: add_comment_overseers_sales_order_path(@sales_order), view_more: overseers_inquiry_comments_path(@sales_order.inquiry.id)} }
       end
     end
   end

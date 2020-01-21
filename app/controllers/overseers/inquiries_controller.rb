@@ -74,14 +74,14 @@ class Overseers::InquiriesController < Overseers::BaseController
         @date_range = params['kra_report']['date_range']
         @category = params['kra_report']['category']
         if @category == 'company_key'
-          @category_filter = {filter_name: 'company_key', filter_type: 'ajax'}
+          @category_filter = { filter_name: 'company_key', filter_type: 'ajax' }
         elsif @category == 'inside_sales_owner_id' || @category == 'inside_by_sales_order'
-          @category_filter = {filter_name: 'inside_sales_owner_id', filter_type: 'dropdown'}
+          @category_filter = { filter_name: 'inside_sales_owner_id', filter_type: 'dropdown' }
         elsif @category == 'outside_sales_owner_id' || @category == 'outside_by_sales_order'
-          @category_filter = {filter_name: 'outside_sales_owner_id', filter_type: 'dropdown'}
+          @category_filter = { filter_name: 'outside_sales_owner_id', filter_type: 'dropdown' }
         end
       else
-        @category_filter = {filter_name: 'inside_sales_owner_id', filter_type: 'dropdown'}
+        @category_filter = { filter_name: 'inside_sales_owner_id', filter_type: 'dropdown' }
       end
       format.html {}
       format.json do
@@ -634,67 +634,72 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   private
 
-  def set_inquiry
-    @inquiry ||= Inquiry.find(params[:id])
-  end
+    def set_inquiry
+      @inquiry ||= Inquiry.find(params[:id])
+    end
 
-  def inquiry_params
-    params.require(:inquiry).permit(
-        :project_uid,
-        :company_id,
-        :contact_id,
-        :industry_id,
-        :inside_sales_owner_id,
-        :outside_sales_owner_id,
-        :sales_manager_id,
-        :procurement_operations_id,
-        :billing_address_id,
-        :billing_company_id,
-        :shipping_address_id,
-        :shipping_company_id,
-        :shipping_contact_id,
-        :bill_from_id,
-        :ship_from_id,
-        :status,
-        :opportunity_type,
-        :opportunity_source,
-        :subject,
-        :gross_profit_percentage,
-        :quotation_date,
-        :customer_committed_date,
-        :customer_order_date,
-        :valid_end_time,
-        :quotation_followup_date,
-        :customer_po_received_date,
-        :procurement_date,
-        :expected_closing_date,
-        :quote_category,
-        :price_type,
-        :potential_amount,
-        :freight_option,
-        :freight_cost,
-        :total_freight_cost,
-        :customer_po_number,
-        :packing_and_forwarding_option,
-        :payment_option_id,
-        :weight_in_kgs,
-        :customer_po_sheet,
-        :final_supplier_quote,
-        :copy_of_email,
-        :is_sez,
-        :calculation_sheet,
-        :commercial_terms_and_conditions,
-        :comments,
-        :product_type,
-        :lost_regret_reason,
-        supplier_quotes: [],
-        inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
-    )
-  end
-
-  def edit_suppliers_params
-    if params.has_key?(:inquiry)
+    def inquiry_params
       params.require(:inquiry).permit(
+        :project_uid,
+          :company_id,
+          :contact_id,
+          :industry_id,
+          :inside_sales_owner_id,
+          :outside_sales_owner_id,
+          :sales_manager_id,
+          :procurement_operations_id,
+          :billing_address_id,
+          :billing_company_id,
+          :shipping_address_id,
+          :shipping_company_id,
+          :shipping_contact_id,
+          :bill_from_id,
+          :ship_from_id,
+          :status,
+          :opportunity_type,
+          :opportunity_source,
+          :subject,
+          :gross_profit_percentage,
+          :quotation_date,
+          :customer_committed_date,
+          :customer_order_date,
+          :valid_end_time,
+          :quotation_followup_date,
+          :customer_po_received_date,
+          :procurement_date,
+          :expected_closing_date,
+          :quote_category,
+          :price_type,
+          :potential_amount,
+          :freight_option,
+          :freight_cost,
+          :total_freight_cost,
+          :customer_po_number,
+          :packing_and_forwarding_option,
+          :payment_option_id,
+          :weight_in_kgs,
+          :customer_po_sheet,
+          :final_supplier_quote,
+          :copy_of_email,
+          :is_sez,
+          :calculation_sheet,
+          :customer_po_delivery_date,
+          :committed_delivery_attachment,
+          :customer_po_received_attachment,
+          :customer_po_delivery_attachment,
+          :commercial_terms_and_conditions,
+          :commercial_terms_and_conditions,
+          :comments,
+          :product_type,
+          :lost_regret_reason,
+          supplier_quotes: [],
+          inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
+      )
+    end
+
+    def edit_suppliers_params
+      if params.has_key?(:inquiry)
+        params.require(:inquiry).permit(
           inquiry_products_attributes: [
               :id,
               inquiry_product_suppliers_attributes: [
@@ -706,80 +711,80 @@ class Overseers::InquiriesController < Overseers::BaseController
                   :_destroy
               ]
           ]
-      )
-    else
-      {}
+        )
+      else
+        {}
+      end
     end
-  end
 
-  def sort_buckets(sort_by, sort_order, indexed_kra_reports)
-    value_present = indexed_kra_reports[0][sort_by].present? && indexed_kra_reports[0][sort_by]['value'].present?
-    case
-    when !value_present && sort_order == 'asc'
-      indexed_kra_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }
-    when !value_present && sort_order == 'desc'
-      indexed_kra_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }.reverse!
-    when value_present && sort_order == 'asc'
-      indexed_kra_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }
-    when value_present && sort_order == 'desc'
-      indexed_kra_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
+    def sort_buckets(sort_by, sort_order, indexed_kra_reports)
+      value_present = indexed_kra_reports[0][sort_by].present? && indexed_kra_reports[0][sort_by]['value'].present?
+      case
+      when !value_present && sort_order == 'asc'
+        indexed_kra_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }
+      when !value_present && sort_order == 'desc'
+        indexed_kra_reports.sort! { |a, b| a['doc_count'] <=> b['doc_count'] }.reverse!
+      when value_present && sort_order == 'asc'
+        indexed_kra_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }
+      when value_present && sort_order == 'desc'
+        indexed_kra_reports.sort! { |a, b| a[sort_by]['value'] <=> b[sort_by]['value'] }.reverse!
+      end
     end
-  end
 
-  def new_purchase_orders_requests_params
-    if params.has_key?(:inquiry)
-      params.require(:inquiry).permit(
+    def new_purchase_orders_requests_params
+      if params.has_key?(:inquiry)
+        params.require(:inquiry).permit(
           :id,
-          po_requests_attributes: [
-              :id,
-              :supplier_id,
-              :inquiry_id,
-              :company_id,
-              :reason_to_stock,
-              :estimated_date_to_unstock,
-              :requested_by_id,
-              :approved_by_id,
-              :_destroy,
-              :logistics_owner_id,
-              :address_id,
-              :contact_id,
-              :payment_option_id,
-              :stock_status,
-              :supplier_committed_date,
-              :blobs,
-              :supplier_po_type,
-              :contact_email,
-              :contact_phone,
-              :bill_from_id,
-              :ship_from_id,
-              :bill_to_id,
-              :ship_to_id,
-              attachments: [],
-              rows_attributes: [
-                  :id,
-                  :_destroy,
-                  :status,
-                  :quantity,
-                  :sales_order_row_id,
-                  :product_id,
-                  :brand,
-                  :tax_code_id,
-                  :tax_rate_id,
-                  :measurement_unit_id,
-                  :unit_price,
-                  :conversion,
-                  :lead_time,
-                  :discount_percentage
-              ],
-              comments_attributes: [
-                  :created_by_id,
-                  :updated_by_id,
-                  :message
-              ]
-          ]
-      )
-    else
-      {}
+            po_requests_attributes: [
+                :id,
+                :supplier_id,
+                :inquiry_id,
+                :company_id,
+                :reason_to_stock,
+                :estimated_date_to_unstock,
+                :requested_by_id,
+                :approved_by_id,
+                :_destroy,
+                :logistics_owner_id,
+                :address_id,
+                :contact_id,
+                :payment_option_id,
+                :stock_status,
+                :supplier_committed_date,
+                :blobs,
+                :supplier_po_type,
+                :contact_email,
+                :contact_phone,
+                :bill_from_id,
+                :ship_from_id,
+                :bill_to_id,
+                :ship_to_id,
+                attachments: [],
+                rows_attributes: [
+                    :id,
+                    :_destroy,
+                    :status,
+                    :quantity,
+                    :sales_order_row_id,
+                    :product_id,
+                    :brand,
+                    :tax_code_id,
+                    :tax_rate_id,
+                    :measurement_unit_id,
+                    :unit_price,
+                    :conversion,
+                    :lead_time,
+                    :discount_percentage
+                ],
+                comments_attributes: [
+                    :created_by_id,
+                    :updated_by_id,
+                    :message
+                ]
+            ]
+        )
+      else
+        {}
+      end
     end
-  end
 end
