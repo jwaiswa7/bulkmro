@@ -17,7 +17,8 @@ handler do |job, time|
 end
 
 every(30.minutes, 'resync_remote_requests') do
-  ResyncRemoteRequest.where('hits < 5').find_each(batch_size: 1000) do |resync_request|
+  date = Date.today
+  ResyncRemoteRequest.where('hits < 5').where(created_at: date.beginning_of_day..date.end_of_day).find_each(batch_size: 100) do |resync_request|
     service = Services::Resources::Shared::ResyncFailedRequests.new(resync_request)
     service.call
   end
