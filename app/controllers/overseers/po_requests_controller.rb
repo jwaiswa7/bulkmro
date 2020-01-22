@@ -200,7 +200,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request = po_request
     @po_request.status = 'Supplier PO: Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Supplier PO: Request Pending'
     @po_request.status = 'Supplier PO: Request Pending' if @po_request.status == 'Supplier PO Request Rejected' && policy(@po_request).manager_or_sales?
-    @po_request.status = 'Supplier PO: Amendment Pending' if (@po_request.status == 'Supplier PO: Created Not Sent' || @po_request.status == 'Supplier PO Sent') && policy(@po_request).manager_or_sales?
+    @po_request.status = 'Supplier PO: Amendment Pending' if (@po_request.status == 'Supplier PO: Created Not Sent' || @po_request.status == 'Supplier PO Sent' || @po_request.status == 'Supplier PO: Amended') && policy(@po_request).manager_or_sales?
     @po_request
   end
 
@@ -281,6 +281,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
       format.html {render partial: 'product_resync_inventory', locals: {product: @product}}
     end
     authorize_acl :po_request
+  end
+
+  def stock_amend_requests
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.stock_amend_request.order(id: :desc), params)
+    authorize_acl @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
   end
 
   private

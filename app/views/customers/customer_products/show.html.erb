@@ -34,8 +34,8 @@
                     <%= f.input :quantity, label: false, :class => 'form-control', input_html: {placeholder: 'Quantity', step: @customer_product.moq, min: @customer_product.moq, value: @default_quantity} %>
                   <% end %>
                 </div>
-                <!-- Hide add to cart button for contact named warehouse for customer saint gobain -->
-                <% unless (current_contact.id == @view_only_contact_for_saint_gobain) %>
+                <!-- Hide add to cart button for contact named warehouse (id = 15667) for customer saint gobain -->
+                <% unless (current_contact.id == 15667) %>
                   <div class="col-8 col-md-4">
                     <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
                   </div>

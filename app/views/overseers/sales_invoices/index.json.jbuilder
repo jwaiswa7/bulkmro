@@ -38,6 +38,9 @@ json.data (@sales_invoices) do |sales_invoice|
                       if is_authorized(sales_invoice, 'edit_mis_date') && policy(sales_invoice).edit_mis_date?
                         row_action_button(edit_mis_date_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), 'calendar-alt', 'Update MIS Date', 'success')
                       end,
+                      if is_authorized(sales_invoice.sales_order, 'revise_committed_delivery_date') && policy(sales_invoice.sales_order).delivery_date_revision_allowed?
+                        row_action_button(revise_committed_delivery_date_overseers_inquiry_sales_order_path(sales_invoice.inquiry, sales_invoice.sales_order), 'calendar', 'Revise Customer Committed Delivery Date', 'dark', :_blank)
+                      end,
                       if is_authorized(sales_invoice, 'resync_sap_status')
                         row_action_button(resync_sap_status_overseers_sales_invoice_path(sales_invoice.to_param), 'retweet-alt', 'Invoice Status Resync', 'danger')
                       end

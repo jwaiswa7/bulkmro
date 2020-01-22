@@ -46,12 +46,14 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
         # resync_opportunity
       when 'Quotations'
         # resync_bp_group
-        if resync_request.error_message.include?('Field cannot be updated (ODBC -1029)')
-          # reset_quote ?
-        elsif resync_request.error_message.include?('No matching records found (ODBC -2028)')
-          resync_project
-          resync_products
-          resync_business_partners
+        if resync_request.error_message.present?
+          if resync_request.error_message.include?('Field cannot be updated (ODBC -1029)')
+            # reset_quote ?
+          elsif resync_request.error_message.include?('No matching records found (ODBC -2028)')
+            resync_project
+            resync_products
+            resync_business_partners
+          end
         end
       when 'BusinessPartners'
         # resync_bp_group
@@ -69,44 +71,50 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
   end
 
   def resync_products
-    5.times do
-      if resync_request.subject_type == 'Inquiry'
-        error = resync_request.error_message
-        # if item_errors.include?(error)
-        model.inquiry_products.each do |ip|
-          item_code = ::Resources::Item.custom_find_resync(["#{ip.sku}", 'ItemCode'])
+    Chewy.strategy(:atomic) do
+      5.times do
+        if resync_request.subject_type == 'Inquiry'
+          error = resync_request.error_message
+          # if item_errors.include?(error)
+          model.inquiry_products.each do |ip|
+            item_code = ::Resources::Item.custom_find_resync(["#{ip.sku}", 'ItemCode'])
+            model.update_attributes(remote_uid: item_code)
+          end
+          resync_request.update_attributes(hits: resync_request.hits + 1)
+          # end
+        elsif resync_request.subject_type == 'Product'
+          item_code = ::Resources::Item.custom_find_resync(["#{model.sku}", 'ItemCode'])
           model.update_attributes(remote_uid: item_code)
+          resync_request.update_attributes(hits: resync_request.hits + 1)
         end
-        resync_request.update_attributes(hits: resync_request.hits + 1)
-        # end
-      elsif resync_request.subject_type == 'Product'
-        item_code = ::Resources::Item.custom_find_resync(["#{model.sku}", 'ItemCode'])
-        model.update_attributes(remote_uid: item_code)
-        resync_request.update_attributes(hits: resync_request.hits + 1)
-      end
-    end if resync_request.status == "failed"
+      end if resync_request.status == "failed"
+    end
   end
 
   def resync_project
-    5.times do
-      error = resync_request.error_message
-      if project_errors.include?(error)
-        project_uid = ::Resources::Project.custom_find_resync(model.inquiry_number, 'Code', resync_request)
-        if project_uid != false && project_uid.to_i > 0
-          model.update_attributes(project_uid: project_uid)
-          resync_request.update_attributes(hits: resync_request.hits + 1)
-          break
+    Chewy.strategy(:atomic) do
+      5.times do
+        error = resync_request.error_message
+        if project_errors.include?(error)
+          project_uid = ::Resources::Project.custom_find_resync(model.inquiry_number, 'Code', resync_request)
+          if project_uid != false && project_uid.to_i > 0
+            model.update_attributes(project_uid: project_uid)
+            resync_request.update_attributes(hits: resync_request.hits + 1)
+            break
+          end
         end
       end
     end
   end
 
   def resync_business_partners
-    5.times do
-      remote_uid = ::Resources::BusinessPartner.custom_find_resync(model.remote_uid, 'CardCode')
-      if remote_uid.present?
-        ::Resources::BusinessPartner.update_associated_records(remote_uid)
-        resync_request.update_attributes(hits: resync_request.hits + 1)
+    Chewy.strategy(:atomic) do
+      5.times do
+        remote_uid = ::Resources::BusinessPartner.custom_find_resync(model.remote_uid, 'CardCode')
+        if remote_uid.present?
+          ::Resources::BusinessPartner.update_associated_records(remote_uid)
+          resync_request.update_attributes(hits: resync_request.hits + 1)
+        end
       end
     end
   end
