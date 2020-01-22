@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
         template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
         layout: 'shared/layouts/pdf_templates/show',
         page_size: 'A4',
+        background: true,
         footer: {
             center: '[page] of [topage]'
         },
