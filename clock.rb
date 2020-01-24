@@ -32,12 +32,6 @@ every(3.hour, 'update_admin_dashboard_cache') do
   UpdateAdminDashboardCacheJob.perform_later
 end if Rails.env.production?
 
-every(4.hour, 'generate_exports_hourly') do
-  Chewy.strategy(:atomic) do
-    Services::Overseers::Exporters::GenerateExportsHourly.new
-  end
-end if Rails.env.production?
-
 every(1.day, 'set_overseer_monthly_target', at: '00:10') do
   puts 'For setting Monthly Targets'
   service = Services::Overseers::Targets::SetMonthlyTarget.new
@@ -106,6 +100,12 @@ every(4.day, 'set_slack_ids', at: '23:00') do
     service.call
   end
 end
+
+# every(4.hour, 'generate_exports_hourly') do
+#   Chewy.strategy(:atomic) do
+#     Services::Overseers::Exporters::GenerateExportsHourly.new
+#   end
+# end if Rails.env.production?
 
 # every(1.day, 'remote_unwanted_requests', at: '22:00') do
 #   service = Services::Overseers::RequestCronJobs::RemoveRequestCronJob.new
