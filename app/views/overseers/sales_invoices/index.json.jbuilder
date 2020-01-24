@@ -7,7 +7,7 @@ json.data (@sales_invoices) do |sales_invoice|
                       if is_authorized(sales_invoice, 'show') && policy(sales_invoice).show? && sales_invoice.inquiry.present?
                         [
                          row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), 'eye', 'View AR Invoice ', 'info', :_blank),
-                         row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, stamp: 1, format: :pdf), 'file-alt', 'Original with Signature', 'success', :_blank, 'get', '', false, 'O',),
+                         row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, stamp: 1, format: :pdf), 'file-alt', 'Original with Signature', 'success', :_blank, 'get', '', false, 'O'),
                          # row_action_button(duplicate_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, stamp: 1, format: :pdf), 'none', 'Duplicate with Signature', 'success', :_blank, 'get', false, 'D'),
                          # row_action_button(triplicate_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, stamp: 1, format: :pdf), 'none', 'Triplicate with Signature', 'success', :_blank, 'get', false, 'T'),
                          row_action_button(make_zip_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, stamp: 1, format: :zip), 'stamp', 'Zip with Signature', 'info', :_blank),
@@ -21,10 +21,11 @@ json.data (@sales_invoices) do |sales_invoice|
                         ]
                       end,
                       if is_authorized(sales_invoice, 'show_original_invoice') && policy(sales_invoice).show_original_invoice? && sales_invoice.inquiry.present?
-                        [row_action_button(url_for(sales_invoice.original_invoice), 'none', sales_invoice.original_invoice.filename, 'success', :_blank, 'get', false, 'O'),
-                     row_action_button(url_for(sales_invoice.duplicate_invoice), 'none', sales_invoice.duplicate_invoice.filename, 'success', :_blank, 'get', false, 'D'),
-                     row_action_button(url_for(sales_invoice.triplicate_invoice), 'none', sales_invoice.triplicate_invoice.filename, 'success', :_blank, 'get', false, 'T'),
-                    ]
+                        [
+                            row_action_button(url_for(sales_invoice.original_invoice), 'none', sales_invoice.original_invoice.filename, 'success', :_blank, 'get', false, false, 'O'),
+                            row_action_button(url_for(sales_invoice.duplicate_invoice), 'none', sales_invoice.duplicate_invoice.filename, 'success', :_blank, 'get', false, false, 'D'),
+                            row_action_button(url_for(sales_invoice.triplicate_invoice), 'none', sales_invoice.triplicate_invoice.filename, 'success', :_blank, 'get', false, false, 'T')
+                        ]
                       end,
                       if is_authorized(sales_invoice, 'edit_pod') && policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count == 0)
                         row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success')

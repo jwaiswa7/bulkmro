@@ -18,7 +18,7 @@ class SalesInvoicesIndex < BaseIndex
     field :contact_id, value: -> (record) { record.inquiry.contact_id if record.inquiry.present? }, type: 'integer'
     field :company_string, value: -> (record) { record.inquiry.company.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
-    field :status, value: -> (record) { statuses[record.status] }
+    field :status, value: -> (record) { statuses[record.status] }, analyzer: 'substring'
     field :status_key, value: -> (record) { statuses[record.status] }, type: 'integer'
     field :legacy, value: -> (record) { record.is_legacy }
     field :inside_sales_owner_id, value: -> (record) { record.inquiry.inside_sales_owner.id if record.inquiry.present? && record.inquiry.inside_sales_owner.present? }
@@ -28,14 +28,14 @@ class SalesInvoicesIndex < BaseIndex
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id if record.inquiry.present? }
     field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id if record.inquiry.present? }
     field :mis_date, value: -> (record) { record.mis_date }, type: 'date'
-    field :created_at, type: 'date'
+    field :created_at, value: ->(record) { record.created_at.to_date if record.created_at.present? }, type: 'date'
     field :updated_at, type: 'date'
     field :cp_created_at_s, value: -> (record) { record.created_at.strftime('%d-%b-%Y').to_s if record.created_at.present? }, analyzer: 'substring'
     field :cp_delivery_date_s, value: -> (record) { record.delivery_date.strftime('%d-%b-%Y').to_s if record.delivery_date.present? }, analyzer: 'substring'
     field :cp_po_number_s, value: -> (record) { record.inquiry.customer_po_number.to_s if record.inquiry.present? && record.inquiry.customer_po_number.present? }, analyzer: 'substring'
     field :cp_order_date_s, value: -> (record) { record.inquiry.customer_order_date.strftime('%d-%b-%Y').to_s if record.inquiry.present? && record.inquiry.customer_order_date.present? }, analyzer: 'substring'
     field :payment_option_id, value: -> (record) { record.sales_order.present? ? record.sales_order.inquiry.present? ? record.sales_order.inquiry.payment_option.present? ? record.sales_order.inquiry.payment_option.id : '' : '' : '' }
-    field :potential_value, value: -> (record) { record.report_total }, type: 'double'
+    field :potential_value, value: -> (record) { record.try(:calculated_total_with_tax) }, type: 'double'
     field :invoice_created_at, value: -> (record) { record.mis_date if record.status != 'Cancelled' }, type: 'date'
     field :is_pod, value: -> (record) {(record.has_attachment? ? 1 : 0) if record.status != 'Cancelled'}, type: 'integer'
     field :regular_pod, value: -> (record) {record.mis_date if !record.has_attachment? && record.inquiry.present? && record.inquiry.opportunity_type != 'route_through' && record.status != 'Cancelled' }, type: 'date'
