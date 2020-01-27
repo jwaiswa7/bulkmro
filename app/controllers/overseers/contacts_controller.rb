@@ -10,6 +10,14 @@ class Overseers::ContactsController < Overseers::BaseController
             base_filter_value: params["company_id"].to_i
         }
       end
+
+    if params["account_id"].present?
+      base_filter = {
+          base_filter_key: 'account_id',
+          base_filter_value: params["account_id"].to_i
+      }
+    end
+
      service = Services::Overseers::Finders::Contacts.new(params.merge(base_filter))
      service.call
      @indexed_contacts = service.indexed_records

@@ -39,8 +39,18 @@ module ShortcutsHelper
 
     elements.each_with_index do |element, index|
       path_so_far += [element, '/'].join
-      name = element == 'manage_failed_skus' ? 'Manage SKUs' : element.titleize
-
+      name = case element
+      when 'manage_failed_skus'
+         'Manage SKUs'
+      when 'ar_invoice_requests'
+         'AR Invoice Request'   
+      when 'invoice_requests'
+         'AP Invoice Request'
+      else
+         element.titleize  
+      end
+    
+      # name = element == 'manage_failed_skus' ? 'Manage SKUs' : element.titleize
       begin
         prev_element = elements[index - 1]
 

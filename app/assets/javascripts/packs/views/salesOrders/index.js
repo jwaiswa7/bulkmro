@@ -6,12 +6,12 @@ import removeHrefExport from '../common/removeHrefExport';
 
 const index = () => {
     bindSummaryBox(".summary_box", '.status-filter')
-    updateSummaryBox()
-    aggregateSummaryBox()
-    $('#export_filtered_records').hide()
+    updateSummaryBox();
+    aggregateSummaryBox();
+    $('#export_filtered_records').hide();
     let controller = camelize($('body').data().controller);
     exportFilteredRecords(Routes.export_filtered_records_overseers_sales_orders_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
-    salesOrderCancel()
+    salesOrderCancel();
 
     commanComment('sales-order','sales_orders');
     removeHrefExport();
@@ -19,19 +19,20 @@ const index = () => {
 
 let salesOrderCancel = () => {
     $('.cancel-sales-order-button').click(function () {
-        var inqId = $(this).attr('data-inquiry-id')
-        var orderId = $(this).attr('data-order-id')
+        let inqId = $(this).data('inquiry-id');
+        let orderId = $(this).data('order-id');
+
         $.ajax({
-            url: "/overseers/inquiries/"+inqId+"/sales_orders/"+orderId+"/order_cancellation_modal",
+            url: Routes.order_cancellation_modal_overseers_inquiry_sales_order_path(inqId, orderId),
             success: function (data) {
-                $('.sales-order-cancel').empty()
-                $('.sales-order-cancel').append(data)
-                $('#cancelSalesOrder').modal('show')
+                $('.sales-order-cancel').empty();
+                $('.sales-order-cancel').append(data);
+                $('#cancelSalesOrder').modal('show');
                 orderCancelledSubmit()
             }
         });
     });
-}
+};
 
 let orderCancelledSubmit = () => {
     $("#cancelSalesOrder").on('click', '.confirm-sales-order-cancel', function (event) {
@@ -51,10 +52,10 @@ let orderCancelledSubmit = () => {
                 if (_error.responseJSON && _error.responseJSON.error)
                     $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error + "</div>");
             }
-        })
+        });
         event.preventDefault();
     })
-}
+};
 
 let aggregateSummaryBox = () => {
     let table = $('.datatable').DataTable();
@@ -68,6 +69,6 @@ let aggregateSummaryBox = () => {
         $("#export-filters").find(".modal-content").html();
         $("#export-filters").modal();
     });
-}
+};
 
 export default index

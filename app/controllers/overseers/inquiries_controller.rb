@@ -540,6 +540,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       update_query = query_params.except('inquiries').reject { |_, v| v.blank? }
       if update_query.present?
         inquiries.update_all(update_query)
+        InquiriesIndex::Inquiry.import(inquiries.pluck(:id))
         redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
       else
         render json: {error: 'Please select any one field to update'}, status: 500
@@ -703,6 +704,11 @@ class Overseers::InquiriesController < Overseers::BaseController
           :copy_of_email,
           :is_sez,
           :calculation_sheet,
+          :customer_po_delivery_date,
+          :committed_delivery_attachment,
+          :customer_po_received_attachment,
+          :customer_po_delivery_attachment,
+          :commercial_terms_and_conditions,
           :commercial_terms_and_conditions,
           :comments,
           :product_type,

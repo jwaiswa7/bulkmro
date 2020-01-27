@@ -132,50 +132,50 @@
         <div class="mt-3">
           <h6 class="mb-1 bmro-form-heading bmro-Billing-slide">Billing / Shipping Details</h6>
 
-          <% if is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
-            <div class="form-row">
-              <div class="col-12 col-md-6">
-                <%= f.input :bill_from, as: :string, input_html: {class: 'select2-single bmro-form-input'}, disabled: true %>
-              </div>
-              <div class="col-12 col-md-6">
-                <%= f.input :ship_from, as: :string, input_html: {class: 'select2-single bmro-form-input'}, disabled: true %>
-              </div>
-            </div>
-          <% else %>
-            <div class="form-row">
-              <div class="col-12 col-md-6">
-                <%= f.association :bill_from, label_method: :to_s, include_blank: "Select a bill from", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_warehouses_path(bill_from: true)}, disabled: is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
-              </div>
-              <div class="col-12 col-md-6">
-                <%= f.association :ship_from, label_method: :to_s, include_blank: "Select a ship from", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
-              </div>
-            </div>
-          <% end %>
+        <% if is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= f.association :billing_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}, disabled: true %>
+              <%= f.input :bill_from, as: :string, input_html: { class: 'bmro-form-input' },  disabled: true %>
             </div>
             <div class="col-12 col-md-6">
-              <%= f.association :shipping_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon'}, include_blank: "Select a shipping company" %>
+              <%= f.input :ship_from, as: :string, input_html: { class: 'bmro-form-input' }, disabled: true %>
             </div>
           </div>
-          <div class="form-row" id="Owner">
-            <div class="col-12 col-md-6">
-              <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company), :'data-placeholder' => "Select a billing contact"}, required: true %>
-            </div>
-            <div class="col-12 col-md-6">
-              <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping contact", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.shipping_company)} %>
-            </div>
-          </div>
+        <% else %>
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= f.association :billing_address, collection: selected_option_or_nil(f, :billing_address), required: true, label_method: :to_s, include_blank: "Select a billing address", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon bmro-form-input-height', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.company)} %>
+              <%= f.association :bill_from, label_method: :to_s, include_blank: "Select a bill from", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_warehouses_path(bill_from: true)}, disabled: is_authorized(@inquiry,'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
             </div>
             <div class="col-12 col-md-6">
-              <%= f.association :shipping_address, collection: selected_option_or_nil(f, :shipping_address), required: true, label_method: :to_s, include_blank: "Select a shipping address", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon bmro-form-input-height', :'data-source' => autocomplete_overseers_addresses_path(company_id: f.object.shipping_company_id)} %>
+              <%= f.association :ship_from, label_method: :to_s, include_blank: "Select a ship from", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
             </div>
+          </div>
+        <% end %>
+        <div class="form-row">
+          <div class="col-12 col-md-6">
+            <%= f.association :billing_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: true %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= f.association :shipping_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, include_blank: "Select a shipping company" %>
           </div>
         </div>
+        <div class="form-row" id="Owner">
+          <div class="col-12 col-md-6">
+            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company), :'data-placeholder' => "Select a billing contact"}, required: true %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping contact", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.shipping_company)} %>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12 col-md-6">
+            <%= f.association :billing_address, collection: selected_option_or_nil(f, :billing_address), required: true, label_method: :to_s, include_blank: "Select a billing address", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon bmro-form-input-height', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.company)} %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= f.association :shipping_address, collection: selected_option_or_nil(f, :shipping_address), required: true, label_method: :to_s, include_blank: "Select a shipping address", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon bmro-form-input-height', :'data-source' => autocomplete_overseers_addresses_path(company_id: f.object.shipping_company_id)} %>
+          </div>
+        </div>
+      </div>
 
         <div class="bmro-dotted-line bmro-dotted-mt"></div>
 
@@ -211,97 +211,155 @@
                 </div>
               <% end %>
 
-              <% if f.object.updated_at %>
-                <div class="form-group bmro-f1 mar-left">
-                  <label class="form-control-label d-block bmro-date-label">Updated at</label>
-                  <div class="bmro-date-line">
-                    <%= format_date(f.object.created_at) %>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </h6>
-          <div class="form-row" id="Order">
-            <!--           <div class="col-12 col-md-6">
-            <% if f.object.created_at %>
-              <div class="form-group">
-                <label class="form-control-label d-block">Created at</label>
-                <%= format_date(f.object.created_at) %>
-              </div>
-            <% end %>
-          </div>
-          <div class="col-12 col-md-6">
             <% if f.object.updated_at %>
-              <div class="form-group">
-                <label class="form-control-label d-block">Updated at</label>
-                <%= format_date(f.object.updated_at) %>
+              <div class="form-group bmro-f1 mar-left">
+                <label class="form-control-label d-block bmro-date-label">Updated at</label>
+                <div class="bmro-date-line">
+                  <%= format_date(f.object.created_at) %>
+                </div>
               </div>
             <% end %>
           </div>
- -->
-            <div class="col-12 col-md-4">
-              <%= f.input :quotation_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, input_html: {class: 'bmro-form-input'}, disabled: true %>
+        </h6>
+        <div class="form-row" id="Order">
+          <div class="col-12 col-md-4">
+            <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: {:'data-toggle' => 'datepicker'} %>
+          <%= f.input :quotation_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, input_html: { class: 'bmro-form-input' }, disabled: true %>
+        </div>
+          <div class="col-12 col-md-4">
+            <%= f.input :expected_closing_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input'} %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= f.input :quotation_followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input'}, required: @inquiry.sales_quotes.present? ? true : false %>
+          </div>
+        </div>
+      </div>
+
+      <% if f.object.sales_quote.present? %>
+        <div class="bmro-dotted-line bmro-dotted-mt"></div>
+        <div class="mt-3">
+          <h6 class="mb-1 bmro-form-heading bmro-order-slide">Order Details</h6>
+          <div class="form-row">
+            <div class="col-12 col-md-5">
+              <%= f.input :customer_po_number, label: 'Customer purchase order number', input_html: { class: 'bmro-form-input' }, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
             </div>
-            <div class="col-12 col-md-4">
-              <%= f.input :expected_closing_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input'} %>
+            <div class="col-12 col-md-7">
+              <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer purchase order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_sheet.filename}".html_safe) : false %>
             </div>
-            <div class="col-12 col-md-4">
-              <%= f.input :quotation_followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input'}, required: @inquiry.sales_quotes.present? ? true : false %>
+            <div class="col-12 col-md-5">
+              <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="bmro-download-icon "></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.copy_of_email.filename}".html_safe) : false %>
+            </div>
+
+            <div class="col-12 col-md-7">
+              <div class="d-block d-md-flex align-items-end">
+                <div class="flex-grow-1">
+                  <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: {multiple: true, class: 'bmro-form-input bmro-dropdown-icon bmro-custom-height'},  label: 'Supplier quotes' %>
+                </div>
+                <div class="form-group bmro-download-icon bmro-btn-pos width-30">
+                  <% f.object.supplier_quotes.attachments.each do |attachment| %>
+                    <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                      <i class="bmro-download-icon"></i>
+                      <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0 bmro-button bmro-trash-parent', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                        <i class="bmro-trash-icon"></i>
+                      <% end if attachment.present? && is_authorized(:attachment, 'destroy') && policy(:attachment).destroy? %>
+                    <% end %>
+                  <% end if f.object.supplier_quotes.attached? %>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
+        <div class="mt-3">
+          <h6 class="text-uppercase text-black-50 mb-1">Order and Delivery Dates</h6>
+          <div class="form-row">
+            <div class="col-12 col-md-6">
+              <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
+            </div>
 
-        <% if f.object.sales_quote.present? %>
-          <div class="bmro-dotted-line bmro-dotted-mt"></div>
-          <div class="mt-3">
-            <h6 class="mb-1 bmro-form-heading bmro-order-slide">Order Details</h6>
-            <div class="form-row">
-              <div class="col-12 col-md-5">
-                <%= f.input :customer_po_number, label: 'Customer purchase order number', input_html: {class: 'bmro-form-input'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
-              </div>
-              <div class="col-12 col-md-7">
-                <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer purchase order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="bmro-download-icon"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_sheet.filename}".html_safe) : false %>
-              </div>
-              <div class="col-12 col-md-5">
-                <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="bmro-download-icon "></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.copy_of_email.filename}".html_safe) : false %>
-              </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :customer_po_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: 'Customer PO Delivery Date', disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :customer_po_delivery_attachment, as: :file, wrapper: :custom_file, required: false, label: 'Committed PO Delivery Email Attachment', hint: f.object.customer_po_delivery_attachment.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_delivery_attachment), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_delivery_attachment.filename}".html_safe) : false, disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            </div>
 
-              <div class="col-12 col-md-7">
-                <div class="d-block d-md-flex align-items-end">
-                  <div class="flex-grow-1">
-                    <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: {multiple: true, class: 'bmro-form-input bmro-dropdown-icon bmro-custom-height'}, label: 'Supplier quotes' %>
-                  </div>
-                  <div class="form-group bmro-download-icon bmro-btn-pos width-30">
-                    <% f.object.supplier_quotes.attachments.each do |attachment| %>
-                      <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success bmro-button bmro-margin-neg', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                        <i class="bmro-download-icon"></i>
-                        <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0 bmro-button bmro-trash-parent', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                          <i class="bmro-trash-icon"></i>
-                        <% end if attachment.present? && is_authorized(:attachment, 'destroy') && policy(:attachment).destroy? %>
-                      <% end %>
-                    <% end if f.object.supplier_quotes.attached? %>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-md-4">
-                <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input'}, disabled: f.object.sales_quotes.blank? %>
-              </div>
-              <div class="col-12 col-md-4">
-                <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input'}, disabled: f.object.sales_quotes.blank? %>
-              </div>
-              <div class="col-12 col-md-4">
-                <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input'}, disabled: f.object.sales_quotes.blank? %>
-              </div>
-              <div class="col-12 col-md-6">
-                <%= f.input :customer_po_received_date, as: :string, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input'}, label: 'Customer PO Received Date' %>
-              </div>
-              <div class="col-12 col-md-6">
-                <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: {:'data-toggle' => 'datepicker', class: 'bmro-form-input'} %>
-              </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :customer_po_received_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: 'Customer PO Received Date', disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :customer_po_received_attachment, as: :file, wrapper: :custom_file, required: false, label: 'Committed PO Received Email Attachment', hint: f.object.customer_po_received_attachment.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_received_attachment), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_received_attachment.filename}".html_safe) : false, disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <!-- Customer Committed date label renamed to Committed delivery date-->
+              <%= f.input :customer_committed_date, as: :string, label: 'Committed Delivery Date', input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :committed_delivery_attachment, as: :file, wrapper: :custom_file, required: false, label: 'Committed Delivery Email Attachment', hint: f.object.committed_delivery_attachment.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.committed_delivery_attachment), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.committed_delivery_attachment.filename}".html_safe) : false, disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
             </div>
           </div>
-        <% end %>
+        </div>
+
+        <div class="mt-3">
+          <div class="form-row">
+            <div class="col-12 col-md-6">
+              <% if f.object.sales_orders.present? %>
+                <strong>Sales Orders</strong>
+                <hr style="margin:0px;">
+                <table class="table w-100 wrap-whitespace">
+                  <thead>
+                  <tr>
+                    <th>Order number</th>
+                    <th class="text-center">Revised Customer Committed Delivery Date</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <% f.object.sales_orders.discard_cancelled_and_rejected.each do |so| %>
+                    <tbody>
+                    <tr>
+                      <td><%= so.order_number %></td>
+                      <td class="text-center"><%= format_date(so.revised_committed_delivery_date) || '-' %></td>
+                      <td>
+                        <%= link_to revise_committed_delivery_date_overseers_inquiry_sales_order_path(f.object, so), :class => "btn btn-dark btn-sm", :title => "Revise Customer Delivery Date" do %>
+                          <i class="fal fa-calendar"></i>
+                        <% end %>
+                      </td>
+                    </tr>
+                    </tbody>
+                  <% end %>
+                </table>
+              <% end %>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <% if f.object.invoices.present? %>
+                <strong>Sales Invoices</strong>
+                <hr style="margin:0px;">
+                <table class="table w-100 wrap-whitespace">
+                  <thead>
+                  <tr>
+                    <th>Invoice number</th>
+                    <th>Actual Delivery Date</th>
+                  </tr>
+                  </thead>
+                  <% f.object.invoices.not_cancelled_invoices.each do |si| %>
+                    <tbody>
+                    <tr>
+                      <td><%= si.invoice_number %></td>
+                      <td><%= format_date(si.delivery_date) || '-' %></td>
+                    </tr>
+                    </tbody>
+                  <% end %>
+                </table>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
 
 
         <div class="mt-2 <%= f.object.sales_quote.present? ? '' : '' %>">
@@ -656,26 +714,26 @@
                   <% end %>
                 </div>
 
-                <div class="col-4 col-md-1">
-                  <div class="d-flex flex-row align-items-center">
-                    <div>
-                      <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
-                    </div>
-                    <%= inquiry_product.remove_nested_fields_link do %>
-                      <div class="form-group align-self-center flex-grow-1 ml-2">
-                        <i class="far  status-cross-danger  "></i>
-                      </div>
-                    <% end if is_authorized(inquiry_product.object, 'destroy') && policy(inquiry_product.object).destroy? %>
+              <div class="col-4 col-md-1">
+                <div class="d-flex flex-row align-items-center">
+                  <div>
+                    <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
                   </div>
+                  <%= inquiry_product.remove_nested_fields_link do %>
+                    <div class="form-group align-self-center flex-grow-1 ml-2">
+                      <i class="far status-cross-danger"></i>
+                    </div>
+                  <% end if is_authorized(inquiry_product.object, 'destroy') && policy(inquiry_product.object).destroy? %>
                 </div>
-                <div class="col-2 col-md-1 text-center">
-                  <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? %>
-                    <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"
-                       <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success"
-                       <% else %>  class="text-warning"
-                       <% end %>title="Resync Inventory"><%= inquiry_product.object.product.stocks.total_qty %></a>
-                  <% end %>
-                </div>
+              </div>
+              <div class="col-2 col-md-1 text-center">
+                <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? %>
+                  <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"
+                     <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success"
+                     <% else %>  class="text-warning"
+                     <% end %>title="Resync Inventory"><%= inquiry_product.object.product.stocks.total_qty %></a>
+                <% end %>
+              </div>
 
               </div>
             <% end %>

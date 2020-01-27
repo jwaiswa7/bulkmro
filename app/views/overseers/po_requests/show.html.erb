@@ -10,8 +10,8 @@
         <% if is_authorized(@po_request, 'edit') && @po_request.status != 'Cancelled' %>
           <a href="<%= edit_overseers_po_request_path(@po_request) %>" class="btn btn-warning btn-rounded align-self-center bmro-button btn-block-sm-down bmro-edit-icon"><i class="fal fa-pen mr-1"></i>Edit</a>
         <% end %>
-        <% if @po_request.status == 'Supplier PO: Amendment Pending'%>
-          <a href="<%= manager_amended_overseers_po_request_path(@po_request) %>" class="btn btn-success bmro-button btn-rounded align-self-center btn-block-sm-down">Amend PO Request</a>
+        <% if @po_request.status == 'Supplier PO: Amendment Pending' && is_authorized(@po_request, 'manager_amended')%>
+          <a href="<%= manager_amended_overseers_po_request_path(@po_request, is_stock: 'no' ) %>" class="btn btn-success bmro-button btn-rounded align-self-center btn-block-sm-down">Amend PO Request</a>
         <% end %>
         <% if !current_overseer.accounts? %>
           <a href="#" class="btn btn-default btn-rounded btn-danger bmro-button align-self-center add-review" data-toggle="modal" data-target="#modalRatingForm">Add/Edit
