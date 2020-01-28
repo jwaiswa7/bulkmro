@@ -2,14 +2,14 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :use_url_as_page_title, true %>
-
+<% provide :can_be_directly_exported_partial, true %>
 <% content_for :heading do %>
   Quotes
 <% end %>
 
 <% provide :heading_buttons do %>
   <div class="btn-group">
-    <a href="<%= export_all_customers_quotes_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales quotes"><i class="fal fa-download mr-1"></i>Quotes</a>
+    <a href="<%= export_all_customers_quotes_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales quotes"><i class="fal bmro-download-icon mr-1"></i>Quotes</a>
   </div>
 <% end %>
 
