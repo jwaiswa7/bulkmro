@@ -12,7 +12,15 @@ Rails.application.routes.draw do
   get '/suppliers', to: redirect('/suppliers/dashboard'), as: 'supplier_root'
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
-  devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
+  # devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
+
+  namespace :suppliers, path: '/' do
+    devise_for :contacts, controllers: {sessions: 'suppliers/sessions', passwords: 'suppliers/passwords'}, path: :suppliers
+  end
+  
+  namespace :customers, path: '/' do
+    devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
+  end
 
   namespace 'callbacks' do
     resources :sales_orders do

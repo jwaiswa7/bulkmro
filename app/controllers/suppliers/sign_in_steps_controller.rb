@@ -33,6 +33,6 @@ class Suppliers::SignInStepsController < Suppliers::BaseController
     end
 
     def set_contact
-      @contact = current_contact
+      @contact = current_suppliers_contact
     end
 end

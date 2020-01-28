@@ -4,7 +4,7 @@
       <h1 class="display-5 mb-1">Checkout</h1>
       <% unless current_cart.items.size.zero? %>
         <div>
-          <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
+          <%= link_to customers_customer_orders_path(contact_id: current_customers_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
             <i class="fal fa-shopping-cart mr-1"></i> Checkout
           <% end %>
         </div>
@@ -39,7 +39,7 @@
           <%= link_to customers_cart_path, :class => "btn btn-warning btn-block" do %>
             <i class="fal fa-pen"></i> Edit Quantity
           <% end %>
-          <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
+          <%= link_to customers_customer_orders_path(contact_id: current_customers_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
             <i class="fal fa-shopping-cart mr-1"></i> Checkout
           <% end %>
         </div>

@@ -4,7 +4,7 @@ class Suppliers::BaseController < ApplicationController
 
   layout 'suppliers/layouts/application'
   before_action :store_contact_location!, if: :storable_location?
-  before_action :authenticate_contact!
+  before_action :authenticate_suppliers_contact!
   before_action :set_paper_trail_whodunnit
   after_action :verify_authorized
   before_action :redirect_if_required
@@ -47,7 +47,7 @@ class Suppliers::BaseController < ApplicationController
       redirect_to_path = if session[:current_company_id].blank? || current_company.blank?
         edit_current_company_suppliers_sign_in_steps_path
       elsif session[:current_company_id].present? && current_company.present?
-        if params[:became].present? && current_contact.companies.pluck(:id).exclude?(current_company.id)
+        if params[:became].present? && current_suppliers_contact.companies.pluck(:id).exclude?(current_company.id)
           session[:current_company_id] = nil
           edit_current_company_suppliers_sign_in_steps_path
         elsif controller_name == 'sign_in_steps'
@@ -85,7 +85,7 @@ class Suppliers::BaseController < ApplicationController
     end
 
     # def current_cart
-    #   current_contact.cart || current_contact.create_cart(
+    #   current_customers_contact.cart || current_customers_contact.create_cart(
     #     company: current_company,
     #     billing_address: current_company.default_billing_address || current_company.billing_address,
     #     shipping_address: current_company.default_shipping_address || current_company.shipping_address,
@@ -99,11 +99,11 @@ class Suppliers::BaseController < ApplicationController
     end
 
     def pundit_user
-      current_contact
+      current_suppliers_contact
     end
 
     def stamping_user
-      current_contact
+      current_suppliers_contact
     end
 
     def namespace
@@ -111,7 +111,7 @@ class Suppliers::BaseController < ApplicationController
     end
 
     def user_for_paper_trail
-      current_contact.to_gid.to_s if current_contact.present?
+      current_suppliers_contact.to_gid.to_s if current_suppliers_contact.present?
     end
 
     def controller_namespace
