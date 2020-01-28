@@ -23,6 +23,7 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
         template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
         layout: 'shared/layouts/pdf_templates/show',
         page_size: 'A4',
+        background: true,
         footer: locals[:pagination] ? { center: '[page] of [topage]' } : {},
         # show_as_html: true,
         locals: {
