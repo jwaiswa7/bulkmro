@@ -63,11 +63,11 @@
                       <% end %>
                       <div class= "<%='d-none' if !@inquiry.lost_regret_reason.present? %>" id="regret-field" >
                         <%= f.input :lost_regret_reason, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.lost_regret_reasons), input_html: {class: 'disabled'}, include_blank: 'Select Reason', selected: @inquiry.lost_regret_reason %>
-                      <% if f.object.persisted? %>
+                        <% if f.object.persisted? %>
                           <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |inquiry_comment| %>
                             <%= inquiry_comment.input :message, as: :text, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''}, label: 'Comment Message'%>
                           <% end %>
-                      <% end %>
+                        <% end %>
                       </div>
                     </div>
                     <div class="modal-footer">
@@ -209,7 +209,7 @@
       <div class="card-alternative mt-3">
         <h6 class="text-uppercase text-black-50 mb-1">Important Dates</h6>
         <div class="form-row">
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-4">
             <% if f.object.created_at %>
               <div class="form-group">
                 <label class="form-control-label d-block">Created at</label>
@@ -217,13 +217,16 @@
               </div>
             <% end %>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-4">
             <% if f.object.updated_at %>
               <div class="form-group">
                 <label class="form-control-label d-block">Updated at</label>
                 <%= format_date(f.object.updated_at) %>
               </div>
             <% end %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
           <div class="col-12 col-md-4">
             <%= f.input :quotation_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: true %>
@@ -267,20 +270,95 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-3">
-              <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <h6 class="text-uppercase text-black-50 mb-1">Order and Delivery Dates</h6>
+          <div class="form-row">
+            <div class="col-12 col-md-6">
+              <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
             </div>
-            <div class="col-12 col-md-3">
-              <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
-            </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-6">
               <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
             </div>
-            <div class="col-12 col-md-4">
-              <%= f.input :customer_po_received_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: 'Customer PO Received Date' %>
+
+            <div class="col-12 col-md-6">
+              <%= f.input :customer_po_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: 'Customer PO Delivery Date', disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
             </div>
-            <div class="col-12 col-md-3">
-              <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: {:'data-toggle' => 'datepicker'} %>
+            <div class="col-12 col-md-6">
+              <%= f.input :customer_po_delivery_attachment, as: :file, wrapper: :custom_file, required: false, label: 'Committed PO Delivery Email Attachment', hint: f.object.customer_po_delivery_attachment.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_delivery_attachment), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_delivery_attachment.filename}".html_safe) : false, disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <%= f.input :customer_po_received_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: 'Customer PO Received Date', disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :customer_po_received_attachment, as: :file, wrapper: :custom_file, required: false, label: 'Committed PO Received Email Attachment', hint: f.object.customer_po_received_attachment.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_received_attachment), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_received_attachment.filename}".html_safe) : false, disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <!-- Customer Committed date label renamed to Committed delivery date-->
+              <%= f.input :customer_committed_date, as: :string, label: 'Committed Delivery Date', input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :committed_delivery_attachment, as: :file, wrapper: :custom_file, required: false, label: 'Committed Delivery Email Attachment', hint: f.object.committed_delivery_attachment.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.committed_delivery_attachment), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.committed_delivery_attachment.filename}".html_safe) : false, disabled: f.object.sales_quotes.blank? || is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <div class="form-row">
+            <div class="col-12 col-md-6">
+              <% if f.object.sales_orders.present? %>
+                <strong>Sales Orders</strong>
+                <hr style="margin:0px;">
+                <table class="table w-100 wrap-whitespace">
+                  <thead>
+                  <tr>
+                    <th>Order number</th>
+                    <th class="text-center">Revised Customer Committed Delivery Date</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <% f.object.sales_orders.discard_cancelled_and_rejected.each do |so| %>
+                    <tbody>
+                    <tr>
+                      <td><%= so.order_number %></td>
+                      <td class="text-center"><%= format_date(so.revised_committed_delivery_date) || '-' %></td>
+                      <td>
+                        <%= link_to revise_committed_delivery_date_overseers_inquiry_sales_order_path(f.object, so), :class => "btn btn-dark btn-sm", :title => "Revise Customer Delivery Date" do %>
+                          <i class="fal fa-calendar"></i>
+                        <% end %>
+                      </td>
+                    </tr>
+                    </tbody>
+                  <% end %>
+                </table>
+              <% end %>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <% if f.object.invoices.present? %>
+                <strong>Sales Invoices</strong>
+                <hr style="margin:0px;">
+                <table class="table w-100 wrap-whitespace">
+                  <thead>
+                  <tr>
+                    <th>Invoice number</th>
+                    <th>Actual Delivery Date</th>
+                  </tr>
+                  </thead>
+                  <% f.object.invoices.not_cancelled_invoices.each do |si| %>
+                    <tbody>
+                    <tr>
+                      <td><%= si.invoice_number %></td>
+                      <td><%= format_date(si.delivery_date) || '-' %></td>
+                    </tr>
+                    </tbody>
+                  <% end %>
+                </table>
+              <% end %>
             </div>
           </div>
         </div>

@@ -76,6 +76,9 @@ class Inquiry < ApplicationRecord
   has_many_attached :supplier_quotes
   has_one_attached :final_supplier_quote
   has_one_attached :calculation_sheet
+  has_one_attached :committed_delivery_attachment
+  has_one_attached :customer_po_received_attachment
+  has_one_attached :customer_po_delivery_attachment
 
   enum status: {
       'Lead by O/S': 11,

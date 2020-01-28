@@ -1,7 +1,7 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
   before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation,
                                          :resync, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map,
-                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation, :order_cancellation_modal, :cancellation]
+                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation, :order_cancellation_modal, :cancellation, :revise_committed_delivery_date, :update_revised_committed_delivery_date]
   before_action :set_notification, only: [:create_confirmation, :create_account_confirmation]
 
   def index
@@ -156,6 +156,27 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     end
   end
 
+  def revise_committed_delivery_date
+    authorize_acl @sales_order
+    render 'shared/layouts/revise_committed_delivery_date'
+  end
+
+  def update_revised_committed_delivery_date
+    authorize_acl @sales_order
+
+    if @sales_order.valid?
+      @sales_order.assign_attributes(revised_committed_delivery_date: params['sales_order']['revised_committed_delivery_date'], revised_committed_deliveries: params['sales_order']['revised_committed_deliveries'])
+
+      messages = FieldModifiedMessage.for(@sales_order, ['revised_committed_delivery_date'])
+      if messages.present? && @sales_order.save
+        @sales_order.inquiry.comments.create(sales_order: @sales_order, message: messages, overseer: current_overseer, revised_committed_delivery_date: true)
+        # render json: {success: 1, message: 'Successfully updated '}, status: 200
+      end
+
+      redirect_to request.referrer, notice: flash_message(@sales_order, action_name)
+    end
+  end
+
   def resync
     authorize_acl @sales_order
     @sales_order.save_and_sync
@@ -187,13 +208,15 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def cancellation
     authorize_acl @sales_order
+
+    binding.pry
     @status = Services::Overseers::SalesOrders::CancelSalesOrder.new(@sales_order, sales_order_params.merge(status: 'Cancelled', remote_status: 'Cancelled by SAP')).call
     if @status.key?(:empty_message)
-      render json: { error: 'Cancellation Message is Required' }, status: 500
+      render json: {error: 'Cancellation Message is Required'}, status: 500
     elsif @status[:status] == 'success'
-      render json: { error: @status[:message] }, status: 200
+      render json: {error: @status[:message]}, status: 200
     elsif @status[:status] == 'failed'
-      render json: { error: @status[:message] }, status: 500
+      render json: {error: @status[:message]}, status: 500
     end
   end
 
@@ -222,6 +245,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
           :parent_id,
           :reject,
           :approve,
+          :revised_committed_delivery_date,
           custom_fields: [
               :reject_reasons,
               :message

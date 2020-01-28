@@ -603,4 +603,21 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       end
     end
   end
+
+  def create_delivery_date_revision_acl_resources
+    role_name = ['Admin', 'Inside Sales Executive', 'Logistics']
+    acl_resources_for_targets = {
+        'sales_order': %w(revise_committed_delivery_date update_revised_committed_delivery_date),
+    }
+    acl_resources_for_targets.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        # update role
+        acl_roles = AclRole.where(role_name: role_name)
+        acl_roles.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
+      end
+    end
+  end
 end
