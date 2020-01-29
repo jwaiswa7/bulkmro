@@ -45,7 +45,7 @@ let rfqReview = () => {
 };
 
 let updateAllInquiryProductSuppliers = () => {
-    $(".update-all, .update-and-send-link-all").click(function () {
+    $(".update-all").click(function () {
         let $this = $(this);
         let formType = $this.val();
         let delay = 300;
@@ -57,9 +57,21 @@ let updateAllInquiryProductSuppliers = () => {
             $this.append(input);
             setTimeout( function () {
                 $this.submit();
+                console.log("------------------", delay);
+                console.log("------------------", $this);
             }, delay);
             delay = delay + 500;
         });
+    });
+
+    $(".update-and-send-link-all").click(function () {
+        let supplierRfqIds = [];
+        let inquiryId = $('input[name="supplier_rfq[inquiry_id]"]').val();
+        $.each($("input[name='inquiry_product_supplier_ids[]']:checked"), function () {
+            let $this = $(this);
+            supplierRfqIds.push($this.attr('supplier_rfq_id'));
+        });
+        console.log(supplierRfqIds)
     });
 };
 
