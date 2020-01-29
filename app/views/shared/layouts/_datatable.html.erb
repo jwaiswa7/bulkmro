@@ -2,28 +2,8 @@
   <% status_process = ['Enqueued','Processing'] %>
   <section class="section-padding-adjustment">
     <div class="d-md-flex justify-content-between">
-      <!-- <div>
-       <%# if content_for?(:heading) %>
-         <h1 class="display-5 mb-1"><%#= yield :heading %></h1>
-       <%# else %>
-         <h1 class="display-5 mb-1"><%#= current_model.titleize %></h1>
-       <%# end unless content_for?(:hide_table_heading) %>
-       <%# unless content_for?(:hide_table_desc) %>
-         <%# if content_for?(:table_desc) %>
-           <p class="lead mt-1 mb-1">
-             <%#= yield :table_desc %>
-           </p>
-         <%# else %>
-           <p class="lead mt-1 mb-1">
-             All <%#= current_model.humanize.downcase %> searchable with relevant term/keywords.
-           </p>
-         <%# end %>
-       <%# end %>
-     </div>-->
     </div>
-
     <%= yield :notice_message %>
-
   </section>
 <% end %>
 
@@ -38,7 +18,7 @@
           <h4 class="export-toggle page-title bmro-drop-arr" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4>
         <% end %>
         <% if content_for?(:can_be_directly_exported_partial) %>
-          <%= render partial: "overseers/"+current_model.downcase+"/download_dropdown" rescue nil %>
+          <%= render partial: controller_path+"/download_dropdown" rescue nil %>
         <% else %>
           <% if content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all') %>
             <% export_status = Export.send(controller_path.split('/').last).not_filtered.last %>
@@ -62,7 +42,7 @@
         <h4 class="page-title"><%= current_model_header %></h4>
          <!--  <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4> -->
     <% end %>
-      <% if (chewy_exist?(controller_name) || (@model_name && chewy_exist?(@model_name))) && !(['inward_completed_queue', 'inward_dispatch_delivered_queue', 'inward_dispatch_pickup_queue', 'material_readiness_queue','logistics_scorecards','tat_report','company_report','kra_report','sales_quotes','sales_orders','purchase_orders','stages'].include? @model_name) %>
+      <% if !content_for?(:can_not_show_date_range)%>
         <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="" placeholder="Select Date">
       <% end %>
     </div>
