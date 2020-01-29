@@ -33,7 +33,6 @@
         </div>
       </div>
     </div>
-    <%= hidden_field_tag :supplier_rfqs, @supplier_rfqs.pluck(:id) %>
     <% @supplier_rfqs.each do |supplier_rfq| %>
       <%= simple_form_for([:overseers, @inquiry, supplier_rfq], :html => {:class => 'needs-validation mt-3 update-isp', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
         <%= render 'shared/snippets/form_errors', f: f %>
