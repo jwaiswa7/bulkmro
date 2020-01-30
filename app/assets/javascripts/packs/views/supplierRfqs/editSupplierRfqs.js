@@ -58,7 +58,7 @@ let updateAllInquiryProductSuppliers = () => {
             setTimeout( function () {
                 $this.submit();
             }, delay);
-            delay = delay + 500;
+            delay = delay + 700;
         });
     });
 };
