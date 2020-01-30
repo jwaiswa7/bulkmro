@@ -100,7 +100,7 @@ import emailMessages from "./emailMessages/init";
 import supplierRfqs from "./supplierRfqs/init"
 
 //Supplier Portal RFQ
-import rfqs from "./rfq/init"
+import rfq from "./rfq/init"
 
 let loader = {
     imports: imports,
@@ -141,7 +141,7 @@ let loader = {
     addresses: addresses,
     emailMessages: emailMessages,
     supplierRfqs: supplierRfqs,
-    rfq: rfqs
+    rfq: rfq
 };
 
 // Imports

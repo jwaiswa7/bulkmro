@@ -1,4 +1,4 @@
-const editSupplierRfqs = () => {
+const editRfq = () => {
     $(".rfq_edit :input").on('change', function(){
         let dataId= $(this).data('id');
         let activeElementNumber = typeof dataId === 'undefined' ? '' : dataId.split('_').pop();
@@ -45,4 +45,4 @@ let calculate_total_price = (finalUnitPrice, quantity, activeElementNumber) => {
     }
 };
 
-export default editSupplierRfqs
+export default editRfq
