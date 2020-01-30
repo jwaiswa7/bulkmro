@@ -71,6 +71,7 @@ class Suppliers::RfqController < Suppliers::BaseController
                                                                                   :unit_freight,
                                                                                   :final_unit_price,
                                                                                   :total_price,
+                                                                                  :attachments,
                                                                                   :remarks]
       )
     end

@@ -1,6 +1,7 @@
 class SupplierRfq < ApplicationRecord
   include Mixins::CanBeStamped
 
+  has_many_attached :attachments
   belongs_to :inquiry
   has_many :inquiry_product_suppliers
   has_many :email_messages, dependent: :destroy
