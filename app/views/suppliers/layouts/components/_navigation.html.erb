@@ -40,10 +40,10 @@
           <i class="fal fa-building"></i>&nbsp;Choose Another Company
         <% end if policy(current_contact).reset_current_company? %>
         <%= link_to edit_suppliers_profile_path, class: 'dropdown-item' do %>
-          <i class="fal fa-user"></i> Edit Profile
+          <i class="bmro-profile-icon"></i> Edit Profile
         <% end %>
         <%= link_to destroy_contact_session_path, method: :delete, :class => 'dropdown-item' do %>
-          <i class="fal fa-power-off"></i>&nbsp;Sign Out
+          <i class="bmro-signout-icon"></i>&nbsp;Sign Out
         <% end %>
       </span>
     </div>
