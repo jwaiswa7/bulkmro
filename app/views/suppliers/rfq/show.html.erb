@@ -97,3 +97,42 @@
     </div>
   </div>
 </div>
+<% if @inquiry_product_supplier.supplier_rfq_revisions.present? %>
+  <div class="col-lg-12">
+    <div class="card mt-1">
+      <div class="card-body">
+        <h5 class="text-uppercase text-black-50 mb-0">RFQ Revision History</h5>
+        <table class="table datatable w-100 wrap-whitespace" data-fixed-header="false">
+          <thead>
+          <tr>
+            <th class="no-sort">Quantity</th>
+            <th class="no-sort">Lead Time</th>
+            <th class="no-sort">Last Unit Price</th>
+            <th class="no-sort">Unit Cost Price</th>
+            <th class="no-sort">GST</th>
+            <th class="no-sort">Unit Freight</th>
+            <th class="no-sort">Final Unit Price</th>
+            <th class="no-sort">Total Price</th>
+            <th class="no-sort">Created On</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @inquiry_product_supplier.supplier_rfq_revisions.each do |rfq_revision| %>
+            <tr>
+              <td><%= JSON.parse(rfq_revision.rfq_data)["quantity"] %></td>
+              <td><%= JSON.parse(rfq_revision.rfq_data)["lead_time"] %></td>
+              <td><%= JSON.parse(rfq_revision.rfq_data)["last_unit_price"] %></td>
+              <td><%= JSON.parse(rfq_revision.rfq_data)["unit_cost_price"] %></td>
+              <td><%= JSON.parse(rfq_revision.rfq_data)["gst"] %></td>
+              <td><%= JSON.parse(rfq_revision.rfq_data)["unit_freight"] %></td>
+              <td><%= JSON.parse(rfq_revision.rfq_data)["final_unit_price"] %></td>
+              <td><%= JSON.parse(rfq_revision.rfq_data)["total_price"] %></td>
+              <td><%= format_date_with_time(rfq_revision.created_at) %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>

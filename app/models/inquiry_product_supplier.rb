@@ -11,6 +11,7 @@ class InquiryProductSupplier < ApplicationRecord
   has_one :final_sales_quote_row, -> (record) { where(inquiry_product_supplier_id: record.id) }, through: :final_sales_quote, class_name: 'SalesQuoteRow', source: :rows
   belongs_to :supplier_rfq, required: false
   delegate :sr_no, to: :inquiry_product
+  has_many :supplier_rfq_revisions
 
   validates_uniqueness_of :supplier, scope: :inquiry_product
   validates_numericality_of :unit_cost_price, greater_than_or_equal_to: 0

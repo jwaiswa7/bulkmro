@@ -8,14 +8,16 @@ class Suppliers::RfqController < Suppliers::BaseController
     authorize :rfq
   end
 
-  def edit
+  def edit_rfq
     authorize :rfq
+    @rfq = SupplierRfq.find(params[:rfq_id])
   end
 
   def update_ips
     authorize :rfq
     inquiry_product_supplier = InquiryProductSupplier.find(ips_params[:id])
     inquiry_product_supplier.assign_attributes(ips_params)
+    Services::Suppliers::BuildFromInquiryProductSupplier.new(inquiry_product_supplier, ips_params).call
     if inquiry_product_supplier.save
       redirect_to suppliers_rfq_path(inquiry_product_supplier.id)
     end
@@ -24,6 +26,7 @@ class Suppliers::RfqController < Suppliers::BaseController
   def update
     authorize :rfq
     if @rfq.present?
+      Services::Suppliers::BuildFromInquiryProductSupplier.new(@rfq, supplier_rfqs_params).call
       @rfq.assign_attributes(supplier_rfqs_params)
       if @rfq.save
         redirect_to suppliers_rfq_index_path, notice: "Rfq's updated."
@@ -45,8 +48,8 @@ class Suppliers::RfqController < Suppliers::BaseController
   private
 
     def get_rfqs
-      rfq_ids = SupplierRfq.where(supplier_id: current_company.id).pluck :id
-      @product_suppliers = InquiryProductSupplier.where(supplier_rfq_id: rfq_ids, supplier_id: current_company.id)
+      @rfqs = SupplierRfq.where(supplier_id: current_company.id)
+      # @product_suppliers = InquiryProductSupplier.where(supplier_rfq_id: rfq_ids, supplier_id: current_company.id)
     end
 
     def set_ips

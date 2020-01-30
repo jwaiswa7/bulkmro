@@ -11,17 +11,10 @@
 <% end %>
 
 <div class="col-lg-12">
-  <% content_for :header_row do %>
-    <th class="no-sort all"></th>
-    <th class="no-sort desktop">Product</th>
-    <th class="no-sort desktop">MPN</th>
-    <th class="no-sort desktop">Brand</th>
-    <th class="no-sort desktop">Qty</th>
-    <th class="no-sort desktop">Lead Time</th>
-    <th class="no-sort desktop">Last Unit Price</th>
-    <th class="no-sort desktop">GST %</th>
-    <th class="no-sort desktop">Final Unit Price</th>
-    <th class="no-sort desktop">Total Price</th>
+    <% content_for :header_row do %>
+      <th class="no-sort all"></th>
+    <th class="no-sort desktop">Inquiry Number</th>
+    <th class="no-sort desktop">Created At</th>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
