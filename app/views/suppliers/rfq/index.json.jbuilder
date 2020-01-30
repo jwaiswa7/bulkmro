@@ -8,6 +8,8 @@ json.data(@rfqs) do |rfq|
                   rfq.inquiry.subject,
                   format_date_with_time(rfq.email_sent_at),
                   rfq.inquiry_product_suppliers.map { |ips| ips.inquiry_product.product }.count,
+                  rfq.calculated_total,
+                  rfq.calculated_total_with_tax,
                   format_date_with_time(rfq.created_at)
               ]
 end

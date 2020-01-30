@@ -34,4 +34,20 @@ class InquiryProductSupplier < ApplicationRecord
   def to_s
     self.supplier
   end
+
+  def unit_cost_price_with_freight
+    (self.unit_cost_price || 0.0) + (self.unit_freight || 0.0)
+  end
+
+  def total_unit_cost_price_with_freight
+    unit_cost_price_with_freight * (self.inquiry_product.quantity)
+  end
+
+  def unit_cost_price_with_freight_with_tax
+    unit_cost_price_with_freight + (unit_cost_price * self.gst)/100  if self.gst.present? && self.gst > 0.0
+  end
+
+  def total_unit_cost_price_with_freight_with_tax
+    unit_cost_price_with_freight_with_tax * (self.inquiry_product.quantity)
+  end
 end
