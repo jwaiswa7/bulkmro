@@ -49,7 +49,6 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
       @supplier_rfq.save
       supplier = Company.find(@supplier_rfq.supplier_id)
       # contact = supplier.default_contact
-      debugger
       contact = Contact.find_by_email('bulkmro007@gmail.com')
       if params['button'] == 'update_and_send_link'
         if contact.present?

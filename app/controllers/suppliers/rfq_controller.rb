@@ -62,6 +62,7 @@ class Suppliers::RfqController < Suppliers::BaseController
 
     def supplier_rfqs_params
       params.require(:supplier_rfq).permit(:id,
+                                           attachments: [],
                                            inquiry_product_suppliers_attributes: [:id,
                                                                                   :quantity,
                                                                                   :lead_time,
@@ -71,7 +72,6 @@ class Suppliers::RfqController < Suppliers::BaseController
                                                                                   :unit_freight,
                                                                                   :final_unit_price,
                                                                                   :total_price,
-                                                                                  :attachments,
                                                                                   :remarks]
       )
     end
