@@ -2,7 +2,7 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :use_url_as_page_title, true %>
-
+<% provide :show_date_filter, true %>
 <% content_for :heading do %>
   Purchase Orders
 <% end %>
@@ -23,6 +23,19 @@
     <th class="no-sort desktop">Warehouse</th>
     <th class="no-sort desktop">Line Items</th>
     <th class="no-sort desktop">PO Date</th>
+    <th class="sort desktop text-left" data-name="created_at">Created Date</th>
+  <% end %>
+
+  <% content_for :filter_row do %>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="daterange"></td>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>

@@ -1,6 +1,7 @@
 <%= provide :container_fluid, true %>
 <% provide :can_be_directly_created, policy(:contact).new? %>
 <% provide :can_be_ajaxed, true %>
+<% provide :show_date_filter, true %>
 
 <% content_for :header_row do %>
   <th class="no-sort all" width="98px">Quick Actions</th>

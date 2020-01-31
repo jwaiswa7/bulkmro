@@ -3,6 +3,7 @@
 <% provide :can_be_directly_exported_filtered_records, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :can_be_directly_created, policy(:company).new? %>
+<% provide :show_date_filter, true %>
 
 <% content_for :header_row do %>
   <th class="no-sort all" width="98px">Quick Actions</th>

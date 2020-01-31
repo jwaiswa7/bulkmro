@@ -11,6 +11,7 @@ json.data(@purchase_orders) do |purchase_order|
                   purchase_order.warehouse&.name,
                   purchase_order.rows.count,
                   format_succinct_date(purchase_order.po_date),
+                  format_succinct_date(purchase_order.created_at)
               ]
 end
 
