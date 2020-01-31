@@ -1,4 +1,4 @@
-  <!-- Google Tag Manager (noscript) -->
+<!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDPC36K"
                   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
@@ -25,7 +25,7 @@
 
   <% if current_company.id != 11420 %>
     <div class="card mt-1">
-      <div class="card-body ">
+      <div class="card-body">
         <h5 class="text-uppercase text-black-50 mb-0">Recent Quotes</h5>
         <table class="table datatable w-100 wrap-whitespace table-bordered" data-fixed-header="false">
           <thead>
@@ -57,7 +57,7 @@
         </table>
       </div>
       <div class="card-footer">
-        <a href="<%= customers_quotes_path %>" class="btn btn-lg btn-block btn-info bmro-button"><i class="fal fa-eye mr-1"></i>View
+        <a href="<%= customers_quotes_path %>" class="btn btn-lg btn-block btn-info bmro-button"><i class="fal fa-eye-tras mr-1"></i>View
           More</a>
       </div>
     </div>
@@ -65,8 +65,8 @@
     <% if @dashboard.recent_sales_orders.any? %>
       <div class="card mt-4">
         <div class="card-body">
-          <h5 class="text-uppercase text-black-50 mb-0">Recent Orders</h5>
-          <table class="table datatable w-100 wrap-whitespace table-bordered" data-fixed-header="false">
+          <h4 class="text-uppercase display-5 mb-1 d-none d-md-block">Recent Orders</h4>
+          <table class="table datatable table-bordered w-100 wrap-whitespace table-bordered" data-fixed-header="false">
             <thead>
             <tr>
               <th class="no-sort"></th>
@@ -100,7 +100,7 @@
           </table>
         </div>
         <div class="card-footer">
-          <a href="<%= customers_orders_path %>" class="btn btn-lg btn-block btn-info bmro-button"><i class="fal fa-eye mr-1"></i>View
+          <a href="<%= customers_orders_path %>" class="btn btn-lg btn-block btn-info bmro-button"><i class="fal fa-eye-tras mr-1"></i>View
             More</a>
         </div>
       </div>
@@ -109,8 +109,8 @@
   <% if @dashboard.recent_sales_invoices.any? %>
     <div class="card mt-4">
       <div class="card-body">
-        <h5 class="text-uppercase text-black-50 mb-0">Recent Invoices</h5>
-        <table class="table datatable w-100 wrap-whitespace table-bordered" data-fixed-header="false">
+        <h4 class="text-uppercase display-5 mb-1 d-none d-md-block">Recent Invoices</h4>
+        <table class="table datatable table-bordered w-100 wrap-whitespace table-bordered" data-fixed-header="false">
           <thead>
           <tr>
             <th class="no-sort"></th>
@@ -154,14 +154,14 @@
               <td><%= sales_invoice.inquiry.inside_sales_owner.to_s %></td>
               <td><%= sales_invoice.inquiry.outside_sales_owner.to_s %></td>
               <td><%= format_date(sales_invoice.created_at) %></td>
-              <td><%= sales_invoice.status %></td>
+              <td><%= status_badge(sales_invoice.status) %></td>
             </tr>
           <% end %>
           </tbody>
         </table>
       </div>
       <div class="card-footer">
-        <a href="<%= customers_invoices_path %>" class="btn btn-lg btn-block btn-info bmro-button"><i class="fal fa-eye mr-1"></i>View
+        <a href="<%= customers_invoices_path %>" class="btn btn-lg btn-block btn-info bmro-button"><i class="fal fa-eye-tras mr-1"></i>View
           More</a>
       </div>
     </div>

@@ -233,7 +233,7 @@ let setup = () => {
 
                 // Init filters
                 let actionTd = $(table).find('thead tr:eq(1) td:eq(0)');
-                let clear = $('<a href="#" class="btn btn-sm px-2 btn-danger" data-toggle="tooltip" title="Clear search and all enabled filters"><i class="fal fa-times"></i></a>');
+                let clear = $('<input type="button" name="clear-btn" value="Reset" class="bmro-button bmro-set-size reset-table-filters">');
                 clear.on('click', function (e) {
                     $('[data-filter="ajax"] select').val("").trigger('change');
                     $('[data-filter="dropdown"] select').val("").trigger('change');
@@ -368,6 +368,7 @@ $('.reset-table-filters').on('click', function(){
     $('.fillter-wrapper .select').val('').trigger('change')
     $('.fillter-wrapper [data-toggle="daterangepicker"]').val('').trigger('change')
     $('.bmro-table-layout [data-toggle="daterangepicker"]').val('')
+    $('.bmro-date-bag').val('');
 })
 
 export default dataTables

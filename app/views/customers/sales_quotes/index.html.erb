@@ -2,6 +2,7 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :use_url_as_page_title, true %>
+<% provide :can_be_directly_exported_partial, true %>
 <% provide :show_date_filter, true %>
 <% content_for :heading do %>
   Quotes
@@ -9,7 +10,7 @@
 
 <% provide :heading_buttons do %>
   <div class="btn-group">
-    <a href="<%= export_all_customers_quotes_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales quotes"><i class="fal fa-download mr-1"></i>Quotes</a>
+    <a href="<%= export_all_customers_quotes_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales quotes"><i class="fal bmro-download-icon mr-1"></i>Quotes</a>
   </div>
 <% end %>
 
@@ -23,7 +24,6 @@
     <th class="no-sort desktop text-right" data-name="inside_sales_executive">Sales Person</th>
     <th class="no-sort desktop text-right">Valid Upto</th>
     <th class="no-sort desktop text-right" data-name="status">Status</th>
-    <th class="sort desktop text-left" data-name="created_at">Created Date</th>
   <% end %>
 
   <% content_for :filter_row do %>
@@ -35,7 +35,6 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="daterange"></td>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
