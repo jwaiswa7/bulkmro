@@ -1,10 +1,14 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
-<% provide :can_be_exported_material_readiness_queue, true %>
+<% provide :can_be_exported_material_readiness_queue, true if params["action"] == 'material_readiness_queue' %>
 
 <% provide :container_fluid, true %>
 <% content_for :heading do %>
-  Material Readiness Queue
+  <% if params["action"] == 'material_readiness_queue' %>
+    Material Readiness Queue
+  <% else %>
+    Manually Closed
+  <% end %>
 <% end %>
 
 <% content_for(:heading_buttons) do %>
