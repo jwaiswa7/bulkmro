@@ -11,6 +11,7 @@
   <%= render partial: "shared/layouts/payment_dashboard_summary_box", locals: {} %>
 </div>
 
+<div class="col-lg-12 bmro-table-layout">
 <% content_for :header_row do %>
   <th class="no-sort" width="98px">Quick Actions</th>
   <th class="no-sort desktop ">Company Alias</th>
@@ -32,4 +33,5 @@
 <div class="col-lg-12">
   <%= render layout: 'shared/layouts/datatable' do %>
   <% end %>
+</div>
 </div>
