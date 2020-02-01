@@ -8,6 +8,7 @@ class Overseers::CompaniesController < Overseers::BaseController
     @indexed_companies = service.indexed_records
     @companies = service.records
     authorize_acl @companies
+
   end
 
   def autocomplete
