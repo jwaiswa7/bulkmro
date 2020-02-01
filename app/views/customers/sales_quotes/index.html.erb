@@ -24,6 +24,7 @@
     <th class="no-sort desktop text-right" data-name="inside_sales_executive">Sales Person</th>
     <th class="no-sort desktop text-right">Valid Upto</th>
     <th class="no-sort desktop text-right" data-name="status">Status</th>
+    <th class="sort desktop text-left" data-name="created_at">Created Date</th>
   <% end %>
 
   <% content_for :filter_row do %>
@@ -35,6 +36,7 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
+    <td data-filter="daterange"></td>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
