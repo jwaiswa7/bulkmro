@@ -35,11 +35,12 @@ let preSetup = () => {
         let searchText = $target.data('search');
 
         if (searchText) {
-            let $input = "<div class='bmro-search-table'>"+"<div class='bmro-input-search'>"+"<input type='search' class='bmro-form-input bmro-search-width filter-list-input search-input' placeholder='" + searchText + "'>"+"</div>" +
+            let $input = "<div class='bmro-search-table'>"+"<div class='bmro-input-search'>"+"<input type='search' class='bmro-form-input bmro-search-width filter-list-input' placeholder='" + searchText + "'>"+"</div>" +
                 "</div>";
-            // $('.search-input').bindWithDelay('keyup', function (e) {
-            //     $('#' + $('table').attr('id')).DataTable().search($('.search-input').val()).draw();
-            // }, 300);
+            $input = $($input);
+            $input.bindWithDelay('keyup', function (e) {
+                $('#' + $target.attr('id')).DataTable().search($(this).find("input").val()).draw();
+            }, 300);
             let $wrapper =
                 "<div class='fillter-wrapper bmro-input-edit'>" +
                 "<div class='bmro-input-search bmro-arrow-parent'>" +
@@ -240,7 +241,6 @@ let setup = () => {
                 let table = this;
 
                 // Init filters
-                // $('.fillter-wrapper').append("<input type='text' name='' class='bmro-form-input bmro-search-width filter-list-input' placeholder='Search by term/keywords...\'>")
                 let actionTd = $(table).find('thead tr:eq(1) td:eq(0)');
                 let clear = $('<input type="button" name="clear-btn" value="Reset" class="bmro-button bmro-set-size reset-table-filters">');
                 $('.reset-table-filters').on('click', function (e) {
@@ -251,9 +251,6 @@ let setup = () => {
                     $('.bmro-search-width').val('')
                     $('.bmro-date-bag').val('');
                 });
-                $('.search-input').bindWithDelay('keyup', function (e) {
-                    $('#' + $('table').attr('id')).DataTable().search($('.search-input').val()).draw();
-                }, 300);
                 actionTd.append(clear);
                 var data_multiclass = [];
                 this.api().columns().every(function () {
