@@ -1,10 +1,12 @@
 import rfqEdit from "./edit";
 import editRfq from "./editRfq"
+import editSupplierRfqs from "./editSupplierRfqs"
 
 
 let rfq = {
     edit: rfqEdit,
-    editRfq: editRfq
+    editRfq: editRfq,
+    editSupplierRfqs: editSupplierRfqs
 };
 
 export default rfq
