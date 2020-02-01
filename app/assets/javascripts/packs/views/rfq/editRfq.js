@@ -2,9 +2,9 @@ const editRfq = () => {
     $(".rfq_edit :input").on('change', function(){
         let dataId= $(this).data('id');
         let activeElementNumber = typeof dataId === 'undefined' ? '' : dataId.split('_').pop();
-        let basicUnitPrice = $('input[data-id="unit_cost_price_' + activeElementNumber + '"]').val() || 0;
+        let basicUnitPrice = parseFloat($('input[data-id="unit_cost_price_' + activeElementNumber + '"]').val()).toFixed(2) || 0;
         let gst = $('select[data-id="gst_' + activeElementNumber + '"]').val();
-        let unitFreight = $('input[data-id="unit_freight_' + activeElementNumber + '"]').val() || 0;
+        let unitFreight = parseFloat($('input[data-id="unit_freight_' + activeElementNumber + '"]').val()).toFixed(2) || 0;
 
         calculate_final_unit_price(gst, basicUnitPrice, unitFreight, activeElementNumber);
 
