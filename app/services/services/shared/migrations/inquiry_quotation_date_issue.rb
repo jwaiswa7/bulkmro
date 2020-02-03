@@ -2,10 +2,10 @@ class Services::Shared::Migrations::InquiryQuotationDateIssue < Services::Shared
   def call
     inq = Inquiry.where('quotation_date < Date(created_at)')
     if inq.present?
-      inq.each_with_index do |val, index|
-      sales_quotes = val.sales_quotes
-      if sales_quotes.present?
-        val.quotation_date = sales_quotes.last.created_at.to_date
+      inq.each do |val|
+      sales_quote = val.final_sales_quote
+      if sales_quote.present?
+        val.quotation_date = sales_quote.created_at.to_date
       else
         val.quotation_date = ''
       end
