@@ -22,8 +22,8 @@
       </span>
     </div>
     <div class="chat-item-body">
-      <% if trimmed && comment.message.present? && comment.message.length > 48 %>
-        <%= comment.message[0..48] + ".." %>
+      <% if trimmed && comment.message.present? && comment.message.length > 200 %>
+        <%= comment.message[0..200] + ".." %>
       <% else %>
         <%= simple_format comment.message %>
       <% end %>
