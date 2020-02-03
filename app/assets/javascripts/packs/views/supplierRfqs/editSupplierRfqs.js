@@ -43,17 +43,22 @@ let rfqReview = () => {
         window.open(Routes.rfq_review_overseers_inquiry_sales_quotes_path(data), '_self');
     });
 };
+
 let updateAllInquiryProductSuppliers = () => {
     $(".update-all, .update-and-send-link-all").click(function () {
         let $this = $(this);
         let formType = $this.val();
+        let delay = 300;
         $("form").each(function() {
             let $this = $(this);
             let input = $("<input>")
                 .attr("type", "hidden")
                 .attr("name", "button").val(formType);
             $this.append(input);
-            $this.submit();
+            setTimeout( function () {
+                $this.submit();
+            }, delay);
+            delay = delay + 700;
         });
     });
 };
