@@ -255,7 +255,7 @@
                 <span></span>
               </td>
               <td align="left" valign="top">
-                <span><%= item.metadata['PopProductName'] %></span>
+                <span><%= item.product.present? ? item.product.name : item.metadata['PopProductName'] %></span>
               </td>
               <td>
                 <span><%= item.product.present? ? item.product.brand.to_s : item.brand %></span>

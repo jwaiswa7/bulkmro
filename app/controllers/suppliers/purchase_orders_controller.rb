@@ -7,7 +7,7 @@ class Suppliers::PurchaseOrdersController < Suppliers::BaseController
     respond_to do |format|
       format.html { }
       format.json do
-        service = Services::Suppliers::Finders::PurchaseOrders.new(params, current_contact, current_company)
+        service = Services::Suppliers::Finders::PurchaseOrders.new(params, current_suppliers_contact, current_company)
         service.call
 
         @indexed_purchase_orders = service.indexed_records

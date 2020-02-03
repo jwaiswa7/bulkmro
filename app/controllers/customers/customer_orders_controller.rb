@@ -6,12 +6,12 @@ class Customers::CustomerOrdersController < Customers::BaseController
 
     if params[:cart].present? && current_cart.id == params[:cart][:id].to_i
       payment = OnlinePayment.where(payment_id: params[:razorpay_payment_id]).first_or_create! do |online_payment|
-        online_payment.assign_attributes(contact: current_contact, payment_id: params[:razorpay_payment_id], auth_token: params[:authenticity_token], amount: params[:cart][:grand_total], metadata: params.to_json, status: :'created')
+        online_payment.assign_attributes(contact: current_customers_contact, payment_id: params[:razorpay_payment_id], auth_token: params[:authenticity_token], amount: params[:cart][:grand_total], metadata: params.to_json, status: :'created')
       end
       payment.save!
     end
 
-    @customer_order = current_contact.customer_orders.build(
+    @customer_order = current_customers_contact.customer_orders.build(
       billing_address_id: current_cart.billing_address_id,
       shipping_address_id: current_cart.shipping_address_id,
       po_reference: current_cart.po_reference,
@@ -19,7 +19,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
       customer_po_sheet: (current_cart.customer_po_sheet.attached?) ? current_cart.customer_po_sheet.blob : nil
     )
     ActiveRecord::Base.transaction do
-      @customer_order = current_contact.customer_orders.create(company: current_company)
+      @customer_order = current_customers_contact.customer_orders.create(company: current_company)
       @customer_order.assign_attributes(
         billing_address_id: current_cart.billing_address_id,
         shipping_address_id: current_cart.shipping_address_id,
@@ -34,7 +34,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
       @customer_order.save
       @customer_order.update_attributes(online_order_number: Services::Resources::Shared::UidGenerator.online_order_number(@customer_order.id))
 
-      Services::Customers::CustomerOrders::Approval.new(current_contact, current_cart, current_company, @customer_order).call
+      Services::Customers::CustomerOrders::Approval.new(current_customers_contact, current_cart, current_company, @customer_order).call
 
       current_cart.items.each do |cart_item|
         @customer_order.rows.where(product_id: cart_item.product_id).first_or_create do |row|
@@ -70,10 +70,10 @@ class Customers::CustomerOrdersController < Customers::BaseController
   end
 
   def pending
-    customer_orders = if current_contact.account_manager?
-      CustomerOrder.not_approved.not_rejected.where(contact_id: current_contact.account.contact_ids)
+    customer_orders = if current_customers_contact.account_manager?
+      CustomerOrder.not_approved.not_rejected.where(contact_id: current_customers_contact.account.contact_ids)
     else
-      current_contact.customer_orders.not_approved.not_rejected
+      current_customers_contact.customer_orders.not_approved.not_rejected
     end.order(id: :desc)
 
     authorize customer_orders
@@ -82,10 +82,10 @@ class Customers::CustomerOrdersController < Customers::BaseController
   end
 
   def approved
-    customer_orders = if current_contact.account_manager?
-      CustomerOrder.approved.where(contact_id: current_contact.account.contact_ids)
+    customer_orders = if current_customers_contact.account_manager?
+      CustomerOrder.approved.where(contact_id: current_customers_contact.account.contact_ids)
     else
-      current_contact.customer_orders.approved
+      current_customers_contact.customer_orders.approved
     end.order(id: :desc)
 
     authorize customer_orders
@@ -103,10 +103,10 @@ class Customers::CustomerOrdersController < Customers::BaseController
   end
 
   def index
-    @customer_orders = if current_contact.account_manager?
-      CustomerOrder.where(contact_id: current_contact.account.contact_ids)
+    @customer_orders = if current_customers_contact.account_manager?
+      CustomerOrder.where(contact_id: current_customers_contact.account.contact_ids)
     else
-      current_contact.customer_orders
+      current_customers_contact.customer_orders
     end.order(id: :desc)
     @customer_orders = ApplyDatatableParams.to(@customer_orders, params)
     authorize @customer_orders

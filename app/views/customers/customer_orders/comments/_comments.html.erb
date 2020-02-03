@@ -10,7 +10,7 @@
 <%= f.hidden_field :show_to_customer, value: show_to_customer %>
 <div class="flex-fill">
   <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
-  <% if current_contact.account_manager? %>
+  <% if current_customers_contact.account_manager? %>
     <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(customer_order).approve? %>
     <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(customer_order).reject? %>
   <% end %>

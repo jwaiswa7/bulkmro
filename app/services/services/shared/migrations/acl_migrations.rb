@@ -583,10 +583,14 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     end
   end
 
-  def create_delivery_date_revision_acl_resources
-    role_name = ['Admin', 'Inside Sales Executive', 'Logistics']
+  def create_supplier_rfq_resources
+    role_name = ['admin']
     acl_resources_for_targets = {
-        'sales_order': %w(revise_committed_delivery_date update_revised_committed_delivery_date),
+        'supplier_rfq': %w(index show new edit create update destroy update_all send_email_request_for_quote add_supplier_rfqs edit_supplier_rfqs update_supplier_rfqs rfq_review),
+        'inquiry_product_supplier': %w(request_for_quote),
+        'company': %w(customized_index),
+        'inquiry': %w(link_product_suppliers draft_rfq request_for_quote destroy_supplier),
+        'sales_quote': %w(rfq_review)
     }
     acl_resources_for_targets.each do |key, val|
       val.each do |action_name|
@@ -600,14 +604,10 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     end
   end
 
-  def create_supplier_rfq_resources
-    role_name = ['admin']
+  def create_delivery_date_revision_acl_resources
+    role_name = ['Admin', 'Inside Sales Executive', 'Logistics']
     acl_resources_for_targets = {
-        'supplier_rfq': %w(index show new edit create update destroy update_all send_email_request_for_quote add_supplier_rfqs edit_supplier_rfqs update_supplier_rfqs rfq_review),
-        'inquiry_product_supplier': %w(request_for_quote),
-        'company': %w(customized_index),
-        'inquiry': %w(link_product_suppliers draft_rfq request_for_quote destroy_supplier),
-        'sales_quote': %w(rfq_review)
+        'sales_order': %w(revise_committed_delivery_date update_revised_committed_delivery_date),
     }
     acl_resources_for_targets.each do |key, val|
       val.each do |action_name|

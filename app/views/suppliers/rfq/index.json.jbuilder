@@ -1,18 +1,22 @@
-json.data(@product_suppliers) do |inquiry_product_supplier|
+json.data(@rfqs) do |rfq|
   json.array! [
                   [
-                      row_action_button(edit_suppliers_rfq_path(inquiry_product_supplier), 'pencil', 'Edit RFQ', 'warning', :_blank),
-                      row_action_button(suppliers_rfq_path(inquiry_product_supplier), 'eye', 'View RFQ', 'info', :_blank)
+                    if rfq.supplier_rfq_revisions.present?
+                      row_action_button(edit_rfq_suppliers_rfq_index_path(rfq_id: rfq.id), 'redo-alt', 'Create RFQ Revision', 'success', :_blank)
+                    else
+                      row_action_button(edit_rfq_suppliers_rfq_index_path(rfq_id: rfq.id), 'pencil', 'Edit RFQ', 'warning', :_blank)
+                    end,
+                    row_action_button(suppliers_rfq_path(id: rfq.id), 'eye', 'View RFQ', 'warning', :_blank)
                   ].join(' '),
-                  inquiry_product_supplier.product.to_s,
-                  inquiry_product_supplier.product.mpn,
-                  inquiry_product_supplier.product.brand.name,
-                  inquiry_product_supplier.inquiry_product.quantity,
-                  inquiry_product_supplier.lead_time,
-                  inquiry_product_supplier.last_unit_price,
-                  inquiry_product_supplier.gst,
-                  inquiry_product_supplier.final_unit_price,
-                  inquiry_product_supplier.total_price
+                  link_to(rfq.id, edit_rfq_suppliers_rfq_index_path(rfq_id: rfq.id), target: '_blank'),
+                  rfq.inquiry.inquiry_number,
+                  rfq.inquiry.subject,
+                  rfq.status,
+                  format_date_with_time(rfq.email_sent_at),
+                  rfq.inquiry_product_suppliers.map { |ips| ips.inquiry_product.product }.count,
+                  rfq.calculated_total,
+                  rfq.calculated_total_with_tax,
+                  format_date_with_time(rfq.created_at)
               ]
 end
 
@@ -21,7 +25,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [],
+                       SupplierRfq.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        [],
                        [],
@@ -29,6 +33,8 @@ json.columnFilters [
                        []
                    ]
 
-json.recordsTotal @product_suppliers.count
-json.recordsFiltered @product_suppliers.count
+json.recordsTotal @rfqs.count
+json.recordsFiltered @rfqs.count
 json.draw params[:draw]
+json.recordsFiltered
+json.recordsTotalValue @total_values

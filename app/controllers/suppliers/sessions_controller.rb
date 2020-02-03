@@ -2,11 +2,11 @@ class Suppliers::SessionsController < Devise::SessionsController
   layout 'shared/layouts/sign_in'
 
   def edit_current_company
-    current_contact
+    current_suppliers_contact
   end
 
   def set_current_company
-    current_contact
+    current_suppliers_contact
   end
 
   def destroy
@@ -19,10 +19,10 @@ class Suppliers::SessionsController < Devise::SessionsController
 
   private
     def after_sign_in_path_for(resource_or_scope)
-      stored_location_for(resource_or_scope) || super
+      suppliers_dashboard_path
     end
 
     def after_sign_out_path_for(resource_or_scope)
-      new_contact_session_path
+      new_suppliers_contact_session_path
     end
 end

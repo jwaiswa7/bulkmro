@@ -1,6 +1,6 @@
 class Suppliers::DashboardController < Suppliers::BaseController
   def show
-    @dashboard = Suppliers::Dashboard.new(current_contact, current_company, params)
+    @dashboard = Suppliers::Dashboard.new(current_suppliers_contact, current_company, params)
     authorize :dashboard
   end
 

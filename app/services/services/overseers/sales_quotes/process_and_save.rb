@@ -17,7 +17,7 @@ class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseS
         row.unit_selling_price = row.unit_selling_price
         row.converted_unit_selling_price = row.calculated_converted_unit_selling_price
       end
-
+      sales_quote.supplier_rfq_ids = sales_quote.rows.map { |sq_row| sq_row.inquiry_product_supplier.supplier_rfq_id }.compact if sales_quote.id.nil?
       # if sales_quote.sent_at.present?
       #   sales_quote.save_and_sync
       # else
