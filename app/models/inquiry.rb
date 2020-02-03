@@ -265,7 +265,7 @@ class Inquiry < ApplicationRecord
   validate :company_is_active, if: :new_record?
 
   def inquiry_sales_quote_date_validation
-    if self.sales_quotes.present?
+    if self.sales_quotes.present? && self.quotation_date.present?
       if self.quotation_date < self.sales_quotes.last.created_at.to_date
         errors.add(:inquiry, 'Quotation Date Must Be Greater Than Last Quote Created Date')
       end
