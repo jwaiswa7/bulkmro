@@ -39,6 +39,9 @@ class Suppliers::RfqController < Suppliers::BaseController
       Services::Suppliers::BuildFromInquiryProductSupplier.new(@rfq, supplier_rfqs_params).call
       @rfq.assign_attributes(supplier_rfqs_params)
       if @rfq.save
+        if @rfq.inquiry_product_suppliers_changed?
+          @rfq.update_attributes(status: 'Supplier Response Submitted')
+        end
         redirect_to suppliers_rfq_index_path, notice: "Rfq's updated."
       end
     end

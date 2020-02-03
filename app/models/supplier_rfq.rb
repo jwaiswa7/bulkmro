@@ -10,10 +10,15 @@ class SupplierRfq < ApplicationRecord
   scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }
 
   enum status: {
-      'Draft RFQ: Not Sent': 1,
-      'Email Sent: Response Pending': 2,
-      'Supplier Responded': 3
+      'Draft RFQ: Email Not Sent': 1,
+      'Email Sent: Supplier Response Pending': 2,
+      'Supplier Response Submitted': 3,
+      'PO Issued': 4
   }
+
+  def inquiry_product_suppliers_changed?
+    inquiry_product_suppliers.any? { |ips| ips.saved_changes? }
+  end
 
   def calculated_total
     self.inquiry_product_suppliers.map { |ips| ips.total_unit_cost_price_with_freight }.compact.sum
