@@ -72,7 +72,6 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   after_initialize :set_defaults, if: :new_record?
-  after_create :set_supplier_rfqs
 
   def set_defaults
     self.margin_percentage ||= legacy? ? 0 : 15.0
@@ -88,12 +87,6 @@ class SalesQuoteRow < ApplicationRecord
 
     self.tax_code ||= product.best_tax_code
     self.tax_rate ||= product.best_tax_rate
-  end
-
-  def set_supplier_rfqs
-    supplier_rfq_ids = []
-    supplier_rfq_ids << self.inquiry_product_supplier.supplier_rfq.id unless sales_quote.supplier_rfq_ids.include?(self.inquiry_product_supplier.supplier_rfq.id)
-    sales_quote.update_column(:supplier_rfq_ids, supplier_rfq_ids)
   end
 
   def best_tax_code
