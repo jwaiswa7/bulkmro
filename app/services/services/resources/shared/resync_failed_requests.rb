@@ -110,8 +110,8 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
   def resync_business_partners
     Chewy.strategy(:atomic) do
       5.times do
-        remote_uid = ::Resources::BusinessPartner.custom_find_resync(model.remote_uid, 'CardCode')
-        if remote_uid.present?
+          remote_uid = ::Resources::BusinessPartner.custom_find_resync(model.remote_uid, 'CardCode')
+          if remote_uid.present?
           ::Resources::BusinessPartner.update_associated_records(remote_uid)
           resync_request.update_attributes(hits: resync_request.hits + 1)
         end
