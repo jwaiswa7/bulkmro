@@ -78,6 +78,7 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
         if @email_message.save
           if SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
             @supplier_rfq.update_attributes(email_sent_at: Time.now, status: 'Email Sent: Supplier Response Pending')
+            SupplierRfqsIndex::SupplierRfq.import([@supplier_rfq.id])
           end
         end
         flash[:notice] = 'Record updated successfully and Emails has been sent to suppliers!'
@@ -101,6 +102,7 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
     if @email_message.save
       SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
       @supplier_rfq.update_attributes(email_sent_at: Time.now, status: 'Email Sent: Supplier Response Pending')
+      SupplierRfqsIndex::SupplierRfq.import([@supplier_rfq.id])
       redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
       # redirect_to overseers_inquiry_sales_quotes_path(@inquiry)
     else

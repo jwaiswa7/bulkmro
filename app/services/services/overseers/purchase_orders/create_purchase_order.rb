@@ -35,7 +35,10 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
             updated_by_id: params[:overseer].id,
             po_request_row_id: row.id
           )
-          po_row.po_request_row.inquiry_product_supplier.supplier_rfq.update_column(:status, 'PO Issued') if po_row.po_request_row.inquiry_product_supplier.present? && po_row.po_request_row.inquiry_product_supplier.supplier_rfq.present?
+          if po_row.po_request_row.inquiry_product_supplier.present? && po_row.po_request_row.inquiry_product_supplier.supplier_rfq.present?
+            po_row.po_request_row.inquiry_product_supplier.supplier_rfq.update_column(:status, 'PO Issued')
+            SupplierRfqsIndex::SupplierRfq.import([po_row.po_request_row.inquiry_product_supplier.supplier_rfq.id])
+          end
         end
       end
       if @purchase_order.save_and_sync(po_request)
