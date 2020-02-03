@@ -35,11 +35,20 @@ let preSetup = () => {
         let searchText = $target.data('search');
 
         if (searchText) {
-            let $input = "<input type='search' class='form-control filter-list-input' placeholder='" + searchText + "'>";
-            $input = $('.bmro-search-width');
+            let $input = "<div class='bmro-search-table'>"+"<div class='bmro-input-search'>"+"<input type='search' class='bmro-form-input bmro-search-width filter-list-input' placeholder='" + searchText + "'>"+"</div>" +
+                "</div>";
+            $input = $($input);
             $input.bindWithDelay('keyup', function (e) {
-                $('#' + $target.attr('id')).DataTable().search($(this).val()).draw();
+                $('#' + $target.attr('id')).DataTable().search($(this).find("input").val()).draw();
             }, 300);
+            let $wrapper =
+                "<div class='fillter-wrapper bmro-input-edit'>" +
+                "<div class='bmro-input-search bmro-arrow-parent'>" +
+                " <input type='button' name='clear-btn' value='Reset' class='bmro-button bmro-set-size reset-table-filters'>" +
+                "</div>" +
+                "</div>";
+            let $filter = $($input).append($wrapper);
+            $filter.insertBefore($target);
             $target.data('has-search', true);
         }
     });
@@ -234,13 +243,13 @@ let setup = () => {
                 // Init filters
                 let actionTd = $(table).find('thead tr:eq(1) td:eq(0)');
                 let clear = $('<input type="button" name="clear-btn" value="Reset" class="bmro-button bmro-set-size reset-table-filters">');
-                clear.on('click', function (e) {
-                    $('[data-filter="ajax"] select').val("").trigger('change');
-                    $('[data-filter="dropdown"] select').val("").trigger('change');
-                    $('[data-filter="daterange"] input').val("").trigger('change');
-                    $('.filter-list-input').val("").trigger('keyup');
-                    $('#export_filtered_records').hide();
-                    e.preventDefault();
+                $('.reset-table-filters').on('click', function (e) {
+                    $('.fillter-wrapper .select2-ajax').val('').trigger('change')
+                    $('.fillter-wrapper .select').val('').trigger('change')
+                    $('.fillter-wrapper [data-toggle="daterangepicker"]').val('').trigger('change')
+                    $('.bmro-table-layout [data-toggle="daterangepicker"]').val('')
+                    $('.bmro-search-width').val('')
+                    $('.bmro-date-bag').val('');
                 });
                 actionTd.append(clear);
                 var data_multiclass = [];
@@ -254,7 +263,6 @@ let setup = () => {
 
                     if (filter && filter != false) {
                         let input = '';
-
                         if (filter == 'dropdown') {
                             let status_class = ((text == 'Status' || text == 'SAP Status') ? 'status-filter': '');
                             input = $('<div class="bmro-input-search bmro-arrow-parent '+status_class+'"><select class="form-control select select2-single bmro-form-input select2-hidden-accessible" data-placeholder="' + [text, ' '].join('') + '"><option value="" selected disabled></option></select></div>');
@@ -280,7 +288,6 @@ let setup = () => {
                         } else {
                             input = $('<div class="bmro-input-search bmro-arrow-parent"><input type="text" class="form-control" placeholder="' + [text, ' ', 'Filter'].join('') + '" /></div>');
                         }
-
                         input.on('change', function () {
                             let val
                             if (input.has('input').length > 0){
