@@ -241,8 +241,6 @@ let setup = () => {
                 let table = this;
 
                 // Init filters
-                let actionTd = $(table).find('thead tr:eq(1) td:eq(0)');
-                let clear = $('<input type="button" name="clear-btn" value="Reset" class="bmro-button bmro-set-size reset-table-filters">');
                 $('.reset-table-filters').on('click', function (e) {
                     $('.fillter-wrapper .select2-ajax').val('').trigger('change')
                     $('.fillter-wrapper .select').val('').trigger('change')
@@ -251,7 +249,6 @@ let setup = () => {
                     $('.bmro-search-width').val('')
                     $('.bmro-date-bag').val('');
                 });
-                actionTd.append(clear);
                 var data_multiclass = [];
                 this.api().columns().every(function () {
                     let column = this;
