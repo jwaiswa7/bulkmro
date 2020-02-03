@@ -36,7 +36,7 @@
         <%= f.association :state, :wrapper => :custom_multi_select, collection: AddressState.indian, include_blank: 'None', input_html: { class: 'bmro-form-input bmro-input-label bmro-dropdown-icon bmro-bg'} %>
       </div>
       <div class="col-6 col-md-3">
-        <%= f.input :city_name, input_html: { class: 'bmro-form-input bmro-input-label bmro-dropdown-icon bmro-bg'} %>
+        <%= f.input :city_name, input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
       </div>
       <div class="col-6 col-md-3">
         <%= f.input :pincode, input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
