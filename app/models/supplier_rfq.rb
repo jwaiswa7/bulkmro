@@ -7,6 +7,7 @@ class SupplierRfq < ApplicationRecord
   has_many :email_messages, dependent: :destroy
 
   accepts_nested_attributes_for :inquiry_product_suppliers
+  scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }
 
   enum status: {
       'Draft RFQ: Not Sent': 1,
