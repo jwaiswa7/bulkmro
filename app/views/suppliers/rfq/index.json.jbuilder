@@ -11,6 +11,7 @@ json.data(@rfqs) do |rfq|
                   link_to(rfq.id, edit_rfq_suppliers_rfq_index_path(rfq_id: rfq.id), target: '_blank'),
                   rfq.inquiry.inquiry_number,
                   rfq.inquiry.subject,
+                  rfq.status,
                   format_date_with_time(rfq.email_sent_at),
                   rfq.inquiry_product_suppliers.map { |ips| ips.inquiry_product.product }.count,
                   rfq.calculated_total,
@@ -22,9 +23,18 @@ end
 json.columnFilters [
                        [],
                        [],
+                       [],
+                       [],
+                       SupplierRfq.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       [],
+                       [],
+                       [],
+                       [],
                        []
                    ]
 
 json.recordsTotal @rfqs.count
 json.recordsFiltered @rfqs.count
 json.draw params[:draw]
+json.recordsFiltered
+json.recordsTotalValue @total_values

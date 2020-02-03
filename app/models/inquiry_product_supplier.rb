@@ -44,7 +44,7 @@ class InquiryProductSupplier < ApplicationRecord
   end
 
   def unit_cost_price_with_freight_with_tax
-    unit_cost_price_with_freight + (unit_cost_price * self.gst)/100  if self.gst.present? && self.gst > 0.0 && unit_cost_price_with_freight.present?
+    (unit_cost_price_with_freight || 0.0) + ((self.gst.present? && self.gst > 0.0) ? (unit_cost_price * self.gst) / 100.0 : 0.0)
   end
 
   def total_unit_cost_price_with_freight_with_tax

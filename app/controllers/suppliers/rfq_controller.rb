@@ -4,6 +4,16 @@ class Suppliers::RfqController < Suppliers::BaseController
 
   def index
     authorize :rfq
+    @rfqs = SupplierRfq.where(supplier_id: current_company.id)
+    service = Services::Suppliers::Finders::SupplierRfqs.new(params, current_suppliers_contact, current_company)
+    service.call
+    @indexed_rfqs = service.indexed_records
+    @rfqs = service.records
+
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_rfqs, SupplierRfq)
+    status_service.call
+    @total_values = status_service.indexed_total_values
+    @statuses = status_service.indexed_statuses
   end
 
   def edit_rfq
