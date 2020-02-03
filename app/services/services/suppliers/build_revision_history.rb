@@ -1,4 +1,4 @@
-class Services::Suppliers::BuildFromInquiryProductSupplier < Services::Shared::BaseService
+class Services::Suppliers::BuildRevisionHistory < Services::Shared::BaseService
   def initialize(rfq, params)
     @rfq = rfq
     @params = params

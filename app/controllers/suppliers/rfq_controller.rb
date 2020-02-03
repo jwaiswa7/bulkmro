@@ -1,8 +1,6 @@
 class Suppliers::RfqController < Suppliers::BaseController
   before_action :get_rfqs, only: :index
   before_action :supplier_rfqs_params, :set_rfq, only: :update
-  before_action :ips_params, only: :update_ips
-  before_action :set_ips, only: [:edit, :show]
 
   def index
     authorize :rfq
@@ -13,20 +11,10 @@ class Suppliers::RfqController < Suppliers::BaseController
     @rfq = SupplierRfq.find(params[:rfq_id])
   end
 
-  def update_ips
-    authorize :rfq
-    inquiry_product_supplier = InquiryProductSupplier.find(ips_params[:id])
-    inquiry_product_supplier.assign_attributes(ips_params)
-    Services::Suppliers::BuildFromInquiryProductSupplier.new(inquiry_product_supplier, ips_params).call
-    if inquiry_product_supplier.save
-      redirect_to suppliers_rfq_path(inquiry_product_supplier.id)
-    end
-  end
-
   def update
     authorize :rfq
     if @rfq.present?
-      Services::Suppliers::BuildFromInquiryProductSupplier.new(@rfq, supplier_rfqs_params).call
+      Services::Suppliers::BuildRevisionHistory.new(@rfq, supplier_rfqs_params).call
       @rfq.assign_attributes(supplier_rfqs_params)
       if @rfq.save
         if @rfq.inquiry_product_suppliers_changed?
@@ -39,6 +27,7 @@ class Suppliers::RfqController < Suppliers::BaseController
 
   def show
     authorize :rfq
+    @rfq = SupplierRfq.find(params[:id])
   end
 
   def edit_supplier_rfqs
@@ -53,10 +42,6 @@ class Suppliers::RfqController < Suppliers::BaseController
     def get_rfqs
       @rfqs = SupplierRfq.where(supplier_id: current_company.id)
       # @product_suppliers = InquiryProductSupplier.where(supplier_rfq_id: rfq_ids, supplier_id: current_company.id)
-    end
-
-    def set_ips
-      @inquiry_product_supplier = InquiryProductSupplier.find(params[:id])
     end
 
     def set_rfq
@@ -76,21 +61,6 @@ class Suppliers::RfqController < Suppliers::BaseController
                                                                                   :final_unit_price,
                                                                                   :total_price,
                                                                                   :remarks]
-      )
-    end
-
-    def ips_params
-      params.require(:inquiry_product_supplier).permit(
-        :id,
-        :quantity,
-        :lead_time,
-        :last_unit_price,
-        :unit_cost_price,
-        :gst,
-        :unit_freight,
-        :final_unit_price,
-        :total_price,
-        :remarks
       )
     end
 end
