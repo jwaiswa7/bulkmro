@@ -56,7 +56,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     authorize_acl :customer_product
     @company.generate_catalog(current_overseer)
 
-    redirect_to overseers_company_path(@company)
+    redirect_to overseers_company_path(@company), notice: 'Catalog successfully generated.'
   end
 
   def destroy_all
