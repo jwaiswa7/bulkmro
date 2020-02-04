@@ -42,7 +42,7 @@
             </div>
           </div>
           <div class="existing box" id="existing">
-            <%= f.association :account, collection: selected_option_or_nil(f, :account), input_html: {class: 'select2-ajax ', :'data-source' => autocomplete_overseers_accounts_path}, include_blank: 'Link company with account', input_html: { class: 'bmro-form-input' } %>
+            <%= f.input :account_id, as: :select, collection: selected_option_or_nil(f, :account), input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_accounts_path}, required: true %>
           </div>
         </div>
       </div>
