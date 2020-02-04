@@ -67,7 +67,7 @@
 
             <!-- <div class="col-6">
               <%#= f.input :status, as: :select, collection: enum_to_collection(InwardDispatch.statuses, keep_raw: true), disabled: true, readonly: true %>
-              
+
             </div> -->
             <%= f.hidden_field :status %>
             <%= f.hidden_field :sales_order_id %>
@@ -187,7 +187,7 @@
             <% end %>
             <% if is_authorized(f.object, 'remove_products') && policy(f.object).remove_products? %>
               <div class="col-1">
-                <div class="form-group mb-0">
+                <div class="form-group mb-0 ml-4">
                   <label>Remove Product</label>
                 </div>
               </div>
@@ -256,7 +256,7 @@
           <% end %>
         </div>
 
-        
+
         <% if f.object.comments.persisted.size > 0 %>
           <div class="card-body">
             <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>

@@ -1,49 +1,63 @@
-
-  <div class="bmro-full-container bmro-bg bmro-company-summary-slide">
-    <div class="bmro-adjusting-form"><div class="card-body bmro-summary-body bmro-summary-body-pt bmro-bg">
-      <div class=form-row>
-        <div class="col-6 col-md-3">
-          <strong class="d-block bmro-summary-heading">Order Number</strong>
-          <span class="bmro-summary-data"> #<%= sales_order.try(:order_number).blank? ? "SAP Request Pending" : sales_order.order_number %></span>
-        </div>
-        <div class="col-6 col-md-3">
-          <strong class="d-block bmro-summary-heading">Status</strong>
-          <span class="bmro-summary-data"> <%= sales_order.status || sales_order.legacy_request_status %></span>
-        </div>
-        <div class="col-6 col-md-2 mt-2 mt-md-0">
-          <strong class="d-block bmro-summary-heading">SAP Status</strong>
-          <span class="bmro-summary-data"> <%= sales_order.remote_status.blank? ? "SAP Request Pending" : sales_order.remote_status %></span>
-        </div>
-        <div class="col-6 col-md-2 mt-2 mt-md-0">
-          <strong class="d-block bmro-summary-heading">Opportunity Type</strong>
-          <span class="bmro-summary-data"> <%= sales_order.inquiry.present? ? sales_order.inquiry.opportunity_type.capitalize.titleize : '-' %></span>
-        </div>
+<div class="bmro-full-container bmro-bg bmro-company-summary-slide">
+  <div class="bmro-adjusting-form"><div class="card-body bmro-summary-body bmro-summary-body-pt bmro-bg">
+    <div class=form-row>
+      <div class="col-6 col-md-3">
+        <strong class="d-block bmro-summary-heading">Order Number</strong>
+        <span class="bmro-summary-data"> #<%= sales_order.try(:order_number).blank? ? "SAP Request Pending" : sales_order.order_number %></span>
       </div>
-
-      <div class="bmro-summary-dotted-line"></div>
-
-      <div class="form-row mb-1">
-        <div class="col-6 col-md-3">
-          <strong class="d-block bmro-summary-heading">Customer Purchase Order No.</strong>
-          <span class="bmro-summary-data"> #<%= @inquiry.customer_po_number %></span>
-        </div>
-        <div class="col-6 col-md-3">
-          <strong class="d-block bmro-summary-heading">Customer Order Date</strong>
-          <span class="bmro-summary-data"> <%= @inquiry.customer_order_date %></span>
-        </div>
-        <div class="col-6 col-md-2 mt-2 mt-md-0">
-          <strong class="d-block bmro-summary-heading">Customer Committed Date</strong>
-          <span class="bmro-summary-data"> <%= @inquiry.customer_committed_date %></span>
-        </div>
-        <div class="col-6 col-md-2 mt-2 mt-md-0">
-          <strong class="d-block bmro-summary-heading">Currency</strong>
-          <span class="bmro-summary-data"> <%= sales_order.currency %> (<%= sales_order.conversion_rate %>)</span>
-        </div>
-        <div class="col-6 col-md-2 mt-2 mt-md-0">
-          <strong class="d-block bmro-summary-heading">Payment Terms</strong>
-          <span class="bmro-summary-data"> <%= @inquiry.payment_option %></span>
-        </div>
+      <div class="col-6 col-md-3">
+        <strong class="d-block bmro-summary-heading">Status</strong>
+        <span class="bmro-summary-data"> <%= sales_order.status || sales_order.legacy_request_status %></span>
       </div>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        <strong class="d-block bmro-summary-heading">SAP Status</strong>
+        <span class="bmro-summary-data"> <%= sales_order.remote_status.blank? ? "SAP Request Pending" : sales_order.remote_status %></span>
+      </div>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        <strong class="d-block bmro-summary-heading">Opportunity Type</strong>
+        <span class="bmro-summary-data"> <%= sales_order.inquiry.present? ? sales_order.inquiry.opportunity_type.capitalize.titleize : '-' %></span>
+      </div>
+      <% if sales_order.status || sales_order.legacy_request_status == "Approved" %>
+        <div class="col-6 col-md-2 mt-2 mt-md-0 text-right">
+          <% if is_authorized(@sales_order, 'show_pdf') %>
+            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn btn-info btn-sm", target: "_blank" do %>
+              <i class="fal fa-eye mr-1"></i>Proforma I.
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="bmro-summary-dotted-line"></div>
+
+    <div class="form-row mb-1">
+      <div class="col-6 col-md-3">
+        <strong class="d-block bmro-summary-heading">Customer Purchase Order No.</strong>
+        <span class="bmro-summary-data"> #<%= @inquiry.customer_po_number %></span>
+      </div>
+      <div class="col-6 col-md-2">
+        <strong class="d-block bmro-summary-heading">Customer Order Date</strong>
+        <span class="bmro-summary-data"> <%= @inquiry.customer_order_date %></span>
+      </div>
+      <div class="col-6 col-md-1 mt-2 mt-md-0">
+        <strong class="d-block">Currency</strong>
+        <%= sales_order.currency %> (<%= sales_order.conversion_rate %>)
+      </div>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        <strong class="d-block bmro-summary-heading">Customer Committed Date</strong>
+        <span class="bmro-summary-data"> <%= @inquiry.customer_committed_date %></span>
+      </div>
+      <% if sales_order.revised_committed_delivery_date.present? %>
+        <div class="col-6 col-md-2 mt-2 mt-md-0">
+          <strong class="d-block bmro-summary-heading">Revised Customer Committed Delivery Date</strong>
+          <span class="bmro-summary-data"><%= sales_order.revised_committed_delivery_date %></span>
+        </div>
+      <% end %>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        <strong class="d-block bmro-summary-heading">Payment Terms</strong>
+        <span class="bmro-summary-data"> <%= @inquiry.payment_option %></span>
+      </div>
+    </div>
 
       <div class="bmro-summary-dotted-line"></div>
       <div class="card-alternative bmro-bg mt-3">
