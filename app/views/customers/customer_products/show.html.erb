@@ -34,9 +34,12 @@
                     <%= f.input :quantity, label: false, :class => 'form-control', input_html: {placeholder: 'Quantity', step: @customer_product.moq, min: @customer_product.moq, value: @default_quantity} %>
                   <% end %>
                 </div>
-                <div class="col-8 col-md-4">
-                  <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
-                </div>
+                <!-- Hide add to cart button for contact named warehouse (id = 15667) for customer saint gobain -->
+                <% unless (current_contact.id == 15667) %>
+                  <div class="col-8 col-md-4">
+                    <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
+                  </div>
+                <% end %>
               </div>
             <% end %>
 
@@ -84,8 +87,14 @@
                 </div>
               <% end %>
               <div class="col-6 col-md-3">
-                <strong class="d-block">Instock Quantity</strong>
-                <%= @customer_product.product.stocks.sum(&:instock).to_i %>
+                <% if @is_saint_gobain %>
+                  <strong class="d-block">Instock Quantity(per Warehouse)</strong>
+                  <b>BH</b> - <%= @customer_product.product.stocks.where(warehouse_id: @bhiwandi_warehouse.id).sum(&:instock).to_i %>
+                  , <b>CN</b> - <%= @customer_product.product.stocks.where(warehouse_id: @chennai_warehouse.id).sum(&:instock).to_i %>
+                <% else %>
+                  <strong class="d-block">Instock Quantity</strong>
+                  <%= @customer_product.product.stocks.sum(&:instock).to_i %>
+                <% end %>
               </div>
               <% if @is_henkel%>
                 <div class="col-6 col-md-3 mb-2">

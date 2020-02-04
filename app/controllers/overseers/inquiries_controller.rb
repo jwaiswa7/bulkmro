@@ -21,6 +21,40 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def regret_inquiry_request_queue
+    respond_to do |format|
+      format.html {}
+      format.json do
+          service = Services::Overseers::Finders::Inquiries.new(params.merge(status: 22), current_overseer)
+          service.call
+          @indexed_inquiries = service.indexed_records
+          @inquiries = service.records
+        end
+    end
+  end
+
+  def regret_request_action
+    @inquiry = Inquiry.find(params['inquiry'])
+    if params['action_name'] == 'Approve'
+      if @inquiry.update_attributes(status: 'Regret')
+        message = "Inquiry Regreted by #{current_overseer}"
+        inq_com = InquiryComment.new(inquiry_id: @inquiry.id, message: message, created_by: current_overseer, updated_by: current_overseer)
+        inq_com.save
+      end
+    else
+      inquiry_status = "inquiry_status_#{@inquiry.inquiry_number}"
+      if Rails.cache.exist?(inquiry_status)
+        @prev_inquiry = Rails.cache.read(inquiry_status)
+        message = "Inquiry Regret Request Rejected by #{current_overseer}"
+        inq_com = InquiryComment.new(inquiry_id: @inquiry.id, message: message, created_by: current_overseer, updated_by: current_overseer)
+        inq_com.save
+        @inquiry.update_attributes(status: @prev_inquiry.status)
+      end
+    end
+
+    redirect_to regret_inquiry_request_queue_overseers_inquiries_path
+  end
+
   def kra_report
     authorize_acl :inquiry
 
@@ -179,7 +213,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     indexed_tat_reports = service.indexed_records
     export_service = Services::Overseers::Exporters::InquiriesTatExporter.new([], current_overseer, indexed_tat_reports, '')
-    export_service.call
+    export_service.build_csv
 
     redirect_to url_for(Export.inquiries_tat.not_filtered.last.report)
   end
@@ -281,22 +315,26 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def update
+    inquiry_status = "inquiry_status_#{@inquiry.inquiry_number}"
+    if Rails.cache.exist?(inquiry_status)
+      Rails.cache.delete(inquiry_status)
+    end
+    Rails.cache.write(inquiry_status, @inquiry)
     @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
     authorize_acl @inquiry
-
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call if @inquiry.inquiry_products.present?
       if @inquiry.status == 'Order Lost'
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :order_lost).call
-      elsif @inquiry.status == 'Regret'
-        Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :regret).call
+      elsif @inquiry.status == 'Regret Request'
+        Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :regret_request).call
       else
         @inquiry.lost_regret_reason = nil
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :default).call
       end
       message = params['inquiry']['comments_attributes']['0']['message']
       if message.present?
-        @inquiry.comments.create(message: "Status changed to: #{@inquiry.status}. \r\n Lost or Regret Reason: #{@inquiry.lost_regret_reason}. \r\n Comment: #{message}." , overseer: current_overseer)
+        @inquiry.comments.create(message: "Status changed to: #{@inquiry.status}. \r\n Lost or Regret Reason: #{@inquiry.lost_regret_reason}. \r\n Comment: #{message}.", overseer: current_overseer)
       end
 
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -477,6 +515,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       update_query = query_params.except('inquiries').reject {|_, v| v.blank?}
       if update_query.present?
         inquiries.update_all(update_query)
+        InquiriesIndex::Inquiry.import(inquiries.pluck(:id))
         redirect_to overseers_inquiries_path, notice: set_flash_message('Selected inquiries updated successfully', 'success')
       else
         render json: {error: 'Please select any one field to update'}, status: 500
@@ -640,6 +679,10 @@ class Overseers::InquiriesController < Overseers::BaseController
           :copy_of_email,
           :is_sez,
           :calculation_sheet,
+          :customer_po_delivery_date,
+          :committed_delivery_attachment,
+          :customer_po_received_attachment,
+          :customer_po_delivery_attachment,
           :commercial_terms_and_conditions,
           :comments,
           :product_type,

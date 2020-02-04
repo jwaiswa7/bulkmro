@@ -1204,7 +1204,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def purchase_orders_old
-    binding.pry
     service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_orders.csv', folder)
     errors = []
     service.loop(limit) do |x|
@@ -4961,6 +4960,38 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         elsif pod_rows.present?
           pod_rows.destroy_all
         end
+      end
+    end
+  end
+
+  def create_dummy_product_stocks
+    warehouse_wise_products_quantity = {
+      'BM9O3Y9': {'BH': 27000},
+      'BM9O9D4': {'BH': 31000, 'CN': 6800},
+      'BM9Y0A4': {'BH': 10000},
+      'BM9X3F3': {'BH': 35000, 'CN': 8000},
+      'BM9S0I2': {'BH': 20000, 'CN': 13500},
+      'BM9U7U0': {'BH': 41000, 'CN': 4800},
+      'BM9O1H1': {'BH': 3100, 'CN': 600},
+      'BM9T1D6': {'BH': 2900, 'CN': 500},
+      'BM9W5T6': {'BH': 2900},
+      'BM9S3N2': {'BH': 12000, 'CN': 5600}
+    }
+
+    bh = Warehouse.find 'LGVfay'
+    cn = Warehouse.find 'OxGf6R'
+
+    warehouse_wise_products_quantity.stringify_keys.each do |k, v|
+      p = Product.find_by_sku(k)
+
+      if p
+        if v[:BH].present?
+          WarehouseProductStock.create(product_id: p.id, warehouse_id: bh.id, instock: v[:BH])
+        end
+        
+        if v[:CN].present?
+          WarehouseProductStock.create(product_id: p.id, warehouse_id: cn.id, instock: v[:CN])
+        end  
       end
     end
   end

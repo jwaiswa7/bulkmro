@@ -26,7 +26,14 @@ json.data (@purchase_orders) do |purchase_order|
                       end,
                       if is_authorized(purchase_order, 'change_material_status') && policy(purchase_order).change_material_status?
                         row_action_button(change_material_status_overseers_purchase_order_path(purchase_order), 'wrench', 'Change Material Status', 'primary', :_blank)
-                      end
+                      end,
+                      if is_authorized(purchase_order, 'index')
+                        link_to('', class: ['btn btn-sm btn-success comment-purchase_order'], 'data-model-id': purchase_order.id, title: 'Comment', remote: true) do
+                          concat content_tag(:span, '')
+                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                        end
+                      end,
+
                   ].join(' '),
                   purchase_order.po_request.present? ? (conditional_link(purchase_order.po_request.id, overseers_po_request_path(purchase_order.po_request), is_authorized(purchase_order.po_request, 'show') && policy(purchase_order.po_request).show?)) : '-',
                   link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: '_blank'),

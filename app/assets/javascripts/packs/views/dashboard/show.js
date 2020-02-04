@@ -5,7 +5,7 @@ const show = () => {
     $('.datatable').on('click', '.update-followup', function (e) {
         var id = $(this).data('inquiry-id');
         var json = {
-            url: "/overseers/inquiries/" + id + "/render_followup_edit_form",
+            url: Routes.render_followup_edit_form_overseers_inquiry_path(id),
             modalId: '#update-followup-date',
             className: '.followup',
             buttonClassName: '.confirm',

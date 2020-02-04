@@ -24,6 +24,8 @@
     <%= render partial: 'shared/layouts/datatable' %>
   <% elsif @is_henkel %>
     <%= render partial: 'grid_henkel' %>
+  <% elsif @is_saint_gobain %>
+    <%= render partial: 'grid_saint_gobain' %>
   <% else %>
     <%= render partial: 'grid' %>
   <% end %>

@@ -75,6 +75,10 @@ class Inquiry < ApplicationRecord
   has_many_attached :supplier_quotes
   has_one_attached :final_supplier_quote
   has_one_attached :calculation_sheet
+  has_one_attached :committed_delivery_attachment
+  has_one_attached :customer_po_received_attachment
+  has_one_attached :customer_po_delivery_attachment
+  validate :inquiry_sales_quote_date_validation
 
   enum status: {
       'Lead by O/S': 11,
@@ -96,6 +100,7 @@ class Inquiry < ApplicationRecord
       'Hold by Accounts': 20,
       'Order Lost': 9,
       'Regret': 10,
+      'Regret Request': 22
   }
 
   enum pipeline_status: {
@@ -117,11 +122,11 @@ class Inquiry < ApplicationRecord
       'Rejected by Accounts': 19,
       # 'Hold by Accounts': 20,
       'Order Lost': 9,
-      'Regret': 10,
+      'Regret': 10
   }, _suffix: true
 
   def regrettable_statuses
-    Inquiry.statuses.keys.sort.reject {|status| ['Order Lost', 'Regret', 'Expected Order'].include?(status)}
+    Inquiry.statuses.keys.sort.reject {|status| ['Order Lost', 'Regret Request', 'Expected Order'].include?(status)}
   end
 
   enum stage: {
@@ -259,6 +264,17 @@ class Inquiry < ApplicationRecord
 
   validate :company_is_active, if: :new_record?
 
+  def inquiry_sales_quote_date_validation
+    if self.sales_quotes.present? && self.quotation_date.present?
+      if self.quotation_date < self.sales_quotes.last.created_at.to_date
+        errors.add(:inquiry, 'Quotation Date Must Be Greater Than Last Quote Created Date')
+      end
+    else
+      if self.quotation_date.present?
+        errors.add(:inquiry, 'You not able to add quotation date before any SQ creation')
+      end
+    end
+  end
 
   def company_is_active
     if !self.company.is_active
@@ -569,5 +585,11 @@ class Inquiry < ApplicationRecord
 
   def self.bible_data_till_date
     BibleSalesOrder.order('mis_date asc').last.mis_date.strftime('%b %Y')
+  end
+
+  def overall_margin_percent
+    calculated_total_cost = self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total_cost).compact.sum : (self.sales_quotes.present? ? self.sales_quotes.last.calculated_total_cost : 0)
+    calculated_total = self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : (self.sales_quotes.present? ? self.sales_quotes.last.calculated_total : 0)
+    ((1 - (calculated_total_cost / calculated_total)) * 100).round(2) if calculated_total > 0
   end
 end

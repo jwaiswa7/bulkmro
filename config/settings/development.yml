@@ -78,7 +78,7 @@ wit:
   auth_token: E4C6GLQOFR4FPNUGUIUDCK3W6T4MWHON
 
 heroku:
-  dyno_adjuster_token: 3c7865fa-e80c-4e9f-a65a-12f23259c4a3
+  dyno_adjuster_token: 748abf58-35e7-46f8-a4bb-8e274e992259
 
 razorpay:
   MERCHANT_KEY_ID: 'rzp_test_YorJsu5KKxrZxc'
@@ -86,7 +86,7 @@ razorpay:
 
 sap:
   ENDPOINT: 'https://35.200.144.191:50000/b1s/v1'
-  DATABASE: 'BMRO_15NOV2019'
+  DATABASE: 'BMRO_13DEC2019'
   USERNAME: 'manager'
   PASSWORD: 'vm1234'
   ATTACHMENT_ENDPOINT: 'https://35.200.144.191:22'

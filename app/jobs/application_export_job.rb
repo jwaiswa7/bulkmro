@@ -2,7 +2,7 @@
 
 class ApplicationExportJob < ActiveJob::Base
   # include Sidekiq::Worker
-  queue_as :default
+  queue_as :high_priority
   # sidekiq_options retry: 1, queue: 'high_priority'
 
   def perform(*args)

@@ -2,12 +2,16 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
   def initialize(po_request, params)
     @po_request = po_request
     @params = params
+    @is_stock = params['is_stock'].present? ? params['is_stock'] : 'no'
   end
 
   def create
     ActiveRecord::Base.transaction do
       warehouse = Warehouse.where(id: po_request.bill_to.id)
-      series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' ' + Date.today.year.to_s).last
+      date = Date.today
+      year = date.year
+      year = year - 1 if date.month < 4
+      series = Series.where(document_type: 'Purchase Order', series_name: warehouse.last.series_code + ' ' + year.to_s).last
       @purchase_order = PurchaseOrder.where(po_number: series.last_number).first_or_create! do |purchase_order|
         purchase_order_params = assign_purchase_order_attributes(series.last_number)
         # purchase_order.update_attributes(purchase_order_params)
@@ -70,7 +74,11 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
         end
       end
       @purchase_order.save_and_sync(po_request)
-      po_request.update_attributes(status: 'Supplier PO: Amended')
+      if @is_stock == 'no'
+        po_request.update_attributes(status: 'Supplier PO: Amended')
+      else
+        po_request.update_attributes(stock_status: 'Supplier Stock PO: Amended')
+      end
 
       @purchase_order.update_attributes(material_status: nil)
       comments = po_request.comments.build(created_by_id: params[:overseer].id, updated_by_id: params[:overseer].id)

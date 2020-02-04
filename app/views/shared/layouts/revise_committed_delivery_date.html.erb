@@ -1,0 +1,46 @@
+<div class="col-12">
+    <%= simple_form_for(@sales_order, url: update_revised_committed_delivery_date_overseers_inquiry_sales_order_path(@inquiry, @sales_order), :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <%= render 'shared/snippets/form_errors', f: f %>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="form-row">
+            <div class="col-6 col-md-6">
+              <%= f.input :revised_committed_delivery_date, as: :string, :label => 'Revised Committed Delivery Date', input_html: {:'data-toggle' => 'datepicker'}, readonly: true %>
+            </div>
+
+            <div class="col-6 col-md-6">
+              <%= f.input :revised_committed_deliveries, wrapper: :custom_file, label: 'Delivery Date Revision Attachment', required: true %>
+
+                <% f.object.revised_committed_deliveries.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="fal fa-download"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                      <i class="fal fa-trash-alt"></i>
+                    <% end if attachment.present? %>
+<!--                  && is_authorized(:attachment, 'destroy') && policy(:attachment).destroy?-->
+                  <% end %>
+                <% end if f.object.revised_committed_deliveries.attached? %>
+            </div>
+          </div>
+
+          <div class="row">
+            <% if f.object.inquiry.comments.persisted.where(sales_order: f.object, revised_committed_delivery_date: true).size > 0 %>
+              <div class="card-body">
+                <h6 class="text-uppercase text-black-50 mb-1">Date Revision History</h6>
+                <div class="chats">
+                  <% f.object.inquiry.comments.persisted.where(sales_order: f.object, revised_committed_delivery_date: true).order(created_at: :desc).each do |comment| %>
+                    <%= format_comment(comment) %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block") do %>
+        <i class="fal fa-pen mr-1"></i> Revise Customer Committed Delivery Date
+      <% end %>
+    <% end %>
+</div>

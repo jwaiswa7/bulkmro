@@ -42,6 +42,8 @@ class ResyncRemoteRequest < ApplicationRecord
   end
 
   def error_message
-    response['raw_response']['error']['message']['value']
+    if response['raw_response']['error'].present?
+      response['raw_response']['error']['message']['value']
+    end
   end
 end

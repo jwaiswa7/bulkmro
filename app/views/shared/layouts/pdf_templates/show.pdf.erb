@@ -236,7 +236,13 @@
     .address-section-gap {
       width: 6%;
     }
-
+    .wicked {
+      background-image: url('<%= Rails.root.join('app', 'assets', 'images', 'cancelled_watermark.png') %>');
+      background-repeat: repeat-y;
+      background-attachment: fixed;
+      background-position: 30% 0;
+      background-size: 100%;
+    }
   </style>
 </head>
 <body class="bmropdfprint-index-orderpdf">
