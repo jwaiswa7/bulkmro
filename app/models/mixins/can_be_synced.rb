@@ -9,7 +9,7 @@ module Mixins::CanBeSynced
         service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
       end
 
-      # service.call
+      service.call
       self.save
     end
 
