@@ -269,13 +269,14 @@ let setup = () => {
                             });
                         } else if (filter == 'daterange') {
                             var dataNameTemp = $(column.header()).data('name')
+                            var placeholderName = dataNameTemp.replace(/_/g, " ")
                             let date_class = ((dataNameTemp == 'mis_date')||(dataNameTemp=='po_date')||(dataNameTemp=='created_at')) ? 'date-item hide '+dataNameTemp: '';
                             if(data_multiclass.length == 0){
                                 data_multiclass.push(dataNameTemp)
                             }else if(data_multiclass.includes('mis_date' || 'po_date') && dataNameTemp=='created_at'){
                                 $('.date-item').not('.created_at').removeClass("hide")
                             }
-                            input = $('<div class="bmro-input-search bmro-arrow-parent '+date_class+'"><input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" /></div>');
+                            input = $('<div class="bmro-input-search bmro-arrow-parent '+date_class+'"><input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Select ' + placeholderName +'" /></div>');
                         } else if (filter == 'ajax') {
                             let source = "";
                             json.columnFilters[this.index()].forEach(function (f) {
