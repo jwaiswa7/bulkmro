@@ -209,56 +209,56 @@
                   <th class="no-sort product-width-adjustment">
                     <span>Product</span>
                   </th>
-                  <th class="no-sort">
+                  <th class="no-sort text-right">
                     <span data-toggle="tooltip" title="Quantity">Qty</span>
                   </th>
-                  <th class="no-sort">
+                  <th class="no-sort text-left">
                     <span data-toggle="tooltip" title="Unit of Measurement">UoM</span>
                   </th>
-                  <th class="no-sort">
+                  <th class="no-sort text-right">
                     <span data-toggle="tooltip" title="Unit Cost">UC</span>
                   </th>
-                  <th class="no-sort">
+                  <th class="no-sort text-right">
                     <span data-toggle="tooltip" title="Margin Percentage">%</span>
                   </th>
-                  <th class="no-sort">
+                  <th class="no-sort text-right">
                     <span data-toggle="tooltip" title="Unit Selling Price">USP</span>
                   </th>
-                  <th class="no-sort">
+                  <th class="no-sort text-right">
                     <span data-toggle="tooltip" title="Total Selling Price">TSP</span>
                   </th>
-                  <th class="no-sort">
+                  <th class="no-sort text-right">
                     <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span>
                   </th>
-                  <th class="no-sort">
+                  <th class="no-sort text-right">
                     <span data-toggle="tooltip" title="Tax Code">T. Code</span>
                   </th>
-                  <th class="no-sort">
+                  <th class="no-sort text-right">
                     <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
                   </th>
                   <% if @sales_order.sales_quote.tax_summary.strip == '0' ||
                       (@sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
-                    <th class="no-sort">
+                    <th class="no-sort text-right">
                       <span data-toggle="tooltip" title="Tax Rate">IGST Rate</span>
                     </th>
-                    <th class="no-sort">
+                    <th class="no-sort text-right">
                       <span data-toggle="tooltip" title="Tax Rate">IGST Amt</span>
                     </th>
                   <% else %>
-                    <th class="no-sort">
+                    <th class="no-sort text-right">
                       <span data-toggle="tooltip" title="Tax Rate">CGST Rate</span>
                     </th>
-                    <th class="no-sort">
+                    <th class="no-sort text-right">
                       <span data-toggle="tooltip" title="Tax Rate">CGST Amt</span>
                     </th>
-                    <th class="no-sort">
+                    <th class="no-sort text-right">
                       <span data-toggle="tooltip" title="Tax Rate">SGST Rate</span>
                     </th>
-                    <th class="no-sort">
+                    <th class="no-sort text-right">
                       <span data-toggle="tooltip" title="Tax Rate">SGST Amt</span>
                     </th>
                   <% end %>
-                  <th class="no-sort">
+                  <th class="no-sort text-right">
                     <span data-toggle="tooltip" title="Total Freight">T. Freight</span>
                   </th>
                 </tr>
@@ -266,62 +266,62 @@
                 <tbody>
                 <% @sales_order.rows.each do |row| %>
                   <tr>
-                    <td>
+                    <td class="text-right">
                       <span>#<%= row.sr_no %></span>
                     </td>
                     <td>
                       <span><%= row.sales_quote_row %></span>
                     </td>
-                    <td>
+                    <td class="text-right">
                       <span><%= row.quantity %></span>
                     </td>
                     <td>
                       <span><%= row.measurement_unit %></span>
                     </td>
-                    <td>
+                    <td class="text-right">
                       <span><%= format_currency(row.converted_unit_cost_price_with_unit_freight_cost, symbol: @sales_order.currency_sign) %></span>
                     </td>
-                    <td>
+                    <td class="text-right">
                       <span><%= number_with_precision(row.margin_percentage, precision: 2) %></span>
                     </td>
-                    <td>
+                    <td class="text-right">
                       <span><%= format_currency(row.converted_unit_selling_price, symbol: @sales_order.currency_sign) %></span>
                     </td>
-                    <td>
+                    <td class="text-right">
                       <span><%= format_currency(row.converted_total_selling_price, symbol: @sales_order.currency_sign) %></span>
                     </td>
-                    <td>
+                    <td class="text-right">
                       <span><%= format_currency(row.converted_total_selling_price_with_tax, symbol: @sales_order.currency_sign) %></span>
                     </td>
-                    <td>
+                    <td class="text-right">
                       <span><%= row.best_tax_code %></span>
                     </td>
-                    <td>
+                    <td class="text-right">
                       <span><%= row.best_tax_rate %></span>
                     </td>
                     <% if @sales_order.sales_quote.tax_summary.strip == '0' ||
                         (@sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
-                      <td>
+                      <td class="text-right">
                         <span><%= row.sales_quote_row.applicable_tax_percentage * 100 %>%</span>
                       </td>
-                      <td>
+                      <td class="text-right">
                         <span><%= format_currency(row.sales_quote_row.converted_total_tax, precision: 2, symbol: nil) %></span>
                       </td>
                     <% else %>
-                      <td>
+                      <td class="text-right">
                         <span><%= row.sales_quote_row.best_tax_rate.tax_percentage / 2 if row.sales_quote_row.best_tax_rate.present? %>%</span>
                       </td>
-                      <td>
+                      <td class="text-right">
                         <span><%= number_to_currency(row.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
                       </td>
-                      <td>
+                      <td class="text-right">
                         <span><%= row.sales_quote_row.best_tax_rate.tax_percentage / 2 if row.sales_quote_row.best_tax_rate.present? %>%</span>
                       </td>
-                      <td>
+                      <td class="text-right">
                         <span><%= number_to_currency(row.sales_quote_row.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
                       </td>
                     <% end %>
-                    <td>
+                    <td class="text-right">
                       <span><%= format_currency(row.freight_cost_subtotal, symbol: @sales_order.currency_sign) %></span>
                     </td>
                   </tr>

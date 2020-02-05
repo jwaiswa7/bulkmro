@@ -46,7 +46,7 @@
       <th class="no-sort" width="98px">Quick Actions</th>
       <th class="no-sort desktop text-right" width="77px">Doc ID</th>
       <th class="no-sort desktop text-right" width="124px">Sent At</th>
-      <th>Created By</th>
+      <th class="text-left">Created By</th>
       <th class="no-sort desktop text-right" width="117px">Line Items</th>
       <th class="no-sort desktop text-right" width="108px">Total(Excl. Tax)</th>
       <th class="no-sort desktop text-right" width="149px">Total(Incl. Tax)</th>
@@ -97,7 +97,7 @@
           </td>
           <td class="text-right"><%= sales_quote.ancestors.count > 0 ? "R#{sales_quote.ancestors.count} - #{sales_quote.id}" : "#{sales_quote.id}"  %></td>
           <td class="text-right"><%= format_date(sales_quote.sent_at) %></td>
-          <td class="text-right"><%= sales_quote.created_by.to_s %></td>
+          <td class="text-left"><%= sales_quote.created_by.to_s %></td>
           <td class="text-right"><%= sales_quote.rows.size %></td>
           <td class="text-right"><%= format_currency(sales_quote.calculated_total) %></td>
           <td class="text-right"><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
