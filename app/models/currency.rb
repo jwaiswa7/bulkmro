@@ -29,7 +29,7 @@ class Currency < ApplicationRecord
   def self.usd
     find_by_name('USD')
   end
-  
+
   def self.lei
     find_by_name('LEI')
   end
