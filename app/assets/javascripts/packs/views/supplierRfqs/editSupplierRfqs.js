@@ -51,15 +51,14 @@ let updateAllInquiryProductSuppliers = () => {
         let delay = 300;
         $("form").each(function() {
             let $this = $(this);
-            let input = $("<input>")
-                .attr("type", "hidden")
-                .attr("name", "button").val(formType);
+            let input = $("<input>").attr("type", "hidden").attr("name", "button").val(formType);
             $this.append(input);
             setTimeout( function () {
                 $this.submit();
             }, delay);
             delay = delay + 700;
         });
+        location.reload();
     });
 };
 
