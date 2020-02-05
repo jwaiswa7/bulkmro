@@ -43,9 +43,9 @@
                       </div>
                       <div class="modal-body bmro-model-body-padding">
                         <% if current_overseer.admin? %>
-                          <%= f.input :status, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select'}, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S', 'Regret')), selected: @inquiry.status %>
+                          <%= f.input :status, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select'}, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S', 'Regret'), keep_raw: true), selected: @inquiry.status %>
                         <% elsif ["Order Lost"].include?(@inquiry.status) %>
-                          <%= f.input :status, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select'}, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S', 'Regret')), selected: @inquiry.status %>
+                          <%= f.input :status, input_html: {class: 'select2-single bmro-form-input bmro-dropdown-icon bmro-width-select'}, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S', 'Regret'), keep_raw: true), selected: @inquiry.status %>
                         <% else %>
                           <%= f.input :status, input_html: {class: 'select2-single bmro-form-input bmro-width-select  bmro-dropdown-icon'}, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses.except('Lead by O/S', 'Regret'), keep_raw: true), disabled: @inquiry.regrettable_statuses %>
                         <% end %>
@@ -741,12 +741,10 @@
             <% else %>
               <div class="form-row bmro-product-btn-parent">
                 <div class="bmro-fl">
-                  <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addexcel-icon mr-1"></i>Add
-                    From Excel</a>
+                  <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addexcel-icon mr-1"></i>Add From Excel</a>
                 </div>
                 <div class="bmro-fl">
-                  <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addlist-icon mr-1"></i>Add
-                    From List</a>
+                  <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addlist-icon mr-1"></i>Add From List</a>
                 </div>
                 <div class="bmro-fl">
                   <%= f.add_nested_fields_link :inquiry_products, class: 'btn btn-block mb-2 mb-md-0 bmro-product-btn' do %>
@@ -754,8 +752,7 @@
                   <% end %>
                 </div>
                 <div class="bmro-fl">
-                  <a href="<%= new_overseers_kit_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-createkit-icon mr-1"></i>Create
-                    a Kit</a>
+                  <a href="<%= new_overseers_kit_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-createkit-icon mr-1"></i>Create a Kit</a>
                 </div>
               </div>
             <% end %>
