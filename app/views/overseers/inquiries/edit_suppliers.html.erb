@@ -80,7 +80,7 @@
                       <% if inquiry_product_supplier.object.id.present? %>
                       <%= inquiry_product_supplier.hidden_field :id %>
                         <div class="row mb-2">
-                          <div class="col-md-6">
+                          <div class="col-md-5 text-wrap">
                             <div class="d-flex flex-row pl-1">
                               <div class="custom-control custom-checkbox d-inline">
                                 <%= check_box_tag 'inquiry_product_supplier_ids[]', inquiry_product_supplier.object.id, false, id: "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}", class: 'custom-control-input' %>
@@ -97,7 +97,7 @@
                             <label title="Unit Cost Price">Unit Price</label><br>
                             <%= inquiry_product_supplier.object.unit_cost_price %>
                           </div>
-                          <div class="col-md-1">
+                          <div class="col-md-2">
                             <label title="Lowest Unit Cost Price">Latest</label><br>
                             <%= inquiry_product_supplier.object.latest_unit_cost_price %>
                           </div>
