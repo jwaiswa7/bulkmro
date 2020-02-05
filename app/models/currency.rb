@@ -15,6 +15,8 @@ class Currency < ApplicationRecord
       '$'
     elsif name == 'EUR'
       '€'
+    elsif name == 'LEI'
+      'L'
     else
       '₹'
     end
@@ -26,6 +28,10 @@ class Currency < ApplicationRecord
 
   def self.usd
     find_by_name('USD')
+  end
+  
+  def self.lei
+    find_by_name('LEI')
   end
 
   def self.eur
