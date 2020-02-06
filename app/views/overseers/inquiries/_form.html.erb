@@ -701,7 +701,11 @@
                 <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_name), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
               </div>
 
-              <div class="col-2 col-md-1 text-center ban-icon-position">
+              <div class=" col-md-2">
+                <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_sku), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+              </div>
+
+              <div class="col-md-1 text-center mt-1">
                 <% if inquiry_product.object.persisted? %>
                   <%= format_boolean_label(inquiry_product.object.product.synced?, 'synced') %>
                 <% else %>
