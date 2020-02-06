@@ -4255,3 +4255,15 @@ td .media.chat-item{
 .search-dropdown-position .form-group{
   overflow: visible;
 }
+
+.ban-icon-position{
+  height: 34px;
+  position: relative;
+}
+
+.ban-icon-position span i {
+  position: absolute;
+  top: 15%;
+  left: 27%;
+  height: 100%;
+}
