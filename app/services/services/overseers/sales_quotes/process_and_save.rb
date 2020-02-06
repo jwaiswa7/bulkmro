@@ -18,13 +18,19 @@ class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseS
         row.converted_unit_selling_price = row.calculated_converted_unit_selling_price
       end
       sales_quote.supplier_rfq_ids = sales_quote.rows.map { |sq_row| sq_row.inquiry_product_supplier.supplier_rfq_id }.compact if sales_quote.id.nil?
-      SupplierRfqsIndex::SupplierRfq.import([po_row.po_request_row.inquiry_product_supplier.supplier_rfq.id])
-      # if sales_quote.sent_at.present?
-      #   sales_quote.save_and_sync
-      # else
-      #   sales_quote.save
-      # end
-      sales_quote.save
+
+      if sales_quote.sent_at.present?
+        sales_quote.save_and_sync
+        remote_uid = SalesQuote.maximum('remote_uid') + 1
+        sales_quote.update_attributes(remote_uid: remote_uid)
+        sales_quote.inquiry.update_attributes(quotation_uid: remote_uid)
+      else
+        sales_quote.save
+      end
+      supplier_rfqs = SupplierRfq.where(id: sales_quote.supplier_rfq_ids) if sales_quote.supplier_rfq_ids.present?
+      if supplier_rfqs.present?
+        sales_quote.supplier_rfqs.map { |rfq| SupplierRfqsIndex::SupplierRfq.import([rfq.id])  }
+      end
     else
       sales_quote.reload
       sales_quote.inquiry.errors.add(:sales_quote, 'Must have at least one sales quote row')
