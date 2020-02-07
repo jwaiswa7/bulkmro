@@ -81,73 +81,17 @@ let onProductChange = (container) => {
 let onScrollandClickSideMenu = () => {
     let topHeight = $('.bmro-nav-ul').height() + $('.bmro-head-bg').height() + 70
 
-    $('.bmro-company-summary').click(function() {
+    $('.side-menu-click').on('click', function() {
+        let dataValueAttr = $(this).attr('data-path')
         $('html, body').animate({
-            scrollTop: $(".bmro-company-summary-slide").offset().top - 200
+            scrollTop: $('#'+dataValueAttr).offset().top - topHeight
         }, 1000)
-    }),
-    $('.bmro-Produts-summary').click(function (){
-            $('html, body').animate({
-                scrollTop: $(".bmro-Produts-summary-slide").offset().top
-            }, 1000)
-        }),
-
-    $('.bmro-Opportunity-Details').click(function (){
-            $('html, body').animate({
-                scrollTop: $(".bmro-Opportunity-Details-slide").offset().top - topHeight
-            }, 1000)
-        })
-
-    $('.bmro-Billing').click(function (){
-        $('html, body').animate({
-            scrollTop: ($(".bmro-Billing-slide").offset().top)-topHeight
-        }, 1000)
-    })
-
-    $('.bmro-owner-details').click(function (){
-        $('html, body').animate({
-            scrollTop: $(".bmro-owner-details-slide").offset().top - topHeight
-        }, 1000)
-    })
-
-    $('.bmro-order-details-slide').click(function (){
-        $('html, body').animate({
-            scrollTop: $(".bmro-order-slide").offset().top - topHeight
-        }, 1000)
-    })
-
-    $('.bmro-important').click(function (){
-        $('html, body').animate({
-            scrollTop: $(".bmro-important-slide").offset().top - topHeight
-        }, 1000)
-    })
-
-    $('.bmro-slide-top').click(function (){
-        $('html, body').animate({
-            scrollTop: $(".bmro-top-slide").offset().top - 200
-        }, 1000)
-    })
-
-    $('.bmro-product-slide').click(function (){
-        $('html, body').animate({
-            scrollTop: $(".bmro-product-slide-on").offset().top - 200
-        }, 1000)
-    })
-
-    $('.bmro-new-slide').click(function (){
-        $('html, body').animate({
-            scrollTop: $(".bmro-new-slide-on").offset().top - 200
-        }, 1000)
-    })
-
-    $('.bmro-invoice-one').click(function(){
-        $(this).parent().toggleClass('bmro-parent-bg')
-    })
+    });
 
     document.addEventListener('scroll', function() {
         $('.target-scroll').each(function() {
             if( $(window).scrollTop() >= ($(this).offset().top-topHeight-1)) {
-                var id = $(this).attr('id');
+                let id = $(this).attr('id');
                 $('.bmro-li-right').addClass('bmro-active-li',1000);
                 $('label[data-path='+ id +']').parent('.bmro-li-right').removeClass('bmro-active-li');
             }
