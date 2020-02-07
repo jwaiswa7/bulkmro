@@ -13,7 +13,6 @@ class Suppliers::RfqController < Suppliers::BaseController
     status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_rfqs, SupplierRfq)
     status_service.call
     @total_values = status_service.indexed_total_values
-    @statuses = status_service.indexed_statuses
   end
 
   def edit_rfq
