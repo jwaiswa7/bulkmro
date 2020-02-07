@@ -28,18 +28,18 @@
 
 <section class="bmro-width-fl">
   <ul class="nav nav-tabs nav-fill bmro-nav-ul">
-    <%= nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
-    <%= nav_item('Imports', overseers_inquiry_imports_path(@inquiry), is_authorized(@inquiry,'imports') && policy(@inquiry).imports?) %>
-    <%= nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit_suppliers') && policy(@inquiry).edit_suppliers?) %>
-    <%= nav_item('RFQs', edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry), is_authorized(@inquiry,'draft_rfq') && policy(@inquiry).draft_rfq?) %>
-    <%= nav_item('RFQ Review', rfq_review_overseers_inquiry_sales_quotes_path(inquiry_id: @inquiry), is_authorized(@inquiry,'draft_rfq') && policy(@inquiry).rfq_review?) %>
-    <%= nav_item('Sales Quotes', overseers_inquiry_sales_quotes_path(@inquiry), is_authorized(@inquiry,'sales_quotes') && policy(@inquiry).sales_quotes?) %>
-    <%= nav_item('Sales Orders', overseers_inquiry_sales_orders_path(@inquiry), is_authorized(@inquiry,'sales_orders') && policy(@inquiry).sales_orders?) %>
-    <%= nav_item('Purchase Orders', overseers_inquiry_purchase_orders_path(@inquiry), is_authorized(@inquiry,'purchase_orders') && policy(@inquiry).purchase_orders?) %>
-    <%= nav_item('Invoices', overseers_inquiry_sales_invoices_path(@inquiry), is_authorized(@inquiry,'sales_invoices') && policy(@inquiry).sales_invoices?) %>
-    <%= nav_item('Shipments', overseers_inquiry_sales_shipments_path(@inquiry), is_authorized(@inquiry,'sales_shipments') && policy(@inquiry).sales_shipments?) %>
-    <%= nav_item('Stages', stages_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
-    <%= nav_item('Comments', overseers_inquiry_comments_path(@inquiry), is_authorized(@inquiry,'comments') && policy(@inquiry).comments?) %>
+    <%= tab_nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
+    <%= tab_nav_item('Imports', overseers_inquiry_imports_path(@inquiry), is_authorized(@inquiry,'imports') && policy(@inquiry).imports?) %>
+    <%= tab_nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit_suppliers') && policy(@inquiry).edit_suppliers?) %>
+    <%= tab_nav_item('RFQs', edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry), is_authorized(@inquiry,'draft_rfq') && policy(@inquiry).draft_rfq?) %>
+    <%= tab_nav_item('RFQ Review', rfq_review_overseers_inquiry_sales_quotes_path(inquiry_id: @inquiry), is_authorized(@inquiry,'draft_rfq') && policy(@inquiry).rfq_review?) %>
+    <%= tab_nav_item('Sales Quotes', overseers_inquiry_sales_quotes_path(@inquiry), is_authorized(@inquiry,'sales_quotes') && policy(@inquiry).sales_quotes?) %>
+    <%= tab_nav_item('Sales Orders', overseers_inquiry_sales_orders_path(@inquiry), is_authorized(@inquiry,'sales_orders') && policy(@inquiry).sales_orders?) %>
+    <%= tab_nav_item('Purchase Orders', overseers_inquiry_purchase_orders_path(@inquiry), is_authorized(@inquiry,'purchase_orders') && policy(@inquiry).purchase_orders?) %>
+    <%= tab_nav_item('Invoices', overseers_inquiry_sales_invoices_path(@inquiry), is_authorized(@inquiry,'sales_invoices') && policy(@inquiry).sales_invoices?) %>
+    <%= tab_nav_item('Shipments', overseers_inquiry_sales_shipments_path(@inquiry), is_authorized(@inquiry,'sales_shipments') && policy(@inquiry).sales_shipments?) %>
+    <%= tab_nav_item('Stages', stages_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
+    <%= tab_nav_item('Comments', overseers_inquiry_comments_path(@inquiry), is_authorized(@inquiry,'comments') && policy(@inquiry).comments?) %>
   </ul>
   <div class="tab-content bmro-mp-0">
     <div class="tab-pane fade active show bmro-mp-0" role="tabpanel">
