@@ -5,7 +5,7 @@
   <div class="card bmro-card">
 <div class="bmro-adjusting-form">
     <div class="card-body bmro-card-body bmro-card-body-pt" data-spy="scroll" data-target=".bmro-nav" data-offset="100">
-      <div class="bmro-Opportunity-slide" id="Opportunity-Details"></div>
+      <div class="bmro-Opportunity-slide target-scroll" id="Opportunity-Details"></div>
       <div>
         <h6 class="mb-1 bmro-form-heading bmro-Opportunity-Details-slide">Opportunity Details</h6>
 
@@ -113,7 +113,7 @@
         </div>
       </div>
 
-      <div class="form-row" id="Billing">
+      <div class="form-row">
         <div class="col-6 col-md-4">
           <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types), required: true, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
         </div>
@@ -128,7 +128,7 @@
       </div>
       <div class="bmro-dotted-line bmro-dotted-mt"></div>
       <div class="mt-3">
-        <h6 class="mb-1 bmro-form-heading bmro-Billing-slide">Billing / Shipping Details</h6>
+        <h6 class="mb-1 bmro-form-heading bmro-Billing-slide target-scroll" id="Billing">Billing / Shipping Details</h6>
 
         <% if is_authorized(@inquiry, 'disable_billing_shipping_details') && policy(@inquiry).disable_billing_shipping_details? %>
           <div class="form-row">
@@ -157,7 +157,7 @@
             <%= f.association :shipping_company, :wrapper => :custom_multi_select, label_method: :to_s, input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' }, include_blank: "Select a shipping company" %>
           </div>
         </div>
-        <div class="form-row" id="Owner">
+        <div class="form-row">
           <div class="col-12 col-md-6">
             <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'select2-ajax bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company), :'data-placeholder' => "Select a billing contact"}, required: true %>
           </div>
@@ -178,8 +178,8 @@
       <div class="bmro-dotted-line bmro-dotted-mt"></div>
 
       <div class="mt-3">
-        <h6 class="mb-1 bmro-form-heading bmro-owner-details-slide">Owner Details</h6>
-        <div class="form-row" id="Important">
+        <h6 class="mb-1 bmro-form-heading bmro-owner-details-slide target-scroll" id="Owner">Owner Details</h6>
+        <div class="form-row">
           <div class="col-12 col-md-3">
             <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, label: 'Procurement Specialist', input_html: {class: "select2-single bmro-form-input bmro-dropdown-icon", :'data-placeholder' => 'Select a Procurement Specialist'}, disabled: is_authorized(f.object, 'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
           </div>
@@ -198,7 +198,7 @@
       <div class="bmro-dotted-line bmro-dotted-mt"></div>
 
       <div class="mt-3">
-        <h6 class="bmro-form-heading bmro-fl bmro-important-slide">Important Dates
+        <h6 class="bmro-form-heading bmro-fl bmro-important-slide target-scroll" id="Important">Important Dates
           <div class="bmro-date-important">
             <% if f.object.created_at %>
               <div class="form-group bmro-fl ">
@@ -219,7 +219,7 @@
             <% end %>
           </div>
         </h6>
-        <div class="form-row" id="Order">
+        <div class="form-row">
           <div class="col-12 col-md-4">
             <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: {:'data-toggle' => 'datepicker'} %>
           <%= f.input :quotation_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, input_html: { class: 'bmro-form-input' }, disabled: true %>
@@ -236,7 +236,7 @@
       <% if f.object.sales_quote.present? %>
         <div class="bmro-dotted-line bmro-dotted-mt"></div>
         <div class="mt-3">
-          <h6 class="mb-1 bmro-form-heading bmro-order-slide">Order Details</h6>
+          <h6 class="mb-1 bmro-form-heading bmro-order-slide target-scroll" id="Order">Order Details</h6>
           <div class="form-row">
             <div class="col-12 col-md-5">
               <%= f.input :customer_po_number, label: 'Customer purchase order number', input_html: { class: 'bmro-form-input' }, disabled: is_authorized(f.object,'restrict_fields_on_completed_orders') && policy(f.object).restrict_fields_on_completed_orders? %>
@@ -596,9 +596,11 @@
             <li class="bmro-li-right bmro-active-li">
               <label data-path="Important" class="bmro-list-button bmro-important">Important Dates</label>
             </li>
-            <li class="bmro-li-right bmro-active-li">
-              <label class="bmro-list-button bmro-order-details-slide" data-path="Order">Order Details</label>
-            </li>
+            <% if f.object.sales_quote.present? %>
+              <li class="bmro-li-right bmro-active-li">
+                <label class="bmro-list-button bmro-order-details-slide" data-path="Order">Order Details</label>
+              </li>
+            <% end %>
           </ul>
         </nav>
       </div>
