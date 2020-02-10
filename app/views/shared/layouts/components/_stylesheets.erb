@@ -11,14 +11,19 @@
 <% if !Rails.env.production? || !Rails.env.staging? %>
   <%= stylesheet_link_tag 'shared/imports', media: 'all', 'data-turbolinks-track': 'reload' %>
 <% end %>
-<% if params[:controller].include?('dashboard') && !current_overseer.admin? %>
-  <%= stylesheet_link_tag 'shared/dashboard.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<% unless current_overseer.nil? %>
+  <% if params[:controller].include?('dashboard') && !current_overseer.admin? %>
+    <%= stylesheet_link_tag 'shared/dashboard.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <% else %>
+    <%= stylesheet_link_tag 'shared/application.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <% end %>
+
+  <% if params[:controller].include?('dashboard') && (current_overseer.manager? || current_overseer.inside?) %>
+    <%= stylesheet_link_tag 'scss/redesign/sales_dashboard', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <% end %>
 <% else %>
   <%= stylesheet_link_tag 'shared/application.css', media: 'all', 'data-turbolinks-track': 'reload' %>
-<% end %>
-
-<% if params[:controller].include?('dashboard') && (current_overseer.manager? || current_overseer.inside?) %>
-  <%= stylesheet_link_tag 'scss/redesign/sales_dashboard', media: 'all', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <!-- /Styles -->
