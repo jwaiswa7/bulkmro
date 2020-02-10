@@ -1,6 +1,6 @@
 class Customers::CustomerProductsController < Customers::BaseController
   before_action :set_customer_product, only: [:show, :to_cart]
-  before_action :set_data_for_saint_gobain, only: [:index, :show]
+  before_action :set_data_for_saint_gobain, :set_data_for_henkel, only: [:index, :show]
 
   def index
     authorize :customer_product
@@ -75,5 +75,10 @@ class Customers::CustomerProductsController < Customers::BaseController
       @is_saint_gobain = (current_company.id == 11420)
       @bhiwandi_warehouse = Warehouse.find 'LGVfay'
       @chennai_warehouse = Warehouse.find 'OxGf6R'
+    end
+
+    def set_data_for_henkel
+      authorize :customer_product
+      @phursungi_warehouse = Warehouse.find 'rQJfAO'
     end
 end
