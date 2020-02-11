@@ -1,6 +1,7 @@
 class Customers::CustomerProductsController < Customers::BaseController
   before_action :set_customer_product, only: [:show, :to_cart]
   before_action :set_data_for_saint_gobain, :set_data_for_henkel, only: [:index, :show]
+  include DisplayHelper
 
   def index
     authorize :customer_product
@@ -49,7 +50,11 @@ class Customers::CustomerProductsController < Customers::BaseController
     @display_class = ''
     if @is_henkel
       @default_quantity = 0
-      @display_class = (@customer_product.product.stocks.sum(&:instock) > 0) ? '' : 'd-none'
+      @display_class = get_instock_status(@customer_product, @phursungi_warehouse) ? '' : 'd-none'
+    end
+
+    if @is_saint_gobain
+      @display_class = get_instock_status(@customer_product, [@bhiwandi_warehouse, @chennai_warehouse]) ? '' : 'd-none'
     end
   end
 
