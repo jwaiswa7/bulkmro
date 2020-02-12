@@ -5,7 +5,7 @@
     define_type Inquiry.all.with_includes do
       field :id, type: 'integer'
       field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
-      field :status, value: -> (record) { statuses[record.status] }
+      field :status, value: -> (record) { statuses[record.status] }, analyzer: 'substring'
       field :status_key, value: -> (record) { statuses[record.status] }, type: 'integer'
       field :pipeline_status_key, value: -> (record) { pipeline_statuses[record.status] }, type: 'integer'
       field :subject, analyzer: 'substring'
