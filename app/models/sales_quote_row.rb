@@ -114,7 +114,7 @@ class SalesQuoteRow < ApplicationRecord
       self.sales_quote.inquiry_currency.conversion_rate
     else
       1
-     end
+    end
   end
 
   def maximum_quantity

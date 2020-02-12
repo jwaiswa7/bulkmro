@@ -103,7 +103,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
         inside_sales: sales_order.inside_sales_owner.try(:full_name),
         inquiry_number: (inquiry.inquiry_number if inquiry.present?),
         bm_number: (row.product.present? ? row.product.sku : row.get_product.sku),
-        description: (row.product.present? ?  row.product.name : row.get_product.name),
+        description: (row.product.present? ? row.product.name : row.get_product.name),
         company_alias: (inquiry.account.name if inquiry.present?),
         order_date: sales_order.created_at.to_date.to_s,
         order_number: sales_order.order_number,
@@ -128,7 +128,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
         so_month_code: '',
         quote_type: (inquiry.quote_category if inquiry.present? && inquiry.quote_category.present?),
         currency: (inquiry.currency.name if inquiry.present?),
-        conversion_rate: (inquiry.inquiry_currency.conversion_rate if (inquiry.present? && inquiry.inquiry_currency.present?)),
+        conversion_rate: (inquiry.inquiry_currency.conversion_rate if inquiry.present? && inquiry.inquiry_currency.present?),
         company_name: (inquiry.company.name if inquiry.present?),
         AR_Invoice: sales_order.invoices.pluck(:invoice_number).join(';'),
         AR_Invoice_Date: sales_order.invoices.map{ |i| i.created_at.to_date.to_s }.join(';'),
@@ -146,11 +146,11 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
         Type_Of_Customer: (inquiry.company.company_type if inquiry.present?),
         Customer_Industry: (inquiry.company.industry.try(:name) if inquiry.present?),
         Customer: ((
-        if (inquiry.present? && inquiry.company.present? && inquiry.company.default_billing_address.country_code == 'IN') then
+        if inquiry.present? && inquiry.company.present? && inquiry.company.default_billing_address.country_code == 'IN' then
           'Domestic'
         else
           'Exports'
-        end) if (inquiry.present? && inquiry.company.present? && inquiry.company.default_billing_address.present?)),
+        end) if inquiry.present? && inquiry.company.present? && inquiry.company.default_billing_address.present?),
         Product_Category: (row.product.present? ? (row.product.category.ancestors_to_s.first if row.product.category.present? && row.product.category.ancestors_to_s.first.present?) : (row.get_product.category.ancestors_to_s.first if row.get_product.category.present? && row.get_product.category.ancestors_to_s.first.present?)),
         Product_Sub_Category_1: (row.product.present? ? (row.product.category.ancestors_to_s.second if row.product.category.present? && row.product.category.ancestors_to_s.second.present?) : (row.get_product.category.ancestors_to_s.second if row.get_product.category.present? && row.get_product.category.ancestors_to_s.second.present?)),
         Product_Sub_Category_2: (row.product.category.ancestors_to_s.third if row.product.present? && row.product.category.present? && row.product.category.ancestors_to_s.third.present?),
