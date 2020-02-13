@@ -11,8 +11,14 @@
         <div class="card-body">
           <div class="form-row">
             <div class="col-12">
-              <%= button_tag(type: "button", name: "generate_sales_quote", class: "btn btn-success btn-block generate_sales_quote ") do %>
-                <i class="far fa-check mr-1"></i> Generate Sales Quote
+              <% if is_authorized(@inquiry, 'new_sales_quote') && policy(@inquiry).new_sales_quote? %>
+                <%= button_tag(type: "button", name: "generate_sales_quote", class: "btn btn-success btn-block generate_sales_quote ") do %>
+                  <i class="far fa-check mr-1"></i> Generate Sales Quote
+                <% end %>
+              <% elsif @inquiry.sales_quotes.present? && is_authorized(@inquiry.final_sales_quote, 'new_revision') && is_authorized(@inquiry.final_sales_quote, 'display_revision_button') && policy(@inquiry.final_sales_quote).new_revision? && policy(@inquiry.final_sales_quote).display_revision_button?  %>
+                <a href="<%= new_revision_overseers_inquiry_sales_quote_path(@inquiry, @inquiry.final_sales_quote) %>" class="btn btn-warning btn-block generate_sales_quote" target="_self" title="" data-method="get" data-original-title="Create Sales Quote Revision">
+                  <i class="fal fa-redo-alt mr-1"></i>Create Sales Quote Revision
+                </a>
               <% end %>
             </div>
           </div>
