@@ -259,7 +259,7 @@ const tooltips = () => {
                             // if the tooltip isn't already open, open that sucker up!
                             else {
                                 // disable horizontal scrollbar to keep overflowing tooltips from jacking with it
-                                $('body').css('overflow-x', 'hidden');
+                                // $('body').css('overflow-x', 'hidden');
 
                                 // get the content for the tooltip
                                 var content = $this.data('tooltipsterContent');
