@@ -95,21 +95,25 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
   end
 
   def build_csv
-    model.joins(:sales_order).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where.not('sales_orders.order_number': nil).where.not('sales_orders.sales_quote_id': nil).where(created_at: start_at..end_at).order(created_at: :desc).find_each(batch_size: 100) do |row|
+    records = model.joins(:sales_order).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where.not('sales_orders.order_number': nil).where.not('sales_orders.sales_quote_id': nil).where(created_at: start_at..end_at).order(created_at: :desc)
+    records.find_each(batch_size: 100) do |row|
       sales_order = row.sales_order
       inquiry = sales_order.inquiry
-
+      product = row.product.present? ? row.product : row.get_product
+      sales_quote_row = row.sales_quote_row
+      supplier = sales_quote_row.supplier
+      company = inquiry.company if inquiry.present?
       rows.push(
         inside_sales: sales_order.inside_sales_owner.try(:full_name),
         inquiry_number: (inquiry.inquiry_number if inquiry.present?),
-        bm_number: (row.product.present? ? row.product.sku : row.get_product.sku),
-        description: (row.product.present? ? row.product.name : row.get_product.name),
+        bm_number: (product.sku),
+        description: (product.name),
         company_alias: (inquiry.account.name if inquiry.present?),
         order_date: sales_order.created_at.to_date.to_s,
         order_number: sales_order.order_number,
         qty: row.quantity,
         selling_price: row.converted_total_selling_price,
-        supplier_name: (row.sales_quote_row.supplier.name if row.sales_quote_row.supplier.present?),
+        supplier_name: (supplier.name if supplier.present?),
         total_landed_cost: '',
         margin: row.total_margin,
         margin_percentage: row.margin_percentage,
@@ -118,10 +122,10 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
         unit_price: row.unit_selling_price,
         freight: row.freight_cost_subtotal,
         tax_type: '', # remaining
-        tax_rate: row.sales_quote_row.try(:tax_rate).try(:tax_percentage),
+        tax_rate: sales_quote_row.try(:tax_rate).try(:tax_percentage),
         tax_amount: '',
         gross_total_selling: '',
-        buying_rate: row.sales_quote_row.unit_cost_price,
+        buying_rate: sales_quote_row.unit_cost_price,
         buying_total: '',
         invoice_value: '',
         invoice_value_with_tax: '',
@@ -129,7 +133,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
         quote_type: (inquiry.quote_category if inquiry.present? && inquiry.quote_category.present?),
         currency: (inquiry.currency.name if inquiry.present?),
         conversion_rate: (inquiry.inquiry_currency.conversion_rate if inquiry.present? && inquiry.inquiry_currency.present?),
-        company_name: (inquiry.company.name if inquiry.present?),
+        company_name: (company.name if company.present?),
         AR_Invoice: sales_order.invoices.pluck(:invoice_number).join(';'),
         AR_Invoice_Date: sales_order.invoices.map{ |i| i.created_at.to_date.to_s }.join(';'),
         AR_Month_Code: '',
@@ -143,20 +147,20 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
         Domestic_Inward_Logistics: '',
         Domestic_Warehouse: '',
         Domestic_Outward_Logistics: '',
-        Type_Of_Customer: (inquiry.company.company_type if inquiry.present?),
-        Customer_Industry: (inquiry.company.industry.try(:name) if inquiry.present?),
+        Type_Of_Customer: (company.company_type if company.present?),
+        Customer_Industry: (company.industry.try(:name) if inquiry.present?),
         Customer: ((
-        if inquiry.present? && inquiry.company.present? && inquiry.company.default_billing_address.country_code == 'IN' then
+        if company.default_billing_address.country_code == 'IN' then
           'Domestic'
         else
           'Exports'
-        end) if inquiry.present? && inquiry.company.present? && inquiry.company.default_billing_address.present?),
-        Product_Category: (row.product.present? ? (row.product.category.ancestors_to_s.first if row.product.category.present? && row.product.category.ancestors_to_s.first.present?) : (row.get_product.category.ancestors_to_s.first if row.get_product.category.present? && row.get_product.category.ancestors_to_s.first.present?)),
-        Product_Sub_Category_1: (row.product.present? ? (row.product.category.ancestors_to_s.second if row.product.category.present? && row.product.category.ancestors_to_s.second.present?) : (row.get_product.category.ancestors_to_s.second if row.get_product.category.present? && row.get_product.category.ancestors_to_s.second.present?)),
-        Product_Sub_Category_2: (row.product.category.ancestors_to_s.third if row.product.present? && row.product.category.present? && row.product.category.ancestors_to_s.third.present?),
-        brand: (row.product.present? ? (row.product.brand.name if row.product.brand.present?) : (row.get_product.brand.name if row.get_product.brand.present?)),
-        Type_Of_Supplier: (row.sales_quote_row.supplier.company_type if row.sales_quote_row.supplier.present?),
-        Supplier_Domestic_Imports: if row.sales_quote_row.supplier.present? && (row.sales_quote_row.supplier.default_shipping_address.try(:country_code) == 'IN' || row.sales_quote_row.supplier.addresses.first.try(:country_code) == 'IN') then
+        end) if inquiry.present? && company.present? && company.default_billing_address.present?),
+        Product_Category: (product.category.ancestors_to_s.first if product.category.present? && product.category.ancestors_to_s.first.present?),
+        Product_Sub_Category_1: (product.category.ancestors_to_s.second if product.category.present? && product.category.ancestors_to_s.second.present?),
+        Product_Sub_Category_2: (product.category.ancestors_to_s.third if product.present? && product.category.present? && product.category.ancestors_to_s.third.present?),
+        brand: (product.brand.name if product.brand.present?),
+        Type_Of_Supplier: (supplier.company_type if supplier.present?),
+        Supplier_Domestic_Imports: if supplier.present? && (supplier.default_shipping_address.try(:country_code) == 'IN' || supplier.addresses.first.try(:country_code) == 'IN') then
                                      'Domestic'
                                    else
                                      'Imports'
