@@ -1,8 +1,10 @@
-  <div class="page-header">
+<div class="page-header">
   <div class="">
     <h2>
       <% if content_for?(:heading) %>
         <%= yield :heading %>
+      <% elsif action_name.include?('rfq') %>
+          <%= SupplierRfq.readable_action(action_name) %>
       <% else %>
         <%= request.path.split('/').last.titleize %>
       <% end %>

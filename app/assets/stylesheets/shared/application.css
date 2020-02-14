@@ -16539,9 +16539,18 @@ ul.gj-list li.list-group-item ul li div {
 
 @media (min-width: 992px) {
   .modal-large {
-    min-width: 500px;
-    max-width: 1500px;
+      min-width: 500px;
+      max-width: 1500px;
+      overflow-y: scroll;
+      min-height: 500px;
+      max-height: 600px;
   }
+  .modal-large .modal-content {
+    overflow: hidden;
+  }
+    .modal-large .modal-content .dataTables_wrapper {
+       width: 98%;
+    }
 }
 .no-scroll-bars {
   -ms-overflow-style: none;

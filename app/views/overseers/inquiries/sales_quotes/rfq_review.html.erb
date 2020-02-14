@@ -1,4 +1,7 @@
 <%#= render 'overseers/inquiries/sales_quotes/form' %>
+<% content_for :page_title do %>
+  RFQ Review
+<% end %>
 <div class="col-lg-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <%= simple_form_for([:overseers, @inquiry, @sales_quote], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>

@@ -1,7 +1,11 @@
 <div class="navbar bg-white breadcrumb-bar">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <%= raw breadcrumbs(yield(:page_title), yield(:controller_is_aliased)) %>
+      <% if action_name.include?('rfq') %>
+        <%= raw breadcrumbs(yield(:page_title), yield(:controller_is_aliased)) %>
+      <% else %>
+        <%= raw breadcrumbs(yield(:page_title), yield(:controller_is_aliased)) %>
+      <% end %>
     </ol>
   </nav>
   <% if current_overseer.present? %>

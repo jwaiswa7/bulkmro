@@ -58,6 +58,7 @@ let updateAllInquiryProductSuppliers = () => {
             }, delay);
             delay = delay + 700;
         });
+        location.reload();
     });
 };
 

@@ -37,11 +37,11 @@ slack:
 
 sendgrid:
   username: bulk
-  password: bdi97DHddP
+  password: GhgjIH4zw3p2
   api_key: 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
   default_email: pradeep.ketkale@bulkmro.com
 
-domain: sprint.bulkmro.com
+domain: staging.bulkmro.com
 
 gmail_smtp:
   address: "smtp.gmail.com"
@@ -81,12 +81,12 @@ heroku:
   dyno_adjuster_token: 748abf58-35e7-46f8-a4bb-8e274e992259
 
 razorpay:
-  MERCHANT_KEY_ID:  'rzp_live_RpAdyGJ65HXFGB'
-  MERCHANT_KEY_SECRET:  'qfPQ2TRAPQxPAqQx8Msvrya9'
+  MERCHANT_KEY_ID: 'rzp_test_YorJsu5KKxrZxc'
+  MERCHANT_KEY_SECRET: 'F1KKKL5ntCXObq4EZ6huRj32'
 
 sap:
   ENDPOINT: 'https://35.200.144.191:50000/b1s/v1'
-  DATABASE: 'BULKMRO_PRODUCTION'
+  DATABASE: 'BMRO_17JANUARY2020'
   USERNAME: 'manager'
   PASSWORD: 'vm1234'
   ATTACHMENT_ENDPOINT: 'https://35.200.144.191:22'

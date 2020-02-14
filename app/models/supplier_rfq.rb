@@ -28,4 +28,12 @@ class SupplierRfq < ApplicationRecord
   def calculated_total_with_tax
     self.inquiry_product_suppliers.map { |ips| ips.total_unit_cost_price_with_freight_with_tax }.compact.sum
   end
+
+  def self.readable_action(action_name)
+    if  action_name == 'edit_supplier_rfqs'
+      'Edit Supplier RFQs'
+    elsif action_name == 'rfq_review'
+      'RFQ Review'
+    end
+  end
 end

@@ -6,7 +6,7 @@ json.data (@companies) do |company|
                   conditional_link(company.to_s,  overseers_company_path(company), is_authorized(company, 'show')),
                   conditional_link(company.account.name.to_s,  overseers_account_path(company.account), is_authorized(company.account, 'show')),
                   company.nature_of_business&.titleize || '-',
-                  company.billing_address&.to_multiline_s,
+                  company.supplied_brands.map(&:name)&.uniq&.join(', ').upcase,
                   company.default_contact&.name || '-',
                   if company.is_supplier? && company.rating.present? && company.rating > 0
                     format_star(company.rating)
@@ -16,7 +16,7 @@ json.data (@companies) do |company|
                   company.purchase_orders.count,
                   company.supplied_brands&.uniq&.count,
                   company.supplied_products&.uniq&.count,
-                  company.supplied_brands.map(&:name)&.uniq&.join(', ').upcase,
+                  company.billing_address&.to_multiline_s,
                   company.created_by.to_s,
                   format_succinct_date(company.created_at)
               ]

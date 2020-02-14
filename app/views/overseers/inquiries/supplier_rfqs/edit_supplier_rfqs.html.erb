@@ -1,10 +1,12 @@
+<% content_for :page_title do %>
+  Edit Supplier RFQ
+<% end %>
 <div class="col-lg-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <div class="card">
       <div class="card-header">
         <div class="form-row">
           <% if @supplier_rfqs.present? %>
-
             <div class="col-md-3 pl-3">
               <span class="custom-control custom-checkbox d-inline">
                 <%= check_box_tag 'select_all_isps', true, false, id: "select_all_isps", class: 'custom-control-input' %>
