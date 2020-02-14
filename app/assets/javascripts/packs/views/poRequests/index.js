@@ -14,10 +14,10 @@ const index = () => {
     });
 
     $('.datatable').on('click', '.cancel-po_request', function (e) {
-        if (confirm('Do you want to '+ $(this).attr('title').toLowerCase() +' the PO Request?')) {
+        if (confirm('Do you want to '+ $(this).attr('data-id').toLowerCase() +' the PO Request?')) {
             var id = $(this).data('po-request-id')
             // var $this = $(this)
-            var title = $(this).attr('title')
+            var title = $(this).attr('data-id')
 
             var json = {
                 url: "/overseers/po_requests/" + id + "/render_modal_form?title=" + title,

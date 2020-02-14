@@ -7,7 +7,7 @@ json.data (@po_requests) do |po_request|
                         row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
                       if is_authorized(po_request, 'can_cancel') && policy(po_request).can_cancel?
-                        link_to('', class: ['icon-title btn btn-sm btn-dark cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Cancel', remote: true) do
+                        link_to('', class: ['btn btn-sm btn-dark cancel-po_request icon-title'], 'data-po-request-id': po_request.id,'data-id':'Cancel', title: 'Cancel', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
@@ -19,12 +19,12 @@ json.data (@po_requests) do |po_request|
                         end
                       end,
                       if po_request.po_request_type == 'Stock' && is_authorized(po_request, 'can_reject') && policy(po_request).can_reject?
-                        link_to('', class: ['icon-title btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
+                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request icon-title'], 'data-po-request-id': po_request.id, 'data-id':'Reject', title: 'Reject', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       elsif is_authorized(po_request, 'can_reject') && policy(po_request).can_reject?
-                        link_to('', class: po_request.status != 'Supplier PO Request Rejected' ? ['icon-title btn btn-sm btn-danger cancel-po_request'] : ['btn btn-sm btn-danger cancel-po_request disabled'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
+                        link_to('', class: po_request.status != 'Supplier PO Request Rejected' ? ['icon-title btn btn-sm btn-danger cancel-po_request'] : ['btn btn-sm btn-danger cancel-po_request disabled'], 'data-po-request-id': po_request.id, 'data-id':'Reject', title: 'Reject', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
