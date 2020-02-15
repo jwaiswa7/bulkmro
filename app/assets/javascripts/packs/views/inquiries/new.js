@@ -1,4 +1,5 @@
 import select2s from "../../components/select2s";
+import onScrollandClickSideMenu from '../common/ScrollandClickSideMenu';
 
 const newAction = () => {
     $('form').on('change', 'select[name*=shipping_company_id]', function (e) {
@@ -20,6 +21,7 @@ const newAction = () => {
         let reset = false;
         onCompanyChange(this, reset);
     });
+    onScrollandClickSideMenu();
 
 };
 
@@ -81,5 +83,6 @@ let onCompanyChange = (container, reset) => {
 
     }
 };
+
 
 export default newAction
