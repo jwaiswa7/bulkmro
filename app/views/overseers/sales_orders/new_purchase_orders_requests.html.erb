@@ -59,7 +59,7 @@
             </ul>
           </p>
           <%= f.simple_fields_for :po_requests, @po_requests.values do |po_request| %>
-            <div class="simple-row">
+            <div class="simple-row target-scroll" id="Top">
               <p class="text">
                 <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
                 <strong><%= po_request.object.supplier.to_s %>: <%= po_request.object.supplier.try(:legacy_email) %></strong>
@@ -102,13 +102,10 @@
           <nav class="bmro-nav bmro-width-100 bmro-fl" data-spy="affix" data-offset-top="205">
             <ul class="bmro-label-ul">
               <li class="bmro-li-right">
-                <label class="bmro-list-button bmro-slide-top">Top</label>
+                <label class="bmro-list-button bmro-slide-top side-menu-click" data-path="Top">Top</label>
               </li>
               <li class="bmro-li-right bmro-active-li">
-                <label class="bmro-list-button bmro-product-slide">Product</label>
-              </li>
-              <li class="bmro-li-right bmro-active-li">
-                <label class="bmro-list-button bmro-new-slide">Add New Product</label>
+                <label class="bmro-list-button bmro-product-slide side-menu-click" data-path="Product">Product</label>
               </li>
             </ul>
           </nav>
@@ -117,7 +114,7 @@
   </div>
     <% else %>
       <div class="card">
-        <div class="card-body">
+        <div class="card-body target-scroll" id="Top">
           <p>
             <ul class="list-group text-danger mb-3">
               <% @sales_order.rows.each do |order_row| %>
