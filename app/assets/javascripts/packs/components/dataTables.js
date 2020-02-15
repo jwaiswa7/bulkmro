@@ -242,12 +242,12 @@ let setup = () => {
 
                 // Init filters
                 $('.reset-table-filters').on('click', function (e) {
-                    $('.fillter-wrapper .select2-ajax').val('').trigger('change')
-                    $('.fillter-wrapper .select').val('').trigger('change')
-                    $('.fillter-wrapper [data-toggle="daterangepicker"]').val('').trigger('change')
-                    $('.bmro-table-layout [data-toggle="daterangepicker"]').val('')
-                    $('.bmro-search-width').val('')
-                    $('.bmro-date-bag').val('');
+                    $('.fillter-wrapper .select2-ajax').val('').trigger('change');
+                    $('.fillter-wrapper .select').val('').trigger('change');
+                    $('.fillter-wrapper [data-toggle="daterangepicker"]').val('').trigger('change');
+                    $('.bmro-table-layout [data-toggle="daterangepicker"]').val('').trigger('change');
+                    $('.bmro-search-width').val('').trigger('keyup');
+                    $('.bmro-date-bag').val('').trigger('keyup');
                 });
                 var data_multiclass = [];
                 this.api().columns().every(function () {
