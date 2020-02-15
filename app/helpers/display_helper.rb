@@ -360,4 +360,8 @@ module DisplayHelper
   def display_stock_status(customer_product, *warehouses)
     format_boolean_label(customer_product.product.stocks.where(warehouse_id: warehouses).sum(&:instock).to_i > 0, 'In Stock')
   end
+
+  def get_instock_status(customer_product, *warehouses)
+    customer_product.product.stocks.where(warehouse_id: warehouses).sum(&:instock).to_i > 0 ? true : false
+  end
 end

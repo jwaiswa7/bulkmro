@@ -30,7 +30,7 @@ class SalesQuoteRow < ApplicationRecord
   # validate :validate_is_unit_selling_price_consistent_with_margin_percentage?, if: :not_legacy?
 
   def unit_cost_price
-    if !self.sales_quote.is_credit_note_entry
+    if !self.sales_quote.is_credit_note_entry && self.inquiry_product_supplier.present?
       self.inquiry_product_supplier.unit_cost_price
     else
       self.credit_note_unit_cost_price
@@ -110,7 +110,11 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def conversion_rate
-    self.sales_quote.inquiry_currency.conversion_rate || 1
+    if self.sales_quote.inquiry_currency.present?
+      self.sales_quote.inquiry_currency.conversion_rate
+    else
+      1
+    end
   end
 
   def maximum_quantity

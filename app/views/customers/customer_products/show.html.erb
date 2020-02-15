@@ -91,6 +91,9 @@
                   <strong class="d-block">Instock Quantity(per Warehouse)</strong>
                   <b>BH</b> - <%= @customer_product.product.stocks.where(warehouse_id: @bhiwandi_warehouse.id).sum(&:instock).to_i %>
                   , <b>CN</b> - <%= @customer_product.product.stocks.where(warehouse_id: @chennai_warehouse.id).sum(&:instock).to_i %>
+                <% elsif @is_henkel %>
+                  <strong class="d-block">Instock Quantity(per Warehouse)</strong>
+                  <b>PUN</b> - <%= @customer_product.product.stocks.where(warehouse_id: @phursungi_warehouse.id).sum(&:instock).to_i %>
                 <% else %>
                   <strong class="d-block">Instock Quantity</strong>
                   <%= @customer_product.product.stocks.sum(&:instock).to_i %>
