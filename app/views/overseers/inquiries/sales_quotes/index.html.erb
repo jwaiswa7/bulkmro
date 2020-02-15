@@ -21,7 +21,7 @@
     </div>
       <ul class="list-group text-info mb-3 bmro-float-left-left collapse" id="instruction">
         <li class="list-group-item bmro-instruction-ul bmro-padding-ul-left">
-          <i class="bmro-bullets-icon"></i> Before making a sales order, Please fulfill the following.
+          Before making a sales order, Please fulfill the following.
         </li>
         <% if @inquiry.customer_po_number.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer PO number must be present.</li><% end %>
         <% if @inquiry.customer_order_date.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer order date must be present.</li><% end %>
