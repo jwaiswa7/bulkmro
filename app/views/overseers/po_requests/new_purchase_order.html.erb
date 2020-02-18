@@ -143,7 +143,9 @@
                 <strong><em>Contact</em></strong>: <%= f.object.supplier.default_contact.phone.present? ? " #{f.object.supplier.default_contact}" : '-' %>
               <% end %>
               <br>
-              <% if f.object.supplier.default_shipping_address.gst.present? %>
+              <% if f.object.ship_from.present? && f.object.ship_from.gst.present? %>
+                <strong><em>GST Number</em></strong>: <%= f.object.ship_from.gst %><br>
+              <% elsif f.object.supplier.default_shipping_address.present? && f.object.supplier.default_shipping_address.gst.present? %>
                 <strong><em>GST Number</em></strong>: <%= f.object.supplier.default_shipping_address.gst %><br>
               <% end %>
             </div>

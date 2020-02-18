@@ -1,4 +1,5 @@
 // Imports
+import disableBackdateOption from "../common/disableBackdateOption";
 
 const editSupplierRfqs = () => {
 
@@ -6,6 +7,13 @@ const editSupplierRfqs = () => {
         $('input[name="inquiry_product_supplier_ids[]"]').each(function () {
             $(this).prop('checked', $('#select_all_isps').prop("checked")).trigger('change');
         });
+    });
+
+    $('input[name*=lead_time]').on("focus", function () {
+        let $this = $(this);
+        let newDate = Date.parse(new Date());
+        console.log(newDate);
+        disableBackdateOption($this,true,moment(newDate).format('DD-MMM-YYYY'));
     });
 
     $(".rfq_edit :input").on('change', function () {

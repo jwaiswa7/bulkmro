@@ -35,8 +35,9 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   def new_revision
+    inquiry_product_suppliers = params['inquiry_product_supplier_ids']
     @old_sales_quote = @inquiry.sales_quotes.find(params[:id])
-    @sales_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(@old_sales_quote, current_overseer).call
+    @sales_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(@old_sales_quote, current_overseer, inquiry_product_suppliers).call
 
     authorize_acl @old_sales_quote
     render 'new'

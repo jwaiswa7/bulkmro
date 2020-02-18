@@ -1,9 +1,12 @@
 <%#= render 'overseers/inquiries/sales_quotes/form' %>
+<% content_for :page_title do %>
+  RFQ Review
+<% end %>
 <div class="col-lg-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <%= simple_form_for([:overseers, @inquiry, @sales_quote], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= f.hidden_field :inquiry_id %>
-      <%= f.hidden_field :parent_id %>
+      <%= f.hidden_field :parent_id, value: @inquiry.final_sales_quote.present? ? @inquiry.final_sales_quote.id : '' %>
 
       <%= render 'shared/snippets/form_errors', f: f %>
 
@@ -16,9 +19,9 @@
                   <i class="far fa-check mr-1"></i> Generate Sales Quote
                 <% end %>
               <% elsif @inquiry.sales_quotes.present? && is_authorized(@inquiry.final_sales_quote, 'new_revision') && is_authorized(@inquiry.final_sales_quote, 'display_revision_button') && policy(@inquiry.final_sales_quote).new_revision? && policy(@inquiry.final_sales_quote).display_revision_button?  %>
-                <a href="<%= new_revision_overseers_inquiry_sales_quote_path(@inquiry, @inquiry.final_sales_quote) %>" class="btn btn-m btn-block btn-warning bmro-button generate_sales_quote" target="_self" title="" data-method="get" data-original-title="Create Sales Quote Revision">
+                <%= button_tag(type: "button", name: "reset_sales_quote", class: "btn btn-m btn-block btn-warning bmro-button reset_sales_quote") do %>
                   <i class="fal fa-redo-alt mr-1"></i>Create Sales Quote Revision
-                </a>
+                <% end %>
               <% end %>
             </div>
           </div>
@@ -64,7 +67,7 @@
                         <div class="col-12">
                           <div class="d-flex flex-row">
                             <div class="custom-control custom-radio align-self-center mr-2">
-                              <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, (f.object.persisted? && row.object.persisted?) || (rows.select { |r| r.new_record? }.size == rows.size && rows[0] == row.object), "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input supplier_id', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' %>
+                              <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, (f.object.persisted? && row.object.persisted?) || (rows.select { |r| r.new_record? }.size == rows.size && rows[0] == row.object) || (@inquiry.final_sales_quote.present? && (@inquiry.final_sales_quote.rows.pluck(:inquiry_product_supplier_id).compact.include?(row.object.inquiry_product_supplier_id))), "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input supplier_id', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' %>
                               <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1], :"data-toggle" => "collapse", "data-target" => "#c-" + row.object.inquiry_product_supplier_id.to_s do %><%= '' %>
                               <% end %>
                             </div>

@@ -14,8 +14,8 @@ json.data(@rfqs) do |rfq|
                   rfq.status,
                   format_date_with_time(rfq.email_sent_at),
                   rfq.inquiry_product_suppliers.map { |ips| ips.inquiry_product.product }.count,
-                  rfq.calculated_total,
-                  rfq.calculated_total_with_tax,
+                  rfq.calculated_total.present? ? format_currency(rfq.calculated_total, show_symbol: false) : 0.0,
+                  rfq.calculated_total_with_tax.present? ? format_currency(rfq.calculated_total_with_tax, show_symbol: false) : 0.0,
                   format_date_with_time(rfq.created_at)
               ]
 end
