@@ -85,7 +85,7 @@
                         </td>
                         <td class="col-md-1">
                           <label title="Lowest Unit Cost Price">Lowest</label><br>
-                          <%= inquiry_product_supplier.object.lowest_unit_cost_price %>
+                          <%= (inquiry_product_supplier.object.lowest_unit_cost_price != 'N/A' && inquiry_product_supplier.object.lowest_unit_cost_price != nil) ? inquiry_product_supplier.object.lowest_unit_cost_price.round(2) : 'N/A' %>
                         </td>
                         <td class="col-md-1">
                           <label title="Unit Cost Price">Unit Price</label><br>
@@ -93,7 +93,7 @@
                         </td>
                         <td class="col-md-1">
                           <label title="Lowest Unit Cost Price">Latest</label><br>
-                          <%= inquiry_product_supplier.object.latest_unit_cost_price %>
+                          <%= (inquiry_product_supplier.object.latest_unit_cost_price != 'N/A' && inquiry_product_supplier.object.latest_unit_cost_price != nil) ? inquiry_product_supplier.object.latest_unit_cost_price.round(2) : 'N/A' %>
                         </td>
                         <td class="col-md-1">
                           <%= inquiry_product_supplier.remove_nested_fields_link do %>

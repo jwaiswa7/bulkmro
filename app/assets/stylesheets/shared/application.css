@@ -16542,8 +16542,7 @@ ul.gj-list li.list-group-item ul li div {
       min-width: 500px;
       max-width: 1500px;
       overflow-y: scroll;
-      min-height: 500px;
-      max-height: 600px;
+      height: 90vh;
   }
   .modal-large .modal-content {
     overflow: hidden;
