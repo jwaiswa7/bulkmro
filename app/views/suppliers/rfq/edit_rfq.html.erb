@@ -86,7 +86,7 @@
                   </div>
                   <div class="col-1">
                     <div class="form-group mb-0">
-                      <%= inquiry_product_supplier.input :gst, label: 'GST%', input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', 'data-id' => "gst_#{inquiry_product_supplier.object.id}"}, collection: TaxRate.all.map {|tax_rate| [tax_rate.tax_percentage.to_s, tax_rate.tax_percentage.to_s]}, required: true %>
+                      <%= inquiry_product_supplier.input :gst, label: 'GST%', input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', 'data-id' => "gst_#{inquiry_product_supplier.object.id}"}, collection: TaxRate.first(5).map {|tax_rate| [tax_rate.tax_percentage.to_s, tax_rate.tax_percentage.to_s]}, required: true %>
                     </div>
                   </div>
                   <div class="col-2">

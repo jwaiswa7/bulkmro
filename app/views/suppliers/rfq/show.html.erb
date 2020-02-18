@@ -8,6 +8,25 @@
     </div>
   </div>
   <div class="card">
+    <div class="card-body">
+      <div class="form-row">
+        <div class="col-12">
+          <div class="form-row d-none d-md-flex">
+            <div class="col-6">
+              <div class="form-group mb-0">
+                <h5 class="display-5 mb-1">RFQ Documents</h5><br>
+                <% @rfq.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <%= attachment.filename %>
+                  <% end %>
+                <% end if @rfq.attachments.attached? %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
     <% @rfq.inquiry_product_suppliers.each_with_index do |inquiry_product_supplier, index| %>
       <% unless index == 0 %>
         <hr>
