@@ -1,8 +1,7 @@
 const onScrollandClickSideMenu = () => {
-    if ($('.bmro-nav-ul').length == 0){
-        var topHeight = $('.bmro-head-bg').height() + 69;
-    }else{
-        var topHeight = $('.bmro-nav-ul').height() + $('.bmro-head-bg').height() + 69;
+    var topHeight = $('.bmro-head-bg').height() + 69;
+    if ($('.bmro-nav-ul').length != 0){
+        topHeight = $('.bmro-nav-ul').height() + $('.bmro-head-bg').height() + 69;
     }
 
     $('.side-menu-click').on('click', function() {
