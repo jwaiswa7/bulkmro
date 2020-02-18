@@ -7,7 +7,7 @@ json.data (@companies) do |company|
                   conditional_link(company.account.name.to_s,  overseers_account_path(company.account), is_authorized(company.account, 'show')),
                   company.nature_of_business&.titleize || '-',
                   company.supplied_brands.map(&:name)&.uniq&.join(', ').upcase,
-                  company.default_contact&.name || '-',
+                  company.default_contact&.name || "<div class='text-red align-middle'>No Default Contact</div>",
                   if company.is_supplier? && company.rating.present? && company.rating > 0
                     format_star(company.rating)
                   elsif company.is_supplier?

@@ -49,7 +49,7 @@
                     </div>
                     <div class="col-2">
                       <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+                        <%= inquiry_product_supplier.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :'data-id' => "lead_time_#{inquiry_product_supplier.object.id}"} %>
                       </div>
                     </div>
                     <% if inquiry_product_supplier.object.last_unit_price.present? && inquiry_product_supplier.object.last_unit_price != 0.0 %>
