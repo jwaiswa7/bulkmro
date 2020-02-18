@@ -1,5 +1,6 @@
 import select2s from "../../components/select2s";
 import onScrollandClickSideMenu from '../common/ScrollandClickSideMenu';
+import disableBackdateOption from "../common/disableBackdateOption";
 
 const newAction = () => {
     $('form').on('change', 'select[name*=shipping_company_id]', function (e) {
@@ -22,6 +23,10 @@ const newAction = () => {
         onCompanyChange(this, reset);
     });
     onScrollandClickSideMenu();
+    $('[name="inquiry[quotation_followup_date]').on("focus", function () {
+        var newDate = Date.parse(new Date())
+        disableBackdateOption($('[name="inquiry[quotation_followup_date]'),true,moment(newDate).format('DD-MMM-YYYY'));
+    });
 
 };
 
