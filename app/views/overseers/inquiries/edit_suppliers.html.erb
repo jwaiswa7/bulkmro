@@ -52,59 +52,63 @@
               <span class="custom-control custom-checkbox">
                 <%= check_box_tag 'inquiry_product_ids[]', inquiry_product.object.id, false, id: "inquiry_product_id_#{inquiry_product.object.id}", class: 'custom-control-input' %>
                 <label class="custom-control-label" for="<%= "inquiry_product_id_#{inquiry_product.object.id}" %>"></label>
-                </span>
+              </span>
             </td>
             <td>
-              <%= inquiry_product.object.product.name %><br>
-              <strong>SKU: </strong><%= inquiry_product.object.product.sku %><br>
-              <% if is_authorized(inquiry_product.object.product, 'sku_purchase_history') && policy(inquiry_product.object.product).sku_purchase_history? %>
-                <a class="ml-2" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-history mr-1"></i>History</a><br>
-                <a class="ml-2" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-inventory mr-1"></i>Resync Inventory</a>
-              <% end %>
-            </td>
-            <td>
-              <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
-                <%= inquiry_product.nested_fields_for :inquiry_product_suppliers do |inquiry_product_supplier| %>
-                  <%= inquiry_product_supplier.hidden_field :id %>
-                  <table class="table mb-0 table-border-styling">
-                    <tbody>
-                      <tr class="row">
-                        <td class="col-md-7">
-                          <div class="d-flex flex-row pl-1">
-                            <div class="custom-control custom-checkbox d-inline">
-                              <%= check_box_tag 'inquiry_product_supplier_ids[]', inquiry_product.object.id, false, id: "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}", class: 'custom-control-input' %>
-                              <label class="custom-control-label" for="<%= "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}" %>"></label>
-                              <%= inquiry_product_supplier.object.supplier.to_s %>
-<!--                              <span class="ml-1">-->
-                                <%# if inquiry_product.object.inquiry_product_suppliers.present? && !inquiry_product.object.inquiry_product_suppliers.first.supplier.rating.nil? %>
-                                  <%#= format_star(inquiry_product.object.inquiry_product_suppliers.first.supplier.rating) %>
-                                <%# end %>
-<!--                              </span>-->
-                            </div>
-                          </div>
-                        </td>
-                        <td class="col-md-1">
-                          <label title="Lowest Unit Cost Price">Lowest</label><br>
-                          <%= (inquiry_product_supplier.object.lowest_unit_cost_price != 'N/A' && inquiry_product_supplier.object.lowest_unit_cost_price != nil) ? inquiry_product_supplier.object.lowest_unit_cost_price.round(2) : 'N/A' %>
-                        </td>
-                        <td class="col-md-1">
-                          <label title="Unit Cost Price">Unit Price</label><br>
-                          <%= inquiry_product_supplier.object.unit_cost_price %>
-                        </td>
-                        <td class="col-md-1">
-                          <label title="Lowest Unit Cost Price">Latest</label><br>
-                          <%= (inquiry_product_supplier.object.latest_unit_cost_price != 'N/A' && inquiry_product_supplier.object.latest_unit_cost_price != nil) ? inquiry_product_supplier.object.latest_unit_cost_price.round(2) : 'N/A' %>
-                        </td>
-                        <td class="col-md-1">
-                          <%= inquiry_product_supplier.remove_nested_fields_link do %>
-                            <i class="far fa-times text-danger delete-isp" id="<%= inquiry_product_supplier.object.id %>"></i>
-                          <% end if is_authorized(inquiry_product_supplier.object, 'destroy') && policy(inquiry_product_supplier.object).destroy? %>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+              <div class="col-md-12">
+                <div class="text-wrap"><strong><%= inquiry_product.object.product.name %></strong></div>
+                <strong>SKU: </strong><%= inquiry_product.object.product.sku %><br>
+                <% if is_authorized(inquiry_product.object.product, 'sku_purchase_history') && policy(inquiry_product.object.product).sku_purchase_history? %>
+                  <a class="ml-2" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-history mr-1"></i>History</a><br>
+                  <a class="ml-2" href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-inventory mr-1"></i>Resync Inventory</a>
                 <% end %>
-              <% end %>
+              </div>
+            </td>
+            <td>
+              <div>
+                <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
+                  <%= inquiry_product.nested_fields_for :inquiry_product_suppliers do |inquiry_product_supplier| %>
+                    <%= inquiry_product_supplier.hidden_field :id %>
+                    <table class="table mb-0 table-border-styling">
+                      <tbody>
+                        <tr class="row">
+                          <td class="col-md-7">
+                            <div class="d-flex flex-row pl-1">
+                              <div class="custom-control custom-checkbox d-inline">
+                                <%= check_box_tag 'inquiry_product_supplier_ids[]', inquiry_product.object.id, false, id: "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}", class: 'custom-control-input' %>
+                                <label class="custom-control-label" for="<%= "inquiry_product_supplier_id_#{inquiry_product_supplier.object.id}" %>"></label>
+                                <%= inquiry_product_supplier.object.supplier.to_s %>
+  <!--                              <span class="ml-1">-->
+                                  <%# if inquiry_product.object.inquiry_product_suppliers.present? && !inquiry_product.object.inquiry_product_suppliers.first.supplier.rating.nil? %>
+                                    <%#= format_star(inquiry_product.object.inquiry_product_suppliers.first.supplier.rating) %>
+                                  <%# end %>
+  <!--                              </span>-->
+                              </div>
+                            </div>
+                          </td>
+                          <td class="col-md-1">
+                            <label title="Lowest Unit Cost Price">Lowest</label><br>
+                            <%= (inquiry_product_supplier.object.lowest_unit_cost_price != 'N/A' && inquiry_product_supplier.object.lowest_unit_cost_price != nil) ? inquiry_product_supplier.object.lowest_unit_cost_price.round(2) : 'N/A' %>
+                          </td>
+                          <td class="col-md-1">
+                            <label title="Unit Cost Price">Unit Price</label><br>
+                            <%= inquiry_product_supplier.object.unit_cost_price %>
+                          </td>
+                          <td class="col-md-1">
+                            <label title="Lowest Unit Cost Price">Latest</label><br>
+                            <%= (inquiry_product_supplier.object.latest_unit_cost_price != 'N/A' && inquiry_product_supplier.object.latest_unit_cost_price != nil) ? inquiry_product_supplier.object.latest_unit_cost_price.round(2) : 'N/A' %>
+                          </td>
+                          <td class="col-md-1">
+                            <%= inquiry_product_supplier.remove_nested_fields_link do %>
+                              <i class="far fa-times text-danger delete-isp" id="<%= inquiry_product_supplier.object.id %>"></i>
+                            <% end if is_authorized(inquiry_product_supplier.object, 'destroy') && policy(inquiry_product_supplier.object).destroy? %>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  <% end %>
+                <% end %>
+              </div>
             </td>
           </tr>
         <% end %>
