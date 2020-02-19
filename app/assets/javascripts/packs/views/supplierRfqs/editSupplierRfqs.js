@@ -59,10 +59,15 @@ let updateAllInquiryProductSuppliers = () => {
         let delay = 300;
         $("form").each(function() {
             let $this = $(this);
+            let supplier_name = $this.find('#inquiry_product_supplier').data('name');
             let input = $("<input>").attr("type", "hidden").attr("name", "button").val(formType);
             $this.append(input);
             setTimeout( function () {
                 $this.submit();
+                $.notify({
+                    type: 'success',
+                    message: 'Record updated successfully and Emails has been sent to '+supplier_name+' !'
+                });
             }, delay);
             delay = delay + 700;
         });

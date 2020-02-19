@@ -61,7 +61,7 @@
                 </div>
 
                 <%= f.nested_fields_for :inquiry_product_suppliers, f.object.inquiry_product_suppliers do |inquiry_product_supplier| %>
-                  <%= hidden_field_tag :inquiry_product_supplier, inquiry_product_supplier.object.id %>
+                  <%= hidden_field_tag :inquiry_product_supplier, inquiry_product_supplier.object.id, 'data-name': inquiry_product_supplier.object.to_s  %>
                   <% if inquiry_product_supplier.object.id.present? %>
                     <div class="form-row d-none d-md-flex">
                       <div class="col-4">

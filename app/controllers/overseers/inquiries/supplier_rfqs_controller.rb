@@ -88,11 +88,8 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
             SupplierRfqsIndex::SupplierRfq.import([@supplier_rfq.id])
           end
         end
-        flash[:notice] = 'Record updated successfully and Emails has been sent to suppliers!'
-        # redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
       else
         flash[:notice] = 'Record updated successfully'
-        # redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
       end
       #
     end
