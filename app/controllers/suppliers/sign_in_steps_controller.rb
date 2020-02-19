@@ -5,7 +5,7 @@ class Suppliers::SignInStepsController < Suppliers::BaseController
 
   def reset_current_company
     authorize @contact
-    session[:current_company_id] = nil
+    session[:current_supplier_company_id] = nil
     redirect_back fallback_location: suppliers_dashboard_path
   end
 
@@ -13,14 +13,14 @@ class Suppliers::SignInStepsController < Suppliers::BaseController
     authorize @contact
 
     if @contact.companies.size == 1
-      session[:current_company_id] = @contact.companies.first.id
+      session[:current_supplier_company_id] = @contact.companies.first.id
       redirect_to suppliers_dashboard_path
     end
   end
 
   def update_current_company
     authorize @contact
-    session[:current_company_id] = contact_params[:company_id]
+    session[:current_supplier_company_id] = contact_params[:company_id]
     redirect_to suppliers_dashboard_path
   end
 

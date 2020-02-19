@@ -21,7 +21,7 @@ class Suppliers::BaseController < ApplicationController
       store_location_for(:contact, request.fullpath)
       if request.fullpath.include? "edit_supplier_rfq"
         contact = Contact.find(params[:supplier_contact_id])
-        session[:current_company_id] = params[:supplier_id]
+        session[:current_supplier_company_id] = params[:supplier_id]
         current_company
         bypass_sign_in(contact)
       end
@@ -44,11 +44,11 @@ class Suppliers::BaseController < ApplicationController
     end
 
     def redirect_if_required
-      redirect_to_path = if session[:current_company_id].blank? || current_company.blank?
+      redirect_to_path = if session[:current_supplier_company_id].blank? || current_company.blank?
         edit_current_company_suppliers_sign_in_steps_path
-      elsif session[:current_company_id].present? && current_company.present?
+      elsif session[:current_supplier_company_id].present? && current_company.present?
         if params[:became].present? && current_suppliers_contact.companies.pluck(:id).exclude?(current_company.id)
-          session[:current_company_id] = nil
+          session[:current_supplier_company_id] = nil
           edit_current_company_suppliers_sign_in_steps_path
         elsif controller_name == 'sign_in_steps'
           suppliers_dashboard_path
@@ -93,8 +93,8 @@ class Suppliers::BaseController < ApplicationController
     # end
 
     def current_company
-      if session[:current_company_id].present?
-        @current_company ||= Company.find(session[:current_company_id])
+      if session[:current_supplier_company_id].present?
+        @current_company ||= Company.find(session[:current_supplier_company_id])
       end
     end
 
