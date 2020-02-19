@@ -55,7 +55,7 @@
 <!--                Process-->
               <%# end %>
 
-<!--            </td>-->
+            </td>
             <td>
               <% if attached_export.present? && attached_export.last.report.attached? %>
                 <%= link_to url_for(attached_export.last.report), class: 'btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1', :"data-original-title" => 'Last Download Available',:"data-toggle" => 'tooltip', :"data-badge"=> [time_ago_in_words(attached_export.last.created_at), "ago"].join(' ') do %>
