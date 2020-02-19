@@ -18204,5 +18204,8 @@ th.logistics-scorecard {
     display: none;
   }
 }
+.word-wrap-text{
+    word-wrap: break-word;
+}
 
 /*# sourceMappingURL=application.css.map */
