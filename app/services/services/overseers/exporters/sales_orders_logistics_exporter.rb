@@ -5,7 +5,6 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
     @export_name = 'sales_order_logistics'
     @path = Rails.root.join('tmp', filename)
     @columns = ['order_number', 'order_date', 'quote_number', 'quote_type', 'opportunity_type', 'invoice_number', 'inside_sales', 'outside_sales', 'company_alias', 'company_name', 'bill_to_name', 'ship_to_name', 'customer_po_number', 'grand_total (Exc. Tax)', 'grand_total (Inc.Tax)', 'buying_cost (Exc. Tax)', 'margin (Exc. tax)', 'status', 'customer_committed_date']
-    @export.update_attributes(export_type: 45, status: 'Enqueued')
   end
 
   def call
@@ -14,7 +13,7 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
 
   def build_csv
     puts '>>>>> Sales Order Logistics Service started >>>>>>>>>'
-    @export.update_attributes(status: 'Processing')
+    @export = Export.create!(export_type: 45, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     model.status_Approved.where(created_at: start_at..end_at).where.not(sales_quote_id: nil).order(created_at: :desc).find_each(batch_size: 100) do |sales_order|
       inquiry = sales_order.inquiry
 
@@ -40,7 +39,7 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
         customer_committed_date: (inquiry.customer_committed_date.present? ? inquiry.customer_committed_date.to_date.to_s : nil),
                 )
     end
-    export = Export.create!(export_type: 45)
-    generate_csv(export)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

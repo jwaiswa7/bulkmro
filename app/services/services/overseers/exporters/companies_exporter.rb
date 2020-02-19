@@ -22,7 +22,7 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
     records.find_each(batch_size: 100) do |record|
       rows.push(
         name: record.name,
-        comapny_alias: record.account.name,
+        comapny_alias: (record.account.name if record.account.present?),
         industry: (record.industry.name if record.industry.present?),
         remote_uid: record.remote_uid,
         state_name: (record.default_billing_address.present? ? record.default_billing_address.try(:state).try(:name) : record.addresses.first.try(:state).try(:name)),

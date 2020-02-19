@@ -20,7 +20,7 @@ class Services::Overseers::Exporters::SalesOrdersSapExporter < Services::Oversee
                 'Margin Amount',
                 'Order Type (BMRO/ONG)'
     ]
-    @export.update_attributes(export_type: 50, status: 'Enqueued')
+    # @export.update_attributes(export_type: 50, status: 'Enqueued')
   end
 
   def call
@@ -28,7 +28,7 @@ class Services::Overseers::Exporters::SalesOrdersSapExporter < Services::Oversee
   end
 
   def build_csv
-    @export.update_attributes(status: 'Processing')
+    @export = Export.create!(export_type: 50, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     model.remote_approved.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc).each do |sales_order|
       inquiry = sales_order.inquiry
       rows.push(

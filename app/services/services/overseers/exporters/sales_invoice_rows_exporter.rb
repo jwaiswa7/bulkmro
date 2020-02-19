@@ -20,7 +20,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
         'Branch (Bill From)',
         'Invoice Status'
     ]
-    @export.update_attributes(export_type: 20, status: 'Enqueued')
+    # @export.update_attributes(export_type: 20, status: 'Enqueued')
   end
 
   def call
@@ -28,7 +28,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
   end
 
   def build_csv
-    @export.update_attributes(status: 'Processing')
+    @export = Export.create!(export_type: 20, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     model.where(created_at: start_at..end_at).order(sales_invoice_id: :asc).where('sales_invoices.sales_order_id IS NOT NULL').joins(:sales_invoice).find_each(batch_size: 100) do |row|
       sales_invoice = row.sales_invoice
       sales_order = sales_invoice.sales_order

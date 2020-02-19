@@ -41,7 +41,7 @@ class Services::Overseers::Exporters::PipelineReportsExporter < Services::Overse
         'Grand Total Amount',
         'Won %'
     ]
-    @export.update_attributes(export_type: 93, status: 'Enqueued')
+    # @export.update_attributes(export_type: 93, status: 'Enqueued')
   end
 
   def call
@@ -49,7 +49,7 @@ class Services::Overseers::Exporters::PipelineReportsExporter < Services::Overse
   end
 
   def build_csv
-    @export.update_attributes(status: 'Processing')
+    @export = Export.create!(export_type: 93, status: 'Processing', filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     if @indexed_records.present?
       records = @indexed_records
     end

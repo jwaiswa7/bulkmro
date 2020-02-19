@@ -19,7 +19,7 @@ class Services::Overseers::Exporters::KraReportsExporter < Services::Overseers::
         'No. of Sales Invoices',
         'Revenue'
     ]
-    @export.update_attributes(export_type: 90, status: 'Enqueued')
+    # @export.update_attributes(export_type: 90, status: 'Enqueued')
   end
 
   def call
@@ -27,7 +27,7 @@ class Services::Overseers::Exporters::KraReportsExporter < Services::Overseers::
   end
 
   def build_csv
-    @export.update_attributes(status: 'Processing')
+    @export = Export.create!(export_type: 90, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     if @indexed_records.present?
       records = @indexed_records
     end

@@ -5,7 +5,7 @@ class Services::Overseers::Exporters::SalesInvoicesLogisticsExporter < Services:
     @export_name = 'sales_invoice_logistics'
     @path = Rails.root.join('tmp', filename)
     @columns = %w(inquiry_number inquiry_date company_name inside_sales order_number order_date order_status invoice_number invoice_date committed_customer_date)
-    @export.update_attributes(export_type: 30, status: 'Enqueued')
+    # @export.update_attributes(export_type: 30, status: 'Enqueued')
   end
 
   def call
@@ -13,7 +13,7 @@ class Services::Overseers::Exporters::SalesInvoicesLogisticsExporter < Services:
   end
 
   def build_csv
-    @export.update_attributes(status: 'Processing')
+    @export = Export.create!(export_type: 30, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     model.where(created_at: start_at..end_at).where.not(sales_order_id: nil).where.not(metadata: nil).order(invoice_number: :asc).find_each(batch_size: 100) do |sales_invoice|
       rows.push(
         inquiry_number: sales_invoice.inquiry.inquiry_number.to_s,

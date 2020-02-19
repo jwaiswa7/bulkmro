@@ -5,7 +5,7 @@ class Services::Overseers::Exporters::CompanyReviewExporter < Services::Overseer
     @export_name = 'supplier_review'
     @path = Rails.root.join('tmp', filename)
     @columns = ['serial', 'supplier_id', 'supplier_name', 'rating_submitted_by', 'review_type', 'rating', 'document']
-    @export.update_attributes(export_type: 60, status: 'Enqueued')
+    # @export.update_attributes(export_type: 60, status: 'Enqueued')
   end
   def call
     perform_export_later('CompanyReviewExporter', @arguments)
@@ -17,7 +17,7 @@ class Services::Overseers::Exporters::CompanyReviewExporter < Services::Overseer
     else
       records = model.where.not(rating: nil).includes(:company)
     end
-    @export.update_attributes(status: 'Processing')
+    @export = Export.create!(export_type: 60, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     records.each_with_index do |company_review, index|
       rows.push(
         serial: index + 1,

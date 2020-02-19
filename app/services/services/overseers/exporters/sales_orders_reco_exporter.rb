@@ -5,7 +5,7 @@ class Services::Overseers::Exporters::SalesOrdersRecoExporter < Services::Overse
     @export_name = 'sales_order_reco'
     @path = Rails.root.join('tmp', filename)
     @columns = ['serial', 'inquiry', 'inquiry_date', 'sales_owner', 'sales_order', 'sales_order_date', 'sales_order_total', 'po_count', 'product_cost']
-    @export.update_attributes(export_type: 65, status: 'Enqueued')
+    # @export.update_attributes(export_type: 65, status: 'Enqueued')
   end
 
   def call
@@ -13,7 +13,7 @@ class Services::Overseers::Exporters::SalesOrdersRecoExporter < Services::Overse
   end
 
   def build_csv
-    @export.update_attributes(status: 'Processing')
+    @export = Export.create!(export_type: 65, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     model.remote_approved.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc).includes(:inquiry, :po_requests).each_with_index do |sales_order, index|
       inquiry = sales_order.inquiry
       purchase_order_ids = sales_order.po_requests.pluck(:purchase_order_id).compact

@@ -25,11 +25,11 @@ class Services::Overseers::Exporters::CompanyReportsExporter < Services::Oversee
   end
 
   def call
-    perform_export_later('CompanyReportsExporter', @arguments)
+    # perform_export_later('CompanyReportsExporter', @arguments)
   end
 
   def build_csv
-    @export.update_attributes(status: 'Processing')
+    @export = Export.create!(export_type: 91, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id, status: 'Processing')
     if @indexed_records.present?
       records = @indexed_records
     end
