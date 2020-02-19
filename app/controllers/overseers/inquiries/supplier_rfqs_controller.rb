@@ -48,8 +48,13 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
       @supplier_rfq.assign_attributes(supplier_rfq_params.merge(overseer: current_overseer))
       @supplier_rfq.save
       supplier = Company.find(@supplier_rfq.supplier_id)
-      # contact = supplier.default_contact
-      contact = Contact.find_by_email('bulkmro007@gmail.com')
+
+      if Settings.domain == 'sprint.bulkmro.com'
+        contact = supplier.default_contact if supplier.default_contact.present?
+      else
+        contact = Contact.find_by_email('bulkmro007@gmail.com')
+      end
+      contact = nil
       if params['button'] == 'update_and_send_link'
         if contact.present?
           @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
@@ -65,6 +70,9 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
               url: "#{@supplier_rfq.to_param}/send_email_request_for_quote"
           }
           render 'shared/layouts/email_messages/new'
+        else
+          flash[:notice] = "No default contact present for supplier #{supplier.to_s}"
+          redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
         end
       elsif params['button'] == 'update_and_send_link_all'
 
