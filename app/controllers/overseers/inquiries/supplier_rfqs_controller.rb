@@ -54,7 +54,6 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
       else
         contact = Contact.find_by_email('bulkmro007@gmail.com')
       end
-      contact = nil
       if params['button'] == 'update_and_send_link'
         if contact.present?
           @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
