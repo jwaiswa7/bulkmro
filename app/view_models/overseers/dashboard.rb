@@ -17,9 +17,8 @@ class Overseers::Dashboard
   def inquiry_needs_followup?(inquiry)
     ((inquiry.quotation_followup_date.present? &&
         (inquiry.quotation_followup_date == Date.today ||
-            inquiry.quotation_followup_date < inquiry.updated_at.to_date && inquiry.updated_at.to_date <= Date.today - 2.day ||
-            inquiry.quotation_followup_date > inquiry.updated_at.to_date && inquiry.quotation_followup_date <= Date.today - 2.day)) ||
-        (inquiry.updated_at.to_date <= Date.today - 2.day))
+        inquiry.quotation_followup_date < inquiry.updated_at.to_date && inquiry.updated_at.to_date <= Date.today - 2.day ||
+        inquiry.quotation_followup_date > inquiry.updated_at.to_date && inquiry.quotation_followup_date <= Date.today - 2.day)) )
   end
 
   def inquiry_followup_count
