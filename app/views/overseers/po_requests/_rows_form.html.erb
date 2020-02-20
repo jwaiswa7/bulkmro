@@ -214,7 +214,7 @@
     <%= po_request_row.hidden_field :tax_code_id %>
     <%= po_request_row.hidden_field :tax_rate_id %>
     <%= po_request_row.hidden_field :measurement_unit_id, value: po_request_row.object.measurement_unit_id || MeasurementUnit.default.id %>
-    <div class="form-row po-request-row bmro-product-slide-on">
+    <div class="form-row po-request-row bmro-product-slide-on target-scroll" id="Product">
       <div class="col-7 col-md-7 mb-1 ml-2">
         <span class="custom-control custom-checkbox d-inline pl-0">
           <%= check_box_tag 'po_request_row[]', po_request_row.object.id, false, id: "po_request_row_id_#{supplier_index}_#{@supplier_product_index}", class: 'custom-control-input', 'data-parent-div-id': "supplier-parent-div-#{supplier_index}"  %>
