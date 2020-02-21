@@ -74,22 +74,24 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
           redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
         end
       elsif params['button'] == 'update_and_send_link_all'
+        if contact.present?
+          @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
+          subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
 
-        @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
-        subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
-
-        @email_message.assign_attributes(
-            subject: subject,
-            body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq).body.raw_source
-        )
-        if @email_message.save
-          if SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
-            @supplier_rfq.update_attributes(email_sent_at: Time.now, status: 'Email Sent: Supplier Response Pending')
-            SupplierRfqsIndex::SupplierRfq.import([@supplier_rfq.id])
+          @email_message.assign_attributes(
+              subject: subject,
+              body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq).body.raw_source
+          )
+          if @email_message.save
+            if SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
+              @supplier_rfq.update_attributes(email_sent_at: Time.now, status: 'Email Sent: Supplier Response Pending')
+              SupplierRfqsIndex::SupplierRfq.import([@supplier_rfq.id])
+            end
           end
         end
       else
         flash[:notice] = 'Record updated successfully'
+        redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
       end
       #
     end
