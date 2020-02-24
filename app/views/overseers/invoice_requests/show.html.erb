@@ -174,11 +174,12 @@
               </thead>
               <tbody>
                 <% @products_list.each_with_index do |k, index| %>
+              <% product_name = k[:purchase_order_row].get_product %>
                   <tr>
                     <td></td>
                     <td><%= index + 1 %></td>
-                    <td><%= k[:purchase_order_row].get_product %></td>
-                    <td><%= k[:purchase_order_row].get_product.try(:brand).to_s %></td>
+                    <td><%= k[:purchase_order_row].product.present? ? k[:purchase_order_row].product.to_s : product_name %></td>
+                    <td><%= k[:purchase_order_row].product.present? ? k[:purchase_order_row].product.try(:brand).to_s : product_name.try(:brand).to_s %></td>
                     <td><%= k[:purchase_order_row].metadata['PopHsn'] %></td>
                     <td><%= k[:purchase_order_row].tax_rate %></td>
                     <td><%= k[:total_quantity] %></td>
