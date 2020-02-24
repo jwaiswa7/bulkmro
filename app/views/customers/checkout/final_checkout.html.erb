@@ -50,6 +50,7 @@
                 <% end %>
               </strong>
               <em class="d-block mt-1"><%= current_contact.name %></em>
+              <em class="d-block mt-1"><%= current_company.name %></em>
               <div id="changed_billing_address">
                 <%= current_cart.billing_address.to_multiline_s %><br/>
                 <% if current_contact.telephone.present? %>
@@ -67,6 +68,7 @@
                 <a data-toggle="collapse" data-parent="#checkout" href="#checkout-shipping" class="float-right">Change</a>
               <% end %>
               <em class="d-block mt-1"><%= current_contact.name %></em>
+              <em class="d-block mt-1"><%= current_company.name %></em>
               <div id="changed_shipping_address">
                 <%= current_cart.shipping_address.to_multiline_s %><br/>
                 <% if current_contact.telephone.present? %>
@@ -163,16 +165,14 @@
 
           <div id="checkout-payment-method" class="collapse" data-parent="#checkout">
             <div class="card-body">
-              <% if current_company.id != 1847 %>
-                <label class="d-flex justify-content-center align-items-center flex-row">
-                      <span class="h-100">
-                        <%= f.radio_button :payment_method, 'Bank Transfer', :checked => true %>
-                      </span>
-                  <span class="flex-grow-1 ml-2">
-                        <strong class="d-block">Bank Transfer</strong>
-                      </span>
-                </label>
-              <% end %>
+              <label class="d-flex justify-content-center align-items-center flex-row">
+                    <span class="h-100">
+                      <%= f.radio_button :payment_method, 'Bank Transfer', :checked => true %>
+                    </span>
+                <span class="flex-grow-1 ml-2">
+                      <strong class="d-block">Bank Transfer</strong>
+                    </span>
+              </label>
 
               <label class="d-flex justify-content-center align-items-center flex-row">
                     <span class="h-100">

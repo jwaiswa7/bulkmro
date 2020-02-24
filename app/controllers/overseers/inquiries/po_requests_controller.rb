@@ -28,6 +28,18 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
       if @po_request.purchase_order.present? && @po_request.stock_status == 'Stock Requested'
         @po_request.stock_status = 'Stock Supplier PO Created'
         @po_request.approved_by = current_overseer
+      else @po_request.changed?
+           @po_request.stock_status = 'Supplier Stock PO: Amendment Pending'
+      end
+      po_request_row_ids = []
+      params[:po_request][:rows_attributes].each do |key, value|
+        if value.key?('_destroy')
+          po_request_row_ids << value['id']
+        end
+      end
+      purchase_order = @po_request.purchase_order
+      if purchase_order.present? && po_request_row_ids.present?
+        purchase_order.rows.where(po_request_row_id: po_request_row_ids).update_all(po_request_row_id: nil)
       end
       ActiveRecord::Base.transaction do
         if @po_request.stock_status_changed?
@@ -73,6 +85,8 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
           :stock_status,
           :requested_by_id,
           :approved_by_id,
+          :delivery_type,
+          :transport_mode,
           :supplier_id, :reason_to_stock, :estimated_date_to_unstock, :sales_order_id, :inquiry_id, :purchase_order_id,
           rows_attributes: [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :brand, :product_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion],
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],

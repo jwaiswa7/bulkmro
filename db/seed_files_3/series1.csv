@@ -1,0 +1,12 @@
+document_type,series_name,series,period_ indicator,length
+Sales Order,HP 2019,111,FY2019-20,9
+A/R Invoice,HP 2019,256,FY2019-20,9
+A/R Invoice Branch Transfer,BTHP 19,257,FY2019-20,9
+A/R Invoice Credit Memo,HP 2019,258,FY2019-20,9
+A/R Invoice Cancel,CANHP 19,259,FY2019-20,9
+Delivery,HP 2019,310,FY2019-20,9
+Purchase Order,HP 2019,416,FY2019-20,9
+GRPO,HP 2019,511,FY2019-20,9
+A/P Invoice,HP 2019,641,FY2019-20,9
+A/P Invoice Branch Transfer,BTHP 19,642,FY2019-20,9
+A/P Invoice Credit Memo,HP 2019,643,FY2019-20,9

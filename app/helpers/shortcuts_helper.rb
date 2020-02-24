@@ -24,7 +24,7 @@ module ShortcutsHelper
 
     elements.each_with_index do |element, index|
       path_so_far += [element, '/'].join
-      name = element.titleize
+      name = element == 'manage_failed_skus' ? 'Manage SKUs' : element.titleize
 
       begin
         prev_element = elements[index - 1]

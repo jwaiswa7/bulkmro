@@ -1,5 +1,7 @@
 class Customers::CustomerProductsController < Customers::BaseController
   before_action :set_customer_product, only: [:show, :to_cart]
+  before_action :set_data_for_saint_gobain, :set_data_for_henkel, only: [:index, :show]
+  include DisplayHelper
 
   def index
     authorize :customer_product
@@ -14,16 +16,18 @@ class Customers::CustomerProductsController < Customers::BaseController
     service = Services::Customers::Finders::CustomerProducts.new(params, current_contact, current_company)
     service.call
     @indexed_customer_products = service.indexed_records
-    @customer_products = service.records.try(:reverse)
+    @customer_products = service.records.with_eager_loaded_images.try(:reverse)
     # for henkel company specific changes
     @is_henkel = (current_company.account == account)
+
     @default_quantity = nil
     if @is_henkel
       @default_quantity = 0
     end
 
-    @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{ |t| [t.id, t.name] }
-    @checked_tags = (params['custom_filters']['tags'].nil? ? [] : params['custom_filters']['tags'].map(&:to_i)) if params['custom_filters'].present?
+    # Incomplete feature
+    # @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{ |t| [t.id, t.name] }
+    # @checked_tags = (params['custom_filters']['tags'].nil? ? [] : params['custom_filters']['tags'].map(&:to_i)) if params['custom_filters'].present?
 
     @customer_products_paginate = @indexed_customer_products.page(params[:page]) if params[:page].present?
   end
@@ -46,7 +50,11 @@ class Customers::CustomerProductsController < Customers::BaseController
     @display_class = ''
     if @is_henkel
       @default_quantity = 0
-      @display_class = (@customer_product.product.stocks.sum(&:instock) > 0) ? '' : 'd-none'
+      @display_class = get_instock_status(@customer_product, @phursungi_warehouse) ? '' : 'd-none'
+    end
+
+    if @is_saint_gobain
+      @display_class = get_instock_status(@customer_product, [@bhiwandi_warehouse, @chennai_warehouse]) ? '' : 'd-none'
     end
   end
 
@@ -65,5 +73,17 @@ class Customers::CustomerProductsController < Customers::BaseController
 
     def set_customer_product
       @customer_product ||= CustomerProduct.find(params[:id])
+    end
+
+    def set_data_for_saint_gobain
+      authorize :customer_product
+      @is_saint_gobain = (current_company.id == 11420)
+      @bhiwandi_warehouse = Warehouse.find 'LGVfay'
+      @chennai_warehouse = Warehouse.find 'OxGf6R'
+    end
+
+    def set_data_for_henkel
+      authorize :customer_product
+      @phursungi_warehouse = Warehouse.find 'rQJfAO'
     end
 end

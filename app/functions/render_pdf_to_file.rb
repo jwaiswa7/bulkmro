@@ -1,5 +1,6 @@
 class RenderPdfToFile < BaseFunction
-  def self.for(record, locals={})
+  def self.for(record, locals = {})
+    locals[:pagination] = locals[:pagination] == false ? locals[:pagination] : true
     action_view = ActionView::Base.new(ActionController::Base.view_paths, {})
     action_view.class.send(:include, DisplayHelper)
 
@@ -13,9 +14,7 @@ class RenderPdfToFile < BaseFunction
       ),
         pdf: record.filename,
         layout: false,
-        footer: {
-            center: '[page] of [topage]'
-        },
+        footer: locals[:pagination] ? { center: '[page] of [topage]' } : {},
     )
 
     tempfile = Tempfile.new([record.filename, 'pdf'].join('.'), Rails.root.join('tmp'))

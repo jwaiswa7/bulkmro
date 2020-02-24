@@ -30,7 +30,7 @@
               <%= row_action_button(overseers_inquiry_import_path(@inquiry, import, format: :text), 'eye', 'Raw Text', 'warning', :_blank) %>
             <% end %>
             <%= if is_authorized(import,'manage_failed_skus') && policy(import).manage_failed_skus?;
-                  row_action_button(manage_failed_skus_overseers_inquiry_import_path(@inquiry, import), 'redo', 'Manage Failed SKUs', 'warning');
+                  row_action_button(manage_failed_skus_overseers_inquiry_import_path(@inquiry, import), 'redo', 'Manage SKUs', 'warning');
                 end %>
           </td>
           <td><%= import.created_by.to_s %></td>

@@ -16,24 +16,24 @@
           </div>
           <div class="col-6 col-md-2 mt-2 mt-md-0">
             <strong class="d-block">Contact Name</strong>
-            <%= @purchase_order.inquiry.contact.full_name || "Mr. Ajay Rathod"%>
+            <%= @purchase_order.inquiry.contact.full_name || "Mr. Ajay Rathod" %>
           </div>
           <div class="col-6 col-md-2 mt-2  mt-md-0">
             <strong class="d-block">Contact # </strong>
             <% if @purchase_order.inquiry.contact.mobile || @purchase_order.inquiry.contact.telephone %>
               <%= @inquiry.contact.phone %>
-            <%else %>
+            <% else %>
               <span>+91-7977261810</span>
-            <%end %>
+            <% end %>
           </div>
           <div class="col-6 col-md-2">
             <strong class="d-block">Committed Delivery Date</strong>
-            <%= Date.parse(@metadata[:PoDate]).strftime("%d-%b-%Y") if @metadata[:PoDate].present? %>
+            <%= @purchase_order.max_lead_date %>
           </div>
           <div class="col-6 col-md-1">
-              <% if is_authorized(@purchase_order,'show') %>
+            <% if is_authorized(@purchase_order, 'show') %>
               <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, @purchase_order, format: :pdf), 'file-pdf', 'Download Pdf', 'dark', :_blank) %>
-              <%end %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -41,7 +41,7 @@
         <div class="form-row mb-1">
           <div class="col-6 col-md-2">
             <strong class="d-block">Freight</strong>
-            <%= @metadata[:PoFreight] %>
+            <%= @metadata[:PoFreight] || @purchase_order.get_freight %>
           </div>
           <div class="col-6 col-md-3">
             <strong class="d-block">Packing & Forwarding</strong>
@@ -57,7 +57,7 @@
           </div>
           <div class="col-6 col-md-3 mt-2 mt-md-0">
             <strong class="d-block">Payment Terms</strong>
-            <%= @metadata[:PoPaymentTerms] %>
+            <%= @payment_terms.name %>
           </div>
         </div>
 
@@ -65,22 +65,24 @@
           <div class="form-row">
             <div class="col-md-6 mt-2 mt-md-0">
               <strong class="d-block">Supplier - Bill to :</strong>
-              <% if @supplier.present? %>
-                <%= @supplier.name if @supplier.name.present? %><br>
-                <%= @supplier.billing_address.to_multiline_s if @supplier.billing_address.present? %>
+              <% if @purchase_order.billing_address.present? %>
+                <%= @purchase_order.billing_address.name if @purchase_order.billing_address.name.present? %><br>
+                <%= @purchase_order.billing_address.to_multiline_s if @purchase_order.billing_address.present? %>
                 <br>
-                Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
-                GST No. : <%= @supplier.billing_address.try(:gst) %><br>
-              <% end %>
+                Tel: <%=  @purchase_order.supplier_contact || (@purchase_order.supplier.default_company_contact.present? ? @purchase_order.supplier.default_company_contact.contact&.phone : '')%>
+                <br>
+                GST No. : <%= @purchase_order.billing_address.try(:gst) %><br>
+                <%end %>
             </div>
             <div class="col-md-6 mt-2 mt-md-0">
               <strong class="d-block">Supplier - Ship to :</strong>
-              <% if @supplier.present? %>
-                <%= @supplier.name if @supplier.name.present? %><br>
-                <%= @supplier.shipping_address.to_multiline_s if @supplier.shipping_address.present?%>
+              <% if @purchase_order.shipping_address.present? %>
+                <%= @purchase_order.shipping_address.name if @purchase_order.shipping_address.name.present? %><br>
+                <%= @purchase_order.shipping_address.to_multiline_s if @purchase_order.shipping_address.present? %>
                 <br>
-                Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
-                GST No. : <%= @supplier.shipping_address.try(:gst) %><br>
+                Tel: <%=  @purchase_order.supplier_contact || (@purchase_order.supplier.default_company_contact.present? ? @purchase_order.supplier.default_company_contact.contact&.phone : '')%>
+                <br>
+                GST No. : <%= @purchase_order.shipping_address.try(:gst) %><br>
               <% end %>
             </div>
           </div>
@@ -88,21 +90,20 @@
             <div class="col-md-6 mt-2 mt-md-0">
               <strong class="d-block">Bulk MRO - Bill to :</strong>
               <span>
-                <% if @inquiry.bill_from.present? %>
-                  <%= (@inquiry.bill_from.address.name.to_s + '<br>').html_safe if @inquiry.bill_from.address.name.present? %>
-                  <%= @inquiry.bill_from.address.to_multiline_s %><br>
-                        GST No. : <%= @inquiry.bill_from.address.gst %><br>
-                      <% end %>
+                <% if @purchase_order.warehouse.present? %>
+                  <%= (@purchase_order.warehouse.address.name.to_s + '<br>').html_safe if @purchase_order.warehouse.address.name.present? %>
+                  <%= @purchase_order.warehouse.address.to_multiline_s %><br>
+                        GST No. : <%= @purchase_order.warehouse.address.gst %><br>
+                  <% end %>
                 PAN No. : AAGCB7343G</span>
             </div>
             <div class="col-md-6 mt-2 mt-md-0">
               <strong class="d-block">Bulk MRO - Ship to :</strong>
-              <span>
-                      <%= (@inquiry.ship_from.address.name.to_s + '<br>').html_safe if @inquiry.ship_from.address.name.present? %>
-                <% if @inquiry.ship_from.present? %>
-                        <%= @inquiry.ship_from.address.to_multiline_s %><br>
-                        GST No. : <%= @inquiry.ship_from.address.gst %><br>
-                      <% end %>
+              <span> <% if @purchase_order.warehouse_ship_from.present? %>
+                  <%= (@purchase_order.warehouse_ship_from.address.name.to_s + '<br>').html_safe if @purchase_order.warehouse_ship_from.address.name.present? %>
+                  <%= @purchase_order.warehouse_ship_from.address.to_multiline_s %><br>
+                        GST No. : <%= @purchase_order.warehouse_ship_from.address.gst %><br>
+                  <% end %>
                 PAN No. : AAGCB7343G</span>
             </div>
           </div>
@@ -205,22 +206,24 @@
                 <span><%= index + 1 %></span>
               </td>
               <td>
-                <span><%= item.product.sku %></span>
+                <span><%= item.product.present? ? item.product.sku : item.sku %></span>
               </td>
               <td>
                 <span></span>
               </td>
               <td align="left" valign="top">
-                <span><%= item.metadata['PopProductName'] %></span>
+                <span><%= item.product.present? ? item.product.name : item.metadata['PopProductName'] %></span>
               </td>
               <td>
-                <span><%= item.product.brand %></span>
+                <span><%= item.product.present? ? item.product.brand.to_s : item.brand %></span>
               </td>
               <td>
-                <span><%= item.metadata['PopHsn'] %></span>
+                <span>
+                  <%= item.show_tax_code %>
+                </span>
               </td>
               <td>
-                <span><%= item.product.measurement_unit.to_s %></span>
+                <span><%= item.uom  %></span>
               </td>
               <td>
                 <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
@@ -229,7 +232,7 @@
                 <span><%= format_currency(item.unit_selling_price, precision: 2, symbol: nil) %></span>
               </td>
               <td align="right" valign="top">
-                <span><%= format_currency(item.total_selling_price, precision: 2, symbol:nil) %></span>
+                <span><%= format_currency(item.total_selling_price, precision: 2, symbol: nil) %></span>
               </td>
               <td>
                 <span><%= item.tax_rate.round(0) %>%</span>
@@ -243,12 +246,12 @@
                 </td>
               <% else %>
                 <td>
-                  <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
+                  <span><%= (item.tax_rate.to_f / 2) %>%</span></td>
                 <td align="right" valign="top">
                   <span><%= format_currency(item.total_tax / 2, precision: 2, symbol: nil) %></span>
                 </td>
                 <td>
-                  <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
+                  <span><%= (item.tax_rate.to_f / 2) %>%</span></td>
                 <td>
                   <span><%= format_currency(item.total_tax / 2, precision: 2, symbol: nil) %><br></span>
                 </td>
@@ -265,23 +268,23 @@
         <div class="form-row">
           <div class="col-6 col-md-3">
             Products
-            <strong class="d-block"><%=@purchase_order.rows.count %></strong>
+            <strong class="d-block"><%= @purchase_order.rows.count %></strong>
           </div>
           <div class="col-6 col-md-3">
             Subtotal
             <strong class="d-block"><%= format_currency(@purchase_order.calculated_total, symbol: nil) %></strong>
           </div>
           <% if (@metadata[:PoTaxRate].to_s.include? "IG") || (@metadata[:ItemLine][0][:PopTaxRate].to_s.include? "IG") %>
-          <div class="col-6 col-md-3">
-            Tax Amt
-            <strong class="d-block"><%= format_currency(@purchase_order.calculated_total_tax, symbol: nil) %></strong>
-          </div>
-            <%else %>
-          <div class="col-6 col-md-3">
-            Tax Amt
-            <strong class="d-block"><%= format_currency(@purchase_order.calculated_total_tax / 2, symbol: nil) %></strong>
-          </div>
-          <%end %>
+            <div class="col-6 col-md-3">
+              Tax Amt
+              <strong class="d-block"><%= format_currency(@purchase_order.calculated_total_tax, symbol: nil) %></strong>
+            </div>
+          <% else %>
+            <div class="col-6 col-md-3">
+              Tax Amt
+              <strong class="d-block"><%= format_currency(@purchase_order.calculated_total_tax / 2, symbol: nil) %></strong>
+            </div>
+          <% end %>
           <div class="col-6 col-md-3">
             Grand Total
             <strong class="d-block"><%= format_currency(@purchase_order.calculated_total_with_tax, symbol: nil) %></strong>
@@ -295,10 +298,21 @@
           </h6></th>
           <ul>
             <li>Seller to email Original Invoice to logistics@bulkmro.com after Order is dispatched.</li>
-            <li>In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or in action.</li>
-            <li>All payments will be issued to Seller at the location specified in Seller’s block on the Purchase Order, unless proper authority for deviation is supplied to Buyer’s Accounts Payable Department</li>
-            <li>Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</li>
-            <li>Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not later than 3 business days in advance of delivery schedule that will not be met or if material is on back order.</li>
+            <li>In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of
+              supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold
+              settlement and shall not lose any discount privilege that applied to the products affected by such action
+              or in action.
+            </li>
+            <li>All payments will be issued to Seller at the location specified in Seller’s block on the Purchase Order,
+              unless proper authority for deviation is supplied to Buyer’s Accounts Payable Department
+            </li>
+            <li>Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The
+              customer shall keep Bulk MRO indemnified from/against all such claims.
+            </li>
+            <li>Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not
+              later than 3 business days in advance of delivery schedule that will not be met or if material is on back
+              order.
+            </li>
           </ul>
         </div>
       </div>
@@ -308,17 +322,29 @@
             Other Information :
           </h6></th>
           <ul>
-            <li><% if @inquiry.bill_from.present? && @inquiry.bill_from.legacy_id == 12 %>
-                 Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= @metadata[:PoNum] %>
+            <li>
+              <% if @inquiry.bill_from.present? && @inquiry.bill_from.legacy_id == 12 %>
+                Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= @metadata[:PoNum] %>
                 when shipping goods.
               <% else %>
-                 Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= @metadata[:PoNum] %>
+                Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= @metadata[:PoNum] %>
                 when shipping goods.
               <% end %></li>
-            <li>In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or in action.</li>
-            <li>All payments will be issued to Seller at the location specified in Seller’s block on the Purchase Order, unless proper authority for deviation is supplied to Buyer’s Accounts Payable Department</li>
-            <li>Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</li>
-            <li>Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not later than 3 business days in advance of delivery schedule that will not be met or if material is on back order.</li>
+            <li>In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of
+              supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold
+              settlement and shall not lose any discount privilege that applied to the products affected by such action
+              or in action.
+            </li>
+            <li>All payments will be issued to Seller at the location specified in Seller’s block on the Purchase Order,
+              unless proper authority for deviation is supplied to Buyer’s Accounts Payable Department
+            </li>
+            <li>Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The
+              customer shall keep Bulk MRO indemnified from/against all such claims.
+            </li>
+            <li>Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not
+              later than 3 business days in advance of delivery schedule that will not be met or if material is on back
+              order.
+            </li>
           </ul>
         </div>
       </div>

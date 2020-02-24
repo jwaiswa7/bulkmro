@@ -35,17 +35,16 @@ class Overseers::CompaniesController < Overseers::BaseController
   def create
     @company = Company.new(company_params.merge(overseer: current_overseer))
     authorize_acl @company
-    if params[:ccr_id].present?
+    if company_params[:company_creation_request_id].present?
       if @company.save
         if @company.company_creation_request.present?
           @company.company_creation_request.update_attributes(company_id: @company.id)
           @company.company_creation_request.activity.update_attributes(company: @company)
-          @notification.send_company_creation_confirmation(
-            @company.company_creation_request,
-              action_name.to_sym,
-              @company,
-              overseers_company_path(@company),
-              @company.name.to_s
+          @notification.send_company_creation_confirmation(@company.company_creation_request,
+                                                           action_name.to_sym,
+                                                           @company,
+                                                           overseers_company_path(@company),
+                                                           @company.name.to_s
           )
         end
         if @company.save_and_sync
@@ -60,7 +59,6 @@ class Overseers::CompaniesController < Overseers::BaseController
       else
         account_params = {name: params[:company]['account_name'], account_type: params[:company]['acc_type']}
         @account = Account.new(account_params.merge(overseer: current_overseer))
-        @account.save_and_sync
       end
       @company.account = @account
       @company.save_and_sync
@@ -77,7 +75,7 @@ class Overseers::CompaniesController < Overseers::BaseController
     service = Services::Overseers::Exporters::CompaniesExporter.new(params[:q], current_overseer, [])
     service.call
 
-    redirect_to url_for(Export.companies.not_filtered.last.report)
+    redirect_to url_for(Export.companies.not_filtered.completed.last.report)
   end
 
   def export_filtered_records
@@ -107,7 +105,9 @@ class Overseers::CompaniesController < Overseers::BaseController
           @date_range = params['company_report']['date_range']
         end
 
-        indexed_company_reports = service.indexed_records.aggregations['company_report_over_month']['buckets']['custom-range']['company_report']['buckets']
+        service_buckets = service.indexed_records.aggregations['company_report_over_month']['buckets']['custom-range']['accounts']['buckets']
+        indexed_company_reports = []
+        service_buckets.map { |x| x['companies']['buckets'].map { |y| indexed_company_reports << y } }
         @per = (params['per'] || params['length'] || 20).to_i
         @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
         @indexed_company_reports = Kaminari.paginate_array(indexed_company_reports).page(@page).per(@per)
@@ -120,7 +120,7 @@ class Overseers::CompaniesController < Overseers::BaseController
     service = Services::Overseers::Finders::CompanyReports.new(params, current_overseer)
     service.call
 
-    indexed_company_reports = service.indexed_records.aggregations['company_report_over_month']['buckets']['custom-range']['company_report']['buckets']
+    indexed_company_reports = service.indexed_records.aggregations['company_report_over_month']['buckets']['custom-range']['accounts']['buckets']
 
     if params['company_report'].present?
       date_range = params['company_report']['date_range']
@@ -147,33 +147,33 @@ class Overseers::CompaniesController < Overseers::BaseController
     def company_params
       params.require(:company).permit(
         :account_id,
-        :name,
-        :industry_id,
-        :remote_uid,
-        :default_company_contact_id,
-        :default_payment_option_id,
-        :default_billing_address_id,
-        :default_shipping_address_id,
-        :inside_sales_owner_id,
-        :outside_sales_owner_id,
-        :sales_manager_id,
-        :company_type,
-        :priority,
-        :site,
-        :company_creation_request_id,
-        :nature_of_business,
-        :creadit_limit,
-        :tan_proof,
-        :pan,
-        :pan_proof,
-        :cen_proof,
-        :logo,
-        :is_msme,
-        :is_active,
-        :is_unregistered_dealer,
-        contact_ids: [],
-        brand_ids: [],
-        product_ids: []
+          :name,
+          :industry_id,
+          :remote_uid,
+          :default_company_contact_id,
+          :default_payment_option_id,
+          :default_billing_address_id,
+          :default_shipping_address_id,
+          :inside_sales_owner_id,
+          :outside_sales_owner_id,
+          :sales_manager_id,
+          :company_type,
+          :priority,
+          :site,
+          :company_creation_request_id,
+          :nature_of_business,
+          :creadit_limit,
+          :tan_proof,
+          :pan,
+          :pan_proof,
+          :cen_proof,
+          :logo,
+          :is_msme,
+          :is_active,
+          :is_unregistered_dealer,
+          contact_ids: [],
+          brand_ids: [],
+          product_ids: []
       )
     end
 end

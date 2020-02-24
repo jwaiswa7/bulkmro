@@ -6,17 +6,24 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
   end
 
   def call
-    i = 0
+    i = 1
     error = []
-
+    orders_in_sheet = []
     fetch_file_to_be_processed(upload_sheet)
     service = Services::Shared::Spreadsheets::CsvImporter.new('bible_file_sheet.csv', 'bible_imports')
     upload_sheet.update(status: 'Processing')
-
     sheet_header = service.get_header
     defined_header = fixed_header('sales_orders')
     begin
-      if sheet_header.sort == defined_header.sort
+      if sheet_header.compact.sort == defined_header.sort
+        service.loop(nil) do |x|
+          order_number = x.get_column('So #')
+          bible_order = BibleSalesOrder.where(order_number: order_number).last
+          if bible_order.present?
+            bible_order.metadata = []
+            bible_order.save
+          end
+        end
         service.loop(nil) do |x|
           begin
             puts '******************************** ITERATION ***********************************', i
@@ -25,43 +32,23 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
             inquiry_number = x.get_column('Inquiry Number')
             bible_order_row_total = x.get_column('Total Selling Price').to_f
             # bible_total_with_tax = x.get_column('Total Selling Price').to_f + x.get_column('Tax Amount').to_f
-
-            if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
-              if order_number == 'Not Booked'
-                inquiry_orders = Inquiry.find_by_inquiry_number(x.get_column('Inquiry Number')).sales_orders
-                if inquiry_orders.count > 1
-                  sales_order = inquiry_orders.where(old_order_number: 'Not Booked').first
-                else
-                  sales_order = inquiry_orders.first if inquiry_orders.first.old_order_number == 'Not Booked'
-                end
-              else
-                sales_order = SalesOrder.find_by_old_order_number(order_number)
-              end
-            else
-              sales_order = SalesOrder.find_by_order_number(order_number.to_i)
-            end
-
+            sales_order = get_sales_order(order_number, inquiry_number)
             if bible_order_row_total.negative?
               ae_sales_order = SalesOrder.where(parent_id: sales_order.id, is_credit_note_entry: true).first
               sales_order = ae_sales_order
             end
-
-            if inquiry_number.include?('.') || inquiry_number.include?('/') || inquiry_number.include?('-') || inquiry_number.match?(/[a-zA-Z]/)
-              inquiry = Inquiry.find_by_old_inquiry_number(inquiry_number)
-            else
-              inquiry = Inquiry.find_by_inquiry_number(inquiry_number.to_i)
-            end
+            inquiry = get_inquiry(inquiry_number)
             isp_full_name = x.get_column('Inside Sales Name').to_s.strip.split
             isp_first_name = isp_full_name[0]
             # isp_last_name = isp_full_name[1] if isp_full_name.length > 1
-
             begin
               bible_order = BibleSalesOrder.where(inquiry_number: inquiry.inquiry_number,
-                                                  order_number: x.get_column('So #'),
+                                                  order_number: order_number,
                                                   mis_date: Date.parse(x.get_column('Order Date')).strftime('%Y-%m-%d')).first_or_create! do |bo|
-                # bible_order.inquiry = inquiry
-                bo.inside_sales_owner = Overseer.where(first_name: isp_first_name).last
-                bo.outside_sales_owner = inquiry.outside_sales_owner
+                # bo.inquiry_number = inquiry.present? ? inquiry.inquiry_number : nil
+                bo.inquiry = inquiry_number
+                bo.inside_sales_owner = inquiry.present? ? inquiry.inside_sales_owner : nil # Overseer.where(first_name: isp_first_name).last
+                bo.outside_sales_owner = inquiry.present? ? inquiry.outside_sales_owner : nil
                 bo.sales_order = sales_order.present? ? sales_order : nil
                 bo.company_name = x.get_column('Magento Company Name')
                 bo.company = inquiry.company
@@ -74,7 +61,6 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
             rescue Exception => e
               error.push(error: e.message, order: order_number)
             end
-
             if bible_order.present?
               order_metadata = bible_order.metadata
               sku_data = {
@@ -97,27 +83,47 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
               order_metadata.push(sku_data)
               bible_order.assign_attributes(metadata: order_metadata)
               bible_order.save
+              orders_in_sheet.push(bible_order.id)
             end
-            upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 10, error: '-')
+            create_upload_log('Success', upload_sheet.id, x.get_row.to_json, '-', i)
           rescue StandardError => err
-            upload_sheet.bible_upload_logs.create(sr_no: i, bible_row_data: x.get_row.to_json, status: 20, error: err.message)
+            create_upload_log('Failed', upload_sheet.id, x.get_row.to_json, err.message, i)
           end
         end
-        calculate_totals
+        calculate_totals(orders_in_sheet)
         upload_sheet.update(status: 'Completed')
         puts 'BibleSO', BibleSalesOrder.count
       else
         upload_sheet.update(status: 'Failed')
+        create_upload_log('Failed', upload_sheet.id, "The sheet headers didn't match", "#{sheet_header.compact.sort - defined_header.sort} column name has a mismatch issue")
       end
     rescue StandardError => err
-      upload_sheet.bible_upload_logs.create(status: false, error: err.message)
+      upload_sheet.update(status: 'Completed with Errors')
+      create_upload_log('Failed', upload_sheet.id, "Something went wrong while calculating totals or updating uploads status", err.message)
     end
-    # puts 'ERROR', error
     File.delete(@path_to_tempfile) if File.exist?(@path_to_tempfile)
   end
 
-  def calculate_totals
-    BibleSalesOrder.all.each do |bible_order|
+  def get_sales_order(order_number, inquiry_number)
+    inquiry = get_inquiry(inquiry_number)
+    if order_number.include?('.') || order_number.include?('/') || order_number.include?('-') || order_number.match?(/[a-zA-Z]/)
+      if order_number == 'Not Booked'
+        inquiry_orders = Inquiry.find_by_inquiry_number(inquiry.inquiry_number).sales_orders
+        if inquiry_orders.count > 1
+          inquiry_orders.where(old_order_number: 'Not Booked').first
+        else
+          inquiry_orders.first if inquiry_orders.first.old_order_number == 'Not Booked'
+        end
+      else
+        SalesOrder.find_by_old_order_number(order_number)
+      end
+    else
+      SalesOrder.find_by_order_number(order_number.to_i)
+    end
+  end
+
+  def calculate_totals(orders_in_sheet)
+    orders_in_sheet.uniq.each do |order_id|
       @bible_order_total = 0
       @bible_order_tax = 0
       @bible_order_total_with_tax = 0
@@ -125,7 +131,7 @@ class Services::Overseers::Bible::CreateOrder < Services::Overseers::Bible::Base
       @margin_sum = 0
       @order_line_items = 0
       @overall_margin_percentage = 0
-
+      bible_order = BibleSalesOrder.find(order_id)
       bible_order.metadata.each do |line_item|
         @bible_order_total = @bible_order_total + line_item['total_selling_price'].to_f
         @bible_order_tax = @bible_order_tax + line_item['tax_amount'].to_f

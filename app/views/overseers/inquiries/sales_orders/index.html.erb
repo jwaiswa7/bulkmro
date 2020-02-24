@@ -45,9 +45,16 @@
             <% end %>
 
             <% if is_authorized(sales_order, 'can_cancel_order') && sales_order.status == 'Approved' && sales_order.order_number.present? %>
-              <%= link_to('', class: ['btn btn-sm btn-danger cancel-invoice cancel-sales-order-button'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Cancel', remote: true) do %>
-                <% concat content_tag(:span, '') %>
-                <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>
+              <% if sales_order.is_invoices_cancelled %>
+                <%= link_to('', class: ['btn btn-sm btn-danger cancel-invoice cancel-sales-order-button'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Cancel', remote: true) do %>
+                  <% concat content_tag(:span, '') %>
+                  <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>
+                <% end %>
+               <% else %>
+                <%= link_to('', class: ['btn btn-sm btn-danger disabled'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Invoices against this SO is not cancelled', remote: true) do %>
+                  <% concat content_tag(:span, '') %>
+                  <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>
+                <% end %>
               <% end %>
             <% end %>
             <% if is_authorized(sales_order, 'comments') && policy(sales_order).comments? %>
@@ -59,7 +66,7 @@
             <% end %>
 
             <%# if is_authorized(sales_order, 'resync') && policy(sales_order).resync? %>
-              <%#= row_action_button(resync_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post) %>
+            <%#= row_action_button(resync_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post) %>
             <%# end %>
             <% if is_authorized(sales_order, 'show_serialized') && policy(sales_order).show_serialized? %>
               <%= row_action_button(url_for(sales_order.serialized_pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
@@ -73,16 +80,19 @@
             <% if is_authorized(sales_order.sales_quote, 'new_freight_request') && policy(sales_order.sales_quote).new_freight_request? %>
               <%= row_action_button(new_overseers_freight_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'New Freight Request', 'warning') %>
             <% end %>
+            <% if is_authorized(sales_order, 'revise_committed_delivery_date') && policy(sales_order).delivery_date_revision_allowed? %>
+              <%= row_action_button(revise_committed_delivery_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar', 'Revise Customer Committed Delivery Date', 'dark', :_blank) %>
+            <% end %>
             <%# if is_authorized(sales_order, 'debugging') %>
-              <%#= row_action_button(debugging_overseers_inquiry_sales_order_path(@inquiry,sales_order),'cogs', 'Debugging', 'danger', :_blank) %>
-             <%# end %>
+            <%#= row_action_button(debugging_overseers_inquiry_sales_order_path(@inquiry,sales_order),'cogs', 'Debugging', 'danger', :_blank) %>
+            <%# end %>
           </td>
           <td><%= sales_order.order_number %></td>
           <td><%= sales_order.id %></td>
           <td><%= sales_order.sales_quote_id || '-' %></td>
           <td><%= status_badge(sales_order.order_status) %></td>
           <% if @sales_orders.where(status: "Approved").count > 1 %>
-            <td> <%=  sales_order.remote_status || "-" %></td>
+            <td> <%= sales_order.remote_status || "-" %></td>
           <% end %>
           <td><%= format_date(sales_order.sent_at) %></td>
           <td><%= sales_order.rows.size %></td>

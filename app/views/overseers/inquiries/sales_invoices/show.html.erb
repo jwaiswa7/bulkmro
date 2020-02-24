@@ -268,13 +268,13 @@
                 </td>
               <% else %>
                 <td>
-                  <span><%= (item.tax_rate / 2).to_f.round(2) %>%</span>
+                  <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span>
                 </td>
                 <td>
                   <span><%= format_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, symbol: nil) %></span>
                 </td>
                 <td>
-                  <span><%= (item.tax_rate / 2).to_f.round(2) %>%</span>
+                  <span><%= (item.tax_rate.round(0) / 2.0).to_f.round(2) %>%</span>
                 </td>
                 <td>
                   <span><%= format_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, symbol: nil) %></span>

@@ -142,7 +142,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         'PoSupShipFrom' => remote_response['ShipToCode'],
         'PoCommittedDate' => remote_response['U_CustComDt'],
         'PoDeliveryTerms' => remote_response['U_TrmDeli'],
-        'PoShipWarehouse' => remote_response['U_BM_BillFromTo'],
+        'PoShipWarehouse' => remote_response['DocumentLines'][0]['WarehouseCode'],
         'PoBillingAddress' => remote_response['PayToCode'],
         'po_sales_manager' => remote_response['U_SalesMgr'],
         'PoTargetWarehouse' => remote_response['U_BM_BillFromTo'],
@@ -169,22 +169,24 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
           TaxCode: row.taxation.to_remote_s, # row.tax_rate.to_s.gsub('.0%', '').gsub('GST ', 'GST@'),
           HSNEntry: row.product.is_service ? nil : row.tax_code.remote_uid,
           SACEntry: row.product.is_service ? row.tax_code.remote_uid : nil,
-          WarehouseCode: po_request.bill_to.remote_uid,
-          LocationCode: po_request.bill_to.location_uid,
+          WarehouseCode: po_request.ship_to.remote_uid,
+          LocationCode: po_request.ship_to.location_uid,
           MeasureUnit: row.measurement_unit.name,
           U_ProdBrand: row.brand_id.present? ? row.brand.name : row.product.brand.name
       }
       item_row << json
     end
+    product_ids = Product.where(sku: Settings.product_specific.freight).last.id
     company_contact = CompanyContact.where(company_id: po_request.supplier_id, contact_id: po_request.contact_id).last
     {
-        PoDate: Time.now.strftime('%Y-%m-%d'),
+        PoDate: po_request.purchase_order.present? ? po_request.purchase_order.created_at.strftime('%Y-%m-%d') : Time.now.strftime('%Y-%m-%d'),
         PoStatus: '63',
         DocNum: record.po_number,
         HandWritten: "tYES",
         PoSupNum: '',
-        PoSupBillFrom: po_request.supplier.billing_address.remote_uid,
-        PoSupShipFrom: po_request.supplier.shipping_address.remote_uid,
+        PayToCode: po_request.bill_from.remote_uid,
+        ShipFrom: po_request.ship_from.remote_uid,
+        PoFreight: po_request.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included',
         PoShippingCost: '0',
         PoTargetWarehouse: po_request.ship_to.remote_uid,
         DocumentLines: item_row,
@@ -192,12 +194,12 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         Project: po_request.inquiry.inquiry_number,
         CardCode: po_request.supplier.remote_uid,
         CardName: po_request.supplier.to_s,
-        DocDate: Time.now.strftime('%Y-%m-%d'),
+        DocDate: po_request.purchase_order.present? ? po_request.purchase_order.created_at.strftime('%Y-%m-%d') : Time.now.strftime('%Y-%m-%d'),
         ProjectCode: po_request.inquiry.inquiry_number,
         NumAtCard: '',
         DocCurrency: po_request.inquiry.currency.name,
         TaxDate: Time.now.strftime('%Y-%m-%d'),
-        DocDueDate: Time.now.strftime('%Y-%m-%d'),
+        DocDueDate: po_request.rows.present? ? po_request.rows.maximum(:lead_time).strftime('%Y-%m-%d') : Time.now.strftime('%Y-%m-%d'),
         U_SalesMgr: po_request.inquiry.sales_manager.to_s,
         U_In_Sales_Own: po_request.inquiry.inside_sales_owner.to_s,
         U_Out_Sales_Own: po_request.inquiry.inside_sales_owner.to_s,
@@ -219,7 +221,8 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
         U_CnfrmTotal: 'A',
         U_CnfrmHSN: 'A',
         U_CnfrmTaxTYpe: 'A',
-        U_CnfrmPrice: 'A'
+        U_CnfrmPrice: 'A',
+        U_TermCondition: po_request.commercial_terms_and_conditions
     }
   end
 

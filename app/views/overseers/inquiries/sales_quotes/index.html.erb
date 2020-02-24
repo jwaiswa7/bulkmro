@@ -19,14 +19,20 @@
           <h5 class="text-info mb-0">Before making a sales order, Please fulfill the following.</h5>
         </li>
         <% if @inquiry.customer_po_number.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer PO number must be present.</li><% end %>
-        <% if @inquiry.customer_order_date.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer order date has to be defined.</li><% end %>
+        <% if @inquiry.customer_order_date.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer order date must be present.</li><% end %>
+        <% if @inquiry.customer_committed_date.blank? || !@inquiry.committed_delivery_attachment.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Committed delivery date and
+        attachment must be present.</li><% end %>
+        <% if @inquiry.customer_po_received_date.blank? || !@inquiry.customer_po_received_attachment.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Committed PO received date and
+        attachment must be present.</li><% end %>
+        <% if @inquiry.customer_po_delivery_date.blank? || !@inquiry.customer_po_delivery_attachment.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Committed PO delivery date and
+        attachment must be present.</li><% end %>
         <% if @inquiry.not_synced? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Inquiry must be synced with SAP.</li><% end %>
         <% if @inquiry.final_sales_quote.not_synced? || @inquiry.last_synced_quote_id != @inquiry.final_sales_quote.id %><li class="list-group-item"><i class="fal fa-check mr-2"></i> Last Sales quote must be synced with SAP.</li><% end %>
         <% if @inquiry.final_sales_quote.email_messages.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Quotation has to be emailed to Customer; make sure your SMTP settings and phone number are updated in your profile.</li><% end %>
         <% if !@inquiry.final_sales_quote.sales_quote_quantity_not_fulfilled? %><li class="list-group-item "><i class="fas fa-info mr-2"></i>Sales quote total quantity already fulfilled by non-rejected sales orders.</li><% end %>
-        <% if @inquiry.customer_committed_date.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer committed date has to be defined.</li><% end %>
+        <% if @inquiry.customer_committed_date.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer committed delivery date has to be defined.</li><% end %>
         <% if !@inquiry.customer_po_sheet.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer PO sheet has to be uploaded.</li><% end %>
-       <% if !@inquiry.calculation_sheet.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Calculation sheet has to be uploaded.</li><% end %>
+        <% if !@inquiry.calculation_sheet.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Calculation sheet has to be uploaded.</li><% end %>
         <% if !@inquiry.supplier_quotes.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Supplier quote(s) have to be uploaded.</li><% end %>
       </ul>
     <% end %>
@@ -62,11 +68,6 @@
             <% end %>
             <% if is_authorized(sales_quote, 'reset_quote') && policy(sales_quote).reset_quote? %>
               <%= row_action_button(reset_quote_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'retweet-alt', 'Reset Quote', 'dark') %>
-            <% elsif policy(sales_quote).reset_quote_for_manager? %>
-              <%= link_to('', class: ['btn btn-sm btn-danger manager-sales-quote-reset'], 'data-sales-quote-id': sales_quote.to_param, 'data-inquiry-id': @inquiry.to_param , title: 'Reset Quote', remote: true) do
-                concat content_tag(:span, '')
-                concat content_tag :i, nil, class: ['fal fa-retweet-alt'].join
-              end %>
             <% end %>
             <% if @inquiry.final_sales_quote.present? && is_authorized(sales_quote, 'new_sales_order') && policy(@inquiry.final_sales_quote).new_sales_order? %>
               <%= row_action_button(new_overseers_inquiry_sales_order_path(@inquiry, sales_quote_id: sales_quote.to_param), 'external-link', 'Add to Order', 'success') %>
@@ -75,20 +76,23 @@
               <%= row_action_button(new_overseers_inquiry_sales_quote_email_message_path(@inquiry, sales_quote), 'envelope', 'Send Email', 'dark') %>
             <% end %>
             <% if is_authorized(sales_quote, 'show') && policy(sales_quote).show? %>
-              <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+              <% if sales_quote.ancestors.count > 0 %>
+                <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf, is_revision_visible: true), 'file-pdf', 'Sales Quote with Revision', 'success', :_blank) %>
+              <% end %>
+              <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf, is_revision_visible: false), 'file-pdf', 'Download', 'dark', :_blank) %>
             <% end %>
             <% if is_authorized(sales_quote, 'new_freight_request') && policy(sales_quote).new_freight_request? %>
               <%= row_action_button(new_overseers_freight_request_path(:sales_quote_id => sales_quote.to_param), 'external-link', 'New Freight Request', 'warning') %>
             <% end %>
           </td>
-          <td><%= sales_quote.id %></td>
-          <td><%= format_date(sales_quote.sent_at) %></td>
-          <td><%= sales_quote.created_by.to_s %></td>
-          <td><%= sales_quote.rows.size %></td>
-          <td><%= format_currency(sales_quote.calculated_total) %></td>
-          <td><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
-          <td><%= format_date(sales_quote.created_at) %></td>
-          <td>
+          <td class="text-right"><%= sales_quote.ancestors.count > 0 ? "R#{sales_quote.ancestors.count} - #{sales_quote.id}" : "#{sales_quote.id}"  %></td>
+          <td class="text-right"><%= format_date(sales_quote.sent_at) %></td>
+          <td class="text-right"><%= sales_quote.created_by.to_s %></td>
+          <td class="text-right"><%= sales_quote.rows.size %></td>
+          <td class="text-right"><%= format_currency(sales_quote.calculated_total) %></td>
+          <td class="text-right"><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
+          <td class="text-right"><%= format_date(sales_quote.created_at) %></td>
+          <td class="text-right">
             <% if policy(sales_quote).reset_quote_form? %>
               <% if sales_quote.sales_orders.present? %>
                 <%= status_badge(sales_quote.sales_orders.last.status) %>

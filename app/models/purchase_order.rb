@@ -33,6 +33,8 @@ class PurchaseOrder < ApplicationRecord
   scope :with_inquiry_by_company, -> (company_id) { joins(:inquiry).where(inquiries: { company_id: company_id }) }
   scope :with_all_material_statuses, -> { where('material_status IN (?)', [10, 20, 25, 30, 35]) }
 
+  delegate :commercial_terms_and_conditions, to: :po_request
+
   def filename(include_extension: false)
     [
         ['po', po_number].join('_'),
@@ -178,7 +180,10 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def billing_address
-    if self.metadata['PoSupBillFrom'].present?
+    if self.metadata['PoSupBillFrom'].present? && self.metadata['PoSupNum'].present?
+      supplier = Company.find_by_remote_uid(self.metadata['PoSupNum'])
+      Address.find_by(remote_uid: self.metadata['PoSupBillFrom'], company_id: supplier.id)
+    elsif self.metadata['PoSupBillFrom'].present?
       Address.find_by_remote_uid(self.metadata['PoSupBillFrom'])
     else
       supplier.billing_address
@@ -186,7 +191,10 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def shipping_address
-    if self.metadata['PoSupShipFrom'].present?
+    if self.metadata['PoSupShipFrom'].present? && self.metadata['PoSupNum'].present?
+      supplier = Company.find_by_remote_uid(self.metadata['PoSupNum'])
+      Address.find_by(remote_uid: self.metadata['PoSupShipFrom'], company_id: supplier.id)
+    elsif self.metadata['PoSupShipFrom'].present?
       Address.find_by_remote_uid(self.metadata['PoSupShipFrom'])
     else
       supplier.shipping_address
@@ -281,5 +289,32 @@ class PurchaseOrder < ApplicationRecord
     else
       nil
     end
+  end
+
+  def warehouse_ship_from
+    if metadata['PoShipWarehouse'].present?
+      Warehouse.find_by(remote_uid: metadata['PoShipWarehouse'])
+    else
+      inquiry.bill_from
+    end
+  end
+
+  def max_lead_date
+    self.po_request.present? ? self.po_request.rows.maximum(:lead_time).strftime('%d-%b-%Y') : Date.parse(self.metadata['PoDate']).strftime('%d-%b-%Y')
+  end
+
+
+  def get_freight
+    product_ids = Product.where(sku: Settings.product_specific.freight).last.id
+    if product_ids.present?
+      if self.po_request.present?
+        self.po_request.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included'
+      else
+        self.rows.pluck(:product_id).include?(product_ids) ? 'Excluded' : 'Included'
+      end
+    end
+  end
+  def supplier_contact
+     self.po_request.contact_phone if self.po_request.present? && self.po_request.contact_phone.present?
   end
 end

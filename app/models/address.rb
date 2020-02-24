@@ -41,7 +41,7 @@ class Address < ApplicationRecord
   # validates_presence_of :name, :country_code, :city_name, :street1
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
-  validates_presence_of :state
+  validates_presence_of :state, :if => :domestic?
   validates_uniqueness_of :remote_uid, on: :update, if: Proc.new {|address| address.company_id.present?}
   validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> {self.gst != 'No GST Number'}
   # validates_presence_of :remote_uid

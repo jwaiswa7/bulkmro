@@ -36,18 +36,24 @@
         <strong class="d-block">Customer Purchase Order No.</strong>
         #<%= @inquiry.customer_po_number %>
       </div>
-      <div class="col-6 col-md-3">
+      <div class="col-6 col-md-2">
         <strong class="d-block">Customer Order Date</strong>
         <%= @inquiry.customer_order_date %>
+      </div>
+      <div class="col-6 col-md-1 mt-2 mt-md-0">
+        <strong class="d-block">Currency</strong>
+        <%= sales_order.currency %> (<%= sales_order.conversion_rate %>)
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         <strong class="d-block">Customer Committed Date</strong>
         <%= @inquiry.customer_committed_date %>
       </div>
-      <div class="col-6 col-md-2 mt-2 mt-md-0">
-        <strong class="d-block">Currency</strong>
-        <%= sales_order.currency %> (<%= sales_order.conversion_rate %>)
-      </div>
+      <% if sales_order.revised_committed_delivery_date.present? %>
+        <div class="col-6 col-md-2 mt-2 mt-md-0">
+          <strong class="d-block">Revised Customer Committed Delivery Date</strong>
+          <%= sales_order.revised_committed_delivery_date %>
+        </div>
+      <% end %>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         <strong class="d-block">Payment Terms</strong>
         <%= @inquiry.payment_option %>
@@ -95,7 +101,7 @@
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
           <% end %>
           <strong><em>Email</em></strong>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-          <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
+          <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_billing_address.gst || '-' %></span>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Customer - Shipping Address</strong>
@@ -106,7 +112,7 @@
               - <%= @inquiry.shipping_contact.phone %></span>
           <% end %>
           <strong><em>Email</em></strong>: <%= @inquiry.shipping_contact.email if @inquiry.shipping_contact.email.present? %>
-          <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
+          <span class="d-block"><strong><em>GST Number</em></strong>: <%= @sales_order.serialized_shipping_address.gst || '-' %></span>
         </div>
       </div>
     </div>

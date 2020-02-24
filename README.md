@@ -2,6 +2,8 @@
 Follow the below instructions and commands for basic setup to get the sprint running in development environment. Along with that sign up on bit Bucket and Heroku with official credentials.
 
 #### stable RVM 
+curl -sSL https://rvm.io/pkuczynski.asc | gpg2 --import -
+
 curl -sSL https://get.rvm.io | bash -s stable
 #### ruby (for version 2.5.3)
 rvm install 2.5.3
@@ -18,9 +20,10 @@ sudo gem install rails -v 5.2.1
 
 #### yarn
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get update && sudo apt-get install yarn
-yarn install
+
+sudo apt-get update && sudo apt install yarn
 
 #### postgres and pgAdmin
 sudo apt install postgresql-10 pgadmin4

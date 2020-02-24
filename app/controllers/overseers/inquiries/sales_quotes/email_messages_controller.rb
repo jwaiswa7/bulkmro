@@ -25,7 +25,7 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
     authorize_acl @sales_quote, 'create_email_message'
 
     if @email_message.auto_attach?
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_quote)), filename: @sales_quote.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_quote, locals: { is_revision_visible: true })), filename: @sales_quote.filename(include_extension: true))
     end
 
     if @email_message.save

@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
+  require 'sidekiq/web'
   post '/rate' => 'rater#create', :as => 'rate'
   mount Maily::Engine, at: '/maily' if Rails.env.development?
   mount ActionCable.server, at: '/cable'
-
+  authenticate :overseer, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
   root to: 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
   get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
@@ -295,6 +298,7 @@ Rails.application.routes.draw do
         get 'under_amend'
         get 'amended'
         get 'pending_stock_approval'
+        get 'stock_amend_requests'
         get 'stock'
         get 'completed_stock'
         get 'add_comment'
@@ -379,12 +383,14 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get 'resync_all_sales_orders'
         get 'pending'
         get 'account_approval_pending'
         get 'cancelled'
         get 'export_all'
         get 'so_sync_pending'
         get 'export_rows'
+        get 'export_rows_in_bible_format'
         get 'export_for_logistics'
         get 'export_for_sap'
         get 'export_for_reco'
@@ -417,9 +423,12 @@ Rails.application.routes.draw do
         patch 'cancelled_purchase_order'
         get 'resync_po'
         get 'change_material_status'
+        get 'render_modal_form'
+        patch 'add_comment'
       end
 
       collection do
+        get 'resync_all_purchase_orders'
         get 'export_material_readiness'
         get 'manually_closed'
         get 'pending_sap_sync'
@@ -431,6 +440,7 @@ Rails.application.routes.draw do
         get 'inward_dispatch_pickup_queue'
         get 'inward_dispatch_delivered_queue'
         get 'inward_completed_queue'
+        get 'cancelled_inward_dispatches'
         post 'update_logistics_owner'
         post 'update_logistics_owner_for_inward_dispatches'
       end
@@ -455,6 +465,7 @@ Rails.application.routes.draw do
         post 'delivery_mail_to_customer_notification'
         get 'dispatch_mail_to_customer'
         post 'dispatch_mail_to_customer_notification'
+        get 'resync_sap_status'
       end
       collection do
         get 'autocomplete'
@@ -503,6 +514,8 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get 'regret_request_action'
+        get 'regret_inquiry_request_queue'
         get 'new_from_customer_order'
         get 'autocomplete'
         get 'index_pg'
@@ -579,6 +592,8 @@ Rails.application.routes.draw do
             get 'get_relationship_map_json'
             get 'order_cancellation_modal'
             patch 'cancellation'
+            get 'revise_committed_delivery_date'
+            patch 'update_revised_committed_delivery_date'
           end
 
           collection do
@@ -797,6 +812,7 @@ Rails.application.routes.draw do
         get 'unique_skus'
         get 'order_count'
         get 'categorywise_revenue'
+        get 'stock_reports'
       end
     end
 
@@ -850,6 +866,9 @@ Rails.application.routes.draw do
     end
 
     resources :invoices, controller: :sales_invoices, only: %i[index show] do
+      member do
+        get 'show_pods'
+      end
       collection do
         get 'export_all'
       end

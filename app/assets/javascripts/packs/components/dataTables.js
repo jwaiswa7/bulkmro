@@ -5,6 +5,14 @@ const dataTables = () => {
     preSetup();
     setup();
     ajax();
+    $('.datatable').DataTable().rowGroup().disable().draw();
+    if (typeof $(".dataTable").data('ajax') !== 'undefined'){
+        let data_ajax = $('.datatable').data('ajax');
+        let report_name = data_ajax.split('/').pop();
+        if (report_name == 'company_report') {
+            $('.datatable').DataTable().rowGroup().enable().draw();
+        }
+    }
 };
 
 // Setup the filter field before all dataTables, if the filter attribute exists
@@ -49,6 +57,7 @@ let setup = () => {
         let allowSort = $(this).data('sort') ? $(this).data(sort) : true;
         let that = this;
 
+
         $.fn.dataTable.ext.errMode = 'throw';
 
         $(this).DataTable({
@@ -77,7 +86,7 @@ let setup = () => {
                         style: 'currency',
                         currency: 'INR',
                         minimumFractionDigits: 2
-                    })
+                    });
                     if (value && value != "") {
                         if (td.hasClass('currency')){
                             td.empty().append(parseInt(value))
@@ -94,7 +103,7 @@ let setup = () => {
                         }
                         else if(td.hasClass('total_inquiries_won_percentage')){
                             let total_inquiries_count = parseInt($('.total_inquiries_count').html().replace(/,/g , ''));
-                            let inquiries_won_percentage = (total_inquiries_count/value)*100;
+                            let inquiries_won_percentage = (value/total_inquiries_count)*100;
                             td.empty().append(parseInt(inquiries_won_percentage));
                         }
                         else if(td.hasClass('actual_margin_percentage')){
@@ -105,6 +114,9 @@ let setup = () => {
                         }
                         else if(td.hasClass('no-data')){
                             td.empty()
+                        }
+                        else if (td.hasClass('total')){
+                            td.empty().append('<strong>Total</strong>');
                         }
                         else{
                             td.empty()
@@ -152,7 +164,11 @@ let setup = () => {
             }, {
                     "targets": 'text-center',
                     "class": 'text-center text-nowrap'
-                }],
+                },{
+                "targets": 'row-group',
+                "class": 'row-group'
+            }],
+            rowGroup: {dataSrc: [ 1 ]},
             fnServerParams: function (data) {
                 data['columns'].forEach(function (items, index) {
                     data['columns'][index]['name'] = $(that).find('th:eq(' + index + ')').data('name');

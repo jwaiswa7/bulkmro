@@ -60,6 +60,14 @@
               <strong class="d-block">Updated At</strong>
               <%= format_date_time_meridiem(@payment_option.updated_at) %>
             </div>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Is Active</strong>
+              <% if @payment_option.is_active %>
+                <i class="far fa-check text-success"></i>
+              <% else %>
+                <i class="far fa-times text-danger"></i>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>

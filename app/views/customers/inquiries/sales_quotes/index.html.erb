@@ -17,7 +17,7 @@
       <tr>
         <td>
           <%= row_action_button(customers_inquiry_sales_quote_path(@inquiry, @final_sales_quote, format: :html), 'fal fa-eye', 'View Sales Quote', 'dark') %>
-          <%= row_action_button(customers_inquiry_sales_quote_path(@inquiry, @final_sales_quote, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+          <%= row_action_button(customers_inquiry_sales_quote_path(@inquiry, @final_sales_quote, format: :pdf, is_revision_visible: false), 'file-pdf', 'Download', 'dark', :_blank) %>
         </td>
         <td><%= format_date(@final_sales_quote.sent_at) %></td>
         <td><%= @final_sales_quote.created_by.to_s %></td>

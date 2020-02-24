@@ -1,0 +1,16 @@
+<div class="form-row">
+  <div class="col-6 col-md-6">
+    <%= f.hidden_field :account_id, value: params[:account_id].present? ? params[:account_id] : @annual_target.account_id %>
+    <%= f.input :account, label: 'Name', :required => 'true', :class => 'form-control', disabled: true %>
+  </div>
+
+  <div class="col-6 col-md-6">
+    <%= f.input :year, as: :select, collection: AnnualTarget.year_range, label: 'Year', :placeholder => 'Year', :required => 'true', :class => 'form-control', include_blank: 'Select Year', selected: AnnualTarget.current_year %>
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="col-6 col-md-4">
+    <%= f.input :account_target, label: 'Target', :required => 'true', :class => 'form-control', :input_html => {:type => "number"} %>
+  </div>
+</div>

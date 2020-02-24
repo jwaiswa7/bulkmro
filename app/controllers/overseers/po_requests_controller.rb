@@ -111,6 +111,17 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize_acl @po_request
     if @po_request.valid?
+      po_request_row_ids = []
+      params[:po_request][:rows_attributes].each do |key, value|
+        if value.key?('_destroy')
+          po_request_row_ids << value['id']
+        end
+      end
+
+      if po_request_row_ids.present?
+        @po_request.purchase_order.rows.where(po_request_row_id: po_request_row_ids).update_all(po_request_row_id: nil)
+      end
+
       # todo allow only in case of zero form errors
       row_updated_message = ''
       messages = FieldModifiedMessage.for(@po_request, ['contact_email', 'contact_phone', 'contact_id', 'payment_option_id', 'bill_from_id', 'ship_from_id', 'bill_to_id', 'ship_to_id', 'status', 'supplier_po_type', 'late_lead_date_reason', 'other_rejection_reason'])
@@ -189,7 +200,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request = po_request
     @po_request.status = 'Supplier PO: Created Not Sent' if @po_request.purchase_order.present? && @po_request.status == 'Supplier PO: Request Pending'
     @po_request.status = 'Supplier PO: Request Pending' if @po_request.status == 'Supplier PO Request Rejected' && policy(@po_request).manager_or_sales?
-    @po_request.status = 'Supplier PO: Amendment Pending' if (@po_request.status == 'Supplier PO: Created Not Sent' || @po_request.status == 'Supplier PO Sent') && policy(@po_request).manager_or_sales?
+    @po_request.status = 'Supplier PO: Amendment Pending' if (@po_request.status == 'Supplier PO: Created Not Sent' || @po_request.status == 'Supplier PO Sent' || @po_request.status == 'Supplier PO: Amended') && policy(@po_request).manager_or_sales?
     @po_request
   end
 
@@ -272,6 +283,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize_acl :po_request
   end
 
+  def stock_amend_requests
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.stock_amend_request.order(id: :desc), params)
+    authorize_acl @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
   private
 
     def po_request_params
@@ -301,6 +322,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
           :supplier_id,
           :transport_mode,
           :delivery_type,
+          :commercial_terms_and_conditions,
           comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
           rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time, :converted_unit_selling_price, :product_unit_selling_price, :conversion],
           attachments: []

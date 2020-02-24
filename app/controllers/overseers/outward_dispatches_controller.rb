@@ -71,7 +71,8 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
         else
           url = overseers_outward_dispatch_path(@outward_dispatch)
         end
-        @outward_dispatch.ar_invoice_request.inward_dispatches.map {|inward_dispatch| inward_dispatch.set_outward_status}
+        inward_dispatches = InwardDispatch.where(id: @outward_dispatch.ar_invoice_request.inward_dispatch_ids)
+        inward_dispatches.map {|inward_dispatch| inward_dispatch.set_outward_status}
         format.html { redirect_to url, notice: 'Outward dispatch was successfully created.' }
         format.json { render :add_packing, status: :created, location: @outward_dispatch }
       else
@@ -104,7 +105,8 @@ class Overseers::OutwardDispatchesController < Overseers::BaseController
     authorize_acl @outward_dispatch
     respond_to do |format|
       if @outward_dispatch.update(outward_dispatch_params.merge(overseer: current_overseer))
-        @outward_dispatch.ar_invoice_request.inward_dispatches.map{|inward_dispatch| inward_dispatch.set_outward_status}
+        inward_dispatches = InwardDispatch.where(id: @outward_dispatch.ar_invoice_request.inward_dispatch_ids)
+        inward_dispatches.map {|inward_dispatch| inward_dispatch.set_outward_status}
         format.html { redirect_to overseers_outward_dispatch_path (@outward_dispatch), notice: 'Outward dispatch was successfully updated.' }
         format.json { render :show, status: :ok, location: @outward_dispatch }
       else

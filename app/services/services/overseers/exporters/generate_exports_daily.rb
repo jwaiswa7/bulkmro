@@ -1,15 +1,14 @@
 class Services::Overseers::Exporters::GenerateExportsDaily < Services::Shared::BaseService
   def initialize
     export_arr = [
-        'ProductsExporter',
-        'CompaniesExporter',
-        'PurchaseOrdersExporter',
-        'SalesInvoiceRowsExporter',
         'SalesInvoicesExporter',
-        'SalesInvoicesLogisticsExporter',
+        'ProductsExporter',
         'SalesOrderRowsExporter',
+        'SalesInvoiceRowsExporter',
+        'CompaniesExporter',
+        'SalesInvoicesLogisticsExporter',
         'SalesOrdersLogisticsExporter',
-        'MaterialReadinessExporter'
+        'PurchaseOrdersExporter'
     ]
     export_arr.each do |value|
       ['Services', 'Overseers', 'Exporters', value].join('::').constantize.new.call

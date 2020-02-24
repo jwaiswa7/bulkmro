@@ -19,7 +19,8 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
       records = model
     end
     # records.each do |record|
-    records.includes(:category, :brand, :measurement_unit).all.order(created_at: :desc).each do |record|
+    @export = Export.create!(export_type: 5, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+    records.includes(:category, :brand, :measurement_unit).all.order(created_at: :desc).find_each(batch_size: 100) do |record|
       rows.push(
         id: record.id,
         sku: record.sku,
@@ -40,8 +41,8 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
 
                 )
     end
-    filtered = @ids.present?
-    export = Export.create!(export_type: 5, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # filtered = @ids.present?
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

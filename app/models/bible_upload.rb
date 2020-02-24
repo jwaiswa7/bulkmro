@@ -12,7 +12,8 @@ class BibleUpload < ApplicationRecord
       'Pending': 10,
       'Processing': 20,
       'Completed': 30,
-      'Failed': 40
+      'Completed with Errors': 40,
+      'Failed': 50
   }
 
   enum import_type: {

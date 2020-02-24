@@ -36,7 +36,7 @@ class SalesInvoiceRow < ApplicationRecord
     if(tax_amount.nil? || tax_amount.zero?) || (row_total.nil? || row_total.zero?)
       0
     else
-      ((tax_amount / row_total) * 100).round(2)
+      ((tax_amount / row_total) * 100)
     end
   end
 

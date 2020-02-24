@@ -5,7 +5,7 @@ class Resources::ApplicationResource
 
   def self.new_session_id
     response = post(
-        '/Login',
+      '/Login',
         body: {CompanyDB: Settings.sap.DATABASE, UserName: Settings.sap.USERNAME, Password: Settings.sap.PASSWORD}.to_json,
         verify: false,
         debug_output: $stdout,
@@ -52,14 +52,14 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
 -----END RSA PRIVATE KEY-----'
 
   SAP = OpenStruct.new(
-      attachment_directory: Settings.sap.ATTACHMENT_DIRECTORY,
-      attachment_api: Settings.sap.ATTACHMENT_API,
-      server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
-      login: {user: Settings.sap.ATTACHMENT_USERNAME, password: Settings.sap.ATTACHMENT_PASSWORD},
-      draft_doc_object_code: 17,
-      draft_base_type: 23,
-      attachment_username: Settings.sap.ATTACHMENT_USERNAME,
-      ssh_key: ATTACHMENT_SSH
+    attachment_directory: Settings.sap.ATTACHMENT_DIRECTORY,
+    attachment_api: Settings.sap.ATTACHMENT_API,
+    server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
+    login: {user: Settings.sap.ATTACHMENT_USERNAME, password: Settings.sap.ATTACHMENT_PASSWORD},
+    draft_doc_object_code: 17,
+    draft_base_type: 23,
+    attachment_username: Settings.sap.ATTACHMENT_USERNAME,
+    ssh_key: ATTACHMENT_SSH
   )
 
   def self.set_headers
@@ -67,10 +67,10 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     debug_output($stdout)
     default_options.merge!(verify: false, timeout: 30)
     headers(
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Cookie': get_sap_cookie,
-        'B1S-ReplaceCollectionsOnPatch': 'true'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Cookie': get_sap_cookie,
+      'B1S-ReplaceCollectionsOnPatch': 'true'
     )
   end
 
@@ -101,7 +101,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.all
-    get("/#{collection_name}").parsed_response['value'].map {|pr| OpenStruct.new(pr)}
+    get("/#{collection_name}").parsed_response['value'].map { |pr| OpenStruct.new(pr) }
   end
 
   def self.find(id, quotes: false)
@@ -132,10 +132,10 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     if validated_response['value'].present?
       remote_record = validated_response['value'][0]
       yield remote_record if block_given?
-      resync_request.update_attributes(:status => 10, :resync_response => validated_response, :resync_url => url) if resync_request.present?
+      resync_request.update_attributes(status: 10, resync_response: validated_response, resync_url: url) if resync_request.present?
       remote_record[self.identifier.to_s]
     else
-      resync_request.update_attributes(:status => 20, :resync_response => validated_response, :resync_url => url) if resync_request.present?
+      resync_request.update_attributes(status: 20, resync_response: validated_response, resync_url: url) if resync_request.present?
       false
     end
   end
@@ -194,24 +194,48 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     end
   end
 
-  def self.log_request(method, record, dependent_record = nil, is_find: false)
+  def self.cancel_document(record)
+    record_remote_uid = record.remote_uid
+    remote_json = {}
+    if record_remote_uid.present?
+      url = "/#{collection_name}(#{record.remote_uid})/Cancel"
+      response = perform_remote_sync_action('post', url)
+      log_request(:post, record, stored_body: false)
+      validated_response = get_validated_response(response)
+      remote_request = log_response(validated_response, 'patch', url)
+      if remote_request.status == 'success'
+        remote_json['status'] = 'success'
+        remote_json['message'] = 'SO Cancel Successfully'
+      elsif remote_request.status == 'failed'
+        remote_json['status'] = 'failed'
+        remote_json['message'] = remote_request.response['raw_response']['error']['message']['value']
+      end
+      remote_json
+    end
+  end
+
+  def self.log_request(method, record, dependent_record = nil, is_find: false, stored_body: true)
     @resource = if dependent_record.nil?
-      if record.is_a?(String)
-        record
+      if stored_body
+        if record.is_a?(String)
+          record
+        else
+          to_remote(record)
+        end
       else
-        to_remote(record)
+        ''
       end
     else
       to_remote(record, dependent_record)
     end
     @remote_request = RemoteRequest.create!(
-        subject: record.is_a?(String) ? nil : record,
-        method: method,
-        is_find: is_find,
-        resource: collection_name,
-        request: @resource,
-        url: [ENDPOINT, "/#{collection_name}"].join(''),
-        status: :pending
+      subject: record.is_a?(String) ? nil : record,
+      method: method,
+      is_find: is_find,
+      resource: collection_name,
+      request: @resource,
+      url: [ENDPOINT, "/#{collection_name}"].join(''),
+      status: :pending
     )
 
     @remote_request
@@ -227,12 +251,12 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
       status = :failed
       if !method.equal? 'get'
         @resync_remote_request = ResyncRemoteRequest.create!(
-            subject: @remote_request.subject,
-            method: method,
-            resource: @remote_request.resource,
-            request: @remote_request.request,
-            url: @remote_request.url,
-            status: @remote_request.status
+          subject: @remote_request.subject,
+          method: method,
+          resource: @remote_request.resource,
+          request: @remote_request.request,
+          url: @remote_request.url,
+          status: @remote_request.status
         )
         @resync_remote_request.update_attributes(response: response, status: status, hits: 0)
         @resync_remote_request

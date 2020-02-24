@@ -10,7 +10,6 @@
   <table class="table-bordered table">
     <thead>
     <tr>
-      <th>Id</th>
       <th>Bible File Upload ID</th>
       <th>Sr. No</th>
       <th>Bible Row Data</th>
@@ -20,23 +19,18 @@
     </tr>
     </thead>
     <tbody>
-    <%# if @bible_file_uploads.present? %>
-      <% @bible_uploads.each do |file_upload| %>
+      <% @bible_upload_logs.each do |upload_log| %>
         <tr>
-          <td><%= file_upload.id%></td>
-          <td><%= file_upload.bible_upload_id %></td>
-          <td><%= file_upload.sr_no %></td>
+          <td><%= upload_log.bible_upload_id %></td>
+          <td><%= upload_log.sr_no %></td>
           <td data-toggle="modal" data-target="#BibleRowModal" class="sheet-view-data">
             View Data
           </td>
-          <td><%= status_badge(file_upload.status) %></td>
-          <td><%= file_upload.error %></td>
-          <td class="sheet-row-data" style="display:none;"><%= file_upload.bible_row_data %></td>
+          <td><%= status_badge(upload_log.status) %></td>
+          <td><%= upload_log.error %></td>
+          <td class="sheet-row-data" style="display:none;"><%= upload_log.bible_row_data %></td>
         </tr>
       <% end %>
-    <%# else %>
-<!--      <p>No data available</p>-->
-    <%# end %>
     </tbody>
   </table>
 </div>

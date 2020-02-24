@@ -9,13 +9,12 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
   def show
     authorize_acl @sales_invoice
-    @metadata = @sales_invoice.metadata.deep_symbolize_keys
 
-
+    @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
     respond_to do |format|
       format.html { render 'show' }
       format.pdf do
-        render_pdf_for @sales_invoice, locals
+        render_pdf_for @sales_invoice, locals.merge!(pagination: false)
       end
     end
   end
@@ -23,11 +22,11 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def duplicate
     authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    locals.merge!(duplicate: true)
+    @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
     respond_to do |format|
       format.html { }
       format.pdf do
-        render_pdf_for @sales_invoice, locals
+        render_pdf_for @sales_invoice, locals.merge!(duplicate: true, pagination: false)
       end
     end
   end
@@ -35,11 +34,12 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def triplicate
     authorize_acl @sales_invoice, 'show'
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    locals.merge!(triplicate: true)
+    @bill_from_warehouse = @sales_invoice.get_bill_from_warehouse
+
     respond_to do |format|
       format.html { }
       format.pdf do
-        render_pdf_for @sales_invoice, locals
+        render_pdf_for @sales_invoice, locals.merge!(triplicate: true, pagination: false)
       end
     end
   end
@@ -47,7 +47,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def make_zip
     authorize_acl @sales_invoice
 
-    service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice, locals)
+    service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice, locals.merge(pagination: false, bill_from_warehouse: @sales_invoice.get_bill_from_warehouse))
     zip = service.call
 
     send_data(zip, type: 'application/zip', filename: @sales_invoice.zipped_filename(include_extension: true))

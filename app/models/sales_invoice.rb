@@ -6,7 +6,7 @@ class SalesInvoice < ApplicationRecord
   update_index('customer_order_status_report#sales_order') { sales_order }
   update_index('logistics_scorecards#sales_invoice') { self }
 
-  pg_search_scope :locate, against: [:id, :invoice_number], associated_against: { company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:id, :invoice_number], associated_against: {company: [:name], account: [:name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name]}, using: {tsearch: {prefix: true}}
 
   belongs_to :sales_order
   belongs_to :billing_address, class_name: 'Address', required: false
@@ -23,7 +23,6 @@ class SalesInvoice < ApplicationRecord
   has_many :email_messages
   has_many :sales_receipts
   has_many :sales_receipt_rows
-  has_many :email_messages
   has_many :pod_rows, dependent: :destroy
   accepts_nested_attributes_for :pod_rows, reject_if: lambda { |attributes|
     if attributes[:id].present?
@@ -135,11 +134,13 @@ class SalesInvoice < ApplicationRecord
   end
 
   def has_attachment?
-    self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached? && self.delivery_completed
+    (self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached? && self.delivery_completed) || self.is_manual_closed
   end
 
   def pod_status
-    if self.pod_rows.present? && self.pod_rows.order(:delivery_date).last.attachments.attached?
+    if is_manual_closed
+      'complete'
+    elsif self.pod_rows.present? && (self.pod_rows.order(:delivery_date).last.attachments.attached?)
       if self.delivery_completed
         'complete'
       else
@@ -264,7 +265,9 @@ class SalesInvoice < ApplicationRecord
   # ======================================================================================================
 
   def calculated_committed_delivery_tat
-    if self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
+    if self.sales_order.revised_committed_delivery_date.present? && self.inquiry.customer_order_date.present?
+      (self.sales_order.revised_committed_delivery_date - self.inquiry.customer_order_date).to_i
+    elsif self.inquiry.customer_committed_date.present? && self.inquiry.customer_order_date.present?
       (self.inquiry.customer_committed_date - self.inquiry.customer_order_date).to_i
     end
   end
@@ -306,7 +309,11 @@ class SalesInvoice < ApplicationRecord
   end
 
   def set_delay_for_nil_delivery_date
-    self.delivery_date.nil? && ((Date.today > self.inquiry.customer_committed_date) if self.inquiry.customer_committed_date.present?)
+    if self.sales_order.revised_committed_delivery_date.present?
+      self.delivery_date.nil? && (Date.today > self.sales_order.revised_committed_delivery_date)
+    elsif self.inquiry.customer_committed_date.present?
+      self.delivery_date.nil? && (Date.today > self.inquiry.customer_committed_date)
+    end
   end
 
   def calculated_delay_bucket
@@ -338,8 +345,39 @@ class SalesInvoice < ApplicationRecord
   end
 
   def cosr_calculate_time_delay
-    if self.delivery_date.present? && self.inquiry.customer_committed_date.present?
+    if self.delivery_date.present? && self.sales_order.revised_committed_delivery_date.present?
+      ((self.delivery_date.to_time.to_i - self.sales_order.revised_committed_delivery_date.to_time.to_i) / 60.0).ceil.abs
+    elsif self.delivery_date.present? && self.inquiry.customer_committed_date.present?
       ((self.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
     end
+  end
+
+  def self.get_invoice_count(overseer, date_range)
+    if date_range.present?
+      from = date_range.split('~').first.to_date.beginning_of_day.strftime('%d-%m-%Y')
+      to = date_range.split('~').last.to_date.end_of_day.strftime('%d-%m-%Y')
+      overseer_role = overseer.role == 'inside_sales_executive' ? 'inside_sales_owner_id' : 'outside_sales_owner_id'
+      invoices = SalesInvoice.joins(:inquiry).where(mis_date: from..to).where(inquiries: {"#{overseer_role}": overseer.id})
+      invoice_count = invoices.count
+      revenue = invoices.map { |invoice| invoice.calculated_total }.compact.sum
+      [invoice_count, revenue]
+    end
+  end
+
+  def get_bill_from_warehouse
+    metadata = self.metadata.deep_symbolize_keys
+    if metadata[:bill_from].present?
+      bill_from_warehouse = Warehouse.find_by_remote_uid(metadata[:bill_from])
+    else
+      inquiry = self.inquiry
+      bill_from_warehouse = inquiry.bill_from
+    end
+
+    bill_from_warehouse
+  end
+
+
+  def get_contact_for_email
+    [self.inquiry.billing_contact.email, self.inquiry.shipping_contact.email].uniq.join(',')
   end
 end

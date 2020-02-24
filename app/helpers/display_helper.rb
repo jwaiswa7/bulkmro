@@ -307,6 +307,8 @@ module DisplayHelper
     end
   end
 
+
+
   def format_review_document(company_review)
     if company_review.rateable_type == 'PoRequest'
       row_action_button(overseers_po_request_path(company_review.rateable), 'file-invoice', 'View PO Request', 'success', :_blank)
@@ -353,5 +355,13 @@ module DisplayHelper
     Rails.cache.fetch('acl_resource_ids', expires_in: 3.hours) do
       AclResource.acl_resource_ids
     end
+  end
+
+  def display_stock_status(customer_product, *warehouses)
+    format_boolean_label(customer_product.product.stocks.where(warehouse_id: warehouses).sum(&:instock).to_i > 0, 'In Stock')
+  end
+
+  def get_instock_status(customer_product, *warehouses)
+    customer_product.product.stocks.where(warehouse_id: warehouses).sum(&:instock).to_i > 0 ? true : false
   end
 end

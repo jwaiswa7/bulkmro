@@ -12,13 +12,14 @@ class SalesOrder < ApplicationRecord
   include Mixins::HasConvertedCalculations
   include DisplayHelper
 
-  update_index('sales_orders#sales_order') {self}
+  update_index('sales_orders#sales_order') { self }
   update_index('customer_order_status_report#sales_order') { self }
 
   pg_search_scope :locate, against: [:status, :id, :order_number], associated_against: {company: [:name], inquiry: [:inquiry_number, :customer_po_number]}, using: {tsearch: {prefix: true}}
   has_closure_tree(name_column: :to_s)
 
   has_one_attached :serialized_pdf
+  has_many_attached :revised_committed_deliveries
 
   belongs_to :sales_quote
 
@@ -28,9 +29,9 @@ class SalesOrder < ApplicationRecord
   has_one :account, through: :company
   has_one :inquiry_currency, through: :inquiry
   has_one :currency, through: :inquiry_currency
-  has_many :rows, -> {joins(:inquiry_product).order('inquiry_products.sr_no ASC')}, class_name: 'SalesOrderRow', inverse_of: :sales_order, dependent: :destroy
+  has_many :rows, -> { joins(:inquiry_product).order('inquiry_products.sr_no ASC') }, class_name: 'SalesOrderRow', inverse_of: :sales_order, dependent: :destroy
   has_many :sales_order_rows, inverse_of: :sales_order
-  accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| (attributes['sales_quote_row_id'].blank? || attributes['quantity'].blank? || attributes['quantity'].to_f < 0) && attributes['id'].blank?}, allow_destroy: true
+  accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| (attributes['sales_quote_row_id'].blank? || attributes['quantity'].blank? || attributes['quantity'].to_f < 0) && attributes['id'].blank? }, allow_destroy: true
   has_many :sales_quote_rows, through: :sales_quote
   has_many :inquiry_product_suppliers, through: :sales_quote_rows
   has_many :products, through: :rows
@@ -141,11 +142,12 @@ class SalesOrder < ApplicationRecord
       "Wrong Order Values": 'Wrong Order Values'
   }
 
-  scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
-  scope :remote_approved, -> {where('(((sales_orders.status = ? OR sales_orders.status = ?) AND sales_orders.remote_status != ?) OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'CO'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled'])}
-  scope :accounts_approval_pending, -> {where(status: 'Accounts Approval Pending').where("created_at >= '2019-07-18'")}
-  scope :under_process, -> {where(status: [:'Approved', :'Accounts Approval Pending', 'Requested'])}
-  scope :without_cancelled, -> {where.not(status: 'Cancelled')}
+  scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }
+  scope :remote_approved, -> { where('(((sales_orders.status = ? OR sales_orders.status = ?) AND sales_orders.remote_status != ?) OR sales_orders.legacy_request_status = ?) AND sales_orders.status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'CO'], SalesOrder.remote_statuses[:'Cancelled by SAP'], SalesOrder.legacy_request_statuses['Approved'], SalesOrder.statuses[:'Cancelled']) }
+  scope :accounts_approval_pending, -> { where(status: 'Accounts Approval Pending').where("created_at >= '2019-07-18'") }
+  scope :under_process, -> { where(status: [:'Approved', :'Accounts Approval Pending', 'Requested']) }
+  scope :without_cancelled, -> { where.not(status: 'Cancelled') }
+  scope :discard_cancelled_and_rejected, -> { where.not(status: ['Cancelled', 'Rejected', 'SAP Rejected']) }
 
   def confirmed?
     self.confirmation.present?
@@ -224,11 +226,11 @@ class SalesOrder < ApplicationRecord
 
 
   def serialized_billing_address
-    self.billing_address || self.inquiry.billing_address
+    self.billing_address.present? ? self.billing_address : self.inquiry.billing_address
   end
 
   def serialized_shipping_address
-    self.shipping_address || self.inquiry.shipping_address
+    self.shipping_address.present? ? self.shipping_address : self.inquiry.shipping_address
   end
 
   def filename(include_extension: false)
@@ -243,7 +245,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def total_quantities
-    self.rows.pluck(:quantity).inject(0) {|sum, x| sum + x}
+    self.rows.pluck(:quantity).inject(0) { |sum, x| sum + x }
   end
 
   def is_not_requested?(record)
@@ -275,8 +277,12 @@ class SalesOrder < ApplicationRecord
   end
 
   def calculate_time_delay
-    if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present? && self.inquiry.customer_committed_date.present?
-      ((self.invoices.last.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
+    if self.inquiry.present? && self.invoices.present? && self.invoices.last.delivery_date.present?
+      if self.revised_committed_delivery_date.present?
+        ((self.invoices.last.delivery_date.to_time.to_i - self.revised_committed_delivery_date.to_time.to_i) / 60.0).ceil.abs
+      elsif self.inquiry.customer_committed_date.present?
+        ((self.invoices.last.delivery_date.to_time.to_i - self.inquiry.customer_committed_date.to_time.to_i) / 60.0).ceil.abs
+      end
     end
   end
 
@@ -308,7 +314,7 @@ class SalesOrder < ApplicationRecord
 
   def unique_skus_in_order
     bible_orders = BibleSalesOrder.where(order_number: self.order_number)
-    bible_orders.map {|bo| bo.metadata.map {|m| m['sku']} }.flatten.compact.uniq.count
+    bible_orders.map { |bo| bo.metadata.map { |bible_order_row| bible_order_row['sku'] } }.flatten.compact.uniq.count
   end
 
   def bible_sales_invoices
@@ -349,5 +355,9 @@ class SalesOrder < ApplicationRecord
 
   def total_qty
     self.rows.sum(:quantity).to_i
+  end
+
+  def is_invoices_cancelled
+    self.invoices.pluck(:status).all?('Cancelled')
   end
 end

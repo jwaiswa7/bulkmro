@@ -2,6 +2,7 @@ import bindSummaryBox from '../common/bindSummaryBox'
 import updateSummaryBox from "../common/updateSummaryBox";
 import exportFilteredRecords from '../common/exportFilteredRecords';
 import callAjaxFunction from '../common/callAjaxFunction';
+import removeHrefExport from '../common/removeHrefExport';
 
 const index = () => {
     bindSummaryBox(".summary_box", '.status-filter')
@@ -10,6 +11,7 @@ const index = () => {
     let controller = camelize($('body').data().controller);
     exportFilteredRecords(Routes.export_filtered_records_overseers_purchase_orders_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
     cancel_purchase_order();
+    removeHrefExport();
 };
 
 const cancel_purchase_order = () => {

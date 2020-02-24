@@ -87,6 +87,9 @@ gem 'axlsx', '3.0.0.pre'
 gem 'axlsx_rails', '0.5.2'
 gem 'rubyzip', '~> 1.2'
 
+# For imports
+gem 'activerecord-import'
+
 # Validate file uploads
 gem 'file_validators'
 
@@ -190,6 +193,9 @@ group :development do
   # Preview emails instead of sending them
   gem 'letter_opener'
 
+  # rails console on browser
+  gem 'web-console'
+
   # RuboCop is a Ruby static code analyzer and code formatter
   gem 'rubocop', '~> 0.63.0', require: false
 end
@@ -202,9 +208,12 @@ group :test do
   # gem 'chromedriver-helper'
 end
 
-# group :production do
-#   gem 'bonsai-elasticsearch-rails', '< 7.0.0'
-# end
+ group :production do
+   # memory leaks, N+1s, slow code monitoring add-on
+   gem 'scout_apm'
+
+   # gem 'bonsai-elasticsearch-rails', '< 7.0.0'
+ end
 #
 # group :staging do
 #   gem 'bonsai-elasticsearch-rails', '< 7.0.0'
@@ -236,3 +245,6 @@ gem 'dalli'
 # required for parsing requests
 gem 'parser'
 gem 'unparser'
+
+# Heroku autoscaling add-on
+gem 'rails_autoscale_agent'

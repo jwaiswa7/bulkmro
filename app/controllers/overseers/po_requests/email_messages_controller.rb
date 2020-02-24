@@ -3,7 +3,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
   ``
   def sending_po_to_supplier
     # if !current_overseer.accounts?
-      @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier).first_or_create]
+    @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Sales', company: @po_request.supplier).first_or_create]
     # end
     @to = @po_request.contact_email.present? ? @po_request.try(:contact_email) : @po_request.contact.try(:email)
     cc_addresses = [@po_request.purchase_order.logistics_owner.try(:email), 'sales@bulkmro.com', 'logistics@bulkmro.com'].compact.join(', ')
@@ -30,15 +30,25 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
       sales_order: @po_request.sales_order,
       email_type: 'Sending PO to Supplier'
     )
+    @metadata = @po_request.purchase_order.metadata.deep_symbolize_keys
+    @payment_terms = PaymentOption.find_by(remote_uid: @metadata[:PoPaymentTerms])
+    @metadata[:packing] = @purchase_order.get_packing(@metadata)
+    @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
     @email_message.assign_attributes(email_message_params)
     @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:cc].present?
     @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:bcc].present?
 
     authorize_acl @po_request, 'sending_po_to_supplier_create_email_message'
-
+    if @email_message.auto_attach.present? && @email_message.auto_attach != false
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@purchase_order, locals: {inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier, payment_terms: @payment_terms})), filename: @purchase_order.filename(include_extension: true))
+    end
     if @email_message.save
       if PoRequestMailer.send_supplier_notification(@email_message).deliver_now
         @po_request.update_attributes(sent_at: Time.now, status: :'Supplier PO Sent')
+      end
+      if @po_request.purchase_order.present? && @po_request.status == 'Supplier PO Sent' && @po_request.purchase_order.has_sent_email_to_supplier? && !@po_request.purchase_order.material_status.present?
+        @po_request.purchase_order.material_status = 'Material Readiness Follow-Up'
+        @po_request.purchase_order.save
       end
       redirect_to overseers_po_requests_path, notice: flash_message(@po_request, action_name)
     else
@@ -139,5 +149,16 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
       @supplier = @purchase_order.get_supplier(@purchase_order.rows.first.metadata['PopProductId'].to_i)
       @contact = @po_request.contact
       @metadata[:packing] = @purchase_order.get_packing(@metadata)
+    end
+
+    def get_supplier(purchase_order, product_id)
+      if purchase_order.metadata['PoSupNum'].present?
+        product_supplier = (Company.find_by_legacy_id(purchase_order.metadata['PoSupNum']) || Company.find_by_remote_uid(purchase_order.metadata['PoSupNum']))
+        return product_supplier if purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy?
+      end
+      if purchase_order.inquiry.final_sales_quote.present?
+        product_supplier = purchase_order.inquiry.final_sales_quote.rows.select {|sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id}.first
+        product_supplier.supplier if product_supplier.present?
+      end
     end
 end

@@ -9,6 +9,12 @@
     <div class="form-group">
       <%= f.input :account_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Account.account_types) %>
     </div>
+
+    <div class="form-row">
+      <div class="col-12">
+        <%= f.input :logo, wrapper: :custom_file, required: false, accept: 'image/png, image/jpeg', label: 'Account Logo' %>
+      </div>
+    </div>
     <%= action_button(action_name, @account) %>
   <% end %>
 </div>

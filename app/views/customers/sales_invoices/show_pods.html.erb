@@ -1,0 +1,48 @@
+<div class="col-lg-12">
+  <div class="page-header">
+    <h2>Proof of Delivery for Invoice #<%= @sales_invoice.invoice_number %></h2>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="form-row mb-2">
+        <div class="col-2">
+          <strong class="d-block">Sr No.</strong>
+        </div>
+        <div class="col-4">
+          <strong class="d-block">Delivery Date</strong>
+        </div>
+        <div class="col-4">
+          <strong class="d-block">GRN No.</strong>
+        </div>
+        <div class="col-2">
+          <strong class="d-block">Attachments</strong>
+        </div>
+      </div>
+      <% @sales_invoice.pod_rows.each_with_index do |pod_row, index| %>
+        <div class="form-row mb-2">
+          <div class="col-2">
+            <%= index + 1 %>
+          </div>
+          <div class="col-4">
+            <% if pod_row.delivery_date.present? %>
+              <%= format_date(pod_row.delivery_date) %>
+            <% end %>
+          </div>
+          <div class="col-4">
+            <% if pod_row.grn_no.present? %>
+              <%= pod_row.grn_no %>
+            <% end %>
+          </div>
+          <div class="col-2">
+            <% pod_row.attachments.each do |attachment| %>
+              <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success mb-1', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                <i class="fal fa-download"></i>
+              <% end %>
+            <% end if pod_row.attachments.attached?%>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

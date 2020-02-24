@@ -1,6 +1,6 @@
 json.data (@bible_uploads) do |bible_upload|
   json.array! [
-                  if bible_upload.status == 'Completed'
+                  if bible_upload.status == 'Completed with Errors' || bible_upload.status == 'Failed'
                     row_action_button(bible_upload_log_overseers_bible_import_path(bible_upload), 'eye', 'View Log', 'info', :_blank)
                   end,
                   bible_upload.id.to_s,
@@ -21,7 +21,6 @@ json.columnFilters [
                        [],
                        []
                    ]
-
 
 json.recordsTotal BibleUpload.all.count
 json.recordsFiltered @indexed_bible_uploads.count

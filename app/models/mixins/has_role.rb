@@ -21,15 +21,17 @@ module Mixins::HasRole
     }
 
     scope :managers, -> { where('role IN (?)', MANAGER_ROLES.map { |r| self.roles[r] }) }
-    scope :managers_and_obj, -> (obj) { where('role IN (?) OR id = ?', MANAGER_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id)) }
+    scope :managers_and_obj, -> (obj) { where('role IN (?) OR id = ? OR email IN (?)', MANAGER_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id), COMMON_OVERSEERS) }
 
     scope :inside, -> { where('role IN (?)', INSIDE_ROLES.map { |r| self.roles[r] }) }
+    scope :inside_with_additional_overseers, -> { where('role IN (?) OR email IN (?)', INSIDE_ROLES.map { |r| self.roles[r] },  COMMON_OVERSEERS)}
     scope :target_inside, -> { where('role IN (?)', TARGET_INSIDE_ROLES.map { |r| self.roles[r] }) }
-    scope :inside_and_obj, -> (obj) { where('role IN (?) OR id = ?', INSIDE_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id)) }
+    scope :inside_and_obj, -> (obj) { where('role IN (?) OR id = ? OR email IN (?)', INSIDE_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id), COMMON_OVERSEERS) }
 
     scope :outside, -> { where('role IN (?)', OUTSIDE_ROLES.map { |r| self.roles[r] }) }
+    scope :outside_with_additional_overseers, -> { where('role IN (?) OR email IN (?)', OUTSIDE_ROLES.map { |r| self.roles[r] }, COMMON_OVERSEERS) }
     scope :target_outside, -> { where('role IN (?)', TARGET_OUTSIDE_ROLES.map { |r| self.roles[r] }) }
-    scope :outside_and_obj, -> (obj) { where('role IN (?) OR id = ?', OUTSIDE_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id)) }
+    scope :outside_and_obj, -> (obj) { where('role IN (?) OR id = ? OR email IN (?)', OUTSIDE_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id),  COMMON_OVERSEERS) }
 
     scope :pipeline_executives, -> { where('role IN (?)', PIPELINE_EXECUTIVES.map { |r| self.roles[r] }) }
 
@@ -47,7 +49,7 @@ module Mixins::HasRole
     LOGISTICS_ROLES = ['Logistics', 'Admin-Leadership Team', 'Admin', 'Inside Sales and Logistic Manager']
     CATALOG_ROLES = ['Admin', 'Cataloging']
     ACCOUNT_ROLES = ['Accounts', 'Admin']
-
+    COMMON_OVERSEERS = ['rn.prasad@bulkmro.com', 'tejaswi.patil@bulkmro.com', 'swati.bhosale@bulkmro.com', 'mithun.trisule@bulkmro.com', 'srikant.desai@bulkmro.com', 'atul.thakur@bulkmro.com', 'rajesh.sharma@bulkmro.com', 'lalit.dhingra@bulkmro.com', 'vivek.syal@bulkmro.com', 'ashish.pareek@bulkmro.com']
 
     def manager?
       role.in? MANAGER_ROLES

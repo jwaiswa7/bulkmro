@@ -109,31 +109,42 @@
         <div>
           <div class="form-row ">
             <div class="col-md-6 mt-md-0 mb-2">
-              <strong class="d-block">Supplier - Bill To</strong>
-              <% if f.object.supplier.default_billing_address.present? %>
+              <strong class="d-block">Supplier - Bill From</strong>
+              <% if f.object.bill_from.present? %>
+                <i><%= f.object.bill_from.name.to_s %></i><br>
+                <%= f.object.bill_from.to_compact_multiline_s %><br>
+              <% else %>
                 <i><%= f.object.supplier.default_billing_address.name.to_s %></i><br>
                 <%= f.object.supplier.default_billing_address.to_compact_multiline_s %><br>
-                <% if f.object.supplier.default_contact.present? %>
-                  <strong><em>Contact</em></strong>: <%= f.object.supplier.default_contact.phone.present? ? " #{f.object.supplier.default_contact}" : '-' %>
-                  <br>
-                <% end %>
-                <% if f.object.supplier.default_billing_address.gst.present? %>
-                  <strong><em>GST Number</em></strong>: <%= f.object.supplier.default_billing_address.gst %><br>
-                <% end %>
+              <% end %>
+              <% if f.object.contact.present? %>
+                <strong><em>Contact</em></strong>: <%= f.object.contact.phone.present? ? " #{f.object.contact.name}" : '-' %>
+              <% else %>
+                <strong><em>Contact</em></strong>: <%= f.object.supplier.default_contact.phone.present? ? " #{f.object.supplier.default_contact}" : '-' %>
+              <% end %>
+              <br>
+              <% if f.object.supplier.default_billing_address.gst.present? %>
+                <strong><em>GST Number</em></strong>: <%= f.object.supplier.default_billing_address.gst %><br>
               <% end %>
             </div>
             <div class="col-md-6 mt-2 mt-md-0">
-              <strong class="d-block">Supplier - Ship To</strong>
-              <% if f.object.supplier.default_shipping_address.present? %>
+              <strong class="d-block">Supplier - Ship From</strong>
+              <% if f.object.ship_from.present? %>
+                <i><%= f.object.ship_from.name.to_s %></i><br>
+                <%= f.object.ship_from.to_compact_multiline_s %><br>
+              <% else %>
                 <i><%= f.object.supplier.default_shipping_address.name.to_s %></i><br>
                 <%= f.object.supplier.default_shipping_address.to_compact_multiline_s %><br>
-                <% if f.object.supplier.default_contact.present? %>
-                  <strong><em>Contact</em></strong>: <%= f.object.supplier.default_contact.phone.present? ? " #{f.object.supplier.default_contact}" : '-' %>
-                  <br>
-                <% end %>
-                <% if f.object.supplier.default_shipping_address.gst.present? %>
-                  <strong><em>GST Number</em></strong>: <%= f.object.supplier.default_shipping_address.gst %><br>
-                <% end %>
+              <% end %>
+
+              <% if f.object.contact.present? %>
+                <strong><em>Contact</em></strong>: <%= f.object.contact.phone.present? ? " #{f.object.contact.name}" : '-' %>
+              <% else %>
+                <strong><em>Contact</em></strong>: <%= f.object.supplier.default_contact.phone.present? ? " #{f.object.supplier.default_contact}" : '-' %>
+              <% end %>
+              <br>
+              <% if f.object.supplier.default_shipping_address.gst.present? %>
+                <strong><em>GST Number</em></strong>: <%= f.object.supplier.default_shipping_address.gst %><br>
               <% end %>
             </div>
           </div>
@@ -240,7 +251,7 @@
                 <span> - </span>
               </td>
               <td>
-                <span><%= row.tax_code.code[0..3] %></span>
+                <span><%= row.tax_code.try(:code) %></span>
               </td>
               <td>
                 <span><%= row.tax_code.tax_percentage.to_f %>%</span>

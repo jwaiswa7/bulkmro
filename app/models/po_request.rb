@@ -72,8 +72,10 @@ class PoRequest < ApplicationRecord
   enum stock_status: {
       'Stock Requested': 10,
       'Stock Rejected': 20,
-      'Stock Supplier PO Created': 30
-  }
+      'Stock Supplier PO Created': 30,
+      'Supplier Stock PO: Amendment Pending': 40,
+      'Supplier Stock PO: Amended': 50
+  }, _prefix: true
 
   enum transport_mode: {
       'Road': 1,
@@ -102,7 +104,8 @@ class PoRequest < ApplicationRecord
   scope :amended, -> { where(status: [:'Supplier PO: Amended']) }
   scope :pending_stock_po, -> { where(stock_status: [:'Stock Requested']) }
   scope :completed_stock_po, -> { where(stock_status: [:'Stock Supplier PO Created']) }
-  scope :stock_po, -> { where(stock_status: [:'Stock Requested', :'Stock Rejected', :'Stock Supplier PO Created']) }
+  scope :stock_po, -> { where(stock_status: [:'Stock Requested', :'Stock Rejected', :'Stock Supplier PO Created', 'Supplier Stock PO: Amendment Pending', 'Supplier Stock PO: Amended']) }
+  scope :stock_amend_request, -> { where(stock_status: ['Supplier Stock PO: Amendment Pending', 'Supplier Stock PO: Amended']) }
 
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? && !is_legacy }
@@ -142,6 +145,13 @@ class PoRequest < ApplicationRecord
   def set_defaults
     self.status ||= :'Supplier PO: Request Pending' if self.po_request_type == 'Regular'
     self.stock_status ||= :'Stock Requested' if self.po_request_type == 'Stock'
+    #     self.commercial_terms_and_conditions ||= [
+    #         '1. Cost does not include any additional certification if required as per Indian regulations.',
+    #         '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',
+    #         '3. Order once placed cannot be changed.',
+    #         '4. BulkMRO does not accept any financial penalties for late deliveries.',
+    #         '5. Warranties are applicable as per OEM\'s Standard warranty only.'
+    #     ].join("\r\n")
   end
 
   def amending?

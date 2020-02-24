@@ -11,11 +11,10 @@ class Services::Overseers::Exporters::MaterialReadinessExporter < Services::Over
     perform_export_later('MaterialReadinessExporter', @arguments)
   end
 
-
   def build_csv
+    @export = Export.create!(export_type: 96, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     service = Services::Overseers::Finders::MaterialReadinessQueues.new({}, @overseer, paginate: false)
     service.call
-
     service.records.find_each(batch_size: 100) do |record|
       rows.push(
         po_request: record.po_request.present? ? record.po_request.id : '-',
@@ -44,7 +43,8 @@ class Services::Overseers::Exporters::MaterialReadinessExporter < Services::Over
       )
     end
 
-    export = Export.create!(export_type: 96, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # filtered = @ids.present?
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

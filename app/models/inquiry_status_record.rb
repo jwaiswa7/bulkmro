@@ -29,7 +29,8 @@ class InquiryStatusRecord < ApplicationRecord
       'Order Won': 18,
       'Rejected by Accounts': 19,
       'Hold by Accounts': 20,
-      'SAP Rejected': 21
+      'SAP Rejected': 21,
+      'Regret Request': 22
   }
 
   enum remote_uid: {

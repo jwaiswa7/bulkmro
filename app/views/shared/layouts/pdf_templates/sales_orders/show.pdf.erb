@@ -152,7 +152,7 @@
                   <br>
                   Tel: <%= record.inquiry.contact.phone || record.inquiry.billing_address.phone %>
                   <br>
-                  GST No.:<%= record.inquiry.billing_address.gst %><br>
+                  GST No.:<%= record.serialized_billing_address.gst || '-' %><br>
                 </td>
                 <td style="width: 2%;"></td>
                 <td class="address-wrapper" style="height: auto;width: 49%;">
@@ -166,9 +166,8 @@
                   <% else %>
                     Tel: <%= record.inquiry.contact.phone || record.inquiry.shipping_address.phone %>
                   <% end %>
-
                   <br>
-                  GST No.:<%= record.inquiry.shipping_address.gst %><br>
+                  GST No.:<%= record.serialized_shipping_address.gst || '-' %><br>
                 </td>
               </tr>
               </tbody>

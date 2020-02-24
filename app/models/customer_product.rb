@@ -28,6 +28,7 @@ class CustomerProduct < ApplicationRecord
   validates_presence_of :moq
 
   scope :with_includes, -> {includes(:brand, :category)}
+  scope :with_eager_loaded_images, -> { eager_load(images_attachments: :blob) }
 
   after_initialize :set_defaults, if: :new_record?
 

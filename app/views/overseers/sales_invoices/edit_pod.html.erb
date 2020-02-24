@@ -10,7 +10,7 @@
     <%= f.nested_fields_for :pod_rows do |pod| %>
       <%= pod.hidden_field :id %>
       <div class="form-row flex-row align-items-start">
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-5">
           <div class="d-flex flex-row align-items-end">
             <div class="flex-grow-1">
               <%= pod.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, required: false, label: 'Proof of Delivery' %>
@@ -38,6 +38,9 @@
               <i class="far fa-times text-danger"></i>
             </div>
           <% end if is_authorized(pod.object, 'destroy') && policy(pod.object).destroy? %>
+        </div>
+        <div class="col-12 col-md-3">
+          <%= pod.input :grn_no, label: "Grn No",required: true %>
         </div>
       </div>
     <% end %>
