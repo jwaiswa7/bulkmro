@@ -38,7 +38,7 @@ class Services::Overseers::Exporters::SalesOrdersBibleFormatExporter < Services:
 
   def build_csv
     @export_time['creation'] = Time.now
-    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
+    ExportMailer.export_notification_mail(@export_name, true, @export_time).deliver_now
     model.joins(:sales_order).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where.not('sales_orders.order_number': nil).where.not('sales_orders.sales_quote_id': nil).where(created_at: start_at..end_at).order(created_at: :desc).find_each(batch_size: 100) do |row|
       sales_order = row.sales_order
       inquiry = sales_order.inquiry
@@ -59,7 +59,7 @@ class Services::Overseers::Exporters::SalesOrdersBibleFormatExporter < Services:
         qty: row.quantity,
         unit_price: row.unit_selling_price,
         freight: row.freight_cost_subtotal,
-        tax_type: (sales_order.sales_quote.tax_summary.strip == '0' || sales_order.sales_quote.tax_summary.to_s.include?("IGST")) ? "IGST #{row.sales_quote_row.try(:tax_rate).try(:tax_percentage)}" : "CGST + SGST #{row.sales_quote_row.try(:tax_rate).try(:tax_percentage)}",
+        tax_type: (sales_order.sales_quote.tax_summary.strip == '0' || sales_order.sales_quote.tax_summary.to_s.include?('IGST')) ? "IGST #{row.sales_quote_row.try(:tax_rate).try(:tax_percentage)}" : "CGST + SGST #{row.sales_quote_row.try(:tax_rate).try(:tax_percentage)}",
         tax_rate: row.sales_quote_row.try(:tax_rate).try(:tax_percentage),
         tax_amount: row.calculated_tax,
         total_selling_price: row.total_selling_price,

@@ -40,7 +40,7 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       if object.filtered
         ExportMailer.export_filtered_records(object, @overseer).deliver_now
       end
-      ExportMailer.export_notification_mail(@export_name,false,@export_time).deliver_now
+      ExportMailer.export_notification_mail(@export_name, false, @export_time).deliver_now
     rescue => ex
       puts ex.message
     end

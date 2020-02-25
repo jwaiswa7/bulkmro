@@ -13,7 +13,7 @@ class Services::Overseers::Exporters::InquiriesTatExporter < Services::Overseers
 
   def build_csv
     @export_time['creation'] = Time.now
-    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
+    ExportMailer.export_notification_mail(@export_name, true, @export_time).deliver_now
     if @indexed_records.present?
       records = @indexed_records
     end
