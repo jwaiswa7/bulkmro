@@ -27,6 +27,8 @@ class Services::Overseers::Exporters::SalesOrdersSapExporter < Services::Oversee
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     model.remote_approved.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc).each do |sales_order|
       inquiry = sales_order.inquiry
       rows.push(

@@ -40,8 +40,12 @@ end
 
 every(1.day, 'refresh_indices', at: '01:30') do
   GC.start
+  chewy_time = {}
+  chewy_time['creation'] = Time.now
+  CommonMailer.chewy_notification_mail(true,chewy_time).deliver_now
   Services::Shared::Chewy::RefreshIndices.new
-
+  chewy_time['end'] = Time.now
+  CommonMailer.chewy_notification_mail(false,chewy_time).deliver_now
   # Dir[[Chewy.indices_path, '/*'].join()].map do |path|
   #   puts "Indexing #{path}"
   #   path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
@@ -156,10 +160,10 @@ end
 #     index_class.reset!
 #   end
 # end
-every(50.minutes, 'bible_upload') do
-  Chewy.strategy(:atomic) do
-    @bible_upload_queue = BibleUpload.where(status: 'Pending').first
-    service = Services::Overseers::Bible::BaseService.new
-    service.call(@bible_upload_queue)
-  end
-end
+# every(50.minutes, 'bible_upload') do
+#   Chewy.strategy(:atomic) do
+#     @bible_upload_queue = BibleUpload.where(status: 'Pending').first
+#     service = Services::Overseers::Bible::BaseService.new
+#     service.call(@bible_upload_queue)
+#   end
+# end

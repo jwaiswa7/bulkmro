@@ -12,6 +12,8 @@ class Services::Overseers::Exporters::SalesInvoicesLogisticsExporter < Services:
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     model.where(created_at: start_at..end_at).where.not(sales_order_id: nil).where.not(metadata: nil).order(invoice_number: :asc).find_each(batch_size: 100) do |sales_invoice|
       rows.push(
         inquiry_number: sales_invoice.inquiry.inquiry_number.to_s,

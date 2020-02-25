@@ -13,6 +13,8 @@ class Services::Overseers::Exporters::CustomerProductsExporter < Services::Overs
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     records = model.where(company: Company.find(company_id)).order(created_at: :desc)
     records.each do |record|
       rows.push(company_name: record.company.to_s,

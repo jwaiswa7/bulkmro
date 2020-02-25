@@ -37,6 +37,8 @@ class Services::Overseers::Exporters::SalesOrdersBibleFormatExporter < Services:
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     model.joins(:sales_order).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where.not('sales_orders.order_number': nil).where.not('sales_orders.sales_quote_id': nil).where(created_at: start_at..end_at).order(created_at: :desc).find_each(batch_size: 100) do |row|
       sales_order = row.sales_order
       inquiry = sales_order.inquiry

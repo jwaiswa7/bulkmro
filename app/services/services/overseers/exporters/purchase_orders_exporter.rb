@@ -12,6 +12,8 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     po_with_no_po_requests = []
     if @ids.present?
       records = model.where(id: @ids).order(created_at: :desc)

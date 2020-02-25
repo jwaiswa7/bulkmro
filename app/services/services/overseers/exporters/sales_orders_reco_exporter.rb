@@ -12,6 +12,8 @@ class Services::Overseers::Exporters::SalesOrdersRecoExporter < Services::Overse
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     model.remote_approved.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc).includes(:inquiry, :po_requests).each_with_index do |sales_order, index|
       inquiry = sales_order.inquiry
       purchase_order_ids = sales_order.po_requests.pluck(:purchase_order_id).compact

@@ -27,6 +27,8 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     model.where(created_at: start_at..end_at).order(sales_invoice_id: :asc).where('sales_invoices.sales_order_id IS NOT NULL').joins(:sales_invoice).find_each(batch_size: 100) do |row|
       sales_invoice = row.sales_invoice
       sales_order = sales_invoice.sales_order
