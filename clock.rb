@@ -110,11 +110,11 @@ every(4.day, 'set_slack_ids', at: '23:00') do
   end
 end
 
-# every(4.hour, 'generate_exports_hourly') do
-#   Chewy.strategy(:atomic) do
-#     Services::Overseers::Exporters::GenerateExportsHourly.new
-#   end
-# end if Rails.env.production?
+every(1.day, 'generate_exports_hourly', at: '23:00') do
+  Chewy.strategy(:atomic) do
+    Services::Overseers::Exporters::GenerateExportsHourly.new
+  end
+end if Rails.env.production?
 
 # every(1.day, 'remote_unwanted_requests', at: '22:00') do
 #   service = Services::Overseers::RequestCronJobs::RemoveRequestCronJob.new

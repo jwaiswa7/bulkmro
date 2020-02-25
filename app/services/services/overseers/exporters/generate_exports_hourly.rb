@@ -3,7 +3,18 @@ class Services::Overseers::Exporters::GenerateExportsHourly < Services::Shared::
   def initialize
     export_hash = {
       'inquiries': 'InquiriesExporter',
-      'sales_orders': 'SalesOrdersExporter'
+      'products': 'ProductsExporter',
+      'companies': 'CompaniesExporter',
+      'purchase_orders': 'PurchaseOrdersExporter',
+      'sales_invoices': 'SalesInvoicesExporter',
+      'sales_orders': 'SalesOrdersExporter',
+      'sales_order_sap': 'SalesOrdersSapExporter',
+      'activities': 'ActivitiesExporter',
+      'company_reviews': 'CompanyReviewExporter',
+      'suppliers': 'SuppliersExporter',
+      'sales_order_reco': 'SalesOrdersRecoExporter',
+      'customer_product': 'CustomerProductsExporter',
+      'material_readiness_queue': 'MaterialReadinessExporter',
     }
 
     export_hash.each do |key, value|
