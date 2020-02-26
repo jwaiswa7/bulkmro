@@ -46,5 +46,5 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
     end
   end
 
-  attr_accessor :start_at, :end_at, :columns, :model, :rows, :path, :export_name, :arguments
+  attr_accessor :start_at, :end_at, :columns, :model, :rows, :path, :export_name, :arguments, :export_hash
 end
