@@ -37,6 +37,7 @@ class Company < ApplicationRecord
   has_many :inquiry_product_suppliers, through: :inquiries
   has_many :inquiry_products, through: :inquiries
   has_many :products, through: :inquiry_products
+  has_many :supplier_products, through: :inquiry_product_suppliers, dependent: :destroy
   has_many :sales_quotes, through: :inquiries, source: :sales_quotes
   has_many :final_sales_quotes, through: :inquiries, source: :final_sales_quote
   has_many :final_sales_orders, through: :inquiries, source: :final_sales_orders
