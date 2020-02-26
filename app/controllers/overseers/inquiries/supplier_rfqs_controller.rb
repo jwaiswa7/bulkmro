@@ -14,7 +14,6 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
   def add_supplier_rfqs
     if params['inquiry_product_ids'].present?
       params['inquiry_product_ids'].reject(&:empty?).each do |inquiry_product_id|
-        inquiry_product = InquiryProduct.find(inquiry_product_id)
         params['inquiry_product_supplier_ids'].reject(&:empty?).each do |inquiry_product_supplier_id|
           inquiry_product_supplier = InquiryProductSupplier.find(inquiry_product_supplier_id)
           if inquiry_product_supplier.present?

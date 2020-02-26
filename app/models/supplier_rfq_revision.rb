@@ -1,3 +1,3 @@
 class SupplierRfqRevision < ApplicationRecord
-	has_one :inquiry_product_supplier
+  has_one :inquiry_product_supplier
 end

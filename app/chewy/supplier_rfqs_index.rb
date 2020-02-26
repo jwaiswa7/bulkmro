@@ -14,6 +14,5 @@ class SupplierRfqsIndex < BaseIndex
     field :potential_value, value: -> (record) { record.calculated_total.to_s if record.calculated_total.present? }, type: 'double'
     field :calculated_total, value: -> (record) { record.calculated_total.to_s if record.calculated_total.present? }, analyzer: 'substring'
     field :calculated_total_with_tax, value: -> (record) { record.calculated_total_with_tax.to_s if record.calculated_total_with_tax.present? }, analyzer: 'substring'
-
   end
 end
