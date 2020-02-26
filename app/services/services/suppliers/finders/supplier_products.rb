@@ -5,10 +5,10 @@ class Services::Suppliers::Finders::SupplierProducts < Services::Customers::Find
 
   def all_records
     indexed_records = if current_company.present?
-                        super.filter(filter_by_value('company_id', current_company.id))
-                      else
-                        super
-                      end
+      super.filter(filter_by_value('company_id', current_company.id))
+    else
+      super
+    end
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
@@ -51,7 +51,7 @@ class Services::Suppliers::Finders::SupplierProducts < Services::Customers::Find
 
   def filter_by_images(indexed_records)
     indexed_records = indexed_records.filter(
-        term: { "has_images": true },
+      term: { "has_images": true },
         )
 
     indexed_records

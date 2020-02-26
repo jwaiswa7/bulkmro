@@ -19,8 +19,8 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
     end
     if @search_filters.present?
       @search_filters.each do |ax|
-        if ax["name"] ==  'supplied_brand'
-          indexed_records =  indexed_records.filter(filter_by_array('supplied_brand', [ax["search"]["value"]]))
+        if ax['name'] ==  'supplied_brand'
+          indexed_records = indexed_records.filter(filter_by_array('supplied_brand', [ax['search']['value']]))
         end
       end
     end
@@ -49,8 +49,8 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
 
     if @search_filters.present?
       @search_filters.each do |ax|
-        if ax["name"] ==  'supplied_brand'
-          indexed_records =  indexed_records.filter(filter_by_array('supplied_brand', [ax["search"]["value"]]))
+        if ax['name'] ==  'supplied_brand'
+          indexed_records = indexed_records.filter(filter_by_array('supplied_brand', [ax['search']['value']]))
         end
       end
     end

@@ -266,7 +266,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl @inquiry
 
     send_file(
-        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+      "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
         filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
     )
   end
@@ -806,7 +806,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     def email_message_params
       params.require(:email_message).permit(
-          :subject,
+        :subject,
           :body,
           :to,
           :cc,
