@@ -110,12 +110,12 @@ every(4.day, 'set_slack_ids', at: '23:00') do
   end
 end
 
-every(1.day, 'generate_exports_hourly', at: '15:42') do
+every(1.day, 'generate_exports_hourly', at: '17:50') do
   Chewy.strategy(:atomic) do
-    Rails::logger.info('>>>>>>>>>>>>>>>>> Starting Job - Generate Export Hourly ')
-    Services::Overseers::Exporters::GenerateExportsHourly.new
-    Rails::logger.info('>>>>>>>>>>>>>>>>> Ending Job - Generate Export Hourly ')
-
+    Rails::logger.info('>>>>>>>>>>>>>>>>> Starting Job - Generate Export Hourly')
+    service = Services::Overseers::Exporters::GenerateExportsHourly.new
+    service.call
+    Rails::logger.info('>>>>>>>>>>>>>>>>> Ending Job - Generate Export Hourly')
   end
 end if Rails.env.production? || Rails.env.staging?
 
