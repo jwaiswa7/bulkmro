@@ -96,6 +96,9 @@ import addresses from "./addresses/init";
 
 import emailMessages from "./emailMessages/init";
 
+// Export
+import exports from "./exports/init";
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -133,7 +136,8 @@ let loader = {
     outwardDispatches: outwardDispatches,
     packingSlips:packingSlips,
     addresses: addresses,
-    emailMessages: emailMessages
+    emailMessages: emailMessages,
+    exports: exports
 };
 
 // Imports

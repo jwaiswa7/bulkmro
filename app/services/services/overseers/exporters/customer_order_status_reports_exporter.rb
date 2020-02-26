@@ -16,6 +16,11 @@ class Services::Overseers::Exporters::CustomerOrderStatusReportsExporter < Servi
     ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     if @indexed_records.present?
       records = @indexed_records
+    else
+      service = Services::Overseers::Finders::CustomerOrderStatusReports.new({}, @overseer, paginate: false)
+      service.call
+      records = service.indexed_records
+      sales_orders = Services::Overseers::SalesOrders::FetchCustomerOrderStatusReportData.new(records, 'All').fetch_data_bm_wise
     end
 
     @export = Export.create!(export_type: 92, status: 'Processing', filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)

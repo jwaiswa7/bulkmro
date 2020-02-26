@@ -6,6 +6,7 @@ class Services::Overseers::Exporters::CustomerProductsExporter < Services::Overs
     @path = Rails.root.join('tmp', filename)
     @columns = ['company_name', 'product_name', 'sku', 'customer_price', 'moq', 'tax_code', 'tax_rate', 'measurement_unit', 'brand']
     @company_id = params.first[:company_id]
+    # @export.update_attributes(export_type: 95, status: 'Enqueued')
   end
 
   def call
@@ -16,6 +17,7 @@ class Services::Overseers::Exporters::CustomerProductsExporter < Services::Overs
     @export_time['creation'] = Time.now
     ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     records = model.where(company: Company.find(company_id)).order(created_at: :desc)
+    @export = Export.create!(export_type: 95, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     records.each do |record|
       rows.push(company_name: record.company.to_s,
           product_name: record.to_s,
@@ -28,9 +30,10 @@ class Services::Overseers::Exporters::CustomerProductsExporter < Services::Overs
           brand: is_present(record.brand, 'to_s')
       )
     end
-    filtered = @ids.present?
-    export = Export.create!(export_type: 95, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # filtered = @ids.present?
+    # export = Export.create!(export_type: 95, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 
   def is_present(check_parameter, get_params_value, symbol = nil)

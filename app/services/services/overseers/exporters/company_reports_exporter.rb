@@ -21,6 +21,7 @@ class Services::Overseers::Exporters::CompanyReportsExporter < Services::Oversee
         'Value of Invoices',
         'Gross Margin(Actual)'
     ]
+      #@export.update_attributes(export_type: 91, status: 'Enqueued')
   end
 
   def call
@@ -30,6 +31,7 @@ class Services::Overseers::Exporters::CompanyReportsExporter < Services::Oversee
   def build_csv
     @export_time['creation'] = Time.now
     ExportMailer.export_notification_mail(@export_name, true, @export_time).deliver_now
+    @export = Export.create!(export_type: 91, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id, status: 'Processing')
     if @indexed_records.present?
       records = @indexed_records
     end
@@ -58,7 +60,8 @@ class Services::Overseers::Exporters::CompanyReportsExporter < Services::Oversee
         ) if company.present?
       end
     end
-    export = Export.create!(export_type: 91, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # export = Export.create!(export_type: 91, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

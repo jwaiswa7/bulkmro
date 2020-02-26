@@ -41,6 +41,7 @@ class Services::Overseers::Exporters::PipelineReportsExporter < Services::Overse
         'Grand Total Amount',
         'Won %'
     ]
+    # @export.update_attributes(export_type: 93, status: 'Enqueued')
   end
 
   def call
@@ -50,6 +51,7 @@ class Services::Overseers::Exporters::PipelineReportsExporter < Services::Overse
   def build_csv
     @export_time['creation'] = Time.now
     ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
+    @export = Export.create!(export_type: 93, status: 'Processing', filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     if @indexed_records.present?
       records = @indexed_records
     end
@@ -65,7 +67,8 @@ class Services::Overseers::Exporters::PipelineReportsExporter < Services::Overse
       a['won'] = record_bucket['sum_monthly_sales']['value'] != 0 ? percentage((((record_bucket['pipeline']['buckets'].map {|bucket| bucket['inquiry_value']['value'] if bucket['key'] == 18}.compact.first || 0) / record_bucket['sum_monthly_sales']['value']) * 100).round(2)) : 0
       rows.push(a)
     end
-    export = Export.create!(export_type: 93, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # export = Export.create!(export_type: 93, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end
