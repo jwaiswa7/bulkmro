@@ -178,8 +178,8 @@
                   <tr>
                     <td></td>
                     <td><%= index + 1 %></td>
-                    <td><%= product.to_s%></td>
-                    <td><%= product.try(:brand).to_s %></td>
+                    <td><%= product %></td>
+                    <td><%= product.try(:brand) %></td>
                     <td><%= k[:purchase_order_row].metadata['PopHsn'] %></td>
                     <td><%= k[:purchase_order_row].tax_rate %></td>
                     <td><%= k[:total_quantity] %></td>

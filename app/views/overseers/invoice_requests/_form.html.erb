@@ -297,11 +297,11 @@
                       </div>
 
                       <div class="col-6 col-md-4">
-                        <%= product.to_s %>
+                        <%= product %>
                       </div>
 
                       <div class="col-6 col-md-1">
-                        <%= product.try(:brand).to_s %>
+                        <%= product.try(:brand) %>
                       </div>
                       <div class="col-12 col-md-1">
                         <%= k[:purchase_order_row].metadata['PopHsn'] %>
