@@ -78,6 +78,7 @@ class Inquiry < ApplicationRecord
   has_one_attached :committed_delivery_attachment
   has_one_attached :customer_po_received_attachment
   has_one_attached :customer_po_delivery_attachment
+  validate :inquiry_sales_quote_date_validation
 
   enum status: {
       'Lead by O/S': 11,
@@ -263,6 +264,17 @@ class Inquiry < ApplicationRecord
 
   validate :company_is_active, if: :new_record?
 
+  def inquiry_sales_quote_date_validation
+    if self.sales_quotes.present? && self.quotation_date.present?
+      if self.quotation_date < self.sales_quotes.last.created_at.to_date
+        errors.add(:inquiry, 'Quotation Date Must Be Greater Than Last Quote Created Date')
+      end
+    else
+      if self.quotation_date.present?
+        errors.add(:inquiry, 'You not able to add quotation date before any SQ creation')
+      end
+    end
+  end
 
   def company_is_active
     if !self.company.is_active
@@ -424,17 +436,17 @@ class Inquiry < ApplicationRecord
   def potential_value(status)
     case status
     when 'Lead by O/S', 'New Inquiry', 'Acknowledgement Mail'
-      self.potential_amount || 0.0
+      self.potential_amount || 0.01
     when 'Cross Reference'
-      self.products.map(&:latest_unit_cost_price).compact.sum || 0.0
+      self.products.map(&:latest_unit_cost_price).compact.sum || self.potential_amount
     when 'Preparing Quotation'
-      self.draft_sales_quotes.map(&:calculated_total).compact.sum || 0.0
+      self.draft_sales_quotes.present? ? self.draft_sales_quotes.map(&:calculated_total).compact.sum : self.last_synced_quote&.try(:calculated_total)
     when 'Quotation Sent', 'Follow-Up on Quotation', 'Expected Order', 'SO Not Created-Customer PO Awaited', 'SO Not Created-Pending Customer PO Revision'
-      self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : 0.0
+      self.final_sales_quote.present? ? self.final_sales_quote&.try(:calculated_total) : self.last_synced_quote&.try(:calculated_total)
     when 'Order Won'
-      self.sales_orders.present? ? self.sales_orders.approved.map(&:calculated_total).sum : 0.0
+      self.sales_orders.present? ? self.sales_orders.approved.map(&:calculated_total).sum :  self.final_sales_quote&.try(:calculated_total)
     when 'Draft SO For Approval by Sales Manager', 'SO Draft: Pending Accounts Approval', 'SO Rejected by Sales Manager', 'Rejected by Accounts'
-      self.sales_orders.map(&:calculated_total).compact.sum || 0.0
+      self.sales_orders.map(&:calculated_total).compact.sum || self.final_sales_quote&.try(:calculated_total)
     when 'Order Lost'
       ((self.final_sales_quotes.present? ? self.final_sales_quotes.map(&:calculated_total).compact.sum : self.products.map(&:latest_unit_cost_price).compact.sum) || 0.0)
     when 'Regret'
