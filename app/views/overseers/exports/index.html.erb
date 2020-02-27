@@ -18,7 +18,9 @@
         <th style="font-weight:bold;width: 100px;">Export Type</th>
         <th style="font-weight:bold;white-space:normal;width: 69px;">Created By</th>
         <th style="font-weight:bold;white-space:normal;width: 51px;">Status</th>
-<!--        <th style="font-weight:bold;white-space:normal;width: 88px;">Export Process</th>-->
+        <% if is_authorized(:export, 'process_for_download') %>
+          <th style="font-weight:bold;white-space:normal;width: 88px;">Export Process</th>
+        <% end %>
         <th style="font-weight:bold;white-space:normal;width: 88px;">Download</th>
       </tr>
       </thead>
@@ -26,46 +28,35 @@
       <% status_process = ['Enqueued','Processing'] %>
       <% export_val = Array.new %>
       <% attached_export = Array.new %>
-      <% @exports_all.each do |export_type, export| %>
-        <% export.each do |exp| %>
-          <% if exp.status == 'Completed' || exp.status == 'Enqueued' || exp.status == 'Processing'%>
-          <%   export_val.push(exp) %>
-          <% end %>
-        <% end %>
-        <% export_val.reverse.each do |exp| %>
-          <% if exp.report.attached? %>
-            <% attached_export.push(exp) %>
-            <% break %>
-          <% end %>
-        <% end %>
-        <% if export_type != nil %>
+      <% @export_filtered.each do |export_type, export| %>
           <tr>
             <td>
-              <%= export_type.present? ? export_type.humanize : '' %>
+              <%= export_type.humanize %>
             </td>
             <td>
-              <%= export_val.last.created_by.to_s if export_val.present? %>
+              <%= export.values.first.created_by %>
             </td>
             <td>
-              <%= (export_val.last.status.present? ? export_val.last.status : '') if export_val.present? %>
+              <%= export.values.first.status %>
             </td>
-<!--            <td>-->
-              <%#= link_to generate_export_overseers_exports_path(export_type: export_type), class: ['btn btn-primary btn-rounded align-self-center btn-block-sm-down ml-1 export-button',(export_val.present? && status_process.include?(export_val.last.status)) ? 'export-disable' : ''].join(' '), :"data-original-title" => 'Click to Process New Download',:"data-toggle" => 'tooltip' do %>
-<!--                <i class="fal fa-download mr-1"></i>-->
-<!--                Process-->
-              <%# end %>
+            <% if is_authorized(:export, 'process_for_download') %>
+              <td>
+                <%= link_to generate_export_overseers_exports_path(export_type: export_type), class: ['btn btn-primary btn-rounded align-self-center btn-block-sm-down ml-1 export-button',(export_val.present? && status_process.include?(export_val.last.status)) ? 'export-disable' : ''].join(' '), :"data-original-title" => 'Click to Process New Download',:"data-toggle" => 'tooltip' do %>
+                  <i class="fal fa-download mr-1"></i>
+                  Process
+                <% end %>
 
-<!--            </td> -->
+              </td>
+            <% end %>
             <td>
-              <% if attached_export.present? && attached_export.last.report.attached? %>
-                <%= link_to url_for(attached_export.last.report), class: 'btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1', :"data-original-title" => 'Last Download Available',:"data-toggle" => 'tooltip', :"data-badge"=> [time_ago_in_words(attached_export.last.created_at), "ago"].join(' ') do %>
+              <% if export.key?("Completed").present? && export["Completed"].report.attached? %>
+                <%= link_to url_for(export["Completed"].report), class: 'btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1', :"data-original-title" => 'Last Download Available',:"data-toggle" => 'tooltip', :"data-badge"=> [time_ago_in_words(export["Completed"].created_at), "ago"].join(' ') do %>
                   <i class="fal fa-download mr-1"></i>
                   Download
                 <% end %>
               <% end %>
             </td>
           </tr>
-        <% end %>
       <% end %>
       </tbody>
     </table>
