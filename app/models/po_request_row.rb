@@ -138,4 +138,8 @@ class PoRequestRow < ApplicationRecord
   def best_tax_rate
     self.tax_rate || self.product.best_tax_rate
   end
+
+  def sales_order_row?
+    self.sales_order_row.present?
+  end
 end
