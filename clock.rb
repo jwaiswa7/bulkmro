@@ -53,28 +53,28 @@ end
 #   # end
 # end
 
-every(1.day, 'inquiry_product_inventory_update', at: '05:00') do
-  service = Services::Resources::Products::UpdateRecentInquiryProductInventory.new
-  service.call
-end if Rails.env.production?
+# every(1.day, 'inquiry_product_inventory_update', at: '05:00') do
+#   service = Services::Resources::Products::UpdateRecentInquiryProductInventory.new
+#   service.call
+# end if Rails.env.production?
 
-every(1.day, 'refresh_smart_queue', at: '06:00') do
-  RefreshSmartQueueJob.perform_later
-end if Rails.env.production?
+# every(1.day, 'refresh_smart_queue', at: '06:00') do
+#   RefreshSmartQueueJob.perform_later
+# end if Rails.env.production?
 
-every(1.day, 'product_inventory_update_for_saint_gobain', at: ['07:00', '11:00', '15:00', '19:00']) do
-  service = Services::Resources::Products::UpdateInventoryForSaintGobain.new
-  service.call
-end if Rails.env.production?
+# every(1.day, 'product_inventory_update_for_saint_gobain', at: ['07:00', '11:00', '15:00', '19:00']) do
+#   service = Services::Resources::Products::UpdateInventoryForSaintGobain.new
+#   service.call
+# end if Rails.env.production?
+#
+# every(1.day, 'product_inventory_update_for_henkel', at: ['07:30', '11:30', '15:30', '19:30']) do
+#   service = Services::Resources::Products::UpdateInventoryForHenkel.new
+#   service.call
+# end if Rails.env.production?
 
-every(1.day, 'product_inventory_update_for_henkel', at: ['07:30', '11:30', '15:30', '19:30']) do
-  service = Services::Resources::Products::UpdateInventoryForHenkel.new
-  service.call
-end if Rails.env.production?
-
-every(1.day, 'send_inventory_status_to_saint_gobain_customer', at: '19:30') do
-  InventoryStatusMailer.send_inventory_status_to_customer.deliver_now
-end if Rails.env.production?
+# every(1.day, 'send_inventory_status_to_saint_gobain_customer', at: '19:30') do
+#   InventoryStatusMailer.send_inventory_status_to_customer.deliver_now
+# end if Rails.env.production?
 
 every(1.day, 'log_currency_rates', at: '20:00') do
   service = Services::Overseers::Currencies::LogCurrencyRates.new
@@ -88,29 +88,29 @@ every(1.day, 'flush_unavailable_images', at: '20:30') do
   end
 end
 
-every(1.day, 'refresh_calculated_totals', at: '21:00') do
-  service = Services::Overseers::Inquiries::RefreshCalculatedTotals.new
-  service.call
-end
+# every(1.day, 'refresh_calculated_totals', at: '21:00') do
+#   service = Services::Overseers::Inquiries::RefreshCalculatedTotals.new
+#   service.call
+# end
 
-every(1.day, 'gcloud_run_backups', at: '21:30') do
-  service = Services::Shared::Gcloud::RunBackups.new
-  service.call
-end if Rails.env.production?
+# every(1.day, 'gcloud_run_backups', at: '21:30') do
+#   service = Services::Shared::Gcloud::RunBackups.new
+#   service.call
+# end if Rails.env.production?
+#
+# every(2.day, 'gcloud_run_backups_alt', at: '22:30') do
+#   service = Services::Shared::Gcloud::RunBackups.new(send_chat_message: false)
+#   service.call
+# end if Rails.env.production?
 
-every(2.day, 'gcloud_run_backups_alt', at: '22:30') do
-  service = Services::Shared::Gcloud::RunBackups.new(send_chat_message: false)
-  service.call
-end if Rails.env.production?
+# every(4.day, 'set_slack_ids', at: '23:00') do
+#   Chewy.strategy(:atomic) do
+#     service = Services::Overseers::Slack::SetSlackIds.new
+#     service.call
+#   end
+# end
 
-every(4.day, 'set_slack_ids', at: '23:00') do
-  Chewy.strategy(:atomic) do
-    service = Services::Overseers::Slack::SetSlackIds.new
-    service.call
-  end
-end
-
-every(1.day, 'generate_exports_hourly', at: '18:41') do
+every(1.day, 'generate_exports_hourly', at: '22:00') do
   Chewy.strategy(:atomic) do
     Rails::logger.info('>>>>>>>>>>>>>>>>> Starting Job - Generate Export Hourly')
     service = Services::Overseers::Exporters::GenerateExportsHourly.new
