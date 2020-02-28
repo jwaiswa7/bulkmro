@@ -111,12 +111,12 @@ end
 # end
 
 every(1.day, 'generate_exports_hourly', at: '22:00') do
-  Chewy.strategy(:atomic) do
+  # Chewy.strategy(:atomic) do
     Rails::logger.info('>>>>>>>>>>>>>>>>> Starting Job - Generate Export Hourly')
     service = Services::Overseers::Exporters::GenerateExportsHourly.new
     service.call
     Rails::logger.info('>>>>>>>>>>>>>>>>> Ending Job - Generate Export Hourly')
-  end
+  # end
 end if Rails.env.production? || Rails.env.staging?
 
 # every(1.day, 'remote_unwanted_requests', at: '22:00') do
