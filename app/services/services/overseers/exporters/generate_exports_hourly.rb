@@ -3,13 +3,13 @@ class Services::Overseers::Exporters::GenerateExportsHourly < Services::Overseer
   def initialize
     @export_hash = {
       'inquiries': 'InquiriesExporter',
-      'products': 'ProductsExporter',
-      'companies': 'CompaniesExporter',
-      'purchase_orders': 'PurchaseOrdersExporter',
-      'sales_invoices': 'SalesInvoicesExporter',
-      'sales_orders': 'SalesOrdersExporter',
-      'activities': 'ActivitiesExporter',
-      'suppliers': 'SuppliersExporter'
+      'products': 'ProductsExporter'
+      # 'companies': 'CompaniesExporter',
+      # 'purchase_orders': 'PurchaseOrdersExporter',
+      # 'sales_invoices': 'SalesInvoicesExporter',
+      # 'sales_orders': 'SalesOrdersExporter',
+      # 'activities': 'ActivitiesExporter',
+      # 'suppliers': 'SuppliersExporter'
       # 'customer_product': 'CustomerProductsExporter',
     }
   end
