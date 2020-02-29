@@ -202,7 +202,7 @@
           </tr>
           </thead>
           <tbody>
-          <% sales_order.rows.each do |row| %>
+          <% sales_order.rows.order(:sr_no).each do |row| %>
             <tr>
               <td>
                 <span>#<%= row.sr_no %></span>
