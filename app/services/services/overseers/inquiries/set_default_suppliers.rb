@@ -16,7 +16,11 @@ class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::Ba
                   last_unit_price: unit_cost_price,
                   bp_catalog_name: inquiry_product.product.bp_catalog_for_supplier(product_supplier.supplier)
               )
-              inquiry_product_supplier.save
+              if inquiry_product_supplier.save
+                # binding.pry
+                # service = Services::Suppliers::CreateSupplierProduct.new(inquiry_product_supplier)
+                # service.call
+              end
             end
           end
         end

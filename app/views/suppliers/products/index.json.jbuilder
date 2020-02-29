@@ -6,7 +6,7 @@ json.data (@supplier_products) do |supplier_product|
                   ].join(' '),
                   supplier_product.product.name.to_s,
                   supplier_product.sku,
-                  (supplier_product.customer_price || supplier_product.product.latest_unit_cost_price.to_f),
+                  (supplier_product.supplier_price || supplier_product.product.latest_unit_cost_price.to_f),
                   format_boolean_label(supplier_product.product.synced?, 'synced'),
                   format_date(supplier_product.product.created_at)
               ]

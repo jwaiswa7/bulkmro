@@ -13,7 +13,10 @@ class Services::Overseers::Inquiries::LinkSuppliersToProducts < Services::Shared
           supplier = Company.find(supplier_id).to_s
           if supplier.to_s != 'Local'
             inquiry_product_supplier = InquiryProductSupplier.where(inquiry_product_id: inquiry_product.id, supplier_id: supplier_id).first_or_initialize
-            inquiry_product_supplier.save
+            if inquiry_product_supplier.save
+              service = Services::Suppliers::CreateSupplierProduct.new(inquiry_product_supplier)
+              service.call
+            end
           end
         end
       end

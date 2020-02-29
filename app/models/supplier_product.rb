@@ -1,24 +1,26 @@
 class SupplierProduct < ApplicationRecord
   include Mixins::CanBeStamped
+  include Mixins::HasSupplier
   include Mixins::HasImages
   include Mixins::CanBeWatermarked
 
-  update_index('supplier_products#supplier_product') {self}
+  # update_index('supplier_products#supplier_product') {self}
   pg_search_scope :locate, against: [:sku, :name], associated_against: {brand: [:name]}, using: {tsearch: {prefix: true}}
 
   belongs_to :brand, required: false
   belongs_to :category, required: false
-  belongs_to :company
+  belongs_to :supplier, class_name: 'Company', foreign_key: :supplier_id
   belongs_to :product
   belongs_to :tax_code, required: false
   belongs_to :tax_rate, required: false
   belongs_to :measurement_unit, required: false
 
   validates_presence_of :name
+
   validates_presence_of :sku
   validates_presence_of :supplier_price
 
-  validates_uniqueness_of :product_id, scope: :company_id
+  validates_uniqueness_of :product_id, scope: :supplier_id
   validates_presence_of :moq
 
   scope :with_includes, -> {includes(:brand, :category)}
