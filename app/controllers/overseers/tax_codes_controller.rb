@@ -67,7 +67,7 @@ class Overseers::TaxCodesController < Overseers::BaseController
   end
 
   def create
-      @tax_code = TaxCode.new(tax_code_params)
+    @tax_code = TaxCode.new(tax_code_params)
 
     authorize_acl @tax_code
 
