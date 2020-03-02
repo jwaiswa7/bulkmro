@@ -14,7 +14,6 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
   def add_supplier_rfqs
     if params['inquiry_product_ids'].present?
       params['inquiry_product_ids'].reject(&:empty?).each do |inquiry_product_id|
-        inquiry_product = InquiryProduct.find(inquiry_product_id)
         params['inquiry_product_supplier_ids'].reject(&:empty?).each do |inquiry_product_supplier_id|
           inquiry_product_supplier = InquiryProductSupplier.find(inquiry_product_supplier_id)
           if inquiry_product_supplier.present?
@@ -61,8 +60,8 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
           @action = 'send_email_request_for_quote'
 
           @email_message.assign_attributes(
-              subject: subject,
-              body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq).body.raw_source
+            subject: subject,
+            body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq).body.raw_source
           )
           @params = {
               record: [:overseers, @supplier_rfq, @email_message],
@@ -74,25 +73,24 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
           redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
         end
       elsif params['button'] == 'update_and_send_link_all'
+        if contact.present?
+          @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
+          subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
 
-        @email_message = @supplier_rfq.email_messages.build(overseer: current_overseer, contact: contact, inquiry: @inquiry, company: supplier)
-        subject = "Bulk MRO RFQ Ref #Inq #{@supplier_rfq.inquiry.inquiry_number} #RFQ #{@supplier_rfq.id}"
-
-        @email_message.assign_attributes(
+          @email_message.assign_attributes(
             subject: subject,
             body: SupplierRfqMailer.request_for_quote_email(@email_message, @supplier_rfq).body.raw_source
-        )
-        if @email_message.save
-          if SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
-            @supplier_rfq.update_attributes(email_sent_at: Time.now, status: 'Email Sent: Supplier Response Pending')
-            SupplierRfqsIndex::SupplierRfq.import([@supplier_rfq.id])
+          )
+          if @email_message.save
+            if SupplierRfqMailer.send_request_for_quote_email(@email_message).deliver_now
+              @supplier_rfq.update_attributes(email_sent_at: Time.now, status: 'Email Sent: Supplier Response Pending')
+              SupplierRfqsIndex::SupplierRfq.import([@supplier_rfq.id])
+            end
           end
         end
-        flash[:notice] = 'Record updated successfully and Emails has been sent to suppliers!'
-        # redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
       else
         flash[:notice] = 'Record updated successfully'
-        # redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
+        redirect_to edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry)
       end
       #
     end
@@ -119,46 +117,46 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
 
   private
 
-  def set_inquiry
-    @inquiry = Inquiry.find(params['inquiry_id'])
-  end
+    def set_inquiry
+      @inquiry = Inquiry.find(params['inquiry_id'])
+    end
 
-  def set_supplier_rfq
-    @supplier_rfq = SupplierRfq.find(params[:id])
-  end
+    def set_supplier_rfq
+      @supplier_rfq = SupplierRfq.find(params[:id])
+    end
 
-  def supplier_rfq_params
-    params.require(:supplier_rfq).permit(:id,
-                                         :inquiry_id,
-                                         :inquiry_product_supplier_id,
-                                         :inquiry_product_id,
-                                         :product_id,
-                                         :status,
-                                         :email_sent_at,
-                                         :created_by_id,
-                                         :updated_by_id,
-                                         inquiry_product_suppliers_attributes: [:id,
-                                                                                :inquiry_id,
-                                                                                :unit_cost_price,
-                                                                                :lead_time,
-                                                                                :last_unit_price,
-                                                                                :gst,
-                                                                                :quantity,
-                                                                                :unit_freight,
-                                                                                :final_unit_price,
-                                                                                :total_price,
-                                                                                :remarks, :_destroy]
-    )
-  end
+    def supplier_rfq_params
+      params.require(:supplier_rfq).permit(:id,
+                                           :inquiry_id,
+                                           :inquiry_product_supplier_id,
+                                           :inquiry_product_id,
+                                           :product_id,
+                                           :status,
+                                           :email_sent_at,
+                                           :created_by_id,
+                                           :updated_by_id,
+                                           inquiry_product_suppliers_attributes: [:id,
+                                                                                  :inquiry_id,
+                                                                                  :unit_cost_price,
+                                                                                  :lead_time,
+                                                                                  :last_unit_price,
+                                                                                  :gst,
+                                                                                  :quantity,
+                                                                                  :unit_freight,
+                                                                                  :final_unit_price,
+                                                                                  :total_price,
+                                                                                  :remarks, :_destroy]
+      )
+    end
 
-  def email_message_params
-    params.require(:email_message).permit(
+    def email_message_params
+      params.require(:email_message).permit(
         :subject,
-        :body,
-        :to,
-        :cc,
-        :bcc,
-        files: []
-    )
-  end
+          :body,
+          :to,
+          :cc,
+          :bcc,
+          files: []
+      )
+    end
 end

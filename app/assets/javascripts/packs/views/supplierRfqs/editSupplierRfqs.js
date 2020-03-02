@@ -1,4 +1,3 @@
-// Imports
 import disableBackdateOption from "../common/disableBackdateOption";
 
 const editSupplierRfqs = () => {
@@ -59,10 +58,16 @@ let updateAllInquiryProductSuppliers = () => {
         let delay = 300;
         $("form").each(function() {
             let $this = $(this);
+            let supplier_name = $this.find('#inquiry_product_supplier').data('name');
             let input = $("<input>").attr("type", "hidden").attr("name", "button").val(formType);
             $this.append(input);
             setTimeout( function () {
                 $this.submit();
+                let message = formType == 'update' ? 'Record updated successfully of supplier '+supplier_name+'!' : 'Record updated successfully and Emails has been sent to '+supplier_name+'!';
+                $.notify({
+                    type: 'success',
+                    message: message
+                });
             }, delay);
             delay = delay + 700;
         });

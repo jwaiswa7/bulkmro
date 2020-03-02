@@ -27,15 +27,15 @@ class Suppliers::ProductsController < Suppliers::BaseController
 
   private
 
-  def set_supplier_product
-    @supplier_product ||= Product.find(params[:id])
-  end
+    def set_supplier_product
+      @supplier_product ||= Product.find(params[:id])
+    end
 
-  def product_params
-    params.require(:product).permit(
-      :product_id,
-      :product_show,
-      :supplier_unit_cost_price
-    )
-  end
+    def product_params
+      params.require(:product).permit(
+        :product_id,
+        :product_show,
+        :supplier_unit_cost_price
+      )
+    end
 end
