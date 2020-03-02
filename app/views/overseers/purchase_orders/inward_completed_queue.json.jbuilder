@@ -8,18 +8,18 @@ json.data (@inward_dispatches) do |inward_dispatch|
                         row_action_button_without_fa(overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'bmro-icon-table bmro-icon-used-view', 'View Inward Dispatch', 'info', target: :_blank)
                       end,
                       if inward_dispatch.sales_order.present? && is_authorized(inward_dispatch, 'can_create_ar_invoice') && (policy(inward_dispatch).create_ar_invoice?) && inward_dispatch.sales_order.remote_uid.present?
-                        row_action_button_without_fa(new_overseers_ar_invoice_request_path(sales_order_id: inward_dispatch.sales_order, ids: inward_dispatch.id), 'bmro-icon-plus', 'Create AR Invoice Request', 'success', target: :_blank)
+                        row_action_button_without_fa(new_overseers_ar_invoice_request_path(sales_order_id: inward_dispatch.sales_order, ids: inward_dispatch.id), 'bmro-icon-table bmro-icon-circle', 'Create AR Invoice Request', 'success', target: :_blank)
                       elsif inward_dispatch.sales_order.present? && is_authorized(inward_dispatch, 'can_create_ar_invoice') && (policy(inward_dispatch).create_ar_invoice?) && inward_dispatch.sales_order.remote_uid.blank?
                         link_to('', class: 'btn btn-sm btn-success able_to_create_ar_invoice', 'data-sales-order-number': inward_dispatch.sales_order.order_number, title: 'Create AR Invoice', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['bmro-icon-plus'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-circle'].join
                         end
                         #row_action_button('#', 'plus', 'View Inward Dispatch', 'success')
                       end,
                       if is_authorized(inward_dispatch, 'index')
                         link_to('', class: ['btn btn-sm btn-success comment-inward-dispatch'], 'data-inward-dispatch-id': inward_dispatch.id, 'data-purchase-id': inward_dispatch.purchase_order.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['bmro-icon-comment'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end
                       end,
                   ].join(' '),
