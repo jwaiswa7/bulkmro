@@ -51,8 +51,8 @@
                     <% if supplier_rfq.attachments.attached? %>
                       Supplier RFQ Documents
                       <% supplier_rfq.attachments.each do |attachment| %>
-                        <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                          <i class="fal fa-download" title="<%= attachment.filename %>"></i>
+                        <%= link_to url_for(attachment), class: 'ml-md-1 bmro-btn btn btn-m bmro-button', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                          <i class="bmro-download-icon" title="<%= attachment.filename %>"></i>
                         <% end %>
                       <% end %>
                       <hr>
