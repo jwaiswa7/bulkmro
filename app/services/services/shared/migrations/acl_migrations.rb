@@ -584,7 +584,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   end
 
   def create_supplier_rfq_resources
-    role_name = ['admin']
+    role_name = ["Outside Sales Manager", "Outside Sales Executive", "Inside Sales and Logistic Manager", "Admin-Leadership Team", "Inside Sales Manager", "Inside Sales Executive",  "Outside Sales Team Leader", "Inside Sales Team Leader", "Admin"]
     acl_resources_for_targets = {
         'supplier_rfq': %w(index show new edit create update destroy update_all send_email_request_for_quote add_supplier_rfqs edit_supplier_rfqs update_supplier_rfqs rfq_review),
         'inquiry_product_supplier': %w(request_for_quote),
