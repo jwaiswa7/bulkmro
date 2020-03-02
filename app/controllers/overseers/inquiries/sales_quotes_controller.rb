@@ -63,7 +63,6 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   def update
-    @inquiry.update_attributes(quotation_date: @sales_quote.created_at)
     @sales_quote.assign_attributes(sales_quote_params.merge(overseer: current_overseer))
     authorize_acl @sales_quote
 
