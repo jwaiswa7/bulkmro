@@ -7,7 +7,7 @@ json.data (@sales_orders) do |sales_order|
                  sales_order.inquiry.inquiry_number,
                  sales_order.inquiry.company.to_s,
                  sales_order.inside_sales_owner.to_s,
-                 format_boolean(sales_order.inquiry.billing_address.is_sez),
+                 sales_order.inquiry.billing_address.present? ? format_boolean(sales_order.inquiry.billing_address.is_sez) : '-',
                  sales_order.inquiry.bill_from.to_s,
                  sales_order.inquiry.inquiry_currency.present? ? sales_order.inquiry.inquiry_currency.currency.to_s : 'INR',
                  format_succinct_date(sales_order.created_at)

@@ -3,7 +3,9 @@ class Overseers::TaxCodesController < Overseers::BaseController
   before_action :set_notification, only: [:update]
 
   def autocomplete
-    if params[:is_service].present?
+    if params[:is_service].present? && params[:is_service] == 'true'
+      @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
+    elsif params[:is_service].present? && params[:is_service] == 'false'
       @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
     else
       @tax_codes = ApplyParams.to(TaxCode.active, params)
