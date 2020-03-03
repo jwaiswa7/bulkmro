@@ -1,7 +1,7 @@
 json.data (@sales_invoices) do |sales_invoice|
   json.array! [
                   [
-                      if is_authorized(sales_invoice, 'show') && policy(sales_invoice).show?  && sales_invoice.inquiry.present?
+                      if is_authorized(sales_invoice, 'show') && policy(sales_invoice).show? && sales_invoice.inquiry.present?
                         [
                             row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), 'eye', 'View Sales Invoice ', 'info', :_blank),
                             row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, stamp: 1, format: :pdf), 'none', 'Original with Signature', 'success', :_blank, 'get', false, 'O'),
