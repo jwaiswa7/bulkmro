@@ -1,11 +1,11 @@
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-2">
+  <section class="pt-0 pt-lg-0 pb-2">
     <div class="d-md-flex justify-content-between">
-      <h3 class="display-5 d-flex align-items-center">
+      <h3 class="display-5 d-flex align-items-center bmro-form-heading">
         <%= @payment_option.name %>
       </h3>
       <% if is_authorized(@payment_option, 'edit') %>
-        <a href="<%= edit_overseers_payment_option_path(@payment_option) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+        <a href="<%= edit_overseers_payment_option_path(@payment_option) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down bmro-button"><i class="fal fa-pen mr-1"></i>Edit
           Payment Term</a>
       <% end %>
     </div>
@@ -15,50 +15,68 @@
     <div class="card">
       <div class="card-body">
         <div>
-          <h6 class="text-uppercase text-black-50 mb-1">Payment Terms Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Payment Terms Details</h6>
           <div class="form-row">
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Name</strong>
+              <strong class="d-block bmro-summary-heading">Name</strong>
+              <div class="bmro-summary-data">
               <%= @payment_option.name %>
+              </div>
             </div>
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Credit Limit</strong>
+              <strong class="d-block bmro-summary-heading">Credit Limit</strong>
+              <div class="bmro-summary-data">
               <%= @payment_option.credit_limit %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">General Discount</strong>
+              <strong class="d-block bmro-summary-heading">General Discount</strong>
+              <div class="bmro-summary-data">
               <%= @payment_option.general_discount %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Load Limit</strong>
+              <strong class="d-block bmro-summary-heading">Load Limit</strong>
+              <div class="bmro-summary-data">
               <%= @payment_option.load_limit %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Remote UID</strong>
+              <strong class="d-block bmro-summary-heading">Remote UID</strong>
+              <div class="bmro-summary-data">
               <%= @payment_option.remote_uid %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Created By</strong>
+              <strong class="d-block bmro-summary-heading">Created By</strong>
+              <div class="bmro-summary-data">
               <%= @payment_option.created_by.full_name if @payment_option.created_by.present? %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Updated By</strong>
+              <strong class="d-block bmro-summary-heading">Updated By</strong>
+              <div class="bmro-summary-data">
               <%= @payment_option.updated_by.full_name if @payment_option.updated_by.present? %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Created At</strong>
+              <strong class="d-block bmro-summary-heading">Created At</strong>
+              <div class="bmro-summary-data">
               <%= format_date_time_meridiem(@payment_option.created_at) %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Updated At</strong>
+              <strong class="d-block bmro-summary-heading">Updated At</strong>
+              <div class="bmro-summary-data">
               <%= format_date_time_meridiem(@payment_option.updated_at) %>
+              </div>
             </div>
             <div class="col-6 col-md-3 mb-2">
               <strong class="d-block">Is Active</strong>

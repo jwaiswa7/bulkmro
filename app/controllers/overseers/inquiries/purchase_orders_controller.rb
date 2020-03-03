@@ -3,6 +3,7 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
   before_action :set_purchase_order_items, only: [:show]
 
   def index
+    @model_name = 'purchase_orders'
     @purchase_orders = @inquiry.purchase_orders
     authorize_acl @purchase_orders
   end

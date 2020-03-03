@@ -2,13 +2,13 @@ json.data (@sales_shipments) do |sales_shipment|
   json.array! [
                   [
                       if is_authorized(sales_shipment, 'relationship_map')
-                        row_action_button(relationship_map_overseers_inquiry_sales_shipment_path(sales_shipment.inquiry.to_param, sales_shipment.to_param), 'sitemap', 'Relationship Map', 'info', :_blank)
+                        row_action_button_without_fa(relationship_map_overseers_inquiry_sales_shipment_path(sales_shipment.inquiry.to_param, sales_shipment.to_param), 'bmro-icon-table bmro-icon-relationship', 'Relationship Map', 'info', :_blank)
                       end,
                       if is_authorized(sales_shipment, 'show') && policy(sales_shipment).show?
-                        row_action_button(overseers_inquiry_sales_shipment_path(sales_shipment.inquiry, sales_shipment, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
+                        row_action_button_without_fa(overseers_inquiry_sales_shipment_path(sales_shipment.inquiry, sales_shipment, format: :pdf), 'bmro-icon-table bmro-icon-pdf', 'Download', 'dark', :_blank)
                       end,
                       if is_authorized(sales_shipment, 'show_shipment_pdf') && policy(sales_shipment).show_shipment_pdf?
-                        row_action_button(url_for(sales_shipment.shipment_pdf), 'file-pdf', sales_shipment.shipment_pdf.filename, 'dark', :_blank)
+                        row_action_button_without_fa(url_for(sales_shipment.shipment_pdf), 'bmro-icon-table bmro-icon-pdf', sales_shipment.shipment_pdf.filename, 'dark', :_blank)
                       end,
                   ].join(' '),
                   conditional_link(sales_shipment.shipment_number, overseers_inquiry_sales_shipments_path(sales_shipment.inquiry, sales_shipment), is_authorized(sales_shipment, 'show') && policy(sales_shipment).show?),

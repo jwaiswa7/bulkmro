@@ -56,7 +56,7 @@
   <!-- Navigation Bar -->
 
   <!-- Settings Dropdown DESKTOP -->
-  <div class="d-block">
+  <div class="d-flex align-items-center">
     <% if current_company.logo.attached? %>
       <span class="d-none d-md-inline">
         <img src="<%= url_for(current_company.logo) %>" height="18" alt="<%= current_company.name %>">
@@ -71,19 +71,19 @@
       </div>
     <% end %>
     <div class="dropdown d-inline">
-      <a href="#" role="button" data-toggle="dropdown">
-        <span class="d-none d-md-inline"><%= current_contact.first_name %></span>
+      <a href="#" role="button" data-toggle="dropdown" aria-expanded="false" class="d-flex">
+        <span class="d-none d-md-inline pr-2"><%= current_customers_contact.first_name %></span>
         <i class="fal fa-cog"></i>
       </a>
       <span class="dropdown-menu dropdown-menu-right">
         <%= link_to reset_current_company_customers_sign_in_steps_path, method: :post, :class => 'dropdown-item' do %>
           <i class="fal fa-building"></i>&nbsp;Choose Another Company
-        <% end if policy(current_contact).reset_current_company? %>
+        <% end if policy(current_customers_contact).reset_current_company? %>
         <%= link_to edit_customers_profile_path, class: 'dropdown-item' do %>
-          <i class="fal fa-user"></i> Edit Profile
+          <i class="bmro-profile-icon"></i> Edit Profile
         <% end %>
-        <%= link_to destroy_contact_session_path, method: :delete, :class => 'dropdown-item' do %>
-          <i class="fal fa-power-off"></i>&nbsp;Sign Out
+        <%= link_to destroy_customers_contact_session_path, method: :delete, :class => 'dropdown-item' do %>
+          <i class="bmro-signout-icon"></i>&nbsp;Sign Out
         <% end %>
       </span>
     </div>

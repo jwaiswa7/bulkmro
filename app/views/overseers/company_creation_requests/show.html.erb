@@ -7,7 +7,7 @@
       </h3>
 
       <% if !@company_creation_request.company.present? && is_authorized(:company, 'new') %>
-        <a href="<%= new_overseers_company_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
+        <a class="bmro-color-button bmro-button" href="<%= new_overseers_company_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center bmro-button bmro-summary-heading btn-block-sm-down"><i class="bmro-plus-icon"></i>Create
           New
           Company</a>
       <% end %>
@@ -17,53 +17,67 @@
   <section class="mb-3">
     <div class="card">
       <div class="card-body">
-        <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
+        <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Company Details</h6>
         <div class="form-row">
           <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-heading">
               First Name
             </strong>
-            <%= @company_creation_request.first_name %>
+            <div class="bmro-summary-data">
+              <%= @company_creation_request.first_name %>
+            </div>  
           </div>
           <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-heading">
               Last Name
             </strong>
-            <%= @company_creation_request.last_name %>
+            <div class="bmro-summary-data">
+              <%= @company_creation_request.last_name %>
+            </div>  
           </div>
           <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-heading">
               Email
             </strong>
-            <%= @company_creation_request.email %>
+            <div class="bmro-summary-data">
+              <%= @company_creation_request.email %>
+            </div>  
           </div>
         </div>
         <div class="form-row">
           <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-heading">
               Is supplier
             </strong>
-            <%= format_boolean(@company_creation_request.is_supplier?) %>
+            <div class="bmro-summary-data">
+              <%= format_boolean(@company_creation_request.is_supplier?) %>
+            </div>  
           </div>
           <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-heading">
               Is customer
             </strong>
-            <%= format_boolean(@company_creation_request.is_customer?) %>
+            <div class="bmro-summary-data">
+              <%= format_boolean(@company_creation_request.is_customer?) %>
+            </div>  
           </div>
           <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-heading">
               Requested by
             </strong>
-            <%= @company_creation_request.activity.created_by.name %>
+            <div class="bmro-summary-data">
+              <%= @company_creation_request.activity.created_by.name %>
+            </div>
           </div>
         </div>
         <div class="form-row">
           <div class="col-12">
-            <strong class="d-block">
+            <strong class="d-block bmro-summary-heading">
               Address
             </strong>
-            <%= @company_creation_request.address %>
+            <div class="bmro-summary-data">
+              <%= @company_creation_request.address %>
+            </div>
           </div>
         </div>
       </div>
@@ -76,11 +90,11 @@
       <div class="card">
         <div class="card-body">
           <div>
-            <h6 class="text-uppercase text-black-50 mb-1">Create OR Link Company</h6>
+            <h6 class="text-uppercase bmro-form-heading text-black-50 mb-1">Create OR Link Company</h6>
             <div class="form-row">
               <div class="col-4">
                 <% if  !@company_creation_request.company.present? && is_authorized(:company, 'new') %>
-                  <a href="<%= new_overseers_company_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
+                  <a href="<%= new_overseers_company_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded bmro-button align-self-center btn-block-sm-down"><i class="bmro-plus-icon"></i>Create
                     New
                     Company</a>
                 <% end %>
@@ -94,7 +108,7 @@
                     </div>
                   </div>
                   <div class="col-3">
-                    <%= submit_tag "Link", class: "btn btn-sm btn-block btn-success" %>
+                    <%= submit_tag "Link", class: "btn btn-sm bmro-button btn-block btn-success" %>
                   </div>
                 <% end %>
               </div>

@@ -2,17 +2,17 @@ json.data (@freight_requests) do |freight_request|
   json.array! [
                   [
                       if is_authorized(freight_request, 'show') && policy(freight_request).show?
-                        row_action_button(overseers_freight_request_path(freight_request), 'eye', 'View Freight Request', 'info')
+                        row_action_button_without_fa(overseers_freight_request_path(freight_request), 'bmro-icon-table bmro-icon-used-view', 'View Freight Request', 'info')
                       end,
-                      row_action_button(edit_overseers_freight_request_path(freight_request), 'pencil', 'Edit Freight Request', 'warning'),
-                      if freight_request.freight_quote.present? && is_authorized(:freight_request.freight_quote, 'show') && policy(freight_request.freight_quote).show?
-                        row_action_button(overseers_freight_quote_path(freight_request.freight_quote), 'eye', 'View Freight Quote', 'primary')
+                      row_action_button_without_fa(edit_overseers_freight_request_path(freight_request), 'bmro-icon-table bmro-icon-pencil', 'Edit Freight Request', 'warning'),
+                      if freight_request.freight_quote.present? && is_authorized(freight_request.freight_quote, 'show') && policy(freight_request.freight_quote).show?
+                        row_action_button_without_fa(overseers_freight_quote_path(freight_request.freight_quote), 'bmro-icon-table bmro-icon-used-view', 'View Freight Quote', 'primary')
                       end,
-                      if freight_request.freight_quote.present? && is_authorized(:freight_request.freight_quote, 'edit') && policy(freight_request.freight_quote).edit?
-                        row_action_button(edit_overseers_freight_request_freight_quote_path(freight_request, freight_request.freight_quote), 'pencil', 'Edit Freight Quote', 'success')
+                      if freight_request.freight_quote.present? && is_authorized(freight_request.freight_quote, 'edit') && policy(freight_request.freight_quote).edit?
+                        row_action_button_without_fa(edit_overseers_freight_request_freight_quote_path(freight_request, freight_request.freight_quote), 'bmro-icon-table bmro-icon-pencil', 'Edit Freight Quote', 'success')
                       end,
                       if !freight_request.freight_quote.present? && is_authorized(:freight_request, 'new') && policy(freight_request).new?
-                        row_action_button(new_overseers_freight_request_freight_quote_path(freight_request), 'external-link', 'New Freight Quote', 'warning')
+                        row_action_button_without_fa(new_overseers_freight_request_freight_quote_path(freight_request), 'bmro-icon-table bmro-icon-new-freight', 'New Freight Quote', 'warning')
                       end,
                   ].join(' '),
                   freight_request.id,

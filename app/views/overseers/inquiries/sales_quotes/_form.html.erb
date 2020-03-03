@@ -47,7 +47,7 @@
       <% f.object.rows.sort_by(&:sr_no).group_by(&:inquiry_product).each do |inquiry_product, rows| %>
         <div class="card mt-3 option-wrapper">
           <div class="card-body accordion" id="ac-<%= inquiry_product.id %>">
-            <div class="btn btn-danger float-right" :class="showProductButton('<%= inquiry_product.id %>')? '': 'disabled'" data-v-event="" data-v-on:click="hideProduct('<%= inquiry_product.id %>')">
+            <div class="btn btn-danger float-right bmro-button" :class="showProductButton('<%= inquiry_product.id %>')? '': 'disabled'" data-v-event="" data-v-on:click="hideProduct('<%= inquiry_product.id %>')">
               <template v-if="showProductButton('<%= inquiry_product.id %>')">
                 Remove Product
               </template>
@@ -104,7 +104,7 @@
                               </div>
                               <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Unit Cost with Freight</strong><br>
-                                <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= format_currency(row.object.unit_cost_price_with_unit_freight_cost) %></span>
+                                <span><%= format_currency(row.object.unit_cost_price_with_unit_freight_cost_supplier) %></span>
                               </div>
                               <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Total Selling Price</strong><br>
@@ -135,7 +135,7 @@
                           </div>
 
                           <div class="col-md-2"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path(is_service: row.object.is_service), "data-bind": ""} %></div>
-                          <div class="col-md-2"><%= row.association :tax_rate, collection: TaxRate.all.map {|tax_rate| [tax_rate.to_s, tax_rate.id, {'data-tax_rate' => tax_rate.tax_percentage}]} , input_html: { "data-bind": ""} %></div>
+                          <div class="col-md-2"><%= row.association :tax_rate, collection: TaxRate.first(5).map {|tax_rate| [tax_rate.to_s, tax_rate.id, {'data-tax_rate' => tax_rate.tax_percentage}]} , selected: row.object.get_tax_rate, input_html: { "data-bind": ""} %></div>
                           <%= row.hidden_field :unit_cost_price, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :unit_cost_price_with_unit_freight_cost, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :total_selling_price, "data-bind": "", disabled: true %>
@@ -174,20 +174,20 @@
             <strong>Total Margin</strong><br>
             <span data-v-html="calculated_total_margin"><%= f.object.calculated_total_margin %></span>
           </div>
-          <div class="flex-fill mt-2 mt-md-0">
-            <strong>Total Freight Cost</strong><br>
-            <span data-v-html="calculated_freight_cost_total"><%= f.object.calculated_freight_cost_total %></span>
-          </div>
+<!--          <div class="flex-fill mt-2 mt-md-0">-->
+<!--            <strong>Total Freight Cost</strong><br>-->
+<!--            <span data-v-html="calculated_freight_cost_total"><%#= f.object.calculated_freight_cost_total %></span>-->
+<!--          </div>-->
         </div>
         <div class="card-body">
           <div class="form-row">
             <div class="col-6">
-              <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block") do %>
+              <%= button_tag(type: "submit", name: "save", class: "bmro-button btn btn-warning btn-block") do %>
                 <i class="fal fa-pen mr-1"></i> Save as Draft
               <% end %>
             </div>
             <div class="col-6">
-              <%= button_tag(type: "submit", name: "save_and_preview", class: "btn btn-success btn-block") do %>
+              <%= button_tag(type: "submit", name: "save_and_preview", class: "bmro-button btn btn-success btn-block") do %>
                 <i class="far fa-check mr-1"></i> Save and Preview
               <% end %>
             </div>

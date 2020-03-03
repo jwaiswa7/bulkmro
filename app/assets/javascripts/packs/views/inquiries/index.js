@@ -5,7 +5,6 @@ import commanComment from "../common/commanComment"
 import removeHrefExport from '../common/removeHrefExport';
 
 const index = () => {
-
     bindSummaryBox(".summary_box", '.status-filter')
     updateSummaryBox()
     aggregateSummaryBox()

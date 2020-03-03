@@ -100,6 +100,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def edit
     authorize_acl @po_request
     # service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
+    @supplier_index = 1
     if current_overseer.logistics?
       @company_reviews = [@po_request.company_reviews.where(created_by: current_overseer, survey_type: 'Logistics', company: @po_request.supplier).first_or_create]
     elsif !current_overseer.accounts?

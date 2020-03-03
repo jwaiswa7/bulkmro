@@ -1,0 +1,360 @@
+<div class="bmro-width100 bmro-head-bg sticky-top-fixed">
+  <!-- Header Logo Starts Here -->
+  <div class="bmro-logo-head">
+    <a href="<%= request.url %>"><img src="<%= image_path('BulkMRO_logo.svg') %>" alt="logo"></a>
+  </div>
+  <!-- Header Logo Ends Here -->
+
+  <!-- Menu Code Starts Here -->
+  <div class="bmro-menu-head">
+    <p class="bmro-menu bmro-menu-click">
+      <span class="bmro-menu-border"></span> Menu
+      <span class="bmro-menu-dropdown bmro-menu-dash-left"></span>
+      <span class="bmro-menu-dropup bmro-menu-dash-left bmro-hide"></span>
+    </p>
+    <div class="bmro-dash-main-menu">
+      <div class="bmro-main-drop-col-level-one">
+        <div class="bmro-main-drop-col-level-one-container">
+          <div class="bmro-select-level-one-to-see-second-and-third active" id="nav-bpartners-heading">
+            <p class="bmro-level-one-heading bmro-heading-bpartners m-0">B. Partners</p>
+          </div>
+          <div class="bmro-select-level-one-to-see-second-and-third" id="nav-catalog-heading">
+            <p class="bmro-level-one-heading bmro-heading-catalog m-0">Catalog</p>
+          </div>
+          <div class="bmro-select-level-one-to-see-second-and-third" id="nav-sales-heading">
+            <p class="bmro-level-one-heading bmro-heading-sales m-0">Sales</p>
+          </div>
+          <div class="bmro-select-level-one-to-see-second-and-third" id="nav-logistics-heading">
+            <p class="bmro-level-one-heading bmro-heading-logistics m-0">Logistics</p>
+          </div>
+          <div class="bmro-select-level-one-to-see-second-and-third" id="nav-inventory-heading">
+            <p class="bmro-level-one-heading bmro-heading-inventory m-0">Inventory</p>
+          </div>
+          <% if is_authorized(:report, 'index') %>
+            <div class="bmro-select-level-one-to-see-second-and-third" id="nav-reports-heading">
+              <p class="bmro-level-one-heading bmro-heading-reports m-0">Reports</p>
+            </div>
+          <% end %>
+          <% if is_authorized(:remote_request, 'index') %>
+            <div class="bmro-select-level-one-to-see-second-and-third" id="nav-admin-heading">
+              <p class="bmro-level-one-heading bmro-heading-admin m-0">Admin</p>
+            </div>
+          <% end %>
+          <!--          <div class="bmro-select-level-one-to-see-second-and-third" id="nav-favourites-heading">-->
+          <!--            <p class="bmro-level-one-heading bmro-heading-docs m-0">Favourites</p>-->
+          <!--          </div>-->
+        </div>
+        <div class="bmro-dashboard-link">
+          <i class="material-icons">keyboard_arrow_left</i>
+          <a href="<%= overseers_dashboard_path %>" class="bmro-dashbord-click bmro-big-heading bmro-dash-heading-menu">
+            Dashboard
+          </a>
+        </div>
+      </div>
+      <div class="bmro-second-and-third-level-headings">
+        <div class="show bmro-second-and-third-level-headings-container" id="bpartners_heading_container">
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">Accounts / Aliases</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'Accounts / Aliases', overseers_accounts_path, is_authorized(:account, 'index') %>
+              <%= nav_dropdown_sub_item 'Accounts Receivable', payment_collections_overseers_accounts_path, is_authorized(:account, 'payment_collections') %>
+              <%= nav_dropdown_sub_item 'Ageing Report', ageing_report_overseers_accounts_path, is_authorized(:account, 'ageing_report') %>
+              <%= nav_dropdown_sub_item 'Receipts', overseers_sales_receipts_path, is_authorized(:sales_receipt, 'index') %>
+            </div>
+          </div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Companies', overseers_companies_path, is_authorized(:company, 'index') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Suppliers', overseers_suppliers_path, is_authorized(:company, 'index') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Addresses', overseers_addresses_path, is_authorized(:address, 'index') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Contacts', overseers_contacts_path, is_authorized((:contact), 'index') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Banks', overseers_banks_path, is_authorized(:bank, 'index') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'IFSC Codes', overseers_ifsc_codes_path, is_authorized(:ifsc_code, 'index') %></div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">Company Creation Requests</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'All Requests', overseers_company_creation_requests_path, is_authorized(:company_creation_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Requested', requested_overseers_company_creation_requests_path, is_authorized(:company_creation_request, 'requested') %>
+              <%= nav_dropdown_sub_item 'Created/Completed', created_overseers_company_creation_requests_path, is_authorized(:company_creation_request, 'created') %>
+            </div>
+          </div>
+
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">Contact Creation Requests</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'All Requests', overseers_contact_creation_requests_path, is_authorized(:contact_creation_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Requested', requested_overseers_contact_creation_requests_path, is_authorized(:contact_creation_request, 'requested') %>
+              <%= nav_dropdown_sub_item 'Created/Completed', created_overseers_contact_creation_requests_path, is_authorized(:contact_creation_request, 'created') %>
+            </div>
+          </div>
+
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">Company Reviews</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'List', overseers_company_reviews_path, is_authorized(:company_review, 'index') %>
+              <%= nav_dropdown_sub_item 'Review Questions', overseers_review_questions_path, is_authorized(:review_questions, 'index') %>
+            </div>
+          </div>
+        </div>
+
+        <div class="bmro-second-and-third-level-headings-container" id="catalog_heading_container">
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">Catalog</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'Product List', overseers_products_path, is_authorized(:product, 'index') %>
+              <%= nav_dropdown_sub_item 'Product Approval Queue', pending_overseers_products_path, is_authorized(:product, 'pending') %>
+              <%= nav_dropdown_sub_item 'Kits', overseers_kits_path, is_authorized(:kit, 'index') %>
+              <%= nav_dropdown_sub_item 'Categories', overseers_categories_path, is_authorized(:category, 'index') %>
+              <%= nav_dropdown_sub_item 'Brands', overseers_brands_path, is_authorized(:brand, 'index') %>
+              <%= nav_dropdown_sub_item 'Measurement Units', overseers_measurement_units_path, is_authorized(:measurement_unit, 'index') %>
+              <%= nav_dropdown_sub_item 'HSN / SAC Codes', overseers_tax_codes_path, is_authorized(:tax_code, 'index') %>
+              <%= nav_dropdown_sub_item 'Payment Terms', overseers_payment_options_path, is_authorized(:payment_option, 'index') %>
+            </div>
+          </div>
+        </div>
+
+        <div class="bmro-second-and-third-level-headings-container" id="sales_heading_container">
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Inquiries', overseers_inquiries_path, is_authorized(:inquiry, 'index') %></div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">Online Orders</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'List', overseers_customer_orders_path, is_authorized(:customer_order, 'index') %>
+              <%= nav_dropdown_sub_item 'Online Payments List', payments_overseers_customer_orders_path, is_authorized(:customer_order, 'payments') %>
+            </div>
+          </div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">Sales Orders</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'Sales Orders List', overseers_sales_orders_path, is_authorized(:sales_order, 'index') %>
+              <%= nav_dropdown_sub_item 'SO Not Invoiced', not_invoiced_overseers_sales_orders_path, is_authorized(:sales_order, 'not_invoiced') %>
+              <%= nav_dropdown_sub_item 'Manager Approval Pending', pending_overseers_sales_orders_path, is_authorized(:sales_order, 'pending') %>
+              <%= nav_dropdown_sub_item 'Accounts Approval Pending', account_approval_pending_overseers_sales_orders_path, is_authorized(:sales_order, 'account_approval_pending') %>
+              <%= nav_dropdown_sub_item 'Pending SAP Sync', so_sync_pending_overseers_sales_orders_path, is_authorized(:sales_order, 'so_sync_pending') %>
+              <%= nav_dropdown_sub_item 'Cancelled SO', cancelled_overseers_sales_orders_path, is_authorized(:sales_order, 'cancelled') %>
+            </div>
+          </div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">GRPO</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'All Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'GRPO Request Rejected'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Cancelled', cancelled_overseers_invoice_requests_path(:status => 'Cancelled GRPO'), is_authorized(:invoice_request, 'cancelled') %>
+            </div>
+          </div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">AP Invoice Requests</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'All Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Pending', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), is_authorized(:invoice_request, 'show_pending_ap_invoice_queue') %>
+              <%= nav_dropdown_sub_item 'Completed', pending_overseers_invoice_requests_path(:status => 'Inward Completed'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'AP Invoice Request Rejected'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Completed', completed_overseers_invoice_requests_path, is_authorized(:invoice_request, 'completed') %>
+            </div>
+          </div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">AR Invoice Requests</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'All Requests', overseers_ar_invoice_requests_path, is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Pending', overseers_ar_invoice_requests_path(:status => "AR Invoice requested"), is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Cancelled', overseers_ar_invoice_requests_path(:status => "Cancelled AR Invoice"), is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Rejected', overseers_ar_invoice_requests_path(:status => "AR Invoice Request Rejected"), is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Completed', overseers_ar_invoice_requests_path(:status => "Completed AR Invoice Request"), is_authorized(:ar_invoice_request, 'index') %>
+            </div>
+          </div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Sales Receipt', overseers_sales_receipts_path, is_authorized(:sales_receipt, 'index') %></div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">Freight Requests</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'All Requests', overseers_freight_requests_path, is_authorized(:freight_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Pending Requests', overseers_freight_requests_path(:status => 'Freight Quote Requested'), is_authorized(:freight_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Completed Requests', overseers_freight_requests_path(:status => 'Freight Quote Submitted'), is_authorized(:freight_request, 'index') %>
+            </div>
+          </div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Smart Queue', smart_queue_overseers_inquiries_path, is_authorized(:inquiry, 'smart_queue') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Sales Shipments', overseers_sales_shipments_path, is_authorized(:sales_shipment, 'index') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Activities', overseers_activities_path, is_authorized(:activity, 'index') %></div>
+        </div>
+
+        <div class="bmro-second-and-third-level-headings-container" id="logistics_heading_container">
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">Purchase Orders</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'Purchase Orders List', overseers_purchase_orders_path, is_authorized(:purchase_order, 'index') %>
+              <%= nav_dropdown_sub_item 'Manually Closed Purchase Orders List', manually_closed_overseers_purchase_orders_path, is_authorized(:purchase_order, 'manually_closed') %>
+              <%= nav_dropdown_sub_item 'Pending SAP Sync', pending_sap_sync_overseers_purchase_orders_path, is_authorized(:purchase_order, 'pending_sap_sync') %>
+              <%= nav_dropdown_sub_item 'Pending Purchase Order Requests', pending_and_rejected_overseers_po_requests_path, is_authorized(:po_request, 'pending_and_rejected') %>
+              <%= nav_dropdown_sub_item 'Under Amend Purchase Order Requests', under_amend_overseers_po_requests_path, is_authorized(:po_request, 'under_amend') %>
+              <%= nav_dropdown_sub_item 'Amended Purchase Order Requests', amended_overseers_po_requests_path, is_authorized(:po_request, 'amended') %>
+              <%= nav_dropdown_sub_item 'Cancelled Purchase Order Requests', cancelled_overseers_po_requests_path, is_authorized(:po_request, 'cancelled') %>
+              <%= nav_dropdown_sub_item 'Completed Purchase Order Requests', overseers_po_requests_path, is_authorized(:po_request, 'index') %>
+            </div>
+          </div>
+          <div class="bmro-small-container">
+            <div>
+              <%= nav_dropdown_sub_item 'All Stock Requests', stock_overseers_po_requests_path, is_authorized(:po_request, 'stock') %>
+              <%= nav_dropdown_sub_item 'Pending Stock Approval', pending_stock_approval_overseers_po_requests_path, is_authorized(:po_request, 'pending_stock_approval') %>
+              <%= nav_dropdown_sub_item 'Completed Stock Requests', completed_stock_overseers_po_requests_path, is_authorized(:po_request, 'completed_stock') %>
+              <%= nav_dropdown_sub_item 'Material Readiness Queue', material_readiness_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'material_readiness_queue') %>
+              <%= nav_dropdown_sub_item 'Inward Dispatch Queue', inward_dispatch_pickup_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'inward_dispatch_pickup_queue') %>
+              <%= nav_dropdown_sub_item 'Inward Delivered Queue', inward_dispatch_delivered_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'inward_dispatch_delivered_queue') %>
+              <%= nav_dropdown_sub_item 'Inward Completed Queue', inward_completed_queue_overseers_purchase_orders_path, is_authorized(:purchase_order, 'inward_completed_queue') %>
+              <%= nav_dropdown_sub_item 'Cancelled Inward Dispatches', cancelled_inward_dispatches_overseers_purchase_orders_path, is_authorized(:purchase_order, 'cancelled_inward_dispatches') %>
+            </div>
+          </div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">Payment Requests</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'All Requests', overseers_payment_requests_path, is_authorized(:payment_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Pending Payment Requests', overseers_payment_requests_path(:status => 'Pending'), is_authorized(:payment_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Completed Payment Requests', overseers_payment_requests_path(:status => 'Completed'), is_authorized(:payment_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Rejected Payment Requests', overseers_payment_requests_path(:status => 'Rejected'), is_authorized(:payment_request, 'index') %>
+            </div>
+          </div>
+
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'AR Invoices', overseers_sales_invoices_path, is_authorized(:sales_invoice, 'index') %></div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">GRPO</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'All Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'GRPO Request Rejected'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Cancelled', cancelled_overseers_invoice_requests_path(:status => 'Cancelled GRPO'), is_authorized(:invoice_request, 'cancelled') %>
+            </div>
+          </div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">AP Invoice Requests</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'All Requests', overseers_invoice_requests_path, is_authorized(:invoice_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Pending', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), is_authorized(:invoice_request, 'show_pending_ap_invoice_queue') %>
+              <%= nav_dropdown_sub_item 'Completed', pending_overseers_invoice_requests_path(:status => 'Inward Completed'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Rejected', pending_overseers_invoice_requests_path(:status => 'AP Invoice Request Rejected'), is_authorized(:invoice_request, 'pending') %>
+              <%= nav_dropdown_sub_item 'Completed', completed_overseers_invoice_requests_path, is_authorized(:invoice_request, 'completed') %>
+            </div>
+          </div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">AR Invoice Requests</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'All Requests', overseers_ar_invoice_requests_path, is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Pending', overseers_ar_invoice_requests_path(:status => "AR Invoice requested"), is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Cancelled', overseers_ar_invoice_requests_path(:status => "Cancelled AR Invoice"), is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Rejected', overseers_ar_invoice_requests_path(:status => "AR Invoice Request Rejected"), is_authorized(:ar_invoice_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Completed', overseers_ar_invoice_requests_path(:status => "Completed AR Invoice Request"), is_authorized(:ar_invoice_request, 'index') %>
+            </div>
+          </div>
+
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Outward Dispatches', overseers_outward_dispatches_path, is_authorized(:outward_dispatch, 'index') %></div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">Freight Requests</p>
+            </div>
+            <div>
+              <%= nav_dropdown_sub_item 'All Requests', overseers_freight_requests_path, is_authorized(:freight_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Pending Requests', overseers_freight_requests_path(:status => 'Freight Quote Requested'), is_authorized(:freight_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Completed Requests', overseers_freight_requests_path(:status => 'Freight Quote Submitted'), is_authorized(:freight_request, 'index') %>
+            </div>
+          </div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Freight Quotes', overseers_freight_quotes_path, is_authorized(:freight_quote, 'index') %></div>
+        </div>
+
+        <div class="bmro-second-and-third-level-headings-container" id="inventory_heading_container">
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Warehouses', overseers_warehouses_path, is_authorized(:warehouse, 'index') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Document Series', series_overseers_warehouses_path, is_authorized(:warehouse, 'series') %></div>
+        </div>
+
+        <div class="bmro-second-and-third-level-headings-container" id="reports_heading_container">
+          <% Report.all.each do |report| %>
+            <div class="bmro-small-container"><%= nav_dropdown_item_new report.name.titleize, overseers_report_path(report), is_authorized(report, 'show') %></div>
+          <% end %>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'KRA Report', kra_report_overseers_inquiries_path, is_authorized(:inquiry, 'kra_report') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Company Report', company_report_overseers_companies_path, is_authorized(:company, 'company_report') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Pipeline Report', pipeline_report_overseers_inquiries_path, is_authorized(:inquiry, 'pipeline_report') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'TAT Report', tat_report_overseers_inquiries_path, is_authorized(:inquiry, 'tat_report') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Customer Order Status Report', customer_order_status_report_overseers_sales_orders_path, is_authorized(:sales_order, 'customer_order_status_report') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Logistics Scorecard', overseers_logistics_scorecards_path, is_authorized(:logistics_scorecard, 'index') %></div>
+        </div>
+
+        <div class="bmro-second-and-third-level-headings-container" id="admin_heading_container">
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Overseers', overseers_overseers_path, is_authorized(:overseer, 'index') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Overseers Roles', overseers_acl_roles_path, is_authorized(:overseer, 'index') %></div>
+          <% if (Rails.env.development?) || is_authorized(:remote_request, 'index') %>
+            <div class="bmro-small-container">
+              <div class="bmro-second-level-heading-container">
+                <p class="bmro-second-level-header">Tools</p>
+              </div>
+              <%= nav_dropdown_sub_item 'Bible Upload', new_bible_import_overseers_bible_imports_path, is_authorized(:bible_upload, 'new_bible_import') %>
+              <%= nav_dropdown_sub_item 'Remote Requests', overseers_remote_requests_path, is_authorized(:remote_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Callback Requests', overseers_callback_requests_path, is_authorized(:callback_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Resync Remote Requests', overseers_resync_remote_requests_path, is_authorized(:resync_remote_request, 'index') %>
+              <%= nav_dropdown_sub_item 'Document Creation Form', new_overseers_document_creation_path, is_authorized(:document_creation, 'new') %>
+              <%= nav_dropdown_sub_item 'ACL Resources', overseers_acl_resources_path, is_authorized(:acl_resource, 'index') %>
+            </div>
+          <% end %>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Docs', overseers_path(page: 'index'), is_authorized(:doc, 'index') %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bmro-search-head">
+    <input type="text" name="search" class="bmro-head-search-width bmro-head-form-input global-search" id="global-search"  placeholder="Search Inquiry, Account, Company, Product" data-toggle="tooltip" title="Use this input search box for global level Inquiry, Account, Company & Product search ">
+  </div>
+  <div class="bmro-profile-head">
+    <div class="bmro-profile-parent">
+      <% if content_for?(:can_be_directly_created) && is_authorized(current_model.singularize.downcase,'new') %>
+        <div class="bmro-dash-plus-icon">
+          <a href="<%= [request.path, '/', 'new'].join %>" data-toggle="tooltip" title="New <%= controller_path.split('/').last.singularize.split("_").join(" ").camelcase %>">
+            <img alt="icon" src="<%= image_path('add-icon.png') %>" class=" bmro-cursol">
+          </a>
+        </div>
+      <% end %>
+      <div class="bmro-border-line"></div>
+      <div class="bmro-profile-logo">
+        <img src="<%= image_path('my-profile.png') %>" alt="profile">
+      </div>
+      <div class="bmro-fl dropdown">
+        <p class="bmro-menu" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+          <%= current_overseer.full_name %>
+          <span class="bmro-menu-dropdown bmro-left-left-left"></span>
+        </p>
+        <div class="dropdown-menu bmro-drop-pos" aria-labelledby="dropdownMenuButton">
+          <%= link_to edit_overseers_profile_path, class: 'bmro-dropdown-item bmro-new-size bmro-new-fw' do %>
+            <i class="bmro-profile-icon"></i>&nbsp;My Profile
+          <% end %>
+          <%= link_to destroy_overseer_session_path, method: :delete, :class => 'bmro-dropdown-item bmro-new-size bmro-new-fw' do %>
+            <i class="bmro-signout-icon"></i>&nbsp;Sign Out
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

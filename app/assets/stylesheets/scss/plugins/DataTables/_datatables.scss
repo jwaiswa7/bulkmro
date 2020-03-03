@@ -105,6 +105,21 @@ table {
       }
     }
   }
+  .table-border-styling {
+    border-collapse: collapse;
+    border-spacing: 0;
+    background-color: transparent;
+    font-weight: 700;
+  }
+}
+
+.modal{
+  .dataTables_wrapper{
+    width: 90%;
+    overflow: auto;
+    margin: auto;
+
+  }
 }
 
 .dataTables_wrapper.dt-bootstrap4 {

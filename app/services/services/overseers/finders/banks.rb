@@ -18,6 +18,10 @@ class Services::Overseers::Finders::Banks < Services::Overseers::Finders::BaseFi
       indexed_records = filter_query(indexed_records)
     end
 
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+
     indexed_records
   end
 
@@ -41,10 +45,11 @@ class Services::Overseers::Finders::Banks < Services::Overseers::Finders::BaseFi
       indexed_records = indexed_records.filter(@base_filter)
     end
 
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+
     indexed_records
   end
 
-  def sort_definition
-    { created_at: :asc }
-  end
 end

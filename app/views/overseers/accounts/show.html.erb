@@ -1,29 +1,29 @@
 <%= provide :container_fluid, true %>
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-4 pb-lg-5">
+  <section class="pt-0 pt-lg-0 pb-0 pb-lg-0">
     <div class="d-md-flex justify-content-between">
-      <h1 class="display-5 d-flex align-items-center">
+      <h3 class="display-5 d-flex align-items-center">
         <% if @account.id == 3 %> <!-- To show logo of GE for GE Account -->
           <img src="<%= url_for(@account.companies.where(id: 2).first.try(:logo)) %>" alt="<%= @account.name %>" height="65" class="pr-2">
         <% else %>
           <img src="https://ui-avatars.com/api/?size=128&name=<%= @account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/><%= @account.alias %>
         <% end %>
-        <span class="pl-2 lead text-muted"><%= @account.name %></span>
-      </h1>
+<!--        <span class="pl-2 lead text-muted bmro-form-heading"><%#= @account.name %></span>-->
+      </h3>
       <% if is_authorized(@account, 'edit') %>
-        <a href="<%= edit_overseers_account_path(@account) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+        <a href="<%= edit_overseers_account_path(@account) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down bmro-button"><i class="fal fa-pen mr-1"></i>Edit
         Account</a>
       <% end %>
     </div>
-    <div class="row d-none">
+   <!--  <div class="row d-none">
       <p class="col-md-10 mt-2 mt-md-1">
         [Company information placeholder]
       </p>
-    </div>
+    </div> -->
   </section>
 
   <section class="mb-3">
-    <div class="card">
+    <div class="card bmro-bg">
       <div class="card-body">
         <% if @account.logo.attached? %>
           <div class="form-row mb-3">
@@ -34,13 +34,17 @@
         <% end %>
         <h6 class="text-uppercase text-black-50 mb-2">Account Details</h6>
         <div class="form-row">
-          <div class="col-6 col-md-6 mb-2">
-            <strong class="d-block">Is Supplier</strong>
+          <div class="col-6 col-md-6 mb-2 bmro-summary-data bmro-summalign">
+            <strong class="d-block bmro-summary-heading bmro-fl">Is Supplier</strong>
+            <div class="bmro-summary-data">
             <%= format_boolean(@account.is_supplier?) %>
+            </div>
           </div>
-          <div class="col-6 col-md-6 mb-2">
-            <strong class="d-block">Is Customer</strong>
+          <div class="col-6 col-md-6 mb-2 bmro-summary-data bmro-summalign">
+            <strong class="d-block bmro-summary-heading">Is Customer</strong>
+            <div class="bmro-summary-data">
             <%= format_boolean(@account.is_customer?) %>
+            </div>
           </div>
         </div>
       </div>
@@ -48,7 +52,7 @@
   </section>
 
   <section class="pb-4 pb-lg-5">
-    <ul class="nav nav-tabs nav-fill">
+    <ul class="nav nav-tabs nav-fill bmro-nav-ul">
       <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#companies" role="tab">Companies</a>
       </li>
@@ -66,21 +70,21 @@
       <%# end %>
     </ul>
 
-    <div class="tab-content">
+    <div class="tab-content bmro-float">
       <div class="tab-pane fade active show" id="companies" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Companies</h3>
 
           <% if is_authorized(:company, 'new') %>
-            <a href="<%= new_overseers_account_company_path(@account) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+            <a href="<%= new_overseers_account_company_path(@account) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down bmro-button mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
               Company</a>
           <% end %>
         </div>
-        <p class="mt-md-1 d-none d-md-block">
+       <!--  <p class="mt-md-1 d-none d-md-block">
           All companies searchable with relevant term/keywords under <strong><%= @account.name %></strong>.
-        </p>
+        </p> -->
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" data-ajax="<%= overseers_account_companies_path(account_id: @account.id) %>">
+        <table class="datatable bmro-datatable-style table table-bordered dt-responsive" data-search="Enter search term/keywords" data-ajax="<%= overseers_account_companies_path(account_id: @account.id) %>">
           <thead>
           <tr>
             <th class="no-sort"></th>
@@ -106,11 +110,11 @@
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Contacts</h3>
         </div>
-        <p class="mt-md-1 d-none d-md-block">
+       <!--  <p class="mt-md-1 d-none d-md-block">
           All contacts searchable with relevant term/keywords under <strong><%= @account.name %></strong>.
-        </p>
+        </p> -->
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_contacts_path(account_id: @account.id) %>">
+        <table class="datatable table bmro-datatable-style table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_contacts_path(account_id: @account.id) %>">
           <thead>
           <tr>
             <th class="no-sort"></th>
@@ -153,7 +157,7 @@
           <h3 class="display-5 mb-1 d-none d-md-block">Monthly Sales Report</h3>
         </div>
 
-        <table class="table text-center mt-3">
+        <table class="table bmro-datatable-style text-center mt-3">
           <thead data-toggle="sticky">
             <tr>
               <th>Company</th>
@@ -162,7 +166,7 @@
               <% end %>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="test">
             <% @data.entries.each do |company, values| %>
               <tr>
                 <td><%= company %></td>

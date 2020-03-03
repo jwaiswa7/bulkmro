@@ -13,6 +13,7 @@ class Product < ApplicationRecord
   include Mixins::CanHaveTaxes
   include Mixins::CanBeActivated
   include Mixins::HasImages
+  include Mixins::CanBeWatermarked
 
   update_index('products#product') { self if self.approved? }
   pg_search_scope :locate, against: [:sku, :mpn, :name], associated_against: { brand: [:name] }, using: { tsearch: { prefix: true } }
@@ -43,6 +44,7 @@ class Product < ApplicationRecord
   scope :with_includes, -> { includes(:brand, :approval, :category, :tax_code) }
   scope :with_manage_failed_skus, -> { includes(:brand, :tax_code, category: [:tax_code]) }
   scope :is_service, -> { where(is_service: true) }
+  scope :with_eager_loaded_images, -> { eager_load(images_attachments: :blob) }
 
   validates_presence_of :name
   validates_presence_of :sku, if: :not_rejected?
@@ -156,5 +158,27 @@ class Product < ApplicationRecord
 
   def get_customer_company_product(company_id)
     self.customer_products.where(company_id: company_id).first
+  end
+
+  def best_images
+    if self.images.present?
+      self.images
+    else
+      nil
+    end
+  end
+
+  def best_image
+    if best_images.present?
+      if best_images.first.present?
+        best_images.first
+      else
+        nil
+      end
+    end
+  end
+
+  def has_images?
+    self.best_images.attached?
   end
 end

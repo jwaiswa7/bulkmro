@@ -2,16 +2,15 @@ class Customers::SessionsController < Devise::SessionsController
   layout 'shared/layouts/sign_in'
 
   def edit_current_company
-    current_contact
+    current_customers_contact
   end
 
   def set_current_company
-    current_contact
+    current_customers_contact
   end
 
   def destroy
-    signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
-    reset_session
+    signed_out = resource_name == :customers_contact ? sign_out(resource_name) : sign_out
     set_flash_message! :notice, :signed_out if signed_out
     yield if block_given?
     respond_to_on_destroy
@@ -23,6 +22,6 @@ class Customers::SessionsController < Devise::SessionsController
     end
 
     def after_sign_out_path_for(resource_or_scope)
-      new_contact_session_path
+      new_customers_contact_session_path
     end
 end

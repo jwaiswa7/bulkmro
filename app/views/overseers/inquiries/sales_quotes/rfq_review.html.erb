@@ -1,0 +1,99 @@
+<%#= render 'overseers/inquiries/sales_quotes/form' %>
+<% content_for :page_title do %>
+  RFQ Review
+<% end %>
+<div class="col-lg-12">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <%= simple_form_for([:overseers, @inquiry, @sales_quote], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <%= f.hidden_field :inquiry_id %>
+      <%= f.hidden_field :parent_id, value: @inquiry.final_sales_quote.present? ? @inquiry.final_sales_quote.id : '' %>
+
+      <%= render 'shared/snippets/form_errors', f: f %>
+
+      <div class="card mt-3">
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col-12">
+              <% if is_authorized(@inquiry, 'new_sales_quote') && policy(@inquiry).new_sales_quote? %>
+                <%= button_tag(type: "button", name: "generate_sales_quote", class: "btn btn-m btn-block btn-warning bmro-button generate_sales_quote") do %>
+                  <i class="far fa-check mr-1"></i> Generate Sales Quote
+                <% end %>
+              <% elsif @inquiry.sales_quotes.present? && is_authorized(@inquiry.final_sales_quote, 'new_revision') && is_authorized(@inquiry.final_sales_quote, 'display_revision_button') && policy(@inquiry.final_sales_quote).new_revision? && policy(@inquiry.final_sales_quote).display_revision_button?  %>
+                <%= button_tag(type: "button", name: "reset_sales_quote", class: "btn btn-m btn-block btn-warning bmro-button reset_sales_quote") do %>
+                  <i class="fal fa-redo-alt mr-1"></i>Create Sales Quote Revision
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <table class="table mt-3 bmro-rfq-table bmro-datatable-style" data-fixed-header="false">
+          <thead>
+          <tr>
+            <th class="text-uppercase">
+              <strong><span data-toggle="tooltip" title="Serial Number">Sr.</span></strong>
+            </th>
+            <th class="text-uppercase">
+              <strong><span data-toggle="tooltip" title="Product">Product</span></strong>
+            </th>
+            <th class="text-uppercase">
+              <strong><span data-toggle="tooltip" title="Suppliers">Supplier(s) Purchase Quote Received</span></strong>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <% f.object.rows.sort_by(&:sr_no).group_by(&:inquiry_product).each do |inquiry_product, rows| %>
+            <tr>
+              <td>
+                <span><%= inquiry_product.sr_no %></span>
+              </td>
+              <td>
+                <span>
+                    <%= inquiry_product.product.sku %>
+                    - <%= inquiry_product.bp_catalog_name? ? inquiry_product.bp_catalog_name : inquiry_product.product.name %>
+                    <%= inquiry_product.bp_catalog_sku? ? '(' + inquiry_product.bp_catalog_sku + ')' : '' %>
+                </span>
+              </td>
+              <td>
+                <span>
+                  <%= f.simple_fields_for :rows, rows.sort_by(&:unit_cost_price), wrapper_tag: :div do |row| %>
+                    <% if row.object.inquiry_product_supplier.unit_cost_price != 0.0 %>
+                      <%= row.hidden_field :inquiry_product_id %>
+                      <%= row.hidden_field :sales_quote_id %>
+                      <%= row.hidden_field :id %>
+                      <div class="form-row simple-row" data-index="<%= row.index %>">
+                        <%= row.hidden_field :inquiry_product_supplier_id, "data-bind": "" %>
+                        <div class="col-12">
+                          <div class="d-flex flex-row">
+                            <div class="custom-control custom-radio align-self-center mr-2">
+                              <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, (f.object.persisted? && row.object.persisted?) || (rows.select { |r| r.new_record? }.size == rows.size && rows[0] == row.object) || (@inquiry.final_sales_quote.present? && (@inquiry.final_sales_quote.rows.pluck(:inquiry_product_supplier_id).compact.include?(row.object.inquiry_product_supplier_id))), "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input supplier_id', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' %>
+                              <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1], :"data-toggle" => "collapse", "data-target" => "#c-" + row.object.inquiry_product_supplier_id.to_s do %><%= '' %>
+                              <% end %>
+                            </div>
+                            <div class="flex-grow-1">
+                              <div class="" data-target="#c-<%= row.object.inquiry_product_supplier_id %>">
+                                <%= row.label '', for: /id="([a-z\d_]*)"/.match(radio)[1], :class => 'd-block' do %>
+                                  <h6 class="text-black-50 mb-1 text-uppercase">
+                                    <strong><%= row.object.inquiry_product_supplier %></strong><br>
+                                    <small><strong>Unit Cost Price: <%= row.object.inquiry_product_supplier.unit_cost_price %>
+                                      | Final Unit Price: <%= row.object.inquiry_product_supplier.total_price %></strong></small>
+                                  </h6>
+                                <% end %>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </span>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  <% end %>
+</div>

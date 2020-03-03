@@ -2,6 +2,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote, :relationship_map, :get_relationship_map_json, :reset_quote_form, :sales_quote_reset_by_manager]
 
   def index
+    @model_name = 'sales_quotes'
     @sales_quotes = @inquiry.sales_quotes
     authorize_acl @sales_quotes
   end
@@ -20,14 +21,23 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   def new
+    inquiry_product_suppliers = params['inquiry_product_supplier_ids']
     @sales_quote = @inquiry.sales_quotes.build(overseer: current_overseer)
-    @sales_quote = Services::Overseers::SalesQuotes::BuildRows.new(@sales_quote).call
+    @sales_quote = Services::Overseers::SalesQuotes::BuildRows.new(@sales_quote, inquiry_product_suppliers).call
+    authorize_acl :sales_quote, 'new'
+  end
+
+  def rfq_review
+    @sales_quote = @inquiry.sales_quotes.build(overseer: current_overseer)
+    inquiry_product_suppliers = params['inquiry_product_supplier_ids'] if params['inquiry_product_supplier_ids'].present?
+    @sales_quote = Services::Overseers::SalesQuotes::BuildRows.new(@sales_quote, inquiry_product_suppliers).call
     authorize_acl :sales_quote, 'new'
   end
 
   def new_revision
+    inquiry_product_suppliers = params['inquiry_product_supplier_ids']
     @old_sales_quote = @inquiry.sales_quotes.find(params[:id])
-    @sales_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(@old_sales_quote, current_overseer).call
+    @sales_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(@old_sales_quote, current_overseer, inquiry_product_suppliers).call
 
     authorize_acl @old_sales_quote
     render 'new'

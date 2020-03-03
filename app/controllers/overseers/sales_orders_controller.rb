@@ -5,7 +5,11 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize_acl :sales_order
 
     respond_to do |format|
-      format.html { render 'pending' }
+      format.html {
+        @statuses = SalesOrder.statuses.except("Approved", "Order Deleted", "Hold by Finance", "Cancelled")
+        @main_summary_statuses = SalesOrder.main_summary_statuses
+        render 'pending'
+      }
       format.json do
         service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer)
         service.call
@@ -29,8 +33,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize @sales_orders
 
     respond_to do |format|
-      format.json { render 'account_approval_pending' }
-      format.html { render 'account_approval_pending' }
+      format.json {render 'account_approval_pending'}
+      format.html {render 'account_approval_pending'}
     end
   end
 
@@ -50,6 +54,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
+        @main_summary_statuses = SalesOrder.main_summary_statuses
         render 'pending'
       end
     end
@@ -117,17 +122,21 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def index
     authorize_acl :sales_order
+    service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
+    service.call
+    @indexed_sales_orders = service.indexed_records
+    @sales_orders = service.records
+
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: 'remote_status', main_summary_status: SalesOrder.main_summary_statuses)
+    status_service.call
+
     respond_to do |format|
-      format.html {}
+      format.html {
+        @statuses = SalesOrder.remote_statuses
+        @alias_name = 'Total Sales Order'
+        @main_summary_statuses = SalesOrder.main_summary_statuses
+      }
       format.json do
-        service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
-        service.call
-        @indexed_sales_orders = service.indexed_records
-        @sales_orders = service.records
-
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: 'remote_status')
-        status_service.call
-
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
         @statuses_count = @statuses.values.sum
@@ -152,6 +161,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
+        @main_summary_statuses = SalesOrder.main_summary_statuses
         @statuses_count = @statuses.values.sum
         @not_invoiced_total = @total_values.values.sum
       end
@@ -175,7 +185,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     sales_orders = SalesOrder.where.not(sent_at: nil).where(remote_uid: nil, status: :'Approved').where("created_at >= '2019-07-18'")
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         @drafts_pending_count = sales_orders.count
         @sales_orders = ApplyDatatableParams.to(sales_orders, params)
@@ -208,6 +218,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       service = Services::Overseers::SalesOrders::NewPoRequests.new(@sales_order, current_overseer)
       @po_requests = service.call
     end
+    @index = 1
   end
 
   def preview_purchase_orders_requests
@@ -236,7 +247,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       if params['customer_order_status_report'].present?
         delivery_status = params['customer_order_status_report']['delivery_status'] if params['customer_order_status_report']['delivery_status'].present?
       else
-        params['customer_order_status_report'] = {'category': @categories[0]}
+        params['customer_order_status_report'] = { 'category': @categories[0] }
         delivery_status = @delivery_statuses[0]
       end
       format.html {}
@@ -280,7 +291,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       delivery_status = params['customer_order_status_report']['delivery_status'] if params['customer_order_status_report']['delivery_status'].present?
       params['customer_order_status_report']['procurement_specialist'] = params['customer_order_status_report']['procurement_specialist'].split('.')[0] if params['customer_order_status_report']['procurement_specialist'].present?
     else
-      params['customer_order_status_report'] = {'category': @categories[0]}
+      params['customer_order_status_report'] = { 'category': @categories[0] }
       delivery_status = @delivery_statuses[0]
     end
 
@@ -383,12 +394,12 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                     :discount_percentage,
                     :unit_price
                 ],
-                comments_attributes: [
-                    :created_by_id,
-                    :updated_by_id,
-                    :message,
-                    :inquiry_id,
-                ]
+            comments_attributes: [
+            :created_by_id,
+            :updated_by_id,
+            :message,
+            :inquiry_id,
+        ]
             ],
         )
       else

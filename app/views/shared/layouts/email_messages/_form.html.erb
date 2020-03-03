@@ -19,25 +19,26 @@
         <div class="form-group">
           <%= f.input :subject %>
         </div>
+        <% if @params[:attachment].present? %>
+          <div class="form-group">
+            <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} %>
+            <div class="d-flex flex-row align-items-center">
+              <% @params[:attachment].each do |invoice_name,url| %>
+                <%= render '/shared/layouts/email_messages/attachment', url: url, invoice_name: invoice_name %>
+              <% end %>
 
-        <div class="form-group">
-          <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} %>
-          <div class="d-flex flex-row align-items-center">
-            <% @params[:attachment].each do |invoice_name,url| %>
-              <%= render '/shared/layouts/email_messages/attachment', url: url, invoice_name: invoice_name %>
-            <% end %>
-
-            <%= f.input :auto_attach, wrapper: :custom_boolean, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <%= f.input :auto_attach, wrapper: :custom_boolean, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+            </div>
           </div>
-        </div>
+        <% end %>
 
         <div class="form-group">
           <%= f.input :body, input_html: {class: 'html-editor'} %>
         </div>
       </div>
       <div class="card-footer">
-        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-          <i class="fal fa-paper-plane"></i> Send Email
+        <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button") do %>
+          <i class="bmro-fa-paper-plane"></i> Send Email
         <% end %>
       </div>
     <% end %>

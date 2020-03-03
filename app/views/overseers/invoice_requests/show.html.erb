@@ -1,14 +1,14 @@
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-2">
+  <section class="pt-0 pt-lg-0 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
         <%= @invoice_request.readable_status %> for Order #<%= @invoice_request.sales_order.order_number if @invoice_request.sales_order.present?%>:&nbsp;<%= status_badge(@invoice_request.status) %>
       </h3>
       <% if is_authorized(@invoice_request, 'edit') %>
-        <a href="<%= edit_overseers_invoice_request_path(@invoice_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
+        <a href="<%= edit_overseers_invoice_request_path(@invoice_request) %>" class="btn btn-warning btn-rounded align-self-center bmro-button btn-block-sm-down"><i class="bmro-update-icon"></i>Edit</a>
       <% end %>
       <%if !current_overseer.accounts? %>
-        <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review -align-right" data-toggle="modal" data-target="#modalRatingForm" >Add/Edit Supplier Rating</a>
+        <a href="#" class="btn btn-default bmro-button btn-rounded btn-danger align-self-center add-review -align-right" data-toggle="modal" data-target="#modalRatingForm" >Add/Edit Supplier Rating</a>
       <% end %>
     </div>
   </section>
@@ -17,20 +17,23 @@
     <div class="card mb-2">
       <div class="card-body">
         <div>
-          <h6 class="text-uppercase text-black-50 mb-1">Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Details</h6>
           <div class="form-row">
             <% if @invoice_request.sales_order.present? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Sales Order #</strong>
+                <strong class="d-block bmro-summary-heading">Sales Order #</strong>
+                <div class="bmro-summary-link">
                 <%= link_to overseers_inquiry_sales_order_path(@invoice_request.inquiry, @invoice_request.sales_order), target: '_blank' do %>
                   <%= format_id(@invoice_request.sales_order.order_number) %>
                 <% end %>
+                </div>
               </div>
             <% end %>
 
             <% if @invoice_request.inquiry.present? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Inquiry #</strong>
+                <strong class="d-block bmro-summary-heading">Inquiry #</strong>
+                <div class="bmro-summary-link">
                 <% if is_authorized(@invoice_request.inquiry, 'edit') %>
                   <%= link_to overseers_inquiry_path(@invoice_request.inquiry), target: '_blank' do %>
                     <%= format_id(@invoice_request.inquiry.inquiry_number) %>
@@ -39,67 +42,82 @@
                   <%= format_id(@invoice_request.sales_order.order_number) %>
                 <% end %>
               </div>
+              </div>
             <% end %>
 
             <% if @invoice_request.status.present? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Status</strong>
+                <strong class="d-block bmro-summary-heading">Status</strong>
                 <%= status_badge(@invoice_request.status) %>
               </div>
             <% end %>
 
             <% if @invoice_request.purchase_order.present? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Purchase Order #</strong>
+                <strong class="d-block bmro-summary-heading">Purchase Order #</strong>
+                <div class="bmro-summary-link">
                 <% if is_authorized(@invoice_request.purchase_order, 'show') %>
                   <%= link_to overseers_inquiry_purchase_order_path(@invoice_request.inquiry, @invoice_request.purchase_order, format: :pdf), target: '_blank' do %>
                     #<%= @invoice_request.purchase_order.po_number %>
                   <% end %>
                 <% end %>
               </div>
-            <% end %>
-
-            <% if @invoice_request.inquiry.present? && @invoice_request.inquiry.inside_sales_owner.present? %>
-              <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Inside Sales</strong>
-                <%= @invoice_request.inquiry.inside_sales_owner.to_s %>
               </div>
             <% end %>
 
             <% if @invoice_request.inquiry.present? && @invoice_request.inquiry.inside_sales_owner.present? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Outside Sales</strong>
+                <strong class="d-block bmro-summary-heading">Inside Sales</strong>
+                <div class="bmro-summary-data">
+                <%= @invoice_request.inquiry.inside_sales_owner.to_s %>
+              </div>
+              </div>
+            <% end %>
+
+            <% if @invoice_request.inquiry.present? && @invoice_request.inquiry.inside_sales_owner.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block bmro-summary-heading">Outside Sales</strong>
+                <div class="bmro-summary-data">
                 <%= @invoice_request.inquiry.outside_sales_owner.to_s %>
+              </div>
               </div>
             <% end %>
             <div class="col-md-12">
               <div class="row">
                 <% if @invoice_request.grpo_number.present? %>
                   <div class="col-6 col-md-3 mb-2">
-                    <strong class="d-block">GRPO #</strong>
+                    <strong class="d-block bmro-summary-heading">GRPO #</strong>
+                    <div class="bmro-summary-data">
                     <%= @invoice_request.grpo_number %>
+                  </div>
                   </div>
                 <% end %>
 
                 <% if @invoice_request.shipment_number.present? %>
                   <div class="col-6 col-md-3 mb-2">
-                    <strong class="d-block">Shipment #</strong>
+                    <strong class="d-block bmro-summary-heading">Shipment #</strong>
+                    <div class="bmro-summary-data">
                     <%= @invoice_request.shipment_number %>
+                  </div>
                   </div>
                 <% end %>
 
                 <% if @invoice_request.ap_invoice_number.present? %>
                   <div class="col-6 col-md-3 mb-2">
-                    <strong class="d-block">AP Invoice #</strong>
+                    <strong class="d-block bmro-summary-heading">AP Invoice #</strong>
+                    <div class="bmro-summary-data">
                     <%= @invoice_request.ap_invoice_number %>
+                  </div>
                   </div>
                 <% end %>
 
 
                 <% if @invoice_request.ar_invoice_number.present? %>
                   <div class="col-6 col-md-3 mb-2">
-                    <strong class="d-block">AR Invoice #</strong>
+                    <strong class="d-block bmro-summary-heading">AR Invoice #</strong>
+                    <div class="bmro-summary-data">
                     <%= @invoice_request.ar_invoice_number %>
+                  </div>
                   </div>
                 <% end %>
 
@@ -115,10 +133,10 @@
               <div class="col-12 col-md-3 mb-2 mt-2">
                 <strong class="d-block">Attachments </strong>
                 <% @invoice_request.attachments.each do |attachment| %>
-                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                    <i class="fal fa-download"></i>
-                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                      <i class="fal fa-trash-alt"></i>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 btn bmro-button btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <i class="bmro-download-icon"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 bmro-button mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                      <i class="bmro-trash-icon bmro-trash-padding"></i>
                     <% end if attachment.present? && is_authorized(:attachment, 'destroy') %>
                   <% end %>
                 <% end %>
@@ -130,7 +148,7 @@
     </div>
 
     <% if @products_list.present? %>
-      <div class="card mb-2">
+      <div class="card mb-2 bmro-card">
         <div class="card-body">
           <div class="chats">
             <% if @invoice_request.purchase_order.present? %>
@@ -157,10 +175,10 @@
               </div>
             <% end %>
 
-            <table class="w-100 datatable table table-bordered dt-responsive dt-responsive wrap-whitespace mt-0" style="width:100%;">
+            <table class="w-100 datatable table table-bordered dt-responsive dt-responsive wrap-whitespace mt-0 bmro-datatable-style bmro-new-table" style="width:100%;">
               <thead>
               <tr>
-                <th class="no-sort"></th>
+                <th class="no-sort" width="98px">Quick Actions</th>
                 <th class="no-sort">Sr. No.</th>
                 <th class="no-sort product-width-adjustment">Product</th>
                 <th class="no-sort">Make</th>
@@ -196,9 +214,9 @@
     <% end %>
 
     <div class="card">
-      <div class="card-body">
+      <div class="card-body bmro-bg">
         <div class="flex-fill">
-          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+          <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Comments History</h6>
         </div>
 
         <% if @invoice_request.comments.persisted.size > 0 %>

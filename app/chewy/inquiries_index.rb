@@ -1,4 +1,4 @@
-  class InquiriesIndex < BaseIndex
+    class InquiriesIndex < BaseIndex
     statuses = Inquiry.statuses.except('Lead by O/S')
     opportunity_types = Inquiry.opportunity_types
     pipeline_statuses = Inquiry.statuses.except('Lead by O/S', 'Supplier RFQ Sent', 'SO Not Created-Customer PO Awaited', 'Hold by Accounts')

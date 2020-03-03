@@ -1,11 +1,11 @@
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-2">
+  <section class="pt-0 pt-lg-0 pb-2">
     <div class="d-md-flex justify-content-between">
-      <h3 class="display-5 d-flex align-items-center">
+      <h3 class="display-5 d-flex align-items-center bmro-form-heading">
         <%= @kit.product.name %>
       </h3>
       <% if is_authorized(@kit, 'edit') && policy(@kit).edit? %>
-        <a href="<%= edit_overseers_kit_path(@kit) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+        <a href="<%= edit_overseers_kit_path(@kit) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down bmro-button"><i class="fal fa-pen mr-1"></i>Edit
           Kit</a>
       <% end %>
     </div>
@@ -15,84 +15,102 @@
     <div class="card">
       <div class="card-body">
         <div>
-          <h6 class="text-uppercase text-black-50 mb-1">Kit Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Kit Details</h6>
           <div class="form-row">
             <% if @kit.inquiry.inquiry_number? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Inquiry</strong>
+                <strong class="d-block bmro-summary-heading">Inquiry</strong>
                 <%= conditional_link(@kit.inquiry.inquiry_number, edit_overseers_inquiry_path(@kit.inquiry), is_authorized(@kit.inquiry, 'edit')) %>
               </div>
             <% end %>
 
             <% if @kit.product.sku? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">BM Number</strong>
+                <strong class="d-block bmro-summary-heading">BM Number</strong>
+                <div class="bmro-summary-data">
                 <%= @kit.product.sku %>
+                </div>
               </div>
             <% end %>
 
             <% if @kit.product.category.present? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Category</strong>
+                <strong class="d-block bmro-summary-heading">Category</strong>
+                <div class="bmro-summary-data">
                 <%= @kit.product.category %>
+                </div>
               </div>
             <% end %>
 
             <% if @kit.product.brand.present? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Brand</strong>
+                <strong class="d-block bmro-summary-heading">Brand</strong>
+                <div class="bmro-summary-data">
                 <%= @kit.product.brand %>
+                </div>
               </div>
             <% end %>
 
             <% if @kit.product.mpn? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Manufacturer Part Number</strong>
+                <strong class="d-block bmro-summary-heading">Manufacturer Part Number</strong>
+                <div class="bmro-summary-data">
                 <%= @kit.product.mpn %>
+                </div>
               </div>
             <% end %>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Service</strong>
+              <strong class="d-block bmro-summary-heading">Service</strong>
+              <div class="bmro-summary-data">
               <%= format_boolean(@kit.product.is_service) %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Kit SAP Status</strong>
+              <strong class="d-block bmro-summary-heading">Kit SAP Status</strong>
+              <div class="bmro-summary-data">
               <%= format_boolean(@kit.synced?) %>
+              </div>
             </div>
 
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Product SAP Status</strong>
+              <strong class="d-block bmro-summary-heading">Product SAP Status</strong>
+              <div class="bmro-summary-data">
               <%= format_boolean(@kit.product.synced?) %>
+              </div>
             </div>
 
           </div>
         </div>
 
-        <div class="mt-3 card-alternative">
-          <h6 class="text-uppercase text-black-50 mb-1 d-block">Accounting and Logistics</h6>
+        <div class="mt-3 card-alternative bmro-bg">
+          <h6 class="text-uppercase text-black-50 mb-1 d-block bmro-form-heading">Accounting and Logistics</h6>
           <div class="form-row">
             <% if @kit.product.tax_code.present? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Tax Code</strong>
+                <strong class="d-block bmro-summary-heading">Tax Code</strong>
+                <div class="bmro-summary-data">
                 <%= @kit.product.tax_code %>
-              </div>
+                </div>
+             </div> 
             <% end %>
 
             <% if @kit.product.measurement_unit %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Unit of Measurement</strong>
+                <strong class="d-block bmro-summary-heading">Unit of Measurement</strong>
+                <div class="bmro-summary-data">
                 <%= @kit.product.measurement_unit %>
-              </div>
+                </div>
+             </div> 
             <% end %>
           </div>
         </div>
 
         <div class="mt-3">
-          <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
-          <table class="table table-bordered dt-responsive wrap-whitespace w-100 mb-0 datatable" data-fixed-header="false">
+          <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Product Details</h6>
+          <table class="table table-bordered dt-responsive wrap-whitespace w-100 mb-0 datatable bmro-datatable-style" data-fixed-header="false">
             <thead>
             <tr>
               <th class="text-right" data-toggle="tooltip" title="Serial Number">Sr. No</th>

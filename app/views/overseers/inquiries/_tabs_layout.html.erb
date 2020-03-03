@@ -1,23 +1,26 @@
-  <div class="page-header">
+  <div class="page-header bmro-page-header">
   <div class="">
-    <h2>
+    <h2 class="bmro-bradecrumb-edit">
       <% if content_for?(:heading) %>
         <%= yield :heading %>
+      <% elsif action_name.include?('rfq') %>
+          <%= SupplierRfq.readable_action(action_name) %>
       <% else %>
         <%= request.path.split('/').last.titleize %>
       <% end %>
-      <small class="text-black-50 mb-2 ml-2 float-right"><strong>#<%= @inquiry.inquiry_number %></strong></small>
+      <!-- <small class="mb-2 ml-2"><strong>#<%= @inquiry.inquiry_number %></strong></small> -->
+      <span><span class="bmro-edit-dash">-</span>#<%= @inquiry.inquiry_number %></span>
     </h2>
 
 
-    <a href="https://drive.google.com/file/d/1rA8bcaxQDkAR091cM5o-RRvG-rlK7X62/view" target="_blank"><img src="<%= image_path('doc_icon.png') %>" alt="Italian Trulli" align="right" data-toggle="tooltip" title="SO/PO User Guide"></a>
+<!--     <a href="https://drive.google.com/file/d/1rA8bcaxQDkAR091cM5o-RRvG-rlK7X62/view" target="_blank"><img src="<%= image_path('doc_icon.png') %>" alt="Italian Trulli" align="right" data-toggle="tooltip" title="SO/PO User Guide"></a>
 
-    <% if content_for?(:heading_byline) %>
+   <% if content_for?(:heading_byline) %>
       <p class="mt-2 mt-md-0"><%= yield :heading_byline %></p>
     <% else %>
       <p>This will <em>'<%= submit_text(@inquiry).downcase %> <strong>#<%= @inquiry.inquiry_number %></strong>'</em> and log it under
         <strong><%= current_overseer.full_name %></strong>.</p>
-    <% end %>
+    <% end %>  -->
   </div>
 
   <% if content_for?(:heading_button) %>
@@ -25,21 +28,23 @@
   <% end %>
 </div>
 
-<section class="pb-4 pb-lg-5">
-  <ul class="nav nav-tabs nav-fill" data-toggle="sticky">
-    <%= nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
-    <%= nav_item('Imports', overseers_inquiry_imports_path(@inquiry), is_authorized(@inquiry,'imports') && policy(@inquiry).imports?) %>
-    <%= nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit_suppliers') && policy(@inquiry).edit_suppliers?) %>
-    <%= nav_item('Sales Quotes', overseers_inquiry_sales_quotes_path(@inquiry), is_authorized(@inquiry,'sales_quotes') && policy(@inquiry).sales_quotes?) %>
-    <%= nav_item('Sales Orders', overseers_inquiry_sales_orders_path(@inquiry), is_authorized(@inquiry,'sales_orders') && policy(@inquiry).sales_orders?) %>
-    <%= nav_item('Purchase Orders', overseers_inquiry_purchase_orders_path(@inquiry), is_authorized(@inquiry,'purchase_orders') && policy(@inquiry).purchase_orders?) %>
-    <%= nav_item('Invoices', overseers_inquiry_sales_invoices_path(@inquiry), is_authorized(@inquiry,'sales_invoices') && policy(@inquiry).sales_invoices?) %>
-    <%= nav_item('Shipments', overseers_inquiry_sales_shipments_path(@inquiry), is_authorized(@inquiry,'sales_shipments') && policy(@inquiry).sales_shipments?) %>
-    <%= nav_item('Stages', stages_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
-    <%= nav_item('Comments', overseers_inquiry_comments_path(@inquiry), is_authorized(@inquiry,'comments') && policy(@inquiry).comments?) %>
+<section class="bmro-width-fl">
+  <ul class="nav nav-tabs nav-fill bmro-nav-ul">
+    <%= tab_nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
+    <%= tab_nav_item('Imports', overseers_inquiry_imports_path(@inquiry), is_authorized(@inquiry,'imports') && policy(@inquiry).imports?) %>
+    <%= tab_nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit_suppliers') && policy(@inquiry).edit_suppliers?) %>
+    <%= tab_nav_item('RFQs', edit_supplier_rfqs_overseers_inquiry_supplier_rfqs_path(inquiry_id: @inquiry), is_authorized(@inquiry,'draft_rfq') && policy(@inquiry).draft_rfq?) %>
+    <%= tab_nav_item('RFQ Review', rfq_review_overseers_inquiry_sales_quotes_path(inquiry_id: @inquiry), is_authorized(@inquiry,'draft_rfq') && policy(@inquiry).rfq_review?) %>
+    <%= tab_nav_item('Sales Quotes', overseers_inquiry_sales_quotes_path(@inquiry), is_authorized(@inquiry,'sales_quotes') && policy(@inquiry).sales_quotes?) %>
+    <%= tab_nav_item('Sales Orders', overseers_inquiry_sales_orders_path(@inquiry), is_authorized(@inquiry,'sales_orders') && policy(@inquiry).sales_orders?) %>
+    <%= tab_nav_item('Purchase Orders', overseers_inquiry_purchase_orders_path(@inquiry), is_authorized(@inquiry,'purchase_orders') && policy(@inquiry).purchase_orders?) %>
+    <%= tab_nav_item('Invoices', overseers_inquiry_sales_invoices_path(@inquiry), is_authorized(@inquiry,'sales_invoices') && policy(@inquiry).sales_invoices?) %>
+    <%= tab_nav_item('Shipments', overseers_inquiry_sales_shipments_path(@inquiry), is_authorized(@inquiry,'sales_shipments') && policy(@inquiry).sales_shipments?) %>
+    <%= tab_nav_item('Stages', stages_overseers_inquiry_path(@inquiry), is_authorized(@inquiry,'edit') && policy(@inquiry).edit?) %>
+    <%= tab_nav_item('Comments', overseers_inquiry_comments_path(@inquiry), is_authorized(@inquiry,'comments') && policy(@inquiry).comments?) %>
   </ul>
-  <div class="tab-content">
-    <div class="tab-pane fade active show" role="tabpanel">
+  <div class="tab-content bmro-mp-0">
+    <div class="tab-pane fade active show bmro-mp-0" role="tabpanel">
       <%= yield %>
     </div>
   </div>

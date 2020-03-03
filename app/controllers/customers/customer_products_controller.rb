@@ -13,7 +13,7 @@ class Customers::CustomerProductsController < Customers::BaseController
       params[:per] = 24
     end
     account = Account.find(2431)
-    service = Services::Customers::Finders::CustomerProducts.new(params, current_contact, current_company)
+    service = Services::Customers::Finders::CustomerProducts.new(params, current_customers_contact, current_company)
     service.call
     @indexed_customer_products = service.indexed_records
     @customer_products = service.records.with_eager_loaded_images.try(:reverse)
