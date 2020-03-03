@@ -710,7 +710,6 @@ class Overseers::InquiriesController < Overseers::BaseController
           :customer_po_received_attachment,
           :customer_po_delivery_attachment,
           :commercial_terms_and_conditions,
-          :commercial_terms_and_conditions,
           :comments,
           :product_type,
           :lost_regret_reason,
