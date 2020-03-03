@@ -11,7 +11,7 @@ production:
   password: <%= ENV["ELASTIC_PASSWORD"] %>
   scheme: 'https'
 staging:
-  host: es-prod-bulkmro-com.centralindia.cloudapp.azure.com:9200
-  user: ''
-  password: ''
-  scheme: 'http'
+  host: <%= ENV["FOUNDELASTICSEARCH_URL"] %>
+  user: <%= ENV["ELASTIC_USER_NAME"] %>
+  password: <%= ENV["ELASTIC_PASSWORD"] %>
+  scheme: 'https'
