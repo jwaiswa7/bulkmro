@@ -1,6 +1,6 @@
 <div class="col-lg-12">
   <% @supplier_rfqs.each do |supplier_rfq| %>
-    <%= simple_form_for([supplier_rfq], url: suppliers_rfq_path(supplier_rfq.id), method: :PATCH, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= simple_form_for([supplier_rfq], url: suppliers_rfq_path(supplier_rfq.id, send_email: true, supplier: @supplier, inquiry: @inquiry), method: :PATCH, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= render 'shared/snippets/form_errors', f: f %>
       <div class="card">
         <div class="card-body">
