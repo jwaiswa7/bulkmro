@@ -1,8 +1,8 @@
 json.data (@payments) do |payment|
   json.array! [
                   [
-                      row_action_button(overseers_customer_order_path(payment.customer_order), 'eye', 'View Customer Order', 'info', :_blank),
-                      row_action_button(refresh_payment_overseers_customer_orders_path(payment_id: payment.to_param), 'sync', 'Refresh', 'success')
+                      row_action_button_without_fa(overseers_customer_order_path(payment.customer_order), 'bmro-icon-table bmro-icon-used-view', 'View Customer Order', 'info', :_blank),
+                      row_action_button_without_fa(refresh_payment_overseers_customer_orders_path(payment_id: payment.to_param), 'bmro-icon-table bmro-icon-refresh', 'Refresh', 'success')
                   ].join(' '),
                   status_badge(payment.status),
                   payment.customer_order.online_order_number,

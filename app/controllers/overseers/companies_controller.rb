@@ -48,6 +48,7 @@ class Overseers::CompaniesController < Overseers::BaseController
           )
         end
         if @company.save_and_sync
+          @company.update_attributes(remote_uid: @company.id)
           redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
         end
       else
@@ -62,6 +63,7 @@ class Overseers::CompaniesController < Overseers::BaseController
       end
       @company.account = @account
       @company.save_and_sync
+      @company.update_attributes(remote_uid: @company.id)
       redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     end
   end
@@ -90,7 +92,7 @@ class Overseers::CompaniesController < Overseers::BaseController
 
   def company_report
     authorize_acl :company
-
+    @model_name = 'company_report'
     respond_to do |format|
       format.html {
         if params['company_report'].present?

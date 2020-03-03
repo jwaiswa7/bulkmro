@@ -34,6 +34,7 @@ module Mixins::CanBeWatermarked
           else
             ActiveStorage::Variant.new(image, variation)
           end
+          ActiveStorage::Variant.new(image, variation)
         else
           '/assets/coming_soon.png'
         end

@@ -3,13 +3,28 @@ class Overseers::ContactsController < Overseers::BaseController
   before_action :set_notification, only: [:create]
 
   def index
-    # service = Services::Overseers::Finders::Contacts.new(params)
-    # service.call
-    # @indexed_contacts = service.indexed_records
-    # @contacts = service.records
-    # authorize_acl @contacts
+      base_filter = {}
+      if params["company_id"].present?
+        base_filter = {
+            base_filter_key: 'company_id',
+            base_filter_value: params["company_id"].to_i
+        }
+      end
 
-    @contacts = ApplyDatatableParams.to(Contact.all.includes(:companies), params)
+    if params["account_id"].present?
+      base_filter = {
+          base_filter_key: 'account_id',
+          base_filter_value: params["account_id"].to_i
+      }
+    end
+
+     service = Services::Overseers::Finders::Contacts.new(params.merge(base_filter))
+     service.call
+     @indexed_contacts = service.indexed_records
+     @contacts = service.records
+     #authorize_acl @contacts
+
+    #@contacts = ApplyDatatableParams.to(Contact.all.includes(:companies), params)
     authorize_acl @contacts
   end
 
@@ -91,7 +106,14 @@ class Overseers::ContactsController < Overseers::BaseController
   def become
     authorize_acl @contact
     sign_in(:contact, @contact)
-    redirect_to customers_dashboard_url(became: true)
+
+    if @contact.company.present?
+      if @contact.company.is_supplier?
+        redirect_to suppliers_dashboard_url(became: true)
+      else
+        redirect_to customers_dashboard_url(became: true)
+      end
+    end
   end
 
   def fetch_company_account

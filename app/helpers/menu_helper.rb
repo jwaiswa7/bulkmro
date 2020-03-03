@@ -7,6 +7,11 @@ module MenuHelper
     request.path == path ? 'active' : nil
   end
 
+  def active_path_if_tabs(path = nil)
+    return nil if path.nil? || request.nil?
+    request.path == path || (['new', 'show', 'edit'].include?(action_name) && recognize_path(path)[:controller] == controller_path && recognize_path(path, method: :get)[:action] == 'index') ? 'active' : nil
+  end
+
   def show_if(bool)
     'show' if bool
   end
@@ -49,10 +54,46 @@ module MenuHelper
     end
   end
 
+  def tab_nav_item(name, path, authorized = false, li_classes = nil, a_classes = nil, attributes: nil)
+    if authorized
+      content_tag(:li, class: ['nav-item', li_classes].compact.join(' ')) do
+        content_tag(:a, class: [active_path_if_tabs(path), 'nav-link', a_classes].compact.join(' '), href: path, role: 'tab') do
+          name
+        end
+      end
+    end
+  end
+
   def nav_dropdown_item(name, path, authorized = false, _li_classes = nil, a_classes = nil, attributes: nil)
     if authorized
       content_tag(:a, class: [active_if_path_is(path), 'dropdown-item', a_classes].compact.join(' '), href: path, role: 'tab') do
         name
+      end
+    end
+  end
+
+  def nav_dropdown_item_new(name, path, authorized = false, _li_classes = nil, a_classes = nil, attributes: nil)
+    if authorized
+      content_tag(:div, class: ['bmro-second-level-heading-container'].compact.join(' ')) do
+        content_tag(:p, class: ['bmro-second-level-header'].compact.join(' ')) do
+          content_tag(:a, class: [active_if_path_is(path),  a_classes].compact.join(' '), href: path, role: 'tab') do
+            name
+          end
+        end
+      end
+    else
+      ''
+    end
+  end
+
+  def nav_dropdown_sub_item(name, path, authorized = false, _li_classes = nil, a_classes = nil, attributes: nil)
+    if authorized
+      content_tag(:div, class: ['bmro-third-level-heading-container'].compact.join(' ')) do
+        content_tag(:p, class: ['bmro-third-level-header'].compact.join(' ')) do
+          content_tag(:a, class: [active_if_path_is(path),  a_classes].compact.join(' '), href: path, role: 'tab') do
+            name
+          end
+        end
       end
     end
   end

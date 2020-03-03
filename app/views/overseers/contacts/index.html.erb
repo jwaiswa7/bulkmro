@@ -1,16 +1,27 @@
 <%= provide :container_fluid, true %>
 <% provide :can_be_directly_created, policy(:contact).new? %>
 <% provide :can_be_ajaxed, true %>
+<% provide :show_date_filter, true %>
 
 <% content_for :header_row do %>
-  <th class="no-sort all"></th>
-  <th class="no-sort all">Name</th>
-  <th class="all" data-name="email">Email</th>
-  <th class="all" data-name="account_id">Account</th>
-  <th class="all" data-name="role">Role</th>
+  <th class="no-sort all" width="98px">Quick Actions</th>
+  <th class="no-sort all text-left">Name</th>
+  <th class="all text-left" data-name="email">Email</th>
+  <th class="all text-left" data-name="account_id">Account</th>
+  <th class="all text-left" data-name="role">Role</th>
   <th class="sort desktop text-right">Inquiry</th>
   <!--<th class="no-sort desktop">SAP Status</th>-->
-  <th class="desktop text-right" data-name="created_at">Created</th>
+  <th class="desktop text-left" data-name="created_at">Created</th>
+<% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="daterange"></td>
 <% end %>
 
 <div class="col-lg-12">

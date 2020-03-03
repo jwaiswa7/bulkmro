@@ -3,39 +3,46 @@
 
   <div class="page-header">
     <h2>PO Requests for Order <%= format_id(@sales_order.order_number) %></h2>
-    <p>This will <em>Create purchase order requests</em> and log it under
-      <strong><%= current_overseer.full_name %></strong>.</p>
+    <!-- <p>This will <em>Create purchase order requests</em> and log it under
+      <strong><%= current_overseer.full_name %></strong>.</p> -->
   </div>
 
   <%= simple_form_for(@sales_order, url: preview_purchase_orders_requests_overseers_sales_order_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <div class="card mb-2">
+  <div class="bmro-width-100 bmro-fl bmro-bg-white">
+    <div class="card bmro-bg-frey">
       <div class="card-body">
         <%= render 'shared/snippets/form_errors', f: f %>
 
         <%= f.hidden_field :order_number, as: :string %>
-        <div class="form-row">
+        <div class="form-row bmro-top-slide">
           <div class="col-4">
-            <strong class="d-block">Order Number</strong>
+            <strong class="d-block bmro-summary-heading">Order Number</strong>
+            <div class="bmro-summary-data">
             <%= link_to overseers_inquiry_sales_order_path(f.object.inquiry, f.object), target: :_blank do %>
               <%= f.object.order_number %>
             <% end %>
+            </div>
           </div>
           <div class="col-4">
-            <strong class="d-block">Inquiry</strong>
+            <strong class="d-block bmro-summary-heading">Inquiry</strong>
+            <div class="bmro-summary-data">
             <%= link_to overseers_inquiry_path(f.object.inquiry) do %>
               <%= f.object.inquiry %>
             <% end %>
+            </div>
           </div>
           <br>
           <div class="col-4">
-            <strong class="d-block">Customer Committed Date</strong>
+            <strong class="d-block bmro-summary-heading">Customer Committed Date</strong>
+            <div class="bmro-summary-data">
             <%= @sales_order.inquiry.customer_committed_date %>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <% if @po_requests.present? %>
-      <div class="card">
+      <div class="card bmro-fix-left">
         <div class="card-body">
           <p>
             <ul class="list-group text-danger mb-3">
@@ -52,31 +59,62 @@
             </ul>
           </p>
           <%= f.simple_fields_for :po_requests, @po_requests.values do |po_request| %>
-            <div class="simple-row">
+            <div class="simple-row target-scroll" id="Top">
               <p class="text">
                 <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
                 <strong><%= po_request.object.supplier.to_s %>: <%= po_request.object.supplier.try(:legacy_email) %></strong>
                 <% if @po_requests.values.map(&:supplier).length > 1 %>
-                  <%= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+                  <%= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center bmro-button', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
                     Remove Supplier
                   <% end %>
                 <% end %>
-                <%= render 'overseers/po_requests/rows_form', f: po_request, product_path: service_autocomplete_overseers_products_path, stock: false %>
+                <%= render 'overseers/po_requests/rows_form', f: po_request, supplier_index: @index, product_path: service_autocomplete_overseers_products_path, stock: false %>
+              </p>
             </div>
             <hr class="<%= f.object.po_requests.last == po_request.object ? 'd-none' : '' %>"/>
+            <% @index = @index + 1 %>
           <% end %>
         </div>
-        <div class="card-footer">
+        <div class="card-footer bmro-card-footer">
           <% if is_authorized(@sales_order, 'create_purchase_orders_requests') %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-              <i class="fal fa-pen"></i> Preview PO request
+            <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
+              <i class="bmro-eye-icon mr-1"></i> Preview PO request
             <% end %>
           <% end %>
+<!--          <div class="bmro-add-new-parant bmro-new-slide-on">-->
+<!--            <div class="bmro-add-new bmro-product-btn-parent">-->
+<!--              <div class="bmro-fl">-->
+<!--                <a href="#" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-addnew-icon mr-1"></i>Add New</a>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
       </div>
+      <div class="bmro-fix-right bmro-fix-sticky">
+        <div class="bmro-right-ul bmro-width-100 bmro-fl">
+          <div class="bmro-width-100 bmro-fl">
+            <% if is_authorized(@sales_order, 'create_purchase_orders_requests') %>
+              <%= button_tag(type: "submit", class: "btn btn-outline-success btn-block mb-2 bmro-button add_nested_fields_link bmro-width-auto bmro-fl") do %>
+                <i class="bmro-eye-icon mr-1"></i> Preview PO request
+              <% end %>
+            <% end %>
+          </div>
+          <nav class="bmro-nav bmro-width-100 bmro-fl" data-spy="affix" data-offset-top="205">
+            <ul class="bmro-label-ul">
+              <li class="bmro-li-right">
+                <label class="bmro-list-button bmro-slide-top side-menu-click" data-path="Top">Top</label>
+              </li>
+              <li class="bmro-li-right bmro-active-li">
+                <label class="bmro-list-button bmro-product-slide side-menu-click" data-path="Product">Product</label>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+  </div>
     <% else %>
       <div class="card">
-        <div class="card-body">
+        <div class="card-body target-scroll" id="Top">
           <p>
             <ul class="list-group text-danger mb-3">
               <% @sales_order.rows.each do |order_row| %>
@@ -91,7 +129,7 @@
               <% end %>
             </ul>
           </p>
-          <table class="table table-bordered dt-responsive wrap-whitespace w-100 mb-0 datatable" data-fixed-header="false" data-sort="false">
+          <table class="table table-bordered dt-responsive wrap-whitespace w-100 mb-0 datatable bmro-datatable-style" data-fixed-header="false" data-sort="false">
             <tr>
               <th class="no-sort desktop" data-name="name">PO Request No.</th>
               <th class="no-sort desktop" data-name="name">Inquiry</th>
@@ -117,6 +155,5 @@
         </div>
       </div>
     <% end %>
-
   <% end %>
 </div>

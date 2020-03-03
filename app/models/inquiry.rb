@@ -14,6 +14,7 @@ class Inquiry < ApplicationRecord
   update_index('customer_order_status_report#sales_order') {self.sales_orders if self.sales_orders.present?}
   update_index('inquiry_mapping_tats#inquiry_mapping_tat') {self.inquiry_mapping_tats}
   update_index('logistics_scorecards#sales_invoice') {self}
+  update_index('supplier_rfqs#supplier_rfq') {self}
 
   pg_search_scope :locate, against: [:id, :inquiry_number], associated_against: {company: [:name], account: [:name], contact: [:first_name, :last_name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name], procurement_operations: [:first_name, :last_name]}, using: {tsearch: {prefix: true}}
 
@@ -68,6 +69,7 @@ class Inquiry < ApplicationRecord
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
   has_one :customer_order, dependent: :nullify
   has_one :freight_request
+  has_many :supplier_rfqs
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email
@@ -85,7 +87,8 @@ class Inquiry < ApplicationRecord
       'New Inquiry': 0,
       'Acknowledgement Mail': 2,
       'Cross Reference': 3,
-      'Supplier RFQ Sent': 12,
+      'RFQ Sent': 12,
+      'PQ Received': 16,
       'Preparing Quotation': 4,
       'Quotation Sent': 5,
       'Follow Up on Quotation': 6,
@@ -123,6 +126,13 @@ class Inquiry < ApplicationRecord
       # 'Hold by Accounts': 20,
       'Order Lost': 9,
       'Regret': 10
+  }, _suffix: true
+
+  enum main_summary_status: {
+      'Cross Reference': 3,
+      'Quotation Sent': 5,
+      'Follow Up on Quotation': 6,
+      'Order Won': 18
   }, _suffix: true
 
   def regrettable_statuses

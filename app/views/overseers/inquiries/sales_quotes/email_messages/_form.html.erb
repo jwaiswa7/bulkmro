@@ -11,7 +11,7 @@
         <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} %>
         <div class="d-flex flex-row align-items-center">
           <div class="form-group mr-2">
-            <%= link_to overseers_inquiry_sales_quote_path(@inquiry, @sales_quote, format: :pdf, target: :_blank), :class => 'btn btn-success' do %>
+            <%= link_to overseers_inquiry_sales_quote_path(@inquiry, @sales_quote, format: :pdf, target: :_blank), :class => 'btn btn-success bmro-button' do %>
               <i class="fal fa-file-pdf mr-2"></i>Quotation
             <% end %>
           </div>
@@ -20,8 +20,8 @@
         <%= f.input :body, input_html: {rows: 10, class: 'html-editor'} %>
       </div>
       <div class="card-footer">
-        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-          <i class="fal fa-paper-plane"></i> Send Email
+        <%= button_tag(type: "submit", class: "bmro-button btn btn-success btn-block") do %>
+          <i class="bmro-fa-paper-plane"></i> Send Email
         <% end %>
       </div>
     <% end %>

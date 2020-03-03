@@ -2,10 +2,10 @@ json.data (@kits) do |kit|
   json.array! [
                   [
                       if is_authorized(kit, 'show') && policy(kit).show?
-                        row_action_button(overseers_kit_path(kit), 'eye', 'View Kit', 'info', :_blank)
+                        row_action_button_without_fa(overseers_kit_path(kit), 'bmro-icon-table bmro-icon-used-view', 'View Kit', 'info', :_blank)
                       end,
                       if is_authorized(kit, 'edit') && policy(kit).edit?
-                        row_action_button(edit_overseers_kit_path(kit), 'pencil', 'Edit Kit', 'warning', :_blank)
+                        row_action_button_without_fa(edit_overseers_kit_path(kit), 'bmro-icon-table bmro-icon-pencil', 'Edit Kit', 'warning', :_blank)
                       end
                   ].join(' '),
                   kit.product.name,

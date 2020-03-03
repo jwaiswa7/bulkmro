@@ -3,11 +3,11 @@ class Customers::SalesOrdersController < Customers::BaseController
 
   def index
     authorize :sales_order
-
+    @model_name = 'sales_orders'
     respond_to do |format|
       format.html { }
       format.json do
-        service = Services::Customers::Finders::SalesOrders.new(params, current_contact, current_company)
+        service = Services::Customers::Finders::SalesOrders.new(params, current_customers_contact, current_company)
         service.call
 
         @indexed_sales_orders = service.indexed_records

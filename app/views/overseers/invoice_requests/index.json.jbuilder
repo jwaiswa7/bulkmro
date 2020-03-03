@@ -2,21 +2,21 @@ json.data (@invoice_requests) do |invoice_request|
   json.array! [
                   [
                       if is_authorized(invoice_request, 'show')
-                        row_action_button(overseers_invoice_request_path(invoice_request), 'eye', 'View AP Request', 'info')
+                        row_action_button_without_fa(overseers_invoice_request_path(invoice_request), 'bmro-icon-table bmro-icon-used-view', 'View AP Request','info')
                       end,
                       if is_authorized(invoice_request, 'edit')
-                        row_action_button(edit_overseers_invoice_request_path(invoice_request), 'pencil', "Edit #{invoice_request.readable_status}", 'warning')
+                        row_action_button_without_fa(edit_overseers_invoice_request_path(invoice_request), 'bmro-icon-table bmro-icon-pencil', "Edit #{invoice_request.readable_status}", 'warning')
                       end,
                       if !invoice_request.status.downcase.include?('cancel') && is_authorized(invoice_request, 'can_cancel_or_reject') && !(invoice_request.status == 'Inward Completed')
-                        link_to('', class: ['btn btn-sm btn-danger cancel-invoice'], 'data-invoice-request-id': invoice_request.id, title: 'Cancel', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-danger cancel-invoice'], 'data-invoice-request-id': invoice_request.id, title: 'Cancel', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-ban'].join
                         end
                       end,
                       if is_authorized(invoice_request, 'index')
-                        link_to('', class: ['btn btn-sm btn-success comment-invoice-request'], 'data-model-id': invoice_request.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-success comment-invoice-request'], 'data-model-id': invoice_request.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end
                       end,
                   ].join(' '),
@@ -41,3 +41,4 @@ json.recordsTotal @invoice_requests.count
 json.recordsFiltered @invoice_requests.total_count
 json.draw params[:draw]
 json.recordsSummary InvoiceRequest.statuses.map {|k, v| {status_id: v, "label": k, "size": @invoice_requests.pluck(:status).count(k)}}.as_json
+json.recordsMainSummary InvoiceRequest.main_summary_statuses.map {|k, v| {status_id: v, "label": k, "size": @invoice_requests.pluck(:status).count(k)}}.as_json

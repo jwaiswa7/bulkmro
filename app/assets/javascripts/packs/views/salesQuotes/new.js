@@ -501,7 +501,6 @@ let assignEventsAndGetAttributes = () => {
         let numberValue = value;
 
         //Check if first char is not a number
-        console.log();
         if (value.trim() !== "" && value.match("[^0-9]") !== null && value.match("[^0-9]").index == 0) {
             if (data.defaultCurrencySign == "") {
                 data.defaultCurrencySign = value.match("[^0-9]")[0]

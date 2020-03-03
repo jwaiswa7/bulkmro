@@ -1,13 +1,10 @@
-<a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4" type="button" data-toggle="collapse" data-target="#pod-summary">
-  Overall Scorecard <i class="fa fa-chevron-down"></i>
-</a>
-<div id="pod-summary" class="collapse">
+<div id="pod-summary" class="collapse" data-parent="#accordion">
   <div class="mt-2 form-row d-flex flex-row align-content-stretch text-right">
     <% if @months.present? %>
       <div class="col-12 col-lg-12">
         <div class="card">
           <div class="card-body">
-            <table border="1" cellspacing="0" class="table table-bordered" align="center" width="100%" style="color: #333;">
+            <table border="1" cellspacing="0" class="table bmro-new-table table-bordered bmro-datatable-style" align="center" width="100%" style="color: #333;">
               <tbody>
               <tr>
                 <th colspan="15" style="text-align: center; font-size: medium;"><b>Committed Month of Delivery</b></th>
@@ -118,7 +115,7 @@
                 <%# end %>
 <!--              </tr>-->
               <tr>
-                <th class="text-uppercase text-left" style="font-size: 12px;"><b>Total</b></th>
+                <th class="text-uppercase text-left" style="font-size: 12px;border-bottom: 1px solid #E0E2E7"><b>Total</b></th>
                 <% @records.each do |month, record| %>
                   <td class="text-uppercase">
                     <b><%= calculate_percentage(record['sum_delay_buckets']['value'].to_i, record['sum_delay_buckets']['value'].to_i) %></b>

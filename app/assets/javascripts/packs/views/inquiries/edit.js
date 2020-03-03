@@ -1,4 +1,5 @@
 import newAction from "./new";
+import onScrollandClickSideMenu from '../common/ScrollandClickSideMenu';
 
 const edit = () => {
     newAction();
@@ -12,6 +13,11 @@ const edit = () => {
         gtag('event', 'click-duplicate', {event_category: 'duplicate-inquiry', event_label: 'Duplicate Inquiry'})
     })
 
+    // $('.bmro-list-button').unbind('click').bind('click',function () {
+    //     let page = $(this).data('path');
+    //     slideTo(page);
+    // })
+
     $('form').on('change', 'select[id*=inquiry_status]', function (e) {
         var selectedValue = $("option:selected").val();
         if (selectedValue == "Order Lost" || selectedValue == "Regret Request") {
@@ -24,6 +30,27 @@ const edit = () => {
             $( "select[name*='lost_regret_reason'] option" ).addClass('disabled')
         }
     })
+
+    // var top = $('.bmro-card-header').offset().top - parseFloat($('.bmro-card-header').css('marginTop').replace(/auto/, 0));
+    var footTop = $('.bmro-product-bottom').offset().top - parseFloat($('.bmro-product-bottom').css('marginTop').replace(/auto/, 0));
+
+    var maxY = footTop - $('.bmro-card-header').outerHeight();
+
+    $(window).scroll(function(evt) {
+        var y = $(this).scrollTop();
+
+        if (y < maxY) {
+            $('.bmro-card-header').removeAttr('style');
+        } else {
+
+            $('.bmro-card-header').css({
+                position: 'relative',
+                // top: (maxY - top) + 'px'
+                top:'1360px'
+            });
+        }
+    });
+    onScrollandClickSideMenu();
 
 };
 let onProductChange = (container) => {
@@ -42,7 +69,15 @@ let onProductChange = (container) => {
                 select.closest('div.form-row').find('[name*=bp_catalog_sku]').val(response.bp_catalog_sku);
             }
         });
-    }
+    }   
 };
+    // end      
+// crezenta js
+
+// slider js
+// $(".bmro-li-right").click(function(){
+//     $('.bmro-li-right').addClass('bmro-active-li',1000);
+//     $(this).removeClass('bmro-active-li');
+// });
 
 export default edit

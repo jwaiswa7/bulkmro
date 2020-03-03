@@ -5,6 +5,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   before_action :set_notification, only: [:create_confirmation, :create_account_confirmation]
 
   def index
+    @model_name = 'sales_orders'
     @sales_orders = @inquiry.sales_orders
     authorize_acl @sales_orders
 

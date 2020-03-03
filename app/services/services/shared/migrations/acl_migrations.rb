@@ -44,7 +44,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_role = AclRole.where(role_name: 'Admin').first_or_create!
     role_resources = AclResource.all.order(id: :asc).pluck(:id)
     resources = []
-    role_resources.map {|x| resources << x.to_s}
+    role_resources.map { |x| resources << x.to_s }
     acl_role.role_resources = resources.uniq.to_json
     acl_role.save
 
@@ -76,8 +76,8 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
         end
       end
 
-      role_resources = role_resources.sort {|x, y| (x <=> y)}
-      role_resources.map {|x| x.to_s}
+      role_resources = role_resources.sort { |x, y| (x <=> y) }
+      role_resources.map { |x| x.to_s }
       acl_role = AclRole.where(role_name: role_name).first_or_create!
       acl_role.role_resources = role_resources.uniq.to_json
       acl_role.save
@@ -92,9 +92,9 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     AclRole.all.each do |acl_role|
       role_resources = ActiveSupport::JSON.decode(acl_role.role_resources)
       autocomplete_resources_ids = []
-      autocomplete_resources.map {|x| autocomplete_resources_ids << x.to_s}
+      autocomplete_resources.map { |x| autocomplete_resources_ids << x.to_s }
       role_resources = role_resources + autocomplete_resources_ids
-      role_resources = role_resources.map {|x| x.to_s}
+      role_resources = role_resources.map { |x| x.to_s }
       acl_role.role_resources = role_resources.uniq.to_json
       acl_role.save
     end
@@ -115,7 +115,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_role = AclRole.where(role_name: 'Admin').first_or_create!
     role_resources = AclResource.all.pluck(:id)
     resources = []
-    role_resources.map {|x| resources << x.to_s}
+    role_resources.map { |x| resources << x.to_s }
     acl_role.role_resources = resources.uniq.to_json
     acl_role.save
 
@@ -131,7 +131,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
 
       if last_role_name.present? && last_role_name != role_name
         resources = []
-        role_resources.map {|x| resources << x.to_s}
+        role_resources.map { |x| resources << x.to_s }
         acl_role = AclRole.where(role_name: last_role_name).first_or_create!
         acl_role.role_resources = resources.uniq.to_json
         acl_role.save
@@ -154,7 +154,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
 
     # last role
     resources = []
-    role_resources.map {|x| resources << x.to_s}
+    role_resources.map { |x| resources << x.to_s }
     acl_role = AclRole.where(role_name: last_role_name).first_or_create!
     acl_role.role_resources = resources.uniq.to_json
     acl_role.save
@@ -166,7 +166,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       resources = []
       role_resources = ActiveSupport::JSON.decode(role.role_resources)
       role_resources = role_resources + get_default_resource_list
-      role_resources.uniq.map {|x| resources << x.to_s}
+      role_resources.uniq.map { |x| resources << x.to_s }
       role.role_resources = resources.to_json
       role.save
     end
@@ -232,7 +232,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     end
 
     read_only_resource_ids = []
-    resource_ids.map {|x| x.map {|y| read_only_resource_ids << y.to_s}}
+    resource_ids.map { |x| x.map { |y| read_only_resource_ids << y.to_s } }
     read_only_resource_ids = read_only_resource_ids.uniq
 
     ar = AclRole.where(role_name: 'Default - Read Only').first_or_create!
@@ -251,7 +251,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     end
 
     access_to_default_resource_ids = []
-    resource_ids.map {|x| x.map {|y| access_to_default_resource_ids << y.to_s}}
+    resource_ids.map { |x| x.map { |y| access_to_default_resource_ids << y.to_s } }
     access_to_all_resource_ids = access_to_default_resource_ids.uniq
     @default_resource_list = access_to_all_resource_ids
   end
@@ -297,7 +297,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     ]
 
     all_resources = AclResource.all.pluck(:id)
-    all_resources = all_resources.map {|x| x.to_s}
+    all_resources = all_resources.map { |x| x.to_s }
 
     roles.each do |role|
       AclRole.where(role_name: role).first_or_create! do |ar|
@@ -322,7 +322,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       model = File.basename(policy_file, '.rb')
       policies = []
       policies = data.scan(/(?:def\ )(?:.*)/)
-      all_policies[model.gsub('_policy', '')] = policies.map {|x| x.gsub('def ', '').gsub('?', '')}
+      all_policies[model.gsub('_policy', '')] = policies.map { |x| x.gsub('def ', '').gsub('?', '') }
     end
     all_policies
   end
@@ -334,7 +334,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       model = File.basename(policy_file, '.rb')
       policies = []
       policies = data.scan(/(?:def\ )(?:.*)/)
-      all_policies[model.gsub('_policy', '')] = policies.map {|x| x.gsub('def ', '').gsub('?', '')}
+      all_policies[model.gsub('_policy', '')] = policies.map { |x| x.gsub('def ', '').gsub('?', '') }
     end
 
     all_acl = []
@@ -488,9 +488,9 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
   def update_role_resource(acl_role, resource_id)
     role_resources = ActiveSupport::JSON.decode(acl_role.role_resources)
     role_resources << resource_id
-    role_resources = role_resources.map {|x| x.to_i}
-    role_resources = role_resources.sort {|x, y| (x <=> y)}
-    role_resources = role_resources.map {|x| x.to_s}
+    role_resources = role_resources.map { |x| x.to_i }
+    role_resources = role_resources.sort { |x, y| (x <=> y) }
+    role_resources = role_resources.map { |x| x.to_s }
     acl_role.role_resources = role_resources.uniq.to_json
     acl_role.save
 
@@ -498,9 +498,9 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     Overseer.where(acl_role_id: acl_role.id).each do |overseer|
       overseer_resources = ActiveSupport::JSON.decode(overseer.acl_resources)
       new_resources = overseer_resources + ActiveSupport::JSON.decode(acl_role.role_resources)
-      new_resources = new_resources.map {|x| x.to_i}
-      new_resources = new_resources.sort {|x, y| (x <=> y)}
-      new_resources = new_resources.map {|x| x.to_s}
+      new_resources = new_resources.map { |x| x.to_i }
+      new_resources = new_resources.sort { |x, y| (x <=> y) }
+      new_resources = new_resources.map { |x| x.to_s }
       overseer.update_attribute(:acl_resources, new_resources.uniq.to_json)
       puts overseer
     end
@@ -570,6 +570,27 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     acl_resources_for_targets = {
         'annual_target': %w(index show new edit create update destroy),
         'overseer': %w(can_add_edit_target)
+    }
+    acl_resources_for_targets.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        # update role
+        acl_roles = AclRole.where(role_name: role_name)
+        acl_roles.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
+      end
+    end
+  end
+
+  def create_supplier_rfq_resources
+    role_name = ["Outside Sales Manager", "Outside Sales Executive", "Inside Sales and Logistic Manager", "Admin-Leadership Team", "Inside Sales Manager", "Inside Sales Executive",  "Outside Sales Team Leader", "Inside Sales Team Leader", "Admin"]
+    acl_resources_for_targets = {
+        'supplier_rfq': %w(index show new edit create update destroy update_all send_email_request_for_quote add_supplier_rfqs edit_supplier_rfqs update_supplier_rfqs rfq_review),
+        'inquiry_product_supplier': %w(request_for_quote),
+        'company': %w(customized_index),
+        'inquiry': %w(link_product_suppliers draft_rfq request_for_quote destroy_supplier),
+        'sales_quote': %w(rfq_review)
     }
     acl_resources_for_targets.each do |key, val|
       val.each do |action_name|

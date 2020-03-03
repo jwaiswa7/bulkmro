@@ -3,33 +3,38 @@
 
   <%= simple_form_for([:overseers, @bank], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
+    <div class="bmro-card bmro-card-padding">
+      <div class="form-row">
+        <div class="col-12">
+          <%= f.input :country_code, as: :country, :required => true , input_html: { class: 'bmro-input-label bmro-form-input bmro-dropdown-icon' },:wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
+        </div>
+      </div>
 
-    <div class="form-row">
+      <div class="form-row">
+        <div class="col-6">
+          <%= f.input :name, required: true, input_html: { class: 'bmro-input-label bmro-form-input' } %>
+        </div>
+
+        <div class="col-6">
+          <%= f.input :code, required: true, input_html: { class: 'bmro-input-label bmro-form-input' } %>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col-6">
+          <%= f.input :swift_number, required: true, input_html: { class: 'bmro-input-label bmro-form-input' }, label: "Swift Number" %>
+        </div>
+
+        <div class="col-6">
+          <%= f.input :iban, label: "IBAN", input_html: { class: 'bmro-input-label bmro-form-input' } %>
+        </div>
+      </div>
+
       <div class="col-12">
-        <%= f.input :country_code, as: :country, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
+        <div class="bmro-button-parent bmro-button-margin">
+          <%= action_button(action_name, @bank) %>
+        </div>
       </div>
-    </div>
-
-    <div class="form-row">
-      <div class="col-6">
-        <%= f.input :name, required: true %>
-      </div>
-
-      <div class="col-6">
-        <%= f.input :code, required: true %>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="col-6">
-        <%= f.input :swift_number, required: true, label: "Swift Number" %>
-      </div>
-
-      <div class="col-6">
-        <%= f.input :iban, label: "IBAN" %>
-      </div>
-    </div>
-
-    <%= action_button(action_name, @bank) %>
+  </div>   
   <% end %>
 </div>

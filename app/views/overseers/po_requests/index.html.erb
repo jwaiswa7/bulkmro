@@ -18,22 +18,11 @@
 
 <% content_for(:heading_buttons) do %>
   <% if is_authorized(:sales_order, 'create_stock_po') %>
-    <button type="button" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1 manualPo" >Create Manual/Stock PO</button>
-    <%# if Inquiry.where(opportunity_type: 'stock').present? %>
-<!--      <a href = "<%#= new_overseers_inquiry_po_request_path(Inquiry.where(opportunity_type: 'stock').last) %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >-->
-<!--        <i class="fal fa-plus-circle mr-1"></i>New Stock <%#= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>-->
-<!--      </a>-->
-    <%# else %>
-<!--      <span data-toggle="tooltip" title="Stock Inquiry Needed. Go to create Inquiry and select opportunity type as stock.">-->
-<!--      <a href=# class=" btn btn-success btn-rounded align-self-center btn-block-sm-down disabled">-->
-<!--        <i class="fal fa-plus-circle mr-1"></i>New Stock <%#= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>-->
-<!--      </a>-->
-<!--    </span>-->
-    <%# end %>
+    <button type="button" class=" btn btn-success btn-rounded bmro-button align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1 manualPo" >Create Manual/Stock PO</button>
   <% end %>
   <% if is_authorized(:sales_order, 'index') %>
-    <a href="<%= overseers_sales_orders_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
-      <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
+    <a href="<%= overseers_sales_orders_path %>" class=" btn btn-success btn-rounded bmro-button align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
+      <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").titleize %>
     </a>
   <% end %>
 <% end %>
@@ -43,17 +32,17 @@
 <% end %>
 <% %>
 <% content_for :header_row do %>
-  <th class="no-sort all"></th>
-  <th class="no-sort desktop">Entity Details</th>
-  <th class="no-sort all" data-name="supplier">Supplier</th>
-  <th class="no-sort all text-right">Committed Delivery Date</th>
-  <th class="no-sort all">Price Details</th>
-  <th class="no-sort all" >Margin %</th>
-  <th class="no-sort desktop">Statuses</th>
-  <th class="no-sort desktop">Latest Comment</th>
-  <th class="no-sort all" data-name="sku" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
-  <th class="sort desktop" data-name="created_at">Requested At</th>
-  <th class="no-sort desktop text-right" data-name="updated_at">Updated At</th>
+  <th class="no-sort bmro-table-changes all" width="98px">Quick Actions</th>
+  <th class="no-sort desktop text-left">Entity Details</th>
+  <th class="no-sort all text-left" data-name="supplier">Supplier</th>
+  <th class="no-sort all text-left">Committed Delivery Date</th>
+  <th class="no-sort all text-left">Price Details</th>
+  <th class="no-sort all text-left" >Margin %</th>
+  <th class="no-sort desktop text-left">Statuses</th>
+  <th class="no-sort desktop text-left">Latest Comment</th>
+  <th class="no-sort all text-left" data-name="sku" data-toggle="tooltip" title="Inside Sales & Procurement">IS&P</th>
+  <th class="sort desktop text-left" data-name="created_at">Requested At</th>
+  <th class="no-sort desktop text-left" data-name="updated_at">Updated At</th>
 <% end %>
 
 <div class="col-lg-12">

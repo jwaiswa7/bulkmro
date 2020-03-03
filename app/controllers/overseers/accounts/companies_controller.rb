@@ -76,6 +76,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     authorize_acl @company
 
     if @company.save_and_sync
+      @company.update_attributes(remote_uid: @company.id)
       redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     else
       render 'new'

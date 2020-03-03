@@ -32,6 +32,6 @@ class Customers::SignInStepsController < Customers::BaseController
     end
 
     def set_contact
-      @contact = current_contact
+      @contact = current_customers_contact
     end
 end

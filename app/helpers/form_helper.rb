@@ -69,7 +69,7 @@ module FormHelper
   			color = 'warning'
   		end
 
-		button_tag(type: 'submit', class: "btn btn-#{color} btn-block") do
+		button_tag(type: 'submit', class: "btn btn-#{color} btn-block bmro-button") do
 			 concat content_tag :i, nil, class: "fal #{i} mr-1"
 			concat content_tag :span, submit_text(entity)
 		end

@@ -7,7 +7,7 @@
 
       <div class="form-row">
         <div class="col-12">
-          <%= f.association :inquiry, collection: [f.object.inquiry], label_method: :to_s, include_blank:"Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label:"Inquiry Number" %>
+          <%= f.association :inquiry, collection: [f.object.inquiry], label_method: :to_s, include_blank:"Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-form-label', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label:"Inquiry Number" %>
         </div>
       </div>
 
@@ -16,34 +16,34 @@
 
         <div class="form-row">
           <div class="col-12">
-            <%= product.input :name %>
+            <%= product.input :name, input_html: {class: 'bmro-form-input bmro-form-label'} %>
           </div>
           <div class="col-6">
-            <%= product.input :sku, :readonly => true %>
+            <%= product.input :sku, :readonly => true, input_html: {class: 'bmro-form-input bmro-form-label'} %>
           </div>
           <div class="col-6">
-            <%= product.input :mpn, label:"Manufacturer Part Number" %>
+            <%= product.input :mpn, label:"Manufacturer Part Number", input_html: {class: 'bmro-form-input bmro-form-label'} %>
           </div>
         </div>
 
         <div class="form-row">
           <div class="col-6">
-            <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank:"Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, label:"Tax code (Please Confirm With Procurement Specialist)" %>
+            <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank:"Type to search", input_html: {class: ' select2-ajax bmro-form-input bmro-form-label' , :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, label:"Tax code (Please Confirm With Procurement Specialist)" %>
           </div>
           <div class="col-6">
-            <%= product.input :best_tax_code, disabled: true %>
+            <%= product.input :best_tax_code, disabled: true, input_html: {class: 'bmro-form-input bmro-form-label'} %>
           </div>
         </div>
 
         <div class="form-row">
           <div class="col-12 col-md-4">
-            <%= product.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single'} %>
+            <%= product.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single bmro-form-label bmro-form-input bmro-dropdown-icon'} %>
           </div>
           <div class="col-6 col-md-4">
-            <%= product.association :brand, collection: selected_option_or_nil(product, :brand), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, :required => true %>
+            <%= product.association :brand, collection: selected_option_or_nil(product, :brand), input_html: {class: 'select2-ajax bmro-form-input bmro-form-label bmro-dropdown-icon', :'data-source' => autocomplete_overseers_brands_path}, :required => true %>
           </div>
           <div class="col-6 col-md-4">
-            <%= product.association :category, collection: selected_option_or_nil(product, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service => false)} %>
+            <%= product.association :category, collection: selected_option_or_nil(product, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax bmro-form-label bmro-form-input bmro-dropdown-icon', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service => false)} %>
           </div>
         </div>
 
@@ -56,7 +56,7 @@
 
       <% if @kit.inquiry.present? %>
         <div class="mt-3">
-          <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
+          <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Products</h6>
           <div class="form-row d-none d-md-flex">
             <div class="col-6">
               <div class="form-group mb-0">
@@ -88,11 +88,11 @@
             </div>
           </div>
           <%= f.nested_fields_for :kit_product_rows, wrapper_tag: :div do |kit_product| %>
-            <div class="form-row flex-row align-items-start">
+            <div class="form-row flex-row align-items-start bmro-form-heading">
               <%= kit_product.hidden_field :id %>
               <div class="col-6">
                 <div class="select2-wrap">
-                  <%= kit_product.association :product, collection: [kit_product.object.product], label_method: :to_s, include_blank:"Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => non_kit_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
+                  <%= kit_product.association :product, collection: [kit_product.object.product], label_method: :to_s, include_blank:"Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-form-label', :'data-source' => non_kit_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
                 </div>
               </div>
 
@@ -113,18 +113,18 @@
               <div class="col-5">
                 <div class="form-row d-flex flex-row align-items-center">
                   <div class="col-2">
-                    <%= kit_product.input :quantity, :label => false, placeholder: placeholder_for(kit_product, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                    <%= kit_product.input :quantity, :label => false, placeholder: placeholder_for(kit_product, :quantity), input_html: {class: 'bmro-form-label bmro-form-input',:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
                   </div>
                   <div class="col-5">
-                    <%= kit_product.association :tax_code, collection: selected_option_or_nil(kit_product, :tax_code), label_method: :to_s, include_blank:"Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: kit_product.object.product.is_service)}, label: false if kit_product.object.product.present? %>
+                    <%= kit_product.association :tax_code, collection: selected_option_or_nil(kit_product, :tax_code), label_method: :to_s, include_blank:"Type to search", input_html: {class: 'select2-ajax bmro-form-label bmro-form-input', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: kit_product.object.product.is_service)}, label: false if kit_product.object.product.present? %>
                   </div>
                   <div class="col-4">
-                    <%= kit_product.association :tax_rate,  :wrapper => :custom_multi_select, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: false %>
+                    <%= kit_product.association :tax_rate, input_html: { class: 'bmro-form-input' },  :wrapper => :custom_multi_select, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: false %>
                   </div>
                   <div class="col-1">
                     <%= kit_product.remove_nested_fields_link do %>
-                      <div class="form-group align-self-center flex-grow-1 ml-2">
-                        <i class="far fa-times text-danger"></i>
+                      <div class="align-self-center flex-grow-1 ml-2">
+                        <i class="bmro-product-trash bmro-pro-trashset"></i>
                       </div>
                     <% end if is_authorized(kit_product.object, 'destroy') %>
                   </div>
@@ -134,22 +134,22 @@
             </div>
           <% end %>
           <% if !f.object.persisted? %>
-            <%= f.add_nested_fields_link :kit_product_rows, 'Add a product', class: 'btn btn-outline-success btn-block' %>
+            <%= f.add_nested_fields_link :kit_product_rows, 'Add a product', class: 'btn btn-outline-success btn-block bmro-button' %>
           <% else %>
-            <%= f.add_nested_fields_link :kit_product_rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
+            <%= f.add_nested_fields_link :kit_product_rows, class: 'btn btn-outline-success bmro-button btn-block mb-2 mb-md-0' do %>
               <i class="fal fa-plus-circle mr-1"></i>Add a product
             <% end %>
           <% end %>
         </div>
       <% end %>
     </div>
-    <div class="card-footer">
+    <div class="card-footer bmro-button-parent bmro-card-footer">
       <% if action_name.capitalize =="New" %>
-        <%= button_tag(type:"submit", class:"btn btn-success btn-block") do %>
+        <%= button_tag(type:"submit", class:"btn btn-success btn-block bmro-button-parent") do %>
           <i class="fal fa-plus-circle"></i> <%= submit_text(@kit) %>
         <% end %>
       <% else %>
-        <%= button_tag(type:"submit", class:"btn btn-warning btn-block") do %>
+        <%= button_tag(type:"submit", class:"btn btn-warning btn-block bmro-button-parent") do %>
           <i class="fal fa-pen"></i> <%= submit_text(@kit) %>
         <% end %>
       <% end %>

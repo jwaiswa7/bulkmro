@@ -1,6 +1,6 @@
 <%#= render 'overseers/layouts/components/headway' %>
 
-<div class="navbar navbar-expand-lg bg-light navbar-light sticky-top" id="nav-sticky">
+<div class="navbar navbar-expand-lg bg-light navbar-light sticky-top bmro-nav-sticky" id="nav-sticky">
   <!-- Drawer Toggle -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -19,12 +19,12 @@
         <a href="#" data-toggle="dropdown">
           <i class="fal fa-cog"></i>
         </a>
-        <div class="dropdown-menu dropdown-menu-right">
+        <div class=" dropdown-menu dropdown-menu-right">
           <%= link_to edit_overseers_profile_path, :class => 'dropdown-item' do %>
             <i class="fal fa-cog"></i>&nbsp;Profile
           <% end %>
           <%= link_to destroy_overseer_session_path, method: :delete, :class => 'dropdown-item' do %>
-            <i class="fal fa-power-off"></i>&nbsp;Sign Out
+            <i class="bmro-signout-icon"></i>&nbsp;Sign Out
           <% end %>
         </div>
       </div>
@@ -380,7 +380,7 @@
         </a>
         <div class="dropdown-menu dropdown-menu-right">
           <%= link_to destroy_overseer_session_path, method: :delete, :class => 'dropdown-item' do %>
-            <i class="fal fa-power-off"></i>&nbsp;Sign Out
+            <i class="bmro-signout-icon"></i>&nbsp;Sign Out
           <% end %>
         </div>
       </div>

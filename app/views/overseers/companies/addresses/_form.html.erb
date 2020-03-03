@@ -4,51 +4,51 @@
   <%= simple_form_for([:overseers, @company, @address], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :company_id %>
     <%= render 'shared/snippets/form_errors', f: f %>
-
+<div class="bmro-card bmro-card-padding">
     <div class="form-row">
       <% if is_authorized(@address, 'edit_remote_uid') %>
         <div class="col-3 col-md-1">
-          <%= f.input :legacy_id, disabled: true %>
+          <%= f.input :legacy_id, disabled: true, input_html: { class: 'bmro-form-input bmro-input-label'}  %>
         </div>
         <div class="col-12 col-md-6">
-          <%= f.input :name %>
+          <%= f.input :name, input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
         </div>
         <div class="col-12 col-md-5">
-          <%= f.input :remote_uid, :label => 'SAP Address ID' %>
+          <%= f.input :remote_uid, :label => 'SAP Address ID' , input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'}%>
         </div>
       <% else %>
         <div class="col-3 col-md-1">
-          <%= f.input :legacy_id, disabled: true %>
+          <%= f.input :legacy_id, disabled: true, input_html: { class: 'bmro-form-input bmro-input-label'} %>
         </div>
         <div class="col-9 col-md-11">
-          <%= f.input :name %>
+          <%= f.input :name, input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
         </div>
       <% end %>
     </div>
-    <%= f.input :street1, label: 'Address Line 1' %>
-    <%= f.input :street2, label: 'Address Line 2' %>
+    <%= f.input :street1, label: 'Address Line 1', input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
+    <%= f.input :street2, label: 'Address Line 2', input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
 
     <div class="form-row">
       <div class="col-6 col-md-3">
-        <%= f.input :country_code, as: :country, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
+        <%= f.input :country_code, as: :country, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"], input_html: { class: 'bmro-form-input bmro-dropdown-icon bmro-input-label bmro-bg'} %>
       </div>
       <div class="col-6 col-md-3">
-        <%= f.association :state, :wrapper => :custom_multi_select, collection: AddressState.indian, include_blank: 'None' %>
+        <%= f.association :state, :wrapper => :custom_multi_select, collection: AddressState.indian, include_blank: 'None', input_html: { class: 'bmro-form-input bmro-input-label bmro-dropdown-icon bmro-bg'} %>
       </div>
       <div class="col-6 col-md-3">
-        <%= f.input :city_name %>
+        <%= f.input :city_name, input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
       </div>
       <div class="col-6 col-md-3">
-        <%= f.input :pincode %>
+        <%= f.input :pincode, input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="col-6">
-        <%= f.input :telephone, label: 'Telephone' %>
+        <%= f.input :telephone, label: 'Telephone', input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
       </div>
       <div class="col-6">
-        <%= f.input :mobile, label: 'Mobile' %>
+        <%= f.input :mobile, label: 'Mobile', input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
       </div>
     </div>
 
@@ -57,33 +57,36 @@
         <div class="form-group string optional address_telephone">
           <label class="form-control-label text-capitalize string optional">GST Number</label>
           <div class="form-inline" style="margin-bottom: 8px">
-            <%= text_field_tag 'gst_code_1', nil, class: 'form-control col-2 col-md-2 gst-change', id: 'gst_code_1', maxlength: '2', disabled: true %>
+            <%= text_field_tag 'gst_code_1', nil, class: 'form-control col-2 col-md-2 gst-change', id: 'gst_code_1', maxlength: '2', disabled: true, input_html: { class: 'bmro-form-input bmro-input-label'} %>
 
-            <%= text_field_tag 'gst_code_2', nil, class: 'form-control gst-change', id: 'gst_code_2', maxlength: '10' %>
+            <%= text_field_tag 'gst_code_2', nil, class: 'form-control gst-change', id: 'gst_code_2', maxlength: '10', input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
 
-            <%= text_field_tag 'gst_code_3', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_3', maxlength: '1' %>
+            <%= text_field_tag 'gst_code_3', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_3', maxlength: '1', input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
 
-            <%= text_field_tag 'gst_code_4', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_4', maxlength: '1' %>
+            <%= text_field_tag 'gst_code_4', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_4', maxlength: '1', input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
 
-            <%= text_field_tag 'gst_code_5', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_5', maxlength: '1' %>
+            <%= text_field_tag 'gst_code_5', nil, class: 'form-control col-1 col-md-1 gst-change', id: 'gst_code_5', maxlength: '1', input_html: { class: 'bmro-form-input bmro-input-label bmro-bg'} %>
           </div>
-          <%= f.input :gst, label: false, readonly: true %>
+          <%= f.input :gst, label: false, readonly: true, input_html: { class: 'bmro-form-input bmro-input-label'} %>
         </div>
       </div>
 
+       <div class="col-6 col-md-6">
+        <%= f.input :gst_proof, :wrapper => :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'GST Number Proof' %>
+      </div>
+
       <div class="col-6 col-md-6">
-        <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true %>
+        <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select,input_html: { class: 'bmro-form-input bmro-input-label bmro-dropdown-icon'}, label: 'Is SEZ', required: true %>
       </div>
 
       <div class="col-6 col-md-6 d-none">
         <%= f.input :gst_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Address.gst_types), label: 'GST Type' %>
       </div>
 
-      <div class="col-12 col-md-6">
-        <%= f.input :gst_proof, :wrapper => :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'GST Number Proof' %>
-      </div>
     </div>
-
+    <div class="bmro-button-parent bmro-model-button bmro-auto-margin bmro-new-fianl-width">
     <%= action_button(action_name, @address) %>
+     </div>
   <% end %>
+  </div>
 </div>

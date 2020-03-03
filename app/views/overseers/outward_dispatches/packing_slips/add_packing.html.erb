@@ -3,7 +3,7 @@
     <div class="card mb-2">
       <div class="card-body">
         <div class="">
-          <h6 class="text-uppercase text-black-50 mb-1"> Entity Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading"> Entity Details</h6>
           <div class="form-row">
           </div>
         </div>
@@ -71,9 +71,9 @@
           </div>
         <% end %>
       </div>
-      <div class="card-footer">
+      <div class="card-footer bmro-card-footer">
         <div class="form-row">
-          <%= button_tag(type: "submit", class: "btn btn-success btn-block packing-form", id: "submitbutton") do %>
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block packing-form bmro-button", id: "submitbutton") do %>
             <% if action_name.capitalize == "Add_packing" %>
               <i class="fal fa-plus-circle"></i>Add Packing
             <% else %>

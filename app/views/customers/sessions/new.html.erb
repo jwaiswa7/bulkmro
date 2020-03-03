@@ -17,7 +17,7 @@
         <%= f.input :password, :class => 'form-control', :required => true, :placeholder => "••••••••", autocomplete: "off", value: ( Rails.env.production? || Rails.env.staging? ) ? '' : 'bulkmro123' %>
       </div>
       <p class="text-center mt-1">
-        <small><%= link_to "Forgot Password?", contact_password_path, method: :post %></small>
+        <small><%= link_to "Forgot Password?", customers_contact_password_path, method: :post %></small>
       </p>
       <% if devise_mapping.rememberable? -%>
         <div class="form-group d-none">

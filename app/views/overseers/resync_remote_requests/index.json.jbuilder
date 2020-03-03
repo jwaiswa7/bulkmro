@@ -2,9 +2,9 @@ json.data (@remote_requests) do |remote_request|
   columns = [
                   [
                       if is_authorized(remote_request,'show')
-                        row_action_button(overseers_resync_remote_request_path(remote_request), 'eye', 'Show Remote Request', 'info')
+                        row_action_button_without_fa(overseers_resync_remote_request_path(remote_request), 'bmro-icon-table bmro-icon-used-view', 'Show Remote Request', 'info')
                       end,
-                      row_action_button(resend_failed_request_overseers_resync_remote_request_path(remote_request), 'retweet-alt', 'Resend Remote Request', 'warning')
+                      row_action_button_without_fa(resend_failed_request_overseers_resync_remote_request_path(remote_request), 'bmro-icon-table bmro-icon-resync', 'Resend Remote Request', 'warning')
                   ].join(' '),
                   remote_request.hits,
                   if remote_request.subject.present? && is_authorized(remote_request.subject,'show')
