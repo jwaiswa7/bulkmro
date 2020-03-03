@@ -78,7 +78,7 @@ class Services::Overseers::PurchaseOrders::CreatePurchaseOrder < Services::Share
           po_row.save!
         end
       end
-      @purchase_order.save
+      @purchase_order.save_and_sync(po_request)
       if @is_stock == 'no'
         po_request.update_attributes(status: 'Supplier PO: Amended')
       else
