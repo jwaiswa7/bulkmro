@@ -132,11 +132,6 @@ class PurchaseOrder < ApplicationRecord
       'CIF Mumbai Airport': 70,
       'Door Delivery': 80
   }
-
-  enum supplier_po_status: {
-
-  }
-
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
   scope :material_pickup_queue, -> {where(material_status: :'Inward Dispatch')}
   scope :material_delivered_queue, -> {where(material_status: :'Material Delivered')}
