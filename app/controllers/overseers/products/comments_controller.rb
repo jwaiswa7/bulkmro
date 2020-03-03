@@ -40,7 +40,6 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
     def approve
       ActiveRecord::Base.transaction do
         @product.create_approval(comment: @comment, overseer: current_overseer)
-        @product.update_attributes(remote_uid: @product.sku)
         @product.save_and_sync
       end
     end
