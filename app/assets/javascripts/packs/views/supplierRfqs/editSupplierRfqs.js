@@ -1,4 +1,3 @@
-// Imports
 import disableBackdateOption from "../common/disableBackdateOption";
 
 const editSupplierRfqs = () => {
@@ -64,9 +63,10 @@ let updateAllInquiryProductSuppliers = () => {
             $this.append(input);
             setTimeout( function () {
                 $this.submit();
+                let message = formType == 'update' ? 'Record updated successfully of supplier '+supplier_name+'!' : 'Record updated successfully and Emails has been sent to '+supplier_name+'!';
                 $.notify({
                     type: 'success',
-                    message: 'Record updated successfully and Emails has been sent to '+supplier_name+' !'
+                    message: message
                 });
             }, delay);
             delay = delay + 700;

@@ -1,7 +1,7 @@
 class Services::Overseers::SalesQuotes::BuildRows < Services::Shared::BaseService
-  def initialize(sales_quote, inquiry_product_supplier_ids=nil)
+  def initialize(sales_quote, inquiry_product_supplier_ids = nil)
     @sales_quote = sales_quote
-    @inquiry_product_supplier_ids = inquiry_product_supplier_ids.map{ |x| x.to_i} if inquiry_product_supplier_ids.present?
+    @inquiry_product_supplier_ids = inquiry_product_supplier_ids.map { |x| x.to_i} if inquiry_product_supplier_ids.present?
   end
 
   def call
@@ -20,9 +20,9 @@ class Services::Overseers::SalesQuotes::BuildRows < Services::Shared::BaseServic
         else
           if sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).blank?
             sales_quote.rows.build(
-                inquiry_product_supplier: inquiry_product_supplier,
-                tax_code: inquiry_product_supplier.product.best_tax_code,
-                measurement_unit: inquiry_product.product.measurement_unit
+              inquiry_product_supplier: inquiry_product_supplier,
+              tax_code: inquiry_product_supplier.product.best_tax_code,
+              measurement_unit: inquiry_product.product.measurement_unit
             )
           end
         end

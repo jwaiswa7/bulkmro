@@ -10,7 +10,7 @@ const tinyHtmlEditor = () => {
         visual : false,
         relative_urls : false,
         remove_script_host : false,
-        document_base_url: 'https://lab.bulkmro.com/'
+        document_base_url: window.location.origin
     });
 };
 

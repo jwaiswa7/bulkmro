@@ -1,5 +1,5 @@
 class Customers::ProfileController < Customers::BaseController
-before_action :authenticate_customers_contact!
+  before_action :authenticate_customers_contact!
 
   def edit
     @contact = current_customers_contact
