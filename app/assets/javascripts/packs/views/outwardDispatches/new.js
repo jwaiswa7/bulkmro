@@ -42,7 +42,7 @@ const outwardNew = () => {
         }
     });
 
-    $('select[name*=logistics_partner]').unbind().bind('change', function () {
+    $('select[name*=logistics_partner]').bind('change', function () {
         if ($(this).val() == "Others") {
             $('.other-logistics-partner').removeClass('d-none');
             $('.other-logistics-partner').find('input').attr("required", true);
