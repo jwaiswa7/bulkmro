@@ -14,6 +14,7 @@ class Inquiry < ApplicationRecord
   update_index('customer_order_status_report#sales_order') {self.sales_orders if self.sales_orders.present?}
   update_index('inquiry_mapping_tats#inquiry_mapping_tat') {self.inquiry_mapping_tats}
   update_index('logistics_scorecards#sales_invoice') {self}
+  update_index('supplier_rfqs#supplier_rfq') {self}
 
   pg_search_scope :locate, against: [:id, :inquiry_number], associated_against: {company: [:name], account: [:name], contact: [:first_name, :last_name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name], procurement_operations: [:first_name, :last_name]}, using: {tsearch: {prefix: true}}
 
@@ -86,7 +87,8 @@ class Inquiry < ApplicationRecord
       'New Inquiry': 0,
       'Acknowledgement Mail': 2,
       'Cross Reference': 3,
-      'Supplier RFQ Sent': 12,
+      'RFQ Sent': 12,
+      'PQ Received': 16,
       'Preparing Quotation': 4,
       'Quotation Sent': 5,
       'Follow Up on Quotation': 6,
