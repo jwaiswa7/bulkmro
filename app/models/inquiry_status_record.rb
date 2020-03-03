@@ -21,7 +21,7 @@ class InquiryStatusRecord < ApplicationRecord
       'Order Lost': 9,
       'Regret': 10,
       'Lead by O/S': 11,
-      'Supplier RFQ Sent': 12,
+      'RFQ Sent': 12,
       'SO Not Created-Customer PO Awaited': 13,
       'SO Not Created-Pending Customer PO Revision': 14,
       'Draft SO for Approval by Sales Manager': 15,
@@ -30,7 +30,8 @@ class InquiryStatusRecord < ApplicationRecord
       'Rejected by Accounts': 19,
       'Hold by Accounts': 20,
       'SAP Rejected': 21,
-      'Regret Request': 22
+      'Regret Request': 22,
+      'PQ Received': 23,
   }
 
   enum remote_uid: {
@@ -45,7 +46,7 @@ class InquiryStatusRecord < ApplicationRecord
       'Order Lost': 15,
       'Regret': 16,
       'Lead by O/S': 99,
-      'Supplier RFQ Sent': 4,
+      'RFQ Sent': 4,
       'Draft SO for Approval by Sales Manager': 9,
       'SO Rejected by Sales Manager': 10,
       'Rejected by Accounts': 12,

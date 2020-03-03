@@ -27,7 +27,8 @@ class Suppliers::RfqController < Suppliers::BaseController
       @rfq.assign_attributes(supplier_rfqs_params)
       if @rfq.save
         if @rfq.inquiry_product_suppliers_changed?
-          @rfq.update_attributes(status: 'Supplier Response Submitted')
+          @rfq.update_attributes(status: 'PQ Sent')
+          Services::Overseers::Inquiries::UpdateStatus.new(@rfq.inquiry, :pq_received).call if @rfq.inquiry.status != 'PQ Received'
         end
         redirect_to suppliers_rfq_index_path, notice: "Rfq's updated."
       end
