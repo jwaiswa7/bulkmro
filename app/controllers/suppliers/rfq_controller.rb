@@ -27,7 +27,8 @@ class Suppliers::RfqController < Suppliers::BaseController
       @rfq.assign_attributes(supplier_rfqs_params)
       if @rfq.save
         if @rfq.inquiry_product_suppliers_changed?
-          @rfq.update_attributes(status: 'Supplier Response Submitted')
+          @rfq.update_attributes(status: 'PQ Sent')
+          Services::Overseers::Inquiries::UpdateStatus.new(@rfq.inquiry, :pq_received).call if @rfq.inquiry.status != 'PQ Received'
           @email_message = @rfq.email_messages.build(contact: current_suppliers_contact, inquiry: @rfq.inquiry, company: current_company)
           if @rfq.supplier_quote_submitted
             subject = "Revised Purchase Quote Received - Inq # #{@rfq.inquiry.inquiry_number} - RFQ # #{@rfq.id} - #{current_company.name}"

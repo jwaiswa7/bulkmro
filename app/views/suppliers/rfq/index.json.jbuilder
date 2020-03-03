@@ -2,11 +2,11 @@ json.data(@rfqs) do |rfq|
   json.array! [
                   [
                     if rfq.supplier_rfq_revisions.present?
-                      row_action_button(edit_rfq_suppliers_rfq_index_path(rfq_id: rfq.id), 'redo-alt', 'Create RFQ Revision', 'success', :_blank)
+                      row_action_button(edit_rfq_suppliers_rfq_index_path(rfq_id: rfq.id), 'redo-alt', 'Create RFQ Revision', 'warning', :_blank)
                     else
                       row_action_button(edit_rfq_suppliers_rfq_index_path(rfq_id: rfq.id), 'pencil', 'Edit RFQ', 'warning', :_blank)
                     end,
-                    row_action_button(suppliers_rfq_path(id: rfq.id), 'eye', 'View RFQ', 'warning', :_blank)
+                    row_action_button(suppliers_rfq_path(id: rfq.id), 'eye', 'View RFQ', 'info', :_blank)
                   ].join(' '),
                   link_to(rfq.id, edit_rfq_suppliers_rfq_index_path(rfq_id: rfq.id), target: '_blank'),
                   rfq.inquiry.inquiry_number,
