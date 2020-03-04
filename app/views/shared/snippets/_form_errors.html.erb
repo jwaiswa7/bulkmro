@@ -1,5 +1,5 @@
 <% if f.object.errors.any? %>
-  <ul class="list-group text-danger mb-3">
+  <ul class="list-group text-danger mb-3 mt-1 float-left">
     <% f.object.errors.full_messages.each do |message| %>
       <li class="list-group-item"><%= message %></li>
     <% end %>
