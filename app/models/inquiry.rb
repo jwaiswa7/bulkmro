@@ -80,8 +80,6 @@ class Inquiry < ApplicationRecord
   has_one_attached :committed_delivery_attachment
   has_one_attached :customer_po_received_attachment
   has_one_attached :customer_po_delivery_attachment
-  validate :inquiry_sales_quote_date_validation
-
   enum status: {
       'Lead by O/S': 11,
       'New Inquiry': 0,
@@ -273,18 +271,6 @@ class Inquiry < ApplicationRecord
   validate :every_product_is_only_added_once?
 
   validate :company_is_active, if: :new_record?
-
-  def inquiry_sales_quote_date_validation
-    if self.sales_quotes.present? && self.quotation_date.present?
-      if self.quotation_date < self.sales_quotes.last.created_at.to_date
-        errors.add(:inquiry, 'Quotation Date Must Be Greater Than Last Quote Created Date')
-      end
-    else
-      if self.quotation_date.present?
-        errors.add(:inquiry, 'You not able to add quotation date before any SQ creation')
-      end
-    end
-  end
 
   def company_is_active
     if !self.company.is_active
