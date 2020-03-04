@@ -1,4 +1,4 @@
-<div class="bmro-left-side bmro-top-slide <%= "supplier-parent-div-#{supplier_index}" %>">
+<div class="<%= "supplier-parent-div-#{supplier_index}" %>">
   <div class="form-row mt-2 po-request-form">
     <%= f.hidden_field :id %>
     <%= f.hidden_field :sales_order_id %>
@@ -42,7 +42,7 @@
     <% else %>
       <% if stock %>
         <div class="col-12 col-md-4">
-          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Rejected', 'Stock Supplier PO Created'), input_html: { class: 'bmro-form-input' }, alphabetical: false), :include_blank => false %>
+          <%= f.input :stock_status, as: :select, collection: enum_to_collection(PoRequest.stock_statuses.except('Stock Rejected', 'Stock Supplier PO Created'), alphabetical: false), input_html: { class: 'bmro-form-input' }, :include_blank => false %>
         </div>
       <% else %>
         <div class="col-12 col-md-4">
@@ -311,29 +311,5 @@
       <% end %>
     </div>
   <% end %>
-<!-- </div> -->
-<!-- <div class="bmro-right-side bmro-fix-sticky">
-  <div class="bmro-fix-right">
-    <div class="bmro-right-ul bmro-width-100 bmro-fl">
-      <div class="bmro-width-100 bmro-fl">
-        <a class="btn btn-outline-success btn-block mb-2 bmro-button add_nested_fields_link bmro-width-auto bmro-fl" data-association-path="sales_order_po_requests_0_rows" data-object-class="row" href="">
-          <i class="fa-pen mr-1"></i>Update P.O Request
-        </a>
-      </div>
-      <nav class="bmro-nav bmro-width-100 bmro-fl" data-spy="affix" data-offset-top="205">
-        <ul class="bmro-label-ul">
-          <li class="bmro-li-right">
-            <label class="bmro-list-button bmro-slide-top">Top</label>
-          </li>
-          <li class="bmro-li-right bmro-active-li">
-            <label class="bmro-list-button bmro-product-slide">Product</label>
-          </li>
-          <li class="bmro-li-right bmro-active-li">
-            <label class="bmro-list-button bmro-new-slide">Add New Product</label>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-</div>-->
+
 </div>
