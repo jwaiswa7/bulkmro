@@ -17,7 +17,9 @@ class Overseers::Inquiries::SupplierRfqsController < Overseers::Inquiries::BaseC
         params['inquiry_product_supplier_ids'].reject(&:empty?).each do |inquiry_product_supplier_id|
           inquiry_product_supplier = InquiryProductSupplier.find(inquiry_product_supplier_id)
           if inquiry_product_supplier.present?
+            rfq_number = (SupplierRfq.last.rfq_number.to_i + 1) if SupplierRfq.count > 0 && SupplierRfq.first.rfq_number.present?
             supplier_rfq = SupplierRfq.where(inquiry_id: @inquiry.id, supplier_id: inquiry_product_supplier.supplier.id).first_or_create
+            supplier_rfq.update_attributes(rfq_number: rfq_number)
             inquiry_product_supplier.supplier_rfq = supplier_rfq
             inquiry_product_supplier.save
           end
