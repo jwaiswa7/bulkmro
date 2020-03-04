@@ -34,7 +34,8 @@ class Warehouse < ApplicationRecord
       'LPN': 12,
       'BHW': 13,
       'AMB': 14,
-      'HR': 15
+      'HR': 15,
+      'SHT': 16
   }
 
 
