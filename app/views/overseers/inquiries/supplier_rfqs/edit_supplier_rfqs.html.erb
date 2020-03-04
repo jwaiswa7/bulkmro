@@ -81,12 +81,12 @@
                       </div>
                       <div class="col-4">
                         <div class="form-group mb-0">
-                          <%= button_tag(type: "submit", class: "btn btn-m btn-block btn-warning bmro-button", value: 'update_and_send_link') do %>
+                          <%= button_tag(type: "submit", class: "btn btn-m btn-block btn-warning bmro-button", value: 'update_and_send_link', disabled: !(policy(inquiry_product_supplier.object).update_and_send_link?)) do %>
                             <i class="fal fa-pen"></i> Update and Send Link
                           <% end %>
-                          <%# if !(policy(inquiry_product_supplier.object).update_and_send_link?) %>
-                          <!--                            <div class="text-red text-center">Default contact not set for supplier to send email.</div>-->
-                          <%# end %>
+                          <% if !(policy(inquiry_product_supplier.object).update_and_send_link?) %>
+                            <div class="text-red text-center">Default contact not set for supplier to send email.</div>
+                          <% end %>
                         </div>
                       </div>
                     </div>
