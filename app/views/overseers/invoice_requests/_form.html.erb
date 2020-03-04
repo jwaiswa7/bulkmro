@@ -143,7 +143,7 @@
             </div>
             <div class="col-6">
               <% status_list = f.object.allow_statuses(current_overseer) %>
-              <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(status_list[:enabled], alphabetical: false, keep_raw: true), :include_blank => false, disabled: status_list[:disabled], input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input bmro-dropdown-icon'} %>
+              <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(status_list[:enabled], alphabetical: false, keep_raw: true), :include_blank => false, disabled: status_list[:disabled], input_html: {class: ' select2-wrap-text bmro-form-input bmro-dropdown-icon'} %>
             </div>
             <div class="col-6">
               <%= f.association :purchase_order, disabled: f.object.purchase_order.present? && f.object.errors.blank?, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text bmro-form-input', :'data-source' => f.object.sales_order.present? ? autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number) : autocomplete_without_po_requests_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
