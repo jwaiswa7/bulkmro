@@ -8,7 +8,7 @@ json.data(@rfqs) do |rfq|
                     end,
                     row_action_button(suppliers_rfq_path(id: rfq.id), 'eye', 'View RFQ', 'info', :_blank)
                   ].join(' '),
-                  link_to(rfq.id, edit_rfq_suppliers_rfq_index_path(rfq_id: rfq.id), target: '_blank'),
+                  link_to(rfq.rfq_number, edit_rfq_suppliers_rfq_index_path(rfq_id: rfq.id), target: '_blank'),
                   rfq.inquiry.inquiry_number,
                   rfq.inquiry.subject,
                   rfq.status,
