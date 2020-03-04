@@ -105,12 +105,13 @@ class Overseers::ContactsController < Overseers::BaseController
 
   def become
     authorize_acl @contact
-    sign_in(:contact, @contact)
 
     if @contact.company.present?
       if @contact.company.is_supplier?
+        sign_in(:suppliers_contact, @contact)
         redirect_to suppliers_dashboard_url(became: true)
       else
+        sign_in(:customers_contact, @contact)
         redirect_to customers_dashboard_url(became: true)
       end
     end
