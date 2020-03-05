@@ -227,7 +227,7 @@ let setup = () => {
             },
 
             language: {
-                processing: '<i class="fal fa-spinner-third fa-spin fa-3x fa-fw"></i>' +
+                processing: '<i class="sprint-loader"></i>' +
                     '<span class="sr-only">Loading...</span>',
                 paginate: {
                     first: '<i class="fal fa-arrow-to-left"></i>',
@@ -310,15 +310,15 @@ let setup = () => {
                         $('.fillter-wrapper').append(input);
                         select2s();
 
-
-
                         // If filters are defined, we use selected to set drodpowns, textboxes and select2 DOM elements to filter the datatable
                         if (selected == "") return;
                         $(this).data('filtered', false);
-                        if (filter == 'dropdown') {
+                        if (filter == "dropdown") {
                             input.find('select').val(selected[1]).trigger('change');
-                        } else if (filter == 'ajax') {
+                        } else if (filter == "ajax") {
                             input.find('select').append(new Option(selected[0], selected[1], true, true)).trigger('change');
+                        } else if (filter == "daterange" && input.hasClass('mis_date')) {
+                            $('.date-item.hide.mis_date').find('input').val(selected).trigger('change');
                         } else {
                             input.find('select').val(selected).trigger('change');
                         }
