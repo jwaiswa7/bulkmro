@@ -227,7 +227,7 @@ let setup = () => {
             },
 
             language: {
-                processing: '<i class="loader2"></i>' +
+                processing: '<i class="sprint-loader"></i>' +
                     '<span class="sr-only">Loading...</span>',
                 paginate: {
                     first: '<i class="fal fa-arrow-to-left"></i>',
