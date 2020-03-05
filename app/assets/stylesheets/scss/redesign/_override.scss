@@ -4310,3 +4310,15 @@ td .media.chat-item{
   left: 27%;
   height: 100%;
 }
+
+.calendar-btn-block{
+  font-size:1rem;
+  text-transform: uppercase;
+  position: relative;
+}
+.bmro-calendar-btn{
+  background-size: 20px;
+  padding: 2px 10px;
+  background-repeat: no-repeat;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAVtJREFUKBWNUrFKxEAQnZlkzRdcoYWVCEJs1FIPYqOFNlqIwfpqba41lYWNFlZXyiFaiIWNzSGctlrkREFszkILK+3CHTvO5kjYFQIGZjPz3pu8zexikiR02X1dRMA5zfqIkPYQ4Q2shxmmCo6BHzfr0/cYRvE5AG9Zun+keEEIsAGAB0ReXVwfzDsY8ybssDmjNT2+WCtp6Ked9p1YLVTYfRbcbBTP5D1htM2A+I4MXxVNDswINWCe9A2KwH1ZXxxFRSFacYRRIzC2e7dnrQqtA8tWGzLMJXJQqwiX42sTBpLJf0i+b9GQb9UGitwjOClyIGwS43NZS+I0zq/sjGdDqj11TlNfK+sSeKlS2hmes9VsoBughzfmyxkMjk3kLoLlXF6MFscxUNQSxytDBaB2Sx35q4HvOqL89LcIunKO+SBKcUUi57guVN1H5CYzHsptWKvQ/oHxx/T8ApOwcv0J5NuxAAAAAElFTkSuQmCC);
+}
