@@ -7,6 +7,13 @@ class Overseers::Dashboard
     Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Regret Request']).order(updated_at: :desc).compact
   end
 
+  def inquiries_with_followup
+    inquiries_in_range = Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Regret Request']).order(updated_at: :desc)
+    inquiries_in_range.map {
+        |inquiry| inquiry if inquiry_needs_followup?(inquiry)
+    }.compact
+  end
+
   def inq_for_sales_dash
     Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Rejected by Accounts']).order(updated_at: :desc)
   end
@@ -19,7 +26,7 @@ class Overseers::Dashboard
   end
 
   def inquiry_followup_count
-    inquiries.count
+    inquiries_with_followup.count
   end
 
   def sales_orders

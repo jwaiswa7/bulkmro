@@ -22,6 +22,13 @@ class Overseers::DashboardController < Overseers::BaseController
     # end
   end
 
+  def follow_up_dashboard
+    if current_overseer.inside_sales_executive?
+      @dashboard = Overseers::Dashboard.new(current_overseer)
+      render 'sales_dashboard'
+    end
+  end
+
   def get_status_records
     inquiry = Inquiry.find_by_inquiry_number(params['inquiry_number'])
     inquiry_status_records = inquiry.inquiry_status_records.order(created_at: :desc).group_by { |c| c.created_at.to_date }
