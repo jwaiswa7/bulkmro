@@ -4310,3 +4310,28 @@ td .media.chat-item{
   left: 27%;
   height: 100%;
 }
+
+.sprint-loader {
+  width:25px;
+  height:25px;
+  display:inline-block;
+  padding:0px;
+  border-radius:100%;
+  border:5px solid;
+  border-top-color:rgba(44, 65, 89, 1);
+  border-bottom-color:rgba(44, 65, 89, 1);
+  border-left-color:rgba(182, 189, 197, 1);
+  border-right-color:rgba(182, 189, 197, 1);
+  -webkit-animation: sprint-loader 2s ease-in-out infinite alternate;
+  animation: sprint-loader 2s ease-in-out infinite alternate;
+}
+@keyframes sprint-loader {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(720deg);}
+}
+@-webkit-keyframes sprint-loader {
+  from {-webkit-transform: rotate(0deg);}
+  to {-webkit-transform: rotate(720deg);}
+}
+
+
