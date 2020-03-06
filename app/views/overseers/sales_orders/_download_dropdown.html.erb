@@ -1,12 +1,10 @@
 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-  <a class="dropdown-item" href="<%= export_rows_overseers_sales_orders_path(format: :csv) %>">Sales Orders
-    (Logistics)</a>
-  <a class="dropdown-item" href="<%= export_rows_in_bible_format_overseers_sales_orders_path(format: :csv) %>">Sales Order Rows</a>
-  <a class="dropdown-item" href="<%= export_for_sap_overseers_sales_orders_path(format: :csv) %>">Sales Order Rows(Bible Format)</a>
-  <a class="dropdown-item" href="<%= export_for_sap_overseers_sales_orders_path(format: :csv) %>">Sales Order
-    (SAP)</a>
+  <%= link_to 'Sales Order',export_all_overseers_sales_orders_path(format: :csv), class: 'dropdown-item' %>
+  <%= link_to 'Sales Orders (Logistics)',export_rows_overseers_sales_orders_path(format: :csv), class: 'dropdown-item' %>
+  <%= link_to 'Sales Order Rows',export_rows_in_bible_format_overseers_sales_orders_path(format: :csv), class: 'dropdown-item' %>
+  <%= link_to 'Sales Order Rows(Bible Format)',export_for_sap_overseers_sales_orders_path(format: :csv), class: 'dropdown-item' %>
+  <%= link_to 'Sales Order (SAP)',export_for_sap_overseers_sales_orders_path(format: :csv), class: 'dropdown-item' %>
   <% if is_authorized(:sales_order, 'export_for_reco') && policy(:sales_order).export_for_reco? %>
-    <a class="dropdown-item" href="<%= export_for_reco_overseers_sales_orders_path(format: :csv) %>">Sales Order
-      For Inquiry RECO</a>
+    <%= link_to 'Sales Order For Inquiry RECO',export_for_reco_overseers_sales_orders_path(format: :csv), class: 'dropdown-item' %>
   <% end %>
 </div>
