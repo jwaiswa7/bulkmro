@@ -61,8 +61,8 @@
               <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>
             <% end %>
 
-            <% if is_authorized(sales_order, 'edit_mis_date') && policy(sales_order).edit_mis_date? %>
-              <%= row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(id: sales_order), 'calendar-alt', 'Update MIS Date', 'success') %>
+            <% if is_authorized(sales_order, 'edit_mis_date') %>
+              <%= row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(id: sales_order), 'calender-alt', 'Update MIS Date', 'success') %>
             <% end %>
 
             <%# if is_authorized(sales_order, 'resync') && policy(sales_order).resync? %>
