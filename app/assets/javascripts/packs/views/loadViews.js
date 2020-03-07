@@ -144,7 +144,6 @@ let loader = {
     addresses: addresses,
     emailMessages: emailMessages,
     exports: exports,
-    emailMessages: emailMessages,
     supplierRfqs: supplierRfqs,
     rfq: rfq
 };
