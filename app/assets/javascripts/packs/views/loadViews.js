@@ -96,6 +96,9 @@ import addresses from "./addresses/init";
 
 import emailMessages from "./emailMessages/init";
 
+// Export
+import exports from "./exports/init";
+
 //Supplier RFQ
 import supplierRfqs from "./supplierRfqs/init"
 
@@ -140,6 +143,7 @@ let loader = {
     packingSlips:packingSlips,
     addresses: addresses,
     emailMessages: emailMessages,
+    exports: exports,
     supplierRfqs: supplierRfqs,
     rfq: rfq
 };

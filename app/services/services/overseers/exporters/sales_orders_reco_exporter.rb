@@ -5,6 +5,7 @@ class Services::Overseers::Exporters::SalesOrdersRecoExporter < Services::Overse
     @export_name = 'sales_order_reco'
     @path = Rails.root.join('tmp', filename)
     @columns = ['serial', 'inquiry', 'inquiry_date', 'sales_owner', 'sales_order', 'sales_order_date', 'sales_order_total', 'po_count', 'product_cost']
+    # @export.update_attributes(export_type: 65, status: 'Enqueued')
   end
 
   def call
@@ -12,6 +13,9 @@ class Services::Overseers::Exporters::SalesOrdersRecoExporter < Services::Overse
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
+    @export = Export.create!(export_type: 65, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     model.remote_approved.where.not(sales_quote_id: nil).where(mis_date: start_at..end_at).order(mis_date: :desc).includes(:inquiry, :po_requests).each_with_index do |sales_order, index|
       inquiry = sales_order.inquiry
       purchase_order_ids = sales_order.po_requests.pluck(:purchase_order_id).compact
@@ -28,7 +32,8 @@ class Services::Overseers::Exporters::SalesOrdersRecoExporter < Services::Overse
         product_cost: purchase_orders.sum(&:calculated_total_without_tax)
       )
     end
-    export = Export.create!(export_type: 65, filtered: true, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # export = Export.create!(export_type: 65, filtered: true, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

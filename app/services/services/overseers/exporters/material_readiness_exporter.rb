@@ -12,6 +12,8 @@ class Services::Overseers::Exporters::MaterialReadinessExporter < Services::Over
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name, true, @export_time).deliver_now
     @export = Export.create!(export_type: 96, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     service = Services::Overseers::Finders::MaterialReadinessQueues.new({}, @overseer, paginate: false)
     service.call

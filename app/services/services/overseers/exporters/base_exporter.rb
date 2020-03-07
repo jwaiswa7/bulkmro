@@ -17,6 +17,7 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       @ids = args[2].pluck(:id).uniq
     end
     @rows = []
+    @export_time = {}
   end
 
   def filename
@@ -35,13 +36,15 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       temp_file.close
       object.report.attach(io: File.open(temp_file.path), filename: filename)
       object.save!
+      @export_time['end'] = Time.now
       if object.filtered
         ExportMailer.export_filtered_records(object, @overseer).deliver_now
       end
+      ExportMailer.export_notification_mail(@export_name, false, @export_time).deliver_now
     rescue => ex
       puts ex.message
     end
   end
 
-  attr_accessor :start_at, :end_at, :columns, :model, :rows, :path, :export_name, :arguments
+  attr_accessor :start_at, :end_at, :columns, :model, :rows, :path, :export_name, :arguments, :export_hash
 end
