@@ -31,6 +31,13 @@ class InvoiceRequest < ApplicationRecord
       'Cancelled GRPO': 130
   }
 
+  enum main_summary_status: {
+      'GRPO Pending': 10,
+      'Pending AR Invoice': 30,
+      'In stock': 70,
+      'Inward Completed': 110
+  }, _suffix: true
+
   enum grpo_rejection_reason: {
       'Mismatch: Supplier PO vs Supplier Invoice': 10,
       'Mismatch: HSN / SAC Code': 20,

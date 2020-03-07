@@ -67,6 +67,12 @@ Rails.application.routes.draw do
       get 'serializer'
       get 'migrations'
       get 'console'
+      get 'get_status_records'
+      get 'show_email_message_modal'
+      post 'update_inquiry'
+      get 'get_filtered_inquiries'
+      get 'get_inquiry_tasks'
+      get 'follow_up_dashboard'
     end
 
     resources :remote_requests do

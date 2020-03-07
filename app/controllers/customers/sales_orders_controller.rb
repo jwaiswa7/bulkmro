@@ -3,7 +3,7 @@ class Customers::SalesOrdersController < Customers::BaseController
 
   def index
     authorize :sales_order
-
+    @model_name = 'sales_orders'
     respond_to do |format|
       format.html { }
       format.json do

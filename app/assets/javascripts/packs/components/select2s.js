@@ -56,6 +56,12 @@ const select2s = () => {
     }).on('change', function () {
         $(this).trigger('input');
     });
+    // open select to field using tab
+    $('form').on('focus', '.select2.select2-container', function (e) {
+        if (e.originalEvent && $(this).find(".select2-selection--single").length > 0) {
+            $(this).siblings('select:enabled').select2('open');
+        }
+    });
 };
 
 export default select2s

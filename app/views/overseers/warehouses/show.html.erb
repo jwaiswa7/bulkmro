@@ -1,11 +1,11 @@
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-2">
+  <section class="pt-0 pt-lg-0 pb-2">
     <div class="d-md-flex justify-content-between">
-      <h3 class="display-5 d-flex align-items-center">
+      <h3 class="display-5 d-flex align-items-center bmro-form-heading">
         <%= @warehouse.name %>
       </h3>
       <% if is_authorized(@warehouse, 'edit') %>
-        <a href="<%= edit_overseers_warehouse_path(@warehouse) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+        <a href="<%= edit_overseers_warehouse_path(@warehouse) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down bmro-button"><i class="fal fa-pen mr-1"></i>Edit
           Warehouse</a>
       <% end %>
     </div>
@@ -15,41 +15,53 @@
     <div class="card">
       <div class="card-body">
         <div>
-          <h6 class="text-uppercase text-black-50 mb-1">Warehouse Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading">Warehouse Details</h6>
           <div class="form-row">
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Warehouse Code</strong>
+              <strong class="d-block bmro-summary-heading">Warehouse Code</strong>
+              <div class="bmro-summary-data">
               <%= @warehouse.remote_uid %>
+              </div>
             </div>
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Warehouse Name</strong>
+              <strong class="d-block bmro-summary-heading">Warehouse Name</strong>
+              <div class="bmro-summary-data">
               <%= @warehouse.name %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Address</strong>
+              <strong class="d-block bmro-summary-heading">Address</strong>
+              <div class="bmro-summary-data">
               <%= @warehouse.address %>
+              </div>
             </div>
 
 
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">State</strong>
+              <strong class="d-block bmro-summary-heading">State</strong>
+              <div class="bmro-summary-data">
               <%= @warehouse.address.state.name %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Remote Branch Code</strong>
+              <strong class="d-block bmro-summary-heading">Remote Branch Code</strong>
+              <div class="bmro-summary-data">
               <%= @warehouse.remote_branch_name %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Location UID</strong>
+              <strong class="d-block bmro-summary-heading">Location UID</strong>
+              <div class="bmro-summary-data">
               <%= @warehouse.location_uid %>
+              </div>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">GST</strong>
+              <strong class="d-block bmro-summary-heading">GST</strong>
               <% if @warehouse.address.gst==nil %>
                 Not Available
               <% else %>
@@ -57,11 +69,11 @@
               <% end %>
             </div>
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Is Active</strong>
+              <strong class="d-block bmro-summary-heading">Is Active</strong>
               <% if @warehouse.is_active %>
-                <i class="far fa-check text-success"></i>
+                <i class="status-check-success bmro-reposition"></i>
               <% else %>
-                <i class="far fa-times text-danger"></i>
+                <i class="status-cross-danger bmro-reposition"></i>
               <% end %>
             </div>
           </div>
@@ -72,10 +84,10 @@
 
   <% if @warehouse.product_stocks.any? && is_authorized(@warehouse, 'show_product_stocks') %>
     <div class="d-md-flex justify-content-between mt-5">
-      <h3 class="display-5 mb-1">Product Stock</h3>
+      <h3 class="display-5 mb-1 bmro-form-heading">Product Stock</h3>
     </div>
 
-    <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" data-ajax="<%= overseers_warehouse_product_stocks_path(warehouse_id: @warehouse.id) %>">
+    <table class="datatable table table-bordered dt-responsive bmro-datatable-style" data-search="Enter search term/keywords" data-ajax="<%= overseers_warehouse_product_stocks_path(warehouse_id: @warehouse.id) %>">
       <thead>
       <tr>
         <th class="no-sort">Product Name</th>

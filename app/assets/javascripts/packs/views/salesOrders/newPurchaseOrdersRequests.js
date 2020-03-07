@@ -4,6 +4,7 @@ import validatePoRequestContacts from "../poRequests/validatePoRequestContacts"
 import updateOnContactSelect from "../poRequests/updateOnContactSelect";
 import validateLeadDate from "../poRequests/validateLeadDate";
 import massLeadDateUpdate from "../poRequests/massLeadDateUpdate";
+import onScrollandClickSideMenu from '../common/ScrollandClickSideMenu';
 
 const newPurchaseOrdersRequests = () => {
     $('#warehouse-div').attr('data-warehouse-id',$('#sales_order_po_requests_attributes_0_bill_to_id option:selected').data('warehouse-state'));
@@ -32,6 +33,7 @@ const newPurchaseOrdersRequests = () => {
     updateOnContactSelect();
     validateLeadDate();
     massLeadDateUpdate();
+    onScrollandClickSideMenu();
 };
 
 export default newPurchaseOrdersRequests

@@ -2,19 +2,27 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
   before_action :set_payment_request, only: [:show, :render_modal_form, :add_comment]
 
   def index
+    authorize_acl :payment_request
+
     service = Services::Overseers::Finders::PaymentRequests.new(params, current_overseer)
     service.call
 
     @indexed_payment_requests = service.indexed_records
     @payment_requests = service.records
 
-
-    authorize_acl :payment_request
-    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_payment_requests, PaymentRequest)
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_payment_requests, PaymentRequest, main_summary_status: PaymentRequest.main_summary_statuses)
     status_service.call
 
-    @total_values = status_service.indexed_total_values
-    @statuses = status_service.indexed_statuses
+    respond_to do |format|
+      format.html {
+        @statuses = PaymentRequest.statuses
+        @main_summary_statuses = PaymentRequest.main_summary_statuses
+      }
+      format.json do
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
+      end
+    end
   end
 
   def update_payment_status

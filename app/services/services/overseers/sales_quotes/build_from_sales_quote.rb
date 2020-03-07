@@ -2,7 +2,7 @@ class Services::Overseers::SalesQuotes::BuildFromSalesQuote < Services::Shared::
   def initialize(old_sales_quote, overseer, selected_inquiry_product_suppliers)
     @old_sales_quote = old_sales_quote
     @overseer = overseer
-    @selected_inquiry_product_suppliers = selected_inquiry_product_suppliers.map{ |x| x.to_i} if selected_inquiry_product_suppliers.present?
+    @selected_inquiry_product_suppliers = selected_inquiry_product_suppliers.map { |x| x.to_i } if selected_inquiry_product_suppliers.present?
   end
 
   def call
@@ -29,16 +29,16 @@ class Services::Overseers::SalesQuotes::BuildFromSalesQuote < Services::Shared::
               if sales_quote.rows.present?
                 if sales_quote.rows.select { |r| r.inquiry_product_supplier == inquiry_product_supplier }.blank?
                   sales_quote.rows.build(
-                      inquiry_product_supplier: inquiry_product_supplier,
-                      tax_code: inquiry_product_supplier.product.best_tax_code,
-                      measurement_unit: inquiry_product.product.measurement_unit
+                    inquiry_product_supplier: inquiry_product_supplier,
+                    tax_code: inquiry_product_supplier.product.best_tax_code,
+                    measurement_unit: inquiry_product.product.measurement_unit
                   )
                 end
               else
                 sales_quote.rows.build(
-                    inquiry_product_supplier: inquiry_product_supplier,
-                    tax_code: inquiry_product_supplier.product.best_tax_code,
-                    measurement_unit: inquiry_product.product.measurement_unit
+                  inquiry_product_supplier: inquiry_product_supplier,
+                  tax_code: inquiry_product_supplier.product.best_tax_code,
+                  measurement_unit: inquiry_product.product.measurement_unit
                 )
               end
             end

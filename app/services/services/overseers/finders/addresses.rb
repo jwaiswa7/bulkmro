@@ -18,6 +18,10 @@ class Services::Overseers::Finders::Addresses < Services::Overseers::Finders::Ba
       indexed_records = filter_query(indexed_records)
     end
 
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+
     indexed_records
   end
 
@@ -35,6 +39,10 @@ class Services::Overseers::Finders::Addresses < Services::Overseers::Finders::Ba
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
+    end
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
     end
 
     if @base_filter.present?

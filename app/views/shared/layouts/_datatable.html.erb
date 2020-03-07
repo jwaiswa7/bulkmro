@@ -1,36 +1,63 @@
 <% if content_for?(:heading) || (content_for?(:can_be_directly_created) && is_authorized(current_model.singularize.downcase, 'new')) || !content_for?(:hide_table_desc) %>
+  <% status_process = ['Enqueued','Processing'] %>
   <section class="section-padding-adjustment">
     <div class="d-md-flex justify-content-between">
-      <!-- <div>
-       <%# if content_for?(:heading) %>
-         <h1 class="display-5 mb-1"><%#= yield :heading %></h1>
-       <%# else %>
-         <h1 class="display-5 mb-1"><%#= current_model.titleize %></h1>
-       <%# end unless content_for?(:hide_table_heading) %>
-       <%# unless content_for?(:hide_table_desc) %>
-         <%# if content_for?(:table_desc) %>
-           <p class="lead mt-1 mb-1">
-             <%#= yield :table_desc %>
-           </p>
-         <%# else %>
-           <p class="lead mt-1 mb-1">
-             All <%#= current_model.humanize.downcase %> searchable with relevant term/keywords.
-           </p>
-         <%# end %>
-       <%# end %>
-     </div>-->
     </div>
-
     <%= yield :notice_message %>
-
   </section>
 <% end %>
+
+<div class="bmro-float">
+  <div class="bmro-invoice-heading">
+    <div class="dropdown">
+      <% if (content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all')) || (content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness')) %>
+        <% if content_for?(:heading) %>
+          <h4 class="export-toggle page-title bmro-drop-arr" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="bmro-downimg"></span><%= yield :heading %></h4>
+        <% else %>
+          <h4 class="export-toggle page-title bmro-drop-arr" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="bmro-downimg"></span><%= current_model_header %></h4>
+        <% end %>
+        <% if content_for?(:can_be_directly_exported_partial) %>
+          <%= render partial: controller_path+"/download_dropdown" rescue nil %>
+        <% else %>
+          <% if content_for?(:can_be_directly_exported) && is_authorized(current_model_downcase.singularize,'export_all') %>
+            <% export_status = Export.send(controller_path.split('/').last).not_filtered.last %>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="btn dropdown-item export-button <%= status_process.include?(export_status.status) ? 'export-disable' : '' %>" href="<%= status_process.include?(export_status.status) ? '' : [request.path, '/', 'export_all.csv'].join  %>" <% if export_status.present? %>data-badge="<%= [time_ago_in_words(export_status.created_at), "ago"].join(' ') %><% end %>" <% if export_status.present? %>data-badge="<%= [time_ago_in_words(export_status.created_at), "ago"].join(' ') %><% end %>" ><%= "EXPORT " +current_model_header %></a>
+              <% if content_for?(:can_be_directly_exported_filtered_records) && is_authorized(current_model_downcase,'export_filtered_records') %>
+                <a class="btn dropdown-item" href="#" id="export_filtered_records" <% if export_status.present? %>data-badge="<%= [time_ago_in_words(export_status.created_at), "ago"].join(' ') %><% end %>">Filtered <%= current_model_header %></a>
+              <% end %>
+            </div>
+          <% elsif content_for?(:can_be_exported_material_readiness_queue) && is_authorized(current_model.singularize.downcase,'export_material_readiness') %>
+            <% export_status = Export.where(export_type: 96).not_filtered.last %>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="btn dropdown-item export-button <%= status_process.include?(export_status.status) ? 'export-disable' : '' %>" href="<%= status_process.include?(export_status.status) ? '' : [request.path.chomp('material_readiness_queue'), 'export_material_readiness.csv'].join %>" <% if export_status.present? %>data-badge="<%= [time_ago_in_words(export_status.created_at), "ago"].join(' ') %><% end %>">Material Readiness Queue</a>
+            </div>
+          <% end %>
+        <% end %>
+  <% elsif content_for?(:heading)%>
+    <h4 class="page-title"><%= yield :heading %></h4>
+  <!--   <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= yield :heading %></h4> -->
+  <% else %>
+        <h4 class="page-title"><%= current_model_header %></h4>
+         <!--  <h4 class="dropdown-toggle page-title" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_model_header %></h4> -->
+    <% end %>
+      <% if content_for?(:show_date_filter) %>
+        <input class="form-control is-valid string required bmro-form-ar-invoice bmro-date-bag" data-toggle="daterangepicker" required="required" aria-required="true" type="text" value="" placeholder="Select Date">
+      <% end %>
+    </div>
+</div>
+  <% if Settings.reports.show_summary && @statuses.present? %>
+    <div class="col-lg-12">
+      <%= render partial: "shared/layouts/summary", locals: {klass: current_model.classify.constantize, statuses: @statuses, alias_name: @alias_name, main_summary_statuses: @main_summary_statuses } %>
+    </div>
+  <% end %>
+</div>
 <section class="pb-4 pb-lg-5">
-  <table class="datatable table table-bordered table-hover dt-responsive
+  <table class="datatable table table-bordered table-hover dt-responsive bmro-datatable-style
    <% if content_for?(:wrap_whitespace) %> wrap-whitespace
    <% end %>" data-search="Enter search term/keywords"
          <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.fullpath %>"
-         <% end %><% if not content_for?(:enable_sort_on_last_column) %>data-sorting="false"<% end %>>
+         <% end %><% if not content_for?(:enable_sort_on_last_column) %>data-sorting="false"<% end %> style="width:100%">
     <thead>
     <tr>
       <%= yield :header_row %>

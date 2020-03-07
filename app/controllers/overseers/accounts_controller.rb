@@ -40,6 +40,7 @@ class Overseers::AccountsController < Overseers::BaseController
     end
 
     if @account.save_and_sync
+      @account.update_attributes(remote_uid: @account.id)
       redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
     else
       render 'new'

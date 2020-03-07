@@ -16,7 +16,7 @@ class CompanyBank < ApplicationRecord
   validates_confirmation_of :account_number, if: :new_record?
   validates_confirmation_of :account_number, if: :account_number_changed?
   validates_presence_of :account_number_confirmation, if: :account_number_changed?
-  validates_plausible_phone :beneficiary_mobile, allow_blank: true
+  phony_normalize :beneficiary_mobile, default_country_code: 'IN'
 
   def to_s
     [self.bank, branch, self.bank.ifsc_code, account_number, account_name].reject(&:blank?).join(', ')

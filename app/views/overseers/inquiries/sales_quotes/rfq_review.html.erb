@@ -15,11 +15,11 @@
           <div class="form-row">
             <div class="col-12">
               <% if is_authorized(@inquiry, 'new_sales_quote') && policy(@inquiry).new_sales_quote? %>
-                <%= button_tag(type: "button", name: "generate_sales_quote", class: "btn btn-success btn-block generate_sales_quote") do %>
+                <%= button_tag(type: "button", name: "generate_sales_quote", class: "btn btn-m btn-block btn-warning bmro-button generate_sales_quote") do %>
                   <i class="far fa-check mr-1"></i> Generate Sales Quote
                 <% end %>
               <% elsif @inquiry.sales_quotes.present? && is_authorized(@inquiry.final_sales_quote, 'new_revision') && is_authorized(@inquiry.final_sales_quote, 'display_revision_button') && policy(@inquiry.final_sales_quote).new_revision? && policy(@inquiry.final_sales_quote).display_revision_button?  %>
-                <%= button_tag(type: "button", name: "reset_sales_quote", class: "btn btn-warning btn-block reset_sales_quote") do %>
+                <%= button_tag(type: "button", name: "reset_sales_quote", class: "btn btn-m btn-block btn-warning bmro-button reset_sales_quote") do %>
                   <i class="fal fa-redo-alt mr-1"></i>Create Sales Quote Revision
                 <% end %>
               <% end %>
@@ -28,17 +28,17 @@
         </div>
       </div>
       <div>
-        <table class="w-100 datatable table table-bordered dt-responsive dt-responsive wrap-whitespace mt-0" data-fixed-header="false">
+        <table class="table mt-3 bmro-rfq-table bmro-datatable-style" data-fixed-header="false">
           <thead>
           <tr>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+            <th class="text-uppercase">
+              <strong><span data-toggle="tooltip" title="Serial Number">Sr.</span></strong>
             </th>
-            <th class="no-sort product-width-adjustment">
-              <span data-toggle="tooltip" title="Product">Product</span>
+            <th class="text-uppercase">
+              <strong><span data-toggle="tooltip" title="Product">Product</span></strong>
             </th>
-            <th class="no-sort">
-              <span data-toggle="tooltip" title="Suppliers">Suppliers</span>
+            <th class="text-uppercase">
+              <strong><span data-toggle="tooltip" title="Suppliers">Supplier(s) Purchase Quote Received</span></strong>
             </th>
           </tr>
           </thead>
@@ -50,11 +50,9 @@
               </td>
               <td>
                 <span>
-                  <strong>
                     <%= inquiry_product.product.sku %>
                     - <%= inquiry_product.bp_catalog_name? ? inquiry_product.bp_catalog_name : inquiry_product.product.name %>
                     <%= inquiry_product.bp_catalog_sku? ? '(' + inquiry_product.bp_catalog_sku + ')' : '' %>
-                  </strong>
                 </span>
               </td>
               <td>
@@ -78,7 +76,8 @@
                                 <%= row.label '', for: /id="([a-z\d_]*)"/.match(radio)[1], :class => 'd-block' do %>
                                   <h6 class="text-black-50 mb-1 text-uppercase">
                                     <strong><%= row.object.inquiry_product_supplier %></strong><br>
-                                    <small><strong>Unit Cost Price: <%= row.object.inquiry_product_supplier.unit_cost_price %> | Final Unit Price: <%= row.object.inquiry_product_supplier.total_price %></strong></small>
+                                    <small><strong>Unit Cost Price: <%= row.object.inquiry_product_supplier.unit_cost_price %>
+                                      | Final Unit Price: <%= row.object.inquiry_product_supplier.total_price %></strong></small>
                                   </h6>
                                 <% end %>
                               </div>

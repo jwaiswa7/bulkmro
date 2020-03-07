@@ -2,13 +2,13 @@ json.data (@contact_creation_requests) do |contact|
   json.array! [
                   [
                     if !contact.contact.present? && is_authorized(:contact, 'new') && contact.activity.company_id.present?
-                      row_action_button(new_overseers_contact_path(ccr_id: contact.id), 'user', 'New Contact', 'success', :_blank)
+                     row_action_button_without_fa(new_overseers_contact_path(ccr_id: contact.id), 'bmro-icon-table bmro-icon-new-contact', 'New Contact', 'success', :_blank)
                     end,
                     if is_authorized(contact, 'show')
-                      row_action_button(overseers_contact_creation_request_path(contact), 'eye',  'View Contact Creation Request', 'info', :_blank)
+                      row_action_button_without_fa(overseers_contact_creation_request_path(contact), 'bmro-icon-table bmro-icon-used-view',  'View Contact Creation Request', 'info', :_blank)
                     end,
                     if is_authorized(contact.activity, 'show')
-                      row_action_button(edit_overseers_activity_path(contact.activity), 'pencil',  'Edit Activity', 'warning', :_blank)
+                      row_action_button_without_fa(edit_overseers_activity_path(contact.activity), 'bmro-icon-table bmro-icon-pencil',  'Edit Activity', 'warning', :_blank)
                     end
                   ].join(' '),
                     link_to(contact.first_name, overseers_contact_creation_request_path(contact), target: '_blank'),

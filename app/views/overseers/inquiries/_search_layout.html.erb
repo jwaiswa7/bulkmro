@@ -3,19 +3,19 @@
     <div class="card-body">
       <div class="form-row">
         <div class="col-2">
-          <%= f.input :category, as: :select, collection: @role_wise_collection, selected: ( @category if @category.present?),input_html: {class: 'select2-single select2-wrap-text'}, :include_blank => false, label: "Category" %>
+          <%= f.input :category, as: :select, collection: @role_wise_collection, selected: ( @category if @category.present?),input_html: {class: 'select2-single select2-wrap-text bmro-form-input'}, :include_blank => false, label: "Category" %>
         </div>
         <div class="col-4">
-          <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', :placeholder => 'Date Range', :value => (@date_range.present? ? @date_range : '')}, required: false, label: 'Pick a Date Range' %>
+          <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', class:'bmro-form-input', :placeholder => 'Date Range', :value => (@date_range.present? ? @date_range : '')}, required: false, label: 'Pick a Date Range' %>
         </div>
         <div class="col-3 text-center">
-          <%= button_tag(type: "submit", class: "btn btn-success btn-block mt-3") do %>
-            <i class="fal fa-hand-point-down mr-2"></i>Fetch Report
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block mt-3 bmro-button") do %>
+            <i class="bmro-hand-point-down"></i>Fetch Report
           <% end %>
         </div>
         <div class="col-3 text-center">
-          <a href="<%= kra_report_overseers_inquiries_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 mt-3">
-            <i class="fal fa-redo mr-2"></i> Reset Report</a>
+          <a href="<%= kra_report_overseers_inquiries_path %>" class="btn btn-outline-success btn-block mb-2 mb-md-0 mt-3 bmro-button">
+            <i class="bmro-fa-redo"></i> Reset Report</a>
         </div>
       </div>
     </div>

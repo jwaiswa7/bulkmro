@@ -2,30 +2,30 @@ json.data (@ar_invoice_requests) do |ar_invoice|
   json.array! [
                   [
                       if is_authorized(ar_invoice, 'show')
-                        row_action_button(overseers_ar_invoice_request_path(ar_invoice), 'fal fa-eye', 'View AR Invoice', 'info', :_blank)
+                        row_action_button_without_fa(overseers_ar_invoice_request_path(ar_invoice), 'bmro-icon-table bmro-icon-used-view', 'View AR Invoice', 'info', :_blank)
                       end,
                       if is_authorized(ar_invoice, 'edit')
-                        row_action_button(edit_overseers_ar_invoice_request_path(ar_invoice), 'pencil', 'Edit AR Invoice', 'warning', :_blank)
+                        row_action_button_without_fa(edit_overseers_ar_invoice_request_path(ar_invoice), 'bmro-icon-table bmro-icon-sighnature', 'Edit AR Invoice', 'warning', :_blank)
                       end,
                       if !ar_invoice.status.downcase.include?('cancel') && is_authorized(ar_invoice, 'can_cancel_or_reject')
-                        link_to('', class: ['btn btn-sm btn-danger cancel-ar-invoice'], 'data-invoice-request-id': ar_invoice.id, title: 'Cancel', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-danger cancel-ar-invoice'], 'data-invoice-request-id': ar_invoice.id, title: 'Cancel', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-cancel-new-icon'].join
                         end
                       end,
                       if !ar_invoice.status.downcase.include?('reject') && is_authorized(ar_invoice, 'can_cancel_or_reject')
-                        link_to('', class: ['btn btn-sm btn-warning reject-ar-invoice'], 'data-invoice-request-id': ar_invoice.id, title: 'Reject', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-warning reject-ar-invoice'], 'data-invoice-request-id': ar_invoice.id, title: 'Reject', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-ban'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-ban-new-icon'].join
                         end
                       end,
                       if is_authorized(ar_invoice, 'can_create_outward_dispatch') && ar_invoice.status == 'Completed AR Invoice Request' && policy(ar_invoice).can_create_outward_dispatch?
-                        row_action_button(new_overseers_outward_dispatch_path(ar_invoice_request_id: ar_invoice), 'fal fa-plus', 'Add outward dispatch', 'info', :_blank)
+                        row_action_button_without_fa(new_overseers_outward_dispatch_path(ar_invoice_request_id: ar_invoice), 'bmro-icon-table bmro-relationship', 'Add outward dispatch', 'info', :_blank)
                       end,
                       if is_authorized(ar_invoice, 'index') && policy(ar_invoice).index?
-                        link_to('', class: ['btn btn-sm btn-success comment-ar-invoice-request'], 'data-model-id': ar_invoice.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-success comment-ar-invoice-request'], 'data-model-id': ar_invoice.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-proof'].join
                         end
                       end,
                   ].join(' '),

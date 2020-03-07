@@ -2,25 +2,25 @@
   <%= render 'shared/snippets/page_header', e: @acl_resource %>
 
   <%= simple_form_for([:overseers, @acl_resource], :html => {:class => 'card needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <div class="card">
+    <div class="card bmro-bg">
       <div class="card-body">
         <%= render 'shared/snippets/form_errors', f: f %>
         <div>
           <div class="form-row">
             <div class="col-6">
-              <%= f.input :resource_model_name %>
+              <%= f.input :resource_model_name, input_html: { class: 'bmro-form-input' } %>
             </div>
             <div class="col-6">
-              <%= f.input :resource_model_alias %>
+              <%= f.input :resource_model_alias, input_html: { class: 'bmro-form-input' } %>
             </div>
             <div class="col-6">
-              <%= f.input :resource_action_name %>
+              <%= f.input :resource_action_name, input_html: { class: 'bmro-form-input' } %>
             </div>
             <div class="col-6">
-              <%= f.input :resource_action_alias %>
+              <%= f.input :resource_action_alias, input_html: { class: 'bmro-form-input' } %>
             </div>
             <div class="col-6">
-              <%= f.input :sort_order %>
+              <%= f.input :sort_order, input_html: { class: 'bmro-form-input' } %>
             </div>
             <div class="col-12">
               <%= f.input :is_menu_item %>
@@ -28,13 +28,13 @@
           </div>
         </div>
       </div>
-      <div class="card-footer">
+      <div class="card-footer bmro-card-footer">
         <% if action_name.capitalize == "New" %>
-          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+          <%= button_tag(type: "submit", class: "btn bmro-button btn-success btn-block") do %>
             <i class="fal fa-plus-circle"></i> <%= submit_text(@acl_resource) %>
           <% end %>
         <% else %>
-          <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+          <%= button_tag(type: "submit", class: "btn bmro-button btn-warning btn-block") do %>
             <i class="fal fa-pen"></i> <%= submit_text(@acl_resource) %>
           <% end %>
         <% end %>

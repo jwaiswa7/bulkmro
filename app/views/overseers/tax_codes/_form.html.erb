@@ -4,37 +4,47 @@
   <%= simple_form_for([:overseers, @tax_code], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
 
-    <div class="form-row">
-      <div class="col-4 col-md-2">
-        <%= f.input :remote_uid %>
+    <div class="bmro-card bmro-card-padding">
+      <div class="form-row">
+        <div class="col-4 col-md-2">
+          <%= f.input :remote_uid, input_html: { class: 'bmro-form-input' } %>
+        </div>
+        <div class="col-8 col-md-10">
+          <%= f.input :description, input_html: { class: 'bmro-form-input' } %>
+        </div>
       </div>
-      <div class="col-8 col-md-10">
-        <%= f.input :description %>
-      </div>
-    </div>
 
-    <div class="form-row">
-      <div class="col-4">
-        <%= f.input :code %>
+      <div class="form-row">
+        <div class="col-4">
+          <%= f.input :code, input_html: { class: 'bmro-form-input' } %>
+        </div>
+        <div class="col-4">
+          <%= f.input :chapter, input_html: { class: 'bmro-form-input' }, readonly: true, input_html: { value: @tax_code.chapter.nil? ? "0000" : @tax_code.chapter}  %>
+        </div>
+        <div class="col-4">
+          <%= f.input :tax_percentage, input_html: { class: 'bmro-form-input' }, label: 'Tax %' %>
+        </div>
       </div>
-      <div class="col-4">
-        <%= f.input :chapter, readonly: true, input_html: { value: @tax_code.chapter.nil? ? "0000" : @tax_code.chapter}  %>
+      <div class="form-row">
+        <div class="col-12 col-md-4">
+          <div class="bmro-summary-data bmro-inline-lable">
+            <%= f.input :is_service %>
+        </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="bmro-summary-data bmro-inline-lable">
+            <%= f.input :is_active %>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="bmro-summary-data bmro-inline-lable">
+            <%= f.input :is_pre_gst %>
+        </div>
+        </div>
       </div>
-      <div class="col-4">
-        <%= f.input :tax_percentage, label: 'Tax %' %>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="col-12 col-md-4">
-        <%= f.input :is_service %>
-      </div>
-      <div class="col-12 col-md-4">
-        <%= f.input :is_active %>
-      </div>
-    </div>
-    <%= f.input :is_pre_gst %>
-    <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-      <i class="fal fa-pen"></i> <%= submit_text(@tax_code) %>
-    <% end %>
+      <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
+        <i class="fal fa-pen"></i> <%= submit_text(@tax_code) %>
+      <% end %>
+     </div> 
   <% end %>
 </div>

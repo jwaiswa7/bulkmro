@@ -7,28 +7,28 @@ json.data (@po_requests) do |po_request|
                         row_action_button(edit_overseers_inquiry_po_request_path(po_request.inquiry, po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
                       if is_authorized(po_request, 'can_cancel') && policy(po_request).can_cancel?
-                        link_to('', class: ['btn btn-sm btn-dark cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Cancel', remote: true) do
+                        link_to('', class: ['btn btn-sm btn-dark cancel-po_request icon-title'], 'data-po-request-id': po_request.id,'data-id':'Cancel', title: 'Cancel', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       end,
                       if is_authorized(po_request, 'index') && policy(po_request).index?
-                        link_to('', class: ['btn btn-sm btn-success comment-po-request'], 'data-model-id': po_request.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-success comment-po-request'], 'data-model-id': po_request.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
                         end
                       end,
                       if po_request.po_request_type == 'Stock' && is_authorized(po_request, 'can_reject') && policy(po_request).can_reject?
-                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
+                        link_to('', class: ['btn btn-sm btn-danger cancel-po_request icon-title'], 'data-po-request-id': po_request.id, 'data-id':'Reject', title: 'Reject', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
                       elsif is_authorized(po_request, 'can_reject') && policy(po_request).can_reject?
-                        link_to('', class: po_request.status != 'Supplier PO Request Rejected' ? ['btn btn-sm btn-danger cancel-po_request'] : ['btn btn-sm btn-danger cancel-po_request disabled'], 'data-po-request-id': po_request.id, title: 'Reject', remote: true) do
+                        link_to('', class: po_request.status != 'Supplier PO Request Rejected' ? ['icon-title btn btn-sm btn-danger cancel-po_request'] : ['btn btn-sm btn-danger cancel-po_request disabled'], 'data-po-request-id': po_request.id, 'data-id':'Reject', title: 'Reject', remote: true) do
                           concat content_tag(:span, '')
                           concat content_tag :i, nil, class: ['fal fa-ban'].join
                         end
-                      end, '<br/>', '<br/>',
+                      end,
                       if is_authorized(po_request, 'new_payment_request') && policy(po_request).new_payment_request?
                         row_action_button(new_overseers_po_request_payment_request_path(po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif is_authorized(po_request, 'show_payment_request') && po_request.payment_request.present?
@@ -43,9 +43,9 @@ json.data (@po_requests) do |po_request|
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       else
                         row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Enter SMTP settings', 'warning disabled')
-                      end, '<br/>', '<br/>',
+                      end,
                       if is_authorized(po_request, 'new_purchase_order') && policy(po_request).new_purchase_order? && po_request.purchase_order_id.nil?
-                        row_action_button(new_purchase_order_overseers_po_request_path(po_request), 'plus', 'Create New Purchase Order', 'success')
+                        row_action_button_without_fa(new_purchase_order_overseers_po_request_path(po_request), 'bmro-plus-circle-icon', 'Create New Purchase Order', 'success')
                       end,
                       if po_request.status == 'Supplier PO: Amendment Pending' && is_authorized(po_request, 'po_amended')
                         row_action_button(overseers_po_request_path(po_request), 'eye', 'Amendment Changes', 'success')

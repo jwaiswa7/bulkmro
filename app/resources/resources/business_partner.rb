@@ -119,7 +119,8 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       assigned_contact.email = assigned_email
       assigned_contact.save(validate: false)
       contact = company.company_contacts.where(contact: assigned_contact).first_or_create!
-      
+      contact.remote_uid = remote_uid
+
       contact.save(validate: false)
     end if contacts.present?
 

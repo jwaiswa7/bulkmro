@@ -1,7 +1,7 @@
 <% if comments.persisted.size > 0 %>
   <div class="chats">
     <% comments.persisted.each do |comment| %>
-      <div class="media chat-item">
+      <div class="media chat-item comments-wrap">
         <div class="media-body">
           <div class="chat-item-title">
             <span class="chat-item-author">
@@ -25,7 +25,7 @@
             <% end %>
               <%= time_ago_in_words(comment.created_at) %> ago</span>
           </div>
-          <div class="chat-item-body">
+          <div class="chat-item-body bmro-summary-data">
             <p><%= comment.message %></p>
           </div>
         </div>
@@ -34,8 +34,8 @@
   </div>
 <% end %>
 
-<%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+<%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => '',class: 'bmro-form-input'} %>
 <%= f.hidden_field :show_to_customer, value: show_to_customer %>
 <div class="flex-fill">
-  <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
+  <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark bmro-button' %>
 </div>

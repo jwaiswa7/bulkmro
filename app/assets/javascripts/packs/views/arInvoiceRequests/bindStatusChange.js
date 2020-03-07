@@ -49,9 +49,8 @@ export default bindStatusChange
 
 
 let onStatusChange = (selector) => {
-    console.log(selector)
+    // console.log(selector)
     $("."+selector).removeClass('d-none');
     $("."+selector).find('select').prop('required',true);
     $("."+selector).find('input').prop('required',true);
 }
-

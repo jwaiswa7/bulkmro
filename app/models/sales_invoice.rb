@@ -55,6 +55,13 @@ class SalesInvoice < ApplicationRecord
       'Material Rejected': 207
   }
 
+  enum main_summary_status: {
+      # AR Invoice
+      'Invoiced': 1,
+      'Paid': 2,
+      'Material Ready for Dispatch': 206
+  }, _suffix: true
+
   enum delay_reason: {
       'Logistics Delivery Delay': 10,
       'Supplier PO Creation Delay': 20,

@@ -1,28 +1,28 @@
-<div class="col-lg-12">
+<div class="col-lg-12 bmro-table-layout">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <% provide :hide_table_desc, true %>
     <% provide :hide_table_heading, true %>
 
     <% content_for :header_row do %>
-      <th class="no-sort"></th>
-      <th class="no-sort desktop text-right">Order #</th>
-      <th class="no-sort desktop text-right">Doc ID</th>
-      <th class="no-sort desktop text-right">Quote ID</th>
-      <th>Status</th>
+      <th class="no-sort" width="117px">Quick Actions</th>
+      <th class="no-sort desktop text-right" width="55px">Order #</th>
+      <th class="no-sort desktop text-right" width="50px">Doc ID</th>
+      <th class="no-sort desktop text-right" width="50px">Quote ID</th>
+      <th width="80px">Status</th>
       <% if @sales_orders.where(status: "Approved").count > 1 %>
         <th> SAP Status</th>
       <% end %>
-      <th class="no-sort desktop text-right">Sent At</th>
+      <th class="no-sort desktop text-right" width="70px">Sent At</th>
 
-      <th class="no-sort desktop text-right">Line Items</th>
-      <th class="no-sort desktop text-right">Quote Total</th>
-      <th class="no-sort desktop text-right">Order Total</th>
-      <th class="no-sort desktop text-right">Order Date</th>
-      <th class="no-sort desktop text-right">Created At</th>
-      <th>Created By</th>
-      <th>Approved By</th>
-      <th>Rejected By</th>
-      <th>SAP Status</th>
+      <th class="no-sort desktop text-right" width="60px">Line Items</th>
+      <th class="no-sort desktop text-right" width="60px">Quote Total</th>
+      <th class="no-sort desktop text-right" width="60px">Order Total</th>
+      <th class="no-sort desktop text-right" width="60px">Order Date</th>
+      <th class="no-sort desktop text-right" width="60px">Created At</th>
+      <th width="60px">Created By</th>
+      <th class="text-left" width="60px">Approved By</th>
+      <th class="text-left" width="60px">Rejected By</th>
+      <th class="text-left" width="60px">SAP Status</th>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>
@@ -46,12 +46,12 @@
 
             <% if is_authorized(sales_order, 'can_cancel_order') && sales_order.status == 'Approved' && sales_order.order_number.present? %>
               <% if sales_order.is_invoices_cancelled %>
-                <%= link_to('', class: ['btn btn-sm btn-danger cancel-invoice cancel-sales-order-button'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Cancel', remote: true) do %>
+                <%= link_to('', class: ['icon-title btn btn-sm btn-danger cancel-invoice cancel-sales-order-button'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Cancel', remote: true) do %>
                   <% concat content_tag(:span, '') %>
                   <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>
                 <% end %>
                <% else %>
-                <%= link_to('', class: ['btn btn-sm btn-danger disabled'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Invoices against this SO is not cancelled', remote: true) do %>
+                <%= link_to('', class: ['icon-title btn btn-sm btn-danger disabled'], 'data-order-id': sales_order.id, 'data-inquiry-id': sales_order.inquiry.id, title: 'Invoices against this SO is not cancelled', remote: true) do %>
                   <% concat content_tag(:span, '') %>
                   <% concat content_tag :i, nil, class: ['fal fa-ban'].join %>
                 <% end %>
@@ -61,8 +61,8 @@
               <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>
             <% end %>
 
-            <% if is_authorized(sales_order, 'edit_mis_date') && policy(sales_order).edit_mis_date? %>
-              <%= row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(id: sales_order), 'calendar-alt', 'Update MIS Date', 'success') %>
+            <% if is_authorized(sales_order, 'edit_mis_date') %>
+              <%= row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(id: sales_order), 'calender-alt', 'Update MIS Date', 'success') %>
             <% end %>
 
             <%# if is_authorized(sales_order, 'resync') && policy(sales_order).resync? %>

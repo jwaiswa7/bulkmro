@@ -1,4 +1,3 @@
-// Imports
 import disableBackdateOption from "../common/disableBackdateOption";
 
 const editSupplierRfqs = () => {

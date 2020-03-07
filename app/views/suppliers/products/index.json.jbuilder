@@ -2,7 +2,6 @@ json.data (@supplier_products) do |supplier_product|
   json.array! [
                   [
                       row_action_button(suppliers_products_path(supplier_product), 'eye', 'View Product', 'info'),
-                      # link_to('', to_cart_customers_product_path(supplier_product), status: 'Add to Cart', class: 'btn btn-sm btn-success fal fa-shopping-cart', remote: true)
                   ].join(' '),
                   supplier_product.product.name.to_s,
                   supplier_product.sku,

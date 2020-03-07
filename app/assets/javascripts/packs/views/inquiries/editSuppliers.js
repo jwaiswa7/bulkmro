@@ -19,7 +19,6 @@ const editSuppliers = () => {
 
     $('#select_all_products').change(function () {
         $('input[name="inquiry_product_ids[]"]').each(function () {
-            console.log($(this));
             $(this).prop('checked', $('#select_all_products').prop("checked")).trigger('change');
         });
     });

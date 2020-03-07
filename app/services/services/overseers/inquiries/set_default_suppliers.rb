@@ -11,10 +11,10 @@ class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::Ba
             unit_cost_price = product_supplier.lowest_unit_cost_price != 'N/A' ? product_supplier.lowest_unit_cost_price : 0.0
             if product_supplier.supplier.to_s != 'Local'
               inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.build(
-                  supplier_id: product_supplier.supplier.id,
-                  unit_cost_price: unit_cost_price,
-                  last_unit_price: unit_cost_price,
-                  bp_catalog_name: inquiry_product.product.bp_catalog_for_supplier(product_supplier.supplier)
+                supplier_id: product_supplier.supplier.id,
+                unit_cost_price: unit_cost_price,
+                last_unit_price: unit_cost_price,
+                bp_catalog_name: inquiry_product.product.bp_catalog_for_supplier(product_supplier.supplier)
               )
               if inquiry_product_supplier.save
                 # binding.pry

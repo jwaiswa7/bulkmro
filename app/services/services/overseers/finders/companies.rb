@@ -17,10 +17,15 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
     if @base_filter.present?
       indexed_records =  indexed_records.filter(@base_filter)
     end
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+
     if @search_filters.present?
-      @search_filters.each do |ax|
-        if ax["name"] ==  'supplied_brand'
-          indexed_records =  indexed_records.filter(filter_by_array('supplied_brand', [ax["search"]["value"]]))
+      @search_filters.each do |data_obj|
+        if data_obj['name'] ==  'supplied_brand'
+          indexed_records = indexed_records.filter(filter_by_array('supplied_brand', [data_obj['search']['value']]))
         end
       end
     end
@@ -43,14 +48,18 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
       indexed_records =  indexed_records.filter(@base_filter)
     end
 
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
 
     if @search_filters.present?
       @search_filters.each do |ax|
-        if ax["name"] ==  'supplied_brand'
-          indexed_records =  indexed_records.filter(filter_by_array('supplied_brand', [ax["search"]["value"]]))
+        if ax['name'] ==  'supplied_brand'
+          indexed_records = indexed_records.filter(filter_by_array('supplied_brand', [ax['search']['value']]))
         end
       end
     end

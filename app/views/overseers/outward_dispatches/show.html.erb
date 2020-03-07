@@ -1,6 +1,20 @@
+  <div class="d-none d-md-inline-block align-top float-right">
+      <div class="mr-2 d-md-inline-block align-top float-right">
+        <a href="<%= edit_outward_packing_slips_overseers_outward_dispatch_packing_slips_path(@outward_dispatch) %>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>
+          Edit All Packing Slip</a>
+
+        <% if is_authorized(@outward_dispatch, 'edit') && policy(@outward_dispatch).edit? %>
+          <a href="<%= edit_overseers_outward_dispatch_path(@outward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center bmro-button btn-block-sm-down mr-1"><i class="fal fa-pen mr-1"></i>
+            Edit Outward Dispatch</a>
+        <% end %>
+        <div class="mr-1 mt-1 float-right">
+          <%= row_action_button(make_packing_zip_overseers_outward_dispatch_path(@outward_dispatch, format: :zip), 'file-archive', 'Download Packing Zip', 'dark', :_blank) %>
+        </div>
+      </div>
+  </div>
 <p id="notice"><%= notice %></p>
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-2">
+  <section class="pt-0 pt-lg-0 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
         Outward Dispatch for Order #<%= @outward_dispatch.sales_order.order_number %>
@@ -10,84 +24,97 @@
 <!--          <i class="fal fa-pen mr-1"></i>Add Packing Slip-->
 <!--        </a>-->
       <%# end %>
-
-        <a href="<%= edit_outward_packing_slips_overseers_outward_dispatch_packing_slips_path(@outward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>
-          Edit All Packing Slip</a>
-
-      <% if is_authorized(@outward_dispatch, 'edit') && policy(@outward_dispatch).edit? %>
-        <a href="<%= edit_overseers_outward_dispatch_path(@outward_dispatch) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down mr-1"><i class="fal fa-pen mr-1"></i>
-          Edit Outward Dispatch</a>
-      <% end %>
-      <div class="mr-1 mt-1">
-        <%= row_action_button(make_packing_zip_overseers_outward_dispatch_path(@outward_dispatch, format: :zip), 'file-archive', 'Download Packing Zip', 'dark', :_blank) %>
-      </div>
     </div>
   </section>
   <section class="mb-3">
     <div class="card mb-2">
       <div class="card-body">
-        <h6 class="text-uppercase text-black-50 mb-1"> Entity Details</h6>
+        <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading"> Entity Details</h6>
         <div class="form-row">
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Customer Name</strong>
-            <%= @outward_dispatch.ar_invoice_request.inquiry.company.to_s %>
+            <strong class="d-block bmro-summary-heading">Customer Name</strong>
+            <div class="bmro-summary-data">
+              <%= @outward_dispatch.ar_invoice_request.inquiry.company.to_s %>
+             </div> 
           </div>
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Inquiry #</strong>
-            <%= @outward_dispatch.ar_invoice_request.inquiry.inquiry_number %>
+            <strong class="d-block bmro-summary-heading">Inquiry #</strong>
+            <div class="bmro-summary-data">
+              <%= @outward_dispatch.ar_invoice_request.inquiry.inquiry_number %>
+            </div> 
           </div>
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Order #</strong>
-            <%= @outward_dispatch.sales_order.order_number %>
+            <strong class="d-block bmro-summary-heading">Order #</strong>
+            <div class="bmro-summary-data">
+              <%= @outward_dispatch.sales_order.order_number %>
+            </div>
           </div>
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">AR Invoice #</strong>
-            <%= @outward_dispatch.ar_invoice_request.ar_invoice_number %>
+            <strong class="d-block bmro-summary-heading">AR Invoice #</strong>
+            <div class="bmro-summary-data">
+              <%= @outward_dispatch.ar_invoice_request.ar_invoice_number %>
+            </div>  
           </div>
         </div>
         <div class="form-row">
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Material Dispatch Date</strong>
-            <%= @outward_dispatch.material_dispatch_date %>
+            <strong class="d-block bmro-summary-heading">Material Dispatch Date</strong>
+            <div class="bmro-summary-data">
+              <%= @outward_dispatch.material_dispatch_date %>
+            </div>  
           </div>
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Expected Date Of Delivery</strong>
-            <%= @outward_dispatch.expected_date_of_delivery %>
+            <strong class="d-block bmro-summary-heading">Expected Date Of Delivery</strong>
+            <div class="bmro-summary-data">
+              <%= @outward_dispatch.expected_date_of_delivery %>
+            </div>  
           </div>
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Material Delivery Date</strong>
-            <%= @outward_dispatch.material_delivery_date %>
+            <strong class="d-block bmro-summary-heading">Material Delivery Date</strong>
+            <div class="bmro-summary-data">
+              <%= @outward_dispatch.material_delivery_date %>
+            </div>  
           </div>
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Material Dispatched By</strong>
-            <%= @outward_dispatch.dispatched_by %>
+            <strong class="d-block bmro-summary-heading">Material Dispatched By</strong>
+            <div class="bmro-summary-data">
+              <%= @outward_dispatch.dispatched_by %>
+            </div>  
           </div>
         </div>
         <div class="form-row">
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Logistics Partner</strong>
-            <%= @outward_dispatch.logistics_partner %>
+            <strong class="d-block bmro-summary-heading">Logistics Partner</strong>
+            <div class="bmro-summary-data">
+              <%= @outward_dispatch.logistics_partner %>
+            </div>
           </div>
           <% if @outward_dispatch.logistics_partner_name.present? %>
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Other Logistics Partner Name</strong>
-              <%= @outward_dispatch.logistics_partner_name %>
+              <strong class="d-block bmro-summary-heading">Other Logistics Partner Name</strong>
+              <div class="bmro-summary-data">
+                <%= @outward_dispatch.logistics_partner_name %>
+              </div>
             </div>
           <% end %>
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Tracking Number</strong>
-            <%= @outward_dispatch.tracking_number %>
+            <strong class="d-block bmro-summary-heading">Tracking Number</strong>
+            <div class="bmro-summary-data">
+              <%= @outward_dispatch.tracking_number %>
+            </div>  
           </div>
         </div>
       </div>
     </div>
+    <div class="bmro-form-label bmro-bg">
     <% @outward_dispatch.packing_slips.each_with_index do |packing_slip, index| %>
       <%= render 'packing_slip', index: index, packing_slip: packing_slip %>
+      </div>
       <br/>
     <% end %>
-    <div class="card">
+    <div class="card bmro-card">
       <% if @outward_dispatch.comments.persisted.size > 0 %>
-        <div class="card-body">
+        <div class="card-body bmro-bg">
           <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
           <div class="chats">
             <% @outward_dispatch.comments.persisted.order(created_at: :desc).each do |comment| %>

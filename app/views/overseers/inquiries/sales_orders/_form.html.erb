@@ -47,7 +47,7 @@
 
         <div class="card mt-3 option-wrapper " data-index="<%= row.index %>">
           <div class="card-body">
-            <%= link_to_remove_association row, {class: 'float-right btn btn-danger', wrapper_class: 'option-wrapper', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+            <%= link_to_remove_association row, {class: 'bmro-button float-right btn btn-danger', wrapper_class: 'option-wrapper', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
               Remove
             <% end %>
             <h6 class="text-uppercase mb-0">
@@ -106,7 +106,7 @@
 
 
       <div class="card mt-3">
-        <div class="card-header">
+        <div class="card-header bmro-card">
           <div class="form-row">
             <div class="col-8 col-md-3">
               <strong>Total Selling Price (Excl. tax)</strong><br>
@@ -129,12 +129,12 @@
         <div class="card-body">
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block") do %>
+              <%= button_tag(type: "submit", name: "save", class: "bmro-button btn btn-warning btn-block") do %>
                 <i class="fal fa-pen mr-1"></i> Save as Draft
               <% end %>
             </div>
             <div class="col-12 col-md-6 mt-2 mt-md-0">
-              <%= button_tag(type: "submit", name: "save_and_confirm", class: "btn btn-success btn-block") do %>
+              <%= button_tag(type: "submit", name: "save_and_confirm", class: "bmro-button btn btn-success btn-block") do %>
                 <i class="far fa-check mr-1"></i> Save and Confirm
               <% end %>
             </div>

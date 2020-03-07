@@ -74,6 +74,13 @@ class PurchaseOrder < ApplicationRecord
       'Delivered': 97
   }
 
+  enum main_summary_status: {
+      'PO Sent to Supplier': 36,
+      'Material Readiness: Follow-Up': 39,
+      'Supplier Pro Forma Invoice / Invoice Awaited': 63,
+      'Supplier PI Pending Finance Approval': 64
+  }, _suffix: true
+
   enum material_status: {
       'Material Readiness Follow-Up': 10,
       'Inward Dispatch': 20,
@@ -125,11 +132,6 @@ class PurchaseOrder < ApplicationRecord
       'CIF Mumbai Airport': 70,
       'Door Delivery': 80
   }
-
-  enum supplier_po_status: {
-
-  }
-
   scope :material_readiness_queue, -> {where.not(material_status: [:'Material Delivered'])}
   scope :material_pickup_queue, -> {where(material_status: :'Inward Dispatch')}
   scope :material_delivered_queue, -> {where(material_status: :'Material Delivered')}

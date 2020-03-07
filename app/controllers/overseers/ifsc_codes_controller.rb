@@ -47,6 +47,7 @@ class Overseers::IfscCodesController < Overseers::BaseController
 
   def suggestion
     authorize_acl :ifsc_code
+
     service = Services::Overseers::Finders::IfscCodes.new(params)
     service.call
 
@@ -55,7 +56,6 @@ class Overseers::IfscCodesController < Overseers::BaseController
     indexed_records.each do |record|
       ifsc_codes << record.attributes
     end
-
     render json: {ifsc_codes: ifsc_codes}.to_json
   end
 

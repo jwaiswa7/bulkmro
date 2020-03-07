@@ -2,6 +2,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote, :relationship_map, :get_relationship_map_json, :reset_quote_form, :sales_quote_reset_by_manager]
 
   def index
+    @model_name = 'sales_quotes'
     @sales_quotes = @inquiry.sales_quotes
     authorize_acl @sales_quotes
   end

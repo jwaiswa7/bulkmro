@@ -9,7 +9,6 @@ class Services::Suppliers::Finders::SupplierProducts < Services::Suppliers::Find
                       else
                         super
                       end
-    binding.pry
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -51,7 +50,7 @@ class Services::Suppliers::Finders::SupplierProducts < Services::Suppliers::Find
 
   def filter_by_images(indexed_records)
     indexed_records = indexed_records.filter(
-        term: { "has_images": true },
+      term: { "has_images": true },
         )
 
     indexed_records

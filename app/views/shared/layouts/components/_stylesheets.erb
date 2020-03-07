@@ -4,7 +4,7 @@
 <!-- /Move to node_modules imports -->
 
 <!-- FA 5 -->
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-6jHF7Z3XI3fF4XZixAuSu0gGKrXwoX/w3uFPxC56OtjChio7wtTGJWRW53Nhx6Ev" crossorigin="anonymous">
+<!--<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-6jHF7Z3XI3fF4XZixAuSu0gGKrXwoX/w3uFPxC56OtjChio7wtTGJWRW53Nhx6Ev" crossorigin="anonymous">-->
 <!-- /FA 5 -->
 
 <!-- Styles -->
@@ -12,7 +12,20 @@
   <%= stylesheet_link_tag 'shared/imports', media: 'all', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<%= stylesheet_link_tag 'shared/application.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+<% unless current_overseer.nil? %>
+  <% if params[:controller].include?('dashboard') && !current_overseer.admin? %>
+    <%= stylesheet_link_tag 'shared/dashboard.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <% else %>
+    <%= stylesheet_link_tag 'shared/application.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <% end %>
+
+  <% if params[:controller].include?('dashboard') && (current_overseer.manager? || current_overseer.inside?) %>
+    <%= stylesheet_link_tag 'scss/redesign/sales_dashboard', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <% end %>
+<% else %>
+  <%= stylesheet_link_tag 'shared/application.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <!-- /Styles -->
 
 <!-- Gijgo checkbox tree for ACL -->

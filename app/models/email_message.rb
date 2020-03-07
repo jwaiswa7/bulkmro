@@ -21,8 +21,8 @@ class EmailMessage < ApplicationRecord
       'Material Received in BM Warehouse': 30,
       'Material Dispatched to Customer': 40,
       'Material Delivered to Customer': 50,
-      'Request for Quote': 60,
-      'Inventory Status Update to Saint Gobain': 70
+      'Inventory Status Update to Saint Gobain': 60,
+      'Request for Quote': 70
   }
 
   after_initialize :set_defaults, if: :new_record?

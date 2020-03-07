@@ -3,7 +3,9 @@ class Overseers::SalesShipmentsController < Overseers::BaseController
     authorize_acl :sales_shipment
 
     respond_to do |format|
-      format.html { }
+      format.html {
+        @statuses = SalesShipment.statuses
+      }
       format.json do
         service = Services::Overseers::Finders::SalesShipments.new(params, current_overseer)
         service.call

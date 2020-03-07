@@ -1,6 +1,6 @@
-<div class="navbar bg-white breadcrumb-bar">
+<div class="navbar breadcrumb-bar bmro-nav-main">
   <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb bmro-breadcrumb-item">
       <% if action_name.include?('rfq') %>
         <%= raw breadcrumbs(yield(:page_title), yield(:controller_is_aliased)) %>
       <% else %>

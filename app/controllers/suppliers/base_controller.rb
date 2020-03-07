@@ -19,7 +19,7 @@ class Suppliers::BaseController < ApplicationController
     def store_contact_location!
       # :contact is the scope we are authenticating
       store_location_for(:contact, request.fullpath)
-      if request.fullpath.include? "edit_supplier_rfq"
+      if request.fullpath.include? 'edit_supplier_rfq'
         contact = Contact.find(params[:supplier_contact_id])
         session[:current_supplier_company_id] = params[:supplier_id]
         current_company
@@ -27,7 +27,7 @@ class Suppliers::BaseController < ApplicationController
       end
     end
 
-    def render_pdf_for(record, locals={})
+    def render_pdf_for(record, locals = {})
       render(
         pdf: record.filename,
         template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
@@ -52,7 +52,7 @@ class Suppliers::BaseController < ApplicationController
           edit_current_company_suppliers_sign_in_steps_path
         elsif controller_name == 'sign_in_steps'
           suppliers_dashboard_path
-        elsif request.fullpath.include? "edit_supplier_rfq"
+        elsif request.fullpath.include? 'edit_supplier_rfq'
           edit_supplier_rfqs_suppliers_rfq_index_path
         end
       end

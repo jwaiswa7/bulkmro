@@ -25,6 +25,10 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
       log_inquiry_status('Acknowledgement Mail') if status == 'New Inquiry' || status == 'Lead by O/S'
     when :cross_reference then
       log_inquiry_status('Cross Reference') if get_status_value(status) <= get_status_value('Acknowledgement Mail') && inquiry.products.present?
+    when :rfq_sent then
+      log_inquiry_status('RFQ Sent') if inquiry.supplier_rfqs.present?
+    when :pq_received then
+      log_inquiry_status('PQ Received') if inquiry.supplier_rfqs.present?
     when :sales_quote_saved then
       log_inquiry_status('Preparing Quotation') if inquiry.sales_quotes.any?
     when :quotation_email_sent then

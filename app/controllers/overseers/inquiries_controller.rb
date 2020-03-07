@@ -5,16 +5,20 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl :inquiry
 
     respond_to do |format|
-      format.html {}
+      service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
+      service.call
+
+      @indexed_inquiries = service.indexed_records
+      @inquiries = service.records
+
+      status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry, main_summary_status: Inquiry.main_summary_statuses)
+      status_service.call
+
+      format.html {
+        @statuses = Inquiry.statuses.except('Lead by O/S')
+        @main_summary_statuses = Inquiry.main_summary_statuses
+      }
       format.json do
-        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
-        service.call
-
-        @indexed_inquiries = service.indexed_records
-        @inquiries = service.records
-
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry)
-        status_service.call
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
       end
@@ -57,7 +61,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def kra_report
     authorize_acl :inquiry
-
+    @model_name = 'kra_report'
     if current_overseer.role == 'inside_sales_executive'
       @role_wise_collection = [['Inside Sales Owner by Inquiry', 'inside_sales_owner_id'], ['Inside Sales Owner by Sales Order', 'inside_by_sales_order']]
     elsif current_overseer.role == 'outside_sales_executive'
@@ -70,14 +74,14 @@ class Overseers::InquiriesController < Overseers::BaseController
         @date_range = params['kra_report']['date_range']
         @category = params['kra_report']['category']
         if @category == 'company_key'
-          @category_filter = {filter_name: 'company_key', filter_type: 'ajax'}
+          @category_filter = { filter_name: 'company_key', filter_type: 'ajax' }
         elsif @category == 'inside_sales_owner_id' || @category == 'inside_by_sales_order'
-          @category_filter = {filter_name: 'inside_sales_owner_id', filter_type: 'dropdown'}
+          @category_filter = { filter_name: 'inside_sales_owner_id', filter_type: 'dropdown' }
         elsif @category == 'outside_sales_owner_id' || @category == 'outside_by_sales_order'
-          @category_filter = {filter_name: 'outside_sales_owner_id', filter_type: 'dropdown'}
+          @category_filter = { filter_name: 'outside_sales_owner_id', filter_type: 'dropdown' }
         end
       else
-        @category_filter = {filter_name: 'inside_sales_owner_id', filter_type: 'dropdown'}
+        @category_filter = { filter_name: 'inside_sales_owner_id', filter_type: 'dropdown' }
       end
       format.html {}
       format.json do
@@ -170,6 +174,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def tat_report
     authorize_acl :inquiry
+    @model_name = 'tat_report'
     respond_to do |format|
       service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
       service.call
@@ -266,7 +271,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl @inquiry
 
     send_file(
-        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+      "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
         filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
     )
   end
@@ -336,7 +341,6 @@ class Overseers::InquiriesController < Overseers::BaseController
       if message.present?
         @inquiry.comments.create(message: "Status changed to: #{@inquiry.status}. \r\n Lost or Regret Reason: #{@inquiry.lost_regret_reason}. \r\n Comment: #{message}.", overseer: current_overseer)
       end
-
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit'
@@ -457,6 +461,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def stages
+    @model_name = 'stages'
     @stages = @inquiry.inquiry_status_records.order(created_at: :asc)
     authorize_acl @inquiry
   end
@@ -806,7 +811,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     def email_message_params
       params.require(:email_message).permit(
-          :subject,
+        :subject,
           :body,
           :to,
           :cc,
