@@ -19,6 +19,7 @@ class Services::Overseers::Exporters::KraReportsExporter < Services::Overseers::
         'No. of Sales Invoices',
         'Revenue'
     ]
+    # @export.update_attributes(export_type: 90, status: 'Enqueued')
   end
 
   def call
@@ -26,6 +27,9 @@ class Services::Overseers::Exporters::KraReportsExporter < Services::Overseers::
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name, true, @export_time).deliver_now
+    @export = Export.create!(export_type: 90, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     if @indexed_records.present?
       records = @indexed_records
     end
@@ -45,7 +49,7 @@ class Services::Overseers::Exporters::KraReportsExporter < Services::Overseers::
         revenue: inquiry['revenue'].present? ? inquiry['revenue']['value'] : 0
           ) if inquiry.present?
     end
-    export = Export.create!(export_type: 90, filtered: false, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

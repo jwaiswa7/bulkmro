@@ -117,3 +117,7 @@ product_specific:
 
 company_specific:
   company_id: [5]
+
+itops_mail:
+  user_mail: 'itops@bulkmro.com'
+  smtp_password: 'dpeloqjmukgkmqim'

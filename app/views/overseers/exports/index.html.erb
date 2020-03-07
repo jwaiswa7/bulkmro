@@ -1,0 +1,59 @@
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+
+<% content_for :header_row do %>
+  <th class="no-sort desktop">Export Type</th>
+  <th class="no-sort all">Created By</th>
+  <th class="no-sort all">Status</th>
+  <th class="no-sort all">Created At</th>
+  <th class="no-sort all">Updated At</th>
+  <th class="no-sort all"></th>
+<% end %>
+
+<div class="col-12">
+  <div>
+    <table class="table-bordered table" id="sticky-nav" style="margin-top: 0px !important;margin-bottom: 0px" >
+      <thead>
+      <tr>
+        <th style="font-weight:bold;width: 100px;">Export Type</th>
+        <th style="font-weight:bold;white-space:normal;width: 69px;">Created By</th>
+        <th style="font-weight:bold;white-space:normal;width: 51px;">Status</th>
+        <% if is_authorized(:export, 'process_for_download') %>
+          <th style="font-weight:bold;white-space:normal;width: 88px;">Export Process</th>
+        <% end %>
+        <th style="font-weight:bold;white-space:normal;width: 88px;">Download</th>
+      </tr>
+      </thead>
+      <tbody style="text-align:left;">
+      <% @export_filtered.each do |export_type, export| %>
+          <tr>
+            <td>
+              <%= export_type.humanize %>
+            </td>
+            <td>
+              <%= export.values.first.created_by %>
+            </td>
+            <td>
+              <%= export.values.first.status %>
+            </td>
+            <% if is_authorized(:export, 'process_for_download') %>
+              <td>
+                <%= link_to generate_export_overseers_exports_path(export_type: export_type), class: ['btn btn-primary btn-rounded align-self-center btn-block-sm-down ml-1 export-button bmro-button', export.values.first.status == ('Processing' || 'Enqueue') ? 'export-disable' : ''].join(' '), :"data-original-title" => 'Click to Process New Download',:"data-toggle" => 'tooltip' do %>
+                  Process
+                <% end %>
+
+              </td>
+            <% end %>
+            <td>
+              <% if export.key?("Completed").present? && export["Completed"].report.attached? %>
+                <%= link_to url_for(export["Completed"].report), class: 'btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button', :"data-original-title" => 'Last Download Available',:"data-toggle" => 'tooltip', :"data-badge"=> [time_ago_in_words(export["Completed"].created_at), "ago"].join(' ') do %>
+                  Download
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
