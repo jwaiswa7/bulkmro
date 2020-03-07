@@ -11,6 +11,7 @@ json.data (@sales_quotes) do |sales_quote|
                   sales_quote.inquiry.inside_sales_owner.to_s,
                   format_date(sales_quote.inquiry.valid_end_time),
                   status_badge(sales_quote.changed_status(sales_quote.inquiry.status)),
+                  format_succinct_date(sales_quote.created_at)
               ]
 end
 

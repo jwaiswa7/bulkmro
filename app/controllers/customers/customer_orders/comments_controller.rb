@@ -1,6 +1,6 @@
 class Customers::CustomerOrders::CommentsController < Customers::CustomerOrders::BaseController
   def create
-    @comment = @customer_order.comments.build(comment_params.merge(contact: current_contact))
+    @comment = @customer_order.comments.build(comment_params.merge(contact: current_customers_contact))
     authorize @comment
 
     if @comment.save
@@ -24,10 +24,10 @@ class Customers::CustomerOrders::CommentsController < Customers::CustomerOrders:
     end
 
     def approve
-      @comment.customer_order.create_approval(customer_order_comment_id: @comment.id, contact: current_contact)
+      @comment.customer_order.create_approval(customer_order_comment_id: @comment.id, contact: current_customers_contact)
     end
 
     def reject
-      @comment.customer_order.create_rejection(customer_order_comment_id: @comment.id, contact: current_contact)
+      @comment.customer_order.create_rejection(customer_order_comment_id: @comment.id, contact: current_customers_contact)
     end
 end

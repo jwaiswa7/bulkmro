@@ -1,0 +1,164 @@
+<% content_for :page_title do %>
+  RFQ
+<% end %>
+<div class="col-lg-12">
+  <div class="card">
+    <div class="card-body">
+      <div class="form-row">
+        <div class="col-12">
+          <h4 class="display-5 mb-1"><%= "Inquiry: ##{@rfq.inquiry.inquiry_number} - RFQ: ##{@rfq.rfq_number}" %></h4>
+        </div>
+        <hr>
+        <div class="col-12">
+          <div class="form-row d-none d-md-flex">
+            <div class="col-6">
+              <div class="form-group mb-0">
+                <h5 class="display-5 mb-1">RFQ Documents</h5><br>
+                <% @rfq.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                    <%= attachment.filename %>
+                  <% end %>
+                <% end if @rfq.attachments.attached? %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <% @rfq.inquiry_product_suppliers.each_with_index do |inquiry_product_supplier, index| %>
+      <% unless index == 0 %>
+        <hr>
+      <% end %>
+      <div class="card-body">
+        <div class="d-md-flex justify-content-between pb-1">
+          <h5 class="display-5 mb-1">Product No. <%= index + 1 %></h5>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+            <%#= f.fields_for :inquiry_product, f.object.inquiry_product do |inquiry_product| %>
+            <div class="form-row d-none d-md-flex">
+              <div class="col-6">
+                <div class="form-group mb-0">
+                  <label>Product Name</label><br>
+                  <%= inquiry_product_supplier.product.to_s %>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group mb-0">
+                  <label>MPN</label><br>
+                  <%= inquiry_product_supplier.product.mpn %>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group mb-0">
+                  <label>Brand</label><br>
+                  <%= inquiry_product_supplier.product.brand.to_s %>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="form-row d-none d-md-flex">
+              <div class="col-3">
+                <div class="form-group mb-0">
+                  <label>Quantity</label><br>
+                  <%= inquiry_product_supplier.inquiry_product.quantity %>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group mb-0">
+                  <label>Lead Time</label><br>
+                  <%= inquiry_product_supplier.lead_time %>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group mb-0">
+                  <label>Lead Time</label><br>
+                  <%= inquiry_product_supplier.last_unit_price %>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group mb-0">
+                  <label>Unit Cost Price</label><br>
+                  <%= inquiry_product_supplier.unit_cost_price %>
+                </div>
+              </div>
+            </div>
+            <div class="form-row d-none d-md-flex">
+              <div class="col-3">
+                <div class="form-group mb-0">
+                  <label>GST</label><br>
+                  <%= inquiry_product_supplier.gst %>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group mb-0">
+                  <label>Unit Freight</label><br>
+                  <%= inquiry_product_supplier.unit_freight %>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group mb-0">
+                  <label>Final Unit Price</label><br>
+                  <%= inquiry_product_supplier.final_unit_price %>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-group mb-0">
+                  <label>Total Price</label><br>
+                  <%= inquiry_product_supplier.total_price %>
+                </div>
+              </div>
+            </div>
+            <%# end %>
+          </div>
+        </div>
+      </div>
+      <% if inquiry_product_supplier.supplier_rfq_revisions.present? %>
+        <div class="col-lg-12">
+          <div class="card mt-1">
+            <div class="card-body">
+              <h6 class="text-uppercase text-black-50 mb-0">RFQ Revision History</h6>
+              <table class="table datatable w-100 wrap-whitespace" data-fixed-header="false">
+                <thead>
+                <tr>
+                  <th class="no-sort">Quantity</th>
+                  <th class="no-sort">Lead Time</th>
+                  <th class="no-sort">Last Unit Price</th>
+                  <th class="no-sort">Unit Cost Price</th>
+                  <th class="no-sort">GST</th>
+                  <th class="no-sort">Unit Freight</th>
+                  <th class="no-sort">Final Unit Price</th>
+                  <th class="no-sort">Total Price</th>
+                  <th class="no-sort">Created On</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% inquiry_product_supplier.supplier_rfq_revisions.each do |rfq_revision| %>
+                  <tr>
+                    <td><%= JSON.parse(rfq_revision.rfq_data)["quantity"] %></td>
+                    <td><%= JSON.parse(rfq_revision.rfq_data)["lead_time"] %></td>
+                    <td><%= JSON.parse(rfq_revision.rfq_data)["last_unit_price"] %></td>
+                    <td><%= JSON.parse(rfq_revision.rfq_data)["unit_cost_price"] %></td>
+                    <td><%= JSON.parse(rfq_revision.rfq_data)["gst"] %></td>
+                    <td><%= JSON.parse(rfq_revision.rfq_data)["unit_freight"] %></td>
+                    <td><%= JSON.parse(rfq_revision.rfq_data)["final_unit_price"] %></td>
+                    <td><%= JSON.parse(rfq_revision.rfq_data)["total_price"] %></td>
+                    <td><%= format_date_with_time(rfq_revision.created_at) %></td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    <br>
+    <div class="card-footer">
+      <%= link_to edit_rfq_suppliers_rfq_index_path(rfq_id: @rfq.id), :class => "mt-2 btn bmro-button btn-block btn-sm" do %>
+        <i class="fal fa-pen"></i> Edit RFQ
+      <% end %>
+    </div>
+  </div>
+</div>

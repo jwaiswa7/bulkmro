@@ -1,0 +1,48 @@
+<% provide :container_fluid, true %>
+
+<div class="col-12">
+  <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <h3 class="text-black-50 mb-0">
+      Hello <strong><%= current_suppliers_contact.first_name %></strong>, you are browsing
+      <strong><%= current_company.name %></strong>
+    </h3>
+  </div>
+
+  <div class="card mt-1">
+    <div class="card-body">
+      <h5 class="text-uppercase text-black-50 mb-0">Recent Purchase Orders</h5>
+      <table class="table datatable w-100 wrap-whitespace table-bordered" data-fixed-header="false">
+        <thead>
+        <tr>
+<!--          <th class="no-sort"></th>-->
+          <th class="no-sort text-left">Purchase #</th>
+          <th class="no-sort text-left">Inquiry #</th>
+          <th class="no-sort text-right">Supplier</th>
+          <th class="no-sort text-right">Status</th>
+          <th class="no-sort text-right">Warehouse</th>
+          <th class="no-sort text-left">Line Items</th>
+          <th class="no-sort text-right">PO Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @dashboard.recent_purchase_orders.each do |purchase_order| %>
+          <tr>
+<!--            <td><%#= row_action_button(customers_quote_path(sales_quote), 'eye', 'View Quote', 'info', :_blank) %></td>-->
+            <td class="text-left"><%= purchase_order.po_number %></td>
+            <td class="text-left"><%= purchase_order.inquiry.inquiry_number %></td>
+            <td><%= purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present? %></td>
+            <td><%= purchase_order.status || purchase_order.metadata_status %></td>
+            <td><%= purchase_order.warehouse&.name %></td>
+            <td class="text-left"><%= purchase_order.rows.count %></td>
+            <td><%= format_succinct_date(purchase_order.po_date) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer">
+      <a href="<%= suppliers_purchase_orders_path %>" class="btn btn-lg btn-block btn-info bmro-button"><i class="fal fa-eye mr-1"></i>View
+        More</a>
+    </div>
+  </div>
+</div>

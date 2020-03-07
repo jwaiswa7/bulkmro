@@ -16,7 +16,7 @@ class InventoryStatusMailer < ApplicationMailer
       subject: "Inventory Status Update as on #{Date.today} .",
       body: body,
       company_id: @company.id,
-      email_type: 60
+      email_type: 70
     )
     standard_email(@email_message)
     email = htmlized_email(@email_message)

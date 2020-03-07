@@ -26,6 +26,7 @@ import treant from "./components/treant";
 import stringManipulations from "./components/stringManipulations";
 import easyAutocomplete from "./components/easyAutocomplete"
 import globalSearch from "./components/globalSearch"
+import navigationMenu from "./components/navigationMenu"
 
 // Namespacing all imports under app
 let app = {};
@@ -58,6 +59,7 @@ app.initializeComponents = () => {
     treant();
     easyAutocomplete();
     globalSearch();
+    navigationMenu();
 };
 
 // Turbolinks load event

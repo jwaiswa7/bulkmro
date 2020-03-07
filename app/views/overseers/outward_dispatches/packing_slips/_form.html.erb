@@ -7,25 +7,26 @@
     <%= f.hidden_field :id %>
     <%= f.hidden_field :outward_dispatch_id %>
     <%#= f.hidden_field :sales_order_id %>
-    <div class="card mb-2">
+    <!-- <div class="card mb-2">
       <div class="card-body">
         <div class="">
-          <h6 class="text-uppercase text-black-50 mb-1"> Entity Details</h6>
+          
           <div class="form-row">
 
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="card">
       <div class="card-body">
         <div class="">
+          <h6 class="text-uppercase text-black-50 mb-1 bmro-form-heading"> Entity Details</h6>
           <div class="form-row">
             <div class="col-4 col-md-4">
-              <%= f.input :box_number, required:true%>
+              <%= f.input :box_number, input_html: { class: 'bmro-form-input' }, required:true%>
             </div>
             <div class="col-4 col-md-4">
-              <%= f.input :box_dimension %>
+              <%= f.input :box_dimension, input_html: { class: 'bmro-form-input' }  %>
             </div>
           </div>
         </div>
@@ -74,9 +75,9 @@
           <% end %>
         <% end %>
       </div>
-      <div class="card-footer">
+      <div class="card-footer bmro-card-footer">
         <div class="form-row">
-          <%= button_tag(type: "submit", class: "btn btn-success btn-block submit-form") do %>
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block submit-form bmro-button") do %>
             <% if action_name.capitalize == "New" %>
               <i class="fal fa-plus-circle"></i>
             <% else %>
@@ -86,6 +87,7 @@
           <% end %>
         </div>
       </div>
+      
     </div>
   <% end %>
 </div>

@@ -23,7 +23,7 @@ class ExportMailer < ApplicationMailer
       subject = "Export #{record.titleize} Completed"
     end
 
-    email = mail(to: 'bulkmro007@gmail.com', subject: subject)
+    email = mail(to: 'tech@bulkmro.com', subject: subject)
     email.delivery_method.settings = Settings.gmail_smtp.to_hash
     email.delivery_method.settings.merge!(user_name: Settings.itops_mail.user_mail, password: Settings.itops_mail.smtp_password)
   end

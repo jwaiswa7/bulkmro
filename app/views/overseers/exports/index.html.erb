@@ -38,8 +38,7 @@
             </td>
             <% if is_authorized(:export, 'process_for_download') %>
               <td>
-                <%= link_to generate_export_overseers_exports_path(export_type: export_type), class: ['btn btn-primary btn-rounded align-self-center btn-block-sm-down ml-1 export-button', export.values.first.status == ('Processing' || 'Enqueue') ? 'export-disable' : ''].join(' '), :"data-original-title" => 'Click to Process New Download',:"data-toggle" => 'tooltip' do %>
-                  <i class="fal fa-download mr-1"></i>
+                <%= link_to generate_export_overseers_exports_path(export_type: export_type), class: ['btn btn-primary btn-rounded align-self-center btn-block-sm-down ml-1 export-button bmro-button', export.values.first.status == ('Processing' || 'Enqueue') ? 'export-disable' : ''].join(' '), :"data-original-title" => 'Click to Process New Download',:"data-toggle" => 'tooltip' do %>
                   Process
                 <% end %>
 
@@ -47,8 +46,7 @@
             <% end %>
             <td>
               <% if export.key?("Completed").present? && export["Completed"].report.attached? %>
-                <%= link_to url_for(export["Completed"].report), class: 'btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1', :"data-original-title" => 'Last Download Available',:"data-toggle" => 'tooltip', :"data-badge"=> [time_ago_in_words(export["Completed"].created_at), "ago"].join(' ') do %>
-                  <i class="fal fa-download mr-1"></i>
+                <%= link_to url_for(export["Completed"].report), class: 'btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 bmro-button', :"data-original-title" => 'Last Download Available',:"data-toggle" => 'tooltip', :"data-badge"=> [time_ago_in_words(export["Completed"].created_at), "ago"].join(' ') do %>
                   Download
                 <% end %>
               <% end %>

@@ -95,6 +95,18 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit_suppliers? && not_logistics?
   end
 
+  def link_product_suppliers?
+    edit? && record.inquiry_products.present? && edit_suppliers?
+  end
+
+  def draft_rfq?
+    edit_suppliers?
+  end
+
+  def rfq_review?
+    record.supplier_rfqs.present?
+  end
+
   def sales_quotes?
     edit? && (new_sales_quote? || record.sales_quotes.present?)
   end

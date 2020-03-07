@@ -107,9 +107,9 @@
               </h6>
               <div class="form-row my-2 text-small">
                 <div class="col-12">
-                  <table class="w-100 datatable table table-bordered dt-responsive table-unstyled" data-fixed-header="false">
+                  <table class="w-100 datatable table table-bordered dt-responsive dt-responsive wrap-whitespace mt-0" data-fixed-header="false">
                     <thead>
-                    <tr>
+                    <tr align="left">
                       <th class="no-sort">
                         <span data-toggle="tooltip" title="Quantity">Qty</span>
                       </th>
@@ -142,31 +142,31 @@
                     </thead>
                     <tbody>
                     <tr>
-                      <td>
+                      <td class="text-right">
                         <span><%= row.object.quantity %></span>
                       </td>
-                      <td>
+                      <td class="text-left">
                         <span><%= row.object.measurement_unit %></span>
                       </td>
-                      <td>
+                      <td class="text-right">
                         <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
                       </td>
-                      <td>
+                      <td class="text-right">
                         <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
                       </td>
-                      <td>
+                      <td class="text-right">
                         <span><%= row.object.unit_selling_price %></span>
                       </td>
                       <td class="<%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
                         <span><%= row.object.converted_unit_selling_price %></span>
                       </td>
-                      <td>
+                      <td class="text-right">
                         <span><%= row.object.total_selling_price %></span>
                       </td>
-                      <td>
+                      <td class="text-right">
                         <span><%= row.object.total_selling_price_with_tax %></span>
                       </td>
-                      <td>
+                      <td class="text-right">
                         <span><%= row.object.best_tax_code %></span>
                       </td>
                     </tr>
@@ -192,10 +192,10 @@
       <div class="card-footer">
         <div class="form-row">
           <div class="col-6">
-            <%= link_to "Cancel", edit_overseers_inquiry_sales_order_path(@inquiry, @sales_order), class: 'btn btn-danger btn-block' %>
+            <%= link_to "Cancel", edit_overseers_inquiry_sales_order_path(@inquiry, @sales_order), class: 'bmro-button btn btn-danger btn-block' %>
           </div>
           <div class="col-6">
-            <%= f.submit 'Save and Confirm', class: 'btn btn-success btn-block' %>
+            <%= f.submit 'Save and Confirm', class: 'bmro-button btn btn-success btn-block' %>
           </div>
         </div>
       </div>

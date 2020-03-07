@@ -4,11 +4,12 @@
     <%= yield :heading_buttons %>
   <% end %>
 </div>
-<p class="mt-md-1 d-none d-md-block">
-  All <%= children.to_s.downcase %> searchable with relevant term/keywords under <strong><%= entity.name %></strong>.
-</p>
-
-<table class="datatable table table-bordered dt-responsive w-100" data-fixed-header="false" data-search="Enter search term/keywords" data-ajax="<%= yield :ajax_url %>">
+<% if entity.present? %>
+  <p class="mt-md-1 d-none d-md-block">
+    All <%= children.to_s.downcase %> searchable with relevant term/keywords under <strong><%= entity.name %></strong>.
+  </p>
+<% end %>
+<table class="datatable table table-bordered dt-responsive w-100 bmro-datatable-style" data-fixed-header="true" data-search="Enter search term/keywords" data-ajax="<%= yield :ajax_url %>">
   <thead>
   <tr>
     <%= yield :header_row %>

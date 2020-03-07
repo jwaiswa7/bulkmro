@@ -53,9 +53,9 @@
         <div class="card-body">
           <div class="simple-row">
 
-            <%= render 'overseers/po_requests/rows_form', f: po_request, product_path: autocomplete_overseers_products_path, stock: true%>
+            <%= render 'overseers/po_requests/rows_form', f: po_request, product_path: autocomplete_overseers_products_path, stock: true, supplier_index: @supplier_index %>
 
-            <%= po_request.add_nested_fields_link :rows, class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' do %>
+            <%= po_request.add_nested_fields_link :rows, class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0 bmro-button', role: 'button' do %>
               <i class="fal fa-plus-circle mr-1"></i>Add a product
             <% end %>
           </div>
@@ -66,11 +66,11 @@
 
     <div class="card-footer">
       <% if action_name.capitalize == "New" %>
-        <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+        <%= button_tag(type: "submit", class: "btn btn-warning btn-block bmro-button") do %>
           <i class="fal fa-pen"></i> Preview PO request
         <% end %>
       <% else %>
-        <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
+        <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2 bmro-button") do %>
           <i class="fal fa-pen"></i> Update PO Request
         <% end %>
       <% end %>

@@ -7,7 +7,7 @@ class Customers::SalesInvoicesController < Customers::BaseController
     respond_to do |format|
       format.html { }
       format.json do
-        service = Services::Customers::Finders::SalesInvoices.new(params, current_contact, current_company)
+        service = Services::Customers::Finders::SalesInvoices.new(params, current_customers_contact, current_company)
         service.call
 
         @indexed_sales_invoices = service.indexed_records
@@ -44,7 +44,7 @@ class Customers::SalesInvoicesController < Customers::BaseController
 
   private
     def set_sales_invoice
-      @sales_invoice = current_contact.account.invoices.find(params[:id])
+      @sales_invoice = current_customers_contact.account.invoices.find(params[:id])
       @locals = { stamp: false }
       if params[:stamp].present?
         @locals = { stamp: true }

@@ -99,6 +99,12 @@ import emailMessages from "./emailMessages/init";
 // Export
 import exports from "./exports/init";
 
+//Supplier RFQ
+import supplierRfqs from "./supplierRfqs/init"
+
+//Supplier Portal RFQ
+import rfq from "./rfq/init"
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -138,6 +144,9 @@ let loader = {
     addresses: addresses,
     emailMessages: emailMessages,
     exports: exports
+    emailMessages: emailMessages,
+    supplierRfqs: supplierRfqs,
+    rfq: rfq
 };
 
 // Imports

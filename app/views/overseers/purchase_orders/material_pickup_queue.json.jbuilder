@@ -8,18 +8,18 @@ json.data (@material_pickup_requests) do |material_pickup_request|
                         "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='pickup_requests[]' class='custom-control-input' value='#{material_pickup_request.id}' id='c-#{material_pickup_request.id}' data-po-id='#{material_pickup_request.purchase_order.id}'><label class='custom-control-label' for='c-#{material_pickup_request.id}'></label></div>"
                       end,
                       if is_authorized(material_pickup_request, 'show') && policy(material_pickup_request).show?
-                        row_action_button(overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'eye', 'View Material Pickup Request', 'info', target: :_blank)
+                        row_action_button_without_fa(overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'bmro-icon-table bmro-icon-used-view', 'View Material Pickup Request', 'info', target: :_blank)
                       end,
                       if is_authorized(material_pickup_request, 'edit') && policy(material_pickup_request).edit?
-                        row_action_button(edit_overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'pencil', 'Edit Pickup Request', 'warning', :_blank)
+                        row_action_button_without_fa(edit_overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'bmro-icon-table bmro-icon-pencil', 'Edit Pickup Request', 'warning', :_blank)
                       end,
                       if is_authorized(material_pickup_request, 'confirm_delivery') && policy(material_pickup_request).confirm_delivery?
-                        row_action_button(confirm_delivery_overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'check', 'Confirm Delivery', 'success', :_blank)
+                        row_action_button_without_fa(confirm_delivery_overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'bmro-icon-table bmro-icon-check', 'Confirm Delivery', 'success', :_blank)
                       end,
                       if is_authorized(material_pickup_request, 'delivered') && policy(material_pickup_request).delivered? && is_authorized(material_pickup_request, 'can_request_invoice') && policy(material_pickup_request).can_request_invoice?
-                        row_action_button(new_overseers_invoice_request_path(purchase_order_id: material_pickup_request.purchase_order, mpr_id: material_pickup_request), 'plus', 'Create GRPO Request', 'success', target: :_blank)
+                        row_action_button_without_fa(new_overseers_invoice_request_path(purchase_order_id: material_pickup_request.purchase_order, mpr_id: material_pickup_request), 'bmro-icon-table bmro-icon-circle', 'Create GRPO Request', 'success', target: :_blank)
                       elsif material_pickup_request.invoice_request.present? && is_authorized(material_pickup_request.invoice_request, 'show') && policy(material_pickup_request.invoice_request).show?
-                        row_action_button(overseers_invoice_request_path(material_pickup_request.invoice_request), 'eye', "View #{material_pickup_request.invoice_request.readable_status}", 'success', target: :_blank)
+                        row_action_button_without_fa(overseers_invoice_request_path(material_pickup_request.invoice_request), 'bmro-icon-table bmro-icon-used-view', "View #{material_pickup_request.invoice_request.readable_status}", 'success', target: :_blank)
                       end,
                   ].join(' '),
                   link_to(material_pickup_request.purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(material_pickup_request.purchase_order.inquiry), target: '_blank'),

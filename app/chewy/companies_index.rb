@@ -23,7 +23,7 @@ class CompaniesIndex < BaseIndex
     field :supplied_brands_count, value: -> (record) {record.supplied_brands.uniq.count}, type: 'integer'
     field :supplied_products_count, value: -> (record) {record.supplied_products.uniq.count}, type: 'integer'
     field :supplied_brand_names, value: -> (record) {record.supplied_brands.map(&:name).uniq.join(',').upcase}
-
+    field :supplied_brand, value: -> (record) {record.supplied_brands.pluck(:id).uniq}
     field :created_at, value: -> (record) {record.created_at}, type: 'date'
     field :updated_at, value: -> (record) {record.updated_at}, type: 'date'
   end

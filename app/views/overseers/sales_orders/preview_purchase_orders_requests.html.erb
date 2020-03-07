@@ -93,7 +93,7 @@
                 </div>
 
                 <% if po_request.object.contact.present? %>
-                  <div class="col-3 col-md-2 mb-2">
+                  <div class="col-5 col-md-3 mb-2">
                     <strong class="d-block">Contact</strong>
                     <%= po_request.object.contact.to_s %>
                     <% if po_request.object.contact_email.present? %>
@@ -115,35 +115,35 @@
                   </div>
                 <% end %>
 
-                <div class="col-2 col-md-2 mb-2">
+                <div class="col-5 col-md-3 mb-2">
                   <strong class="d-block">Status</strong>
                   <%= po_request.object.status %>
                 </div>
-                <div class="col-2 col-md-2 mb-2">
+                <div class="col-5 col-md-3 mb-2">
                   <strong class="d-block">P. Terms</strong>
                   <%= po_request.object.payment_option %>
                 </div>
 
 
                 <% if po_request.object.supplier_po_type.present? %>
-                  <div class="col-2 col-md-2 mb-2">
+                  <div class="col-5 col-md-3 mb-2">
                     <strong class="d-block">Supplier PO Type</strong>
                     <%= po_request.object.supplier_po_type.humanize.titleize %>
                   </div>
                 <% end %>
                 <% if po_request.object.supplier_committed_date.present? %>
-                  <div class="col-2 col-md-2 mb-2">
+                  <div class="col-5 col-md-3 mb-2">
                     <strong class="d-block">Supplier Committed Delivery Date</strong>
                     <%= po_request.object.supplier_committed_date %>
                   </div>
                 <% end %>
 
-                <div class="col-2 col-md-2 mb-2">
+                <div class="col-5 col-md-3 mb-2">
                   <strong class="d-block">Transport Mode</strong>
                   <%= po_request.object.transport_mode.present? ? po_request.object.transport_mode : 'Road' %>
                 </div>
 
-                <div class="col-2 col-md-2 mb-2">
+                <div class="col-5 col-md-3 mb-2">
                   <strong class="d-block">Delivery Type</strong>
                   <%= po_request.object.delivery_type.present? ? po_request.object.delivery_type : 'Door Delivery' %>
                 </div>
@@ -222,16 +222,16 @@
             <hr class="<%= f.object.po_requests.last == po_request.object ? 'd-none' : '' %>"/>
           <% end %>
         </div>
-        <div class="card-footer">
+        <div class="card-footer bmro-card-footer">
           <% if is_authorized(@sales_order, 'create_purchase_orders_requests') %>
             <div class="form-row">
               <div class="col-md-6">
-                <%= link_to :back, :class => "btn btn-warning btn-block" do %>
+                <%= link_to :back, :class => "btn btn-warning btn-block bmro-button" do %>
                   <i class="fal fa-angle-double-left"></i> Back
                 <% end %>
               </div>
               <div class="col-md-6">
-                <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+                <%= button_tag(type: "submit", class: "btn btn-success btn-block bmro-button") do %>
                   <i class="fal fa-pen"></i> Create PO request
                 <% end %>
               </div>

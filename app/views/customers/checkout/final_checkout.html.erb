@@ -49,12 +49,12 @@
                   <a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing" class="float-right">Change</a>
                 <% end %>
               </strong>
-              <em class="d-block mt-1"><%= current_contact.name %></em>
+              <em class="d-block mt-1"><%= current_customers_contact.name %></em>
               <em class="d-block mt-1"><%= current_company.name %></em>
               <div id="changed_billing_address">
                 <%= current_cart.billing_address.to_multiline_s %><br/>
-                <% if current_contact.telephone.present? %>
-                  T: <%= current_contact.telephone %><br/>
+                <% if current_customers_contact.telephone.present? %>
+                  T: <%= current_customers_contact.telephone %><br/>
                 <% end %>
                 GST No: <%= current_cart.billing_address.gst %>
               </div>
@@ -67,12 +67,12 @@
               <% if params[:next_step].blank? %>
                 <a data-toggle="collapse" data-parent="#checkout" href="#checkout-shipping" class="float-right">Change</a>
               <% end %>
-              <em class="d-block mt-1"><%= current_contact.name %></em>
+              <em class="d-block mt-1"><%= current_customers_contact.name %></em>
               <em class="d-block mt-1"><%= current_company.name %></em>
               <div id="changed_shipping_address">
                 <%= current_cart.shipping_address.to_multiline_s %><br/>
-                <% if current_contact.telephone.present? %>
-                  T: <%= current_contact.telephone %><br/>
+                <% if current_customers_contact.telephone.present? %>
+                  T: <%= current_customers_contact.telephone %><br/>
                 <% end %>
                 GST No: <%= current_cart.shipping_address.gst %>
               </div>
@@ -239,7 +239,7 @@
                 <% if @cart.billing_address.present? && @cart.shipping_address.present? %>
                   <div class="col-12 col-md-6 mt-2 mt-md-0">
                     <% if @cart.payment_method.present? && @cart.payment_method == 'Bank Transfer' %>
-                      <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
+                      <%= link_to customers_customer_orders_path(contact_id: current_customers_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
                         Place Order
                       <% end %>
                     <% else %>
@@ -254,8 +254,8 @@
                           data-name="Bulk MRO"
                           data-description="Online Order Payment"
                           data-image="https://sprint.bulkmro.com/assets/BMIS_Logo_PNG-53d0c1344909fef521a2a08848e952268ba7b61c133103f49c7100f2735b8d59.png"
-                          data-prefill.name="<%= current_contact.full_name %>"
-                          data-prefill.email="<%= current_contact.email %>"
+                          data-prefill.name="<%= current_customers_contact.full_name %>"
+                          data-prefill.email="<%= current_customers_contact.email %>"
                           data-theme.color="#F37254"
                         ></script>
                         <%= f.hidden_field :id %>

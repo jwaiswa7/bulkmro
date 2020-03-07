@@ -7,7 +7,7 @@ class Customers::SalesQuotes::CommentsController < Customers::SalesQuotes::BaseC
   end
 
   def create
-    @comment = @inquiry.comments.build(comment_params.merge(contact: current_contact, show_to_customer: true))
+    @comment = @inquiry.comments.build(comment_params.merge(contact: current_customers_contact, show_to_customer: true))
     authorize @comment
 
     if @comment.save

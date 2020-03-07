@@ -10,25 +10,27 @@ const massLeadDateUpdate = () => {
 };
 
 let toggleCheckboxes = () => {
-    $('#all_lead_dates').prop("checked", false);
+    $('input[type=checkbox][id^=all_lead_dates_]').prop("checked", false);
 
-    $('#all_lead_dates').change((event) => {
-        var $element = $(event.target)
-        if ($element.is(':checked')) {
-            $('input[type=checkbox][name="po_request_row[]"]').each((index, element) => {
+    $('input[type=checkbox][id^="all_lead_dates_"]').change((event) => {
+        var selectAllParentDivId = event.target.getAttribute('id').replace('all_lead_dates_','.supplier-parent-div-')
+        var concatenatedStringWithParentDivID = selectAllParentDivId.concat(' input[type=checkbox][name="po_request_row[]"]')
+
+        if ($(event.target).is(':checked')) {
+            $(concatenatedStringWithParentDivID).each((index, element) => {
                 $(element).prop("checked", true);
-                showOrHideActions();
             });
         } else {
-            $('input[type=checkbox][name="po_request_row[]"]').each((index, element) => {
+            $(concatenatedStringWithParentDivID).each((index, element) => {
                 $(element).prop("checked", false);
-                showOrHideActions();
             });
         }
+        showOrHideActions(selectAllParentDivId);
     });
 
-    $('body').on('change', 'input[type=checkbox][name="po_request_row[]"]', (event) => {
-        showOrHideActions();
+    $('input[type=checkbox][id^="po_request_row_id_"]').change((event) => {
+        var parentDivId = event.target.getAttribute('data-parent-div-id')
+        showOrHideActions(parentDivId)
     })
 }
 
@@ -62,14 +64,16 @@ let updateLeadDate = () => {
 };
 
 
-let showOrHideActions = () => {
+let showOrHideActions = (parentDiv) => {
     let hide = true;
 
-    if ($('input[type=checkbox][name="po_request_row[]"]:checked').length > 0) {
-        $('.update_lead_date_wrapper').show();
+    var divUpdateLeadDateWrapper = parentDiv.concat(' .update_lead_date_wrapper')
+    var checkedBox = $(parentDiv.concat(' input[type=checkbox][name="po_request_row[]"]:checked'))
+    if ($(checkedBox).length > 0) {
+        $(divUpdateLeadDateWrapper).show();
         disableBackdateOption($('input[name*=common_lead_date]'));
     } else {
-        $('.update_lead_date_wrapper').hide();
+        $(divUpdateLeadDateWrapper).hide();
     }
 
 }

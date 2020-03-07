@@ -2,34 +2,38 @@
   <%= render 'shared/snippets/page_header', e: @warehouse %>
 
   <%= simple_form_for([:overseers, @warehouse], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <div class="form-group">
-      <%= f.input :name, label: 'Warehouse Name', :placeholder => 'e.g. Reliance Industries', :required => 'true', :class => 'form-control' %>
-    </div>
-    <%= f.simple_fields_for :address do |address| %>
-       <div class="form-group">
-          <%= address.input :street1, label:"Street1"  %>
-        </div>
-        <div class="form-group">
-          <%= address.input :street2, label:"Street2"  %>
-        </div>
-        <div class="form-row">
-          <div class="col-6 col-md-3">
-            <%= address.input :country_code, as: :country, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
+    <div class="bmro-card bmro-card-padding">
+      <div class="form-group bmro-margin-bottom">
+        <%= f.input :name, label: 'Warehouse Name', :placeholder => 'e.g. Reliance Industries', :required => 'true', :class => 'form-control bmro-form-input' %>
+      </div>
+      <%= f.simple_fields_for :address do |address| %>
+         <div class="form-group bmro-margin-bottom">
+            <%= address.input :street1, input_html: { class: 'bmro-form-input' }, label:"Street1"  %>
           </div>
-
+          <div class="form-group bmro-margin-bottom">
+            <%= address.input :street2, input_html: { class: 'bmro-form-input' }, label:"Street2"  %>
+          </div>
+          <div class="form-row bmro-margin-bottom">
             <div class="col-6 col-md-3">
-              <%= address.association :state, :wrapper => :custom_multi_select, collection: AddressState.indian %>
+              <%= address.input :country_code, as: :country, input_html: { class: 'bmro-form-input select2-single bmro-dropdown-icon' }, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
             </div>
 
-          <div class="col-6 col-md-3">
-            <%= address.input :city_name %>
+              <div class="col-6 col-md-3">
+                <%= address.association :state, input_html: { class: 'bmro-form-input select2-single bmro-dropdown-icon' }, :wrapper => :custom_multi_select, collection: AddressState.indian %>
+              </div>
+
+            <div class="col-6 col-md-3">
+              <%= address.input :city_name, input_html: { class: 'bmro-form-input' } %>
+            </div>
+            <div class="col-6 col-md-3">
+              <%= address.input :pincode, input_html: { class: 'bmro-form-input' } %>
+            </div>
+            <%= f.input :is_active %>
           </div>
-          <div class="col-6 col-md-3">
-            <%= address.input :pincode %>
-          </div>
-          <%= f.input :is_active %>
-        </div>
-    <% end %>
-    <%= action_button(action_name, @warehouse) %>
+      <% end %>
+      <div class="bmro-button-parent">
+        <%= action_button(action_name, @warehouse) %>
+      </div>
+    </div>  
   <% end %>
 </div>

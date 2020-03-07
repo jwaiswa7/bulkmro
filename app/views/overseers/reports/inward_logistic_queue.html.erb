@@ -1,20 +1,48 @@
-<div class="col-lg-12">
-  <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4" type="button" data-toggle="collapse" data-target="#summary">
+<div class="bmro-float">
+  <a class="btn text-left btn-lg btn-block mt-3 mt-lg-4 bmro-click-toggle bmro-invoice-one collapsed bmro-collapse-button-bg" type="button" data-toggle="collapse" data-target="#summary">
     Inward Logistics Queue Summary
   </a>
+  <div class="bmro-float">
+    <div class="bmro-collaps bmro-collaps2">
+      <div class="bmro-invoice-data">
+        <div class="bmro-invoice-edit">
+          <label>Material Not Ready</label>
+          <span>396</span>
+        </div>
+        <div class="bmro-invoice-edit">
+          <label>Material Pickup Pending</label>
+          <span>93</span>
+        </div>
+        <div class="bmro-invoice-edit">
+          <label>Delivered:GRPO Pending</label>
+          <span>2630</span>
+        </div>
+        <div class="bmro-invoice-edit">
+          <label>Status Partial GRPO Done</label>
+          <span>0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+   $(".bmro-click-toggle").click(function(){
+    $(this).parent().toggleClass("bmro-collaps2-bg");
+  }); 
+</script>
 
-  <div id="summary" class="collapse show">
-    <div class="mt-2 form-row d-flex flex-row align-content-stretch">
+  <div id="summary" class="collapse bmro-float">
+    <div class="form-row d-flex flex-row align-content-stretch bm-2 bmro-bg bmro-inward-colum-parent bmro-margin-bottom-20">
       <% @data.summary_box_data.each_with_index do |title, index| %>
-        <div class="col-4 col-md-3 col-lg-3 col-xl-4 d-flex flex-row align-content-stretch">
+        <div class="col-2 col-md-2 col-lg-2 col-xl-2 d-flex flex-row align-content-stretch">
 
-          <div class="card w-100 mb-2 rim rim-bottom border-<%= index == @data.summary_box_data.size - 1 ? "warning" : "success" %>">
-            <div class="card-body px-3 pt-3 pb-3">
-              <div class="text-center d-flex flex-column h-100">
-                <p class="mb-1 text-small">
+          <div class="bmro-inward-card card w-100 mb-2 rim border-<%= index == @data.summary_box_data.size - 1 ? "warning" : "success" %>">
+            <div class="card-body px-1 pt-1 pb-1">
+              <div class="h-100">
+                <p class="mb-1 text-small bmro-logistics-p">
                   <a href="#"><strong><%= title.first.to_s == "with_inward_pending" ? "Delivered : GRPO Pending".upcase : title.first.to_s.humanize.remove("With").upcase %></strong></a>
                 </p>
-                <h5 class="mb-0 mt-auto text-<%= index == @data.summary_box_data.size - 1 ? "warning" : "success" %>"><%= @data.summary_box_data[title.first] %></h5>
+                <h5 class="bmro-inward-head mb-0 mt-auto text-<%= index == @data.summary_box_data.size - 1 ? "warning" : "success" %>"><%= @data.summary_box_data[title.first] %></h5>
               </div>
             </div>
           </div>
@@ -24,18 +52,20 @@
   </div>
 </div>
 
+
+
 <% provide :container_fluid, true %>
-<div class="col-lg-12 mb-0">
+<div class="col-lg-12 mt-1 mb-0">
   <div class="page-header mb-0">
     <h2>Inward Logistics Queue Report</h2>
-    <p>Inward Logistics Queue Report from <strong><%= format_date_without_time(Date.new(2018, 04, 01)) %></strong> to
-      <strong><%= format_date_without_time(Date.today.end_of_day) %></strong>.</p>
+    <!-- <p>Inward Logistics Queue Report from <strong><%= format_date_without_time(Date.new(2018, 04, 01)) %></strong> to
+      <strong><%= format_date_without_time(Date.today.end_of_day) %></strong>.</p> -->
   </div>
 </div>
 
 <div class="sticky-top" style="width: 100%;display: none" id="stick-tid">
-  <table class="table text-center mt-3" style="margin-top: 0px !important;margin-bottom: 0px" >
-    <thead >
+  <table class="table text-center mt-3 bmro-new-table bmro-th bmro-datatable-style bmro-remove-radius" style="margin-top: 0px !important;margin-bottom: 0px" >
+    <thead>
     <tr>
       <th class="text-uppercase">Logistics Owner</th>
       <th class="text-uppercase text-black-50">Material Not Ready</th>
@@ -47,16 +77,17 @@
   </table>
 </div>
 
-<table class="table text-center mt-3" id="sticky-nav">
+<table class="table text-center mt-3 bmro-new-table bmro-th bmro-datatable-style bmro-remove-radius" id="sticky-nav">
   <thead data-toggle="sticky">
   <tr>
-    <td><h5 class="mb-0 text-black-50">Logistics Owner</h5></td>
-    <td><h5 class="mb-0 text-black-50">Material Not Ready</h5></td>
-    <td><h5 class="mb-0 text-black-50">Material Pickups Pending</h5></td>
-    <td><h5 class="mb-0 text-black-50">Inward Pending</h5></td>
-    <td><h5 class="mb-0 text-black-50">Status Partial GRPO Done</h5></td>
+    <td class="mb-0 text-black-50">Logistics Owner</td>
+    <td class="mb-0 text-black-50">Material Not Ready</td>
+    <td class="mb-0 text-black-50">Material Pickups Pending</td>
+    <td class="mb-0 text-black-50">Inward Pending</td>
+    <td class="mb-0 text-black-50">Status Partial GRPO Done</td>
   </tr>
   </thead>
+
   <tbody>
   <% @data.entries.each do |overseer, values| %>
     <% if values.except(:name).values.uniq.length > 1 %>

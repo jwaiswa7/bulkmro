@@ -3,6 +3,7 @@ class Overseers::LogisticsScorecardsController < Overseers::BaseController
 
   def index
     authorize_acl :logistics_scorecard
+    @model_name = 'logistics_scorecards'
     respond_to do |format|
       format.html {
         service = Services::Overseers::LogisticsScorecards::OverallSummary.new(params, current_overseer)

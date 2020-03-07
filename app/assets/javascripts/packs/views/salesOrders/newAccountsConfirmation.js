@@ -13,14 +13,14 @@ const newAccountsConfirmation = () => {
         let i = values.indexOf(rejectReason);
 
         if (f.currentTarget.checked == true) {
-            $(".summary-list ."+ target).removeClass('fa-times').addClass('fa-check');
+            $(".summary-list ."+ target).removeClass('bmro-status-cancel').addClass('dummy');
             if (i >= 0) {
                 values.splice(i, 1);
                 $select.val(values).change();
             }
 
         } else if (f.currentTarget.checked == false) {
-            $(".summary-list ."+ target).removeClass('fa-check').addClass('fa-times');
+            $(".summary-list ."+ target).removeClass('dummy').addClass('bmro-status-cancel');
             values.push(rejectReason);
             $select.val(values).change();
 
@@ -62,7 +62,7 @@ let rejectReasonMapping = (param) => {
         "sales_order_confirm_shipping_warehouse": "Wrong Shipping Warehouse",
         "sales_order_confirm_billing_address": "Wrong Billing Address",
         "sales_order_confirm_shipping_address": "Wrong Shipping Address",
-        "sales_order_confirm_attachments": "Wrong Attachments",
+        // "sales_order_confirm_attachments": "Wrong Attachments",
         "sales_order_confirm_hsn_codes": "Wrong HSN Codes",
         "sales_order_confirm_tax_rates": "Wrong Tax Rates",
         "sales_order_confirm_tax_types": "Wrong Tax Types",

@@ -1,14 +1,14 @@
 class Customers::ProfileController < Customers::BaseController
-  before_action :authenticate_contact!
+  before_action :authenticate_customers_contact!
 
   def edit
-    @contact = current_contact
+    @contact = current_customers_contact
     authorize :profile
   end
 
   def update
     authorize :profile
-    @contact = current_contact
+    @contact = current_customers_contact
     if @contact.valid_password?(profile_params[:current_password].to_s)
       @contact.assign_attributes(profile_params)
       if @contact.save

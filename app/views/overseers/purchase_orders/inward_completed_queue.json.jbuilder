@@ -1,25 +1,25 @@
 json.data (@inward_dispatches) do |inward_dispatch|
   json.array! [
+                  if inward_dispatch.sales_order.present? && is_authorized(inward_dispatch, 'can_create_ar_invoice') && (policy(inward_dispatch).create_ar_invoice?) && inward_dispatch.sales_order.remote_uid.present?
+                    "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-so-id='#{inward_dispatch.sales_order.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
+                  end,
                   [
-                      if inward_dispatch.sales_order.present? && is_authorized(inward_dispatch, 'can_create_ar_invoice') && (policy(inward_dispatch).create_ar_invoice?) && inward_dispatch.sales_order.remote_uid.present?
-                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='the_inward_dispatches[]' class='custom-control-input' value='#{inward_dispatch.id}' id='c-#{inward_dispatch.id}' data-so-id='#{inward_dispatch.sales_order.id}' data-po-id='#{inward_dispatch.purchase_order.id}'><label class='custom-control-label' for='c-#{inward_dispatch.id}'></label></div>"
-                      end,
                       if is_authorized(inward_dispatch, 'show')
-                        row_action_button(overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'eye', 'View Inward Dispatch', 'info', target: :_blank)
+                        row_action_button_without_fa(overseers_purchase_order_inward_dispatch_path(inward_dispatch.purchase_order, inward_dispatch), 'bmro-icon-table bmro-icon-used-view', 'View Inward Dispatch', 'info', target: :_blank)
                       end,
                       if inward_dispatch.sales_order.present? && is_authorized(inward_dispatch, 'can_create_ar_invoice') && (policy(inward_dispatch).create_ar_invoice?) && inward_dispatch.sales_order.remote_uid.present?
-                        row_action_button(new_overseers_ar_invoice_request_path(sales_order_id: inward_dispatch.sales_order, ids: inward_dispatch.id), 'plus', 'Create AR Invoice Request', 'success', target: :_blank)
+                        row_action_button_without_fa(new_overseers_ar_invoice_request_path(sales_order_id: inward_dispatch.sales_order, ids: inward_dispatch.id), 'bmro-icon-table bmro-icon-circle', 'Create AR Invoice Request', 'success', target: :_blank)
                       elsif inward_dispatch.sales_order.present? && is_authorized(inward_dispatch, 'can_create_ar_invoice') && (policy(inward_dispatch).create_ar_invoice?) && inward_dispatch.sales_order.remote_uid.blank?
                         link_to('', class: 'btn btn-sm btn-success able_to_create_ar_invoice', 'data-sales-order-number': inward_dispatch.sales_order.order_number, title: 'Create AR Invoice', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-plus'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-circle'].join
                         end
                         #row_action_button('#', 'plus', 'View Inward Dispatch', 'success')
                       end,
                       if is_authorized(inward_dispatch, 'index')
-                        link_to('', class: ['btn btn-sm btn-success comment-inward-dispatch'], 'data-inward-dispatch-id': inward_dispatch.id, 'data-purchase-id': inward_dispatch.purchase_order.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['btn btn-sm btn-success comment-inward-dispatch'], 'data-inward-dispatch-id': inward_dispatch.id, 'data-purchase-id': inward_dispatch.purchase_order.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end
                       end,
                   ].join(' '),
@@ -51,6 +51,7 @@ json.data (@inward_dispatches) do |inward_dispatch|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [],

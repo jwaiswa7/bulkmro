@@ -9,9 +9,18 @@ Rails.application.routes.draw do
   root to: 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
   get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
+  get '/suppliers', to: redirect('/suppliers/dashboard'), as: 'supplier_root'
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
-  devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: 'customers'
+  # devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
+
+  namespace :suppliers, path: '/' do
+    devise_for :contacts, controllers: {sessions: 'suppliers/sessions', passwords: 'suppliers/passwords'}, path: :suppliers
+  end
+  
+  namespace :customers, path: '/' do
+    devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
+  end
 
   namespace 'callbacks' do
     resources :sales_orders do
@@ -58,6 +67,12 @@ Rails.application.routes.draw do
       get 'serializer'
       get 'migrations'
       get 'console'
+      get 'get_status_records'
+      get 'show_email_message_modal'
+      post 'update_inquiry'
+      get 'get_filtered_inquiries'
+      get 'get_inquiry_tasks'
+      get 'follow_up_dashboard'
     end
 
     resources :remote_requests do
@@ -180,6 +195,7 @@ Rails.application.routes.draw do
 
     resources :suppliers do
       collection do
+        get 'customized_index'
         get 'autocomplete'
         get 'export_all'
         get 'export_filtered_records'
@@ -505,6 +521,12 @@ Rails.application.routes.draw do
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
+        post 'link_product_suppliers'
+        post 'search_suppliers'
+        post 'destroy_supplier'
+        get 'draft_rfq'
+        post 'request_for_quote'
+        post 'send_email_request_for_quote'
         get 'resync_inquiry_products'
         get 'resync_unsync_inquiry_products'
         get 'calculation_sheet'
@@ -546,6 +568,19 @@ Rails.application.routes.draw do
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
+        resources :supplier_rfqs do
+          collection do
+            post 'create_and_send_link'
+            post 'add_supplier_rfqs'
+            get 'edit_supplier_rfqs'
+            get 'rfq_review'
+            post 'rfq_review_submit'
+            post 'update_all'
+          end
+          member do
+            post 'send_email_request_for_quote'
+          end
+        end
         resources :sales_shipments do
           member do
             get 'relationship_map'
@@ -616,6 +651,10 @@ Rails.application.routes.draw do
             get 'get_relationship_map_json'
             get 'reset_quote_form'
             patch 'sales_quote_reset_by_manager'
+          end
+
+          collection do
+            get 'rfq_review'
           end
 
           scope module: 'sales_quotes' do
@@ -927,5 +966,46 @@ Rails.application.routes.draw do
       end
     end
 
+  end
+
+  namespace 'suppliers' do
+    resource :dashboard, controller: :dashboard, only: :show
+    resources :purchase_orders, controller: :purchase_orders, only: %i[index show]
+    resource :profile, controller: :profile, except: [:show, :index]
+    resources :rfq, controller: :rfq do
+      collection do
+        get 'edit_supplier_rfqs'
+        get 'edit_rfq'
+        patch 'update_ips'
+      end
+    end
+
+    resources :products, controller: :products do
+      collection do
+        get 'index'
+      end
+      member do
+        get 'show'
+        post 'update_price'
+      end
+    end
+
+    resources :companies do
+      collection do
+        get 'choose_company'
+        get 'contact_companies'
+      end
+    end
+
+    resource 'sign_in_steps', controller: 'sign_in_steps' do
+      post 'reset_current_company'
+      get 'edit_current_company'
+      patch 'update_current_company'
+    end
+
+    resource :session, controller: :sessions do
+      get 'edit_current_company'
+      get 'set_current_company'
+    end
   end
 end

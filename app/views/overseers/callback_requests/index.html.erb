@@ -3,13 +3,13 @@
 <% provide :wrap_whitespace, true %>
 
 <% content_for :header_row do %>
-  <th class="no-sort"></th>
-  <th class="text-right">Status</th>
+  <th class="no-sort" width="98px">Quick Actions</th>
+  <th class="text-left">Status</th>
   <th class="text-right"># Hits</th>
-  <th>Method</th>
-  <th data-name="resource_id">Resource</th>
+  <th class="text-left">Method</th>
+  <th data-name="resource_id" class="text-left">Resource</th>
   <th>Response</th>
-  <th class="text-right" data-name="created_at">Created</th>
+  <th class="text-left" data-name="created_at">Created</th>
 <% end %>
 <% content_for :filter_row do %>
   <td data-filter="false"></td>

@@ -87,7 +87,7 @@ class Services::Resources::Shared::ResyncFailedRequests < Services::Shared::Base
           model.update_attributes(remote_uid: item_code)
           resync_request.update_attributes(hits: resync_request.hits + 1)
         end
-      end if resync_request.status == "failed"
+      end if resync_request.status == 'failed'
     end
   end
 

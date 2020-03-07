@@ -5,7 +5,7 @@
         <%= @customer_product.name %>
       </h3>
       <% if is_authorized(@customer_product, 'edit') %>
-        <a href="<%= edit_overseers_company_customer_product_path(@company) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+        <a href="<%= edit_overseers_company_customer_product_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 bmro-button"><i class="fal fa-pen mr-1"></i>Edit
           customer_product</a>
       <% end %>
     </div>

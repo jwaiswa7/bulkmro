@@ -1,20 +1,24 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment, :render_followup_edit_form, :update_followup_date]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :relationship_map, :get_relationship_map_json, :resync_inquiry_products, :resync_unsync_inquiry_products, :duplicate, :render_modal_form, :add_comment, :render_followup_edit_form, :update_followup_date, :link_product_suppliers, :draft_rfq, :destroy_supplier]
 
   def index
     authorize_acl :inquiry
 
     respond_to do |format|
-      format.html {}
+      service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
+      service.call
+
+      @indexed_inquiries = service.indexed_records
+      @inquiries = service.records
+
+      status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry, main_summary_status: Inquiry.main_summary_statuses)
+      status_service.call
+
+      format.html {
+        @statuses = Inquiry.statuses.except('Lead by O/S')
+        @main_summary_statuses = Inquiry.main_summary_statuses
+      }
       format.json do
-        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
-        service.call
-
-        @indexed_inquiries = service.indexed_records
-        @inquiries = service.records
-
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry)
-        status_service.call
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
       end
@@ -57,7 +61,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def kra_report
     authorize_acl :inquiry
-
+    @model_name = 'kra_report'
     if current_overseer.role == 'inside_sales_executive'
       @role_wise_collection = [['Inside Sales Owner by Inquiry', 'inside_sales_owner_id'], ['Inside Sales Owner by Sales Order', 'inside_by_sales_order']]
     elsif current_overseer.role == 'outside_sales_executive'
@@ -170,6 +174,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def tat_report
     authorize_acl :inquiry
+    @model_name = 'tat_report'
     respond_to do |format|
       service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
       service.call
@@ -194,12 +199,12 @@ class Overseers::InquiriesController < Overseers::BaseController
       service = Services::Overseers::Finders::TatReports.new(params, current_overseer)
       service.call
       @indexed_tat_reports = service.indexed_records
-      status_avgs = @indexed_tat_reports.aggregations['tat_by_sales_owner']['buckets']['custom-range']['inquiry_mapping_tats']['buckets'].select {|avg| avg['key'] == @inside_sales_owner.to_i}
+      status_avgs = @indexed_tat_reports.aggregations['tat_by_sales_owner']['buckets']['custom-range']['inquiry_mapping_tats']['buckets'].select { |avg| avg['key'] == @inside_sales_owner.to_i }
       unless status_avgs.blank?
         @sales_owner_average_values = status_avgs[0].except('key', 'doc_count')
         statuses = {'new_inquiry': 0, 'acknowledgment_mail': 0, 'cross_reference': 0, 'preparing_quotation': 0, 'quotation_sent': 0, 'draft_so_appr_by_sales_manager': 0, 'so_reject_by_sales_manager': 0, 'so_draft_pending_acct_approval': 0, 'rejected_by_accounts': 0, 'hold_by_accounts': 0, 'order_won': 0, 'order_lost': 0, 'regret': 0}
-        @status_average = statuses.map {|status, value| {status: status.to_s, value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / status_avgs.first['doc_count']).round(2) : 0}}
-        format.html {render partial: 'sales_owner_status_average'}
+        @status_average = statuses.map { |status, value| {status: status.to_s, value: @sales_owner_average_values[status.to_s].present? ? (@sales_owner_average_values[status.to_s]['value'] / status_avgs.first['doc_count']).round(2) : 0} }
+        format.html { render partial: 'sales_owner_status_average' }
       else
         format.html
       end
@@ -336,7 +341,6 @@ class Overseers::InquiriesController < Overseers::BaseController
       if message.present?
         @inquiry.comments.create(message: "Status changed to: #{@inquiry.status}. \r\n Lost or Regret Reason: #{@inquiry.lost_regret_reason}. \r\n Comment: #{message}.", overseer: current_overseer)
       end
-
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit'
@@ -347,7 +351,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl :inquiry
 
     respond_to do |format|
-      format.html {render partial: 'overseers/dashboard/edit_followup', locals: {obj: @inquiry, url: update_followup_date_overseers_inquiry_path(@inquiry)}}
+      format.html { render partial: 'overseers/dashboard/edit_followup', locals: {obj: @inquiry, url: update_followup_date_overseers_inquiry_path(@inquiry)} }
     end
   end
 
@@ -412,6 +416,16 @@ class Overseers::InquiriesController < Overseers::BaseController
     redirect_to(edit_overseers_inquiry_path(@inquiry)) && (return)
   end
 
+  def link_product_suppliers
+    authorize_acl @inquiry
+
+    if params[:supplier_ids].present?
+      service = Services::Overseers::Inquiries::LinkSuppliersToProducts.new(@inquiry, params[:supplier_ids], params[:inquiry_product_ids])
+      service.call
+    end
+    render json: {success: true, message: 'Supplier linked successfully'}, status: 200
+  end
+
   def edit_suppliers
     authorize_acl @inquiry
 
@@ -426,7 +440,6 @@ class Overseers::InquiriesController < Overseers::BaseController
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call
 
-
       if params.has_key?(:common_supplier_selected)
         Services::Overseers::Inquiries::CommonSupplierSelected.new(@inquiry, params[:inquiry][:common_supplier_id], params[:inquiry_product_ids]).call
         redirect_to edit_suppliers_overseers_inquiry_path(@inquiry)
@@ -436,7 +449,19 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def search_suppliers
+    authorize_acl @inquiry
+  end
+
+  def destroy_supplier
+    authorize_acl @inquiry
+    if params[:inquiry_product_supplier_id].present?
+      InquiryProductSupplier.find(params[:inquiry_product_supplier_id]).destroy
+    end
+  end
+
   def stages
+    @model_name = 'stages'
     @stages = @inquiry.inquiry_status_records.order(created_at: :asc)
     authorize_acl @inquiry
   end
@@ -513,7 +538,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     if inquiries.present?
       query_params = params['bulk_update_inquiries'].to_enum.to_h
-      update_query = query_params.except('inquiries').reject {|_, v| v.blank?}
+      update_query = query_params.except('inquiries').reject { |_, v| v.blank? }
       if update_query.present?
         inquiries.update_all(update_query)
         InquiriesIndex::Inquiry.import(inquiries.pluck(:id))
@@ -604,7 +629,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize_acl @inquiry
     respond_to do |format|
       if params[:title] == 'Comment'
-        format.html {render partial: 'shared/layouts/add_comment', locals: {obj: @inquiry, url: add_comment_overseers_inquiry_path(@inquiry), view_more: overseers_inquiry_comments_path(@inquiry)}}
+        format.html { render partial: 'shared/layouts/add_comment', locals: {obj: @inquiry, url: add_comment_overseers_inquiry_path(@inquiry), view_more: overseers_inquiry_comments_path(@inquiry)} }
       end
     end
   end
@@ -782,5 +807,16 @@ class Overseers::InquiriesController < Overseers::BaseController
       else
         {}
       end
+    end
+
+    def email_message_params
+      params.require(:email_message).permit(
+        :subject,
+          :body,
+          :to,
+          :cc,
+          :bcc,
+          files: []
+      )
     end
 end

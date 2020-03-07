@@ -3,17 +3,20 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def index
     authorize_acl :purchase_order
+    service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer)
+    service.call
+
+    @indexed_purchase_orders = service.indexed_records
+    @purchase_orders = service.records.try(:reverse)
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_purchase_orders, PurchaseOrder, custom_status: nil, main_summary_status: PurchaseOrder.main_summary_statuses)
+    status_service.call
+
     respond_to do |format|
-      format.html {}
+      format.html {
+        @statuses = PurchaseOrder.statuses
+        @main_summary_statuses = PurchaseOrder.main_summary_statuses
+      }
       format.json do
-        service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer)
-        service.call
-
-        @indexed_purchase_orders = service.indexed_records
-        @purchase_orders = service.records.try(:reverse)
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_purchase_orders, PurchaseOrder)
-        status_service.call
-
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
       end
@@ -22,22 +25,26 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def manually_closed
     authorize_acl :purchase_order
+    service = Services::Overseers::Finders::MaterialReadinessQueues.new(params.merge(is_manually_close: true), current_overseer)
+    service.call
+
+    @indexed_purchase_orders = service.indexed_records
+    @purchase_orders = service.records.try(:reverse)
+
+    @summary_records = service.get_summary_records(@indexed_purchase_orders)
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@summary_records, PurchaseOrder, custom_status: 'material_summary_status', main_summary_status: PurchaseOrder.material_summary_statuses)
+    status_service.call
 
     respond_to do |format|
-      format.html {}
+      format.html {
+        # @statuses = PurchaseOrder.material_summary_statuses
+        @alias_name = 'Followup'
+        @main_summary_statuses = PurchaseOrder.material_summary_statuses
+      }
       format.json do
-        service = Services::Overseers::Finders::MaterialReadinessQueues.new(params.merge(is_manually_close: true), current_overseer)
-        service.call
-
-        @indexed_purchase_orders = service.indexed_records
-        @purchase_orders = service.records.try(:reverse)
-
-        @summary_records = service.get_summary_records(@indexed_purchase_orders)
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@summary_records, PurchaseOrder, custom_status: 'material_summary_status')
-        status_service.call
-
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
+        @main_summary_statuses = status_service.indexed_main_summary_statuses
       end
     end
     render 'material_readiness_queue'
@@ -82,20 +89,23 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def material_readiness_queue
     authorize_acl :purchase_order
+    service = Services::Overseers::Finders::MaterialReadinessQueues.new(params, current_overseer)
+    service.call
+
+    @indexed_purchase_orders = service.indexed_records
+    @purchase_orders = service.records.try(:reverse)
+    @model_name = 'material_readiness_queue'
+    @summary_records = service.get_summary_records(@indexed_purchase_orders)
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@summary_records, PurchaseOrder, custom_status: 'material_summary_status', main_summary_status: PurchaseOrder.material_summary_statuses)
+    status_service.call
 
     respond_to do |format|
-      format.html {}
+      format.html {
+        @statuses = PurchaseOrder.material_summary_statuses
+        @alias_name = 'Followup'
+        @main_summary_statuses = PurchaseOrder.material_summary_statuses
+      }
       format.json do
-        service = Services::Overseers::Finders::MaterialReadinessQueues.new(params, current_overseer)
-        service.call
-
-        @indexed_purchase_orders = service.indexed_records
-        @purchase_orders = service.records.try(:reverse)
-
-        @summary_records = service.get_summary_records(@indexed_purchase_orders)
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@summary_records, PurchaseOrder, custom_status: 'material_summary_status')
-        status_service.call
-
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
       end
@@ -109,7 +119,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def inward_dispatch_pickup_queue
     @status = 'Inward Dispatch Queue'
-
+    @model_name = 'inward_dispatch_pickup_queue'
 
     base_filter = {
         base_filter_key: 'status',
@@ -136,7 +146,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def inward_dispatch_delivered_queue
     @status = 'Inward Delivered Queue'
-
+    @model_name = 'inward_dispatch_delivered_queue'
     base_filter = {
         base_filter_key: 'status',
 
@@ -185,7 +195,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def inward_completed_queue
     @status = 'Inward Completed Queue'
-
+    @model_name = 'inward_completed_queue'
     base_filter = {
         base_filter_key: 'is_inward_completed',
         base_filter_value: true

@@ -4,13 +4,13 @@ json.data (@outward_dispatches) do |outward_dispatch|
   json.array! [
                   [
                       if is_authorized(outward_dispatch ,'show')
-                        row_action_button(overseers_outward_dispatch_path(outward_dispatch), 'eye', 'View Outward Dispatch', 'info', :_blank)
+                        row_action_button_without_fa(overseers_outward_dispatch_path(outward_dispatch), 'bmro-icon-table bmro-icon-used-view', 'View Outward Dispatch', 'info', :_blank)
                       end,
                       if is_authorized(outward_dispatch,'edit')
-                        row_action_button(edit_overseers_outward_dispatch_path(outward_dispatch), 'edit', 'Edit Outward Dispatch', 'warning', :_blank)
+                        row_action_button_without_fa(edit_overseers_outward_dispatch_path(outward_dispatch), 'bmro-icon-table bmro-icon-new-freight', 'Edit Outward Dispatch', 'warning', :_blank)
                       end,
                       if is_authorized(:outward_dispatch, 'can_create_packing_slip') && policy(outward_dispatch).can_create_packing_slip?
-                        row_action_button(new_overseers_outward_dispatch_packing_slip_path(outward_dispatch), 'plus', 'Create Packing Slip', 'success', :_blank)
+                        row_action_button_without_fa(new_overseers_outward_dispatch_packing_slip_path(outward_dispatch), 'bmro-icon-table bmro-icon-circle', 'Create Packing Slip', 'success', :_blank)
                       end,
                       if sales_invoice.present? && is_authorized(sales_invoice, 'can_send_pod_email') && policy(sales_invoice).create_email_message? && (outward_dispatch.status == 'Material Ready for Dispatch')
                         row_action_button(dispatch_mail_to_customer_overseers_sales_invoice_path(sales_invoice), 'envelope', 'Send Dispatch Mail', 'dark', :_blank)
@@ -19,17 +19,17 @@ json.data (@outward_dispatches) do |outward_dispatch|
                         row_action_button(delivery_mail_to_customer_overseers_sales_invoice_path(sales_invoice), 'envelope', 'Delivery Email', 'success')
                       end,
                       if sales_invoice.present? && is_authorized(sales_invoice, 'edit_pod') && policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count == 0)
-                        row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success')
+                        row_action_button_without_fa(edit_pod_overseers_sales_invoice_path(sales_invoice), 'bmro-icon-table bmro-icon-truck', 'Add Proof of Delivery', 'success')
                       end,
                       if sales_invoice.present? && is_authorized(sales_invoice, 'edit_pod') && policy(sales_invoice).edit_pod? && (sales_invoice.pod_rows.count > 0)
                         [
-                            row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info'),
+                            row_action_button_without_fa(edit_pod_overseers_sales_invoice_path(sales_invoice), 'bmro-icon-table bmro-icon-pencil', 'Edit Proof of Delivery', 'info'),
                         ]
                       end,
                       if is_authorized(outward_dispatch, 'index')
-                        link_to('', class: ['btn btn-sm btn-success comment-outward-dispatch'], 'data-model-id': outward_dispatch.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-success comment-outward-dispatch'], 'data-model-id': outward_dispatch.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end
                       end,
 

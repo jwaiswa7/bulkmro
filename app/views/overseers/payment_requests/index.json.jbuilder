@@ -2,15 +2,15 @@ json.data (@payment_requests) do |payment_request|
   json.array! [
                   [
                       if is_authorized(payment_request, 'show')
-                        row_action_button(overseers_payment_request_path(payment_request), 'eye', 'View Payment Request', 'info')
+                        row_action_button_without_fa(overseers_payment_request_path(payment_request), 'bmro-icon-table bmro-icon-used-view', 'View Payment Request', 'info')
                       end,
                       if is_authorized(payment_request, 'edit') && !payment_request.Cancelled?
-                        row_action_button(edit_overseers_po_request_payment_request_path(payment_request.po_request, payment_request), 'pencil', 'Edit Payment Request', 'warning')
+                        row_action_button_without_fa(edit_overseers_po_request_payment_request_path(payment_request.po_request, payment_request), 'bmro-icon-table bmro-icon-pencil', 'Edit Payment Request', 'warning')
                       end,
                       if is_authorized(payment_request, 'index')
-                        link_to('', class: ['btn btn-sm btn-success comment-payment-request'], 'data-model-id': payment_request.id, title: 'Comment', remote: true) do
+                        link_to('', class: ['icon-title btn btn-sm btn-success comment-payment-request'], 'data-model-id': payment_request.id, title: 'Comment', 'data-title': 'Comment', remote: true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-comment-lines'].join
+                          concat content_tag :i, nil, class: ['bmro-icon-table bmro-icon-comment'].join
                         end
                       end,
                   ].join(' '),
@@ -69,3 +69,4 @@ json.recordsFiltered @indexed_payment_requests.total_count
 json.draw params[:draw]
 # json.recordsTotalValue @total_values
 json.recordsSummary PaymentRequest.statuses.map { |k, v| { status_id: v, 'label': k, 'size': @statuses[v] || 0 } }.as_json
+json.recordsMainSummary PaymentRequest.main_summary_statuses.map { |k, v| { status_id: v, 'label': k, 'size': @statuses[v] || 0 } }.as_json
