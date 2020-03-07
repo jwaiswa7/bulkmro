@@ -143,7 +143,7 @@ let loader = {
     packingSlips:packingSlips,
     addresses: addresses,
     emailMessages: emailMessages,
-    exports: exports
+    exports: exports,
     emailMessages: emailMessages,
     supplierRfqs: supplierRfqs,
     rfq: rfq
