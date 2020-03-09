@@ -6,6 +6,7 @@ class Services::Overseers::Inquiries::LinkSuppliersToProducts < Services::Shared
   end
 
   def call
+    debugger
     inquiry_products = InquiryProduct.where(id: inquiry_product_ids)
     inquiry_products.each do |inquiry_product|
       if inquiry_product.product.approved?

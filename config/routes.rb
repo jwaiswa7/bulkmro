@@ -710,6 +710,12 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
+
+        resources :supplier_products do
+          collection do
+            get 'autocomplete'
+          end
+        end
         resources :company_reviews
 
         resources :tags do

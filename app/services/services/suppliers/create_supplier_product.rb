@@ -4,8 +4,10 @@ class Services::Suppliers::CreateSupplierProduct < Services::Shared::BaseService
   end
 
   def call
+    debugger
     supplier_id = inquiry_product_supplier.supplier_id
     product = inquiry_product_supplier.inquiry_product.product if inquiry_product_supplier.inquiry_product.present?
+    debugger
     supplier_products = SupplierProduct.where(supplier_id: supplier_id, product_id: product.id)
     unit_price = inquiry_product_supplier.present? ? inquiry_product_supplier.latest_unit_cost_price : 0.0
     unless supplier_products.present?

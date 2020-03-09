@@ -12,6 +12,7 @@ class InquiryProductSupplier < ApplicationRecord
   belongs_to :supplier_rfq, required: false
   delegate :sr_no, to: :inquiry_product
   has_many :supplier_rfq_revisions
+  has_many :supplier_products, through: :supplier
 
   validates_uniqueness_of :supplier, scope: :inquiry_product
   validates_numericality_of :unit_cost_price, greater_than_or_equal_to: 0
