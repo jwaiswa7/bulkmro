@@ -32,9 +32,9 @@ class Services::Overseers::Finders::CustomerOrderStatusReports < Services::Overs
       end
       if @customer_order_status_report_params['date_range'].present?
         indexed_records = filter_by_date_range(indexed_records, @customer_order_status_report_params['date_range'])
-      else
-        indexed_records = filter_by_date_range(indexed_records, "01-Apr-2018+~+#{Date.today.strftime('%d-%b-%Y')}")
       end
+    else
+      indexed_records = filter_by_date_range(indexed_records, "01-Apr-2018+~+#{Date.today.strftime('%d-%b-%Y')}")
     end
     indexed_records
   end

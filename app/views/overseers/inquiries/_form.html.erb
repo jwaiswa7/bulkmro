@@ -381,16 +381,16 @@
       </div>
       <div class="bmro-dotted-line bmro-dotted-mt bmro-dotted-mb0"></div>
 <!--      hide synch absent-->
-      <div class="form-row mt-3 hide">
+      <div class="form-row mt-3">
         <div class="col-md-6">
           <% if is_authorized(@inquiry, 'resync_inquiry_products') && policy(@inquiry).resync_inquiry_products? %>
-            <a href="<%= resync_inquiry_products_overseers_inquiry_path %>" class=""><i class="fal fa-retweet mr-1"></i>Resync
+            <a href="<%= resync_inquiry_products_overseers_inquiry_path %>" class="bmro-button btn-block"><i class="bmro-icon-table fal fa-retweet-alt"></i>Resync
               All Products</a>
           <% end %>
         </div>
         <div class="col-md-6">
           <% if is_authorized(@inquiry, 'resync_unsync_inquiry_products') && policy(@inquiry).resync_unsync_inquiry_products? %>
-            <a href="<%= resync_unsync_inquiry_products_overseers_inquiry_path %>" class=""><i class="fal fa-retweet mr-1"></i>Resync
+            <a href="<%= resync_unsync_inquiry_products_overseers_inquiry_path %>" class="btn bmro-button btn-block"><i class="bmro-fa-redo"></i>Resync
               Unsynced Products</a>
           <% end %>
         </div>
