@@ -312,6 +312,7 @@
               <div class="bmro-second-level-heading-container">
                 <p class="bmro-second-level-header">Tools</p>
               </div>
+              <%= nav_dropdown_sub_item 'Exports', overseers_exports_path, is_authorized(:export, 'index_for_export') %>
               <%= nav_dropdown_sub_item 'Bible Upload', new_bible_import_overseers_bible_imports_path, is_authorized(:bible_upload, 'new_bible_import') %>
               <%= nav_dropdown_sub_item 'Remote Requests', overseers_remote_requests_path, is_authorized(:remote_request, 'index') %>
               <%= nav_dropdown_sub_item 'Callback Requests', overseers_callback_requests_path, is_authorized(:callback_request, 'index') %>
