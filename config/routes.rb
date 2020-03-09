@@ -72,6 +72,7 @@ Rails.application.routes.draw do
       post 'update_inquiry'
       get 'get_filtered_inquiries'
       get 'get_inquiry_tasks'
+      get 'follow_up_dashboard'
     end
 
     resources :remote_requests do
@@ -185,6 +186,12 @@ Rails.application.routes.draw do
     end
 
     resources :annual_targets
+
+    resources :exports, except: [:show] do
+      collection do
+        get 'generate_export'
+      end
+    end
 
     resources :suppliers do
       collection do

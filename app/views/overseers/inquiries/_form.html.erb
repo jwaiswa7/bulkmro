@@ -322,8 +322,8 @@
                       <td><%= so.order_number %></td>
                       <td class="text-center"><%= format_date(so.revised_committed_delivery_date) || '-' %></td>
                       <td>
-                        <%= link_to revise_committed_delivery_date_overseers_inquiry_sales_order_path(f.object, so), :class => "btn btn-dark btn-sm", :title => "Revise Customer Delivery Date" do %>
-                          <i class="fal fa-calendar"></i>
+                        <%= link_to revise_committed_delivery_date_overseers_inquiry_sales_order_path(f.object, so), :class => "btn btn-dark btn-sm calendar-btn-block", :title => "Revise Customer Delivery Date" do %>
+                          <i class="bmro-calendar-btn"></i>
                         <% end %>
                       </td>
                     </tr>
@@ -381,16 +381,16 @@
       </div>
       <div class="bmro-dotted-line bmro-dotted-mt bmro-dotted-mb0"></div>
 <!--      hide synch absent-->
-      <div class="form-row mt-3 hide">
+      <div class="form-row mt-3">
         <div class="col-md-6">
           <% if is_authorized(@inquiry, 'resync_inquiry_products') && policy(@inquiry).resync_inquiry_products? %>
-            <a href="<%= resync_inquiry_products_overseers_inquiry_path %>" class=""><i class="fal fa-retweet mr-1"></i>Resync
+            <a href="<%= resync_inquiry_products_overseers_inquiry_path %>" class="bmro-button btn-block"><i class="bmro-icon-table fal fa-retweet-alt"></i>Resync
               All Products</a>
           <% end %>
         </div>
         <div class="col-md-6">
           <% if is_authorized(@inquiry, 'resync_unsync_inquiry_products') && policy(@inquiry).resync_unsync_inquiry_products? %>
-            <a href="<%= resync_unsync_inquiry_products_overseers_inquiry_path %>" class=""><i class="fal fa-retweet mr-1"></i>Resync
+            <a href="<%= resync_unsync_inquiry_products_overseers_inquiry_path %>" class="btn bmro-button btn-block"><i class="bmro-fa-redo"></i>Resync
               Unsynced Products</a>
           <% end %>
         </div>
