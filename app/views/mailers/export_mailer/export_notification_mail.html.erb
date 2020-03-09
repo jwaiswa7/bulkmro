@@ -1,0 +1,40 @@
+<div class="font-family: Arial; font-size: 14.5px;">
+  <p style="color: #555;">Dear Tech,</p>
+  <% if @process_status == true %>
+    <p style="color: #555;"><%= @export.titleize %> export process is initiated at Sprint.<br/></p>
+  <% else %>
+    <p style="color: #555;"><%= @export.titleize %> export process is completed at Sprint. Total time for export creation is <%= Time.at(@export_time['end']-@export_time['creation']).utc.strftime("%H:%M:%S") %><br/></p>
+   <% end %>
+
+  <br/>
+  <p style="color: #555;">Regards,</p>
+</div>
+
+<div>
+  <div>
+    <div dir="ltr">
+      <div style="font-size:12.8px">
+        <p style="margin:0 0 0">
+          <img class="CToWUd" height="46" src="https://www.bulkmro.com/skin/frontend/base/default/images/emaillogo.jpg" width="420"><br>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:12.8px; color: #555;">
+    <p style="margin:0 0 0;font-size:12.8px">
+      <span style="font-family:Arial;font-size:13.33px"><span style="font-size:8pt"><b>Bulk MRO Industrial Supply Pvt. Ltd.</b></span>&nbsp;<br></span>
+    </p><span style="font-size:8pt"><span style="font-size:10.66px"></span></span>
+
+    <p style="margin:0 0 0;font-size:12.8px; color: #555;">
+      <span style="font-size:8pt">2nd Floor, A Wing, Todi Estate, Sun Mill Compound,</span><span style="font-size:8pt">&nbsp;Lower Parel,&nbsp;</span><span style="font-size:8pt">Mumbai 400013, India</span>
+    </p>
+    <p style="color: #555;">
+      <font face="Arial"><span style="font-size:11px">TIN Number: 27391218005V |&nbsp;CTIN Number: 27391218005C</span></font><br>
+      <span><font face="Arial"><span style="font-size:11px">GST Maharashtra: 27AAGCB7343G1ZN | GST Gujarat: 24AAGCB7343G1ZT | GST Delhi: 07AAGCB7343G1ZP&nbsp;</span></font></span><br>
+      <a style="color: #555;font-size:11px;" href="http://www.bulkmro.com/" target="_blank">www.bulkmro.com</a>
+    </p>
+  </div>
+  <div style="font-size:12.8px">
+    <p style="font-weight:bold;"></p>
+  </div>
+</div>

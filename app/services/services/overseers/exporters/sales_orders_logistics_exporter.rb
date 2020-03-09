@@ -12,6 +12,10 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name, true, @export_time).deliver_now
+    puts '>>>>> Sales Order Logistics Service started >>>>>>>>>'
+    @export = Export.create!(export_type: 45, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     model.status_Approved.where(created_at: start_at..end_at).where.not(sales_quote_id: nil).order(created_at: :desc).find_each(batch_size: 100) do |sales_order|
       inquiry = sales_order.inquiry
 
@@ -37,7 +41,7 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
         customer_committed_date: (inquiry.customer_committed_date.present? ? inquiry.customer_committed_date.to_date.to_s : nil),
                 )
     end
-    export = Export.create!(export_type: 45)
-    generate_csv(export)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

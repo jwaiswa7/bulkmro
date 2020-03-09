@@ -5,17 +5,21 @@ class Services::Overseers::Exporters::CompanyReviewExporter < Services::Overseer
     @export_name = 'supplier_review'
     @path = Rails.root.join('tmp', filename)
     @columns = ['serial', 'supplier_id', 'supplier_name', 'rating_submitted_by', 'review_type', 'rating', 'document']
+    # @export.update_attributes(export_type: 60, status: 'Enqueued')
   end
   def call
     perform_export_later('CompanyReviewExporter', @arguments)
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     if @ids.present?
       records = model.where(id: @ids).order(created_at: :desc)
     else
       records = model.where.not(rating: nil).includes(:company)
     end
+    @export = Export.create!(export_type: 60, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     records.each_with_index do |company_review, index|
       rows.push(
         serial: index + 1,
@@ -27,8 +31,9 @@ class Services::Overseers::Exporters::CompanyReviewExporter < Services::Overseer
         document: company_review.rateable_type + "[#{company_review.rateable_id}]"
       )
     end
-    filtered = @ids.present?
-    export = Export.create!(export_type: 60, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
-    generate_csv(export)
+    # filtered = @ids.present?
+    # export = Export.create!(export_type: 60, filtered: filtered, created_by_id: @overseer.id, updated_by_id: @overseer.id)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end

@@ -14,6 +14,7 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
   end
 
   def build_csv
+    @export = Export.create!(export_type: 97, status: 'Processing', filtered: @ids.present?, created_by_id: @overseer.id, updated_by_id: @overseer.id)
     company = @company
 
     records = company.inquiries.where(created_at: Date.parse('2018-11-01 00:00:00')..(Date.today.end_of_day))
@@ -108,7 +109,7 @@ class Services::Customers::Exporters::AmatCustomersExporter < Services::Overseer
         end
       end
     end
-    export = Export.create!(export_type: 97, filtered: false)
-    generate_csv(export)
+    @export.update_attributes(status: 'Completed')
+    generate_csv(@export)
   end
 end
