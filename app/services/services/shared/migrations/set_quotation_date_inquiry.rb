@@ -22,7 +22,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
       service.loop(nil) do |x|
         Inquiry.where(inquiry_number: x.get_column('inquiry_number'), quotation_date: nil).last do |inquiry|
             inquiry.quotation_date = x.get_column('Quote_date')
-             inquiry_comment = inquiry.comments.build(message: message, inquiry: inquiry, overseer: Overseer.find(238))
+            inquiry_comment = inquiry.comments.build(message: message, inquiry: inquiry, overseer: Overseer.find(238))
             inquiry.save(validate: false)
             inquiry_comment.save
             writer << [
