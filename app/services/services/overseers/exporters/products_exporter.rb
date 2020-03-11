@@ -13,6 +13,8 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     if @ids.present?
       records = model.where(id: @ids)
     else

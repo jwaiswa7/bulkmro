@@ -1,8 +1,8 @@
 class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::Exporters::BaseExporter
   def initialize(*params)
     super(*params)
-    @model = Activity
     @export_name = 'activities'
+    @model = Activity
     @path = Rails.root.join('tmp', filename)
     @columns = ['created_by', 'account', 'company', 'company_type', 'inquiry', 'commercial_status', 'contact_name', 'purpose', 'type', 'points_discussed', 'actions_required', 'misc_expences', 'activity_date', 'created']
   end
@@ -12,6 +12,8 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
   end
 
   def build_csv
+    @export_time['creation'] = Time.now
+    ExportMailer.export_notification_mail(@export_name,true,@export_time).deliver_now
     if @ids.present?
       records = model.where(id: @ids).order(created_at: :desc)
     else
