@@ -16,6 +16,7 @@ class CreateSupplierProducts < ActiveRecord::Migration[5.2]
       t.references :tax_rate, foreign_key: true
       t.references :tax_code, foreign_key: true
       t.references :measurement_unit, foreign_key: true
+      t.jsonb :inquiry_ids, array: true, default: []
 
       t.timestamps
       t.userstamps

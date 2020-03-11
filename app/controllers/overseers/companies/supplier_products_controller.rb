@@ -34,36 +34,36 @@ class Overseers::Companies::SupplierProductsController < Overseers::Companies::B
   #   redirect_to url_for(Export.customer_product.last.report)
   # end
 
-  def edit
-    authorize_acl @supplier_product
-    @tags = Tag.all
-  end
-
-  def update
-    custom_params = supplier_product_params
-    @product = Product.find(supplier_product_params[:product_id])
-    @supplier_product = @company.supplier_products.where(product: @product).first_or_initialize
-
-    custom_params[:tag_ids].reject!(&:empty?)
-    custom_params[:tag_ids].each_with_index do |tag_id, index|
-      @tag = @company.tags.where(id: tag_id)
-      if @tag.blank?
-        @new_tag = @company.tags.where(name: tag_id).first_or_create
-        custom_params[:tag_ids][index] = @new_tag.id.to_s
-      end
-    end
-
-    @supplier_product.assign_attributes(custom_params)
-    @supplier_product.assign_attributes(name: @product.name) if @supplier_product.name.blank?
-    @supplier_product.assign_attributes(sku: @product.sku) if @supplier_product.sku.blank?
-    authorize_acl @supplier_product
-
-    if @supplier_product.save
-      redirect_to overseers_company_supplier_product_path(@supplier_product.company, @supplier_product), notice: flash_message(@supplier_product, action_name)
-    else
-      render 'edit'
-    end
-  end
+  # def edit
+  #   authorize_acl @supplier_product
+  #   @tags = Tag.all
+  # end
+  #
+  # def update
+  #   custom_params = supplier_product_params
+  #   @product = Product.find(supplier_product_params[:product_id])
+  #   @supplier_product = @company.supplier_products.where(product: @product).first_or_initialize
+  #
+  #   custom_params[:tag_ids].reject!(&:empty?)
+  #   custom_params[:tag_ids].each_with_index do |tag_id, index|
+  #     @tag = @company.tags.where(id: tag_id)
+  #     if @tag.blank?
+  #       @new_tag = @company.tags.where(name: tag_id).first_or_create
+  #       custom_params[:tag_ids][index] = @new_tag.id.to_s
+  #     end
+  #   end
+  #
+  #   @supplier_product.assign_attributes(custom_params)
+  #   @supplier_product.assign_attributes(name: @product.name) if @supplier_product.name.blank?
+  #   @supplier_product.assign_attributes(sku: @product.sku) if @supplier_product.sku.blank?
+  #   authorize_acl @supplier_product
+  #
+  #   if @supplier_product.save
+  #     redirect_to overseers_company_supplier_product_path(@supplier_product.company, @supplier_product), notice: flash_message(@supplier_product, action_name)
+  #   else
+  #     render 'edit'
+  #   end
+  # end
 
   def destroy
     authorize_acl @supplier_product
@@ -75,7 +75,7 @@ class Overseers::Companies::SupplierProductsController < Overseers::Companies::B
   private
 
     def set_supplier_product
-      @customer_product ||= CustomerProduct.find(params[:id])
+      @supplier_product ||= SupplierProduct.find(params[:id])
     end
 
     def supplier_product_params
