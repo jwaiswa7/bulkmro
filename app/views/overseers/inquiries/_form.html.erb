@@ -664,7 +664,15 @@
           <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
             <div class="form-row flex-row align-items-start w-100 col-md-12">
               <%= inquiry_product.hidden_field :id %>
-              <div class=" col-md-1">
+              <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.approved? %>
+                <div class=" col-md-1 border-left-status-success">
+              <% elsif inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.rejected? %>
+                <div class=" col-md-1 border-left-status-danger">
+              <% elsif inquiry_product.object.persisted? %>
+                <div class=" col-md-1 border-left-status-warning">
+              <% else %>
+                <div class=" col-md-1">
+              <% end %>
                 <div class="d-flex flex-row">
                   <div class="mr-1 mt-2">
                     <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.approved? %>
