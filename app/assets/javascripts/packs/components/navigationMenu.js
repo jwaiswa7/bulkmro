@@ -28,7 +28,7 @@ const navigationMenu = () => {
 
     function toggleFirstLevelHeading (classname, containerName) {
 
-        $("#" + classname).hover(() => {
+        $("#" + classname).click(() => {
             let toggle = $('.bmro-main-drop-col-level-one-container .bmro-select-level-one-to-see-second-and-third').hasClass('active');
             let toggleClass = $('.bmro-second-and-third-level-headings .bmro-second-and-third-level-headings-container').hasClass('show');
 
@@ -43,22 +43,10 @@ const navigationMenu = () => {
 
     }
 
-    // $(".bmro-menu-click").mouseenter(function () {
-    //     $('.bmro-dash-main-menu').addClass('bmro-dash-main-menu-show');
-    //     $(this).addClass('bmro-menu-roted');
-    // });
-    //
     $(".bmro-dash-main-menu").mouseleave(function () {
         $('.bmro-dash-main-menu').removeClass('bmro-dash-main-menu-show');
         $('.bmro-menu-click').removeClass('bmro-menu-roted');
     });
-    // let modal = document.getElementById("bmro_main_menu_dropdown");
-    // let btn = document.getElementsByClassName("bmro-menu-click");
-
-    // $(".bmro-menu-click").click(() => {
-        // $('.bmro-dash-main-menu').toggleClass('bmro-dash-main-menu-show')
-        // modal.style.display = 'block'
-    // })
 
     $(".bmro-menu-click").click(() => {
         if($('.bmro-dash-main-menu').hasClass("bmro-dash-main-menu-show")) {
@@ -69,12 +57,6 @@ const navigationMenu = () => {
             $(this).addClass('bmro-menu-roted')
         }
     })
-
-    // window.onclick = function(event) {
-    //     if (event.target == modal) {
-    //         modal.style.display = "none";
-    //     }
-    // }
 
     toggleFirstLevelHeading('nav-bpartners-heading', 'bpartners_heading_container');
 
