@@ -5,10 +5,10 @@ class Services::Suppliers::Finders::SupplierProducts < Services::Suppliers::Find
 
   def all_records
     indexed_records = if current_company.present?
-                        super.filter(filter_by_value('supplier_id', current_company.id))
-                      else
-                        super
-                      end
+      super.filter(filter_by_value('supplier_id', current_company.id))
+    else
+      super
+    end
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
