@@ -67,7 +67,7 @@
                       <%= inquiry_product_supplier.input :quantity, readonly: true, :input_html => { :value => inquiry_product_supplier.object.inquiry_product.quantity, 'data-id' => "quantity_#{inquiry_product_supplier.object.id}" } %>
                     </div>
                   </div>
-                  <div class="col-2">
+                  <div class="col-1">
                     <div class="form-group mb-0">
                       <%= inquiry_product_supplier.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :'data-id' => "lead_time_#{inquiry_product_supplier.object.id}"} %>
                     </div>
@@ -75,7 +75,7 @@
                   <% if inquiry_product_supplier.object.last_unit_price.present? %>
                     <div class="col-2">
                       <div class="form-group mb-0">
-                        <%= inquiry_product_supplier.input :last_unit_price, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                        <%= inquiry_product_supplier.input :last_unit_price, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, disabled: true %>
                       </div>
                     </div>
                   <% end %>
@@ -89,7 +89,7 @@
                       <%= inquiry_product_supplier.input :gst, label: 'GST%', input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', 'data-id' => "gst_#{inquiry_product_supplier.object.id}"}, collection: TaxRate.first(5).map {|tax_rate| [tax_rate.tax_percentage.to_s, tax_rate.tax_percentage.to_s]}, required: true %>
                     </div>
                   </div>
-                  <div class="col-2">
+                  <div class="col-1">
                     <div class="form-group mb-0">
                       <%= inquiry_product_supplier.input :unit_freight, input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '', 'data-id' => "unit_freight_#{inquiry_product_supplier.object.id}"}, required: true %>
                     </div>
@@ -160,7 +160,7 @@
       </div>
       <div class="card-footer">
         <%# if is_authorized(inquiry_product_supplier, 'request_for_quote') %>
-        <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+        <%= button_tag(type: "submit", class: "btn bmro-button btn-block") do %>
           <i class="fal fa-pen"></i> Update All
         <% end %>
         <%# end %>

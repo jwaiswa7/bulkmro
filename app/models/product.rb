@@ -132,6 +132,10 @@ class Product < ApplicationRecord
     self.inquiry_product_suppliers.where('supplier_id = ?', supplier.id).order(updated_at: :desc).pluck(:bp_catalog_name, :bp_catalog_sku).compact.first if supplier.present?
   end
 
+  def fetch_supplier_products(supplier)
+    self.inquiry_product_suppliers.where('supplier_id = ?', supplier.id).order(updated_at: :desc).pluck(:updated_at).first
+  end
+
   def is_kit
     self.kit.present?
   end
@@ -152,9 +156,9 @@ class Product < ApplicationRecord
     ["#{self.to_s}", has_images? ? " - Has #{self.images.count} Image(s)" : ''].join
   end
 
-  def has_images?
-    self.images.attached?
-  end
+  # def has_images?
+  #   self.images.attached?
+  # end
 
   def get_customer_company_product(company_id)
     self.customer_products.where(company_id: company_id).first
