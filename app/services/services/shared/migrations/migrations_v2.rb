@@ -220,7 +220,7 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
   end
 
   def create_ifsc_code
-    service = Services::Shared::Spreadsheets::CsvImporter.new('ifsc_code_list.csv', 'seed_files')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Quotation Date.csv', 'seed_files')
     service.loop(nil) do |x|
       Chewy.strategy(:bypass) do
         IfscCode.where(ifsc_code: x.get_column('IFSC')).first_or_create do |ifsc|
@@ -234,6 +234,28 @@ class Services::Shared::Migrations::MigrationsV2 < Services::Shared::Migrations:
         end
       end
     end
+  end
+
+  def sales_quote_blank
+    column_headers = ['inquiry', 'status', 'quotation_date']
+    message = "The Quote date was updated from Backend on 11-Mar-2020 per request from Nillesh Desai and Nutan Bala. Note - there is no actual quote in the system as these were sent from email and out of system."
+    # inquiry_number = [42224, 40158, 40166, 40681, 41946, 42016, 42017, 42018, 42020, 42087, 42109, 42280, 42345, 42512, 43329, 43503, 42668, 34637, 35555, 36792, 42271, 42642, 42987, 43327, 43582, 44060, 44269, 44359, 42779, 43285, 44106, 44129, 36109, 37405, 37406, 37588, 37640, 37845, 38265, 38312, 38315, 38323, 38330, 38465, 38530, 38598, 42495, 42497, 43074, 40227, 41823, 42348, 42529, 43422, 43454, 43574, 44107, 44317, 43678, 34515, 34548, 34557, 34780, 42026, 37292, 37699, 37742, 38508, 38592, 35533, 42319, 43153, 43364, 43458, 43537, 44073, 41460, 42651, 42703, 43531, 36130, 36443, 37075, 37975, 40217, 41045, 41280, 41765, 41837, 41908, 42226, 42252, 43186, 43218, 43400, 42609, 42611, 42774, 42889, 42890, 42992, 43091, 43912, 44234, 43392, 43412, 43933, 43712]
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Quotation Date.csv', 'seed_files_3')
+    csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
+      service.loop(nil) do |x|
+        Inquiry.where(inquiry_number: x.get_column('inquiry_number'), quotation_date: nil).first_or_initialize do |inquiry|
+          inquiry.quotation_date = x.get_column('Quote_date')
+          inquiry.comments.create(message: message, inquiry: inquiry, overseer: Overseer.find(238))
+          inquiry.save
+              writer << [
+                  inquiry.inquiry_number,
+                  inquiry.status,
+                  inquiry.quotation_date.to_date.to_s
+              ]
+        end
+      end  
+    end
+    fetch_csv('quotation.csv', csv_data)
   end
 
   def sap_sales_order_totals_mismatch
