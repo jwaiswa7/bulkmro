@@ -400,7 +400,7 @@
                                          {selected: SalesOrder.reject_reasons.values}, :multiple => true, :class => 'form-control select2-multiple bmro-dropdown-icon-none', required: true %>
                           </div>
                           <%= c.input :message, :placeholder => 'Type message', required: false,input_html: {class: 'bmro-form-input'}  %>
-                          <%= c.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger bmro-button account-rejection' if policy(@sales_order).reject? %>
+                          <%= c.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger bmro-button' if policy(@sales_order).reject? %>
                         <% end %>
                       </div>
                     </div>
