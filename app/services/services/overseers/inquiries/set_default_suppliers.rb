@@ -17,9 +17,8 @@ class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::Ba
                 bp_catalog_name: inquiry_product.product.bp_catalog_for_supplier(product_supplier.supplier)
               )
               if inquiry_product_supplier.save
-                # binding.pry
-                # service = Services::Suppliers::CreateSupplierProduct.new(inquiry_product_supplier)
-                # service.call
+                service = Services::Suppliers::CreateSupplierProduct.new(inquiry_product_supplier)
+                service.call
               end
             end
           end

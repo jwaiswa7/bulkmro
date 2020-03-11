@@ -35,7 +35,6 @@ let toggleCheckboxes = () => {
 }
 
 let addProductSuppliers = () => {
-    debugger
     let suppliers = [];
     let product_ids = [];
     let inquiry_id = $('input[name=inquiry_id]').val();
@@ -44,7 +43,6 @@ let addProductSuppliers = () => {
         suppliers.push($(element).val());
     });
     if (suppliers.length > 0) {
-        debugger
         let data = { supplier_ids: suppliers, inquiry_product_ids: product_ids };
         $.ajax({
             url: Routes.link_product_suppliers_overseers_inquiry_path(inquiry_id),
