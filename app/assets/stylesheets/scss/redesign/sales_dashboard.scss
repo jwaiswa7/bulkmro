@@ -429,12 +429,23 @@ p.bmro-menu{
 .bmro-account-label-one{
   color: #2C4159;
   font-size: 12px;
+  font-weight: bold;
+  line-height: 16px;
+  width: 100%;
+  letter-spacing: -0.5px;
+  float: left;
+}
+
+.bmro-account-label-two{
+  color: #2C4159;
+  font-size: 11px;
   font-weight: 500;
   line-height: 16px;
   width: 100%;
   letter-spacing: -0.5px;
   float: left;
 }
+
 .bmro-new-size{
   font-size: 12px!important;
 }
