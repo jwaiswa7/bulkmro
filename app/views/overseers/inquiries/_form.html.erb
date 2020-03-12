@@ -384,7 +384,7 @@
       <div class="form-row mt-3">
         <div class="col-md-6">
           <% if is_authorized(@inquiry, 'resync_inquiry_products') && policy(@inquiry).resync_inquiry_products? %>
-            <a href="<%= resync_inquiry_products_overseers_inquiry_path %>" class="bmro-button btn-block"><i class="bmro-icon-table fal fa-retweet-alt"></i>Resync
+            <a href="<%= resync_inquiry_products_overseers_inquiry_path %>" class="btn bmro-button btn-block"><i class="bmro-icon-table fal fa-retweet-alt"></i>Resync
               All Products</a>
           <% end %>
         </div>
@@ -759,6 +759,13 @@
               <div class="bmro-fl">
                 <a href="<%= new_overseers_kit_path(@inquiry) %>" class="btn btn-block mb-2 mb-md-0 bmro-product-btn"><i class="bmro-createkit-icon mr-1"></i>Create a Kit</a>
               </div>
+              <% if is_authorized(@inquiry, 'update') %>
+                <div class="bmro-fl bmro-button-parent">
+                  <%= button_tag(type: "submit", class: "btn btn-block h-100") do %>
+                    <i class="bmro-update-icon"></i> <%= submit_text(@inquiry) %>
+                  <% end %>
+                </div>
+              <% end %>
             </div>
           <% end %>
         </div>
