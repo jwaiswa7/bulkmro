@@ -51,16 +51,16 @@ tq7iFj/oZ0WuMVBpik7S47FVc9SeuWTUcbRwC87lF5aobMyUNIaxc06+4zR9Hl5X
 ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
 -----END RSA PRIVATE KEY-----'
 
-  SAP = OpenStruct.new(
-    attachment_directory: Settings.sap.ATTACHMENT_DIRECTORY,
-    attachment_api: Settings.sap.ATTACHMENT_API,
-    server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
-    login: {user: Settings.sap.ATTACHMENT_USERNAME, password: Settings.sap.ATTACHMENT_PASSWORD},
-    draft_doc_object_code: 17,
-    draft_base_type: 23,
-    attachment_username: Settings.sap.ATTACHMENT_USERNAME,
-    ssh_key: ATTACHMENT_SSH
-  )
+  # SAP = OpenStruct.new(
+  #   attachment_directory: Settings.sap.ATTACHMENT_DIRECTORY,
+  #   attachment_api: Settings.sap.ATTACHMENT_API,
+  #   server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
+  #   login: {user: Settings.sap.ATTACHMENT_USERNAME, password: Settings.sap.ATTACHMENT_PASSWORD},
+  #   draft_doc_object_code: 17,
+  #   draft_base_type: 23,
+  #   attachment_username: Settings.sap.ATTACHMENT_USERNAME,
+  #   ssh_key: ATTACHMENT_SSH
+  # )
 
   def self.set_headers
     base_uri ENDPOINT.to_s
