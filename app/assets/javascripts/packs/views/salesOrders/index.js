@@ -18,12 +18,13 @@ const index = () => {
 };
 
 let salesOrderCancel = () => {
-    $('.cancel-sales-order-button').click(function () {
+    $('.cancel-sales-order-button, .cancel-sales-order-isp').click(function () {
         let inqId = $(this).data('inquiry-id');
         let orderId = $(this).data('order-id');
+        let url = $(this).data('url');
 
         $.ajax({
-            url: Routes.order_cancellation_modal_overseers_inquiry_sales_order_path(inqId, orderId),
+            url: url,
             success: function (data) {
                 $('.sales-order-cancel').empty();
                 $('.sales-order-cancel').append(data);

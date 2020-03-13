@@ -213,6 +213,14 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     accounts? || admin?
   end
 
+  def order_cancellation_modal_by_isp?
+    admin? || inside?
+  end
+
+  def can_isp_cancel_so?
+    (inside? || admin_or_manager?) && !record.po_requests.present? && !record.invoices.present? && !record.inward_dispatches.present? && !record.outward_dispatches.present? && record.created_at.month == Date.today.month
+  end
+
   class Scope
     attr_reader :overseer, :scope
 

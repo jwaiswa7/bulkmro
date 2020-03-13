@@ -1,7 +1,7 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
   before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation,
                                          :resync, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map,
-                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation, :order_cancellation_modal, :cancellation, :revise_committed_delivery_date, :update_revised_committed_delivery_date]
+                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation, :order_cancellation_modal, :order_cancellation_modal_by_isp, :cancellation, :isp_order_cancellation, :revise_committed_delivery_date, :update_revised_committed_delivery_date]
   before_action :set_notification, only: [:create_confirmation, :create_account_confirmation]
 
   def index
@@ -201,9 +201,17 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def order_cancellation_modal
+
     authorize @sales_order
     respond_to do |format|
       format.html { render partial: 'cancellation' }
+    end
+  end
+
+  def order_cancellation_modal_by_isp
+    authorize @sales_order
+    respond_to do |format|
+      format.html { render partial: 'cancellation_by_isp' }
     end
   end
 
@@ -217,6 +225,18 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     elsif @status[:status] == 'failed'
       render json: {error: @status[:message]}, status: 500
     end
+  end
+
+  def isp_order_cancellation
+    authorize_acl @sales_order
+    # @status = Services::Overseers::SalesOrders::CancelSalesOrder.new(@sales_order, sales_order_params.merge(status: 'Cancelled', remote_status: 'Cancelled by SAP')).call
+    # if @status.key?(:empty_message)
+    #   render json: {error: 'Cancellation Message is Required'}, status: 500
+    # elsif @status[:status] == 'success'
+    #   render json: {error: @status[:message]}, status: 200
+    # elsif @status[:status] == 'failed'
+    #   render json: {error: @status[:message]}, status: 500
+    # end
   end
 
   private
