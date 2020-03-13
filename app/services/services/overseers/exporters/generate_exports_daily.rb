@@ -1,4 +1,4 @@
-class Services::Overseers::Exporters::GenerateExportsHourly < Services::Overseers::Exporters::BaseExporter
+class Services::Overseers::Exporters::GenerateExportsDaily < Services::Overseers::Exporters::BaseExporter
 
   def initialize
     @export_hash = {
