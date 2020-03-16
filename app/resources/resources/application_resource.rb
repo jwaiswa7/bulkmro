@@ -4,20 +4,20 @@ class Resources::ApplicationResource
   # debug_output @@remote_exchange_log
 
   def self.new_session_id
-     response = post(
-       '/Login',
-         body: {CompanyDB: Settings.sap.DATABASE, UserName: Settings.sap.USERNAME, Password: Settings.sap.PASSWORD}.to_json,
-         verify: false,
-         debug_output: $stdout,
-         timeout: 30
-     )
-     response['SessionId']
+     # response = HTTParty.post(
+     #   'https://35.200.244.135:50000/b1s/v1/Login',
+     #     body: {CompanyDB: Settings.sap.DATABASE, UserName: Settings.sap.USERNAME, Password: Settings.sap.PASSWORD}.to_json,
+     #     verify: false,
+     #     debug_output: $stdout,
+     #     timeout: 30
+     # )
+     # response['SessionId']
   end
 
   def self.get_sap_cookie
-    Rails.cache.fetch('sap_cookie', expires_in: 20.minutes) do
-      "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=#{(DateTime.now - 1.day).strftime('%a, %d %b %Y %T') }"
-    end
+    # Rails.cache.fetch('sap_cookie', expires_in: 20.minutes) do
+    #   "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=#{(DateTime.now - 1.day).strftime('%a, %d %b %Y %T') }"
+    # end
   end
 
   ENDPOINT = URI.parse(Settings.sap.ENDPOINT)
