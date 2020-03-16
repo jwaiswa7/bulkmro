@@ -1,6 +1,6 @@
 require 'clockwork'
 include Clockwork
-require './config/boot'
+# require './config/boot'
 require './config/environment'
 require 'active_support/time'
 require 'sidekiq'
@@ -127,7 +127,7 @@ end
 #   end
 # end
 
-every(1.day, 'generate_exports_daily', at: '19:35') do
+every(1.day, 'generate_exports_daily', at: '20:00') do
   # to-do check for memory leaks on heroku
   Chewy.strategy(:atomic) do
     service = Services::Overseers::Exporters::GenerateExportsDaily.new
