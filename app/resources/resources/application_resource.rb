@@ -4,20 +4,20 @@ class Resources::ApplicationResource
   # debug_output @@remote_exchange_log
 
   def self.new_session_id
-     # response = post(
-     #   '/Login',
-     #     body: {CompanyDB: Settings.sap.DATABASE, UserName: Settings.sap.USERNAME, Password: Settings.sap.PASSWORD}.to_json,
-     #     verify: false,
-     #     debug_output: $stdout,
-     #     timeout: 30
-     # )
-     # response['SessionId']
+     response = post(
+       '/Login',
+         body: {CompanyDB: Settings.sap.DATABASE, UserName: Settings.sap.USERNAME, Password: Settings.sap.PASSWORD}.to_json,
+         verify: false,
+         debug_output: $stdout,
+         timeout: 30
+     )
+     response['SessionId']
   end
 
   def self.get_sap_cookie
-    # Rails.cache.fetch('sap_cookie', expires_in: 20.minutes) do
-    #   "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=#{(DateTime.now - 1.day).strftime('%a, %d %b %Y %T') }"
-    # end
+    Rails.cache.fetch('sap_cookie', expires_in: 20.minutes) do
+      "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=#{(DateTime.now - 1.day).strftime('%a, %d %b %Y %T') }"
+    end
   end
 
   ENDPOINT = URI.parse(Settings.sap.ENDPOINT)
@@ -51,16 +51,16 @@ tq7iFj/oZ0WuMVBpik7S47FVc9SeuWTUcbRwC87lF5aobMyUNIaxc06+4zR9Hl5X
 ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
 -----END RSA PRIVATE KEY-----'
 
-  # SAP = OpenStruct.new(
-  #   attachment_directory: Settings.sap.ATTACHMENT_DIRECTORY,
-  #   attachment_api: Settings.sap.ATTACHMENT_API,
-  #   server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
-  #   login: {user: Settings.sap.ATTACHMENT_USERNAME, password: Settings.sap.ATTACHMENT_PASSWORD},
-  #   draft_doc_object_code: 17,
-  #   draft_base_type: 23,
-  #   attachment_username: Settings.sap.ATTACHMENT_USERNAME,
-  #   ssh_key: ATTACHMENT_SSH
-  # )
+  SAP = OpenStruct.new(
+    attachment_directory: Settings.sap.ATTACHMENT_DIRECTORY,
+    attachment_api: Settings.sap.ATTACHMENT_API,
+    server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
+    login: {user: Settings.sap.ATTACHMENT_USERNAME, password: Settings.sap.ATTACHMENT_PASSWORD},
+    draft_doc_object_code: 17,
+    draft_base_type: 23,
+    attachment_username: Settings.sap.ATTACHMENT_USERNAME,
+    ssh_key: ATTACHMENT_SSH
+  )
 
   def self.set_headers
     base_uri ENDPOINT.to_s
