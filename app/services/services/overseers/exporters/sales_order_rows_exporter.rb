@@ -88,7 +88,8 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
         'Landed (Usd Million)',
         'Margin (Usd Million)'
     ]
-    # @export.update_attributes(export_type: 35, status: 'Enqueued')
+    # @export.update_attributes(export_type: 35, status: 'Enqueued'
+    @start_at = Date.new(2019, 04, 01).beginning_of_day
   end
 
   def call
