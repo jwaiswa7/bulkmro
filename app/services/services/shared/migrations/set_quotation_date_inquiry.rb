@@ -20,7 +20,7 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     service = Services::Shared::Spreadsheets::CsvImporter.new('Quotation_date.csv', 'seed_files_3')
     csv_data = CSV.generate(write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
-        Inquiry.where(inquiry_number: x.get_column('inquiry_number'), quotation_date: nil).last do |inquiry|
+        Inquiry.where(inquiry_number: x.get_column('inquiry_number'), quotation_date: nil).each do |inquiry|
             inquiry.quotation_date = x.get_column('Quote_date')
             inquiry_comment = inquiry.comments.build(message: message, inquiry: inquiry, overseer: Overseer.find(238))
             inquiry.save(validate: false)
