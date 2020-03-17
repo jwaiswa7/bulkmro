@@ -261,7 +261,8 @@ let setup = () => {
                     if (filter && filter != false) {
                         let input = '';
                         if (filter == 'dropdown') {
-                            let status_class = ((text == 'Status' || text == 'SAP Status') ? 'status-filter': '');
+                            let class_exist = $(table).find('thead tr:eq(1) td:eq(' + column.index() + ')').attr('class')
+                            let status_class = ((class_exist == undefined || class_exist=='') ? ((text == 'Status' || text == 'SAP Status') ? 'status-filter': '') : class_exist );
                             input = $('<div class="bmro-input-search bmro-arrow-parent '+status_class+'"><select class="form-control select select2-single bmro-form-input select2-hidden-accessible" data-placeholder="' + [text, ' '].join('') + '"><option value="" selected disabled></option></select></div>');
                             json.columnFilters[this.index()].forEach(function (f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
