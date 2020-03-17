@@ -1,0 +1,20 @@
+<% provide :can_be_ajaxed, true %>
+<% provide :container_fluid, true %>
+
+<%= render layout: 'search_layout' do %>
+<% end %>
+<% content_for :heading do %>
+  ISP Report
+<% end %>
+<% content_for :header_row do %>
+  <th data-name="first_name no-sort" class="text-left">Name</th>
+  <th class="text-left no-sort">Inquiry count</th>
+  <th class="text-left no-sort">Sales quotes count</th>
+  <th class="text-left no-sort">Sales Orders count</th>
+  <th class="text-left no-sort">Purchase orders count</th>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

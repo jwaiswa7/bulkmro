@@ -138,6 +138,21 @@ class Overseers::OverseersController < Overseers::BaseController
     render json: {'acl_resources' => @overseer.acl_resources}
   end
 
+  def isp_report
+    authorize_acl :overseer
+    service = Services::Overseers::Finders::IspReport.new(params, current_overseer)
+    service.call
+    records = service.records
+    report_bucket_service = Services::Overseers::Overseers::GetIspReportBuckets.new(records,params)
+    @per = (params['per'] || params['length'] || 20).to_i
+    @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
+    bucket_records = report_bucket_service.call
+    @records = Kaminari.paginate_array(bucket_records).page(@page).per(@per)
+    if params['isp_report'].present?
+      @date_range = params['isp_report']['date_range']
+    end
+  end
+
   private
 
     def overseer_params
