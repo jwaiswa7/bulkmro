@@ -127,10 +127,11 @@ end
 #   end
 # end
 
-# every(1.day, 'generate_exports_daily', at: '04:00') do
-#   to-do check for memory leaks on heroku
+# every(1.day, 'generate_exports_daily', at: '19:35') do
+#   # to-do check for memory leaks on heroku
 #   Chewy.strategy(:atomic) do
-#     Services::Overseers::Exporters::GenerateExportsDaily.new
+#     service = Services::Overseers::Exporters::GenerateExportsDaily.new
+#     service.call
 #   end
 # end
 
