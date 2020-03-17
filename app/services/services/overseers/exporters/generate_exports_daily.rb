@@ -17,6 +17,7 @@ class Services::Overseers::Exporters::GenerateExportsDaily < Services::Overseers
     @export_hash.each do |key, value|
       unless Export.where(export_type: key).last.status.in?(['Enqueued', 'Processing'])
         ['Services', 'Overseers', 'Exporters', value].join('::').constantize.new.call
+        sleep 1800
       end
     end
   end
