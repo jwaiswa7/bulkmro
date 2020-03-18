@@ -15,11 +15,11 @@
 
     <% if @sales_quotes.present? && @inquiry.final_sales_quote.present? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
     <div class="bmro-instruction-heading">
-       <h4 class="bmro-instruction-head bmro-margin-ul collapsed bmro-ul-background" data-toggle="collapse" data-target="#instruction"><span class="bmro-information"></span>Before making a sales order, Please fulfill the following. <i class="bmro-add-icon bmro-hide"></i>
+       <h4 class="bmro-instruction-head bmro-margin-ul bmro-ul-background" data-toggle="collapse" data-target="#instruction"><span class="bmro-information"></span>Before making a sales order, Please fulfill the following. <i class="bmro-add-icon bmro-hide"></i>
         <i class="bmro-minus-icon bmro-hide"></i>
        </h4>
     </div>
-      <ul class="list-group text-info mb-3 bmro-float-left-left collapse" id="instruction">
+      <ul class="list-group text-info mb-3 bmro-float-left-left collapse show" id="instruction">
         <% if @inquiry.customer_po_number.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer PO number must be present.</li><% end %>
         <% if @inquiry.customer_order_date.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer order date must be present.</li><% end %>
         <% if @inquiry.customer_committed_date.blank? || !@inquiry.committed_delivery_attachment.attached? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Committed delivery date and
@@ -77,7 +77,7 @@
               end %>
             <% end %>
             <% if @inquiry.final_sales_quote.present? && is_authorized(sales_quote, 'new_sales_order') && policy(@inquiry.final_sales_quote).new_sales_order? %>
-              <%= row_action_button(new_overseers_inquiry_sales_order_path(@inquiry, sales_quote_id: sales_quote.to_param), 'external-link', 'Add to Order', 'success') %>
+              <%= row_action_button_without_fa(new_overseers_inquiry_sales_order_path(@inquiry, sales_quote_id: sales_quote.to_param), 'add-to-order-btn', 'Add to Order', 'success') %>
             <% end %>
             <% if policy(sales_quote).new_email_message? && is_authorized(sales_quote, 'new_email_message') %>
               <%= row_action_button(new_overseers_inquiry_sales_quote_email_message_path(@inquiry, sales_quote), 'envelope', 'Send Email', 'dark') %>
