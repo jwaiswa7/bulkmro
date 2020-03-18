@@ -1,6 +1,6 @@
 class SalesQuotesIndex < BaseIndex
   statuses = Inquiry.statuses
-  define_type SalesQuote.limit(1).with_includes do
+  define_type SalesQuote.all.with_includes do
     witchcraft!
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) { record.inquiry.inquiry_number.to_i }, type: 'integer'

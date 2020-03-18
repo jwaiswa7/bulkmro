@@ -21,7 +21,7 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
 
   def all_records
     inquiry_indexed_records = InquiriesIndex.all
-    sales_quotes_indexed_records = SalesQuotesIndex.all
+    sales_quotes_indexed_records = SalesOrdersWithCancelIndex.all
     sales_orders_indexed_records = SalesOrdersIndex.all
     purchase_order_indexed_records = PurchaseOrdersIndex.all
     if current_overseer.present? && !current_overseer.allow_inquiries?
@@ -66,7 +66,7 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
 
   def perform_query(query_string)
     inquiry_indexed_records = InquiriesIndex.query(multi_match: { query: query_string, operator: 'and', fields: %w[inside_sales_owner] })
-    sales_quotes_indexed_records = SalesQuotesIndex.query(multi_match: { query: query_string, operator: 'and', fields: %w[inside_sales_owner] })
+    sales_quotes_indexed_records = SalesOrdersWithCancelIndex.query(multi_match: { query: query_string, operator: 'and', fields: %w[inside_sales_owner] })
     sales_orders_indexed_records = SalesOrdersIndex.query(multi_match: { query: query_string, operator: 'and', fields: %w[inside_sales_owner] })
     purchase_order_indexed_records = PurchaseOrdersIndex.query(multi_match: { query: query_string, operator: 'and', fields: %w[inside_sales_owner] })
     if current_overseer.present? && !current_overseer.allow_inquiries?
