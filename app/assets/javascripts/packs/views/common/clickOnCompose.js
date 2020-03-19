@@ -24,5 +24,9 @@ const clickOnCompose = function () {
             },
         });
     });
+
+    $('#myModal').on('hidden.bs.modal', function () {
+        tinymce.remove('.html-editor');
+    });
 }
 export default clickOnCompose
