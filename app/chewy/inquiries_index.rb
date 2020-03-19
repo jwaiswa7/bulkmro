@@ -31,6 +31,8 @@
       field :account_id, value: -> (record) { record.account_id }
       field :account, value: -> (record) { record.account.to_s }, analyzer: 'substring'
       field :contact_id, value: -> (record) {record.contact_id}
+      field :billing_contact, value: -> (record) {record.billing_contact.try(:name)}, analyzer: 'substring'
+      field :shipping_contact, value: -> (record) {record.shipping_contact.try(:name)}, analyzer: 'substring'
       field :contact_s, value: -> (record) { record.contact.to_s }, analyzer: 'substring'
       field :priority, type: 'integer'
       field :quotation_followup_date, type: 'date'
