@@ -1,5 +1,4 @@
 class SalesOrdersWithCancelIndex < BaseIndex
-
   define_type SalesOrder.with_includes do
     witchcraft!
     field :id, type: 'integer'
