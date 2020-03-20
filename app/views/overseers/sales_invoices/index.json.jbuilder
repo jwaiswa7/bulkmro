@@ -1,4 +1,5 @@
 json.data (@sales_invoices) do |sales_invoice|
+  inquiry = sales_invoice.inquiry
   json.array! [
                   [
                       if is_authorized(sales_invoice, 'relationship_map')
@@ -50,6 +51,8 @@ json.data (@sales_invoices) do |sales_invoice|
                   sales_invoice.inquiry.present? ?  conditional_link(sales_invoice.sales_order.order_number, overseers_inquiry_sales_order_path(sales_invoice.inquiry, sales_invoice.sales_order), is_authorized(sales_invoice.sales_order, 'show')) : '-',
                   link_to(sales_invoice.inquiry.company.account.to_s, overseers_account_path(sales_invoice.inquiry.company.account), target: '_blank'),
                   link_to(sales_invoice.inquiry.company.name, overseers_company_path(sales_invoice.inquiry.company, sales_invoice), target: '_blank'),
+                  inquiry.billing_contact.present? ? sales_invoice.inquiry.billing_contact.try(:name) : '',
+                  inquiry.shipping_contact.present? ? sales_invoice.inquiry.shipping_contact.try(:name) : '',
                   sales_invoice.inquiry.present? ? sales_invoice.rows.count : '',
                   status_badge(sales_invoice.status),
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.inside_sales_owner.to_s : '',
@@ -69,6 +72,8 @@ json.columnFilters [
                        [],
                        [{ "source": autocomplete_overseers_accounts_path }],
                        [{ "source": autocomplete_overseers_companies_path }],
+                       [],
+                       [],
                        [],
                        SalesInvoice.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
