@@ -1,0 +1,447 @@
+<div class="bmro-width100">
+  <div class="bmro-dash-leftside">
+    <div class="bmro-width100 leftside">
+      <div class="bmro-width100 status-height">
+        <div class="bmro-dash-box">
+          <% @dashboard.main_statuses.each do |status| %>
+            <div class="bmro-same-box col status-box" data-status="<%= status %>">
+              <label><%= status %></label>
+              <h5><%= @dashboard.get_status_metrics(status)[:'count'] %></h5>
+              <span><%= format_currency(@dashboard.get_status_metrics(status)[:'value']) %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="bmro-width100 bmro-main-pedding main-pedding">
+        <div class="bmro-dash-inqu h-100">
+          <div class="bmro-width100 bmro-inquries-main inquiries-card h-100">
+            <div class="inquiry-list-wrapper h-100">
+              <%= render partial: 'inquiry_list_wrapper', locals:{inq_for_sales_dash: @dashboard.inq_for_sales_dash} %>
+            </div>
+          </div>
+          <div class="bmro-width100 bmro-sales-show-hide bmro-sales-main">
+            <div class="bmro-width100 bmro-sales-pedding">
+              <span class="bmro-sales-back bmro-menu-dropdown bmro-sales-draft-arrow bmro-font-size-dash bmro-cursol"></span>
+              <p class="bmro-menu bmro-cursol">
+                Sales Order Draft
+              </p>
+              <span class="bmro-inqu-no bmro-inqu-no-ml">12</span>
+              <div class="bmro-star-parent">
+                <span class="bmro-dash-star bmro-show-star"></span>
+                <label>Show Starred</label>
+              </div>
+            </div>
+            <div class="bmro-width100 bmro-dash-table-mt">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-all-task-th bmro-Inquries-width1">
+                  <span class="bmro-task-th">Inquiry No</span>
+                </div>
+                <div class="bmro-all-task-th bmro-Inquries-width2">
+                  <span class="bmro-task-th bmro-task-th-p0">Account</span>
+                </div>
+                <div class="bmro-all-task-th bmro-Inquries-width3 bmro-text-right">
+                  <span class="bmro-task-th">Orders</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-Inquries-task">
+                <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star"></span>
+                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">32125</span>
+                </div>
+                <div class="bmro-task-print bmro-Inquries-width2 bmro-fl">
+                  <span class="bmro-account-label-one">Abbott Healthcare Pvt.Ltd</span>
+                  <span class="bmro-status-label bmro-color-green">Partialy Delivered(Logistics)</span>
+                </div>
+                <div class="bmro-Inquries-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-table-order-no">12</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bmro-width100 bmro-purchase-order">
+            <div class="bmro-width100 bmro-sales-pedding">
+              <span class="bmro-inqu-no">12</span>
+              <p class="bmro-menu bmro-font-size-dash dropdown-toggle" id="My-inquries" data-toggle="dropdown" role="button">
+                My Purchase Order
+                <span class="bmro-menu-dropdown bmro-menu-dropdown-ml"></span>
+              </p>
+              <div class="dropdown-menu">
+                <a class="bmro-dropdown-item bmro-new-fw bmro-show-sales" href="#"><span class="bmro-inqu-no-drop ">12</span>My Sales Invoices</a>
+                <a class="bmro-dropdown-item bmro-new-fw bmro-show-purchse" href="#"><span class="bmro-inqu-no-drop">02</span>My Purchase Orders</a>
+              </div>
+              <div class="bmro-star-parent">
+                <span class="bmro-dash-star bmro-show-star"></span>
+                <label class="bmro-cursol">Show Starred</label>
+              </div>
+              <div class="bmro-star-parent bmro-reset-button bmro-inquiry-show-hide bmro-cursol">
+                <label class="bmro-cursol">Reset</label>
+              </div>
+            </div>
+
+            <div class="bmro-width100 bmro-dash-table-mt">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                  <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                  <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmro-width100">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                  <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                  <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmro-width100">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                  <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                  <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmro-width100">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                  <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                  <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmro-width100">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                  <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                  <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmro-width100">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                  <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                  <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bmro-width100">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-dash-star bmro-pur-star"></span>
+                  <span class="bmro-task-th bmro-pb-task">Inquiry No</span>
+                </div>
+                <div class="bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-task-th bmro-pb-task bmro-task-th-p0">Purchase Order No</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-task-th bmro-pb-task">P.O - Date</span>
+                </div>
+              </div>
+              <div class="bmro-width100 bmro-purchase">
+                <div class="bmro-task-no-td bmro-purchase-width1 bmro-fl bmro-position-relative">
+                  <span class="bmro-big-heading bmro-fl bmro-td-span bmro-cursol bmro-order-show">32165</span>
+                </div>
+                <div class="bmro-task-print bmro-purchase-width2 bmro-fl">
+                  <span class="bmro-account-label-one">1235789</span>
+                </div>
+                <div class="bmro-purchase-width3 bmro-fl bmro-text-right">
+                  <span class="bmro-td-span">17/06/19 </span>
+                </div>
+                <div class="bmro-width100">
+                  <span class="bmro-task-th bmro-task-th-pl bmro-width100">Account</span>
+                  <span class="bmro-purchase-abb bmro-width100">Abbott Healthcare Pvt. Ltd </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="bmro-dash-task h-100" id="bmro-dash-task">
+          <div class="bmro-width100 accordion bmro-all-task-action h-100">
+            <div class="bmro-width100 bmro-pl-pr task-ht">
+              <!--              <span class="bmro-inqu-no">12</span>-->
+              <p class="bmro-big-heading bmro-fl bmro-cursol bmro-font-size-dash dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                All Tasks
+                <!-- Commented for demo -->
+                <!-- <span class="bmro-drop-icon-head bmro-drop-icon-head-fr dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></span> --></p>
+              <!--<div class="dropdown-menu ">-->
+              <!--<a class="bmro-dropdown-item" href="#">Display Option 1</a>-->
+              <!--<a class="bmro-dropdown-item" href="#">Display Option 2</a>-->
+              <!--<a class="bmro-dropdown-item" href="#">Display Option 3</a>-->
+              <!--</div>-->
+              <!--<div class="bmro-star-parent">-->
+              <!--<span class="bmro-dash-star bmro-show-star"></span>-->
+              <!--<label>Show Starred</label>-->
+              <!--</div>-->
+            </div>
+            <div class="bmro-width100 bmro-mt-collas subhead-height">
+              <div class="bmro-width100 bmro-pl-pr">
+                <div class="bmro-all-task-th bmro-task-td-width">
+                  <span class="bmro-task-th">Inquiry</span>
+                </div>
+                <div class="bmro-all-task-th bmro-task-width">
+                  <span class="bmro-task-th bmro-task-th-p0">Task</span>
+                </div>
+                <div class="bmro-all-task-th bmro-action-width bmro-text-left">
+                  <span class="bmro-task-th d-flex justify-content-end">Actions</span>
+                </div>
+              </div>
+            </div>
+            <div class="bmro-width100 bmro-mt-collas content-mid-height">
+              <div class="task-list-wrapper h-100">
+                <%= render partial: 'task_list_wrapper', locals:{inq_for_sales_dash: @dashboard.inq_for_sales_dash, show_all_tasks: true, show_inquiry_tasks: false, inquiry_has_tasks: false} %>
+              </div>
+            </div>
+          </div>
+
+          <div class="bmro-width100 bmro-order-hide bmro-order-action inquiry-tasks">
+            <!-- Doc-wise tasks -->
+            <!--            <div id="collapsetwo" class="collapse bmro-width100">-->
+            <!--              <div class="bmro-width100 bmro-padding-task">-->
+            <!--                <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">-->
+            <!--                  <span class="bmro-dash-star"></span>-->
+            <!--                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">88888888</span>-->
+            <!--                </div>-->
+            <!--                <div class="bmro-task-print bmro-task-width bmro-fl">-->
+            <!--                  <div class="bmro-commited-data bmro-task-td">-->
+            <!--                    Supplier Commited date higher than Customer Commited Date (Revise Date)-->
+            <!--                  </div>-->
+            <!--                </div>-->
+            <!--                <div class="bmro-action-button-parent bmro-action-width bmro-fl">-->
+            <!--                  <a href="#" class="bmro-action-button bmro-fr bmro-lightbox" data-toggle="modal" data-target="#myModal" role="button">Compose Email-->
+            <!--                  </a>-->
+            <!--                </div>-->
+            <!--              </div>-->
+            <!--            </div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<%= render partial:'right_side_slide_modal' %>
+</div>
