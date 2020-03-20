@@ -634,9 +634,10 @@ Rails.application.routes.draw do
             get 'order_cancellation_modal'
             get 'order_cancellation_modal_by_isp'
             patch 'cancellation'
-            patch 'isp_order_cancellation'
+            post 'isp_order_cancellation'
             get 'revise_committed_delivery_date'
             patch 'update_revised_committed_delivery_date'
+            post 'isp_so_cancellation_email'
           end
 
           collection do

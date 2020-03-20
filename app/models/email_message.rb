@@ -22,7 +22,8 @@ class EmailMessage < ApplicationRecord
       'Material Dispatched to Customer': 40,
       'Material Delivered to Customer': 50,
       'Inventory Status Update to Saint Gobain': 60,
-      'Request for Quote': 70
+      'Request for Quote': 70,
+      'Request for SO Cancellation': 80
   }
 
   after_initialize :set_defaults, if: :new_record?

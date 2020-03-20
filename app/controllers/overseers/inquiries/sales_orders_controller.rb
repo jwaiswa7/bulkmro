@@ -1,7 +1,7 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
   before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation,
                                          :resync, :edit_mis_date, :update_mis_date, :fetch_order_data, :relationship_map,
-                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation, :order_cancellation_modal, :order_cancellation_modal_by_isp, :cancellation, :isp_order_cancellation, :revise_committed_delivery_date, :update_revised_committed_delivery_date]
+                                         :get_relationship_map_json, :new_accounts_confirmation, :create_account_confirmation, :order_cancellation_modal, :order_cancellation_modal_by_isp, :cancellation, :isp_order_cancellation, :revise_committed_delivery_date, :update_revised_committed_delivery_date, :isp_so_cancellation_email]
   before_action :set_notification, only: [:create_confirmation, :create_account_confirmation]
 
   def index
@@ -236,6 +236,25 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       render json: {error: @status[:message]}, status: 200
     elsif @status[:status] == 'failed'
       render json: {error: @status[:message]}, status: 500
+    end
+  end
+
+  def isp_so_cancellation_email
+    authorize_acl @sales_order
+    so_cancellation_reason = "Reason for SO Cancellation: #{sales_order_params['comments_attributes']['0']['message']}" if sales_order_params['comments_attributes']['0']['message'].present?
+    @sales_order.comments.build(message: so_cancellation_reason, overseer: current_overseer, inquiry: @inquiry)
+    @sales_order.save
+    @email_message = @sales_order.email_messages.build(overseer: current_overseer, inquiry: @inquiry, email_type: 'Request for SO Cancellation')
+    subject = "Request for SO Cancellation for #Inquiry #{@sales_order.inquiry.inquiry_number} #RFQ #{@sales_order.order_number}"
+    @email_message.assign_attributes(
+        from: 'meenakshi.naik@bulkmro.com',
+        to: 'meenakshi.naik@bulkmro.com',
+        subject: subject,
+        body: SalesOrderMailer.request_cancel_so_email(@email_message).body.raw_source
+    )
+    if @email_message.save
+      SalesOrderMailer.send_request_cancel_so_email(@email_message).deliver_now
+      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: 'Email sent to Accounts team for cancellation!'
     end
   end
 

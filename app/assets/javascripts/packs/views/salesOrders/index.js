@@ -12,13 +12,14 @@ const index = () => {
     let controller = camelize($('body').data().controller);
     exportFilteredRecords(Routes.export_filtered_records_overseers_sales_orders_path(), 'Email sent with Filtered ' + controller.titleize() + '!')
     salesOrderCancel();
+    salesOrderCancelAutoEmail();
 
     commanComment('sales-order','sales_orders');
     removeHrefExport();
 };
 
 let salesOrderCancel = () => {
-    $('.cancel-sales-order-button, .cancel-sales-order-isp').click(function () {
+    $('.cancel-sales-order-button').click(function () {
         let inqId = $(this).data('inquiry-id');
         let orderId = $(this).data('order-id');
         let url = $(this).data('url');
@@ -33,18 +34,61 @@ let salesOrderCancel = () => {
             }
         });
     });
+
+};
+
+let salesOrderCancelAutoEmail = () => {
+    $('.cancel-sales-order-isp').click(function () {
+        let inqId = $(this).data('inquiry-id');
+        let orderId = $(this).data('order-id');
+        let url = $(this).data('url');
+
+        $.ajax({
+            url: url,
+            success: function (data) {
+                $('.sales-order-cancel').empty();
+                $('.sales-order-cancel').append(data);
+                $('#cancelSalesOrder').modal('show');
+                orderCancelAutoEmailSubmit();
+            }
+        });
+    });
+
 };
 
 let orderCancelledSubmit = () => {
     $("#cancelSalesOrder").on('click', '.confirm-sales-order-cancel', function (event) {
-        var formSelector = "#" + $(this).closest('form').attr('id'),
-        datastring = $(formSelector).serialize();
+        let formSelector = "#" + $(this).closest('form').attr('id'),
+            datastring = $(formSelector).serialize();
 
         $.ajax({
             type: "PATCH",
             url: $(formSelector).attr('action'),
             data: datastring,
             dataType: "json",
+            success: function success(data) {
+                $('#cancelSalesOrder').modal('hide');
+                window.location.reload()
+            },
+            error: function error(_error) {
+                if (_error.responseJSON && _error.responseJSON.error)
+                    $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error + "</div>");
+            }
+        });
+        event.preventDefault();
+    });
+};
+
+let orderCancelAutoEmailSubmit = () => {
+    $("#cancelSalesOrder").on('click', '.auto-email-so-cancel', function (event) {
+        $(this).attr('disabled', true);
+        let formSelector = "#" + $(this).closest('form').attr('id');
+        let url = $(this).data('url');
+        $(formSelector).attr('method', '');
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: $(this).closest('form').serialize(),
             success: function success(data) {
                 $('#cancelSalesOrder').modal('hide');
                 window.location.reload()
