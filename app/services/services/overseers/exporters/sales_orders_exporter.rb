@@ -19,7 +19,8 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         'Outside Sales',
         'Sales Manager',
         'Quote Type',
-        'Opportunity Type'
+        'Opportunity Type',
+        'Total Marging'
     ]
   end
 
@@ -55,6 +56,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         sales_manager: inquiry.sales_manager.full_name,
         quote_type: inquiry.try(:quote_category) || '',
         opportunity_type: inquiry.try(:opportunity_type) || '',
+        total_margin: sales_order.calculated_total_margin
                 ) if inquiry.present?
     end
     @export.update_attributes(status: 'Completed')
