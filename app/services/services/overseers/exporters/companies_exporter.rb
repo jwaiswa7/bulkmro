@@ -4,7 +4,7 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
     @model = Company
     @export_name = 'companies'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['name', 'company_alias', 'industry', 'remote_uid', 'state_name', 'company_contact', 'payment_option', 'inside_sales_owner', 'outside_sales_owner', 'sales_manager', 'site', 'phone', 'mobile', 'email', 'pan', 'tan', 'company_type', 'nature_of_business', 'credit_limit', 'is_msme', 'tax_identifier', 'created_at']
+    @columns = ['name', 'company_alias', 'industry', 'remote_uid', 'state_name', 'company_contact', 'payment_option', 'inside_sales_owner', 'outside_sales_owner', 'sales_manager','logistics_owner', 'site', 'phone', 'mobile', 'email', 'pan', 'tan', 'company_type', 'nature_of_business', 'credit_limit', 'is_msme', 'tax_identifier', 'created_at']
   end
 
   def call
@@ -32,6 +32,7 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
         payment_option: (record.default_payment_option.name if record.default_payment_option.present?),
         inside_sales_owner: (record.inside_sales_owner.try(:full_name) if record.inside_sales_owner.present?),
         outside_sales_owner: (record.outside_sales_owner.try(:full_name) if record.outside_sales_owner.present?),
+        logistics_owner: (record.logistics_owner.full_name if record.logistics_owner.present?),
         sales_manager: (record.sales_manager.full_name if record.sales_manager.present?),
         site: record.site,
         phone: record.phone,
