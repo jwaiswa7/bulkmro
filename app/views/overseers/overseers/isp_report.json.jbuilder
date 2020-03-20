@@ -7,10 +7,6 @@ json.data (@records) do |record|
               record[:purchase_orders_count]
               ]
 end
-
-# json.recordsTotal @records.model.all.count
-# json.recordsFiltered @records.total_count
-#
 json.recordsTotal @records.count
 json.recordsFiltered @records.total_count
 json.draw params[:draw]

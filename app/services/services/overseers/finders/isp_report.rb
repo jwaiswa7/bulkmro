@@ -5,18 +5,7 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
     else
       all_records
     end
-
-#     @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
-#     @indexed_records = non_paginated_records if !paginate
-#
-# #    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes if indexed_records.present?
-# #    @records = order_by_ids(@indexed_records) if indexed_records.present?
-#     if @indexed_records.size > 0
-#       @records = model_klass.find_ordered(indexed_records.pluck(:id)).with_includes if @indexed_records.present?
-#     else
-#       @records = model_klass.none
-#     end
-      @records = non_paginated_records
+    @records = non_paginated_records
   end
 
   def all_records
@@ -36,7 +25,7 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
       purchase_order_indexed_records = purchase_order_indexed_records.order(sort_definition)
     end
     if @isp_report_params.present?
-      date_range = @isp_report_params["date_range"].split('~')
+      date_range = @isp_report_params['date_range'].split('~')
 
       if !date_range.empty?
         inquiry_indexed_records = date_range_query(inquiry_indexed_records, date_range)
@@ -82,7 +71,7 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
     end
 
     if @isp_report_params.present?
-      date_range = @isp_report_params["date_range"].split('~')
+      date_range = @isp_report_params['date_range'].split('~')
       if !date_range.empty?
         inquiry_indexed_records = date_range_query(inquiry_indexed_records, date_range)
         sales_quotes_indexed_records = date_range_query(sales_quotes_indexed_records, date_range)

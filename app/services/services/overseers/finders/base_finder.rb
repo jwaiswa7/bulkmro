@@ -282,7 +282,6 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
         }
     }
-
   end
 
   def aggregate_by_status(key = 'statuses', aggregation_field = 'potential_value', size = 50, status_field)
