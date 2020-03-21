@@ -10,14 +10,14 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
 
   def all_records
     inquiry_indexed_records = InquiriesIndex.all
-    sales_quotes_indexed_records = SalesOrdersWithCancelIndex.all
-    sales_orders_indexed_records = SalesOrdersIndex.all
+    sales_quotes_indexed_records = SalesQuotesIndex.all
+    sales_orders_indexed_records = SalesOrdersWithCancelIndex.all
     purchase_order_indexed_records = PurchaseOrdersIndex.all
     if current_overseer.present? && !current_overseer.allow_inquiries?
-      inquiry_indexed_records = inquiry_indexed_records.order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-      sales_quotes_indexed_records = sales_quotes_indexed_records.order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-      sales_orders_indexed_records = sales_orders_indexed_records.order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-      purchase_order_indexed_records = purchase_order_indexed_records.order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+      inquiry_indexed_records = inquiry_indexed_records.order(sort_definition).filter(filter_by_owner([current_overseer.id]))
+      sales_quotes_indexed_records = sales_quotes_indexed_records.order(sort_definition).filter(filter_by_owner([current_overseer.id]))
+      sales_orders_indexed_records = sales_orders_indexed_records.order(sort_definition).filter(filter_by_owner([current_overseer.id]))
+      purchase_order_indexed_records = purchase_order_indexed_records.order(sort_definition).filter(filter_by_owner([current_overseer.id]))
     else
       inquiry_indexed_records = inquiry_indexed_records.order(sort_definition)
       sales_quotes_indexed_records = sales_quotes_indexed_records.order(sort_definition)
@@ -55,8 +55,8 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
 
   def perform_query(query_string)
     inquiry_indexed_records = InquiriesIndex.query(multi_match: { query: query_string, operator: 'and', fields: %w[inside_sales_owner] })
-    sales_quotes_indexed_records = SalesOrdersWithCancelIndex.query(multi_match: { query: query_string, operator: 'and', fields: %w[inside_sales_owner] })
-    sales_orders_indexed_records = SalesOrdersIndex.query(multi_match: { query: query_string, operator: 'and', fields: %w[inside_sales_owner] })
+    sales_quotes_indexed_records = SalesQuotesIndex.query(multi_match: { query: query_string, operator: 'and', fields: %w[inside_sales_owner] })
+    sales_orders_indexed_records = SalesOrdersWithCancelIndex.query(multi_match: { query: query_string, operator: 'and', fields: %w[inside_sales_owner] })
     purchase_order_indexed_records = PurchaseOrdersIndex.query(multi_match: { query: query_string, operator: 'and', fields: %w[inside_sales_owner] })
     if current_overseer.present? && !current_overseer.allow_inquiries?
       inquiry_indexed_records = inquiry_indexed_records.order(sort_definition).filter(filter_by_owner(current_overseer.self_and_descendant_ids))
@@ -108,6 +108,6 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
   end
 
   def model_klass
-    Inquiry
+    Oversser
   end
 end
