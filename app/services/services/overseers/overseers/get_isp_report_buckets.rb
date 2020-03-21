@@ -19,7 +19,7 @@ class Services::Overseers::Overseers::GetIspReportBuckets < Services::Shared::Ba
     records = []
     inside_sales_owners.each do |isp_owner|
       records << {
-          name: isp_owner.to_s,
+          name: isp_owner.full_name,
           id: isp_owner.id,
           inquiries_count: @inquiry_records[isp_owner.id] || 0,
           sales_quotes_count: @sales_quote_records[isp_owner.id] || 0,
