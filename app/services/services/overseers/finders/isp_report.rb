@@ -97,8 +97,8 @@ class Services::Overseers::Finders::IspReport < Services::Overseers::Finders::Ba
     if !date_range.empty?
       indexed_records.query(
         range: {
-          :"created_at" => {
-              "time_zone": "+05:30",
+          "created_at": {
+              "time_zone": '+05:30',
               gte: date_range[0].strip.to_date.beginning_of_day,
               lte: date_range[1].strip.to_date.end_of_day
           }

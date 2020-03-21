@@ -5,7 +5,6 @@ class Services::Overseers::Overseers::GetIspReportBuckets < Services::Shared::Ba
     @sales_orders_records = all_indexed_records[:sales_orders_records].aggregations['inside_sales_owners']['buckets']
     @purchase_order_records = all_indexed_records[:purchase_order_records].aggregations['inside_sales_owners']['buckets']
     @inside_sales_owner_id = params[:isp_report][:procurement_specialist].to_i if params[:isp_report].present? && params[:isp_report][:procurement_specialist].present?
-
   end
 
   def call
@@ -27,14 +26,13 @@ class Services::Overseers::Overseers::GetIspReportBuckets < Services::Shared::Ba
           sales_orders_count: @sales_orders_records[isp_owner.id] || 0,
           purchase_orders_count: @purchase_order_records[isp_owner.id] || 0,
       }
-
     end
     records
   end
 
   def format_array_to_hash(array_data)
     hash_data = {}
-    array_data.map{ |record| hash_data[record['key']] = record['doc_count'] }
+    array_data.map { |record| hash_data[record['key']] = record['doc_count'] }
     hash_data
   end
 

@@ -296,6 +296,7 @@
             <%= nav_dropdown_item 'TAT Report', tat_report_overseers_inquiries_path, is_authorized(:inquiry, 'tat_report') %>
             <%= nav_dropdown_item 'Customer Order Status Report', customer_order_status_report_overseers_sales_orders_path, is_authorized(:sales_order, 'customer_order_status_report') %>
             <%= nav_dropdown_item 'Logistics Scorecard', overseers_logistics_scorecards_path, is_authorized(:logistics_scorecard, 'index') %>
+            <%= nav_dropdown_item 'Logistics Scorecard', isp_report_overseers_overseers, is_authorized(:overseer, 'isp_report_overseers_overseers') %>
           </div>
         </li>
       <% end %>
