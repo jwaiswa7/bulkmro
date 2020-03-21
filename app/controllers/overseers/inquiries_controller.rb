@@ -292,8 +292,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def next_inquiry_step
     @company = Company.find(params[:inquiry][:company_id])
-    # @inquiry = @company.inquiries.build(inquiry_params.merge(overseer: current_overseer))
-    @inquiry = @company.inquiries.build(inquiry_params)
+    @inquiry = @company.inquiries.build(inquiry_params.merge(overseer: current_overseer))
     Rails.cache.write(:inquiry, @inquiry, expires_in: 25.minutes)
     redirect_to new_overseers_inquiry_path(company_id: @company.to_param)
     authorize_acl @inquiry
