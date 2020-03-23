@@ -39,7 +39,6 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def regret_request_action
     @inquiry = Inquiry.find(params['inquiry'])
-    @inquiry = Inquiry.find(params['inquiry'])
     if params['action_name'] == 'Approve'
       if @inquiry.update_attributes(status: 'Regret')
         message = "Inquiry Regreted by #{current_overseer}"
