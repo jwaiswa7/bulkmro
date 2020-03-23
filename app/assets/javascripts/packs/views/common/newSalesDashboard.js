@@ -12,10 +12,6 @@ notificationsPanel()
 navigationMenu();
 clickOnCompose();
 statusBox();
-    // $(".bmro-right-side-open").click(function () {
-    //     $('.bmro-slide-order-no').addClass('bmro-slide-order-show');
-    //     $('.bmro-slide-on-inquries').removeClass('bmro-inquries-po');
-    // });
 
     getStatusRecords();
     getInquiryTasks();

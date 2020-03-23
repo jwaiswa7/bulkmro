@@ -1,7 +1,8 @@
+<div class="bmro-dash-rightside">
 <div class="bmro-width100 h-100">
   <div class="bmro-width100">
     <div class="bmro-dash-right-menu">
-      <!--              <span class="bmro-all-notification active-menu bmro-all-action" role="button">All</span>-->
+
       <span class="bmro-all-notification bmro-notification-action" role="button" id="notifications" >Notification</span>
       <span class="bmro-all-notification bmro-Comments-action active-menu" role="button" id="comments">Comments</span>
     </div>
@@ -25,20 +26,13 @@
           <h5 class="bmro-big-heading bmro-hash-mt">#<%= notification.id %> <span class="bmro-today-button">Notification</span></h5>
           <span class="bmro-today-span"><%= notification.message %></span>
           <span class="bmro-today-posted">Posted on: <%= notification.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
-          <!--<h5 class="bmro-big-heading bmro-hash-mt">Farhan. A <span class="bmro-today-button">Logistics</span></h5>-->
+
         </div>
       <%end %>
     <%end %>
   </div>
   <div class="bmro-width100 bmro-comments-sec" id="comment-rows">
-    <!--        <div class="bmro-today-list bmro-today-mt-mb">-->
-    <!--          <div class="bmro-width100 bmro-today-line-parent">-->
-    <!--            <div class="bmro-today-parent">-->
-    <!--              <span class="bmro-big-heading bmro-fl">Comments</span>-->
-    <!--            </div>-->
-    <!--            <span class="bmro-today-line"></span>-->
-    <!--          </div>-->
-    <!--        </div>-->
+
     <% @dashboard.comments.each do |date, comments| %>
       <div class="bmro-today-list bmro-today-list-bm bmro-today-mt-mb">
         <div class="bmro-width100 bmro-today-line-parent">
@@ -58,9 +52,14 @@
           <span class="bmro-today-span"><%= comment.message %></span>
           <h5 class="bmro-big-heading bmro-hash-mt"><%= comment.created_by.to_s %> <span class="bmro-today-button"><%= comment.created_by.role %></span></h5>
           <span class="bmro-today-posted">Posted on: <%= comment.created_at.strftime("%d/%m/%Y %I:%M %P") %></span>
-          <!--<h5 class="bmro-big-heading bmro-hash-mt">Farhan. A <span class="bmro-today-button">Logistics</span></h5>-->
+
         </div>
       <%end %>
     <%end %>
   </div>
+</div>
+
+
+  <%= render partial:'right_side_slide_modal' %>
+
 </div>

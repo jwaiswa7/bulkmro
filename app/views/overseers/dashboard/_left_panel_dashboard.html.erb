@@ -1,4 +1,4 @@
-<div class="bmro-width100">
+
   <div class="bmro-dash-leftside">
     <div class="bmro-width100 leftside">
       <div class="bmro-width100 status-height">
@@ -384,20 +384,10 @@
         <div class="bmro-dash-task h-100" id="bmro-dash-task">
           <div class="bmro-width100 accordion bmro-all-task-action h-100">
             <div class="bmro-width100 bmro-pl-pr task-ht">
-              <!--              <span class="bmro-inqu-no">12</span>-->
+
               <p class="bmro-big-heading bmro-fl bmro-cursol bmro-font-size-dash dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
                 All Tasks
-                <!-- Commented for demo -->
-                <!-- <span class="bmro-drop-icon-head bmro-drop-icon-head-fr dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></span> --></p>
-              <!--<div class="dropdown-menu ">-->
-              <!--<a class="bmro-dropdown-item" href="#">Display Option 1</a>-->
-              <!--<a class="bmro-dropdown-item" href="#">Display Option 2</a>-->
-              <!--<a class="bmro-dropdown-item" href="#">Display Option 3</a>-->
-              <!--</div>-->
-              <!--<div class="bmro-star-parent">-->
-              <!--<span class="bmro-dash-star bmro-show-star"></span>-->
-              <!--<label>Show Starred</label>-->
-              <!--</div>-->
+
             </div>
             <div class="bmro-width100 bmro-mt-collas subhead-height">
               <div class="bmro-width100 bmro-pl-pr">
@@ -420,28 +410,23 @@
           </div>
 
           <div class="bmro-width100 bmro-order-hide bmro-order-action inquiry-tasks">
-            <!-- Doc-wise tasks -->
-            <!--            <div id="collapsetwo" class="collapse bmro-width100">-->
-            <!--              <div class="bmro-width100 bmro-padding-task">-->
-            <!--                <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">-->
-            <!--                  <span class="bmro-dash-star"></span>-->
-            <!--                  <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span">88888888</span>-->
-            <!--                </div>-->
-            <!--                <div class="bmro-task-print bmro-task-width bmro-fl">-->
-            <!--                  <div class="bmro-commited-data bmro-task-td">-->
-            <!--                    Supplier Commited date higher than Customer Commited Date (Revise Date)-->
-            <!--                  </div>-->
-            <!--                </div>-->
-            <!--                <div class="bmro-action-button-parent bmro-action-width bmro-fl">-->
-            <!--                  <a href="#" class="bmro-action-button bmro-fr bmro-lightbox" data-toggle="modal" data-target="#myModal" role="button">Compose Email-->
-            <!--                  </a>-->
-            <!--                </div>-->
-            <!--              </div>-->
-            <!--            </div>-->
+
           </div>
         </div>
       </div>
     </div>
   </div>
-<%= render partial:'right_side_slide_modal' %>
-</div>
+
+
+  <div class="modal fade bmro-compose" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close bmro-modal-close" data-dismiss="modal"><span class="bmro-close-icon"></span></button>
+          <div class="bmro-width100 bmro-padding-email">
+            <div id="email_message"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
