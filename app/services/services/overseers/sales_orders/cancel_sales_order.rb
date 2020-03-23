@@ -24,8 +24,11 @@ class Services::Overseers::SalesOrders::CancelSalesOrder < Services::Shared::Bas
 
 
   def sales_order_cancel(sales_order, sales_order_params)
-    so_cancellation_reason = "Reason for SO Cancellation: #{sales_order_params['comments_attributes']['0']['message']}" if sales_order_params['comments_attributes']['0']['message'].present?
-    sales_order.comments.build(message: so_cancellation_reason, inquiry: @inquiry)
+    comment_attributes = sales_order_params['comments_attributes']['0']
+    so_cancellation_reason = "Reason for SO Cancellation: #{comment_attributes['message']}" if comment_attributes['message'].present?
+    sales_order.comments.build(message: so_cancellation_reason, created_by_id: comment_attributes['created_by_id'], inquiry_id: comment_attributes['inquiry_id'])
+    sales_order['status'] = sales_order_params['status']
+    sales_order['remote_status'] = sales_order_params['remote_status']
     sales_order.save
     { status: 'success', message: 'Sales Order Cancelled Successfully' }
   end

@@ -20,8 +20,6 @@ const index = () => {
 
 let salesOrderCancel = () => {
     $('.cancel-sales-order-button').click(function () {
-        let inqId = $(this).data('inquiry-id');
-        let orderId = $(this).data('order-id');
         let url = $(this).data('url');
 
         $.ajax({
@@ -39,8 +37,6 @@ let salesOrderCancel = () => {
 
 let salesOrderCancelAutoEmail = () => {
     $('.cancel-sales-order-isp').click(function () {
-        let inqId = $(this).data('inquiry-id');
-        let orderId = $(this).data('order-id');
         let url = $(this).data('url');
 
         $.ajax({
@@ -89,6 +85,7 @@ let orderCancelAutoEmailSubmit = () => {
             url: url,
             type: "POST",
             data: $(this).closest('form').serialize(),
+            dataType: "json",
             success: function success(data) {
                 $('#cancelSalesOrder').modal('hide');
                 window.location.reload()

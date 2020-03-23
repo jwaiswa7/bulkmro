@@ -233,7 +233,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     if @status.key?(:empty_message)
       render json: {error: 'Cancellation Message is Required'}, status: 500
     elsif @status[:status] == 'success'
-      render json: {error: @status[:message]}, status: 200
+      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: @status[:message]
     elsif @status[:status] == 'failed'
       render json: {error: @status[:message]}, status: 500
     end
@@ -245,16 +245,20 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     @sales_order.comments.build(message: so_cancellation_reason, overseer: current_overseer, inquiry: @inquiry)
     @sales_order.save
     @email_message = @sales_order.email_messages.build(overseer: current_overseer, inquiry: @inquiry, email_type: 'Request for SO Cancellation')
-    subject = "Request for SO Cancellation for #Inquiry #{@sales_order.inquiry.inquiry_number} #RFQ #{@sales_order.order_number}"
+    subject = "Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
     @email_message.assign_attributes(
         from: 'meenakshi.naik@bulkmro.com',
-        to: 'meenakshi.naik@bulkmro.com',
+        # to: 'accounts@bulkmro.com',
+        to: 'bulkmro007@gmail.com',
         subject: subject,
         body: SalesOrderMailer.request_cancel_so_email(@email_message).body.raw_source
     )
     if @email_message.save
-      SalesOrderMailer.send_request_cancel_so_email(@email_message).deliver_now
-      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: 'Email sent to Accounts team for cancellation!'
+      if SalesOrderMailer.send_request_cancel_so_email(@email_message).deliver_now
+        redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: 'Email sent to Accounts team for cancellation!'
+      else
+        redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: 'Email not sent! Something went wrong!!'
+      end
     end
   end
 
