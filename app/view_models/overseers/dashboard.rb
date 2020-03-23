@@ -22,8 +22,18 @@ class Overseers::Dashboard
     }.compact
   end
 
+  def inq_for_account_dash
+    inq_from_invoice_request = []
+    invoice_requests.each { |inv_req| inq_from_invoice_request.push inv_req.inquiry }
+    inq_from_invoice_request.concat inquiries_with_so_approval_pending
+  end
+
   def inq_for_sales_dash
-    Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Rejected by Accounts']).order(updated_at: :desc)
+    if self.overseer.inside_sales_executive?
+      Inquiry.with_includes.where(inside_sales_owner_id: overseer.id).where('updated_at > ? OR quotation_followup_date > ?', Date.new(2018, 04, 01), Date.new(2018, 04, 01)).where.not(status: ['Order Won', 'Order Lost', 'Regret', 'Rejected by Accounts']).order(updated_at: :desc)
+    elsif self.overseer.accounts?
+      inq_for_account_dash
+    end
   end
 
   def inquiry_needs_followup?(inquiry)
@@ -65,11 +75,10 @@ class Overseers::Dashboard
   def get_status_metrics(status)
     if self.overseer.inside_sales_executive?
       count_parameter = recent_inquiries.pluck(:status)
-      value_parameter = inquiry_calculated_total(nil,status)
+      value_parameter = inquiry_calculated_total(recent_inquiries,status)
     elsif self.overseer.accounts?
-      count_parameter = invoice_requests.pluck(:status)
-      count_parameter = count_parameter.concat (inquiries_with_so_approval_pending.pluck(:status))
-      value_parameter = inquiry_calculated_total(nil,invoice_requests)
+      count_parameter = inq_for_sales_dash.pluck(:status)
+      value_parameter = inquiry_calculated_total(inq_for_sales_dash,status)
     end
     {
         count: count_parameter.count(status),
@@ -77,12 +86,8 @@ class Overseers::Dashboard
     }
   end
 
-  def inquiry_calculated_total(documents,status)
-    if documents
-      documents.map { |doc| doc.inquiry.calculated_total if doc.status == status }.compact.sum
-    else
-      recent_inquiries.map { |inquiry| inquiry.calculated_total if inquiry.status == status }.compact.sum
-    end
+  def inquiry_calculated_total(inquiries,status)
+      inquiries.map {  |inquiry| inquiry.calculated_total if inquiry.status == status }.compact.sum
   end
 
   def recent_sales_orders
