@@ -1,9 +1,10 @@
 class Services::Overseers::Overseers::GetIspReportBuckets < Services::Shared::BaseService
-  def initialize(all_indexed_records, params)
+  def initialize(all_indexed_records, overseers, params)
     @inquiry_records = all_indexed_records[:inquiry_records].aggregations['inside_sales_owners']['buckets']
     @sales_quote_records = all_indexed_records[:sales_quote_records].aggregations['inside_sales_owners']['buckets']
     @sales_orders_records = all_indexed_records[:sales_orders_records].aggregations['inside_sales_owners']['buckets']
     @purchase_order_records = all_indexed_records[:purchase_order_records].aggregations['inside_sales_owners']['buckets']
+    @overseers = overseers
     @inside_sales_owner_id = params[:isp_report][:procurement_specialist].to_i if params[:isp_report].present? && params[:isp_report][:procurement_specialist].present?
   end
 
@@ -12,7 +13,7 @@ class Services::Overseers::Overseers::GetIspReportBuckets < Services::Shared::Ba
     @sales_quote_records = format_array_to_hash(@sales_quote_records)
     @sales_orders_records = format_array_to_hash(@sales_orders_records)
     @purchase_order_records = format_array_to_hash(@purchase_order_records)
-    inside_sales_owners =  AclRole.where(role_name: 'Inside Sales Executive').last.overseers.alphabetical
+    inside_sales_owners =  @overseers
     if @inside_sales_owner_id.present?
       inside_sales_owners = inside_sales_owners.where(id: @inside_sales_owner_id)
     end
@@ -36,5 +37,5 @@ class Services::Overseers::Overseers::GetIspReportBuckets < Services::Shared::Ba
     hash_data
   end
 
-  attr_accessor :all_indexed_records, :inside_sales_owner_id
+  attr_accessor :all_indexed_records, :inside_sales_owner_id, :overseers
 end

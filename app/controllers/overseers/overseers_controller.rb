@@ -143,7 +143,8 @@ class Overseers::OverseersController < Overseers::BaseController
     service = Services::Overseers::Finders::IspReport.new(params, current_overseer)
     service.call
     records = service.records
-    report_bucket_service = Services::Overseers::Overseers::GetIspReportBuckets.new(records, params)
+    @overseers = Inquiry.procurement_specialists
+    report_bucket_service = Services::Overseers::Overseers::GetIspReportBuckets.new(records, @overseers, params)
     @per = (params['per'] || params['length'] || 20).to_i
     @page = params['page'] || ((params['start'] || 20).to_i / @per + 1)
     bucket_records = report_bucket_service.call

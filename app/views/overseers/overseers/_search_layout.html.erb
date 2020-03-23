@@ -6,7 +6,7 @@
           <%= f.input :date_range, as: :string, input_html: {:'data-toggle' => 'daterangepicker', class:'bmro-form-input', :placeholder => 'Date Range', :value => (@date_range.present? ? @date_range : '')}, required: false, label: 'Pick a Date Range' %>
         </div>
         <div class="col-3">
-          <%= f.input :procurement_specialist, as: :select, collection: Inquiry.procurement_specialists,
+          <%= f.input :procurement_specialist, as: :select, collection: @overseers,
                       input_html: {class: "select2-single bmro-form-input bmro-dropdown-input", :'data-placeholder' => 'Select a  Procurement Specialist'}, required: false, include_blank: true,
                       selected: params['isp_report'].present? && params['isp_report']['procurement_specialist'].present? ? params['isp_report']['procurement_specialist'].to_i : '' %>
         </div>
