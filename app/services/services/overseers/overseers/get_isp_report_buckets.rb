@@ -12,7 +12,7 @@ class Services::Overseers::Overseers::GetIspReportBuckets < Services::Shared::Ba
     @sales_quote_records = format_array_to_hash(@sales_quote_records)
     @sales_orders_records = format_array_to_hash(@sales_orders_records)
     @purchase_order_records = format_array_to_hash(@purchase_order_records)
-    inside_sales_owners = Overseer.inside_with_additional_overseers.alphabetical
+    inside_sales_owners =  AclRole.where(role_name: 'Inside Sales Executive').last.overseers.alphabetical
     if @inside_sales_owner_id.present?
       inside_sales_owners = inside_sales_owners.where(id: @inside_sales_owner_id)
     end
