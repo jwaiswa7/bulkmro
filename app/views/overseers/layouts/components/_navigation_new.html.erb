@@ -122,7 +122,9 @@
         </div>
 
         <div class="bmro-second-and-third-level-headings-container" id="sales_heading_container">
-          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Inquiries', overseers_inquiries_path, is_authorized(:inquiry, 'index') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Inquiries', overseers_inquiries_path, is_authorized(:inquiry, 'index') %>
+            <%= nav_dropdown_sub_item 'Inquiries Regret Requests', regret_inquiry_request_queue_overseers_inquiries_path, is_authorized(:inquiry, 'regret_inquiry_request_queue') %>
+          </div>
           <div class="bmro-small-container">
             <div class="bmro-second-level-heading-container">
               <p class="bmro-second-level-header">Online Orders</p>
