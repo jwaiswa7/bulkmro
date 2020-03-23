@@ -2,7 +2,7 @@ json.data (@inquiries) do |inquiry|
   columns = [
       [
           if is_authorized(inquiry, 'regret_inquiry_request_queue')
-            row_action_button(regret_request_action_overseers_inquiries_path(inquiry: inquiry.id, action_name: 'Approve'), 'check', 'Approve', 'success')
+            row_action_button(regret_request_action_overseers_inquiries_path(inquiry: inquiry.id, action_name: 'Approve'), 'fal fa-comment-alt-check', 'Approve', 'success')
           end,
           if is_authorized(inquiry, 'regret_inquiry_request_queue')
             row_action_button(regret_request_action_overseers_inquiries_path(inquiry: inquiry.id, action_name: 'Reject'), 'times', 'Reject', 'danger')
