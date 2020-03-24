@@ -55,7 +55,7 @@
 <section class="pb-4 pb-lg-5">
   <table class="datatable table table-bordered table-hover dt-responsive bmro-datatable-style
    <% if content_for?(:wrap_whitespace) %> wrap-whitespace
-   <% end %>" data-search="Enter search term/keywords"
+   <% end %>"  <% if !content_for?(:can_not_searched) %>data-search="Enter search term/keywords"<% end %>
          <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.fullpath %>"
          <% end %><% if not content_for?(:enable_sort_on_last_column) %>data-sorting="false"<% end %> style="width:100%">
     <thead>
