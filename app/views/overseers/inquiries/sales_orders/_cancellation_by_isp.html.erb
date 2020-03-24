@@ -22,11 +22,11 @@
             <% if policy(@sales_order).can_isp_cancel_so? %>
               <button type="submit" class="btn btn-warning confirm-sales-order-cancel" >Cancel Sales Order</button>
             <% else %>
-              This will send auto email to Accounts team for SO cancellation.
-              <div class="col-md-6">
-                <button type="submit" class="btn btn-dark auto-email-so-cancel" data-url="<%= isp_so_cancellation_email_overseers_inquiry_sales_order_path(@inquiry, @sales_order)%>">Cancel Sales Order</button>
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-dark auto-email-so-cancel" data-url="<%= isp_so_cancellation_email_overseers_inquiry_sales_order_path(@inquiry, @sales_order)%>">Cancel Sales Order</button><br><br>
+                This will send auto email to Accounts team for SO cancellation.
               </div>
-            <% end %>
+          <% end %>
           </div>
         <% end %>
       </div>
