@@ -16,36 +16,65 @@ const index = () => {
 
     commanComment('sales-order','sales_orders');
     removeHrefExport();
+    $('.sprint-loader').hide();
 };
 
 let salesOrderCancel = () => {
     $('.cancel-sales-order-button').click(function () {
         let url = $(this).data('url');
-
+        $('.confirm-sales-order-cancel').prop('disabled', true);
         $.ajax({
             url: url,
             success: function (data) {
                 $('.sales-order-cancel').empty();
                 $('.sales-order-cancel').append(data);
                 $('#cancelSalesOrder').modal('show');
-                orderCancelledSubmit()
+                $('.confirm-sales-order-cancel').prop('disabled', true);
+                $('.sprint-loader').hide();
+
+                $('.cancellation-msg').on('keyup', function (event) {
+                    if($(this).val() === '' || $(this).val() === 'undefined') {
+                        $('.confirm-sales-order-cancel').prop('disabled', true);
+                    }
+                    else {
+                        $('.confirm-sales-order-cancel').prop('disabled', false);
+                    }
+                });
+                orderCancelledSubmit();
             }
         });
     });
-
 };
 
 let salesOrderCancelAutoEmail = () => {
     $('.cancel-sales-order-isp').click(function () {
         let url = $(this).data('url');
 
+        // if url.split('/') ==
         $.ajax({
             url: url,
             success: function (data) {
                 $('.sales-order-cancel').empty();
                 $('.sales-order-cancel').append(data);
                 $('#cancelSalesOrder').modal('show');
-                orderCancelAutoEmailSubmit();
+                $('.sprint-loader').hide();
+                let data_url = $('.cancel-button').data('url');
+                let action = data_url.split('/').pop();
+                $('.cancel-button').prop('disabled', true);
+
+                $('.cancellation-msg').on('change', function (event) {
+                    if($(this).val() === '' || $(this).val() === 'undefined') {
+                        $('.cancel-button').prop('disabled', true);
+                    }
+                    else {
+                        $('.cancel-button').prop('disabled', false);
+                    }
+                });
+                if (action == 'isp_order_cancellation') {
+                    orderCancelAccount('.confirm-sales-order-cancel');
+                } else {
+                    orderCancelAccount('.auto-email-so-cancel');
+                }
             }
         });
     });
@@ -54,6 +83,8 @@ let salesOrderCancelAutoEmail = () => {
 
 let orderCancelledSubmit = () => {
     $("#cancelSalesOrder").on('click', '.confirm-sales-order-cancel', function (event) {
+        $(this).attr('disabled', true);
+        $('.sprint-loader').show();
         let formSelector = "#" + $(this).closest('form').attr('id'),
             datastring = $(formSelector).serialize();
 
@@ -64,7 +95,12 @@ let orderCancelledSubmit = () => {
             dataType: "json",
             success: function success(data) {
                 $('#cancelSalesOrder').modal('hide');
-                window.location.reload()
+                $.notify({
+                    message: data.responseJSON.notice
+                }, {
+                    type: 'warning'
+                }, {delay: 5000});
+                window.location.reload();
             },
             error: function error(_error) {
                 if (_error.responseJSON && _error.responseJSON.error)
@@ -75,9 +111,10 @@ let orderCancelledSubmit = () => {
     });
 };
 
-let orderCancelAutoEmailSubmit = () => {
-    $("#cancelSalesOrder").on('click', '.auto-email-so-cancel', function (event) {
+let orderCancelAccount = (class_name) => {
+    $("#cancelSalesOrder").on('click', class_name, function (event) {
         $(this).attr('disabled', true);
+        $('.sprint-loader').show();
         let formSelector = "#" + $(this).closest('form').attr('id');
         let url = $(this).data('url');
         $(formSelector).attr('method', '');
@@ -88,7 +125,12 @@ let orderCancelAutoEmailSubmit = () => {
             dataType: "json",
             success: function success(data) {
                 $('#cancelSalesOrder').modal('hide');
-                window.location.reload()
+                $.notify({
+                    message: data.notice
+                }, {
+                    type: 'warning'
+                }, {delay: 5000});
+                window.location.reload();
             },
             error: function error(_error) {
                 if (_error.responseJSON && _error.responseJSON.error)

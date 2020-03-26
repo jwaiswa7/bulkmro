@@ -8,23 +8,28 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <%= simple_form_for([:overseers, @sales_order], :url => isp_order_cancellation_overseers_inquiry_sales_order_path(@sales_order.inquiry, @sales_order), :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => '', method: :post}) do |f| %>
+        <%= simple_form_for([:overseers, @sales_order], :html => {:class => 'needs-validation p-3', :'novalidate' => '', :'data-parsley-validate' => '', method: :post}) do |f| %>
           <div class="error bg-danger text-white mb-3 px-1 rounded"></div>
           <div class="modal-body">
             <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |sales_order| %>
               <%= sales_order.hidden_field :created_by_id %>
               <%= sales_order.hidden_field :inquiry_id, :value => @inquiry.id %>
               <%= sales_order.hidden_field :sales_order_id, :value => @sales_order.id %>
-              <%= sales_order.input :message, :wrapper => :custom_multi_select, as: :select, include_blank: 'Select Cancellation Reason', collection: enum_to_collection(SalesOrder.cancellation_reasons, keep_raw: true),  input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon' } %>
+              <%= sales_order.input :message, :wrapper => :custom_multi_select, as: :select, include_blank: 'Select Cancellation Reason', collection: enum_to_collection(SalesOrder.cancellation_reasons, keep_raw: true),  input_html: { class: 'select2-single bmro-form-input bmro-dropdown-icon cancellation-msg', required: true } %>
             <% end %>
           </div>
           <div class="modal-footer">
             <% if policy(@sales_order).can_isp_cancel_so? %>
-              <button type="submit" class="btn btn-warning confirm-sales-order-cancel" >Cancel Sales Order</button>
-            <% else %>
               <div class="col-md-12">
-                <button type="submit" class="btn btn-dark auto-email-so-cancel" data-url="<%= isp_so_cancellation_email_overseers_inquiry_sales_order_path(@inquiry, @sales_order)%>">Cancel Sales Order</button><br><br>
+                <button type="button" class="btn btn-dark bmro-button cancel-button confirm-sales-order-cancel" data-url="<%= isp_order_cancellation_overseers_inquiry_sales_order_path(@inquiry, @sales_order)%>">Cancel Sales Order</button>
+              </div>
+            <% else %>
+              <div class="col-md-8">
+                <button type="button" class="btn btn-dark bmro-button cancel-button auto-email-so-cancel" data-url="<%= isp_so_cancellation_email_overseers_inquiry_sales_order_path(@inquiry, @sales_order)%>">Cancel Sales Order</button><br><br>
                 This will send auto email to Accounts team for SO cancellation.
+              </div>
+              <div class="col-md-4">
+                <i class="sprint-loader"></i>
               </div>
           <% end %>
           </div>
