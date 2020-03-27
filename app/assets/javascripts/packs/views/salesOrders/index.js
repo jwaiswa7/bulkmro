@@ -113,30 +113,34 @@ let orderCancelledSubmit = () => {
 
 let orderCancelAccount = (class_name) => {
     $("#cancelSalesOrder").on('click', class_name, function (event) {
-        $(this).attr('disabled', true);
-        $('.sprint-loader').show();
-        let formSelector = "#" + $(this).closest('form').attr('id');
-        let url = $(this).data('url');
-        $(formSelector).attr('method', '');
-        $.ajax({
-            url: url,
-            type: "POST",
-            data: $(this).closest('form').serialize(),
-            dataType: "json",
-            success: function success(data) {
-                $('#cancelSalesOrder').modal('hide');
-                $.notify({
-                    message: data.notice
-                }, {
-                    type: 'warning'
-                }, {delay: 5000});
-                window.location.reload();
-            },
-            error: function error(_error) {
-                if (_error.responseJSON && _error.responseJSON.error)
-                    $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error + "</div>");
-            }
-        });
+        if (confirm('Are you sure you want to cancel SO?')) {
+            $(this).attr('disabled', true);
+            $('.sprint-loader').show();
+            let formSelector = "#" + $(this).closest('form').attr('id');
+            let url = $(this).data('url');
+            $(formSelector).attr('method', '');
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: $(this).closest('form').serialize(),
+                dataType: "json",
+                success: function success(data) {
+                    $('#cancelSalesOrder').modal('hide');
+                    $.notify({
+                        message: data.notice
+                    }, {
+                        type: 'warning'
+                    }, {delay: 5000});
+                    window.location.reload();
+                },
+                error: function error(_error) {
+                    if (_error.responseJSON && _error.responseJSON.error)
+                        $(formSelector).find('.error').empty().html("<div class='p-1'>" + _error.responseJSON.error + "</div>");
+                }
+            });
+        } else {
+            $('#cancelSalesOrder').modal('hide');
+        }
         event.preventDefault();
     })
 };
