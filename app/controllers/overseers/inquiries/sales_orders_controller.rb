@@ -252,7 +252,8 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
         from: 'meenakshi.naik@bulkmro.com',
         # to: 'accounts@bulkmro.com',
         to: 'bulkmro007@gmail.com',
-        cc: @inquiry,
+        # cc: [@inquiry.company.try(:sales_manager).try(:email), @inquiry.inside_sales_owner.try(:email)],
+        cc: ['bhumika.desai@bulkmro.com'],
         subject: subject,
         body: SalesOrderMailer.request_cancel_so_email(@email_message).body.raw_source
       )
