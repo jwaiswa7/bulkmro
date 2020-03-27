@@ -138,6 +138,7 @@
             <div>
               <%= nav_dropdown_sub_item 'List', overseers_customer_orders_path, is_authorized(:customer_order, 'index') %>
               <%= nav_dropdown_sub_item 'Online Payments List', payments_overseers_customer_orders_path, is_authorized(:customer_order, 'payments') %>
+              <%= nav_dropdown_sub_item 'Razorpay Orders', razorpay_orders_overseers_customer_orders_path, is_authorized(:customer_order, 'payments') %>
             </div>
           </div>
           <div class="bmro-small-container">
