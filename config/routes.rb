@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   namespace :suppliers, path: '/' do
     devise_for :contacts, controllers: {sessions: 'suppliers/sessions', passwords: 'suppliers/passwords'}, path: :suppliers
   end
-  
+
   namespace :customers, path: '/' do
     devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: :customers
   end
@@ -968,7 +968,6 @@ Rails.application.routes.draw do
         get 'contact_companies'
       end
     end
-
   end
 
   namespace 'suppliers' do

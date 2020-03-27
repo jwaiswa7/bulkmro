@@ -201,7 +201,6 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def order_cancellation_modal
-
     authorize @sales_order
     respond_to do |format|
       format.html { render partial: 'cancellation' }
@@ -250,11 +249,12 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       @email_message = @sales_order.email_messages.build(overseer: current_overseer, inquiry: @inquiry, email_type: 'Request for SO Cancellation')
       subject = "Request for SO Cancellation for Inquiry ##{@sales_order.inquiry.inquiry_number} Sales Order ##{@sales_order.order_number}"
       @email_message.assign_attributes(
-          from: 'meenakshi.naik@bulkmro.com',
-          # to: 'accounts@bulkmro.com',
-          to: 'bulkmro007@gmail.com',
-          subject: subject,
-          body: SalesOrderMailer.request_cancel_so_email(@email_message).body.raw_source
+        from: 'meenakshi.naik@bulkmro.com',
+        # to: 'accounts@bulkmro.com',
+        to: 'bulkmro007@gmail.com',
+        cc: @inquiry,
+        subject: subject,
+        body: SalesOrderMailer.request_cancel_so_email(@email_message).body.raw_source
       )
       if @email_message.save
         if SalesOrderMailer.send_request_cancel_so_email(@email_message).deliver_now
