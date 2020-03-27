@@ -3,13 +3,13 @@
     <div class="bmro-task-header">
       <span class="bmro-small-heading bmro-width100 bmro-small-heading-mb">Inquiry No</span>
       <h5 class="bmro-big-heading bmro-fl">
-        <%= inq_for_sales_dash[0].inquiry_number %> - Tasks
+        <%= inq_for_dash[0].inquiry_number %> - Tasks
       </h5>
     </div>
     <div class="bmro-task-header bmr-text-right">
       <span class="bmro-small-heading bmro-width100 bmro-small-heading-mb">Company</span>
       <h5 class="bmro-big-heading">
-        <%= inq_for_sales_dash[0].company.name %>
+        <%= inq_for_dash[0].company.name %>
       </h5>
     </div>
   </div>
@@ -19,7 +19,7 @@
 
   <div id="collapseOne" class="collapse show bmro-width100">
     <% if show_all_tasks || (show_inquiry_tasks && inquiry_has_tasks) %>
-      <% inq_for_sales_dash.each do |inquiry| %>
+      <% inq_for_dash.each do |inquiry| %>
         <% if inquiry.status == 'New Inquiry' %>
           <div class="bmro-width100 bmro-padding-task">
             <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative">

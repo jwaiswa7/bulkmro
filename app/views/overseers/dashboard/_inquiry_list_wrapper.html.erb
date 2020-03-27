@@ -1,17 +1,8 @@
 <div class="bmro-width100 bmro-sales-pedding subhead-height">
-  <span class="bmro-inqu-no"><%= @dashboard.inq_for_sales_dash.count %></span>
+  <span class="bmro-inqu-no"><%= @dashboard.inq_for_dash.count %></span>
   <p class="bmro-menu bmro-font-size-dash dropdown-toggle" id="My-inquries" data-toggle="dropdown" role="button">
     My Inquiries
-    <!--    <span class="bmro-menu-dropdown bmro-menu-dropdown-ml"></span>-->
   </p>
-  <!--  <div class="dropdown-menu">-->
-  <!--    <a class="bmro-dropdown-item bmro-new-fw bmro-show-sales" href="#"><span class="bmro-inqu-no-drop">12</span>My Sales Invoices</a>-->
-  <!--    <a class="bmro-dropdown-item bmro-new-fw bmro-show-purchse" href="#"><span class="bmro-inqu-no-drop">02</span>My Purchase Orders</a>-->
-  <!--  </div>-->
-  <!--  <div class="bmro-star-parent">-->
-  <!--    <span class="bmro-dash-star bmro-show-star"></span>-->
-  <!--    <label class="bmro-cursol">Show Starred</label>-->
-  <!--  </div>-->
   <div class="bmro-star-parent bmro-reset-button bmro-inquiry-show-hide bmro-cursol">
     <label class="bmro-cursol">Reset</label>
   </div>
@@ -32,7 +23,7 @@
     </div>
   </div>
   <div class="bmro-width100 sub-content-height">
-    <% inq_for_sales_dash.each do |inquiry| %>
+    <% inq_for_dash.each do |inquiry| %>
       <div class="bmro-width100 bmro-Inquries-task">
         <div class="bmro-task-no-td bmro-Inquries-width1 bmro-fl bmro-position-relative">
           <!-- <span class="bmro-dash-star"></span>-->

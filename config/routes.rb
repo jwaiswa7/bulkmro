@@ -70,6 +70,8 @@ Rails.application.routes.draw do
       get 'get_status_records'
       get 'show_email_message_modal'
       post 'update_inquiry'
+      post 'update_invoice_request'
+      post 'approve_reject_so'
       get 'get_filtered_inquiries'
       get 'get_inquiry_tasks'
       get 'follow_up_dashboard'

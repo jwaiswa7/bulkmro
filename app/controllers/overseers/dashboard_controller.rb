@@ -64,25 +64,59 @@ class Overseers::DashboardController < Overseers::BaseController
     redirect_back fallback_location: overseers_dashboard_path
   end
 
+
+  def  update_invoice_request
+    invoice_request = InvoiceRequest.find_by_id(params['invoice_request']['invoice_request_id'])
+    if params['invoice_request']['grpo_number'].present?
+      invoice_request.update_attribute('grpo_number',params['invoice_request']['grpo_number'].to_i)
+    end
+    if params['invoice_request']['ap_invoice_number'].present?
+      invoice_request.update_attribute('ap_invoice_number', params['invoice_request']['ap_invoice_number'].to_i)
+    end
+    redirect_back fallback_location: overseers_dashboard_path
+  end
+
   def get_filtered_inquiries
     @dashboard = Overseers::Dashboard.new(current_overseer)
-    respond_to do |format|
-      format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_sales_dash: @dashboard.inq_for_sales_dash.map { |inquiry| inquiry if inquiry.status == params['status'] }.compact}}
+    statuses_for_invoice_req = ['GRPO Pending','Pending AP Invoice','Pending AR Invoice']
+    if statuses_for_invoice_req.include? params['status']
+      respond_to do |format|
+        format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.invoice_requests.map { |inv_req| inv_req.inquiry if inv_req.status == params['status'] }.compact}}
+      end
+    else
+      respond_to do |format|
+        format.html {render partial: 'inquiry_list_wrapper', locals: {inq_for_dash: @dashboard.inq_for_dash.map { |inquiry| inquiry if inquiry.status == params['status'] }.compact}}
+      end
     end
   end
 
   def get_inquiry_tasks
     @dashboard = Overseers::Dashboard.new(current_overseer)
-    inquiry = @dashboard.inq_for_sales_dash.where(inquiry_number: params['inquiry_number'].to_i)
+    if current_overseer.inside_sales_executive?
+      inquiry = @dashboard.inq_for_dash.where(inquiry_number: params['inquiry_number'].to_i)
 
-    if (inquiry.last.customer_po_number.blank? || inquiry.last.customer_order_date.blank? || (inquiry.last.approvals.any? && inquiry.last.inquiry_product_suppliers.any? && inquiry.last.sales_quotes.persisted.blank?) || (inquiry.last.final_sales_quote.present? && policy(inquiry.last.final_sales_quote).new_sales_order?) )
-      inquiry_has_tasks = true
-    else
-      inquiry_has_tasks = false
-    end
+      if (inquiry.last.customer_po_number.blank? || inquiry.last.customer_order_date.blank? || (inquiry.last.approvals.any? && inquiry.last.inquiry_product_suppliers.any? && inquiry.last.sales_quotes.persisted.blank?) || (inquiry.last.final_sales_quote.present? && policy(inquiry.last.final_sales_quote).new_sales_order?) )
+        inquiry_has_tasks = true
+      else
+        inquiry_has_tasks = false
+      end
 
-    respond_to do |format|
-      format.html {render partial: 'task_list_wrapper', locals: {inq_for_sales_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: inquiry_has_tasks}}
+      respond_to do |format|
+        format.html {render partial: 'task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: inquiry_has_tasks}}
+      end
+
+    elsif current_overseer.accounts?
+      inquiry = []
+      @dashboard.inq_for_account_dash.each do |inq|
+        if inq.inquiry_number == params['inquiry_number'].to_i
+          inquiry.push inq
+          break
+        end
+      end
+
+      respond_to do |format|
+        format.html {render partial: 'account_task_list_wrapper', locals: {inq_for_dash: inquiry, show_all_tasks: false, show_inquiry_tasks: true, inquiry_has_tasks: true}}
+      end
     end
   end
 
