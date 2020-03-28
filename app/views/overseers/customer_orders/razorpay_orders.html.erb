@@ -1,0 +1,19 @@
+<%= provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+<% content_for :heading do %>
+  Razorpay Orders
+<% end %>
+<% content_for :header_row do %>
+  <th class="no-sort" width="98px">Quick Actions</th>
+  <th class="no-sort text-left">Status</th>
+  <th class="no-sort text-right" >Online Order #</th>
+  <th class="no-sort text-right">Amount</th>
+  <th class="no-sort text-right">Amount Due</th>
+  <th class="no-sort text-right">Amount Paid</th>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

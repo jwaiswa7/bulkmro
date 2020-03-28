@@ -512,9 +512,14 @@ Rails.application.routes.draw do
         end
       end
 
+      member do
+        get 'order_data'
+      end
+
       collection do
         get 'payments'
         get 'refresh_payment'
+        get 'razorpay_orders'
       end
     end
 
