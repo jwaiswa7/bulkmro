@@ -2,6 +2,19 @@ import openRatingModal from "../common/openRatingModal";
 
 const edit = () => {
     openRatingModal()
+    var dataAttributes = $('body').data();
+    var controllerAction = camelize(dataAttributes.controllerAction);
+    if( controllerAction == "new")
+    {
+        $('#invoice_request_attachments').prop('required',true);
+        $('.error').text('Attachment is required')
+    }
+    else {
+        $('#invoice_request_attachments').prop('required',false);
+        $('.error').text('');
+    }
+
+
     $('.add-review').on('click',function (e) {
         $('#multipleRatingForm').modal('toggle')
     })
