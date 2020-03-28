@@ -152,4 +152,8 @@ class Overseer < ApplicationRecord
   def get_annual_target
     self.annual_targets.where(year: AnnualTarget.current_year).last
   end
+
+  def self.inside_sales_executives
+    Overseer.joins(:acl_role).where(acl_roles:{role_name: 'Inside Sales Executive'}, status: 'active')
+  end
 end
