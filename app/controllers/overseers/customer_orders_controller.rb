@@ -1,4 +1,5 @@
 class Overseers::CustomerOrdersController < Overseers::BaseController
+  include Mixins::HasOnlinePayments
   before_action :set_customer_order, only: [:show]
 
   def index
@@ -14,6 +15,18 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
     end.order(id: :desc)
     @payments = ApplyDatatableParams.to(payments, params.except(:company_id))
     authorize_acl :customer_order
+  end
+
+  def razorpay_orders
+    @orders = all_orders.items
+    @per = (params['per'] || params['length'] || 10).to_i
+    @page = params['page'] || ((params['start'] || 10).to_i / @per + 1)
+    @order_records = Kaminari.paginate_array(@orders).page(@page).per(@per)
+  end
+
+  def order_data
+    @order = get_order(params["id"])
+    @payments = order_payments(params["id"])
   end
 
   def refresh_payment

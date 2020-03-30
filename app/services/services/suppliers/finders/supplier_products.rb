@@ -1,15 +1,14 @@
-class Services::Suppliers::Finders::SupplierProducts < Services::Customers::Finders::BaseFinder
+class Services::Suppliers::Finders::SupplierProducts < Services::Suppliers::Finders::BaseFinder
   def call
     call_base
   end
 
   def all_records
     indexed_records = if current_company.present?
-      super.filter(filter_by_value('company_id', current_company.id))
+      super.filter(filter_by_value('supplier_id', current_company.id))
     else
       super
     end
-
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -24,7 +23,7 @@ class Services::Suppliers::Finders::SupplierProducts < Services::Customers::Find
   end
 
   def model_klass
-    CustomerProduct
+    SupplierProduct
   end
 
   def perform_query(query)

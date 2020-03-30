@@ -27,7 +27,7 @@ class SalesOrdersIndex < BaseIndex
     field :account_id, value: -> (record) { record.inquiry.contact.account.id if record.inquiry.present? }, type: 'integer'
     field :account_name, value: -> (record) { record.inquiry.contact.account.name.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :company, value: -> (record) { record.inquiry.company.to_s if record.inquiry.present? }, analyzer: 'substring'
-    field :inside_sales_owner_id, value: -> (record) { record.inquiry.inside_sales_owner.id if record.inquiry.present? && record.inquiry.inside_sales_owner.present? }
+    field :inside_sales_owner_id, value: -> (record) { record.inquiry.inside_sales_owner.id if record.inquiry.present? && record.inquiry.inside_sales_owner.present? }, type: 'integer'
     field :inside_sales_owner, value: -> (record) { record.inquiry.inside_sales_owner.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :outside_sales_owner_id, value: -> (record) { record.inquiry.outside_sales_owner.id if record.inquiry.present? && record.inquiry.outside_sales_owner.present? }
     field :outside_sales_owner, value: -> (record) { record.inquiry.outside_sales_owner.to_s if record.inquiry.present? }, analyzer: 'substring'

@@ -10,6 +10,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @sort_order = sort_order
     @pipeline_report_params = params[:pipeline_report]
     @kra_report_params = params[:kra_report]
+    @isp_report_params = params[:isp_report]
     @tat_report_params = params[:tat_report]
     @prefix = params[:prefix]
     @company_report_params = params[:company_report]
@@ -269,6 +270,18 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     }
     keys.map {|i| query_obj[:bool][:should] << { terms: { "#{i}": vals}}}
     query_obj
+  end
+
+  def aggregate_by_isp(size = 500)
+    {
+        "inside_sales_owners": {
+            terms: {
+                field: 'inside_sales_owner_id',
+                size: size
+            }
+
+        }
+    }
   end
 
   def aggregate_by_status(key = 'statuses', aggregation_field = 'potential_value', size = 50, status_field)

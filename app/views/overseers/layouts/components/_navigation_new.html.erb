@@ -122,7 +122,15 @@
         </div>
 
         <div class="bmro-second-and-third-level-headings-container" id="sales_heading_container">
-          <div class="bmro-small-container"><%= nav_dropdown_item_new 'Inquiries', overseers_inquiries_path, is_authorized(:inquiry, 'index') %></div>
+          <div class="bmro-small-container">
+            <div class="bmro-second-level-heading-container">
+              <p class="bmro-second-level-header">Inquiries</p>
+            </div>
+            <div>
+            <%= nav_dropdown_sub_item 'Inquiries List', overseers_inquiries_path, is_authorized(:inquiry, 'index') %>
+            <%= nav_dropdown_sub_item 'Inquiries Regret Requests', regret_inquiry_request_queue_overseers_inquiries_path, is_authorized(:inquiry, 'regret_inquiry_request_queue') %>
+            </div>
+          </div>
           <div class="bmro-small-container">
             <div class="bmro-second-level-heading-container">
               <p class="bmro-second-level-header">Online Orders</p>
@@ -130,6 +138,7 @@
             <div>
               <%= nav_dropdown_sub_item 'List', overseers_customer_orders_path, is_authorized(:customer_order, 'index') %>
               <%= nav_dropdown_sub_item 'Online Payments List', payments_overseers_customer_orders_path, is_authorized(:customer_order, 'payments') %>
+              <%= nav_dropdown_sub_item 'Razorpay Orders', razorpay_orders_overseers_customer_orders_path, is_authorized(:customer_order, 'payments') %>
             </div>
           </div>
           <div class="bmro-small-container">
@@ -302,6 +311,7 @@
           <div class="bmro-small-container"><%= nav_dropdown_item_new 'TAT Report', tat_report_overseers_inquiries_path, is_authorized(:inquiry, 'tat_report') %></div>
           <div class="bmro-small-container"><%= nav_dropdown_item_new 'Customer Order Status Report', customer_order_status_report_overseers_sales_orders_path, is_authorized(:sales_order, 'customer_order_status_report') %></div>
           <div class="bmro-small-container"><%= nav_dropdown_item_new 'Logistics Scorecard', overseers_logistics_scorecards_path, is_authorized(:logistics_scorecard, 'index') %></div>
+          <div class="bmro-small-container"><%= nav_dropdown_item_new 'ISP Report', isp_report_overseers_overseers_path, is_authorized(:overseer, 'isp_report') %></div>
         </div>
 
         <div class="bmro-second-and-third-level-headings-container" id="admin_heading_container">
