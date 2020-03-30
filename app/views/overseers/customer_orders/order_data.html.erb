@@ -1,0 +1,159 @@
+<% content_for :page_title do %>
+  Order Payments
+<% end %>
+<div class="col-lg-12">
+  <div class="card">
+    <div class="card-body">
+      <div class="form-row">
+        <div class="col-11">
+          <h4 class="display-5 mb-1"><%= "Order: ##{@order.attributes['id']}  -  Amount #{format_currency((@order.attributes['amount'] / 100))}" %></h4>
+        </div>
+        <div class="col-1">
+          <a href="<%= razorpay_orders_overseers_customer_orders_path %>" class="btn btn-warning bmro-button btn-rounded align-self-center btn-block-sm-down w-100">Back</a>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <% if @payments.count > 0 %>
+      <% @payments.items.each_with_index do |item, index| %>
+      <% unless index == 0 %>
+        <hr>
+      <% end %>
+      <div class="card-body">
+        <div class="d-md-flex justify-content-between pb-1">
+          <h5 class="display-5 mb-1">Payment No. <%= index + 1 %></h5>
+        </div>
+        <hr>
+        <div class="form-row">
+          <div class="col-12">
+            <div class="d-md-flex justify-content-between pb-1">
+              <h6 class="display-5 mb-1">Payment Details</h6>
+            </div>
+            <%#= f.fields_for :inquiry_product, f.object.inquiry_product do |inquiry_product| %>
+            <div class="form-row d-none d-md-flex">
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Payment No.</label><br>
+                  <%= item['id'] %>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Entity</label><br>
+                  <%= item['entity'].present? ? item['entity'].capitalize : '-' %>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Amount</label><br>
+                  <%= item['amount'].present? ? format_currency((item['amount'] / 100)) : 0 %>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Status</label><br>
+                  <%= item['status'].present? ? item['status'].capitalize : '-' %>
+                </div>
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="d-md-flex justify-content-between pb-1">
+              <h6 class="display-5 mb-1">Fees</h6>
+            </div>
+            <div class="form-row d-none d-md-flex">
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Total Fee</label><br>
+                  <%= item['fee'].present? ? format_currency((item['fee'] / 100)) : 0 %>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Razorpay Fee</label><br>
+                  <%= (item['fee'].present? && item['tax'].present?) ? format_currency((item['fee'] / 100) - (item['tax'] / 100)) : 0 %>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Tax</label><br>
+                  <%= item['tax'].present? ? format_currency((item['tax'] / 100)) : 0 %>
+                </div>
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="d-md-flex justify-content-between pb-1">
+              <h6 class="display-5 mb-1">Payment Method Details</h6>
+            </div>
+            <div class="form-row d-none d-md-flex">
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Payment Method</label><br>
+                  <%= item['method'].present? ? item['method'].capitalize : '-' %>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Card</label><br>
+                  <%= item['card_id'].present? ? item['card_id'] : '-' %>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Bank</label><br>
+                  <%= item['bank'].present? ? item['bank'] : '-' %>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Wallet</label><br>
+                  <%= item['wallet'].present? ? item['wallet'] : '-' %>
+                </div>
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="d-md-flex justify-content-between pb-1">
+              <h6 class="display-5 mb-1">Contact Details</h6>
+            </div>
+            <div class="form-row d-none d-md-flex">
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Email</label><br>
+                  <%= item['email'].present? ? item['email'] : '-' %>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group mb-0">
+                  <label>Mobile No.</label><br>
+                  <%= item['contact'].present? ? item['contact'] : '-' %>
+                </div>
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="d-md-flex justify-content-between pb-1">
+              <h6 class="display-5 mb-1">Notes</h6>
+            </div>
+            <% if item['notes'].present? %>
+              <div class="form-row d-none d-md-flex">
+                <% item['notes'].each do |k, v| %>
+                  <div class="col-2">
+                    <div class="form-group mb-0">
+                      <label><%= k.capitalize %></label><br>
+                      <%= v %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+            <%# end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% end %>
+    <br>
+  </div>
+</div>

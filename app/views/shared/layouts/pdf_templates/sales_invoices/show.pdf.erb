@@ -204,7 +204,11 @@
                   <b><span>Customer - Bill to:</span></b>
                 </div>
                 <div class="heading heading-right">
-                  <b><span>Customer - Ship to:</span></b>
+                  <% if inquiry.company_id==5 %>
+                    <b><span>Customer - Ship to / Place Of Supply</span></b>
+                  <%else %>
+                    <b><span>Customer - Ship to:</span></b>
+                  <%end %>
                 </div>
 
                 <br clear="all">

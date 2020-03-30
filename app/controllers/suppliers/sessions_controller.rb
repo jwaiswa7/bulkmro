@@ -11,6 +11,7 @@ class Suppliers::SessionsController < Devise::SessionsController
 
   def destroy
     signed_out = sign_out(resource_name)
+    session.delete(:current_supplier_company_id) if signed_out
     set_flash_message! :notice, :signed_out if signed_out
     yield if block_given?
     respond_to_on_destroy

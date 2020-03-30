@@ -48,12 +48,14 @@ class Overseers::InquiriesController < Overseers::BaseController
     else
       inquiry_status = "inquiry_status_#{@inquiry.inquiry_number}"
       if Rails.cache.exist?(inquiry_status)
-        @prev_inquiry = Rails.cache.read(inquiry_status)
-        message = "Inquiry Regret Request Rejected by #{current_overseer}"
-        inq_com = InquiryComment.new(inquiry_id: @inquiry.id, message: message, created_by: current_overseer, updated_by: current_overseer)
-        inq_com.save
-        @inquiry.update_attributes(status: @prev_inquiry.status)
+        Rails.cache.delete(inquiry_status)
       end
+      Rails.cache.write(inquiry_status, @inquiry)
+      @prev_inquiry = Rails.cache.read(inquiry_status)
+      message = "Inquiry Regret Request Rejected by #{current_overseer}"
+      inq_com = InquiryComment.new(inquiry_id: @inquiry.id, message: message, created_by: current_overseer, updated_by: current_overseer)
+      inq_com.save
+      @inquiry.update_attributes(status: @prev_inquiry.status)
     end
 
     redirect_to regret_inquiry_request_queue_overseers_inquiries_path
@@ -292,8 +294,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def next_inquiry_step
     @company = Company.find(params[:inquiry][:company_id])
-    # @inquiry = @company.inquiries.build(inquiry_params.merge(overseer: current_overseer))
-    @inquiry = @company.inquiries.build(inquiry_params)
+    @inquiry = @company.inquiries.build(inquiry_params.merge(overseer: current_overseer))
     Rails.cache.write(:inquiry, @inquiry, expires_in: 25.minutes)
     redirect_to new_overseers_inquiry_path(company_id: @company.to_param)
     authorize_acl @inquiry
