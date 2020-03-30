@@ -127,12 +127,12 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     @indexed_sales_orders = service.indexed_records
     @sales_orders = service.records
 
-    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: 'remote_status', main_summary_status: SalesOrder.main_summary_statuses)
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: nil, main_summary_status: SalesOrder.main_summary_statuses)
     status_service.call
 
     respond_to do |format|
       format.html {
-        @statuses = SalesOrder.remote_statuses
+        @statuses = SalesOrder.statuses
         @alias_name = 'Total Sales Order'
         @main_summary_statuses = SalesOrder.main_summary_statuses
       }
