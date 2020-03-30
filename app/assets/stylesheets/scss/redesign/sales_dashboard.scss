@@ -196,6 +196,11 @@ p.bmro-menu{
   overflow-y: auto;
   overflow-x: hidden;
 }
+.bmro-comments-sec{
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 95%;
+}
 .leftside{
   max-height: 45rem;
 }
@@ -2443,4 +2448,7 @@ canvas {
 }
 .bmro-dashboard-link p {
   margin: 0;
+}
+.bmro-email-form-group{
+  overflow: auto !important;
 }

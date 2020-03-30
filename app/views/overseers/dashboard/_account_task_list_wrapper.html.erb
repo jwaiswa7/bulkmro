@@ -24,19 +24,19 @@
       <% inquiry.invoice_requests.each do |invoice_req| %>
         <% if (invoice_req.status == 'GRPO Pending' ||  invoice_req.status == 'Pending AR Invoice') && !invoice_req.grpo_number.present? %>
           <div class="bmro-width100 bmro-padding-task">
-            <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative" style="width: 13%">
+            <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative" >
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width bmro-fl" style="width: 13%">
-              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.sales_order.present? ? invoice_req.sales_order.order_number : '-------------' %></span>
+            <div class="bmro-task-no-td bmro-task-td-width bmro-fl" >
+              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.sales_order.present? ? invoice_req.sales_order.order_number : '-----------' %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width bmro-fl" style="width: 13%">
+            <div class="bmro-task-no-td bmro-task-td-width bmro-fl" >
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.purchase_order.po_number %></span>
             </div>
 
-            <div class="bmro-task-print bmro-task-width bmro-fl" style="width: 30%">
+            <div class="bmro-task-print bmro-task-width bmro-fl" >
               <div class="bmro-commited-data bmro-task-td">
                 Add GRPO SAP number.
               </div>
@@ -54,19 +54,19 @@
 
         <% if invoice_req.status == 'Pending AP Invoice' && !invoice_req.ap_invoice_number.present? %>
           <div class="bmro-width100 bmro-padding-task">
-            <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative" style="width: 13%">
+            <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative" >
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width bmro-fl" style="width: 13%">
+            <div class="bmro-task-no-td bmro-task-td-width bmro-fl" >
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.sales_order.present? ? invoice_req.sales_order.order_number : '-----------' %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width bmro-fl" style="width: 13%">
+            <div class="bmro-task-no-td bmro-task-td-width bmro-fl" >
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.purchase_order.po_number %></span>
             </div>
 
-            <div class="bmro-task-print bmro-task-width bmro-fl" style="width: 30%">
+            <div class="bmro-task-print bmro-task-width bmro-fl" >
               <div class="bmro-commited-data bmro-task-td">
                 Add AP SAP number.
               </div>
@@ -84,19 +84,19 @@
 
         <% if invoice_req.status == 'Pending AR Invoice' %>
           <div class="bmro-width100 bmro-padding-task">
-            <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative" style="width: 13%">
+            <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative" >
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width bmro-fl" style="width: 13%">
+            <div class="bmro-task-no-td bmro-task-td-width bmro-fl" >
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.sales_order.present? ? invoice_req.sales_order.order_number : '-----------' %></span>
             </div>
 
-            <div class="bmro-task-no-td bmro-task-td-width bmro-fl" style="width: 13%">
+            <div class="bmro-task-no-td bmro-task-td-width bmro-fl">
               <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= invoice_req.purchase_order.po_number %></span>
             </div>
 
-            <div class="bmro-task-print bmro-task-width bmro-fl" style="width: 30%">
+            <div class="bmro-task-print bmro-task-width bmro-fl" >
               <div class="bmro-commited-data bmro-task-td">
                 Add AR number.
               </div>
@@ -112,23 +112,19 @@
       <% if inquiry.status == 'SO Draft: Pending Accounts Approval' %>
 
         <div class="bmro-width100 bmro-padding-task">
-          <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative" style="width: 13%">
+          <div class="bmro-task-no-td bmro-task-td-width bmro-fl bmro-position-relative" >
             <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
           </div>
 
-          <div class="bmro-task-no-td bmro-task-td-width bmro-fl" style="width: 13%">
-            <% if inquiry.sales_orders.present? && inquiry.sales_orders.last.order_number.present? %>
-              <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"> <%= inquiry.sales_orders.last.order_number  %> </span>
-            <% else %>
-              <span class="bmro-commited-data bmro-task-td bmro-fl bmro-no-mrl bmro-td-span"> #SAP Pending </span>
-            <% end %>
+          <div class="bmro-task-no-td bmro-task-td-width bmro-fl" >
+            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"> <%= inquiry.sales_orders.last.order_number if inquiry.sales_orders.present? %> </span>
           </div>
 
-          <div class="bmro-task-no-td bmro-task-td-width bmro-fl" style="width: 13%;">
-            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span" style="text-align:center"> ------------- </span>
+          <div class="bmro-task-no-td bmro-task-td-width bmro-fl" >
+            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"> ------------ </span>
           </div>
 
-          <div class="bmro-task-print bmro-task-width bmro-fl" style="width: 30%">
+          <div class="bmro-task-print bmro-task-width bmro-fl" >
             <div class="bmro-commited-data bmro-task-td">
               Sales Order Approve / Reject
             </div>
