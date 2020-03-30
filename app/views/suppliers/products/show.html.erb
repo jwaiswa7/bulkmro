@@ -14,14 +14,14 @@
           </div>
           <div class="col-md-9">
             <h4 class="display-5 mb-1 text-black-50 mt-2 mt-md-0"><%= @supplier_product.name %></h4>
-            <h4 class="mb-3"><%= format_currency(@supplier_product.supplier_unit_cost_price.present? ? @supplier_product.supplier_unit_cost_price : @supplier_product.latest_unit_cost_price_for(current_company)) %></h4>
+            <h4 class="mb-3"><%= format_currency(@supplier_product.supplier_price.present? ? @supplier_product.supplier_price : @supplier_product.product.latest_unit_cost_price_for(current_company)) %></h4>
 
             <h6 class="text-uppercase text-black-50 mb-1 mt-2">Product Details</h6>
             <div class="form-row">
               <% if @supplier_product.brand.present? %>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">Brand</strong>
-                  <%= @supplier_product.brand.name %>
+                  <%= @supplier_product.brand.to_s %>
                 </div>
               <% end %>
 
@@ -55,7 +55,7 @@
 
               <div class="col-6 col-md-3">
                 <strong class="d-block">Instock Quantity</strong>
-                <%= @supplier_product.stocks.sum(&:instock).to_i %>
+                <%= @supplier_product.product.stocks.sum(&:instock).to_i %>
               </div>
               <% if @is_henkel%>
                 <div class="col-6 col-md-3 mb-2">
@@ -84,7 +84,7 @@
               <%= f.hidden_field :product_show, value: true %>
               <div class="form-row <%= @display_class %>">
                 <div class="col-2 col-md-4">
-                  <%= f.input :supplier_unit_cost_price, label: false, :class => 'form-control', input_html: {value: @supplier_product.supplier_unit_cost_price.present? ? @supplier_product.supplier_unit_cost_price : @supplier_product.latest_unit_cost_price_for(current_company)} %>
+                  <%= f.input :supplier_price, label: false, :class => 'form-control', input_html: {value: @supplier_product.supplier_price.present? ? @supplier_product.supplier_price : @supplier_product.product.latest_unit_cost_price_for(current_company)} %>
                 </div>
                 <div class="col-10 col-md-8">
                   <%= f.submit 'Update Price', class: "btn btn-block btn-success" %>

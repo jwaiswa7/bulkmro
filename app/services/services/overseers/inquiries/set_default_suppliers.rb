@@ -15,7 +15,10 @@ class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::Ba
                 unit_cost_price: unit_cost_price,
                 last_unit_price: unit_cost_price
               )
-              inquiry_product_supplier.save
+              if inquiry_product_supplier.save
+                service = Services::Suppliers::CreateSupplierProduct.new(inquiry_product_supplier)
+                service.call
+              end
             end
           end
         end
