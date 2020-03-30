@@ -457,7 +457,9 @@ class Overseers::InquiriesController < Overseers::BaseController
   def destroy_supplier
     authorize_acl @inquiry
     if params[:inquiry_product_supplier_id].present?
-      InquiryProductSupplier.find(params[:inquiry_product_supplier_id]).destroy
+      ips = InquiryProductSupplier.find(params[:inquiry_product_supplier_id])
+      Services::Suppliers::UpdateSupplierProduct.new(ips).call
+      ips.destroy
     end
   end
 

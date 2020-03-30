@@ -170,6 +170,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'get_resources'
+        get 'isp_report'
       end
     end
 
@@ -511,9 +512,14 @@ Rails.application.routes.draw do
         end
       end
 
+      member do
+        get 'order_data'
+      end
+
       collection do
         get 'payments'
         get 'refresh_payment'
+        get 'razorpay_orders'
       end
     end
 
@@ -716,6 +722,12 @@ Rails.application.routes.draw do
             post 'generate_catalog'
             post 'destroy_all'
             get 'export_customer_product'
+            get 'autocomplete'
+          end
+        end
+
+        resources :supplier_products do
+          collection do
             get 'autocomplete'
           end
         end

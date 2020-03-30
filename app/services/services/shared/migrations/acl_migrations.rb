@@ -621,6 +621,23 @@ class Services::Shared::Migrations::AclMigrations < Services::Shared::BaseServic
     end
   end
 
+  def create_supplier_product_resources
+    role_name = ["Outside Sales Manager", "Outside Sales Executive", "Inside Sales and Logistic Manager", "Admin-Leadership Team", "Inside Sales Manager", "Inside Sales Executive",  "Outside Sales Team Leader", "Inside Sales Team Leader", "Admin"]
+    acl_resources_for_targets = {
+        'supplier_product': %w(index show edit update destroy destroy_all)
+    }
+    acl_resources_for_targets.each do |key, val|
+      val.each do |action_name|
+        acl_resource = AclResource.where(resource_model_name: key, resource_action_name: action_name).first_or_create!
+        # update role
+        acl_roles = AclRole.where(role_name: role_name)
+        acl_roles.each do |acl_role|
+          update_role_resource(acl_role, acl_resource.id)
+        end
+      end
+    end
+  end
+
   def isp_so_cancellation_acl_resources
     role_name = ['Admin', 'Inside Sales Executive']
     acl_resources_for_targets = {
