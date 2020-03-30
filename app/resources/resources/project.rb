@@ -1,3 +1,4 @@
+
 class Resources::Project < Resources::ApplicationResource
   def self.identifier
     :Code
@@ -12,7 +13,7 @@ class Resources::Project < Resources::ApplicationResource
 
     if validated_response[:error_message].present? && validated_response[:error_message] == 'This entry already exists in the following tables (ODBC -2035)'
       record.inquiry_number
-    elsif validated_response['code'].present?
+    elsif validated_response['Code'].present?
       record.inquiry_number
     else
       nil
