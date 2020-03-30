@@ -108,9 +108,10 @@ class SalesOrder < ApplicationRecord
   }, _prefix: true
 
   enum main_summary_status: {
-      'Supplier PO: Pending': 17,
-      'Material Ready for Dispatch': 33,
-      'Invoiced': 25
+      'Requested': 10,
+      'Accounts Approval Pending': 20,
+      'Approved': 60,
+      'SAP Rejected': 40
   }, _suffix: true
 
   enum remote_status: {

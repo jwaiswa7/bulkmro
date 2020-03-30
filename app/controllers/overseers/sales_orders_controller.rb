@@ -7,7 +7,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html {
         @statuses = SalesOrder.statuses.except("Approved", "Order Deleted", "Hold by Finance", "Cancelled")
-        @main_summary_statuses = SalesOrder.main_summary_statuses
+        @main_summary_statuses = SalesOrder.main_summary_statuses.except('Approved', 'Requested')
         render 'pending'
       }
       format.json do
@@ -17,11 +17,12 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records
 
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: nil, main_summary_status: SalesOrder.main_summary_statuses.except('Approved', 'Requested'))
         status_service.call
 
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
+        @main_summary_statuses = SalesOrder.main_summary_statuses.except('Approved', 'Requested')
 
         render 'pending'
       end
@@ -132,9 +133,10 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     respond_to do |format|
       format.html {
-        @statuses = SalesOrder.statuses
+        @statuses = SalesOrder.statuses.except('SAP Rejected', 'Hold by Finance')
+
         @alias_name = 'Total Sales Order'
-        @main_summary_statuses = SalesOrder.main_summary_statuses
+        @main_summary_statuses = SalesOrder.main_summary_statuses.except('SAP Rejected')
       }
       format.json do
         @total_values = status_service.indexed_total_values
@@ -155,13 +157,12 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records
-
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: 'remote_status')
+        @main_summary_statuses = SalesOrder.main_summary_statuses.except('SAP Rejected')
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: 'status', main_summary_status: @main_summary_statuses)
         status_service.call
 
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
-        @main_summary_statuses = SalesOrder.main_summary_statuses
         @statuses_count = @statuses.values.sum
         @not_invoiced_total = @total_values.values.sum
       end
