@@ -116,8 +116,8 @@
             <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"><%= inquiry.inquiry_number %></span>
           </div>
 
-          <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl" >
-            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"> <%= inquiry.sales_orders.last.order_number if inquiry.sales_orders.present? %> </span>
+          <div class="bmro-task-no-td bmro-task-td-width bmro-fl" >
+            <span class="bmro-big-heading bmro-fl bmro-no-mrl bmro-td-span"> <%= (inquiry.sales_orders.present? && inquiry.sales_orders.last.order_number != nil) ? inquiry.sales_orders.last.order_number : '#SAP Request Pending' %> </span>
           </div>
 
           <div class="bmro-task-no-td bmro-task-td-width-new-account bmro-fl" >
