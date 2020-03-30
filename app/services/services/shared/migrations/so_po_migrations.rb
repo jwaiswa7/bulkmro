@@ -4,18 +4,26 @@ class Services::Shared::Migrations::SoPoMigrations < Services::Shared::Migration
   #s.set_warehouse_series
 
   def set_warehouse_series
-    service = Services::Shared::Spreadsheets::CsvImporter.new('tm_bhm_series.csv', 'seed_files_3')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('document_series2020.csv', 'seed_files_3')
+    data_not_done = []
     service.loop(nil) do |x|
       p x.get_column('period_ document_type')
-      s = Series.new(document_type: x.get_column('document_type'),
-                     series: x.get_column('series'),
-                     series_name: x.get_column('series_name'),
-                     period_indicator: x.get_column('period_indicator'),
-                     number_length: x.get_column('length').to_i)
-      p '******************8'
-      # p s.errors.full_message
-      s.save(validate: false)
-      p '******************8'
+      if Series.document_types.keys.include? x.get_column('document_type')
+        s = Series.new(document_type: x.get_column('document_type'),
+                       series: x.get_column('first_number').to_s.first(3).to_i,
+                       series_name: x.get_column('series_name'),
+                       period_indicator: x.get_column('period_indicator'),
+                       number_length: x.get_column('length').to_i,
+                        first_number: x.get_column('first_number'),
+                        last_number: x.get_column('first_number'))
+        p '******************8'
+        # p s.errors.full_message
+        s.save(validate: false)
+        p '******************8'
+      else
+        data_not_done << {series_name: x.get_column('series_name'), first_number: x.get_column('first_number')}
+      end
+      p data_not_done
     end
   end
 
