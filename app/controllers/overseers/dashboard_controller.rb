@@ -10,7 +10,7 @@ class Overseers::DashboardController < Overseers::BaseController
     if current_overseer.inside_sales_executive?
       @dashboard = Overseers::Dashboard.new(current_overseer)
       render 'new_sales_dashboard'
-    elsif current_overseer.accounts?
+    elsif current_overseer.acl_role.role_name == 'Accounts'
       @dashboard = Overseers::Dashboard.new(current_overseer)
       render 'accounts_dashboard'
     elsif current_overseer.admin?
