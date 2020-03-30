@@ -2,7 +2,7 @@ class Series < ApplicationRecord
 
   pg_search_scope :locate, against: [:document_type, :series_name], using: {tsearch: {prefix: true}}
 
-  after_save :create_first_number
+  # after_save :create_first_number
   validates_numericality_of :last_number, less_than: ->(series) { series.first_number + 99999 }
   validates_numericality_of :last_number, greater_than: ->(series) { series.first_number - 1 }
 
@@ -27,7 +27,8 @@ class Series < ApplicationRecord
       'Outgoing Payments': 18,
       'Journal Vouchers': 19,
       'Inventory Transfer Request': 20,
-      'Inventory Transfer': 21
+      'Inventory Transfer': 21,
+      'Goods Issue': 22
   }
 
   def create_first_number
