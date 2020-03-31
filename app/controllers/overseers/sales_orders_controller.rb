@@ -6,8 +6,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     respond_to do |format|
       format.html {
-        @statuses = SalesOrder.statuses.except("Approved", "Order Deleted", "Hold by Finance", "Cancelled")
-        @main_summary_statuses = SalesOrder.main_summary_statuses.except('Approved', 'Requested')
+        @statuses = SalesOrder.statuses.except("Approved", "Order Deleted", "Hold by Finance", "Cancelled", 'SAP Rejected')
+        @main_summary_statuses = SalesOrder.main_summary_statuses.except('Approved', 'SAP Rejected')
         render 'pending'
       }
       format.json do
@@ -42,7 +42,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def cancelled
     authorize_acl :sales_order
     respond_to do |format|
-      format.html { render 'pending' }
+      format.html { render 'cancelled' }
       format.json do
         service = Services::Overseers::Finders::CancelledSalesOrders.new(params, current_overseer)
         service.call
@@ -149,17 +149,21 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def not_invoiced
     authorize_acl :sales_order
+    service = Services::Overseers::Finders::NotInvoicedSalesOrders.new(params, current_overseer)
+    service.call
+
+    @indexed_sales_orders = service.indexed_records
+    @sales_orders = service.records
+    @statuses = SalesOrder.statuses.except('SAP Rejected', 'Hold by Finance')
+
+
+    @main_summary_statuses = SalesOrder.main_summary_statuses.except('SAP Rejected')
+    status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: 'status', main_summary_status: @main_summary_statuses)
+    status_service.call
+
     respond_to do |format|
       format.html { render 'not_invoiced' }
       format.json do
-        service = Services::Overseers::Finders::NotInvoicedSalesOrders.new(params, current_overseer)
-        service.call
-
-        @indexed_sales_orders = service.indexed_records
-        @sales_orders = service.records
-        @main_summary_statuses = SalesOrder.main_summary_statuses.except('SAP Rejected')
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, custom_status: 'status', main_summary_status: @main_summary_statuses)
-        status_service.call
 
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
