@@ -22,11 +22,11 @@
       <ul class="list-group text-info mb-3 bmro-float-left-left collapse show" id="instruction">
         <% if @inquiry.customer_po_number.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer PO number must be present.</li><% end %>
         <% if @inquiry.customer_order_date.blank? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Customer order date must be present.</li><% end %>
-        <% if (@inquiry.customer_committed_date.blank? && !@inquiry.sales_orders.last.approved?) || (!@inquiry.committed_delivery_attachment.attached? && !@inquiry.sales_orders.last.approved?) %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Committed delivery date and
+        <% if (@inquiry.customer_committed_date.blank? || !@inquiry.committed_delivery_attachment.attached?) && !@inquiry.sales_orders.last.approved? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Committed delivery date and
         attachment must be present.</li><% end %>
-        <% if (@inquiry.customer_po_received_date.blank? && !@inquiry.sales_orders.last.approved?) ||(!@inquiry.customer_po_received_attachment.attached? && !@inquiry.sales_orders.last.approved?) %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Committed PO received date and
+        <% if (@inquiry.customer_po_received_date.blank? ||!@inquiry.customer_po_received_attachment.attached?) && !@inquiry.sales_orders.last.approved? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Committed PO received date and
         attachment must be present.</li><% end %>
-        <% if (@inquiry.customer_po_delivery_date.blank? && !@inquiry.sales_orders.last.approved?) || (!@inquiry.customer_po_delivery_attachment.attached? && !@inquiry.sales_orders.last.approved?) %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Committed PO delivery date and
+        <% if (@inquiry.customer_po_delivery_date.blank? || !@inquiry.customer_po_delivery_attachment.attached?) && !@inquiry.sales_orders.last.approved? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Committed PO delivery date and
         attachment must be present.</li><% end %>
         <% if @inquiry.not_synced? %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i>Inquiry must be synced with SAP.</li><% end %>
         <% if @inquiry.final_sales_quote.not_synced? || @inquiry.last_synced_quote_id != @inquiry.final_sales_quote.id %><li class="list-group-item bmro-instruction-ul"><i class="bmro-bullets-icon"></i> Last Sales quote must be synced with SAP.</li><% end %>
